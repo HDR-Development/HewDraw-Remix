@@ -18,7 +18,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build release NRO
       run: |
-        PATH=$PATH:/root/.cargo/bin /root/.cargo/bin/cargo-skyline skyline build --release
+        PATH=$PATH:/root/.cargo/bin && cd plugin && /root/.cargo/bin/cargo-skyline skyline build --release
       env:
         HOME: /root
     - name: Upload plugin artifact
