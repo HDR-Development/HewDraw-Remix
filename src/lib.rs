@@ -20,7 +20,7 @@ fn test_replacement() -> u32 {
 
 #[skyline::main(name = "tmp")]
 pub fn main() {
-    println!("Hello from Skyline Rust Plugin!");
+    println!("Hello from Skyline Rust!");
 
     install_hook!(test_replacement);
 
