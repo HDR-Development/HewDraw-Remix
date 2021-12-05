@@ -2,9 +2,9 @@ name: Rust
 
 on:
   push:
-    branches: [ master ] # CHANGE "master" TO "main" IF THAT IS THE NAME OF YOUR MAIN BRANCH!
+    branches: [ release, dev ] # CHANGE "master" TO "main" IF THAT IS THE NAME OF YOUR MAIN BRANCH!
   pull_request:
-    branches: [ master ]
+    branches: [ release, dev ]
   workflow_dispatch:
 
 jobs:
