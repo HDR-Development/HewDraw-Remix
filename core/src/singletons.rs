@@ -53,6 +53,7 @@ pub fn init() {
 macro_rules! expose_singleton {
     ($($public:ident, $private:ident)*) => {
         $(
+            #[inline(always)]
             #[allow(non_snake_case)]
             pub fn $public() -> *mut u8 {
                 unsafe {
