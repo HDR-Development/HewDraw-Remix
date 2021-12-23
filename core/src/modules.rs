@@ -1,8 +1,10 @@
 mod buffer;
+mod var;
 
 use std::sync::Once;
 
 pub use buffer::*;
+pub use var::*;
 
 use skyline::hooks::*;
 use crate::offsets;
@@ -99,7 +101,7 @@ pub fn get_entry<T>(address: *mut *mut u64, index: isize) -> Option<*mut T> {
 }
 
 pub fn clean_hdr_object(address: *mut *mut u64) {
-    if let Some(var_module) = get_entry::<u8>(address, VAR_MODULE_OFFSET) {
+    if let Some(var_module) = get_entry::<VarModule>(address, VAR_MODULE_OFFSET) {
         if !var_module.is_null() {
             unsafe {
                 drop(Box::from_raw(var_module))
@@ -162,7 +164,9 @@ fn set_fighter_vtable_hook(ctx: &mut InlineCtx) {
     unsafe {
         let new_vtable = recreate_vtable_with_space(*ctx.registers[8].x.as_ref() as _);
         let buffer_module = Box::new(BufferModule::new(*ctx.registers[25].x.as_ref() as _));
+        let var_module = Box::new(VarModule::new());
         set_entry(new_vtable, Box::leak(buffer_module), BUFFER_MODULE_OFFSET);
+        set_entry(new_vtable, Box::leak(var_module), VAR_MODULE_OFFSET);
         *ctx.registers[8].x.as_mut() = new_vtable as _;
     };
 }
@@ -196,7 +200,9 @@ fn set_weapon_vtable_hook(ctx: &mut InlineCtx) {
     unsafe {
         let new_vtable = recreate_vtable_with_space(*ctx.registers[25].x.as_ref() as _);
         let buffer_module = Box::new(BufferModule::new(*ctx.registers[25].x.as_ref() as _));
+        let var_module = Box::new(VarModule::new());
         set_entry(new_vtable, Box::leak(buffer_module), BUFFER_MODULE_OFFSET);
+        set_entry(new_vtable, Box::leak(var_module), VAR_MODULE_OFFSET);
         *(*ctx.registers[22].x.as_ref() as *mut *mut *mut u64) = new_vtable;
     };
 }
@@ -229,8 +235,10 @@ fn set_item_vtable_hook(ctx: &mut InlineCtx) {
 
     unsafe {
         let new_vtable = recreate_vtable_with_space(*ctx.registers[23].x.as_ref() as _);
-        let buffer_module = Box::new(BufferModule::new(*ctx.registers[25].x.as_ref() as _));
+        let buffer_module = Box::new(BufferModule::new(*ctx.registers[28].x.as_ref() as _));
+        let var_module = Box::new(VarModule::new());
         set_entry(new_vtable, Box::leak(buffer_module), BUFFER_MODULE_OFFSET);
+        set_entry(new_vtable, Box::leak(var_module), VAR_MODULE_OFFSET);
         *(*ctx.registers[28].x.as_ref() as *mut *mut *mut u64) = new_vtable as _;
     };
 }

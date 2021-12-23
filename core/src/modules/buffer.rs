@@ -116,7 +116,7 @@ impl BufferModule {
     /// * `owner` - Owning `BattleObject` instance
     /// # Returns
     /// New, constructed `BufferModule` with all settings set to default
-    pub fn new(owner: *mut BattleObject) -> Self {
+    pub(crate) fn new(owner: *mut BattleObject) -> Self {
         Self {
             owner,
             cats: [
@@ -135,7 +135,8 @@ impl BufferModule {
     /// * `object` - Owning `BattleObject` instance
     /// * `category` - Which command flag category the input is under (valid values are 0-3)
     /// * `flag` - Which flag in the category you are enabling hold buffer for
-    pub fn persist_command_one(object: *mut BattleObject, category: i32, flag: i32) {
+    #[export_name = "BufferModule__persist_command_one"]
+    pub extern "Rust" fn persist_command_one(object: *mut BattleObject, category: i32, flag: i32) {
         let module = require_buffer_module!(object);
 
         let flag = flag & 0x1F;
@@ -149,7 +150,8 @@ impl BufferModule {
     /// * `category` - Which command flag category the input is under (valid values are 0-3)
     /// * `flag` - Which flag in the category you are enabling hold buffer for
     /// * `lifetime` - The maximum number of frames hold buffer is enabled for (-1 is infinite). This lifetime includes tap buffer frames.
-    pub fn persist_command_one_with_lifetime(object: *mut BattleObject, category: i32, flag: i32, lifetime: i32) {
+    #[export_name = "BufferModule__persist_command_one_with_lifetime"]
+    pub extern "Rust" fn persist_command_one_with_lifetime(object: *mut BattleObject, category: i32, flag: i32, lifetime: i32) {
         let module = require_buffer_module!(object);
 
         Self::persist_command_one(object, category, flag);
@@ -160,14 +162,16 @@ impl BufferModule {
     /// # Arguments
     /// * `object` - Owning `BattleObject` instance
     /// * `lifetime` - The maximum number of frames hold buffer is enabled for (-1 is infinite). This lifetime includes tap buffer frames.
-    pub fn set_persist_lifetime(object: *mut BattleObject, lifetime: i32) {
+    #[export_name = "BufferModule__set_persist_lifetime"]
+    pub extern "Rust" fn set_persist_lifetime(object: *mut BattleObject, lifetime: i32) {
         require_buffer_module!(object).hold_all_frame_max = lifetime;
     }
 
     /// Enables global hold buffer on all inputs for this `BattleObject`
     /// # Arguments
     /// * `object` - Owning `BattleObject` instance
-    pub fn enable_persist(object: *mut BattleObject) {
+    #[export_name = "BufferModule__enable_persist"]
+    pub extern "Rust" fn enable_persist(object: *mut BattleObject) {
         require_buffer_module!(object).hold_all = true;
     }
 
@@ -177,7 +181,8 @@ impl BufferModule {
     /// # Note
     /// If specific inputs have hold buffer enabled, calling `disable_persist` will not disable those,
     /// only the global flag which enabled hold buffer on all inputs will be disabled
-    pub fn disable_persist(object: *mut BattleObject) {
+    #[export_name = "BufferModule__disable_persist"]
+    pub extern "Rust" fn disable_persist(object: *mut BattleObject) {
         require_buffer_module!(object).hold_all = false;
     }
 
@@ -187,7 +192,8 @@ impl BufferModule {
     /// # Note
     /// This function is similar to `ControlModule::clear_command_flag_cat` in that it resets all information regarding holding those inputs.
     /// This does not impact anything in the `ControlModule` command information, only the `BufferModule` implementation
-    pub fn clear_persist(object: *mut BattleObject) {
+    #[export_name = "BufferModule__clear_persist"]
+    pub extern "Rust" fn clear_persist(object: *mut BattleObject) {
         let module = require_buffer_module!(object);
 
         module.cats[0].clear();
@@ -201,7 +207,8 @@ impl BufferModule {
     /// * `object` - Owning `BattleObject` instance
     /// * `category` - Which command flag category the input is under (valid values are 0-3)
     /// * `flag` - Which flag in the category you are clearing hold buffer for
-    pub fn clear_persist_one(object: *mut BattleObject, category: i32, flag: i32) {
+    #[export_name = "BufferModule__clear_persist_one"]
+    pub extern "Rust" fn clear_persist_one(object: *mut BattleObject, category: i32, flag: i32) {
         let module = require_buffer_module!(object);
         let cat = &mut module.cats[category as usize];
         cat.on_last_frame &= !(1 << (flag as usize));
@@ -216,7 +223,8 @@ impl BufferModule {
     /// * `cats` - `ControlModule` command flag information to update `BufferModule` with.
     /// # Note
     /// This method is not intended to be used by users of `BufferModule`. It is instead used internally with a hook to update every frame.
-    pub fn exec(object: *mut BattleObject, cats: &mut [&mut [u8]; 4]) {
+    #[export_name = "BufferModule__exec"]
+    pub extern "Rust" fn exec(object: *mut BattleObject, cats: &mut [&mut [u8]; 4]) {
         let module = require_buffer_module!(object);
 
         let press_frame = unsafe {
@@ -233,7 +241,8 @@ impl BufferModule {
     /// * `object` - Owning `BattleObject` instance
     /// # Returns
     /// A boolean representing whether or not global hold buffer is enabled.
-    pub fn is_persist(object: *mut BattleObject) -> bool {
+    #[export_name = "BufferModule__is_persist"]
+    pub extern "Rust" fn is_persist(object: *mut BattleObject) -> bool {
         require_buffer_module!(object).hold_all
     }
 
@@ -244,7 +253,8 @@ impl BufferModule {
     /// * `flag` - Which flag in the category you are checking hold buffer for
     /// # Returns
     /// A boolean representing whether or not hold buffer is enabled for a specific input.
-    pub fn is_persist_one(object: *mut BattleObject, category: i32, flag: i32) -> bool {
+    #[export_name = "BufferModule__is_persist_one"]
+    pub extern "Rust" fn is_persist_one(object: *mut BattleObject, category: i32, flag: i32) -> bool {
         require_buffer_module!(object).cats[category as usize].should_hold[flag as usize]
     }
 
@@ -256,7 +266,8 @@ impl BufferModule {
     /// #Note
     /// This returns whatever value was last last set with `set_persist_lifetime` and
     /// is a valid value even when `is_persist` is false.
-    pub fn persist_lifetime(object: *mut BattleObject) -> i32 {
+    #[export_name = "BufferModule__persist_lifetime"]
+    pub extern "Rust" fn persist_lifetime(object: *mut BattleObject) -> i32 {
         require_buffer_module!(object).hold_all_frame_max
     }
 
@@ -267,6 +278,7 @@ impl BufferModule {
     /// * `flag` - Which flag in the category you are checking hold buffer for
     /// # Returns
     /// The number of frames the input has been held
+    #[export_name = "BufferModule__persist_lifetime_one"]
     pub fn persist_lifetime_one(object: *mut BattleObject, category: i32, flag: i32) -> i32 {
         require_buffer_module!(object).cats[category as usize].hold_frame[flag as usize]
     }
@@ -278,6 +290,7 @@ impl BufferModule {
     /// * `flag` - Which flag in the category you are checking hold buffer for
     /// # Returns
     /// The max amount of frames a specific input can have hold buffer for.
+    #[export_name = "BufferModule__persist_lifetime_max_one"]
     pub fn persist_lifetime_max_one(object: *mut BattleObject, category: i32, flag: i32) -> i32 {
         require_buffer_module!(object).cats[category as usize].hold_frame_max[flag as usize]
     }
