@@ -1,21 +1,26 @@
 use std::sync::Once;
 use skyline::nn::ro::LookupSymbol;
+use smash::app::*;
 
-static mut BOSS_MANAGER:                   *const *mut u8 = 0 as _;
-static mut ITEM_MANAGER:                   *const *mut u8 = 0 as _;
-static mut STAGE_MANAGER:                  *const *mut u8 = 0 as _;
-static mut FIGHTER_MANAGER:                *const *mut u8 = 0 as _;
-static mut BATTLE_OBJECT_SLOW:             *const *mut u8 = 0 as _;
-static mut BATTLE_OBJECT_WORLD:            *const *mut u8 = 0 as _;
-static mut ITEM_PARAM_ACCESSOR:            *const *mut u8 = 0 as _;
-static mut BATTLE_OBJECT_MANAGER:          *const *mut u8 = 0 as _;
-static mut FIGHTER_CUT_IN_MANAGER:         *const *mut u8 = 0 as _;
-static mut FIGHTER_PARAM_ACCESSOR2:        *const *mut u8 = 0 as _;
-static mut GIMMICK_EVENT_PRESENTER:        *const *mut u8 = 0 as _;
-static mut FIGHTER_PIT_B_FINAL_MODULE:     *const *mut u8 = 0 as _;
-static mut FIGHTER_BAYONETTA_FINAL_MODULE: *const *mut u8 = 0 as _;
-static mut LUA_MANAGER:                    *const *mut u8 = 0 as _;
-static mut EFFECT_MANAGER:                 *const *mut u8 = 0 as _;
+// temporary until they are in skyline-smash
+pub type LuaManager = u8;
+pub type EffectManager = u8;
+
+static mut BOSS_MANAGER:                   *const *mut BossManager                 = 0 as _;
+static mut ITEM_MANAGER:                   *const *mut ItemManager                 = 0 as _;
+static mut STAGE_MANAGER:                  *const *mut StageManager                = 0 as _;
+static mut FIGHTER_MANAGER:                *const *mut FighterManager              = 0 as _;
+static mut BATTLE_OBJECT_SLOW:             *const *mut BattleObjectSlow            = 0 as _;
+static mut BATTLE_OBJECT_WORLD:            *const *mut BattleObjectWorld           = 0 as _;
+static mut ITEM_PARAM_ACCESSOR:            *const *mut ItemParamAccessor           = 0 as _;
+static mut BATTLE_OBJECT_MANAGER:          *const *mut BattleObjectManager         = 0 as _;
+static mut FIGHTER_CUT_IN_MANAGER:         *const *mut FighterCutInManager         = 0 as _;
+static mut FIGHTER_PARAM_ACCESSOR2:        *const *mut FighterParamAccessor2       = 0 as _;
+static mut GIMMICK_EVENT_PRESENTER:        *const *mut GimmickEventPresenter       = 0 as _;
+static mut FIGHTER_PIT_B_FINAL_MODULE:     *const *mut FighterPitBFinalModule      = 0 as _;
+static mut FIGHTER_BAYONETTA_FINAL_MODULE: *const *mut FighterBayonettaFinalModule = 0 as _;
+static mut LUA_MANAGER:                    *const *mut u8                          = 0 as _;
+static mut EFFECT_MANAGER:                 *const *mut u8                          = 0 as _;
 
 static INIT: Once = Once::new();
 
@@ -55,7 +60,7 @@ macro_rules! expose_singleton {
         $(
             #[inline(always)]
             #[allow(non_snake_case)]
-            pub fn $public() -> *mut u8 {
+            pub fn $public() -> *mut $public {
                 unsafe {
                     *$private
                 }

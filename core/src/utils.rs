@@ -1,3 +1,6 @@
+use smash::app::BattleObject;
+use crate::offsets;
+
 #[macro_export]
 macro_rules! dump_trace {
     () => {{
@@ -52,3 +55,6 @@ pub fn offset_to_addr<T>(offset: usize) -> *const T {
         (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *const u8).add(offset) as _
     }
 }
+
+#[skyline::from_offset(offsets::get_battle_object_from_id())]
+pub fn get_battle_object_from_id(id: u32) -> *mut BattleObject;
