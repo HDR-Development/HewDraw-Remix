@@ -56,7 +56,7 @@ mod offsets_impl {
         pub set_fighter_vtable: usize,
         pub set_weapon_vtable: usize,
         pub set_item_vtable: usize,
-        pub get_battle_object_from_id: usize
+        pub get_battle_object_from_id: usize,
     }
 
     static EXEC_COMMAND_SEARCH_CODE: &[u8] = &[
@@ -181,7 +181,6 @@ mod offsets_impl {
             offsets.set_weapon_vtable = byte_search(SET_WEAPON_VTABLE_SEARCH_CODE).expect("Unable to find Weapon class constructor hook!") + SET_WEAPON_VTABLE_OFFSET_TO_START;
             offsets.set_item_vtable = byte_search(SET_ITEM_VTABLE_SEARCH_CODE).expect("Unable to find Item class constructor hook!") + SET_ITEM_VTABLE_OFFSET_TO_START;
             offsets.get_battle_object_from_id = byte_search(GET_BATTLE_OBJECT_FROM_ID_SEARCH_CODE).expect("Unable to find Item class constructor hook!") + GET_BATTLE_OBJECT_FROM_ID_OFFSET_TO_START;
-
             offsets
         };
     }

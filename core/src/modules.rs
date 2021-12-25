@@ -1,9 +1,11 @@
 mod buffer;
+mod param;
 mod var;
 
 use std::sync::Once;
 
 pub use buffer::*;
+pub use param::*;
 pub use var::*;
 
 use skyline::hooks::*;
@@ -109,7 +111,7 @@ pub fn clean_hdr_object(address: *mut *mut u64) {
         }
     }
 
-    if let Some(param_module) = get_entry::<u8>(address, PARAM_MODULE_OFFSET) {
+    if let Some(param_module) = get_entry::<ParamModule>(address, PARAM_MODULE_OFFSET) {
         if !param_module.is_null() {
             unsafe {
                 drop(Box::from_raw(param_module))
@@ -164,8 +166,10 @@ fn set_fighter_vtable_hook(ctx: &mut InlineCtx) {
     unsafe {
         let new_vtable = recreate_vtable_with_space(*ctx.registers[8].x.as_ref() as _);
         let buffer_module = Box::new(BufferModule::new(*ctx.registers[25].x.as_ref() as _));
+        let param_module = Box::new(ParamModule::new(*ctx.registers[25].x.as_ref() as _));
         let var_module = Box::new(VarModule::new());
         set_entry(new_vtable, Box::leak(buffer_module), BUFFER_MODULE_OFFSET);
+        set_entry(new_vtable, Box::leak(param_module), PARAM_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(var_module), VAR_MODULE_OFFSET);
         *ctx.registers[8].x.as_mut() = new_vtable as _;
     };
@@ -200,8 +204,10 @@ fn set_weapon_vtable_hook(ctx: &mut InlineCtx) {
     unsafe {
         let new_vtable = recreate_vtable_with_space(*ctx.registers[25].x.as_ref() as _);
         let buffer_module = Box::new(BufferModule::new(*ctx.registers[25].x.as_ref() as _));
+        let param_module = Box::new(ParamModule::new(*ctx.registers[25].x.as_ref() as _));
         let var_module = Box::new(VarModule::new());
         set_entry(new_vtable, Box::leak(buffer_module), BUFFER_MODULE_OFFSET);
+        set_entry(new_vtable, Box::leak(param_module), PARAM_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(var_module), VAR_MODULE_OFFSET);
         *(*ctx.registers[22].x.as_ref() as *mut *mut *mut u64) = new_vtable;
     };
@@ -236,8 +242,10 @@ fn set_item_vtable_hook(ctx: &mut InlineCtx) {
     unsafe {
         let new_vtable = recreate_vtable_with_space(*ctx.registers[23].x.as_ref() as _);
         let buffer_module = Box::new(BufferModule::new(*ctx.registers[28].x.as_ref() as _));
+        let param_module = Box::new(ParamModule::new(*ctx.registers[28].x.as_ref() as _));
         let var_module = Box::new(VarModule::new());
         set_entry(new_vtable, Box::leak(buffer_module), BUFFER_MODULE_OFFSET);
+        set_entry(new_vtable, Box::leak(param_module), PARAM_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(var_module), VAR_MODULE_OFFSET);
         *(*ctx.registers[28].x.as_ref() as *mut *mut *mut u64) = new_vtable as _;
     };
@@ -249,6 +257,7 @@ pub(crate) fn init() {
         set_weapon_vtable_hook
     );
     buffer::init();
+    param::init();
 }
 
 pub(crate) unsafe fn init_items() {

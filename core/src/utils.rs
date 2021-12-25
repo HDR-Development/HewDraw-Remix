@@ -1,4 +1,4 @@
-use smash::app::BattleObject;
+use smash::{app::BattleObject, phx::Hash40};
 use crate::offsets;
 
 #[macro_export]
@@ -48,6 +48,19 @@ pub fn byte_search<T: Eq>(needle: &[T]) -> Option<usize> {
     };
 
     text.windows(needle.len()).position(|window| window == needle)
+}
+
+pub fn byte_search_rodata<T: Eq>(needle: &[T]) -> Option<usize> {
+    const RODATA_LEN: usize = 0xCC8C9B;
+    let (rodata, text_len) = unsafe {
+        let start = skyline::hooks::getRegionAddress(skyline::hooks::Region::Rodata) as *const T;
+        let end = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Rodata) as usize + RODATA_LEN) as *const T;
+        let text = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *const T;
+        let length = end.offset_from(start) as usize;
+        (std::slice::from_raw_parts(start, length), start.offset_from(text) as usize)
+    };
+
+    rodata.windows(needle.len()).position(|window| window == needle).map(|x| x + text_len)
 }
 
 pub fn offset_to_addr<T>(offset: usize) -> *const T {
