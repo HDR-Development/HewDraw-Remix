@@ -1,4 +1,4 @@
-use smash::{app::BattleObject, phx::Hash40};
+use smash::app::BattleObject;
 use crate::offsets;
 
 #[macro_export]

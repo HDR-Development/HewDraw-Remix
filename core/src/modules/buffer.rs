@@ -328,7 +328,7 @@ impl CommandFlagCat {
 
 #[skyline::hook(offset = offsets::get_command_flag_cat())]
 fn get_command_flag_cat_replace(control_module: u64, cat: i32) -> u32 {
-    let mut cats = unsafe {
+    let cats = unsafe {
         std::slice::from_raw_parts((control_module + 0x568) as *mut CommandFlagCat, 4)
     };
 
@@ -347,7 +347,7 @@ fn get_command_flag_cat_replace(control_module: u64, cat: i32) -> u32 {
 fn exec_command_hook(control_module: u64, flag: bool) {
     call_original!(control_module, flag);
     
-    let mut cats = unsafe {
+    let cats = unsafe {
         std::slice::from_raw_parts_mut((control_module + 0x568) as *mut CommandFlagCat, 4)
     };
 

@@ -260,6 +260,7 @@ pub(crate) fn init() {
     param::init();
 }
 
+#[allow(dead_code)]
 pub(crate) unsafe fn init_items() {
     skyline::install_hooks!(
         set_item_vtable_hook

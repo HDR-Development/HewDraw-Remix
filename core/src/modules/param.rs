@@ -7,8 +7,6 @@ use smash::{hash40, app::BattleObject};
 use smash::phx::Hash40 as Hash40_2;
 use parking_lot::RwLock;
 
-use crate::utils;
-
 use super::PARAM_MODULE_OFFSET;
 
 macro_rules! get_param_module {
@@ -101,13 +99,6 @@ impl ParamListing {
     pub fn get_item_in_list(&self, index: usize) -> Option<&ParamListing> {
         match self {
             Self::List(list) => list.get(index),
-            _ => None
-        }
-    }
-
-    pub fn get_item_in_struct(&self, key: Hash40) -> Option<&ParamListing> {
-        match self {
-            Self::Struct(struc) => struc.get(&key),
             _ => None
         }
     }
@@ -396,7 +387,7 @@ impl ParamModule {
                 .unwrap_or(0),
             ParamType::Shared => {
                 let index = unsafe {
-                    (*object).kind
+                    (*module.owner).kind
                 };
 
                 GLOBAL_FIGHTER_PARAM
@@ -447,7 +438,7 @@ impl ParamModule {
                 .map_or_else(|| Hash40_2::new("invalid"), |x| Hash40_2::new_raw(x.0)),
             ParamType::Shared => {
                 let index = unsafe {
-                    (*object).kind
+                    (*module.owner).kind
                 };
 
                 GLOBAL_FIGHTER_PARAM
@@ -496,7 +487,7 @@ impl ParamModule {
                 .unwrap_or(0.0),
             ParamType::Shared => {
                 let index = unsafe {
-                    (*object).kind
+                    (*module.owner).kind
                 };
 
                 GLOBAL_FIGHTER_PARAM
@@ -545,7 +536,7 @@ impl ParamModule {
                 .unwrap_or(false),
             ParamType::Shared => {
                 let index = unsafe {
-                    (*object).kind
+                    (*module.owner).kind
                 };
 
                 GLOBAL_FIGHTER_PARAM
@@ -590,7 +581,7 @@ impl ParamModule {
                 .map_or_else(|| String::new(), |x| x.clone()),
             ParamType::Shared => {
                 let index = unsafe {
-                    (*object).kind
+                    (*module.owner).kind
                 };
 
                 GLOBAL_FIGHTER_PARAM

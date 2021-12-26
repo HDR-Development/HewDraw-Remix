@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate lazy_static;
 
-mod offsets;
+pub mod offsets;
 
 #[cfg(feature = "import-only")]
 mod modules_import;
@@ -11,8 +11,6 @@ mod modules;
 
 pub mod singletons;
 pub mod utils;
-
-use std::path::{PathBuf, Path};
 
 #[cfg(feature = "import-only")]
 pub use modules_import::*;
