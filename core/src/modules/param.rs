@@ -272,11 +272,13 @@ lazy_static! {
     static ref AGENT_PARAM_REVERSE: HashMap<Hash40_2, (Hash40_2, usize)> = {
         let mut hashes = HashMap::new();
         for line in AGENT_PARAMS.lines() {
-            let mut split = line.split(":");
-            let agent = split.next().unwrap();
-            let file = split.next().unwrap();
-            let size = split.next().unwrap().parse::<usize>().unwrap();
-            hashes.insert(Hash40_2::new(file), (Hash40_2::new(agent), size));
+            if !line.starts_with("#") && !line.is_empty() {
+                let mut split = line.split(":");
+                let agent = split.next().unwrap();
+                let file = split.next().unwrap();
+                let size = split.next().unwrap().parse::<usize>().unwrap();
+                hashes.insert(Hash40_2::new(file), (Hash40_2::new(agent), size));
+            }
         }
         hashes
     };
@@ -330,19 +332,30 @@ fn agent_param_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
     Some(size)
 }
 
+/// Specified which kind of param to retrieve from ParamModule
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum ParamType {
+    /// References common params that exist across the entire game instance
     Common,
+    /// References "shared" params that exist for all fighters but are different depending on fighter kind
     Shared,
+    /// References agent specific params
     Agent,
 }
 
+// An additional module to be used with Smash's `BattleObject` class. This uses an ARCropolis API to load (new) files and store them as global param data
+// that objects can access at runtime. This allows for storing constants in data modifiable for easy balancing.
 pub struct ParamModule {
     owner: *mut BattleObject,
     agent_params: Option<Arc<ParamListing>>
 }
 
 impl ParamModule {
+    /// Constructs a new `ParamModule` instance
+    /// # Arguments
+    /// * `owner` - The owning `BattleObject` instance
+    /// # Returns
+    /// A new `ParamModule` instance. This assumes that when this is constructed that the file has already been loaded.
     pub(crate) fn new(owner: *mut BattleObject) -> Self {
         let kind = unsafe {
             (*owner).agent_kind_hash
@@ -354,6 +367,20 @@ impl ParamModule {
         }
     }
 
+    /// Retrieves an integer from the specified ParamModule instance
+    /// # Arguments
+    /// * `owner` - The owning `BattleObject` instance
+    /// * `ty` - Where to retreive the param from
+    /// * `key` - The key/path of the param
+    /// # Returns
+    /// The integer specified
+    /// # Example
+    /// ```
+    /// let dacus_start_frame = ParamModule::get_int(fighter.module_accessor, ParamType::Shared, "dacus_frame_min");
+    /// if fighter.global_table[STATUS_FRAME] >= dacus_start_frame && should_dacus {
+    ///     // perform dacus here
+    /// }
+    /// ```
     #[export_name = "ParamModule__get_int"]
     pub extern "Rust" fn get_int(object: *mut BattleObject, ty: ParamType, key: &str) -> i32 {
         let module = require_param_module!(object);
@@ -388,6 +415,23 @@ impl ParamModule {
         }
     }
 
+    /// Retrieves a hash from the specified ParamModule instance
+    /// # Arguments
+    /// * `owner` - The owning `BattleObject` instance
+    /// * `ty` - Where to retreive the param from
+    /// * `key` - The key/path of the param
+    /// # Returns
+    /// The hash specified
+    /// # Example
+    /// ```
+    /// let frame_window_start = ParamModule::get_float(fighter.module_accessor, ParamType::Shared, "gentleman_combo_start_frame");
+    /// let frame_window_end = ParamModule::get_float(fighter.module_accessor, ParamType::Shared, "gentleman_combo_end_frame");
+    /// let target_motion = ParamModule::get_hash(fighter.module_accessor, ParamType::Shared, "gentleman_combo_target_motion");
+    /// let current_frame = MotionModule::frame(fighter.module_accessor);
+    /// if frame_window_start <= current_frame && current_frame < frame_window_end && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+    ///     MotionModule::change_motion(fighter.module_accessor, target_motion, 0.0, 1.0, false, false, 0.0, 0.0);
+    /// }
+    /// ``` 
     #[export_name = "ParamModule__get_hash"]
     pub extern "Rust" fn get_hash(object: *mut BattleObject, ty: ParamType, key: &str) -> Hash40_2 {
         let module = require_param_module!(object);
@@ -422,6 +466,21 @@ impl ParamModule {
         }
     }
 
+    /// Retrieves a float from the specified ParamModule instance
+    /// # Arguments
+    /// * `owner` - The owning `BattleObject` instance
+    /// * `ty` - Where to retreive the param from
+    /// * `key` - The key/path of the param
+    /// # Returns
+    /// The float specified
+    /// # Example
+    /// ```
+    /// let grab_angle_hi = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "angleable_grab.angle_hi");
+    /// let grab_angle_lw = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "angleable_grab.angle_lw");
+    /// let stick_y = (ControlModule::get_stick_y(fighter.module_accessor).clamp(-1.0, 1.0) + 1.0) / 2.0;
+    /// let angle = stick_y.lerp(grab_angle_lw, grab_angle_hi);
+    /// fighter.rotate_waist_for_grab(angle);
+    /// ``` 
     #[export_name = "ParamModule__get_float"]
     pub extern "Rust" fn get_float(object: *mut BattleObject, ty: ParamType, key: &str) -> f32 {
         let module = require_param_module!(object);
@@ -456,6 +515,21 @@ impl ParamModule {
         }
     }
 
+    /// Retrieves a flag from the specified ParamModule instance
+    /// # Arguments
+    /// * `owner` - The owning `BattleObject` instance
+    /// * `ty` - Where to retreive the param from
+    /// * `key` - The key/path of the param
+    /// # Returns
+    /// The flag specified
+    /// # Example
+    /// ```
+    /// if !ParamModule::is_flag(fighter.battle_object, ParamType::Common, "disable_shorthop_macro") {
+    ///     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+    ///         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_RESERVE_JUMP_MINI_ATTACK);
+    ///     }
+    /// }
+    /// ``` 
     #[export_name = "ParamModule__is_flag"]
     pub extern "Rust" fn is_flag(object: *mut BattleObject, ty: ParamType, key: &str) -> bool {
         let module = require_param_module!(object);
@@ -490,6 +564,17 @@ impl ParamModule {
         }
     }
 
+    /// Retrieves a string from the specified ParamModule instance
+    /// # Arguments
+    /// * `owner` - The owning `BattleObject` instance
+    /// * `ty` - Where to retreive the param from
+    /// * `key` - The key/path of the param
+    /// # Returns
+    /// The string specified
+    /// # Example
+    /// ```
+    /// println!("HDR Version String: {}", ParamModule::get_string(fighter.battle_object, ParamType::Common, "version_string"));
+    /// ```
     #[export_name = "ParamModule__get_string"]
     pub extern "Rust" fn get_string(object: *mut BattleObject, ty: ParamType, key: &str) -> String {
         let module = require_param_module!(object);
