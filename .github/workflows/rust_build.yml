@@ -10,7 +10,7 @@ on:
 jobs:
   plugin:
     env:
-      PLUGIN_NAME: tmp # CHANGE THIS TO THE NAME OF YOUR TEMPLATE!
+      PLUGIN_NAME: HDR # CHANGE THIS TO THE NAME OF YOUR TEMPLATE!
     runs-on: ubuntu-latest
     container: 
       image: jugeeya/cargo-skyline:2.1.0
