@@ -1,4 +1,7 @@
 **/target
 **/*.py
 **/*.pyc
+**/build/
 Cargo.lock
+!scripts/*
+.vscode
