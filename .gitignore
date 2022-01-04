@@ -3,3 +3,4 @@
 **/*.pyc
 **/build/
 Cargo.lock
+!scripts/*
