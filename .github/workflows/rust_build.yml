@@ -1,10 +1,10 @@
-name: Rust
+name: nightly build
 
 on:
   push:
-    branches: [ release, dev ] # CHANGE "master" TO "main" IF THAT IS THE NAME OF YOUR MAIN BRANCH!
+    branches: [ dev ] # CHANGE "master" TO "main" IF THAT IS THE NAME OF YOUR MAIN BRANCH!
   pull_request:
-    branches: [ release, dev ]
+    branches: [ dev ]
   workflow_dispatch:
 
 jobs:
@@ -32,6 +32,14 @@ jobs:
     needs:
       - plugin
     steps:
+    - name: delete old betas
+      uses: dev-drprasad/delete-older-releases@v0.2.0
+      with:
+        repo: <owner>/<repoName> # defaults to current repo
+        keep_latest: 3
+        delete_tag_pattern: nightly # defaults to ""
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Download all artifacts
       uses: actions/download-artifact@v2
     - name: Update Release
@@ -41,9 +49,9 @@ jobs:
         prerelease: true
         allow_override: true
         gzip: false
-        tag: beta
-        name: beta
+        tag: nightly
+        name: nightly
         body: >
-          Beta built off of the latest code in the repository. 
+          Nightly built off of the latest code in the repository. 
         files: >
           plugin/* 
