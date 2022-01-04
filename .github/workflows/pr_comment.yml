@@ -3,6 +3,8 @@ on:
   workflow_run:
     workflows: ['rust build']
     types: [completed]
+  pull_request:
+    branches: [ dev, beta ]
 jobs:
   pr_comment:
     if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success'
