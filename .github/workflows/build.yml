@@ -12,6 +12,7 @@ jobs:
     env:
       PLUGIN_NAME: hdr # CHANGE THIS TO THE NAME OF YOUR TEMPLATE!
     runs-on: ubuntu-latest
+    if: github.event.workflow_run.event == 'push'
     container: 
       image: jugeeya/cargo-skyline:2.1.0
     steps:
