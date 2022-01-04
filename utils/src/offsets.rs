@@ -44,7 +44,7 @@ mod offsets_impl {
 
 #[cfg(not(feature = "no-offset-search"))]
 mod offsets_impl {
-    use crate::utils::byte_search;
+    use crate::util::byte_search;
 
     struct CoreOffsets {
         pub exec_command: usize,

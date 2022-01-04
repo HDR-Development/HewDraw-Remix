@@ -13,10 +13,11 @@ crate-type = ["cdylib"]
 [dependencies]
 skyline = { git = "https://github.com/ultimate-research/skyline-rs.git" }
 skyline_smash = { git = "https://github.com/blu-dev/skyline-smash.git" }
-hdr-core = { package = "core", path = "../core" }
+utils = { path = "../utils" }
+fighters = { path = "../fighters" }
 
 [features]
-dev = ["hdr-core/no-offset-search"]
+dev = ["utils/no-offset-search"]
 
 [profile.dev]
 panic = "abort"

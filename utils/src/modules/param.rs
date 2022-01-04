@@ -252,7 +252,7 @@ impl FighterParam {
     }
 }
 
-static AGENT_PARAMS: &'static str = hdr_macros::agent_params!("core/agent_params.txt");
+static AGENT_PARAMS: &'static str = hdr_macros::agent_params!("utils/agent_params.txt");
 
 lazy_static! {
     static ref GLOBAL_FIGHTER_PARAM: RwLock<Option<FighterParam>> = RwLock::new(None);

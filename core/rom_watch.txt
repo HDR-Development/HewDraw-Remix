@@ -1,2 +1,0 @@
-fighter/common/hdr/param/common.prc
-fighter/common/hdr/param/fighter_param.prc

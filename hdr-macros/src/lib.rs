@@ -24,7 +24,7 @@ pub fn size_of_rom_file(item: TokenStream) -> TokenStream {
         }
     };
 
-    let complete_path = parent.join("../../romfs").join(local_path);
+    let complete_path = parent.join("../../romfs/build/").join(local_path);
     match std::fs::metadata(&complete_path) {
         Ok(metadata) => syn::LitInt::new(format!("{}", metadata.len()).as_str(), literal.span()).to_token_stream().into(),
         Err(e) => syn::Error::new(literal.span(), format!("Could not get file size of path {}: {:?}", complete_path.display(), e)).into_compile_error().into()
@@ -42,7 +42,7 @@ pub fn rom_path(item: TokenStream) -> TokenStream {
         }
     };
 
-    let full_path = parent.join("../../romfs/");
+    let full_path = parent.join("../../romfs/build/");
 
     let full_path = match full_path.as_os_str().to_str() {
         Some(path) => path,
@@ -113,7 +113,7 @@ pub fn agent_params(item: TokenStream) -> TokenStream {
         }
     };
 
-    let rom_path = parent.join("../../romfs/");
+    let rom_path = parent.join("../../romfs/build/");
     
     let mut output = String::new();
     for line in data.lines() {

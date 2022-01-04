@@ -1,7 +1,7 @@
 use smash::app::{BattleObject, lua_bind::ControlModule, BattleObjectModuleAccessor};
 
 use crate::offsets;
-use crate::utils::get_battle_object_from_id;
+use crate::util::get_battle_object_from_id;
 
 use super::BUFFER_MODULE_OFFSET;
 

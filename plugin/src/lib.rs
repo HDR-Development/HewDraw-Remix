@@ -2,5 +2,5 @@
 
 #[skyline::main(name = "hdr")]
 pub fn main() {
-    hdr_core::init();
+    utils::init();
 }
