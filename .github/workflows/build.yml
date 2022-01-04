@@ -2,9 +2,9 @@ name: rust build
 
 on:
   push:
-    branches: [ dev, beta ] # CHANGE "master" TO "main" IF THAT IS THE NAME OF YOUR MAIN BRANCH!
+    branches: [ dev, stable ] # CHANGE "master" TO "main" IF THAT IS THE NAME OF YOUR MAIN BRANCH!
   pull_request:
-    branches: [ dev, beta ]
+    branches: [ dev, stable ]
   #workflow_dispatch:
 
 jobs:
@@ -56,7 +56,7 @@ jobs:
           plugin/* 
   upload_beta:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/beta'
+    if: github.ref == 'refs/heads/stable'
     needs:
       - plugin
     steps:
