@@ -10,7 +10,7 @@ on:
 jobs:
   plugin:
     env:
-      PLUGIN_NAME: HDR # CHANGE THIS TO THE NAME OF YOUR TEMPLATE!
+      PLUGIN_NAME: hdr # CHANGE THIS TO THE NAME OF YOUR TEMPLATE!
     runs-on: ubuntu-latest
     container: 
       image: jugeeya/cargo-skyline:2.1.0
@@ -18,33 +18,32 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build release NRO
       run: |
-        PATH=$PATH:/root/.cargo/bin && cd plugin && /root/.cargo/bin/cargo-skyline skyline build --release
+        PATH=$PATH:/root/.cargo/bin && cd plugin && /root/.cargo/bin/cargo-skyline skyline build --release && cd ..
       env:
         HOME: /root
     - name: Upload plugin artifact
       uses: actions/upload-artifact@v2
       with:
         name: plugin
-        path: target/aarch64-skyline-switch/release/lib${{env.PLUGIN_NAME}}.nro
-# UNCOMMENT THE SECTION BELOW TO GET BETA RELEASES ON EVERY NEW COMMIT TO THE MAIN BRANCH
-#   upload:
-#     runs-on: ubuntu-latest
-#     if: github.ref == 'refs/heads/master'
-#     needs:
-#       - plugin
-#     steps:
-#     - name: Download all artifacts
-#       uses: actions/download-artifact@v2
-#     - name: Update Release
-#       uses: meeDamian/github-release@2.0
-#       with:
-#         token: ${{ secrets.GITHUB_TOKEN }}
-#         prerelease: true
-#         allow_override: true
-#         gzip: false
-#         tag: beta
-#         name: beta
-#         body: >
-#           Beta built off of the latest code in the repository. 
-#         files: >
-#           plugin/* 
+        path: plugin/target/aarch64-skyline-switch/release/lib${{env.PLUGIN_NAME}}.nro
+  upload:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/dev'
+    needs:
+      - plugin
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v2
+    - name: Update Release
+      uses: meeDamian/github-release@2.0
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        prerelease: true
+        allow_override: true
+        gzip: false
+        tag: beta
+        name: beta
+        body: >
+          Beta built off of the latest code in the repository. 
+        files: >
+          plugin/* 
