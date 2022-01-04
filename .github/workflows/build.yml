@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/dev'
     needs:
-      - plugin
+      - plugin_build
     steps:
     - name: delete old betas
       uses: dev-drprasad/delete-older-releases@v0.2.0
@@ -58,7 +58,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/beta'
     needs:
-      - plugin
+      - plugin_build
     steps:
     - name: delete old betas
       uses: dev-drprasad/delete-older-releases@v0.2.0
