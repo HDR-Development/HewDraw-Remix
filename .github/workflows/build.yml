@@ -88,11 +88,13 @@ jobs:
       - plugin
     if: ${{ github.event_name == 'pull_request' }}
     steps:
-      - name: Pull request artifacts
+      - name: Download all artifacts
+        uses: actions/download-artifact@v2
+      - name: post artifacts on PR
         if: ${{ github.event_name == 'pull_request' }}
         uses: gavv/pull-request-artifacts@v1.0.0
         with:
           commit: ${{ github.event.pull_request.head.sha }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: |
-            plugin/target/aarch64-skyline-switch/release/lib${{env.PLUGIN_NAME}}.nro
+            plugin
