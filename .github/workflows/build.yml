@@ -8,7 +8,7 @@ on:
   #workflow_dispatch:
 
 jobs:
-  plugin:
+  plugin_build:
     env:
       PLUGIN_NAME: hdr # CHANGE THIS TO THE NAME OF YOUR TEMPLATE!
     runs-on: ubuntu-latest
