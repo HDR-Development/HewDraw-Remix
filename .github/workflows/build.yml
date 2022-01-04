@@ -3,6 +3,8 @@ name: rust build
 on:
   push:
     branches: [ dev, beta ] # CHANGE "master" TO "main" IF THAT IS THE NAME OF YOUR MAIN BRANCH!
+  pull_request:
+    branches: [ dev, beta ]
   #workflow_dispatch:
 
 jobs:
