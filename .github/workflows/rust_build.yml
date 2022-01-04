@@ -35,7 +35,6 @@ jobs:
     - name: delete old betas
       uses: dev-drprasad/delete-older-releases@v0.2.0
       with:
-        repo: <owner>/<repoName> # defaults to current repo
         keep_latest: 1
         delete_tag_pattern: nightly # defaults to ""
       env:
