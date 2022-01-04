@@ -10,7 +10,7 @@ on:
 jobs:
   plugin:
     env:
-      PLUGIN_NAME: HDR # CHANGE THIS TO THE NAME OF YOUR TEMPLATE!
+      PLUGIN_NAME: hdr # CHANGE THIS TO THE NAME OF YOUR TEMPLATE!
     runs-on: ubuntu-latest
     container: 
       image: jugeeya/cargo-skyline:2.1.0
@@ -26,7 +26,6 @@ jobs:
       with:
         name: plugin
         path: target/aarch64-skyline-switch/release/lib${{env.PLUGIN_NAME}}.nro
-UNCOMMENT THE SECTION BELOW TO GET BETA RELEASES ON EVERY NEW COMMIT TO THE MAIN BRANCH
   upload:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/dev'
