@@ -14,7 +14,7 @@ on:
 jobs:
   plugin_build:
     env:
-      PLUGIN_NAME: hdr # CHANGE THIS TO THE NAME OF YOUR TEMPLATE!
+      PLUGIN_NAME: hdr
     runs-on: ubuntu-latest
     container: 
       image: jugeeya/cargo-skyline:2.1.0
@@ -23,7 +23,7 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.9' # Version range or exact version of a Python version to use, using SemVer's version range syntax
-    - name: make distribution
+    - name: checkout version
       uses: actions/checkout@v2
     - run: |
         PATH=$PATH:/root/.cargo/bin && cd scripts && python3 make_dist.py && cd ..

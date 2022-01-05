@@ -1,64 +1,132 @@
 #!/usr/bin/python3.9
-import shutil, os, sys, pathlib
+import shutil, os, sys, pathlib, build_lib
+
+if "help" in sys.argv or "-h" in sys.argv:
+  print("no arguments required for simple build. To build parts of the project"
+    + " as a development reloadable plugin, use argument 'dev=mario,luigi,captain'"
+    + " to specify which character crates to build into the reloadable dev plugin.")
+  print("For example:\n\t./build.py dev=mario,luigi,captain\n")
+  exit(0)
+
+characters = {"peach"}
+
+is_dev_build = False
+plugin_subpath = "skyline/plugins/"
+development_subpath = "smashline/"
+ryujinx_rom_path = "mods/contents/01006a800016e000/skyline/romfs"
+switch_rom_path = "atmosphere/contents/01006a800016e000/romfs"
 
 current_dir = os.getcwd()
+os.chdir('..')
 
 print("arguments: " + ' '.join(sys.argv))
 
-build_type = "--release"
+release_arg = "--release"
+build_type = "release"
 if "debug" in sys.argv:
-  build_type = ""
+  release_arg = ""
+  build_type = "debug"
 
-# TODO special build commands for regular vs development plugins
-
-build_command = "cargo skyline build " + build_type
-print("BUILD COMMAND:")
-print(build_command)
-
-# build the plugin
-os.chdir('../plugin')
-os.system(build_command)
-os.chdir('..')
 
 # if staging folder exists, delete it
 if "build" in os.listdir('.'):
   shutil.rmtree('build')
 os.mkdir('build')
 
-plugin_subpath = "romfs/skyline/plugins/"
 
-ryujinx_plugin_path = "mods/contents/01006a800016e000/skyline/"
-switch_plugin_path = "atmosphere/contents/01006a800016e000/"
+# search for dev plugin args
+dev_characters = set()
+for arg in sys.argv:
+  if "dev" in arg:
 
+    # if theres no equals, break
+    if not "=" in arg:
+      print("dev specified, but no character arguments given!\n please use 'dev=mario,luigi,samus' format")
+      break
+    
+    # set that this is a development build
+    is_dev_build = True
 
-def collect_plugin(package_name: str, context_path: str):
-  print("COLLECTING " + package_name + " plugins!")
-  # get regular nro, if it exists
-  plugin_source = os.path.join('plugin/target/aarch64-skyline-switch/release/libhdr.nro')
-  plugin_destination = os.path.join('build', package_name, context_path, plugin_subpath)
-  pathlib.Path(plugin_destination).mkdir(parents=True)
-  shutil.copy(
-    os.path.join(plugin_source), 
-    os.path.join(plugin_destination, "libhdr.nro"))
+    # get the list of characters
+    char_list = (arg.split('=')[1]).split(",")
+
+    # add each character to the set
+    for char in char_list:
+      dev_characters.add(char)
+
+if (is_dev_build):
+    
+  # special build commands for regular vs development plugins
+  dev_args = ""
+  if len(dev_characters) > 0:
+    # add all of the characters
+    dev_args += ' --no-default-features --features="runtime"'
+    for character in dev_characters:
+      dev_args += ',"' + character + '"'
+  else:
+    print("ERROR: No character arguments given!")
   
-  # get development nro, if it exists
+  # build the dev plugin with args
+  build_lib.build(release_arg, dev_args)
 
-  return
+  build_lib.collect_plugin("hdr-switch", os.path.join(switch_rom_path, development_subpath), build_type, "development.nro")
+  build_lib.collect_plugin("hdr-ryujinx", os.path.join(ryujinx_rom_path, development_subpath), build_type, "development.nro")
 
-def collect_romfs(package_name: str, context_path: str):
-  print("COLLECTING " + package_name + " romfs!")
-  romfs_source = os.path.join("romfs/build")
-  romfs_destination = os.path.join("build", package_name, context_path, "ultimate/mods/hdr")
-  shutil.copytree(
-    os.path.join(romfs_source), 
-    os.path.join(romfs_destination))
+  # build normal nro
+  non_dev_characters = characters.copy()
 
-  return
+  # remove any dev characters
+  for char in dev_characters:
+    non_dev_characters.remove(char)
 
-collect_plugin("hdr-ryujinx", ryujinx_plugin_path)
-collect_romfs("hdr-ryujinx", "sd")
+  plugin_args = " --no-default-features "
+  if len(non_dev_characters) > 0:
+    # add each non dev character
+    plugin_args += "--features=" + non_dev_characters[0]
+    for i in range(1, len(non_dev_characters)):
+      plugin_args += ',"' + non_dev_characters[i] + '"'
 
-collect_plugin("hdr-switch", switch_plugin_path)
-collect_romfs("hdr-switch", "")
+  # build the regular plugin with args
+  build_lib.build(release_arg, plugin_args)
+
+  # collect switch plugin
+  build_lib.collect_plugin("hdr-switch", 
+    os.path.join(switch_rom_path, plugin_subpath), 
+    build_type, "libhdr.nro")
+
+    # collect switch romfs
+  build_lib.collect_romfs("hdr-switch", "")
+
+  # collect ryujinx plugin
+  build_lib.collect_plugin("hdr-ryujinx", 
+    os.path.join(ryujinx_rom_path, plugin_subpath), 
+    build_type, "libhdr.nro")
+  
+  # collect ryujinx romfs
+  build_lib.collect_romfs("hdr-ryujinx", "sd")
+
+
+else:
+  # simple build
+  build_lib.build(release_arg, "")
+
+  # collect switch package
+  build_lib.collect_plugin("hdr-switch", 
+    os.path.join(switch_rom_path, plugin_subpath), 
+    build_type, "libhdr.nro")
+
+  # collect switch romfs
+  build_lib.collect_romfs("hdr-switch", "")
+
+
+  # collect ryujinx plugin
+  build_lib.collect_plugin("hdr-ryujinx", 
+    os.path.join(ryujinx_rom_path, plugin_subpath), 
+    build_type, "libhdr.nro")
+  
+  # collect ryujinx romfs
+  build_lib.collect_romfs("hdr-ryujinx", "sd")
 
 os.chdir(current_dir)
+
+
