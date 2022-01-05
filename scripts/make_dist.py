@@ -8,12 +8,13 @@ exec(open("build.py").read())
 # build zips
 
 if not os.path.exists("../build"):
+  print("no build dir!")
   exit("build dir was missing!")
 
 # if distribution folder exists, delete it
-if "distributions" in os.listdir('.'):
-  shutil.rmtree('distributions')
-os.mkdir('distributions')
+if "distributions" in os.listdir('..'):
+  shutil.rmtree('../distributions')
+os.mkdir('../distributions')
 
 # zip each folder in the staging dir
 packages = os.listdir("../build")
