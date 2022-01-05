@@ -15,11 +15,12 @@ jobs:
     container: 
       image: jugeeya/cargo-skyline:2.1.0
     steps:
-    - name: make distribution
-      uses: actions/checkout@v2
+    - name: setup python
       uses: actions/setup-python@v2
       with:
         python-version: '3.9' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+    - name: make distribution
+      uses: actions/checkout@v2
     - run: |
         PATH=$PATH:/root/.cargo/bin && cd scripts && python3 make_dist.py && cd ..
       env:
