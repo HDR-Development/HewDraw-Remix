@@ -1,6 +1,10 @@
 use common::prelude::*;
 
+#[rustfmt::skip]
+pub mod acmd;
+
 pub mod status;
+pub mod opff;
 
 use smash::app::{self, lua_bind::*};
 use smash::lua2cpp::*;
@@ -9,6 +13,8 @@ use smash::phx::*;
 
 use smash_script::*;
 
-pub fn install() {
+pub fn install(is_runtime: bool) {
+    acmd::install();
     status::install();
+    opff::install(is_runtime);
 }

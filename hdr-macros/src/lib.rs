@@ -2,9 +2,52 @@ use std::path::Path;
 
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
-use syn::{__private::ToTokens, spanned::Spanned};
+use syn::{__private::ToTokens, spanned::Spanned, parse_macro_input};
 
 use std::fmt::Write;
+
+#[proc_macro_attribute]
+pub fn opff(attrs: TokenStream, item: TokenStream) -> TokenStream {
+    let attrs = parse_macro_input!(attrs as syn::Ident);
+    let usr_fn = parse_macro_input!(item as syn::ItemFn);
+
+    let usr_fn_name = usr_fn.sig.ident.clone();
+
+    let runtime_name = quote::format_ident!("{}_runtime", usr_fn_name);
+    let static_name = quote::format_ident!("{}_static", usr_fn_name);
+
+    quote::quote!(
+        #usr_fn
+
+        #[smashline::fighter_frame(agent = #attrs)]
+        fn #static_name(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+            #[allow(unused_unsafe)]
+            unsafe {
+                #usr_fn_name(fighter)
+            }
+        }
+
+        #[smashline::fighter_frame_callback]
+        fn #runtime_name(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+            #[allow(unused_unsafe)]
+            unsafe {
+                let category = smash::app::utility::get_category(&mut *fighter.module_accessor);
+                let kind = smash::app::utility::get_kind(&mut *fighter.module_accessor);
+                if category == *smash::lib::lua_const::BATTLE_OBJECT_CATEGORY_FIGHTER && kind == *#attrs {
+                    #usr_fn_name(fighter)
+                }
+            }
+        }
+
+        pub fn install(is_runtime: bool) {
+            if is_runtime {
+                smashline::install_agent_frame_callback!(#runtime_name);
+            } else {
+                smashline::install_agent_frame!(#static_name);
+            }
+        }
+    ).into()
+}
 
 #[proc_macro]
 pub fn size_of_rom_file(item: TokenStream) -> TokenStream {
