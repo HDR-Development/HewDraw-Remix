@@ -2,5 +2,7 @@
 
 #[skyline::main(name = "hdr")]
 pub fn main() {
-    utils::init();
+    #[cfg(not(feature = "runtime"))]
+    { utils::init(); }
+    fighters::install();
 }

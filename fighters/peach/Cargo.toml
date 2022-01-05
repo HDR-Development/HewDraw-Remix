@@ -7,3 +7,4 @@ edition = "2018"
 
 [dependencies]
 common = { path = "../common" }
+skyline = { git = "https://github.com/ultimate-research/skyline-rs" }

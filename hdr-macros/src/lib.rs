@@ -80,6 +80,20 @@ pub fn from_root(item: TokenStream) -> TokenStream {
 }
 
 #[proc_macro]
+pub fn hash40(item: TokenStream) -> TokenStream {
+    let literal = match syn::parse::<syn::LitStr>(item.clone()) {
+        Ok(literal) => literal,
+        Err(e) => {
+            return syn::Error::new_spanned(TokenStream2::from(item), format!("Failed to parse input as string literal: {:?}", e)).into_compile_error().into();
+        }
+    };
+
+    let str = literal.value();
+    let hash = hash40::to_hash40(str.as_str());
+    syn::LitInt::new(format!("{}", hash.0).as_str(), literal.span()).to_token_stream().into()
+}
+
+#[proc_macro]
 pub fn agent_params(item: TokenStream) -> TokenStream {
     let literal = match syn::parse::<syn::LitStr>(item.clone()) {
         Ok(literal) => literal,

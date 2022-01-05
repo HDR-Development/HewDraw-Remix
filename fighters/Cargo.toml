@@ -7,4 +7,8 @@ edition = "2018"
 
 [dependencies]
 common = { path = "./common" }
-peach = { path = "./peach" }
+peach = { path = "./peach", optional = true }
+
+[features]
+ignore-common = []
+include-peach = ["peach"]

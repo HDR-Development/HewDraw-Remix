@@ -17,7 +17,11 @@ utils = { path = "../utils" }
 fighters = { path = "../fighters" }
 
 [features]
+default = ["peach"]
 dev = ["utils/no-offset-search"]
+runtime = ["fighters/ignore-common"]
+
+peach = ["fighters/include-peach"]
 
 [profile.dev]
 panic = "abort"

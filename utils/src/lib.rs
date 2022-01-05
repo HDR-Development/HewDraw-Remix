@@ -9,6 +9,8 @@ pub mod consts;
 pub mod singletons;
 pub mod util;
 
+pub use hdr_macros::*;
+
 pub use modules::*;
 
 pub fn init() {
