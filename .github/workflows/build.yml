@@ -3,9 +3,13 @@ name: rust build
 on:
   push:
     branches: [ dev, stable ] # CHANGE "master" TO "main" IF THAT IS THE NAME OF YOUR MAIN BRANCH!
+    paths-ignore:
+      - '**/README.md'
+      - '**/.gitignore'
   pull_request:
     branches: [ dev, stable ]
-  #workflow_dispatch:
+    paths-ignore:
+      - '**/.gitignore'
 
 jobs:
   plugin_build:
