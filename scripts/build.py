@@ -1,5 +1,5 @@
 #!/usr/bin/python3.9
-import shutil, os, sys, pathlib, pkgutil
+import shutil, os, sys, pkgutil
 
 if "help" in sys.argv or "-h" in sys.argv:
   print("no arguments required for simple build. To build parts of the project"
