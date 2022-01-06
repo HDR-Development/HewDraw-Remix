@@ -5,10 +5,9 @@ exec(open("build.py").read())
 
 # TODO collect dependencies (skyline, smashline, arcropolis, etc)
 
-# build zips
-
+# check if build exists
 if not os.path.exists("../build"):
-  print("no build dir!")
+  print("ERROR: no build dir!")
   exit("build dir was missing!")
 
 # if distribution folder exists, delete it
