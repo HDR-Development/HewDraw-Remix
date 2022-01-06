@@ -1,5 +1,5 @@
 #!/usr/bin/python3.9
-import shutil, os, sys, pathlib, build_lib
+import shutil, os, sys, pathlib, pkgutil
 
 if "help" in sys.argv or "-h" in sys.argv:
   print("no arguments required for simple build. To build parts of the project"
@@ -67,12 +67,12 @@ if (is_dev_build):
     print("ERROR: No character arguments given!")
   
   # build the dev plugin with args
-  build_lib.build(release_arg, dev_args)
+  pkgutil.build(release_arg, dev_args)
 
-  build_lib.collect_plugin("hdr-switch", os.path.join(switch_rom_path, development_subpath), build_type, "development.nro")
-  build_lib.collect_plugin("hdr-ryujinx", os.path.join(ryujinx_rom_path, development_subpath), build_type, "development.nro")
+  pkgutil.collect_plugin("hdr-switch", os.path.join(switch_rom_path, development_subpath), build_type, "development.nro")
+  pkgutil.collect_plugin("hdr-ryujinx", os.path.join(ryujinx_rom_path, development_subpath), build_type, "development.nro")
 
-  # build normal nro
+  # setup normal nro
   non_dev_characters = characters.copy()
 
   # remove any dev characters
@@ -87,45 +87,45 @@ if (is_dev_build):
       plugin_args += ',"' + non_dev_characters[i] + '"'
 
   # build the regular plugin with args
-  build_lib.build(release_arg, plugin_args)
+  pkgutil.build(release_arg, plugin_args)
 
   # collect switch plugin
-  build_lib.collect_plugin("hdr-switch", 
+  pkgutil.collect_plugin("hdr-switch", 
     os.path.join(switch_rom_path, plugin_subpath), 
     build_type, "libhdr.nro")
 
     # collect switch romfs
-  build_lib.collect_romfs("hdr-switch", "")
+  pkgutil.collect_romfs("hdr-switch", "")
 
   # collect ryujinx plugin
-  build_lib.collect_plugin("hdr-ryujinx", 
+  pkgutil.collect_plugin("hdr-ryujinx", 
     os.path.join(ryujinx_rom_path, plugin_subpath), 
     build_type, "libhdr.nro")
   
   # collect ryujinx romfs
-  build_lib.collect_romfs("hdr-ryujinx", "sd")
+  pkgutil.collect_romfs("hdr-ryujinx", "sd")
 
 
 else:
   # simple build
-  build_lib.build(release_arg, "")
+  pkgutil.build(release_arg, "")
 
   # collect switch package
-  build_lib.collect_plugin("hdr-switch", 
+  pkgutil.collect_plugin("hdr-switch", 
     os.path.join(switch_rom_path, plugin_subpath), 
     build_type, "libhdr.nro")
 
   # collect switch romfs
-  build_lib.collect_romfs("hdr-switch", "")
+  pkgutil.collect_romfs("hdr-switch", "")
 
 
   # collect ryujinx plugin
-  build_lib.collect_plugin("hdr-ryujinx", 
+  pkgutil.collect_plugin("hdr-ryujinx", 
     os.path.join(ryujinx_rom_path, plugin_subpath), 
     build_type, "libhdr.nro")
   
   # collect ryujinx romfs
-  build_lib.collect_romfs("hdr-ryujinx", "sd")
+  pkgutil.collect_romfs("hdr-ryujinx", "sd")
 
 os.chdir(current_dir)
 

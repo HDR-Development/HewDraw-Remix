@@ -33,3 +33,9 @@ def build(build_type: str, dev_args: str):
   os.chdir('plugin')
   os.system(build_command)
   os.chdir('..')
+
+
+# inform the user of their foolishness in running this file itself
+if __name__ == '__main__':
+    # Execute when the module is not initialized from an import statement.
+    print("this is just a library you fool, don't run this lol")
