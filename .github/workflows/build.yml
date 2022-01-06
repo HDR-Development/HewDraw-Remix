@@ -6,11 +6,14 @@ on:
     paths-ignore:
       - '**/README.md'
       - '**/.gitignore'
+      - 'scripts/**'
   pull_request:
     branches: [ dev, stable ]
     paths-ignore:
+      - '**/README.md'
       - '**/.gitignore'
       - 'scripts/**'
+      
 
 jobs:
   plugin_build:
