@@ -10,7 +10,7 @@ on:
     branches: [ dev, stable ]
     paths-ignore:
       - '**/.gitignore'
-      - '**/scripts/*'
+      - 'scripts/**'
 
 jobs:
   plugin_build:
