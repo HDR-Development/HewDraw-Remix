@@ -3,29 +3,46 @@ name: rust build
 on:
   push:
     branches: [ dev, stable ] # CHANGE "master" TO "main" IF THAT IS THE NAME OF YOUR MAIN BRANCH!
+    paths-ignore:
+      - '**/README.md'
+      - '**/.gitignore'
+      - 'scripts/**'
   pull_request:
     branches: [ dev, stable ]
-  #workflow_dispatch:
+    paths-ignore:
+      - '**/README.md'
+      - '**/.gitignore'
+      - 'scripts/**'
+      
 
 jobs:
   plugin_build:
     env:
-      PLUGIN_NAME: hdr # CHANGE THIS TO THE NAME OF YOUR TEMPLATE!
+      PLUGIN_NAME: hdr
     runs-on: ubuntu-latest
     container: 
       image: jugeeya/cargo-skyline:2.1.0
     steps:
-    - uses: actions/checkout@v2
-    - name: Build release NRO
-      run: |
-        PATH=$PATH:/root/.cargo/bin && cd plugin && /root/.cargo/bin/cargo-skyline skyline build --release && cd ..
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+    - name: checkout version
+      uses: actions/checkout@v2
+    - run: |
+        PATH=$PATH:/root/.cargo/bin && cd scripts && python3 make_dist.py && cd ..
       env:
         HOME: /root
-    - name: Upload plugin artifact
+    - name: Upload hdr-switch artifact
       uses: actions/upload-artifact@v2
       with:
-        name: plugin
-        path: plugin/target/aarch64-skyline-switch/release/lib${{env.PLUGIN_NAME}}.nro
+        name: hdr-switch
+        path: distributions/hdr-switch.zip
+    - name: Upload hdr-ryujinx artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: hdr-ryujinx
+        path: distributions/hdr-ryujinx.zip
   upload_nightly:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/dev'
@@ -53,7 +70,8 @@ jobs:
         body: >
           Nightly built off of the latest code in the repository. 
         files: >
-          plugin/* 
+          hdr-switch/*
+          hdr-ryujinx/*
   upload_beta:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/stable'
@@ -81,4 +99,5 @@ jobs:
         body: >
           Beta built off of the latest code in the repository. 
         files: >
-          plugin/* 
+          hdr-switch/*
+          hdr-ryujinx/*
