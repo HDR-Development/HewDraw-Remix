@@ -16,6 +16,12 @@ def inplace_change(filename, old_string, new_string):
         s = s.replace(old_string, new_string)
         f.write(s)
 
+def insert_text(filename, text:str):
+  with open(filename, 'r+') as f:
+    content = f.read()
+    f.seek(0, 0)
+    f.write(text.rstrip('\r\n') + '\n' + content)
+
 os.chdir("../fighters")
 
 for fighter in characters.characters:
@@ -24,10 +30,7 @@ for fighter in characters.characters:
   files = glob.glob("./" + fighter + "/**", recursive=True)
 
   for file in files:
-    print(file)
     if os.path.isfile(file):
-      # edit the file with the right name
-      inplace_change(file, "${template}", fighter)
-      inplace_change(file, "${TEMPLATE}", fighter.upper())
 
-# use common::acmd_import::*;
+      print(file)
+      inplace_change(file, "use smash::app::{sv_system, sv_animcmd::{frame, wait}, self, lua_bind::*};\nuse smash::phx::Hash40;\nuse smash::lib::lua_const::*;\nuse smash::lua2cpp::L2CAgentBase;\nuse smash::app::utility::*;\nuse smash_script::*;\nuse smashline::*;\nuse smashline::*;\nuse smash_script::macros::*;\nuse crate::utils::hdr;\nuse crate::vars::*;", "use super::*;")

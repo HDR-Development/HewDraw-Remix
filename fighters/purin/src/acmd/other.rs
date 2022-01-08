@@ -1,15 +1,5 @@
 
-use smash::app::{sv_system, sv_animcmd::{frame, wait}, self, lua_bind::*};
-use smash::phx::*;
-use smash::lib::lua_const::*;
-use smash::lua2cpp::L2CAgentBase;
-use smash::app::utility::*;
-use smash_script::*;
-use smashline::*;
-use smash_script::macros::*;
-use crate::utils::hdr;
-use crate::vars::*;
-
+use super::*;
 
 #[acmd_script( agent = "purin", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
 unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
