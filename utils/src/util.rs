@@ -78,6 +78,6 @@ pub fn get_battle_object_from_id(id: u32) -> *mut BattleObject;
 
 pub fn get_battle_object_from_accessor(boma: *mut BattleObjectModuleAccessor) -> *mut BattleObject {
     unsafe {
-        get_battle_object_from_id((*boma).battle_object_id))
+        get_battle_object_from_id((*boma).battle_object_id)
     }
 }

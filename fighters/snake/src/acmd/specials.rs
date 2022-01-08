@@ -1,0 +1,251 @@
+
+use smash::app::{sv_system, sv_animcmd::{frame, wait}, self, lua_bind::*};
+use smash::phx::*;
+use smash::lib::lua_const::*;
+use smash::lua2cpp::L2CAgentBase;
+use smash::app::utility::*;
+use smash_script::*;
+use smashline::*;
+use smashline::*;
+use smash_script::macros::*;
+use crate::utils::hdr;
+use crate::vars::*;
+
+
+#[acmd_script( agent = "snake", script = "game_specialhistart" , category = ACMD_GAME , low_priority)]
+unsafe fn snake_special_hi_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    if is_excute(fighter) {
+        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_CYPHER, false, 0);
+        ATTACK(fighter, /*ID*/ 0, /*Part*/ 0, /*Bone*/ Hash40::new("top"), /*Damage*/ 6.0, /*Angle*/ 361, /*KBG*/ 45, /*FKB*/ 0, /*BKB*/ 20, /*Size*/ 8.5, /*X*/ 0.0, /*Y*/ 3.5, /*Z*/ 0.0, /*X2*/ Some(0.0), /*Y2*/ Some(8.0), /*Z2*/ Some(0.0), /*Hitlag*/ 0.8, /*SDI*/ 1.5, /*Clang_Rebound*/ *ATTACK_SETOFF_KIND_ON, /*FacingRestrict*/ *ATTACK_LR_CHECK_POS, /*SetWeight*/ false, /*ShieldDamage*/ 1, /*Trip*/ 0.0, /*Rehit*/ 0, /*Reflectable*/ false, /*Absorbable*/ false, /*Flinchless*/ false, /*DisableHitlag*/ false, /*Direct_Hitbox*/ true, /*Ground_or_Air*/ *COLLISION_SITUATION_MASK_GA, /*Hitbits*/ *COLLISION_CATEGORY_MASK_ALL, /*CollisionPart*/ *COLLISION_PART_MASK_ALL, /*FriendlyFire*/ false, /*Effect*/ Hash40::new("collision_attr_elec"), /*SFXLevel*/ *ATTACK_SOUND_LEVEL_M, /*SFXType*/ *COLLISION_SOUND_ATTR_ELEC, /*Type*/ *ATTACK_REGION_BODY);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    
+}
+
+#[acmd_script( agent = "snake", script = "game_specialairhistart" , category = ACMD_GAME , low_priority)]
+unsafe fn snake_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    if is_excute(fighter) {
+        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_CYPHER, false, 0);
+        ATTACK(fighter, /*ID*/ 0, /*Part*/ 0, /*Bone*/ Hash40::new("top"), /*Damage*/ 6.0, /*Angle*/ 361, /*KBG*/ 45, /*FKB*/ 0, /*BKB*/ 20, /*Size*/ 8.5, /*X*/ 0.0, /*Y*/ 3.5, /*Z*/ 0.0, /*X2*/ Some(0.0), /*Y2*/ Some(8.0), /*Z2*/ Some(0.0), /*Hitlag*/ 0.8, /*SDI*/ 1.5, /*Clang_Rebound*/ *ATTACK_SETOFF_KIND_ON, /*FacingRestrict*/ *ATTACK_LR_CHECK_POS, /*SetWeight*/ false, /*ShieldDamage*/ 1, /*Trip*/ 0.0, /*Rehit*/ 0, /*Reflectable*/ false, /*Absorbable*/ false, /*Flinchless*/ false, /*DisableHitlag*/ false, /*Direct_Hitbox*/ true, /*Ground_or_Air*/ *COLLISION_SITUATION_MASK_GA, /*Hitbits*/ *COLLISION_CATEGORY_MASK_ALL, /*CollisionPart*/ *COLLISION_PART_MASK_ALL, /*FriendlyFire*/ false, /*Effect*/ Hash40::new("collision_attr_elec"), /*SFXLevel*/ *ATTACK_SOUND_LEVEL_M, /*SFXType*/ *COLLISION_SOUND_ATTR_ELEC, /*Type*/ *ATTACK_REGION_BODY);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    
+}
+
+#[acmd_script( agent = "snake", script = "game_speciallwblast" , category = ACMD_GAME , low_priority)]
+unsafe fn snake_special_lw_blast_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4_SWITCH, false, 0);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.500);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.500);
+    }
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        if !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)) {
+            WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_EXPLODING_FLAG_C4_STARTUP);
+        }
+    }
+    
+}
+
+#[acmd_script( agent = "snake", script = "game_speciallwsquatblast" , category = ACMD_GAME , low_priority)]
+unsafe fn snake_special_lw_squat_blast_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    if is_excute(fighter) {
+        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4_SWITCH, false, 0);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.500);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.000);
+        if !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)) {
+            WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_EXPLODING_FLAG_C4_STARTUP);
+        }
+    }
+    
+}
+
+#[acmd_script( agent = "snake", script = "game_specialairlwblast" , category = ACMD_GAME , low_priority)]
+unsafe fn snake_special_air_lw_blast_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4_SWITCH, false, 0);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.500);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.500);
+    }
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        if !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)) {
+            WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_EXPLODING_FLAG_C4_STARTUP);
+        }
+    }
+    
+}
+
+#[acmd_script( agent = "snake", script = "game_specialnstart" , category = ACMD_GAME , low_priority)]
+unsafe fn snake_special_n_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    if is_excute(fighter) {
+        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) || (ControlModule::get_stick_y(boma) >= 0.5)){
+            if(snake_grenade_counter[hdr::get_player_number(boma)] < 2){
+                if(hdr::get_num_of_active_item(*ITEM_KIND_SENSORBOMB) < 1){
+                    snake_grenade_counter[hdr::get_player_number(boma)] += 1;
+                    ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_SENSORBOMB), 0, 0, false, false);
+                }
+            }
+        }
+        else if(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_LW) || (ControlModule::get_stick_y(boma) <= -0.5)){
+            if(snake_grenade_counter[hdr::get_player_number(boma)] < 2){
+                if(hdr::get_num_of_active_item(*ITEM_KIND_SMOKESCREEN) < 1){
+                    snake_grenade_counter[hdr::get_player_number(boma)] += 1;
+                    ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_SMOKESCREEN), 0, 0, false, false);
+                }
+            }
+        }
+        else if(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)){  }else{
+            ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE, false, 0);
+            ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN, false, 0);
+        }
+        if(ArticleModule::is_exist(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN)){
+            ArticleModule::set_visibility_whole(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN, false, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        }
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        if ArticleModule::is_exist(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN) {
+            ArticleModule::set_visibility_whole(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN, true, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        }
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.333);
+    }
+    
+}
+
+#[acmd_script( agent = "snake", script = "game_specialairnstart" , category = ACMD_GAME , low_priority)]
+unsafe fn snake_special_air_n_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    if is_excute(fighter) {
+        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) || (ControlModule::get_stick_y(boma) >= 0.5)){
+            if(snake_grenade_counter[hdr::get_player_number(boma)] < 2){
+                if(hdr::get_num_of_active_item(*ITEM_KIND_SENSORBOMB) < 1){
+                    snake_grenade_counter[hdr::get_player_number(boma)] += 1;
+                    ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_SENSORBOMB), 0, 0, false, false);
+                }
+            }
+        }
+        else if(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_LW) || (ControlModule::get_stick_y(boma) <= -0.5)){
+            if(snake_grenade_counter[hdr::get_player_number(boma)] < 2){
+                if(hdr::get_num_of_active_item(*ITEM_KIND_SMOKESCREEN) < 1){
+                    snake_grenade_counter[hdr::get_player_number(boma)] += 1;
+                    ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_SMOKESCREEN), 0, 0, false, false);
+                }
+            }
+        }
+        else if(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)){  }else{
+            ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE, false, 0);
+            ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN, false, 0);
+        }
+        if(ArticleModule::is_exist(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN)){
+            ArticleModule::set_visibility_whole(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN, false, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        }
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        if ArticleModule::is_exist(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN) {
+            ArticleModule::set_visibility_whole(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN, true, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        }
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.333);
+    }
+    
+}
+
+pub fn install() {
+    install_acmd_scripts!(
+        snake_special_hi_start_game,
+        snake_special_air_hi_start_game,
+        snake_special_lw_blast_game,
+        snake_special_lw_squat_blast_game,
+        snake_special_air_lw_blast_game,
+        snake_special_n_start_game,
+        snake_special_air_n_start_game,
+    );
+}
+

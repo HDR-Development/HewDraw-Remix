@@ -1,5 +1,5 @@
 #!/usr/bin/python3.9
-import shutil, os, sys, pkgutil
+import shutil, os, sys, pkgutil, characters
 
 if "help" in sys.argv or "-h" in sys.argv:
   print("no arguments required for simple build. To build parts of the project"
@@ -8,7 +8,7 @@ if "help" in sys.argv or "-h" in sys.argv:
   print("For example:\n\t./build.py dev=mario,luigi,captain\n")
   exit(0)
 
-characters = {"peach"}
+characters = characters.characters
 
 is_dev_build = False
 plugin_subpath = "skyline/plugins/"
