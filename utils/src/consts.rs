@@ -57,4 +57,9 @@ pub mod vars {
     pub mod common {
         pub const EXAMPLE_FLAG: i32 = 0x1;
     }
+
+    pub mod mario {
+        pub const FIREBRAND_SPAWNED: i32 = 0x1000;
+        pub const DOUBLE_FIREBALL: i32 = 0x1001;
+    }
 }
