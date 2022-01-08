@@ -2,6 +2,7 @@ pub mod prelude {
     pub use smash;
     pub use skyline;
     pub use smash_script;
+    pub use smash_script::*;
     pub use smashline;
     pub use utils::{self, *, consts::*};
     pub use super::StatusShift;

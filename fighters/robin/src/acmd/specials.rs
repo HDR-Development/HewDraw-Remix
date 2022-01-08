@@ -1,7 +1,5 @@
 
 use super::*;
-use hdr_modules::consts::{*, globals::*};
-use hdr_modules::*;
 
 #[acmd_script( agent = "reflet", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn reflet_special_hi_game(fighter: &mut L2CAgentBase) {
