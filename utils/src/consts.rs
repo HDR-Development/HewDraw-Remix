@@ -55,11 +55,20 @@ pub mod globals {
 
 pub mod vars {
     pub mod common {
-        pub const EXAMPLE_FLAG: i32 = 0x1;
+        
+
+        // separator
+
+
     }
 
     pub mod mario {
+        // flag
         pub const FIREBRAND_SPAWNED: i32 = 0x1000;
         pub const DOUBLE_FIREBALL: i32 = 0x1001;
+    }
+
+    pub mod miigunner {
+        pub const HEAVY_ATTACK: i32 = 0x1001;
     }
 }
