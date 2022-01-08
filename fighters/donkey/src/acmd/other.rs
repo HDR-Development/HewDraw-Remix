@@ -60,7 +60,7 @@ unsafe fn heavy_item_throw_f(fighter: &mut L2CAgentBase) {
   }
   frame(lua_state, 16.0);
   if is_excute(fighter) {
-    ItemModule::throw_item(boma, /* angle */ 75.0, /* power */ 4.0, /* damage mul */ 1.0, /* unk */ 0, /* unk */ true, /* unk */ 0.0);
+    ItemModule::throw_item(boma, 75.0, 4.0, 1.0, 0, true, 0.0);
   }
 }
 
@@ -73,7 +73,7 @@ unsafe fn heavy_item_throw_b(fighter: &mut L2CAgentBase) {
   }
   frame(lua_state, 18.0);
   if is_excute(fighter) {
-    ItemModule::throw_item(boma, /* angle */ 125.0, /* power */ 4.0, /* damage mul */ 1.0, /* unk */ 0, /* unk */ true, /* unk */ 0.0);
+    ItemModule::throw_item(boma, 125.0, 4.0, 1.0, 0, true, 0.0);
   }
 }
 
