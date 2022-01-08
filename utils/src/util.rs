@@ -1,4 +1,4 @@
-use smash::app::BattleObject;
+use smash::app::{BattleObject, BattleObjectModuleAccessor};
 use crate::offsets;
 
 #[macro_export]
@@ -75,3 +75,9 @@ pub fn offset_to_addr<T>(offset: usize) -> *const T {
 
 #[skyline::from_offset(offsets::get_battle_object_from_id())]
 pub fn get_battle_object_from_id(id: u32) -> *mut BattleObject;
+
+pub fn get_battle_object_from_accessor(boma: *mut BattleObjectModuleAccessor) -> *mut BattleObject {
+    unsafe {
+        get_battle_object_from_id((*boma).battle_object_id))
+    }
+}
