@@ -1,5 +1,17 @@
 
-use super::*;
+use smash::app::{sv_system, sv_animcmd::{frame, wait}, self, lua_bind::*};
+use smash::phx::*;
+use smash::hash40;
+use smash::lib::lua_const::*;
+use smash::lua2cpp::L2CAgentBase;
+use smash::app::utility::*;
+use smash_script::*;
+use smashline::*;
+use smashline::*;
+use smash_script::macros::*;
+use crate::utils::hdr;
+use crate::vars::*;
+
 
 #[acmd_script( agent = "brave", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
 unsafe fn brave_attack_dash_game(fighter: &mut L2CAgentBase) {
