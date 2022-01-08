@@ -10,7 +10,7 @@ unsafe fn rockman_special_s_game(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        //VarModule::off_flag(boma, rockman::DETONATE_CRASHBOMB);
+        //VarModule::off_flag(fighter.battle_object, rockman::DETONATE_CRASHBOMB);
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
@@ -18,7 +18,7 @@ unsafe fn rockman_special_s_game(fighter: &mut L2CAgentBase) {
             ArticleModule::generate_article_enable(boma, *FIGHTER_ROCKMAN_GENERATE_ARTICLE_CRASHBOMB, false, 0);
         }
         else{
-            //VarModule::on_flag(boma, rockman::DETONATE_CRASHBOMB);
+            //VarModule::on_flag(fighter.battle_object, rockman::DETONATE_CRASHBOMB);
             ArticleModule::change_status(boma, *FIGHTER_ROCKMAN_GENERATE_ARTICLE_CRASHBOMB, *WEAPON_ROCKMAN_CRASHBOMB_STATUS_KIND_EXPLODE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         }
         
@@ -71,7 +71,7 @@ unsafe fn rockman_special_air_s_game(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        //VarModule::off_flag(boma, rockman::DETONATE_CRASHBOMB);
+        //VarModule::off_flag(fighter.battle_object, rockman::DETONATE_CRASHBOMB);
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
@@ -79,7 +79,7 @@ unsafe fn rockman_special_air_s_game(fighter: &mut L2CAgentBase) {
             ArticleModule::generate_article_enable(boma, *FIGHTER_ROCKMAN_GENERATE_ARTICLE_CRASHBOMB, false, 0);
         }
         else{
-            //VarModule::on_flag(boma, rockman::DETONATE_CRASHBOMB);
+            //VarModule::on_flag(fighter.battle_object, rockman::DETONATE_CRASHBOMB);
             ArticleModule::change_status(boma, *FIGHTER_ROCKMAN_GENERATE_ARTICLE_CRASHBOMB, *WEAPON_ROCKMAN_CRASHBOMB_STATUS_KIND_EXPLODE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         }
         

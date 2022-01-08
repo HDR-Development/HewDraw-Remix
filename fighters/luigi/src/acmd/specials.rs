@@ -9,8 +9,8 @@ unsafe fn game_specialn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     if is_excute(fighter) {
-        VarModule::off_flag(boma, mario::FIREBRAND_ACTIVATED);
-        VarModule::off_flag(boma, mario::DOUBLE_FIREBALL);
+        VarModule::off_flag(fighter.battle_object, mario::FIREBRAND_ACTIVATED);
+        VarModule::off_flag(fighter.battle_object, mario::DOUBLE_FIREBALL);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
@@ -20,7 +20,7 @@ unsafe fn game_specialn(fighter: &mut L2CAgentBase) {
             }
         }
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            VarModule::on_flag(boma, mario::FIREBRAND_ACTIVATED);
+            VarModule::on_flag(fighter.battle_object, mario::FIREBRAND_ACTIVATED);
             ATTACK(fighter, 0, 0, Hash40::new("arml"), 9.0, 69, 55, 0, 65, 7.5, 6.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
             ATTACK(fighter, 1, 0, Hash40::new("arml"), 9.0, 69, 55, 0, 65, 7.5, 2.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
             ATTACK(fighter, 2, 0, Hash40::new("shoulderl"), 9.0, 69, 55, 0, 65, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
@@ -34,14 +34,14 @@ unsafe fn game_specialn(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        if VarModule::is_flag(boma, mario::FIREBRAND_ACTIVATED) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+        if VarModule::is_flag(boma, mario::FIREBRAND_ACTIVATED) && AttackModule::is_infliction_status(fighter.battle_object, *COLLISION_KIND_MASK_HIT) {
             FT_MOTION_RATE(fighter, 0.5);
         }
     }
     frame(lua_state, 25.0);
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) 
-           && !VarModule::is_flag(boma, mario::FIREBRAND_ACTIVATED) {
+           && !VarModule::is_flag(fighter.battle_object, mario::FIREBRAND_ACTIVATED) {
             ArticleModule::generate_article(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_FIREBALL, false, 0);
             FT_MOTION_RATE(fighter, 2.000);
         }
@@ -54,8 +54,8 @@ unsafe fn game_specialairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     if is_excute(fighter) {
-        VarModule::off_flag(boma, mario::FIREBRAND_ACTIVATED);
-        VarModule::off_flag(boma, mario::DOUBLE_FIREBALL);
+        VarModule::off_flag(fighter.battle_object, mario::FIREBRAND_ACTIVATED);
+        VarModule::off_flag(fighter.battle_object, mario::DOUBLE_FIREBALL);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
@@ -65,7 +65,7 @@ unsafe fn game_specialairn(fighter: &mut L2CAgentBase) {
             }
         }
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            VarModule::on_flag(boma, mario::FIREBRAND_ACTIVATED);
+            VarModule::on_flag(fighter.battle_object, mario::FIREBRAND_ACTIVATED);
             ATTACK(fighter, 0, 0, Hash40::new("arml"), 9.0, 69, 55, 0, 65, 7.5, 6.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
             ATTACK(fighter, 1, 0, Hash40::new("arml"), 9.0, 69, 55, 0, 65, 7.5, 2.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
             ATTACK(fighter, 2, 0, Hash40::new("shoulderl"), 9.0, 69, 55, 0, 65, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
@@ -79,14 +79,14 @@ unsafe fn game_specialairn(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        if VarModule::is_flag(boma, mario::FIREBRAND_ACTIVATED) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+        if VarModule::is_flag(boma, mario::FIREBRAND_ACTIVATED) && AttackModule::is_infliction_status(fighter.battle_object, *COLLISION_KIND_MASK_HIT) {
             FT_MOTION_RATE(fighter, 0.5);
         }
     }
     frame(lua_state, 25.0);
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) 
-           && !VarModule::is_flag(boma, mario::FIREBRAND_ACTIVATED) {
+           && !VarModule::is_flag(fighter.battle_object, mario::FIREBRAND_ACTIVATED) {
             ArticleModule::generate_article(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_FIREBALL, false, 0);
             FT_MOTION_RATE(fighter, 2.000);
         }

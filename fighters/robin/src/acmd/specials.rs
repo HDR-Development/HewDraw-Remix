@@ -16,7 +16,7 @@ unsafe fn reflet_special_hi_game(fighter: &mut L2CAgentBase) {
             WorkModule::on_flag(boma,  *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND);
         }
         else{
-            VarModule::on_flag(fighter.module_accessor, common::UP_SPECIAL_CANCEL);
+            VarModule::on_flag(fighter.battle_object, common::UP_SPECIAL_CANCEL);
             MotionModule::set_rate(boma, 1.3);
         }
     }
@@ -47,7 +47,7 @@ unsafe fn reflet_special_air_hi_game(fighter: &mut L2CAgentBase) {
             WorkModule::on_flag(boma,  *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND);
         }
         else{
-            VarModule::on_flag(fighter.module_accessor, common::UP_SPECIAL_CANCEL);
+            VarModule::on_flag(fighter.battle_object, common::UP_SPECIAL_CANCEL);
             MotionModule::set_rate(boma, 1.3);
         }
     }
