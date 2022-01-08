@@ -4,8 +4,12 @@ use crate::offsets;
 #[macro_export]
 macro_rules! dump_trace {
     () => {{
-        const MAXIMUM_BT_LEN: usize = 0x20;
         let text = ::skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64;
+        ::utils::dump_trace!(text)
+    }};
+    ($base:expr) => {{
+        const MAXIMUM_BT_LEN: usize = 0x20;
+        let text = $base;
         println!("Current text address: {:#x}", text);
 
         let mut lr: *const u64;

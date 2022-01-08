@@ -1,6 +1,6 @@
+#![feature(asm)]
 use common::prelude::*;
 
-#[rustfmt::skip]
 pub mod acmd;
 
 pub mod status;

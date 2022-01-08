@@ -302,9 +302,19 @@ fn fighter_param_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
 }
 
 #[arc_callback]
-fn common_param_callback(hash: u64, data: &mut [u8]) -> Option<usize> {
+fn common_param_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
     assert_eq!(hash, hash40("fighter/common/hdr/param/common.prc"));
-    load_original_file(hash, data)
+    let size = load_original_file(hash, &mut data).expect("Unable to load file for 'fighter/common/hdr/param/common.prc'");
+    let exact_data = &data[..size];
+    let listing = match prc::read_stream(&mut std::io::Cursor::new(exact_data)) {
+        Ok(struc) => ParamListing::from(ParamKind::Struct(struc)),
+        Err(e) => {
+            panic!("Unable to parse 'fighter/common/hdr/param/common.prc'. Reason: {:?}", e)
+        }
+    };
+
+    *GLOBAL_COMMON_PARAM.write() = Some(listing);
+    Some(size)
 }
 
 #[arc_callback]
@@ -377,14 +387,17 @@ impl ParamModule {
         let module = require_param_module!(object);
 
         match ty {
-            ParamType::Common => GLOBAL_COMMON_PARAM
-                .read()
+            ParamType::Common => {
+                let read = GLOBAL_COMMON_PARAM.read();
+                println!("{}", read.is_none());
+                read
                 .as_ref()
                 .map(|x| x.index(key))
                 .flatten()
                 .map(|x| x.get_int())
                 .flatten()
-                .unwrap_or(0),
+                .unwrap_or(0)
+            },
             ParamType::Shared => {
                 let index = unsafe {
                     (*module.owner).kind

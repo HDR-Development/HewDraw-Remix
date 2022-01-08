@@ -15,6 +15,7 @@ pub use modules::*;
 
 pub fn init() {
     modules::init();
+    singletons::init();
 
     std::panic::set_hook(Box::new(|info| {
         let location = info.location().unwrap();

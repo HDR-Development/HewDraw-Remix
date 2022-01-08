@@ -49,5 +49,6 @@ pub mod globals {
     // 0x30
     // 0x31
     // 0x32 some substatus
+    pub const STATUS_CHANGE_CALLBACK: i32 = 0x3E;
     pub const DASH_POST_TRANSITION_CALLBACK: i32 = 0x57;
 }
