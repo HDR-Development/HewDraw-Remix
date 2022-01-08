@@ -1,47 +1,5 @@
 
-use smash::app::{sv_system, sv_animcmd::{frame, wait, execute}, self, lua_bind::*};
-use smash::phx::*;
-use smash::lib::lua_const::*;
-use smash::lua2cpp::L2CAgentBase;
-use smash::app::utility::*;
-use smash_script::*;
-use smashline::*;
-use smashline::*;
-use smash_script::macros::*;
-use crate::utils::hdr;
-use crate::vars::*;
-
-
-#[acmd_script( agent = "lucas", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn lucas_attack_s4_s_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    if is_excute(fighter) {
-        VisibilityModule::set_int64(boma, Hash40::new("bat").hash as i64, Hash40::new("bat_visible").hash as i64);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
-    }
-    frame(lua_state, 11.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_LUCAS_STATUS_ATTACK_S4_FLAG_REFLECT_START);
-    }
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 361, 93, 0, 50, 3.7, 0.0, 5.6, 7.0, Some(0.0), Some(5.6), Some(3.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCAS_BAT, *ATTACK_REGION_OBJECT);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 15.0, 361, 95, 0, 50, 3.7, 0.0, 5.6, 13.0, Some(0.0), Some(5.6), Some(7.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCAS_BAT, *ATTACK_REGION_OBJECT);
-    }
-    frame(lua_state, 16.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-    frame(lua_state, 20.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_LUCAS_STATUS_ATTACK_S4_FLAG_REFLECT_END);
-    }
-    
-}
+use super::*;
 
 #[acmd_script( agent = "lucas", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
 unsafe fn lucas_attack_hi4_game(fighter: &mut L2CAgentBase) {

@@ -1,5 +1,5 @@
 #!/usr/bin/python3.9
-import shutil, os, sys, glob, characters
+import shutil, os, sys, glob, characters, re
 
 
 def inplace_change(filename, old_string, new_string):
