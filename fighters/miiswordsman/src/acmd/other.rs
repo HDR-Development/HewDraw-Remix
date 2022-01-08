@@ -1,19 +1,5 @@
 
-use smash::app::{sv_system, sv_animcmd::{frame, wait}, sv_battle_object, self, lua_bind::*};
-use smash::phx::*;
-use smash::lib::lua_const::*;
-use smash::lua2cpp::L2CAgentBase;
-use smash::app::utility::*;
-use smash_script::*;
-use smashline::*;
-use smashline::*;
-use smash_script::macros::*;
-use crate::utils::hdr;
-use crate::vars::*;
-
-use hdr_modules::consts::{*, globals::*};
-use hdr_modules::*;
-
+use super::*;
 
 #[acmd_script( agent = "miiswordsman", script = "game_catch" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_catch_game(fighter: &mut L2CAgentBase) {
