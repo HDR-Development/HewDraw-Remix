@@ -16,11 +16,11 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     		ATTACK(fighter, 0, 0, Hash40::new("top"), 0.5, 270, 100, 10, 0, 5.0, 0.0, 4.0, 0.0, None, None, None, 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     		AttackModule::set_catch_only_all(boma, true, false);
     	}
-    	sv_animcmd::wait(lua_state, 3.0);
+    	wait(lua_state, 3.0);
     	if is_excute(fighter) {
     		AttackModule::clear_all(boma);
     	}
-    	sv_animcmd::wait(lua_state, 3.0);
+    	wait(lua_state, 3.0);
     }
     frame(lua_state, 73.0);
     if is_excute(fighter) {

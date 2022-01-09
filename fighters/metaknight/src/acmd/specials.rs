@@ -149,7 +149,7 @@ unsafe fn metaknight_special_hi_loop_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         prev_pos = PostureModule::pos_y(boma);
         //println!("First prev_pos: {}", prev_pos);
-        sv_animcmd::wait(lua_state, 1.0);
+        wait(lua_state, 1.0);
         for _ in 0..30 {
             //println!("prev_pos: {}", prev_pos);
             pos = PostureModule::pos_y(boma);
@@ -160,7 +160,7 @@ unsafe fn metaknight_special_hi_loop_game(fighter: &mut L2CAgentBase) {
                 break;
             }
             prev_pos = PostureModule::pos_y(boma);
-            sv_animcmd::wait(lua_state, 1.0);
+            wait(lua_state, 1.0);
         }
     }
 
