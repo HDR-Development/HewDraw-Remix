@@ -1,7 +1,7 @@
 #!/usr/bin/python3.9
 import shutil, os, sys, pkgutil, characters
 
-if "help" in sys.argv or "-h" in sys.argv:
+if "help" in sys.argv or "--help" in sys.argv or "-h" in sys.argv:
   print("no arguments required for simple build. To build parts of the project"
     + " as a development reloadable plugin, use argument 'dev=mario,luigi,captain'"
     + " to specify which character crates to build into the reloadable dev plugin.")
@@ -67,10 +67,11 @@ if (is_dev_build):
     print("ERROR: No character arguments given!")
   
   # build the dev plugin with args
+  os.environ["CARGO_TARGET_DIR"] = os.path.join("target", "development")
   pkgutil.build(release_arg, dev_args)
 
-  pkgutil.collect_plugin("hdr-switch", os.path.join(switch_rom_path, development_subpath), build_type, "development.nro")
-  pkgutil.collect_plugin("hdr-ryujinx", os.path.join(ryujinx_rom_path, development_subpath), build_type, "development.nro")
+  pkgutil.collect_plugin("hdr-switch", os.path.join(switch_rom_path, development_subpath), build_type, "development.nro", "development")
+  pkgutil.collect_plugin("hdr-ryujinx", os.path.join(ryujinx_rom_path, development_subpath), build_type, "development.nro", "development")
 
   # setup normal nro
   non_dev_characters = characters.copy()
@@ -82,17 +83,23 @@ if (is_dev_build):
   plugin_args = " --no-default-features "
   if len(non_dev_characters) > 0:
     # add each non dev character
-    plugin_args += "--features=" + non_dev_characters[0]
-    for i in range(1, len(non_dev_characters)):
-      plugin_args += ',"' + non_dev_characters[i] + '"'
+    plugin_args += "--features="
+    no_comma = True
+    for arg in iter(non_dev_characters):
+      if no_comma:
+        plugin_args += '"' + arg + '"'
+        no_comma = False
+      else:
+        plugin_args += ',"' + arg + '"'
 
   # build the regular plugin with args
+  os.environ["CARGO_TARGET_DIR"] = os.path.join("target", "standalone")
   pkgutil.build(release_arg, plugin_args)
 
   # collect switch plugin
   pkgutil.collect_plugin("hdr-switch", 
     os.path.join(switch_rom_path, plugin_subpath), 
-    build_type, "libhdr.nro")
+    build_type, "libhdr.nro", "standalone")
 
     # collect switch romfs
   pkgutil.collect_romfs("hdr-switch", "")
@@ -100,7 +107,7 @@ if (is_dev_build):
   # collect ryujinx plugin
   pkgutil.collect_plugin("hdr-ryujinx", 
     os.path.join(ryujinx_rom_path, plugin_subpath), 
-    build_type, "libhdr.nro")
+    build_type, "libhdr.nro", "standalone")
   
   # collect ryujinx romfs
   pkgutil.collect_romfs("hdr-ryujinx", "sd")

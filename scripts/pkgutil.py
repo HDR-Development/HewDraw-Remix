@@ -1,9 +1,13 @@
 import pathlib, shutil, os
 
-def collect_plugin(package_name: str, package_path: str, build_type: str, plugin_name: str):
+def collect_plugin(package_name: str, package_path: str, build_type: str, plugin_name: str, build_subdir: str = None):
   print("COLLECTING " + package_name + " plugins!")
   # get nro
-  plugin_source = os.path.join("plugin/target/aarch64-skyline-switch/" + build_type + "/libhdr.nro")
+  if build_subdir != None:
+    plugin_source = os.path.join("plugin/target/" + build_subdir + "/aarch64-skyline-switch/" + build_type + "/libhdr.nro")
+  else:
+    plugin_source = os.path.join("plugin/target/aarch64-skyline-switch/" + build_type + "/libhdr.nro")
+    
   plugin_destination = os.path.join('build', package_name, package_path)
   pathlib.Path(plugin_destination).mkdir(parents=True)
   shutil.copy(
