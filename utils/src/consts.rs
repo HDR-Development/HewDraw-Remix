@@ -91,6 +91,18 @@ pub mod vars {
     }
 
     pub mod miigunner {
-        pub const HEAVY_ATTACK: i32 = 0x1001;
+        pub const HEAVY_ATTACK: i32 = 0x1000;
+    }
+
+    pub mod trail {
+        pub const ATTACK_12_INTO_S3: i32 = 0x1000;
+    }
+
+    pub mod sonic {
+        pub const PULSE_HITBOX: i32 = 0x1000;
+    }
+
+    pub mod snake {
+        pub const SNAKE_GRENADE_COUNTER: i32 = 0x1000;
     }
 }

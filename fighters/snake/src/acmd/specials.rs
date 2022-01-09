@@ -137,26 +137,27 @@ unsafe fn snake_special_n_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) || (ControlModule::get_stick_y(boma) >= 0.5)){
-            if(snake_grenade_counter[hdr::get_player_number(boma)] < 2){
-                if(hdr::get_num_of_active_item(*ITEM_KIND_SENSORBOMB) < 1){
-                    snake_grenade_counter[hdr::get_player_number(boma)] += 1;
+            if VarModule::get_int(fighter.battle_object, vars::snake::SNAKE_GRENADE_COUNTER) < 2 {
+                if(ItemManager::get_num_of_active_item(*ITEM_KIND_SENSORBOMB) < 1){
+                    VarModule::inc_int(fighter.battle_object, vars::snake::SNAKE_GRENADE_COUNTER);
                     ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_SENSORBOMB), 0, 0, false, false);
                 }
             }
         }
         else if(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_LW) || (ControlModule::get_stick_y(boma) <= -0.5)){
-            if(snake_grenade_counter[hdr::get_player_number(boma)] < 2){
-                if(hdr::get_num_of_active_item(*ITEM_KIND_SMOKESCREEN) < 1){
-                    snake_grenade_counter[hdr::get_player_number(boma)] += 1;
+            if VarModule::get_int(fighter.battle_object, vars::snake::SNAKE_GRENADE_COUNTER) < 2 {
+                if(ItemManager::get_num_of_active_item(*ITEM_KIND_SMOKESCREEN) < 1){
+                    VarModule::inc_int(fighter.battle_object, vars::snake::SNAKE_GRENADE_COUNTER);
                     ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_SMOKESCREEN), 0, 0, false, false);
                 }
             }
         }
-        else if(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)){  }else{
+        else if !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
+            // TODO: remove this
             ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE, false, 0);
             ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN, false, 0);
         }
-        if(ArticleModule::is_exist(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN)){
+        if ArticleModule::is_exist(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN) {
             ArticleModule::set_visibility_whole(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN, false, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         }
     }
@@ -187,17 +188,17 @@ unsafe fn snake_special_air_n_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) || (ControlModule::get_stick_y(boma) >= 0.5)){
-            if(snake_grenade_counter[hdr::get_player_number(boma)] < 2){
-                if(hdr::get_num_of_active_item(*ITEM_KIND_SENSORBOMB) < 1){
-                    snake_grenade_counter[hdr::get_player_number(boma)] += 1;
+            if VarModule::get_int(fighter.battle_object, vars::snake::SNAKE_GRENADE_COUNTER) < 2 {
+                if(ItemManager::get_num_of_active_item(*ITEM_KIND_SENSORBOMB) < 1){
+                    VarModule::inc_int(fighter.battle_object, vars::snake::SNAKE_GRENADE_COUNTER);
                     ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_SENSORBOMB), 0, 0, false, false);
                 }
             }
         }
         else if(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_LW) || (ControlModule::get_stick_y(boma) <= -0.5)){
-            if(snake_grenade_counter[hdr::get_player_number(boma)] < 2){
-                if(hdr::get_num_of_active_item(*ITEM_KIND_SMOKESCREEN) < 1){
-                    snake_grenade_counter[hdr::get_player_number(boma)] += 1;
+            if VarModule::get_int(fighter.battle_object, vars::snake::SNAKE_GRENADE_COUNTER) < 2 {
+                if(ItemManager::get_num_of_active_item(*ITEM_KIND_SMOKESCREEN) < 1){
+                    VarModule::inc_int(fighter.battle_object, vars::snake::SNAKE_GRENADE_COUNTER);
                     ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_SMOKESCREEN), 0, 0, false, false);
                 }
             }

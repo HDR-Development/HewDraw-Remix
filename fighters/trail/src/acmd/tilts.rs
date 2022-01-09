@@ -20,7 +20,7 @@ unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         // Jab 2 -> Ftilt cancel
-        if VarModule::is_flag(fighter.battle_object, trail::ATTACK_12_INTO_S3){
+        if VarModule::is_flag(fighter.battle_object, vars::trail::ATTACK_12_INTO_S3){
             FT_MOTION_RATE(fighter, 0.8);
             ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.5, 75, 20, 0, 40, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
             ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.5, 75, 20, 0, 40, 3.5, 0.0, 4.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
@@ -41,7 +41,7 @@ unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, trail::ATTACK_12_INTO_S3){
+        if VarModule::is_flag(fighter.battle_object, vars::trail::ATTACK_12_INTO_S3){
             ATTACK(fighter, 3, 0, Hash40::new("haver"), 0.5, 80, 20, 0, 40, 3.5, -3.2, 9.5, -7.6, None, None, None,1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
             AttackModule::set_add_reaction_frame_revised(boma, 3, 8.0, false);
         }
@@ -51,7 +51,7 @@ unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, trail::ATTACK_12_INTO_S3){
+        if VarModule::is_flag(fighter.battle_object, vars::trail::ATTACK_12_INTO_S3){
             ATTACK(fighter, 2, 0, Hash40::new("haver"), 0.5, 80, 20, 0, 40, 3.5, 0.0, 9.5, 0.0, None, None, None,1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
             AttackModule::set_add_reaction_frame_revised(boma, 2, 8.0, false);
         }
@@ -59,7 +59,7 @@ unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
     wait(lua_state, 3.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if VarModule::is_flag(fighter.battle_object, trail::ATTACK_12_INTO_S3){
+        if VarModule::is_flag(fighter.battle_object, vars::trail::ATTACK_12_INTO_S3){
             FT_MOTION_RATE(fighter, 0.84);
         }
         else{
@@ -68,7 +68,7 @@ unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 29.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, trail::ATTACK_12_INTO_S3){
+        if VarModule::is_flag(fighter.battle_object, vars::trail::ATTACK_12_INTO_S3){
             WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
         }
     }
