@@ -57,6 +57,9 @@ pub mod vars {
     pub mod common {
         // flag
         pub const IS_HEAVY_ATTACK: i32 = 0x0;
+        pub const FIREBRAND_ACTIVATED: i32 = 0x1;
+        pub const DOUBLE_FIREBALL: i32 = 0x2;
+        pub const NOKNOK_SHELL: i32 = 0x3;
 
         // int
         pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0;
@@ -116,7 +119,6 @@ pub mod vars {
     pub mod mario {
         // flags
         pub const FIREBRAND_SPAWNED: i32 = 0x1000;
-        pub const DOUBLE_FIREBALL: i32 = 0x1001;
     }
 
     pub mod roy {
