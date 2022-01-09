@@ -1,5 +1,5 @@
 
-use super::*;use crate::hooks::sys_line::meter::*;
+use super::*;
 
 
 #[acmd_script( agent = "dolly", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
@@ -38,6 +38,7 @@ unsafe fn dolly_escape_attack_game(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, true);
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         HIT_NODE(fighter, Hash40::new("bust"), *HIT_STATUS_XLU);
@@ -59,7 +60,6 @@ unsafe fn dolly_escape_attack_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 11.0, 88, 60, 0, 62, 3.0, 0.0, 9.5, 4.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 11.0, 88, 60, 0, 68, 3.0, 0.0, 8.0, 7.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
         ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 0, 1, 0.5);
-        meter_gain(boma, 10);
      }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
@@ -84,6 +84,7 @@ unsafe fn dolly_escape_attack_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("handl"), *HIT_STATUS_NORMAL);
         HIT_NODE(fighter, Hash40::new("handr"), *HIT_STATUS_NORMAL);
         AttackModule::clear_all(boma);
+        MeterModule::watch_damage(fighter.battle_object, false);
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {

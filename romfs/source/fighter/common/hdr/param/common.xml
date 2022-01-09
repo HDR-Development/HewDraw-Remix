@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
     <int hash="djc_leniency_frame">6</int>
+    <float hash="meter_max_damage">300</float>
+    <int hash="meter_level_count">10</int>
+    <int hash="meter_flash_frame_count">120</int>
 </struct>

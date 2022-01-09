@@ -31,9 +31,9 @@ fn rebuild_romfs(root_src_path: &Path, root_dst_path: &Path) {
 
 fn main() {
     let rom_dst_path = Path::new(hdr_macros::rom_path!());
-    let rom_src_path = rom_dst_path.with_file_name("source");
-    rebuild_romfs(&rom_src_path, rom_dst_path);
-    let rom_path = hdr_macros::rom_path!();
+    let rom_src_path = Path::new(hdr_macros::rom_source_path!());
+    rebuild_romfs(rom_src_path, rom_dst_path);
+    let rom_path = hdr_macros::rom_source_path!();
     for file in ROM_WATCH.lines() {
         println!("cargo:rerun-if-changed={}{}", rom_path, file);
     }

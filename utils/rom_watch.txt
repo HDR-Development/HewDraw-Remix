@@ -1,2 +1,2 @@
-fighter/common/hdr/param/common.prc
-fighter/common/hdr/param/fighter_param.prc
+fighter/common/hdr/param/common.xml
+fighter/common/hdr/param/fighter_param.xml

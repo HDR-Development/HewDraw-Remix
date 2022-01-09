@@ -55,11 +55,21 @@ pub mod globals {
 
 pub mod vars {
     pub mod common {
+        // flag
         pub const IS_HEAVY_ATTACK: i32 = 0x0;
 
+        // int
+        pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0;
+
+        // float
+        pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0;
+
         // separator
+        // flag
+        pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 0x50;
+
+        // int
         pub const GIMMICK_TIMER: i32 = 0x50;
-        pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 0x51;
         
 
     }
@@ -79,6 +89,14 @@ pub mod vars {
         pub const SLAUGHTER_HIGH_KICK: i32 = 0x1000;
     }
 
+    pub mod dolly {
+        pub use super::shotos::*;
+
+        // flags
+        pub const IS_USE_FIRE_KICK: i32 = 0x1050;
+        pub const UNABLE_CANCEL_S3_DASH: i32 = 0x1051;
+    }
+
     pub mod mario {
         // flags
         pub const FIREBRAND_SPAWNED: i32 = 0x1000;
@@ -90,15 +108,25 @@ pub mod vars {
         pub const TRAIL_EFFECT: i32 = 0x1000;
     }
 
-    pub mod trail {
-        pub const ATTACK_12_INTO_S3: i32 = 0x1000;
-    }
+    mod shotos {
+        // flags
+        pub const IS_USE_EX_SPECIAL: i32 = 0x1000;
+        pub const IS_MAGIC_SERIES_CANCEL: i32 = 0x1001;
+        pub const SHOULD_COMBOS_SCALE: i32 = 0x1002;
 
+        // ints
+        pub const REPEAT_COUNT_LW: i32 = 0x1000;
+    }
+    
     pub mod sonic {
         pub const PULSE_HITBOX: i32 = 0x1000;
     }
-
+    
     pub mod snake {
         pub const SNAKE_GRENADE_COUNTER: i32 = 0x1000;
+    }
+    
+    pub mod trail {
+        pub const ATTACK_12_INTO_S3: i32 = 0x1000;
     }
 }

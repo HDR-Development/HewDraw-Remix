@@ -40,6 +40,10 @@ mod offsets_impl {
     pub const fn get_battle_object_from_id() -> usize {
         0x3ac540
     }
+
+    pub const fn fighter_handle_damage() -> usize {
+        0x6310a0
+    }
 }
 
 #[cfg(not(feature = "no-offset-search"))]
@@ -57,6 +61,7 @@ mod offsets_impl {
         pub set_weapon_vtable: usize,
         pub set_item_vtable: usize,
         pub get_battle_object_from_id: usize,
+        pub fighter_handle_damage: usize
     }
 
     static EXEC_COMMAND_SEARCH_CODE: &[u8] = &[
@@ -156,6 +161,16 @@ mod offsets_impl {
 
     const GET_BATTLE_OBJECT_FROM_ID_OFFSET_TO_START: usize = 0xC;
 
+    static FIGHTER_HANDLE_DAMAGE_SEARCH_CODE: &[u8] = &[
+        0xff, 0xc3, 0x06, 0xd1, // sub sp, sp, #0x1b0
+        0xed, 0x33, 0x12, 0x6d, // stp d13, d12, [sp, #0x120]
+        0xeb, 0x2b, 0x13, 0x6d, // stp d11, d10, [sp, #0x130]
+        0xe9, 0x23, 0x14, 0x6d, // stp d9, d8, [sp, #0x140]
+        0xfc, 0x6f, 0x15, 0xa9, // stp x28, x27, [sp, #0x150]
+        0xfa, 0x67, 0x16, 0xa9, // stp x26, x25, [sp, #0x160]
+        0xf8, 0x5f, 0x17, 0xa9, // stp x24, x23, [sp, #0x170]
+    ];
+
     lazy_static! {
         static ref CORE_OFFSETS: CoreOffsets = {
             let mut offsets = CoreOffsets {
@@ -168,7 +183,8 @@ mod offsets_impl {
                 set_fighter_vtable: 0,
                 set_weapon_vtable: 0,
                 set_item_vtable: 0,
-                get_battle_object_from_id: 0
+                get_battle_object_from_id: 0,
+                fighter_handle_damage: 0
             };
 
             offsets.exec_command = byte_search(EXEC_COMMAND_SEARCH_CODE).expect("Unable to find exec command hook!") - EXEC_COMMAND_OFFSET_FROM_START;
@@ -181,6 +197,7 @@ mod offsets_impl {
             offsets.set_weapon_vtable = byte_search(SET_WEAPON_VTABLE_SEARCH_CODE).expect("Unable to find Weapon class constructor hook!") + SET_WEAPON_VTABLE_OFFSET_TO_START;
             offsets.set_item_vtable = byte_search(SET_ITEM_VTABLE_SEARCH_CODE).expect("Unable to find Item class constructor hook!") + SET_ITEM_VTABLE_OFFSET_TO_START;
             offsets.get_battle_object_from_id = byte_search(GET_BATTLE_OBJECT_FROM_ID_SEARCH_CODE).expect("Unable to find Item class constructor hook!") + GET_BATTLE_OBJECT_FROM_ID_OFFSET_TO_START;
+            offsets.fighter_handle_damage = byte_search(FIGHTER_HANDLE_DAMAGE_SEARCH_CODE).expect("Unable to find Fighter::HandleDamage!");
             offsets
         };
     }
@@ -223,6 +240,10 @@ mod offsets_impl {
 
     pub fn get_battle_object_from_id() -> usize {
         CORE_OFFSETS.get_battle_object_from_id
+    }
+
+    pub fn fighter_handle_damage() -> usize {
+        CORE_OFFSETS.fighter_handle_damage
     }
 }
 

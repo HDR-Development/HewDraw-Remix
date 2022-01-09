@@ -96,6 +96,27 @@ pub fn rom_path(item: TokenStream) -> TokenStream {
 }
 
 #[proc_macro]
+pub fn rom_source_path(item: TokenStream) -> TokenStream {
+    let item = TokenStream2::from(item);
+    let path = Path::new(file!());
+    let parent = match path.parent() {
+        Some(parent) => parent,
+        None => {
+            return syn::Error::new(item.span(), "Failed to get parent of current path.").into_compile_error().into()
+        }
+    };
+
+    let full_path = parent.join("../../romfs/source/");
+
+    let full_path = match full_path.as_os_str().to_str() {
+        Some(path) => path,
+        None => return syn::Error::new(item.span(), "Full path contains invalid characters!").into_compile_error().into()
+    };
+    
+    syn::LitStr::new(full_path, item.span()).to_token_stream().into()
+}
+
+#[proc_macro]
 pub fn from_root(item: TokenStream) -> TokenStream {
     let literal = match syn::parse::<syn::LitStr>(item.clone()) {
         Ok(literal) => literal,

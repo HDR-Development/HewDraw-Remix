@@ -81,3 +81,19 @@ pub fn get_battle_object_from_accessor(boma: *mut BattleObjectModuleAccessor) ->
         get_battle_object_from_id((*boma).battle_object_id)
     }
 }
+
+extern "C" {
+    #[link_name = "\u{1}_ZN3app8lua_bind38FighterManager__get_fighter_entry_implEPNS_14FighterManagerENS_14FighterEntryIDE"]
+    fn get_fighter_entry(manager: *mut smash::app::FighterManager, entry_id: u32) -> *mut u8;
+}
+
+pub fn get_battle_object_from_entry_id(entry_id: u32) -> Option<*mut BattleObject> {
+    unsafe {
+        let entry = get_fighter_entry(super::singletons::FighterManager(), entry_id);
+        if entry.is_null() {
+            None
+        } else {
+            Some(*(entry.add(0x4160) as *mut *mut BattleObject))
+        }
+    }
+}
