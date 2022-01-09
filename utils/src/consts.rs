@@ -129,4 +129,9 @@ pub mod vars {
     pub mod trail {
         pub const ATTACK_12_INTO_S3: i32 = 0x1000;
     }
+
+    pub mod samus {
+        pub const SHINESPARK_USED: i32 = 0x1000;
+        pub const SHINESPARK_READY: i32 = 0x1001;
+    }
 }

@@ -7,7 +7,7 @@ unsafe fn miiswordsman_special_n1_game(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     let end_frame = MotionModule::end_frame(boma);
     if is_excute(fighter) {
-        VarModule::set_int(fighter.battle_object, common::vars::GIMMICK_TIMER, 0); // Timer used to track time until Gale Strike is available again
+        VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0); // Timer used to track time until Gale Strike is available again
         //heavy_attack[hdr::get_player_number(boma)] = false;
         VarModule::off_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK);
         ArticleModule::remove(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_TORNADOSHOT, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -28,10 +28,10 @@ unsafe fn miiswordsman_special_n1_game(fighter: &mut L2CAgentBase) {
          ArticleModule::generate_article(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_TORNADOSHOT, false, 0);
          //if heavy_attack[hdr::get_player_number(boma)]{
         if VarModule::is_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK){
-            VarModule::set_int(fighter.battle_object, common::vars::GIMMICK_TIMER, 120);
+            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 120);
          }
          else{
-            VarModule::set_int(fighter.battle_object, common::vars::GIMMICK_TIMER, 52);
+            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 52);
          }
      }
      frame(lua_state, 18.0);
@@ -85,7 +85,7 @@ unsafe fn miiswordsman_special_air_n1_game(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     let end_frame = MotionModule::end_frame(boma);
     if is_excute(fighter) {
-        VarModule::set_int(fighter.battle_object, common::vars::GIMMICK_TIMER, 0); // Timer used to track time until Gale Strike is available again
+        VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0); // Timer used to track time until Gale Strike is available again
         //heavy_attack[hdr::get_player_number(boma)] = false;
         VarModule::off_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK);
         ArticleModule::remove(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_TORNADOSHOT, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -103,10 +103,10 @@ unsafe fn miiswordsman_special_air_n1_game(fighter: &mut L2CAgentBase) {
          ArticleModule::generate_article(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_TORNADOSHOT, false, 0);
          //if heavy_attack[hdr::get_player_number(boma)]{
         if VarModule::is_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK){             
-            VarModule::set_int(fighter.battle_object, common::vars::GIMMICK_TIMER, 120);
+            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 120);
          }
          else{
-            VarModule::set_int(fighter.battle_object, common::vars::GIMMICK_TIMER, 52);
+            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 52);
          }
      }
      frame(lua_state, 18.0);
