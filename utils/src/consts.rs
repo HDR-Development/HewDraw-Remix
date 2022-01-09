@@ -133,6 +133,11 @@ pub mod vars {
         // ints
         pub const REPEAT_COUNT_LW: i32 = 0x1000;
         pub const REPEAT_COUNT_HI: i32 = 0x1001;
+        pub const EX_SPECIAL_SCRIPTING: i32 = 0x1002;
+    }
+
+    pub mod ryu {
+        pub use super::shotos::*;
     }
     
     pub mod sonic {

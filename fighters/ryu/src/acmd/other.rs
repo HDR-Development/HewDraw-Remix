@@ -1,6 +1,4 @@
-
-use super::*;use crate::hooks::sys_line::meter::*;
-
+use super::*;
 
 #[acmd_script( agent = "ryu", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
 unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
@@ -38,7 +36,8 @@ unsafe fn ryu_attack_near_w_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        magic_series_cancel[hdr::get_player_number(boma)] = false;
+        MeterModule::watch_damage(fighter.battle_object, true);
+        VarModule::off_flag(fighter.battle_object, vars::ryu::IS_MAGIC_SERIES_CANCEL);
          WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
         FT_MOTION_RATE(fighter, 1.000);
@@ -53,11 +52,11 @@ unsafe fn ryu_attack_near_w_game(fighter: &mut L2CAgentBase) {
         AttackModule::set_add_reaction_frame(boma, 1, 4.0, false);
         AttackModule::set_add_reaction_frame(boma, 2, 7.0, false);
         AttackModule::set_add_reaction_frame(boma, 3, 4.0, false);
-        meter_gain(boma, 5);
      }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        MeterModule::watch_damage(fighter.battle_object, false);
         WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     frame(lua_state, 25.0);
