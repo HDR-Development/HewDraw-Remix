@@ -25,7 +25,7 @@ unsafe fn koopajr_special_air_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "koopajr_cannonball", script = "game_hop" , category = ACMD_GAME , low_priority)]
 unsafe fn koopajr_cannonball_hop_game(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
-    let boma = fighter.boma();
+    let boma = weapon.boma();
     let mut keep_hitbox = false;
 
     if WorkModule::is_flag(weapon.module_accessor, *WEAPON_KOOPAJR_CANNONBALL_INSTANCE_WORK_ID_FLAG_HIT_WALL) {

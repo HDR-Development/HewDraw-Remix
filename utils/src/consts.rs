@@ -102,6 +102,20 @@ pub mod vars {
         pub const UNABLE_CANCEL_S3_DASH: i32 = 0x1051;
     }
 
+    pub mod gaogaen {
+        // floats
+        pub const ANGLE_GRAB_STICK_Y: i32 = 0x1000;
+    }
+
+    pub mod kamui {
+        // flag
+        pub const BAIR_BOOST: i32 = 0x1000;
+    }
+
+    pub mod ken {
+        pub use super::shotos::*;
+    }
+
     pub mod mario {
         // flags
         pub const FIREBRAND_SPAWNED: i32 = 0x1000;
@@ -120,6 +134,7 @@ pub mod vars {
 
         // ints
         pub const REPEAT_COUNT_LW: i32 = 0x1000;
+        pub const REPEAT_COUNT_HI: i32 = 0x1001;
     }
     
     pub mod sonic {

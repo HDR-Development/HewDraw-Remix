@@ -335,7 +335,7 @@ unsafe fn special_lw_loop(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     wait(lua_state, 3.0);
-    if (!ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)) {
+    if !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
         MotionModule::set_frame(boma, MotionModule::frame(boma) + 15.0, true);
     } else {
         wait(lua_state, 6.0);

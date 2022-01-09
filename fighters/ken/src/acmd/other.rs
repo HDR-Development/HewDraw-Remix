@@ -1,5 +1,5 @@
 
-use super::*;use crate::hooks::sys_line::meter::*;
+use super::*;
 
 
 #[acmd_script( agent = "ken", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
@@ -52,7 +52,8 @@ unsafe fn ken_attack_near_w_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        magic_series_cancel[hdr::get_player_number(boma)] = false;
+        MeterModule::watch_damage(fighter.battle_object, true);
+        VarModule::off_flag(fighter.battle_object, vars::ken::IS_MAGIC_SERIES_CANCEL);
          WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
     }
@@ -66,11 +67,11 @@ unsafe fn ken_attack_near_w_game(fighter: &mut L2CAgentBase) {
         AttackModule::set_add_reaction_frame(boma, 1, 4.0, false);
         AttackModule::set_add_reaction_frame(boma, 2, 7.0, false);
         AttackModule::set_add_reaction_frame(boma, 3, 4.0, false);
-        meter_gain(boma, 5);
      }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        MeterModule::watch_damage(fighter.battle_object, false);
         WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     frame(lua_state, 26.0);
