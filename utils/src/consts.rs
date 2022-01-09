@@ -58,7 +58,9 @@ pub mod vars {
         
 
         // separator
-
+        GIMMICK_TIMER = 0x50;
+        SPECIAL_PROJECTILE_SPAWNED = 0x51;
+        
 
     }
 

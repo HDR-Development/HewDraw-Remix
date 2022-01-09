@@ -10,9 +10,9 @@ unsafe fn sheik_special_s_game(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) && !ItemModule::is_have_item(boma, 0) && VarModule::get_int(fighter.battle_object, common::GIMMICK_TIMER) < 1 {
+        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) && !ItemModule::is_have_item(boma, 0) && VarModule::get_int(fighter.battle_object, common::vars::GIMMICK_TIMER) < 1 {
             //ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_EXPLOSIONBOMB), 0, 0, false, false);
-            VarModule::set_int(fighter.battle_object, common::GIMMICK_TIMER, 1); // Start counting cooldown timer
+            VarModule::set_int(fighter.battle_object, common::vars::GIMMICK_TIMER, 1); // Start counting cooldown timer
             StatusModule::change_status_request_from_script(boma, *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_S_END, true);
         }
         else{
@@ -28,9 +28,9 @@ unsafe fn sheik_special_air_s_game(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) && !ItemModule::is_have_item(boma, 0) && VarModule::get_int(fighter.battle_object, common::GIMMICK_TIMER) < 1 {
+        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) && !ItemModule::is_have_item(boma, 0) && VarModule::get_int(fighter.battle_object, common::vars::GIMMICK_TIMER) < 1 {
             //ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_EXPLOSIONBOMB), 0, 0, false, false);
-            VarModule::set_int(fighter.battle_object, common::GIMMICK_TIMER, 1); // Start counting cooldown timer
+            VarModule::set_int(fighter.battle_object, common::vars::GIMMICK_TIMER, 1); // Start counting cooldown timer
             StatusModule::change_status_request_from_script(boma, *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_S_END, true);
         }
         else{
