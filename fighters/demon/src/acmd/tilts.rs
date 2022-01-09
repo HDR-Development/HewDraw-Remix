@@ -1,9 +1,6 @@
 
 use super::*;
 
-use hdr_modules::consts::{*, globals::*};
-use hdr_modules::*;
-
 
 #[acmd_script( agent = "demon", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
@@ -41,7 +38,7 @@ unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, demon::SLAUGHTER_HIGH_KICK);
+        VarModule::off_flag(fighter.battle_object, vars::demon::SLAUGHTER_HIGH_KICK);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
     frame(lua_state, 4.0);

@@ -69,10 +69,25 @@ pub mod vars {
         pub const IS_CRITICAL_HIT: i32 = 0x1000;
     }
 
+    pub mod chrom {
+        // flags
+        pub use super::roy::TRAIL_EFFECT;
+    }
+
+    pub mod demon {
+        // flags
+        pub const SLAUGHTER_HIGH_KICK: i32 = 0x1000;
+    }
+
     pub mod mario {
-        // flag
+        // flags
         pub const FIREBRAND_SPAWNED: i32 = 0x1000;
         pub const DOUBLE_FIREBALL: i32 = 0x1001;
+    }
+
+    pub mod roy {
+        // flags
+        pub const TRAIL_EFFECT: i32 = 0x1000;
     }
 
     pub mod miigunner {
