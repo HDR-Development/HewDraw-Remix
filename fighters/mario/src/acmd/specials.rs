@@ -18,7 +18,7 @@ unsafe fn mario_specialn(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             ArticleModule::generate_article(boma, *FIGHTER_MARIO_GENERATE_ARTICLE_FIREBALL, false, 0);
-            special_projectile_spawned[hdr::get_player_number(boma)] = true;
+            VarModule::on_flag(fighter.battle_object, vars::common::SPECIAL_PROJECTILE_SPAWNED);
          }
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             VarModule::on_flag(fighter.battle_object, mario::FIREBRAND_ACTIVATED);
@@ -61,7 +61,7 @@ unsafe fn mario_specialairn(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             ArticleModule::generate_article(boma, *FIGHTER_MARIO_GENERATE_ARTICLE_FIREBALL, false, 0);
-            special_projectile_spawned[hdr::get_player_number(boma)] = true;
+            VarModule::on_flag(fighter.battle_object, vars::common::SPECIAL_PROJECTILE_SPAWNED);
          }
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             VarModule::on_flag(fighter.battle_object, mario::FIREBRAND_ACTIVATED);

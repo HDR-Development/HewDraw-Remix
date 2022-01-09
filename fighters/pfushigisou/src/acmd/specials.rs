@@ -8,7 +8,7 @@ unsafe fn pfushigisou_special_s_game(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 22.0);
     if is_excute(fighter) {
-        if !special_projectile_spawned[hdr::get_player_number(boma)] {
+        if !VarModule::is_flag(fighter.battle_object, vars::common::SPECIAL_PROJECTILE_SPAWNED) {
             ArticleModule::generate_article(boma, *FIGHTER_PFUSHIGISOU_GENERATE_ARTICLE_LEAFCUTTER, false, 0);
         }
     }
@@ -30,7 +30,7 @@ unsafe fn pfushigisou_special_air_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 22.0);
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_PFUSHIGISOU_GENERATE_ARTICLE_LEAFCUTTER, false, 0);
-        special_projectile_spawned[hdr::get_player_number(boma)] = true;
+        VarModule::on_flag(fighter.battle_object, vars::common::SPECIAL_PROJECTILE_SPAWNED);
      }
     frame(lua_state, 29.0);
     if is_excute(fighter) {

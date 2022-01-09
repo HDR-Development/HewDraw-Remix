@@ -323,8 +323,8 @@ unsafe fn miigunner_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
 	if is_excute(fighter) {
 		VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
-		charge_finished[hdr::get_player_number(boma)] = false;
-		charge_attack_level[hdr::get_player_number(boma)] = 0.0;
+		VarModule::off_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
+		VarModule::set_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 0.0);
     }
 	frame(lua_state, 4.0);
 	if is_excute(fighter) {
@@ -344,15 +344,15 @@ unsafe fn miigunner_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 		wait(lua_state, 1.0);
 		if is_excute(fighter) {
 			// If a boosted aerial and the charge hasn't been finished
-			if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) && !charge_finished[hdr::get_player_number(boma)]{
+			if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) && !VarModule::is_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED){
 				// If holding down the button, increment the charge and continue the slowed animation
 				if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-					charge_attack_level[hdr::get_player_number(boma)] += 1.0; // Increment the charge by 1
+					VarModule::add_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 1.0); // Increment the charge by 1
 					FT_MOTION_RATE(fighter, 5.0);
 				}
 				// If no longer holding the button, play out the rest of the animation as normal
 				else{
-					charge_finished[hdr::get_player_number(boma)] = true;
+					VarModule::on_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
 					FT_MOTION_RATE(fighter, 1.0);
 				}
 			}
@@ -373,19 +373,19 @@ unsafe fn miigunner_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 	if is_excute(fighter) {
 		FT_MOTION_RATE(fighter, 1.0);
 		if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
-			let charge_attack_damage_mul = 1.0 + (charge_attack_level[hdr::get_player_number(boma)] * 0.05);
+			let charge_attack_damage_mul = 1.0 + (VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) * 0.05);
 			ATTACK(fighter, 0, 0, Hash40::new("handr"), 8.0 * charge_attack_damage_mul, 75, 65, 0, 50, 4.0, 2.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
 			ATTACK(fighter, 1, 0, Hash40::new("handr"), 12.0 * charge_attack_damage_mul, 75, 65, 0, 50, 5.5, 8.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
 			// If fully charged, add body hitboxes
-			if charge_attack_level[hdr::get_player_number(boma)] >= 5.0 {
+			if VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) >= 5.0 {
 				SET_SPEED_EX(fighter, 0.0, 3.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
 				ATTACK(fighter, 2, 0, Hash40::new("head"), 18.0, 80, 70, 0, 40, 5.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
 			}
 			// Add non-fully-charged boosted speed
 			else {
-				//let addSpeed1 = Vector3f{ x: 0.0, y: 1.0 + 0.5 * charge_attack_level[hdr::get_player_number(boma)], z: 0.0 };
+				//let addSpeed1 = Vector3f{ x: 0.0, y: 1.0 + 0.5 * VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL), z: 0.0 };
 				//KineticModule::add_speed(boma, &addSpeed1);
-				let boost_speed = 1.0 + (0.375 * charge_attack_level[hdr::get_player_number(boma)]);
+				let boost_speed = 1.0 + (0.375 * VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL));
 				SET_SPEED_EX(fighter, KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) * PostureModule::lr(boma), boost_speed, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
 			}
 		}
@@ -400,7 +400,7 @@ unsafe fn miigunner_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 			ATTACK(fighter, 0, 0, Hash40::new("handr"), 6.0, 65, 90, 0, 30, 2.5, 4.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
 			ATTACK(fighter, 1, 0, Hash40::new("handr"), 6.0, 65, 90, 0, 30, 4.0, 8.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
 			/*
-			if charge_attack_level[hdr::get_player_number(boma)] => 4.0 {
+			if VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) => 4.0 {
 				ATTACK(fighter, 2, 0, Hash40::new("head"), 8.0, 77, 80, 0, 50, 5.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
 			}
 			*/
@@ -425,7 +425,7 @@ unsafe fn miigunner_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 		// Clear the fully charged lingering hitboxes
 		if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
 			// High-charged boost
-			if charge_attack_level[hdr::get_player_number(boma)] >= 5.0 {
+			if VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) >= 5.0 {
 				FT_MOTION_RATE(fighter, 4.0);
 			}
 			else {
@@ -439,7 +439,7 @@ unsafe fn miigunner_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 		// Clear the fully charged lingering hitboxes
 		if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
 			// High-charged boost
-			if charge_attack_level[hdr::get_player_number(boma)] >= 5.0 {
+			if VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) >= 5.0 {
 				// Activate Ledge Grab
 				notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
 			}
@@ -473,7 +473,7 @@ unsafe fn miigunner_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
 			// If a boosted aerial and the charge hasn't been finished
 			if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
 				// If no longer holding the button, play out the rest of the animation as normal
-				if charge_finished[hdr::get_player_number(boma)] {
+				if VarModule::is_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED) {
 					LAST_EFFECT_SET_RATE(fighter, 1.0);
 				}
 				// If holding down the button, charge is being incremented
@@ -493,7 +493,7 @@ unsafe fn miigunner_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
 		}
 		EFFECT_DETACH_KIND(fighter, Hash40::new_raw(0x139e44e9f0), -1);
 		EFFECT_FOLLOW(fighter, Hash40::new_raw(0x13e943d966), Hash40::new("haver"), 0, 0, 2.5, 90, 0, 0, 0.3, true);
-		if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) && !charge_finished[hdr::get_player_number(boma)]{
+		if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) && !VarModule::is_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED){
 			LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 10.0); // Blue value seems fine, increase the green value to make it a bit more of a realistic blue hue
 		}
 	}

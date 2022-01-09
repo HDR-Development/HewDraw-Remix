@@ -1,6 +1,6 @@
 #[cfg(feature = "no-offset-search")]
 mod offsets_impl {
-    // These offsets are hardcoded to increase runtime speed but will are only viable for smash version 13.0.1
+    // These offsets are hardcoded to increase runtime speed but are only viable for smash version 13.0.1
     pub const fn exec_command() -> usize {
         0x6babf0
     }

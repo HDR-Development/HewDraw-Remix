@@ -1,4 +1,5 @@
 use super::*;
+use smash::app::sv_battle_object;
 
 #[acmd_script( agent = "miigunner", script = "game_dash" , category = ACMD_GAME , low_priority)]
 unsafe fn dash_game(fighter: &mut L2CAgentBase) {
@@ -197,7 +198,7 @@ unsafe fn miigunner_bottomshoot_shoot_game(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
 	let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
 	if is_excute(fighter) {
-		let bottomshoot_damage = 7.0 + charge_attack_level[hdr::get_player_number(owner_module_accessor)] * 5.0 / 29.0;
+		let bottomshoot_damage = 7.0 + VarModule::get_float(get_battle_object_from_accessor(owner_module_accessor), vars::miigunner::CHARGE_ATTACK_LEVEL) * 5.0 / 29.0;
 		ATTACK(fighter, 0, 0, Hash40::new("top"), bottomshoot_damage, 45, 105, 0, 57, 11.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_ENERGY);
 	}
 

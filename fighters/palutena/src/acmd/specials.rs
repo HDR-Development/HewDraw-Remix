@@ -16,7 +16,7 @@ unsafe fn palutena_special_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW))
            && !ArticleModule::is_exist(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD) {
-            VarModule::set_float(boma, palutena::SPECIAL_LW_LR, PostureModule::lr(fighter.battle_object));
+            VarModule::set_float(fighter.battle_object, vars::palutena::SPECIAL_LW_LR, PostureModule::lr(fighter.module_accessor));
             StatusModule::change_status_request_from_script(boma, *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_LW_REFLECT, true);
         }
         else{
@@ -48,7 +48,7 @@ unsafe fn palutena_special_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW))
            && !ArticleModule::is_exist(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD) {
-            VarModule::set_float(boma, palutena::SPECIAL_LW_LR, PostureModule::lr(fighter.battle_object));
+            VarModule::set_float(fighter.battle_object, vars::palutena::SPECIAL_LW_LR, PostureModule::lr(fighter.module_accessor));
             StatusModule::change_status_request_from_script(boma, *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_LW_REFLECT, true);
         }
         else{
@@ -73,7 +73,7 @@ unsafe fn palutena_special_lw_reflect_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     if is_excute(fighter) {
-        PostureModule::set_lr(boma, VarModule::get_float(fighter.battle_object, palutena::SPECIAL_LW_LR));
+        PostureModule::set_lr(boma, VarModule::get_float(fighter.battle_object, vars::palutena::SPECIAL_LW_LR));
         PostureModule::update_rot_y_lr(boma);
         shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PALUTENA_REFLECTOR_KIND_REFLECTOR, *FIGHTER_REFLECTOR_GROUP_EXTEND);
         ArticleModule::generate_article(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD, false, 0);
@@ -98,7 +98,7 @@ unsafe fn palutena_special_air_lw_reflect_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     if is_excute(fighter) {
-        PostureModule::set_lr(boma, VarModule::get_float(fighter.battle_object, palutena::SPECIAL_LW_LR));
+        PostureModule::set_lr(boma, VarModule::get_float(fighter.battle_object, vars::palutena::SPECIAL_LW_LR));
         PostureModule::update_rot_y_lr(boma);
         shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PALUTENA_REFLECTOR_KIND_REFLECTOR, *FIGHTER_REFLECTOR_GROUP_EXTEND);
         ArticleModule::generate_article(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD, false, 0);

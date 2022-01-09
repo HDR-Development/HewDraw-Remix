@@ -1,4 +1,4 @@
-#![feature(asm)]
+#![feature(asm)]#![allow(unused_imports)]#![allow(unused_variables)]
 #![feature(proc_macro_hygiene)]
 
 #[skyline::main(name = "hdr")]

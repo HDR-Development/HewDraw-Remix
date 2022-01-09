@@ -1,4 +1,4 @@
-#![feature(asm)]
+#![feature(asm)]#![allow(unused_imports)]#![allow(unused_variables)]
 use common::prelude::*;
 
 pub mod acmd;

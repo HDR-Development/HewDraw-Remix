@@ -67,6 +67,7 @@ pub mod vars {
         // separator
         // flag
         pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 0x50;
+        pub const UP_SPECIAL_CANCEL: i32 = 0x51;
 
         // int
         pub const GIMMICK_TIMER: i32 = 0x50;
@@ -119,23 +120,58 @@ pub mod vars {
     }
     
     pub mod sonic {
+        // flags
         pub const PULSE_HITBOX: i32 = 0x1000;
     }
     
     pub mod snake {
+        // ints
         pub const SNAKE_GRENADE_COUNTER: i32 = 0x1000;
     }
     
     pub mod trail {
+        // flags
         pub const ATTACK_12_INTO_S3: i32 = 0x1000;
     }
 
     pub mod samus {
+        // flags
         pub const SHINESPARK_USED: i32 = 0x1000;
         pub const SHINESPARK_READY: i32 = 0x1001;
     }
 
     pub mod robot {
+        // flags
         pub const BOOST_ATTACK: i32 = 0x1000;
+    }
+
+    pub mod gaogen {
+        // floats
+        pub const ANGLE_GRAB_STICK_Y: i32 = 0x1000;
+    }
+
+    pub mod palutena {
+        // floats
+        pub const SPECIAL_LW_LR: i32 = 0x1000;
+    }
+
+    pub mod miiswordsman {
+        // ints
+        pub const SPECIAL_LW1_CHARGE_LEVEL: i32 = 0x1000;
+
+        // flags
+        pub const SPECIAL_LW1_ATTACK_TRIGGER: i32 = 0x1000;
+        pub const SKYWARD_SLASH_DASH_HIT: i32 = 0x1001;
+        pub const WAVE_SPECIAL_N: i32 = 0x1002;
+        pub const CHAKRAM_STICK_ATTACK: i32 = 0x1003;
+
+    }
+
+    pub mod miigunner {
+        // floats
+        pub const CHARGE_ATTACK_LEVEL: i32 = 0x1000;
+        
+        // flags
+        pub const IS_CHARGE_FINISHED: i32 = 0x1000;
     }
 }

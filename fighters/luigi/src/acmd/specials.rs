@@ -12,7 +12,7 @@ unsafe fn game_specialn(fighter: &mut L2CAgentBase) {
     frame(lua_state, 17.0);
     if is_excute(fighter) {
         if !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if (!special_projectile_spawned[hdr::get_player_number(boma)]) {
+            if (!VarModule::is_flag(fighter.battle_object, vars::common::SPECIAL_PROJECTILE_SPAWNED)) {
                 ArticleModule::generate_article(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_FIREBALL, false, 0);
             }
         }
@@ -57,7 +57,7 @@ unsafe fn game_specialairn(fighter: &mut L2CAgentBase) {
     frame(lua_state, 17.0);
     if is_excute(fighter) {
         if !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if (!special_projectile_spawned[hdr::get_player_number(boma)]) {
+            if (!VarModule::is_flag(fighter.battle_object, vars::common::SPECIAL_PROJECTILE_SPAWNED)) {
                 ArticleModule::generate_article(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_FIREBALL, false, 0);
             }
         }

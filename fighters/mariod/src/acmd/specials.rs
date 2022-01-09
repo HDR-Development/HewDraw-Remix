@@ -16,7 +16,7 @@ unsafe fn mariod_special_n_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         if !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if (!special_projectile_spawned[hdr::get_player_number(boma)]) {
+            if (!VarModule::is_flag(fighter.battle_object, vars::common::SPECIAL_PROJECTILE_SPAWNED)) {
                 ArticleModule::generate_article(boma, *FIGHTER_MARIOD_GENERATE_ARTICLE_DRCAPSULE, false, 0);
             }
         }
@@ -48,7 +48,7 @@ unsafe fn mariod_special_air_n_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         if !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if (!special_projectile_spawned[hdr::get_player_number(boma)]) {
+            if (!VarModule::is_flag(fighter.battle_object, vars::common::SPECIAL_PROJECTILE_SPAWNED)) {
                 ArticleModule::generate_article(boma, *FIGHTER_MARIOD_GENERATE_ARTICLE_DRCAPSULE, false, 0);
             }
         }
