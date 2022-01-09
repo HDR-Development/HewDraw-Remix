@@ -41,7 +41,7 @@ unsafe fn lucas_attack_hi4_game(fighter: &mut L2CAgentBase) {
         WHOLE_HIT(fighter, *HIT_STATUS_INVINCIBLE);
     }
     frame(lua_state, 5.0);
-    execute(lua_state, 5.0);
+    app::sv_animcmd::execute(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
         WHOLE_HIT(fighter, *HIT_STATUS_INVINCIBLE);
