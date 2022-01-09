@@ -67,8 +67,7 @@ unsafe fn captain_special_air_n_game(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        speed_vector_1[hdr::get_player_number(boma)] = smash::phx::Vector3f { x: 0.0, y: 0.5, z: 0.0 };
-        KineticModule::add_speed(boma, &speed_vector_1[hdr::get_player_number(boma)]);
+        KineticModule::add_speed(boma, &Vector3f::new(0.0, 0.5, 0.0));
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -83,8 +82,7 @@ unsafe fn captain_special_air_n_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 53.0);
     if is_excute(fighter) {
-        speed_vector_1[hdr::get_player_number(boma)] = smash::phx::Vector3f { x: 0.9, y: 2.4, z: 0.0 };
-        KineticModule::add_speed(boma, &speed_vector_1[hdr::get_player_number(boma)]);
+        KineticModule::add_speed(boma, &Vector3f::new(0.9, 2.4, 0.0));
         WorkModule::on_flag(boma, *FIGHTER_CAPTAIN_STATUS_WORK_ID_FLAG_FALCON_PUNCH_GENERATE_BIRD);
         ATTACK(fighter, 0, 0, Hash40::new("armr"), 22.0, 361, 59, 0, 93, 5.5, -1.0, 0.0, 0.0, None, None, None, 1.5, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 1, 0, Hash40::new("shoulderr"), 22.0, 361, 59, 0, 93, 5.5, -2.5, 0.0, 0.0, None, None, None, 1.5, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
@@ -124,8 +122,7 @@ unsafe fn captain_special_air_n_turn_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 48.0);
     if is_excute(fighter) {
-        speed_vector_1[hdr::get_player_number(boma)] = smash::phx::Vector3f { x: 0.9, y: 2.4, z: 0.0 };
-        KineticModule::add_speed(boma, &speed_vector_1[hdr::get_player_number(boma)]);
+        KineticModule::add_speed(boma, &Vector3f::new(0.9, 2.4, 0.0));
         WorkModule::on_flag(boma, *FIGHTER_CAPTAIN_STATUS_WORK_ID_FLAG_FALCON_PUNCH_GENERATE_BIRD);
         ATTACK(fighter, 0, 0, Hash40::new("armr"), 25.0, 361, 59, 0, 93, 5.5, -1.0, 0.0, 0.0, None, None, None, 1.5, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 1, 0, Hash40::new("shoulderr"), 25.0, 361, 59, 0, 93, 5.5, -2.5, 0.0, 0.0, None, None, None, 1.5, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);

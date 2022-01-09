@@ -4,6 +4,7 @@ extern crate lazy_static;
 pub mod offsets;
 
 mod modules;
+pub mod ext;
 
 pub mod consts;
 pub mod singletons;
