@@ -105,4 +105,9 @@ pub mod vars {
     pub mod snake {
         pub const SNAKE_GRENADE_COUNTER: i32 = 0x1000;
     }
+
+    pub mod samus {
+        pub const SHINESPARK_USED: i32 = 0x1000;
+        pub const SHINESPARK_READY: i32 = 0x1001;
+    }
 }

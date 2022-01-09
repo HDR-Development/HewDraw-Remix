@@ -77,7 +77,7 @@ unsafe fn koopa_appeal_hi_r_game(fighter: &mut L2CAgentBase) {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
                 ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_GREENSHELL), 0, 0, false, false);
                 noknok_shell[hdr::get_player_number(boma)] = true;
-                VarModule::set_int(fighter.battle_object, common::vars::GIMMICK_TIMER, 1);
+                VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 1);
             }
         }
     }
@@ -94,7 +94,7 @@ unsafe fn koopa_appeal_hi_l_game(fighter: &mut L2CAgentBase) {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
                 ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_GREENSHELL), 0, 0, false, false);
                 noknok_shell[hdr::get_player_number(boma)] = true;
-                VarModule::set_int(fighter.battle_object, common::vars::GIMMICK_TIMER, 1);
+                VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 1);
             }
         }
     }

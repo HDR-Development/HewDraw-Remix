@@ -50,7 +50,7 @@ unsafe fn taunt_starrod(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 65.0);
     if is_excute(fighter) {
-        let id = hdr::get_player_number(boma);
+        
         if !kirby_star_rod[id] {
             if [*CONTROL_PAD_BUTTON_APPEAL_S_L, *CONTROL_PAD_BUTTON_APPEAL_S_R].iter().any(|x| ControlModule::check_button_on(boma, *x)) {
                 DamageModule::add_damage(boma, 75.0, 0);

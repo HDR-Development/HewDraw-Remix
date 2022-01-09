@@ -90,7 +90,7 @@ unsafe fn attack_hi4(fighter: &mut L2CAgentBase) {
         AttackModule::set_no_finish_camera(boma, 0, true, false);
         AttackModule::set_no_finish_camera(boma, 1, true, false);
     }
-    sv_animcmd::wait(lua_state, 2.0);
+    wait(lua_state, 2.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
@@ -98,7 +98,7 @@ unsafe fn attack_hi4(fighter: &mut L2CAgentBase) {
     if is_excute(fighter){
         ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 80, 170, 0, 50, 8.0, 0.0, 28.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
     }
-    sv_animcmd::wait(lua_state, 3.0);
+    wait(lua_state, 3.0);
     if is_excute(fighter){
         AttackModule::clear_all(boma);
     }
@@ -118,7 +118,7 @@ pub unsafe fn attack_hi4_effect(fighter: &mut L2CAgentBase) {
         LANDING_EFFECT(fighter, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 0, 0, 3, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
         EFFECT(fighter, Hash40::new_raw(0x1441eaf0b3u64), Hash40::new("top"), 0, 8, 0, -90, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
     }
-    sv_animcmd::wait(lua_state, 1.0);
+    wait(lua_state, 1.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW_ALPHA(fighter, Hash40::new_raw(0x1156ac182a), Hash40::new("armr"), 7.5, -0.341439992, -0.169369996, 0, 0, 0, 1.25, true, 0.9);
         LAST_EFFECT_SET_RATE(fighter, 2);
