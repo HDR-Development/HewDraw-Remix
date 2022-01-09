@@ -47,15 +47,29 @@ impl StatusShift for L2CFighterCommon {
     }
 }
 
+pub trait GetObjects {
+    unsafe fn object<'a>(&'a mut self) -> &'a mut BattleObject;
+    unsafe fn boma<'a>(&'a mut self) -> &'a mut BattleObjectModuleAccessor;
+}
+
+impl GetObjects for L2CAgentBase {
+    unsafe fn object<'a>(&'a mut self) -> &'a mut BattleObject {
+        &mut *self.battle_object
+    }
+
+    unsafe fn boma<'a>(&'a mut self) -> &'a mut BattleObjectModuleAccessor {
+        &mut *self.module_accessor
+    }
+}
+
 
 pub trait InputCheck {
     unsafe fn is_cat_flag(&mut self, category: i32, fighter_pad_cmd_flag: i32) -> bool;
 }
 
-impl InputCheck for L2CFighterCommon {
+impl InputCheck for L2CAgentBase {
     unsafe fn  is_cat_flag(&mut self, category: i32, fighter_pad_cmd_flag: i32) -> bool {
-        let flag_mask = ControlModule::get_command_flag_cat(self.module_accessor, category);
-        return compare_mask(flag_mask, fighter_pad_cmd_flag);
+        return self.boma().is_cat_flag(category, fighter_pad_cmd_flag);
     }
 }
 
