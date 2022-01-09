@@ -6,6 +6,7 @@ pub mod prelude {
     pub use smashline;
     pub use utils::{self, *, ext::*, consts::*, util::*};
     pub use super::StatusShift;
+    pub use super::InputCheck;
 }
 
 pub mod acmd_import {
@@ -26,7 +27,8 @@ use smash::app::lua_bind::*;
 use smash::lua2cpp::*;
 use smash::lib::{*, lua_const::*};
 use smash::phx::*;
-use utils::{*, consts::*};
+use utils::{*, consts::*, util::*};
+use smash::app::*;
 
 pub mod djc;
 
@@ -44,6 +46,26 @@ impl StatusShift for L2CFighterCommon {
         self.fastshift(L2CValue::Ptr(new_main as *const () as _))
     }
 }
+
+
+pub trait InputCheck {
+    unsafe fn is_cat_flag(&mut self, category: i32, fighter_pad_cmd_flag: i32) -> bool;
+}
+
+impl InputCheck for L2CFighterCommon {
+    unsafe fn  is_cat_flag(&mut self, category: i32, fighter_pad_cmd_flag: i32) -> bool {
+        let flag_mask = ControlModule::get_command_flag_cat(self.module_accessor, category);
+        return compare_mask(flag_mask, fighter_pad_cmd_flag);
+    }
+}
+
+impl InputCheck for BattleObjectModuleAccessor {
+    unsafe fn  is_cat_flag(&mut self, category: i32, fighter_pad_cmd_flag: i32) -> bool {
+        let flag_mask = ControlModule::get_command_flag_cat(self, category);
+        return compare_mask(flag_mask, fighter_pad_cmd_flag);
+    }
+}
+
 
 pub fn install() {
     djc::install();

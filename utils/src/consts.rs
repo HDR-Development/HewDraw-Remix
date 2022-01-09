@@ -62,6 +62,7 @@ pub mod vars {
         pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0;
 
         // float
+        /// var to store the damage that this fighter DEALT as the attacker.
         pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0;
 
         // separator

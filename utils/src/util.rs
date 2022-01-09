@@ -97,3 +97,17 @@ pub fn get_battle_object_from_entry_id(entry_id: u32) -> Option<*mut BattleObjec
         }
     }
 }
+
+/// Utility function to compare two masks, such as a "cat flag"
+/// Internally, its just a binary & operation. When possible, use 
+/// fighter.is_cat_flag() or boma.is_cat_flag() instead, for clarity.
+/// 
+/// # Arguments:
+/// * `mask1` : a bitmask, such as a cat flag mask (cat1, cat2, etc)\n
+/// * `mask2` : another bitmask, such as `*FIGHTER_KIND_MARIO`
+/// 
+/// # Returns:
+/// `bool` : whether the binary & of the masks is nonzero (aka "true")
+pub fn compare_mask(mask1: i32, mask2: i32) -> bool {
+    return (mask1 & mask2) != 0;
+}
