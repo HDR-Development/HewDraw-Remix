@@ -32,6 +32,7 @@ use utils::{*, consts::*, util::*};
 use smash::app::*;
 
 pub mod djc;
+pub mod opff;
 
 pub trait StatusShift {
     unsafe fn main_shift(&mut self, new_main: unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue) -> L2CValue;
