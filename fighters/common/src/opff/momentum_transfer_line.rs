@@ -25,7 +25,7 @@ use hdr_modules::VarModule;
 pub unsafe fn momentum_transfer_helper(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mut L2CAgent, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, fighter_kind: i32, curr_frame: f32) {
 
 	if situation_kind == *SITUATION_KIND_AIR && ![*FIGHTER_STATUS_KIND_JUMP_SQUAT, *FIGHTER_STATUS_KIND_JUMP, *FIGHTER_STATUS_KIND_ESCAPE_AIR].contains(&status_kind) {
-		VarModule::on_flag(fighter.module_accessor, common::ENABLE_AIR_ESCAPE_MAGNET);
+		VarModule::on_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_MAGNET);
 	}
 
 	if (fighter_kind == *FIGHTER_KIND_PFUSHIGISOU && status_kind == *FIGHTER_PFUSHIGISOU_STATUS_KIND_SPECIAL_LW_OUT)
@@ -35,7 +35,7 @@ pub unsafe fn momentum_transfer_helper(fighter: &mut L2CFighterCommon, lua_state
 		|| (fighter_kind == *FIGHTER_KIND_ELIGHT && status_kind == *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_LW_OUT) 
 		|| status_kind == *FIGHTER_STATUS_KIND_REBIRTH {
 		let ratio = (WorkModule::get_param_float(boma, hash40("jump_speed_x_max"), 0) / WorkModule::get_param_float(boma, hash40("run_speed_max"), 0));
-		VarModule::set_float(fighter.module_accessor, common::JUMP_SPEED_RATIO, ratio);
+		VarModule::set_float(fighter.battle_object, vars::common::JUMP_SPEED_RATIO, ratio);
 	}
 
 	if [*FIGHTER_STATUS_KIND_TURN_RUN, *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE].contains(&status_kind) {
@@ -71,7 +71,7 @@ unsafe fn additional_momentum_transfer_moves(fighter: &mut L2CFighterCommon, lua
 
 		if should_conserve_special_momentum && (KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN)).abs() > 0.0 {
 			if [*FIGHTER_STATUS_KIND_JUMP, *FIGHTER_STATUS_KIND_JUMP_SQUAT].contains(&StatusModule::prev_status_kind(boma, 0)) {
-				let new_speed = VarModule::get_float(fighter.module_accessor, common::CURRENT_MOMENTUM_SPECIALS);
+				let new_speed = VarModule::get_float(fighter.battle_object, vars::common::CURRENT_MOMENTUM_SPECIALS);
 				fighter.clear_lua_stack();
 				lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, new_speed);
 				app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);

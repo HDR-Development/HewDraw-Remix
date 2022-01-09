@@ -38,13 +38,21 @@ def insert_text(filename, text:str):
     f.write(text.rstrip('\r\n') + '\n' + content)
 
 flag_patterns = [
-  ("{old_name}[hdr::get_player_number(boma)] = true;", "VarModule::on_flag(fighter.battle_object, vars::{new_name});"),
-  ("{old_name}[hdr::get_player_number(boma)] = false;", "VarModule::off_flag(fighter.battle_object, vars::{new_name});"),
-  ("if({old_name}[hdr::get_player_number(boma)])", "if VarModule::is_flag(fighter.battle_object, vars::{new_name})"),
-  ("({old_name}[hdr::get_player_number(boma)])", " VarModule::is_flag(fighter.battle_object, vars::{new_name})"),
-  ("(!{old_name}[hdr::get_player_number(boma)])", " !VarModule::is_flag(fighter.battle_object, vars::{new_name})"),
-  ("!{old_name}[hdr::get_player_number(boma)]", " !VarModule::is_flag(fighter.battle_object, vars::{new_name})"),
-  ("if {old_name}[hdr::get_player_number(boma)]", "if VarModule::is_flag(fighter.battle_object, vars::{new_name})")
+  ("{old_name}[hdr::get_player_number(boma)] = true;", "VarModule::on_flag(get_battle_object_from_accessor(boma), vars::{new_name});"),
+  ("{old_name}[hdr::get_player_number(boma)] = false;", "VarModule::off_flag(get_battle_object_from_accessor(boma), vars::{new_name});"),
+  ("if({old_name}[hdr::get_player_number(boma)])", "if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("({old_name}[hdr::get_player_number(boma)])", " VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("(!{old_name}[hdr::get_player_number(boma)])", " !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("!{old_name}[hdr::get_player_number(boma)]", " !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("if {old_name}[hdr::get_player_number(boma)]", "if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
+
+  ("{old_name}[id] = true;", "VarModule::on_flag(get_battle_object_from_accessor(boma), vars::{new_name});"),
+  ("{old_name}[id] = false;", "VarModule::off_flag(get_battle_object_from_accessor(boma), vars::{new_name});"),
+  ("if({old_name}[id])", "if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("({old_name}[id])", " VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("(!{old_name}[id])", " !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("!{old_name}[id]", " !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("if {old_name}[id]", "if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})")
 ]
 
 def variable_replace(file: str, old_var: str, new_var: str):

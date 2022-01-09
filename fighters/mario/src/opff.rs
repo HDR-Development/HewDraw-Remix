@@ -161,14 +161,14 @@ unsafe fn special_n_article_fix(fighter: &mut L2CFighterCommon, boma: &mut Battl
 
 // NokNok Shell Timer Count
 unsafe fn noknok_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
-    let gimmick_timerr = VarModule::get_int(fighter.module_accessor, common::GIMMICK_TIMER);
+    let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER);
     if gimmick_timerr > 0 && gimmick_timerr < 1801 {
         if gimmick_timerr > 1799 {
             noknok_shell[id] = false;
-            VarModule::set_int(fighter.module_accessor, common::GIMMICK_TIMER, 0);
+            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
             gimmick_flash(boma);
         } else {
-            VarModule::set_int(fighter.module_accessor, common::GIMMICK_TIMER, gimmick_timerr + 1);
+            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, gimmick_timerr + 1);
         }
     }
 }

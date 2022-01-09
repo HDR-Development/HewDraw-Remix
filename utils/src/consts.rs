@@ -60,9 +60,11 @@ pub mod vars {
         pub const FIREBRAND_ACTIVATED: i32 = 0x1;
         pub const DOUBLE_FIREBALL: i32 = 0x2;
         pub const NOKNOK_SHELL: i32 = 0x3;
+        pub const IS_IN_HITSTUN: i32 = 0x4;
 
         // int
         pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0;
+        pub const COSTUME_SLOT_NUMBER: i32 = 0x1;
 
         // float
         /// var to store the damage that this fighter DEALT as the attacker.

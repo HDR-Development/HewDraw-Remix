@@ -110,7 +110,7 @@ unsafe fn aerial_acrobatics(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
 
     if status_kind == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK {
         if motion_kind == hash40("special_s1") || (motion_kind == hash40("special_air_s1") && frame >= 15.0){
-            VarModule::on_flag(fighter.module_accessor, common::SIDE_SPECIAL_CANCEL);
+            VarModule::on_flag(fighter.battle_object, vars::common::SIDE_SPECIAL_CANCEL);
             if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, true);
             }
@@ -136,9 +136,9 @@ unsafe fn aerial_acrobatics(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
 
 // Re-enable Gale Strike once tornado is gone
 unsafe fn gale_strike_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
-    let gimmick_timer = VarModule::get_int(fighter.module_accessor, common::GIMMICK_TIMER);
+    let gimmick_timer = VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER);
 	if gimmick_timer > 0 {
-        VarModule::set_int(fighter.module_accessor, common::GIMMICK_TIMER, gimmick_timer - 1);
+        VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, gimmick_timer - 1);
     }
 }
 
@@ -156,7 +156,7 @@ unsafe fn skyward_slash_dash_act(fighter: &mut L2CFighterCommon, boma: &mut Batt
             if frame >= 30.0 {
                 //println!("SSD Fall Act");
                 VarModule::off_flag(fighter.module_accessor, miiswordsman::SKYWARD_SLASH_DASH_HIT);
-                VarModule::on_flag(fighter.module_accessor, common::UP_SPECIAL_CANCEL);
+                VarModule::on_flag(fighter.battle_object, vars::common::UP_SPECIAL_CANCEL);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
             }
         }

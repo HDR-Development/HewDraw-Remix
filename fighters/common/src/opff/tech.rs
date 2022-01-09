@@ -257,7 +257,7 @@ unsafe fn glide_toss(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModu
     if [*FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B].contains(&status_kind) {
         if MotionModule::frame(boma) <= 6.0 {
             can_glide_toss[id] = true;
-            VarModule::set_float(fighter.module_accessor, common::ROLL_DIR, facing);
+            VarModule::set_float(fighter.battle_object, vars::common::ROLL_DIR, facing);
         }
         else {
             can_glide_toss[id] = false;
@@ -267,12 +267,12 @@ unsafe fn glide_toss(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModu
     if status_kind == *FIGHTER_STATUS_KIND_ITEM_THROW {
         if (prev_status == *FIGHTER_STATUS_KIND_ESCAPE_F) && can_glide_toss[id] {
             let motion_value: f32 = 2.8 * (MotionModule::end_frame(boma) - MotionModule::frame(boma)) / MotionModule::end_frame(boma);
-            let motion_vec = Vector3f {x:  motion_value * VarModule::get_float(fighter.module_accessor, common::ROLL_DIR), y: 0.0, z: 0.0};
+            let motion_vec = Vector3f {x:  motion_value * VarModule::get_float(fighter.battle_object, vars::common::ROLL_DIR), y: 0.0, z: 0.0};
             KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
         }
         if (prev_status == *FIGHTER_STATUS_KIND_ESCAPE_B) && can_glide_toss[id] {
             let motion_value: f32 = 2.8 * (MotionModule::end_frame(boma) - MotionModule::frame(boma)) / MotionModule::end_frame(boma);
-            let motion_vec = Vector3f {x:  motion_value * VarModule::get_float(fighter.module_accessor, common::ROLL_DIR) * -1.0, y: 0.0, z: 0.0};
+            let motion_vec = Vector3f {x:  motion_value * VarModule::get_float(fighter.battle_object, vars::common::ROLL_DIR) * -1.0, y: 0.0, z: 0.0};
             KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
         }
     }
@@ -388,10 +388,10 @@ unsafe fn moonwalks(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModul
     }
     if [*FIGHTER_STATUS_KIND_DASH].contains(&status_kind) {
         if stick_value_x*facing < -0.1 && stick_value_y < -0.65 {
-            VarModule::on_flag(fighter.module_accessor, common::IS_MOONWALK);
-            VarModule::on_flag(fighter.module_accessor, common::IS_MOONWALK_JUMP);
+            VarModule::on_flag(fighter.battle_object, vars::common::IS_MOONWALK);
+            VarModule::on_flag(fighter.battle_object, vars::common::IS_MOONWALK_JUMP);
         }
-        if !is_dash_input && MotionModule::frame(boma) > 2.0 && stick_value_x*facing < -0.18 /*Walk stick sensitivity*/ && VarModule::is_flag(fighter.module_accessor, common::IS_MOONWALK) {  // If you haven't input a turn dash, your dash frame isn't at the start of a turn dash, your stick is backwards, and the moonwalk input is valid
+        if !is_dash_input && MotionModule::frame(boma) > 2.0 && stick_value_x*facing < -0.18 /*Walk stick sensitivity*/ && VarModule::is_flag(fighter.battle_object, vars::common::IS_MOONWALK) {  // If you haven't input a turn dash, your dash frame isn't at the start of a turn dash, your stick is backwards, and the moonwalk input is valid
             let mut prev_speed = 0.0;
             if KineticModule::is_enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
                 fighter.clear_lua_stack();
@@ -420,9 +420,9 @@ unsafe fn moonwalks(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModul
             app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
         }
         else {
-            if MotionModule::frame(boma) > 2.0 && VarModule::is_flag(fighter.module_accessor, common::IS_MOONWALK) {
+            if MotionModule::frame(boma) > 2.0 && VarModule::is_flag(fighter.battle_object, vars::common::IS_MOONWALK) {
                 // println!("moonwalk off dash");
-                VarModule::off_flag(fighter.module_accessor, common::IS_MOONWALK);
+                VarModule::off_flag(fighter.battle_object, vars::common::IS_MOONWALK);
                 if !is_dash_input {
                     // println!("no dash");
                     fighter.clear_lua_stack();

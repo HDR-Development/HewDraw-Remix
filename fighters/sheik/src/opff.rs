@@ -33,7 +33,7 @@ unsafe fn nspecial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
 
 // Sheik Grenade Pull Cancel
 unsafe fn grenade_pull(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
-    if VarModule::get_int(fighter.module_accessor, common::GIMMICK_TIMER) != 0 {
+    if VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER) != 0 {
         return;
     }
 
@@ -42,7 +42,7 @@ unsafe fn grenade_pull(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
             if situation_kind == *SITUATION_KIND_AIR {
                 if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
-                    VarModule::set_int(fighter.module_accessor, common::GIMMICK_TIMER, 1); // Start counting
+                    VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 1); // Start counting
                 }
             }
         }
@@ -51,13 +51,13 @@ unsafe fn grenade_pull(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 
 // Grenade Cancel Timer Count
 unsafe fn grenade_cancel_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
-    let gimmick_timerr = VarModule::get_int(fighter.module_accessor, common::GIMMICK_TIMER);
+    let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER);
     if gimmick_timerr > 0 && gimmick_timerr < 901 {
         if gimmick_timerr > 899 {
-            VarModule::set_int(fighter.module_accessor, common::GIMMICK_TIMER, 0);
+            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
             gimmick_flash(boma);
         } else {
-            VarModule::set_int(fighter.module_accessor, common::GIMMICK_TIMER, gimmick_timerr + 1);
+            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, gimmick_timerr + 1);
         }
     }
 }
@@ -69,7 +69,7 @@ unsafe fn grenade_cancel_reset(fighter: &mut L2CFighterCommon, id: usize, status
         *FIGHTER_STATUS_KIND_WIN,
         *FIGHTER_STATUS_KIND_LOSE,
         *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-        VarModule::set_int(fighter.module_accessor, common::GIMMICK_TIMER, 0);
+        VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
     }
 }
 
@@ -77,7 +77,7 @@ unsafe fn grenade_cancel_reset(fighter: &mut L2CFighterCommon, id: usize, status
 unsafe fn grenade_cancel_training(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
     if hdr::is_training_mode() {
         if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
-            VarModule::set_int(fighter.module_accessor, common::GIMMICK_TIMER, 0);
+            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
         }
     }
 }

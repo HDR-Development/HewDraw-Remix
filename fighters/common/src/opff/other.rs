@@ -74,15 +74,15 @@ pub unsafe fn buffered_cstick_aerial_fixes(fighter: &mut L2CFighterCommon, boma:
         // if frame 2 of buffered aerial
         if fighter.global_table[CURRENT_FRAME].get_i32() == 1 {
             // this is first frame cstick stops overriding left stick if input on second-to-last frame of jumpsquat
-            if VarModule::is_flag(fighter.module_accessor, common::CSTICK_OVERRIDE_SECOND) {
+            if VarModule::is_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE_SECOND) {
                 // set proper jump x speed using stick_x value on this frame
                 let new_speed = calc_melee_momentum(fighter, false, false, false);
                 fighter.clear_lua_stack();
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, new_speed);
                 app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-                VarModule::set_float(fighter.module_accessor, common::CURRENT_MOMENTUM, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND));
+                VarModule::set_float(fighter.battle_object, vars::common::CURRENT_MOMENTUM, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND));
                 
-                if VarModule::is_flag(fighter.module_accessor, common::IS_TAP_JUMP) && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) && fighter.global_table[STICK_Y].get_f32() <= 0.0 {
+                if VarModule::is_flag(fighter.battle_object, vars::common::IS_TAP_JUMP) && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) && fighter.global_table[STICK_Y].get_f32() <= 0.0 {
                     // setting shorthop speed here
                     let mini_jump_y = WorkModule::get_param_float(fighter.module_accessor, hash40("mini_jump_y"), 0);
                     let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
@@ -102,13 +102,13 @@ pub unsafe fn buffered_cstick_aerial_fixes(fighter: &mut L2CFighterCommon, boma:
         // if frame 3 of buffered aerial
         if fighter.global_table[CURRENT_FRAME].get_i32() == 2 {
             // this is first frame cstick stops overriding left stick if input on last frame of jumpsquat
-            if VarModule::is_flag(fighter.module_accessor, common::CSTICK_OVERRIDE) && !VarModule::is_flag(fighter.module_accessor, common::CSTICK_OVERRIDE_SECOND) {
+            if VarModule::is_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE) && !VarModule::is_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE_SECOND) {
                 // set proper jump x speed using stick_x value on this frame
                 let new_speed = calc_melee_momentum(fighter, false, false, false);
                 fighter.clear_lua_stack();
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, new_speed);
                 app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-                VarModule::set_float(fighter.module_accessor, common::CURRENT_MOMENTUM, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND));
+                VarModule::set_float(fighter.battle_object, vars::common::CURRENT_MOMENTUM, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND));
             }
         }
     }

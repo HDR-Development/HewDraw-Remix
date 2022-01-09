@@ -29,17 +29,17 @@ unsafe fn hitstun_tumble_glow(boma: &mut BattleObjectModuleAccessor, id: usize, 
     let cbm_vec1 = Vector4f{ /* Red */ x: 0.85, /* Green */ y: 0.85, /* Blue */ z: 0.85, /* Alpha */ w: 0.2};
     let cbm_vec2 = Vector4f{ /* Red */ x: 0.9907, /* Green */ y: 0.02, /* Blue */ z: 0.0251, /* Alpha */ w: 0.8};
     if (WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) > 0.0) {
-        if (!is_in_hitstun[id]) {
+        if  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::IS_IN_HITSTUN) {
             hitstun_start[id] = true;
         }
     } else {
-        if (is_in_hitstun[id]) {
+        if  VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::IS_IN_HITSTUN) {
             ColorBlendModule::cancel_main_color(boma, 0);
         }
-        is_in_hitstun[id] = false;
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::IS_IN_HITSTUN);
     }
     if (hitstun_start[id]) {
-        is_in_hitstun[id] = true;
+        VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::IS_IN_HITSTUN);
         ColorBlendModule::set_main_color(boma, /* Brightness */ &cbm_vec1, /* Diffuse */ &cbm_vec2, 0.21, 2.2, 5, /* Display Color */ true);
         hitstun_start[id] = false;
     }

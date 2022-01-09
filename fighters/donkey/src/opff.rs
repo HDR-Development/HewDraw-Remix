@@ -15,13 +15,13 @@ unsafe fn nspecial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
 
 // Barrel Timer Count
 unsafe fn barrel_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
-    let gimmick_timerr = VarModule::get_int(fighter.module_accessor, common::GIMMICK_TIMER);
+    let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER);
     if gimmick_timerr > 0 && gimmick_timerr < 901 {
         if gimmick_timerr > 899 {
-            VarModule::set_int(fighter.module_accessor, common::GIMMICK_TIMER, 0);
+            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
             gimmick_flash(boma);
         } else {
-            VarModule::set_int(fighter.module_accessor, common::GIMMICK_TIMER, gimmick_timerr + 1);
+            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, gimmick_timerr + 1);
         }
     }
 }
@@ -29,14 +29,14 @@ unsafe fn barrel_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 // Barrel Timer Death Reset
 unsafe fn barrel_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
     if [*FIGHTER_STATUS_KIND_ENTRY, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_REBIRTH].contains(&status_kind) {
-        VarModule::set_int(fighter.module_accessor, common::GIMMICK_TIMER, 0);
+        VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
     }
 }
 
 // Training Mode Barrel Timer taunt reset
 unsafe fn barrel_training(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
-        VarModule::set_int(fighter.module_accessor, common::GIMMICK_TIMER, 0);
+        VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
     }
 }
 

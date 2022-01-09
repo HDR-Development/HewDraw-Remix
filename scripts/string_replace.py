@@ -22,18 +22,6 @@ def insert_text(filename, text:str):
     f.seek(0, 0)
     f.write(text.rstrip('\r\n') + '\n' + content)
 
-patterns = [
-  ("{old_name}[hdr::get_player_number(boma)] = true;", "VarModule::on_flag(fighter.battle_object, vars::{new_name})"),
-  ("{old_name}[hdr::get_player_number(boma)] = false;", "VarModule::off_flag(fighter.battle_object, vars::{new_name})"),
-  ("if({old_name}[hdr::get_player_number(boma)])", "if VarModule::is_flag(fighter.battle_object, vars::{new_name})"),
-  ("({old_name}[hdr::get_player_number(boma)])", " VarModule::is_flag(fighter.battle_object, vars::{new_name})"),
-  ("(!{old_name}[hdr::get_player_number(boma)])", " !VarModule::is_flag(fighter.battle_object, vars::{new_name})"),
-  ("if {old_name}[hdr::get_player_number(boma)]", "if VarModule::is_flag(fighter.battle_object, vars::{new_name})")
-]
-
-def variable_replace(file: str, old_var: str, new_var: str):
-  for old, new in patterns:
-    inplace_change(file, old.replace("{old_name}", old_var), new.replace("{new_name}", new_var))
 
 os.chdir("../fighters")
 
@@ -46,5 +34,9 @@ for fighter in characters.characters:
 
   for file in files:
     if os.path.isfile(file):
-      variable_replace(file, "noknok_shell", "common::NOKNOK_SHELL")
+      if "opff" in file:
+        if "common" in file:
+          insert_text(file, "use crate::opff_import::*;")
+        else:
+          insert_text(file, "use common::opff_import::*;")
         
