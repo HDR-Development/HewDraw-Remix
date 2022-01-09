@@ -319,7 +319,6 @@ unsafe fn bayonetta_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "bayonetta", script = "game_attackairhihold" , category = ACMD_GAME , low_priority)]
 unsafe fn bayonetta_attack_air_hi_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
 		FT_MOTION_RATE(fighter, 1.0);
