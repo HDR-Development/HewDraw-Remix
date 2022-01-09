@@ -4,7 +4,7 @@ use super::*;
 macro_rules! smash_attacks_common { 
     ($fighter:ident) => {{
         let lua_state = $fighter.lua_state_agent;
-        let boma = fighter.boma();
+        let boma = $fighter.boma();
         frame(lua_state, 1.0);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
         original!($fighter);

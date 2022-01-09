@@ -31,7 +31,7 @@ unsafe fn game_specialn(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        if VarModule::is_flag(boma, vars::common::FIREBRAND_ACTIVATED) && AttackModule::is_infliction_status(fighter.battle_object, *COLLISION_KIND_MASK_HIT) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::FIREBRAND_ACTIVATED) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             FT_MOTION_RATE(fighter, 0.5);
         }
     }
@@ -76,7 +76,7 @@ unsafe fn game_specialairn(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        if VarModule::is_flag(boma, vars::common::FIREBRAND_ACTIVATED) && AttackModule::is_infliction_status(fighter.battle_object, *COLLISION_KIND_MASK_HIT) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::FIREBRAND_ACTIVATED) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             FT_MOTION_RATE(fighter, 0.5);
         }
     }
