@@ -31,42 +31,10 @@ unsafe fn kirby_turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "kirby", script = "game_appealsl" , category = ACMD_GAME , low_priority)]
-unsafe fn game_appealsl(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    //taunt_starrod(fighter);
-}
-
-#[acmd_script( agent = "kirby", script = "game_appealsr" , category = ACMD_GAME , low_priority)]
-unsafe fn game_appealsr(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    //taunt_starrod(fighter);   
-}
-
-unsafe fn taunt_starrod(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 65.0);
-    if is_excute(fighter) {
-        
-        if !kirby_star_rod[id] {
-            if [*CONTROL_PAD_BUTTON_APPEAL_S_L, *CONTROL_PAD_BUTTON_APPEAL_S_R].iter().any(|x| ControlModule::check_button_on(boma, *x)) {
-                DamageModule::add_damage(boma, 75.0, 0);
-                ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_STARROD), 0, 0, false, false);
-                kirby_star_rod[id] = true;
-            }
-        }
-    }
-}
-
 pub fn install() {
     install_acmd_scripts!(
         dash_effect,
         kirby_turn_dash_game,
-		game_appealsl,
-        game_appealsr,
     );
 }
 
