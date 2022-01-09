@@ -4,7 +4,7 @@ pub mod prelude {
     pub use smash_script;
     pub use smash_script::*;
     pub use smashline;
-    pub use utils::{self, *, consts::*};
+    pub use utils::{self, *, ext::*, consts::*};
     pub use super::StatusShift;
 }
 
