@@ -49,7 +49,7 @@ flag_patterns = [
 
 def variable_replace(file: str, old_var: str, new_var: str):
   for old, new in flag_patterns:
-    print(old + ", " + new)
+    # print(old + ", " + new)
     inplace_change(file, old.replace("{old_name}", old_var), new.replace("{new_name}", new_var))
 
 os.chdir("../fighters")
@@ -63,6 +63,6 @@ for fighter in characters.characters:
 
   for file in files:
     if os.path.isfile(file) and not "target" in file:
-      print(file)
+      # print(file)
       variable_replace(file, sys.argv[1], sys.argv[2])
         

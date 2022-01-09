@@ -166,12 +166,7 @@ unsafe fn mario_dair(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 30.0);
-    if is_excute(fighter) {
-        if aerial_command_risen[hdr::get_player_number(boma)] {
-            FT_MOTION_RATE(fighter, 2.000);
-        }
-    }
+
     frame(lua_state, 33.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
