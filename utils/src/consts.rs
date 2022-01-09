@@ -90,10 +90,6 @@ pub mod vars {
         pub const TRAIL_EFFECT: i32 = 0x1000;
     }
 
-    pub mod miigunner {
-        pub const HEAVY_ATTACK: i32 = 0x1000;
-    }
-
     pub mod trail {
         pub const ATTACK_12_INTO_S3: i32 = 0x1000;
     }
