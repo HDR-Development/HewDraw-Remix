@@ -43,6 +43,7 @@ flag_patterns = [
   ("if({old_name}[hdr::get_player_number(boma)])", "if VarModule::is_flag(fighter.battle_object, vars::{new_name})"),
   ("({old_name}[hdr::get_player_number(boma)])", " VarModule::is_flag(fighter.battle_object, vars::{new_name})"),
   ("(!{old_name}[hdr::get_player_number(boma)])", " !VarModule::is_flag(fighter.battle_object, vars::{new_name})"),
+  ("!{old_name}[hdr::get_player_number(boma)]", " !VarModule::is_flag(fighter.battle_object, vars::{new_name})"),
   ("if {old_name}[hdr::get_player_number(boma)]", "if VarModule::is_flag(fighter.battle_object, vars::{new_name})")
 ]
 
