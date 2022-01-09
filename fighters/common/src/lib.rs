@@ -16,6 +16,7 @@ pub mod acmd_import {
     pub use smash::phx::*;
     pub use smash_script::macros::*;
     pub use smashline::*;
+    pub use smash::hash40;
     pub use app::{sv_system, sv_animcmd::{frame, wait}};
     pub use smash::app::sv_battle_object::notify_event_msc_cmd;
     pub use utils::{VarModule, ParamModule, BufferModule};

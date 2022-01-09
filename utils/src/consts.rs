@@ -55,11 +55,16 @@ pub mod globals {
 
 pub mod vars {
     pub mod common {
-        
+        pub const IS_HEAVY_ATTACK: i32 = 0x0;
 
         // separator
 
 
+    }
+
+    pub mod brave {
+        // flags
+        pub const IS_CRITICAL_HIT: i32 = 0x1000;
     }
 
     pub mod mario {
