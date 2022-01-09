@@ -1,8 +1,8 @@
 
 use super::*;
 
-use hdr_modules::consts::{*, globals::*};
-use hdr_modules::*;
+
+
 
 
 #[acmd_script( agent = "mariod", script = "game_specialn" , category = ACMD_GAME , low_priority)]

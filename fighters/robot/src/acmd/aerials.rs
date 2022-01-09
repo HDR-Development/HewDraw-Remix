@@ -1,10 +1,6 @@
 
 use super::*;
 
-use hdr_modules::consts::{*, globals::*};
-use hdr_modules::*;
-
-
 #[acmd_script( agent = "robot", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn robot_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -90,7 +86,7 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 0.667);
         KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        VarModule::off_flag(fighter.battle_object, robot::BOOST_ATTACK);
+        VarModule::off_flag(fighter.battle_object, vars::robot::BOOST_ATTACK);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
@@ -99,7 +95,7 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            VarModule::on_flag(fighter.battle_object, robot::BOOST_ATTACK);
+            VarModule::on_flag(fighter.battle_object, vars::robot::BOOST_ATTACK);
             FT_MOTION_RATE(fighter, 2.0);
         }
         else{
@@ -112,7 +108,7 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, robot::BOOST_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::robot::BOOST_ATTACK) {
             SET_SPEED_EX(fighter, 1.65, 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         }
         ATTACK(fighter, 0, 0, Hash40::new("top"), 13.5, 35, 91, 0, 35, 8.6, 0.0, 3.5, -8.5, Some(0.0), Some(3.5), Some(-10.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
@@ -148,14 +144,14 @@ unsafe fn robot_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("robot_atk_ab_jet"), Hash40::new("knee1"), 1.5, 0, 0, 0, 0, -90, 0.9, true);
         LAST_EFFECT_SET_RATE(fighter, 0.5);
-        if VarModule::is_flag(fighter.battle_object, robot::BOOST_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::robot::BOOST_ATTACK) {
             LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 10.0);
         }
     }
     frame(lua_state, 35.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("robot_nozzle_flare"), Hash40::new("knee"), 0, 0, 0, 90, -90, 0, 1, true);
-        if VarModule::is_flag(fighter.battle_object, robot::BOOST_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::robot::BOOST_ATTACK) {
             LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 10.0);
         }
     }

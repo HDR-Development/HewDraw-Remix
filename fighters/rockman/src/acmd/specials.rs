@@ -1,9 +1,6 @@
 
 use super::*;
 
-use hdr_modules::consts::{*, globals::*};
-use hdr_modules::*;
-
 #[acmd_script( agent = "rockman", script = "game_specials" , category = ACMD_GAME , low_priority)]
 unsafe fn rockman_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

@@ -90,7 +90,7 @@ unsafe fn ken_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     if is_excute(fighter) {
-        heavy_attack[hdr::get_player_number(boma)] = false;
+        VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
          WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
     }
@@ -101,7 +101,7 @@ unsafe fn ken_attack_air_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            heavy_attack[hdr::get_player_number(boma)] = true;
+            VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
              PostureModule::reverse_lr(boma);
             PostureModule::update_rot_y_lr(boma);
         }

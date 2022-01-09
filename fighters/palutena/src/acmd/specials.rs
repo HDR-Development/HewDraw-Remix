@@ -1,8 +1,8 @@
 
 use super::*;
 
-use hdr_modules::consts::{*, globals::*};
-use hdr_modules::*;
+
+
 
 #[acmd_script( agent = "palutena", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
 unsafe fn palutena_special_lw_game(fighter: &mut L2CAgentBase) {

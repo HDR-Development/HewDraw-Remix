@@ -1,8 +1,5 @@
 
 use super::*;
-use hdr_modules::consts::{*, globals::*};
-use hdr_modules::*;
-
 
 #[acmd_script( agent = "rockman", script = "game_dash" , category = ACMD_GAME , low_priority)]
 unsafe fn dash_game(fighter: &mut L2CAgentBase) {

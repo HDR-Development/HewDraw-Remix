@@ -1,8 +1,8 @@
 
 use super::*;
 
-use hdr_modules::consts::{*, globals::*};
-use hdr_modules::*;
+
+
 
 #[acmd_script( agent = "kamui", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn kamui_attack_air_n_game(fighter: &mut L2CAgentBase) {

@@ -198,12 +198,12 @@ unsafe fn ken_attack_dash_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
-        heavy_attack[hdr::get_player_number(boma)] = false;
+        VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
      }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            heavy_attack[hdr::get_player_number(boma)] = true;
+            VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
              FT_MOTION_RATE(fighter, 4.000);
         }
     }
@@ -212,7 +212,7 @@ unsafe fn ken_attack_dash_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 1.000);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 60, 40, 0, 70, 4.2, 0.0, 9.0, 10.0, Some(0.0), Some(9.0), Some(7.2), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
         meter_gain(boma, 12);
-         if heavy_attack[hdr::get_player_number(boma)] {
+         if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 33, 60, 0, 60, 4.2, 0.0, 9.0, 10.0, Some(0.0), Some(9.0), Some(7.2), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
             meter_gain(boma, 14);
          }
@@ -221,7 +221,7 @@ unsafe fn ken_attack_dash_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 80, 25, 0, 75, 3.5, 0.0, 9.0, 8.5, Some(0.0), Some(9.0), Some(7.2), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
         meter_gain(boma, 8);
-         if heavy_attack[hdr::get_player_number(boma)] {
+         if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 80, 70, 0, 60, 3.5, 0.0, 9.0, 8.5, Some(0.0), Some(9.0), Some(7.2), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
             meter_gain(boma, 10);
          }

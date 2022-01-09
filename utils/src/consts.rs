@@ -134,4 +134,8 @@ pub mod vars {
         pub const SHINESPARK_USED: i32 = 0x1000;
         pub const SHINESPARK_READY: i32 = 0x1001;
     }
+
+    pub mod robot {
+        pub const BOOST_ATTACK: i32 = 0x1000;
+    }
 }

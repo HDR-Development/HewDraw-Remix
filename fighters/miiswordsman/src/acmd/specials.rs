@@ -8,14 +8,14 @@ unsafe fn miiswordsman_special_n1_game(fighter: &mut L2CAgentBase) {
     let end_frame = MotionModule::end_frame(boma);
     if is_excute(fighter) {
         VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0); // Timer used to track time until Gale Strike is available again
-        //heavy_attack[hdr::get_player_number(boma)] = false;
+        //VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
         VarModule::off_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK);
         ArticleModule::remove(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_TORNADOSHOT, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
      }
      frame(lua_state, 10.0);
      if is_excute(fighter) {
          if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW){
-             //heavy_attack[hdr::get_player_number(boma)] = true;
+             //VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
              VarModule::on_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK);
              FT_MOTION_RATE(fighter, 3.0);
          }
@@ -26,7 +26,7 @@ unsafe fn miiswordsman_special_n1_game(fighter: &mut L2CAgentBase) {
      frame(lua_state, 17.0);
      if is_excute(fighter) {
          ArticleModule::generate_article(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_TORNADOSHOT, false, 0);
-         //if heavy_attack[hdr::get_player_number(boma)]{
+         //if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
         if VarModule::is_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK){
             VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 120);
          }
@@ -36,7 +36,7 @@ unsafe fn miiswordsman_special_n1_game(fighter: &mut L2CAgentBase) {
      }
      frame(lua_state, 18.0);
      if is_excute(fighter) {
-         //if heavy_attack[hdr::get_player_number(boma)]{
+         //if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
         if VarModule::is_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK){
              FT_MOTION_RATE(fighter, 1.2);
          }
@@ -86,14 +86,14 @@ unsafe fn miiswordsman_special_air_n1_game(fighter: &mut L2CAgentBase) {
     let end_frame = MotionModule::end_frame(boma);
     if is_excute(fighter) {
         VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0); // Timer used to track time until Gale Strike is available again
-        //heavy_attack[hdr::get_player_number(boma)] = false;
+        //VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
         VarModule::off_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK);
         ArticleModule::remove(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_TORNADOSHOT, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
      }
      frame(lua_state, 10.0);
      if is_excute(fighter) {
          if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW){
-             //heavy_attack[hdr::get_player_number(boma)] = true;
+             //VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
              VarModule::on_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK);
              FT_MOTION_RATE(fighter, 3.0);
          }
@@ -101,7 +101,7 @@ unsafe fn miiswordsman_special_air_n1_game(fighter: &mut L2CAgentBase) {
      frame(lua_state, 17.0);
      if is_excute(fighter) {
          ArticleModule::generate_article(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_TORNADOSHOT, false, 0);
-         //if heavy_attack[hdr::get_player_number(boma)]{
+         //if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
         if VarModule::is_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK){             
             VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 120);
          }
@@ -111,7 +111,7 @@ unsafe fn miiswordsman_special_air_n1_game(fighter: &mut L2CAgentBase) {
      }
      frame(lua_state, 18.0);
      if is_excute(fighter) {
-         //if heavy_attack[hdr::get_player_number(boma)]{
+         //if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
         if VarModule::is_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK){
              FT_MOTION_RATE(fighter, 1.2);
          }
@@ -2263,14 +2263,14 @@ unsafe fn miiswordsman_special_hi2_hold_game(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        //heavy_attack[hdr::get_player_number(boma)] = false;
+        //VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
         VarModule::off_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK);
         FT_MOTION_RATE(fighter, 0.6);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW){
-            //heavy_attack[hdr::get_player_number(boma)] = true;
+            //VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
             VarModule::on_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK);
             FT_MOTION_RATE(fighter, 2.5);
         }
@@ -2297,14 +2297,14 @@ unsafe fn miiswordsman_special_hi2_hold_air_game(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        //heavy_attack[hdr::get_player_number(boma)] = false;
+        //VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
         VarModule::off_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK);
         FT_MOTION_RATE(fighter, 0.6);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW){
-            //heavy_attack[hdr::get_player_number(boma)] = true;
+            //VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
             VarModule::on_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK);
             FT_MOTION_RATE(fighter, 2.5);
         }
@@ -2333,7 +2333,7 @@ unsafe fn miiswordsman_special_hi2_game(fighter: &mut L2CAgentBase) {
         frame(lua_state, 2.0);
         if is_excute(fighter) {
             // Charged
-            //if heavy_attack[hdr::get_player_number(boma)]{
+            //if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
             if VarModule::is_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK){
                 ATTACK(fighter, 0, 0, Hash40::new("rot"), 3.0, 367, 40, 0, 40, 8.0, 0.0, 0.0, 12.0, Some(0.0), Some(0.0), Some(15.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
                 ATTACK(fighter, 1, 0, Hash40::new("rot"), 3.0, 55, 40, 0, 40, 8.0, 0.0, 0.0, 12.0, Some(0.0), Some(0.0), Some(15.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -2375,7 +2375,7 @@ unsafe fn miiswordsman_special_hi2_game(fighter: &mut L2CAgentBase) {
         //println!("Launch Angle: {}", launch_angle);
         
         // Charged
-        //if heavy_attack[hdr::get_player_number(boma)]{
+        //if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
         if VarModule::is_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK){
             ATTACK(fighter, 0, 0, Hash40::new("rot"), 6.0, launch_angle, 110, 0, 70, 8.0, 0.0, 0.0, 12.0, Some(0.0), Some(0.0), Some(15.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
             ATTACK(fighter, 1, 0, Hash40::new("rot"), 6.0, launch_angle, 110, 0, 70, 3.0, 0.0, 10.0, 6.0, Some(0.0), Some(-10.0), Some(6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -2398,7 +2398,7 @@ unsafe fn miiswordsman_special_hi2_landing_game(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        //if !heavy_attack[hdr::get_player_number(boma)] {
+        //if !VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
         if !VarModule::is_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 0.8);
         }
@@ -2411,7 +2411,7 @@ unsafe fn miiswordsman_special_hi2_fall_game(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        //if !heavy_attack[hdr::get_player_number(boma)] {
+        //if !VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
         if !VarModule::is_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 0.8);
         }

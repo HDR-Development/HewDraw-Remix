@@ -1,7 +1,7 @@
 
 use super::*;
-use hdr_modules::consts::{*, globals::*};
-use hdr_modules::*;
+
+
 
 #[acmd_script( agent = "mario", script = "game_appealhir" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_utauntr(fighter: &mut L2CAgentBase) {

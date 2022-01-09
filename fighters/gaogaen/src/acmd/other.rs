@@ -1,6 +1,6 @@
 
-use super::*;use hdr_modules::consts::{*, globals::*};
-use hdr_modules::*;
+use super::*;
+
 use smash::app::BattleObjectModuleAccessor;
 
 

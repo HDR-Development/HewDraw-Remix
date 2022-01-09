@@ -86,7 +86,7 @@ unsafe fn roy_appeallwr_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         
         if(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)){
-            CHROY_SWORD_TRAIL_EFFECT[id] = true;
+            VarModule::on_flag(fighter.battle_object, vars::roy::TRAIL_EFFECT);
         }
     }
     
@@ -100,7 +100,7 @@ unsafe fn roy_appeallwl_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         
         if(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)){
-            CHROY_SWORD_TRAIL_EFFECT[id] = true;
+            VarModule::on_flag(fighter.battle_object, vars::roy::TRAIL_EFFECT);
         }
     }
     
