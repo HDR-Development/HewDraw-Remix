@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "miiswordsman", script = "game_specialn1" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_n1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     if is_excute(fighter) {
         VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0); // Timer used to track time until Gale Strike is available again
@@ -49,7 +49,7 @@ unsafe fn miiswordsman_special_n1_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "effect_specialn1" , category = ACMD_EFFECT , low_priority)]
 unsafe fn miiswordsman_special_n1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);   
     frame(lua_state, 4.0);
     if is_excute(fighter) {
@@ -82,7 +82,7 @@ unsafe fn miiswordsman_special_n1_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairn1" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_n1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     if is_excute(fighter) {
         VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0); // Timer used to track time until Gale Strike is available again
@@ -125,7 +125,7 @@ unsafe fn miiswordsman_special_air_n1_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "effect_specialairn1" , category = ACMD_EFFECT , low_priority)]
 unsafe fn miiswordsman_special_air_n1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);   
     frame(lua_state, 4.0);
     if is_excute(fighter) {
@@ -158,7 +158,7 @@ unsafe fn miiswordsman_special_air_n1_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialn2" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_n2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 
     if is_excute(fighter) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_MOTION);
@@ -214,7 +214,7 @@ unsafe fn miiswordsman_special_n2_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "effect_specialn2" , category = ACMD_EFFECT , low_priority)]
 unsafe fn miiswordsman_special_n2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 
     frame(lua_state, 12.0);
     if is_excute(fighter) {
@@ -246,7 +246,7 @@ unsafe fn miiswordsman_special_n2_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "sound_specialn2" , category = ACMD_SOUND , low_priority)]
 unsafe fn miiswordsman_special_n2_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 
     frame(lua_state, 16.0);
     if is_excute(fighter) {
@@ -258,7 +258,7 @@ unsafe fn miiswordsman_special_n2_sound(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairn2" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_n2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 
     if is_excute(fighter) {
         let x_vel = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -326,7 +326,7 @@ unsafe fn miiswordsman_special_air_n2_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "effect_specialairn2" , category = ACMD_EFFECT , low_priority)]
 unsafe fn miiswordsman_special_air_n2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 
     frame(lua_state, 12.0);
     if is_excute(fighter) {
@@ -357,7 +357,7 @@ unsafe fn miiswordsman_special_air_n2_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "sound_specialairn2" , category = ACMD_SOUND , low_priority)]
 unsafe fn miiswordsman_special_air_n2_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 
     frame(lua_state, 16.0);
     if is_excute(fighter) {
@@ -373,7 +373,7 @@ unsafe fn miiswordsman_special_air_n2_sound(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialn3end" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_n3_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     frame(lua_state, 6.0);
     for _ in 0..4 {
@@ -421,7 +421,7 @@ unsafe fn miiswordsman_special_n3_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "effect_specialn3end" , category = ACMD_EFFECT , low_priority)]
 unsafe fn miiswordsman_special_n3_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("miiswordsman_rapid_slash_sword"), Hash40::new("haver"), 0, -0.5, 0, 0, 0, 0, 1.0, true);
     }
@@ -503,7 +503,7 @@ unsafe fn miiswordsman_special_n3_end_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "sound_specialn3end" , category = ACMD_SOUND , low_priority)]
 unsafe fn miiswordsman_special_n3_end_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
@@ -528,7 +528,7 @@ unsafe fn miiswordsman_special_n3_end_sound(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialn3endturn" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_n3_end_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     frame(lua_state, 6.0);
     if is_excute(fighter) {
@@ -578,7 +578,7 @@ unsafe fn miiswordsman_special_n3_end_turn_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "effect_specialn3endturn" , category = ACMD_EFFECT , low_priority)]
 unsafe fn miiswordsman_special_n3_end_turn_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("miiswordsman_rapid_slash_sword"), Hash40::new("haver"), 0, -0.5, 0, 0, 0, 0, 1.0, true);
     }
@@ -660,7 +660,7 @@ unsafe fn miiswordsman_special_n3_end_turn_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "sound_specialn3endturn" , category = ACMD_SOUND , low_priority)]
 unsafe fn miiswordsman_special_n3_end_turn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
@@ -685,7 +685,7 @@ unsafe fn miiswordsman_special_n3_end_turn_sound(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialn3endmax" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_n3_end_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     frame(lua_state, 6.0);
     for _ in 0..4 {
@@ -732,7 +732,7 @@ unsafe fn miiswordsman_special_n3_end_max_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "effect_specialn3endmax" , category = ACMD_EFFECT , low_priority)]
 unsafe fn miiswordsman_special_n3_end_max_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("miiswordsman_rapid_slash_sword"), Hash40::new("haver"), 0, -0.5, 0, 0, 0, 0, 1.0, true);
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
@@ -823,7 +823,7 @@ unsafe fn miiswordsman_special_n3_end_max_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "sound_specialn3endmax" , category = ACMD_SOUND , low_priority)]
 unsafe fn miiswordsman_special_n3_end_max_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
@@ -848,7 +848,7 @@ unsafe fn miiswordsman_special_n3_end_max_sound(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialn3endmaxturn" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_n3_end_max_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     frame(lua_state, 6.0);
     if is_excute(fighter) {
@@ -898,7 +898,7 @@ unsafe fn miiswordsman_special_n3_end_max_turn_game(fighter: &mut L2CAgentBase) 
 #[acmd_script( agent = "miiswordsman", script = "effect_specialn3endmaxturn" , category = ACMD_EFFECT , low_priority)]
 unsafe fn miiswordsman_special_n3_end_max_turn_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("miiswordsman_rapid_slash_sword"), Hash40::new("haver"), 0, -0.5, 0, 0, 0, 0, 1.0, true);
         LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 180, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
@@ -989,7 +989,7 @@ unsafe fn miiswordsman_special_n3_end_max_turn_effect(fighter: &mut L2CAgentBase
 #[acmd_script( agent = "miiswordsman", script = "sound_specialn3endmaxturn" , category = ACMD_SOUND , low_priority)]
 unsafe fn miiswordsman_special_n3_end_max_turn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
@@ -1014,7 +1014,7 @@ unsafe fn miiswordsman_special_n3_end_max_turn_sound(fighter: &mut L2CAgentBase)
 #[acmd_script( agent = "miiswordsman", script = "game_specialairn3end" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_n3_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     if is_excute(fighter) {
         SET_SPEED_EX(fighter, 0.5, 1.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -1081,7 +1081,7 @@ unsafe fn miiswordsman_special_air_n3_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "effect_specialairn3end" , category = ACMD_EFFECT , low_priority)]
 unsafe fn miiswordsman_special_air_n3_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("miiswordsman_rapid_slash_sword"), Hash40::new("haver"), 0, -0.5, 0, 0, 0, 0, 1.0, true);
     }
@@ -1159,7 +1159,7 @@ unsafe fn miiswordsman_special_air_n3_end_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "sound_specialairn3end" , category = ACMD_SOUND , low_priority)]
 unsafe fn miiswordsman_special_air_n3_end_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
@@ -1183,7 +1183,7 @@ unsafe fn miiswordsman_special_air_n3_end_sound(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairn3endturn" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_n3_end_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     if is_excute(fighter) {
         SET_SPEED_EX(fighter, -0.5, 1.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -1253,7 +1253,7 @@ unsafe fn miiswordsman_special_air_n3_end_turn_game(fighter: &mut L2CAgentBase) 
 #[acmd_script( agent = "miiswordsman", script = "effect_specialairn3endturn" , category = ACMD_EFFECT , low_priority)]
 unsafe fn miiswordsman_special_air_n3_end_turn_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("miiswordsman_rapid_slash_sword"), Hash40::new("haver"), 0, -0.5, 0, 0, 0, 0, 1.0, true);
     }
@@ -1331,7 +1331,7 @@ unsafe fn miiswordsman_special_air_n3_end_turn_effect(fighter: &mut L2CAgentBase
 #[acmd_script( agent = "miiswordsman", script = "sound_specialairn3endturn" , category = ACMD_SOUND , low_priority)]
 unsafe fn miiswordsman_special_air_n3_end_turn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
@@ -1355,7 +1355,7 @@ unsafe fn miiswordsman_special_air_n3_end_turn_sound(fighter: &mut L2CAgentBase)
 #[acmd_script( agent = "miiswordsman", script = "game_specialairn3endmax" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_n3_end_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     if is_excute(fighter) {
         SET_SPEED_EX(fighter, 0.5, 1.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -1422,7 +1422,7 @@ unsafe fn miiswordsman_special_air_n3_end_max_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "effect_specialairn3endmax" , category = ACMD_EFFECT , low_priority)]
 unsafe fn miiswordsman_special_air_n3_end_max_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("miiswordsman_rapid_slash_sword"), Hash40::new("haver"), 0, -0.5, 0, 0, 0, 0, 1.0, true);
     }
@@ -1499,7 +1499,7 @@ unsafe fn miiswordsman_special_air_n3_end_max_effect(fighter: &mut L2CAgentBase)
 #[acmd_script( agent = "miiswordsman", script = "sound_specialairn3endmax" , category = ACMD_SOUND , low_priority)]
 unsafe fn miiswordsman_special_air_n3_end_max_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
@@ -1523,7 +1523,7 @@ unsafe fn miiswordsman_special_air_n3_end_max_sound(fighter: &mut L2CAgentBase) 
 #[acmd_script( agent = "miiswordsman", script = "game_specialairn3endmaxturn" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_n3_end_max_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     if is_excute(fighter) {
         SET_SPEED_EX(fighter, -0.5, 1.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -1593,7 +1593,7 @@ unsafe fn miiswordsman_special_air_n3_end_max_turn_game(fighter: &mut L2CAgentBa
 #[acmd_script( agent = "miiswordsman", script = "effect_specialairn3endmaxturn" , category = ACMD_EFFECT , low_priority)]
 unsafe fn miiswordsman_special_air_n3_end_max_turn_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("miiswordsman_rapid_slash_sword"), Hash40::new("haver"), 0, -0.5, 0, 0, 0, 0, 1.0, true);
     }
@@ -1670,7 +1670,7 @@ unsafe fn miiswordsman_special_air_n3_end_max_turn_effect(fighter: &mut L2CAgent
 #[acmd_script( agent = "miiswordsman", script = "sound_specialairn3endmaxturn" , category = ACMD_SOUND , low_priority)]
 unsafe fn miiswordsman_special_air_n3_end_max_turn_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
@@ -1700,7 +1700,7 @@ unsafe fn miiswordsman_special_air_n3_end_max_turn_sound(fighter: &mut L2CAgentB
 #[acmd_script( agent = "miiswordsman", script = "game_specials1start" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_s1_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
@@ -1712,7 +1712,7 @@ unsafe fn miiswordsman_special_s1_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairs1start" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_s1_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
@@ -1724,7 +1724,7 @@ unsafe fn miiswordsman_special_air_s1_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specials1" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
 
@@ -1735,7 +1735,7 @@ unsafe fn miiswordsman_special_s1_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairs1" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
 
@@ -1746,7 +1746,7 @@ unsafe fn miiswordsman_special_air_s1_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specials1hit" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_s1_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 12.5, 44, 91, 0, 70, 7.0, 0.0, 10.0, 11.0, Some(0.0), Some(1.5), Some(11.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
@@ -1777,7 +1777,7 @@ unsafe fn miiswordsman_special_s2_dash_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specials2attack" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_s2_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 55, 88, 0, 55, 5.0, 0.0, 5.5, 16.0, Some(0.0), Some(5.5), Some(14.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -1797,7 +1797,7 @@ unsafe fn miiswordsman_special_s2_attack_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "effect_specials2attack" , category = ACMD_EFFECT , low_priority)]
 unsafe fn miiswordsman_special_s2_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         // Vanilla Effects
@@ -1865,7 +1865,7 @@ unsafe fn miiswordsman_special_air_s2_dash_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairs2attack" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_s2_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 55, 88, 0, 55, 5.0, 0.0, 5.5, 16.0, Some(0.0), Some(5.5), Some(14.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -1885,7 +1885,7 @@ unsafe fn miiswordsman_special_air_s2_attack_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "effect_specialairs2attack" , category = ACMD_EFFECT , low_priority)]
 unsafe fn miiswordsman_special_air_s2_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         // Vanilla Effects
@@ -1948,7 +1948,7 @@ unsafe fn miiswordsman_special_air_s2_attack_effect(fighter: &mut L2CAgentBase) 
 #[acmd_script( agent = "miiswordsman", script = "game_specials3_1" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_s3_1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.27);
@@ -1982,7 +1982,7 @@ unsafe fn miiswordsman_special_s3_1_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specials3_1hi" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_s3_1_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.27);
@@ -2016,7 +2016,7 @@ unsafe fn miiswordsman_special_s3_1_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specials3_1lw" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_s3_1_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.27);
@@ -2050,7 +2050,7 @@ unsafe fn miiswordsman_special_s3_1_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairs3_1" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_s3_1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.27);
@@ -2084,7 +2084,7 @@ unsafe fn miiswordsman_special_air_s3_1_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairs3_1hi" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_s3_1_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.27);
@@ -2118,7 +2118,7 @@ unsafe fn miiswordsman_special_air_s3_1_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairs3_1lw" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_s3_1_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.27);
@@ -2157,7 +2157,7 @@ unsafe fn miiswordsman_special_air_s3_1_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialhi1start" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_hi1_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.7);
@@ -2167,7 +2167,7 @@ unsafe fn miiswordsman_special_hi1_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairhi1" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_hi1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         let addSpeed = smash::phx::Vector3f { x: 0.0, y: 0.5, z: 0.0 };
@@ -2218,7 +2218,7 @@ unsafe fn miiswordsman_special_air_hi1_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialhi1end" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_hi1_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 55, 116, 0, 103, 8.0, 0.0, 6.0, -4.0, Some(0.0), Some(6.0), Some(4.5), 2.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_SWORD);
@@ -2237,7 +2237,7 @@ unsafe fn miiswordsman_special_hi1_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairhi1end" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_hi1_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 55, 116, 0, 103, 8.0, 0.0, 6.0, -4.0, Some(0.0), Some(6.0), Some(4.5), 2.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_SWORD);
@@ -2260,7 +2260,7 @@ unsafe fn miiswordsman_special_air_hi1_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialhi2hold" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_hi2_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         //VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
@@ -2294,7 +2294,7 @@ unsafe fn miiswordsman_special_hi2_hold_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialhi2holdair" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_hi2_hold_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         //VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
@@ -2328,7 +2328,7 @@ unsafe fn miiswordsman_special_hi2_hold_air_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialhi2" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     for _ in 0..5 {
         frame(lua_state, 2.0);
         if is_excute(fighter) {
@@ -2395,7 +2395,7 @@ unsafe fn miiswordsman_special_hi2_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialhi2landing" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_hi2_landing_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         //if !VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
@@ -2408,7 +2408,7 @@ unsafe fn miiswordsman_special_hi2_landing_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialhi2fall" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_hi2_fall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         //if !VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
@@ -2429,7 +2429,7 @@ unsafe fn miiswordsman_special_hi2_fall_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("haver"), 14.0, 40, 64, 0, 90, 4.5, 1.0, 12.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -2467,7 +2467,7 @@ unsafe fn miiswordsman_special_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 367, 100, 115, 0, 6.0, 0.0, 9.0, 7.0, Some(0.0), Some(6.0), Some(14.0), 1.0, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -2568,7 +2568,7 @@ unsafe fn miiswordsman_special_air_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_speciallw1hit" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_lw1_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         let current_level = VarModule::get_int(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL);
         // Attack transition
@@ -2604,7 +2604,7 @@ unsafe fn miiswordsman_special_lw1_hit_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairlw1hit" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_lw1_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         let current_level = VarModule::get_int(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL);
         // Attack transition
@@ -2642,7 +2642,7 @@ unsafe fn miiswordsman_special_air_lw1_hit_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_speciallw1hitlv1" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_lw1_hit_lv1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         VarModule::set_int(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL, 0); // Reset charge level
         WorkModule::on_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_COUNTER_FLAG_GRAVITY_ON);
@@ -2678,7 +2678,7 @@ unsafe fn miiswordsman_special_lw1_hit_lv1_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairlw1hitlv1" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_lw1_hit_lv1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         VarModule::set_int(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL, 0); // Reset charge level
         WorkModule::on_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_COUNTER_FLAG_GRAVITY_ON);
@@ -2715,7 +2715,7 @@ unsafe fn miiswordsman_special_air_lw1_hit_lv1_game(fighter: &mut L2CAgentBase) 
 #[acmd_script( agent = "miiswordsman", script = "game_speciallw1hitlv2" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_lw1_hit_lv2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_COUNTER_FLAG_GRAVITY_OFF);
     }
@@ -2751,7 +2751,7 @@ unsafe fn miiswordsman_special_lw1_hit_lv2_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairlw1hitlv2" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_lw1_hit_lv2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_COUNTER_FLAG_GRAVITY_OFF);
     }
@@ -2792,7 +2792,7 @@ unsafe fn miiswordsman_special_air_lw1_hit_lv2_game(fighter: &mut L2CAgentBase) 
 #[acmd_script( agent = "miiswordsman", script = "game_speciallw2" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_lw2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.3);
@@ -2824,7 +2824,7 @@ unsafe fn miiswordsman_special_lw2_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "effect_speciallw2" , category = ACMD_EFFECT , low_priority)]
 unsafe fn miiswordsman_special_lw2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), -1.5, 0, 2, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
@@ -2863,7 +2863,7 @@ unsafe fn miiswordsman_special_lw2_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairlw2" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_lw2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 
     frame(lua_state, 1.0);
     if is_excute(fighter) {
@@ -2899,7 +2899,7 @@ unsafe fn miiswordsman_special_air_lw2_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "effect_specialairlw2" , category = ACMD_EFFECT , low_priority)]
 unsafe fn miiswordsman_special_air_lw2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), -1.5, 0, 2, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
@@ -2942,7 +2942,7 @@ unsafe fn miiswordsman_special_air_lw2_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_speciallw3" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("haver"), 5.0, 365, 0, 0, 40, 4.0, 0.0, 11.0, 0.0, None, None, None, 3.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -2960,7 +2960,7 @@ unsafe fn miiswordsman_special_lw3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_speciallw3end" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_lw3_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
 
@@ -3020,7 +3020,7 @@ unsafe fn miiswordsman_special_lw3_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairlw3" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 2.5);
     }
@@ -3063,7 +3063,7 @@ unsafe fn miiswordsman_special_air_lw3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairlw3end" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_lw3_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
 
@@ -3123,7 +3123,7 @@ unsafe fn miiswordsman_special_air_lw3_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairlw3endair" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_lw3_end_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);

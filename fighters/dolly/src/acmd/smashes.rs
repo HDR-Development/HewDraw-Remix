@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "dolly", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.499);
     }
@@ -45,7 +45,7 @@ unsafe fn dolly_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         MeterModule::watch_damage(fighter.battle_object, true);
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -103,7 +103,7 @@ unsafe fn dolly_attack_hi4_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         MeterModule::watch_damage(fighter.battle_object, true);

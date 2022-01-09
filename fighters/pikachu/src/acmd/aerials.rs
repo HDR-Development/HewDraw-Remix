@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "pikachu", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -45,7 +45,7 @@ unsafe fn game_attackairn(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pikachu", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -80,7 +80,7 @@ unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pikachu", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -112,7 +112,7 @@ unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pikachu", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
 unsafe fn effect_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         //EFFECT_FOLLOW_ALPHA(fighter, Hash40::new_raw(0x1156ac182a), Hash40::new("footl"), 0.0, 0.0, 0.0, 0, 0, 0, 1.5, true, 1.0);
@@ -125,7 +125,7 @@ unsafe fn effect_attackairb(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pikachu", script = "sound_attackairb" , category = ACMD_SOUND , low_priority)]
 unsafe fn sound_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         PLAY_SEQUENCE(fighter, Hash40::new_raw(0x1682a99e02));
@@ -138,14 +138,14 @@ unsafe fn sound_attackairb(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pikachu", script = "game_landingairb" , category = ACMD_GAME , low_priority)]
 unsafe fn game_landingairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 
 }
 
 #[acmd_script( agent = "pikachu", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -179,7 +179,7 @@ unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pikachu", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }

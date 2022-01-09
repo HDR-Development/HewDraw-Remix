@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "richter", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.5);
     frame(lua_state, 4.0);
@@ -31,7 +31,7 @@ unsafe fn richter_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter_whip", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_whip_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         PhysicsModule::set_2nd_status(boma, *PH2NDARY_CRAW_NONE);
@@ -53,7 +53,7 @@ unsafe fn richter_whip_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 93, 75, 0, 60, 5.0, 0.0, 25.5, 3.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
@@ -78,7 +78,7 @@ unsafe fn richter_attack_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_SIMON_STATUS_ATTACK_FLAG_ENABLE_COMBO);
@@ -104,7 +104,7 @@ unsafe fn richter_attack_lw3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter", script = "game_attacklw32" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_attack_lw32_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);

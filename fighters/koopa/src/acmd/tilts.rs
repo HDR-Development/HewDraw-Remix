@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "koopa", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
 unsafe fn koopa_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 4);
@@ -31,7 +31,7 @@ unsafe fn koopa_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "koopa", script = "game_attacks3s" , category = ACMD_GAME , low_priority)]
 unsafe fn koopa_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 4);
@@ -57,7 +57,7 @@ unsafe fn koopa_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "koopa", script = "game_attacks3_lw" , category = ACMD_GAME , low_priority)]
 unsafe fn koopa_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 4);
@@ -83,7 +83,7 @@ unsafe fn koopa_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "koopa", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn koopa_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.750);
@@ -129,7 +129,7 @@ unsafe fn koopa_attack_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "koopa", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn koopa_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 4);

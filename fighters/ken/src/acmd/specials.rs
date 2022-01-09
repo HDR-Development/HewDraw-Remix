@@ -6,7 +6,7 @@ use crate::hooks::sys_line::meter::*;
 #[acmd_script( agent = "ken", script = "game_specialn" , category = ACMD_GAME , low_priority)]
 unsafe fn ken_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
@@ -35,7 +35,7 @@ unsafe fn ken_special_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ken", script = "game_specialairn" , category = ACMD_GAME , low_priority)]
 unsafe fn ken_special_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);

@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "nana", script = "game_attackairn_nana" , category = ACMD_GAME , low_priority)]
 unsafe fn nana_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -28,7 +28,7 @@ unsafe fn nana_attack_air_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "nana", script = "game_attackairf_nana" , category = ACMD_GAME , low_priority)]
 unsafe fn nana_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -62,7 +62,7 @@ unsafe fn nana_attack_air_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "nana", script = "game_attackairb_nana" , category = ACMD_GAME , low_priority)]
 unsafe fn nana_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -85,7 +85,7 @@ unsafe fn nana_attack_air_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "nana", script = "game_attackairhi_nana" , category = ACMD_GAME , low_priority)]
 unsafe fn nana_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -107,7 +107,7 @@ unsafe fn nana_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "nana", script = "game_attackairlw_nana" , category = ACMD_GAME , low_priority)]
 unsafe fn nana_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.182);

@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "pfushigisou", script = "game_specials" , category = ACMD_GAME , low_priority)]
 unsafe fn pfushigisou_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 22.0);
     if is_excute(fighter) {
         if !VarModule::is_flag(fighter.battle_object, vars::common::SPECIAL_PROJECTILE_SPAWNED) {
@@ -26,7 +26,7 @@ unsafe fn pfushigisou_special_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pfushigisou", script = "game_specialairs" , category = ACMD_GAME , low_priority)]
 unsafe fn pfushigisou_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 22.0);
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_PFUSHIGISOU_GENERATE_ARTICLE_LEAFCUTTER, false, 0);
@@ -46,7 +46,7 @@ unsafe fn pfushigisou_special_air_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pfushigisou", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn pfushigisou_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_PFUSHIGISOU_STATUS_SPECIAL_HI_FLAG_SET_ANGLE);
@@ -66,7 +66,7 @@ unsafe fn pfushigisou_special_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pfushigisou", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn pfushigisou_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_PFUSHIGISOU_GENERATE_ARTICLE_VINE, false, 0);
         ArticleModule::set_visibility_whole(boma, *FIGHTER_PFUSHIGISOU_GENERATE_ARTICLE_VINE, false, app::ArticleOperationTarget(0));

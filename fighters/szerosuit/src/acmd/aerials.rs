@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "szerosuit", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn szerosuit_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP, false, 0);
         ArticleModule::change_motion(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP, Hash40::new("attack_air_n"), false, 1.0);
@@ -52,7 +52,7 @@ unsafe fn szerosuit_attack_air_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "szerosuit", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn szerosuit_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -100,7 +100,7 @@ unsafe fn szerosuit_attack_air_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "szerosuit", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn szerosuit_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.857);
@@ -133,7 +133,7 @@ unsafe fn szerosuit_attack_air_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "szerosuit", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn szerosuit_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -183,7 +183,7 @@ unsafe fn szerosuit_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "szerosuit", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn szerosuit_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         //FT_MOTION_RATE(fighter, 0.667);

@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "gamewatch", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn gamewatch_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         WorkModule::set_int(boma, *WEAPON_GAMEWATCH_NORMAL_WEAPON_KIND_CHAIR, *FIGHTER_GAMEWATCH_INSTANCE_WORK_ID_INT_NORMAL_WEAPON_KIND);
@@ -35,7 +35,7 @@ unsafe fn gamewatch_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gamewatch", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn gamewatch_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.700);
         HIT_NODE(fighter, Hash40::new("handr"), *HIT_STATUS_XLU);
@@ -73,7 +73,7 @@ unsafe fn gamewatch_attack_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gamewatch", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn gamewatch_attack_hi3_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.700);
         HIT_NODE(fighter, Hash40::new("handr"), *HIT_STATUS_XLU);
@@ -115,7 +115,7 @@ unsafe fn gamewatch_attack_hi3_l_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gamewatch", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn gamewatch_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::set_int(boma, *WEAPON_GAMEWATCH_NORMAL_WEAPON_KIND_MANHOLE, *FIGHTER_GAMEWATCH_INSTANCE_WORK_ID_INT_NORMAL_WEAPON_KIND);
         ArticleModule::generate_article(boma, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_NORMAL_WEAPON, false, 0);

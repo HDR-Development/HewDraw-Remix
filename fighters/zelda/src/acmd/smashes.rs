@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "zelda", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
 unsafe fn zelda_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.667);
@@ -48,7 +48,7 @@ unsafe fn zelda_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "zelda", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
 unsafe fn zelda_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -96,7 +96,7 @@ unsafe fn zelda_attack_hi4_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "zelda", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
 unsafe fn zelda_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);

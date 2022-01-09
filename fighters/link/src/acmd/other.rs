@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "link", script = "game_appealhil", category = ACMD_GAME , low_priority)]
 unsafe fn appeal_hi_l(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("sword2"), 0.5, 0, 20, 0, 10, 3.0, 7.4, 0.0, 0.0, Some(-1.5), Some(0.0), Some(0.0), 2.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -19,7 +19,7 @@ unsafe fn appeal_hi_l(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "link", script = "game_appealhir", category = ACMD_GAME , low_priority)]
 unsafe fn appeal_hi_r(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("sword2"), 0.5, 0, 20, 0, 10, 3.0, 7.4, 0.0, 0.0, Some(-1.5), Some(0.0), Some(0.0), 2.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -34,7 +34,7 @@ unsafe fn appeal_hi_r(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "link", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
 unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, true);
@@ -49,7 +49,7 @@ unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "link", script = "game_turndash" , category = ACMD_GAME , low_priority)]
 unsafe fn link_turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
 		WorkModule::on_flag(boma, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH);
@@ -64,7 +64,7 @@ unsafe fn link_turn_dash_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "link_boomerang", script = "game_fly" , category = ACMD_GAME , low_priority)]
 unsafe fn link_boomerang_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 80, 35, 0, 80, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -4, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         AttackModule::enable_safe_pos(boma);
@@ -79,7 +79,7 @@ unsafe fn link_boomerang_fly_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "link_boomerang", script = "game_turn" , category = ACMD_GAME , low_priority)]
 unsafe fn link_boomerang_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 80, 40, 0, 55, 3.6, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -1.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
     }

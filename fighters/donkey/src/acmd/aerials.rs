@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "donkey", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn attack_air_n(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.65);
@@ -46,7 +46,7 @@ unsafe fn attack_air_n(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "donkey", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn attack_air_f(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         FT_MOTION_RATE(fighter, 1.1);
@@ -85,7 +85,7 @@ unsafe fn attack_air_f(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "donkey", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn attack_air_b(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     
     frame(lua_state, 7.0);
     if is_excute(fighter) {
@@ -114,7 +114,7 @@ unsafe fn attack_air_b(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "donkey", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
 unsafe fn donkey_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state,6.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW_FLIP(fighter,Hash40::new("donkey_attack_line"), Hash40::new("donkey_attack_line"), Hash40::new("top"), 6, 6, 9, 190, 0, 0, 1.8, true, *EF_FLIP_YZ)
@@ -129,7 +129,7 @@ unsafe fn donkey_attack_air_b_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "donkey", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn attack_air_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.250);
@@ -161,7 +161,7 @@ unsafe fn attack_air_hi(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "donkey", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn attack_air_lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);

@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "younglink", script = "game_specials1" , category = ACMD_GAME , low_priority)]
 unsafe fn younglink_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.385);
@@ -26,7 +26,7 @@ unsafe fn younglink_special_s1_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "younglink", script = "game_specialairs1" , category = ACMD_GAME , low_priority)]
 unsafe fn younglink_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.385);
@@ -49,7 +49,7 @@ unsafe fn younglink_special_air_s1_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "younglink", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn younglink_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("sword"), 1.0, 173, 100, 55, 0, 3.5, 2.2, 0.0, 1.0, None, None, None, 0.4, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -79,7 +79,7 @@ unsafe fn younglink_special_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "younglink", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn younglink_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 367, 100, 107, 0, 7.0, 0.0, 7.5, 10.5, Some(0.0), Some(7.5), Some(8.5), 1.0, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -174,7 +174,7 @@ unsafe fn younglink_special_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "younglink", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
 unsafe fn younglink_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 17.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
@@ -196,7 +196,7 @@ unsafe fn younglink_special_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "younglink", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn younglink_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 17.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {

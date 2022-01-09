@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "wario", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
 unsafe fn wario_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.476);
@@ -33,7 +33,7 @@ unsafe fn wario_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "wario", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn wario_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.476);
@@ -61,7 +61,7 @@ unsafe fn wario_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "wario", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
 unsafe fn wario_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.476);
@@ -89,7 +89,7 @@ unsafe fn wario_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "wario", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn wario_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 92, 102, 0, 53, 5.0, 0.0, 18.0, 5.0, Some(0.0), Some(18.0), Some(-5.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -110,7 +110,7 @@ unsafe fn wario_attack_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "wario", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn wario_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 67, 45, 0, 35, 4.5, 0.0, 3.8, 10.0, Some(0.0), Some(3.8), Some(4.0), 1.15, 1.2, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.2, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);

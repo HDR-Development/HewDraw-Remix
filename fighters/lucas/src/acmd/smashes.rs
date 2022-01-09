@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "lucas", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
 unsafe fn lucas_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         VisibilityModule::set_int64(boma, Hash40::new("bat").hash as i64, Hash40::new("bat_visible").hash as i64);
     }
@@ -35,7 +35,7 @@ unsafe fn lucas_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucas", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
 unsafe fn lucas_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         WHOLE_HIT(fighter, *HIT_STATUS_INVINCIBLE);

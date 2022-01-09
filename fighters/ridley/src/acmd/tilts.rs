@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "ridley", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
 unsafe fn ridley_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.800);
@@ -31,7 +31,7 @@ unsafe fn ridley_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ridley", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn ridley_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.800);
@@ -57,7 +57,7 @@ unsafe fn ridley_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ridley", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
 unsafe fn ridley_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.800);
@@ -83,7 +83,7 @@ unsafe fn ridley_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ridley", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn ridley_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
@@ -112,7 +112,7 @@ unsafe fn ridley_attack_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ridley", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn ridley_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.875);

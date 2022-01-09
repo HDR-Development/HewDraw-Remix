@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "master", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
 unsafe fn master_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, false, 0);
     }
@@ -43,7 +43,7 @@ unsafe fn master_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "master", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
 unsafe fn master_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, false, 0);
     }
@@ -81,7 +81,7 @@ unsafe fn master_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "master", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
 unsafe fn master_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, false, 0);
     }

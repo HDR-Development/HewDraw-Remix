@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "marth", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {  }frame(lua_state, 8.0);
     if is_excute(fighter) {
@@ -27,7 +27,7 @@ unsafe fn marth_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("sword1"), 6.5, 100, 104, 0, 60, 3.5, 0.0, 0.0, 2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -59,7 +59,7 @@ unsafe fn marth_attack_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("sword1"), 9.0, 30, 75, 0, 40, 3.5, 0.0, 0.0, 2.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);

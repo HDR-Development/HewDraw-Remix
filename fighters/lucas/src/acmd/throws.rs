@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "lucas", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
 unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.500);
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 7.0, 105, 50, 0, 85, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -26,7 +26,7 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucas", script = "expression_throwlw" , category = ACMD_EXPRESSION , low_priority)]
 unsafe fn expression_throwlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     
 }
 

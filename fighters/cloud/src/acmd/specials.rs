@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "cloud", script = "game_specials1" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_CLOUD_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
     }
@@ -45,7 +45,7 @@ unsafe fn cloud_special_s1_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "cloud", script = "game_specialairs1" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_CLOUD_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
     }
@@ -85,7 +85,7 @@ unsafe fn cloud_special_air_s1_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "cloud", script = "game_specials2" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_special_s2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_CLOUD_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
         WorkModule::on_flag(boma, *FIGHTER_CLOUD_STATUS_SPECIAL_S_FLAG_DETACH_EFFECT);
@@ -119,7 +119,7 @@ unsafe fn cloud_special_s2_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "cloud", script = "game_specialairs2" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_special_air_s2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_CLOUD_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
         WorkModule::on_flag(boma, *FIGHTER_CLOUD_STATUS_SPECIAL_S_FLAG_DETACH_EFFECT);
@@ -155,7 +155,7 @@ unsafe fn cloud_special_air_s2_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "cloud", script = "game_specials1_lb" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_special_s1_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         if(PostureModule::lr(boma) < 0.0){
@@ -184,7 +184,7 @@ unsafe fn cloud_special_s1_lb_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "cloud", script = "game_specialairs1_lb" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_special_air_s1_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         if(PostureModule::lr(boma) < 0.0){
@@ -213,7 +213,7 @@ unsafe fn cloud_special_air_s1_lb_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "cloud", script = "game_specials2_lb" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_special_s2_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.75);
     frame(lua_state, 2.0);
     if is_excute(fighter) {
@@ -239,7 +239,7 @@ unsafe fn cloud_special_s2_lb_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "cloud", script = "game_specialairs2_lb" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_special_air_s2_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     FT_MOTION_RATE(fighter, 0.75);
     frame(lua_state, 2.0);
     if is_excute(fighter) {
@@ -265,7 +265,7 @@ unsafe fn cloud_special_air_s2_lb_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "cloud", script = "game_specials3_lb" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_special_s3_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.750);
@@ -328,7 +328,7 @@ unsafe fn cloud_special_s3_lb_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "cloud", script = "game_specialairs3_lb" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_special_air_s3_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.750);
@@ -387,7 +387,7 @@ unsafe fn cloud_special_air_s3_lb_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "cloud", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.333);
@@ -457,7 +457,7 @@ unsafe fn cloud_special_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "cloud", script = "game_specialhi2" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_special_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_NONE);
@@ -498,7 +498,7 @@ unsafe fn cloud_special_hi2_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "cloud", script = "game_specialhi2fall" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_special_hi2_fall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_NONE);
         WorkModule::off_flag(boma, *FIGHTER_CLOUD_STATUS_SPECIAL_HI_FLAG_IS_ENABLE_CONTROL);
@@ -525,7 +525,7 @@ unsafe fn cloud_special_hi2_fall_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "cloud", script = "game_specialhi_lb" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_special_hi_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
@@ -602,7 +602,7 @@ unsafe fn cloud_special_hi_lb_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "cloud", script = "game_specialairhi_lb" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_special_air_hi_lb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
@@ -679,7 +679,7 @@ unsafe fn cloud_special_air_hi_lb_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "cloud", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.812);
@@ -735,7 +735,7 @@ unsafe fn cloud_special_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "cloud", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.812);

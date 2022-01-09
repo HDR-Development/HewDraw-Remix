@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "tantan", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn tantan_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -36,7 +36,7 @@ unsafe fn tantan_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "tantan", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn tantan_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.571);
         SET_SPEED_EX(fighter, 0, 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -80,7 +80,7 @@ unsafe fn tantan_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "tantan", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn tantan_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 76, 110, 0, 60, 6.0, 0.0, 5.0, 6.5, Some(0.0), Some(5.0), Some(-6.5), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);

@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "metaknight", script = "game_specialnspin" , category = ACMD_GAME , low_priority)]
 unsafe fn metaknight_special_n_spin_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 110, 0, 0, 40, 7.0, 0.0, 8.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 1.0, 110, 0, 0, 40, 7.0, 0.0, 11.0, 3.0, Some(0.0), Some(11.0), Some(-3.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 5, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
@@ -16,7 +16,7 @@ unsafe fn metaknight_special_n_spin_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "metaknight", script = "game_specialnend" , category = ACMD_GAME , low_priority)]
 unsafe fn metaknight_special_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         ATTACK(fighter, 0, 1, Hash40::new("top"), 5.0, 90, 125, 0, 50, 13.0, 0.0, 10.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
@@ -31,7 +31,7 @@ unsafe fn metaknight_special_n_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "metaknight", script = "game_specialairnend" , category = ACMD_GAME , low_priority)]
 unsafe fn metaknight_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         ATTACK(fighter, 0, 1, Hash40::new("top"), 5.0, 90, 125, 0, 50, 13.0, 0.0, 10.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
@@ -46,7 +46,7 @@ unsafe fn metaknight_special_air_n_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "metaknight", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn metaknight_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let mut pos = 0.0;
     let mut prev_pos = 0.0;
     frame(lua_state, 6.0);
@@ -102,7 +102,7 @@ unsafe fn metaknight_special_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "metaknight", script = "game_specialhiloop" , category = ACMD_GAME , low_priority)]
 unsafe fn metaknight_special_hi_loop_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let mut pos = 0.0;
     let mut prev_pos = 0.0;
     if is_excute(fighter) {
@@ -169,7 +169,7 @@ unsafe fn metaknight_special_hi_loop_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "metaknight", script = "game_speciallwf" , category = ACMD_GAME , low_priority)]
 unsafe fn metaknight_special_lw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_METAKNIGHT_STATUS_SPECIAL_LW_ATTACK_FLAG_NO_HOP);
         ArticleModule::change_motion(boma, *FIGHTER_METAKNIGHT_GENERATE_ARTICLE_MANTLE, smash::phx::Hash40::new("special_air_lw_f"), false, 0.0);
@@ -198,7 +198,7 @@ unsafe fn metaknight_special_lw_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "metaknight", script = "game_speciallwsubf" , category = ACMD_GAME , low_priority)]
 unsafe fn metaknight_special_lw_sub_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 361, 114, 0, 20, 8.5, 0.0, 7.5, 6.0, Some(0.0), Some(7.5), Some(8.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0, 361, 114, 0, 20, 5.5, 0.0, 6.4, 20.0, Some(0.0), Some(6.4), Some(-2.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -214,7 +214,7 @@ unsafe fn metaknight_special_lw_sub_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "metaknight", script = "game_specialairlwf" , category = ACMD_GAME , low_priority)]
 unsafe fn metaknight_special_air_lw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_METAKNIGHT_STATUS_SPECIAL_LW_ATTACK_FLAG_NO_HOP);
         ArticleModule::change_motion(boma, *FIGHTER_METAKNIGHT_GENERATE_ARTICLE_MANTLE, smash::phx::Hash40::new("special_air_lw_f"), false, 0.0);
@@ -245,7 +245,7 @@ unsafe fn metaknight_special_air_lw_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "metaknight", script = "game_speciallwsubairf" , category = ACMD_GAME , low_priority)]
 unsafe fn metaknight_special_lw_sub_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 53, 114, 0, 20, 11.2, 0.0, 7.5, 6.0, Some(0.0), Some(7.5), Some(8.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0, 53, 114, 0, 20, 7.5, 0.0, 6.4, 21.0, Some(0.0), Some(6.4), Some(-2.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -260,7 +260,7 @@ unsafe fn metaknight_special_lw_sub_air_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "metaknight", script = "game_speciallwb" , category = ACMD_GAME , low_priority)]
 unsafe fn metaknight_special_lw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);
     }
@@ -293,7 +293,7 @@ unsafe fn metaknight_special_lw_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "metaknight", script = "game_speciallwsubb" , category = ACMD_GAME , low_priority)]
 unsafe fn metaknight_special_lw_sub_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 361, 114, 0, 20, 7.5, 0.0, 7.5, -6.0, Some(0.0), Some(7.5), Some(-8.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0, 361, 114, 0, 20, 5.5, 0.0, 6.5, -16.5, Some(0.0), Some(6.5), Some(2.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -308,7 +308,7 @@ unsafe fn metaknight_special_lw_sub_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "metaknight", script = "game_specialairlwb" , category = ACMD_GAME , low_priority)]
 unsafe fn metaknight_special_air_lw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);
     }
@@ -342,7 +342,7 @@ unsafe fn metaknight_special_air_lw_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "metaknight", script = "game_speciallwsubairb" , category = ACMD_GAME , low_priority)]
 unsafe fn metaknight_special_lw_sub_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 361, 114, 0, 20, 11.2, 0.0, 7.5, -6.0, Some(0.0), Some(7.5), Some(-8.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0, 361, 114, 0, 20, 7.5, 0.0, 6.5, -21.0, Some(0.0), Some(6.5), Some(2.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);

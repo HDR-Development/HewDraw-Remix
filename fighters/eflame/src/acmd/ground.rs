@@ -3,7 +3,7 @@ use super::*;
 #[acmd_script( agent = "eflame", script = "game_attack12" , category = ACMD_GAME , low_priority)]
 unsafe fn eflame_12(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         if ArticleModule::is_exist(boma, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD) {

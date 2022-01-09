@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "luigi", script = "game_specialn" , category = ACMD_GAME , low_priority)]
 unsafe fn game_specialn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, mario::FIREBRAND_ACTIVATED);
         VarModule::off_flag(fighter.battle_object, mario::DOUBLE_FIREBALL);
@@ -49,7 +49,7 @@ unsafe fn game_specialn(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "luigi", script = "game_specialairn" , category = ACMD_GAME , low_priority)]
 unsafe fn game_specialairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, mario::FIREBRAND_ACTIVATED);
         VarModule::off_flag(fighter.battle_object, mario::DOUBLE_FIREBALL);
@@ -94,7 +94,7 @@ unsafe fn game_specialairn(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "luigi", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
 unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WHOLE_HIT(fighter, *HIT_STATUS_INVINCIBLE);
@@ -134,7 +134,7 @@ unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "luigi", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn game_specialairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_LW_FLAG_RISE);

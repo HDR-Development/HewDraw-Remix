@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "ganon", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn ganon_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
@@ -27,7 +27,7 @@ unsafe fn ganon_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ganon", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn ganon_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("legr"), 12.0, 60, 94, 0, 34, 3.0, 0.0, 0.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 3, 0.35, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -44,7 +44,7 @@ unsafe fn ganon_attack_lw3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ganon", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn ganon_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.579);
@@ -96,7 +96,7 @@ unsafe fn ganon_attack_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ganon", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
 unsafe fn ganon_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10e97de698), Hash40::new("top"), 0, 15, -3, 180, 190, -90, 1.15, true);
@@ -113,14 +113,14 @@ unsafe fn ganon_attack_hi3_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ganon", script = "expression_attackhi3" , category = ACMD_EXPRESSION , low_priority)]
 unsafe fn ganon_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     
 }
 
 #[acmd_script( agent = "ganon", script = "sound_attackhi3" , category = ACMD_SOUND , low_priority)]
 unsafe fn ganon_attack_hi3_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 21.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new_raw(0x11d7624dd3));

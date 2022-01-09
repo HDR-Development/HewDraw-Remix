@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "dolly", script = "game_attack11" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         MeterModule::watch_damage(fighter.battle_object, true);
@@ -45,7 +45,7 @@ unsafe fn dolly_attack_11_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_attack12" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
@@ -84,7 +84,7 @@ unsafe fn dolly_attack_12_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_attack13" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -121,7 +121,7 @@ unsafe fn dolly_attack_13_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
         VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);

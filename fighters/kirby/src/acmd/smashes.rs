@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "kirby", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attacks4hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -28,7 +28,7 @@ unsafe fn game_attacks4hi(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "kirby", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attacks4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -51,7 +51,7 @@ unsafe fn game_attacks4(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "kirby", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attacks4lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -74,7 +74,7 @@ unsafe fn game_attacks4lw(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "kirby", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackhi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 9.0);
     FT_MOTION_RATE(fighter, 0.6);
     if is_excute(fighter) {
@@ -113,7 +113,7 @@ unsafe fn game_attackhi4(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "kirby", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attacklw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);

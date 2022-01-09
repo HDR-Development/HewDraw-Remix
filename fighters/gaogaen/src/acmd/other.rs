@@ -7,7 +7,7 @@ use smash::app::BattleObjectModuleAccessor;
 #[acmd_script( agent = "gaogaen", script = "game_catch" , category = ACMD_GAME , low_priority)]
 unsafe fn gaogaen_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     
     frame(lua_state, 1.0);
     if is_excute(fighter) {
@@ -43,7 +43,7 @@ unsafe fn gaogaen_catch_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gaogaen", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
 unsafe fn gaogaen_catchturn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     
     frame(lua_state, 1.0);
     if is_excute(fighter) {
@@ -79,7 +79,7 @@ unsafe fn gaogaen_catchturn_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gaogaen", script = "game_catchdash" , category = ACMD_GAME , low_priority)]
 unsafe fn gaogaen_catchdash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     
     frame(lua_state, 1.0);
     if is_excute(fighter) {
@@ -114,7 +114,7 @@ unsafe fn gaogaen_catchdash_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gaogaen", script = "game_dash" , category = ACMD_GAME , low_priority)]
 unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.2);
     }
@@ -129,7 +129,7 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gaogaen", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
 unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -1, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, false);
@@ -144,7 +144,7 @@ unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gaogaen", script = "game_turndash" , category = ACMD_GAME , low_priority)]
 unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH);

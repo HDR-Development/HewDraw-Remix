@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "kirby", script = "game_catch" , category = ACMD_GAME , low_priority)]
 unsafe fn game_catch(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.200);
@@ -32,7 +32,7 @@ unsafe fn game_catch(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "kirby", script = "game_catchdash" , category = ACMD_GAME , low_priority)]
 unsafe fn game_catchdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         GrabModule::set_rebound(boma, true);
@@ -54,7 +54,7 @@ unsafe fn game_catchdash(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "kirby", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
 unsafe fn game_catchturn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         GrabModule::set_rebound(boma, true);

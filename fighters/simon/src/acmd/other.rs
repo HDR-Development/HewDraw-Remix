@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "simon", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
 unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -3, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, false);
@@ -19,7 +19,7 @@ unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "simon", script = "game_turndash" , category = ACMD_GAME , low_priority)]
 unsafe fn simon_turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
 		WorkModule::on_flag(boma, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH);
@@ -34,7 +34,7 @@ unsafe fn simon_turn_dash_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "simon", script = "game_catch" , category = ACMD_GAME , low_priority)]
 unsafe fn simon_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.700);
@@ -62,7 +62,7 @@ unsafe fn simon_catch_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "simon_axe", script = "game_fly" , category = ACMD_GAME , low_priority)]
 unsafe fn simon_axe_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("axe"), 8.5, 74, 45, 0, 55, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 8, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
     }

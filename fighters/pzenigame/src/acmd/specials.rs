@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "pzenigame", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn pzenigame_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         SA_SET(fighter, *SITUATION_KIND_AIR);
@@ -45,7 +45,7 @@ unsafe fn pzenigame_special_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pzenigame", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn pzenigame_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         SA_SET(fighter, *SITUATION_KIND_AIR);

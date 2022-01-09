@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "eflame", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn eflame_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 2.5);
@@ -51,7 +51,7 @@ unsafe fn eflame_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "eflame", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn eflame_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 2.5);
@@ -96,7 +96,7 @@ unsafe fn eflame_attack_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "eflame", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn eflame_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 2.5);

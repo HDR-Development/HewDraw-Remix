@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "ganon", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
 unsafe fn ganon_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::remove_exist(boma, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, app::ArticleOperationTarget(0));
         ArticleModule::generate_article(boma, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, false, 0);
@@ -46,7 +46,7 @@ unsafe fn ganon_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ganon", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
 unsafe fn ganon_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::remove_exist(boma, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, app::ArticleOperationTarget(0));
         ArticleModule::generate_article(boma, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, false, 0);
@@ -83,7 +83,7 @@ unsafe fn ganon_attack_hi4_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ganon", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
 unsafe fn ganon_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::remove_exist(boma, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, app::ArticleOperationTarget(0));
         ArticleModule::generate_article(boma, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, false, 0);

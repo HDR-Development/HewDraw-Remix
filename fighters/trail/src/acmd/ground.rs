@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "trail", script = "game_attack11" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attack11(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::trail::ATTACK_12_INTO_S3);
@@ -61,7 +61,7 @@ unsafe fn game_attack11(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "trail", script = "game_attack12" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attack12(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("haver"), 3.0, 60, 12, 0, 42, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_STAB, *ATTACK_REGION_SWORD);
@@ -95,7 +95,7 @@ unsafe fn game_attack12(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "trail", script = "game_attack13" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attack13(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("haver"), 4.0, 46, 94, 0, 68, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_CLEAVE, *ATTACK_REGION_SWORD);
@@ -113,7 +113,7 @@ unsafe fn game_attack13(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "trail", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.5);

@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "wolf", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
 unsafe fn wolf_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 361, 106, 0, 50, 6.0, 0.0, 13.0, 14.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
@@ -23,7 +23,7 @@ unsafe fn wolf_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "wolf", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn wolf_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
@@ -41,7 +41,7 @@ unsafe fn wolf_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "wolf", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
 unsafe fn wolf_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
@@ -60,7 +60,7 @@ unsafe fn wolf_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "wolf", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn wolf_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         ATTACK(fighter, 1, 0, Hash40::new("legr"), 8.0, 75, 105, 0, 35, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -77,7 +77,7 @@ unsafe fn wolf_attack_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "wolf", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn wolf_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("legr"), 7.0, 60, 100, 0, 45, 5.0, -2.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_KICK);

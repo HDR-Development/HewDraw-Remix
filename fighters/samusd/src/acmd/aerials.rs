@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "samusd", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         FT_MOTION_RATE(fighter, 1.4);
@@ -47,7 +47,7 @@ unsafe fn game_attackairn(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samusd", script = "effect_attackairn" , category = ACMD_EFFECT , low_priority)]
 unsafe fn effect_attackairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("hip"), -2.0, 0.0, 0.0, 0, 0, 0, 2.5, true);
@@ -146,7 +146,7 @@ unsafe fn effect_attackairn(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samusd", script = "sound_attackairn" , category = ACMD_SOUND , low_priority)]
 unsafe fn sound_attackairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     for _ in 0..2 {
         if is_excute(fighter) {
@@ -175,7 +175,7 @@ unsafe fn sound_attackairn(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samusd", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         FT_MOTION_RATE(fighter, 0.875);
@@ -217,7 +217,7 @@ unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samusd", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
 unsafe fn effect_attackairf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("arml"), 0.0, 0.0, 0.0, 0, 0, 0, 1.89999998, true);
@@ -235,7 +235,7 @@ unsafe fn effect_attackairf(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samusd", script = "sound_attackairf" , category = ACMD_SOUND , low_priority)]
 unsafe fn sound_attackairf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_samusd_swing_m"));
@@ -246,7 +246,7 @@ unsafe fn sound_attackairf(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samusd", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         //FT_MOTION_RATE(fighter, 0.714); // 7F startup
@@ -283,7 +283,7 @@ unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samusd", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -332,7 +332,7 @@ unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samusd", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
 unsafe fn effect_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("arml"), 0.0, 0.0, 0.0, 0, 0, 0, 1.89999998, true);
@@ -383,7 +383,7 @@ unsafe fn effect_attackairhi(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samusd", script = "sound_attackairhi" , category = ACMD_SOUND , low_priority)]
 unsafe fn sound_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_samusd_swing_s"));
@@ -398,7 +398,7 @@ unsafe fn sound_attackairhi(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samusd", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.562);

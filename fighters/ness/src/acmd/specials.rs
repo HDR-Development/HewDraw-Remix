@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "ness", script = "game_specialnfire" , category = ACMD_GAME , low_priority)]
 unsafe fn special_n_fire_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 75, 10, 0, 150, 6.0, 0.0, 5.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
@@ -18,7 +18,7 @@ unsafe fn special_n_fire_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ness", script = "game_specialairnfire" , category = ACMD_GAME , low_priority)]
 unsafe fn special_air_n_fire_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 75, 10, 0, 150, 3.0, 0.0, 4.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
@@ -32,7 +32,7 @@ unsafe fn special_air_n_fire_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ness", script = "sound_specials" , category = ACMD_SOUND )]
 unsafe fn sound_specials(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 
     let rng = app::sv_math::rand(smash::hash40("fighter"), 2);
 
@@ -58,7 +58,7 @@ unsafe fn sound_specials(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ness", script = "sound_specialairs" , category = ACMD_SOUND )]
 unsafe fn sound_specialairs(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let rng = app::sv_math::rand(smash::hash40("fighter"), 2);
 
     if rng == 0 {
@@ -78,7 +78,7 @@ unsafe fn sound_specialairs(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ness", script = "game_speciallwhold" , category = ACMD_GAME , low_priority)]
 unsafe fn special_lw_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     //wait_loop_clear(lua_state);
     for _ in 0..999 {
         if is_excute(fighter) {

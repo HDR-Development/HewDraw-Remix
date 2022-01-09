@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "demon", script = "expression_throwhi" , category = ACMD_EXPRESSION , low_priority)]
 unsafe fn demon_throw_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);

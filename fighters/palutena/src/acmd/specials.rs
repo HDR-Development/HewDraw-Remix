@@ -7,7 +7,7 @@ use super::*;
 #[acmd_script( agent = "palutena", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
 unsafe fn palutena_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 6.8, 6.8);
@@ -39,7 +39,7 @@ unsafe fn palutena_special_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "palutena", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn palutena_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 6.8, 6.8);
@@ -71,7 +71,7 @@ unsafe fn palutena_special_air_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "palutena", script = "game_speciallwreflect" , category = ACMD_GAME , low_priority)]
 unsafe fn palutena_special_lw_reflect_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         PostureModule::set_lr(boma, VarModule::get_float(fighter.battle_object, vars::palutena::SPECIAL_LW_LR));
         PostureModule::update_rot_y_lr(boma);
@@ -96,7 +96,7 @@ unsafe fn palutena_special_lw_reflect_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "palutena", script = "game_specialairlwreflect" , category = ACMD_GAME , low_priority)]
 unsafe fn palutena_special_air_lw_reflect_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         PostureModule::set_lr(boma, VarModule::get_float(fighter.battle_object, vars::palutena::SPECIAL_LW_LR));
         PostureModule::update_rot_y_lr(boma);

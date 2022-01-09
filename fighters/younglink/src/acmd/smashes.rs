@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "younglink", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
 unsafe fn younglink_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -43,7 +43,7 @@ unsafe fn younglink_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "younglink", script = "game_attacks4s2" , category = ACMD_GAME , low_priority)]
 unsafe fn younglink_attack_s4_s2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("sword"), 12.0, 48, 119, 0, 43, 3.8, 0.5, 1.0, 1.7, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -60,7 +60,7 @@ unsafe fn younglink_attack_s4_s2_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "younglink", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
 unsafe fn younglink_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);

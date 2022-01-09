@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "captain", script = "game_specialn" , category = ACMD_GAME , low_priority)]
 unsafe fn captain_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.800);
@@ -34,7 +34,7 @@ unsafe fn captain_special_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "captain", script = "game_specialnturn" , category = ACMD_GAME , low_priority)]
 unsafe fn captain_special_n_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 21.0);
     if is_excute(fighter) {
         PostureModule::reverse_lr(boma);
@@ -64,7 +64,7 @@ unsafe fn captain_special_n_turn_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "captain", script = "game_specialairn" , category = ACMD_GAME , low_priority)]
 unsafe fn captain_special_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         KineticModule::add_speed(boma, &Vector3f::new(0.0, 0.5, 0.0));
@@ -107,7 +107,7 @@ unsafe fn captain_special_air_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "captain", script = "game_specialairnturn" , category = ACMD_GAME , low_priority)]
 unsafe fn captain_special_air_n_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 21.0);
     if is_excute(fighter) {
         REVERSE_LR(fighter);
@@ -147,7 +147,7 @@ unsafe fn captain_special_air_n_turn_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "captain", script = "game_specialsstart" , category = ACMD_GAME , low_priority)]
 unsafe fn captain_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         JostleModule::set_team(boma, 1);
@@ -178,7 +178,7 @@ unsafe fn captain_special_s_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "captain", script = "game_specialsend" , category = ACMD_GAME , low_priority)]
 unsafe fn captain_special_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.500);
@@ -214,7 +214,7 @@ unsafe fn captain_special_s_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "captain", script = "game_specialairlwend" , category = ACMD_GAME , low_priority)]
 unsafe fn captain_special_air_lw_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.790);

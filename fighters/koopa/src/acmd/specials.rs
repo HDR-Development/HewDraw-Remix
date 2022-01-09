@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "koopa", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn koopa_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 6.5, 6.5);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
@@ -61,7 +61,7 @@ unsafe fn koopa_special_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "koopa", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn koopa_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_KOOPA_STATUS_SPECIAL_HI_FLAG4);
@@ -104,7 +104,7 @@ unsafe fn koopa_special_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "koopa", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
 unsafe fn koopa_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 80, 100, 60, 0, 4.0, 0.0, 1.0, 17.0, Some(0.0), Some(9.0), Some(17.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
@@ -129,7 +129,7 @@ unsafe fn koopa_special_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "koopa", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn koopa_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 31.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_KOOPA_STATUS_SPECIAL_LW_FLAG1);

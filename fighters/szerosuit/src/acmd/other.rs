@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "szerosuit", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn szerosuit_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 5.5, 60, 110, 0, 70, 9.0, 0.0, 7.0, 1.0, Some(0.0), Some(7.0), Some(-1.5), 0.3, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -19,7 +19,7 @@ unsafe fn szerosuit_landing_air_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "szerosuit", script = "game_catch" , category = ACMD_GAME , low_priority)]
 unsafe fn szerosuit_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         GrabModule::set_rebound(boma, true);
@@ -46,7 +46,7 @@ unsafe fn szerosuit_catch_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "szerosuit", script = "sound_catch" , category = ACMD_SOUND , low_priority)]
 unsafe fn szerosuit_catch_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new_raw(0x1281c86397));
@@ -61,14 +61,14 @@ unsafe fn szerosuit_catch_sound(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "szerosuit", script = "effect_catch" , category = ACMD_EFFECT , low_priority)]
 unsafe fn szerosuit_catch_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     
 }
 
 #[acmd_script( agent = "szerosuit", script = "expression_catch" , category = ACMD_EXPRESSION , low_priority)]
 unsafe fn szerosuit_catch_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -81,7 +81,7 @@ unsafe fn szerosuit_catch_expression(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "szerosuit", script = "game_dash" , category = ACMD_GAME , low_priority)]
 unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
@@ -92,7 +92,7 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "szerosuit", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
 unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 0.53, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_ALPHA(fighter, 0.7);
@@ -106,7 +106,7 @@ unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "szerosuit", script = "game_turndash" , category = ACMD_GAME , low_priority)]
 unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH);

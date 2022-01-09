@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "miigunner", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn miigunner_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.476);
@@ -47,7 +47,7 @@ unsafe fn miigunner_attack_air_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn miigunner_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	if is_excute(fighter) {
 		VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -63,8 +63,8 @@ unsafe fn miigunner_attack_air_f_game(fighter: &mut L2CAgentBase) {
 	frame(lua_state, 8.0);
     if is_excute(fighter) {
 		// Trigger boosted aerial
-		let cat1 = ControlModule::get_command_flag_cat(boma, 0);
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) || hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) || hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) || hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N) {
+		let cat1 = 0;
+        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) || fighter.is_cat_flag(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) || fighter.is_cat_flag(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) || fighter.is_cat_flag(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N) {
             VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
 			FT_MOTION_RATE(fighter, 2.5);
         }
@@ -117,7 +117,7 @@ unsafe fn miigunner_attack_air_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
 unsafe fn miigunner_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	frame(lua_state, 7.0);
 	if is_excute(fighter) {
 		EFFECT_FOLLOW(fighter, Hash40::new_raw(0x16688e0af6), Hash40::new("armr"), 6.0, 0, 0, 0, 90, 0, 1.0, true);
@@ -142,7 +142,7 @@ unsafe fn miigunner_attack_air_f_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn miigunner_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
 		VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -154,8 +154,8 @@ unsafe fn miigunner_attack_air_b_game(fighter: &mut L2CAgentBase) {
 	frame(lua_state, 7.0);
     if is_excute(fighter) {
 		// Trigger boosted aerial
-		let cat1 = ControlModule::get_command_flag_cat(boma, 0);
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) || hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) || hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) || hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N) {
+		let cat1 = 0;
+        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) || fighter.is_cat_flag(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) || fighter.is_cat_flag(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) || fighter.is_cat_flag(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N) {
             VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
 			FT_MOTION_RATE(fighter, 2.5);
         }
@@ -227,7 +227,7 @@ unsafe fn miigunner_attack_air_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
 unsafe fn miigunner_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	frame(lua_state, 7.0);
     if is_excute(fighter) {
         // Flash to indicate boosted aerial
@@ -258,7 +258,7 @@ unsafe fn miigunner_attack_air_b_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn miigunner_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.667);
@@ -320,7 +320,7 @@ unsafe fn miigunner_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn miigunner_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	if is_excute(fighter) {
 		VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
 		VarModule::off_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
@@ -455,7 +455,7 @@ unsafe fn miigunner_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
 unsafe fn miigunner_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	frame(lua_state, 5.0);
 	if is_excute(fighter) {
 		EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("arml"), 5.0, 0, 0, 0, 0, 0, 1.11, true);

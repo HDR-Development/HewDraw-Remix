@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "dedede", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn dedede_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("hammer1"), 2.5, 15, 100, 60, 0, 3.0, -8.0, 0.0, 0.0, Some(-2.0), Some(0.0), Some(0.0), 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
@@ -32,7 +32,7 @@ unsafe fn dedede_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dedede", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn dedede_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);

@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "mewtwo", script = "game_attack11" , category = ACMD_GAME , low_priority)]
 unsafe fn mewtwo_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.600);
@@ -44,7 +44,7 @@ unsafe fn mewtwo_attack_11_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "mewtwo", script = "game_attack100end" , category = ACMD_GAME , low_priority)]
 unsafe fn mewtwo_attack_100_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 361, 110, 0, 82, 5.5, 0.0, 10.5, 11.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
@@ -61,7 +61,7 @@ unsafe fn mewtwo_attack_100_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "mewtwo", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
 unsafe fn mewtwo_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 54, 67, 0, 80, 5.5, 0.0, 10.0, 16.299999, Some(0.0), Some(8.5), Some(16.299999), 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);

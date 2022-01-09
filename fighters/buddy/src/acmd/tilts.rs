@@ -11,7 +11,7 @@ pub fn install() {
 #[acmd_script( agent = "buddy", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn buddy_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         HIT_NO(fighter, 12, *HIT_STATUS_NORMAL);
         HIT_NO(fighter, 13, *HIT_STATUS_NORMAL);
@@ -51,7 +51,7 @@ unsafe fn buddy_attack_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "buddy", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn buddy_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0 / 1.571); // originally was MotionModule::set_rate, but let's use the lua macros for consistency
     }

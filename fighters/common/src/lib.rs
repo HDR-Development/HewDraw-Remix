@@ -7,6 +7,7 @@ pub mod prelude {
     pub use utils::{self, *, ext::*, consts::*, util::*};
     pub use super::StatusShift;
     pub use super::InputCheck;
+    pub use super::GetObjects;
 }
 
 pub mod acmd_import {

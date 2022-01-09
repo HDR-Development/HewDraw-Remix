@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "miigunner", script = "game_specialn1start" , category = ACMD_GAME , low_priority)]
 unsafe fn special_n1_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	if is_excute(fighter) {
 		VarModule::set_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 0.0);
 		VarModule::off_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
@@ -20,7 +20,7 @@ unsafe fn special_n1_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "game_specialairn1start" , category = ACMD_GAME , low_priority)]
 unsafe fn special_air_n1_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	if is_excute(fighter) {
 		VarModule::set_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 0.0);
 		VarModule::off_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
@@ -36,7 +36,7 @@ unsafe fn special_air_n1_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "game_specialn1firemax" , category = ACMD_GAME , low_priority)]
 unsafe fn special_n1_fire_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	if is_excute(fighter) {
 		VarModule::set_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 0.0);
 		VarModule::off_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
@@ -88,7 +88,7 @@ unsafe fn special_n1_fire_max_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "effect_specialn1firemax" , category = ACMD_EFFECT , low_priority)]
 unsafe fn special_n1_fire_max_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	frame(lua_state, 1.20);
 	if is_excute(fighter) {
 		// Flash to signify first charge level reached
@@ -120,7 +120,7 @@ unsafe fn special_n1_fire_max_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "sound_specialn1firemax" , category = ACMD_SOUND , low_priority)]
 unsafe fn special_n1_fire_max_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	frame(lua_state, 1.0);
 	if is_excute(fighter) {
 		PLAY_SEQUENCE(fighter, Hash40::new("seq_miigunner_rnd_special_c1_n01"));
@@ -137,7 +137,7 @@ unsafe fn special_n1_fire_max_sound(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "game_specialairn1firemax" , category = ACMD_GAME , low_priority)]
 unsafe fn special_air_n1_fire_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	if is_excute(fighter) {
 		VarModule::set_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 0.0);
 		VarModule::off_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
@@ -189,7 +189,7 @@ unsafe fn special_air_n1_fire_max_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "effect_specialairn1firemax" , category = ACMD_EFFECT , low_priority)]
 unsafe fn special_air_n1_fire_max_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	frame(lua_state, 1.20);
 	if is_excute(fighter) {
 		// Flash to signify first charge level reached
@@ -221,7 +221,7 @@ unsafe fn special_air_n1_fire_max_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "sound_specialairn1firemax" , category = ACMD_SOUND , low_priority)]
 unsafe fn special_air_n1_fire_max_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	frame(lua_state, 1.0);
 	if is_excute(fighter) {
 		PLAY_SEQUENCE(fighter, Hash40::new("seq_miigunner_rnd_special_c1_n01"));
@@ -238,7 +238,7 @@ unsafe fn special_air_n1_fire_max_sound(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "game_specialn2loop" , category = ACMD_GAME , low_priority)]
 unsafe fn special_n2_loop_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	frame(lua_state, 1.0);
 	if is_excute(fighter) {
 		FT_MOTION_RATE(fighter, 1);
@@ -263,7 +263,7 @@ unsafe fn special_n2_loop_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "game_specialn3start" , category = ACMD_GAME , low_priority)]
 unsafe fn special_n3_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	if is_excute(fighter) {
 		VarModule::set_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 0.0);
 		VarModule::off_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
@@ -298,7 +298,7 @@ unsafe fn special_n3_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "game_specialairn3start" , category = ACMD_GAME , low_priority)]
 unsafe fn special_air_n3_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	if is_excute(fighter) {
 		VarModule::set_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 0.0);
 		VarModule::off_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
@@ -333,7 +333,7 @@ unsafe fn special_air_n3_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "game_specialhi1" , category = ACMD_GAME , low_priority)]
 unsafe fn special_hi1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	if is_excute(fighter) {
 		VarModule::set_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 0.0);
 		VarModule::off_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
@@ -394,7 +394,7 @@ unsafe fn special_hi1_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "game_specialairhi1" , category = ACMD_GAME , low_priority)]
 unsafe fn special_air_hi1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	if is_excute(fighter) {
 		VarModule::set_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 0.0);
 		VarModule::off_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
@@ -457,7 +457,7 @@ unsafe fn special_air_hi1_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "game_specialhi2" , category = ACMD_GAME , low_priority)]
 unsafe fn special_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	frame(lua_state, 2.0);
 	if is_excute(fighter) {
 		ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 80, 100, 0, 83, 5.0, 0.0, 18.0, 1.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -483,7 +483,7 @@ unsafe fn special_hi2_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "game_specialhi3start" , category = ACMD_GAME , low_priority)]
 unsafe fn special_hi3_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	frame(lua_state, 1.0);
 	if is_excute(fighter) {
 		FT_MOTION_RATE(fighter, 1.5);
@@ -493,7 +493,7 @@ unsafe fn special_hi3_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "game_specialairhi3start" , category = ACMD_GAME , low_priority)]
 unsafe fn special_air_hi3_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	frame(lua_state, 1.0);
 	if is_excute(fighter) {
 		FT_MOTION_RATE(fighter, 1.5);
@@ -503,7 +503,7 @@ unsafe fn special_air_hi3_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "game_specialhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn special_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	frame(lua_state, 1.0);
 	if is_excute(fighter) {
 		FT_MOTION_RATE(fighter, 0.85);

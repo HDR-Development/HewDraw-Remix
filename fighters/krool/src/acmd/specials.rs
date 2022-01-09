@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "krool", script = "game_specialnfire" , category = ACMD_GAME , low_priority)]
 unsafe fn krool_special_n_fire_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.800);
@@ -34,7 +34,7 @@ unsafe fn krool_special_n_fire_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "krool", script = "game_specialairnfire" , category = ACMD_GAME , low_priority)]
 unsafe fn krool_special_air_n_fire_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.800);
@@ -63,7 +63,7 @@ unsafe fn krool_special_air_n_fire_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "krool", script = "game_specialnloop" , category = ACMD_GAME , low_priority)]
 unsafe fn krool_special_n_loop_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         CATCH(fighter, 0, Hash40::new("top"), 7.0, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(18.0), *FIGHTER_STATUS_KIND_SWALLOWED, *COLLISION_SITUATION_MASK_G);
         CATCH(fighter, 1, Hash40::new("top"), 4.5, 0.0, 9.5, 10.7, Some(0.0), Some(9.5), Some(20.5), *FIGHTER_STATUS_KIND_SWALLOWED, *COLLISION_SITUATION_MASK_A);
@@ -85,7 +85,7 @@ unsafe fn krool_special_n_loop_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "krool", script = "game_specialairnloop" , category = ACMD_GAME , low_priority)]
 unsafe fn krool_special_air_n_loop_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         CATCH(fighter, 0, Hash40::new("top"), 7.0, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(18.0), *FIGHTER_STATUS_KIND_SWALLOWED, *COLLISION_SITUATION_MASK_G);
         CATCH(fighter, 1, Hash40::new("top"), 4.5, 0.0, 9.5, 10.7, Some(0.0), Some(9.5), Some(20.5), *FIGHTER_STATUS_KIND_SWALLOWED, *COLLISION_SITUATION_MASK_A);

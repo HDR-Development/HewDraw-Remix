@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "richter", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 2.5, 4.5);
     }
@@ -42,7 +42,7 @@ unsafe fn richter_attack_air_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter", script = "game_attackairfhi" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_attack_air_f_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.8);
     if is_excute(fighter) {
@@ -81,7 +81,7 @@ unsafe fn richter_attack_air_f_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter_whip", script = "game_attackairfhi" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_whip_attack_air_f_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.8);
     if is_excute(fighter) {
@@ -99,7 +99,7 @@ unsafe fn richter_whip_attack_air_f_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.8);
     if is_excute(fighter) {
@@ -138,7 +138,7 @@ unsafe fn richter_attack_air_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter_whip", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_whip_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.8);
     if is_excute(fighter) {
@@ -156,7 +156,7 @@ unsafe fn richter_whip_attack_air_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter", script = "game_attackairflw" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_attack_air_f_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.8);
     if is_excute(fighter) {
@@ -195,7 +195,7 @@ unsafe fn richter_attack_air_f_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter_whip", script = "game_attackairflw" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_whip_attack_air_f_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.8);
     if is_excute(fighter) {
@@ -213,7 +213,7 @@ unsafe fn richter_whip_attack_air_f_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter", script = "game_attackairbhi" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_attack_air_b_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.5);
     if is_excute(fighter) {
@@ -248,7 +248,7 @@ unsafe fn richter_attack_air_b_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter_whip", script = "game_attackairbhi" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_whip_attack_air_b_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.5);
     if is_excute(fighter) {
@@ -266,7 +266,7 @@ unsafe fn richter_whip_attack_air_b_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.5);
     if is_excute(fighter) {
@@ -301,7 +301,7 @@ unsafe fn richter_attack_air_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter_whip", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_whip_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.5);
     if is_excute(fighter) {
@@ -319,7 +319,7 @@ unsafe fn richter_whip_attack_air_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter", script = "game_attackairblw" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_attack_air_b_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.5);
     if is_excute(fighter) {
@@ -354,7 +354,7 @@ unsafe fn richter_attack_air_b_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter_whip", script = "game_attackairblw" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_whip_attack_air_b_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.5);
     if is_excute(fighter) {
@@ -372,7 +372,7 @@ unsafe fn richter_whip_attack_air_b_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.5);
     frame(lua_state, 8.0);
@@ -406,7 +406,7 @@ unsafe fn richter_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter_whip", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_whip_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.5);
     if is_excute(fighter) {
@@ -424,7 +424,7 @@ unsafe fn richter_whip_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         //WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
         //SET_SPEED_EX(fighter, 0, 0.6, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);

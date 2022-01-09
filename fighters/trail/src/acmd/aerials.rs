@@ -3,7 +3,7 @@ use super::*;
 #[acmd_script( agent = "trail", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -39,7 +39,7 @@ unsafe fn game_attackairn(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "trail", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 2.0);
@@ -93,7 +93,7 @@ unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "trail", script = "game_attackairf2" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairf2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         WorkModule::off_flag(boma, *FIGHTER_TRAIL_STATUS_ATTACK_AIR_N_FLAG_CHECK_COMBO_BUTTON_ON);
@@ -145,7 +145,7 @@ unsafe fn game_attackairf2(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "trail", script = "game_attackairf3" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairf3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -171,7 +171,7 @@ unsafe fn game_attackairf3(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "trail", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -203,7 +203,7 @@ unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "trail", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -256,7 +256,7 @@ unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "trail", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         //WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);

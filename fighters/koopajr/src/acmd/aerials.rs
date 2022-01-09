@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "koopajr", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn koopajr_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.500);
@@ -43,7 +43,7 @@ unsafe fn koopajr_attack_air_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "koopajr", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn koopajr_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.662);
@@ -82,7 +82,7 @@ unsafe fn koopajr_attack_air_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "koopajr", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn koopajr_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.727);
@@ -116,7 +116,7 @@ unsafe fn koopajr_attack_air_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "koopajr", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn koopajr_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article_enable(boma, *FIGHTER_KOOPAJR_GENERATE_ARTICLE_HAMMER, false, 0);
     }
@@ -148,7 +148,7 @@ unsafe fn koopajr_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "koopajr", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn koopajr_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.643);
@@ -196,7 +196,7 @@ unsafe fn koopajr_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "koopajr", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn koopajr_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_LANDING_ATTACK_AIR_SQUAT);

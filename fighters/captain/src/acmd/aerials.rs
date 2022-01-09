@@ -6,7 +6,7 @@ use super::*;
 #[acmd_script( agent = "captain", script = "effect_attackairn" , category = ACMD_EFFECT , low_priority)]
 unsafe fn captain_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0.0, 4.5, 2.0, -148, -141, -3.0, 1.1, true, 0.7);
@@ -26,7 +26,7 @@ unsafe fn captain_attack_air_n_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "captain", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
 unsafe fn captain_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("toer"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.7, true);
@@ -49,7 +49,7 @@ unsafe fn captain_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "captain", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
 unsafe fn captain_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
 	    EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0.0, 10.0, 1.0, 0.0, 100.0, 90.0, 1.2, true);
@@ -60,7 +60,7 @@ unsafe fn captain_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "captain", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
 unsafe fn captain_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
 	    EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0.0, 10.75, 10.0, -20.0, 0.0, 0.0, 0.7, true);
@@ -76,7 +76,7 @@ unsafe fn captain_attack_air_f_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "captain", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn captain_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -120,7 +120,7 @@ unsafe fn captain_attack_air_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "captain", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn captain_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -153,7 +153,7 @@ unsafe fn captain_attack_air_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "captain", script = "sound_attackairf" , category = ACMD_SOUND , low_priority)]
 unsafe fn captain_attack_air_f_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new_raw(0x124ee81be1));
@@ -178,7 +178,7 @@ unsafe fn captain_attack_air_f_sound(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "captain", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn captain_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -209,7 +209,7 @@ unsafe fn captain_attack_air_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "captain", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn captain_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -244,7 +244,7 @@ unsafe fn captain_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "captain", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn captain_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);

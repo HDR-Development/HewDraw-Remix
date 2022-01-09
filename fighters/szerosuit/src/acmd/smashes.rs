@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "szerosuit", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
 unsafe fn szerosuit_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 25.0);
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(boma, 2.0, 7.0, 5.5, 6.0);
@@ -32,7 +32,7 @@ unsafe fn szerosuit_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "szerosuit", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
 unsafe fn szerosuit_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -83,7 +83,7 @@ unsafe fn szerosuit_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "szerosuit", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
 unsafe fn szerosuit_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 26.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("footl"), 12.0, 36, 119, 0, 28, 4.7, 3.5, -0.2, -0.2, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_KICK);

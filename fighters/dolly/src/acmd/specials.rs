@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "dolly", script = "game_specialn" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
@@ -34,7 +34,7 @@ unsafe fn dolly_special_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_specialsfstart" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_f_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
@@ -63,7 +63,7 @@ unsafe fn dolly_special_f_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_specialairsfstart" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_air_f_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
@@ -92,7 +92,7 @@ unsafe fn dolly_special_air_f_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_specialsfattack" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_f_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -208,7 +208,7 @@ unsafe fn dolly_special_f_attack_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "effect_specialsfattack" , category = ACMD_EFFECT , low_priority)]
 unsafe fn dolly_special_f_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         if WorkModule::is_flag(boma,  *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
             if WorkModule::get_int64(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
@@ -289,7 +289,7 @@ unsafe fn dolly_special_f_attack_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_specialsfend" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_f_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
     }
@@ -298,7 +298,7 @@ unsafe fn dolly_special_f_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_specialairsfend" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_air_f_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
@@ -308,7 +308,7 @@ unsafe fn dolly_special_air_f_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_specialsbstart" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_b_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
@@ -326,7 +326,7 @@ unsafe fn dolly_special_b_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_specialairsbstart" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_air_b_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
@@ -344,7 +344,7 @@ unsafe fn dolly_special_air_b_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_specialsbattackw" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_b_attack_w_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
@@ -469,7 +469,7 @@ unsafe fn dolly_special_b_attack_w_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_specialsbattack" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_b_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
@@ -581,14 +581,14 @@ unsafe fn dolly_special_b_attack_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_specialsbend" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_b_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     
 }
 
 #[acmd_script( agent = "dolly", script = "game_specialhi1" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_hi1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
@@ -702,7 +702,7 @@ unsafe fn dolly_special_hi1_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_specialhicommand" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_hi_command_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
@@ -896,7 +896,7 @@ unsafe fn dolly_special_hi_command_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_specialairhi1" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_air_hi1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
@@ -1010,7 +1010,7 @@ unsafe fn dolly_special_air_hi1_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_specialhicommand" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
@@ -1204,7 +1204,7 @@ unsafe fn dolly_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_specialhifall" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_hi_fall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         FT_MOTION_RATE(fighter, 0.667);
@@ -1215,7 +1215,7 @@ unsafe fn dolly_special_hi_fall_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_specialairhiend" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_air_hi_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
@@ -1225,7 +1225,7 @@ unsafe fn dolly_special_air_hi_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_speciallwstart" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
@@ -1244,7 +1244,7 @@ unsafe fn dolly_special_lw_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_specialairlwstart" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
@@ -1263,7 +1263,7 @@ unsafe fn dolly_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_specialairlwrisew" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_lw_w_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
@@ -1310,7 +1310,7 @@ unsafe fn dolly_special_lw_w_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_specialairlwrise" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
@@ -1360,7 +1360,7 @@ unsafe fn dolly_special_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_lw_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 0.0);
     if is_excute(fighter) {
         if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
@@ -1590,7 +1590,7 @@ unsafe fn dolly_special_lw_attack_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_speciallwend" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_lw_landing_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         SET_SPEED_EX(fighter, 1.5, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {

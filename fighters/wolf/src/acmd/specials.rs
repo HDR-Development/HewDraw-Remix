@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "wolf", script = "game_specialsend" , category = ACMD_GAME , low_priority)]
 unsafe fn wolf_special_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 20.0, 270, 100, 0, 20, 4.0, 0.0, 5.5, 5.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
@@ -29,7 +29,7 @@ unsafe fn wolf_special_s_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "wolf", script = "game_specialairsend" , category = ACMD_GAME , low_priority)]
 unsafe fn wolf_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 20.0, 270, 100, 0, 20, 4.0, 0.0, 5.5, 5.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
@@ -53,7 +53,7 @@ unsafe fn wolf_special_air_s_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "wolf", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn wolf_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("hip"), 1.0, 40, 20, 0, 60, 5.0, -2.0, 0.0, 2.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -78,7 +78,7 @@ unsafe fn wolf_special_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "wolf", script = "game_speciallwstart" , category = ACMD_GAME , low_priority)]
 unsafe fn wolf_special_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.333);
@@ -101,7 +101,7 @@ unsafe fn wolf_special_lw_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "wolf", script = "game_specialairlwstart" , category = ACMD_GAME , low_priority)]
 unsafe fn wolf_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.333);
@@ -124,7 +124,7 @@ unsafe fn wolf_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "wolf", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
 unsafe fn wolf_special_lw_start_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.333);
@@ -147,7 +147,7 @@ unsafe fn wolf_special_lw_start_l_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "wolf", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn wolf_special_air_lw_start_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.333);

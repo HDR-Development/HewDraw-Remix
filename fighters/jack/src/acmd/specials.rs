@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "jack", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_JACK_GENERATE_ARTICLE_WIREROPE, false, 0);
     }

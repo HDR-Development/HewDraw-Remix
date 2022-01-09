@@ -7,7 +7,7 @@ use super::*;
 #[acmd_script( agent = "kamui", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn kamui_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_SPEARHAND, false, 0);
         ArticleModule::change_motion(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_SPEARHAND, smash::phx::Hash40::new("attack_air_n"), false, 0.0);
@@ -46,7 +46,7 @@ unsafe fn kamui_attack_air_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "kamui", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn kamui_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         //FT_MOTION_RATE(fighter, 0.714);
@@ -81,7 +81,7 @@ unsafe fn kamui_attack_air_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "kamui", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn kamui_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, kamui::BAIR_BOOST);
@@ -133,7 +133,7 @@ unsafe fn kamui_attack_air_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "kamui", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
 unsafe fn kamui_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         EFFECT_FLW_POS(fighter, Hash40::new("kamui_transform_splash_start"), Hash40::new("neck"), 2, 0, 0, 0, 0, 0, 1, true);
     }
@@ -160,7 +160,7 @@ unsafe fn kamui_attack_air_b_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "kamui", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn kamui_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -186,7 +186,7 @@ unsafe fn kamui_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "kamui", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn kamui_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         
@@ -227,7 +227,7 @@ unsafe fn kamui_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "kamui", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
 unsafe fn kamui_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW_ALPHA(fighter, Hash40::new_raw(0x0c1e107c25), Hash40::new("top"), 0, 6, 0, -90, 0, 0, 0.8, true, 0.9);
@@ -257,7 +257,7 @@ unsafe fn kamui_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "kamui", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn kamui_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     
 }
 

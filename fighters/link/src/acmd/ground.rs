@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "link", script = "game_attack11" , category = ACMD_GAME , low_priority)]
 unsafe fn attack_11(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.444);
@@ -45,7 +45,7 @@ unsafe fn attack_11(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "link", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
 unsafe fn attack_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 19.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("sword2"), 13.0, 50, 82, 0, 75, 3.5, 3.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);

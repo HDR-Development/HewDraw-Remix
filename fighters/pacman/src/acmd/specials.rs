@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "pacman", script = "game_specialnshoot" , category = ACMD_GAME , low_priority)]
 unsafe fn pacman_special_n_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW){
@@ -54,7 +54,7 @@ unsafe fn pacman_special_n_shoot_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pacman", script = "game_specialairnshoot" , category = ACMD_GAME , low_priority)]
 unsafe fn pacman_special_air_n_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW){
@@ -105,7 +105,7 @@ unsafe fn pacman_special_air_n_shoot_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pacman", script = "game_speciallwfailure" , category = ACMD_GAME , low_priority)]
 unsafe fn pacman_special_lw_failure_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 2.4);
@@ -129,7 +129,7 @@ unsafe fn pacman_special_lw_failure_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pacman", script = "game_specialairlwfailure" , category = ACMD_GAME , low_priority)]
 unsafe fn pacman_special_air_lw_failure_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 2.4);

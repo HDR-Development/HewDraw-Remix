@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "miifighter", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn miifighter_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 0.0, 3.0);

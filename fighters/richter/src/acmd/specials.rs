@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "richter", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
@@ -49,7 +49,7 @@ unsafe fn richter_special_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
@@ -93,7 +93,7 @@ unsafe fn richter_special_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_GENERATE_HOLYWATER);
     }
@@ -113,7 +113,7 @@ unsafe fn richter_special_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn richter_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_GENERATE_HOLYWATER);
     }

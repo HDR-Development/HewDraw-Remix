@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "samus", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
 unsafe fn attack_s4_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("armr"), 13.5, 361, 102, 0, 30, 3.3, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -27,7 +27,7 @@ unsafe fn attack_s4_hi(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samus", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
 unsafe fn attack_s4_s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -54,7 +54,7 @@ unsafe fn attack_s4_s(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samus", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
 unsafe fn attack_s4_lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("armr"), 12.5, 361, 102, 0, 30, 3.3, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -77,7 +77,7 @@ unsafe fn attack_s4_lw(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samus", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
 unsafe fn attack_hi4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 
     frame(lua_state, 7.0);
     if is_excute(fighter){
@@ -111,7 +111,7 @@ unsafe fn attack_hi4(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samus", script = "effect_attackhi4", category = ACMD_EFFECT , low_priority)]
 pub unsafe fn attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 
     frame(lua_state, 14.0);
     if is_excute(fighter) {
@@ -133,7 +133,7 @@ pub unsafe fn attack_hi4_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samus", script = "sound_attackhi4", category = ACMD_SOUND , low_priority)]
 pub unsafe fn attack_hi4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 
     frame(lua_state, 13.0);
     if is_excute(fighter){
@@ -149,7 +149,7 @@ pub unsafe fn attack_hi4_sound(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samus", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
 unsafe fn attack_lw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);

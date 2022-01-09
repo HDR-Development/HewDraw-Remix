@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "jack", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.455);
@@ -60,14 +60,14 @@ unsafe fn jack_attack_air_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "jack", script = "game_landingairn" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_landing_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) { if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {} }
 }
 
 #[acmd_script( agent = "jack", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -127,14 +127,14 @@ unsafe fn jack_attack_air_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "jack", script = "game_landingairf" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_landing_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) { if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {} }
 }
 
 #[acmd_script( agent = "jack", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.500);
@@ -214,14 +214,14 @@ unsafe fn jack_attack_air_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "jack", script = "game_landingairb" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_landing_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) { if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {} }
 }
 
 #[acmd_script( agent = "jack", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -257,14 +257,14 @@ unsafe fn jack_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "jack", script = "game_landingairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_landing_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) { if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {} }
 }
 
 #[acmd_script( agent = "jack", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.727);
@@ -329,7 +329,7 @@ unsafe fn jack_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "jack", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) { if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {} }
 }
 

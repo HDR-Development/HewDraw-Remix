@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "chrom", script = "game_specialnend" , category = ACMD_GAME , low_priority)]
 unsafe fn chrom_special_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         KineticModule::set_consider_ground_friction(boma, false, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
@@ -34,7 +34,7 @@ unsafe fn chrom_special_n_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "game_specialnend2" , category = ACMD_GAME , low_priority)]
 unsafe fn chrom_special_n_end2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         KineticModule::set_consider_ground_friction(boma, false, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
@@ -63,7 +63,7 @@ unsafe fn chrom_special_n_end2_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "game_specialnend3" , category = ACMD_GAME , low_priority)]
 unsafe fn chrom_special_n_end3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         KineticModule::set_consider_ground_friction(boma, false, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
@@ -92,7 +92,7 @@ unsafe fn chrom_special_n_end3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "game_specialairnend" , category = ACMD_GAME , low_priority)]
 unsafe fn chrom_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         KineticModule::set_consider_ground_friction(boma, false, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
@@ -121,7 +121,7 @@ unsafe fn chrom_special_air_n_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "game_specialairnend2" , category = ACMD_GAME , low_priority)]
 unsafe fn chrom_special_air_n_end2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         KineticModule::set_consider_ground_friction(boma, false, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
@@ -150,7 +150,7 @@ unsafe fn chrom_special_air_n_end2_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "game_specialairnend3" , category = ACMD_GAME , low_priority)]
 unsafe fn chrom_special_air_n_end3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         KineticModule::set_consider_ground_friction(boma, false, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
@@ -179,7 +179,7 @@ unsafe fn chrom_special_air_n_end3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_specials1" , category = ACMD_EFFECT , low_priority)]
 unsafe fn chrom_special_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
@@ -208,7 +208,7 @@ unsafe fn chrom_special_s1_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_specialairs1" , category = ACMD_EFFECT , low_priority)]
 unsafe fn chrom_special_air_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
@@ -237,7 +237,7 @@ unsafe fn chrom_special_air_s1_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_specials2hi" , category = ACMD_EFFECT , low_priority)]
 unsafe fn chrom_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.24, 1, 0.7);
@@ -263,7 +263,7 @@ unsafe fn chrom_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_specialairs2hi" , category = ACMD_EFFECT , low_priority)]
 unsafe fn chrom_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.24, 1, 0.7);
@@ -289,7 +289,7 @@ unsafe fn chrom_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_specials2lw" , category = ACMD_EFFECT , low_priority)]
 unsafe fn chrom_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
@@ -318,7 +318,7 @@ unsafe fn chrom_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_specialairs2lw" , category = ACMD_EFFECT , low_priority)]
 unsafe fn chrom_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
@@ -347,7 +347,7 @@ unsafe fn chrom_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_specials3hi" , category = ACMD_EFFECT , low_priority)]
 unsafe fn chrom_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.24, 1, 0.7);
@@ -376,7 +376,7 @@ unsafe fn chrom_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_specialairs3hi" , category = ACMD_EFFECT , low_priority)]
 unsafe fn chrom_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.24, 1, 0.7);
@@ -405,7 +405,7 @@ unsafe fn chrom_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_specials3s" , category = ACMD_EFFECT , low_priority)]
 unsafe fn chrom_special_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
@@ -431,7 +431,7 @@ unsafe fn chrom_special_s3_s_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_specialairs3s" , category = ACMD_EFFECT , low_priority)]
 unsafe fn chrom_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
@@ -457,7 +457,7 @@ unsafe fn chrom_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_specials3lw" , category = ACMD_EFFECT , low_priority)]
 unsafe fn chrom_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.93, 0.03, 0.7);
@@ -486,7 +486,7 @@ unsafe fn chrom_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_specialairs3lw" , category = ACMD_EFFECT , low_priority)]
 unsafe fn chrom_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.93, 0.03, 0.7);
@@ -515,7 +515,7 @@ unsafe fn chrom_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_specials4hi" , category = ACMD_EFFECT , low_priority)]
 unsafe fn chrom_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.24, 1, 0.7);
@@ -544,7 +544,7 @@ unsafe fn chrom_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_specialairs4hi" , category = ACMD_EFFECT , low_priority)]
 unsafe fn chrom_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.24, 1, 0.7);
@@ -573,7 +573,7 @@ unsafe fn chrom_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_specials4s" , category = ACMD_EFFECT , low_priority)]
 unsafe fn chrom_special_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
@@ -602,7 +602,7 @@ unsafe fn chrom_special_s4_s_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_specialairs4s" , category = ACMD_EFFECT , low_priority)]
 unsafe fn chrom_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
@@ -631,7 +631,7 @@ unsafe fn chrom_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_specials4lw" , category = ACMD_EFFECT , low_priority)]
 unsafe fn chrom_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.93, 0.03, 0.7);
@@ -685,7 +685,7 @@ unsafe fn chrom_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_specialairs4lw" , category = ACMD_EFFECT , low_priority)]
 unsafe fn chrom_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.93, 0.03, 0.7);

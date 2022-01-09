@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "murabito", script = "game_dash" , category = ACMD_GAME , low_priority)]
 unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
@@ -15,7 +15,7 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "murabito", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
 unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, false);
@@ -30,7 +30,7 @@ unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "murabito", script = "game_turndash" , category = ACMD_GAME , low_priority)]
 unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH);
@@ -45,7 +45,7 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "murabito_slingshot", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn murabito_slingshot_attackairb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	if is_excute(fighter) {
     
     }    
@@ -55,7 +55,7 @@ unsafe fn murabito_slingshot_attackairb_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "murabito_bullet", script = "game_shootf" , category = ACMD_GAME , low_priority)]
 unsafe fn murabito_bullet_shoot_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 60, 80, 0, 55, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -3.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
         AttackModule::enable_safe_pos(boma);
@@ -74,7 +74,7 @@ unsafe fn murabito_bullet_shoot_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "murabito_clayrocket", script = "game_fly" , category = ACMD_GAME , low_priority)]
 unsafe fn murabito_clayrocket_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	frame(lua_state, 6.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 110, 55, 0, 75, 4.0, 0.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -3.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
@@ -85,7 +85,7 @@ unsafe fn murabito_clayrocket_fly_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "murabito_flowerpot", script = "game_throwed" , category = ACMD_GAME , low_priority)]
 unsafe fn murabito_floweropt_throwed_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("have"), 10.0, 70, 60, 0, 65, 4.2, 0.0, 2.5, 0.0, None, None, None, 0.6, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         AttackModule::enable_safe_pos(boma);

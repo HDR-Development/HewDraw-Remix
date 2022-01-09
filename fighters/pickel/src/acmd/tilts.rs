@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "pickel", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn pickel_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
@@ -178,7 +178,7 @@ unsafe fn pickel_attack_s3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pickel", script = "effect_attacks3" , category = ACMD_EFFECT , low_priority)]
 unsafe fn pickel_attack_s3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     
     frame(lua_state, 3.0);
     if is_excute(fighter) {
@@ -238,7 +238,7 @@ unsafe fn pickel_attack_s3_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pickel", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn pickel_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);

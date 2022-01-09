@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "fox", script = "game_specialairsend" , category = ACMD_GAME , low_priority)]
 unsafe fn game_specialairsend(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
@@ -15,7 +15,7 @@ unsafe fn game_specialairsend(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "fox", script = "game_specialhihold" , category = ACMD_GAME , low_priority)]
 unsafe fn game_specialhihold(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
@@ -41,7 +41,7 @@ unsafe fn game_specialhihold(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "fox", script = "game_specialhiholdair" , category = ACMD_GAME , low_priority)]
 unsafe fn game_specialhiholdair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
@@ -67,7 +67,7 @@ unsafe fn game_specialhiholdair(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "fox", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn game_specialhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);
     }
@@ -98,7 +98,7 @@ unsafe fn sound_specialhi(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "fox", script = "game_speciallwstart" , category = ACMD_GAME , low_priority)]
 unsafe fn game_speciallwstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 360, 32, 0, 62, 8.0, 0.0, 6.5, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
@@ -111,7 +111,7 @@ unsafe fn game_speciallwstart(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "fox", script = "game_specialairlwstart" , category = ACMD_GAME , low_priority)]
 unsafe fn game_specialairlwstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 10, 32, 0, 62, 8.0, 0.0, 6.5, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);

@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "koopajr", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
 unsafe fn koopajr_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_KOOPAJR_GENERATE_ARTICLE_MECHAKOOPA, false, 0);
@@ -15,7 +15,7 @@ unsafe fn koopajr_special_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "koopajr", script = "game_specialirlw" , category = ACMD_GAME , low_priority)]
 unsafe fn koopajr_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_KOOPAJR_GENERATE_ARTICLE_MECHAKOOPA, false, 0);
@@ -25,7 +25,7 @@ unsafe fn koopajr_special_air_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "koopajr_cannonball", script = "game_hop" , category = ACMD_GAME , low_priority)]
 unsafe fn koopajr_cannonball_hop_game(weapon: &mut L2CAgentBase) {
     let lua_state = weapon.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let mut keep_hitbox = false;
 
     if WorkModule::is_flag(weapon.module_accessor, *WEAPON_KOOPAJR_CANNONBALL_INSTANCE_WORK_ID_FLAG_HIT_WALL) {

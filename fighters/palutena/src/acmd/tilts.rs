@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "palutena", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn palutena_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.571);
@@ -50,7 +50,7 @@ unsafe fn palutena_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "palutena", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn palutena_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.778);
@@ -87,7 +87,7 @@ unsafe fn palutena_attack_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "palutena", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn palutena_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.693);

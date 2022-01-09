@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "sonic", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn sonic_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::shoot_exist(boma, *FIGHTER_SONIC_GENERATE_ARTICLE_GIMMICKJUMP, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
     }
@@ -19,7 +19,7 @@ unsafe fn sonic_special_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "sonic", script = "game_speciallwhold" , category = ACMD_GAME , low_priority)]
 unsafe fn sonic_special_lw_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if VarModule::is_flag(fighter.battle_object, vars::sonic::PULSE_HITBOX) {
         frame(lua_state, 3.0);
         if is_excute(fighter) {
@@ -37,7 +37,7 @@ unsafe fn sonic_special_lw_hold_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "sonic", script = "game_speciallwstart" , category = ACMD_GAME , low_priority)]
 unsafe fn sonic_special_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_SONIC_STATUS_KIND_SPECIAL_LW_HOLD, false);
@@ -48,7 +48,7 @@ unsafe fn sonic_special_lw_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "sonic", script = "game_specialairlwstart" , category = ACMD_GAME , low_priority)]
 unsafe fn sonic_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_SONIC_STATUS_KIND_SPECIAL_LW_HOLD, false);
@@ -59,7 +59,7 @@ unsafe fn sonic_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "sonic", script = "game_specialnhoming" , category = ACMD_GAME , low_priority)]
 unsafe fn sonic_special_n_homing_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);
@@ -77,7 +77,7 @@ unsafe fn sonic_special_n_homing_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "sonic", script = "sound_specialnhoming" , category = ACMD_SOUND )]
 unsafe fn sonic_special_n_homing_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let rng = app::sv_math::rand(smash::hash40("fighter"), 2);
     let mut sound = "";
 
@@ -94,7 +94,7 @@ unsafe fn sonic_special_n_homing_sound(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "sonic", script = "game_specialnhit" , category = ACMD_GAME , low_priority)]
 unsafe fn sonic_special_n_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         let temp = Vector3f { x: -0.3, y: 1.0, z: 0.0 };
@@ -107,7 +107,7 @@ unsafe fn sonic_special_n_hit_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "sonic", script = "effect_specialnhit" , category = ACMD_EFFECT , low_priority)]
 unsafe fn sonic_special_n_hit_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     
 }
 

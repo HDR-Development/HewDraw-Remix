@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "pitb", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn pitb_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -40,7 +40,7 @@ unsafe fn pitb_attack_air_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pitb", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn pitb_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -74,7 +74,7 @@ unsafe fn pitb_attack_air_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pitb", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn pitb_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -112,7 +112,7 @@ unsafe fn pitb_attack_air_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pitb", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn pitb_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -154,7 +154,7 @@ unsafe fn pitb_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pitb", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn pitb_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);

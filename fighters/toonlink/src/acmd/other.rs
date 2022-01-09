@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "toonlink", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
 unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 1, 0, 0, 0, 0, 0, 0.53, 0, 0, 0, 0, 0, 0, true);
@@ -23,7 +23,7 @@ unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "toonlink", script = "game_turndash" , category = ACMD_GAME , low_priority)]
 unsafe fn toonlink_turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
 		WorkModule::on_flag(boma, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH);
@@ -38,7 +38,7 @@ unsafe fn toonlink_turn_dash_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "toonlink", script = "effect_jumpaerialfront" , category = ACMD_EFFECT , low_priority)]
 unsafe fn toonlink_jump_aerial_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new_raw(0x0f97480fb2), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
         EFFECT(fighter, Hash40::new("sys_chicken_feather"), Hash40::new("top"), 0.0, 5.0, -2.0, 0.0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
@@ -57,7 +57,7 @@ unsafe fn toonlink_jump_aerial_f_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "toonlink", script = "effect_jumpaerialback" , category = ACMD_EFFECT , low_priority)]
 unsafe fn toonlink_jump_aerial_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new_raw(0x0f97480fb2), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
         EFFECT(fighter, Hash40::new("sys_chicken_feather"), Hash40::new("top"), 0.0, 5.0, -2.0, 0.0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
@@ -76,7 +76,7 @@ unsafe fn toonlink_jump_aerial_b_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "toonlink", script = "game_aircatch" , category = ACMD_GAME , low_priority)]
 unsafe fn toonlink_air_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK);
     }
@@ -128,7 +128,7 @@ unsafe fn toonlink_air_catch_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "toonlink", script = "effect_aircatch" , category = ACMD_EFFECT , low_priority)]
 unsafe fn toonlink_air_catch_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("haver"), 0, 0, 5.0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);

@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "murabito", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
 unsafe fn murabito_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.746);
@@ -47,7 +47,7 @@ unsafe fn murabito_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "murabito", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
 unsafe fn murabito_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_FIREWORK, false, 0);
@@ -76,7 +76,7 @@ unsafe fn murabito_attack_hi4_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "murabito_firework", script = "game_shoot" , category = ACMD_GAME , low_priority)]
 unsafe fn murabito_firework_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     for x in 0..4 {
         if is_excute(fighter) {
@@ -110,7 +110,7 @@ unsafe fn murabito_firework_shoot_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "murabito", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
 unsafe fn murabito_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);

@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "murabito", script = "game_speciallw1" , category = ACMD_GAME , low_priority)]
 unsafe fn murabito_special_lw1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MURABITO_STATUS_SPECIAL_LW_PLANT_FLAG_CHECK_PLANT);
@@ -32,7 +32,7 @@ unsafe fn murabito_special_lw1_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "murabito", script = "game_speciallw2" , category = ACMD_GAME , low_priority)]
 unsafe fn murabito_special_lw2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLAG_WATER);
@@ -55,7 +55,7 @@ unsafe fn murabito_special_lw2_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "murabito", script = "game_specialairlw2" , category = ACMD_GAME , low_priority)]
 unsafe fn murabito_special_air_lw2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLAG_WATER);
@@ -78,7 +78,7 @@ unsafe fn murabito_special_air_lw2_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "murabito", script = "game_speciallw3hit" , category = ACMD_GAME , low_priority)]
 unsafe fn murabito_special_lw3_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !ItemModule::is_have_item(boma, 0){
@@ -91,7 +91,7 @@ unsafe fn murabito_special_lw3_hit_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "murabito", script = "game_specialairlw3hit" , category = ACMD_GAME , low_priority)]
 unsafe fn murabito_special_air_lw3_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !ItemModule::is_have_item(boma, 0){

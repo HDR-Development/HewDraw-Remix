@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "miifighter", script = "game_specialhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn miifighter_special_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
     }
@@ -76,7 +76,7 @@ unsafe fn miifighter_special_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miifighter", script = "game_specialairhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn miifighter_special_air_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
     }
@@ -147,7 +147,7 @@ unsafe fn miifighter_special_air_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miifighter", script = "game_specialhi2" , category = ACMD_GAME , low_priority)]
 unsafe fn miifighter_special_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MIIFIGHTER_STATUS_SYOTEN_KICK_FLAG_AIR_START);
@@ -239,7 +239,7 @@ unsafe fn miifighter_special_hi2_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miifighter", script = "game_specialairhi2" , category = ACMD_GAME , low_priority)]
 unsafe fn miifighter_special_air_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_XLU);

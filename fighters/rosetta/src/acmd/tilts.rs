@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "rosetta", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn rosetta_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("footl"), 7.5, 361, 70, 0, 65, 6.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -21,7 +21,7 @@ unsafe fn rosetta_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "rosetta", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn rosetta_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
@@ -49,7 +49,7 @@ unsafe fn rosetta_attack_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "rosetta", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn rosetta_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("footl"), 5.5, 30, 98, 0, 35, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);

@@ -8,7 +8,7 @@ use super::*;
 #[acmd_script( agent = "mario", script = "game_specialn" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_specialn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.149);
         VarModule::off_flag(fighter.battle_object, mario::FIREBRAND_ACTIVATED);
@@ -51,7 +51,7 @@ unsafe fn mario_specialn(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "mario", script = "game_specialairn" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_specialairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.149);
         VarModule::off_flag(fighter.battle_object, mario::FIREBRAND_ACTIVATED);
@@ -94,7 +94,7 @@ unsafe fn mario_specialairn(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "mario", script = "game_specials" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_specials(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, false, 0);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
@@ -130,7 +130,7 @@ unsafe fn mario_specials(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "mario", script = "game_specialairs" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_specialairs(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, false, 0);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
@@ -166,7 +166,7 @@ unsafe fn mario_specialairs(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "mario", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_specialhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if (WorkModule::is_flag(boma, *FIGHTER_MARIO_STATUS_SPECIAL_HI_FLAG_CAPPY)) {
         frame(lua_state, 3.0);
         if is_excute(fighter) {
@@ -257,7 +257,7 @@ unsafe fn mario_specialhi(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "mario", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_specialairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if (WorkModule::is_flag(boma, *FIGHTER_MARIO_STATUS_SPECIAL_HI_FLAG_CAPPY)) {
         frame(lua_state, 3.0);
         if is_excute(fighter) {

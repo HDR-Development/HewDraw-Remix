@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "marth", script = "game_specials1" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
@@ -31,7 +31,7 @@ unsafe fn marth_special_s1_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "game_specialairs1" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
@@ -57,7 +57,7 @@ unsafe fn marth_special_air_s1_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "game_specials2hi" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_special_s2_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
@@ -83,7 +83,7 @@ unsafe fn marth_special_s2_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "game_specialairs2hi" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_special_air_s2_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
@@ -109,7 +109,7 @@ unsafe fn marth_special_air_s2_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "game_specialairs2lw" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_special_s2_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
@@ -135,7 +135,7 @@ unsafe fn marth_special_s2_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "game_specialairs2lw" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_special_air_s2_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
@@ -161,7 +161,7 @@ unsafe fn marth_special_air_s2_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "game_specials3hi" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_special_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
@@ -187,7 +187,7 @@ unsafe fn marth_special_s3_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "game_specialairs3hi" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_special_air_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
@@ -213,7 +213,7 @@ unsafe fn marth_special_air_s3_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "game_specials3s" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_special_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
@@ -239,7 +239,7 @@ unsafe fn marth_special_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "game_specialairs3s" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_special_air_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
@@ -265,7 +265,7 @@ unsafe fn marth_special_air_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "game_specials3lw" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_special_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
@@ -290,7 +290,7 @@ unsafe fn marth_special_s3_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "game_specialairs3lw" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_special_air_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
@@ -315,7 +315,7 @@ unsafe fn marth_special_air_s3_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "effect_specials1" , category = ACMD_EFFECT , low_priority)]
 unsafe fn marth_special_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
@@ -344,7 +344,7 @@ unsafe fn marth_special_s1_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "effect_specialairs1" , category = ACMD_EFFECT , low_priority)]
 unsafe fn marth_special_air_s1_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
@@ -373,7 +373,7 @@ unsafe fn marth_special_air_s1_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "effect_specials2hi" , category = ACMD_EFFECT , low_priority)]
 unsafe fn marth_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.24, 1, 0.7);
@@ -399,7 +399,7 @@ unsafe fn marth_special_s2_hi_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "effect_specialairs2hi" , category = ACMD_EFFECT , low_priority)]
 unsafe fn marth_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.24, 1, 0.7);
@@ -425,7 +425,7 @@ unsafe fn marth_special_air_s2_hi_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "effect_specials2lw" , category = ACMD_EFFECT , low_priority)]
 unsafe fn marth_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
@@ -454,7 +454,7 @@ unsafe fn marth_special_s2_lw_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "effect_specialairs2lw" , category = ACMD_EFFECT , low_priority)]
 unsafe fn marth_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
@@ -483,7 +483,7 @@ unsafe fn marth_special_air_s2_lw_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "effect_specials3hi" , category = ACMD_EFFECT , low_priority)]
 unsafe fn marth_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.24, 1, 0.7);
@@ -512,7 +512,7 @@ unsafe fn marth_special_s3_hi_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "effect_specialairs3hi" , category = ACMD_EFFECT , low_priority)]
 unsafe fn marth_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.24, 1, 0.7);
@@ -541,7 +541,7 @@ unsafe fn marth_special_air_s3_hi_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "effect_specials3s" , category = ACMD_EFFECT , low_priority)]
 unsafe fn marth_special_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
@@ -567,7 +567,7 @@ unsafe fn marth_special_s3_s_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "effect_specialairs3s" , category = ACMD_EFFECT , low_priority)]
 unsafe fn marth_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
@@ -593,7 +593,7 @@ unsafe fn marth_special_air_s3_s_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "effect_specials3lw" , category = ACMD_EFFECT , low_priority)]
 unsafe fn marth_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.93, 0.03, 0.7);
@@ -622,7 +622,7 @@ unsafe fn marth_special_s3_lw_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "effect_specialairs3lw" , category = ACMD_EFFECT , low_priority)]
 unsafe fn marth_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.93, 0.03, 0.7);
@@ -651,7 +651,7 @@ unsafe fn marth_special_air_s3_lw_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {  }frame(lua_state, 5.0);
     if is_excute(fighter) {
@@ -685,7 +685,7 @@ unsafe fn marth_special_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {  }frame(lua_state, 5.0);
     if is_excute(fighter) {
@@ -719,7 +719,7 @@ unsafe fn marth_special_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "game_speciallwhit" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("sword1"), 8.0, 361, 35, 0, 90, 5.5, 1.5, 0.0, 1.5, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
@@ -747,7 +747,7 @@ unsafe fn marth_special_lw_hit_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "marth", script = "game_specialairlwhit" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_special_air_lw_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("sword1"), 8.0, 361, 35, 0, 90, 5.5, 1.5, 0.0, 1.5, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);

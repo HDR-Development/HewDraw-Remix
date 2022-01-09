@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "miiswordsman", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	if is_excute(fighter) {
 		FighterAreaModuleImpl::enable_fix_jostle_area(boma, 0.0, 4.0);
 	}
@@ -46,7 +46,7 @@ unsafe fn attack_s3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	if is_excute(fighter) {
 		FighterAreaModuleImpl::enable_fix_jostle_area(boma, 0.0, 4.0);
 	}
@@ -78,7 +78,7 @@ unsafe fn attack_s3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	frame(lua_state, 8.0);
 	if is_excute(fighter) {
 		ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 7.0, 80, 123, 0, 30, 3.0, 1.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -96,7 +96,7 @@ unsafe fn attack_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	frame(lua_state, 5.0);
 	if is_excute(fighter) {
 		ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 7.0, 70, 80, 0, 50, 2.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);

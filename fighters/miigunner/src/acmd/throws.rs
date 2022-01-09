@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "miigunner", script = "game_throwf" , category = ACMD_GAME , low_priority)]
 unsafe fn throwf_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	if is_excute(fighter) {
 		ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 3.0, 361, 90, 0, 65, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
 		ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -31,7 +31,7 @@ unsafe fn throwf_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "game_throwb" , category = ACMD_GAME , low_priority)]
 unsafe fn throwb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	if is_excute(fighter) {
 		VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
 		
@@ -87,7 +87,7 @@ unsafe fn throwb_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "effect_throwb" , category = ACMD_EFFECT , low_priority)]
 unsafe fn throwb_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	frame(lua_state, 4.0);
 	if is_excute(fighter) {
 		// Heavy throw
@@ -129,7 +129,7 @@ unsafe fn throwb_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miigunner", script = "sound_throwb" , category = ACMD_SOUND , low_priority)]
 unsafe fn throwb_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	frame(lua_state, 2.0);
 	if is_excute(fighter) {
 		PLAY_SE(fighter, Hash40::new("se_common_throw_01"));

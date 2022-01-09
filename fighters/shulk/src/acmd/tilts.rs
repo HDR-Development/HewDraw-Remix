@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "shulk", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn shulk_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.476);
@@ -40,7 +40,7 @@ unsafe fn shulk_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "shulk", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn shulk_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.533);
@@ -70,7 +70,7 @@ unsafe fn shulk_attack_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "shulk", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn shulk_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("armr"), 9.5, 65, 90, 0, 45, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);

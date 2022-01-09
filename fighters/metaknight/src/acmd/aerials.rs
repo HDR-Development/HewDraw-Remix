@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "metaknight", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn metaknight_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.400);
@@ -46,7 +46,7 @@ unsafe fn metaknight_attack_air_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "metaknight", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn metaknight_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.500);
@@ -108,7 +108,7 @@ unsafe fn metaknight_attack_air_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "metaknight", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
 unsafe fn metaknight_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("metaknight_air_f"), Hash40::new("top"), 0, 0, 2, 0, 0, 0, 1.25, true);
         LAST_EFFECT_SET_RATE(fighter, 3.0);
@@ -133,7 +133,7 @@ unsafe fn metaknight_attack_air_f_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "metaknight", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn metaknight_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -213,7 +213,7 @@ unsafe fn metaknight_attack_air_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "metaknight", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
 unsafe fn metaknight_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("metaknight_air_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.15, true);
         EffectModule::set_disable_render_offset_last(boma);
@@ -231,7 +231,7 @@ unsafe fn metaknight_attack_air_b_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "metaknight", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn metaknight_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.200);
@@ -275,7 +275,7 @@ unsafe fn metaknight_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "metaknight", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
 unsafe fn metaknight_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -294,7 +294,7 @@ unsafe fn metaknight_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "metaknight", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn metaknight_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 2.353);
@@ -333,7 +333,7 @@ unsafe fn metaknight_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "metaknight", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
 unsafe fn metaknight_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);

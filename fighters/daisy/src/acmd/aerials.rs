@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "daisy", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn daisy_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -33,7 +33,7 @@ unsafe fn daisy_attack_air_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "daisy", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn daisy_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.637);
@@ -62,7 +62,7 @@ unsafe fn daisy_attack_air_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "daisy", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn daisy_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.667);
@@ -94,7 +94,7 @@ unsafe fn daisy_attack_air_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "daisy", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn daisy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -121,7 +121,7 @@ unsafe fn daisy_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "daisy", script = "sound_attackairhi" , category = ACMD_SOUND , low_priority)]
 unsafe fn daisy_attack_air_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new_raw(0x128beb5f99));
@@ -132,7 +132,7 @@ unsafe fn daisy_attack_air_hi_sound(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "daisy", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
 unsafe fn daisy_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_line"), Hash40::new("top"), 2.0, 0.0, 2.0, -85, 0, 0, 0.8, true, 0.9);
@@ -148,7 +148,7 @@ unsafe fn daisy_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "daisy", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn daisy_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);

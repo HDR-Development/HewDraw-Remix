@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "edge", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
 unsafe fn sephiroth_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.5);
     frame(lua_state, 11.0);

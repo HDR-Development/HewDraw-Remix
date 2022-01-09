@@ -6,7 +6,7 @@ use crate::hooks::sys_line::meter::*;
 #[acmd_script( agent = "ryu", script = "game_specialn" , category = ACMD_GAME , low_priority)]
 unsafe fn ryu_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.909);
@@ -44,7 +44,7 @@ unsafe fn ryu_special_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ryu", script = "game_specialairn" , category = ACMD_GAME , low_priority)]
 unsafe fn ryu_special_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.909);
@@ -82,7 +82,7 @@ unsafe fn ryu_special_air_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ryu", script = "game_specialsstart" , category = ACMD_GAME , low_priority)]
 unsafe fn ryu_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         MotionModule::set_rate(boma, 2.000);
@@ -119,7 +119,7 @@ unsafe fn ryu_special_s_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ryu", script = "game_specials" , category = ACMD_GAME , low_priority)]
 unsafe fn ryu_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
@@ -204,7 +204,7 @@ unsafe fn ryu_special_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ryu", script = "game_specialsend" , category = ACMD_GAME , low_priority)]
 unsafe fn ryu_special_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
@@ -225,7 +225,7 @@ unsafe fn ryu_special_s_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ryu", script = "game_specialairsstart" , category = ACMD_GAME , low_priority)]
 unsafe fn ryu_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         MotionModule::set_rate(boma, 2.000);
@@ -260,7 +260,7 @@ unsafe fn ryu_special_air_s_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ryu", script = "game_specialairs" , category = ACMD_GAME , low_priority)]
 unsafe fn ryu_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
@@ -331,7 +331,7 @@ unsafe fn ryu_special_air_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ryu", script = "game_specialairsend" , category = ACMD_GAME , low_priority)]
 unsafe fn ryu_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
@@ -352,7 +352,7 @@ unsafe fn ryu_special_air_s_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ryu", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn ryu_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if(ex_special_scripting[hdr::get_player_number(boma)] != 3){

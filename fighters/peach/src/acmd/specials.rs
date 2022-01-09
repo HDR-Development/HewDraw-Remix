@@ -3,7 +3,7 @@ use super::*;
 #[acmd_script(agent = "peach", script = "game_specialshitend" , category = ACMD_GAME , low_priority)]
 unsafe fn peach_special_s_hit_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 55, 88, 0, 60, 7.7, 0.0, 5.0, 4.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 6, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_HIP);
     }
@@ -17,7 +17,7 @@ unsafe fn peach_special_s_hit_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script(agent = "peach", script = "game_specialhistart" , category = ACMD_GAME , low_priority)]
 unsafe fn peach_special_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, false, 0);
         ArticleModule::change_motion(boma, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, Hash40::new("special_hi_start"), false, 1.0);
@@ -79,7 +79,7 @@ unsafe fn peach_special_hi_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script(agent = "peach", script = "game_specialairhistart" , category = ACMD_GAME , low_priority)]
 unsafe fn peach_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, false, 0);
         ArticleModule::change_motion(boma, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, Hash40::new("special_hi_start"), false, 1.0);

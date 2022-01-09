@@ -5,7 +5,7 @@ use smash::app::sv_battle_object;
 #[acmd_script( agent = "miiswordsman", script = "game_catch" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         GrabModule::set_rebound(boma, true);
@@ -27,7 +27,7 @@ unsafe fn miiswordsman_catch_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_catchdash" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_catch_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         GrabModule::set_rebound(boma, true);
@@ -50,7 +50,7 @@ unsafe fn miiswordsman_catch_dash_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_catch_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         GrabModule::set_rebound(boma, true);
@@ -73,7 +73,7 @@ unsafe fn miiswordsman_catch_turn_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_dash" , category = ACMD_GAME , low_priority)]
 unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
@@ -84,7 +84,7 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
 unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, true);
@@ -99,7 +99,7 @@ unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_turndash" , category = ACMD_GAME , low_priority)]
 unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH);
@@ -114,7 +114,7 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman_tornadoshot", script = "game_fly" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_tornadoshot_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     // Heavy
     //if heavy_attack[hdr::get_player_number(owner_module_accessor)]{
@@ -171,7 +171,7 @@ unsafe fn miiswordsman_tornadoshot_fly_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman_wave", script = "game_fly" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_wave_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
 
     frame(lua_state, 1.0);
@@ -215,7 +215,7 @@ unsafe fn miiswordsman_wave_fly_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman_chakram", script = "game_fly" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_chakram_fly_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     // Tap Input
     if !WorkModule::is_flag(boma, *WEAPON_MIISWORDSMAN_CHAKRAM_INSTANCE_WORK_ID_FLAG_FLICK){
@@ -245,7 +245,7 @@ unsafe fn miiswordsman_chakram_fly_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman_chakram", script = "game_flynormalsub" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_chakram_fly_normal_sub_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 1.5, 365, 40, 0, 30, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -0.5, 0.0, 8, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
         AttackModule::set_add_reaction_frame(boma, 0, -2.0, false);
@@ -262,7 +262,7 @@ unsafe fn miiswordsman_chakram_fly_normal_sub_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman_chakram", script = "game_flyflicksub" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_chakram_fly_flick_sub_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 125, 40, 0, 80, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
         AttackModule::enable_safe_pos(boma);
@@ -272,7 +272,7 @@ unsafe fn miiswordsman_chakram_fly_flick_sub_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman_chakram", script = "game_hop" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_chakram_hop_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     if is_excute(fighter) {
         VarModule::off_flag(get_battle_object_from_accessor(owner_module_accessor), vars::miiswordsman::CHAKRAM_STICK_ATTACK);
@@ -282,7 +282,7 @@ unsafe fn miiswordsman_chakram_hop_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman_chakram", script = "game_stick" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_chakram_stick_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     if is_excute(fighter) {
         if VarModule::is_flag(get_battle_object_from_accessor(owner_module_accessor), vars::miiswordsman::CHAKRAM_STICK_ATTACK) {
@@ -304,7 +304,7 @@ unsafe fn miiswordsman_chakram_stick_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman_chakram", script = "effect_stick" , category = ACMD_EFFECT , low_priority)]
 unsafe fn miiswordsman_chakram_stick_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     if VarModule::is_flag(get_battle_object_from_accessor(owner_module_accessor), vars::miiswordsman::CHAKRAM_STICK_ATTACK) {
         frame(lua_state, 1.0);

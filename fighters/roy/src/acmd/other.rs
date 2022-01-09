@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "roy", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn roy_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 26.0);
     if is_excute(fighter) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
@@ -15,7 +15,7 @@ unsafe fn roy_landing_air_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "roy", script = "game_catch" , category = ACMD_GAME , low_priority)]
 unsafe fn roy_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         GrabModule::set_rebound(boma, true);
@@ -37,7 +37,7 @@ unsafe fn roy_catch_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "roy", script = "game_dash" , category = ACMD_GAME , low_priority)]
 unsafe fn roy_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	frame(lua_state, 16.0); // Effectively F16
     if is_excute(fighter) {
 		FT_MOTION_RATE(fighter, 1.0);
@@ -49,7 +49,7 @@ unsafe fn roy_dash_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "roy", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
 unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, false);
@@ -64,7 +64,7 @@ unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "roy", script = "game_turndash" , category = ACMD_GAME , low_priority)]
 unsafe fn roy_turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.3);
@@ -81,7 +81,7 @@ unsafe fn roy_turn_dash_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "roy", script = "game_appeallwr" , category = ACMD_GAME , low_priority)]
 unsafe fn roy_appeallwr_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         
@@ -95,7 +95,7 @@ unsafe fn roy_appeallwr_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "roy", script = "game_appeallwl" , category = ACMD_GAME , low_priority)]
 unsafe fn roy_appeallwl_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         

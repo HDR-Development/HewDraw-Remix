@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "gaogaen", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
 unsafe fn gaogaen_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("handl"), 13.0, 31, 88, 0, 54, 4.5, 3.4, 0.0, 0.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
@@ -23,7 +23,7 @@ unsafe fn gaogaen_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gaogaen", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn gaogaen_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("handl"), 13.0, 31, 88, 0, 54, 4.5, 3.4, 0.0, 0.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
@@ -40,7 +40,7 @@ unsafe fn gaogaen_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gaogaen", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
 unsafe fn gaogaen_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("handl"), 13.0, 31, 88, 0, 54, 4.5, 3.4, 0.0, 0.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
@@ -57,7 +57,7 @@ unsafe fn gaogaen_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gaogaen", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn gaogaen_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);

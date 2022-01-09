@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "link", script = "game_catch" , category = ACMD_GAME , low_priority)]
 unsafe fn catch(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.200);
@@ -32,7 +32,7 @@ unsafe fn catch(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "link", script = "game_catchdash" , category = ACMD_GAME , low_priority)]
 unsafe fn catch_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         GrabModule::set_rebound(boma, true);
@@ -54,7 +54,7 @@ unsafe fn catch_dash(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "link", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
 unsafe fn catch_turn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         GrabModule::set_rebound(boma, true);
@@ -76,7 +76,7 @@ unsafe fn catch_turn(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "link", script = "game_throwb" , category = ACMD_GAME , low_priority)]
 unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	if is_excute(fighter) {
 		ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 2.5, 110, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
 		ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);

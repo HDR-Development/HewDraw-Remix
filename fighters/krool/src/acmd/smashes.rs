@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "krool", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
 unsafe fn krool_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
@@ -35,7 +35,7 @@ unsafe fn krool_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "krool", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
 unsafe fn krool_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -69,7 +69,7 @@ unsafe fn krool_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "krool", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
 unsafe fn krool_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);

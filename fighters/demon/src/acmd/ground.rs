@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "demon", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
@@ -51,7 +51,7 @@ unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "demon", script = "game_attackstand1" , category = ACMD_GAME , low_priority)]
 unsafe fn kazuya_left_splits_kick_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_DEMON_REFLECTOR_KIND_ATTACK_STAND1, *FIGHTER_DEMON_REFLECTOR_GROUP_ATTACK_STAND1);
@@ -93,7 +93,7 @@ unsafe fn kazuya_left_splits_kick_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "demon", script = "game_attackstand21" , category = ACMD_GAME , low_priority)]
 unsafe fn kazuya_triple_spin_kicks_1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     
 }
 

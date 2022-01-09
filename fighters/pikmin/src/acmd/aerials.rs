@@ -6,7 +6,7 @@ use super::PikminInfo;
 #[acmd_script( agent = "pikmin_pikmin", scripts = ["game_attackairf", "game_attackairf_y", "game_attackairf_b", "game_attackairf_w", "game_attackairf_v" ] , category = ACMD_GAME , low_priority)]
 unsafe fn pikmin_attack_air_f_common(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
     let pikmin = PikminInfo::from(variation);
     frame(lua_state, 5.0);
@@ -33,7 +33,7 @@ unsafe fn pikmin_attack_air_f_common(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pikmin_pikmin", scripts = ["game_attackairb", "game_attackairb_y", "game_attackairb_b", "game_attackairb_w", "game_attackairb_v"] , category = ACMD_GAME , low_priority)]
 unsafe fn pikmin_attack_air_b_common(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
     let pikmin = PikminInfo::from(variation);
     frame(lua_state, 8.0);
@@ -55,7 +55,7 @@ unsafe fn pikmin_attack_air_b_common(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pikmin_pikmin", scripts = ["game_attackairhi", "game_attackairhi_y", "game_attackairhi_b", "game_attackairhi_w", "game_attackairhi_v"] , category = ACMD_GAME , low_priority)]
 unsafe fn pikmin_attack_air_hi_common(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
     let pikmin = PikminInfo::from(variation);
     frame(lua_state, 7.0);
@@ -77,7 +77,7 @@ unsafe fn pikmin_attack_air_hi_common(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pikmin_pikmin", scripts = ["game_attackairlw", "game_attackairlw_y", "game_attackairlw_b", "game_attackairlw_w", "game_attackairlw_v"] , category = ACMD_GAME , low_priority)]
 unsafe fn pikmin_attack_air_lw_common(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     let variation = WorkModule::get_int(boma, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
     let pikmin = PikminInfo::from(variation);
     frame(lua_state, 9.0);
@@ -103,7 +103,7 @@ unsafe fn pikmin_attack_air_lw_common(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pikmin", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn olimar_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_FLAG_SYNC);
     }
@@ -133,7 +133,7 @@ unsafe fn olimar_attack_air_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pikmin", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn olimar_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_FLAG_SYNC);
     }
@@ -161,7 +161,7 @@ unsafe fn olimar_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pikmin", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn olimar_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_FLAG_SYNC);
     }
@@ -197,7 +197,7 @@ unsafe fn olimar_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pikmin", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn olimar_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_PIKMIN_STATUS_ATTACK_AIR_WORK_FLAG_SYNC);
     }
@@ -231,7 +231,7 @@ unsafe fn olimar_attack_air_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pikmin", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn olimar_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);

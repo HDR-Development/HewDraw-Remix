@@ -6,7 +6,7 @@ use crate::hooks::sys_line::meter::*;
 #[acmd_script( agent = "ryu", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn ryu_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
@@ -48,7 +48,7 @@ unsafe fn ryu_attack_air_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ryu", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn ryu_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
@@ -88,7 +88,7 @@ unsafe fn ryu_attack_air_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ryu", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn ryu_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
          WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -131,7 +131,7 @@ unsafe fn ryu_attack_air_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ryu", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn ryu_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
@@ -177,7 +177,7 @@ unsafe fn ryu_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ryu", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn ryu_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);

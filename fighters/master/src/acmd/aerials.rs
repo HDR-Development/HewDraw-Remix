@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "master", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn master_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_BOW, false, 0);
         ArticleModule::change_motion(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_BOW, smash::phx::Hash40::new("attack_air_n"), false, 0.0);
@@ -44,14 +44,14 @@ unsafe fn master_attack_air_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "master", script = "game_landingairn" , category = ACMD_GAME , low_priority)]
 unsafe fn master_landing_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     
 }
 
 #[acmd_script( agent = "master", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn master_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.637);
         ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, false, 0);
@@ -105,7 +105,7 @@ unsafe fn master_attack_air_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "master", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn master_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.833);
         ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, false, 0);
@@ -152,7 +152,7 @@ unsafe fn master_attack_air_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "master", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn master_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, false, 0);
         ArticleModule::change_motion(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, smash::phx::Hash40::new("attack_air_hi"), false, 0.0);

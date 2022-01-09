@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "rockman", script = "game_specials" , category = ACMD_GAME , low_priority)]
 unsafe fn rockman_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         //VarModule::off_flag(fighter.battle_object, rockman::DETONATE_CRASHBOMB);
@@ -26,7 +26,7 @@ unsafe fn rockman_special_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "rockman", script = "effect_specials" , category = ACMD_EFFECT , low_priority)]
 unsafe fn rockman_special_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         if !WorkModule::is_flag(boma, *FIGHTER_ROCKMAN_STATUS_SPECIAL_S_WORK_ID_FLAG_ALREADY_EXIST_CRASHBOMB){
@@ -65,7 +65,7 @@ unsafe fn rockman_special_s_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "rockman", script = "game_specialairs" , category = ACMD_GAME , low_priority)]
 unsafe fn rockman_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         //VarModule::off_flag(fighter.battle_object, rockman::DETONATE_CRASHBOMB);
@@ -87,7 +87,7 @@ unsafe fn rockman_special_air_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "rockman", script = "effect_specialairs" , category = ACMD_EFFECT , low_priority)]
 unsafe fn rockman_special_air_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         if !WorkModule::is_flag(boma, *FIGHTER_ROCKMAN_STATUS_SPECIAL_S_WORK_ID_FLAG_ALREADY_EXIST_CRASHBOMB){

@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "wiifit", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
 unsafe fn wiifit_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -34,7 +34,7 @@ unsafe fn wiifit_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "wiifit", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
 unsafe fn wiifit_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -57,7 +57,7 @@ unsafe fn wiifit_attack_lw4_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "wiifit", script = "game_attackhi4l" , category = ACMD_GAME , low_priority)]
 unsafe fn wiifit_attack_hi4_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -93,7 +93,7 @@ unsafe fn wiifit_attack_hi4_l_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "wiifit", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
 unsafe fn wiifit_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);

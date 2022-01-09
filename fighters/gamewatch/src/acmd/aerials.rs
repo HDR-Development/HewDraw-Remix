@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "gamewatch", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn gamewatch_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::set_int(boma, *WEAPON_GAMEWATCH_NORMAL_WEAPON_KIND_TROPICALFISH, *FIGHTER_GAMEWATCH_INSTANCE_WORK_ID_INT_NORMAL_WEAPON_KIND);
         ArticleModule::generate_article(boma, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_NORMAL_WEAPON, false, 0);
@@ -81,7 +81,7 @@ unsafe fn gamewatch_attack_air_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gamewatch", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn gamewatch_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_BOMB, false, 0);
     }
@@ -132,7 +132,7 @@ unsafe fn gamewatch_attack_air_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gamewatch", script = "game_landingairf" , category = ACMD_GAME , low_priority)]
 unsafe fn gamewatch_landing_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::remove_exist(boma, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_BOMB, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
@@ -142,7 +142,7 @@ unsafe fn gamewatch_landing_air_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gamewatch", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn gamewatch_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::set_int(boma, *WEAPON_GAMEWATCH_NORMAL_WEAPON_KIND_TURTLE, *FIGHTER_GAMEWATCH_INSTANCE_WORK_ID_INT_NORMAL_WEAPON_KIND);
         ArticleModule::generate_article(boma, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_NORMAL_WEAPON, false, 0);
@@ -204,7 +204,7 @@ unsafe fn gamewatch_attack_air_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gamewatch", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn gamewatch_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.500);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -262,7 +262,7 @@ unsafe fn gamewatch_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gamewatch", script = "sound_attackairhi" , category = ACMD_SOUND , low_priority)]
 unsafe fn gamewatch_attack_air_hi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_gamewatch_wave08_mi"));
@@ -278,14 +278,14 @@ unsafe fn gamewatch_attack_air_hi_sound(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gamewatch_breath", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn gamewatch_breath_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     
 }
 
 #[acmd_script( agent = "gamewatch", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn gamewatch_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);

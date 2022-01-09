@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "diddy", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
 unsafe fn diddy_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -66,7 +66,7 @@ unsafe fn diddy_attack_hi4_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "diddy", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
 unsafe fn diddy_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);

@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "chrom", script = "game_catch" , category = ACMD_GAME , low_priority)]
 unsafe fn chrom_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         GrabModule::set_rebound(boma, true);
@@ -26,7 +26,7 @@ unsafe fn chrom_catch_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "game_dash" , category = ACMD_GAME , low_priority)]
 unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 	frame(lua_state, 13.0); // Effectively F13
     if is_excute(fighter) {
 		FT_MOTION_RATE(fighter, 1.0);
@@ -38,7 +38,7 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
 unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, false);
@@ -53,7 +53,7 @@ unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "game_turndash" , category = ACMD_GAME , low_priority)]
 unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
 		WorkModule::on_flag(boma, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH);
@@ -68,7 +68,7 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "game_appeallwr" , category = ACMD_GAME , low_priority)]
 unsafe fn chrom_appeallwr_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         if(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)){
@@ -81,7 +81,7 @@ unsafe fn chrom_appeallwr_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "game_appeallwl" , category = ACMD_GAME , low_priority)]
 unsafe fn chrom_appeallwl_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)){

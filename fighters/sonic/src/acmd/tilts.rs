@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "sonic", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn sonic_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.667);
@@ -34,7 +34,7 @@ unsafe fn sonic_attack_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "sonic", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
 unsafe fn sonic_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new_raw(0x0d0da6e3c0), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
@@ -55,7 +55,7 @@ unsafe fn sonic_attack_hi3_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "sonic", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn sonic_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);

@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "roy", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
 unsafe fn roy_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -33,7 +33,7 @@ unsafe fn roy_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "roy", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
 unsafe fn roy_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -77,7 +77,7 @@ unsafe fn roy_attack_hi4_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "roy", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
 unsafe fn roy_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -112,7 +112,7 @@ unsafe fn roy_attack_lw4_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "roy", script = "effect_specials4hi" , category = ACMD_EFFECT , low_priority)]
 unsafe fn roy_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.24, 1, 0.7);
@@ -141,7 +141,7 @@ unsafe fn roy_special_s4_hi_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "roy", script = "effect_specialairs4hi" , category = ACMD_EFFECT , low_priority)]
 unsafe fn roy_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.24, 1, 0.7);
@@ -170,7 +170,7 @@ unsafe fn roy_special_air_s4_hi_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "roy", script = "effect_specials4s" , category = ACMD_EFFECT , low_priority)]
 unsafe fn roy_special_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
@@ -199,7 +199,7 @@ unsafe fn roy_special_s4_s_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "roy", script = "effect_specialairs4s" , category = ACMD_EFFECT , low_priority)]
 unsafe fn roy_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0, 0.05, 0.7);
@@ -228,7 +228,7 @@ unsafe fn roy_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "roy", script = "effect_specials4lw" , category = ACMD_EFFECT , low_priority)]
 unsafe fn roy_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.93, 0.03, 0.7);
@@ -282,7 +282,7 @@ unsafe fn roy_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "roy", script = "effect_specialairs4lw" , category = ACMD_EFFECT , low_priority)]
 unsafe fn roy_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.93, 0.03, 0.7);

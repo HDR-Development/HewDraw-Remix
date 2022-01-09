@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "lucario", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
 unsafe fn lucario_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_FORCE_AURAPOWER_ATTACK_POWER_MUL);
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.0, 5.0);
@@ -32,7 +32,7 @@ unsafe fn lucario_attack_dash_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucario", script = "game_attack11" , category = ACMD_GAME , low_priority)]
 unsafe fn lucario_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.571);
@@ -68,7 +68,7 @@ unsafe fn lucario_attack_11_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucario", script = "game_attack12" , category = ACMD_GAME , low_priority)]
 unsafe fn lucario_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
@@ -96,7 +96,7 @@ unsafe fn lucario_attack_12_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucario", script = "game_attack13" , category = ACMD_GAME , low_priority)]
 unsafe fn lucario_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);

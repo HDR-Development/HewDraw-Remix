@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "ganon", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
 unsafe fn ganon_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(boma, 3.0, 6.0, 8.5, 9.5);
@@ -55,7 +55,7 @@ unsafe fn ganon_special_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ganon", script = "game_specialairlwend" , category = ACMD_GAME , low_priority)]
 unsafe fn ganon_special_air_lw_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.790);

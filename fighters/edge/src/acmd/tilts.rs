@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "edge", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
 unsafe fn sephiroth_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.6);
     frame(lua_state, 6.0);
@@ -28,7 +28,7 @@ unsafe fn sephiroth_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "edge", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn sephiroth_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.6);
     frame(lua_state, 6.0);
@@ -51,7 +51,7 @@ unsafe fn sephiroth_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "edge", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
 unsafe fn sephiroth_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.6);
     frame(lua_state, 6.0);
@@ -74,7 +74,7 @@ unsafe fn sephiroth_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "edge", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn sephiroth_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.25);
     frame(lua_state, 12.0);
@@ -131,7 +131,7 @@ unsafe fn sephiroth_attack_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "edge", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn sephiroth_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.8);
     frame(lua_state, 6.0);

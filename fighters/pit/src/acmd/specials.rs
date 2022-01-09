@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "pit", script = "game_specialairnfires" , category = ACMD_GAME , low_priority)]
 unsafe fn pit_special_n_fire_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         let stop_rise = Vector3f{x: 1.0, y: 0.0, z: 1.0};
@@ -18,7 +18,7 @@ unsafe fn pit_special_n_fire_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pit", script = "game_specialairnfirehi" , category = ACMD_GAME , low_priority)]
 unsafe fn pit_special_n_fire_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         let stop_rise = Vector3f{x: 1.0, y: 0.0, z: 1.0};

@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "snake", script = "game_specialhistart" , category = ACMD_GAME , low_priority)]
 unsafe fn snake_special_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
     }
@@ -28,7 +28,7 @@ unsafe fn snake_special_hi_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "snake", script = "game_specialairhistart" , category = ACMD_GAME , low_priority)]
 unsafe fn snake_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
     }
@@ -51,7 +51,7 @@ unsafe fn snake_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "snake", script = "game_speciallwblast" , category = ACMD_GAME , low_priority)]
 unsafe fn snake_special_lw_blast_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4_SWITCH, false, 0);
@@ -76,7 +76,7 @@ unsafe fn snake_special_lw_blast_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "snake", script = "game_speciallwsquatblast" , category = ACMD_GAME , low_priority)]
 unsafe fn snake_special_lw_squat_blast_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
     }
@@ -105,7 +105,7 @@ unsafe fn snake_special_lw_squat_blast_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "snake", script = "game_specialairlwblast" , category = ACMD_GAME , low_priority)]
 unsafe fn snake_special_air_lw_blast_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4_SWITCH, false, 0);
@@ -130,7 +130,7 @@ unsafe fn snake_special_air_lw_blast_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "snake", script = "game_specialnstart" , category = ACMD_GAME , low_priority)]
 unsafe fn snake_special_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
     }
@@ -181,7 +181,7 @@ unsafe fn snake_special_n_start_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "snake", script = "game_specialairnstart" , category = ACMD_GAME , low_priority)]
 unsafe fn snake_special_air_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
     }

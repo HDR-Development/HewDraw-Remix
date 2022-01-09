@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "kamui", script = "game_specialswallattackf" , category = ACMD_GAME , low_priority)]
 unsafe fn kamui_special_s_wall_attack_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::change_motion(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_SPEARHAND, smash::phx::Hash40::new("special_s_wall_attack_f"), false, 0.0);
     }
@@ -35,7 +35,7 @@ unsafe fn kamui_special_s_wall_attack_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "kamui", script = "game_specialswallattackb" , category = ACMD_GAME , low_priority)]
 unsafe fn kamui_special_s_wall_attack_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::change_motion(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_SPEARHAND, smash::phx::Hash40::new("special_s_wall_attack_b"), false, 0.0);
     }

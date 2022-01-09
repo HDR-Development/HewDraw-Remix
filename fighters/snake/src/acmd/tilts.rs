@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "snake", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn snake_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("legr"), 4.0, 78, 10, 0, 42, 4.5, 3.2, 0.0, 0.0, Some(1.2), Some(0.0), Some(0.0), 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KNEE);
@@ -31,7 +31,7 @@ unsafe fn snake_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "snake", script = "game_attacks3s2" , category = ACMD_GAME , low_priority)]
 unsafe fn snake_attack_s3_s2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 2.000);
@@ -65,7 +65,7 @@ unsafe fn snake_attack_s3_s2_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "snake", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn snake_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
@@ -102,7 +102,7 @@ unsafe fn snake_attack_hi3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "snake", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn snake_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 90, 62, 0, 60, 5.0, 0.0, 2.3, 16.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);

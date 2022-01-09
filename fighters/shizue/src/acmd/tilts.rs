@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "shizue", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn shizue_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_SHIZUE_GENERATE_ARTICLE_UMBRELLA, false, 0);
     }
@@ -30,7 +30,7 @@ unsafe fn shizue_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "shizue", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn shizue_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.625);
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 2.0, 4.0);

@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "trail", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.5);
@@ -78,7 +78,7 @@ unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "trail", script = "game_attacks32" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attacks3s2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.8);
     }
@@ -116,7 +116,7 @@ unsafe fn game_attacks3s2(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "trail", script = "game_attacks33" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attacks3s3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("haver"), 1.0, 42, 250, 0, 45, 3.4, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_CLEAVE, *ATTACK_REGION_SWORD);
@@ -137,7 +137,7 @@ unsafe fn game_attacks3s3(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "trail", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 0.8, 110, 100, 100, 0, 3.5, 0.0, 7.2, 4.4, Some(0.0), Some(7.2), Some(11.2), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_NONE);
@@ -205,7 +205,7 @@ unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "trail", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.8);

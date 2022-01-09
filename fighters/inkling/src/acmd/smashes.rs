@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "inkling", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
 unsafe fn inkling_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_BRUSH, false, 0);
         ArticleModule::change_motion(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_BRUSH, smash::phx::Hash40::new("attack_s4_s"), true, 0.0);
@@ -40,7 +40,7 @@ unsafe fn inkling_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "inkling", script = "game_attacks4charge" , category = ACMD_GAME , low_priority)]
 unsafe fn inkling_attack_s4_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::change_motion(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_BRUSH, smash::phx::Hash40::new_raw(0x104aaf9b16), false, 0.0);
     }
@@ -50,7 +50,7 @@ unsafe fn inkling_attack_s4_hold_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "inkling", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
 unsafe fn inkling_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_BLASTER, false, 0);
         ArticleModule::change_motion(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_BLASTER, smash::phx::Hash40::new("attack_hi4"), true, 0.0);
@@ -93,7 +93,7 @@ unsafe fn inkling_attack_hi4_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "inkling", script = "game_attackhi4charge" , category = ACMD_GAME , low_priority)]
 unsafe fn inkling_attack_hi4_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::change_motion(boma, *FIGHTER_INKLING_GENERATE_ARTICLE_BLASTER, smash::phx::Hash40::new_raw(0x11a8f5a6bf), false, 0.0);
     }

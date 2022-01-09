@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "mewtwo", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
 
     if is_excute(fighter) {
         GroundModule::select_cliff_hangdata(boma, *FIGHTER_MEWTWO_CLIFF_HANG_DATA_SPECIAL_HI as u32);

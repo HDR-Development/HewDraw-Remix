@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "bayonetta", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn bayonetta_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_R_ARM, false, false, true, 20, 0, 15, 0, false);
@@ -54,7 +54,7 @@ unsafe fn bayonetta_attack_air_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "bayonetta", script = "game_attackairnhold" , category = ACMD_GAME , low_priority)]
 unsafe fn bayonetta_attack_air_n_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("legr"), 1.0, 361, 60, 0, 25, 4.8, 3.0, 0.0, 1.7, None, None, None, 0.75, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 7, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATTACK(fighter, 1, 0, Hash40::new("kneer"), 1.0, 361, 60, 0, 25, 3.3, 7.0, 0.0, 0.0, None, None, None, 0.75, 1.25, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 7, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -92,7 +92,7 @@ unsafe fn bayonetta_attack_air_n_hold_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "bayonetta", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn bayonetta_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_L_ARM, true, false, true, 10, 3, 10, 0, true);
@@ -143,7 +143,7 @@ unsafe fn bayonetta_attack_air_f_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "bayonetta", script = "game_attackairf2" , category = ACMD_GAME , low_priority)]
 unsafe fn bayonetta_attack_air_f2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_L_ARM, true, false, true, 10, 3, 10, 0, true);
@@ -187,7 +187,7 @@ unsafe fn bayonetta_attack_air_f2_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "bayonetta", script = "game_attackairf3" , category = ACMD_GAME , low_priority)]
 unsafe fn bayonetta_attack_air_f3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_L_ARM, false, false, true, 10, 3, 10, 5, true);
@@ -225,7 +225,7 @@ unsafe fn bayonetta_attack_air_f3_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "bayonetta", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn bayonetta_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_L_LEG, false, false, true, 10, 3, 10, 5, true);
@@ -267,7 +267,7 @@ unsafe fn bayonetta_attack_air_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "bayonetta", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn bayonetta_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_L_ARM, false, false, true, 20, 3, 15, 0, false);

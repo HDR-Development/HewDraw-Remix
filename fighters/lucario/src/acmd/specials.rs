@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "lucario", script = "game_specials" , category = ACMD_GAME , low_priority)]
 unsafe fn lucario_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 2.0, 5.0);
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -36,7 +36,7 @@ unsafe fn lucario_special_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucario", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn lucario_special_hi_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.500);
@@ -51,7 +51,7 @@ unsafe fn lucario_special_hi_l_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucario", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn lucario_special_hi_r_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.400);
@@ -66,7 +66,7 @@ unsafe fn lucario_special_hi_r_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucario", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn lucario_special_air_hi_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.400);
@@ -85,7 +85,7 @@ unsafe fn lucario_special_air_hi_l_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucario", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn lucario_special_air_hi_r_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.500);
@@ -104,7 +104,7 @@ unsafe fn lucario_special_air_hi_r_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucario", script = "game_specialhimove" , category = ACMD_GAME , low_priority)]
 unsafe fn lucario_special_hi_move_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);
     }
@@ -122,7 +122,7 @@ unsafe fn lucario_special_hi_move_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucario", script = "game_specialhiend" , category = ACMD_GAME , low_priority)]
 unsafe fn lucario_special_hi_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     wait(lua_state, 1.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("hip"), 6.0, 70, 10, 0, 96, 8.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
@@ -141,7 +141,7 @@ unsafe fn lucario_special_hi_end_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucario", script = "game_specialairhiend" , category = ACMD_GAME , low_priority)]
 unsafe fn lucario_special_air_hi_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     wait(lua_state, 1.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("hip"), 6.0, 70, 10, 0, 96, 8.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);

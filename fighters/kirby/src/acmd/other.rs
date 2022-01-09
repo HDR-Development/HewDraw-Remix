@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "kirby", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
 unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, false);
@@ -19,7 +19,7 @@ unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "kirby", script = "game_turndash" , category = ACMD_GAME , low_priority)]
 unsafe fn kirby_turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
 		WorkModule::on_flag(boma, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH);
@@ -34,20 +34,20 @@ unsafe fn kirby_turn_dash_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "kirby", script = "game_appealsl" , category = ACMD_GAME , low_priority)]
 unsafe fn game_appealsl(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     //taunt_starrod(fighter);
 }
 
 #[acmd_script( agent = "kirby", script = "game_appealsr" , category = ACMD_GAME , low_priority)]
 unsafe fn game_appealsr(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     //taunt_starrod(fighter);   
 }
 
 unsafe fn taunt_starrod(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 65.0);
     if is_excute(fighter) {
         

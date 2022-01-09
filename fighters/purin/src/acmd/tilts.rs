@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "purin", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn purin_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("footl"), *HIT_STATUS_XLU);
@@ -23,7 +23,7 @@ unsafe fn purin_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "purin", script = "game_attacks3hi" , category = ACMD_GAME , low_priority)]
 unsafe fn purin_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("footl"), *HIT_STATUS_XLU);
@@ -41,7 +41,7 @@ unsafe fn purin_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "purin", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
 unsafe fn purin_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("footl"), *HIT_STATUS_XLU);
@@ -59,7 +59,7 @@ unsafe fn purin_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "purin", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn purin_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("footl"), *HIT_STATUS_XLU);

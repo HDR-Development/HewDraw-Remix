@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "szerosuit", script = "game_specials2" , category = ACMD_GAME , low_priority)]
 unsafe fn szerosuit_special_s_2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 31.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 5, Hash40::new("top"), 4.0, 107, 62, 0, 98, 4.5, 0.0, 8.0, 36.0, Some(0.0), Some(8.0), Some(33.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_WHIP);
@@ -21,7 +21,7 @@ unsafe fn szerosuit_special_s_2_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "szerosuit", script = "game_specialairs2" , category = ACMD_GAME , low_priority)]
 unsafe fn szerosuit_special_air_s_2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 31.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 5, Hash40::new("top"), 4.0, 108, 105, 0, 60, 5.0, 0.0, 8.0, 36.0, Some(0.0), Some(8.0), Some(36.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_WHIP);
@@ -37,7 +37,7 @@ unsafe fn szerosuit_special_air_s_2_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "szerosuit", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn szerosuit_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         SA_SET(fighter, *SITUATION_KIND_AIR);
@@ -92,7 +92,7 @@ unsafe fn szerosuit_special_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "szerosuit", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn szerosuit_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         SA_SET(fighter, *SITUATION_KIND_AIR);
@@ -147,7 +147,7 @@ unsafe fn szerosuit_special_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "szerosuit", script = "game_specialairlwkick" , category = ACMD_GAME , low_priority)]
 unsafe fn szerosuit_special_air_lw_kick_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_LW_FLAG_KICK_REVERSE_ENABLE);

@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "pitb", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn pitb_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.667);
         JostleModule::set_status(boma, false);
@@ -36,7 +36,7 @@ unsafe fn pitb_special_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pitb", script = "game_speciallwstartr" , category = ACMD_GAME , low_priority)]
 unsafe fn pitb_special_lw_start_r_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.667);
@@ -51,7 +51,7 @@ unsafe fn pitb_special_lw_start_r_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pitb", script = "game_speciallwstartl" , category = ACMD_GAME , low_priority)]
 unsafe fn pitb_special_lw_start_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.667);
@@ -66,7 +66,7 @@ unsafe fn pitb_special_lw_start_l_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pitb", script = "game_specialairlwstartr" , category = ACMD_GAME , low_priority)]
 unsafe fn pitb_special_air_lw_start_r_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.667);
@@ -81,7 +81,7 @@ unsafe fn pitb_special_air_lw_start_r_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pitb", script = "game_speciallwstartl" , category = ACMD_GAME , low_priority)]
 unsafe fn pitb_special_air_lw_start_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.667);
@@ -96,7 +96,7 @@ unsafe fn pitb_special_air_lw_start_l_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pitb", script = "game_speciallwhold" , category = ACMD_GAME , low_priority)]
 unsafe fn pitb_special_lw_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_SHIELD, 0, *FIGHTER_PIT_SHIELD_GROUP_KIND_SPECIAL_LW);
         shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_SHIELD, 1, *FIGHTER_PIT_SHIELD_GROUP_KIND_SPECIAL_LW);
@@ -117,7 +117,7 @@ unsafe fn pitb_special_lw_hold_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pitb", script = "game_specialairlwhold" , category = ACMD_GAME , low_priority)]
 unsafe fn pitb_special_air_lw_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_SHIELD, 0, *FIGHTER_PIT_SHIELD_GROUP_KIND_SPECIAL_LW);
         shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_SHIELD, 1, *FIGHTER_PIT_SHIELD_GROUP_KIND_SPECIAL_LW);

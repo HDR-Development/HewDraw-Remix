@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "murabito", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn murabito_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
@@ -37,7 +37,7 @@ unsafe fn murabito_attack_air_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "murabito", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn murabito_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_SLINGSHOT, true, 0);
@@ -81,7 +81,7 @@ unsafe fn murabito_attack_air_b_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "murabito", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
 unsafe fn murabito_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new_raw(0x1156ac182a), Hash40::new("haver"), 0.0, -4.0, 0.0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 360, true);
@@ -98,7 +98,7 @@ unsafe fn murabito_attack_air_b_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "murabito", script = "sound_attackairb" , category = ACMD_SOUND , low_priority)]
 unsafe fn murabito_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new_raw(0x1946174757));
@@ -113,7 +113,7 @@ unsafe fn murabito_attack_air_b_sound(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "murabito", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn murabito_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -155,7 +155,7 @@ unsafe fn murabito_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "murabito", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn murabito_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.769);

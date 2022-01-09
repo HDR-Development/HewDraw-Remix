@@ -5,7 +5,7 @@ use super::*;
 #[acmd_script( agent = "littlemac", script = "game_attack11" , category = ACMD_GAME , low_priority)]
 unsafe fn littlemac_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK);
@@ -45,7 +45,7 @@ unsafe fn littlemac_attack_11_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "littlemac", script = "game_attack12" , category = ACMD_GAME , low_priority)]
 unsafe fn littlemac_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK);
@@ -108,7 +108,7 @@ unsafe fn littlemac_attack_12_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "littlemac", script = "game_attack13" , category = ACMD_GAME , low_priority)]
 unsafe fn littlemac_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
@@ -140,7 +140,7 @@ unsafe fn littlemac_attack_13_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "littlemac", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
 unsafe fn littlemac_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 361, 100, 20, 0, 3.0, 0.0, 6.0, 7.0, Some(0.0), Some(6.0), Some(3.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_G_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);

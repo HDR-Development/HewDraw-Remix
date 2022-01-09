@@ -4,7 +4,7 @@ use super::*;
 #[acmd_script( agent = "samus", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn special_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_SAMUS_STATUS_SPECIAL_HI_FLAG_DISABLE_LR);
     }
@@ -59,7 +59,7 @@ unsafe fn special_hi(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samus", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn special_air_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_SAMUS_STATUS_SPECIAL_HI_FLAG_DISABLE_LR);
     }
