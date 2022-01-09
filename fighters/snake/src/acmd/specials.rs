@@ -138,7 +138,7 @@ unsafe fn snake_special_n_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) || (ControlModule::get_stick_y(boma) >= 0.5)){
             if(snake_grenade_counter[hdr::get_player_number(boma)] < 2){
-                if(hdr::get_num_of_active_item(*ITEM_KIND_SENSORBOMB) < 1){
+                if(app::ItemManager::get_num_of_active_item(*ITEM_KIND_SENSORBOMB) < 1){
                     snake_grenade_counter[hdr::get_player_number(boma)] += 1;
                     ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_SENSORBOMB), 0, 0, false, false);
                 }
@@ -146,7 +146,7 @@ unsafe fn snake_special_n_start_game(fighter: &mut L2CAgentBase) {
         }
         else if(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_LW) || (ControlModule::get_stick_y(boma) <= -0.5)){
             if(snake_grenade_counter[hdr::get_player_number(boma)] < 2){
-                if(hdr::get_num_of_active_item(*ITEM_KIND_SMOKESCREEN) < 1){
+                if(app::ItemManager::get_num_of_active_item(*ITEM_KIND_SMOKESCREEN) < 1){
                     snake_grenade_counter[hdr::get_player_number(boma)] += 1;
                     ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_SMOKESCREEN), 0, 0, false, false);
                 }
@@ -188,7 +188,7 @@ unsafe fn snake_special_air_n_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) || (ControlModule::get_stick_y(boma) >= 0.5)){
             if(snake_grenade_counter[hdr::get_player_number(boma)] < 2){
-                if(hdr::get_num_of_active_item(*ITEM_KIND_SENSORBOMB) < 1){
+                if(app::ItemManager::get_num_of_active_item(*ITEM_KIND_SENSORBOMB) < 1){
                     snake_grenade_counter[hdr::get_player_number(boma)] += 1;
                     ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_SENSORBOMB), 0, 0, false, false);
                 }
@@ -196,7 +196,7 @@ unsafe fn snake_special_air_n_start_game(fighter: &mut L2CAgentBase) {
         }
         else if(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_LW) || (ControlModule::get_stick_y(boma) <= -0.5)){
             if(snake_grenade_counter[hdr::get_player_number(boma)] < 2){
-                if(hdr::get_num_of_active_item(*ITEM_KIND_SMOKESCREEN) < 1){
+                if(app::ItemManager::get_num_of_active_item(*ITEM_KIND_SMOKESCREEN) < 1){
                     snake_grenade_counter[hdr::get_player_number(boma)] += 1;
                     ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_SMOKESCREEN), 0, 0, false, false);
                 }

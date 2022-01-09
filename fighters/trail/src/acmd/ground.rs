@@ -7,7 +7,7 @@ unsafe fn game_attack11(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, trail::ATTACK_12_INTO_S3);
+        VarModule::off_flag(fighter.battle_object, vars::trail::ATTACK_12_INTO_S3);
         FT_MOTION_RATE(fighter, 0.5);
     }
     frame(lua_state, 6.0);

@@ -11,7 +11,7 @@ unsafe fn younglink_appeal_lw_r_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 61.0);
     if is_excute(fighter) {
-        if (DamageModule::damage(boma, 0) > 2.5) {
+        if DamageModule::damage(boma, 0) > 2.5 {
             DamageModule::add_damage(boma, -2.5, 0);
         }
     }
@@ -32,7 +32,7 @@ unsafe fn younglink_appeal_lw_l_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 61.0);
     if is_excute(fighter) {
-        if (DamageModule::damage(boma, 0) > 2.5) {
+        if DamageModule::damage(boma, 0) > 2.5 {
             DamageModule::add_damage(boma, -2.5, 0);
         }
     }
