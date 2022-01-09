@@ -49,17 +49,25 @@ impl StatusShift for L2CFighterCommon {
 }
 
 pub trait GetObjects {
-    unsafe fn object<'a>(&'a mut self) -> &'a mut BattleObject;
-    unsafe fn boma<'a>(&'a mut self) -> &'a mut BattleObjectModuleAccessor;
+    unsafe fn get_object(agent: &mut Self) -> &'static mut BattleObject;
+    unsafe fn get_boma(agent: &mut Self) -> &'static mut BattleObjectModuleAccessor;
+    
+    unsafe fn object(&mut self) -> &'static mut BattleObject {
+        Self::get_object(self)
+    }
+
+    unsafe fn boma(&mut self) -> &'static mut BattleObjectModuleAccessor {
+        Self::get_boma(self)
+    }
 }
 
 impl GetObjects for L2CAgentBase {
-    unsafe fn object<'a>(&'a mut self) -> &'a mut BattleObject {
-        &mut *self.battle_object
+    unsafe fn get_object(agent: &mut Self) -> &'static mut BattleObject {
+        std::mem::transmute(agent.battle_object)
     }
 
-    unsafe fn boma<'a>(&'a mut self) -> &'a mut BattleObjectModuleAccessor {
-        &mut *self.module_accessor
+    unsafe fn get_boma(agent: &mut Self) -> &'static mut BattleObjectModuleAccessor {
+        std::mem::transmute(agent.module_accessor)
     }
 }
 
