@@ -1,6 +1,5 @@
 
 use super::*;
-use crate::hooks::sys_line::meter::*;
 
 
 #[acmd_script( agent = "ken", script = "game_specialn" , category = ACMD_GAME , low_priority)]
@@ -19,7 +18,7 @@ unsafe fn ken_special_n_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-        add_meter(fighter, boma, 2);
+        MeterModule::add(fighter.battle_object, 2.0);
      }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
@@ -48,7 +47,7 @@ unsafe fn ken_special_air_n_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-        add_meter(fighter, boma, 2);
+        MeterModule::add(fighter.battle_object, 2.0);
      }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
