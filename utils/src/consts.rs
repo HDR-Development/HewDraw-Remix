@@ -58,8 +58,8 @@ pub mod vars {
         pub const IS_HEAVY_ATTACK: i32 = 0x0;
 
         // separator
-        GIMMICK_TIMER = 0x50;
-        SPECIAL_PROJECTILE_SPAWNED = 0x51;
+        pub const GIMMICK_TIMER: i32 = 0x50;
+        pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 0x51;
         
 
     }
