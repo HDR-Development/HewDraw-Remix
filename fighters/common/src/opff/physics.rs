@@ -15,11 +15,10 @@ mod groups {
     pub const XLARGE: i32 = 3;
     pub const XXLARGE: i32 = 4;
 }
-//=================================================================
-//== ECB ADJUSTMENTS
-//== Note: Resetting while a fighter is in air in training mode
-//         causes said fighters to drop through the floor
-//=================================================================
+
+
+/// Shifts fighter's ECB (Environment Collision Box) rhombus up to around their knees when they are in the air for over
+/// a certain amount of frames *and* they are in the proper status
 unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
     if !boma.is_prev_status_one_of(&[
         *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
@@ -112,6 +111,8 @@ unsafe fn extra_traction(boma: &mut BattleObjectModuleAccessor) {
 //=================================================================
 //== GRAB JUMP REFRESH
 //=================================================================
+
+/// Gives fighters an additional jump if they are grabbed
 unsafe fn grab_jump_refresh(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_CAPTURE_PULLED,

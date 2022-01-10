@@ -15,6 +15,7 @@ use smash::{
 };
 use utils::{
     *,
+    ext::*,
     consts::*,
     util::*
 };
@@ -103,14 +104,14 @@ impl GetObjects for BattleObjectModuleAccessor {
         std::mem::transmute(utils::util::get_battle_object_from_accessor(boma))
     }
 
-    unsafe fn get_boma(boma: &mut Self) -> &'static mut BattleObjectModuleAccessor {
+    unsafe fn get_boma(_: &mut Self) -> &'static mut BattleObjectModuleAccessor {
         panic!("Calling GetObjects::get_boma() on a BattleObjectModuleAccessor is invalid")
     }
 }
 
-
 pub trait AgentUtil {
-    unsafe fn is_cat_flag(&mut self, category: i32, fighter_pad_cmd_flag: i32) -> bool;
+    unsafe fn is_cat_flag<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool;
+    unsafe fn is_cat_flag_all<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool;
     unsafe fn is_status(&mut self, kind: i32) -> bool;
     unsafe fn is_status_one_of(&mut self, kinds: &[i32]) -> bool;
     unsafe fn is_prev_status(&mut self, kind: i32) -> bool;
@@ -123,8 +124,12 @@ pub trait AgentUtil {
 }
 
 impl AgentUtil for L2CAgentBase {
-    unsafe fn is_cat_flag(&mut self, category: i32, fighter_pad_cmd_flag: i32) -> bool {
-        return self.boma().is_cat_flag(category, fighter_pad_cmd_flag);
+    unsafe fn is_cat_flag<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool {
+        return self.boma().is_cat_flag(fighter_pad_cmd_flag);
+    }
+
+    unsafe fn is_cat_flag_all<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool {
+        return self.boma().is_cat_flag_all(fighter_pad_cmd_flag);
     }
 
     unsafe fn is_status(&mut self, kind: i32) -> bool {
@@ -165,9 +170,24 @@ impl AgentUtil for L2CAgentBase {
 }
 
 impl AgentUtil for BattleObjectModuleAccessor {
-    unsafe fn is_cat_flag(&mut self, category: i32, fighter_pad_cmd_flag: i32) -> bool {
-        let flag_mask = ControlModule::get_command_flag_cat(self, category);
-        return compare_mask(flag_mask, fighter_pad_cmd_flag);
+    unsafe fn is_cat_flag<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool {
+        let cat = fighter_pad_cmd_flag.into();
+        match cat {
+            CommandCat::Cat1(cat) => Cat1::new(self).intersects(cat),
+            CommandCat::Cat2(cat) => Cat2::new(self).intersects(cat),
+            CommandCat::Cat3(cat) => Cat3::new(self).intersects(cat),
+            CommandCat::Cat4(cat) => Cat4::new(self).intersects(cat)
+        }
+    }
+
+    unsafe fn is_cat_flag_all<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool {
+        let cat = fighter_pad_cmd_flag.into();
+        match cat {
+            CommandCat::Cat1(cat) => Cat1::new(self).contains(cat),
+            CommandCat::Cat2(cat) => Cat2::new(self).contains(cat),
+            CommandCat::Cat3(cat) => Cat3::new(self).contains(cat),
+            CommandCat::Cat4(cat) => Cat4::new(self).contains(cat)
+        }
     }
 
     unsafe fn is_status(&mut self, kind: i32) -> bool {
