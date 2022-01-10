@@ -138,6 +138,8 @@ pub trait AgentUtil {
     unsafe fn is_motion(&mut self, motion: Hash40) -> bool;
     unsafe fn is_motion_one_of(&mut self, motions: &[Hash40]) -> bool;
 
+    unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32;
+
     // INSTANCE
     unsafe fn is_fighter(&mut self) -> bool;
     unsafe fn is_weapon(&mut self) -> bool;
@@ -235,6 +237,10 @@ impl AgentUtil for L2CAgentBase {
 
     unsafe fn is_motion_one_of(&mut self, kinds: &[Hash40]) -> bool {
         return self.boma().is_motion_one_of(kinds);
+    }
+
+    unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32 {
+        return self.boma().change_status_req(kind, repeat);
     }
 
     unsafe fn is_fighter(&mut self) -> bool {
@@ -373,6 +379,10 @@ impl AgentUtil for BattleObjectModuleAccessor {
     unsafe fn is_motion_one_of(&mut self, kinds: &[Hash40]) -> bool {
         let kind = MotionModule::motion_kind(self);
         return kinds.contains(&Hash40::new_raw(kind));
+    }
+
+    unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32 {
+        return StatusModule::change_status_request_from_script(self, kind, repeat) as i32;
     }
 
     unsafe fn is_fighter(&mut self) -> bool {
