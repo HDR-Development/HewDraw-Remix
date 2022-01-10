@@ -49,7 +49,7 @@ unsafe fn djc_momentum_helper(id: usize, status_kind: i32, frame: f32) {
         double_jump_frame[id] = frame;
     }
     /*
-    if double_jump_frame[id] == 1.0 {
+    if VarModule::get_float(get_battle_object_from_accessor(boma), vars::common::DOUBLE_JUMP_FRAME) == 1.0 {
         double_jump_timer[id] = 1.0;
     }
     if double_jump_timer[id] > 0.0 && (status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL || status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR) {

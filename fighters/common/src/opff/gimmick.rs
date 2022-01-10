@@ -10,20 +10,20 @@ pub unsafe fn gimmick_flash(boma: &mut BattleObjectModuleAccessor) {
     let cbm_vec2 = Vector4f{x: 1.0, y: 0.8, z: 0.35, w: 0.00};
     ColorBlendModule::set_main_color(boma, &cbm_vec1, &cbm_vec2, 0.5, 0.5, 5, true);
 
-    gimmick_ready_glow_timer[hdr::get_player_number(boma)] = 1;
+    VarModule::set_int(get_battle_object_from_accessor(boma), vars::common::GIMMICK_READY_GLOW_TIMER, 1);
 }
 
 pub unsafe fn gimmick_ready_glow_timer_counting(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     let id = hdr::get_player_number(boma);
-    if gimmick_ready_glow_timer[id] > 0 && gimmick_ready_glow_timer[id] < 121 { // 250/5 = 50F
-        if gimmick_ready_glow_timer[id] > 119 {
+    if VarModule::get_int(get_battle_object_from_accessor(boma), vars::common::GIMMICK_READY_GLOW_TIMER) > 0 && VarModule::get_int(get_battle_object_from_accessor(boma), vars::common::GIMMICK_READY_GLOW_TIMER) < 121 { // 250/5 = 50F
+        if VarModule::get_int(get_battle_object_from_accessor(boma), vars::common::GIMMICK_READY_GLOW_TIMER) > 119 {
             ColorBlendModule::cancel_main_color(boma, 0);
         } else {
-            gimmick_ready_glow_timer[id] += 1;
+            VarModule::inc_int(get_battle_object_from_accessor(boma), vars::common::GIMMICK_READY_GLOW_TIMER);
         }
     }
     if [*FIGHTER_STATUS_KIND_WIN, *FIGHTER_STATUS_KIND_LOSE, *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-        gimmick_ready_glow_timer[id] = 0;
+        VarModule::set_int(get_battle_object_from_accessor(boma), vars::common::GIMMICK_READY_GLOW_TIMER, 0);
     }
 }
 

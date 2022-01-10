@@ -55,6 +55,8 @@ flag_patterns = [
 int_patterns = [
   ("= {old_name}[{index_value}]", "= VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name})"),
   ("={old_name}[{index_value}]", "= VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("!={old_name}[{index_value}]", "!= VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("!= {old_name}[{index_value}]", "!= VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name})"),
   ("<{old_name}[{index_value}]", "< VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name})"),
   (">{old_name}[{index_value}]", "> VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name})"),
   ("< {old_name}[{index_value}]", "< VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name})"),
@@ -63,6 +65,8 @@ int_patterns = [
   (",{old_name}[{index_value}]", ", VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name})"),
   ("{old_name}[{index_value}]==", "VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name}) =="),
   ("{old_name}[{index_value}] ==", "VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name}) =="),
+  ("{old_name}[{index_value}]!=", "VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name}) !="),
+  ("{old_name}[{index_value}] !=", "VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name}) !="),
   ("{old_name}[{index_value}]>", "VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name}) >"),
   ("{old_name}[{index_value}] >", "VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name}) >"),
   ("{old_name}[{index_value}]<", "VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name}) <"),
@@ -80,6 +84,8 @@ int_patterns = [
 float_patterns = [
   ("= {old_name}[{index_value}]", "= VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name})"),
   ("={old_name}[{index_value}]", "= VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("!= {old_name}[{index_value}]", "!= VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("!={old_name}[{index_value}]", "!= VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name})"),
   ("<{old_name}[{index_value}]", "< VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name})"),
   (">{old_name}[{index_value}]", "> VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name})"),
   ("< {old_name}[{index_value}]", "< VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name})"),
@@ -88,6 +94,8 @@ float_patterns = [
   (",{old_name}[{index_value}]", ", VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name})"),
   ("{old_name}[{index_value}]==", "VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name}) =="),
   ("{old_name}[{index_value}] ==", "VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name}) =="),
+  ("{old_name}[{index_value}]!=", "VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name}) !="),
+  ("{old_name}[{index_value}] !=", "VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name}) !="),
   ("{old_name}[{index_value}]>", "VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name}) >"),
   ("{old_name}[{index_value}] >", "VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name}) >"),
   ("{old_name}[{index_value}]<", "VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name}) <"),
@@ -99,18 +107,17 @@ float_patterns = [
   ("{old_name}[{index_value}]= 1.0;", "VarModule::set_float(get_battle_object_from_accessor(boma), vars::{new_name}, 1.0);"),
   ("{old_name}[{index_value}] = 1.0;", "VarModule::set_float(get_battle_object_from_accessor(boma), vars::{new_name}, 1.0);"),
 
-  
   ("{old_name}[{index_value}] += 1.0;", "VarModule::add_float(get_battle_object_from_accessor(boma), vars::{new_name}, 1.0);"),
 
 ]
 
-variable_type = input("what is the variable's type? (bool, int, float")
+variable_type = input("what is the variable's type? (bool, int, float): ")
 
-if variable_type is "bool":
+if variable_type == "bool":
   patterns = flag_patterns
-elif variable_type is "int":
+elif variable_type == "int":
   patterns = int_patterns
-elif variable_type is "float":
+elif variable_type == "float":
   patterns = float_patterns
 else:
   print("Not a valid variable type! Please specify one of the options: [bool, int, float]")
