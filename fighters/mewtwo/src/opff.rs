@@ -6,7 +6,7 @@ use common::opff::*;
 unsafe fn actionable_teleport_air(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
     if status_kind == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3 && situation_kind == *SITUATION_KIND_AIR && frame > 8.0 {
         if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
-            VarModule::on_flag(boma, common::UP_SPECIAL_CANCEL);
+            VarModule::on_flag(boma.object(), common::UP_SPECIAL_CANCEL);
             CancelModule::enable_cancel(boma);
         }
     }
@@ -16,7 +16,7 @@ unsafe fn actionable_teleport_air(boma: &mut BattleObjectModuleAccessor, id: usi
 unsafe fn fall_after_teleport(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_FALL_SPECIAL && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3 {
         if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
-            VarModule::on_flag(boma, common::UP_SPECIAL_CANCEL);
+            VarModule::on_flag(boma.object(), common::UP_SPECIAL_CANCEL);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
         }
     }

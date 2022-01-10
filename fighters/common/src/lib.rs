@@ -1,3 +1,4 @@
+#![feature(asm)]#![allow(unused_imports)]#![allow(unused_variables)]
 pub mod prelude {
     pub use smash;
     pub use skyline;
@@ -88,11 +89,11 @@ impl GetObjects for L2CAgentBase {
 
 impl GetObjects for BattleObjectModuleAccessor {
     unsafe fn get_object(boma: &mut Self) -> &'static mut BattleObject {
-        return get_battle_object_from_module_accessor(self)
+        return get_battle_object_from_module_accessor(boma)
     }
 
-    unsafe fn get_boma(agent: &mut Self) -> &'static mut BattleObjectModuleAccessor {
-        return self;
+    unsafe fn get_boma(boma: &mut Self) -> &'static mut BattleObjectModuleAccessor {
+        return boma;
     }
 }
 

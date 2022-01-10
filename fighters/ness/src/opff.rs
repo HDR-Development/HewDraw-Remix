@@ -37,7 +37,7 @@ unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, st
                 up_special_interrupt[id] = true;
             }
             if up_special_interrupt_airtime[id] {
-                VarModule::on_flag(boma, common::UP_SPECIAL_CANCEL); // Disallow more up specials
+                VarModule::on_flag(boma.object(), common::UP_SPECIAL_CANCEL); // Disallow more up specials
             }
             StatusModule::change_status_request_from_script(boma, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END, true);
         }

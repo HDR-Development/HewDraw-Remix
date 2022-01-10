@@ -207,7 +207,7 @@ unsafe fn waveland_plat_drop(boma: &mut BattleObjectModuleAccessor, cat2: i32, s
     if reset_statuses.contains(&status_kind) {
         // if stick set to neutral, toggle waveland platdrop flag
         if ControlModule::get_stick_y(boma) > -0.3 {
-            VarModule::on_flag(boma, common::ENABLE_WAVELAND_PLATDROP);
+            VarModule::on_flag(boma.object(), common::ENABLE_WAVELAND_PLATDROP);
         }
     }
 }
@@ -478,10 +478,10 @@ unsafe fn tap_upB_jump_refresh(fighter: &mut L2CFighterCommon, boma: &mut Battle
         if ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_JUMP) && !ControlModule::check_button_release(boma, *CONTROL_PAD_BUTTON_JUMP) {
             // if first 3 frames of dj
             if MotionModule::frame(boma) <= 2.0 {
-                VarModule::on_flag(boma, common::UP_SPECIAL_JUMP_REFRESH_WINDOW);
+                VarModule::on_flag(boma.object(), common::UP_SPECIAL_JUMP_REFRESH_WINDOW);
             }
             else {
-                VarModule::off_flag(boma, common::UP_SPECIAL_JUMP_REFRESH_WINDOW);
+                VarModule::off_flag(boma.object(), common::UP_SPECIAL_JUMP_REFRESH_WINDOW);
             }
         }
     }
@@ -490,11 +490,11 @@ unsafe fn tap_upB_jump_refresh(fighter: &mut L2CFighterCommon, boma: &mut Battle
         if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) == WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
             WorkModule::set_int(boma, WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
         }
-        VarModule::on_flag(boma, common::DISABLE_UP_SPECIAL_JUMP_REFRESH);
-        VarModule::off_flag(boma, common::UP_SPECIAL_JUMP_REFRESH_WINDOW);
+        VarModule::on_flag(boma.object(), common::DISABLE_UP_SPECIAL_JUMP_REFRESH);
+        VarModule::off_flag(boma.object(), common::UP_SPECIAL_JUMP_REFRESH_WINDOW);
     }
     if situation_kind == *SITUATION_KIND_GROUND && VarModule::is_flag(boma.object(), common::DISABLE_UP_SPECIAL_JUMP_REFRESH) {
-        VarModule::off_flag(boma, common::DISABLE_UP_SPECIAL_JUMP_REFRESH);
+        VarModule::off_flag(boma.object(), common::DISABLE_UP_SPECIAL_JUMP_REFRESH);
     }
 }
 
@@ -585,21 +585,21 @@ pub unsafe fn hitfall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, s
             && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
             || AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT)
             || AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::set_int(boma, common::HITFALL_BUFFER, 0);
+            VarModule::set_int(boma.object(), common::HITFALL_BUFFER, 0);
         } 
         
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) 
             || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::set_int(boma, common::HITFALL_BUFFER, VarModule::get_int(boma, common::HITFALL_BUFFER) + 1);
+            VarModule::set_int(boma.object(), common::HITFALL_BUFFER, VarModule::get_int(boma.object(), common::HITFALL_BUFFER) + 1);
         }
 
-        let buffer = VarModule::get_int(boma, common::HITFALL_BUFFER);
+        let buffer = VarModule::get_int(boma.object(), common::HITFALL_BUFFER);
         if hdr::compare_cat(cat[1], *FIGHTER_PAD_CMD_CAT2_FLAG_FALL_JUMP) && 
             buffer <= 5 && buffer > 0 {
             WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
         }
 
-        // println!("CAN HITFALL: {}", VarModule::get_int(boma, common::HITFALL_BUFFER));
+        // println!("CAN HITFALL: {}", VarModule::get_int(boma.object(), common::HITFALL_BUFFER));
 
     }
 }
@@ -664,13 +664,13 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mu
     
 
     /*if BufferModule::is_persist(boma) && VarModule::is_flag(boma.object(), common::FLOAT_PAUSE_AERIAL) {
-        VarModule::off_flag(boma, common::FLOAT_PAUSE_AERIAL);
+        VarModule::off_flag(boma.object(), common::FLOAT_PAUSE_AERIAL);
         let cbm_vec1 = Vector4f{x: 0.95, y: 0.95, z: 0.95, w: 0.2};
         let cbm_vec2 = Vector4f{x: 0.0, y: 0.0, z: 0.3, w: 0.8};
         ColorBlendModule::set_main_color(boma, &cbm_vec1, &cbm_vec2, 0.5, 2.2, 2, true);
     }
     if !BufferModule::is_persist(boma) && !VarModule::is_flag(boma.object(), common::FLOAT_PAUSE_AERIAL) {
-        VarModule::on_flag(boma, common::FLOAT_PAUSE_AERIAL);
+        VarModule::on_flag(boma.object(), common::FLOAT_PAUSE_AERIAL);
         ColorBlendModule::cancel_main_color(boma, 0);
     }*/
 

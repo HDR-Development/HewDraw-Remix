@@ -114,16 +114,16 @@ pub unsafe fn airdodge_refresh_on_hit_disable(boma: &mut BattleObjectModuleAcces
         //println!("dont refresh!");
         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR);
     }
-    VarModule::set_flag(boma, common::PREV_FLAG_DISABLE_ESCAPE_AIR, WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR));
+    VarModule::set_flag(boma.object(), common::PREV_FLAG_DISABLE_ESCAPE_AIR, WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR));
 }
 
 pub unsafe fn tumble_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FALL {
         if fighter.global_table[CURRENT_FRAME].get_i32() <= 20 {
-            VarModule::on_flag(boma, common::DISABLE_AIRDODGE);
+            VarModule::on_flag(boma.object(), common::DISABLE_AIRDODGE);
         }
         else {
-            VarModule::off_flag(boma, common::DISABLE_AIRDODGE);
+            VarModule::off_flag(boma.object(), common::DISABLE_AIRDODGE);
         }
     }
 }

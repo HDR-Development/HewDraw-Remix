@@ -269,16 +269,16 @@ unsafe fn extra_traction(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_age
             *FIGHTER_STATUS_KIND_ATTACK_LW4_START,
             *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind) {
                 //double_traction_check[hdr::get_player_number(boma)] = true;
-                VarModule::on_flag(boma, common::ENABLE_DOUBLE_TRACTION);
+                VarModule::on_flag(boma.object(), common::ENABLE_DOUBLE_TRACTION);
             }
         else{
             //double_traction_check[hdr::get_player_number(boma)] = false;
-            VarModule::off_flag(boma, common::ENABLE_DOUBLE_TRACTION);
+            VarModule::off_flag(boma.object(), common::ENABLE_DOUBLE_TRACTION);
         }
     }
     else{
         //double_traction_check[hdr::get_player_number(boma)] = false;
-        VarModule::off_flag(boma, common::ENABLE_DOUBLE_TRACTION);
+        VarModule::off_flag(boma.object(), common::ENABLE_DOUBLE_TRACTION);
     }
 
     //println!("Current traction: {}", WorkModule::get_param_float(boma, hash40("ground_brake"), 0));

@@ -167,11 +167,11 @@ unsafe fn skyward_slash_dash_act(fighter: &mut L2CFighterCommon, boma: &mut Batt
 // Kinesis Blade OPFF stuff
 unsafe fn kinesis_blade(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64) {
 	if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW && (motion_kind == hash40("special_lw1") || motion_kind == hash40("special_air_lw1")){
-        if VarModule::get_int(boma, miiswordsman::SPECIAL_LW1_CHARGE_LEVEL) > 0 {
+        if VarModule::get_int(boma.object(), miiswordsman::SPECIAL_LW1_CHARGE_LEVEL) > 0 {
             //println!("Kinesis ready");
             if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK) {
                 //println!("Kinesis activation");
-                VarModule::on_flag(boma, miiswordsman::SPECIAL_LW1_ATTACK_TRIGGER);
+                VarModule::on_flag(boma.object(), miiswordsman::SPECIAL_LW1_ATTACK_TRIGGER);
                 StatusModule::change_status_request(boma, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW1_HIT, false);
             }
         }

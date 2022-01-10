@@ -42,7 +42,7 @@ unsafe fn elwind1_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, statu
     if [hash40("special_hi"), hash40("special_air_hi")].contains(&motion_kind) {
         if frame > 8.0 && frame <= 12.0 {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-                VarModule::on_flag(boma, common::UP_SPECIAL_CANCEL);
+                VarModule::on_flag(boma.object(), common::UP_SPECIAL_CANCEL);
                 //ControlModule::clear_command(boma, true);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
             }

@@ -17,7 +17,7 @@ unsafe fn final_cutter_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, 
         if frame > 10.0 && frame < 19.0 {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
                 if final_cutter_hit[id] {
-                    VarModule::on_flag(boma, common::UP_SPECIAL_CANCEL);
+                    VarModule::on_flag(boma.object(), common::UP_SPECIAL_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
                 } else {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, true);

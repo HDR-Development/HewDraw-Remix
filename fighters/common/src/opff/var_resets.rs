@@ -27,7 +27,7 @@ unsafe fn special_cancel_flag_reset(boma: &mut BattleObjectModuleAccessor, statu
                 *FIGHTER_STATUS_KIND_WIN,
                 *FIGHTER_STATUS_KIND_LOSE,
                 *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-            VarModule::off_flag(boma, common::UP_SPECIAL_CANCEL);
+            VarModule::off_flag(boma.object(), common::UP_SPECIAL_CANCEL);
         }
     }
 

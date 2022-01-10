@@ -10,7 +10,7 @@ unsafe fn cross_chop_cancel_dj_reset(boma: &mut BattleObjectModuleAccessor, id: 
         }
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
-            VarModule::on_flag(boma, common::UP_SPECIAL_CANCEL);
+            VarModule::on_flag(boma.object(), common::UP_SPECIAL_CANCEL);
         }
     }
 }
@@ -49,11 +49,11 @@ unsafe fn catch_lean(boma: &mut BattleObjectModuleAccessor, lean_frame: f32, ret
     let stick_y = ControlModule::get_stick_y(boma);
     let frame = MotionModule::frame(boma);
     let end_frame = MotionModule::end_frame(boma);
-    let grab_y = VarModule::get_float(boma, common::ANGLE_GRAB_STICK_Y);
+    let grab_y = VarModule::get_float(boma.object(), common::ANGLE_GRAB_STICK_Y);
     if frame >= 0.0 && frame < lean_frame {
         // linear interpolate to stick position,
         // while getting stick position still
-        VarModule::set_float(boma, common::ANGLE_GRAB_STICK_Y, stick_y);
+        VarModule::set_float(boma.object(), common::ANGLE_GRAB_STICK_Y, stick_y);
         rotate_bust(boma, max_angle, min_angle, stick_y * ((frame as f32) / 7.0));
     } else if frame >= lean_frame && frame < return_frame {
         // rotate at selected angle for each frame
