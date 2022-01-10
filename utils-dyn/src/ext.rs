@@ -228,7 +228,7 @@ bitflags! {
         const GuardRelease   = 0x80;
     }
 
-    pub struct PadInputs: i32 {
+    pub struct Buttons: i32 {
         const Attack      = 0x1;
         const Special     = 0x2;
         const Jump        = 0x4;

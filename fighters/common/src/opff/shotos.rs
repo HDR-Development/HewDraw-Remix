@@ -8,16 +8,17 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 
 // Dtilt and Utilt repeat increment
-unsafe fn dtilt_utilt_repeat_increment(boma: &mut BattleObjectModuleAccessor, id: usize, motion_kind: u64) {
-    if [hash40("attack_hi3_w"), hash40("attack_lw3_w")].contains(&motion_kind)
-        && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-        && !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::shotos::REPEAT_INCREMENTED) {
-        if motion_kind == hash40("attack_hi3_w") {
-            repeat_num_hi[id] += 1;
-        } else if motion_kind == hash40("attack_lw3_w") {
-            repeat_num_lw[id] += 1;
+unsafe fn dtilt_utilt_repeat_increment(boma: &mut BattleObjectModuleAccessor) {
+    if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+    && !VarModule::is_flag(boma.object(), vars::shotos::REPEAT_INCREMENTED)
+    {
+        if boma.is_motion(Hash40::new("attack_hi3_w")) {
+            VarModule::inc_int(boma.object(), vars::shotos::REPEAT_COUNT_HI);
+            VarModule::on_flag(boma.object(), vars::shotos::REPEAT_INCREMENTED);
+        } else if boma.is_motion(Hash40::new("attack_lw3_w")) {
+            VarModule::inc_int(boma.object(), vars::shotos::REPEAT_COUNT_LW);
+            VarModule::on_flag(boma.object(), vars::shotos::REPEAT_INCREMENTED);
         }
-        VarModule::on_flag(get_battle_object_from_accessor(boma), vars::shotos::REPEAT_INCREMENTED);
     }
 }
 
@@ -28,28 +29,27 @@ unsafe fn tatsumaki_ex_land_cancel_hover(boma: &mut BattleObjectModuleAccessor, 
 	let ex_momentum = Vector3f{x: 0.0, y: 0.0, z: 0.0};
     let prev_situation_kind = StatusModule::prev_situation_kind(boma);
 
-    if [*FIGHTER_STATUS_KIND_SPECIAL_S,
+    if boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END].contains(&status_kind) {
-        if situation_kind == *SITUATION_KIND_GROUND && prev_situation_kind == *SITUATION_KIND_AIR {
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END
+    ])
+    {
+        if boma.is_situation(*SITUATION_KIND_GROUND) && boma.is_prev_situation(*SITUATION_KIND_AIR) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
         }
-		if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::shotos::EX_SPECIAL){
-			KineticModule::mul_speed(boma, &ex_momentum, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-		}
-		
-        if [*FIGHTER_STATUS_KIND_SPECIAL_S,
-            *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
-            *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP].contains(&status_kind) {
-            if situation_kind == *SITUATION_KIND_AIR {
-                if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
-                    || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-                    if jump_rising < 0.0 {
-                        KineticModule::mul_speed(boma, &stop_rise, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                    }
-                }
-            }
+
+        if VarModule::is_flag(boma.object(), vars::shotos::IS_USE_EX_SPECIAL) {
+            KineticModule::mul_speed(boma, &Vector3f::zero(), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        }
+
+        if !boma.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END)
+        && boma.is_situation(*SITUATION_KIND_AIR)
+        && boma.is_button_on(Buttons::Special | Buttons::Attack)
+        && KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) < 0.0
+        {
+            KineticModule::mul_speed(boma, &Vector3f::new(1.0, 0.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         }
     }
 }

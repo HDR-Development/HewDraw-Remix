@@ -112,12 +112,20 @@ impl GetObjects for BattleObjectModuleAccessor {
 pub trait AgentUtil {
     unsafe fn is_cat_flag<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool;
     unsafe fn is_cat_flag_all<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool;
+    unsafe fn is_button_on(&mut self, buttons: Buttons) -> bool;
+    unsafe fn is_button_off(&mut self, buttons: Buttons) -> bool;
+    unsafe fn is_button_trigger(&mut self, buttons: Buttons) -> bool;
+    unsafe fn is_button_release(&mut self, buttons: Buttons) -> bool;
+    unsafe fn was_prev_button_on(&mut self, buttons: Buttons) -> bool;
+    unsafe fn was_prev_button_off(&mut self, buttons: Buttons) -> bool;
     unsafe fn is_status(&mut self, kind: i32) -> bool;
     unsafe fn is_status_one_of(&mut self, kinds: &[i32]) -> bool;
     unsafe fn is_prev_status(&mut self, kind: i32) -> bool;
     unsafe fn is_prev_status_one_of(&mut self, kinds: &[i32]) -> bool;
     unsafe fn is_situation(&mut self, kind: i32) -> bool;
     unsafe fn is_prev_situation(&mut self, kind: i32) -> bool;
+    unsafe fn is_motion(&mut self, motion: Hash40) -> bool;
+    unsafe fn is_motion_one_of(&mut self, motions: &[Hash40]) -> bool;
     unsafe fn is_fighter(&mut self) -> bool;
     unsafe fn is_weapon(&mut self) -> bool;
     unsafe fn kind(&mut self) -> i32;
@@ -130,6 +138,30 @@ impl AgentUtil for L2CAgentBase {
 
     unsafe fn is_cat_flag_all<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool {
         return self.boma().is_cat_flag_all(fighter_pad_cmd_flag);
+    }
+
+    unsafe fn is_button_on(&mut self, buttons: Buttons) -> bool {
+        return self.boma().is_button_on(buttons);
+    }
+
+    unsafe fn is_button_off(&mut self, buttons: Buttons) -> bool {
+        return self.boma().is_button_off(buttons);
+    }
+
+    unsafe fn is_button_trigger(&mut self, buttons: Buttons) -> bool {
+        return self.boma().is_button_trigger(buttons);
+    }
+
+    unsafe fn is_button_release(&mut self, buttons: Buttons) -> bool {
+        return self.boma().is_button_release(buttons);
+    }
+
+    unsafe fn was_prev_button_on(&mut self, buttons: Buttons) -> bool {
+        return self.boma().was_prev_button_on(buttons);
+    }
+
+    unsafe fn was_prev_button_off(&mut self, buttons: Buttons) -> bool {
+        return self.boma().was_prev_button_off(buttons);
     }
 
     unsafe fn is_status(&mut self, kind: i32) -> bool {
@@ -188,6 +220,30 @@ impl AgentUtil for BattleObjectModuleAccessor {
             CommandCat::Cat3(cat) => Cat3::new(self).contains(cat),
             CommandCat::Cat4(cat) => Cat4::new(self).contains(cat)
         }
+    }
+
+    unsafe fn is_button_on(&mut self, buttons: Buttons) -> bool {
+        Buttons::from_bits_unchecked(ControlModule::get_button(self)).intersects(buttons)
+    }
+
+    unsafe fn is_button_off(&mut self, buttons: Buttons) -> bool {
+        !self.is_button_on(buttons)
+    }
+
+    unsafe fn is_button_trigger(&mut self, buttons: Buttons) -> bool {
+        Buttons::from_bits_unchecked(ControlModule::get_trigger(self)).intersects(buttons)
+    }
+
+    unsafe fn is_button_release(&mut self, buttons: Buttons) -> bool {
+        Buttons::from_bits_unchecked(ControlModule::get_release(self)).intersects(buttons)
+    }
+
+    unsafe fn was_prev_button_on(&mut self, buttons: Buttons) -> bool {
+        Buttons::from_bits_unchecked(ControlModule::get_button_prev(self)).intersects(buttons)
+    }
+
+    unsafe fn was_prev_button_off(&mut self, buttons: Buttons) -> bool {
+        !self.was_prev_button_on(buttons)
     }
 
     unsafe fn is_status(&mut self, kind: i32) -> bool {
