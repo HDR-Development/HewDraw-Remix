@@ -192,8 +192,8 @@ impl AgentUtil for L2CAgentBase {
         return self.boma().is_motion(kind);
     }
 
-    unsafe fn is_motion_one_of(&mut self, kind: Hash40) -> bool {
-        return self.boma().is_motion_one_of(kind);
+    unsafe fn is_motion_one_of(&mut self, kinds: &[Hash40]) -> bool {
+        return self.boma().is_motion_one_of(kinds);
     }
 
     unsafe fn is_fighter(&mut self) -> bool {
@@ -281,12 +281,12 @@ impl AgentUtil for BattleObjectModuleAccessor {
     }
 
     unsafe fn is_motion(&mut self, kind: Hash40) -> bool {
-        return MotionModule::motion_kind(self) == kind;
+        return MotionModule::motion_kind(self) == kind.hash;
     }
 
     unsafe fn is_motion_one_of(&mut self, kinds: &[Hash40]) -> bool {
         let kind = MotionModule::motion_kind(self);
-        return kinds.contains(&kind);
+        return kinds.contains(&Hash40::new_raw(kind));
     }
 
     unsafe fn is_fighter(&mut self) -> bool {
