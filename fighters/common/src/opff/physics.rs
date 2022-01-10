@@ -8,7 +8,13 @@ use smash::hash40;
 use smash::phx::Hash40;
 use smash_script::{self, *, macros::*};
 
-
+mod groups {
+    pub const SMALL: i32 = 0;
+    pub const MEDIUM: i32 = 1;
+    pub const LARGE: i32 = 2;
+    pub const XLARGE: i32 = 3;
+    pub const XXLARGE: i32 = 4;
+}
 //=================================================================
 //== ECB ADJUSTMENTS
 //== Note: Resetting while a fighter is in air in training mode
@@ -57,127 +63,15 @@ unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor, status_kind: i32, si
 
     let air_trans: bool = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) < 10;
 
-    // Small
-    let group1: &[i32] = &[
-        *FIGHTER_KIND_KIRBY,
-        *FIGHTER_KIND_PIKACHU,
-        *FIGHTER_KIND_NESS,
-        *FIGHTER_KIND_PURIN,
-        *FIGHTER_KIND_GAMEWATCH,
-        *FIGHTER_KIND_POPO,
-        *FIGHTER_KIND_NANA,
-        *FIGHTER_KIND_PICHU,
-        *FIGHTER_KIND_METAKNIGHT,
-        *FIGHTER_KIND_WARIO,
-        *FIGHTER_KIND_PZENIGAME,
-        *FIGHTER_KIND_PFUSHIGISOU,
-        *FIGHTER_KIND_LUCAS,
-        *FIGHTER_KIND_PIKMIN,
-        *FIGHTER_KIND_TOONLINK,
-        *FIGHTER_KIND_DUCKHUNT,
-        *FIGHTER_KIND_MURABITO,
-        *FIGHTER_KIND_INKLING,
-        *FIGHTER_KIND_SHIZUE
-    ];
+    let group = ParamModule::get_int(boma.object(), ParamType::Shared, "ecb_group_shift");
 
-    // Medium
-    let group2: &[i32] = &[
-        *FIGHTER_KIND_MARIO,
-        *FIGHTER_KIND_YOSHI,
-        *FIGHTER_KIND_LUIGI,
-        *FIGHTER_KIND_MARIOD,
-        *FIGHTER_KIND_YOUNGLINK,
-        *FIGHTER_KIND_PLIZARDON,
-        *FIGHTER_KIND_DIDDY,
-        *FIGHTER_KIND_DEDEDE,
-        *FIGHTER_KIND_ROCKMAN,
-        *FIGHTER_KIND_GEKKOUGA,
-        *FIGHTER_KIND_PACMAN,
-        *FIGHTER_KIND_KOOPAJR,
-        *FIGHTER_KIND_PACKUN,
-        *FIGHTER_KIND_MIIFIGHTER,
-        *FIGHTER_KIND_MIISWORDSMAN,
-        *FIGHTER_KIND_MIIGUNNER,
-        *FIGHTER_KIND_PACKUN,
-        *FIGHTER_KIND_BUDDY,
-        *FIGHTER_KIND_PICKEL
-    ];
-
-    // Large
-    let group3: &[i32] = &[
-        *FIGHTER_KIND_FOX,
-        *FIGHTER_KIND_FALCO,
-        *FIGHTER_KIND_DAISY,
-        *FIGHTER_KIND_MEWTWO,
-        *FIGHTER_KIND_PIT,
-        *FIGHTER_KIND_PITB,
-        *FIGHTER_KIND_SONIC,
-        *FIGHTER_KIND_LUCARIO,
-        *FIGHTER_KIND_ROBOT,
-        *FIGHTER_KIND_WOLF,
-        *FIGHTER_KIND_LITTLEMAC,
-        *FIGHTER_KIND_KROOL,
-        *FIGHTER_KIND_GAOGAEN
-    ];
-
-    // X-Large
-    let group4: &[i32] = &[
-        *FIGHTER_KIND_DONKEY,
-        *FIGHTER_KIND_LINK,
-        *FIGHTER_KIND_SAMUS,
-        *FIGHTER_KIND_SAMUSD,
-        *FIGHTER_KIND_CAPTAIN,
-        *FIGHTER_KIND_PEACH,
-        *FIGHTER_KIND_KOOPA,
-        *FIGHTER_KIND_SHEIK,
-        *FIGHTER_KIND_ZELDA,
-        *FIGHTER_KIND_MARTH,
-        *FIGHTER_KIND_LUCINA,
-        *FIGHTER_KIND_GANON,
-        *FIGHTER_KIND_ROY,
-        *FIGHTER_KIND_CHROM,
-        *FIGHTER_KIND_SZEROSUIT,
-        *FIGHTER_KIND_SNAKE,
-        *FIGHTER_KIND_IKE,
-        *FIGHTER_KIND_WIIFIT,
-        *FIGHTER_KIND_ROSETTA,
-        *FIGHTER_KIND_PALUTENA,
-        *FIGHTER_KIND_REFLET,
-        *FIGHTER_KIND_SHULK,
-        *FIGHTER_KIND_RYU,
-        *FIGHTER_KIND_KEN,
-        *FIGHTER_KIND_CLOUD,
-        *FIGHTER_KIND_KAMUI,
-        *FIGHTER_KIND_BAYONETTA,
-        *FIGHTER_KIND_RIDLEY,
-        *FIGHTER_KIND_SIMON,
-        *FIGHTER_KIND_RICHTER,
-        *FIGHTER_KIND_JACK,
-        *FIGHTER_KIND_BRAVE,
-        *FIGHTER_KIND_DOLLY,
-        *FIGHTER_KIND_MASTER,
-        *FIGHTER_KIND_TANTAN,
-		*FIGHTER_KIND_EFLAME,
-		*FIGHTER_KIND_ELIGHT,
-        *FIGHTER_KIND_DEMON,
-        *FIGHTER_KIND_DEMON + 1
-    ];
-
-    // XX-Large
-    let group5: &[i32] = &[
-        *FIGHTER_KIND_SAMUS,
-        *FIGHTER_KIND_SAMUSD,
-        *FIGHTER_KIND_EDGE
-    ];
-
-    // There *must* be a better "Rust" way to do this :)
-    max_offset = match fighter_kind {
-        y if group1.contains(&y) => 2.,
-        y if group2.contains(&y) => 3.5,
-        y if group3.contains(&y) => 4.,
-        y if group4.contains(&y) => 5.,
-        y if group5.contains(&y) => 6.,
-        _ => max_offset,
+    let sh_amount: f32 = match group {
+        groups::SMALL   => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.small"),
+        groups::MEDIUM  => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.medium"),
+        groups::LARGE   => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.large"),
+        groups::XLARGE  => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.x_large"),
+        groups::XXLARGE => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.xx_large"),
+        _ => 0.0
     };
 
     if status_kind == *FIGHTER_STATUS_KIND_ENTRY {
