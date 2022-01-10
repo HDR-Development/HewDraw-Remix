@@ -98,6 +98,16 @@ impl GetObjects for L2CAgentBase {
     }
 }
 
+impl GetObjects for BattleObjectModuleAccessor {
+    unsafe fn get_object(boma: &mut Self) -> &'static mut BattleObject {
+        utils::get_battle_object_from_accessor(boma)
+    }
+
+    unsafe fn get_boma(boma: &mut Self) -> &'static mut BattleObjectModuleAccessor {
+        panic!("Calling GetObjects::get_boma() on a BattleObjectModuleAccessor is invalid")
+    }
+}
+
 
 pub trait AgentUtil {
     unsafe fn is_cat_flag(&mut self, category: i32, fighter_pad_cmd_flag: i32) -> bool;
