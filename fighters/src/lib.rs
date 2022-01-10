@@ -1,7 +1,7 @@
 pub fn install() {
     #[cfg(not(feature = "ignore-common"))]
-        { common::install(); }
-        #[cfg(feature = "include-pitb")]
+    { common::install(); }
+    #[cfg(feature = "include-pitb")]
     { pitb::install(cfg!(feature = "runtime")); }
     #[cfg(feature = "include-eflame")]
     { eflame::install(cfg!(feature = "runtime")); }

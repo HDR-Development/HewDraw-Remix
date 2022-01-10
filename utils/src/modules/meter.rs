@@ -245,12 +245,12 @@ impl MeterModule {
 
         let new_levels = if module.watch && module.has_hit {
             let difference = VarModule::get_float(module.owner, vars::common::LAST_ATTACK_DAMAGE_DEALT);
+            module.current_meter += difference * module.damage_gain_mul;
             module.watch = false;
             module.watching_motion = Hash40::new("invalid");
             module.watching_frame = 0.0;
             module.damage_gain_mul = 1.0;
             let current = Self::level(module.owner);
-            module.current_meter += difference * module.damage_gain_mul;
             module.current_meter = dbg!(module.current_meter).min(ParamModule::get_float(module.owner, ParamType::Common, "meter_max_damage"));
             Self::level(module.owner) - current
         } else {

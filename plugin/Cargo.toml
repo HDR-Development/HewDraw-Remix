@@ -12,14 +12,14 @@ crate-type = ["cdylib"]
 
 [dependencies]
 skyline = { git = "https://github.com/ultimate-research/skyline-rs.git" }
-skyline_smash = { git = "https://github.com/blu-dev/skyline-smash.git" }
+smashline = { git = "https://github.com/blu-dev/smashline" }
 utils = { path = "../utils" }
 fighters = { path = "../fighters" }
 
 [features]
 default = ["pitb","eflame","pfushigisou","purin","younglink","plizardon","shulk","chrom","miifighter","gamewatch","krool","samusd","ryu","rosetta","yoshi","lucas","link","lucario","zelda","kamui","wolf","nana","tantan","koopag","ridley","gekkouga","ike","roy","rockman","peach","elight","gaogaen","falco","ness","kirby","pikachu","daisy","sheik","mariod","luigi","captain","mario","jack","palutena","dolly","pickel","wiifit","pzenigame","pichu","pit","ken","brave","richter","miiswordsman","robin","master","robot","szerosuit","ganon","wario","diddy","shizue","littlemac","pacman","edge","marth","trail","mewtwo","metaknight","toonlink","koopajr","sonic","donkey","inkling","packun","miigunner","buddy","pikmin","cloud","fox","duckhunt","lucina","murabito","bayonetta","samus","koopa","simon","popo","dedede","snake","demon"]
 dev = ["utils/no-offset-search"]
-runtime = ["fighters/ignore-common"]
+runtime = ["fighters/ignore-common", "fighters/runtime"]
 pitb = ["fighters/include-pitb"]
 eflame = ["fighters/include-eflame"]
 pfushigisou = ["fighters/include-pfushigisou"]

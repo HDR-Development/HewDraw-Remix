@@ -100,6 +100,7 @@ snake        = { path = "./snake",        optional = true }
 demon        = { path = "./demon",        optional = true }
 
 [features]
+runtime              = []
 ignore-common        = []
 include-pitb         = ["pitb"]
 include-eflame       = ["eflame"]

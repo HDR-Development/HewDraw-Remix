@@ -92,9 +92,10 @@ if (is_dev_build):
       else:
         plugin_args += ',"' + arg + '"'
 
-  # build the regular plugin with args
-  os.environ["CARGO_TARGET_DIR"] = os.path.join("target", "standalone")
-  pkgutil.build(release_arg, plugin_args)
+  if not "dev-only" in sys.argv:
+    # build the regular plugin with args
+    os.environ["CARGO_TARGET_DIR"] = os.path.join("target", "standalone")
+    pkgutil.build(release_arg, plugin_args)
 
   # collect switch plugin
   pkgutil.collect_plugin("hdr-switch", 

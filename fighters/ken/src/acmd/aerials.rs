@@ -8,7 +8,8 @@ unsafe fn ken_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         MeterModule::watch_damage(fighter.battle_object, true);
-        MeterModule::set_damage_gain_mul(fighter.battle_object, 0.75);
+        MeterModule::add(fighter.battle_object, 300.0);
+        MeterModule::set_damage_gain_mul(fighter.battle_object, 10.0);
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
     }
