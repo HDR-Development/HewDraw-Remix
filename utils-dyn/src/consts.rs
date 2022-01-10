@@ -80,6 +80,10 @@ pub mod vars {
         pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0;
         pub const COSTUME_SLOT_NUMBER: i32 = 0x1;
         pub const FLOAT_TIMER: i32 = 0x2;
+        pub const FLOAT_DURATION: i32 = 0x3;
+        pub const FLOAT_STYLE: i32 = 0x4;
+        pub const GIMMICK_READY_GLOW_TIMER: i32 = 0x5;
+
 
         // float
         /// var to store the damage that this fighter DEALT as the attacker.
@@ -87,6 +91,7 @@ pub mod vars {
         pub const CURRENT_MOMENTUM: i32 = 0x1;
         pub const JUMPSQUAT_VELOCITY: i32 = 0x2;
         pub const JUMP_SPEED_RATIO: i32 = 0x3;
+        pub const DOUBLE_JUMP_FRAME: i32 = 0x4;
 
         // separator
         // flag

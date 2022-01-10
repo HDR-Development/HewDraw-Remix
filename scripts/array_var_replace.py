@@ -37,28 +37,99 @@ def insert_text(filename, text:str):
     f.seek(0, 0)
     f.write(text.rstrip('\r\n') + '\n' + content)
 
-flag_patterns = [
-  ("{old_name}[hdr::get_player_number(boma)] = true;", "VarModule::on_flag(get_battle_object_from_accessor(boma), vars::{new_name});"),
-  ("{old_name}[hdr::get_player_number(boma)] = false;", "VarModule::off_flag(get_battle_object_from_accessor(boma), vars::{new_name});"),
-  ("if({old_name}[hdr::get_player_number(boma)])", "if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
-  ("({old_name}[hdr::get_player_number(boma)])", " VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
-  ("(!{old_name}[hdr::get_player_number(boma)])", " !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
-  ("!{old_name}[hdr::get_player_number(boma)]", " !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
-  ("if {old_name}[hdr::get_player_number(boma)]", "if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
-
-  ("{old_name}[id] = true;", "VarModule::on_flag(get_battle_object_from_accessor(boma), vars::{new_name});"),
-  ("{old_name}[id] = false;", "VarModule::off_flag(get_battle_object_from_accessor(boma), vars::{new_name});"),
-  ("if({old_name}[id])", "if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
-  ("({old_name}[id])", " VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
-  ("(!{old_name}[id])", " !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
-  ("!{old_name}[id]", " !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
-  ("if {old_name}[id]", "if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})")
+index_values = [
+  "id",
+  "hdr::get_player_number(boma)"
 ]
 
+flag_patterns = [
+  ("{old_name}[{index_value}] = true;", "VarModule::on_flag(get_battle_object_from_accessor(boma), vars::{new_name});"),
+  ("{old_name}[{index_value}] = false;", "VarModule::off_flag(get_battle_object_from_accessor(boma), vars::{new_name});"),
+  ("if({old_name}[{index_value}])", "if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("({old_name}[{index_value}])", " VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("(!{old_name}[{index_value}])", " !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("!{old_name}[{index_value}]", " !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("if {old_name}[{index_value}]", "if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::{new_name})"),
+]
+
+int_patterns = [
+  ("= {old_name}[{index_value}]", "= VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("={old_name}[{index_value}]", "= VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("!={old_name}[{index_value}]", "!= VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("!= {old_name}[{index_value}]", "!= VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("<{old_name}[{index_value}]", "< VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  (">{old_name}[{index_value}]", "> VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("< {old_name}[{index_value}]", "< VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("> {old_name}[{index_value}]", "> VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  (", {old_name}[{index_value}]", ", VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  (",{old_name}[{index_value}]", ", VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("{old_name}[{index_value}]==", "VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name}) =="),
+  ("{old_name}[{index_value}] ==", "VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name}) =="),
+  ("{old_name}[{index_value}]!=", "VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name}) !="),
+  ("{old_name}[{index_value}] !=", "VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name}) !="),
+  ("{old_name}[{index_value}]>", "VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name}) >"),
+  ("{old_name}[{index_value}] >", "VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name}) >"),
+  ("{old_name}[{index_value}]<", "VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name}) <"),
+  ("{old_name}[{index_value}] <", "VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name}) <"),
+  ("({old_name}[{index_value}]", "(VarModule::get_int(get_battle_object_from_accessor(boma), vars::{new_name})"),
+
+  ("{old_name}[{index_value}]= 0;", "VarModule::set_int(get_battle_object_from_accessor(boma), vars::{new_name}, 0);"),
+  ("{old_name}[{index_value}] = 0;", "VarModule::set_int(get_battle_object_from_accessor(boma), vars::{new_name}, 0);"),
+  ("{old_name}[{index_value}]= 1;", "VarModule::set_int(get_battle_object_from_accessor(boma), vars::{new_name}, 1);"),
+  ("{old_name}[{index_value}] = 1;", "VarModule::set_int(get_battle_object_from_accessor(boma), vars::{new_name}, 1);"),
+
+  ("{old_name}[{index_value}] += 1;", "VarModule::inc_int(get_battle_object_from_accessor(boma), vars::{new_name});"),
+]
+
+float_patterns = [
+  ("= {old_name}[{index_value}]", "= VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("={old_name}[{index_value}]", "= VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("!= {old_name}[{index_value}]", "!= VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("!={old_name}[{index_value}]", "!= VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("<{old_name}[{index_value}]", "< VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  (">{old_name}[{index_value}]", "> VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("< {old_name}[{index_value}]", "< VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("> {old_name}[{index_value}]", "> VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  (", {old_name}[{index_value}]", ", VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  (",{old_name}[{index_value}]", ", VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name})"),
+  ("{old_name}[{index_value}]==", "VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name}) =="),
+  ("{old_name}[{index_value}] ==", "VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name}) =="),
+  ("{old_name}[{index_value}]!=", "VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name}) !="),
+  ("{old_name}[{index_value}] !=", "VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name}) !="),
+  ("{old_name}[{index_value}]>", "VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name}) >"),
+  ("{old_name}[{index_value}] >", "VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name}) >"),
+  ("{old_name}[{index_value}]<", "VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name}) <"),
+  ("{old_name}[{index_value}] <", "VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name}) <"),
+  ("({old_name}[{index_value}]", "(VarModule::get_float(get_battle_object_from_accessor(boma), vars::{new_name})"),
+
+  ("{old_name}[{index_value}]= 0.0;", "VarModule::set_float(get_battle_object_from_accessor(boma), vars::{new_name}, 0.0);"),
+  ("{old_name}[{index_value}] = 0.0;", "VarModule::set_float(get_battle_object_from_accessor(boma), vars::{new_name}, 0.0);"),
+  ("{old_name}[{index_value}]= 1.0;", "VarModule::set_float(get_battle_object_from_accessor(boma), vars::{new_name}, 1.0);"),
+  ("{old_name}[{index_value}] = 1.0;", "VarModule::set_float(get_battle_object_from_accessor(boma), vars::{new_name}, 1.0);"),
+
+  ("{old_name}[{index_value}] += 1.0;", "VarModule::add_float(get_battle_object_from_accessor(boma), vars::{new_name}, 1.0);"),
+
+]
+
+variable_type = input("what is the variable's type? (bool, int, float): ")
+
+if variable_type == "bool":
+  patterns = flag_patterns
+elif variable_type == "int":
+  patterns = int_patterns
+elif variable_type == "float":
+  patterns = float_patterns
+else:
+  print("Not a valid variable type! Please specify one of the options: [bool, int, float]")
+  exit(1)
+
 def variable_replace(file: str, old_var: str, new_var: str):
-  for old, new in flag_patterns:
+  for old, new in patterns:
     # print(old + ", " + new)
-    inplace_change(file, old.replace("{old_name}", old_var), new.replace("{new_name}", new_var))
+    for index_value in index_values:
+      inplace_change(file, 
+        old.replace("{old_name}", old_var).replace("{index_value}", index_value), 
+        new.replace("{new_name}", new_var))
 
 os.chdir("../fighters")
 
