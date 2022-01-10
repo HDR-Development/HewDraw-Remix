@@ -78,22 +78,22 @@ unsafe fn headbutt_aerial_stall(fighter: &mut L2CFighterCommon, boma: &mut Battl
         let motion_value = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
         let motion_vec = Vector3f{x: 1.0, y: 0.0, z: 1.0};
         if situation_kind == *SITUATION_KIND_AIR {
-            if !special_stall_used[id] {
+            if  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_STALL_USED) {
                 if frame < 25.0 {
                     if motion_value < 0.0 {
-                        special_stall[id] = true;
+                        VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_STALL);
                         KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                     }
                 }
             }
         }
     }
-    if special_stall[id] && (status_kind != *FIGHTER_STATUS_KIND_SPECIAL_S || (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame >= 25.0)) {
-            special_stall_used[id] = true;
-            special_stall[id] = false;
+    if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_STALL) && (status_kind != *FIGHTER_STATUS_KIND_SPECIAL_S || (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame >= 25.0)) {
+            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_STALL_USED);
+            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_STALL);
     }
     if situation_kind == *SITUATION_KIND_GROUND && special_stall_used[id] {
-        special_stall_used[id] = false;
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_STALL_USED);
     }
 }
 

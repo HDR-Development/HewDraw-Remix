@@ -74,6 +74,12 @@ pub mod vars {
         pub const TILT_CHECKS: i32 = 0xF;
         pub const JAB_DA_CHECKS: i32 = 0x10;
         pub const AERIAL_CHECKS: i32 = 0x11;
+        pub const SPECIAL_STALL_USED: i32 = 0x12;
+        pub const SPECIAL_STALL: i32 = 0x13;
+        pub const UP_SPECIAL_INTERRUPT: i32 = 0x14;
+        pub const ENABLE_AIR_ESCAPE_MAGNET: i32 = 0x15;
+        pub const UP_SPECIAL_INTERRUPT_AIRTIME: i32 = 0x16;
+        pub const DITCIT_SLIDING: i32 = 0x17;
 
 
         // int
@@ -92,6 +98,9 @@ pub mod vars {
         pub const JUMPSQUAT_VELOCITY: i32 = 0x2;
         pub const JUMP_SPEED_RATIO: i32 = 0x3;
         pub const DOUBLE_JUMP_FRAME: i32 = 0x4;
+        pub const GROUND_VEL: i32 = 0x5;
+        pub const RAR_LENIENCY: i32 = 0x6;
+        pub const CURRENT_MOMENTUM_SPECIALS: i32 = 0x7;
 
         // separator
         // flag

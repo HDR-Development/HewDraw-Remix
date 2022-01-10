@@ -63,7 +63,7 @@ unsafe fn ditcit(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: 
     let mut motion_vec = Vector3f {x: 0.0, y: 0.0, z: 0.0};
 
     if status_kind != *FIGHTER_STATUS_KIND_ITEM_THROW {
-        ditcit_sliding[player_number] = false;
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::DITCIT_SLIDING);
     }
 
     if status_kind == *FIGHTER_STATUS_KIND_ITEM_THROW_DASH {
@@ -75,10 +75,10 @@ unsafe fn ditcit(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: 
              || (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3))
              || (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3))) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ITEM_THROW, false);
-            ditcit_sliding[player_number] = true;
+            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::DITCIT_SLIDING);
         }
     } else {
-        if ditcit_sliding[player_number] {  // status_kind == ITEM_THROWN, coming from THROW_DASH
+        if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::DITCIT_SLIDING) {  // status_kind == ITEM_THROWN, coming from THROW_DASH
             motion_value = 2.8 * (MotionModule::end_frame(boma) - MotionModule::frame(boma)) / MotionModule::end_frame(boma);
             motion_vec.x = motion_value * facing;
             motion_vec.y = 0.0;

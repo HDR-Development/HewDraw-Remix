@@ -39,7 +39,9 @@ def insert_text(filename, text:str):
 
 index_values = [
   "id",
-  "hdr::get_player_number(boma)"
+  "hdr::get_player_number(boma)",
+  "player_number",
+  "get_player_number(boma)"
 ]
 
 flag_patterns = [
@@ -79,6 +81,10 @@ int_patterns = [
   ("{old_name}[{index_value}] = 1;", "VarModule::set_int(get_battle_object_from_accessor(boma), vars::{new_name}, 1);"),
 
   ("{old_name}[{index_value}] += 1;", "VarModule::inc_int(get_battle_object_from_accessor(boma), vars::{new_name});"),
+
+  # for staging setters that we cant automate
+  ("{old_name}[{index_value}]=", "VarModule::set_int(get_battle_object_from_accessor(boma), vars::{new_name}, value_here) "),
+  ("{old_name}[{index_value}] =", "VarModule::set_int(get_battle_object_from_accessor(boma), vars::{new_name}, value_here) "),
 ]
 
 float_patterns = [
@@ -109,18 +115,22 @@ float_patterns = [
 
   ("{old_name}[{index_value}] += 1.0;", "VarModule::add_float(get_battle_object_from_accessor(boma), vars::{new_name}, 1.0);"),
 
+  # for staging setters that we cant automate
+  ("{old_name}[{index_value}]=", "VarModule::set_float(get_battle_object_from_accessor(boma), vars::{new_name}, value_here) "),
+  ("{old_name}[{index_value}] =", "VarModule::set_float(get_battle_object_from_accessor(boma), vars::{new_name}, value_here) "),
+
 ]
 
-variable_type = input("what is the variable's type? (bool, int, float): ")
+variable_type = input("what is the variable's type? (flag, int, float): ")
 
-if variable_type == "bool":
+if variable_type == "flag":
   patterns = flag_patterns
 elif variable_type == "int":
   patterns = int_patterns
 elif variable_type == "float":
   patterns = float_patterns
 else:
-  print("Not a valid variable type! Please specify one of the options: [bool, int, float]")
+  print("Not a valid variable type! Please specify one of the options: [flag, int, float]")
   exit(1)
 
 def variable_replace(file: str, old_var: str, new_var: str):

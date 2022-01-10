@@ -88,7 +88,7 @@ unsafe fn special_cancel_flag_reset(boma: &mut BattleObjectModuleAccessor, statu
     }
 
     // Up Special Interrupt
-    if up_special_interrupt[player_number] {
+    if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::UP_SPECIAL_INTERRUPT) {
         if situation_kind != *SITUATION_KIND_AIR
             || [*FIGHTER_STATUS_KIND_DAMAGE,
                 *FIGHTER_STATUS_KIND_DAMAGE_AIR,
@@ -104,12 +104,12 @@ unsafe fn special_cancel_flag_reset(boma: &mut BattleObjectModuleAccessor, statu
                 *FIGHTER_STATUS_KIND_WIN,
                 *FIGHTER_STATUS_KIND_LOSE,
                 *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-            up_special_interrupt[player_number] = false;
+            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::UP_SPECIAL_INTERRUPT);
         }
     }
 
     // Up Special Intterupt Airtime
-    if up_special_interrupt_airtime[player_number] {
+    if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME) {
         if situation_kind != *SITUATION_KIND_AIR
             || [*FIGHTER_STATUS_KIND_DAMAGE,
                 *FIGHTER_STATUS_KIND_DAMAGE_AIR,
@@ -125,7 +125,7 @@ unsafe fn special_cancel_flag_reset(boma: &mut BattleObjectModuleAccessor, statu
                 *FIGHTER_STATUS_KIND_WIN,
                 *FIGHTER_STATUS_KIND_LOSE,
                 *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-            up_special_interrupt_airtime[player_number] = false;
+            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME);
         }
     }
 }
@@ -138,8 +138,8 @@ unsafe fn special_motion_reset(boma: &mut BattleObjectModuleAccessor, status_kin
             *FIGHTER_STATUS_KIND_WIN,
             *FIGHTER_STATUS_KIND_LOSE,
             *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-        special_stall[player_number] = false;
-        special_stall_used[player_number] = false;
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_STALL);
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_STALL_USED);
     }
 }
 

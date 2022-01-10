@@ -9,42 +9,6 @@ use smash::hash40;
 use smash_script::macros::*;
 
 
-// Graphical routines for flashing upon changing float styles; repurposes meter glow stuff
-pub unsafe fn float_flash(boma: &mut BattleObjectModuleAccessor, float_option: i32) {
-    let mut f_red   = 0.0;
-    let mut f_green = 0.0;
-    let mut f_blue  = 0.0;
-
-    if float_option == 0 {
-        f_red = 0.65;
-        f_green = 0.25;
-        f_blue = 0.65;
-    } else if float_option == 1 {
-        f_red = 0.22;
-        f_green = 0.7;
-        f_blue = 0.22;
-    } else {
-        f_red = 0.22;
-        f_green = 0.22;
-        f_blue = 0.22;
-    }
-
-    let cbm_vec1 = Vector4f{x: f_red, y: f_green, z: f_blue, w: 0.72};
-    let cbm_vec2 = Vector4f{x: f_red, y: f_green, z: f_blue, w: 0.05};
-    ColorBlendModule::set_main_color(boma, &cbm_vec1, &cbm_vec2, 1.0, 0.5, 7, true);
-
-    meter_gain_glow_timer[hdr::get_player_number(boma)] = 1;
-
-    let pos_meter1 = Vector3f{x: 0.0, y: 3.0, z: 0.0};
-    let pos_meter2 = Vector3f{x: 0.0, y: 1.0, z: 0.0};
-    let rot2 = Vector3f{x: 0.0, y: 0.0, z: 0.0};
-    let random_vec2 = Vector3f{x: 0.1, y: 0.1, z: 0.5};
-    EffectModule::kill_kind(boma, Hash40::new("sys_damage_curse"), false, true);
-    EffectModule::kill_kind(boma, Hash40::new("sys_v_smoke_a"), false, true);
-    EffectModule::req_on_joint(boma, Hash40::new("sys_damage_curse"), Hash40::new("top"), &pos_meter1, &rot2, 0.5, &random_vec2, &random_vec2, false, 0, 0, 0);
-    EffectModule::req_on_joint(boma, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), &pos_meter2, &rot2, 0.5, &random_vec2, &random_vec2, false, 0, 0, 0);
-}
-
 // Ganondorf, Robin, Dark Samus, Mewtwo float
 pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     let id = hdr::get_player_number(boma);
@@ -55,62 +19,27 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         VarModule::set_int(get_battle_object_from_accessor(boma), vars::common::FLOAT_STYLE, 0);
     }
 
-    // Choose float style via taunting and shield + directional input
-    if status_kind == *FIGHTER_STATUS_KIND_APPEAL && MotionModule::frame(boma) < 50.0 {
-        let guard_on = ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD);
-        if guard_on && stick_y > 0.5 {
-            VarModule::set_int(get_battle_object_from_accessor(boma), vars::common::FLOAT_STYLE, 0);
-            float_flash(boma, 0);
-            CancelModule::enable_cancel(boma);
-        }
-        if guard_on && stick_y < -0.5 {
-            VarModule::set_int(get_battle_object_from_accessor(boma), vars::common::FLOAT_STYLE, 1);
-            float_flash(boma, 1);
-            CancelModule::enable_cancel(boma);
-        }
-        if guard_on && (stick_x < -0.5 || stick_x > 0.5) {
-            float_style[id] = 2;
-            float_flash(boma, 2);
-            CancelModule::enable_cancel(boma);
-        }
-    }
-
-    // Choose float style on respawn platform with respective taunt button
-    if status_kind == *FIGHTER_STATUS_KIND_REBIRTH {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) {
-            VarModule::set_int(get_battle_object_from_accessor(boma), vars::common::FLOAT_STYLE, 0);
-            float_flash(boma, 0);
-        }
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_LW) {
-            VarModule::set_int(get_battle_object_from_accessor(boma), vars::common::FLOAT_STYLE, 1);
-            float_flash(boma, 1);
-        }
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_S_L) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_S_R) {
-            float_style[id] = 2;
-            float_flash(boma, 2);
-        }
-    }
 
     // Track double jump frame for float leniency window
     if status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL {
-        double_jump_frame[id] = MotionModule::frame(boma);
+        VarModule::set_float(get_battle_object_from_accessor(boma), vars::common::DOUBLE_JUMP_FRAME, MotionModule::frame(boma));
     }
 
     // Set the max float duration for the current character
     if fighter_kind == *FIGHTER_KIND_SAMUSD {
-        float_duration[id] = 50;
+        VarModule::set_int(get_battle_object_from_accessor(boma), vars::common::FLOAT_DURATION,  50);
         motion_value = 1.0;
     }
     if fighter_kind == *FIGHTER_KIND_REFLET {
-        float_duration[id] = 60;
+        VarModule::set_int(get_battle_object_from_accessor(boma), vars::common::FLOAT_DURATION,60);
         motion_value = 0.0;
     }
     if fighter_kind == *FIGHTER_KIND_GANON {
-        float_duration[id] = 60;
+        VarModule::set_int(get_battle_object_from_accessor(boma), vars::common::FLOAT_DURATION, 60);
         motion_value = 0.0;
     }
     if fighter_kind == *FIGHTER_KIND_MEWTWO {
-        float_duration[id] = 60;
+        VarModule::set_int(get_battle_object_from_accessor(boma), vars::common::FLOAT_DURATION, 60);
         motion_value = 1.0;
     }
 
@@ -123,7 +52,7 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
     // float option isnt 1
     if VarModule::get_int(get_battle_object_from_accessor(boma), vars::common::FLOAT_STYLE) != 1 {
         if status_kind != *FIGHTER_STATUS_KIND_ATTACK_AIR {
-            float_pause_aerial[id] = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) == VarModule::get_int(get_battle_object_from_accessor(boma), vars::common::FLOAT_DURATION);
+            VarModule::set_int(get_battle_object_from_accessor(boma), vars::common::FLOAT_PAUSE_AERIAL, value_here)  WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) == VarModule::get_int(get_battle_object_from_accessor(boma), vars::common::FLOAT_DURATION);
         }
     }
 
