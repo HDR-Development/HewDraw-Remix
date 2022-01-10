@@ -188,6 +188,14 @@ impl AgentUtil for L2CAgentBase {
         return self.boma().is_prev_situation(kind);
     }
 
+    unsafe fn is_motion(&mut self, kind: Hash40) -> bool {
+        return self.boma().is_motion(kind);
+    }
+
+    unsafe fn is_motion_one_of(&mut self, kind: Hash40) -> bool {
+        return self.boma().is_motion_one_of(kind);
+    }
+
     unsafe fn is_fighter(&mut self) -> bool {
         return self.boma().is_fighter();
     }
@@ -270,6 +278,15 @@ impl AgentUtil for BattleObjectModuleAccessor {
 
     unsafe fn is_prev_situation(&mut self, kind: i32) -> bool {
         return StatusModule::prev_situation_kind(self) == kind;
+    }
+
+    unsafe fn is_motion(&mut self, kind: Hash40) -> bool {
+        return MotionModule::motion_kind(self) == kind;
+    }
+
+    unsafe fn is_motion_one_of(&mut self, kinds: &[Hash40]) -> bool {
+        let kind = MotionModule::motion_kind(self);
+        return kinds.contains(&kind);
     }
 
     unsafe fn is_fighter(&mut self) -> bool {

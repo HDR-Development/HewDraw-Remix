@@ -29,28 +29,30 @@ unsafe fn tatsumaki_ex_land_cancel_hover(boma: &mut BattleObjectModuleAccessor, 
 	let ex_momentum = Vector3f{x: 0.0, y: 0.0, z: 0.0};
     let prev_situation_kind = StatusModule::prev_situation_kind(boma);
 
-    if boma.is_status_one_of(&[
+    if !boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END
     ])
     {
-        if boma.is_situation(*SITUATION_KIND_GROUND) && boma.is_prev_situation(*SITUATION_KIND_AIR) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
-        }
+        return;
+    }
+    
+    if boma.is_situation(*SITUATION_KIND_GROUND) && boma.is_prev_situation(*SITUATION_KIND_AIR) {
+        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+    }
 
-        if VarModule::is_flag(boma.object(), vars::shotos::IS_USE_EX_SPECIAL) {
-            KineticModule::mul_speed(boma, &Vector3f::zero(), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        }
+    if VarModule::is_flag(boma.object(), vars::shotos::IS_USE_EX_SPECIAL) {
+        KineticModule::mul_speed(boma, &Vector3f::zero(), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    }
 
-        if !boma.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END)
-        && boma.is_situation(*SITUATION_KIND_AIR)
-        && boma.is_button_on(Buttons::Special | Buttons::Attack)
-        && KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) < 0.0
-        {
-            KineticModule::mul_speed(boma, &Vector3f::new(1.0, 0.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        }
+    if !boma.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END)
+    && boma.is_situation(*SITUATION_KIND_AIR)
+    && boma.is_button_on(Buttons::Special | Buttons::Attack)
+    && KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) < 0.0
+    {
+        KineticModule::mul_speed(boma, &Vector3f::new(1.0, 0.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
 }
 
