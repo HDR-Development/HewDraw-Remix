@@ -1,11 +1,8 @@
+use crate::opff_import::*;
 use smash::app::BattleObjectModuleAccessor;
 use smash::phx::{Vector2f};
 use smash::app::lua_bind::*;
 use smash::lib::lua_const::*;
-
-use crate::utils::hdr;
-
-use crate::vars::popo_jc_grab;
 
 //=================================================================
 //== SHIELD STOPS

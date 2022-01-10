@@ -1,11 +1,9 @@
+use crate::opff_import::*;
 use smash::app::BattleObjectModuleAccessor;
 use smash::phx::{Vector2f, Vector3f, Vector4f};
 use smash::app::lua_bind::*;
 use smash::lib::lua_const::*;
 use smash::hash40;
-
-use crate::utils::hdr;
-use crate::vars::*;
 
 pub unsafe fn gimmick_flash(boma: &mut BattleObjectModuleAccessor) {
     let cbm_vec1 = Vector4f{x: 1.0, y: 0.8, z: 0.35, w: 0.25};

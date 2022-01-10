@@ -1,11 +1,9 @@
+use crate::opff_import::*;
 use smash::app::BattleObjectModuleAccessor;
 use smash::phx::{Vector2f, Vector3f};
 use smash::app::lua_bind::*;
 use smash::lib::lua_const::*;
 use smash::hash40;
-
-use crate::utils::hdr;
-use crate::vars::*;
 
 pub unsafe fn reset_all_magic_flags(boma: &mut BattleObjectModuleAccessor) {
     let id = hdr::get_player_number(boma);

@@ -1,3 +1,4 @@
+use crate::opff_import::*;
 use smash::app::BattleObjectModuleAccessor;
 use smash::phx::{Vector2f, Vector3f, Vector4f};
 use smash::app::lua_bind::*;
@@ -7,17 +8,6 @@ use smash::phx::Hash40;
 use smash::cpp::root::app::SituationKind;
 use smash::lua2cpp::L2CFighterCommon;
 use smash::app::{self, lua_bind::*, sv_kinetic_energy, sv_animcmd};
-
-use hdr_modules::consts::{*, globals::*};
-use hdr_core::modules::*;
-use hdr_core;
-use crate::hooks::sys_line::tech::hdr_core::singletons::FIGHTER_MANAGER;
-use smash_script::{self, *, macros::*};
-
-use crate::utils::hdr;
-use crate::utils::hdr::get_player_number;
-use crate::utils::hdr::clamp;
-use crate::vars::*;
 
 
 //=================================================================
@@ -203,7 +193,7 @@ unsafe fn waveland_plat_drop(boma: &mut BattleObjectModuleAccessor, cat2: i32, s
     if status_kind == *FIGHTER_STATUS_KIND_LANDING && plat_drop_statuses.contains(&prev_status) {
         
         // if we are allowed to drop yet
-        if (VarModule::is_flag(boma, common::ENABLE_WAVELAND_PLATDROP)) {
+        if (VarModule::is_flag(boma.object(), common::ENABLE_WAVELAND_PLATDROP)) {
             if GroundModule::is_passable_ground(boma) && hdr::stick_y_flick_check(boma, -0.66) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_PASS, true);
             }
@@ -495,7 +485,7 @@ unsafe fn tap_upB_jump_refresh(fighter: &mut L2CFighterCommon, boma: &mut Battle
             }
         }
     }
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI && VarModule::is_flag(boma, common::UP_SPECIAL_JUMP_REFRESH_WINDOW) && !VarModule::is_flag(boma, common::DISABLE_UP_SPECIAL_JUMP_REFRESH) {
+    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI && VarModule::is_flag(boma.object(), common::UP_SPECIAL_JUMP_REFRESH_WINDOW) && !VarModule::is_flag(boma.object(), common::DISABLE_UP_SPECIAL_JUMP_REFRESH) {
         // Grants 1 extra jump if all jumps used up
         if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) == WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
             WorkModule::set_int(boma, WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
@@ -503,7 +493,7 @@ unsafe fn tap_upB_jump_refresh(fighter: &mut L2CFighterCommon, boma: &mut Battle
         VarModule::on_flag(boma, common::DISABLE_UP_SPECIAL_JUMP_REFRESH);
         VarModule::off_flag(boma, common::UP_SPECIAL_JUMP_REFRESH_WINDOW);
     }
-    if situation_kind == *SITUATION_KIND_GROUND && VarModule::is_flag(boma, common::DISABLE_UP_SPECIAL_JUMP_REFRESH) {
+    if situation_kind == *SITUATION_KIND_GROUND && VarModule::is_flag(boma.object(), common::DISABLE_UP_SPECIAL_JUMP_REFRESH) {
         VarModule::off_flag(boma, common::DISABLE_UP_SPECIAL_JUMP_REFRESH);
     }
 }
@@ -673,16 +663,17 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mu
     respawn_taunt(boma, status_kind);
     
 
-    /*if BufferModule::is_persist(boma) && VarModule::is_flag(boma, common::FLOAT_PAUSE_AERIAL) {
+    /*if BufferModule::is_persist(boma) && VarModule::is_flag(boma.object(), common::FLOAT_PAUSE_AERIAL) {
         VarModule::off_flag(boma, common::FLOAT_PAUSE_AERIAL);
         let cbm_vec1 = Vector4f{x: 0.95, y: 0.95, z: 0.95, w: 0.2};
         let cbm_vec2 = Vector4f{x: 0.0, y: 0.0, z: 0.3, w: 0.8};
         ColorBlendModule::set_main_color(boma, &cbm_vec1, &cbm_vec2, 0.5, 2.2, 2, true);
     }
-    if !BufferModule::is_persist(boma) && !VarModule::is_flag(boma, common::FLOAT_PAUSE_AERIAL) {
+    if !BufferModule::is_persist(boma) && !VarModule::is_flag(boma.object(), common::FLOAT_PAUSE_AERIAL) {
         VarModule::on_flag(boma, common::FLOAT_PAUSE_AERIAL);
         ColorBlendModule::cancel_main_color(boma, 0);
     }*/
 
     freeze_stages(boma);
 }
+    

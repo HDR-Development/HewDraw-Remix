@@ -1,3 +1,4 @@
+use crate::opff_import::*;
 use smash::app::BattleObjectModuleAccessor;
 use smash::phx::*;
 use smash::app::lua_bind::*;
@@ -7,16 +8,6 @@ use smash::app::{self, lua_bind::*, sv_kinetic_energy, sv_animcmd};
 use smash::lua2cpp::L2CFighterCommon;
 use smash::hash40;
 
-use crate::utils::hdr;
-use crate::utils::hdr::get_player_number;
-use crate::utils::hdr::clamp;
-
-use smash_script::*;
-
-use crate::vars::*;
-
-use hdr_modules::consts::{*, globals::*};
-use hdr_modules::VarModule;
 
 //===================================================================
 //== MOMENTUM TRANSFER HELPER

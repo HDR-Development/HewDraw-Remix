@@ -1,10 +1,8 @@
+use crate::opff_import::*;
 use smash::app::{self, lua_bind::*, sv_animcmd, sv_system};
 use smash::lib::{lua_const::*, L2CAgent};
 use smash::lua2cpp::L2CFighterCommon;
 use smash::phx::{Hash40, Vector3f};
-use crate::utils::hdr;
-
-use crate::vars::DEBUG;
 
 #[repr(C)]
 struct HitboxData {
@@ -361,3 +359,4 @@ pub unsafe fn handle_set_rebound(
 pub fn install() {
     skyline::install_hooks!(handle_effect_follow, handle_set_rebound);
 }
+

@@ -111,7 +111,7 @@ impl WeaponFrameInfo {
         let cat3 = ControlModule::get_command_flag_cat(boma, 2);
         let cat4 = ControlModule::get_command_flag_cat(boma, 3);
         let cur_frame = MotionModule::frame(boma);
-        VarModule::set_int(weapon.battle_object, common::COSTUME_SLOT_NUMBER, WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR));
+        crate::vars::costumeslotnumber[id] = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
         Some(Self {
             lua_state: lua_state,
             agent: weapon as *mut L2CFighterBase as *mut L2CAgent,

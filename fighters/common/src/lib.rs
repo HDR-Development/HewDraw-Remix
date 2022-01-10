@@ -86,6 +86,16 @@ impl GetObjects for L2CAgentBase {
     }
 }
 
+impl GetObjects for BattleObjectModuleAccessor {
+    unsafe fn get_object(boma: &mut Self) -> &'static mut BattleObject {
+        return get_battle_object_from_module_accessor(self)
+    }
+
+    unsafe fn get_boma(agent: &mut Self) -> &'static mut BattleObjectModuleAccessor {
+        return self;
+    }
+}
+
 
 pub trait InputCheck {
     unsafe fn is_cat_flag(&mut self, category: i32, fighter_pad_cmd_flag: i32) -> bool;
@@ -103,6 +113,7 @@ impl InputCheck for BattleObjectModuleAccessor {
         return compare_mask(flag_mask, fighter_pad_cmd_flag);
     }
 }
+
 
 
 pub fn install() {

@@ -25,18 +25,23 @@ def insert_text(filename, text:str):
 
 os.chdir("../fighters")
 
-
-
-for fighter in characters.characters:
-
+def replace(fighter):
   # get all files
   files = glob.glob("./" + fighter + "/**", recursive=True)
 
   for file in files:
-    if os.path.isfile(file):
+    if os.path.isfile(file) and not "target" in file and not "acmd" in file:
       if "opff" in file:
+        print(file)
         if "common" in file:
           insert_text(file, "use crate::opff_import::*;")
         else:
           insert_text(file, "use common::opff_import::*;")
-        
+      else:
+        print("no opff: " + file)
+
+
+for fighter in characters.characters:
+  replace(fighter)
+  
+replace("common")

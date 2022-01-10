@@ -1,11 +1,10 @@
+use crate::opff_import::*;
 use smash::app::BattleObjectModuleAccessor;
 use smash::phx::{Vector2f, Vector3f};
 use smash::app::lua_bind::*;
 use smash::lib::lua_const::*;
 use smash::hash40;
 use smash::phx::Hash40;
-
-use crate::utils::hdr;
 
 unsafe fn gentleman(boma: &mut BattleObjectModuleAccessor, status_kind: i32, fighter_kind: i32) {
     let mut jab_finisher_start = 1.0; // Start of window for rapid jab finisher transition, determined by character

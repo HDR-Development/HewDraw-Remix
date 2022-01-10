@@ -1,13 +1,10 @@
+use crate::opff_import::*;
 use smash::app::BattleObjectModuleAccessor;
 use smash::phx::{Vector2f, Vector3f};
 use smash::app::lua_bind::*;
 use smash::lib::lua_const::*;
 use smash::hash40;
 use smash::app::utility::*;
-
-use crate::utils::hdr;
-
-use crate::vars::{ledge_pos, ledge_occupying, tether_hogged};
 
 //=================================================================
 //== LEDGE ACTIONABILITY
@@ -214,3 +211,4 @@ pub unsafe fn run(boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_
     occupy_ledge(boma, status_kind, situation_kind, fighter_kind);
     tether_trump_landing(boma, status_kind, situation_kind);
 }
+

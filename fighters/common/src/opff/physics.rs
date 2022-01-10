@@ -1,3 +1,4 @@
+use crate::opff_import::*;
 use smash::app::BattleObjectModuleAccessor;
 use smash::phx::{Vector2f, Vector3f};
 use smash::lib::{lua_const::*, L2CValue, L2CAgent};
@@ -7,13 +8,6 @@ use smash::hash40;
 use smash::phx::Hash40;
 use smash_script::{self, *, macros::*};
 
-use hdr_modules::consts::{*, globals::*};
-use hdr_modules::VarModule;
-
-use crate::utils::hdr;
-
-//use crate::vars::ecb_y_offsets;
-use crate::vars::*;
 
 //=================================================================
 //== ECB ADJUSTMENTS

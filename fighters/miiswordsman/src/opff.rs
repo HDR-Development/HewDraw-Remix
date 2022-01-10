@@ -1,3 +1,4 @@
+use common::opff_import::*;
 use super::*;
 use globals::*;
 use common::opff::*;
@@ -151,7 +152,7 @@ unsafe fn skyward_slash_dash_act(fighter: &mut L2CFighterCommon, boma: &mut Batt
         }
     }
     if status_kind == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END {
-        if VarModule::is_flag(fighter.module_accessor, miiswordsman::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(boma, miiswordsman::IS_HEAVY_ATTACK) && situation_kind == *SITUATION_KIND_AIR {
+        if VarModule::is_flag(fighter.module_accessor, miiswordsman::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(boma.object(), miiswordsman::IS_HEAVY_ATTACK) && situation_kind == *SITUATION_KIND_AIR {
             //println!("SSD Success");
             if frame >= 30.0 {
                 //println!("SSD Fall Act");

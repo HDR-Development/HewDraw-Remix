@@ -1,3 +1,4 @@
+use crate::opff_import::*;
 use smash::app::BattleObjectModuleAccessor;
 use smash::lua2cpp::L2CFighterCommon;
 use smash::phx::{Vector2f, Vector3f, Vector4f};
@@ -7,13 +8,6 @@ use smash::phx::*;
 use smash::hash40;
 use smash::app::sv_animcmd::*;
 use smash_script::*;
-
-use hdr_modules::consts::{*, globals::*};
-use hdr_modules::VarModule;
-
-use crate::utils::hdr;
-use crate::vars::*;
-use crate::hooks::general_mechanics::jump::calc_melee_momentum;
 
 unsafe fn hitstun_overlay_orange(boma: &mut BattleObjectModuleAccessor, id: usize) {
     let cmb_vec1 = Vector4f{x: 0.949, y: 0.5137, z: 0.08643, w: 0.69};
@@ -116,7 +110,7 @@ pub unsafe fn buffered_cstick_aerial_fixes(fighter: &mut L2CFighterCommon, boma:
 
 pub unsafe fn airdodge_refresh_on_hit_disable(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     
-    if [*FIGHTER_STATUS_KIND_DAMAGE, *FIGHTER_STATUS_KIND_DAMAGE_AIR, *FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR].contains(&status_kind) && VarModule::is_flag(boma, common::PREV_FLAG_DISABLE_ESCAPE_AIR) {
+    if [*FIGHTER_STATUS_KIND_DAMAGE, *FIGHTER_STATUS_KIND_DAMAGE_AIR, *FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR].contains(&status_kind) && VarModule::is_flag(boma.object(), common::PREV_FLAG_DISABLE_ESCAPE_AIR) {
         //println!("dont refresh!");
         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR);
     }
@@ -148,3 +142,4 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleA
     airdodge_refresh_on_hit_disable(boma, status_kind);
     tumble_timer(fighter, boma, status_kind);
 }
+

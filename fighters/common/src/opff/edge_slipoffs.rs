@@ -1,3 +1,4 @@
+use crate::opff_import::*;
 use smash::app::BattleObjectModuleAccessor;
 use smash::app::lua_bind::*;
 use smash::lib::lua_const::*;
@@ -130,3 +131,4 @@ pub fn install() {
         get_ground_correct_kind_air_trans_hook,
     );
 }
+

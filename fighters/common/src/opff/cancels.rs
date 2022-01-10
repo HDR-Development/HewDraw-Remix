@@ -1,12 +1,10 @@
+use crate::opff_import::*;
 use smash::app::BattleObjectModuleAccessor;
 use smash::phx::{Vector2f, Vector3f};
 use smash::app::lua_bind::*;
 use smash::lib::lua_const::*;
 use smash::hash40;
 
-use crate::utils::hdr;
-
-use crate::vars::{popo_jc_grab, ditcit_sliding, footstool_airdodge_lockout};
 
 //=================================================================
 //== JUMP CANCEL GRABS

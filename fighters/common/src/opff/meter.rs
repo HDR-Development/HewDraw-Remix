@@ -1,3 +1,4 @@
+use crate::opff_import::*;
 use smash::app::BattleObjectModuleAccessor;
 use smash::lua2cpp::L2CFighterCommon;
 use smash::lua2cpp::L2CAgentBase;
@@ -8,15 +9,7 @@ use smash::phx::Hash40;
 use smash::hash40;
 
 
-use crate::utils::hdr;
-use crate::vars::*;
-
 use smash_script::macros::*;
-
-use hdr_modules::consts::{*, globals::*};
-use hdr_modules::*;
-
-use super::gimmick;
 
 pub unsafe fn get_meter_count(boma: &mut BattleObjectModuleAccessor) -> i32 {
     meter_counter[hdr::get_player_number(boma)]
@@ -265,3 +258,4 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleA
     }
     gimmick::gimmick_ready_glow_timer_counting(boma, status_kind);
 }
+

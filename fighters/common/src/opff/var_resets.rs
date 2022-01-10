@@ -1,29 +1,16 @@
+use crate::opff_import::*;
 use smash::app::BattleObjectModuleAccessor;
 use smash::phx::{Vector2f, Vector3f};
 use smash::app::lua_bind::*;
 use smash::lib::lua_const::*;
 use smash::hash40;
 
-use crate::utils::hdr;
-
-use crate::vars::{
-    side_special_cancel,
-    air_special_used,
-    special_wall_jump,
-    up_special_interrupt,
-    up_special_interrupt_airtime,
-    special_stall,
-    special_stall_used
-};
-
-use hdr_modules::consts::{*, globals::*};
-use hdr_modules::*;
 
 unsafe fn special_cancel_flag_reset(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     let player_number = hdr::get_player_number(boma);
 
     // Up Special Cancel
-    if VarModule::is_flag(boma, common::UP_SPECIAL_CANCEL) {
+    if VarModule::is_flag(boma.object(), common::UP_SPECIAL_CANCEL) {
         if situation_kind != *SITUATION_KIND_AIR
             || [*SITUATION_KIND_AIR,
                 *FIGHTER_STATUS_KIND_DAMAGE,
