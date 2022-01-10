@@ -5,8 +5,7 @@ use smash::phx::*;
 use utils::{*, consts::*, util::*};
 use smash::app::*;
 
-mod ext;
-pub use ext::*;
+pub use common_dyn::ext::*;
 
 pub mod djc;
 pub mod opff;

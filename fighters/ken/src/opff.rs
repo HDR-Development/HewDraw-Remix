@@ -7,7 +7,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     shotos::moveset(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
 }
 
-#[utils::opff(FIGHTER_KIND_KEN )]
+#[utils::opff(FIGHTER_KIND_KEN)]
 pub fn ken_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         fighter_common_opff(fighter);

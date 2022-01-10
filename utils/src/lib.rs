@@ -4,11 +4,11 @@ extern crate lazy_static;
 pub mod offsets;
 
 mod modules;
-pub mod ext;
 
-pub mod consts;
-pub mod singletons;
-pub mod util;
+pub use utils_dyn::ext;
+pub use utils_dyn::consts;
+pub use utils_dyn::singletons;
+pub use utils_dyn::util;
 
 pub use hdr_macros::*;
 
