@@ -146,14 +146,12 @@ pub mod vars {
         pub const TRAIL_EFFECT: i32 = 0x1000;
     }
 
-    mod shotos {
+    pub mod shotos {
         // flags
         pub const IS_USE_EX_SPECIAL: i32 = 0x1000;
         pub const IS_MAGIC_SERIES_CANCEL: i32 = 0x1001;
         pub const SHOULD_COMBOS_SCALE: i32 = 0x1002;
         pub const REPEAT_INCREMENTED: i32 = 0x1003;
-        pub const EX_SPECIAL: i32 = 0x1004;
-        pub const MAGIC_SERIES_CANCEL: i32 = 0x1005;
 
         // ints
         pub const REPEAT_COUNT_LW: i32 = 0x1000;

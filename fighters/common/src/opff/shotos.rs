@@ -11,7 +11,7 @@ use smash::app::lua_bind::*;
 unsafe fn dtilt_utilt_repeat_increment(boma: &mut BattleObjectModuleAccessor, id: usize, motion_kind: u64) {
     if [hash40("attack_hi3_w"), hash40("attack_lw3_w")].contains(&motion_kind)
         && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-        &&  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::shotos::REPEAT_INCREMENTED) {
+        && !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::shotos::REPEAT_INCREMENTED) {
         if motion_kind == hash40("attack_hi3_w") {
             repeat_num_hi[id] += 1;
         } else if motion_kind == hash40("attack_lw3_w") {
