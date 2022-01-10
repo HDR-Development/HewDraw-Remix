@@ -1,46 +1,57 @@
 #[cfg(feature = "no-offset-search")]
 mod offsets_impl {
     // These offsets are hardcoded to increase runtime speed but are only viable for smash version 13.0.1
+    #[export_name = "exec_command"]
     pub const fn exec_command() -> usize {
         0x6babf0
     }
 
+    #[export_name = "get_command_flag_cat"]
     pub const fn get_command_flag_cat() -> usize {
         0x6ba980
     }
 
+    #[export_name = "demon_on_link_capture_event"]
     pub const fn demon_on_link_capture_event() -> usize {
         0x9337e0
     }
 
+    #[export_name = "force_linear_histun"]
     pub const fn force_linear_histun() -> usize {
         0x62ba54
     }
 
+    #[export_name = "get_param_int_impl"]
     pub const fn get_param_int_impl() -> usize {
         0x4e5380
     }
 
+    #[export_name = "get_param_float_impl"]
     pub const fn get_param_float_impl() -> usize {
         0x4e53C0
     }
 
+    #[export_name = "set_fighter_vtable"]
     pub const fn set_fighter_vtable() -> usize {
         0x14f4784
     }
 
+    #[export_name = "set_weapon_vtable"]
     pub const fn set_weapon_vtable() -> usize {
         0x14f4c9c
     }
 
+    #[export_name = "set_item_vtable"]
     pub const fn set_item_vtable() -> usize {
         0x14f4f34
     }
 
+    #[export_name = "get_battle_object_from_id"]
     pub const fn get_battle_object_from_id() -> usize {
         0x3ac540
     }
 
+    #[export_name = "fighter_handle_damage"]
     pub const fn fighter_handle_damage() -> usize {
         0x6310a0
     }
@@ -202,46 +213,57 @@ mod offsets_impl {
         };
     }
 
+    #[export_name = "offsets_exec_command"]
     pub fn exec_command() -> usize {
         CORE_OFFSETS.exec_command
     }
 
+    #[export_name = "offsets_get_command_flag_cat"]
     pub fn get_command_flag_cat() -> usize {
         CORE_OFFSETS.get_command_flag_cat
     }
 
+    #[export_name = "offsets_demon_on_link_capture_event"]
     pub fn demon_on_link_capture_event() -> usize {
         CORE_OFFSETS.demon_on_link_capture_event
     }
 
+    #[export_name = "offsets_force_linear_histun"]
     pub fn force_linear_histun() -> usize {
         CORE_OFFSETS.force_linear_histun
     }
 
+    #[export_name = "offsets_get_param_int_impl"]
     pub fn get_param_int_impl() -> usize {
         CORE_OFFSETS.get_param_int_impl
     }
 
+    #[export_name = "offsets_get_param_float_impl"]
     pub fn get_param_float_impl() -> usize {
         CORE_OFFSETS.get_param_float_impl
     }
 
+    #[export_name = "offsets_set_fighter_vtable"]
     pub fn set_fighter_vtable() -> usize {
         CORE_OFFSETS.set_fighter_vtable
     }
 
+    #[export_name = "offsets_set_weapon_vtable"]
     pub fn set_weapon_vtable() -> usize {
         CORE_OFFSETS.set_weapon_vtable
     }
 
+    #[export_name = "offsets_set_item_vtable"]
     pub fn set_item_vtable() -> usize {
         CORE_OFFSETS.set_item_vtable
     }
 
+    #[export_name = "offsets_get_battle_object_from_id"]
     pub fn get_battle_object_from_id() -> usize {
         CORE_OFFSETS.get_battle_object_from_id
     }
 
+    #[export_name = "offsets_fighter_handle_damage"]
     pub fn fighter_handle_damage() -> usize {
         CORE_OFFSETS.fighter_handle_damage
     }
