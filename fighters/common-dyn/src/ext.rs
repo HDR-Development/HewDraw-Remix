@@ -11,7 +11,8 @@ use smash::{
     lib::{
         L2CValue,
         lua_const::*
-    }
+    },
+    phx::*
 };
 use utils::{
     *,
