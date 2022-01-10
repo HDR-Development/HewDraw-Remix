@@ -28,5 +28,5 @@ pub unsafe fn gimmick_ready_glow_timer_counting(boma: &mut BattleObjectModuleAcc
 }
 
 pub unsafe fn run(boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
-
+    gimmick_ready_glow_timer_counting(boma, status_kind);
 }

@@ -27,7 +27,7 @@ pub mod acmd_import {
 
 pub mod opff_import {
     pub use super::prelude::*;
-    pub use smash::app::{self, lua_bind::*};
+    pub use smash::app::{self, lua_bind::*, utility::*};
     pub use smash::lua2cpp::*;
     pub use smash::lib::{*, lua_const::*};
     pub use smash::phx::*;
@@ -37,6 +37,7 @@ pub mod opff_import {
     pub use app::{sv_system, sv_animcmd::{frame, wait}};
     pub use smash::app::sv_battle_object::notify_event_msc_cmd;
     pub use utils::{VarModule, ParamModule, BufferModule, MeterModule};
+    pub use utils::consts::globals::*;
 }
 
 use smash::app::lua_bind::*;
@@ -89,11 +90,11 @@ impl GetObjects for L2CAgentBase {
 
 impl GetObjects for BattleObjectModuleAccessor {
     unsafe fn get_object(boma: &mut Self) -> &'static mut BattleObject {
-        return get_battle_object_from_module_accessor(boma)
+        std::mem::transmute(get_battle_object_from_accessor(boma))
     }
 
     unsafe fn get_boma(boma: &mut Self) -> &'static mut BattleObjectModuleAccessor {
-        return boma;
+        std::mem::transmute(boma)
     }
 }
 

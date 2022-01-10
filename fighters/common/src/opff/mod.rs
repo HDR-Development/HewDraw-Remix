@@ -1,3 +1,4 @@
+use crate::opff_import::*;
 use smash::app::{self, lua_bind::*, sv_system, sv_kinetic_energy};
 use smash::phx::*;
 use smash::hash40;
@@ -14,22 +15,20 @@ pub mod cancels;
 pub mod var_resets;
 pub mod gentleman;
 pub mod momentum_transfer_line;
-pub mod meter;
+pub mod shotos;
 pub mod magic;
 pub mod gimmick;
 pub mod floats;
-pub mod visualizer;
 pub mod other;
 
-
+/*
 pub fn install() {
     // acmd::add_custom_hooks!(sys_line_system_control_fighter_hook);
     smashline::install_agent_frames!(sys_line_system_control_fighter_hook);
     smashline::install_agent_frames!(sys_line_system_control_hook);
-    moveset_changes::install();
-    weapon_changes::install();
-    visualizer::install();
+    
 }
+*/
 
 pub struct FrameInfo {
     pub lua_state: u64,
@@ -61,7 +60,7 @@ impl FrameInfo {
         let cat3 = ControlModule::get_command_flag_cat(boma, 2);
         let cat4 = ControlModule::get_command_flag_cat(boma, 3);
         let cur_frame = MotionModule::frame(boma);
-        crate::vars::costumeslotnumber[id] = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
+        VarModule::set_int(fighter.battle_object,common::COSTUME_SLOT_NUMBER,WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR));
         Some(Self {
             lua_state: lua_state,
             agent: fighter as *mut L2CFighterCommon as *mut L2CAgent,
@@ -111,7 +110,7 @@ impl WeaponFrameInfo {
         let cat3 = ControlModule::get_command_flag_cat(boma, 2);
         let cat4 = ControlModule::get_command_flag_cat(boma, 3);
         let cur_frame = MotionModule::frame(boma);
-        crate::vars::costumeslotnumber[id] = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
+        VarModule::set_int(weapon.battle_object,common::COSTUME_SLOT_NUMBER,WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR));
         Some(Self {
             lua_state: lua_state,
             agent: weapon as *mut L2CFighterBase as *mut L2CAgent,
@@ -247,7 +246,7 @@ unsafe fn handle_game_resets(boma: &mut app::BattleObjectModuleAccessor, fighter
         //Momentum transfer helper
         //Initialize ratio using base values (jump_speed_x_max / run_speed_max) once at beginning of match
         let ratio = (WorkModule::get_param_float(boma, hash40("jump_speed_x_max"), 0) / WorkModule::get_param_float(boma, hash40("run_speed_max"), 0));
-        VarModule::set_float(fighter.module_accessor, common::MP_SPEED_RATIO, ratio);
+        VarModule::set_float(fighter.battle_object, common::MP_SPEED_RATIO, ratio);
 
     }
     last_ready_go[id] = is_ready_go[id];
