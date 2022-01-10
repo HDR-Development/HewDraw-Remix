@@ -135,14 +135,14 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         // Prevent float from activating during aerials
         if float_style[id] != 1 {
             if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-                if float_pause_aerial[id] {
-                    aerial_no_float[id] = true;
+                if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::FLOAT_PAUSE_AERIAL) {
+                    VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_NO_FLOAT);
                     WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
                 }
             } else {
-                if aerial_no_float[id] {
+                if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_NO_FLOAT) {
                     WorkModule::set_int(boma, float_duration[id], *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
-                    aerial_no_float[id] = false;
+                    VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_NO_FLOAT);
                 }
             }
         }

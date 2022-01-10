@@ -14,17 +14,17 @@ unsafe fn hitstun_overlay_orange(boma: &mut BattleObjectModuleAccessor, id: usiz
     let cmb_vec1 = Vector4f{x: 0.949, y: 0.5137, z: 0.08643, w: 0.69};
     let cmb_vec2 = Vector4f{x: 0.949, y: 0.5137, z: 0.08643, w: 0.0};
     if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) > 0.0 {
-        if !is_in_hitstun[id] {
+        if  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::IS_IN_HITSTUN) {
             VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::HITSTUN_START);
         }
     } else {
-        if is_in_hitstun[id] {
+        if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::IS_IN_HITSTUN) {
             ColorBlendModule::cancel_main_color(boma, 0);
         }
-        is_in_hitstun[id] = false;
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::IS_IN_HITSTUN);
     }
     if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::HITSTUN_START) {
-        is_in_hitstun[id] = true;
+        VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::IS_IN_HITSTUN);
         ColorBlendModule::set_main_color(boma, &cmb_vec1, &cmb_vec2, 1.0, 0.5, 10, true);
         VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::HITSTUN_START);
     }

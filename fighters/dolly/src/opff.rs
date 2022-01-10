@@ -322,7 +322,7 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
             // Check for utilt inputs during ftilt
             if motion_kind == hash40("attack_s3_s") {
                 if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3) {
-                    //tilt_checks[id] = true;
+                    //VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::TILT_CHECKS);
                     magic_series_cancel[id] = true;
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI3,false);
                 }

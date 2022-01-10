@@ -7,26 +7,26 @@ use smash::hash40;
 
 pub unsafe fn reset_all_magic_flags(boma: &mut BattleObjectModuleAccessor) {
     let id = hdr::get_player_number(boma);
-    jab_da_checks[id] = false;
-    tilt_checks[id] = false;
-    smash_checks[id] = false;
+    VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::JAB_DA_CHECKS);
+    VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::TILT_CHECKS);
+    VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SMASH_CHECKS);
     aerial_checks[id] = false;
 }
 
 pub unsafe fn set_all_magic_flags(boma: &mut BattleObjectModuleAccessor) {
     let id = hdr::get_player_number(boma);
-    jab_da_checks[id] = true;
-    tilt_checks[id] = true;
-    smash_checks[id] = true;
+    VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::JAB_DA_CHECKS);
+    VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::TILT_CHECKS);
+    VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::SMASH_CHECKS);
     aerial_checks[id] = true;
 }
 
 pub unsafe fn reset_magic_flag(boma: &mut BattleObjectModuleAccessor, magic_level: i32) {
     let id = hdr::get_player_number(boma);
     match magic_level {
-        1 => {jab_da_checks[id] = false;}
-        2 => {tilt_checks[id] = false;}
-        3 => {smash_checks[id] = false;}
+        1 => {VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::JAB_DA_CHECKS);}
+        2 => {VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::TILT_CHECKS);}
+        3 => {VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SMASH_CHECKS);}
         4 => {aerial_checks[id] = false;}
         _ => {reset_all_magic_flags(boma);}
     };
@@ -35,9 +35,9 @@ pub unsafe fn reset_magic_flag(boma: &mut BattleObjectModuleAccessor, magic_leve
 pub unsafe fn set_magic_flag(boma: &mut BattleObjectModuleAccessor, magic_level: i32) {
     let id = hdr::get_player_number(boma);
     match magic_level {
-        1 => {jab_da_checks[id] = true;}
-        2 => {tilt_checks[id] = true;}
-        3 => {smash_checks[id] = true;}
+        1 => {VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::JAB_DA_CHECKS);}
+        2 => {VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::TILT_CHECKS);}
+        3 => {VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::SMASH_CHECKS);}
         4 => {aerial_checks[id] = true;}
         _ => {set_all_magic_flags(boma);}
     };

@@ -68,7 +68,13 @@ pub mod vars {
         pub const SIDE_SPECIAL_CANCEL: i32 = 0x9;
         pub const DISABLE_UP_SPECIAL_JUMP_REFRESH: i32 = 0xA;
         pub const HITSTUN_START: i32 = 0xB;
-        
+        pub const AERIAL_NO_FLOAT: i32 = 0xC;
+        pub const FLOAT_PAUSE_AERIAL: i32 = 0xD;
+        pub const SMASH_CHECKS: i32 = 0xE;
+        pub const TILT_CHECKS: i32 = 0xF;
+        pub const JAB_DA_CHECKS: i32 = 0x10;
+        pub const AERIAL_CHECKA: i32 = 0x11;
+
 
         // int
         pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0;
