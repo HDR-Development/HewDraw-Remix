@@ -11,4 +11,6 @@
         <float hash="x_large">5</float>
         <float hash="xx_large">6</float>
     </struct>
+    <int hash="ecb_shift_air_trans_frame">10</int>
+    <float hash="ecb_shift_for_waveland">-0.2</float>
 </struct>

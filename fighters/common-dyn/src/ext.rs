@@ -114,6 +114,9 @@ pub trait AgentUtil {
     unsafe fn is_status(&mut self, kind: i32) -> bool;
     unsafe fn is_status_one_of(&mut self, kinds: &[i32]) -> bool;
     unsafe fn is_prev_status(&mut self, kind: i32) -> bool;
+    unsafe fn is_prev_status_one_of(&mut self, kinds: &[i32]) -> bool;
+    unsafe fn is_situation(&mut self, kind: i32) -> bool;
+    unsafe fn is_prev_situation(&mut self, kind: i32) -> bool;
     unsafe fn is_fighter(&mut self) -> bool;
     unsafe fn is_weapon(&mut self) -> bool;
     unsafe fn kind(&mut self) -> i32;
@@ -134,6 +137,18 @@ impl AgentUtil for L2CAgentBase {
 
     unsafe fn is_prev_status(&mut self, kind: i32) -> bool {
         return self.boma().is_prev_status(kind);
+    }
+
+    unsafe fn is_prev_status_one_of(&mut self, kinds: &[i32]) -> bool {
+        return self.boma().is_prev_status_one_of(kinds);
+    }
+
+    unsafe fn is_situation(&mut self, kind: i32) -> bool {
+        return self.boma().is_situation(kind);
+    }
+
+    unsafe fn is_prev_situation(&mut self, kind: i32) -> bool {
+        return self.boma().is_prev_situation(kind);
     }
 
     unsafe fn is_fighter(&mut self) -> bool {
@@ -166,6 +181,19 @@ impl AgentUtil for BattleObjectModuleAccessor {
 
     unsafe fn is_prev_status(&mut self, kind: i32) -> bool {
         return StatusModule::prev_status_kind(self, 0) == kind;
+    }
+
+    unsafe fn is_prev_status_one_of(&mut self, kinds: &[i32]) -> bool {
+        let kind = StatusModule::prev_status_kind(self, 0);
+        return kinds.contains(&kind);
+    }
+
+    unsafe fn is_situation(&mut self, kind: i32) -> bool {
+        return StatusModule::situation_kind(self) == kind;
+    }
+
+    unsafe fn is_prev_situation(&mut self, kind: i32) -> bool {
+        return StatusModule::prev_situation_kind(self) == kind;
     }
 
     unsafe fn is_fighter(&mut self) -> bool {
