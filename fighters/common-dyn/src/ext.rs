@@ -111,14 +111,24 @@ impl GetObjects for BattleObjectModuleAccessor {
 }
 
 pub trait AgentUtil {
+    // INPUTS
     unsafe fn is_cat_flag<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool;
     unsafe fn is_cat_flag_all<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool;
+    unsafe fn is_pad_flag(&mut self, pad_flag: PadFlag) -> bool;
     unsafe fn is_button_on(&mut self, buttons: Buttons) -> bool;
     unsafe fn is_button_off(&mut self, buttons: Buttons) -> bool;
     unsafe fn is_button_trigger(&mut self, buttons: Buttons) -> bool;
     unsafe fn is_button_release(&mut self, buttons: Buttons) -> bool;
     unsafe fn was_prev_button_on(&mut self, buttons: Buttons) -> bool;
     unsafe fn was_prev_button_off(&mut self, buttons: Buttons) -> bool;
+    unsafe fn stick_x(&mut self) -> f32;
+    unsafe fn stick_y(&mut self) -> f32;
+    unsafe fn prev_stick_x(&mut self) -> f32;
+    unsafe fn prev_stick_y(&mut self) -> f32;
+    unsafe fn is_flick_y(&mut self, sensitivity: f32) -> bool;
+    unsafe fn is_input_jump(&mut self) -> bool;
+
+    // STATE
     unsafe fn is_status(&mut self, kind: i32) -> bool;
     unsafe fn is_status_one_of(&mut self, kinds: &[i32]) -> bool;
     unsafe fn is_prev_status(&mut self, kind: i32) -> bool;
@@ -127,6 +137,8 @@ pub trait AgentUtil {
     unsafe fn is_prev_situation(&mut self, kind: i32) -> bool;
     unsafe fn is_motion(&mut self, motion: Hash40) -> bool;
     unsafe fn is_motion_one_of(&mut self, motions: &[Hash40]) -> bool;
+
+    // INSTANCE
     unsafe fn is_fighter(&mut self) -> bool;
     unsafe fn is_weapon(&mut self) -> bool;
     unsafe fn kind(&mut self) -> i32;
@@ -139,6 +151,10 @@ impl AgentUtil for L2CAgentBase {
 
     unsafe fn is_cat_flag_all<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool {
         return self.boma().is_cat_flag_all(fighter_pad_cmd_flag);
+    }
+
+    unsafe fn is_pad_flag(&mut self, pad_flag: PadFlag) -> bool {
+        return self.boma().is_pad_flag(pad_flag);
     }
 
     unsafe fn is_button_on(&mut self, buttons: Buttons) -> bool {
@@ -163,6 +179,26 @@ impl AgentUtil for L2CAgentBase {
 
     unsafe fn was_prev_button_off(&mut self, buttons: Buttons) -> bool {
         return self.boma().was_prev_button_off(buttons);
+    }
+
+    unsafe fn stick_x(&mut self) -> f32 {
+        return self.boma().stick_x();
+    }
+
+    unsafe fn stick_y(&mut self) -> f32 {
+        return self.boma().stick_y();
+    }
+
+    unsafe fn prev_stick_x(&mut self) -> f32 {
+        return self.boma().prev_stick_x();
+    }
+
+    unsafe fn prev_stick_y(&mut self) -> f32 {
+        return self.boma().prev_stick_y();
+    }
+
+    unsafe fn is_flick_y(&mut self, sensitivity: f32) -> bool {
+        return self.boma().is_flick_y(sensitivity);
     }
 
     unsafe fn is_status(&mut self, kind: i32) -> bool {
@@ -231,6 +267,10 @@ impl AgentUtil for BattleObjectModuleAccessor {
         }
     }
 
+    unsafe fn is_pad_flag(&mut self, pad_flag: PadFlag) -> bool {
+        PadFlag::from_bits_unchecked(ControlModule::get_pad_flag(self)).intersects(pad_flag)
+    }
+
     unsafe fn is_button_on(&mut self, buttons: Buttons) -> bool {
         Buttons::from_bits_unchecked(ControlModule::get_button(self)).intersects(buttons)
     }
@@ -253,6 +293,47 @@ impl AgentUtil for BattleObjectModuleAccessor {
 
     unsafe fn was_prev_button_off(&mut self, buttons: Buttons) -> bool {
         !self.was_prev_button_on(buttons)
+    }
+
+    unsafe fn stick_x(&mut self) -> f32 {
+        return ControlModule::get_stick_x(self);
+    }
+    
+    unsafe fn stick_y(&mut self) -> f32 {
+        return ControlModule::get_stick_y(self);
+    }
+    
+    unsafe fn prev_stick_x(&mut self) -> f32 {
+        return ControlModule::get_stick_prev_x(self);
+    }
+    
+    unsafe fn prev_stick_y(&mut self) -> f32 {
+        return ControlModule::get_stick_prev_y(self);
+    }
+
+    unsafe fn is_input_jump(&mut self) -> bool {
+        if self.is_cat_flag(Cat1::Jump) && ControlModule::is_enable_flick_jump(self) {
+            WorkModule::set_int(boma, 1, *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE);
+            return true;
+        }
+
+        return self.is_cat_flag(Cat1::JumpButton);
+    }
+        
+    // TODO: Reimplement this check
+    unsafe fn is_flick_y(&mut self, sensitivity: f32) -> bool {
+        let stick = self.stick_y();
+        let p_stick = self.prev_stick_y();
+
+        if sensitivity < 0.0 && stick < sensitivity && (stick < p_stick || boma.is_pad_flag(Cat2::JumpFall)) {
+            return true;
+        }
+
+        if sensitivity > 0.0 && stick > sensitivity && (stick > p_stick || boma.is_pad_flag(Cat2::JumpFal)) {
+            return true;
+        }
+
+        return false;
     }
 
     unsafe fn is_status(&mut self, kind: i32) -> bool {
