@@ -6,13 +6,13 @@ pub mod prelude {
     pub use smashline;
     pub use utils::{self, *, ext::*, consts::*, util::*};
     pub use super::StatusShift;
-    pub use super::InputCheck;
+    pub use super::AgentUtil;
     pub use super::GetObjects;
 }
 
 pub mod acmd_import {
     pub use super::prelude::*;
-    pub use smash::app::{self, lua_bind::*};
+    pub use smash::app::{self, *, lua_bind::*};
     pub use smash::lua2cpp::*;
     pub use smash::lib::{*, lua_const::*};
     pub use smash::phx::*;
@@ -72,20 +72,75 @@ impl GetObjects for L2CAgentBase {
 }
 
 
-pub trait InputCheck {
+pub trait AgentUtil {
     unsafe fn is_cat_flag(&mut self, category: i32, fighter_pad_cmd_flag: i32) -> bool;
+    unsafe fn is_status(&mut self, kind: i32) -> bool;
+    unsafe fn is_status_one_of(&mut self, kinds: &[i32]) -> bool;
+    unsafe fn is_prev_status(&mut self, kind: i32) -> bool;
+    unsafe fn is_fighter(&mut self) -> bool;
+    unsafe fn is_weapon(&mut self) -> bool;
+    unsafe fn kind(&mut self) -> i32;
 }
 
-impl InputCheck for L2CAgentBase {
-    unsafe fn  is_cat_flag(&mut self, category: i32, fighter_pad_cmd_flag: i32) -> bool {
+impl AgentUtil for L2CAgentBase {
+    unsafe fn is_cat_flag(&mut self, category: i32, fighter_pad_cmd_flag: i32) -> bool {
         return self.boma().is_cat_flag(category, fighter_pad_cmd_flag);
+    }
+
+    unsafe fn is_status(&mut self, kind: i32) -> bool {
+        return self.boma().is_status(kind);
+    }
+
+    unsafe fn is_status_one_of(&mut self, kinds: &[i32]) -> bool {
+        return self.boma().is_status_one_of(kinds);
+    }
+
+    unsafe fn is_prev_status(&mut self, kind: i32) -> bool {
+        return self.boma().is_prev_status(kind);
+    }
+
+    unsafe fn is_fighter(&mut self) -> bool {
+        return self.boma().is_fighter();
+    }
+
+    unsafe fn is_weapon(&mut self) -> bool {
+        return self.boma().is_weapon();
+    }
+
+    unsafe fn kind(&mut self) -> i32 {
+        return self.boma().kind();
     }
 }
 
-impl InputCheck for BattleObjectModuleAccessor {
-    unsafe fn  is_cat_flag(&mut self, category: i32, fighter_pad_cmd_flag: i32) -> bool {
+impl AgentUtil for BattleObjectModuleAccessor {
+    unsafe fn is_cat_flag(&mut self, category: i32, fighter_pad_cmd_flag: i32) -> bool {
         let flag_mask = ControlModule::get_command_flag_cat(self, category);
         return compare_mask(flag_mask, fighter_pad_cmd_flag);
+    }
+
+    unsafe fn is_status(&mut self, kind: i32) -> bool {
+        return StatusModule::status_kind(self) == kind;
+    }
+
+    unsafe fn is_status_one_of(&mut self, kinds: &[i32]) -> bool {
+        let kind = StatusModule::status_kind(self);
+        return kinds.contains(&kind);
+    }
+
+    unsafe fn is_prev_status(&mut self, kind: i32) -> bool {
+        return StatusModule::prev_status_kind(self, 0) == kind;
+    }
+
+    unsafe fn is_fighter(&mut self) -> bool {
+        return smash::app::utility::get_category(self) == *BATTLE_OBJECT_CATEGORY_FIGHTER;
+    }
+
+    unsafe fn is_weapon(&mut self) -> bool {
+        return smash::app::utility::get_category(self) == *BATTLE_OBJECT_CATEGORY_WEAPON;
+    }
+
+    unsafe fn kind(&mut self) -> i32 {
+        return smash::app::utility::get_kind(self);
     }
 }
 
