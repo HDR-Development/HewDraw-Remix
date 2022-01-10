@@ -231,7 +231,7 @@ unsafe fn handle_game_resets(boma: &mut app::BattleObjectModuleAccessor, fighter
     else if is_ready_go[id] && !last_ready_go[id]
     {
         //println!("---------------- GAME START --------------");
-        crate::vars::reset(boma);
+        VarModule::reset(fighter.battle_object, VarModule::RESET_ALL);
 
         //~~replacing char-specific status scripts... kinda a hacky way, but its not too bad lul. We "should" find a good place to hook to put this in, but like this works perfectly fine for now~~
         // IT HAS BEEN DONE, HACKY NO MORE

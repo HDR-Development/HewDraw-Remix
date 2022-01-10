@@ -62,7 +62,7 @@ def variable_replace(file: str, old_var: str, new_var: str):
 
 os.chdir("../fighters")
 
-
+characters.characters.add("common")
 
 for fighter in characters.characters:
 

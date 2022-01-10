@@ -65,6 +65,10 @@ pub mod vars {
         pub const CSTICK_OVERRIDE_SECOND: i32 = 0x6;
         pub const IS_TAP_JUMP: i32 = 0x7;
         pub const OMNI_FLOAT: i32 = 0x8;
+        pub const SIDE_SPECIAL_CANCEL: i32 = 0x9;
+        pub const DISABLE_UP_SPECIAL_JUMP_REFRESH: i32 = 0xA;
+        pub const HITSTUN_START: i32 = 0xB;
+        
 
         // int
         pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0;
@@ -75,6 +79,8 @@ pub mod vars {
         /// var to store the damage that this fighter DEALT as the attacker.
         pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0;
         pub const CURRENT_MOMENTUM: i32 = 0x1;
+        pub const JUMPSQUAT_VELOCITY: i32 = 0x2;
+        pub const JUMP_SPEED_RATIO: i32 = 0x3;
 
         // separator
         // flag
