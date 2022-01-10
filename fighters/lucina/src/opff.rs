@@ -9,7 +9,7 @@ unsafe fn side_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kin
             // Up
             if [hash40("special_s3_hi"), hash40("special_air_s3_hi")].contains(&motion_kind) {
                 // Check for tilt attack inputs
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3) {
+                if boma.is_cat_flag(Cat1::AttackHi3) {
                     if situation_kind == *SITUATION_KIND_GROUND {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI3, false);
                     }
@@ -18,7 +18,7 @@ unsafe fn side_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kin
                     }
                 }
                 // Check for smash attack inputs
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4) {
+                if boma.is_cat_flag(Cat1::AttackHi4) {
                     if situation_kind == *SITUATION_KIND_GROUND {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI4_START, false);
                     }
@@ -30,7 +30,7 @@ unsafe fn side_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kin
             // Forward
             if [hash40("special_s3_s"), hash40("special_air_s3_s")].contains(&motion_kind) {
                 // Check for tilt attack inputs
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) {
+                if boma.is_cat_flag(Cat1::AttackS3) {
                     if situation_kind == *SITUATION_KIND_GROUND {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S3, false);
                     }
@@ -39,7 +39,7 @@ unsafe fn side_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kin
                     }
                 }
                 // Check for smash attack inputs
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) {
+                if boma.is_cat_flag(Cat1::AttackS4) {
                     if situation_kind == *SITUATION_KIND_GROUND {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START, false);
                     }
@@ -51,7 +51,7 @@ unsafe fn side_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kin
             // Down
             if [hash40("special_s3_lw"), hash40("special_air_s3_lw")].contains(&motion_kind) {
                 // Check for tilt attack inputs
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3) {
+                if boma.is_cat_flag(Cat1::AttackLw3) {
                     if situation_kind == *SITUATION_KIND_GROUND {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW3, false);
                     }
@@ -60,7 +60,7 @@ unsafe fn side_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kin
                     }
                 }
                 // Check for smash attack inputs
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4) {
+                if boma.is_cat_flag(Cat1::AttackLw4) {
                     if situation_kind == *SITUATION_KIND_GROUND {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, false);
                     }

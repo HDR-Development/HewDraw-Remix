@@ -8,9 +8,9 @@ unsafe fn grab_walk(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat
         let motion_value = 0.65;
         let mut motion_vec = Vector3f{x: 0.0, y: 0.0, z: 0.0};
 
-        if hdr::compare_cat(cat2, *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R) {
+        if boma.is_cat_flag(Cat2::AppealSR) {
             motion_vec.x = motion_value;
-        } else if hdr::compare_cat(cat2, *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L) {
+        } else if boma.is_cat_flag(Cat2::AppealSL) {
             motion_vec.x = -motion_value;
         }
         KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);

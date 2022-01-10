@@ -6,7 +6,7 @@ use common::opff::*;
 unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, cat2: i32) {
     //PM-like neutral-b canceling
     /***if status_kind == *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_N1_HOLD {
-        if hdr::compare_cat(cat2, *FIGHTER_PAD_CMD_CAT2_FLAG_COMMON_GUARD) {
+        if boma.is_cat_flag(Cat2::CommonGuard) {
             for trans_group in [*FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ESCAPE, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE].iter() {
                 WorkModule::unable_transition_term_group(boma, *trans_group);
             }
@@ -67,7 +67,7 @@ unsafe fn laser_blaze_ff_land_cancel(boma: &mut BattleObjectModuleAccessor, situ
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
         }
         if situation_kind == *SITUATION_KIND_AIR {
-            if hdr::compare_cat(cat2, *FIGHTER_PAD_CMD_CAT2_FLAG_FALL_JUMP) && stick_y < -0.66
+            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66
                 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
                 WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
             }

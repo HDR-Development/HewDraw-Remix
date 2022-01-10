@@ -6,7 +6,7 @@ use common::opff::*;
 unsafe fn jab_2_ftilt_cancel(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64) {
     if [*FIGHTER_STATUS_KIND_ATTACK].contains(&status_kind) && motion_kind == hash40("attack_12") {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3)
+            if boma.is_cat_flag(Cat1::AttackS3)
                && (WorkModule::is_flag(boma, /*Flag*/ *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) || WorkModule::is_flag(boma, /*Flag*/ *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO)) {
                 if !StopModule::is_stop(boma) {
                     VarModule::on_flag(boma.object(), trail::ATTACK_12_INTO_S3);
@@ -25,7 +25,7 @@ unsafe fn fair_cancels(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_
     // Check for aerial attack inputs during fair 2
     if status_kind == *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F && motion_kind == hash40("attack_air_f2") {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N
+            if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N
                                     | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3
                                     | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4
                                     | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3
@@ -36,15 +36,15 @@ unsafe fn fair_cancels(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
                 }
             }
-            //if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_HI
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3
+            //if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_HI
+            if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3
                                     | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4) {
                 if !StopModule::is_stop(boma) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
                 }
             }
-            //if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_LW
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3
+            //if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_LW
+            if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3
                                     | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4) {
                 if !StopModule::is_stop(boma) {                                        
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);

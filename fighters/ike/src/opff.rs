@@ -45,7 +45,7 @@ unsafe fn jump_attack_cancels(boma: &mut BattleObjectModuleAccessor, id: usize, 
             let touch_right = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
             let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
             if touch_left || touch_right {
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH | *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON) {
+                if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH | *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON) {
                     special_wall_jump[id] = true;
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                 }
@@ -63,7 +63,7 @@ unsafe fn jump_attack_cancels(boma: &mut BattleObjectModuleAccessor, id: usize, 
             }
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
         }
-    } else if hdr::compare_cat(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || hdr::compare_cat(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
+    } else if compare_mask(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || compare_mask(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK, true);
     }
 }

@@ -6,10 +6,10 @@ use common::opff::*;
 unsafe fn dragon_fang_shot_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_N_SHOOT && frame > 7.0 {
         if situation_kind == *SITUATION_KIND_GROUND {
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_DASH) {
+            if boma.is_cat_flag(Cat1::Walk) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH) {
+            if boma.is_cat_flag(Cat1::Turn) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_TURN_DASH, false);
             }
         }

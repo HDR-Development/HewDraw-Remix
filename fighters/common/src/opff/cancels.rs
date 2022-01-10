@@ -11,7 +11,7 @@ use smash::hash40;
 //=================================================================
 unsafe fn jump_cancel_grab(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, fighter_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_JUMP_SQUAT {
-        if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH) {
+        if boma.is_cat_flag(Cat1::WallJumpRight) {
             if fighter_kind == *FIGHTER_KIND_POPO {
                 popo_jc_grab[hdr::get_player_number(boma)] = true;
             }
@@ -29,7 +29,7 @@ unsafe fn airdodge_cancels(boma: &mut BattleObjectModuleAccessor, cat2: i32, cat
         if MotionModule::frame(boma) > 3.0 && MotionModule::frame(boma) < 41.0 {
             // Throw item
             if ItemModule::is_have_item(boma, 0) {
-                if hdr::compare_cat(cat3, *FIGHTER_PAD_CMD_CAT3_FLAG_ITEM_LIGHT_THROW_AIR_ALL) {
+                if boma.is_cat_flag(Cat3::ItemLightThrowAirAll) {
                     if facing * stick_x < 0.0 {
                         PostureModule::reverse_lr(boma);
                     }
@@ -44,7 +44,7 @@ unsafe fn airdodge_cancels(boma: &mut BattleObjectModuleAccessor, cat2: i32, cat
                     *FIGHTER_KIND_SZEROSUIT,
                     *FIGHTER_KIND_LUIGI].contains(&fighter_kind) {
                     if !ItemModule::is_have_item(boma, 0) {
-                       if hdr::compare_cat(cat2, *FIGHTER_PAD_CMD_CAT2_FLAG_AIR_LASSO) {
+                       if boma.is_cat_flag(Cat2::AirLasso) {
                            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_AIR_LASSO, true);
                        }
                     }
@@ -68,12 +68,12 @@ unsafe fn ditcit(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: 
 
     if status_kind == *FIGHTER_STATUS_KIND_ITEM_THROW_DASH {
         if MotionModule::frame(boma) > 2.0 && MotionModule::frame(boma) < 6.0
-            && ((hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4))
-             || (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4))
-             || (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4))
-             || (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3))
-             || (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3))
-             || (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3))) {
+            && ((boma.is_cat_flag(Cat1::AttackHi4))
+             || (boma.is_cat_flag(Cat1::AttackLw4))
+             || (boma.is_cat_flag(Cat1::AttackS4))
+             || (boma.is_cat_flag(Cat1::AttackHi3))
+             || (boma.is_cat_flag(Cat1::AttackLw3))
+             || (boma.is_cat_flag(Cat1::AttackS3))) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ITEM_THROW, false);
             VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::DITCIT_SLIDING);
         }
@@ -94,23 +94,23 @@ unsafe fn ditcit(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: 
 unsafe fn dacus(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, stick_y: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH {
         if MotionModule::frame(boma) < 10.0 {
-            let is_catch = hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_CATCH);
+            let is_catch = boma.is_cat_flag(Cat1::WallJumpRight) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_CATCH);
 
             // Normal smash input or Z with left stick
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4) || (stick_y >= 0.7 && is_catch) {
+            if boma.is_cat_flag(Cat1::AttackHi4) || (stick_y >= 0.7 && is_catch) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI4_START, true);
             }
 
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4) || (stick_y <= -0.7 && is_catch) {
+            if boma.is_cat_flag(Cat1::AttackLw4) || (stick_y <= -0.7 && is_catch) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, true);
             }
 
             // Adjust input window of tilts to prevent accidental smashes
             if MotionModule::frame(boma) > 2.0 {
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3) {
+                if boma.is_cat_flag(Cat1::AttackHi3) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI4_START, true);
                 }
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3) {
+                if boma.is_cat_flag(Cat1::AttackLw3) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, true);
                 }
             }
@@ -123,7 +123,7 @@ unsafe fn dacus(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i
 //=================================================================
 unsafe fn jump_cancel_airdodge(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, fighter_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_JUMP_SQUAT {
-        if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE) && !hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH) {
+        if boma.is_cat_flag(Cat1::JumpButton) && !boma.is_cat_flag(Cat1::WallJumpRight) {
             WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
         }

@@ -20,7 +20,7 @@ unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleO
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
             }
         }
-        else if hdr::compare_cat(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || hdr::compare_cat(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
+        else if compare_mask(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || compare_mask(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK, true);
         }
         // Wall Jump
@@ -29,7 +29,7 @@ unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleO
                 let touch_right = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
                 let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
                 if touch_left || touch_right {
-                    if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH | *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON) {
+                    if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH | *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON) {
                         VarModule::on_flag(fighter.module_accessor, miiswordsman::SPECIAL_WALL_JUMP);
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                     }
@@ -112,22 +112,22 @@ unsafe fn aerial_acrobatics(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
     if status_kind == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK {
         if motion_kind == hash40("special_s1") || (motion_kind == hash40("special_air_s1") && frame >= 15.0){
             VarModule::on_flag(fighter.battle_object, vars::common::SIDE_SPECIAL_CANCEL);
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N) {
+            if boma.is_cat_flag(Cat1::AttackN) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, true);
             }
-            if (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) && hdr::is_stick_forward(boma))
-                || (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) && hdr::is_stick_forward(boma)) {
+            if (boma.is_cat_flag(Cat1::AttackS3) && hdr::is_stick_forward(boma))
+                || (boma.is_cat_flag(Cat1::AttackS4) && hdr::is_stick_forward(boma)) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, true);
             }
-            if (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) && hdr::is_stick_backward(boma))
-                || (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) && hdr::is_stick_backward(boma)) {
+            if (boma.is_cat_flag(Cat1::AttackS3) && hdr::is_stick_backward(boma))
+                || (boma.is_cat_flag(Cat1::AttackS4) && hdr::is_stick_backward(boma)) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, true);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3
+            if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3
                                     | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, true);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3
+            if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3
                                     | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, true);
             }

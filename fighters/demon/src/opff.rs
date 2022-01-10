@@ -6,7 +6,7 @@ use common::opff::*;
 unsafe fn slaughter_high_kick(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64) {
     if [*FIGHTER_STATUS_KIND_ATTACK_HI3].contains(&status_kind) && motion_kind == hash40("attack_hi3") {
         if WorkModule::is_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_HI_3_FLAG_CHECK_STEP){
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3
+            if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3
                                     | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4)
                && hdr::is_stick_backward(boma) {
                 VarModule::on_flag(boma.object(), demon::SLAUGHTER_HIGH_KICK);

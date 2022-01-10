@@ -201,6 +201,10 @@ impl AgentUtil for L2CAgentBase {
         return self.boma().is_flick_y(sensitivity);
     }
 
+    unsafe fn is_input_jump(&mut self) -> bool {
+        return self.boma().is_input_jump();
+    }
+
     unsafe fn is_status(&mut self, kind: i32) -> bool {
         return self.boma().is_status(kind);
     }
@@ -313,7 +317,7 @@ impl AgentUtil for BattleObjectModuleAccessor {
 
     unsafe fn is_input_jump(&mut self) -> bool {
         if self.is_cat_flag(Cat1::Jump) && ControlModule::is_enable_flick_jump(self) {
-            WorkModule::set_int(boma, 1, *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE);
+            WorkModule::set_int(self, 1, *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE);
             return true;
         }
 
@@ -325,11 +329,11 @@ impl AgentUtil for BattleObjectModuleAccessor {
         let stick = self.stick_y();
         let p_stick = self.prev_stick_y();
 
-        if sensitivity < 0.0 && stick < sensitivity && (stick < p_stick || boma.is_pad_flag(Cat2::JumpFall)) {
+        if sensitivity < 0.0 && stick < sensitivity && (stick < p_stick || self.is_cat_flag(Cat2::FallJump)) {
             return true;
         }
 
-        if sensitivity > 0.0 && stick > sensitivity && (stick > p_stick || boma.is_pad_flag(Cat2::JumpFal)) {
+        if sensitivity > 0.0 && stick > sensitivity && (stick > p_stick || self.is_cat_flag(Cat2::FallJump)) {
             return true;
         }
 

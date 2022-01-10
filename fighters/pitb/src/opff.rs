@@ -14,7 +14,7 @@ unsafe fn bow_ff_lc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, sit
             }
         }
         if situation_kind == *SITUATION_KIND_AIR {
-            if hdr::compare_cat(cat2, *FIGHTER_PAD_CMD_CAT2_FLAG_FALL_JUMP) && stick_y < -0.66
+            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66
                 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
                 WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
             }

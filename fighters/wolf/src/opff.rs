@@ -8,7 +8,7 @@ unsafe fn airdodge_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i3
         if situation_kind == *SITUATION_KIND_AIR {
             KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
             if frame > 17.0 {
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
+                if boma.is_cat_flag(Cat1::JumpButton) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
                 }
             }
@@ -37,7 +37,7 @@ unsafe fn shine_jump_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: 
 unsafe fn flash_shortens(boma: &mut BattleObjectModuleAccessor, id: usize, motion_kind: u64, frame: f32) {
     /*
     if motion_kind == hash40("special_s") || motion_kind == hash40("special_air_s") {
-        if hdr::compare_cat(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) && !WorkModule::is_flag(boma, *FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_FLAG_RUSH_FORCE_END) {
+        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) && !WorkModule::is_flag(boma, *FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_FLAG_RUSH_FORCE_END) {
             let motion_vec = Vector3f{x: 0.1, y: 1.0, z: 1.0};
             WorkModule::on_flag(boma, *FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_FLAG_RUSH_FORCE_END);
             KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
@@ -54,7 +54,7 @@ unsafe fn flash_shortens(boma: &mut BattleObjectModuleAccessor, id: usize, motio
             illusion_shortened[id] = true;
         }
 
-        if hdr::compare_cat(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) && !illusion_shortened[id] {
+        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) && !illusion_shortened[id] {
             illusion_shorten[id] = true;
             WorkModule::on_flag(boma, *FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_FLAG_RUSH_FORCE_END);
         }

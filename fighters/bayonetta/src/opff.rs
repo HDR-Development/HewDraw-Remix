@@ -12,25 +12,25 @@ unsafe fn jab_dash_attack_cancels(boma: &mut BattleObjectModuleAccessor, status_
 
             // Check for tilt attack inputs during jab
             if status_kind == *FIGHTER_STATUS_KIND_ATTACK {
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) {
+                if boma.is_cat_flag(Cat1::AttackS3) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S3, false);
                 }
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3) {
+                if boma.is_cat_flag(Cat1::AttackHi3) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI3, false);
                 }
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3) {
+                if boma.is_cat_flag(Cat1::AttackLw3) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW3, false);
                 }
 
                 // Check for special attack inputs during jab (on hit)
                 if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                    if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N) {
+                    if boma.is_cat_flag(Cat1::SpecialN) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_N, false);
                     }
-                    if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S) {
+                    if boma.is_cat_flag(Cat1::SpecialS) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_S, false);
                     }
-                    if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI) {
+                    if boma.is_cat_flag(Cat1::SpecialHi) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI, false);
                     }
                 }
@@ -39,11 +39,11 @@ unsafe fn jab_dash_attack_cancels(boma: &mut BattleObjectModuleAccessor, status_
             // Check for side special and up special inputs during dash attack (on hit)
             if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH
                 && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S) {
+                if boma.is_cat_flag(Cat1::SpecialS) {
                     StatusModule::set_situation_kind(boma, smash::app::SituationKind(*SITUATION_KIND_AIR), true);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_S, false);
                 }
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI) {
+                if boma.is_cat_flag(Cat1::SpecialHi) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI, false);
                 }
             }
@@ -62,26 +62,26 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
             // Check for smash attack inputs during ftilt and utilt
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
                 && [*FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI3].contains(&status_kind) {
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) {
+                if boma.is_cat_flag(Cat1::AttackS4) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START,true);
                 }
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4) {
+                if boma.is_cat_flag(Cat1::AttackHi4) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI4_START,true);
                 }
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4) {
+                if boma.is_cat_flag(Cat1::AttackLw4) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW4_START,true);
                 }
             }
 
             // Check for special attack inputs
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N) {
+                if boma.is_cat_flag(Cat1::SpecialN) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_N, false);
                 }
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S) {
+                if boma.is_cat_flag(Cat1::SpecialS) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_S, false);
                 }
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI) {
+                if boma.is_cat_flag(Cat1::SpecialHi) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI, false);
                 }
             }
@@ -113,13 +113,13 @@ unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32
             }
             // Check for special attack inputs
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N) {
+                if boma.is_cat_flag(Cat1::SpecialN) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_N, false);
                 }
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S) {
+                if boma.is_cat_flag(Cat1::SpecialS) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_S, false);
                 }
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI) {
+                if boma.is_cat_flag(Cat1::SpecialHi) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI, false);
                 }
             }
@@ -127,22 +127,22 @@ unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32
             // Check for aerial attack inputs during fair
             if status_kind == *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F {
                 if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                    //if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_N
-                    if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N) {
+                    //if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_N
+                    if boma.is_cat_flag(Cat1::AttackN) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
                     }
-                    //if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_B) ||
-                    if (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) && hdr::is_stick_backward(boma))
-                        || (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) && hdr::is_stick_backward(boma)) {
+                    //if boma.is_cat_flag(Cat1::AttackAirB) ||
+                    if (boma.is_cat_flag(Cat1::AttackS3) && hdr::is_stick_backward(boma))
+                        || (boma.is_cat_flag(Cat1::AttackS4) && hdr::is_stick_backward(boma)) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
                     }
-                    //if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_HI
-                    if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3
+                    //if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_HI
+                    if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3
                                             | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
                     }
-                    //if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_LW
-                    if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3
+                    //if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_LW
+                    if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3
                                             | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
                     }
@@ -167,7 +167,7 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
     //PM-like neutral-b canceling
     if status_kind == *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE {
         if situation_kind == *SITUATION_KIND_AIR {
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE) {
+            if boma.is_cat_flag(Cat1::JumpButton) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
                 ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
             }

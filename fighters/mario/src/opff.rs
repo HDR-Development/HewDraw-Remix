@@ -16,7 +16,7 @@ unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         let y_speed = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         let facing = PostureModule::lr(boma);
         if frame <= 28.0 {
-            if hdr::compare_cat(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
+            if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
                 // Tell the game that you've started rising
                 aerial_command_rising[id] = true;
                 // Add vertical speed for the dair rise if you've activated the rise and this isn't your second time attempting to initiate the rise during your current airtime
@@ -77,13 +77,13 @@ unsafe fn up_b_wall_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
             if frame >= 23.0 && frame <= 25.0 {
                 if !special_wall_jump[id] {
                     if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32) {
-                        if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH) {
+                        if boma.is_cat_flag(Cat1::Turn) {
                             special_wall_jump[id] = true;
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                         }
                     }
                     if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32) {
-                        if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH) {
+                        if boma.is_cat_flag(Cat1::Turn) {
                             special_wall_jump[id] = true;
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                         }
@@ -121,7 +121,7 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
     if status_kind == *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_CHARGE {
         if situation_kind == *SITUATION_KIND_AIR {
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE) {
+            if boma.is_cat_flag(Cat1::JumpButton) {
                 WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
                 ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);

@@ -7,10 +7,10 @@ unsafe fn paralyzer_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_ki
     if status_kind == *FIGHTER_SZEROSUIT_STATUS_KIND_SPECIAL_N_SHOOT {
         if frame > 7.0 {
             if situation_kind == *SITUATION_KIND_GROUND {
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_DASH) {
+                if boma.is_cat_flag(Cat1::Walk) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
                 }
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH) {
+                if boma.is_cat_flag(Cat1::Turn) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_TURN_DASH, false);
                 }
             }

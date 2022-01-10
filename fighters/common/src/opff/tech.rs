@@ -67,7 +67,7 @@ unsafe fn tumble_exit(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_k
 
         if can_escape_tumble[id] {
             // println!(" ESCAPE POSSIBLE ");
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_DASH
+            if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_DASH
                                     | *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH) {
                 if situation_kind == *SITUATION_KIND_AIR {
                     tumble_kb[id] = false;
@@ -84,7 +84,7 @@ unsafe fn tumble_exit(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_k
     if status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FALL
         && !(WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR) || WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)) {
         if situation_kind == *SITUATION_KIND_AIR {
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_DASH) || hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH) {
+            if boma.is_cat_flag(Cat1::Walk) || boma.is_cat_flag(Cat1::Turn) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
             }
         }
@@ -465,7 +465,7 @@ unsafe fn shield_lock_tech(boma: &mut BattleObjectModuleAccessor, status_kind: i
         let guard_hold = ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD_HOLD);
 
         if (special_hold && !special_disabled) || guard_hold {
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON) {
+            if boma.is_cat_flag(Cat1::Jump) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
             }
         }
@@ -594,7 +594,7 @@ pub unsafe fn hitfall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, s
         }
 
         let buffer = VarModule::get_int(boma.object(), common::HITFALL_BUFFER);
-        if hdr::compare_cat(cat[1], *FIGHTER_PAD_CMD_CAT2_FLAG_FALL_JUMP) && 
+        if compare_mask(cat[1], *FIGHTER_PAD_CMD_CAT2_FLAG_FALL_JUMP) && 
             buffer <= 5 && buffer > 0 {
             WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
         }

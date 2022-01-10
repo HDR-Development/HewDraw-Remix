@@ -10,7 +10,7 @@ unsafe fn laser_ff_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kin
         }
         if situation_kind == *SITUATION_KIND_AIR {
             KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-            if hdr::compare_cat(cat2, *FIGHTER_PAD_CMD_CAT2_FLAG_FALL_JUMP)
+            if boma.is_cat_flag(Cat2::FallJump)
                 && stick_y < -0.66
                 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
                 WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
@@ -45,7 +45,7 @@ unsafe fn shine_jc_turnaround(boma: &mut BattleObjectModuleAccessor, status_kind
 unsafe fn phantasm_shorten(boma: &mut BattleObjectModuleAccessor, id: usize, motion_kind: u64, frame: f32) {
     /*
     if [hash40("special_s"), hash40("special_air_s")].contains(&motion_kind) {
-        if hdr::compare_cat(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
+        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
             let motion_vec = Vector3f{x: 0.1, y: 1.0, z: 1.0};
             WorkModule::on_flag(boma, *FIGHTER_FALCO_ILLUSION_STATUS_WORK_ID_FLAG_RUSH_FORCE_END);
             KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
@@ -63,7 +63,7 @@ unsafe fn phantasm_shorten(boma: &mut BattleObjectModuleAccessor, id: usize, mot
             illusion_shortened[id] = true;
         }
 
-        if hdr::compare_cat(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) && !illusion_shortened[id] {
+        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) && !illusion_shortened[id] {
             illusion_shorten[id] = true;
             WorkModule::on_flag(boma, *FIGHTER_FALCO_ILLUSION_STATUS_WORK_ID_FLAG_RUSH_FORCE_END);
         }

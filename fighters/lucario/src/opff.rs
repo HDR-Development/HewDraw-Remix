@@ -14,7 +14,7 @@ unsafe fn extreme_speed_cancel(boma: &mut BattleObjectModuleAccessor, status_kin
 unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32) {
     //PM-like neutral-b canceling
     /***if status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD {
-        if hdr::compare_cat(cat2, *FIGHTER_PAD_CMD_CAT2_FLAG_COMMON_GUARD) {
+        if boma.is_cat_flag(Cat2::CommonGuard) {
             if situation_kind == *SITUATION_KIND_AIR {
                 if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
                     WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
@@ -52,38 +52,38 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
             || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
             // Check for tilt attack inputs
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) {
+            if boma.is_cat_flag(Cat1::AttackS3) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S3,false);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3) {
+            if boma.is_cat_flag(Cat1::AttackHi3) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI3,false);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3) {
+            if boma.is_cat_flag(Cat1::AttackLw3) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW3,false);
             }
 
             // Check for smash attack inputs
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) {
+            if boma.is_cat_flag(Cat1::AttackS4) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START,true);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4) {
+            if boma.is_cat_flag(Cat1::AttackHi4) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI4_START,true);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4) {
+            if boma.is_cat_flag(Cat1::AttackLw4) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW4_START,true);
             }
 
             // Check for special attack inputs
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N) {
+            if boma.is_cat_flag(Cat1::SpecialN) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_N,false);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S) {
+            if boma.is_cat_flag(Cat1::SpecialS) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_S,false);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI) {
+            if boma.is_cat_flag(Cat1::SpecialHi) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI,false);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW) {
+            if boma.is_cat_flag(Cat1::SpecialLw) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
             }
 
@@ -106,27 +106,27 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
             || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
             // Check for smash attack inputs
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) {
+            if boma.is_cat_flag(Cat1::AttackS4) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START,true);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4) {
+            if boma.is_cat_flag(Cat1::AttackHi4) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI4_START,true);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4) {
+            if boma.is_cat_flag(Cat1::AttackLw4) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW4_START,true);
             }
 
             // Check for special attack inputs
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N) {
+            if boma.is_cat_flag(Cat1::SpecialN) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_N,false);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S) {
+            if boma.is_cat_flag(Cat1::SpecialS) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_S,false);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI) {
+            if boma.is_cat_flag(Cat1::SpecialHi) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI,false);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW) {
+            if boma.is_cat_flag(Cat1::SpecialLw) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
             }
 
@@ -148,16 +148,16 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
             || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
 
             // Check for special attack inputs
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N) {
+            if boma.is_cat_flag(Cat1::SpecialN) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_N,false);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S) {
+            if boma.is_cat_flag(Cat1::SpecialS) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_S,false);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI) {
+            if boma.is_cat_flag(Cat1::SpecialHi) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI,false);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW) {
+            if boma.is_cat_flag(Cat1::SpecialLw) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
             }
 
@@ -183,16 +183,16 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
                 }
             }
             // Check for special attack inputs
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N) {
+            if boma.is_cat_flag(Cat1::SpecialN) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_N,false);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S) {
+            if boma.is_cat_flag(Cat1::SpecialS) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_S,false);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI) {
+            if boma.is_cat_flag(Cat1::SpecialHi) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI,false);
             }
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW) {
+            if boma.is_cat_flag(Cat1::SpecialLw) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
             }
         }

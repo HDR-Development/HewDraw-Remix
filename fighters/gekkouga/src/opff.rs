@@ -7,10 +7,10 @@ unsafe fn max_water_shuriken_dc(boma: &mut BattleObjectModuleAccessor, status_ki
     if status_kind == *FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_N_MAX_SHOT {
         if frame > 11.0 {
             if situation_kind == *SITUATION_KIND_GROUND {
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_DASH) {
+                if boma.is_cat_flag(Cat1::Walk) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
                 }
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH) {
+                if boma.is_cat_flag(Cat1::Turn) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_TURN_DASH, false);
                 }
             }
@@ -23,13 +23,13 @@ unsafe fn shadow_sneak_smash_attack_cancel(boma: &mut BattleObjectModuleAccessor
     if status_kind == *FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_S_ATTACK {
         if frame < 6.0 {
             if situation_kind == *SITUATION_KIND_GROUND {
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) {
+                if boma.is_cat_flag(Cat1::AttackS4) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START, false);
                 }
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4) {
+                if boma.is_cat_flag(Cat1::AttackHi4) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI4_START, false);
                 }
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4) {
+                if boma.is_cat_flag(Cat1::AttackLw4) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, false);
                 }
             }

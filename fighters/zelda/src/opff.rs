@@ -5,7 +5,7 @@ use common::opff::*;
  
 unsafe fn teleport_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, id: usize) {
     if status_kind == *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2 {
-        if hdr::compare_cat(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
+        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3, false);
         }
     }

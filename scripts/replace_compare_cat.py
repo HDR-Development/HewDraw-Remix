@@ -150,9 +150,9 @@ for fighter in characters.characters:
     if os.path.isfile(file) and not "target" in file:
       # print(file)
       for entry in flags:
-        # hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH)
-        inplace_change(file, "hdr::compare_cat(cat1, *" + entry[0] + ")", "boma.is_cat_flag(" + entry[1] + ")")
-        inplace_change(file, "hdr::compare_cat(cat2, *" + entry[0] + ")", "boma.is_cat_flag(" + entry[1] + ")")
-        inplace_change(file, "hdr::compare_cat(cat3, *" + entry[0] + ")", "boma.is_cat_flag(" + entry[1] + ")")
-        inplace_change(file, "hdr::compare_cat(cat4, *" + entry[0] + ")", "boma.is_cat_flag(" + entry[1] + ")")
+        # compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH)
+        inplace_change(file, "compare_mask(cat1, *" + entry[0] + ")", "boma.is_cat_flag(" + entry[1] + ")")
+        inplace_change(file, "compare_mask(cat2, *" + entry[0] + ")", "boma.is_cat_flag(" + entry[1] + ")")
+        inplace_change(file, "compare_mask(cat3, *" + entry[0] + ")", "boma.is_cat_flag(" + entry[1] + ")")
+        inplace_change(file, "compare_mask(cat4, *" + entry[0] + ")", "boma.is_cat_flag(" + entry[1] + ")")
         

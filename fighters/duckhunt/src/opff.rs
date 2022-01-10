@@ -6,7 +6,7 @@ use common::opff::*;
 unsafe fn duck_jump_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_FLY {
         if frame > 20.0 {
-            if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI) {
+            if boma.is_cat_flag(Cat1::SpecialHi) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_END, true);
             }
         }
