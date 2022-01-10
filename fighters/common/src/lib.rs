@@ -9,6 +9,7 @@ mod ext;
 pub use ext::*;
 
 pub mod djc;
+pub mod opff;
 
 
 pub fn install() {

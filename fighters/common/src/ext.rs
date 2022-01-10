@@ -45,6 +45,21 @@ pub mod acmd_import {
     pub use utils::{VarModule, ParamModule, BufferModule, MeterModule};
 }
 
+pub mod opff_import {
+    pub use super::prelude::*;
+    pub use smash::app::{self, lua_bind::*, utility::*};
+    pub use smash::lua2cpp::*;
+    pub use smash::lib::{*, lua_const::*};
+    pub use smash::phx::*;
+    pub use smash_script::macros::*;
+    pub use smashline::*;
+    pub use smash::hash40;
+    pub use app::{sv_system, sv_animcmd::{frame, wait}};
+    pub use smash::app::sv_battle_object::notify_event_msc_cmd;
+    pub use utils::{VarModule, ParamModule, BufferModule, MeterModule};
+    pub use utils::consts::globals::*;
+}
+
 pub trait StatusShift {
     unsafe fn main_shift(&mut self, new_main: unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue) -> L2CValue;
     unsafe fn fast_shift(&mut self, new_main: unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue) -> L2CValue;

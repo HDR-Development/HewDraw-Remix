@@ -30,7 +30,7 @@ jobs:
     - name: checkout version
       uses: actions/checkout@v2
     - run: |
-        PATH=$PATH:/root/.cargo/bin && cd scripts && python3 make_dist.py && cd ..
+        PATH=$PATH:/root/.cargo/bin && cd scripts && python3 make_dist.py release && cd ..
       env:
         HOME: /root
     - name: Upload hdr-switch artifact

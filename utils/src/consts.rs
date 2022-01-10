@@ -60,13 +60,21 @@ pub mod vars {
         pub const FIREBRAND_ACTIVATED: i32 = 0x1;
         pub const DOUBLE_FIREBALL: i32 = 0x2;
         pub const NOKNOK_SHELL: i32 = 0x3;
+        pub const IS_IN_HITSTUN: i32 = 0x4;
+        pub const CSTICK_OVERRIDE: i32 = 0x5;
+        pub const CSTICK_OVERRIDE_SECOND: i32 = 0x6;
+        pub const IS_TAP_JUMP: i32 = 0x7;
+        pub const OMNI_FLOAT: i32 = 0x8;
 
         // int
         pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0;
+        pub const COSTUME_SLOT_NUMBER: i32 = 0x1;
+        pub const FLOAT_TIMER: i32 = 0x2;
 
         // float
         /// var to store the damage that this fighter DEALT as the attacker.
         pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0;
+        pub const CURRENT_MOMENTUM: i32 = 0x1;
 
         // separator
         // flag
@@ -197,4 +205,5 @@ pub mod vars {
         // flags
         pub const IS_CHARGE_FINISHED: i32 = 0x1000;
     }
+
 }

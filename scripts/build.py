@@ -5,7 +5,9 @@ if "help" in sys.argv or "--help" in sys.argv or "-h" in sys.argv:
   print("no arguments required for simple build. To build parts of the project"
     + " as a development reloadable plugin, use argument 'dev=mario,luigi,captain'"
     + " to specify which character crates to build into the reloadable dev plugin.")
-  print("For example:\n\t./build.py dev=mario,luigi,captain\n")
+  print("For example:")
+  print("\t./build.py debug dev=mario,luigi,captain\n")
+  print("\t./build.py release dev=captain\n")
   exit(0)
 
 characters = characters.characters
@@ -21,11 +23,11 @@ os.chdir('..')
 
 print("arguments: " + ' '.join(sys.argv))
 
-release_arg = "--release"
-build_type = "release"
-if "debug" in sys.argv:
-  release_arg = ""
-  build_type = "debug"
+release_arg = ""
+build_type = "debug"
+if "release" in sys.argv or "--release" in sys.argv:
+  release_arg = "--release"
+  build_type = "release"
 
 
 # if staging folder exists, delete it
