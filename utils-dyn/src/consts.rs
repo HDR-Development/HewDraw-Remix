@@ -73,7 +73,7 @@ pub mod vars {
         pub const SMASH_CHECKS: i32 = 0xE;
         pub const TILT_CHECKS: i32 = 0xF;
         pub const JAB_DA_CHECKS: i32 = 0x10;
-        pub const AERIAL_CHECKA: i32 = 0x11;
+        pub const AERIAL_CHECKS: i32 = 0x11;
 
 
         // int
