@@ -5,17 +5,6 @@ def help():
   print("usage: ./array_var_replace <old variable name> <new variable name>\nex:")
   print("\t./array_var_replace double_fireball common::DOUBLE_FIREBALL")
 
-if "help" in sys.argv:
-  help()
-
-if not len(sys.argv) == 3:
-  print("invalid arguments!\n")
-  help()
-  exit(1)
-
-if not "::" in sys.argv[2]:
-  print("No package given for new VarModule const! Please specify (for example: ./array_var_replace.py noknok_shell common::NOKNOK_SHELL)")
-  exit(1)
 
 def inplace_change(filename, old_string, new_string):
     # Safely read the input filename using 'with'
@@ -121,37 +110,61 @@ float_patterns = [
 
 ]
 
-variable_type = input("what is the variable's type? (flag, int, float): ")
 
-if variable_type == "flag":
-  patterns = flag_patterns
-elif variable_type == "int":
-  patterns = int_patterns
-elif variable_type == "float":
-  patterns = float_patterns
-else:
-  print("Not a valid variable type! Please specify one of the options: [flag, int, float]")
-  exit(1)
+def replace_patterns(old_var, new_var, var_type):
 
-def variable_replace(file: str, old_var: str, new_var: str):
-  for old, new in patterns:
-    # print(old + ", " + new)
-    for index_value in index_values:
-      inplace_change(file, 
-        old.replace("{old_name}", old_var).replace("{index_value}", index_value), 
-        new.replace("{new_name}", new_var))
+  if var_type == "flag":
+    patterns = flag_patterns
+  elif var_type == "int":
+    patterns = int_patterns
+  elif var_type == "float":
+    patterns = float_patterns
+  else:
+    print("Not a valid variable type! Please specify one of the options: [flag, int, float]")
+    exit(1)
+  changed = 0
 
-os.chdir("../fighters")
+  def variable_replace(file: str, old_var: str, new_var: str):
+    changed = 0
+    for old, new in patterns:
+      # print(old + ", " + new)
+      for index_value in index_values:
+        changed += inplace_change(file, 
+          old.replace("{old_name}", old_var).replace("{index_value}", index_value), 
+          new.replace("{new_name}", new_var))
+    return changed
 
-characters.characters.add("common")
+  characters.characters.add("common")
 
-for fighter in characters.characters:
+  for fighter in characters.characters:
 
-  # get all files
-  files = glob.glob("./" + fighter + "/**", recursive=True)
+    # get all files
+    files = glob.glob("./" + fighter + "/**", recursive=True)
 
-  for file in files:
-    if os.path.isfile(file) and not "target" in file:
-      # print(file)
-      variable_replace(file, sys.argv[1], sys.argv[2])
+    for file in files:
+      if os.path.isfile(file) and not "target" in file:
+        # print(file)
+        changed += variable_replace(file, old_var, new_var)
         
+  return changed
+
+if __name__ == "__main__":
+
+  os.chdir("../fighters")
+
+  if "help" in sys.argv:
+    help()
+
+  if not len(sys.argv) == 3:
+    print("invalid arguments!\n")
+    help()
+    exit(1)
+
+  if not "::" in sys.argv[2]:
+    print("No package given for new VarModule const! Please specify (for example: ./array_var_replace.py noknok_shell common::NOKNOK_SHELL)")
+    exit(1)
+
+
+  variable_type = input("what is the variable's type? (flag, int, float): ")
+
+  replace_patterns(sys.argv[1], sys.argv[2], variable_type)
