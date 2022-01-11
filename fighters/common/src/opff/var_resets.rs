@@ -32,7 +32,7 @@ unsafe fn special_cancel_flag_reset(boma: &mut BattleObjectModuleAccessor, statu
     }
 
     // Side Special Cancel
-    if side_special_cancel[player_number] {
+    if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::SIDE_SPECIAL_CANCEL) {
         if situation_kind != *SITUATION_KIND_AIR
             || [*SITUATION_KIND_AIR,
                 *FIGHTER_STATUS_KIND_DAMAGE,
@@ -49,7 +49,7 @@ unsafe fn special_cancel_flag_reset(boma: &mut BattleObjectModuleAccessor, statu
                 *FIGHTER_STATUS_KIND_WIN,
                 *FIGHTER_STATUS_KIND_LOSE,
                 *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-            side_special_cancel[player_number] = false;
+            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SIDE_SPECIAL_CANCEL);
         }
     }
 

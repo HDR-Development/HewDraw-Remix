@@ -5,55 +5,6 @@ use smash::app::lua_bind::*;
 use smash::lib::lua_const::*;
 use smash::hash40;
 
-
-//=================================================================
-//== JUMP CANCEL GRABS
-//=================================================================
-unsafe fn jump_cancel_grab(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, fighter_kind: i32) {
-    if status_kind == *FIGHTER_STATUS_KIND_JUMP_SQUAT {
-        if boma.is_cat_flag(Cat1::WallJumpRight) {
-            if fighter_kind == *FIGHTER_KIND_POPO {
-                VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::POPO_JC_GRAB);
-            }
-            WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK);
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_CATCH, true);
-        }
-    }
-}
-
-//=================================================================
-//== AIRDODGE CANCEL ZAIR AND ITEM TOSS
-//=================================================================
-unsafe fn airdodge_cancels(boma: &mut BattleObjectModuleAccessor, cat2: i32, cat3: i32, status_kind: i32, fighter_kind: i32, facing: f32, stick_x: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-        if MotionModule::frame(boma) > 3.0 && MotionModule::frame(boma) < 41.0 {
-            // Throw item
-            if ItemModule::is_have_item(boma, 0) {
-                if boma.is_cat_flag(Cat3::ItemLightThrowAirAll) {
-                    if facing * stick_x < 0.0 {
-                        PostureModule::reverse_lr(boma);
-                    }
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ITEM_THROW, false);
-                }
-            } else { // Zair if no item toss
-                if [*FIGHTER_KIND_LUCAS,
-                    *FIGHTER_KIND_YOUNGLINK,
-                    *FIGHTER_KIND_TOONLINK,
-                    *FIGHTER_KIND_SAMUS,
-                    *FIGHTER_KIND_SAMUSD,
-                    *FIGHTER_KIND_SZEROSUIT,
-                    *FIGHTER_KIND_LUIGI].contains(&fighter_kind) {
-                    if !ItemModule::is_have_item(boma, 0) {
-                       if boma.is_cat_flag(Cat2::AirLasso) {
-                           StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_AIR_LASSO, true);
-                       }
-                    }
-                }
-            }
-        }
-    }
-}
-
 //=================================================================
 //== DITCIT
 //=================================================================
@@ -88,47 +39,6 @@ unsafe fn ditcit(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: 
     }
 }
 
-//=================================================================
-//== DACUS
-//=================================================================
-unsafe fn dacus(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, stick_y: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH {
-        if MotionModule::frame(boma) < 10.0 {
-            let is_catch = boma.is_cat_flag(Cat1::WallJumpRight) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_CATCH);
-
-            // Normal smash input or Z with left stick
-            if boma.is_cat_flag(Cat1::AttackHi4) || (stick_y >= 0.7 && is_catch) {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI4_START, true);
-            }
-
-            if boma.is_cat_flag(Cat1::AttackLw4) || (stick_y <= -0.7 && is_catch) {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, true);
-            }
-
-            // Adjust input window of tilts to prevent accidental smashes
-            if MotionModule::frame(boma) > 2.0 {
-                if boma.is_cat_flag(Cat1::AttackHi3) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI4_START, true);
-                }
-                if boma.is_cat_flag(Cat1::AttackLw3) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, true);
-                }
-            }
-        }
-    }
-}
-
-//=================================================================
-//== JUMP CANCEL AIRDODGE
-//=================================================================
-unsafe fn jump_cancel_airdodge(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, fighter_kind: i32) {
-    if status_kind == *FIGHTER_STATUS_KIND_JUMP_SQUAT {
-        if boma.is_cat_flag(Cat1::JumpButton) && !boma.is_cat_flag(Cat1::WallJumpRight) {
-            WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK);
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
-        }
-    }
-}
 
 //=================================================================
 //== ANTI-FOOTSTOOL DEGENERACY TECH

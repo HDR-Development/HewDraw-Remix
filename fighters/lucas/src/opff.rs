@@ -46,7 +46,7 @@ unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, st
 // Lucas DJC and momentum tracker
 unsafe fn djc_momentum_helper(id: usize, status_kind: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL {
-        double_jump_frame[id] = frame;
+        VarModule::set_float(get_battle_object_from_accessor(boma), vars::common::DOUBLE_JUMP_FRAME, value_here)  frame;
     }
     /*
     if VarModule::get_float(get_battle_object_from_accessor(boma), vars::common::DOUBLE_JUMP_FRAME) == 1.0 {

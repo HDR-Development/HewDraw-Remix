@@ -30,7 +30,7 @@ pub unsafe fn momentum_transfer_helper(fighter: &mut L2CFighterCommon, lua_state
 	}
 
 	if [*FIGHTER_STATUS_KIND_TURN_RUN, *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE].contains(&status_kind) {
-        VarModule::set_float(get_battle_object_from_accessor(boma), vars::common::RAR_LENIENCY, value_here)  clamp(0.8*(MotionModule::end_frame(boma) - MotionModule::frame(boma)*2.0 + 6.0)/MotionModule::end_frame(boma), 0.1, 0.8); // You have a limited amount of time to get full RAR momentum from turn brake or run brake, with a 3F leniency
+        VarModule::set_float(get_battle_object_from_accessor(boma), vars::common::RAR_LENIENCY, (0.8*(MotionModule::end_frame(boma) - MotionModule::frame(boma)*2.0 + 6.0)/MotionModule::end_frame(boma)).clamp(0.1, 0.8)); // You have a limited amount of time to get full RAR momentum from turn brake or run brake, with a 3F leniency
     }
 
     if situation_kind == *SITUATION_KIND_GROUND {

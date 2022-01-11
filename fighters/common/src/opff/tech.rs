@@ -395,7 +395,7 @@ unsafe fn moonwalks(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModul
             }
             let added_speed = stick_value_x.signum() * ((run_accel_mul + (run_accel_add * stick_value_x.abs())));
             let moonwalk_speed = prev_speed + added_speed;
-            let moonwalk_speed_clamped = clamp(moonwalk_speed, -run_speed, run_speed);
+            let moonwalk_speed_clamped = moonwalk_speed.clamp(run_speed, run_speed);
 
             fighter.clear_lua_stack();
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
@@ -419,7 +419,7 @@ unsafe fn moonwalks(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModul
                     lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
                     let speed_stop = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
                     let added_speed = speed_stop - (facing * -2.0 * ground_brake);
-                    let added_speed_clamped = clamp(added_speed, -run_speed, run_speed);
+                    let added_speed_clamped = added_speed.clamp(-run_speed, run_speed);
 
                     fighter.clear_lua_stack();
                     lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);

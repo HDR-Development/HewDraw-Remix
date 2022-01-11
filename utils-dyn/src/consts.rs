@@ -112,6 +112,7 @@ pub mod vars {
         pub const AIR_SPECIAL_USED: i32 = 54;
         pub const LEDGE_OCCUPYING: i32 = 55;
         pub const DOUBLE_JUMP_CANCELED: i32 = 56;
+        pub const IS_MOONWALK: i32 = 57;
         
 
         // int
@@ -122,7 +123,7 @@ pub mod vars {
         pub const FLOAT_STYLE: i32 = 0x4;
         pub const GIMMICK_READY_GLOW_TIMER: i32 = 0x5;
         pub const SNAKE_GRENADE_COUNTER: i32 = 0x6;
-
+        pub const HITFALL_BUFFER: i32 = 0x7;
 
         // float
         /// var to store the damage that this fighter DEALT as the attacker.
