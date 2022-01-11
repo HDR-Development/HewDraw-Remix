@@ -699,7 +699,7 @@ unsafe fn dolly_special_hi1_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialhicommand" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "dolly", script = "game_SpecialHiCommand" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_hi_command_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -1007,7 +1007,7 @@ unsafe fn dolly_special_air_hi1_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "dolly", script = "game_specialhicommand" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "dolly", script = "game_SpecialHiCommand" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();

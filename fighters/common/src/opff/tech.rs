@@ -500,54 +500,35 @@ unsafe fn tap_upB_jump_refresh(fighter: &mut L2CFighterCommon, boma: &mut Battle
 
  
 unsafe fn drift_di(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
-    
-    if situation_kind == *SITUATION_KIND_AIR
-    && [*FIGHTER_STATUS_KIND_DAMAGE_FLY,
+    if boma.is_situation(*SITUATION_KIND_AIR)
+    && !StopModule::is_stop(boma)
+    && boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
         *FIGHTER_STATUS_KIND_DAMAGE_AIR,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U
-       ].contains(&status_kind) && !StopModule::is_stop(boma) {
-        // KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-        //println!("drift di time!");
+    ])
+    {
+        let speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+        let speed_y = fighter.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
 
+        let mut speed_mul = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_mul_base");
+        let speed_mul_add_max = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_mul_add_max");
 
-        let mut drift_mod = 0.005;
-        let bottom_thresh = 0.35;
-        let top_thresh = 2.0;
-        let drift_mod_add_max = 0.008;
+        let lerp_min_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_lerp_min");
+        let lerp_max_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_lerp_max");
 
-        let stick_x = ControlModule::get_stick_x(boma);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
-        let x_vel = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
-        let y_vel = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-        
-        
-        if (x_vel.abs() < bottom_thresh) {
-            //println!("below threshold");
-            drift_mod += drift_mod_add_max;
-            //let cbm_vec1 = Vector4f{x: 0.95, y: 0.95, z: 0.95, w: 0.2};
-            //let cbm_vec2 = Vector4f{x: 0.3, y: 0.0, z: 0.0, w: 0.8};
-            //ColorBlendModule::set_main_color(boma, &cbm_vec1, &cbm_vec2, 0.5, 2.2, 2, true); 
-
-        } else if (x_vel.abs() < top_thresh) {
-            //println!("mid threshold");
-            drift_mod += drift_mod_add_max * (1.0 - ( (x_vel - bottom_thresh) / (top_thresh - bottom_thresh)));
-            //let cbm_vec1 = Vector4f{x: 0.95, y: 0.95, z: 0.95, w: 0.2};
-            //let cbm_vec2 = Vector4f{x: 0.0, y: 0.0, z: 0.3, w: 0.8};
-            //ColorBlendModule::set_main_color(boma, &cbm_vec1, &cbm_vec2, 0.5, 2.2, 2, true);
-        } else {
-            //ColorBlendModule::cancel_main_color(boma, 0);
+        if speed_x.abs() < lerp_min_speed {
+            speed_mul += speed_mul_add_max;
+        } else if speed_x.abs() < lerp_max_speed {
+            let ratio = 1.0 - ((speed_x.abs() - lerp_min_speed) / (lerp_max_speed - lerp_min_speed));
+            speed_mul += ratio * speed_mul_add_max;
         }
-        let drift_value = stick_x * drift_mod;
-        //println!("drift_value: {0}", drift_value);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE, x_vel + drift_value, y_vel);
-        app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+
+        let drift_value = fighter.stick_x() * speed_mul;
+        fighter.set_speed(Vector2f::new(speed_x + drift_value, speed_y), *FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
     }
 }
 
@@ -569,10 +550,10 @@ pub unsafe fn freeze_stages(boma: &mut BattleObjectModuleAccessor) {
 }
 
 pub unsafe fn hitfall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, fighter_kind: i32, cat: [i32 ; 4]) {
-    if situation_kind == *SITUATION_KIND_AIR
-        && [*FIGHTER_KIND_GAOGAEN].contains(&fighter_kind)
-        && status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-        
+    if boma.kind() == *FIGHTER_KIND_GAOGAEN
+    && boma.is_situation(*SITUATION_KIND_AIR)
+    && boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR)
+    {
         /* this is written this way because stick_y_flick wont update during
             hitlag, which means we need a flag to allow you to hitfall 1 frame
             after the end of hitlag as well, and we need to check previous 
@@ -581,68 +562,62 @@ pub unsafe fn hitfall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, s
             the hitlag is over. Without the HITFALL_BUFFER flag, you have to
             input the fastfall BEFORE you hit the move, only.
         */
-        if (!AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) 
-            && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
-            || AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT)
-            || AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::set_int(boma.object(), common::HITFALL_BUFFER, 0);
-        } 
-        
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) 
-            || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::set_int(boma.object(), common::HITFALL_BUFFER, VarModule::get_int(boma.object(), common::HITFALL_BUFFER) + 1);
+        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        || AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        {
+            VarModule::set_int(boma.object(), vars::common::HITFALL_BUFFER, 0);
         }
 
-        let buffer = VarModule::get_int(boma.object(), common::HITFALL_BUFFER);
-        if compare_mask(cat[1], *FIGHTER_PAD_CMD_CAT2_FLAG_FALL_JUMP) && 
-            buffer <= 5 && buffer > 0 {
-            WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            VarModule::inc_int(boma.object(), vars::common::HITFALL_BUFFER);
         }
 
-        // println!("CAN HITFALL: {}", VarModule::get_int(boma.object(), common::HITFALL_BUFFER));
+        let buffer = VarModule::get_int(boma.object(), vars::common::HITFALL_BUFFER);
 
+        if boma.is_cat_flag(Cat2::FallJump)
+        && 0 < buffer && buffer <= 5 
+        {
+            WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+        }
     }
 }
 
 pub unsafe fn respawn_taunt(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if status_kind == *FIGHTER_STATUS_KIND_REBIRTH {
-        let motion_kind = MotionModule::motion_kind(boma);
-        if motion_kind == hash40("appeal_hi_r") ||
-            motion_kind == hash40("appeal_hi_l") ||
-            motion_kind == hash40("appeal_lw_r") ||
-            motion_kind == hash40("appeal_lw_l") ||
-            motion_kind == hash40("appeal_s_l") ||
-            motion_kind == hash40("appeal_s_r") {
-            return;
-        }
-
-        if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) {
-            if PostureModule::lr(boma) == 1.0 {
-                MotionModule::change_motion(boma, Hash40::new("appeal_hi_r"), 0.0, 1.0, false, 0.0, false, false);
-            }
-            else {
-                MotionModule::change_motion(boma, Hash40::new("appeal_hi_l"), 0.0, 1.0, false, 0.0, false, false);
-            }
-        }
-
-        if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_LW) {
-            if PostureModule::lr(boma) == 1.0 {
-                MotionModule::change_motion(boma, Hash40::new("appeal_lw_r"), 0.0, 1.0, false, 0.0, false, false);
-            }
-            else {
-                MotionModule::change_motion(boma, Hash40::new("appeal_lw_l"), 0.0, 1.0, false, 0.0, false, false);
-            }
-        }
-
-        if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_S_L) || ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_S_R) {
-            if PostureModule::lr(boma) == 1.0 {
-                MotionModule::change_motion(boma, Hash40::new("appeal_s_r"), 0.0, 1.0, false, 0.0, false, false);
-            }
-            else {
-                MotionModule::change_motion(boma, Hash40::new("appeal_s_l"), 0.0, 1.0, false, 0.0, false, false);
-            }
-        }
+    if !boma.is_status(*FIGHTER_STATUS_KIND_REBIRTH) {
+        return;
     }
+
+    match MotionModule::motion_kind(boma) {
+        utils::hash40!("appeal_hi_r") => return,
+        utils::hash40!("appeal_hi_l") => return,
+        utils::hash40!("appeal_lw_r") => return,
+        utils::hash40!("appeal_lw_l") => return,
+        utils::hash40!("appeal_s_l") => return,
+        utils::hash40!("appeal_s_r") => return,
+        _ => {}
+    }
+
+    let motion = if boma.is_button_trigger(Buttons::AppealHi) {
+        if PostureModule::lr(boma) == 1.0 {
+            Hash40::new("appeal_hi_r")
+        } else {
+            Hash40::new("appeal_hi_l")
+        }
+    } else if boma.is_button_trigger(Buttons::AppealSL) {
+        Hash40::new("appeal_s_l")
+    } else if boma.is_button_trigger(Buttons::AppealSR) {
+        Hash40::new("appeal_s_r")
+    } else if boma.is_button_trigger(Buttons::AppealLw) {
+        if PostureModule::lr(boma) == 1.0 {
+            Hash40::new("appeal_lw_r")
+        } else {
+            Hash40::new("appeal_lw_l")
+        }
+    } else {
+        return;
+    };
+
+    MotionModule::change_motion(boma, motion, 0.0, 1.0, false, 0.0, false, false);
 }
 
 pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mut L2CAgent, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32, curr_frame: f32) {

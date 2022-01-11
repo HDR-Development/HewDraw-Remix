@@ -1,11 +1,4 @@
-use super::*;
-use smash::app::utility::*;
-use smash::lua2cpp::L2CFighterCommon;
-use smash::app::BattleObjectModuleAccessor;
-use smash::hash40;
-use smash::phx::{Vector2f, Vector3f, Hash40};
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
+use crate::opff_import::*;
 
 // Dtilt and Utilt repeat increment
 unsafe fn dtilt_utilt_repeat_increment(boma: &mut BattleObjectModuleAccessor) {
@@ -83,19 +76,20 @@ unsafe fn ex_shoryuken(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
     }
 }
 
+// The actual super fs cancel code since it's used on both ryu and ken w/ separate inputs
+unsafe fn super_fs_cancel(boma: &mut BattleObjectModuleAccessor) -> bool {
+    if MeterModule::drain(boma.object(), 10) {
+        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FINAL, true);
+        true
+    } else {
+        false
+    }
+}
+
 // Shotos Hadoken FADC and Super (FS) cancels
 unsafe fn hadoken_fadc_sfs_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, cat: [i32; 4], frame: f32) {
-    // The actual super fs cancel code since it's used on both ryu and ken w/ separate inputs
-    unsafe fn super_fs_cancel(boma: &mut BattleObjectModuleAccessor) -> bool {
-        if MeterModule::drain(boma.object(), 10) {
-            WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-            WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FINAL, true);
-            true
-        } else {
-            false
-        }
-    }
 
     let mut agent_base = fighter.fighter_base.agent_base;
     let cat1 = cat[0];
@@ -202,16 +196,16 @@ unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
             return;
         }
     } else {
-        let status_kind = if boma.is_cat_flag(Cat1::AttackS3) {
-            *FIGHTER_STATUS_KIND_ATTACK_S3_START
+        if boma.is_cat_flag(Cat1::AttackS3) {
+            *FIGHTER_STATUS_KIND_ATTACK_S3
         } else if boma.is_cat_flag(Cat1::AttackHi3) {
-            *FIGHTER_STATUS_KIND_ATTACK_HI3_START
+            *FIGHTER_STATUS_KIND_ATTACK_HI3
         } else if boma.is_cat_flag(Cat1::AttackLw3) {
-            *FIGHTER_STATUS_KIND_ATTACK_LW3_START
+            *FIGHTER_STATUS_KIND_ATTACK_LW3
         } else {
             return;
         }
-    }
+    };
 
     VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
     StatusModule::change_status_request_from_script(boma, new_status, false);
@@ -235,7 +229,7 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
         *FIGHTER_STATUS_KIND_ATTACK_LW4_START
     } else {
         return;
-    }
+    };
 
     VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
     boma.change_status_req(new_status, true);
@@ -258,10 +252,10 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_COMMAND1);
 
         if boma.is_cat_flag(Cat4::Command1) {
-            boma.change_status_req(*FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1);
+            boma.change_status_req(*FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1, false);
             return;
         } else if boma.is_cat_flag(Cat4::Command2) {
-            boma.change_status_req(*FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2);
+            boma.change_status_req(*FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2, false);
             return;
         }
     }
@@ -289,26 +283,83 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
         *FIGHTER_STATUS_KIND_SPECIAL_LW
     } else {
         return;
-    }
+    };
 
     boma.change_status_req(new_status, false);
 }
 
+unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
+    #[derive(PartialEq, Eq)]
+    enum AerialDirection {
+        Neutral,
+        Forward,
+        Backward,
+        Up,
+        Down,
+        None
+    }
 
+    unsafe fn get_aerial_direction(boma: &mut BattleObjectModuleAccessor) -> AerialDirection {
+        if boma.is_cat_flag(Cat1::AttackS3 | Cat1::AttackS4) {
+            if boma.stick_x() < 0.0 {
+                AerialDirection::Backward
+            } else {
+                AerialDirection::Forward
+            }
+        } else if boma.is_cat_flag(Cat1::AttackHi3 | Cat1::AttackHi4) {
+            AerialDirection::Up
+        } else if boma.is_cat_flag(Cat1::AttackLw3 | Cat1::AttackLw4) {
+            AerialDirection::Down
+        } else if boma.is_cat_flag(Cat1::AttackAirN | Cat1::AttackN) {
+            AerialDirection::Neutral
+        } else {
+            AerialDirection::None
+        }
+    }
+
+    if boma.is_input_jump()
+    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+    && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX)
+    {
+        boma.change_status_req(*FIGHTER_STATUS_KIND_JUMP_AERIAL, true);
+        return;
+    }
+
+    let dir = get_aerial_direction(boma);
+    match MotionModule::motion_kind(boma) {
+        super::hash40!("attack_air_n") if matches!(dir, AerialDirection::None | AerialDirection::Neutral) => return,
+        super::hash40!("attack_air_f") if matches!(dir, AerialDirection::None | AerialDirection::Neutral | AerialDirection::Forward) => return,
+        super::hash40!("attack_air_b") => return,
+        super::hash40!("attack_air_hi") if !matches!(dir, AerialDirection::Backward | AerialDirection::Down) => return,
+        super::hash40!("attack_air_lw") if !matches!(dir, AerialDirection::Backward) => return,
+        _ => {
+            boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
+        }
+    }
+}
+
+unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_cat_flag(Cat1::SpecialLw) && MeterModule::drain(boma.object(), 1) {
+        boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_LW, true);
+        return;
+    }
+
+    if boma.kind() == *FIGHTER_KIND_RYU
+    && boma.is_cat_flag(Cat4::SpecialNCommand | Cat4::SpecialN2Command | Cat4::SpecialHiCommand)
+    {
+        super_fs_cancel(boma);
+        return;
+    }
+
+    if boma.kind() == *FIGHTER_KIND_KEN
+    && boma.is_cat_flag(Cat4::SpecialSCommand | Cat4::SpecialHiCommand)
+    {
+        super_fs_cancel(boma);
+        return;
+    }
+}
 
 unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    let mut agent_base = fighter.fighter_base.agent_base;
-    let cat1 = cat[0];
-    let cat4 = cat[3];
-    let fighter_kind = get_kind(boma);
-    let ryu_enable = (fighter_kind == *FIGHTER_KIND_RYU) &&
-        hdr::compare_cat(cat4, *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N_COMMAND
-                                | *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N2_COMMAND
-                                | *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_HI_COMMAND);
-
-    let ken_enable = (fighter_kind == *FIGHTER_KIND_KEN) &&
-        hdr::compare_cat(cat4, *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_S_COMMAND
-                                | *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_HI_COMMAND);
 
     if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
         return;
@@ -331,102 +382,8 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 
     // Aerial Cancels
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-            || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
-            // Check for jump inputs
-            if moveset_utils::jump_checker_buffer(boma, cat1)
-                && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL,true);
-                }
-            }
-
-            // Aerial Magic Series
-            // Nair
-            if motion_kind == hash40("attack_air_n") {
-                /*
-                   if (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_N) || (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N)) {
-                   StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
-                   }
-                   */
-                //if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_F) ||
-                if (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) && hdr::is_stick_forward(boma))
-                    || (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) && hdr::is_stick_forward(boma)) {
-                    //VarModule::on_flag(get_battle_object_from_accessor(boma), vars::shotos::MAGIC_SERIES_CANCEL);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
-                }
-                //if (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_B) ||
-                if (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) && hdr::is_stick_backward(boma))
-                    || (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) && hdr::is_stick_backward(boma))  {
-                    //VarModule::on_flag(get_battle_object_from_accessor(boma), vars::shotos::MAGIC_SERIES_CANCEL);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
-                    //PostureModule::reverse_lr(boma);
-                }
-                //if (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_HI) ||
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3
-                                        | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4) {
-                    //VarModule::on_flag(get_battle_object_from_accessor(boma), vars::shotos::MAGIC_SERIES_CANCEL);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
-                }
-                //if (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_LW) ||
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3
-                                        | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4) {
-                    //VarModule::on_flag(get_battle_object_from_accessor(boma), vars::shotos::MAGIC_SERIES_CANCEL);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
-                }
-            }
-            // Fair
-            if motion_kind == hash40("attack_air_f") {
-                //if (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_B) ||
-                if (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) && hdr::is_stick_backward(boma))
-                    || (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) && hdr::is_stick_backward(boma)) {
-                    //VarModule::on_flag(get_battle_object_from_accessor(boma), vars::shotos::MAGIC_SERIES_CANCEL);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
-                    //PostureModule::reverse_lr(boma);
-                }
-                //if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_HI) ||
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3
-                                        | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4) {
-                    //VarModule::on_flag(get_battle_object_from_accessor(boma), vars::shotos::MAGIC_SERIES_CANCEL);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
-                }
-                //if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_LW) ||
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3
-                                        | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4) {
-                    //VarModule::on_flag(get_battle_object_from_accessor(boma), vars::shotos::MAGIC_SERIES_CANCEL);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
-                }
-            }
-            // Bair
-            if motion_kind == hash40("attack_air_b") {
-
-            }
-            // Uair
-            if motion_kind == hash40("attack_air_hi") {
-                //if (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_B) ||
-                if (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) && hdr::is_stick_backward(boma))
-                    || (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) && hdr::is_stick_backward(boma)) {
-                    //VarModule::on_flag(get_battle_object_from_accessor(boma), vars::shotos::MAGIC_SERIES_CANCEL);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
-                    //PostureModule::reverse_lr(boma);
-                }
-                //if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_LW) ||
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3
-                                        | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4) {
-                    //VarModule::on_flag(get_battle_object_from_accessor(boma), vars::shotos::MAGIC_SERIES_CANCEL);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
-                }
-            }
-            // Dair
-            if motion_kind == hash40("attack_air_lw") {
-                //if (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_B) ||
-                if (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) && hdr::is_stick_backward(boma))
-                    || (hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) && hdr::is_stick_backward(boma)) {
-                    //VarModule::on_flag(get_battle_object_from_accessor(boma), vars::shotos::MAGIC_SERIES_CANCEL);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
-                }
-            }
-        }
+        aerial_cancels(boma);
+        return;
     }
 
     if boma.is_status_one_of(&[
@@ -436,41 +393,8 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END
-    ]) {}
-
-    // Shoryu/Tatsu Cancels
-    if [*FIGHTER_STATUS_KIND_SPECIAL_HI,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
-        *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END].contains(&status_kind) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-            || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
-
-            // Check for down special inputs
-            if meter::get_meter_level(boma) >= 1 {
-                if hdr::compare_cat(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW) {
-                    if !meter_used[id] {
-                        meter_used[id] = true;
-                        meter::use_meter_level(&mut agent_base, boma, 1);
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW,true);
-                    }
-                }
-            }
-
-            // Final Smash Cancels
-            if meter::get_meter_level(boma) >= 10 {
-                if ryu_enable || ken_enable {
-                    if !meter_used[id] {
-                        meter_used[id] = true;
-                        meter::use_meter_level(&mut agent_base, boma, 10);
-                        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-                        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FINAL, true);
-                    }
-                }
-            }
-        }
+    ]) {
+        special_cancels(boma);
+        return;
     }
 }
