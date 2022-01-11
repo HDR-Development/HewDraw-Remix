@@ -52,7 +52,7 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
     // float option isnt 1
     if VarModule::get_int(boma.object(), vars::common::FLOAT_STYLE) != 1 {
         if status_kind != *FIGHTER_STATUS_KIND_ATTACK_AIR {
-            VarModule::set_int(boma.object(), vars::common::FLOAT_PAUSE_AERIAL, value_here)  WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) == VarModule::get_int(boma.object(), vars::common::FLOAT_DURATION);
+            VarModule::set_flag(boma.object(), vars::common::FLOAT_PAUSE_AERIAL, WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) == VarModule::get_int(boma.object(), vars::common::FLOAT_DURATION));
         }
     }
 

@@ -31,7 +31,7 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
     if status_kind == *FIGHTER_STATUS_KIND_CLIFF_CATCH
         || status_kind == *FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE
         || status_kind == *FIGHTER_STATUS_KIND_CLIFF_WAIT {
-        VarModule::set_vec3(boma.object(), common::LEDGE_POS, GroundModule::hang_cliff_pos_3f(boma);
+        VarModule::set_vec3(boma.object(), common::LEDGE_POS, GroundModule::hang_cliff_pos_3f(boma));
     }
 
     // De-occupy ledge if not on ledge anymore
