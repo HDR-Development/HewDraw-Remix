@@ -165,7 +165,12 @@ for entry in variables:
     new_consts.add(variable_name)
     print(variable_name)
 
-print("\nchanged: " + changed)
+print("\nchanged: ")
+print(changed)
+
+print("\nnew consts:")
+for const in new_consts:
+  print(const)
 
 
       

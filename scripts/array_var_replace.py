@@ -147,7 +147,9 @@ def replace_patterns(old_var, new_var, var_type) -> int:
       if os.path.isfile(file) and not "target" in file:
         # print(file)
         changed += variable_replace(file, old_var, new_var)
-        
+  
+  print("changed for " + new_var)
+  print(changed)
   return changed
 
 if __name__ == "__main__":
