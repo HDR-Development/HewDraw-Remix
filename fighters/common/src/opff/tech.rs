@@ -605,44 +605,41 @@ pub unsafe fn hitfall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, s
 }
 
 pub unsafe fn respawn_taunt(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if status_kind == *FIGHTER_STATUS_KIND_REBIRTH {
-        let motion_kind = MotionModule::motion_kind(boma);
-        if motion_kind == hash40("appeal_hi_r") ||
-            motion_kind == hash40("appeal_hi_l") ||
-            motion_kind == hash40("appeal_lw_r") ||
-            motion_kind == hash40("appeal_lw_l") ||
-            motion_kind == hash40("appeal_s_l") ||
-            motion_kind == hash40("appeal_s_r") {
-            return;
-        }
-
-        if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) {
-            if PostureModule::lr(boma) == 1.0 {
-                MotionModule::change_motion(boma, Hash40::new("appeal_hi_r"), 0.0, 1.0, false, 0.0, false, false);
-            }
-            else {
-                MotionModule::change_motion(boma, Hash40::new("appeal_hi_l"), 0.0, 1.0, false, 0.0, false, false);
-            }
-        }
-
-        if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_LW) {
-            if PostureModule::lr(boma) == 1.0 {
-                MotionModule::change_motion(boma, Hash40::new("appeal_lw_r"), 0.0, 1.0, false, 0.0, false, false);
-            }
-            else {
-                MotionModule::change_motion(boma, Hash40::new("appeal_lw_l"), 0.0, 1.0, false, 0.0, false, false);
-            }
-        }
-
-        if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_S_L) || ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_S_R) {
-            if PostureModule::lr(boma) == 1.0 {
-                MotionModule::change_motion(boma, Hash40::new("appeal_s_r"), 0.0, 1.0, false, 0.0, false, false);
-            }
-            else {
-                MotionModule::change_motion(boma, Hash40::new("appeal_s_l"), 0.0, 1.0, false, 0.0, false, false);
-            }
-        }
+    if !boma.is_status(*FIGHTER_STATUS_KIND_REBIRTH) {
+        return;
     }
+
+    match MotionModule::motion_kind(boma) {
+        utils::hash40!("appeal_hi_r") => return,
+        utils::hash40!("appeal_hi_l") => return,
+        utils::hash40!("appeal_lw_r") => return,
+        utils::hash40!("appeal_lw_l") => return,
+        utils::hash40!("appeal_s_l") => return,
+        utils::hash40!("appeal_s_r") => return,
+        _ => {}
+    }
+
+    let motion = if boma.is_button_trigger(Buttons::AppealHi) {
+        if PostureModule::lr(boma) == 1.0 {
+            Hash40::new("appeal_hi_r")
+        } else {
+            Hash40::new("appeal_hi_l")
+        }
+    } else if boma.is_button_trigger(Buttons::AppealSL) {
+        Hash40::new("appeal_s_l")
+    } else if boma.is_button_trigger(Buttons::AppealSR) {
+        Hash40::new("appeal_s_r")
+    } else if boma.is_button_trigger(Buttons::AppealLw) {
+        if PostureModule::lr(boma) == 1.0 {
+            Hash40::new("appeal_lw_r")
+        } else {
+            Hash40::new("appeal_lw_l")
+        }
+    } else {
+        return;
+    };
+
+    MotionModule::change_motion(boma, motion, 0.0, 1.0, false, 0.0, false, false);
 }
 
 pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mut L2CAgent, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32, curr_frame: f32) {
