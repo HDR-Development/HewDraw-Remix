@@ -138,11 +138,11 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
                 continue;
             };
 
-            if i == player_number || VarModule::get_float(battle_object, common::LEDGE_POS_X) == 0.0 {
+            if i == player_number || VarModule::get_float(battle_object, vars::common::LEDGE_POS_X) == 0.0 {
                 continue;
             }
 
-            if ledge_try_pos.x == VarModule::get_float(battle_object, common::LEDGE_POS_X) && ledge_try_pos.y == VarModule::get_float(battle_object, common::LEDGE_POS_Y) {
+            if ledge_try_pos.x == VarModule::get_float(battle_object, vars::common::LEDGE_POS_X) && ledge_try_pos.y == VarModule::get_float(battle_object, vars::common::LEDGE_POS_Y) {
                 println!("Sending tethering player {} into ledge trump as they are trying to rewind to an occupied ledge.", player_number);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_CLIFF_ROBBED, false);
             }

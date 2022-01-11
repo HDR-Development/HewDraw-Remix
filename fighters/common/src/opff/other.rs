@@ -130,7 +130,7 @@ pub unsafe fn tumble_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
 }
 
 pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
-    let id = hdr::get_player_number(boma);
+    
     
     damage_slideoff_airdodge_disable(boma, status_kind);
     sliding_smash_disable(fighter, boma, status_kind, fighter_kind);

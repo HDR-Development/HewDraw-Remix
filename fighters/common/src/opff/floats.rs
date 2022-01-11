@@ -11,7 +11,7 @@ use smash_script::macros::*;
 
 // Ganondorf, Robin, Dark Samus, Mewtwo float
 pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
-    let id = hdr::get_player_number(boma);
+    
     let mut motion_value = 0.0;
 
     // Default to float option 0 upon match start/entry status kind

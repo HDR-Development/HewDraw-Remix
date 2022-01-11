@@ -15,7 +15,7 @@ pub unsafe fn calc_melee_momentum(fighter: &mut L2CFighterCommon, aerial_attack:
   let js_frames = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0);
   let traction = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
   let stick_x = ControlModule::get_stick_x(fighter.module_accessor);
-  let ratio = VarModule::get_float(fighter.battle_object, common::JUMP_SPEED_RATIO);
+  let ratio = VarModule::get_float(fighter.battle_object, vars::common::JUMP_SPEED_RATIO);
   //println!("run_speed_max: {}", run_speed_max);
   //println!("jump_speed_ratio: {}", ratio); 
 
@@ -27,16 +27,16 @@ pub unsafe fn calc_melee_momentum(fighter: &mut L2CFighterCommon, aerial_attack:
 
   if StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_JUMP_SQUAT {
       //println!("Jumpsquat momentum...");
-      x_vel = VarModule::get_float(fighter.battle_object, common::JUMPSQUAT_VELOCITY);
+      x_vel = VarModule::get_float(fighter.battle_object, vars::common::JUMPSQUAT_VELOCITY);
       //println!("x_vel: {}", x_vel);
   }
 
   if fighter_kind == *FIGHTER_KIND_PICKEL && [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT].contains(&StatusModule::prev_status_kind(fighter.module_accessor, 0)) {
-      x_vel = VarModule::get_float(fighter.battle_object, common::JUMPSQUAT_VELOCITY);
+      x_vel = VarModule::get_float(fighter.battle_object, vars::common::JUMPSQUAT_VELOCITY);
   }
 
   if fighter_kind == *FIGHTER_KIND_TANTAN && [*FIGHTER_TANTAN_STATUS_KIND_ATTACK_JUMP_SQUAT].contains(&StatusModule::prev_status_kind(fighter.module_accessor, 0)) {
-      x_vel = VarModule::get_float(fighter.battle_object, common::JUMPSQUAT_VELOCITY);
+      x_vel = VarModule::get_float(fighter.battle_object, vars::common::JUMPSQUAT_VELOCITY);
   }
 
   //println!("jumpsquat velocity: {}", x_vel);
