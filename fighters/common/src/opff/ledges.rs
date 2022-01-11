@@ -25,7 +25,7 @@ unsafe fn ledge_act(boma: &mut BattleObjectModuleAccessor, status_kind: i32, fig
 //== LEDGE OCCUPANCY
 //=================================================================
 unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, fighter_kind: i32) {
-    let player_number = hdr::get_player_number(boma);
+    let player_number = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32;
     let ledge_try_pos = GroundModule::hang_cliff_pos_3f(boma) as Vector3f;
 
     if status_kind == *FIGHTER_STATUS_KIND_CLIFF_CATCH
@@ -162,7 +162,7 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
 //== TETHER TRUMP LANDING LAG
 //=================================================================
 unsafe fn tether_trump_landing(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
-    let player_number = hdr::get_player_number(boma);
+    let player_number = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     let prev_status_kind = StatusModule::prev_status_kind(boma, 0);
 
     if status_kind == *FIGHTER_STATUS_KIND_CLIFF_ROBBED {

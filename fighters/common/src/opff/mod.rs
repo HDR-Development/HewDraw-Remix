@@ -51,7 +51,7 @@ impl FrameInfo {
     pub unsafe fn update_and_get(fighter: &mut L2CFighterCommon) -> Option<Self> {
         let lua_state = fighter.lua_state_agent;
         let boma = sv_system::battle_object_module_accessor(lua_state);
-        let id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
+        let id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
         if !(0..8).contains(&id) {
             return None;
         }
