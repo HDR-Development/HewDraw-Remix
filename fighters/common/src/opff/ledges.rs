@@ -31,7 +31,7 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
     if status_kind == *FIGHTER_STATUS_KIND_CLIFF_CATCH
         || status_kind == *FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE
         || status_kind == *FIGHTER_STATUS_KIND_CLIFF_WAIT {
-        ledge_pos[player_number] = GroundModule::hang_cliff_pos_3f(boma);
+        VarModule::set_vec3(boma.object(), common::LEDGE_POS, GroundModule::hang_cliff_pos_3f(boma);
     }
 
     // De-occupy ledge if not on ledge anymore
@@ -44,7 +44,7 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
         *FIGHTER_STATUS_KIND_CLIFF_JUMP1,
         *FIGHTER_STATUS_KIND_CLIFF_JUMP2,
         *FIGHTER_STATUS_KIND_CLIFF_JUMP3].contains(&status_kind) {
-        ledge_pos[player_number] = Vector3f {x: 0.0, y: 0.0, z: 0.0};
+        VarModule::set_vec3(boma.object(), common::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
     }
 
     // Tell the game you're currently occupying the ledge if you've been on it
@@ -132,11 +132,17 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
         */
 
         for i in 0..8 {
-            if i == player_number || ledge_pos[i].x == 0.0 {
+            let battle_object = if let Some(battle_object) = ::utils::util::get_battle_object_from_entry_id(i) {
+                battle_object
+            } else {
+                continue;
+            };
+
+            if i == player_number || VarModule::get_float(battle_object, common::LEDGE_POS_X) == 0.0 {
                 continue;
             }
 
-            if ledge_try_pos.x == ledge_pos[i].x && ledge_try_pos.y == ledge_pos[i].y {
+            if ledge_try_pos.x == VarModule::get_float(battle_object, common::LEDGE_POS_X) && ledge_try_pos.y == VarModule::get_float(battle_object, common::LEDGE_POS_Y) {
                 println!("Sending tethering player {} into ledge trump as they are trying to rewind to an occupied ledge.", player_number);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_CLIFF_ROBBED, false);
             }
@@ -172,7 +178,7 @@ unsafe fn tether_trump_landing(boma: &mut BattleObjectModuleAccessor, status_kin
     */
 
     // Increased landing lag (special fall landing) if landing right after being tether hogged
-    if /*prev_status_kind == *FIGHTER_STATUS_KIND_CLIFF_ROBBED &&*/ tether_hogged[player_number] && situation_kind == *SITUATION_KIND_GROUND {
+    if /*prev_status_kind == *FIGHTER_STATUS_KIND_CLIFF_ROBBED &&*/ VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::TETHER_HOGGED) && situation_kind == *SITUATION_KIND_GROUND {
         VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::TETHER_HOGGED);
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
     }

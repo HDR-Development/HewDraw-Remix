@@ -22,7 +22,7 @@ mod groups {
 unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
     if !boma.is_prev_status_one_of(&[
         *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
-        *FIGHTER_STATUS_KINDCAPTURE_WAIT,
+        *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
         *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
         *FIGHTER_STATUS_KIND_CAPTURE_CUT,
         *FIGHTER_STATUS_KIND_THROWN
