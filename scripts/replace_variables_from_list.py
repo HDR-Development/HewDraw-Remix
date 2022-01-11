@@ -162,15 +162,38 @@ for entry in variables:
   just_changed = replace_patterns(variable_lowercase, "common::" + variable_name, variable_type)
   changed += just_changed
   if just_changed > 0 and not variable_name in new_consts:
-    new_consts.add(variable_name)
+    new_consts.add(entry)
     print(variable_name)
 
 print("\nchanged: ")
 print(changed)
 
-print("\nnew consts:")
+int_consts = set()
+float_consts = set()
+flag_consts = set()
+
 for const in new_consts:
+  if const[1] == "FLAG":
+    flag_consts.add(const[0])
+  elif const[1] == "INT":
+    int_consts.add(const[0])
+  elif const[1] == "FLOAT":
+    float_consts.add(const[0])
+  else:
+    exit("unknown const type!")
+  
+print("flag consts:")
+for const in flag_consts:
   print(const)
+
+print("int consts:")
+for const in int_consts:
+  print(const)
+
+print("float consts:")
+for const in float_consts:
+  print(const)
+
 
 
       
