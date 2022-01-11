@@ -44,13 +44,13 @@ unsafe fn flame_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
 
 // NokNok shell flag reset
 unsafe fn noknok_reset(id: usize, status_kind: i32) {
-    if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::NOKNOK_SHELL) {
+    if VarModule::is_flag(boma.object(), vars::common::NOKNOK_SHELL) {
         if [*FIGHTER_STATUS_KIND_DEAD,
             *FIGHTER_STATUS_KIND_REBIRTH,
             *FIGHTER_STATUS_KIND_WIN,
             *FIGHTER_STATUS_KIND_LOSE,
             *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-                VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::NOKNOK_SHELL);
+                VarModule::off_flag(boma.object(), vars::common::NOKNOK_SHELL);
         }
     }
 }
@@ -60,7 +60,7 @@ unsafe fn noknok_reset(id: usize, status_kind: i32) {
 unsafe fn noknok_training(id: usize, status_kind: i32) {
     if hdr::is_training_mode() {
         if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
-            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::NOKNOK_SHELL);
+            VarModule::off_flag(boma.object(), vars::common::NOKNOK_SHELL);
         }
     }
 }

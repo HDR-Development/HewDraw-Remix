@@ -18,10 +18,10 @@ pub unsafe fn land_cancel_and_b_reverse(boma: &mut BattleObjectModuleAccessor, i
                 if stick_x * facing < 0.0 {
                     PostureModule::reverse_lr(boma);
                     PostureModule::update_rot_y_lr(boma);
-                    if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::B_REVERSED) {
+                    if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(boma.object(), vars::common::B_REVERSED) {
                         let b_reverse = Vector3f{x: -1.0, y: 1.0, z: 1.0};
                         KineticModule::mul_speed(boma, &b_reverse, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                        VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::B_REVERSED);
+                        VarModule::on_flag(boma.object(), vars::common::B_REVERSED);
                     }
                 }
             }
@@ -32,8 +32,8 @@ pub unsafe fn land_cancel_and_b_reverse(boma: &mut BattleObjectModuleAccessor, i
 // Shinkespark charge
 unsafe fn shinespark_charge(id: usize, status_kind: i32, frame: f32) {
     if [*FIGHTER_STATUS_KIND_RUN, *FIGHTER_STATUS_KIND_TURN_RUN].contains(&status_kind) && frame > 30.0 {
-        if  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::SHINESPARK_READY) {
-            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::SHINESPARK_READY);
+        if  !VarModule::is_flag(boma.object(), vars::common::SHINESPARK_READY) {
+            VarModule::on_flag(boma.object(), vars::common::SHINESPARK_READY);
         }
     }
 }
@@ -47,8 +47,8 @@ unsafe fn shinespark_reset(id: usize, status_kind: i32) {
         *FIGHTER_STATUS_KIND_RUN_BRAKE,
         *FIGHTER_STATUS_KIND_TURN_RUN,
         *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE].contains(&status_kind) {
-            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SHINESPARK_READY);
-            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SHINESPARK_USED);
+            VarModule::off_flag(boma.object(), vars::common::SHINESPARK_READY);
+            VarModule::off_flag(boma.object(), vars::common::SHINESPARK_USED);
     }
 }
 

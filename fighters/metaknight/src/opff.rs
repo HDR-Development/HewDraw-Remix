@@ -18,13 +18,13 @@ unsafe fn dim_cape_early_attack_cancel(boma: &mut BattleObjectModuleAccessor, st
 unsafe fn flag_resets(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, motion_kind: u64, frame: f32) {
     if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
         if status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_N_SPIN {
-            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::NEUTRAL_SPECIAL_HIT);
+            VarModule::on_flag(boma.object(), vars::common::NEUTRAL_SPECIAL_HIT);
         } else if status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_RUSH {
-            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::SIDE_SPECIAL_HIT);
+            VarModule::on_flag(boma.object(), vars::common::SIDE_SPECIAL_HIT);
         } else if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_HI_LOOP].contains(&status_kind) {
-            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::UP_SPECIAL_HIT);
+            VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_HIT);
         } else if status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_ATTACK {
-            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::DOWN_SPECIAL_HIT);
+            VarModule::on_flag(boma.object(), vars::common::DOWN_SPECIAL_HIT);
         }
     }
 }
@@ -59,10 +59,10 @@ unsafe fn reset_flags(id: usize, status_kind: i32, situation_kind: i32) {
             *FIGHTER_STATUS_KIND_WIN,
             *FIGHTER_STATUS_KIND_LOSE,
             *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::NEUTRAL_SPECIAL_HIT);
-            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SIDE_SPECIAL_HIT);
-            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::UP_SPECIAL_HIT);
-            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::DOWN_SPECIAL_HIT);
+            VarModule::off_flag(boma.object(), vars::common::NEUTRAL_SPECIAL_HIT);
+            VarModule::off_flag(boma.object(), vars::common::SIDE_SPECIAL_HIT);
+            VarModule::off_flag(boma.object(), vars::common::UP_SPECIAL_HIT);
+            VarModule::off_flag(boma.object(), vars::common::DOWN_SPECIAL_HIT);
     }
 }
 

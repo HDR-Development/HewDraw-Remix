@@ -32,7 +32,7 @@ unsafe fn special_cancel_flag_reset(boma: &mut BattleObjectModuleAccessor, statu
     }
 
     // Side Special Cancel
-    if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::SIDE_SPECIAL_CANCEL) {
+    if VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL) {
         if situation_kind != *SITUATION_KIND_AIR
             || [*SITUATION_KIND_AIR,
                 *FIGHTER_STATUS_KIND_DAMAGE,
@@ -49,12 +49,12 @@ unsafe fn special_cancel_flag_reset(boma: &mut BattleObjectModuleAccessor, statu
                 *FIGHTER_STATUS_KIND_WIN,
                 *FIGHTER_STATUS_KIND_LOSE,
                 *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SIDE_SPECIAL_CANCEL);
+            VarModule::off_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL);
         }
     }
 
     // Aerial Special Used
-    if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::AIR_SPECIAL_USED) {
+    if VarModule::is_flag(boma.object(), vars::common::AIR_SPECIAL_USED) {
         if situation_kind != *SITUATION_KIND_AIR
              || [*SITUATION_KIND_AIR,
                 *FIGHTER_STATUS_KIND_DAMAGE,
@@ -71,24 +71,24 @@ unsafe fn special_cancel_flag_reset(boma: &mut BattleObjectModuleAccessor, statu
                 *FIGHTER_STATUS_KIND_WIN,
                 *FIGHTER_STATUS_KIND_LOSE,
                 *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::AIR_SPECIAL_USED);
+            VarModule::off_flag(boma.object(), vars::common::AIR_SPECIAL_USED);
         }
     }
 
     // Up Special Wall Jump
-    if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_WALL_JUMP) {
+    if VarModule::is_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP) {
         if situation_kind != SITUATION_KIND_AIR
             || [*FIGHTER_STATUS_KIND_DEAD,
                 *FIGHTER_STATUS_KIND_REBIRTH,
                 *FIGHTER_STATUS_KIND_WIN,
                 *FIGHTER_STATUS_KIND_LOSE,
                 *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_WALL_JUMP);
+            VarModule::off_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP);
         }
     }
 
     // Up Special Interrupt
-    if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::UP_SPECIAL_INTERRUPT) {
+    if VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT) {
         if situation_kind != *SITUATION_KIND_AIR
             || [*FIGHTER_STATUS_KIND_DAMAGE,
                 *FIGHTER_STATUS_KIND_DAMAGE_AIR,
@@ -104,12 +104,12 @@ unsafe fn special_cancel_flag_reset(boma: &mut BattleObjectModuleAccessor, statu
                 *FIGHTER_STATUS_KIND_WIN,
                 *FIGHTER_STATUS_KIND_LOSE,
                 *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::UP_SPECIAL_INTERRUPT);
+            VarModule::off_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT);
         }
     }
 
     // Up Special Intterupt Airtime
-    if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME) {
+    if VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME) {
         if situation_kind != *SITUATION_KIND_AIR
             || [*FIGHTER_STATUS_KIND_DAMAGE,
                 *FIGHTER_STATUS_KIND_DAMAGE_AIR,
@@ -125,7 +125,7 @@ unsafe fn special_cancel_flag_reset(boma: &mut BattleObjectModuleAccessor, statu
                 *FIGHTER_STATUS_KIND_WIN,
                 *FIGHTER_STATUS_KIND_LOSE,
                 *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME);
+            VarModule::off_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME);
         }
     }
 }
@@ -138,8 +138,8 @@ unsafe fn special_motion_reset(boma: &mut BattleObjectModuleAccessor, status_kin
             *FIGHTER_STATUS_KIND_WIN,
             *FIGHTER_STATUS_KIND_LOSE,
             *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_STALL);
-        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_STALL_USED);
+        VarModule::off_flag(boma.object(), vars::common::SPECIAL_STALL);
+        VarModule::off_flag(boma.object(), vars::common::SPECIAL_STALL_USED);
     }
 }
 

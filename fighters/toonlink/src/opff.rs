@@ -22,10 +22,10 @@ unsafe fn bomb_pull_b_reverse(boma: &mut BattleObjectModuleAccessor, id: usize, 
             if stick_x * facing < 0.0 {
                 PostureModule::reverse_lr(boma);
                 PostureModule::update_rot_y_lr(boma);
-                if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::B_REVERSED) {
+                if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(boma.object(), vars::common::B_REVERSED) {
                     let b_reverse = Vector3f{x: -1.0, y: 1.0, z: 1.0};
                     KineticModule::mul_speed(boma, &b_reverse, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                    VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::B_REVERSED);
+                    VarModule::on_flag(boma.object(), vars::common::B_REVERSED);
                 }
             }
         }

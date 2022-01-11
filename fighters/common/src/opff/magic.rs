@@ -7,27 +7,27 @@ use smash::hash40;
 
 pub unsafe fn reset_all_magic_flags(boma: &mut BattleObjectModuleAccessor) {
     let id = hdr::get_player_number(boma);
-    VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::JAB_DA_CHECKS);
-    VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::TILT_CHECKS);
-    VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SMASH_CHECKS);
-    VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_CHECKS);
+    VarModule::off_flag(boma.object(), vars::common::JAB_DA_CHECKS);
+    VarModule::off_flag(boma.object(), vars::common::TILT_CHECKS);
+    VarModule::off_flag(boma.object(), vars::common::SMASH_CHECKS);
+    VarModule::off_flag(boma.object(), vars::common::AERIAL_CHECKS);
 }
 
 pub unsafe fn set_all_magic_flags(boma: &mut BattleObjectModuleAccessor) {
     let id = hdr::get_player_number(boma);
-    VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::JAB_DA_CHECKS);
-    VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::TILT_CHECKS);
-    VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::SMASH_CHECKS);
-    VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_CHECKS);
+    VarModule::on_flag(boma.object(), vars::common::JAB_DA_CHECKS);
+    VarModule::on_flag(boma.object(), vars::common::TILT_CHECKS);
+    VarModule::on_flag(boma.object(), vars::common::SMASH_CHECKS);
+    VarModule::on_flag(boma.object(), vars::common::AERIAL_CHECKS);
 }
 
 pub unsafe fn reset_magic_flag(boma: &mut BattleObjectModuleAccessor, magic_level: i32) {
     let id = hdr::get_player_number(boma);
     match magic_level {
-        1 => {VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::JAB_DA_CHECKS);}
-        2 => {VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::TILT_CHECKS);}
-        3 => {VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SMASH_CHECKS);}
-        4 => {VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_CHECKS);}
+        1 => {VarModule::off_flag(boma.object(), vars::common::JAB_DA_CHECKS);}
+        2 => {VarModule::off_flag(boma.object(), vars::common::TILT_CHECKS);}
+        3 => {VarModule::off_flag(boma.object(), vars::common::SMASH_CHECKS);}
+        4 => {VarModule::off_flag(boma.object(), vars::common::AERIAL_CHECKS);}
         _ => {reset_all_magic_flags(boma);}
     };
 }
@@ -35,10 +35,10 @@ pub unsafe fn reset_magic_flag(boma: &mut BattleObjectModuleAccessor, magic_leve
 pub unsafe fn set_magic_flag(boma: &mut BattleObjectModuleAccessor, magic_level: i32) {
     let id = hdr::get_player_number(boma);
     match magic_level {
-        1 => {VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::JAB_DA_CHECKS);}
-        2 => {VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::TILT_CHECKS);}
-        3 => {VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::SMASH_CHECKS);}
-        4 => {VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_CHECKS);}
+        1 => {VarModule::on_flag(boma.object(), vars::common::JAB_DA_CHECKS);}
+        2 => {VarModule::on_flag(boma.object(), vars::common::TILT_CHECKS);}
+        3 => {VarModule::on_flag(boma.object(), vars::common::SMASH_CHECKS);}
+        4 => {VarModule::on_flag(boma.object(), vars::common::AERIAL_CHECKS);}
         _ => {set_all_magic_flags(boma);}
     };
 }

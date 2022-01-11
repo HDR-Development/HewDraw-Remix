@@ -33,10 +33,10 @@ unsafe fn psi_magnet_jump_cancel_turnaround(boma: &mut BattleObjectModuleAccesso
 unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
     if status_kind == *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD {
         if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-            if  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::UP_SPECIAL_INTERRUPT) {
-                VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::UP_SPECIAL_INTERRUPT);
+            if  !VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT) {
+                VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT);
             }
-            if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME) {
+            if VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME) {
                 VarModule::on_flag(boma.object(), common::UP_SPECIAL_CANCEL); // Disallow more up specials
             }
             StatusModule::change_status_request_from_script(boma, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END, true);
@@ -46,15 +46,15 @@ unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, st
     if status_kind == *FIGHTER_STATUS_KIND_FALL_SPECIAL
         && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END
         && situation_kind == *SITUATION_KIND_AIR {
-        if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::UP_SPECIAL_INTERRUPT) &&  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME) {
-            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME);
+        if VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT) &&  !VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME) {
+            VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
         }
     }
 
 
     /*
-    if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::UP_SPECIAL_INTERRUPT) {
+    if VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT) {
         println!("Up Special Interrupt flag active")
     }
 
@@ -66,9 +66,9 @@ unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, st
         && (MotionModule::frame(boma) >= (MotionModule::end_frame(boma)-3.0))
         && situation_kind == *SITUATION_KIND_AIR {
         println!("PKT ending animation is over");
-        if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::UP_SPECIAL_INTERRUPT) &&  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME) {
+        if VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT) &&  !VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME) {
             println!("PKT special airtime interrupt flag set");
-            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME);
+            VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
         }
     }

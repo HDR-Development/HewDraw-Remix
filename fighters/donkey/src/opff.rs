@@ -62,10 +62,10 @@ unsafe fn giant_punch_b_reverse(fighter: &mut L2CFighterCommon, boma: &mut Battl
             if stick_x * facing < 0.0 {
                 PostureModule::reverse_lr(boma);
                 PostureModule::update_rot_y_lr(boma);
-                if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::B_REVERSED) {
+                if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(boma.object(), vars::common::B_REVERSED) {
                     let b_reverse = Vector3f{x: -1.0, y: 1.0, z: 1.0};
                     KineticModule::mul_speed(boma, &b_reverse, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                    VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::B_REVERSED);
+                    VarModule::on_flag(boma.object(), vars::common::B_REVERSED);
                 }
             }
         }
@@ -78,22 +78,22 @@ unsafe fn headbutt_aerial_stall(fighter: &mut L2CFighterCommon, boma: &mut Battl
         let motion_value = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
         let motion_vec = Vector3f{x: 1.0, y: 0.0, z: 1.0};
         if situation_kind == *SITUATION_KIND_AIR {
-            if  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_STALL_USED) {
+            if  !VarModule::is_flag(boma.object(), vars::common::SPECIAL_STALL_USED) {
                 if frame < 25.0 {
                     if motion_value < 0.0 {
-                        VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_STALL);
+                        VarModule::on_flag(boma.object(), vars::common::SPECIAL_STALL);
                         KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                     }
                 }
             }
         }
     }
-    if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_STALL) && (status_kind != *FIGHTER_STATUS_KIND_SPECIAL_S || (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame >= 25.0)) {
-            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_STALL_USED);
-            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_STALL);
+    if VarModule::is_flag(boma.object(), vars::common::SPECIAL_STALL) && (status_kind != *FIGHTER_STATUS_KIND_SPECIAL_S || (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame >= 25.0)) {
+            VarModule::on_flag(boma.object(), vars::common::SPECIAL_STALL_USED);
+            VarModule::off_flag(boma.object(), vars::common::SPECIAL_STALL);
     }
     if situation_kind == *SITUATION_KIND_GROUND && special_stall_used[id] {
-        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_STALL_USED);
+        VarModule::off_flag(boma.object(), vars::common::SPECIAL_STALL_USED);
     }
 }
 
@@ -103,9 +103,9 @@ unsafe fn down_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut Battle
         *FIGHTER_DONKEY_STATUS_KIND_SPECIAL_LW_LOOP,
         *FIGHTER_DONKEY_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind) {
         if AttackModule::is_infliction(boma, 2) {
-            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_CHECKS);
+            VarModule::on_flag(boma.object(), vars::common::SPECIAL_CHECKS);
         }
-        if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_CHECKS) && frame > 5.0 {
+        if VarModule::is_flag(boma.object(), vars::common::SPECIAL_CHECKS) && frame > 5.0 {
             if moveset_utils::jump_checker_buffer(boma, cat1) {
                 if situation_kind == *SITUATION_KIND_AIR {
                     if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
@@ -117,7 +117,7 @@ unsafe fn down_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut Battle
             }
         }
     } else {
-        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_CHECKS);
+        VarModule::off_flag(boma.object(), vars::common::SPECIAL_CHECKS);
     }
 }
 

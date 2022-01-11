@@ -22,7 +22,7 @@ unsafe fn grenade_counter_reset(id: usize, status_kind: i32) {
     if [*FIGHTER_STATUS_KIND_ENTRY,
         *FIGHTER_STATUS_KIND_DEAD,
         *FIGHTER_STATUS_KIND_REBIRTH].contains(&status_kind) {
-        VarModule::set_int(get_battle_object_from_accessor(boma), vars::common::SNAKE_GRENADE_COUNTER, 0);
+        VarModule::set_int(boma.object(), vars::common::SNAKE_GRENADE_COUNTER, 0);
     }
 }
 

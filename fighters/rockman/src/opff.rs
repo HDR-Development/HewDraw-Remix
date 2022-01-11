@@ -6,7 +6,7 @@ use common::opff::*;
 unsafe fn jc_light_utilt_hit(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI3 {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && frame > 20.0 {
-            if  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::HEAVY_ATTACK) {
+            if  !VarModule::is_flag(boma.object(), vars::common::HEAVY_ATTACK) {
                 if moveset_utils::jump_checker_buffer(boma, cat1) {
                     if situation_kind == *SITUATION_KIND_AIR {
                         if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {

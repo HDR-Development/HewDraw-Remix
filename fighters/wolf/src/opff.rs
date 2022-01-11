@@ -46,16 +46,16 @@ unsafe fn flash_shortens(boma: &mut BattleObjectModuleAccessor, id: usize, motio
     */
     if motion_kind == hash40("special_s") || motion_kind == hash40("special_air_s") {
         if frame <= 1.0 {
-            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::ILLUSION_SHORTEN);
-            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::ILLUSION_SHORTENED);
+            VarModule::off_flag(boma.object(), vars::common::ILLUSION_SHORTEN);
+            VarModule::off_flag(boma.object(), vars::common::ILLUSION_SHORTENED);
         }
-        if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::ILLUSION_SHORTEN) &&  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::ILLUSION_SHORTENED) {
+        if VarModule::is_flag(boma.object(), vars::common::ILLUSION_SHORTEN) &&  !VarModule::is_flag(boma.object(), vars::common::ILLUSION_SHORTENED) {
             KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::ILLUSION_SHORTENED);
+            VarModule::on_flag(boma.object(), vars::common::ILLUSION_SHORTENED);
         }
 
-        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) &&  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::ILLUSION_SHORTENED) {
-            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::ILLUSION_SHORTEN);
+        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) &&  !VarModule::is_flag(boma.object(), vars::common::ILLUSION_SHORTENED) {
+            VarModule::on_flag(boma.object(), vars::common::ILLUSION_SHORTEN);
             WorkModule::on_flag(boma, *FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_FLAG_RUSH_FORCE_END);
         }
     }
