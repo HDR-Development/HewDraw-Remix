@@ -183,20 +183,20 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                     let pos2 = Vector3f{x: 2.0, y: 0.0, z: 0.5};
                     let pos3 = Vector3f{x: 0.0, y: 0.0, z: -0.5};
                     let pos4 = Vector3f{x: 2.0, y: 0.0, z: -0.5};
-                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("hip"), &pos1, &hdr::DEFAULT_VECTOR3, 2.5, true, 0, 0, 0, 0, 0, false, false);
-                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new_raw(0x09aee445d1), &pos2, &hdr::DEFAULT_VECTOR3, 2.0, true, 0, 0, 0, 0, 0, false, false);
-                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("kneer"), &pos3, &hdr::DEFAULT_VECTOR3, 1.70000005, true, 0, 0, 0, 0, 0, false, false);
-                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("footr"), &hdr::DEFAULT_VECTOR3, &hdr::DEFAULT_VECTOR3, 2.0999999, true, 0, 0, 0, 0, 0, false, false);
-                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("armr"), &hdr::DEFAULT_VECTOR3, &hdr::DEFAULT_VECTOR3, 1.89999998, true, 0, 0, 0, 0, 0, false, false);
-                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("handr"), &hdr::DEFAULT_VECTOR3, &hdr::DEFAULT_VECTOR3, 2.0, true, 0, 0, 0, 0, 0, false, false);
-                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new_raw(0x0954eb78b2), &pos4, &hdr::DEFAULT_VECTOR3, 2.0, true, 0, 0, 0, 0, 0, false, false);
-                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("kneel"), &hdr::DEFAULT_VECTOR3, &hdr::DEFAULT_VECTOR3, 1.70000005, true, 0, 0, 0, 0, 0, false, false);
-                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("footl"), &hdr::DEFAULT_VECTOR3, &hdr::DEFAULT_VECTOR3, 2.0999999, true, 0, 0, 0, 0, 0, false, false);
-                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("arml"), &hdr::DEFAULT_VECTOR3, &hdr::DEFAULT_VECTOR3, 1.89999998, true, 0, 0, 0, 0, 0, false, false);
-                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("handl"), &hdr::DEFAULT_VECTOR3, &hdr::DEFAULT_VECTOR3, 1.89999998, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("hip"), &pos1, &Vector3f::zero(), 2.5, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new_raw(0x09aee445d1), &pos2, &Vector3f::zero(), 2.0, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("kneer"), &pos3, &Vector3f::zero(), 1.70000005, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("footr"), &Vector3f::zero(), &Vector3f::zero(), 2.0999999, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("armr"), &Vector3f::zero(), &Vector3f::zero(), 1.89999998, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("handr"), &Vector3f::zero(), &Vector3f::zero(), 2.0, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new_raw(0x0954eb78b2), &pos4, &Vector3f::zero(), 2.0, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("kneel"), &Vector3f::zero(), &Vector3f::zero(), 1.70000005, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("footl"), &Vector3f::zero(), &Vector3f::zero(), 2.0999999, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("arml"), &Vector3f::zero(), &Vector3f::zero(), 1.89999998, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("samusd_win3_aura"), Hash40::new("handl"), &Vector3f::zero(), &Vector3f::zero(), 1.89999998, true, 0, 0, 0, 0, 0, false, false);
                 }
                 if fighter_kind == *FIGHTER_KIND_MEWTWO {
-                    EffectModule::req_follow(boma, Hash40::new("mewtwo_final_aura"), Hash40::new("hip"), &hdr::DEFAULT_VECTOR3, &hdr::DEFAULT_VECTOR3, 1.25, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("mewtwo_final_aura"), Hash40::new("hip"), &Vector3f::zero(), &Vector3f::zero(), 1.25, true, 0, 0, 0, 0, 0, false, false);
                 }
             }
             VarModule::set_int(fighter.battle_object, vars::common::FLOAT_TIMER, timer + 1);
@@ -208,15 +208,15 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
 
             if timer == 1 {
                 if fighter_kind == *FIGHTER_KIND_GANON {
-                    EffectModule::req_follow(boma, Hash40::new("ganon_entry_aura"), Hash40::new("kneer"), &hdr::DEFAULT_VECTOR3, &hdr::DEFAULT_VECTOR3, 0.75, true, 0, 0, 0, 0, 0, false, false);
-                    EffectModule::req_follow(boma, Hash40::new("ganon_entry_aura"), Hash40::new("footr"), &hdr::DEFAULT_VECTOR3, &hdr::DEFAULT_VECTOR3, 0.75, true, 0, 0, 0, 0, 0, false, false);
-                    EffectModule::req_follow(boma, Hash40::new("ganon_entry_aura"), Hash40::new("kneel"), &hdr::DEFAULT_VECTOR3, &hdr::DEFAULT_VECTOR3, 0.75, true, 0, 0, 0, 0, 0, false, false);
-                    EffectModule::req_follow(boma, Hash40::new("ganon_entry_aura"), Hash40::new("footl"), &hdr::DEFAULT_VECTOR3, &hdr::DEFAULT_VECTOR3, 0.75, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("ganon_entry_aura"), Hash40::new("kneer"), &Vector3f::zero(), &Vector3f::zero(), 0.75, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("ganon_entry_aura"), Hash40::new("footr"), &Vector3f::zero(), &Vector3f::zero(), 0.75, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("ganon_entry_aura"), Hash40::new("kneel"), &Vector3f::zero(), &Vector3f::zero(), 0.75, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("ganon_entry_aura"), Hash40::new("footl"), &Vector3f::zero(), &Vector3f::zero(), 0.75, true, 0, 0, 0, 0, 0, false, false);
                 }
                 if fighter_kind == *FIGHTER_KIND_REFLET {
-                    EffectModule::req_follow(boma, Hash40::new("reflet_catch"), Hash40::new("top"), &Vector3f{x: 0.0, y: -6.0, z: -5.3}, &hdr::DEFAULT_VECTOR3, 0.7, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("reflet_catch"), Hash40::new("top"), &Vector3f{x: 0.0, y: -6.0, z: -5.3}, &Vector3f::zero(), 0.7, true, 0, 0, 0, 0, 0, false, false);
                     LAST_EFFECT_SET_COLOR(fighter, 0.0, 1.0, 0.0);  // elwind green
-                    EffectModule::req_follow(boma, Hash40::new("sys_aura_light"), Hash40::new("bookc"), &hdr::DEFAULT_VECTOR3, &hdr::DEFAULT_VECTOR3, 1.5, true, 0, 0, 0, 0, 0, false, false);
+                    EffectModule::req_follow(boma, Hash40::new("sys_aura_light"), Hash40::new("bookc"), &Vector3f::zero(), &Vector3f::zero(), 1.5, true, 0, 0, 0, 0, 0, false, false);
                     LAST_EFFECT_SET_COLOR(fighter, 0.0, 1.0, 0.078);  // elwind green
                 }
             }

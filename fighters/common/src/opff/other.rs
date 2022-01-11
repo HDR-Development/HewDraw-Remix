@@ -38,7 +38,7 @@ pub unsafe fn ecb_visualizer(boma: &mut BattleObjectModuleAccessor) {
 
     let pos_bottom = Vector3f {x: center_pos + offset_x, y: PostureModule::pos_y(boma) + offset_y, z: 15.0}; //need a positive Z value so the effect is in front of everything
     EffectModule::kill_kind(boma, Hash40::new("sys_ripstick_bullet"), true, true);
-    EffectModule::req_2d(boma, Hash40::new("sys_ripstick_bullet"), &pos_bottom, &hdr::DEFAULT_VECTOR3, 0.25, 0);
+    EffectModule::req_2d(boma, Hash40::new("sys_ripstick_bullet"), &pos_bottom, &Vector3f::zero(), 0.25, 0);
 }
 
 pub unsafe fn damage_slideoff_airdodge_disable(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {

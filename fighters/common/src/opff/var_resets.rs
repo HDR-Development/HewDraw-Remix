@@ -7,7 +7,7 @@ use smash::hash40;
 
 
 unsafe fn special_cancel_flag_reset(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
-    let player_number = hdr::get_player_number(boma);
+    let player_number = 
 
     // Up Special Cancel
     if VarModule::is_flag(boma.object(), common::UP_SPECIAL_CANCEL) {
@@ -131,7 +131,7 @@ unsafe fn special_cancel_flag_reset(boma: &mut BattleObjectModuleAccessor, statu
 }
 
 unsafe fn special_motion_reset(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
-    let player_number = hdr::get_player_number(boma);
+    let player_number = 
     if situation_kind == *SITUATION_KIND_GROUND
         || [*FIGHTER_STATUS_KIND_DEAD,
             *FIGHTER_STATUS_KIND_REBIRTH,

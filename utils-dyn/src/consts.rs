@@ -83,7 +83,7 @@ pub mod vars {
         pub const AIR_CROSS: i32 = 0x18;
         pub const FINAL_CUTTER_HIT: i32 = 25;
         pub const SPECIAL_CHECKS: i32 = 26;
-
+        pub const DISABLE_AIRDODGE: i32 = 27;
         pub const NEUTRAL_SPECIAL_HIT: i32 = 28;
         //pub const POPO_JC_GRAB: i32 = 29;
         pub const ILLUSION_SHORTENED: i32 = 30;
@@ -116,6 +116,8 @@ pub mod vars {
         pub const CAN_GLIDE_TOSS: i32 = 58;
         pub const IS_MOONWALK_JUMP: i32 = 59;
         pub const ENABLE_DOUBLE_TRACTION: i32 = 60;
+        pub const PREV_FLAG_DISABLE_ESCAPE_AIR: i32 = 61;
+        pub const ENABLE_WAVELAND_PLATDROP: i32 = 62;
         
 
         // int
@@ -127,6 +129,7 @@ pub mod vars {
         pub const GIMMICK_READY_GLOW_TIMER: i32 = 0x5;
         pub const SNAKE_GRENADE_COUNTER: i32 = 0x6;
         pub const HITFALL_BUFFER: i32 = 0x7;
+        pub const JUMP_SQUAT_FRAME: i32 = 0x8;
 
         // float
         /// var to store the damage that this fighter DEALT as the attacker.

@@ -9,7 +9,7 @@ use smash::hash40;
 //== DITCIT
 //=================================================================
 unsafe fn ditcit(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, facing: f32) {
-    let player_number = hdr::get_player_number(boma);
+    let player_number = 
     let mut motion_value: f32 = 0.0;
     let mut motion_vec = Vector3f {x: 0.0, y: 0.0, z: 0.0};
 
@@ -65,7 +65,7 @@ unsafe fn footstool_defense(boma: &mut BattleObjectModuleAccessor, status_kind: 
         // DamageModule::add_damage(boma, 100.0, 0);
     }
 
-    let player_number = hdr::get_player_number(boma);
+    let player_number = 
 
     // Prevent airdodging after a footstool until after F20
     if (status_kind == *FIGHTER_STATUS_KIND_JUMP && prev_status_0 == *FIGHTER_STATUS_KIND_TREAD_JUMP)
