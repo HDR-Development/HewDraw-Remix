@@ -500,54 +500,35 @@ unsafe fn tap_upB_jump_refresh(fighter: &mut L2CFighterCommon, boma: &mut Battle
 
  
 unsafe fn drift_di(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
-    
-    if situation_kind == *SITUATION_KIND_AIR
-    && [*FIGHTER_STATUS_KIND_DAMAGE_FLY,
+    if boma.is_situation(*SITUATION_KIND_AIR)
+    && !StopModule::is_stop(boma)
+    && boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
         *FIGHTER_STATUS_KIND_DAMAGE_AIR,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U
-       ].contains(&status_kind) && !StopModule::is_stop(boma) {
-        // KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-        //println!("drift di time!");
+    ])
+    {
+        let speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+        let speed_y = fighter.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
 
+        let mut speed_mul = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_mul_base");
+        let speed_mul_add_max = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_mul_add_max");
 
-        let mut drift_mod = 0.005;
-        let bottom_thresh = 0.35;
-        let top_thresh = 2.0;
-        let drift_mod_add_max = 0.008;
+        let lerp_min_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_lerp_min");
+        let lerp_max_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_lerp_max");
 
-        let stick_x = ControlModule::get_stick_x(boma);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
-        let x_vel = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
-        let y_vel = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-        
-        
-        if (x_vel.abs() < bottom_thresh) {
-            //println!("below threshold");
-            drift_mod += drift_mod_add_max;
-            //let cbm_vec1 = Vector4f{x: 0.95, y: 0.95, z: 0.95, w: 0.2};
-            //let cbm_vec2 = Vector4f{x: 0.3, y: 0.0, z: 0.0, w: 0.8};
-            //ColorBlendModule::set_main_color(boma, &cbm_vec1, &cbm_vec2, 0.5, 2.2, 2, true); 
-
-        } else if (x_vel.abs() < top_thresh) {
-            //println!("mid threshold");
-            drift_mod += drift_mod_add_max * (1.0 - ( (x_vel - bottom_thresh) / (top_thresh - bottom_thresh)));
-            //let cbm_vec1 = Vector4f{x: 0.95, y: 0.95, z: 0.95, w: 0.2};
-            //let cbm_vec2 = Vector4f{x: 0.0, y: 0.0, z: 0.3, w: 0.8};
-            //ColorBlendModule::set_main_color(boma, &cbm_vec1, &cbm_vec2, 0.5, 2.2, 2, true);
-        } else {
-            //ColorBlendModule::cancel_main_color(boma, 0);
+        if speed_x.abs() < lerp_min_speed {
+            speed_mul += speed_mul_add_max;
+        } else if speed_x.abs() < lerp_max_speed {
+            let ratio = 1.0 - ((speed_x.abs() - lerp_min_speed) / (lerp_max_speed - lerp_min_speed));
+            speed_mul += ratio * speed_mul_add_max;
         }
-        let drift_value = stick_x * drift_mod;
-        //println!("drift_value: {0}", drift_value);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE, x_vel + drift_value, y_vel);
-        app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+
+        let drift_value = fighter.stick_x() * speed_mul;
+        fighter.set_speed(Vector2f::new(speed_x + drift_value, speed_y), *FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
     }
 }
 
@@ -592,7 +573,7 @@ pub unsafe fn hitfall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, s
         }
 
         let buffer = VarModule::get_int(boma.object(), vars::common::HITFALL_BUFFER);
-        
+
         if boma.is_cat_flag(Cat2::FallJump)
         && 0 < buffer && buffer <= 5 
         {

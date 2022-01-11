@@ -4,6 +4,7 @@ use smash::{
         L2CAgentBase
     },
     app::{
+        self,
         BattleObject,
         BattleObjectModuleAccessor,
         lua_bind::*
@@ -20,6 +21,7 @@ use utils::{
     consts::*,
     util::*
 };
+use smash_script::*;
 
 pub mod prelude {
     pub use smash;
@@ -31,6 +33,7 @@ pub mod prelude {
     pub use super::StatusShift;
     pub use super::AgentUtil;
     pub use super::GetObjects;
+    pub use super::LuaUtil;
 }
 
 pub mod acmd_import {
@@ -108,6 +111,13 @@ impl GetObjects for BattleObjectModuleAccessor {
     unsafe fn get_boma(_: &mut Self) -> &'static mut BattleObjectModuleAccessor {
         panic!("Calling GetObjects::get_boma() on a BattleObjectModuleAccessor is invalid")
     }
+}
+
+pub trait LuaUtil {
+    // kinetic
+    unsafe fn get_speed_x(&mut self, kinetic_id: i32) -> f32;
+    unsafe fn get_speed_y(&mut self, kinetic_id: i32) -> f32;
+    unsafe fn set_speed(&mut self, speed: Vector2f, kinetic_id: i32);
 }
 
 pub trait AgentUtil {
@@ -395,5 +405,25 @@ impl AgentUtil for BattleObjectModuleAccessor {
 
     unsafe fn kind(&mut self) -> i32 {
         return smash::app::utility::get_kind(self);
+    }
+}
+
+impl LuaUtil for L2CAgentBase {
+    unsafe fn get_speed_x(&mut self, kinetic_id: i32) -> f32 {
+        self.clear_lua_stack();
+        lua_args!(self, kinetic_id);
+        app::sv_kinetic_energy::get_speed_x(self.lua_state_agent)
+    }
+
+    unsafe fn get_speed_y(&mut self, kinetic_id: i32) -> f32 {
+        self.clear_lua_stack();
+        lua_args!(self, kinetic_id);
+        app::sv_kinetic_energy::get_speed_y(self.lua_state_agent)
+    }
+
+    unsafe fn set_speed(&mut self, speed: Vector2f, kinetic_id: i32) {
+        self.clear_lua_stack();
+        lua_args!(self, kinetic_id, speed.x, speed.y);
+        app::sv_kinetic_energy::set_speed(self.lua_state_agent);
     }
 }
