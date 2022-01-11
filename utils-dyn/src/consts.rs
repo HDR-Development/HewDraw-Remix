@@ -113,6 +113,9 @@ pub mod vars {
         pub const LEDGE_OCCUPYING: i32 = 55;
         pub const DOUBLE_JUMP_CANCELED: i32 = 56;
         pub const IS_MOONWALK: i32 = 57;
+        pub const CAN_GLIDE_TOSS: i32 = 58;
+        pub const IS_MOONWALK_JUMP: i32 = 59;
+        pub const ENABLE_DOUBLE_TRACTION: i32 = 60;
         
 
         // int
@@ -141,6 +144,11 @@ pub mod vars {
         pub const SONIC_LIGHTSPEED_DASH_FRAME_COUNTER: i32 = 0xB;
         pub const BASE_DASH_SPEED: i32 = 0xC;
         pub const WITHDRAW_FRAME: i32 = 0xD;
+        pub const ROLL_DIR: i32 = 0xE;
+        pub const LEDGE_POS: i32 = 0xF;
+        pub const LEDGE_POS_X: i32 = 0xF;
+        pub const LEDGE_POS_Y: i32 = 0x10;
+        pub const LEDGE_POS_Z: i32 = 0x11;
 
         // separator
         // flag
@@ -149,6 +157,8 @@ pub mod vars {
 
         // int
         pub const GIMMICK_TIMER: i32 = 0x50;
+
+        // vec3
         
 
     }
