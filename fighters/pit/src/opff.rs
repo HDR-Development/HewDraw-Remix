@@ -8,8 +8,8 @@ unsafe fn upperdash_arm_jump_and_aerial_cancel(boma: &mut BattleObjectModuleAcce
         if frame > 27.0 {
             if moveset_utils::jump_checker_buffer(boma, cat1) {
                 if situation_kind == *SITUATION_KIND_AIR {
-                    if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) - 1 && !side_special_cancel[id] {
-                        side_special_cancel[id] = true;
+                    if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) - 1 &&  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::SIDE_SPECIAL_CANCEL) {
+                        VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::SIDE_SPECIAL_CANCEL);
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                     }
                 } else if situation_kind == *SITUATION_KIND_GROUND {

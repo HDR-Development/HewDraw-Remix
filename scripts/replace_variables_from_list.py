@@ -153,8 +153,8 @@ os.chdir("../fighters")
 changed = 0
 
 for entry in variables:
-  if entry[0] in current_consts:
-    continue
+  #if entry[0] in current_consts:
+  #  continue
   variable_name = entry[0]
   variable_type = entry[1].lower()
 

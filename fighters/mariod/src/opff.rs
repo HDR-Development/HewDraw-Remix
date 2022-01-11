@@ -7,7 +7,7 @@ unsafe fn special_n_article_fix(boma: &mut BattleObjectModuleAccessor, id: usize
     if [*FIGHTER_STATUS_KIND_SPECIAL_N].contains(&status_kind) {
         if situation_kind == *SITUATION_KIND_GROUND {
             if frame <= 1.0 {
-                special_projectile_spawned[id] = false;
+                VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_PROJECTILE_SPAWNED);
             }
         }
     }

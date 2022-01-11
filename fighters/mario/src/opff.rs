@@ -136,13 +136,13 @@ unsafe fn special_n_article_fix(fighter: &mut L2CFighterCommon, boma: &mut Battl
         //if situation_kind == *SITUATION_KIND_GROUND {
             if frame <= 1.0 /*frame >= 13.0 && frame < 15.0*/ {
                 //println!("Reset fireball projectile flag");
-                special_projectile_spawned[id] = false;
+                VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_PROJECTILE_SPAWNED);
             }
         //}
         /*
         else if situation_kind == *SITUATION_KIND_AIR {
             if frame >= 14.0 && frame < 15.0{
-                special_projectile_spawned[id] = true;
+                VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_PROJECTILE_SPAWNED);
                 println!("=== PROJECTILE SPAWNED FROM AERIAL VERSION");
             }
         }
@@ -150,12 +150,12 @@ unsafe fn special_n_article_fix(fighter: &mut L2CFighterCommon, boma: &mut Battl
     }
     /*
     else{
-        if special_projectile_spawned[id]{
-            special_projectile_spawned[id] = false;
+        if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_PROJECTILE_SPAWNED){
+            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_PROJECTILE_SPAWNED);
         }
     }
 
-    if !special_projectile_spawned[id]{
+    if  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_PROJECTILE_SPAWNED){
     }
     */
 }
@@ -165,7 +165,7 @@ unsafe fn noknok_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER);
     if gimmick_timerr > 0 && gimmick_timerr < 1801 {
         if gimmick_timerr > 1799 {
-            noknok_shell[id] = false;
+            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::NOKNOK_SHELL);
             VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
             gimmick_flash(boma);
         } else {
@@ -176,13 +176,13 @@ unsafe fn noknok_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 
 // NokNok shell flag reset
 unsafe fn noknok_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
-    if noknok_shell[id] {
+    if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::NOKNOK_SHELL) {
         if [*FIGHTER_STATUS_KIND_DEAD,
             *FIGHTER_STATUS_KIND_REBIRTH,
             *FIGHTER_STATUS_KIND_WIN,
             *FIGHTER_STATUS_KIND_LOSE,
             *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-                noknok_shell[id] = false;
+                VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::NOKNOK_SHELL);
         }
     }
 }
@@ -192,7 +192,7 @@ unsafe fn noknok_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i
 unsafe fn noknok_training(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
     if hdr::is_training_mode() {
         if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
-            noknok_shell[id] = false;
+            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::NOKNOK_SHELL);
         }
     }
 }
