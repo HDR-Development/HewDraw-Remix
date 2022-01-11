@@ -37,11 +37,18 @@ index_values = [
 flag_patterns = [
   ("{old_name}[{index_value}] = true;", "VarModule::on_flag(boma.object(), vars::{new_name});"),
   ("{old_name}[{index_value}] = false;", "VarModule::off_flag(boma.object(), vars::{new_name});"),
+  ("{old_name}[{index_value}] =true;", "VarModule::on_flag(boma.object(), vars::{new_name});"),
+  ("{old_name}[{index_value}] =false;", "VarModule::off_flag(boma.object(), vars::{new_name});"),
+  ("{old_name}[{index_value}]= true;", "VarModule::on_flag(boma.object(), vars::{new_name});"),
+  ("{old_name}[{index_value}]= false;", "VarModule::off_flag(boma.object(), vars::{new_name});"),
+  ("{old_name}[{index_value}]=true;", "VarModule::on_flag(boma.object(), vars::{new_name});"),
+  ("{old_name}[{index_value}]=false;", "VarModule::off_flag(boma.object(), vars::{new_name});"),
   ("if({old_name}[{index_value}])", "if VarModule::is_flag(boma.object(), vars::{new_name})"),
   ("({old_name}[{index_value}])", " VarModule::is_flag(boma.object(), vars::{new_name})"),
   ("(!{old_name}[{index_value}])", " !VarModule::is_flag(boma.object(), vars::{new_name})"),
   ("!{old_name}[{index_value}]", " !VarModule::is_flag(boma.object(), vars::{new_name})"),
   ("if {old_name}[{index_value}]", "if VarModule::is_flag(boma.object(), vars::{new_name})"),
+  ("{old_name}[{index_value}]", "VarModule::is_flag(boma.object(), vars::{new_name})"),
 ]
 
 int_patterns = [

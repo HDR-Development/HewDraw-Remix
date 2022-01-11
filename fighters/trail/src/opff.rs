@@ -59,7 +59,7 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     fair_cancels(boma, cat[0], status_kind, situation_kind, motion_kind);
 }
 
-#[utils::opff(0x5D )]
+#[utils::opff(FIGHTER_KIND_TRAIL)]
 pub fn trail_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         fighter_common_opff(fighter);
@@ -68,7 +68,7 @@ pub fn trail_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub unsafe fn trail_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         let status_kind = if info.status_kind == *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_N || info.status_kind == *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F { // status kind checks for nair/fair
             *FIGHTER_STATUS_KIND_ATTACK_AIR
         } else {

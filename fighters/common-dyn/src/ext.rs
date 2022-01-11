@@ -139,6 +139,13 @@ pub trait AgentUtil {
     unsafe fn prev_stick_y(&mut self) -> f32;
     unsafe fn is_flick_y(&mut self, sensitivity: f32) -> bool;
     unsafe fn is_input_jump(&mut self) -> bool;
+    /// returns whether or not the stick x is pointed in the "forwards" direction for
+    /// a character
+    unsafe fn is_stick_forward(&mut self) -> bool;
+
+    /// returns whether or not the stick x is pointed in the "backwards" direction for
+    /// a character
+    unsafe fn is_stick_backward(&mut self) -> bool;
 
     // STATE
     unsafe fn is_status(&mut self, kind: i32) -> bool;
@@ -149,6 +156,9 @@ pub trait AgentUtil {
     unsafe fn is_prev_situation(&mut self, kind: i32) -> bool;
     unsafe fn is_motion(&mut self, motion: Hash40) -> bool;
     unsafe fn is_motion_one_of(&mut self, motions: &[Hash40]) -> bool;
+    unsafe fn get_jump_count(&mut self) -> i32;
+    unsafe fn get_jump_count_max(&mut self) -> i32;
+
 
     unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32;
 
@@ -219,6 +229,18 @@ impl AgentUtil for L2CAgentBase {
         return self.boma().is_input_jump();
     }
 
+    /// returns whether or not the stick x is pointed in the "forwards" direction for
+    /// a character
+    unsafe fn is_stick_forward(&mut self) -> bool {
+        return self.boma().is_stick_forward();
+    }
+
+    /// returns whether or not the stick x is pointed in the "backwards" direction for
+    /// a character
+    unsafe fn is_stick_backward(&mut self) -> bool {
+        return self.boma().is_stick_backward();
+    }
+
     unsafe fn is_status(&mut self, kind: i32) -> bool {
         return self.boma().is_status(kind);
     }
@@ -265,6 +287,14 @@ impl AgentUtil for L2CAgentBase {
 
     unsafe fn kind(&mut self) -> i32 {
         return self.boma().kind();
+    }
+
+    unsafe fn get_jump_count(&mut self) -> i32 {
+        return self.boma().get_jump_count();
+    }
+
+    unsafe fn get_jump_count_max(&mut self) -> i32 {
+        return self.boma().get_jump_count_max();
     }
 }
 
@@ -358,6 +388,30 @@ impl AgentUtil for BattleObjectModuleAccessor {
         return false;
     }
 
+    /// returns whether or not the stick x is pointed in the "forwards" direction for
+    /// a character
+    unsafe fn is_stick_forward(&mut self) -> bool{
+        let stick_value_x = ControlModule::get_stick_x(self);
+        if stick_value_x != 0. {
+            if stick_value_x*PostureModule::lr(self) > 0. {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /// returns whether or not the stick x is pointed in the "backwards" direction for
+    /// a character
+    unsafe fn is_stick_backward(&mut self) -> bool{
+        let stick_value_x = ControlModule::get_stick_x(self);
+        if stick_value_x != 0. {
+            if stick_value_x*PostureModule::lr(self) < 0. {
+                return true;
+            }
+        }
+        return false;
+    }
+
     unsafe fn is_status(&mut self, kind: i32) -> bool {
         return StatusModule::status_kind(self) == kind;
     }
@@ -407,6 +461,14 @@ impl AgentUtil for BattleObjectModuleAccessor {
 
     unsafe fn kind(&mut self) -> i32 {
         return smash::app::utility::get_kind(self);
+    }
+
+    unsafe fn get_jump_count(&mut self) -> i32 {
+        return WorkModule::get_int(self, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+    }
+
+    unsafe fn get_jump_count_max(&mut self) -> i32 {
+        return WorkModule::get_int(self, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX);
     }
 }
 

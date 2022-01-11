@@ -15,7 +15,7 @@ unsafe fn areadbhar_autocancel(boma: &mut BattleObjectModuleAccessor, id: usize,
             }
         }
     }
-    if status_kind == *FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_LANDING && special_autocancel[id] {
+    if status_kind == *FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_LANDING && VarModule::is_flag(boma.object(), vars::common::SPECIAL_AUTOCANCEL) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
     }
 }
@@ -103,7 +103,7 @@ pub fn master_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub unsafe fn master_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

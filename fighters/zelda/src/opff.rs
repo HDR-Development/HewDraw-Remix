@@ -17,8 +17,8 @@ unsafe fn teleport_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i3
     let warp_speed = WorkModule::get_param_float(boma, hash40("param_special_hi"), hash40("wrap_speed_add")) + WorkModule::get_param_float(boma, hash40("param_special_hi"), hash40("wrap_speed_multi"));
 
     if status_kind == *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2 {
-        if touch_right || touch_left || is_wall_ride[id] {
-            is_wall_ride[id] = true;
+        if touch_right || touch_left || VarModule::is_flag(boma.object(), vars::common::IS_TELEPORT_WALL_RIDE) {
+            VarModule::on_flag(boma.object(), vars::common::IS_TELEPORT_WALL_RIDE);
             if (touch_right && KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) < 0.0) || (touch_left && KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0) {
                 let rise_speed = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
                 if rise_speed > 0.0 {
@@ -40,7 +40,7 @@ unsafe fn teleport_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i3
         }
     }
     else {
-        is_wall_ride[id] = false;
+        VarModule::off_flag(boma.object(), vars::common::IS_TELEPORT_WALL_RIDE);
     }
 }
 
@@ -50,7 +50,7 @@ unsafe fn neutral_special_cancels(boma: &mut BattleObjectModuleAccessor, status_
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             if boma.is_input_jump() {
                 if situation_kind == *SITUATION_KIND_AIR {
-                    if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
+                    if boma.get_jump_count() < boma.get_jump_count_max() {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, true);
                     }
                 } else if situation_kind == *SITUATION_KIND_GROUND {
@@ -77,7 +77,7 @@ pub fn zelda_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub unsafe fn zelda_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

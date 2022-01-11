@@ -8,7 +8,7 @@ unsafe fn psi_magnet_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32,
         if frame > 4.0 {
             if boma.is_input_jump() {
                 if situation_kind == *SITUATION_KIND_AIR {
-                    if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
+                    if boma.get_jump_count() < boma.get_jump_count_max() {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                     }
                 } else if situation_kind == *SITUATION_KIND_GROUND {
@@ -44,9 +44,9 @@ unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, st
 }
 
 // Lucas DJC and momentum tracker
-unsafe fn djc_momentum_helper(id: usize, status_kind: i32, frame: f32) {
+unsafe fn djc_momentum_helper(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL {
-        VarModule::set_float(boma.object(), vars::common::DOUBLE_JUMP_FRAME, value_here)  frame;
+        VarModule::set_float(boma.object(), vars::common::DOUBLE_JUMP_FRAME, frame);
     }
     /*
     if VarModule::get_float(boma.object(), vars::common::DOUBLE_JUMP_FRAME) == 1.0 {
@@ -91,12 +91,24 @@ unsafe fn pk_thunder_wall_ride(boma: &mut BattleObjectModuleAccessor, id: usize,
 
 }
 
+// Lucas PK Fire Fast Fall
+unsafe fn pk_fire_ff(boma: &mut BattleObjectModuleAccessor, stick_y: f32) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) {
+        if boma.is_situation(*SITUATION_KIND_AIR) {
+            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66
+                && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
+                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            }
+        }
+    }
+}
+
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     psi_magnet_jc(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     pk_thunder_cancel(boma, id, status_kind, situation_kind);
     pk_thunder_wall_ride(boma, id, status_kind, situation_kind);
-    djc_momentum_helper(id, status_kind, frame);
-    pk::moveset(boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
+    djc_momentum_helper(boma, id, status_kind, frame);
+    pf_fire_ff(boma, stick_y);
 }
 
 #[utils::opff(FIGHTER_KIND_LUCAS )]
@@ -108,7 +120,7 @@ pub fn lucas_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub unsafe fn lucas_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

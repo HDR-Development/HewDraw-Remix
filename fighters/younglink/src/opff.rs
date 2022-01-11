@@ -41,6 +41,12 @@ unsafe fn bomb_b_reverse(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     }
 }
 
+
+extern "Rust" {
+    fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
+}
+
+
 // Bombchu Timer Count
 unsafe fn bombchu_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
     let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER);
@@ -66,7 +72,7 @@ unsafe fn bombchu_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: 
 
 // Training Mode Bombchu Timer taunt reset
 unsafe fn bombchu_training(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
-    if hdr::is_training_mode() {
+    if is_training_mode() {
         if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
             VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
         }
@@ -79,6 +85,19 @@ unsafe fn sword_length(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("sword"), &long_sword_scale);
 }
 
+
+unsafe fn holdable_dair(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
+    // young link dair hold
+    if motion_kind == hash40("attack_air_lw")
+        && frame > 20.0 && frame < 65.0 
+        && ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_ATTACK)
+    {
+        
+        MotionModule::set_frame_sync_anim_cmd(boma, 68.0, true, true, false);
+        
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     special_s_article_fix(fighter, boma, id, status_kind, situation_kind, frame);
     fire_arrow_ff(fighter, boma, status_kind, situation_kind, cat[1], stick_y);
@@ -87,19 +106,25 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     bombchu_reset(fighter, id, status_kind);
     bombchu_training(fighter, id, status_kind);
 	sword_length(fighter, boma);
-    links::moveset(boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
+    holdable_dair(boma, motion_kind,frame);
+}
+
+// symbol-based call for the links' common opff
+extern "Rust" {
+    fn links_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
 
 #[utils::opff(FIGHTER_KIND_YOUNGLINK )]
 pub fn younglink_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         fighter_common_opff(fighter);
-		younglink_frame(fighter)
+		younglink_frame(fighter);
+        links_common(fighter);
     }
 }
 
 pub unsafe fn younglink_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

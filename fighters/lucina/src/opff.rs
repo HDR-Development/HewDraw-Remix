@@ -77,7 +77,7 @@ unsafe fn side_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kin
             if [hash40("special_s4_hi"), hash40("special_air_s4_hi")].contains(&motion_kind) && MotionModule::frame(boma) > 13.0 {
                 if boma.is_input_jump() {
                     if situation_kind == *SITUATION_KIND_AIR {
-                        if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
+                        if boma.get_jump_count() < boma.get_jump_count_max() {
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                         }
                     } else if situation_kind == *SITUATION_KIND_GROUND {
@@ -104,8 +104,13 @@ unsafe fn soaring_slash(boma: &mut BattleObjectModuleAccessor, id: usize, status
     }
 }
 
+
+// symbol-based call for the fe characters' common opff
+extern "Rust" {
+    fn fe_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
+}
+
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    fe::moveset(boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
     // Magic Series
     side_special_cancels(boma, status_kind, situation_kind, cat[0], motion_kind);
     soaring_slash(boma, id, status_kind);
@@ -115,12 +120,13 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
 pub fn lucina_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         fighter_common_opff(fighter);
-		lucina_frame(fighter)
+		lucina_frame(fighter);
+        fe_common(fighter);
     }
 }
 
 pub unsafe fn lucina_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

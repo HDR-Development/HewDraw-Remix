@@ -119,6 +119,8 @@ pub mod vars {
         pub const ENABLE_WAVELAND_PLATDROP: i32 = 62;
         pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 63;
         pub const UP_SPECIAL_CANCEL: i32 = 64;
+        pub const IS_TELEPORT_WALL_RIDE: i32 = 65;
+        pub const SPIN_ATTACK_LAND_CANCEL: i32 = 66;
         
 
         // int
@@ -277,5 +279,6 @@ pub mod vars {
         // flags
         pub const IS_CHARGE_FINISHED: i32 = 0x1000;
     }
+
 
 }

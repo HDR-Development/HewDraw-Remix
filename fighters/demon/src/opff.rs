@@ -8,7 +8,7 @@ unsafe fn slaughter_high_kick(boma: &mut BattleObjectModuleAccessor, cat1: i32, 
         if WorkModule::is_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_HI_3_FLAG_CHECK_STEP){
             if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3
                                     | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4)
-               && hdr::is_stick_backward(boma) {
+               && boma.is_stick_backward() {
                 VarModule::on_flag(boma.object(), demon::SLAUGHTER_HIGH_KICK);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_5,false);
             }
@@ -32,7 +32,7 @@ pub fn demon_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub unsafe fn demon_frame(fighter: &mut L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

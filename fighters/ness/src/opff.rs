@@ -29,6 +29,18 @@ unsafe fn psi_magnet_jump_cancel_turnaround(boma: &mut BattleObjectModuleAccesso
     }
 }
 
+// Ness PK Fire Fast Fall
+unsafe fn pk_fire_ff(boma: &mut BattleObjectModuleAccessor, stick_y: f32) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) {
+        if boma.is_situation(*SITUATION_KIND_AIR) {
+            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66
+                && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
+                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            }
+        }
+    }
+}
+
 // Ness PK Thunder cancel
 unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
     if status_kind == *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_HOLD {
@@ -96,7 +108,7 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     psi_magnet_jump_cancel_turnaround(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     pk_thunder_cancel(boma, id, status_kind, situation_kind);
     pk_thunder_wall_ride(boma, id, status_kind, situation_kind);
-    pk::moveset(boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
+    pf_fire_ff(boma, stick_y);
 }
 
 #[utils::opff(FIGHTER_KIND_NESS )]
@@ -108,7 +120,7 @@ pub fn ness_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub unsafe fn ness_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

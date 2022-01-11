@@ -111,3 +111,18 @@ pub fn get_battle_object_from_entry_id(entry_id: u32) -> Option<*mut BattleObjec
 pub fn compare_mask(mask1: i32, mask2: i32) -> bool {
     return (mask1 & mask2) != 0;
 }
+
+/// get a vector3f where the given value is the strength and stick X is used to determine
+/// the direction of the vector in the x direction. y and z are always zero.
+/// 
+#[inline(always)]
+pub unsafe fn x_motion_vec(val: f32, stick_x: f32) -> smash::phx::Vector3f {
+    smash::phx::Vector3f{x: val * stick_x.signum(), y: 0.0, z: 0.0}
+}
+
+
+extern "C"{
+    /// gets whether we are in training mode
+    #[link_name = "\u{1}_ZN3app9smashball16is_training_modeEv"]
+    pub fn is_training_mode() -> bool;
+}

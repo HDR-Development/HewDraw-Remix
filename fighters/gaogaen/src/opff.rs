@@ -5,8 +5,8 @@ use ::common::opff::*;
  
 unsafe fn cross_chop_cancel_dj_reset(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, cat1: i32) {
     if status_kind == *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_TURN {
-        if hdr::get_jump_count(boma) == hdr::get_jump_count_max(boma) {
-            WorkModule::set_int(boma, hdr::get_jump_count_max(boma) - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+        if boma.get_jump_count() == boma.get_jump_count_max() {
+            WorkModule::set_int(boma, boma.get_jump_count_max() - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
         }
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
@@ -21,7 +21,7 @@ unsafe fn fthrow_movement(boma: &mut BattleObjectModuleAccessor, status_kind: i3
         if motion_kind == hash40("throw_f") {
             if situation_kind == *SITUATION_KIND_GROUND {
                 if stick_x != 0.0 {
-                    let motion_vec = moveset_utils::x_motion_vec(1.0, stick_x);
+                    let motion_vec = x_motion_vec(1.0, stick_x);
                     KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
                 }
             }
@@ -90,7 +90,7 @@ pub fn gaogaen_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub unsafe fn gaogaen_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

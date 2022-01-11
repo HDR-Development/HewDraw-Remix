@@ -60,12 +60,7 @@ unsafe fn hammer_flip_b_reverse(boma: &mut BattleObjectModuleAccessor, id: usize
     }
 }
 
-// Reset Star Rod flag each match
-unsafe fn reset_star_rod(id: usize, status_kind: i32) {
-    if status_kind == *FIGHTER_STATUS_KIND_ENTRY && kirby_star_rod[id] {
-        VarModule::off_flag(boma.object(), vars::common::KIRBY_STAR_ROD);
-    }
-}
+
 
 // Magic Series
 unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
@@ -274,7 +269,7 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
                 // Check for jump inputs
                 if boma.is_input_jump()
                     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                    if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
+                    if boma.get_jump_count() < boma.get_jump_count_max() {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL,false);
                     }
                 }
@@ -356,7 +351,7 @@ pub fn kirby_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub unsafe fn kirby_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

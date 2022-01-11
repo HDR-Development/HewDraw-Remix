@@ -160,6 +160,12 @@ unsafe fn special_n_article_fix(fighter: &mut L2CFighterCommon, boma: &mut Battl
     */
 }
 
+
+extern "Rust" {
+    fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
+}
+
+
 // NokNok Shell Timer Count
 unsafe fn noknok_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
     let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER);
@@ -176,13 +182,13 @@ unsafe fn noknok_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 
 // NokNok shell flag reset
 unsafe fn noknok_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
-    if VarModule::is_flag(boma.object(), vars::common::NOKNOK_SHELL) {
+    if VarModule::is_flag(fighter.battle_object, vars::common::NOKNOK_SHELL) {
         if [*FIGHTER_STATUS_KIND_DEAD,
             *FIGHTER_STATUS_KIND_REBIRTH,
             *FIGHTER_STATUS_KIND_WIN,
             *FIGHTER_STATUS_KIND_LOSE,
             *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-                VarModule::off_flag(boma.object(), vars::common::NOKNOK_SHELL);
+                VarModule::off_flag(fighter.battle_object, vars::common::NOKNOK_SHELL);
         }
     }
 }
@@ -190,9 +196,9 @@ unsafe fn noknok_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i
 // TRAINING MODE
 // NokNok shell flag reset via taunt
 unsafe fn noknok_training(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
-    if hdr::is_training_mode() {
+    if is_training_mode() {
         if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
-            VarModule::off_flag(boma.object(), vars::common::NOKNOK_SHELL);
+            VarModule::off_flag(fighter.battle_object, vars::common::NOKNOK_SHELL);
         }
     }
 }
@@ -217,7 +223,7 @@ pub fn mario_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub unsafe fn mario_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

@@ -25,7 +25,7 @@ unsafe fn flip_jump_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
         || motion_kind == hash40("special_air_lw_start") {
         if frame > 20.0 {
             if boma.is_input_jump() {
-                if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
+                if boma.get_jump_count() < boma.get_jump_count_max() {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                 }
             }
@@ -48,7 +48,7 @@ pub fn szerosuit_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub unsafe fn szerosuit_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

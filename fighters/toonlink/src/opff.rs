@@ -38,11 +38,16 @@ unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("sword2"), &long_sword_scale);
 }
 
+// symbol-based call for the links' common opff
+extern "Rust" {
+    fn links_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
+}
+
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     heros_bow_ff(boma, status_kind, situation_kind, cat[1], stick_y);
     bomb_pull_b_reverse(boma, id, status_kind, stick_x, facing, frame);
 	sword_length(boma);
-    links::moveset(boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
+    
 
     // Frame Data
     frame_data(boma, status_kind, motion_kind, frame);
@@ -65,12 +70,13 @@ unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, mo
 pub fn toonlink_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         fighter_common_opff(fighter);
-		toonlink_frame(fighter)
+		toonlink_frame(fighter);
+        links_common(fighter);
     }
 }
 
 pub unsafe fn toonlink_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

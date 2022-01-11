@@ -20,7 +20,7 @@ unsafe fn bthrow_movement(boma: &mut BattleObjectModuleAccessor, status_kind: i3
         if motion_kind == hash40("throw_b") {
             if situation_kind == *SITUATION_KIND_GROUND {
                 if stick_x != 0.0 {
-                    let motion_vec = moveset_utils::x_motion_vec(1.0, stick_x);
+                    let motion_vec = x_motion_vec(1.0, stick_x);
                     KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
                 }
             }
@@ -43,7 +43,7 @@ pub fn wario_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub unsafe fn wario_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

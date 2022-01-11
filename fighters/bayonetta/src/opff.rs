@@ -107,7 +107,7 @@ unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32
             // Check for jump inputs
             if boma.is_input_jump()
                 && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
+                if boma.get_jump_count() < boma.get_jump_count_max() {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                 }
             }
@@ -132,8 +132,8 @@ unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
                     }
                     //if boma.is_cat_flag(Cat1::AttackAirB) ||
-                    if (boma.is_cat_flag(Cat1::AttackS3) && hdr::is_stick_backward(boma))
-                        || (boma.is_cat_flag(Cat1::AttackS4) && hdr::is_stick_backward(boma)) {
+                    if (boma.is_cat_flag(Cat1::AttackS3) && boma.is_stick_backward())
+                        || (boma.is_cat_flag(Cat1::AttackS4) && boma.is_stick_backward()) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
                     }
                     //if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_HI
@@ -193,7 +193,7 @@ pub fn bayonetta_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub unsafe fn bayonetta_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
          moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

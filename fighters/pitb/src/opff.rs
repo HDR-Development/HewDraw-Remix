@@ -28,7 +28,7 @@ unsafe fn guardian_orbitar_jc(boma: &mut BattleObjectModuleAccessor, status_kind
         if frame > 3.0 {
             if boma.is_input_jump() {
                 if situation_kind == *SITUATION_KIND_AIR {
-                    if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
+                    if boma.get_jump_count() < boma.get_jump_count_max() {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                     }
                 } else if situation_kind == *SITUATION_KIND_GROUND {
@@ -42,10 +42,15 @@ unsafe fn guardian_orbitar_jc(boma: &mut BattleObjectModuleAccessor, status_kind
     }
 }
 
+
+extern "Rust" {
+    fn pits_common(boma: &mut BattleObjectModuleAccessor, status_kind: i32);
+}
+
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     bow_ff_lc(boma, status_kind, situation_kind, cat[1], stick_y);
     guardian_orbitar_jc(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
-    pits::moveset(boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
+    pits_common(boma, status_kind);
 }
 
 #[utils::opff(FIGHTER_KIND_PITB )]
@@ -56,8 +61,9 @@ pub fn pitb_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
+
 pub unsafe fn pitb_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

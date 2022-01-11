@@ -178,7 +178,7 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
             // Check for jump inputs
             if boma.is_input_jump()
                 && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
+                if boma.get_jump_count() < boma.get_jump_count_max() {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL,false);
                 }
             }
@@ -206,7 +206,7 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
             // Check for jump inputs
             if boma.is_input_jump()
                 && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
+                if boma.get_jump_count() < boma.get_jump_count_max() {
                     if situation_kind == *SITUATION_KIND_AIR {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL,false);
                     }
@@ -228,7 +228,7 @@ pub fn lucario_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub unsafe fn lucario_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

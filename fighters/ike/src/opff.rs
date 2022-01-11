@@ -10,7 +10,7 @@ unsafe fn aether_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
 
     if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_IKE_STATUS_KIND_SPECIAL_HI_2].contains(&status_kind) {
         if stick_x != 0.0 {
-            let motion_vec = moveset_utils::x_motion_vec(0.3, stick_x);
+            let motion_vec = x_motion_vec(0.3, stick_x);
             KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
         }
     }
@@ -83,7 +83,7 @@ pub fn ike_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub unsafe fn ike_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

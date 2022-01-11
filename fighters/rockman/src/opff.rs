@@ -6,10 +6,10 @@ use ::common::opff::*;
 unsafe fn jc_light_utilt_hit(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI3 {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && frame > 20.0 {
-            if  !VarModule::is_flag(boma.object(), vars::common::HEAVY_ATTACK) {
+            if  !VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK) {
                 if boma.is_input_jump() {
                     if situation_kind == *SITUATION_KIND_AIR {
-                        if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
+                        if boma.get_jump_count() < boma.get_jump_count_max() {
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                         }
                     } else if situation_kind == *SITUATION_KIND_GROUND {
@@ -27,7 +27,7 @@ unsafe fn jc_dtilt_hit(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && frame > 12.0 {
             if boma.is_input_jump() {
                 if situation_kind == *SITUATION_KIND_AIR {
-                    if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
+                    if boma.get_jump_count() < boma.get_jump_count_max() {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                     }
                 } else if situation_kind == *SITUATION_KIND_GROUND {
@@ -66,7 +66,7 @@ pub fn rockman_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub unsafe fn rockman_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

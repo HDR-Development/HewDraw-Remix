@@ -236,7 +236,7 @@ unsafe fn shield_stop_run_drop(boma: &mut BattleObjectModuleAccessor, status_kin
 // Full Meter Gain via shield during taunt
 unsafe fn full_meter_training_taunt(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     let mut agent_base = fighter.fighter_base.agent_base;
-    if hdr::is_training_mode() {
+    if is_training_mode() {
         if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
                 meter::add_meter(&mut agent_base, boma, meter_max);
@@ -423,14 +423,14 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_N,false);
             }
             // Burn Knuckle
-            if boma.is_cat_flag(Cat1::SpecialS) && hdr::is_stick_forward(boma) {
+            if boma.is_cat_flag(Cat1::SpecialS) && boma.is_stick_forward() {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_S,false);
             }
             if boma.is_cat_flag( Cat4::SpecialNCommand) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND,false);
             }
             // Crack Shoot
-            if boma.is_cat_flag(Cat1::SpecialS) && hdr::is_stick_backward(boma) {
+            if boma.is_cat_flag(Cat1::SpecialS) && boma.is_stick_backward() {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B,false);
             }
             if boma.is_cat_flag( Cat4::SpecialSCommand) {
@@ -486,14 +486,14 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
                    }
                    */
                 //if (boma.is_cat_flag(Cat1::AttackAirF) ||
-                if (boma.is_cat_flag(Cat1::AttackS3) && hdr::is_stick_forward(boma))
-                    || (boma.is_cat_flag(Cat1::AttackS4) && hdr::is_stick_forward(boma)) {
+                if (boma.is_cat_flag(Cat1::AttackS3) && boma.is_stick_forward())
+                    || (boma.is_cat_flag(Cat1::AttackS4) && boma.is_stick_forward()) {
                     //VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
                 }
                 //if (boma.is_cat_flag(Cat1::AttackAirB) ||
-                if (boma.is_cat_flag(Cat1::AttackS3) && hdr::is_stick_backward(boma))
-                    || (boma.is_cat_flag(Cat1::AttackS4) && hdr::is_stick_backward(boma)) {
+                if (boma.is_cat_flag(Cat1::AttackS3) && boma.is_stick_backward())
+                    || (boma.is_cat_flag(Cat1::AttackS4) && boma.is_stick_backward()) {
                     //VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
                     //PostureModule::reverse_lr(boma);
@@ -514,8 +514,8 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
             // Fair
             if motion_kind == hash40("attack_air_f") {
                 //if (boma.is_cat_flag(Cat1::AttackAirB) ||
-                if (boma.is_cat_flag(Cat1::AttackS3) && hdr::is_stick_backward(boma))
-                    || (boma.is_cat_flag(Cat1::AttackS4) && hdr::is_stick_backward(boma)) {
+                if (boma.is_cat_flag(Cat1::AttackS3) && boma.is_stick_backward())
+                    || (boma.is_cat_flag(Cat1::AttackS4) && boma.is_stick_backward()) {
                     //VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
                     //PostureModule::reverse_lr(boma);
@@ -540,8 +540,8 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
             // Uair
             if motion_kind == hash40("attack_air_hi") {
                 //if (boma.is_cat_flag(Cat1::AttackAirB) ||
-                if (boma.is_cat_flag(Cat1::AttackS3) && hdr::is_stick_backward(boma))
-                    || (boma.is_cat_flag(Cat1::AttackS4) && hdr::is_stick_backward(boma)) {
+                if (boma.is_cat_flag(Cat1::AttackS3) && boma.is_stick_backward())
+                    || (boma.is_cat_flag(Cat1::AttackS4) && boma.is_stick_backward()) {
                     //VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
                     //PostureModule::reverse_lr(boma);
@@ -556,8 +556,8 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
             // Dair
             if motion_kind == hash40("attack_air_lw") {
                 //if (boma.is_cat_flag(Cat1::AttackAirB) ||
-                if (boma.is_cat_flag(Cat1::AttackS3) && hdr::is_stick_backward(boma))
-                    || (boma.is_cat_flag(Cat1::AttackS4) && hdr::is_stick_backward(boma)) {
+                if (boma.is_cat_flag(Cat1::AttackS3) && boma.is_stick_backward())
+                    || (boma.is_cat_flag(Cat1::AttackS4) && boma.is_stick_backward()) {
                     //VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
                 }
@@ -611,7 +611,7 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
                 // Each cancel costs 2 meter
                 if meter::get_meter_level(boma) >= 1 {
                     // Crack Shoot
-                    if boma.is_cat_flag(Cat1::SpecialS) && hdr::is_stick_backward(boma) {
+                    if boma.is_cat_flag(Cat1::SpecialS) && boma.is_stick_backward() {
                         if  !VarModule::is_flag(boma.object(), vars::common::METER_USED){
                             VarModule::on_flag(boma.object(), vars::common::METER_USED);
                             meter::use_meter_level(&mut agent_base, boma, 1);
@@ -677,7 +677,7 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
                         }
                     }
                     // Burn Knuckle
-                    if boma.is_cat_flag(Cat1::SpecialS) && hdr::is_stick_forward(boma) {
+                    if boma.is_cat_flag(Cat1::SpecialS) && boma.is_stick_forward() {
                         if  !VarModule::is_flag(boma.object(), vars::common::METER_USED){
                             VarModule::on_flag(boma.object(), vars::common::METER_USED);
                             meter::use_meter_level(&mut agent_base, boma, 1);
@@ -692,7 +692,7 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
                         }
                     }
                     // Crack Shoot
-                    if boma.is_cat_flag(Cat1::SpecialS) && hdr::is_stick_backward(boma) {
+                    if boma.is_cat_flag(Cat1::SpecialS) && boma.is_stick_backward() {
                         if  !VarModule::is_flag(boma.object(), vars::common::METER_USED){
                             VarModule::on_flag(boma.object(), vars::common::METER_USED);
                             meter::use_meter_level(&mut agent_base, boma, 1);
@@ -744,7 +744,7 @@ pub fn dolly_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub unsafe fn dolly_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

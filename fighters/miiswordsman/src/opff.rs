@@ -10,7 +10,7 @@ unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleO
         let pad_flag = ControlModule::get_pad_flag(boma);
         if boma.is_input_jump() {
             if situation_kind == *SITUATION_KIND_AIR && frame > 8.0 {
-                if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
+                if boma.get_jump_count() < boma.get_jump_count_max() {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                 }
             } else if situation_kind == *SITUATION_KIND_GROUND {
@@ -25,12 +25,12 @@ unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleO
         }
         // Wall Jump
         if situation_kind == *SITUATION_KIND_AIR {
-            if !VarModule::is_flag(fighter.module_accessor, miiswordsman::SPECIAL_WALL_JUMP) {
+            if !VarModule::is_flag(fighter.battle_object, miiswordsman::SPECIAL_WALL_JUMP) {
                 let touch_right = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
                 let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
                 if touch_left || touch_right {
                     if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH | *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON) {
-                        VarModule::on_flag(fighter.module_accessor, miiswordsman::SPECIAL_WALL_JUMP);
+                        VarModule::on_flag(fighter.battle_object, miiswordsman::SPECIAL_WALL_JUMP);
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                     }
                 }
@@ -43,7 +43,7 @@ unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleO
         let pad_flag = ControlModule::get_pad_flag(boma);
         if boma.is_input_jump() && frame > 6.0 && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             if situation_kind == *SITUATION_KIND_AIR {
-                if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
+                if boma.get_jump_count() < boma.get_jump_count_max() {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                 }
             } else if situation_kind == *SITUATION_KIND_GROUND {
@@ -59,8 +59,8 @@ unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleO
 // Mii Swordfighter Aerial Power Thrust Jump Reset
 unsafe fn aerial_power_thrust_jump_reset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, motion_kind: u64) {
     if motion_kind == hash40("special_lw3") || status_kind == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END {
-        if hdr::get_jump_count(boma) == hdr::get_jump_count_max(boma) {
-            WorkModule::set_int(boma, hdr::get_jump_count_max(boma) - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+        if boma.get_jump_count() == boma.get_jump_count_max() {
+            WorkModule::set_int(boma, boma.get_jump_count_max() - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
         }
     }
 }
@@ -73,7 +73,7 @@ unsafe fn heros_spin_movement(fighter: &mut L2CFighterCommon, boma: &mut BattleO
     if status_kind == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_HOLD {
         if situation_kind == *SITUATION_KIND_GROUND {
             if stick_x != 0.0 {
-                let motion_vec = moveset_utils::x_motion_vec(valueWalk, stick_x);
+                let motion_vec = x_motion_vec(valueWalk, stick_x);
                 KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
             }
         }
@@ -82,7 +82,7 @@ unsafe fn heros_spin_movement(fighter: &mut L2CFighterCommon, boma: &mut BattleO
         if situation_kind == *SITUATION_KIND_GROUND {
             if frame < 46.0 {
                 if stick_x != 0.0 {
-                    let motion_vec = moveset_utils::x_motion_vec(motion_value, stick_x);
+                    let motion_vec = x_motion_vec(motion_value, stick_x);
                     KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
                 }
             }
@@ -94,14 +94,14 @@ unsafe fn heros_spin_movement(fighter: &mut L2CFighterCommon, boma: &mut BattleO
 unsafe fn land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, motion_kind: u64) {
     // Activate Land cancel flag
     if motion_kind == hash40("special_hi3") {
-        VarModule::on_flag(fighter.module_accessor, miiswordsman::SPIN_ATTACK_LAND_CANCEL);
+        VarModule::on_flag(fighter.battle_object, common::SPIN_ATTACK_LAND_CANCEL);
     }
     // Reset Land cancel flag
     if !(motion_kind == hash40("special_hi3") || motion_kind == hash40("special_air_hi3")) {
-        VarModule::off_flag(fighter.module_accessor, miiswordsman::SPIN_ATTACK_LAND_CANCEL);
+        VarModule::off_flag(fighter.battle_object, common::SPIN_ATTACK_LAND_CANCEL);
     }
     // Land cancel
-    if status_kind == *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL && VarModule::is_flag(fighter.module_accessor, miiswordsman::SPIN_ATTACK_LAND_CANCEL) {
+    if status_kind == *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL && VarModule::is_flag(fighter.battle_object, common::SPIN_ATTACK_LAND_CANCEL) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
     }
 }
@@ -115,12 +115,12 @@ unsafe fn aerial_acrobatics(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
             if boma.is_cat_flag(Cat1::AttackN) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, true);
             }
-            if (boma.is_cat_flag(Cat1::AttackS3) && hdr::is_stick_forward(boma))
-                || (boma.is_cat_flag(Cat1::AttackS4) && hdr::is_stick_forward(boma)) {
+            if (boma.is_cat_flag(Cat1::AttackS3) && boma.is_stick_forward())
+                || (boma.is_cat_flag(Cat1::AttackS4) && boma.is_stick_forward()) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, true);
             }
-            if (boma.is_cat_flag(Cat1::AttackS3) && hdr::is_stick_backward(boma))
-                || (boma.is_cat_flag(Cat1::AttackS4) && hdr::is_stick_backward(boma)) {
+            if (boma.is_cat_flag(Cat1::AttackS3) && boma.is_stick_backward())
+                || (boma.is_cat_flag(Cat1::AttackS4) && boma.is_stick_backward()) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, true);
             }
             if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3
@@ -147,16 +147,16 @@ unsafe fn gale_strike_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
 unsafe fn skyward_slash_dash_act(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
 	if status_kind == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            VarModule::on_flag(fighter.module_accessor, miiswordsman::SKYWARD_SLASH_DASH_HIT);
+            VarModule::on_flag(fighter.battle_object, miiswordsman::SKYWARD_SLASH_DASH_HIT);
             //println!("SSD Hit");
         }
     }
     if status_kind == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END {
-        if VarModule::is_flag(fighter.module_accessor, miiswordsman::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(boma.object(), miiswordsman::IS_HEAVY_ATTACK) && situation_kind == *SITUATION_KIND_AIR {
+        if VarModule::is_flag(fighter.battle_object, miiswordsman::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(boma.object(), common::IS_HEAVY_ATTACK) && situation_kind == *SITUATION_KIND_AIR {
             //println!("SSD Success");
             if frame >= 30.0 {
                 //println!("SSD Fall Act");
-                VarModule::off_flag(fighter.module_accessor, miiswordsman::SKYWARD_SLASH_DASH_HIT);
+                VarModule::off_flag(fighter.battle_object, miiswordsman::SKYWARD_SLASH_DASH_HIT);
                 VarModule::on_flag(fighter.battle_object, vars::common::UP_SPECIAL_CANCEL);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
             }
@@ -226,7 +226,7 @@ pub fn miiswordsman_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon
 }
 
 pub unsafe fn miiswordsman_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

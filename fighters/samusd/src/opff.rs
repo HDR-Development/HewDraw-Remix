@@ -4,9 +4,9 @@ use globals::*;
 use ::common::opff::*;
  
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    samus::land_cancel_and_b_reverse(boma, id, status_kind, situation_kind, stick_x, facing, frame);
-    samus::morphball_crawl(boma, status_kind, frame);
-    samus::nspecial_cancels(boma, status_kind, situation_kind);
+    super::samus::land_cancel_and_b_reverse(boma, id, status_kind, situation_kind, stick_x, facing, frame);
+    super::samus::morphball_crawl(boma, status_kind, frame);
+    super::samus::nspecial_cancels(boma, status_kind, situation_kind);
 
     // Frame Data
     frame_data(boma, status_kind, motion_kind, frame);
@@ -34,7 +34,7 @@ pub fn samusd_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub unsafe fn samusd_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

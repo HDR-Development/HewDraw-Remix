@@ -43,7 +43,7 @@ unsafe fn transition_fall(boma: &mut BattleObjectModuleAccessor, id: usize, stat
 }
 
 // Reset flags
-unsafe fn reset_flags(id: usize, status_kind: i32, situation_kind: i32) {
+unsafe fn reset_flags(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
     if situation_kind != SITUATION_KIND_AIR
         || [*FIGHTER_STATUS_KIND_DAMAGE,
             *FIGHTER_STATUS_KIND_DAMAGE_AIR,
@@ -77,7 +77,7 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     dim_cape_early_attack_cancel(boma, status_kind, frame);
     flag_resets(boma, id, status_kind, motion_kind, frame);
     transition_fall(boma, id, status_kind);
-    reset_flags(id, status_kind, situation_kind);
+    reset_flags(boma, id, status_kind, situation_kind);
     sword_length(boma);
 }
 
@@ -90,7 +90,7 @@ pub fn metaknight_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) 
 }
 
 pub unsafe fn metaknight_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = crate::hooks::sys_line::FrameInfo::update_and_get(fighter) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
