@@ -106,7 +106,7 @@ unsafe fn down_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut Battle
             VarModule::on_flag(boma.object(), vars::common::SPECIAL_CHECKS);
         }
         if VarModule::is_flag(boma.object(), vars::common::SPECIAL_CHECKS) && frame > 5.0 {
-            if moveset_utils::jump_checker_buffer(boma, cat1) {
+            if boma.is_input_jump() {
                 if situation_kind == *SITUATION_KIND_AIR {
                     if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);

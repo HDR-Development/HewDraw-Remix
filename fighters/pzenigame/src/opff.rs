@@ -38,7 +38,7 @@ unsafe fn withdraw_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
         VarModule::add_float(boma.object(), vars::common::WITHDRAW_FRAME, 1.0);
         // JC Lockout: frame 30
         if VarModule::get_float(boma.object(), vars::common::WITHDRAW_FRAME) > 15.0 {
-            if moveset_utils::jump_checker_buffer(boma, cat1) {
+            if boma.is_input_jump() {
                 if situation_kind == *SITUATION_KIND_AIR {
                     if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
@@ -54,7 +54,7 @@ unsafe fn withdraw_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
     }
 
     if [*FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_END].contains(&status_kind) && frame < 10.0 {
-        if moveset_utils::jump_checker_buffer(boma, cat1) {
+        if boma.is_input_jump() {
             if situation_kind == *SITUATION_KIND_AIR {
                 if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);

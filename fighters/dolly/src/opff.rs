@@ -351,7 +351,7 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
             // Check for jump and dash inputs during utilt, and dash inputs during ftilt
             if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI3
                 && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && frame > 13.0 {
-                if moveset_utils::jump_checker_buffer(boma, cat1) {
+                if boma.is_input_jump() {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT,true);
                 }
                 if boma.is_cat_flag(Cat1::Walk) {

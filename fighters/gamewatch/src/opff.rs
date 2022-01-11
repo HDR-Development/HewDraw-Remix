@@ -26,7 +26,7 @@ unsafe fn ff_chef_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind
 unsafe fn parachute_dj(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     if [*FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_FALL,
         *FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_CLOSE].contains(&status_kind) {
-        if moveset_utils::jump_checker_buffer(boma, cat1) {
+        if boma.is_input_jump() {
             if situation_kind == *SITUATION_KIND_AIR {
                 if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);

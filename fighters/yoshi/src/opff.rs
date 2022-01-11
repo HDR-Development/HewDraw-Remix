@@ -15,7 +15,7 @@ unsafe fn egg_roll_jc_waveland(boma: &mut BattleObjectModuleAccessor, status_kin
     }
 
     if status_kind == *FIGHTER_YOSHI_STATUS_KIND_SPECIAL_S_END {
-        if moveset_utils::jump_checker_buffer(boma, cat1) {
+        if boma.is_input_jump() {
             if situation_kind == *SITUATION_KIND_AIR {
                 if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);

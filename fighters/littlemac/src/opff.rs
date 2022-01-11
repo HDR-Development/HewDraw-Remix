@@ -23,7 +23,7 @@ unsafe fn normal_side_special(boma: &mut BattleObjectModuleAccessor, status_kind
 unsafe fn straight_lunge_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, cat2: i32, frame: f32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START].contains(&status_kind) {
         if frame > 25.0 {
-            if moveset_utils::jump_checker_buffer(boma, cat1) {
+            if boma.is_input_jump() {
                 if situation_kind == *SITUATION_KIND_AIR {
                     if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);

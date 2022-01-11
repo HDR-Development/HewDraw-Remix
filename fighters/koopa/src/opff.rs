@@ -6,7 +6,7 @@ use ::common::opff::*;
 unsafe fn bowser_bomb_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_LW_G].contains(&status_kind) {
         if frame > 19.0 && frame < 30.0 {
-            if moveset_utils::jump_checker_buffer(boma, cat1) {
+            if boma.is_input_jump() {
                 if situation_kind == *SITUATION_KIND_AIR {
                     let jump_count = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
                     let jump_count_max = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX);

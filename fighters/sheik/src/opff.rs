@@ -9,7 +9,7 @@ unsafe fn bouncing_fish_return_cancel(fighter: &mut L2CFighterCommon, boma: &mut
     }
 
     if situation_kind == *SITUATION_KIND_AIR {
-        if moveset_utils::jump_checker_buffer(boma, cat1) {
+        if boma.is_input_jump() {
             if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
             }
@@ -87,7 +87,7 @@ unsafe fn grenade_cancel_training(fighter: &mut L2CFighterCommon, id: usize, sta
 unsafe fn up_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     if status_kind == *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_END {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            if moveset_utils::jump_checker_buffer(boma, cat1) {
+            if boma.is_input_jump() {
                 if situation_kind == *SITUATION_KIND_AIR {
                     if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);

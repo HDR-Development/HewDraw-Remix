@@ -90,7 +90,7 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
             // Check for jump inputs during dash attack (on hit)
             if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH
                 && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                if moveset_utils::jump_checker_buffer(boma, cat1)
+                if boma.is_input_jump()
                     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT,true);
                 }
@@ -132,7 +132,7 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
 
             // Check for jump inputs during utilt
             if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI3 {
-                if moveset_utils::jump_checker_buffer(boma, cat1)
+                if boma.is_input_jump()
                     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT,true);
                 }
@@ -163,7 +163,7 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
 
             // Check for jump inputs
             if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI4 {
-                if moveset_utils::jump_checker_buffer(boma, cat1)
+                if boma.is_input_jump()
                     & AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT,true);
                 }
@@ -176,7 +176,7 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
             || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
             // Check for jump inputs
-            if moveset_utils::jump_checker_buffer(boma, cat1)
+            if boma.is_input_jump()
                 && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
                 if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL,false);
@@ -204,7 +204,7 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
             || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
 
             // Check for jump inputs
-            if moveset_utils::jump_checker_buffer(boma, cat1)
+            if boma.is_input_jump()
                 && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
                 if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
                     if situation_kind == *SITUATION_KIND_AIR {

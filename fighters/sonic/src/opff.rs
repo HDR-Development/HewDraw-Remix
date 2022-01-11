@@ -32,13 +32,13 @@ unsafe fn sonic_moveset(boma: &mut BattleObjectModuleAccessor, situation_kind: i
     moveset_utils::enable_b_turnaround(boma, status_kind, id, *FIGHTER_STATUS_KIND_SPECIAL_LW);
 
     /* enable jump out of down-b turn... (down-b and side-b share a lot of statuses) */
-    if status_kind == *FIGHTER_SONIC_STATUS_KIND_SPECIAL_S_TURN && moveset_utils::jump_checker_buffer(boma, cat1) {
+    if status_kind == *FIGHTER_SONIC_STATUS_KIND_SPECIAL_S_TURN && boma.is_input_jump() {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_SONIC_STATUS_KIND_SPIN_JUMP, true);
         //ControlModule::clear_command(boma, true);
     }
 
     /* disable jump during speciallw charge */
-    if status_kind == *FIGHTER_SONIC_STATUS_KIND_SPECIAL_LW_HOLD && moveset_utils::jump_checker_buffer(boma, cat1) {
+    if status_kind == *FIGHTER_SONIC_STATUS_KIND_SPECIAL_LW_HOLD && boma.is_input_jump() {
         ControlModule::clear_command(boma, true);
     }
 

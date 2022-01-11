@@ -21,7 +21,7 @@ unsafe fn shine_jump_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: 
     if [*FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT,
         *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
         *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind) {
-        if moveset_utils::jump_checker_buffer(boma, cat1) {
+        if boma.is_input_jump() {
             if situation_kind == *SITUATION_KIND_AIR {
                 if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);

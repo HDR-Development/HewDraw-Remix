@@ -8,7 +8,7 @@ unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleO
     if [*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_DASH].contains(&status_kind) {
         // Jump and Attack cancels
         let pad_flag = ControlModule::get_pad_flag(boma);
-        if moveset_utils::jump_checker_buffer(boma, cat1) {
+        if boma.is_input_jump() {
             if situation_kind == *SITUATION_KIND_AIR && frame > 8.0 {
                 if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
@@ -41,7 +41,7 @@ unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleO
     if [*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK].contains(&status_kind) {
         // Jump cancels
         let pad_flag = ControlModule::get_pad_flag(boma);
-        if moveset_utils::jump_checker_buffer(boma, cat1) && frame > 6.0 && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+        if boma.is_input_jump() && frame > 6.0 && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             if situation_kind == *SITUATION_KIND_AIR {
                 if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);

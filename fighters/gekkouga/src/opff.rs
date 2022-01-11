@@ -40,7 +40,7 @@ unsafe fn shadow_sneak_smash_attack_cancel(boma: &mut BattleObjectModuleAccessor
 // Dair Jump Cancel
 unsafe fn dair_jc(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, cat1: i32, motion_kind: u64, frame: f32) {
     if motion_kind == hash40("attack_air_lw") {
-        if moveset_utils::jump_checker_buffer(boma, cat1) {
+        if boma.is_input_jump() {
             if frame > 30.0 {
                 if situation_kind == *SITUATION_KIND_AIR {
                     if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {

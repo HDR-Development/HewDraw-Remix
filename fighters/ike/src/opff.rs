@@ -56,7 +56,7 @@ unsafe fn jump_attack_cancels(boma: &mut BattleObjectModuleAccessor, id: usize, 
     // Jump and Attack cancels
     let pad_flag = ControlModule::get_pad_flag(boma);
 
-    if moveset_utils::jump_checker_buffer(boma, cat1) {
+    if boma.is_input_jump() {
         if situation_kind == *SITUATION_KIND_GROUND {
             if facing * stick_x < 0.0 {
                 PostureModule::reverse_lr(boma);

@@ -6,7 +6,7 @@ use ::common::opff::*;
 unsafe fn upperdash_arm_jump_and_aerial_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32, frame: f32, id: usize) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S || (status_kind == *FIGHTER_PIT_STATUS_KIND_SPECIAL_S_END && frame > 5.0) {
         if frame > 27.0 {
-            if moveset_utils::jump_checker_buffer(boma, cat1) {
+            if boma.is_input_jump() {
                 if situation_kind == *SITUATION_KIND_AIR {
                     if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) - 1 &&  !VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL) {
                         VarModule::on_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL);
