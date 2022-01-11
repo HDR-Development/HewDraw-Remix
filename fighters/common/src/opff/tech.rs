@@ -230,10 +230,10 @@ unsafe fn dash_drop(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
 //=================================================================
 unsafe fn run_squat(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_y: f32) {
     //let crouch_thresh: f32 = WorkModule::get_param_float(boma, hash40("common"), hash40("pass_stick_y"));
-    if status_kind == *FIGHTER_STATUS_KIND_RUN || status_kind == *FIGHTER_STATUS_KIND_RUN_BRAKE {
-        if stick_y < -0.66 {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
-        }
+    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_RUN, *FIGHTER_STATUS_KIND_RUN_BRAKE])
+    && boma.stick_y() < WorkModule::get_param_float(boma, hash40("common"), hash40("squat_stick_y"))
+    {
+        boma.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
     }
 }
 
@@ -241,30 +241,26 @@ unsafe fn run_squat(boma: &mut BattleObjectModuleAccessor, status_kind: i32, sti
 //== GLIDE TOSS
 //=================================================================
 unsafe fn glide_toss(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, facing: f32) {
-    let id = hdr::get_player_number(boma);
-    let prev_status = StatusModule::prev_status_kind(boma, 0);
-
-    if [*FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B].contains(&status_kind) {
-        if MotionModule::frame(boma) <= 6.0 {
-            can_glide_toss[id] = true;
-            VarModule::set_float(fighter.battle_object, vars::common::ROLL_DIR, facing);
-        }
-        else {
-            can_glide_toss[id] = false;
-        }
+    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B])
+    {
+        let max_ditcit_frame = ParamModule::get_float(boma.object(), ParamType::Common, "ditcit_frame");
+        VarModule::set_flag(boma.object(), vars::common::CAN_GLIDE_TOSS, MotionModule::frame(boma) <= max_ditcit_frame);
+        return;
     }
 
-    if status_kind == *FIGHTER_STATUS_KIND_ITEM_THROW {
-        if (prev_status == *FIGHTER_STATUS_KIND_ESCAPE_F) && can_glide_toss[id] {
-            let motion_value: f32 = 2.8 * (MotionModule::end_frame(boma) - MotionModule::frame(boma)) / MotionModule::end_frame(boma);
-            let motion_vec = Vector3f {x:  motion_value * VarModule::get_float(fighter.battle_object, vars::common::ROLL_DIR), y: 0.0, z: 0.0};
-            KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
+    if boma.is_status(*FIGHTER_STATUS_KIND_ITEM_THROW)
+    && VarModule::is_flag(boma.object(), vars::common::CAN_GLIDE_TOSS)
+    {
+        let multiplier = 2.8 * (MotionModule::end_frame(boma) - MotionModule::frame(boma)) / MotionModule::end_frame(boma);
+        let speed_x = if boma.is_prev_status(*FIGHTER_STATUS_KIND_ESCAPE_F) {
+            multiplier * VarModule::get_float(boma.object(), vars::common::ROLL_DIR)
+        } else if boma.is_prev_status(*FIGHTER_STATUS_KIND_ESCAPE_B) {
+            multiplier * VarModule::get_float(boma.object(), vars::common::ROLL_DIR) * -1.0
+        } else {
+            return;
         }
-        if (prev_status == *FIGHTER_STATUS_KIND_ESCAPE_B) && can_glide_toss[id] {
-            let motion_value: f32 = 2.8 * (MotionModule::end_frame(boma) - MotionModule::frame(boma)) / MotionModule::end_frame(boma);
-            let motion_vec = Vector3f {x:  motion_value * VarModule::get_float(fighter.battle_object, vars::common::ROLL_DIR) * -1.0, y: 0.0, z: 0.0};
-            KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-        }
+
+        KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &Vector3f::new(speed_x, 0.0, 0.0));
     }
 }
 

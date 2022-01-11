@@ -21,4 +21,5 @@
         <float hash="speed_lerp_max">2</float>
     </struct>
     <float hash="jump_special_hi_refresh">3</float>
+    <float hash="ditcit_frame">6</float>
 </struct>
