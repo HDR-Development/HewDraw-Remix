@@ -146,69 +146,30 @@ unsafe fn non_tumble_di(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agen
     // println!("hitstun passed: {}", hitstun_passed);
 }
 
-//=================================================================
-//== ASDI
-//=================================================================
-unsafe fn asdi(fighter: &mut L2CFighterCommon, lua_state: u64, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
-    //let prev_status = StatusModule::prev_status_kind(boma, 0);
-    // println!(" ======= Current Status Kind: {}", status_kind);
-    if [*FIGHTER_STATUS_KIND_DAMAGE, *FIGHTER_STATUS_KIND_DAMAGE_AIR, *FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL].contains(&status_kind) {
-        let stick_x = ControlModule::get_stick_x(boma);
-        let stick_y = ControlModule::get_stick_y(boma);
-        //let asdi_pulse_max = (WorkModule::get_param_float(boma, hash40("hit_stop_delay_flick_mul"), hash40("common"))) * (WorkModule::get_param_float(boma, hash40("hit_stop_delay_auto_mul"), hash40("common")));
-        let asdi_pulse_max = 3.0;
-        //let asdi_mag = ((stick_x ^2) + (stick_y ^2)).sqrt
-        // println!("Current frames of hitlag: {}", WorkModule::get_int(boma, *FIGHTER_STATUS_DAMAGE_WORK_INT_HIT_STOP_FRAME));
-        // println!("Current frames of hitlag (tracked via FighterStopModuleImpl): {}", FighterStopModuleImpl::get_damage_stop_frame(boma));
-        if FighterStopModuleImpl::get_damage_stop_frame(boma) as i32 == 1 {
-            // println!("last frame of hitlag");
-            if(stick_x.abs() > 0.1 || stick_y.abs() > 0.1){
-                // println!("ASDI x: {}", stick_x);
-                // println!("ASDI y: {}", stick_y);
-                // println!("ASDI max magnitude: {}", asdi_pulse_max);
-                // println!("Pre-ASDI x position: {}", PostureModule::pos_x(boma));
-                // println!("Pre-ASDI y position: {}", PostureModule::pos_y(boma));
-                // println!("Inputting ASDI pulse");
-                if situation_kind == *SITUATION_KIND_GROUND && stick_y > 0.0 {
-                    StatusModule::set_situation_kind(boma, SituationKind(*SITUATION_KIND_AIR), false);
-                }
-                let asdi_vec = Vector3f {x: asdi_pulse_max * stick_x * 50.0, y: asdi_pulse_max * stick_y * 50.0, z: 0.0};
-                PostureModule::add_pos(boma, &asdi_vec);
-                // println!("Post-ASDI x position: {}", PostureModule::pos_x(boma));
-                // println!("Post-ASDI y position: {}", PostureModule::pos_y(boma));
-            }
-        }
-
-
-    }
-}
-
 // plat drop if you input down during a waveland (airdodge landing lag)
 unsafe fn waveland_plat_drop(boma: &mut BattleObjectModuleAccessor, cat2: i32, status_kind: i32) {
-    let plat_drop_statuses = [
+    let flick_y_sens = ParamModule::get_float(boma.object(), ParamType::Common, "general_flick_y_sens");
+    if boma.is_status(*FIGHTER_STATUS_KIND_LANDING)
+    && VarModule::is_flag(boma.object(), vars::common::ENABLE_WAVELAND_PLATDROP)
+    && GroundModule::is_passable_ground(boma)
+    && boma.is_flick_y()
+    && boma.is_prev_status_one_of(&[
         *FIGHTER_STATUS_KIND_ESCAPE_AIR,
         *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE
-    ];
-    let prev_status = StatusModule::prev_status_kind(boma, 0);
-    if status_kind == *FIGHTER_STATUS_KIND_LANDING && plat_drop_statuses.contains(&prev_status) {
-        
-        // if we are allowed to drop yet
-        if (VarModule::is_flag(boma.object(), common::ENABLE_WAVELAND_PLATDROP)) {
-            if GroundModule::is_passable_ground(boma) && hdr::stick_y_flick_check(boma, -0.66) {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_PASS, true);
-            }
-        }
+    ])
+    {
+        boma.change_status_req(*FIGHTER_STATUS_KIND_PASS, true);
+        return;
     }
-    let reset_statuses = [
+
+    if boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_ESCAPE_AIR,
         *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE,
         *FIGHTER_STATUS_KIND_LANDING
-    ];
-    if reset_statuses.contains(&status_kind) {
-        // if stick set to neutral, toggle waveland platdrop flag
-        if ControlModule::get_stick_y(boma) > -0.3 {
-            VarModule::on_flag(boma.object(), common::ENABLE_WAVELAND_PLATDROP);
-        }
+    ])
+    && boma.stick_y() > -0.3
+    {
+        VarModule::on_flag(boma.object(), vars::common::ENABLE_WAVELAND_PLATDROP);
     }
 }
 
@@ -227,7 +188,7 @@ unsafe fn dash_drop(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
         *FIGHTER_STATUS_KIND_TURN_DASH
     ])
     {
-        boma.is_status(*FIGHTER_STATUS_KIND_PASS, false);
+        boma.is_status(*FIGHTER_STATUS_KIND_PASS);
     }
 }
 
@@ -423,7 +384,6 @@ pub unsafe fn respawn_taunt(boma: &mut BattleObjectModuleAccessor, status_kind: 
 pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mut L2CAgent, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32, curr_frame: f32) {
     tumble_exit(boma, cat[0], status_kind, situation_kind);
     non_tumble_di(fighter, lua_state, l2c_agent, boma, status_kind);
-    //asdi(fighter, lua_state, boma, status_kind); // Unused
     dash_drop(boma, status_kind);
     run_squat(boma, status_kind, stick_y); // Must be done after dash_drop()
     glide_toss(fighter, boma, status_kind, facing);
