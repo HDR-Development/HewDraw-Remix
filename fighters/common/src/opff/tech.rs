@@ -217,11 +217,17 @@ unsafe fn waveland_plat_drop(boma: &mut BattleObjectModuleAccessor, cat2: i32, s
 //== DASH DROP
 //=================================================================
 unsafe fn dash_drop(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if [*FIGHTER_STATUS_KIND_RUN, *FIGHTER_STATUS_KIND_RUN_BRAKE,
-        * FIGHTER_STATUS_KIND_DASH, *FIGHTER_STATUS_KIND_TURN_DASH].contains(&status_kind) {
-        if GroundModule::is_passable_ground(boma) && hdr::stick_y_flick_check(boma, -0.66) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_PASS, false);
-        }
+    let flick_y_sens = ParamModule::get_float(boma.object(), ParamType::Common, "general_flick_y_sens");
+    if GroundModule::is_passable_ground(boma)
+    && boma.is_flick_y(flick_y_sens)
+    && boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_RUN,
+        *FIGHTER_STATUS_KIND_RUN_BRAKE,
+        *FIGHTER_STATUS_KIND_DASH,
+        *FIGHTER_STATUS_KIND_TURN_DASH
+    ])
+    {
+        boma.is_status(*FIGHTER_STATUS_KIND_PASS, false);
     }
 }
 
@@ -258,7 +264,7 @@ unsafe fn glide_toss(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModu
             multiplier * VarModule::get_float(boma.object(), vars::common::ROLL_DIR) * -1.0
         } else {
             return;
-        }
+        };
 
         KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &Vector3f::new(speed_x, 0.0, 0.0));
     }
