@@ -9,6 +9,7 @@ use utils::{*, consts::*, util::*};
 use smash::app::*;
 
 pub use common_dyn::ext::*;
+pub use common_dyn::*;
 
 pub mod djc;
 pub mod opff;

@@ -6,20 +6,20 @@ use smash::lib::{lua_const::*, L2CValue, L2CAgent};
 use smash::lua2cpp::L2CFighterCommon;
 use smash::lua2cpp::L2CFighterBase;							 
 
-pub mod ledges;
-pub mod shields;
-pub mod physics;
-pub mod tech;
-pub mod tech_cleanup;
-pub mod cancels;
-pub mod var_resets;
-pub mod gentleman;
-pub mod momentum_transfer_line;
-//pub mod shotos;
+// pub mod ledges;
+// pub mod shields;
+// pub mod physics;
+// pub mod tech;
+// pub mod tech_cleanup;
+// pub mod cancels;
+// pub mod var_resets;
+// pub mod gentleman;
+// pub mod momentum_transfer_line;
+pub mod shotos;
 //pub mod magic;
-pub mod gimmick;
-pub mod floats;
-pub mod other;
+// pub mod gimmick;
+// pub mod floats;
+// pub mod other;
 
 /*
 pub fn install() {
@@ -51,7 +51,8 @@ impl FrameInfo {
     pub unsafe fn update_and_get(fighter: &mut L2CFighterCommon) -> Option<Self> {
         let lua_state = fighter.lua_state_agent;
         let boma = sv_system::battle_object_module_accessor(lua_state);
-        let id = hdr::get_player_number(boma);
+        // let id = hdr::get_player_number(boma);
+        let id = 0;
         if !(0..8).contains(&id) {
             return None;
         }
@@ -178,18 +179,18 @@ pub unsafe fn moveset_edits(fighter: &mut L2CFighterCommon, info: &FrameInfo) {
 
 
     // General Engine Edits
-    physics::run(fighter, info.lua_state, &mut *info.agent, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
-    shields::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
-    tech::run(fighter, info.lua_state, &mut *info.agent, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing, info.frame);
-    tech_cleanup::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing, info.frame);
-    cancels::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
-    ledges::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
-    var_resets::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
-    gentleman::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
-    //magic::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
-    gimmick::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
-    other::run(fighter, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
-    momentum_transfer_line::run(fighter, info.lua_state, &mut *info.agent, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
+    // physics::run(fighter, info.lua_state, &mut *info.agent, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
+    // shields::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
+    // tech::run(fighter, info.lua_state, &mut *info.agent, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing, info.frame);
+    // tech_cleanup::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing, info.frame);
+    // cancels::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
+    // ledges::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
+    // var_resets::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
+    // gentleman::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
+    // //magic::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
+    // gimmick::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
+    // other::run(fighter, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
+    // momentum_transfer_line::run(fighter, info.lua_state, &mut *info.agent, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
     // Function hooks are in src/hooks/function_hooks
 
     // Character Moveset Changes

@@ -447,7 +447,7 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
             if boma.is_cat_flag(Cat1::SpecialLw) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
             }
-            if boma.is_cat_flag( Cat4::SpecialHICommand) {
+            if boma.is_cat_flag( Cat4::SpecialHiCommand) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND,false);
             }
 
@@ -648,7 +648,7 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
                         }
                     }
-                    if boma.is_cat_flag( Cat4::SpecialHICommand) {
+                    if boma.is_cat_flag( Cat4::SpecialHiCommand) {
                         if !meter_used[id]{
                             meter_used[id] = true;
                             meter::use_meter_level(&mut agent_base, boma, 1);
@@ -714,7 +714,7 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
                         }
                     }
-                    if boma.is_cat_flag( Cat4::SpecialHICommand) {
+                    if boma.is_cat_flag( Cat4::SpecialHiCommand) {
                         if !meter_used[id]{
                             meter_used[id] = true;
                             meter::use_meter_level(&mut agent_base, boma, 1);

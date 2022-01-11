@@ -49,7 +49,7 @@ pub mod acmd_import {
 
 pub mod opff_import {
     pub use super::prelude::*;
-    pub use smash::app::{self, lua_bind::*, utility::*};
+    pub use smash::app::{self, *, lua_bind::*, utility::*};
     pub use smash::lua2cpp::*;
     pub use smash::lib::{*, lua_const::*};
     pub use smash::phx::*;

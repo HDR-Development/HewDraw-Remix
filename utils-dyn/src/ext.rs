@@ -191,7 +191,7 @@ bitflags! {
         const SpecialNCommand       = 0x1;
         const SpecialN2Command      = 0x2;
         const SpecialSCommand       = 0x4;
-        const SpecialHICommand      = 0x8;
+        const SpecialHiCommand      = 0x8;
         const Command6N6            = 0x10;
         const Command4N4            = 0x20;
         const AttackCommand1        = 0x40;
