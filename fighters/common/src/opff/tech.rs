@@ -230,10 +230,10 @@ unsafe fn dash_drop(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
 //=================================================================
 unsafe fn run_squat(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_y: f32) {
     //let crouch_thresh: f32 = WorkModule::get_param_float(boma, hash40("common"), hash40("pass_stick_y"));
-    if status_kind == *FIGHTER_STATUS_KIND_RUN || status_kind == *FIGHTER_STATUS_KIND_RUN_BRAKE {
-        if stick_y < -0.66 {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
-        }
+    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_RUN, *FIGHTER_STATUS_KIND_RUN_BRAKE])
+    && boma.stick_y() < WorkModule::get_param_float(boma, hash40("common"), hash40("squat_stick_y"))
+    {
+        boma.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
     }
 }
 
@@ -241,263 +241,57 @@ unsafe fn run_squat(boma: &mut BattleObjectModuleAccessor, status_kind: i32, sti
 //== GLIDE TOSS
 //=================================================================
 unsafe fn glide_toss(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, facing: f32) {
-    let id = hdr::get_player_number(boma);
-    let prev_status = StatusModule::prev_status_kind(boma, 0);
-
-    if [*FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B].contains(&status_kind) {
-        if MotionModule::frame(boma) <= 6.0 {
-            can_glide_toss[id] = true;
-            VarModule::set_float(fighter.battle_object, vars::common::ROLL_DIR, facing);
-        }
-        else {
-            can_glide_toss[id] = false;
-        }
-    }
-
-    if status_kind == *FIGHTER_STATUS_KIND_ITEM_THROW {
-        if (prev_status == *FIGHTER_STATUS_KIND_ESCAPE_F) && can_glide_toss[id] {
-            let motion_value: f32 = 2.8 * (MotionModule::end_frame(boma) - MotionModule::frame(boma)) / MotionModule::end_frame(boma);
-            let motion_vec = Vector3f {x:  motion_value * VarModule::get_float(fighter.battle_object, vars::common::ROLL_DIR), y: 0.0, z: 0.0};
-            KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-        }
-        if (prev_status == *FIGHTER_STATUS_KIND_ESCAPE_B) && can_glide_toss[id] {
-            let motion_value: f32 = 2.8 * (MotionModule::end_frame(boma) - MotionModule::frame(boma)) / MotionModule::end_frame(boma);
-            let motion_vec = Vector3f {x:  motion_value * VarModule::get_float(fighter.battle_object, vars::common::ROLL_DIR) * -1.0, y: 0.0, z: 0.0};
-            KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-        }
-    }
-}
-
-//=================================================================
-//== PIVOTS
-//=================================================================
-const PIVOT_STICK_SNAPBACK_WINDOW: f32 = 2.0;
-unsafe fn pivots(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_value_x: f32, curr_frame: f32){
-
-    // Get the pivot boost amount for the current character
-    let dash_speed: f32 = WorkModule::get_param_float(boma, hash40("dash_speed"), 0);
-    let mut pivot_boost: smash::phx::Vector3f = smash::phx::Vector3f {x: dash_speed * 0.75, y: 0.0, z: 0.0};
-    if status_kind == *FIGHTER_STATUS_KIND_TURN_DASH
-        && curr_frame <= PIVOT_STICK_SNAPBACK_WINDOW && stick_value_x == 0.0
-        && [*FIGHTER_STATUS_KIND_TURN_DASH, *FIGHTER_STATUS_KIND_DASH].contains(&StatusModule::prev_status_kind(boma, 0))
-        && ![*FIGHTER_STATUS_KIND_WAIT, *FIGHTER_STATUS_KIND_TURN].contains(&StatusModule::prev_status_kind(boma, 1))
+    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B])
     {
-        /*
-        if curr_frame == 3.0 {
-            pivot_boost.x = dash_speed * 0.35; // Reduce pivot speed boost if on the last frame of pivot leniency
-        }
-        */
-        PostureModule::reverse_lr(boma);
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_TURN,true);
-        KineticModule::clear_speed_all(boma);
-        KineticModule::add_speed(boma, &pivot_boost);
+        let max_ditcit_frame = ParamModule::get_float(boma.object(), ParamType::Common, "ditcit_frame");
+        VarModule::set_flag(boma.object(), vars::common::CAN_GLIDE_TOSS, MotionModule::frame(boma) <= max_ditcit_frame);
+        return;
     }
-}
 
-
-//=================================================================
-//== MOONWALKS
-//== Note: There may be some unforeseen kinks to work out
-//=================================================================
-#[derive(Copy, Clone)]
-pub enum MwState {
-    BEGIN,
-    LOOP,
-    SLIDE,
-    WAIT,
-}
-unsafe fn moonwalk(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
-    let id = hdr::get_player_number(boma);
-
-    match state[id] {
-        MwState::BEGIN => {
-            if status_kind == *FIGHTER_STATUS_KIND_DASH || status_kind == *FIGHTER_STATUS_KIND_TURN_DASH {
-                state[id] = MwState::LOOP;
-            }
+    if boma.is_status(*FIGHTER_STATUS_KIND_ITEM_THROW)
+    && VarModule::is_flag(boma.object(), vars::common::CAN_GLIDE_TOSS)
+    {
+        let multiplier = 2.8 * (MotionModule::end_frame(boma) - MotionModule::frame(boma)) / MotionModule::end_frame(boma);
+        let speed_x = if boma.is_prev_status(*FIGHTER_STATUS_KIND_ESCAPE_F) {
+            multiplier * VarModule::get_float(boma.object(), vars::common::ROLL_DIR)
+        } else if boma.is_prev_status(*FIGHTER_STATUS_KIND_ESCAPE_B) {
+            multiplier * VarModule::get_float(boma.object(), vars::common::ROLL_DIR) * -1.0
+        } else {
+            return;
         }
-        MwState::LOOP => {
-            if stick_x == 0.0 && stick_y == 0.0 {
-                state[id] = MwState::WAIT;
-            } else if PostureModule::lr(boma) * stick_x < 0.0 {
-                let x_vel = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-                // Reverse momentum
-                //KineticModule::add_speed(boma, &Vector3f {x: x_vel.abs() * -2.0 * stick_x.abs(), y: 0.0, z: 0.0});
-                state[id] = MwState::SLIDE;
-            } else if status_kind != *FIGHTER_STATUS_KIND_DASH || status_kind != *FIGHTER_STATUS_KIND_TURN_DASH {
-                state[id] = MwState::BEGIN;
-            } else {
-                // Waiting for input
-            }
-        }
-        MwState::SLIDE => {
-            let x_vel = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            let run_speed_max = WorkModule::get_param_float(boma, hash40("run_speed_max"), 0);
-            let run_accel_add = WorkModule::get_param_float(boma, hash40("run_accel_add"), 0);
-            let run_accel_mul = WorkModule::get_param_float(boma, hash40("run_accel_mul"), 0);
-            let vel_step = Vector3f {x: (run_accel_add + run_accel_mul * stick_x.abs()) * -1.0, y: 0.0, z: 0.0};
 
-            //WorkModule::unable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN);
-            if vel_step.x.abs() + x_vel.abs() <= run_speed_max {
-                KineticModule::add_speed(boma, &vel_step);
-            }
-            if status_kind == *FIGHTER_STATUS_KIND_JUMP_SQUAT {
-                PostureModule::set_lr(boma, x_vel.signum() * -1.0);
-                PostureModule::update_rot_y_lr(boma);
-            }
-            if status_kind != *FIGHTER_STATUS_KIND_DASH && status_kind != *FIGHTER_STATUS_KIND_TURN_DASH {
-                state[id] = MwState::BEGIN;
-            }
-        }
-        MwState::WAIT => {
-            if status_kind != *FIGHTER_STATUS_KIND_DASH && status_kind != *FIGHTER_STATUS_KIND_TURN_DASH {
-                state[id] = MwState::BEGIN;
-            }
-        }
-    };
-}
-
-//=================================================================
-//== MOONWALKS
-//== Version 8.4.0a Implementation
-//=================================================================
-unsafe fn moonwalks(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_value_x: f32, stick_value_y: f32, facing: f32) {
-    /* Moonwalk melee calculation: (stick_pos.x * run_accel_mul) + (sign(stick_pos.x) * run_accel_add) */
-    let run_speed = WorkModule::get_param_float(boma, hash40("run_speed_max"), 0);
-    let run_accel_mul = WorkModule::get_param_float(boma, hash40("run_accel_mul"), 0);
-    let run_accel_add = WorkModule::get_param_float(boma, hash40("run_accel_add"), 0);
-    let ground_brake = WorkModule::get_param_float(boma, hash40("ground_brake"), 0);
-    let dash_speed: f32 = WorkModule::get_param_float(boma, hash40("dash_speed"), 0);
-    let stick_x = fighter.global_table[hdr_modules::consts::globals::STICK_X].get_f32();
-    let is_dash_input: bool = ((ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH) != 0) || ((ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH) != 0);
-    let mut moonwalk_go: f32 = 0.0;
-    if dash_speed > run_speed{
-        moonwalk_go = dash_speed;
-    }
-    else{
-        moonwalk_go = run_speed;
-    }
-    if [*FIGHTER_STATUS_KIND_DASH].contains(&status_kind) {
-        if stick_value_x*facing < -0.1 && stick_value_y < -0.65 {
-            VarModule::on_flag(fighter.battle_object, vars::common::IS_MOONWALK);
-            VarModule::on_flag(fighter.battle_object, vars::common::IS_MOONWALK_JUMP);
-        }
-        if !is_dash_input && MotionModule::frame(boma) > 2.0 && stick_value_x*facing < -0.18 /*Walk stick sensitivity*/ && VarModule::is_flag(fighter.battle_object, vars::common::IS_MOONWALK) {  // If you haven't input a turn dash, your dash frame isn't at the start of a turn dash, your stick is backwards, and the moonwalk input is valid
-            let mut prev_speed = 0.0;
-            if KineticModule::is_enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-                prev_speed = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-            }
-            else {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
-                prev_speed = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-            }
-            let added_speed = stick_value_x.signum() * ((run_accel_mul + (run_accel_add * stick_value_x.abs())));
-            let moonwalk_speed = prev_speed + added_speed;
-            let moonwalk_speed_clamped = moonwalk_speed.clamp(run_speed, run_speed);
-
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-            app::sv_kinetic_energy::unable(fighter.lua_state_agent);
-
-            // println!("moonwalkin: {}", moonwalk_speed);
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
-            app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP, moonwalk_speed_clamped);
-            app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-        }
-        else {
-            if MotionModule::frame(boma) > 2.0 && VarModule::is_flag(fighter.battle_object, vars::common::IS_MOONWALK) {
-                // println!("moonwalk off dash");
-                VarModule::off_flag(fighter.battle_object, vars::common::IS_MOONWALK);
-                if !is_dash_input {
-                    // println!("no dash");
-                    fighter.clear_lua_stack();
-                    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
-                    let speed_stop = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-                    let added_speed = speed_stop - (facing * -2.0 * ground_brake);
-                    let added_speed_clamped = added_speed.clamp(-run_speed, run_speed);
-
-                    fighter.clear_lua_stack();
-                    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-                    app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-                    fighter.clear_lua_stack();
-                    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, added_speed_clamped);
-                    app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-                    fighter.clear_lua_stack();
-                    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
-                    app::sv_kinetic_energy::unable(fighter.lua_state_agent);
-                }
-            }
-        }
+        KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &Vector3f::new(speed_x, 0.0, 0.0));
     }
 }
 
 unsafe fn shield_lock_tech(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     // airdodge with second shield button while holding another shield button
-    if situation_kind == *SITUATION_KIND_AIR
-    && [*FIGHTER_STATUS_KIND_JUMP,
+    if boma.is_situation(*SITUATION_KIND_AIR)
+    && boma.is_button_trigger(Buttons::GuardHold)
+    && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR)
+    && boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_JUMP,
         *FIGHTER_STATUS_KIND_JUMP_AERIAL,
         *FIGHTER_STATUS_KIND_FALL,
         *FIGHTER_STATUS_KIND_PASS,
         *FIGHTER_STATUS_KIND_FALL_AERIAL,
         *FIGHTER_STATUS_KIND_CLIFF_JUMP1,
         *FIGHTER_STATUS_KIND_CLIFF_JUMP2,
-        *FIGHTER_STATUS_KIND_CLIFF_JUMP3].contains(&status_kind) {
-        if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_GUARD_HOLD) {
-            if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
-            }
-        }
+        *FIGHTER_STATUS_KIND_CLIFF_JUMP3
+    ])
+    {
+        boma.change_status_req(*FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
+        return;
     }
 
-    // allow button jump during shield lock
-    if status_kind == *FIGHTER_STATUS_KIND_GUARD_ON || status_kind == *FIGHTER_STATUS_KIND_GUARD {
-        let special_buttons = [
-        *CONTROL_PAD_BUTTON_SPECIAL,
-        *CONTROL_PAD_BUTTON_SPECIAL_RAW
-        ];
-        let special_disabled = WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_GUARD_HOLD_SPECIAL_BUTTON);
-        let special_hold = special_buttons.iter().any(|x| ControlModule::check_button_on(boma, *x));
-        let guard_hold = ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD_HOLD);
-
-        if (special_hold && !special_disabled) || guard_hold {
-            if boma.is_cat_flag(Cat1::Jump) {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-            }
-        }
+    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD])
+    && boma.is_cat_flag(Cat1::Jump)
+    && ((boma.is_button_on(Buttons::SpecialAll) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_GUARD_HOLD_SPECIAL_BUTTON))
+        || boma.is_button_on(Buttons::GuardHold))
+    {
+        boma.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
     }
 }
-
-unsafe fn tap_upB_jump_refresh(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, fighter_kind: i32, cat1: i32) {
-    if status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL {
-        // if using tap jump (until I find a better way to check)
-        if ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_JUMP) && !ControlModule::check_button_release(boma, *CONTROL_PAD_BUTTON_JUMP) {
-            // if first 3 frames of dj
-            if MotionModule::frame(boma) <= 2.0 {
-                VarModule::on_flag(boma.object(), common::UP_SPECIAL_JUMP_REFRESH_WINDOW);
-            }
-            else {
-                VarModule::off_flag(boma.object(), common::UP_SPECIAL_JUMP_REFRESH_WINDOW);
-            }
-        }
-    }
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI && VarModule::is_flag(boma.object(), common::UP_SPECIAL_JUMP_REFRESH_WINDOW) && !VarModule::is_flag(boma.object(), common::DISABLE_UP_SPECIAL_JUMP_REFRESH) {
-        // Grants 1 extra jump if all jumps used up
-        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) == WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
-            WorkModule::set_int(boma, WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-        }
-        VarModule::on_flag(boma.object(), common::DISABLE_UP_SPECIAL_JUMP_REFRESH);
-        VarModule::off_flag(boma.object(), common::UP_SPECIAL_JUMP_REFRESH_WINDOW);
-    }
-    if situation_kind == *SITUATION_KIND_GROUND && VarModule::is_flag(boma.object(), common::DISABLE_UP_SPECIAL_JUMP_REFRESH) {
-        VarModule::off_flag(boma.object(), common::DISABLE_UP_SPECIAL_JUMP_REFRESH);
-    }
-}
-
  
 unsafe fn drift_di(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     if boma.is_situation(*SITUATION_KIND_AIR)
@@ -627,27 +421,11 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mu
     dash_drop(boma, status_kind);
     run_squat(boma, status_kind, stick_y); // Must be done after dash_drop()
     glide_toss(fighter, boma, status_kind, facing);
-    //moonwalk(boma, status_kind, stick_x, stick_y, facing);  // State-based implementation
-    //moonwalks(fighter, boma, status_kind, stick_x, stick_y, facing);  // Version 8.4.0a implementation
-    //pivots(boma, status_kind, stick_x, curr_frame);
     shield_lock_tech(boma, status_kind, situation_kind, cat[0]);
-    //tap_upB_jump_refresh(fighter, boma, status_kind, situation_kind, fighter_kind, cat[0]);
     drift_di(fighter, boma, status_kind, situation_kind);
     waveland_plat_drop(boma, cat[1], status_kind);
     hitfall(boma, status_kind, situation_kind, fighter_kind, cat);
     respawn_taunt(boma, status_kind);
-    
-
-    /*if BufferModule::is_persist(boma) && VarModule::is_flag(boma.object(), common::FLOAT_PAUSE_AERIAL) {
-        VarModule::off_flag(boma.object(), common::FLOAT_PAUSE_AERIAL);
-        let cbm_vec1 = Vector4f{x: 0.95, y: 0.95, z: 0.95, w: 0.2};
-        let cbm_vec2 = Vector4f{x: 0.0, y: 0.0, z: 0.3, w: 0.8};
-        ColorBlendModule::set_main_color(boma, &cbm_vec1, &cbm_vec2, 0.5, 2.2, 2, true);
-    }
-    if !BufferModule::is_persist(boma) && !VarModule::is_flag(boma.object(), common::FLOAT_PAUSE_AERIAL) {
-        VarModule::on_flag(boma.object(), common::FLOAT_PAUSE_AERIAL);
-        ColorBlendModule::cancel_main_color(boma, 0);
-    }*/
 
     freeze_stages(boma);
 }
