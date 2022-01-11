@@ -569,10 +569,10 @@ pub unsafe fn freeze_stages(boma: &mut BattleObjectModuleAccessor) {
 }
 
 pub unsafe fn hitfall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, fighter_kind: i32, cat: [i32 ; 4]) {
-    if situation_kind == *SITUATION_KIND_AIR
-        && [*FIGHTER_KIND_GAOGAEN].contains(&fighter_kind)
-        && status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-        
+    if boma.kind() == *FIGHTER_KIND_GAOGAEN
+    && boma.is_situation(*SITUATION_KIND_AIR)
+    && boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR)
+    {
         /* this is written this way because stick_y_flick wont update during
             hitlag, which means we need a flag to allow you to hitfall 1 frame
             after the end of hitlag as well, and we need to check previous 
@@ -581,26 +581,23 @@ pub unsafe fn hitfall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, s
             the hitlag is over. Without the HITFALL_BUFFER flag, you have to
             input the fastfall BEFORE you hit the move, only.
         */
-        if (!AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) 
-            && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
-            || AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT)
-            || AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::set_int(boma.object(), common::HITFALL_BUFFER, 0);
-        } 
+        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        || AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        {
+            VarModule::set_int(boma.object(), vars::common::HITFALL_BUFFER, 0);
+        }
+
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            VarModule::inc_int(boma.object(), vars::common::HITFALL_BUFFER);
+        }
+
+        let buffer = VarModule::get_int(boma.object(), vars::common::HITFALL_BUFFER);
         
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) 
-            || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::set_int(boma.object(), common::HITFALL_BUFFER, VarModule::get_int(boma.object(), common::HITFALL_BUFFER) + 1);
+        if boma.is_cat_flag(Cat2::FallJump)
+        && 0 < buffer && buffer <= 5 
+        {
+            WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
         }
-
-        let buffer = VarModule::get_int(boma.object(), common::HITFALL_BUFFER);
-        if compare_mask(cat[1], *FIGHTER_PAD_CMD_CAT2_FLAG_FALL_JUMP) && 
-            buffer <= 5 && buffer > 0 {
-            WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
-        }
-
-        // println!("CAN HITFALL: {}", VarModule::get_int(boma.object(), common::HITFALL_BUFFER));
-
     }
 }
 
