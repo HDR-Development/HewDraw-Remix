@@ -85,7 +85,6 @@ pub mod vars {
         pub const SPECIAL_CHECKS: i32 = 26;
         pub const DISABLE_AIRDODGE: i32 = 27;
         pub const NEUTRAL_SPECIAL_HIT: i32 = 28;
-        //pub const POPO_JC_GRAB: i32 = 29;
         pub const ILLUSION_SHORTENED: i32 = 30;
         pub const FOOTSTOOL_AIRDODGE_LOCKOUT: i32 = 31;
         pub const CAN_ESCAPE_TUMBLE: i32 = 32;
@@ -118,6 +117,8 @@ pub mod vars {
         pub const ENABLE_DOUBLE_TRACTION: i32 = 60;
         pub const PREV_FLAG_DISABLE_ESCAPE_AIR: i32 = 61;
         pub const ENABLE_WAVELAND_PLATDROP: i32 = 62;
+        pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 63;
+        pub const UP_SPECIAL_CANCEL: i32 = 64;
         
 
         // int
@@ -130,9 +131,9 @@ pub mod vars {
         pub const SNAKE_GRENADE_COUNTER: i32 = 0x6;
         pub const HITFALL_BUFFER: i32 = 0x7;
         pub const JUMP_SQUAT_FRAME: i32 = 0x8;
+        pub const GIMMICK_TIMER: i32 = 0x9;
 
         // float
-        /// var to store the damage that this fighter DEALT as the attacker.
         pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0;
         pub const CURRENT_MOMENTUM: i32 = 0x1;
         pub const JUMPSQUAT_VELOCITY: i32 = 0x2;
@@ -153,19 +154,8 @@ pub mod vars {
         pub const LEDGE_POS_Y: i32 = 0x10;
         pub const LEDGE_POS_Z: i32 = 0x11;
         pub const MP_SPEED_RATIO: i32 = 0x12;
-        
-
-        // separator
-        // flag
-        pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 0x50;
-        pub const UP_SPECIAL_CANCEL: i32 = 0x51;
-
-        // int
-        pub const GIMMICK_TIMER: i32 = 0x50;
-
-        // vec3
-        
-
+        pub const ANGLE_GRAB_STICK_Y: i32 = 0x13;
+       
     }
 
     pub mod brave {
