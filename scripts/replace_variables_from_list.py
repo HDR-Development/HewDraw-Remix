@@ -147,7 +147,7 @@ variables = [
 
 current_consts = "pub const IS_HEAVY_ATTACK: i32 = 0x0;\n        pub const FIREBRAND_ACTIVATED: i32 = 0x1;\n        pub const DOUBLE_FIREBALL: i32 = 0x2;\n        pub const NOKNOK_SHELL: i32 = 0x3;\n        pub const IS_IN_HITSTUN: i32 = 0x4;\n        pub const CSTICK_OVERRIDE: i32 = 0x5;\n        pub const CSTICK_OVERRIDE_SECOND: i32 = 0x6;\n        pub const IS_TAP_JUMP: i32 = 0x7;\n        pub const OMNI_FLOAT: i32 = 0x8;\n        pub const SIDE_SPECIAL_CANCEL: i32 = 0x9;\n        pub const DISABLE_UP_SPECIAL_JUMP_REFRESH: i32 = 0xA;\n        pub const HITSTUN_START: i32 = 0xB;\n        pub const AERIAL_NO_FLOAT: i32 = 0xC;\n        pub const FLOAT_PAUSE_AERIAL: i32 = 0xD;\n        pub const SMASH_CHECKS: i32 = 0xE;\n        pub const TILT_CHECKS: i32 = 0xF;\n        pub const JAB_DA_CHECKS: i32 = 0x10;\n        pub const AERIAL_CHECKS: i32 = 0x11;\n        pub const SPECIAL_STALL_USED: i32 = 0x12;\n        pub const SPECIAL_STALL: i32 = 0x13;\n        pub const UP_SPECIAL_INTERRUPT: i32 = 0x14;\n        pub const ENABLE_AIR_ESCAPE_MAGNET: i32 = 0x15;\n        pub const UP_SPECIAL_INTERRUPT_AIRTIME: i32 = 0x16;\n        pub const DITCIT_SLIDING: i32 = 0x17;\n\n\n        // int\n        pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0;\n        pub const COSTUME_SLOT_NUMBER: i32 = 0x1;\n        pub const FLOAT_TIMER: i32 = 0x2;\n        pub const FLOAT_DURATION: i32 = 0x3;\n        pub const FLOAT_STYLE: i32 = 0x4;\n        pub const GIMMICK_READY_GLOW_TIMER: i32 = 0x5;\n\n\n        // float\n        /// var to store the damage that this fighter DEALT as the attacker.\n        pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0;\n        pub const CURRENT_MOMENTUM: i32 = 0x1;\n        pub const JUMPSQUAT_VELOCITY: i32 = 0x2;\n        pub const JUMP_SPEED_RATIO: i32 = 0x3;\n        pub const DOUBLE_JUMP_FRAME: i32 = 0x4;\n        pub const GROUND_VEL: i32 = 0x5;\n        pub const RAR_LENIENCY: i32 = 0x6;\n        pub const CURRENT_MOMENTUM_SPECIALS: i32 = 0x7;\n\n        // separator\n        // flag\n        pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 0x50;\n        pub const UP_SPECIAL_CANCEL: i32 = 0x51;\n\n        // int\n        pub const GIMMICK_TIMER: i32 = 0x50;"
 
-new_consts = {}
+new_consts = set()
 
 os.chdir("../fighters")
 changed = 0
@@ -159,9 +159,13 @@ for entry in variables:
   variable_type = entry[1].lower()
 
   variable_lowercase = variable_name.lower()
-  changed += replace_patterns(variable_lowercase, "common::" + variable_name, variable_type)
+  just_changed = replace_patterns(variable_lowercase, "common::" + variable_name, variable_type)
+  changed += just_changed
+  if just_changed > 0 and not variable_name in new_consts:
+    new_consts.add(variable_name)
+    print(variable_name)
 
-print(changed)
+print("\nchanged: " + changed)
 
 
       

@@ -111,7 +111,7 @@ float_patterns = [
 ]
 
 
-def replace_patterns(old_var, new_var, var_type):
+def replace_patterns(old_var, new_var, var_type) -> int:
 
   if var_type == "flag":
     patterns = flag_patterns
@@ -124,14 +124,16 @@ def replace_patterns(old_var, new_var, var_type):
     exit(1)
   changed = 0
 
-  def variable_replace(file: str, old_var: str, new_var: str):
+  def variable_replace(file: str, old_var: str, new_var: str) -> int:
     changed = 0
     for old, new in patterns:
       # print(old + ", " + new)
       for index_value in index_values:
-        changed += inplace_change(file, 
+        did_change = inplace_change(file, 
           old.replace("{old_name}", old_var).replace("{index_value}", index_value), 
           new.replace("{new_name}", new_var))
+        if did_change:
+          changed += 1
     return changed
 
   characters.characters.add("common")
