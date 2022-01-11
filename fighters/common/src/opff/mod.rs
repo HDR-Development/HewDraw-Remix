@@ -51,7 +51,7 @@ impl FrameInfo {
     pub unsafe fn update_and_get(fighter: &mut L2CFighterCommon) -> Option<Self> {
         let lua_state = fighter.lua_state_agent;
         let boma = sv_system::battle_object_module_accessor(lua_state);
-        let id = hdr::get_player_number(boma);
+        let id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
         if !(0..8).contains(&id) {
             return None;
         }
@@ -60,7 +60,7 @@ impl FrameInfo {
         let cat3 = ControlModule::get_command_flag_cat(boma, 2);
         let cat4 = ControlModule::get_command_flag_cat(boma, 3);
         let cur_frame = MotionModule::frame(boma);
-        VarModule::set_int(fighter.battle_object,common::COSTUME_SLOT_NUMBER,WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR));
+        VarModule::set_int(fighter.battle_object, vars::common::COSTUME_SLOT_NUMBER,WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR));
         Some(Self {
             lua_state: lua_state,
             agent: fighter as *mut L2CFighterCommon as *mut L2CAgent,
@@ -101,7 +101,7 @@ impl WeaponFrameInfo {
     pub unsafe fn weapon_update_and_get(weapon: &mut L2CFighterBase) -> Option<Self> {
         let lua_state = weapon.lua_state_agent;
         let boma = sv_system::battle_object_module_accessor(lua_state);
-        let id = hdr::get_player_number(boma);
+        let id = 0;
         if !(0..8).contains(&id) {
             return None;
         }
@@ -110,7 +110,7 @@ impl WeaponFrameInfo {
         let cat3 = ControlModule::get_command_flag_cat(boma, 2);
         let cat4 = ControlModule::get_command_flag_cat(boma, 3);
         let cur_frame = MotionModule::frame(boma);
-        VarModule::set_int(weapon.battle_object,common::COSTUME_SLOT_NUMBER,WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR));
+        VarModule::set_int(weapon.battle_object, vars::common::COSTUME_SLOT_NUMBER,WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR));
         Some(Self {
             lua_state: lua_state,
             agent: weapon as *mut L2CFighterBase as *mut L2CAgent,
@@ -145,9 +145,9 @@ pub unsafe fn fighter_common_opff(fighter: &mut L2CFighterCommon) {
         let boma = &mut *info.boma;
         if get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
             /* Logic for when game "sessions" begin/end */
-            handle_game_resets(boma, fighter);
+            //handle_game_resets(boma, fighter);
             //Update and handle GLOBAL_FRAME_COUNT
-            global_frame_count::update_global_frame_counter(boma, info.status_kind);
+            //global_frame_count::update_global_frame_counter(boma, info.status_kind);
             //movesets
             moveset_edits(fighter, &info);
             // visualizer::training_mode_hitbox_visualizer_control(boma);
@@ -164,7 +164,7 @@ pub unsafe fn weapon_common_opff(weapon: &mut L2CFighterBase) {
             /* Logic for when game "sessions" begin/end */
             //handle_game_resets_weapon(boma, weapon);
             //Update and handle GLOBAL_FRAME_COUNT
-            global_frame_count::update_global_frame_counter(boma, info.status_kind);
+            //global_frame_count::update_global_frame_counter(boma, info.status_kind);
             //movesets
             weapon_edits(weapon, &info);
         }
@@ -202,51 +202,3 @@ pub unsafe fn weapon_edits(fighter: &mut L2CFighterBase, info: &WeaponFrameInfo)
 
 }
 
-/* Notes on is_ready_go and the logic here
-
-is_ready_go returns true when you (the player) have control over your character.
-by creating two statics and comparing them we can determine when the game switches from a state
-where you don't have control of the character (menus, loading, even training mode reset, anything that isn't technically "ingame")
-we can determine the "start" (or end) of a match/game/gameplay session
-
-In addition, is_ready go returns false for a few frames at the beginning of loading into training mode. It also returns false for the duration of the
-Ready.... Go! sequence at the beginning of a match.
-
-*/
-unsafe fn handle_game_resets(boma: &mut app::BattleObjectModuleAccessor, fighter: &mut L2CFighterCommon) {
-    let id = hdr::get_player_number(boma);
-    //static vars don't get re-initialized if they've already been
-    static mut last_ready_go: [bool;8] = [false;8];
-    static mut is_ready_go: [bool;8] = [true;8];
-
-    is_ready_go[id] = hdr::is_ready_go();
-
-    //THIS BLOCK RUNS WHEN A "SESSION" ENDS
-    if !is_ready_go[id] && last_ready_go[id]
-    {
-        //println!("---------------- GAME END --------------");
-    }
-    //THIS BLOCK RUNS WHEN A "SESSION" BEGINS
-    else if is_ready_go[id] && !last_ready_go[id]
-    {
-        //println!("---------------- GAME START --------------");
-        VarModule::reset(fighter.battle_object, VarModule::RESET_ALL);
-
-        //~~replacing char-specific status scripts... kinda a hacky way, but its not too bad lul. We "should" find a good place to hook to put this in, but like this works perfectly fine for now~~
-        // IT HAS BEEN DONE, HACKY NO MORE
-        //crate::status_scripts::character_specific::character_specific_status_script_replacements(app::utility::get_kind(boma), &fighter.agent);
-
-
-        // Initialize base dash and run speeds at the start of the match
-        //println!("Initializing base dash and run speeds...");
-        //VarModule::set_float(boma.object(), vars::common::BASE_DASH_SPEED, value_here)  WorkModule::get_param_float(boma, hash40("dash_speed"), 0);
-        //VarModule::set_float(boma.object(), vars::common::BASE_RUN_SPEED_MAX, value_here)  WorkModule::get_param_float(boma, hash40("run_speed_max"), 0);
-
-        //Momentum transfer helper
-        //Initialize ratio using base values (jump_speed_x_max / run_speed_max) once at beginning of match
-        let ratio = (WorkModule::get_param_float(boma, hash40("jump_speed_x_max"), 0) / WorkModule::get_param_float(boma, hash40("run_speed_max"), 0));
-        VarModule::set_float(fighter.battle_object, common::MP_SPEED_RATIO, ratio);
-
-    }
-    last_ready_go[id] = is_ready_go[id];
-}

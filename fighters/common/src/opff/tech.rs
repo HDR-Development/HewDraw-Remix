@@ -14,7 +14,7 @@ use smash::app::{self, lua_bind::*, sv_kinetic_energy, sv_animcmd};
 //== TUMBLE EXIT
 //=================================================================
 unsafe fn tumble_exit(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32) {
-    let id = hdr::get_player_number(boma);
+    
     let remaining_hitstun = WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
     let total_hitstun = WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME_LAST);
     let hitstun_passed = total_hitstun - remaining_hitstun;

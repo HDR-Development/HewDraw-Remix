@@ -149,6 +149,8 @@ pub mod vars {
         pub const LEDGE_POS_X: i32 = 0xF;
         pub const LEDGE_POS_Y: i32 = 0x10;
         pub const LEDGE_POS_Z: i32 = 0x11;
+        pub const MP_SPEED_RATIO: i32 = 0x12;
+        
 
         // separator
         // flag

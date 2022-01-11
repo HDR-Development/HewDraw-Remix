@@ -14,7 +14,7 @@ pub unsafe fn gimmick_flash(boma: &mut BattleObjectModuleAccessor) {
 }
 
 pub unsafe fn gimmick_ready_glow_timer_counting(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    let id = hdr::get_player_number(boma);
+    
     if VarModule::get_int(boma.object(), vars::common::GIMMICK_READY_GLOW_TIMER) > 0 && VarModule::get_int(boma.object(), vars::common::GIMMICK_READY_GLOW_TIMER) < 121 { // 250/5 = 50F
         if VarModule::get_int(boma.object(), vars::common::GIMMICK_READY_GLOW_TIMER) > 119 {
             ColorBlendModule::cancel_main_color(boma, 0);
