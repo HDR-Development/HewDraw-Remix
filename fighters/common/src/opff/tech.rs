@@ -588,12 +588,12 @@ pub unsafe fn respawn_taunt(boma: &mut BattleObjectModuleAccessor, status_kind: 
     }
 
     match MotionModule::motion_kind(boma) {
-        utils::hash40!("appeal_hi_r") => return,
-        utils::hash40!("appeal_hi_l") => return,
-        utils::hash40!("appeal_lw_r") => return,
-        utils::hash40!("appeal_lw_l") => return,
-        utils::hash40!("appeal_s_l") => return,
-        utils::hash40!("appeal_s_r") => return,
+        ::utils::hash40!("appeal_hi_r") => return,
+        ::utils::hash40!("appeal_hi_l") => return,
+        ::utils::hash40!("appeal_lw_r") => return,
+        ::utils::hash40!("appeal_lw_l") => return,
+        ::utils::hash40!("appeal_s_l") => return,
+        ::utils::hash40!("appeal_s_r") => return,
         _ => {}
     }
 
