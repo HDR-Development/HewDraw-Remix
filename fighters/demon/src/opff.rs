@@ -9,13 +9,13 @@ unsafe fn slaughter_high_kick(boma: &mut BattleObjectModuleAccessor, cat1: i32, 
             if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3
                                     | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4)
                && boma.is_stick_backward() {
-                VarModule::on_flag(boma.object(), demon::SLAUGHTER_HIGH_KICK);
+                VarModule::on_flag(boma.object(), vars::demon::SLAUGHTER_HIGH_KICK);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_5,false);
             }
         }
     }
     if ![*FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_5].contains(&status_kind) {
-        VarModule::off_flag(boma.object(), demon::SLAUGHTER_HIGH_KICK);
+        VarModule::off_flag(boma.object(), vars::demon::SLAUGHTER_HIGH_KICK);
     }
 }
 

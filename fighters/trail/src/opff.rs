@@ -9,14 +9,14 @@ unsafe fn jab_2_ftilt_cancel(boma: &mut BattleObjectModuleAccessor, cat1: i32, s
             if boma.is_cat_flag(Cat1::AttackS3)
                && (WorkModule::is_flag(boma, /*Flag*/ *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) || WorkModule::is_flag(boma, /*Flag*/ *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO)) {
                 if !StopModule::is_stop(boma) {
-                    VarModule::on_flag(boma.object(), trail::ATTACK_12_INTO_S3);
+                    VarModule::on_flag(boma.object(), vars::trail::ATTACK_12_INTO_S3);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S3,false);
                 }
             }
         }
     }
     if ![*FIGHTER_STATUS_KIND_ATTACK, *FIGHTER_STATUS_KIND_ATTACK_S3].contains(&status_kind) {
-        VarModule::off_flag(boma.object(), trail::ATTACK_12_INTO_S3);
+        VarModule::off_flag(boma.object(), vars::trail::ATTACK_12_INTO_S3);
     }
 }
 

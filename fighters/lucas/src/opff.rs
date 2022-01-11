@@ -27,7 +27,7 @@ unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, st
                 VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT);
             }
             if VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME) {
-                VarModule::on_flag(boma.object(), common::UP_SPECIAL_CANCEL); // Disallow more up specials
+                VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL); // Disallow more up specials
             }
             StatusModule::change_status_request_from_script(boma, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END, true);
         }
@@ -108,7 +108,7 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     pk_thunder_cancel(boma, id, status_kind, situation_kind);
     pk_thunder_wall_ride(boma, id, status_kind, situation_kind);
     djc_momentum_helper(boma, id, status_kind, frame);
-    pf_fire_ff(boma, stick_y);
+    pk_fire_ff(boma, stick_y);
 }
 
 #[utils::opff(FIGHTER_KIND_LUCAS )]

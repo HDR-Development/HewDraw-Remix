@@ -18,7 +18,7 @@ unsafe fn cheer_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 unsafe fn spotdodge_desync(boma: &mut BattleObjectModuleAccessor, fighter_kind: i32, status_kind: i32) {
     if fighter_kind == *FIGHTER_KIND_NANA {
         if ![*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B].contains(&status_kind){
-            BufferModule::unable_persist(boma.object());
+            BufferModule::disable_persist(boma.object());
         } else if [*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B].contains(&StatusModule::status_kind_next(boma)) {
             BufferModule::enable_persist(boma.object());
         }
@@ -28,9 +28,10 @@ unsafe fn spotdodge_desync(boma: &mut BattleObjectModuleAccessor, fighter_kind: 
 // Clear JC grab flag
 unsafe fn clear_jc_grab_flag(id: usize, fighter_kind: i32, status_kind: i32) {
     if fighter_kind == *FIGHTER_KIND_POPO {
-        popo_jc_grab[id] = [*FIGHTER_STATUS_KIND_CATCH,
-                            *FIGHTER_STATUS_KIND_CATCH_PULL,
-                            *FIGHTER_STATUS_KIND_CATCH_WAIT].contains(&status_kind);
+        //VarModule::set_flag(boma.object(), vars::common::POPO_JC_GRAB,
+        //[*FIGHTER_STATUS_KIND_CATCH,
+        //    *FIGHTER_STATUS_KIND_CATCH_PULL,
+        //    *FIGHTER_STATUS_KIND_CATCH_WAIT].contains(&status_kind));
     }
 }
 

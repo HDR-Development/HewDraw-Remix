@@ -63,7 +63,7 @@ unsafe fn flutter_kick(boma: &mut BattleObjectModuleAccessor, id: usize, situati
         VarModule::off_flag(boma.object(), vars::common::AERIAL_COMMAND_RISING);
         VarModule::off_flag(boma.object(), vars::common::AERIAL_COMMAND_MOMENTUM_RESET);
     }
-    if situation_kind == *SITUATION_KIND_GROUND && aerial_command_risen[id] {
+    if situation_kind == *SITUATION_KIND_GROUND && VarModule::is_flag(boma.object(), vars::common::AERIAL_COMMAND_RISEN) {
         VarModule::off_flag(boma.object(), vars::common::AERIAL_COMMAND_RISEN);
         VarModule::off_flag(boma.object(), vars::common::AERIAL_COMMAND_MOMENTUM_RESET);
     }

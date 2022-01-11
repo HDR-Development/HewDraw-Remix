@@ -48,7 +48,7 @@ unsafe fn peach_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         _ => {
             fighter.sub_attack_air_common(false.into());
             MotionModule::set_trans_move_speed_no_scale(fighter.module_accessor, true);
-            return fighter.main_shift(djc::attack_air_main_status);
+            return fighter.main_shift(common::djc::attack_air_main_status);
         }
     };
     smash_script::notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_KEEP, fighter_log_attack_kind);

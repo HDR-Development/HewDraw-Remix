@@ -9,7 +9,7 @@ unsafe fn elytra_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status
         VarModule::add_float(boma.object(), vars::common::GLIDE_TIMER, 1.0);
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
             if(VarModule::get_float(boma.object(), vars::common::GLIDE_TIMER) > (25.0) && VarModule::get_float(boma.object(), vars::common::GLIDE_TIMER) < (45.0) ){
-                //VarModule::on_flag(boma.object(), common::UP_SPECIAL_CANCEL);
+                //VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_FALL_SPECIAL,false);
             }
         }

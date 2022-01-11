@@ -101,7 +101,7 @@ unsafe fn cannon_jump_kick_actionability(boma: &mut BattleObjectModuleAccessor, 
     if [*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI2_JUMP].contains(&status_kind) {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
 			if frame > 35.0 {
-				VarModule::on_flag(boma.object(), common::UP_SPECIAL_CANCEL);
+				VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL);
 				CancelModule::enable_cancel(boma);
 			}
 		}
@@ -120,7 +120,7 @@ unsafe fn arm_rocket_airdash(boma: &mut BattleObjectModuleAccessor, id: usize, s
 	}
 	if [*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI3_RUSH_END].contains(&status_kind) {
 		if frame > 10.0 {
-			VarModule::on_flag(boma.object(), common::UP_SPECIAL_CANCEL);
+			VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL);
 			StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
 		}
     }

@@ -31,7 +31,7 @@ unsafe fn bomb_n_deton_b_reverse(boma: &mut BattleObjectModuleAccessor, id: usiz
 }
 
 // Land cancel flags
-unsafe fn land_cancel_flags(boma: &mut BattleObjectModuleAccessor, fighter_kind: i32, id: usize, motion_kind: u64, status_kind: i32, situation_kind: i32) {
+unsafe fn land_cancel_flags(boma: &mut BattleObjectModuleAccessor, fighter_kind: i32, motion_kind: u64, status_kind: i32, situation_kind: i32) {
     // not including Link bc this stuff is handled within his status scripts
     if fighter_kind != *FIGHTER_KIND_LINK {
         //println!("land cancel flag fn test");
@@ -106,7 +106,7 @@ unsafe fn up_special_drift(boma: &mut BattleObjectModuleAccessor, fighter_kind: 
 }
 
 // Spin attack land cancel
-unsafe fn up_special_land_cancel(boma: &mut BattleObjectModuleAccessor, fighter_kind: i32, id: usize, status_kind: i32) {
+unsafe fn up_special_land_cancel(boma: &mut BattleObjectModuleAccessor, fighter_kind: i32, status_kind: i32) {
     let fighter_kind = get_kind(boma);
     // not including Link bc this stuff is handled within his status scripts
     if fighter_kind != *FIGHTER_KIND_LINK {
@@ -124,10 +124,10 @@ unsafe fn up_special_land_cancel(boma: &mut BattleObjectModuleAccessor, fighter_
 #[no_mangle]
 pub unsafe extern "Rust" fn links_common(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        let fighter_kind = get_kind(boma);
-        land_cancel_flags(boma, fighter_kind, id, info.motion_kind, info.status_kind, situation_kind);
-        up_special_drift(boma, fighter_kind, info.status_kind, situation_kind, stick_x, facing, info.frame);
-        up_special_land_cancel(boma, fighter_kind, id, info.status_kind);
+        let fighter_kind = get_kind(&mut *info.boma);
+        land_cancel_flags(&mut *info.boma, info.fighter_kind, info.motion_kind.hash, info.status_kind, info.situation_kind);
+        up_special_drift(&mut *info.boma, info.fighter_kind, info.status_kind, info.situation_kind, info.stick_x, info.facing, info.frame);
+        up_special_land_cancel(&mut *info.boma, info.fighter_kind, info.status_kind);
     }
 }
 

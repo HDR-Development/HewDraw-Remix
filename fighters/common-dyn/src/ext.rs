@@ -34,7 +34,7 @@ pub mod prelude {
     pub use super::AgentUtil;
     pub use super::GetObjects;
     pub use super::LuaUtil;
-    pub use utils::consts::vars::*;
+    //pub use utils::consts::vars::*;
 }
 
 pub mod acmd_import {

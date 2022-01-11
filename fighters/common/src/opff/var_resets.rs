@@ -9,7 +9,7 @@ use smash::hash40;
 unsafe fn special_cancel_flag_reset(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     
     // Up Special Cancel
-    if VarModule::is_flag(boma.object(), common::UP_SPECIAL_CANCEL) {
+    if VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL) {
         if situation_kind != *SITUATION_KIND_AIR
             || [*SITUATION_KIND_AIR,
                 *FIGHTER_STATUS_KIND_DAMAGE,
@@ -26,7 +26,7 @@ unsafe fn special_cancel_flag_reset(boma: &mut BattleObjectModuleAccessor, statu
                 *FIGHTER_STATUS_KIND_WIN,
                 *FIGHTER_STATUS_KIND_LOSE,
                 *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-            VarModule::off_flag(boma.object(), common::UP_SPECIAL_CANCEL);
+            VarModule::off_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL);
         }
     }
 

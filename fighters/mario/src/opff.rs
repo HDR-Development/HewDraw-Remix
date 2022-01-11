@@ -64,7 +64,7 @@ unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     }
 
     // If grounded, reset aerial rise and momentum reset flags
-    if situation_kind == *SITUATION_KIND_GROUND && aerial_command_risen[id] {
+    if situation_kind == *SITUATION_KIND_GROUND && VarModule::is_flag(boma.object(), vars::common::AERIAL_COMMAND_RISEN) {
         VarModule::off_flag(boma.object(), vars::common::AERIAL_COMMAND_RISEN);
         VarModule::off_flag(boma.object(), vars::common::AERIAL_COMMAND_MOMENTUM_RESET);
     }

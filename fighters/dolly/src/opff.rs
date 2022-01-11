@@ -43,15 +43,12 @@ unsafe fn power_wave_dash_cancel_super_cancels(fighter: &mut L2CFighterCommon, b
         }
 
         // Triple Geyser
-        if meter::get_meter_level(boma) >= 10 {
+        if MeterModule::level(boma) >= 10 {
             if boma.is_cat_flag( Cat4::SpecialN2Command) {
-                if  !VarModule::is_flag(boma.object(), vars::common::METER_USED) {
-                    VarModule::on_flag(boma.object(), vars::common::METER_USED);
-                    meter::use_meter_level(&mut agent_base, boma, 10);
-                    WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-                    WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FINAL, true);
-                }
+                WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+                WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FINAL, true);
+                
             }
         }
 
@@ -93,16 +90,12 @@ unsafe fn special_super_cancels_triple_geyser(fighter: &mut L2CFighterCommon, bo
         *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND,
         *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK].contains(&status_kind) {
         // Triple Geyser
-        if meter::get_meter_level(boma) >= 10 {
+        if MeterModule::level(boma) >= 10 {
             if boma.is_cat_flag( Cat4::SpecialN2Command) {
-                if  !VarModule::is_flag(boma.object(), vars::common::METER_USED) {
-                    VarModule::on_flag(boma.object(), vars::common::METER_USED);
-                    meter::use_meter_level(&mut agent_base, boma, 10);
-                    WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
-                    WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-                    WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FINAL, true);
-                }
+                WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
+                WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+                WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FINAL, true);
             }
         }
     }
@@ -112,16 +105,13 @@ unsafe fn special_super_cancels_triple_geyser(fighter: &mut L2CFighterCommon, bo
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2,
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW].contains(&status_kind)
         && motion_kind == 0x13434c5490 as u64 {
-        if meter::get_meter_level(boma) >= 6 {
+        if MeterModule::level(boma) >= 6 {
             WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
             if boma.is_cat_flag( Cat4::SpecialN2Command) {
-                if  !VarModule::is_flag(boma.object(), vars::common::METER_USED) {
-                    VarModule::on_flag(boma.object(), vars::common::METER_USED);
-                    meter::use_meter_level(&mut agent_base, boma, 6);
-                    WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-                    WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FINAL, true);
-                }
+            
+                WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+                WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FINAL, true);
             }
         }
     }
@@ -147,10 +137,10 @@ unsafe fn burn_knuckle_land_cancel(boma: &mut BattleObjectModuleAccessor, id: us
 
 // Terrry Super Special Meter Activation
 unsafe fn super_special_meter_activation(boma: &mut BattleObjectModuleAccessor) {
-    if meter::get_meter_level(boma) >= 4 {
+    if MeterModule::level(boma) >= 4 {
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
     }
-    if meter::get_meter_level(boma) < 4 {
+    if MeterModule::level(boma) < 4 {
         WorkModule::off_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
     }
 }
@@ -174,17 +164,14 @@ unsafe fn super_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
     let mut agent_base = fighter.fighter_base.agent_base;
     // Power Geyser
     if status_kind == *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL {
-        if meter::get_meter_level(boma) >= 2 {
+        if MeterModule::level(boma) >= 2 {
             WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2);
             // Buster Wolf
             if compare_mask(cat4, *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND
                                     | *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_R_COMMAND) {
-                if  !VarModule::is_flag(boma.object(), vars::common::METER_USED) {
-                    VarModule::on_flag(boma.object(), vars::common::METER_USED);
-                    meter::use_meter_level(&mut agent_base, boma, 2);
-                    VarModule::on_flag(boma.object(), vars::common::SUPER_CANCEL);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, false);
-                }
+                
+                VarModule::on_flag(boma.object(), vars::common::SUPER_CANCEL);
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, false);
             }
         }
     }
@@ -192,17 +179,13 @@ unsafe fn super_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
     if [*FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2,
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW].contains(&status_kind)
         || motion_kind == 0x13434c5490 as u64 {
-        if meter::get_meter_level(boma) >= 2 {
+        if MeterModule::level(boma) >= 2 {
             WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL);
             // Power Geyser
             if compare_mask(cat4, *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND
                                     | *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_R_COMMAND) {
-                if  !VarModule::is_flag(boma.object(), vars::common::METER_USED) {
-                    VarModule::on_flag(boma.object(), vars::common::METER_USED);
-                    meter::use_meter_level(&mut agent_base, boma, 2);
-                    VarModule::on_flag(boma.object(), vars::common::SUPER_CANCEL);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, false);
-                }
+                VarModule::on_flag(boma.object(), vars::common::SUPER_CANCEL);
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, false);
             }
         }
     }
@@ -224,9 +207,10 @@ unsafe fn shield_stop_run_drop(boma: &mut BattleObjectModuleAccessor, status_kin
         && situation_kind == *SITUATION_KIND_GROUND
         && [*FIGHTER_STATUS_KIND_DASH, *FIGHTER_DOLLY_STATUS_KIND_DASH_BACK].contains(&status_kind)
     {
+        let flick_y_sens = ParamModule::get_float(boma.object(), ParamType::Common, "general_flick_y_sens");
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_GUARD_ON, true);
         ControlModule::clear_command(boma, true);
-        if GroundModule::is_passable_ground(boma) && hdr::stick_y_flick_check(boma, -0.66) {
+        if GroundModule::is_passable_ground(boma) && boma.is_flick_y(flick_y_sens) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_PASS, true);
         }
     }
@@ -274,30 +258,30 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
             // Check for tilt attack inputs
             if motion_kind != hash40("attack_13") {
                 if boma.is_cat_flag(Cat1::AttackS3) {
-                    VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
+                    VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S3,false);
                 }
                 if boma.is_cat_flag(Cat1::AttackHi3) {
-                    VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
+                    VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI3,false);
                 }
                 if boma.is_cat_flag(Cat1::AttackLw3) {
-                    VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
+                    VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW3,false);
                 }
             }
 
             // Check for smash attack inputs
             if boma.is_cat_flag(Cat1::AttackS4) {
-                VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
+                VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START,true);
             }
             if boma.is_cat_flag(Cat1::AttackHi4) {
-                VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
+                VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI4_START,true);
             }
             if boma.is_cat_flag(Cat1::AttackLw4) {
-                VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
+                VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW4_START,true);
             }
 
@@ -323,22 +307,22 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
             if motion_kind == hash40("attack_s3_s") {
                 if boma.is_cat_flag(Cat1::AttackHi3) {
                     //VarModule::on_flag(boma.object(), vars::common::TILT_CHECKS);
-                    VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
+                    VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI3,false);
                 }
             }
 
             // Check for smash attack inputs
             if boma.is_cat_flag(Cat1::AttackS4) {
-                VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
+                VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START,true);
             }
             if boma.is_cat_flag(Cat1::AttackHi4) {
-                VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
+                VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI4_START,true);
             }
             if boma.is_cat_flag(Cat1::AttackLw4) {
-                VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
+                VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW4_START,true);
             }
 
@@ -488,26 +472,26 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
                 //if (boma.is_cat_flag(Cat1::AttackAirF) ||
                 if (boma.is_cat_flag(Cat1::AttackS3) && boma.is_stick_forward())
                     || (boma.is_cat_flag(Cat1::AttackS4) && boma.is_stick_forward()) {
-                    //VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
+                    //VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
                 }
                 //if (boma.is_cat_flag(Cat1::AttackAirB) ||
                 if (boma.is_cat_flag(Cat1::AttackS3) && boma.is_stick_backward())
                     || (boma.is_cat_flag(Cat1::AttackS4) && boma.is_stick_backward()) {
-                    //VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
+                    //VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
                     //PostureModule::reverse_lr(boma);
                 }
                 //if (boma.is_cat_flag(Cat1::AttackAirHi) ||
                 if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3
                                         | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4) {
-                    //VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
+                    //VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
                 }
                 //if (boma.is_cat_flag(Cat1::AttackAirLw) ||
                 if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3
                                         | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4) {
-                    //VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
+                    //VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
                 }
             }
@@ -516,20 +500,20 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
                 //if (boma.is_cat_flag(Cat1::AttackAirB) ||
                 if (boma.is_cat_flag(Cat1::AttackS3) && boma.is_stick_backward())
                     || (boma.is_cat_flag(Cat1::AttackS4) && boma.is_stick_backward()) {
-                    //VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
+                    //VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
                     //PostureModule::reverse_lr(boma);
                 }
                 //if (boma.is_cat_flag(Cat1::AttackAirHi) ||
                 if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3
                                         | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4) {
-                    //VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
+                    //VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
                 }
                 //if (boma.is_cat_flag(Cat1::AttackAirLw) ||
                 if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3
                                         | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4) {
-                    //VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
+                    //VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
                 }
             }
@@ -542,14 +526,14 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
                 //if (boma.is_cat_flag(Cat1::AttackAirB) ||
                 if (boma.is_cat_flag(Cat1::AttackS3) && boma.is_stick_backward())
                     || (boma.is_cat_flag(Cat1::AttackS4) && boma.is_stick_backward()) {
-                    //VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
+                    //VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
                     //PostureModule::reverse_lr(boma);
                 }
                 //if (boma.is_cat_flag(Cat1::AttackAirLw) ||
                 if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3
                                         | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4) {
-                    //VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
+                    //VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
                 }
             }
@@ -558,7 +542,7 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
                 //if (boma.is_cat_flag(Cat1::AttackAirB) ||
                 if (boma.is_cat_flag(Cat1::AttackS3) && boma.is_stick_backward())
                     || (boma.is_cat_flag(Cat1::AttackS4) && boma.is_stick_backward()) {
-                    //VarModule::on_flag(boma.object(), vars::shotos::MAGIC_SERIES_CANCEL);
+                    //VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
                 }
             }
@@ -609,51 +593,39 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
                 WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND);
 
                 // Each cancel costs 2 meter
-                if meter::get_meter_level(boma) >= 1 {
+                if MeterModule::level(boma) >= 1 {
                     // Crack Shoot
                     if boma.is_cat_flag(Cat1::SpecialS) && boma.is_stick_backward() {
-                        if  !VarModule::is_flag(boma.object(), vars::common::METER_USED){
-                            VarModule::on_flag(boma.object(), vars::common::METER_USED);
-                            meter::use_meter_level(&mut agent_base, boma, 1);
-                            StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B,false);
-                        }
+                        
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B,false);
+                        
                     }
                     if boma.is_cat_flag( Cat4::SpecialSCommand) {
-                        if  !VarModule::is_flag(boma.object(), vars::common::METER_USED) {
-                            VarModule::on_flag(boma.object(), vars::common::METER_USED);
-                            meter::use_meter_level(&mut agent_base, boma, 1);
-                            StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND,false);
-                        }
+                        
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND,false);
+                        
                     }
                     // Rising Tackle
                     if boma.is_cat_flag(Cat1::SpecialHi) {
-                        if  !VarModule::is_flag(boma.object(), vars::common::METER_USED){
-                            VarModule::on_flag(boma.object(), vars::common::METER_USED);
-                            meter::use_meter_level(&mut agent_base, boma, 1);
-                            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI,false);
-                        }
+                        
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI,false);
+                        
                     }
                     if boma.is_cat_flag( Cat4::SpecialHi2Command) {
-                        if  !VarModule::is_flag(boma.object(), vars::common::METER_USED){
-                            VarModule::on_flag(boma.object(), vars::common::METER_USED);
-                            meter::use_meter_level(&mut agent_base, boma, 1);
-                            StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_COMMAND,false);
-                        }
+                        
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_COMMAND,false);
+                        
                     }
                     // Power Dunk
                     if boma.is_cat_flag(Cat1::SpecialLw) {
-                        if  !VarModule::is_flag(boma.object(), vars::common::METER_USED){
-                            VarModule::on_flag(boma.object(), vars::common::METER_USED);
-                            meter::use_meter_level(&mut agent_base, boma, 1);
-                            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
-                        }
+                        
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
+                        
                     }
                     if boma.is_cat_flag( Cat4::SpecialHiCommand) {
-                        if  !VarModule::is_flag(boma.object(), vars::common::METER_USED){
-                            VarModule::on_flag(boma.object(), vars::common::METER_USED);
-                            meter::use_meter_level(&mut agent_base, boma, 1);
-                            StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND,false);
-                        }
+                        
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND,false);
+                        
                     }
                 }
             }
@@ -667,59 +639,42 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
                 WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND);
 
                 // Each cancel costs 2 meter
-                if meter::get_meter_level(boma) >= 1 {
+                if MeterModule::level(boma) >= 1 {
                     // Power Wave
                     if boma.is_cat_flag(Cat1::SpecialN) {
-                        if  !VarModule::is_flag(boma.object(), vars::common::METER_USED){
-                            VarModule::on_flag(boma.object(), vars::common::METER_USED);
-                            meter::use_meter_level(&mut agent_base, boma, 1);
-                            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_N,false);
-                        }
+                        
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_N,false);
+                        
                     }
                     // Burn Knuckle
                     if boma.is_cat_flag(Cat1::SpecialS) && boma.is_stick_forward() {
-                        if  !VarModule::is_flag(boma.object(), vars::common::METER_USED){
-                            VarModule::on_flag(boma.object(), vars::common::METER_USED);
-                            meter::use_meter_level(&mut agent_base, boma, 1);
-                            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_S,false);
-                        }
+                        
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_S,false);
+                        
                     }
                     if boma.is_cat_flag( Cat4::SpecialNCommand) {
-                        if  !VarModule::is_flag(boma.object(), vars::common::METER_USED){
-                            VarModule::on_flag(boma.object(), vars::common::METER_USED);
-                            meter::use_meter_level(&mut agent_base, boma, 1);
-                            StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND,false);
-                        }
+                        
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND,false);
+                        
                     }
                     // Crack Shoot
                     if boma.is_cat_flag(Cat1::SpecialS) && boma.is_stick_backward() {
-                        if  !VarModule::is_flag(boma.object(), vars::common::METER_USED){
-                            VarModule::on_flag(boma.object(), vars::common::METER_USED);
-                            meter::use_meter_level(&mut agent_base, boma, 1);
-                            StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B,false);
-                        }
+                        
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B,false);
+                        
                     }
                     if boma.is_cat_flag( Cat4::SpecialSCommand) {
-                        if  !VarModule::is_flag(boma.object(), vars::common::METER_USED){
-                            VarModule::on_flag(boma.object(), vars::common::METER_USED);
-                            meter::use_meter_level(&mut agent_base, boma, 1);
-                            StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND,false);
-                        }
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND,false);
+                        
                     }
                     // Power Dunk
                     if boma.is_cat_flag(Cat1::SpecialLw) {
-                        if  !VarModule::is_flag(boma.object(), vars::common::METER_USED){
-                            VarModule::on_flag(boma.object(), vars::common::METER_USED);
-                            meter::use_meter_level(&mut agent_base, boma, 1);
-                            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
-                        }
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
+                        
                     }
                     if boma.is_cat_flag( Cat4::SpecialHiCommand) {
-                        if  !VarModule::is_flag(boma.object(), vars::common::METER_USED){
-                            VarModule::on_flag(boma.object(), vars::common::METER_USED);
-                            meter::use_meter_level(&mut agent_base, boma, 1);
-                            StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND,false);
-                        }
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND,false);
+                        
                     }
                 }
             }

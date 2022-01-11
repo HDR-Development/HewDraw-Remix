@@ -30,7 +30,7 @@ pub unsafe fn land_cancel_and_b_reverse(boma: &mut BattleObjectModuleAccessor, i
 }
 
 // Shinkespark charge
-unsafe fn shinespark_charge(id: usize, status_kind: i32, frame: f32) {
+unsafe fn shinespark_charge(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
     if [*FIGHTER_STATUS_KIND_RUN, *FIGHTER_STATUS_KIND_TURN_RUN].contains(&status_kind) && frame > 30.0 {
         if  !VarModule::is_flag(boma.object(), vars::common::SHINESPARK_READY) {
             VarModule::on_flag(boma.object(), vars::common::SHINESPARK_READY);
@@ -39,7 +39,7 @@ unsafe fn shinespark_charge(id: usize, status_kind: i32, frame: f32) {
 }
 
 // Shinkespark Reset
-unsafe fn shinespark_reset(id: usize, status_kind: i32) {
+unsafe fn shinespark_reset(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32) {
     if ![*FIGHTER_STATUS_KIND_ATTACK_DASH,
         *FIGHTER_STATUS_KIND_DASH,
         *FIGHTER_STATUS_KIND_TURN_DASH,
@@ -75,20 +75,27 @@ pub unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kin
     }
 }
 
+#[no_mangle]
+pub unsafe extern "Rust" fn common_samus(fighter: &mut L2CFighterCommon) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
+        land_cancel_and_b_reverse(&mut *info.boma, info.id, info.status_kind, info.situation_kind, info.stick_x, info.facing, info.frame);
+        morphball_crawl(&mut *info.boma, info.status_kind, info.frame);
+        nspecial_cancels(&mut *info.boma, info.status_kind, info.situation_kind);
+    }
+}
+
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
 
-    land_cancel_and_b_reverse(boma, id, status_kind, situation_kind, stick_x, facing, frame);
-    shinespark_charge(id, status_kind, frame);
-    shinespark_reset(id, status_kind);
-    morphball_crawl(boma, status_kind, frame);
-    nspecial_cancels(boma, status_kind, situation_kind);
+    shinespark_charge(boma, id, status_kind, frame);
+    shinespark_reset(boma, id, status_kind);
 }
 
 #[utils::opff(FIGHTER_KIND_SAMUS )]
 pub fn samus_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         fighter_common_opff(fighter);
-		samus_frame(fighter)
+		samus_frame(fighter);
+        common_samus(fighter);
     }
 }
 

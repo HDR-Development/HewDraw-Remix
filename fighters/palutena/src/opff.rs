@@ -23,7 +23,7 @@ pub unsafe fn palutena_teleport_cancel(boma: &mut BattleObjectModuleAccessor, id
                 let is_jump = compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP);
                 if (touch_right || touch_left) && (is_turn_dash || is_jump) {
                     VarModule::on_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP);
-                    VarModule::on_flag(boma.object(), common::UP_SPECIAL_CANCEL);
+                    VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                 }
             }

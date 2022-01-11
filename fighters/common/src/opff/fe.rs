@@ -39,7 +39,7 @@ unsafe fn dancing_blade_stall(boma: &mut BattleObjectModuleAccessor, id: usize, 
         if situation_kind == *SITUATION_KIND_AIR {
             if  !VarModule::is_flag(boma.object(), vars::common::SPECIAL_STALL_USED) {
                 if frame < 16.0 {
-                    special_stall[id] = true;
+                    VarModule::on_flag(boma.object(), vars::common::SPECIAL_STALL);
                     if jump_rising < 0.0 {
                         KineticModule::mul_speed(boma, &stop_rise, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                     }
@@ -51,9 +51,9 @@ unsafe fn dancing_blade_stall(boma: &mut BattleObjectModuleAccessor, id: usize, 
             }
         }
     }
-    if special_stall[id] && (status_kind != *FIGHTER_STATUS_KIND_SPECIAL_S || (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame >= 16.0)) {
+    if VarModule::is_flag(boma.object(), vars::common::SPECIAL_STALL) && (status_kind != *FIGHTER_STATUS_KIND_SPECIAL_S || (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame >= 16.0)) {
         VarModule::on_flag(boma.object(), vars::common::SPECIAL_STALL_USED);
-        special_stall[id] = false;
+        VarModule::off_flag(boma.object(), vars::common::SPECIAL_STALL);
     }
     if situation_kind == *SITUATION_KIND_GROUND && VarModule::is_flag(boma.object(), vars::common::SPECIAL_STALL_USED) {
         VarModule::off_flag(boma.object(), vars::common::SPECIAL_STALL_USED);

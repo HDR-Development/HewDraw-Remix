@@ -25,12 +25,12 @@ unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleO
         }
         // Wall Jump
         if situation_kind == *SITUATION_KIND_AIR {
-            if !VarModule::is_flag(fighter.battle_object, miiswordsman::SPECIAL_WALL_JUMP) {
+            if !VarModule::is_flag(fighter.battle_object, vars::common::SPECIAL_WALL_JUMP) {
                 let touch_right = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
                 let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
                 if touch_left || touch_right {
                     if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH | *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON) {
-                        VarModule::on_flag(fighter.battle_object, miiswordsman::SPECIAL_WALL_JUMP);
+                        VarModule::on_flag(fighter.battle_object, vars::common::SPECIAL_WALL_JUMP);
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                     }
                 }
@@ -94,14 +94,14 @@ unsafe fn heros_spin_movement(fighter: &mut L2CFighterCommon, boma: &mut BattleO
 unsafe fn land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, motion_kind: u64) {
     // Activate Land cancel flag
     if motion_kind == hash40("special_hi3") {
-        VarModule::on_flag(fighter.battle_object, common::SPIN_ATTACK_LAND_CANCEL);
+        VarModule::on_flag(fighter.battle_object, vars::common::SPIN_ATTACK_LAND_CANCEL);
     }
     // Reset Land cancel flag
     if !(motion_kind == hash40("special_hi3") || motion_kind == hash40("special_air_hi3")) {
-        VarModule::off_flag(fighter.battle_object, common::SPIN_ATTACK_LAND_CANCEL);
+        VarModule::off_flag(fighter.battle_object, vars::common::SPIN_ATTACK_LAND_CANCEL);
     }
     // Land cancel
-    if status_kind == *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL && VarModule::is_flag(fighter.battle_object, common::SPIN_ATTACK_LAND_CANCEL) {
+    if status_kind == *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL && VarModule::is_flag(fighter.battle_object, vars::common::SPIN_ATTACK_LAND_CANCEL) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
     }
 }
@@ -147,16 +147,16 @@ unsafe fn gale_strike_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
 unsafe fn skyward_slash_dash_act(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
 	if status_kind == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            VarModule::on_flag(fighter.battle_object, miiswordsman::SKYWARD_SLASH_DASH_HIT);
+            VarModule::on_flag(fighter.battle_object, vars::miiswordsman::SKYWARD_SLASH_DASH_HIT);
             //println!("SSD Hit");
         }
     }
     if status_kind == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END {
-        if VarModule::is_flag(fighter.battle_object, miiswordsman::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(boma.object(), common::IS_HEAVY_ATTACK) && situation_kind == *SITUATION_KIND_AIR {
+        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK) && situation_kind == *SITUATION_KIND_AIR {
             //println!("SSD Success");
             if frame >= 30.0 {
                 //println!("SSD Fall Act");
-                VarModule::off_flag(fighter.battle_object, miiswordsman::SKYWARD_SLASH_DASH_HIT);
+                VarModule::off_flag(fighter.battle_object, vars::miiswordsman::SKYWARD_SLASH_DASH_HIT);
                 VarModule::on_flag(fighter.battle_object, vars::common::UP_SPECIAL_CANCEL);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
             }
@@ -167,11 +167,11 @@ unsafe fn skyward_slash_dash_act(fighter: &mut L2CFighterCommon, boma: &mut Batt
 // Kinesis Blade OPFF stuff
 unsafe fn kinesis_blade(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64) {
 	if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW && (motion_kind == hash40("special_lw1") || motion_kind == hash40("special_air_lw1")){
-        if VarModule::get_int(boma.object(), miiswordsman::SPECIAL_LW1_CHARGE_LEVEL) > 0 {
+        if VarModule::get_int(boma.object(), vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL) > 0 {
             //println!("Kinesis ready");
             if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK) {
                 //println!("Kinesis activation");
-                VarModule::on_flag(boma.object(), miiswordsman::SPECIAL_LW1_ATTACK_TRIGGER);
+                VarModule::on_flag(boma.object(), vars::miiswordsman::SPECIAL_LW1_ATTACK_TRIGGER);
                 StatusModule::change_status_request(boma, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW1_HIT, false);
             }
         }

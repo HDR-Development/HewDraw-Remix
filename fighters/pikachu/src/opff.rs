@@ -4,18 +4,18 @@ use globals::*;
 use ::common::opff::*;
  
 // Disable QA jump cancels if not directly QA into the ground
-unsafe fn disable_qa_jc(id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
+unsafe fn disable_qa_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
     if status_kind == *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END {
         if situation_kind == *SITUATION_KIND_AIR && frame > 1.0 {
-            disable_special_jc[id] = true;
+            VarModule::on_flag(boma.object(), vars::common::DISABLE_SPECIAL_JC);
         }
     }
 }
 
 // Reset JC disable flag
-unsafe fn reset_jc_disable_flag(id: usize, status_kind: i32, situation_kind: i32) {
+unsafe fn reset_jc_disable_flag(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
     if situation_kind == *SITUATION_KIND_GROUND && status_kind != *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL {
-        disable_special_jc[id] = false;
+        VarModule::off_flag(boma.object(), vars::common::DISABLE_SPECIAL_JC);
     }
 }
 
@@ -27,8 +27,8 @@ unsafe fn jc_qa_agility(boma: &mut BattleObjectModuleAccessor, id: usize, status
             if situation_kind == *SITUATION_KIND_GROUND {
                 if [*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP,
                     *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END].contains(&prev_status_kind) {
-                    if !disable_special_jc[id] {
-                        if moveset_utils::jump_checker_buffer(boma, cat1) {
+                    if  !VarModule::is_flag(boma.object(), vars::common::DISABLE_SPECIAL_JC) {
+                        if boma.is_input_jump() {
                             if facing * stick_x < 0.0 {
                                 PostureModule::reverse_lr(boma);
                             }
@@ -42,8 +42,8 @@ unsafe fn jc_qa_agility(boma: &mut BattleObjectModuleAccessor, id: usize, status
 }
 
 pub unsafe fn electric_rats_moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    disable_qa_jc(id, status_kind, situation_kind, frame);
-    reset_jc_disable_flag(id, status_kind, situation_kind);
+    disable_qa_jc(boma, id, status_kind, situation_kind, frame);
+    reset_jc_disable_flag(boma, id, status_kind, situation_kind);
     jc_qa_agility(boma, id, status_kind, situation_kind, cat[0], stick_x, facing, frame);
 }
 

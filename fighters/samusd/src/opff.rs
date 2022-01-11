@@ -4,9 +4,7 @@ use globals::*;
 use ::common::opff::*;
  
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    super::samus::land_cancel_and_b_reverse(boma, id, status_kind, situation_kind, stick_x, facing, frame);
-    super::samus::morphball_crawl(boma, status_kind, frame);
-    super::samus::nspecial_cancels(boma, status_kind, situation_kind);
+    
 
     // Frame Data
     frame_data(boma, status_kind, motion_kind, frame);
@@ -25,11 +23,18 @@ unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, mo
     }
 }
 
+// symbol-based call for the samus' common opff
+extern "Rust" {
+    fn samus_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
+}
+
+
 #[utils::opff(FIGHTER_KIND_SAMUSD )]
 pub fn samusd_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         fighter_common_opff(fighter);
-		samusd_frame(fighter)
+		samusd_frame(fighter);
+        samus_common(fighter);
     }
 }
 

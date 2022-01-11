@@ -121,6 +121,8 @@ pub mod vars {
         pub const UP_SPECIAL_CANCEL: i32 = 64;
         pub const IS_TELEPORT_WALL_RIDE: i32 = 65;
         pub const SPIN_ATTACK_LAND_CANCEL: i32 = 66;
+        pub const AERIAL_COMMAND_RISEN: i32 = 67;
+        pub const DISABLE_SPECIAL_JC: i32 = 68;
         
 
         // int

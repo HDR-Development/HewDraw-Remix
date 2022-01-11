@@ -33,10 +33,10 @@ unsafe fn flag_resets(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
 unsafe fn transition_fall(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_FALL_SPECIAL {
         let prev_status = StatusModule::prev_status_kind(boma, 0);
-        if (prev_status == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_N_END && neutral_special_hit[id])
-            || (prev_status == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END && side_special_hit[id])
-            || (prev_status == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_HI_LOOP && up_special_hit[id])
-            || ([*FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_END, *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_ATTACK].contains(&prev_status) && down_special_hit[id]) {
+        if (prev_status == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_N_END && VarModule::is_flag(boma.object(), vars::common::NEUTRAL_SPECIAL_HIT))
+            || (prev_status == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END && VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_HIT))
+            || (prev_status == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_HI_LOOP && VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_HIT))
+            || ([*FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_END, *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_ATTACK].contains(&prev_status) && VarModule::is_flag(boma.object(), vars::common::DOWN_SPECIAL_HIT)) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
         }
     }

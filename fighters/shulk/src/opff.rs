@@ -8,7 +8,7 @@ unsafe fn air_slash_cancels(boma: &mut BattleObjectModuleAccessor, id: usize, st
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             if frame > 22.0 {
                 if boma.is_cat_flag(Cat1::JumpButton) {
-                    VarModule::on_flag(boma.object(), common::UP_SPECIAL_CANCEL);
+                    VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
                 }
             }

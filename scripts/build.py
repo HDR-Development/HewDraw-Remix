@@ -23,6 +23,10 @@ os.chdir('..')
 
 print("arguments: " + ' '.join(sys.argv))
 
+allow_build_dev = True
+if "nodev" in sys.argv:
+  allow_build_dev = False
+
 release_arg = ""
 build_type = "debug"
 if "release" in sys.argv or "--release" in sys.argv:
@@ -70,10 +74,12 @@ if (is_dev_build):
   
   # build the dev plugin with args
   os.environ["CARGO_TARGET_DIR"] = os.path.join("target", "development")
-  pkgutil.build(release_arg, dev_args)
+  
+  if allow_build_dev:
+    pkgutil.build(release_arg, dev_args)
 
-  pkgutil.collect_plugin("hdr-switch", os.path.join(switch_rom_path, development_subpath), build_type, "development.nro", "development")
-  pkgutil.collect_plugin("hdr-ryujinx", os.path.join(ryujinx_rom_path, development_subpath), build_type, "development.nro", "development")
+    pkgutil.collect_plugin("hdr-switch", os.path.join(switch_rom_path, development_subpath), build_type, "development.nro", "development")
+    pkgutil.collect_plugin("hdr-ryujinx", os.path.join(ryujinx_rom_path, development_subpath), build_type, "development.nro", "development")
 
   # setup normal nro
   non_dev_characters = characters.copy()

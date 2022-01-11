@@ -157,7 +157,7 @@ pub unsafe extern "Rust" fn fighter_common_opff(fighter: &mut L2CFighterCommon) 
     }
 }
 
-
+/*
 pub unsafe fn weapon_common_opff(weapon: &mut L2CFighterBase) {
     if let Some(info) = WeaponFrameInfo::weapon_update_and_get(weapon) {
         let boma = smash::app::sv_system::battle_object_module_accessor(weapon.lua_state_agent);
@@ -170,7 +170,7 @@ pub unsafe fn weapon_common_opff(weapon: &mut L2CFighterBase) {
             weapon_edits(weapon, &info);
         }
     }
-}
+}*/
 
 pub unsafe fn moveset_edits(fighter: &mut L2CFighterCommon, info: &FrameInfo) {
     let boma = &mut *info.boma;

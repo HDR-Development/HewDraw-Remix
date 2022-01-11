@@ -31,7 +31,7 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
     if status_kind == *FIGHTER_STATUS_KIND_CLIFF_CATCH
         || status_kind == *FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE
         || status_kind == *FIGHTER_STATUS_KIND_CLIFF_WAIT {
-        VarModule::set_vec3(boma.object(), common::LEDGE_POS, GroundModule::hang_cliff_pos_3f(boma));
+        VarModule::set_vec3(boma.object(), vars::common::LEDGE_POS, GroundModule::hang_cliff_pos_3f(boma));
     }
 
     // De-occupy ledge if not on ledge anymore
@@ -44,7 +44,7 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
         *FIGHTER_STATUS_KIND_CLIFF_JUMP1,
         *FIGHTER_STATUS_KIND_CLIFF_JUMP2,
         *FIGHTER_STATUS_KIND_CLIFF_JUMP3].contains(&status_kind) {
-        VarModule::set_vec3(boma.object(), common::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
+        VarModule::set_vec3(boma.object(), vars::common::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
     }
 
     // Tell the game you're currently occupying the ledge if you've been on it

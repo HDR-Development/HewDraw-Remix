@@ -21,7 +21,7 @@ unsafe fn soaring_slash_cancel(boma: &mut BattleObjectModuleAccessor, id: usize,
         if frame > 27.0 && frame < 30.0 {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
                 if VarModule::is_flag(boma.object(), vars::common::SOARING_SLASH_HIT) {
-                    VarModule::on_flag(boma.object(), common::UP_SPECIAL_CANCEL);
+                    VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
                 } else {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, true);

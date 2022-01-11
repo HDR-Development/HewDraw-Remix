@@ -53,9 +53,6 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     upB_kart_respawn(boma, status_kind);
 }
 
-pub unsafe fn weapon_moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    
-}
 
 #[utils::opff(FIGHTER_KIND_KOOPAJR )]
 pub fn koopajr_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
@@ -79,7 +76,7 @@ pub fn koopajr_weapon_frame_wrapper(weapon: &mut smash::lua2cpp::L2CFighterBase)
 }
 
 pub unsafe fn koopajr_weapon_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
-    if let Some(info) = crate::hooks::sys_line::WeaponFrameInfo::weapon_update_and_get(weapon) {
-        weapon_moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
-    }
+    //if let Some(info) = WeaponFrameInfo::weapon_update_and_get(weapon) {
+    //    
+    //}
 }

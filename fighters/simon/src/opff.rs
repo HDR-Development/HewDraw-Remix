@@ -41,7 +41,7 @@ unsafe fn cross_ff_land_cancel(boma: &mut BattleObjectModuleAccessor, id: usize,
 }
 
 // Turn off air_cross flag if not in Cross in the air
-unsafe fn air_cross_air_off(id: usize, status_kind: i32, situation_kind: i32) {
+unsafe fn air_cross_air_off(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
     if situation_kind == *SITUATION_KIND_AIR {
         if ![*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_SIMON_STATUS_KIND_SPECIAL_S2].contains(&status_kind) {
             if VarModule::is_flag(boma.object(), vars::common::AIR_CROSS) {
@@ -53,7 +53,7 @@ unsafe fn air_cross_air_off(id: usize, status_kind: i32, situation_kind: i32) {
 
 // Land cancel Cross if used in the air and fallen to the ground
 unsafe fn land_cancel_cross(boma: &mut BattleObjectModuleAccessor, id: usize, situation_kind: i32) {
-    if situation_kind == *SITUATION_KIND_GROUND && air_cross[id] {
+    if situation_kind == *SITUATION_KIND_GROUND && VarModule::is_flag(boma.object(), vars::common::AIR_CROSS) {
         VarModule::off_flag(boma.object(), vars::common::AIR_CROSS);
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
     }
@@ -62,7 +62,7 @@ unsafe fn land_cancel_cross(boma: &mut BattleObjectModuleAccessor, id: usize, si
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     holy_water_ac_b_rev(boma, id, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     cross_ff_land_cancel(boma, id, status_kind, situation_kind, cat[1], stick_y);
-    air_cross_air_off(id, status_kind, situation_kind);
+    air_cross_air_off(boma, id, status_kind, situation_kind);
     land_cancel_cross(boma, id, situation_kind);
 }
 
