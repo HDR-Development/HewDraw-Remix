@@ -7,3 +7,10 @@ pub mod ext;
 pub use ext::*;
 
 pub mod djc;
+
+pub mod opff {
+  use smash::lua2cpp::L2CFighterCommon;
+  extern "Rust" {
+    pub fn fighter_common_opff(fighter: &mut L2CFighterCommon);
+  }
+}

@@ -64,6 +64,7 @@ pub mod opff_import {
     pub use smash::app::sv_battle_object::notify_event_msc_cmd;
     pub use utils::{VarModule, ParamModule, BufferModule, MeterModule};
     pub use utils::consts::globals::*;
+    pub use super::super::opff::*;
 }
 
 pub trait StatusShift {

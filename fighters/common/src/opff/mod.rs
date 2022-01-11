@@ -140,7 +140,8 @@ Use this instead of get_command_flag_cat
 // lol, lmao - blujay
 
 // general per-frame fighter-level hooks
-pub unsafe fn fighter_common_opff(fighter: &mut L2CFighterCommon) {
+#[no_mangle]
+pub unsafe extern "Rust" fn fighter_common_opff(fighter: &mut L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         let boma = &mut *info.boma;
         if get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
