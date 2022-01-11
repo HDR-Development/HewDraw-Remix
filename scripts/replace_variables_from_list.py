@@ -161,8 +161,8 @@ for entry in variables:
   variable_lowercase = variable_name.lower()
   just_changed = replace_patterns(variable_lowercase, "common::" + variable_name, variable_type)
   changed += just_changed
-  if just_changed > 0 and not variable_name in new_consts:
-    new_consts.add(entry)
+  if just_changed > 0 and not (entry[0], entry[1]) in new_consts:
+    new_consts.add((entry[0], entry[1]))
     print(variable_name)
 
 print("\nchanged: ")

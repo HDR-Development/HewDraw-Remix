@@ -13,7 +13,7 @@ unsafe fn sonic_lightspeed_dash(boma: &mut BattleObjectModuleAccessor, status_ki
     }
 
     if status_kind == *FIGHTER_STATUS_KIND_DEAD {
-        sonic_lightspeed_dash_frame_counter[id] = 0.0;
+        VarModule::set_float(get_battle_object_from_accessor(boma), vars::common::SONIC_LIGHTSPEED_DASH_FRAME_COUNTER, 0.0);
         WorkModule::set_flag(boma, false, *FIGHTER_STATUS_WORK_KEEP_FLAG_SONIC_SPECIAL_S_DASH_FLAG);
     }
 

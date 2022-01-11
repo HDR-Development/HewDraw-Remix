@@ -54,7 +54,7 @@ unsafe fn special_cancel_flag_reset(boma: &mut BattleObjectModuleAccessor, statu
     }
 
     // Aerial Special Used
-    if air_special_used[player_number] {
+    if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::AIR_SPECIAL_USED) {
         if situation_kind != *SITUATION_KIND_AIR
              || [*SITUATION_KIND_AIR,
                 *FIGHTER_STATUS_KIND_DAMAGE,
@@ -71,19 +71,19 @@ unsafe fn special_cancel_flag_reset(boma: &mut BattleObjectModuleAccessor, statu
                 *FIGHTER_STATUS_KIND_WIN,
                 *FIGHTER_STATUS_KIND_LOSE,
                 *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-            air_special_used[player_number] = false;
+            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::AIR_SPECIAL_USED);
         }
     }
 
     // Up Special Wall Jump
-    if special_wall_jump[player_number] {
+    if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_WALL_JUMP) {
         if situation_kind != SITUATION_KIND_AIR
             || [*FIGHTER_STATUS_KIND_DEAD,
                 *FIGHTER_STATUS_KIND_REBIRTH,
                 *FIGHTER_STATUS_KIND_WIN,
                 *FIGHTER_STATUS_KIND_LOSE,
                 *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-            special_wall_jump[player_number] = false;
+            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_WALL_JUMP);
         }
     }
 

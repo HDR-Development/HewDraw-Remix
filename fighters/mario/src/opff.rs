@@ -18,11 +18,11 @@ unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         if frame <= 28.0 {
             if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
                 // Tell the game that you've started rising
-                aerial_command_rising[id] = true;
+                VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_RISING);
                 // Add vertical speed for the dair rise if you've activated the rise and this isn't your second time attempting to initiate the rise during your current airtime
-                if aerial_command_rising[id] && !aerial_command_risen[id] {
+                if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_RISING) &&  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_RISEN) {
                     // Reset momentum on the first special button press press
-                    if !aerial_command_momentum_reset[id]{
+                    if  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_MOMENTUM_RESET){
                         // Slow down the move to better facilitate recovering
                         MotionModule::set_rate(boma, 0.5);
                         // Have mario glow a bit to indicate that he's recovering
@@ -31,7 +31,7 @@ unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
                         KineticModule::clear_speed_energy_id(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                         KineticModule::clear_speed_energy_id(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
                         KineticModule::clear_speed_energy_id(boma, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                        aerial_command_momentum_reset[id] = true;
+                        VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_MOMENTUM_RESET);
                     }
                     //KineticModule::add_speed(boma, &motion_vec);
                     if y_speed + motion_vec.y > max_rise_speed {
@@ -53,20 +53,20 @@ unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         }
     }
 
-    if aerial_command_rising[id] {
+    if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_RISING) {
         if motion_kind != hash40("attack_air_lw")
             || (motion_kind == hash40("attack_air_lw") && frame > 28.0) {
             ColorBlendModule::cancel_main_color(boma, 0);
-            aerial_command_risen[id] = true;
-            aerial_command_rising[id] = false;
-            aerial_command_momentum_reset[id] = false;
+            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_RISEN);
+            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_RISING);
+            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_MOMENTUM_RESET);
         }
     }
 
     // If grounded, reset aerial rise and momentum reset flags
     if situation_kind == *SITUATION_KIND_GROUND && aerial_command_risen[id] {
-        aerial_command_risen[id] = false;
-        aerial_command_momentum_reset[id] = false;
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_RISEN);
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_MOMENTUM_RESET);
     }
 }
 
@@ -75,16 +75,16 @@ unsafe fn up_b_wall_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
         if situation_kind == *SITUATION_KIND_AIR {
             if frame >= 23.0 && frame <= 25.0 {
-                if !special_wall_jump[id] {
+                if  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_WALL_JUMP) {
                     if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32) {
                         if boma.is_cat_flag(Cat1::Turn) {
-                            special_wall_jump[id] = true;
+                            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_WALL_JUMP);
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                         }
                     }
                     if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32) {
                         if boma.is_cat_flag(Cat1::Turn) {
-                            special_wall_jump[id] = true;
+                            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_WALL_JUMP);
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                         }
                     }
@@ -101,10 +101,10 @@ unsafe fn fludd_b_reverse(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
             if stick_x * facing < 0.0 {
                 PostureModule::reverse_lr(boma);
                 PostureModule::update_rot_y_lr(boma);
-                if frame > 1.0 && frame < 5.0 && !b_reversed[id] {
+                if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::B_REVERSED) {
                     let b_reverse = Vector3f{x: -1.0, y: 1.0, z: 1.0};
                     KineticModule::mul_speed(boma, &b_reverse, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                    b_reversed[id] = true;
+                    VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::B_REVERSED);
                 }
             }
         }

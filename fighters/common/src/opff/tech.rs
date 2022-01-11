@@ -26,7 +26,7 @@ unsafe fn tumble_exit(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_k
     if [*FIGHTER_STATUS_KIND_DAMAGE_FLY,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL].contains(&status_kind) {
         if remaining_hitstun > 0.0 {
-            can_escape_tumble[id] = false;
+            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::CAN_ESCAPE_TUMBLE);
         }
     }
 
@@ -45,33 +45,33 @@ unsafe fn tumble_exit(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_k
                     // println!("Hitstun passed: {}", hitstun_passed);
                 }
                 */
-                tumble_kb[id] = true;
+                VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::TUMBLE_KB);
             }
         }
 
         if ![*FIGHTER_STATUS_KIND_DAMAGE_FALL,
             *FIGHTER_STATUS_KIND_DAMAGE_FLY,
             *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL].contains(&status_kind) {
-            tumble_kb[id] = false;
-            can_escape_tumble[id] = false;
+            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::TUMBLE_KB);
+            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::CAN_ESCAPE_TUMBLE);
             // println!("No more KB");
             // println!(" === No KB status kind: {}", status_kind);
             // println!(" Damage Fly status kind: {}", *FIGHTER_STATUS_KIND_DAMAGE_FLY);
         }
 
-        if tumble_kb[id] && remaining_hitstun == 0.0 {
+        if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::TUMBLE_KB) && remaining_hitstun == 0.0 {
             // println!(" === CAN ESCAPE TUMBLE");
             // println!(" ---> Status Kind: {}", status_kind);
-            can_escape_tumble[id] = true;
+            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::CAN_ESCAPE_TUMBLE);
         }
 
-        if can_escape_tumble[id] {
+        if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::CAN_ESCAPE_TUMBLE) {
             // println!(" ESCAPE POSSIBLE ");
             if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_DASH
                                     | *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH) {
                 if situation_kind == *SITUATION_KIND_AIR {
-                    tumble_kb[id] = false;
-                    can_escape_tumble[id] = false;
+                    VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::TUMBLE_KB);
+                    VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::CAN_ESCAPE_TUMBLE);
                     // println!(" === TUMBLE ESCAPED");
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
                 }

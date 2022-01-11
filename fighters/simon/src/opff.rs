@@ -16,10 +16,10 @@ unsafe fn holy_water_ac_b_rev(boma: &mut BattleObjectModuleAccessor, id: usize, 
             if stick_x * facing < 0.0 {
                 PostureModule::reverse_lr(boma);
                 PostureModule::update_rot_y_lr(boma);
-                if frame > 1.0 && frame < 5.0 && !b_reversed[id] {
+                if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::B_REVERSED) {
                     let b_reverse = Vector3f{x: -1.0, y: 1.0, z: 1.0};
                     KineticModule::mul_speed(boma, &b_reverse, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                    b_reversed[id] = true;
+                    VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::B_REVERSED);
                 }
             }
         }
@@ -30,7 +30,7 @@ unsafe fn holy_water_ac_b_rev(boma: &mut BattleObjectModuleAccessor, id: usize, 
 unsafe fn cross_ff_land_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_SIMON_STATUS_KIND_SPECIAL_S2].contains(&status_kind) {
         if situation_kind == *SITUATION_KIND_AIR {
-            air_cross[id] = true;
+            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::AIR_CROSS);
             if boma.is_cat_flag(Cat2::FallJump)
                 && stick_y < -0.66
                 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
@@ -44,8 +44,8 @@ unsafe fn cross_ff_land_cancel(boma: &mut BattleObjectModuleAccessor, id: usize,
 unsafe fn air_cross_air_off(id: usize, status_kind: i32, situation_kind: i32) {
     if situation_kind == *SITUATION_KIND_AIR {
         if ![*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_SIMON_STATUS_KIND_SPECIAL_S2].contains(&status_kind) {
-            if air_cross[id] {
-                air_cross[id] = false;
+            if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::AIR_CROSS) {
+                VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::AIR_CROSS);
             }
         }
     }
@@ -54,7 +54,7 @@ unsafe fn air_cross_air_off(id: usize, status_kind: i32, situation_kind: i32) {
 // Land cancel Cross if used in the air and fallen to the ground
 unsafe fn land_cancel_cross(boma: &mut BattleObjectModuleAccessor, id: usize, situation_kind: i32) {
     if situation_kind == *SITUATION_KIND_GROUND && air_cross[id] {
-        air_cross[id] = false;
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::AIR_CROSS);
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
     }
 }

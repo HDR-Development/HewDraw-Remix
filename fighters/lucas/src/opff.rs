@@ -50,27 +50,27 @@ unsafe fn djc_momentum_helper(id: usize, status_kind: i32, frame: f32) {
     }
     /*
     if VarModule::get_float(get_battle_object_from_accessor(boma), vars::common::DOUBLE_JUMP_FRAME) == 1.0 {
-        double_jump_timer[id] = 1.0;
+        VarModule::set_float(get_battle_object_from_accessor(boma), vars::common::DOUBLE_JUMP_TIMER, 1.0);
     }
-    if double_jump_timer[id] > 0.0 && (status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL || status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR) {
-        double_jump_timer[id] += 1.0;
+    if VarModule::get_float(get_battle_object_from_accessor(boma), vars::common::DOUBLE_JUMP_TIMER) > 0.0 && (status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL || status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR) {
+        VarModule::add_float(get_battle_object_from_accessor(boma), vars::common::DOUBLE_JUMP_TIMER, 1.0);
     }
-    if double_jump_stop[id] && double_jump_timer[id] == 0.0 {
-        double_jump_stop[id] = false;
+    if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::DOUBLE_JUMP_STOP) && VarModule::get_float(get_battle_object_from_accessor(boma), vars::common::DOUBLE_JUMP_TIMER) == 0.0 {
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::DOUBLE_JUMP_STOP);
         println!("DJ stop flag reset");
     }
-    if double_jump_stop[id] {
-        double_jump_timer[id] = 0.0;
+    if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::DOUBLE_JUMP_STOP) {
+        VarModule::set_float(get_battle_object_from_accessor(boma), vars::common::DOUBLE_JUMP_TIMER, 0.0);
         println!("Ended!");
     }
-    if double_jump_timer[id] >= 15.0 {
-        double_jump_stop[id] = true;
+    if VarModule::get_float(get_battle_object_from_accessor(boma), vars::common::DOUBLE_JUMP_TIMER) >= 15.0 {
+        VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::DOUBLE_JUMP_STOP);
         println!("Ending DJC motion blending");
     }
-    //println!("Lucas DJ timer: Frame {}", double_jump_timer[id]);
+    //println!("Lucas DJ timer: Frame {}", VarModule::get_float(get_battle_object_from_accessor(boma), vars::common::DOUBLE_JUMP_TIMER));
     */
     if status_kind != *FIGHTER_STATUS_KIND_ATTACK_AIR {
-        double_jump_canceled[id] = false;
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::DOUBLE_JUMP_CANCELED);
     }
 }
 

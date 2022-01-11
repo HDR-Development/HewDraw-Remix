@@ -6,17 +6,17 @@ use common::opff::*;
 unsafe fn final_cutter_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, cat1: i32, frame: f32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_HI2].contains(&status_kind){
         if(AttackModule::is_infliction(boma, 2)){
-            final_cutter_hit[id] = true;
+            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::FINAL_CUTTER_HIT);
         }
     }
     else{
-        final_cutter_hit[id] = false;
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::FINAL_CUTTER_HIT);
     }
 
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_HI2 {
         if frame > 10.0 && frame < 19.0 {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-                if final_cutter_hit[id] {
+                if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::FINAL_CUTTER_HIT) {
                     VarModule::on_flag(boma.object(), common::UP_SPECIAL_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
                 } else {
@@ -49,10 +49,10 @@ unsafe fn hammer_flip_b_reverse(boma: &mut BattleObjectModuleAccessor, id: usize
                 if stick_x * facing < 0.0 {
                     PostureModule::reverse_lr(boma);
                     PostureModule::update_rot_y_lr(boma);
-                    if frame > 1.0 && frame < 5.0 && !b_reversed[id] {
+                    if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::B_REVERSED) {
                         let b_reverse = Vector3f{x: -1.0, y: 1.0, z: 1.0};
                         KineticModule::mul_speed(boma, &b_reverse, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                        b_reversed[id] = true;
+                        VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::B_REVERSED);
                     }
                 }
             }
@@ -63,7 +63,7 @@ unsafe fn hammer_flip_b_reverse(boma: &mut BattleObjectModuleAccessor, id: usize
 // Reset Star Rod flag each match
 unsafe fn reset_star_rod(id: usize, status_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_ENTRY && kirby_star_rod[id] {
-        kirby_star_rod[id] = false;
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::KIRBY_STAR_ROD);
     }
 }
 

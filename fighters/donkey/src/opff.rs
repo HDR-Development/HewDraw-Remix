@@ -62,10 +62,10 @@ unsafe fn giant_punch_b_reverse(fighter: &mut L2CFighterCommon, boma: &mut Battl
             if stick_x * facing < 0.0 {
                 PostureModule::reverse_lr(boma);
                 PostureModule::update_rot_y_lr(boma);
-                if frame > 1.0 && frame < 5.0 && !b_reversed[id] {
+                if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::B_REVERSED) {
                     let b_reverse = Vector3f{x: -1.0, y: 1.0, z: 1.0};
                     KineticModule::mul_speed(boma, &b_reverse, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                    b_reversed[id] = true;
+                    VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::B_REVERSED);
                 }
             }
         }
@@ -103,9 +103,9 @@ unsafe fn down_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut Battle
         *FIGHTER_DONKEY_STATUS_KIND_SPECIAL_LW_LOOP,
         *FIGHTER_DONKEY_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind) {
         if AttackModule::is_infliction(boma, 2) {
-            special_checks[id] = true;
+            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_CHECKS);
         }
-        if special_checks[id] && frame > 5.0 {
+        if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_CHECKS) && frame > 5.0 {
             if moveset_utils::jump_checker_buffer(boma, cat1) {
                 if situation_kind == *SITUATION_KIND_AIR {
                     if hdr::get_jump_count(boma) < hdr::get_jump_count_max(boma) {
@@ -117,7 +117,7 @@ unsafe fn down_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut Battle
             }
         }
     } else {
-        special_checks[id] = false;
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_CHECKS);
     }
 }
 

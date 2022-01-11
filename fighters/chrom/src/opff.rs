@@ -20,7 +20,7 @@ unsafe fn soaring_slash_cancel(boma: &mut BattleObjectModuleAccessor, id: usize,
     if status_kind == *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2 {
         if frame > 27.0 && frame < 30.0 {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-                if soaring_slash_hit[id] {
+                if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::SOARING_SLASH_HIT) {
                     VarModule::on_flag(boma.object(), common::UP_SPECIAL_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
                 } else {
@@ -124,13 +124,13 @@ unsafe fn soaring_slash(boma: &mut BattleObjectModuleAccessor, id: usize, status
     if [*FIGHTER_STATUS_KIND_SPECIAL_HI,
         *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2].contains(&status_kind) {
         if AttackModule::is_infliction(boma, 2) {
-            soaring_slash_hit[id] = true;
+            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::SOARING_SLASH_HIT);
         }
     }
     if ![*FIGHTER_STATUS_KIND_SPECIAL_HI,
         *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2,
         *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_3].contains(&status_kind) {
-        soaring_slash_hit[id] = false;
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SOARING_SLASH_HIT);
     }
 }
 

@@ -23,10 +23,10 @@ unsafe fn quickdraw_b_reverse(boma: &mut BattleObjectModuleAccessor, id: usize, 
             if stick_x * facing < 0.0 {
                 PostureModule::reverse_lr(boma);
                 PostureModule::update_rot_y_lr(boma);
-                if frame > 1.0 && frame < 5.0 && !b_reversed[id] {
+                if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::B_REVERSED) {
                     let b_reverse = Vector3f{x: -1.0, y: 1.0, z: 1.0};
                     KineticModule::mul_speed(boma, &b_reverse, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                    b_reversed[id] = true;
+                    VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::B_REVERSED);
                 }
             }
         }
@@ -41,12 +41,12 @@ unsafe fn jump_attack_cancels(boma: &mut BattleObjectModuleAccessor, id: usize, 
 
     // Wall Jump
     if situation_kind == *SITUATION_KIND_AIR {
-        if !special_wall_jump[id] {
+        if  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_WALL_JUMP) {
             let touch_right = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
             let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
             if touch_left || touch_right {
                 if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH | *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON) {
-                    special_wall_jump[id] = true;
+                    VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_WALL_JUMP);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                 }
             }

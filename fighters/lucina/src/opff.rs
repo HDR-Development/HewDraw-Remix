@@ -94,13 +94,13 @@ unsafe fn soaring_slash(boma: &mut BattleObjectModuleAccessor, id: usize, status
     if [*FIGHTER_STATUS_KIND_SPECIAL_HI,
         *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2].contains(&status_kind) {
         if AttackModule::is_infliction(boma, 2) {
-            soaring_slash_hit[id] = true;
+            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::SOARING_SLASH_HIT);
         }
     }
     if ![*FIGHTER_STATUS_KIND_SPECIAL_HI,
         *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2,
         *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_3].contains(&status_kind) {
-        soaring_slash_hit[id] = false;
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SOARING_SLASH_HIT);
     }
 }
 

@@ -13,7 +13,7 @@ unsafe fn jump_cancel_grab(boma: &mut BattleObjectModuleAccessor, cat1: i32, sta
     if status_kind == *FIGHTER_STATUS_KIND_JUMP_SQUAT {
         if boma.is_cat_flag(Cat1::WallJumpRight) {
             if fighter_kind == *FIGHTER_KIND_POPO {
-                popo_jc_grab[hdr::get_player_number(boma)] = true;
+                VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::POPO_JC_GRAB);
             }
             WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_CATCH, true);
@@ -161,9 +161,9 @@ unsafe fn footstool_defense(boma: &mut BattleObjectModuleAccessor, status_kind: 
     if (status_kind == *FIGHTER_STATUS_KIND_JUMP && prev_status_0 == *FIGHTER_STATUS_KIND_TREAD_JUMP)
         || (status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL && prev_status_0 == *FIGHTER_STATUS_KIND_JUMP && prev_status_1 == *FIGHTER_STATUS_KIND_TREAD_JUMP)
         && MotionModule::frame(boma) < 20.0 {
-        footstool_airdodge_lockout[player_number] = true;
-    } else if footstool_airdodge_lockout[player_number] {
-        footstool_airdodge_lockout[player_number] = false;
+        VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::FOOTSTOOL_AIRDODGE_LOCKOUT);
+    } else if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::FOOTSTOOL_AIRDODGE_LOCKOUT) {
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::FOOTSTOOL_AIRDODGE_LOCKOUT);
     }
 }
 

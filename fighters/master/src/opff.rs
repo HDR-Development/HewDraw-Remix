@@ -8,10 +8,10 @@ unsafe fn areadbhar_autocancel(boma: &mut BattleObjectModuleAccessor, id: usize,
         *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind) {
         if situation_kind == *SITUATION_KIND_AIR {
             if frame < 26.0 {
-                special_autocancel[id] = false;
+                VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_AUTOCANCEL);
             }
             if frame >= 26.0 {
-                special_autocancel[id] = true;
+                VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::SPECIAL_AUTOCANCEL);
             }
         }
     }

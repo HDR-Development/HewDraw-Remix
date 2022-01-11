@@ -80,7 +80,39 @@ pub mod vars {
         pub const ENABLE_AIR_ESCAPE_MAGNET: i32 = 0x15;
         pub const UP_SPECIAL_INTERRUPT_AIRTIME: i32 = 0x16;
         pub const DITCIT_SLIDING: i32 = 0x17;
+        pub const AIR_CROSS: i32 = 0x18;
+        pub const FINAL_CUTTER_HIT: i32 = 25;
+        pub const SPECIAL_CHECKS: i32 = 26;
 
+        pub const NEUTRAL_SPECIAL_HIT: i32 = 28;
+        //pub const POPO_JC_GRAB: i32 = 29;
+        pub const ILLUSION_SHORTENED: i32 = 30;
+        pub const FOOTSTOOL_AIRDODGE_LOCKOUT: i32 = 31;
+        pub const CAN_ESCAPE_TUMBLE: i32 = 32;
+        pub const SUPER_CANCEL: i32 = 33;
+        pub const SHINESPARK_USED: i32 = 34;
+        pub const SPECIAL_AUTOCANCEL: i32 = 35;
+        pub const SHINESPARK_READY: i32 = 36;
+        pub const ILLUSION_SHORTEN: i32 = 37;
+        pub const SOARING_SLASH_HIT: i32 = 38;
+        pub const DOUBLE_JUMP_STOP: i32 = 39;
+        pub const KIRBY_STAR_ROD: i32 = 40;
+        pub const IS_IN_TUMBLE: i32 = 41;
+        pub const SPECIAL_WALL_JUMP: i32 = 42;
+        pub const DOWN_SPECIAL_HIT: i32 = 43;
+        pub const MAGIC_CANCEL_ADDITIONAL: i32 = 44;
+        pub const TETHER_HOGGED: i32 = 45;
+        pub const AERIAL_COMMAND_MOMENTUM_RESET: i32 = 46;
+        pub const TUMBLE_START: i32 = 47;
+        pub const B_REVERSED: i32 = 48;
+        pub const AERIAL_COMMAND_RISING: i32 = 49;
+        pub const SIDE_SPECIAL_HIT: i32 = 50;
+        pub const TUMBLE_KB: i32 = 51;
+        pub const UP_SPECIAL_HIT: i32 = 52;
+        pub const AIR_SPECIAL_USED: i32 = 54;
+        pub const LEDGE_OCCUPYING: i32 = 55;
+        pub const DOUBLE_JUMP_CANCELED: i32 = 56;
+        
 
         // int
         pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0;
@@ -89,6 +121,7 @@ pub mod vars {
         pub const FLOAT_DURATION: i32 = 0x3;
         pub const FLOAT_STYLE: i32 = 0x4;
         pub const GIMMICK_READY_GLOW_TIMER: i32 = 0x5;
+        pub const SNAKE_GRENADE_COUNTER: i32 = 0x6;
 
 
         // float
@@ -101,6 +134,12 @@ pub mod vars {
         pub const GROUND_VEL: i32 = 0x5;
         pub const RAR_LENIENCY: i32 = 0x6;
         pub const CURRENT_MOMENTUM_SPECIALS: i32 = 0x7;
+        pub const DOUBLE_JUMP_TIMER: i32 = 0x8;
+        pub const GLIDE_TIMER: i32 = 0x9;
+        pub const BASE_RUN_SPEED_MAX: i32 = 0xA;
+        pub const SONIC_LIGHTSPEED_DASH_FRAME_COUNTER: i32 = 0xB;
+        pub const BASE_DASH_SPEED: i32 = 0xC;
+        pub const WITHDRAW_FRAME: i32 = 0xD;
 
         // separator
         // flag

@@ -35,22 +35,22 @@ unsafe fn egg_roll_jc_waveland(boma: &mut BattleObjectModuleAccessor, status_kin
 unsafe fn flutter_kick(boma: &mut BattleObjectModuleAccessor, id: usize, situation_kind: i32, motion_kind: u64, frame: f32) {
     if motion_kind == hash40("attack_air_lw") {
         let motion_vec = Vector3f{x: 0.0, y: 1.275, z: 0.0};
-        if !aerial_command_risen[id] {
+        if  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_RISEN) {
             if frame <= 44.0 {
                 if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
                     || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)
                     /*|| ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK)*/ {
-                    aerial_command_rising[id] = true;
+                    VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_RISING);
                     KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
 
-                    if aerial_command_rising[id] && !aerial_command_risen[id] {
+                    if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_RISING) &&  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_RISEN) {
                         // Reset momentum on the rise initialization
-                        if !aerial_command_momentum_reset[id]{
+                        if  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_MOMENTUM_RESET){
                             // Reset momentum
                             KineticModule::clear_speed_energy_id(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                             KineticModule::clear_speed_energy_id(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
                             KineticModule::clear_speed_energy_id(boma, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                            aerial_command_momentum_reset[id] = true;
+                            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_MOMENTUM_RESET);
                         }
                     }
 
@@ -58,14 +58,14 @@ unsafe fn flutter_kick(boma: &mut BattleObjectModuleAccessor, id: usize, situati
             }
         }
     }
-    if aerial_command_rising[id] && (motion_kind != hash40("attack_air_lw") || (motion_kind == hash40("attack_air_lw") && frame > 44.0)) {
-        aerial_command_risen[id] = true;
-        aerial_command_rising[id] = false;
-        aerial_command_momentum_reset[id] = false;
+    if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_RISING) && (motion_kind != hash40("attack_air_lw") || (motion_kind == hash40("attack_air_lw") && frame > 44.0)) {
+        VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_RISEN);
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_RISING);
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_MOMENTUM_RESET);
     }
     if situation_kind == *SITUATION_KIND_GROUND && aerial_command_risen[id] {
-        aerial_command_risen[id] = false;
-        aerial_command_momentum_reset[id] = false;
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_RISEN);
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::AERIAL_COMMAND_MOMENTUM_RESET);
     }
 }
 

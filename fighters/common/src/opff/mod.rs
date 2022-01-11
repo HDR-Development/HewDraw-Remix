@@ -239,8 +239,8 @@ unsafe fn handle_game_resets(boma: &mut app::BattleObjectModuleAccessor, fighter
 
         // Initialize base dash and run speeds at the start of the match
         //println!("Initializing base dash and run speeds...");
-        //base_dash_speed[hdr::get_player_number(boma)] = WorkModule::get_param_float(boma, hash40("dash_speed"), 0);
-        //base_run_speed_max[hdr::get_player_number(boma)] = WorkModule::get_param_float(boma, hash40("run_speed_max"), 0);
+        //VarModule::set_float(get_battle_object_from_accessor(boma), vars::common::BASE_DASH_SPEED, value_here)  WorkModule::get_param_float(boma, hash40("dash_speed"), 0);
+        //VarModule::set_float(get_battle_object_from_accessor(boma), vars::common::BASE_RUN_SPEED_MAX, value_here)  WorkModule::get_param_float(boma, hash40("run_speed_max"), 0);
 
         //Momentum transfer helper
         //Initialize ratio using base values (jump_speed_x_max / run_speed_max) once at beginning of match

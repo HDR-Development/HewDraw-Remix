@@ -6,9 +6,9 @@ use common::opff::*;
 unsafe fn elytra_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if (status_kind == *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_GLIDING) {
         // Increment glide timer during elytra
-        glide_timer[id] += 1.0;
+        VarModule::add_float(get_battle_object_from_accessor(boma), vars::common::GLIDE_TIMER, 1.0);
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-            if(glide_timer[id] > (25.0) && glide_timer[id] < (45.0) ){
+            if(VarModule::get_float(get_battle_object_from_accessor(boma), vars::common::GLIDE_TIMER) > (25.0) && VarModule::get_float(get_battle_object_from_accessor(boma), vars::common::GLIDE_TIMER) < (45.0) ){
                 //VarModule::on_flag(boma.object(), common::UP_SPECIAL_CANCEL);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_FALL_SPECIAL,false);
             }
@@ -16,8 +16,8 @@ unsafe fn elytra_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status
     }
     // Reset glide timer if not gliding
     else{
-        if(glide_timer[id] > 0.0){
-            glide_timer[id] = 0.0;
+        if(VarModule::get_float(get_battle_object_from_accessor(boma), vars::common::GLIDE_TIMER) > 0.0){
+            VarModule::set_float(get_battle_object_from_accessor(boma), vars::common::GLIDE_TIMER, 0.0);
         }
     }
 }
@@ -49,19 +49,19 @@ unsafe fn hitstun_tumble_glow(boma: &mut BattleObjectModuleAccessor, id: usize, 
     let cbm_t_vec1 = Vector4f{ /* Red */ x: 0.85, /* Green */ y: 0.85, /* Blue */ z: 0.85, /* Alpha */ w: 0.2};
     let cbm_t_vec2 = Vector4f{ /* Red */ x: 0.1612, /* Green */ y: 0.2549, /* Blue */ z: 0.098, /* Alpha */ w: 0.8};
     if (status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FALL) {
-        if (!is_in_tumble[id]) {
-            tumble_start[id] = true;
+        if  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::IS_IN_TUMBLE) {
+            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::TUMBLE_START);
         }
     } else {
-        if (is_in_tumble[id]) {
+        if  VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::IS_IN_TUMBLE) {
             ColorBlendModule::cancel_main_color(boma, 0);
         }
-        is_in_tumble[id] = false;
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::IS_IN_TUMBLE);
     }
-    if (tumble_start[id]) {
-        is_in_tumble[id] = true;
+    if  VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::TUMBLE_START) {
+        VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::IS_IN_TUMBLE);
         ColorBlendModule::set_main_color(boma, /* Brightness */ &cbm_t_vec1, /* Diffuse */ &cbm_t_vec2, 0.21, 2.2, 3, /* Display Color */ true);
-        tumble_start[id] = false;
+        VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::TUMBLE_START);
     }
 
 }

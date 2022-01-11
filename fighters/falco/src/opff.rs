@@ -55,16 +55,16 @@ unsafe fn phantasm_shorten(boma: &mut BattleObjectModuleAccessor, id: usize, mot
 
     if motion_kind == hash40("special_s") || motion_kind == hash40("special_air_s") {
         if frame <= 1.0 {
-            illusion_shorten[id] = false;
-            illusion_shortened[id] = false;
+            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::ILLUSION_SHORTEN);
+            VarModule::off_flag(get_battle_object_from_accessor(boma), vars::common::ILLUSION_SHORTENED);
         }
-        if illusion_shorten[id] && !illusion_shortened[id] {
+        if VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::ILLUSION_SHORTEN) &&  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::ILLUSION_SHORTENED) {
             KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-            illusion_shortened[id] = true;
+            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::ILLUSION_SHORTENED);
         }
 
-        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) && !illusion_shortened[id] {
-            illusion_shorten[id] = true;
+        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) &&  !VarModule::is_flag(get_battle_object_from_accessor(boma), vars::common::ILLUSION_SHORTENED) {
+            VarModule::on_flag(get_battle_object_from_accessor(boma), vars::common::ILLUSION_SHORTEN);
             WorkModule::on_flag(boma, *FIGHTER_FALCO_ILLUSION_STATUS_WORK_ID_FLAG_RUSH_FORCE_END);
         }
     }
