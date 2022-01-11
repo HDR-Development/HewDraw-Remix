@@ -438,66 +438,32 @@ unsafe fn moonwalks(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModul
 
 unsafe fn shield_lock_tech(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     // airdodge with second shield button while holding another shield button
-    if situation_kind == *SITUATION_KIND_AIR
-    && [*FIGHTER_STATUS_KIND_JUMP,
+    if boma.is_situation(*SITUATION_KIND_AIR)
+    && boma.is_button_trigger(Buttons::GuardHold)
+    && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR)
+    && boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_JUMP,
         *FIGHTER_STATUS_KIND_JUMP_AERIAL,
         *FIGHTER_STATUS_KIND_FALL,
         *FIGHTER_STATUS_KIND_PASS,
         *FIGHTER_STATUS_KIND_FALL_AERIAL,
         *FIGHTER_STATUS_KIND_CLIFF_JUMP1,
         *FIGHTER_STATUS_KIND_CLIFF_JUMP2,
-        *FIGHTER_STATUS_KIND_CLIFF_JUMP3].contains(&status_kind) {
-        if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_GUARD_HOLD) {
-            if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
-            }
-        }
+        *FIGHTER_STATUS_KIND_CLIFF_JUMP3
+    ])
+    {
+        boma.change_status_req(*FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
+        return;
     }
 
-    // allow button jump during shield lock
-    if status_kind == *FIGHTER_STATUS_KIND_GUARD_ON || status_kind == *FIGHTER_STATUS_KIND_GUARD {
-        let special_buttons = [
-        *CONTROL_PAD_BUTTON_SPECIAL,
-        *CONTROL_PAD_BUTTON_SPECIAL_RAW
-        ];
-        let special_disabled = WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_GUARD_HOLD_SPECIAL_BUTTON);
-        let special_hold = special_buttons.iter().any(|x| ControlModule::check_button_on(boma, *x));
-        let guard_hold = ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD_HOLD);
-
-        if (special_hold && !special_disabled) || guard_hold {
-            if boma.is_cat_flag(Cat1::Jump) {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-            }
-        }
+    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD])
+    && boma.is_cat_flag(Cat1::Jump)
+    && ((boma.is_button_on(Buttons::SpecialAll) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_GUARD_HOLD_SPECIAL_BUTTON))
+        || boma.is_button_on(Buttons::GuardHold))
+    {
+        boma.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
     }
 }
-
-unsafe fn tap_upB_jump_refresh(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, fighter_kind: i32, cat1: i32) {
-    if status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL {
-        // if using tap jump (until I find a better way to check)
-        if ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_JUMP) && !ControlModule::check_button_release(boma, *CONTROL_PAD_BUTTON_JUMP) {
-            // if first 3 frames of dj
-            if MotionModule::frame(boma) <= 2.0 {
-                VarModule::on_flag(boma.object(), common::UP_SPECIAL_JUMP_REFRESH_WINDOW);
-            }
-            else {
-                VarModule::off_flag(boma.object(), common::UP_SPECIAL_JUMP_REFRESH_WINDOW);
-            }
-        }
-    }
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI && VarModule::is_flag(boma.object(), common::UP_SPECIAL_JUMP_REFRESH_WINDOW) && !VarModule::is_flag(boma.object(), common::DISABLE_UP_SPECIAL_JUMP_REFRESH) {
-        // Grants 1 extra jump if all jumps used up
-        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) == WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
-            WorkModule::set_int(boma, WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-        }
-        VarModule::on_flag(boma.object(), common::DISABLE_UP_SPECIAL_JUMP_REFRESH);
-        VarModule::off_flag(boma.object(), common::UP_SPECIAL_JUMP_REFRESH_WINDOW);
-    }
-    if situation_kind == *SITUATION_KIND_GROUND && VarModule::is_flag(boma.object(), common::DISABLE_UP_SPECIAL_JUMP_REFRESH) {
-        VarModule::off_flag(boma.object(), common::DISABLE_UP_SPECIAL_JUMP_REFRESH);
-    }
-}
-
  
 unsafe fn drift_di(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     if boma.is_situation(*SITUATION_KIND_AIR)
@@ -631,23 +597,10 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mu
     //moonwalks(fighter, boma, status_kind, stick_x, stick_y, facing);  // Version 8.4.0a implementation
     //pivots(boma, status_kind, stick_x, curr_frame);
     shield_lock_tech(boma, status_kind, situation_kind, cat[0]);
-    //tap_upB_jump_refresh(fighter, boma, status_kind, situation_kind, fighter_kind, cat[0]);
     drift_di(fighter, boma, status_kind, situation_kind);
     waveland_plat_drop(boma, cat[1], status_kind);
     hitfall(boma, status_kind, situation_kind, fighter_kind, cat);
     respawn_taunt(boma, status_kind);
-    
-
-    /*if BufferModule::is_persist(boma) && VarModule::is_flag(boma.object(), common::FLOAT_PAUSE_AERIAL) {
-        VarModule::off_flag(boma.object(), common::FLOAT_PAUSE_AERIAL);
-        let cbm_vec1 = Vector4f{x: 0.95, y: 0.95, z: 0.95, w: 0.2};
-        let cbm_vec2 = Vector4f{x: 0.0, y: 0.0, z: 0.3, w: 0.8};
-        ColorBlendModule::set_main_color(boma, &cbm_vec1, &cbm_vec2, 0.5, 2.2, 2, true);
-    }
-    if !BufferModule::is_persist(boma) && !VarModule::is_flag(boma.object(), common::FLOAT_PAUSE_AERIAL) {
-        VarModule::on_flag(boma.object(), common::FLOAT_PAUSE_AERIAL);
-        ColorBlendModule::cancel_main_color(boma, 0);
-    }*/
 
     freeze_stages(boma);
 }
