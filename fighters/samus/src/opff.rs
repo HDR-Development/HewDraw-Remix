@@ -1,7 +1,7 @@
-use common::opff_import::*;
+use ::common::opff_import::*;
 use super::*;
 use globals::*;
-use common::opff::*;
+use ::common::opff::*;
  
 pub unsafe fn land_cancel_and_b_reverse(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, stick_x: f32, facing: f32, frame: f32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_S,

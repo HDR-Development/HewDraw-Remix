@@ -1,7 +1,7 @@
-use common::opff_import::*;
+use ::common::opff_import::*;
 use super::*;
 use globals::*;
-use common::opff::*;
+use ::common::opff::*;
  
 unsafe fn special_n_article_fix(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_N].contains(&status_kind) {

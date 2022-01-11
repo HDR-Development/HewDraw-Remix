@@ -1,7 +1,7 @@
-use common::opff_import::*;
+use ::common::opff_import::*;
 use super::*;
 use globals::*;
-use common::opff::*;
+use ::common::opff::*;
  
 unsafe fn duck_jump_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_FLY {

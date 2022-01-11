@@ -1,7 +1,7 @@
-use common::opff_import::*;
+use ::common::opff_import::*;
 use super::*;
 use globals::*;
-use common::opff::*;
+use ::common::opff::*;
  
 unsafe fn soaring_slash_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_HI,

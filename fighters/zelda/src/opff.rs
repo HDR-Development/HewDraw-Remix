@@ -1,7 +1,7 @@
-use common::opff_import::*;
+use ::common::opff_import::*;
 use super::*;
 use globals::*;
-use common::opff::*;
+use ::common::opff::*;
  
 unsafe fn teleport_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, id: usize) {
     if status_kind == *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2 {

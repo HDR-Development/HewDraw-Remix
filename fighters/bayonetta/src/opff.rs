@@ -1,7 +1,7 @@
-use common::opff_import::*;
+use ::common::opff_import::*;
 use super::*;
 use globals::*;
-use common::opff::*;
+use ::common::opff::*;
  
 unsafe fn jab_dash_attack_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
     // Level 1: Jab and Dash Attack Cancels

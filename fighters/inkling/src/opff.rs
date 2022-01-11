@@ -1,7 +1,7 @@
-use common::opff_import::*;
+use ::common::opff_import::*;
 use super::*;
 use globals::*;
-use common::opff::*;
+use ::common::opff::*;
  
 unsafe fn inkling_moveset(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, id: usize){
     if motion_kind == hash40("attack_air_lw") && AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {

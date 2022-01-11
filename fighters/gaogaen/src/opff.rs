@@ -1,7 +1,7 @@
-use common::opff_import::*;
+use ::common::opff_import::*;
 use super::*;
 use globals::*;
-use common::opff::*;
+use ::common::opff::*;
  
 unsafe fn cross_chop_cancel_dj_reset(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, cat1: i32) {
     if status_kind == *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_TURN {

@@ -1,7 +1,7 @@
-use common::opff_import::*;
+use ::common::opff_import::*;
 use super::*;
 use globals::*;
-use common::opff::*;
+use ::common::opff::*;
  
 unsafe fn upperdash_arm_jump_and_aerial_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32, frame: f32, id: usize) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S || (status_kind == *FIGHTER_PIT_STATUS_KIND_SPECIAL_S_END && frame > 5.0) {

@@ -1,5 +1,5 @@
 #![feature(asm)]#![allow(unused_imports)]#![allow(unused_variables)]
-use common::prelude::*;
+use ::common::prelude::*;
 
 // pub mod acmd;
 

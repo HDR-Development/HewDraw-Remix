@@ -1,7 +1,7 @@
-use common::opff_import::*;
+use ::common::opff_import::*;
 use super::*;
 use globals::*;
-use common::opff::*;
+use ::common::opff::*;
  
 unsafe fn space_pirate_rush_flight(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, stick_x: f32) {
     if status_kind == *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_S_FALL {

@@ -1,7 +1,7 @@
-use common::opff_import::*;
+use ::common::opff_import::*;
 use super::*;
 use globals::*;
-use common::opff::*;
+use ::common::opff::*;
  
 unsafe fn sonic_lightspeed_dash(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, situation_kind: i32, cat1: i32, id: usize){
     if SONIC_LIGHTSPEED_NO_JUMP[id] && status_kind != *FIGHTER_SONIC_STATUS_KIND_SPECIAL_S_END && motion_kind != hash40("special_s_start") {

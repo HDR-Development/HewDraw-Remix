@@ -1,4 +1,4 @@
-use common::acmd_import::*;
+use ::common::acmd_import::*;
 use super::*;
 use smash_script::macros::*;
 use smashline::*;

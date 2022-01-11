@@ -1,7 +1,7 @@
-use common::opff_import::*;
+use ::common::opff_import::*;
 use super::*;
 use globals::*;
-use common::opff::*;
+use ::common::opff::*;
  
 unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
     let long_sword_scale = Vector3f{x: 0.9, y: 1.0, z: 1.0};

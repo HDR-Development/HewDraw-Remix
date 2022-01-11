@@ -1,7 +1,7 @@
-use common::opff_import::*;
+use ::common::opff_import::*;
 use super::*;
 use globals::*;
-use common::opff::*;
+use ::common::opff::*;
  
 unsafe fn final_cutter_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, cat1: i32, frame: f32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_HI2].contains(&status_kind){
