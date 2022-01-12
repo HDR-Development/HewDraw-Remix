@@ -7,7 +7,7 @@ unsafe fn dtilt_repeat_increment(boma: &mut BattleObjectModuleAccessor, id: usiz
     if motion_kind == hash40("attack_lw3")
         && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
         &&  !VarModule::is_flag(boma.object(), vars::shotos::REPEAT_INCREMENTED) {
-        VarModule::inc_int(boma.object(), vars::common::REPEAT_NUM_LW);
+        //VarModule::inc_int(boma.object(), vars::common::REPEAT_NUM_LW);
         VarModule::on_flag(boma.object(), vars::shotos::REPEAT_INCREMENTED);
     }
 }
@@ -43,7 +43,7 @@ unsafe fn power_wave_dash_cancel_super_cancels(fighter: &mut L2CFighterCommon, b
         }
 
         // Triple Geyser
-        if MeterModule::level(boma) >= 10 {
+        if MeterModule::level(boma.object()) >= 10 {
             if boma.is_cat_flag( Cat4::SpecialN2Command) {
                 WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
                 WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
@@ -90,7 +90,7 @@ unsafe fn special_super_cancels_triple_geyser(fighter: &mut L2CFighterCommon, bo
         *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND,
         *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK].contains(&status_kind) {
         // Triple Geyser
-        if MeterModule::level(boma) >= 10 {
+        if MeterModule::level(boma.object()) >= 10 {
             if boma.is_cat_flag( Cat4::SpecialN2Command) {
                 WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
                 WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
@@ -105,7 +105,7 @@ unsafe fn special_super_cancels_triple_geyser(fighter: &mut L2CFighterCommon, bo
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2,
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW].contains(&status_kind)
         && motion_kind == 0x13434c5490 as u64 {
-        if MeterModule::level(boma) >= 6 {
+        if MeterModule::level(boma.object()) >= 6 {
             WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
             if boma.is_cat_flag( Cat4::SpecialN2Command) {
             
@@ -137,10 +137,10 @@ unsafe fn burn_knuckle_land_cancel(boma: &mut BattleObjectModuleAccessor, id: us
 
 // Terrry Super Special Meter Activation
 unsafe fn super_special_meter_activation(boma: &mut BattleObjectModuleAccessor) {
-    if MeterModule::level(boma) >= 4 {
+    if MeterModule::level(boma.object()) >= 4 {
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
     }
-    if MeterModule::level(boma) < 4 {
+    if MeterModule::level(boma.object()) < 4 {
         WorkModule::off_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
     }
 }
@@ -164,7 +164,7 @@ unsafe fn super_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
     let mut agent_base = fighter.fighter_base.agent_base;
     // Power Geyser
     if status_kind == *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL {
-        if MeterModule::level(boma) >= 2 {
+        if MeterModule::level(boma.object()) >= 2 {
             WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2);
             // Buster Wolf
             if compare_mask(cat4, *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND
@@ -179,7 +179,7 @@ unsafe fn super_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
     if [*FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2,
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW].contains(&status_kind)
         || motion_kind == 0x13434c5490 as u64 {
-        if MeterModule::level(boma) >= 2 {
+        if MeterModule::level(boma.object()) >= 2 {
             WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL);
             // Power Geyser
             if compare_mask(cat4, *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND
@@ -192,7 +192,7 @@ unsafe fn super_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
 }
 
 // Turn off Super Cancel Flag
-unsafe fn super_cancel_flag_off(id: usize, status_kind: i32) {
+unsafe fn super_cancel_flag_off(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32) {
     if ![*FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL,
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2,
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW].contains(&status_kind) {
@@ -223,7 +223,8 @@ unsafe fn full_meter_training_taunt(fighter: &mut L2CFighterCommon, boma: &mut B
     if is_training_mode() {
         if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-                meter::add_meter(&mut agent_base, boma, meter_max);
+                let meter_max = ParamModule::get_float(boma.object(), ParamType::Common, "meter_max_damage");
+                MeterModule::add(boma.object(), meter_max);
             }
         }
     }
@@ -237,7 +238,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     super_special_meter_activation(boma);
     cancel_supers_early(boma, status_kind, situation_kind, frame);
     super_cancels(fighter, boma, id, status_kind, cat[3], motion_kind);
-    super_cancel_flag_off(id, status_kind);
+    super_cancel_flag_off(boma, id, status_kind);
     shield_stop_run_drop(boma, status_kind, stick_y, situation_kind);
     full_meter_training_taunt(fighter, boma, status_kind);
 
@@ -593,7 +594,7 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
                 WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND);
 
                 // Each cancel costs 2 meter
-                if MeterModule::level(boma) >= 1 {
+                if MeterModule::level(boma.object()) >= 1 {
                     // Crack Shoot
                     if boma.is_cat_flag(Cat1::SpecialS) && boma.is_stick_backward() {
                         
@@ -639,7 +640,7 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
                 WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND);
 
                 // Each cancel costs 2 meter
-                if MeterModule::level(boma) >= 1 {
+                if MeterModule::level(boma.object()) >= 1 {
                     // Power Wave
                     if boma.is_cat_flag(Cat1::SpecialN) {
                         
