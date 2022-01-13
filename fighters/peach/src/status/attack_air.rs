@@ -1,6 +1,20 @@
 use super::*;
 use globals::*;
 
+::utils::import!(
+    common::djc::{
+        sub_attack_air_inherit_jump_aerial_motion_uniq_process_init,
+        sub_attack_air_inherit_jump_aerial_motion_uniq_process_exec,
+        attack_air_main_status,
+        attack_air_main_status_loop
+    }
+);
+
+// ::utils::import!{common::djc::sub_attack_air_inherit_jump_aerial_motion_uniq_process_init}
+// ::utils::import!{common::djc::sub_attack_air_inherit_jump_aerial_motion_uniq_process_exec}
+// ::utils::import!{common::djc::attack_air_main_status}
+// ::utils::import!{common::djc::attack_air_main_status_loop}
+
 pub fn install() {
     smashline::install_status_scripts!(
         peach_attack_air_init,
@@ -40,11 +54,11 @@ unsafe fn peach_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
 
     let fighter_log_attack_kind = match motion_kind {
-        utils::hash40!("attack_air_n") => *FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_N,
-        utils::hash40!("attack_air_f") => *FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_F,
-        utils::hash40!("attack_air_b") => *FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_B,
-        utils::hash40!("attack_air_lw") => *FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_LW,
-        utils::hash40!("attack_air_hi") => *FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_HI,
+        ::utils::hash40!("attack_air_n") => *FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_N,
+        ::utils::hash40!("attack_air_f") => *FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_F,
+        ::utils::hash40!("attack_air_b") => *FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_B,
+        ::utils::hash40!("attack_air_lw") => *FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_LW,
+        ::utils::hash40!("attack_air_hi") => *FIGHTER_LOG_ATTACK_KIND_ATTACK_AIR_HI,
         _ => {
             fighter.sub_attack_air_common(false.into());
             MotionModule::set_trans_move_speed_no_scale(fighter.module_accessor, true);

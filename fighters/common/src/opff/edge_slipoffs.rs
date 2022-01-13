@@ -1,4 +1,8 @@
-use crate::opff_import::*;
+use utils::{
+    *,
+    ext::*,
+    consts::*
+};
 use smash::app::BattleObjectModuleAccessor;
 use smash::app::lua_bind::*;
 use smash::lib::lua_const::*;

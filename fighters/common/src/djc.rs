@@ -12,7 +12,7 @@ pub fn install() {
 // TAGS: DJC, Double Jump Cancel, FIGHTER_STATUS_KIND_ATTACK_AIR
 /// Regular attack air status script except uses the animation's movement by default.
 /// To be used by fighters who have double jump cancel
-#[no_mangle]
+#[utils::export(common::djc)]
 pub unsafe extern "C" fn attack_air_main_status(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_common(L2CValue::Bool(false));
     MotionModule::set_trans_move_speed_no_scale(fighter.module_accessor, true);
@@ -21,7 +21,7 @@ pub unsafe extern "C" fn attack_air_main_status(fighter: &mut L2CFighterCommon) 
 
 // TAGS: DJC, Double Jump Cancel, FIGHTER_STATUS_KIND_ATTACK_AIR
 /// Performs the leniency check for double jump canceling
-#[no_mangle]
+#[utils::export(common::djc)]
 pub unsafe extern "C" fn attack_air_main_status_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_JUMP_AERIAL {
         let djc_leniency_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "djc_leniency_frame");

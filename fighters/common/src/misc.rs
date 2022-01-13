@@ -1,5 +1,11 @@
-
-use crate::opff_import::*;
+use smash::app::lua_bind::*;
+use smash::lua2cpp::*;
+use smash::app::*;
+use smash::lib::lua_const::*;
+use smash::hash40;
+use utils::ext::*;
+use utils::consts::*;
+use utils::*;
 
 use globals::*;
 

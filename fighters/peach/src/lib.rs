@@ -1,5 +1,5 @@
 #![feature(asm)]#![allow(unused_imports)]#![allow(unused_variables)]
-use ::common::prelude::*;
+use ::common_dyn::opff_import::*;
 
 pub mod acmd;
 

@@ -1,4 +1,8 @@
-use crate::opff_import::*;
+use utils::{
+    *,
+    ext::*,
+    consts::*
+};
 use smash::app::BattleObjectModuleAccessor;
 use smash::phx::{Vector2f, Vector3f};
 use smash::app::lua_bind::*;
@@ -33,7 +37,7 @@ unsafe fn gentleman(boma: &mut BattleObjectModuleAccessor, status_kind: i32, fig
         if [*FIGHTER_KIND_ZELDA, *FIGHTER_KIND_MEWTWO, *FIGHTER_KIND_GAMEWATCH, *FIGHTER_KIND_PALUTENA].contains(&fighter_kind) {
             if MotionModule::motion_kind(boma) == hash40("attack_11") {
                 if MotionModule::frame(boma) > jab_finisher_start && MotionModule::frame(boma) < jab_finisher_end {
-                    if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
+                    if boma.is_pad_flag(PadFlag::SpecialTrigger) {
                         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
                         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
                         MotionModule::change_motion(boma, Hash40::new("attack_100_end"), 0.0, 1.0, false, 0.0, false, false);
@@ -44,7 +48,7 @@ unsafe fn gentleman(boma: &mut BattleObjectModuleAccessor, status_kind: i32, fig
         } else if [*FIGHTER_KIND_KIRBY, *FIGHTER_KIND_FOX, *FIGHTER_KIND_SHEIK, *FIGHTER_KIND_FALCO, *FIGHTER_KIND_KOOPAJR, *FIGHTER_KIND_SIMON, *FIGHTER_KIND_RICHTER, *FIGHTER_KIND_MIIFIGHTER, *FIGHTER_KIND_DEDEDE, *FIGHTER_KIND_PFUSHIGISOU, *FIGHTER_KIND_MURABITO].contains(&fighter_kind) {
             if MotionModule::motion_kind(boma) == hash40("attack_12") {
                 if MotionModule::frame(boma) > jab_finisher_start && MotionModule::frame(boma) < jab_finisher_end {
-                    if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
+                    if boma.is_pad_flag(PadFlag::SpecialTrigger) {
                         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
                         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
                         if fighter_kind == *FIGHTER_KIND_MURABITO {

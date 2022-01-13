@@ -8,13 +8,13 @@ use smash::phx::*;
 use utils::{*, consts::*, util::*};
 use smash::app::*;
 
-pub use common_dyn::ext::*;
-pub use common_dyn::*;
+use utils::ext::*;
+
+#[macro_use] extern crate smash_script;
 
 pub mod djc;
 pub mod opff;
 pub mod misc;
-
 
 pub fn install() {
     djc::install();

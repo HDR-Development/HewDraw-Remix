@@ -1,4 +1,8 @@
-use crate::opff_import::*;
+use utils::{
+    *,
+    ext::*,
+    consts::*
+};
 
 // Dtilt and Utilt repeat increment
 unsafe fn dtilt_utilt_repeat_increment(boma: &mut BattleObjectModuleAccessor) {

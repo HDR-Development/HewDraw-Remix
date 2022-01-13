@@ -1,4 +1,8 @@
-use crate::opff_import::*;
+use utils::{
+    *,
+    ext::*,
+    consts::*
+};
 use smash::app::BattleObjectModuleAccessor;
 use smash::lua2cpp::L2CFighterCommon;
 use smash::phx::{Vector2f, Vector3f, Vector4f};
@@ -9,6 +13,7 @@ use smash::hash40;
 use smash::app::sv_animcmd::*;
 use smash_script::*;
 use crate::misc::*;
+use globals::*;
 
 unsafe fn hitstun_overlay_orange(boma: &mut BattleObjectModuleAccessor, id: usize) {
     let cmb_vec1 = Vector4f{x: 0.949, y: 0.5137, z: 0.08643, w: 0.69};

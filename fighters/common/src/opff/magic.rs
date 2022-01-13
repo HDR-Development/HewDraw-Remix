@@ -1,4 +1,8 @@
-use crate::opff_import::*;
+use utils::{
+    *,
+    ext::*,
+    consts::*
+};
 use smash::app::BattleObjectModuleAccessor;
 use smash::phx::{Vector2f, Vector3f};
 use smash::app::lua_bind::*;

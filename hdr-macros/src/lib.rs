@@ -1,4 +1,5 @@
-use std::path::Path;
+#![feature(box_into_inner)]
+use std::{path::Path, collections::HashMap};
 
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
@@ -207,4 +208,170 @@ pub fn agent_params(item: TokenStream) -> TokenStream {
         }
     }
     syn::LitStr::new(output.as_str(), literal.span()).to_token_stream().into()
+}
+
+// fn recreate_module_paths(paths: &syn::punctuated::Punctuated<syn::Path, syn::token::Comma>) -> syn::Item {
+//     enum PathTerminator {
+//         Mod(HashMap<String, PathTerminator>),
+//         Item(PathTerminator)
+//     }
+
+//     let mut module = None;
+
+//     let mut hashmap = HashMap::new();
+
+//     for path in paths.iter() {
+//         for segment in path.segments.iter().rev().skip(1) {
+
+//         }    
+//     }
+
+//     for path in paths.iter() {
+//         // reverse the path so that the last segment is first and then skip it since it's a regular item
+//         for segment in path.segments.iter().rev().skip(1) {
+//             if let Some(mod_) = module {
+//                 module = Some(syn::parse_quote!(
+//                     mod #segment { pub #mod_ }
+//                 ));
+//             } else {
+//                 module = Some(syn::parse_quote!( mod #segment { #end } ));
+//             }
+//         }
+//     }
+
+    
+//     if let Some(module) = module {
+//         syn::Item::Mod(module)
+//     } else {
+//         end
+//     }
+// }
+
+// struct ArgList(syn::punctuated::Punctuated<syn::Path, syn::token::Comma>);
+
+// impl syn::parse::Parse for ArgList {
+//     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+//         syn::punctuated::Punctuated::parse_terminated(input).map(|x| Self(x))
+//     }
+// }
+
+fn handle_tree_path(path: syn::UsePath, current_path: &String) -> syn::Item {
+    let syn::UsePath { tree, ident, .. } = path;
+    let mut new_mod: syn::ItemMod = syn::parse_quote!(
+        pub mod #ident {
+
+        }
+    );
+    new_mod.content
+        .as_mut()
+        .unwrap()
+        .1
+        .push(
+            handle_tree_recursive(
+                Box::into_inner(tree),
+                &format!("{}__{}", current_path, ident.to_string())
+            )
+        );
+    syn::Item::Mod(new_mod)
+}
+
+fn handle_tree_group(group: syn::UseGroup, current_path: &String) -> syn::Item {
+    let syn::UseGroup { items, .. } = group;
+    let items: Vec<syn::Item> = items.into_iter().map(|x| handle_tree_recursive(x, current_path)).collect();
+    let items2 = items.iter();
+    syn::Item::Verbatim(quote::quote!(
+        #(
+            #items2
+        )*
+    ))
+}
+
+fn handle_tree_rename(rename: syn::UseRename, current_path: &String) -> syn::Item {
+    let og_fn_name = &rename.ident;
+    let new_fn_name = &rename.rename;
+    let link_name = syn::LitStr::new(format!("{}__{}", current_path, og_fn_name.to_string()).as_str(), og_fn_name.span());
+    syn::parse_quote!(
+        extern "C" {
+            #[link_name = #link_name]
+            pub fn #new_fn_name(fighter: &mut smash::lua2cpp::L2CFighterCommon) -> smash::lib::L2CValue;
+        }
+    )
+}
+
+fn handle_tree_name(name: syn::UseName, current_path: &String) -> syn::Item {
+    let fn_name = &name.ident;
+    let link_name = syn::LitStr::new(format!("{}__{}", current_path, fn_name.to_string()).as_str(), name.span());
+    syn::parse_quote!(
+        extern "C" {
+            #[link_name = #link_name]
+            pub fn #fn_name(fighter: &mut smash::lua2cpp::L2CFighterCommon) -> smash::lib::L2CValue;
+        }
+    )
+}
+
+fn handle_tree_recursive(tree: syn::UseTree, current_path: &String) -> syn::Item {
+    match tree {
+        syn::UseTree::Glob(glob) => syn::Item::Verbatim(syn::Error::new(glob.span(), "HDR Imports cannot use the glob match!").into_compile_error().into_token_stream()),
+        syn::UseTree::Path(path) => handle_tree_path(path, current_path),
+        syn::UseTree::Group(group) => handle_tree_group(group, current_path),
+        syn::UseTree::Rename(rename) => handle_tree_rename(rename, current_path),
+        syn::UseTree::Name(name) => handle_tree_name(name, current_path)
+    }
+}
+
+#[proc_macro]
+pub fn import(item: TokenStream) -> TokenStream {
+    let tree = parse_macro_input!(item as syn::UseTree);
+    handle_tree_recursive(tree, &String::from("hdr")).to_token_stream().into()
+
+
+    // quote::quote!(
+    //     use #tree
+    // ).to_token_stream().into()
+    // let ArgList(path) = parse_macro_input!(item as ArgList);
+    // let fn_name = path.segments.last().expect("The path is empty somehow!");
+    // let mut link_name = String::new();
+    // for seg in path.segments.iter() {
+    //     link_name += &format!("__{}", seg.ident.to_string());
+    // }
+    // if !link_name.starts_with("hdr") {
+    //     link_name = "hdr".to_string() + &link_name;
+    // }
+    // let link_name = syn::LitStr::new(link_name.as_str(), path.span());
+    // let extern_mod = syn::parse_quote!(
+    //     extern "C" {
+    //         #[link_name = #link_name]
+    //         pub fn #fn_name(fighter: &mut smash::lua2cpp::L2CFighterCommon) -> smash::lib::L2CValue;
+    //     }
+    // );
+    // recreate_module_path(&path, syn::Item::ForeignMod(extern_mod)).to_token_stream().into()
+}
+
+#[proc_macro_attribute]
+pub fn export(attr: TokenStream, item: TokenStream) -> TokenStream {
+    let path = parse_macro_input!(attr as syn::Path);
+    let mut usr_fn = parse_macro_input!(item as syn::ItemFn);
+    let mut link_name = String::new();
+    for seg in path.segments.iter() {
+        link_name += &format!("__{}", seg.ident.to_string());
+    }
+    if !link_name.starts_with("hdr") {
+        link_name = "hdr".to_string() + &link_name + &format!("__{}", usr_fn.sig.ident.to_string());
+    }
+    let link_name = syn::LitStr::new(link_name.as_str(), path.span());
+    let public = syn::VisPublic {
+        pub_token: syn::token::Pub {
+            span: path.span()
+        }
+    };
+    usr_fn.vis = syn::Visibility::Public(public);
+    usr_fn.sig.abi = Some(syn::Abi {
+        extern_token: syn::token::Extern {
+            span: path.span()
+        },
+        name: Some(syn::LitStr::new("C", path.span()))
+    });
+    usr_fn.attrs.push(syn::parse_quote!(#[export_name = #link_name]));
+
+    usr_fn.to_token_stream().into()
 }

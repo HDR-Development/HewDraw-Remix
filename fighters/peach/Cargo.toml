@@ -6,5 +6,9 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-common = { package = "common-dyn", path = "../common-dyn" }
-skyline = { git = "https://github.com/ultimate-research/skyline-rs" }
+skyline = { git = "https://github.com/ultimate-research/skyline-rs.git" }
+skyline_smash = { git = "https://github.com/blu-dev/skyline-smash", features = ["weak_l2cvalue"] }
+smash_script = { git = "https://github.com/blu-dev/smash-script.git", branch = "development" }
+smashline = { git = "https://github.com/blu-dev/smashline.git", branch = "development" }
+utils = { path = "../../utils" }
+common-dyn = { path = "../common-dyn" }

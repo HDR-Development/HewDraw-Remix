@@ -1,4 +1,8 @@
-use crate::opff_import::*;
+use utils::{
+    *,
+    ext::*,
+    consts::*
+};
 use smash::app::{self, lua_bind::*, sv_system, sv_kinetic_energy};
 use smash::phx::*;
 use smash::hash40;
@@ -65,7 +69,7 @@ impl FrameInfo {
             lua_state: lua_state,
             agent: fighter as *mut L2CFighterCommon as *mut L2CAgent,
             boma: boma as *mut smash::app::BattleObjectModuleAccessor,
-            fighter_kind: get_kind(boma),
+            fighter_kind: boma.kind(),
             status_kind: StatusModule::status_kind(boma),
             situation_kind: StatusModule::situation_kind(boma),
             motion_kind: Hash40::new_raw(MotionModule::motion_kind(boma)),
@@ -115,7 +119,7 @@ impl WeaponFrameInfo {
             lua_state: lua_state,
             agent: weapon as *mut L2CFighterBase as *mut L2CAgent,
             boma: boma as *mut smash::app::BattleObjectModuleAccessor,
-            weapon_kind: get_kind(boma),
+            weapon_kind: boma.kind(),
             status_kind: StatusModule::status_kind(boma),
             situation_kind: StatusModule::situation_kind(boma),
             motion_kind: Hash40::new_raw(MotionModule::motion_kind(boma)),
@@ -144,15 +148,8 @@ Use this instead of get_command_flag_cat
 pub unsafe extern "Rust" fn fighter_common_opff(fighter: &mut L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         let boma = &mut *info.boma;
-        if get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-            /* Logic for when game "sessions" begin/end */
-            //handle_game_resets(boma, fighter);
-            //Update and handle GLOBAL_FRAME_COUNT
-            //global_frame_count::update_global_frame_counter(boma, info.status_kind);
-            //movesets
+        if boma.is_fighter() {
             moveset_edits(fighter, &info);
-            // visualizer::training_mode_hitbox_visualizer_control(boma);
-            // visualizer::sys_line(fighter);
         }
     }
 }

@@ -1,7 +1,7 @@
-use ::common::opff_import::*;
+use ::common_dyn::opff_import::*;
 use super::*;
 use globals::*;
-use ::common::opff::*;
+use ::common_dyn::opff::*;
  
 unsafe fn float_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR {
@@ -18,7 +18,7 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     float_cancel(boma, status_kind);
 }
 
-#[utils::opff(FIGHTER_KIND_PEACH )]
+#[::utils::opff(FIGHTER_KIND_PEACH )]
 pub fn peach_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         fighter_common_opff(fighter);
