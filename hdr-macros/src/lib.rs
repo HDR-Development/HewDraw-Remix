@@ -255,7 +255,7 @@ pub fn agent_params(item: TokenStream) -> TokenStream {
 //     }
 // }
 
-fn handle_tree_path(path: syn::UsePath, current_path: &String) -> syn::Item {
+fn handle_tree_path(path: syn::UsePath, current_path: &String, no_ret: bool) -> syn::Item {
     let syn::UsePath { tree, ident, .. } = path;
     let mut new_mod: syn::ItemMod = syn::parse_quote!(
         pub mod #ident {
@@ -269,15 +269,16 @@ fn handle_tree_path(path: syn::UsePath, current_path: &String) -> syn::Item {
         .push(
             handle_tree_recursive(
                 Box::into_inner(tree),
-                &format!("{}__{}", current_path, ident.to_string())
+                &format!("{}__{}", current_path, ident.to_string()),
+                no_ret
             )
         );
     syn::Item::Mod(new_mod)
 }
 
-fn handle_tree_group(group: syn::UseGroup, current_path: &String) -> syn::Item {
+fn handle_tree_group(group: syn::UseGroup, current_path: &String, no_ret: bool) -> syn::Item {
     let syn::UseGroup { items, .. } = group;
-    let items: Vec<syn::Item> = items.into_iter().map(|x| handle_tree_recursive(x, current_path)).collect();
+    let items: Vec<syn::Item> = items.into_iter().map(|x| handle_tree_recursive(x, current_path, no_ret)).collect();
     let items2 = items.iter();
     syn::Item::Verbatim(quote::quote!(
         #(
@@ -286,65 +287,67 @@ fn handle_tree_group(group: syn::UseGroup, current_path: &String) -> syn::Item {
     ))
 }
 
-fn handle_tree_rename(rename: syn::UseRename, current_path: &String) -> syn::Item {
+fn handle_tree_rename(rename: syn::UseRename, current_path: &String, no_ret: bool) -> syn::Item {
     let og_fn_name = &rename.ident;
     let new_fn_name = &rename.rename;
     let link_name = syn::LitStr::new(format!("{}__{}", current_path, og_fn_name.to_string()).as_str(), og_fn_name.span());
-    syn::parse_quote!(
-        extern "C" {
-            #[link_name = #link_name]
-            pub fn #new_fn_name(fighter: &mut smash::lua2cpp::L2CFighterCommon) -> smash::lib::L2CValue;
-        }
-    )
+    if no_ret {
+        syn::parse_quote!(
+            extern "C" {
+                #[link_name = #link_name]
+                pub fn #new_fn_name(fighter: &mut smash::lua2cpp::L2CFighterCommon);
+            }
+        )
+    } else {
+        syn::parse_quote!(
+            extern "C" {
+                #[link_name = #link_name]
+                pub fn #new_fn_name(fighter: &mut smash::lua2cpp::L2CFighterCommon) -> smash::lib::L2CValue;
+            }
+        )
+    }
 }
 
-fn handle_tree_name(name: syn::UseName, current_path: &String) -> syn::Item {
+fn handle_tree_name(name: syn::UseName, current_path: &String, no_ret: bool) -> syn::Item {
     let fn_name = &name.ident;
     let link_name = syn::LitStr::new(format!("{}__{}", current_path, fn_name.to_string()).as_str(), name.span());
-    syn::parse_quote!(
-        extern "C" {
-            #[link_name = #link_name]
-            pub fn #fn_name(fighter: &mut smash::lua2cpp::L2CFighterCommon) -> smash::lib::L2CValue;
-        }
-    )
+    if no_ret {
+        syn::parse_quote!(
+            extern "C" {
+                #[link_name = #link_name]
+                pub fn #fn_name(fighter: &mut smash::lua2cpp::L2CFighterCommon);
+            }
+        )
+    } else {
+        syn::parse_quote!(
+            extern "C" {
+                #[link_name = #link_name]
+                pub fn #fn_name(fighter: &mut smash::lua2cpp::L2CFighterCommon) -> smash::lib::L2CValue;
+            }
+        )
+    }
 }
 
-fn handle_tree_recursive(tree: syn::UseTree, current_path: &String) -> syn::Item {
+fn handle_tree_recursive(tree: syn::UseTree, current_path: &String, no_ret: bool) -> syn::Item {
     match tree {
         syn::UseTree::Glob(glob) => syn::Item::Verbatim(syn::Error::new(glob.span(), "HDR Imports cannot use the glob match!").into_compile_error().into_token_stream()),
-        syn::UseTree::Path(path) => handle_tree_path(path, current_path),
-        syn::UseTree::Group(group) => handle_tree_group(group, current_path),
-        syn::UseTree::Rename(rename) => handle_tree_rename(rename, current_path),
-        syn::UseTree::Name(name) => handle_tree_name(name, current_path)
+        syn::UseTree::Path(path) => handle_tree_path(path, current_path, no_ret),
+        syn::UseTree::Group(group) => handle_tree_group(group, current_path, no_ret),
+        syn::UseTree::Rename(rename) => handle_tree_rename(rename, current_path, no_ret),
+        syn::UseTree::Name(name) => handle_tree_name(name, current_path, no_ret)
     }
+}
+
+#[proc_macro]
+pub fn import_noreturn(item: TokenStream) -> TokenStream {
+    let tree = parse_macro_input!(item as syn::UseTree);
+    handle_tree_recursive(tree, &String::from("hdr"), true).to_token_stream().into()
 }
 
 #[proc_macro]
 pub fn import(item: TokenStream) -> TokenStream {
     let tree = parse_macro_input!(item as syn::UseTree);
-    handle_tree_recursive(tree, &String::from("hdr")).to_token_stream().into()
-
-
-    // quote::quote!(
-    //     use #tree
-    // ).to_token_stream().into()
-    // let ArgList(path) = parse_macro_input!(item as ArgList);
-    // let fn_name = path.segments.last().expect("The path is empty somehow!");
-    // let mut link_name = String::new();
-    // for seg in path.segments.iter() {
-    //     link_name += &format!("__{}", seg.ident.to_string());
-    // }
-    // if !link_name.starts_with("hdr") {
-    //     link_name = "hdr".to_string() + &link_name;
-    // }
-    // let link_name = syn::LitStr::new(link_name.as_str(), path.span());
-    // let extern_mod = syn::parse_quote!(
-    //     extern "C" {
-    //         #[link_name = #link_name]
-    //         pub fn #fn_name(fighter: &mut smash::lua2cpp::L2CFighterCommon) -> smash::lib::L2CValue;
-    //     }
-    // );
-    // recreate_module_path(&path, syn::Item::ForeignMod(extern_mod)).to_token_stream().into()
+    handle_tree_recursive(tree, &String::from("hdr"), false).to_token_stream().into()
 }
 
 #[proc_macro_attribute]

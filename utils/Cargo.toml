@@ -13,7 +13,7 @@ arcropolis-api = { git = "https://github.com/Raytwo/arcropolis_api" }
 prc-rs = "1.3"
 parking_lot = "0.11.2"
 hdr-macros = { path = "../hdr-macros" }
-utils-dyn = { path = "../utils-dyn" }
+utils-dyn = { package = "dynamic", path = "../dynamic" }
 
 [build-dependencies]
 hdr-macros = { path = "../hdr-macros" }

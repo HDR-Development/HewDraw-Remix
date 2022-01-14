@@ -1,6 +1,6 @@
 use super::*;
  
-utils::import!(common::opff::fighter_common_opff);
+utils::import_noreturn!(common::opff::fighter_common_opff);
 
 unsafe fn blue_eggs_land_cancels(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N)

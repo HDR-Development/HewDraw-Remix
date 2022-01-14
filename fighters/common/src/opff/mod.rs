@@ -145,7 +145,7 @@ Use this instead of get_command_flag_cat
 
 // general per-frame fighter-level hooks
 #[utils::export(common::opff)]
-pub fn fighter_common_opff(fighter: &mut L2CFighterCommon) {
+pub unsafe fn fighter_common_opff(fighter: &mut L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         let boma = &mut *info.boma;
         if boma.is_fighter() {

@@ -9,6 +9,7 @@ mod modules;
 pub use hdr_macros::{
     export,
     import,
+    import_noreturn,
     hash40
 };
 

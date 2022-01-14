@@ -38,7 +38,6 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
 unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, false);
@@ -65,26 +64,13 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "chrom", script = "game_appeallwr" , category = ACMD_GAME , low_priority)]
-unsafe fn chrom_appeallwr_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "chrom", scripts = ["game_appeallwl", "game_appeallwr"], category = ACMD_GAME , low_priority)]
+unsafe fn chrom_appeallw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        if(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)){
-            VarModule::on_flag(fighter.battle_object, vars::chrom::TRAIL_EFFECT);
-        }
-    }
-    
-}
-
-#[acmd_script( agent = "chrom", script = "game_appeallwl" , category = ACMD_GAME , low_priority)]
-unsafe fn chrom_appeallwl_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)){
+        if boma.is_button_on(Buttons::AppealHi) {
             VarModule::on_flag(fighter.battle_object, vars::chrom::TRAIL_EFFECT);
         }
     }
@@ -97,8 +83,7 @@ pub fn install() {
         dash_game,
         dash_effect,
         turn_dash_game,
-        chrom_appeallwr_game,
-        chrom_appeallwl_game,
+        chrom_appeallw_game,
     );
 }
 

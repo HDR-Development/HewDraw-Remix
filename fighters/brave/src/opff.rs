@@ -1,6 +1,6 @@
 use super::*;
 
-utils::import!(common::opff::fighter_common_opff);
+utils::import_noreturn!(common::opff::fighter_common_opff);
 
 unsafe fn nspecial_cancels(fighter: &mut L2CFighterCommon) {
     //PM-like neutral-b canceling

@@ -631,7 +631,6 @@ unsafe fn chrom_special_air_s4_s_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_specials4lw" , category = ACMD_EFFECT , low_priority)]
 unsafe fn chrom_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.93, 0.03, 0.7);
@@ -685,7 +684,6 @@ unsafe fn chrom_special_s4_lw_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "chrom", script = "effect_specialairs4lw" , category = ACMD_EFFECT , low_priority)]
 unsafe fn chrom_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 0, 0.93, 0.03, 0.7);
