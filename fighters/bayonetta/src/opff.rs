@@ -170,15 +170,13 @@ unsafe fn nspecial_cancels(fighter: &mut L2CFighterCommon) {
 }
 
 #[utils::macros::opff(FIGHTER_KIND_BAYONETTA )]
-pub fn bayonetta_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    unsafe {
-        common::opff::fighter_common_opff(fighter);
+pub unsafe fn bayonetta_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    common::opff::fighter_common_opff(fighter);
 
-        jab_cancels(fighter);
-        dash_attack_cancels(fighter);
-        tilt_cancels(fighter);
-        aerial_cancels(fighter);
-        special_cancels(fighter);
-        nspecial_cancels(fighter);
-    }
+    jab_cancels(fighter);
+    dash_attack_cancels(fighter);
+    tilt_cancels(fighter);
+    aerial_cancels(fighter);
+    special_cancels(fighter);
+    nspecial_cancels(fighter);
 }

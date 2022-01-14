@@ -8,14 +8,14 @@ unsafe fn brave_attack_dash_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 19.0);
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::brave::IS_CRITICAL_HIT);
-        let RNG = app::sv_math::rand(hash40("fighter"), 63);
-        if (RNG > 1){
+        let rng = app::sv_math::rand(hash40("fighter"), 63);
+        if rng > 1 {
             VarModule::off_flag(fighter.battle_object, vars::brave::IS_CRITICAL_HIT);
         }
         else{
             VarModule::on_flag(fighter.battle_object, vars::brave::IS_CRITICAL_HIT);
         }
-        if (VarModule::is_flag(fighter.battle_object, vars::brave::IS_CRITICAL_HIT)) {
+        if VarModule::is_flag(fighter.battle_object, vars::brave::IS_CRITICAL_HIT) {
             WorkModule::on_flag(boma, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_CRITICAL_HIT);
             ATTACK(fighter, 0, 0, Hash40::new("armr"), 20.0, 50, 89, 0, 70, 1.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BRAVE_CRITICALHIT, *ATTACK_REGION_SWORD);
             ATTACK(fighter, 1, 0, Hash40::new("sword1"), 20.0, 45, 89, 0, 70, 3.7, 9.5, 0.0, -0.5, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BRAVE_CRITICALHIT, *ATTACK_REGION_SWORD);
