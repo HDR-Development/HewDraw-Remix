@@ -1,199 +1,184 @@
-use ::common::opff_import::*;
 use super::*;
-use globals::*;
-use ::common::opff::*;
  
-unsafe fn jab_dash_attack_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
-    // Level 1: Jab and Dash Attack Cancels
-    if [*FIGHTER_STATUS_KIND_ATTACK,
-        *FIGHTER_STATUS_KIND_ATTACK_DASH].contains(&status_kind) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-            || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+utils::import!(common::opff::fighter_common_opff);
 
-            // Check for tilt attack inputs during jab
-            if status_kind == *FIGHTER_STATUS_KIND_ATTACK {
-                if boma.is_cat_flag(Cat1::AttackS3) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S3, false);
-                }
-                if boma.is_cat_flag(Cat1::AttackHi3) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI3, false);
-                }
-                if boma.is_cat_flag(Cat1::AttackLw3) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW3, false);
-                }
+unsafe fn jab_cancels(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK)
+    || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+        return;
+    }
 
-                // Check for special attack inputs during jab (on hit)
-                if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                    if boma.is_cat_flag(Cat1::SpecialN) {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_N, false);
-                    }
-                    if boma.is_cat_flag(Cat1::SpecialS) {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_S, false);
-                    }
-                    if boma.is_cat_flag(Cat1::SpecialHi) {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI, false);
-                    }
-                }
-            }
+    if fighter.is_cat_flag(Cat1::AttackS3) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_S3, false);
+        return;
+    }
 
-            // Check for side special and up special inputs during dash attack (on hit)
-            if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH
-                && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                if boma.is_cat_flag(Cat1::SpecialS) {
-                    StatusModule::set_situation_kind(boma, smash::app::SituationKind(*SITUATION_KIND_AIR), true);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_S, false);
-                }
-                if boma.is_cat_flag(Cat1::SpecialHi) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI, false);
-                }
-            }
-        }
+    if fighter.is_cat_flag(Cat1::AttackHi3) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_HI3, false);
+        return;
+    }
+
+    if fighter.is_cat_flag(Cat1::AttackLw3) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_LW3, false);
+        return;
+    }
+
+    if !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+        return;
+    }
+
+    if fighter.is_cat_flag(Cat1::SpecialN) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_N, false);
+        return;
+    }
+
+    if fighter.is_cat_flag(Cat1::SpecialS) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_S, false);
+        return;
+    }
+
+    if fighter.is_cat_flag(Cat1::SpecialHi) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_HI, false);
     }
 }
 
-unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
+unsafe fn dash_attack_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if !fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_DASH)
+    || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+        return;
+    }
+
+    if fighter.is_cat_flag(Cat1::SpecialS) {
+        StatusModule::set_situation_kind(fighter.module_accessor, app::SituationKind(*SITUATION_KIND_AIR), true);
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_S, false);
+        return;
+    }
+
+    if fighter.is_cat_flag(Cat1::SpecialHi) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_HI, false);
+    }
+}
+
+unsafe fn tilt_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     // Level 2: Tilt Cancels
-    if [*FIGHTER_STATUS_KIND_ATTACK_S3,
+    if !fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_HI3,
-        *FIGHTER_STATUS_KIND_ATTACK_LW3].contains(&status_kind) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-            || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+        *FIGHTER_STATUS_KIND_ATTACK_LW3
+    ])
+    || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    {
+        return;
+    }
 
-            // Check for smash attack inputs during ftilt and utilt
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-                && [*FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI3].contains(&status_kind) {
-                if boma.is_cat_flag(Cat1::AttackS4) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START,true);
-                }
-                if boma.is_cat_flag(Cat1::AttackHi4) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI4_START,true);
-                }
-                if boma.is_cat_flag(Cat1::AttackLw4) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW4_START,true);
-                }
-            }
+    if fighter.is_cat_flag(Cat1::SpecialN) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_N, false);
+        return;
+    }
 
-            // Check for special attack inputs
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                if boma.is_cat_flag(Cat1::SpecialN) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_N, false);
-                }
-                if boma.is_cat_flag(Cat1::SpecialS) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_S, false);
-                }
-                if boma.is_cat_flag(Cat1::SpecialHi) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI, false);
-                }
-            }
+    if fighter.is_cat_flag(Cat1::SpecialS) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_S, false);
+        return;
+    }
 
-            // Check for jump inputs during utilt
-            /*
-               if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI3){
-                   if jump_checker_buffer(boma, cat1) && AttackModule::is_infliction_status(boma, COLLISION_KIND_MASK_HIT)) {
-                       StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT,true);
-                   }
-               }
-               */
-        }
+    if fighter.is_cat_flag(Cat1::SpecialHi) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_HI, false);
+        return;
+    }
+    
+    // The tilt -> smash attacks is only valid for non-dtilt
+    if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_LW3) {
+        return;
+    }
+    
+    if fighter.is_cat_flag(Cat1::AttackS4) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_S4_START, true);
+        return;
+    }
+    
+    if fighter.is_cat_flag(Cat1::AttackHi4) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_HI4_START, true);
+        return;
+    }
+
+    if fighter.is_cat_flag(Cat1::AttackLw4) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_LW4_START, true);
+        return;
     }
 }
 
-unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
-    // Aerial Cancels
-    if [*FIGHTER_STATUS_KIND_ATTACK_AIR,
-        *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F].contains(&status_kind) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-            || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
-            // Check for jump inputs
-            if boma.is_input_jump()
-                && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                if boma.get_jump_count() < boma.get_jump_count_max() {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                }
-            }
-            // Check for special attack inputs
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                if boma.is_cat_flag(Cat1::SpecialN) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_N, false);
-                }
-                if boma.is_cat_flag(Cat1::SpecialS) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_S, false);
-                }
-                if boma.is_cat_flag(Cat1::SpecialHi) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI, false);
-                }
-            }
-
-            // Check for aerial attack inputs during fair
-            if status_kind == *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F {
-                if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                    //if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_N
-                    if boma.is_cat_flag(Cat1::AttackN) {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
-                    }
-                    //if boma.is_cat_flag(Cat1::AttackAirB) ||
-                    if (boma.is_cat_flag(Cat1::AttackS3) && boma.is_stick_backward())
-                        || (boma.is_cat_flag(Cat1::AttackS4) && boma.is_stick_backward()) {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
-                    }
-                    //if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_HI
-                    if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3
-                                            | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4) {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
-                    }
-                    //if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_LW
-                    if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3
-                                            | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4) {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
-                    }
-                }
-            }
-        }
+unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F])
+    || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    {
+        return;
     }
+
+    if fighter.is_input_jump()
+    && fighter.get_jump_count() < fighter.get_jump_count_max()
+    {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
+        return;
+    }
+
+    if fighter.is_cat_flag(Cat1::SpecialN) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_N, false);    
+        return;
+    }
+
+    if fighter.is_cat_flag(Cat1::SpecialS) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_S, false);
+        return;
+    }
+
+    if fighter.is_cat_flag(Cat1::SpecialHi) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_HI, false);
+        return;
+    }
+
+    if !fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F) {
+        return;
+    }
+
+    match fighter.get_aerial() {
+        Some(AerialKind::Fair) | None => return,
+        _ => {}
+    }
+
+    fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
 }
 
-unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, frame: f32) {
+unsafe fn special_cancels(fighter: &mut L2CFighterCommon) {
     // Special Cancels
-    if status_kind == *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            if MotionModule::frame(boma) > 33.0 {
-                CancelModule::enable_cancel(boma);
-            }
-        }
+    if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U)
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    && fighter.motion_frame() > 33.0
+    {
+        CancelModule::enable_cancel(fighter.module_accessor);
     }
 }
 
-unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
+unsafe fn nspecial_cancels(fighter: &mut L2CFighterCommon) {
     //PM-like neutral-b canceling
-    if status_kind == *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE {
-        if situation_kind == *SITUATION_KIND_AIR {
-            if boma.is_cat_flag(Cat1::JumpButton) {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
-                ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
-            }
-        }
+    if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE)
+    && fighter.is_situation(*SITUATION_KIND_AIR)
+    && fighter.is_cat_flag(Cat1::JumpButton)
+    {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
+        ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    // Magic Series
-    jab_dash_attack_cancels(boma, status_kind, cat[0]);
-    tilt_cancels(boma, status_kind, cat[0]);
-    aerial_cancels(boma, status_kind, cat[0]);
-    special_cancels(boma, status_kind, frame);
-    nspecial_cancels(boma, status_kind, situation_kind, cat[0]);
-}
-
-#[utils::opff(FIGHTER_KIND_BAYONETTA )]
+#[utils::macros::opff(FIGHTER_KIND_BAYONETTA )]
 pub fn bayonetta_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
-		bayonetta_frame(fighter)
-    }
-}
+        common::opff::fighter_common_opff(fighter);
 
-pub unsafe fn bayonetta_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = FrameInfo::update_and_get(fighter) {
-         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        jab_cancels(fighter);
+        dash_attack_cancels(fighter);
+        tilt_cancels(fighter);
+        aerial_cancels(fighter);
+        special_cancels(fighter);
+        nspecial_cancels(fighter);
     }
 }

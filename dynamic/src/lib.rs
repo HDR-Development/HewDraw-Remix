@@ -12,4 +12,6 @@ pub use hdr_macros::{
     hash40
 };
 
+pub use hdr_macros as macros;
+
 pub use modules::*;

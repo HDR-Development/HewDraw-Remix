@@ -1,5 +1,5 @@
 #![feature(box_into_inner)]
-use std::{path::Path, collections::HashMap};
+use std::path::Path;
 
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;

@@ -293,6 +293,15 @@ impl Cat4 {
     }
 }
 
+#[derive(Copy, Clone, PartialEq, Eq)]
+pub enum AerialKind {
+    Nair,
+    Fair,
+    Bair,
+    Uair,
+    Dair
+}
+
 pub trait MainShift {
     fn main_shift(&mut self, new_main: unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue) -> L2CValue;
 }
@@ -334,6 +343,7 @@ pub trait BomaExt {
     unsafe fn prev_stick_y(&mut self) -> f32;
     unsafe fn is_flick_y(&mut self, sensitivity: f32) -> bool;
     unsafe fn is_input_jump(&mut self) -> bool;
+    unsafe fn get_aerial(&mut self) -> Option<AerialKind>;
     /// returns whether or not the stick x is pointed in the "forwards" direction for
     /// a character
     unsafe fn is_stick_forward(&mut self) -> bool;
@@ -353,6 +363,7 @@ pub trait BomaExt {
     unsafe fn is_motion_one_of(&mut self, motions: &[Hash40]) -> bool;
     unsafe fn get_jump_count(&mut self) -> i32;
     unsafe fn get_jump_count_max(&mut self) -> i32;
+    unsafe fn motion_frame(&mut self) -> f32;
 
 
     unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32;
@@ -477,6 +488,24 @@ impl BomaExt for BattleObjectModuleAccessor {
         return false;
     }
 
+    unsafe fn get_aerial(&mut self) -> Option<AerialKind> {
+        if self.is_cat_flag(Cat1::AttackHi3 | Cat1::AttackHi4) {
+            Some(AerialKind::Uair)
+        } else if self.is_cat_flag(Cat1::AttackLw3 | Cat1::AttackLw4) {
+            Some(AerialKind::Dair)
+        } else if self.is_cat_flag(Cat1::AttackS3 | Cat1::AttackS4) {
+            if self.is_stick_backward() {
+                Some(AerialKind::Bair)
+            } else {
+                Some(AerialKind::Fair)
+            }
+        } else if self.is_cat_flag(Cat1::AttackN | Cat1::AttackAirN) {
+            Some(AerialKind::Nair)
+        } else {
+            None
+        }
+    }
+
     unsafe fn is_status(&mut self, kind: i32) -> bool {
         return StatusModule::status_kind(self) == kind;
     }
@@ -510,6 +539,10 @@ impl BomaExt for BattleObjectModuleAccessor {
     unsafe fn is_motion_one_of(&mut self, kinds: &[Hash40]) -> bool {
         let kind = MotionModule::motion_kind(self);
         return kinds.contains(&Hash40::new_raw(kind));
+    }
+
+    unsafe fn motion_frame(&mut self) -> f32 {
+        return MotionModule::frame(self);
     }
 
     unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32 {
@@ -592,13 +625,13 @@ impl GetObjects for BattleObject {
         std::mem::transmute(this.module_accessor)
     }
 
-    unsafe fn get_object(this: &mut Self) -> &'static mut BattleObject {
+    unsafe fn get_object(_: &mut Self) -> &'static mut BattleObject {
         panic!("Gannot call GetObjects::get_object on BattleObject!")
     }
 }
 
 impl GetObjects for BattleObjectModuleAccessor {
-    unsafe fn get_boma(this: &mut Self) -> &'static mut BattleObjectModuleAccessor {
+    unsafe fn get_boma(_: &mut Self) -> &'static mut BattleObjectModuleAccessor {
         panic!("Gannot call GetObjects::get_boma on BattleObjectModuleAccessor!")
     }
 
