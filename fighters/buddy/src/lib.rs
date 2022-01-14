@@ -1,4 +1,4 @@
-#![feature(asm)] // #![allow(unused_imports)]#![allow(unused_variables)]
+#![feature(asm)]
 pub mod acmd;
 
 //pub mod status;

@@ -2,7 +2,7 @@ use super::*;
  
 utils::import!(common::opff::fighter_common_opff);
 
-unsafe fn blue_eggs_land_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+unsafe fn blue_eggs_land_cancels(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N)
     && fighter.is_situation(*SITUATION_KIND_GROUND)
     && fighter.is_prev_situation(*SITUATION_KIND_AIR)
@@ -12,7 +12,7 @@ unsafe fn blue_eggs_land_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon)
 }
 
 // Banjo Grenade Airdodge Cancel
-unsafe fn grenade_ac(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+unsafe fn grenade_ac(fighter: &mut L2CFighterCommon) {
     if fighter.is_situation(*SITUATION_KIND_AIR)
     && fighter.is_status_one_of(&[*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_LW_SHOOT, *FIGHTER_STATUS_KIND_SPECIAL_LW])
     && fighter.motion_frame() > 15.0
@@ -24,7 +24,7 @@ unsafe fn grenade_ac(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 #[utils::macros::opff(FIGHTER_KIND_BUDDY)]
-pub unsafe fn buddy_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub unsafe fn buddy_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
 
     blue_eggs_land_cancels(fighter);

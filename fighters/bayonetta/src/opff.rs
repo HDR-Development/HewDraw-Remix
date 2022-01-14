@@ -42,7 +42,7 @@ unsafe fn jab_cancels(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn dash_attack_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+unsafe fn dash_attack_cancels(fighter: &mut L2CFighterCommon) {
     if !fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_DASH)
     || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
         return;
@@ -59,7 +59,7 @@ unsafe fn dash_attack_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-unsafe fn tilt_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+unsafe fn tilt_cancels(fighter: &mut L2CFighterCommon) {
     // Level 2: Tilt Cancels
     if !fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_ATTACK_S3,
@@ -170,7 +170,7 @@ unsafe fn nspecial_cancels(fighter: &mut L2CFighterCommon) {
 }
 
 #[utils::macros::opff(FIGHTER_KIND_BAYONETTA )]
-pub unsafe fn bayonetta_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub unsafe fn bayonetta_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
 
     jab_cancels(fighter);

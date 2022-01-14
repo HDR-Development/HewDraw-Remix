@@ -256,8 +256,9 @@ bitflags! {
         const GuardHold   = 0x10000;
         const SpecialRaw2 = 0x20000;
 
-        const SpecialAll = 0x20802;
-        const AttackAll = 0x201;
+        const SpecialAll  = 0x20802;
+        const AttackAll   = 0x201;
+        const AppealAll   = 0x7400;
     }
 }
 

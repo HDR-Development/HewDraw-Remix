@@ -29,7 +29,7 @@ unsafe fn dash_cancel_frizz(fighter: &mut L2CFighterCommon) {
 }
 
 #[utils::macros::opff(FIGHTER_KIND_BRAVE )]
-pub unsafe fn brave_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub unsafe fn brave_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
 
     nspecial_cancels(fighter);
