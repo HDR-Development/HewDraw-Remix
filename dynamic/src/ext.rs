@@ -68,6 +68,7 @@ impl Vec4Ext for Vector4f {
     }
 }
 
+#[derive(Copy, Clone)]
 pub enum CommandCat {
     Cat1(Cat1),
     Cat2(Cat2),

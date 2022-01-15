@@ -13,15 +13,16 @@ pub use var::*;
 use skyline::hooks::*;
 use crate::offsets;
 
-const ADDITIONAL_VTABLE_ENTRIES: usize = 6;
+const ADDITIONAL_VTABLE_ENTRIES: usize = 7;
 const HDR_BATTLE_OBJECT_MAGIC: u64 = 0x5443454A424F5F48; // H_OBJECT
 
 const VAR_MODULE_OFFSET:    isize = -1;
 const PARAM_MODULE_OFFSET:  isize = -2;
 const BUFFER_MODULE_OFFSET: isize = -3;
 const METER_MODULE_OFFSET:  isize = -4;
-const HDR_MAGIC_OFFSET:     isize = -5;
-const TOTAL_SIZE_OFFSET:    isize = -6;
+const MAGIC_MODULE_OFFSET:  isize = -5;
+const HDR_MAGIC_OFFSET:     isize = -6;
+const TOTAL_SIZE_OFFSET:    isize = -7;
 
 pub fn within_address_space(address: u64) -> bool {
     let text = unsafe {
