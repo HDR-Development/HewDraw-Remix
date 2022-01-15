@@ -156,7 +156,6 @@ unsafe fn daisy_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "daisy", script = "game_specialhiopen" , category = ACMD_GAME , low_priority)]
 unsafe fn daisy_special_hi_open_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::change_motion(boma, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, Hash40::new("special_hi_open"), false, 1.0);
