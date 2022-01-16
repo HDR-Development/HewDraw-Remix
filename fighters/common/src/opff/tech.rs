@@ -268,7 +268,7 @@ unsafe fn drift_di(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
             speed_mul += ratio * speed_mul_add_max;
         }
 
-        let drift_value = fighter.stick_x() * speed_mul;
+        let drift_value = boma.stick_x() * speed_mul;
         fighter.set_speed(Vector2f::new(speed_x + drift_value, speed_y), *FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
     }
 }

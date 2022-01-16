@@ -1,20 +1,37 @@
-#![feature(asm)]#![allow(unused_imports)]#![allow(unused_variables)]
-use ::common::prelude::*;
+#![feature(asm)]
 
 pub mod acmd;
 
 //pub mod status;
-pub mod opff;
+//pub mod opff;
 
-use smash::app::{self, lua_bind::*};
-use smash::lua2cpp::*;
-use smash::lib::{*, lua_const::*};
-use smash::phx::*;
-
-use smash_script::*;
+use smash::{
+    app::{
+        self,
+        sv_animcmd::{
+            frame,
+            wait
+        },
+        lua_bind::*
+    },
+    lib::lua_const::*,
+    lua2cpp::*,
+    phx::*,
+    hash40
+};
+use smash_script::{
+    *,
+    macros::*
+};
+use utils::{
+    *,
+    ext::*,
+    consts::*,
+};
+use smashline::*;
 
 pub fn install(is_runtime: bool) {
     acmd::install();
     //status::install();
-    opff::install(is_runtime);
+    //opff::install(is_runtime);
 }

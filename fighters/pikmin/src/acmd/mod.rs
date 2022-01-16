@@ -1,4 +1,4 @@
-use ::common::acmd_import::*;
+use super::*;
 use smash::lib::lua_const::*;
 
 mod aerials;

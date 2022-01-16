@@ -63,11 +63,10 @@ unsafe fn miigunner_attack_air_f_game(fighter: &mut L2CAgentBase) {
 	frame(lua_state, 8.0);
     if is_excute(fighter) {
 		// Trigger boosted aerial
-		let cat1 = 0;
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) || compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) || compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) || compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N) {
-            VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+		if boma.is_button_on(Buttons::Attack) {
+			VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
 			FT_MOTION_RATE(fighter, 2.5);
-        }
+		}
     }
 	frame(lua_state, 10.0);
 	if is_excute(fighter) {
