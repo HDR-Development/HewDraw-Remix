@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 unsafe fn bowser_bomb_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_LW_G].contains(&status_kind) {
@@ -84,10 +85,10 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
 }
 
 
-#[utils::opff(FIGHTER_KIND_KOOPA )]
+#[utils::macros::opff(FIGHTER_KIND_KOOPA )]
 pub fn koopa_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		koopa_frame(fighter)
     }
 }

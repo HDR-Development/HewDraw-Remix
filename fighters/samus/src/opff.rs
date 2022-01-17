@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 pub unsafe fn land_cancel_and_b_reverse(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, stick_x: f32, facing: f32, frame: f32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_S,
@@ -90,10 +91,10 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     shinespark_reset(boma, id, status_kind);
 }
 
-#[utils::opff(FIGHTER_KIND_SAMUS )]
+#[utils::macros::opff(FIGHTER_KIND_SAMUS )]
 pub fn samus_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		samus_frame(fighter);
         common_samus(fighter);
     }

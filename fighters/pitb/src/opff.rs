@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 unsafe fn bow_ff_lc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if [*FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT,
@@ -53,10 +54,10 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     pits_common(boma, status_kind);
 }
 
-#[utils::opff(FIGHTER_KIND_PITB )]
+#[utils::macros::opff(FIGHTER_KIND_PITB )]
 pub fn pitb_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		pitb_frame(fighter)
     }
 }

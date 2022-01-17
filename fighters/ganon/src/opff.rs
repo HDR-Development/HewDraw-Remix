@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 unsafe fn aerial_wiz_foot_jump_reset_bounce(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_LW,
@@ -82,10 +83,10 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     repeated_warlock_punch_turnaround(boma, status_kind, stick_x, facing, frame);
 }
 
-#[utils::opff(FIGHTER_KIND_GANON )]
+#[utils::macros::opff(FIGHTER_KIND_GANON )]
 pub fn ganon_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		ganon_frame(fighter)
     }
 }

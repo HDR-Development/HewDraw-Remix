@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 unsafe fn dragon_fang_shot_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_N_SHOOT && frame > 7.0 {
@@ -20,10 +21,10 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     dragon_fang_shot_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
 }
 
-#[utils::opff(FIGHTER_KIND_KAMUI )]
+#[utils::macros::opff(FIGHTER_KIND_KAMUI )]
 pub fn kamui_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		kamui_frame(fighter)
     }
 }

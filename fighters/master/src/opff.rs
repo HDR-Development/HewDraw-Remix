@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 unsafe fn areadbhar_autocancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
     if [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_FRONT,
@@ -94,10 +95,10 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     dsmash_dash_cancel(boma, status_kind, cat[0], frame);
 }
 
-#[utils::opff(FIGHTER_KIND_MASTER )]
+#[utils::macros::opff(FIGHTER_KIND_MASTER )]
 pub fn master_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		master_frame(fighter)
     }
 }

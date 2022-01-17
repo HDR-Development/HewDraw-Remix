@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 unsafe fn grab_walk(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat2: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_CATCH_WAIT {
@@ -32,10 +33,10 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     grenade_counter_reset(boma, id, status_kind);
 }
 
-#[utils::opff(FIGHTER_KIND_SNAKE )]
+#[utils::macros::opff(FIGHTER_KIND_SNAKE )]
 pub fn snake_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		snake_frame(fighter)
     }
 }

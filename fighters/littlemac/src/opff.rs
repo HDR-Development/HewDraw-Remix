@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 unsafe fn normal_side_special(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if WorkModule::is_flag(boma, *FIGHTER_LITTLEMAC_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_S) {
@@ -117,10 +118,10 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     nspecial_cancels(boma, status_kind, situation_kind, cat[0]);
 }
 
-#[utils::opff(FIGHTER_KIND_LITTLEMAC )]
+#[utils::macros::opff(FIGHTER_KIND_LITTLEMAC )]
 pub fn littlemac_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		littlemac_frame(fighter)
     }
 }

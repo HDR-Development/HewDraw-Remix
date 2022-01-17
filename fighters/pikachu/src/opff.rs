@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 // Disable QA jump cancels if not directly QA into the ground
 unsafe fn disable_qa_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
@@ -59,10 +60,10 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     // nothing lol
 }
 
-#[utils::opff(FIGHTER_KIND_PIKACHU )]
+#[utils::macros::opff(FIGHTER_KIND_PIKACHU )]
 pub fn pikachu_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		pikachu_frame(fighter);
         electric_rats_common(fighter);
     }

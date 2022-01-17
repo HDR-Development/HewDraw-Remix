@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 unsafe fn space_pirate_rush_flight(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, stick_x: f32) {
     if status_kind == *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_S_FALL {
@@ -49,10 +50,10 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     wing_blitz_drift(boma, status_kind, situation_kind, stick_x, stick_y);
 }
 
-#[utils::opff(FIGHTER_KIND_RIDLEY )]
+#[utils::macros::opff(FIGHTER_KIND_RIDLEY )]
 pub fn ridley_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		ridley_frame(fighter)
     }
 }

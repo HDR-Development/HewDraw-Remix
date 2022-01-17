@@ -17,7 +17,7 @@ unsafe fn jab_cancels(fighter: &mut L2CFighterCommon) {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_HI3, false);
         return;
     }
-
+  
     if fighter.is_cat_flag(Cat1::AttackLw3) {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_LW3, false);
         return;

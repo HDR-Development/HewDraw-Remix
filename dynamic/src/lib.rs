@@ -5,6 +5,7 @@ pub mod singletons;
 pub mod consts;
 pub mod ext;
 mod modules;
+pub mod frame_info;
 
 pub use hdr_macros::{
     export,
@@ -16,3 +17,4 @@ pub use hdr_macros::{
 pub use hdr_macros as macros;
 
 pub use modules::*;
+pub use frame_info::*;

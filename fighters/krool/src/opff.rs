@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 unsafe fn jetpack_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
     if status_kind == *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI {
@@ -47,10 +48,10 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     propellerpack_b_rev(boma, id, status_kind, stick_x, facing, frame);
 }
 
-#[utils::opff(FIGHTER_KIND_KROOL )]
+#[utils::macros::opff(FIGHTER_KIND_KROOL )]
 pub fn krool_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		krool_frame(fighter)
     }
 }

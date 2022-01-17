@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 // symbol-based call for the shotos' common opff
 extern "Rust" {
@@ -13,10 +14,10 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // nothing lol
 }
 
-#[utils::opff(FIGHTER_KIND_NANA )]
+#[utils::macros::opff(FIGHTER_KIND_NANA )]
 pub fn nana_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		nana_frame(fighter);
         ice_climbers_common(fighter);
     }

@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
     let long_sword_scale = Vector3f{x: 0.9, y: 1.0, z: 1.0};
@@ -42,10 +43,10 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     nspecial_cancels(boma, status_kind, situation_kind, cat[1]);
 }
 
-#[utils::opff(FIGHTER_KIND_EDGE )]
+#[utils::macros::opff(FIGHTER_KIND_EDGE )]
 pub fn edge_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		edge_frame(fighter)
     }
 }

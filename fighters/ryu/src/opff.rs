@@ -1,4 +1,5 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
@@ -12,10 +13,10 @@ extern "Rust" {
     fn shotos_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
 
-#[utils::opff(FIGHTER_KIND_RYU )]
+#[utils::macros::opff(FIGHTER_KIND_RYU )]
 pub fn ryu_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		ryu_frame(fighter);
         shotos_common(fighter);
     }

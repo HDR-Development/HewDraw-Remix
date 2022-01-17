@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 unsafe fn cross_chop_cancel_dj_reset(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, cat1: i32) {
     if status_kind == *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_TURN {
@@ -81,10 +82,10 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     angled_grab(boma, status_kind); 
 }
 
-#[utils::opff(FIGHTER_KIND_GAOGAEN )]
+#[utils::macros::opff(FIGHTER_KIND_GAOGAEN )]
 pub fn gaogaen_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		gaogaen_frame(fighter)
     }
 }

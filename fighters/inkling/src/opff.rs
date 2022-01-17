@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 
 const INKLING_COLORS: [Vector3f;8] = [
@@ -31,10 +32,10 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     inkling_moveset(boma, motion_kind, id);
 }
 
-#[utils::opff(FIGHTER_KIND_INKLING )]
+#[utils::macros::opff(FIGHTER_KIND_INKLING )]
 pub fn inkling_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		inkling_frame(fighter)
     }
 }

@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 unsafe fn nspecial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     //PM-like neutral-b canceling
@@ -140,10 +141,10 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // Magic Series
     //down_special_cancels(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
 }
-#[utils::opff(FIGHTER_KIND_DONKEY )]
+#[utils::macros::opff(FIGHTER_KIND_DONKEY )]
 pub fn donkey_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		donkey_frame(fighter)
     }
 }

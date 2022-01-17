@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 // symbol-based call for the pikachu/pichu characters' common opff
 extern "Rust" {
@@ -12,10 +13,10 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     //nothing lol
 }
 
-#[utils::opff(FIGHTER_KIND_PICHU )]
+#[utils::macros::opff(FIGHTER_KIND_PICHU )]
 pub fn pichu_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		pichu_frame(fighter);
         electric_rats_common(fighter);
     }

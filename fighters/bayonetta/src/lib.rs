@@ -1,6 +1,7 @@
-#![feature(asm)]
+#![feature(asm)]#![allow(unused)]
 use smash::{
     app::{
+        *,
         self,
         sv_animcmd::{
             frame,
@@ -8,6 +9,7 @@ use smash::{
         },
         lua_bind::*
     },
+    hash40,
     lib::lua_const::*,
     lua2cpp::*,
     phx::*
@@ -31,5 +33,5 @@ pub mod opff;
 pub fn install(is_runtime: bool) {
     acmd::install();
     //status::install();
-    //opff::install(is_runtime);
+    opff::install(is_runtime);
 }

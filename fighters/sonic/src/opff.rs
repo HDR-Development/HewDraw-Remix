@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 
 // Sonic Spindash Jump Waveland
@@ -21,10 +22,10 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     //sonic_lightspeed_dash(boma, status_kind, motion_kind, situation_kind, cat[0], id);
 }
 
-#[utils::opff(FIGHTER_KIND_SONIC )]
+#[utils::macros::opff(FIGHTER_KIND_SONIC )]
 pub fn sonic_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		sonic_frame(fighter)
     }
 }

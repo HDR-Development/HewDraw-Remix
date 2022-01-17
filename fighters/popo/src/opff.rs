@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 
 // Ice Climbers Cheer Cancel (Techy)
@@ -66,7 +67,7 @@ unsafe fn nana_death_effect(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    let fighter_kind = get_kind(boma);
+    let fighter_kind = boma.kind();
     cheer_cancel(fighter, boma, fighter_kind, status_kind);
     spotdodge_desync(boma, fighter_kind, status_kind);
     clear_jc_grab_flag(id, fighter_kind, status_kind);
@@ -86,10 +87,10 @@ pub unsafe fn ice_climbers_moveset(fighter: &mut L2CFighterCommon, boma: &mut Ba
     
 }
 
-#[utils::opff(FIGHTER_KIND_POPO )]
+#[utils::macros::opff(FIGHTER_KIND_POPO )]
 pub fn popo_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		popo_frame(fighter);
         ice_climbers_common(fighter);
     }

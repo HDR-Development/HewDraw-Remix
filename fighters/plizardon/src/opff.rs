@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 unsafe fn flame_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
     let prev_situation = StatusModule::prev_situation_kind(boma);
@@ -34,10 +35,10 @@ unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, mo
     }
 }
 
-#[utils::opff(FIGHTER_KIND_PLIZARDON )]
+#[utils::macros::opff(FIGHTER_KIND_PLIZARDON )]
 pub fn plizardon_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		plizardon_frame(fighter)
     }
 }

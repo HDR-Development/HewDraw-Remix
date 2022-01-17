@@ -1,7 +1,8 @@
-use ::common::opff_import::*;
+// opff import
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
-use ::common::opff::*;
+
  
 unsafe fn header_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
     let status_kind_prev = StatusModule::prev_status_kind(boma, 0);
@@ -33,10 +34,10 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
 
 }
 
-#[utils::opff(FIGHTER_KIND_WIIFIT )]
+#[utils::macros::opff(FIGHTER_KIND_WIIFIT )]
 pub fn wiifit_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        fighter_common_opff(fighter);
+        common::opff::fighter_common_opff(fighter);
 		wiifit_frame(fighter)
     }
 }
