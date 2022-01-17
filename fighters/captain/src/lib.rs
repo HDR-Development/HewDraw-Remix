@@ -7,6 +7,9 @@ pub mod acmd;
 pub mod opff;
 
 use smash::{
+    lib::{
+        L2CValue,
+    },
     app::{
         *,
         self,

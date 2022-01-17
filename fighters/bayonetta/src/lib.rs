@@ -1,5 +1,14 @@
 #![feature(asm)]#![allow(unused)]
+
+pub mod acmd;
+
+pub mod status;
+pub mod opff;
+
 use smash::{
+    lib::{
+        L2CValue,
+    },
     app::{
         *,
         self,
@@ -20,18 +29,14 @@ use smash_script::{
 };
 use utils::{
     *,
+    util::*,
+    ext::*,
     consts::*,
-    ext::*
 };
 use smashline::*;
 
-pub mod acmd;
-
-//pub mod status;
-pub mod opff;
-
 pub fn install(is_runtime: bool) {
     acmd::install();
-    //status::install();
+    status::install();
     opff::install(is_runtime);
 }

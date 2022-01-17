@@ -1,6 +1,9 @@
 #![feature(asm)]#![allow(unused)]
 
 use smash::{
+    lib::{
+        L2CValue,
+    },
     app::{
         *,
         self,
