@@ -123,6 +123,19 @@ pub mod vars {
         pub const SPIN_ATTACK_LAND_CANCEL: i32 = 66;
         pub const AERIAL_COMMAND_RISEN: i32 = 67;
         pub const DISABLE_SPECIAL_JC: i32 = 68;
+        pub const IS_DACUS: i32 = 69;
+        pub const ATTACK_DASH_CANCEL_DISABLE: i32 = 70;
+        pub const DISABLE_BACKDASH: i32 = 71;
+        pub const IS_LATE_PIVOT: i32 = 72;
+        pub const IS_TURNDASH_INPUT: i32 = 73;
+        pub const IS_BACKDASH: i32 = 74;
+        pub const IS_STICKY_WALK: i32 = 75;
+        pub const ENABLE_BOOST_RUN: i32 = 76;
+        pub const UP_SPECIAL_JUMP_REFRESH_WINDOW: i32 = 77;
+        pub const PERFECT_WAVEDASH: i32 = 78;
+        pub const ENABLE_AIR_ESCAPE_JUMPSQUAT: i32 = 79;
+        pub const SHOULD_WAVELAND: i32 = 80;
+
         
 
         // int
@@ -136,6 +149,8 @@ pub mod vars {
         pub const HITFALL_BUFFER: i32 = 0x7;
         pub const JUMP_SQUAT_FRAME: i32 = 0x8;
         pub const GIMMICK_TIMER: i32 = 0x9;
+        pub const ATTACK_DASH_CANCEL_FRAME: i32 = 0xA;
+        pub const AIR_ESCAPE_MAGNET_FRAME: i32 = 0xB;
 
         // float
         pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0;
@@ -160,6 +175,12 @@ pub mod vars {
         pub const MP_SPEED_RATIO: i32 = 0x12;
         pub const ANGLE_GRAB_STICK_Y: i32 = 0x13;
         pub const GET_DIST_TO_FLOOR: i32 = 0x14;
+        pub const ECB_Y_OFFSETS: i32 = 0x15;
+        pub const CURR_DASH_SPEED: i32 = 0x16;
+        pub const MOONWALK_SPEED: i32 = 0x17;
+        pub const ESCAPE_AIR_SLIDE_SPEED_X: i32 = 0x18;
+        pub const ESCAPE_AIR_SLIDE_SPEED_Y: i32 = 0x19;
+        pub const Y_POS: i32 = 0x1A;
        
     }
 
@@ -272,6 +293,7 @@ pub mod vars {
         pub const SKYWARD_SLASH_DASH_HIT: i32 = 0x1001;
         pub const WAVE_SPECIAL_N: i32 = 0x1002;
         pub const CHAKRAM_STICK_ATTACK: i32 = 0x1003;
+        pub const GALE_STAB_EDGE_CANCEL: i32 = 0x1004;
 
     }
 

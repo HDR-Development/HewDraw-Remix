@@ -1,4 +1,5 @@
 // status imports
+use interpolation::Lerp;
 use super::*;
 use globals::*;
 // This file contains code for aerial glide tosses, wavelanding
@@ -134,7 +135,7 @@ unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status_kind = fighter.global_table[STATUS_KIND].clone();
     if status_kind == FIGHTER_STATUS_KIND_FALL || status_kind == FIGHTER_STATUS_KIND_LANDING {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
-            use interpolation::Lerp;
+
             let current_frame = MotionModule::frame(fighter.module_accessor);
             let end_frame = MotionModule::end_frame(fighter.module_accessor);
             let progress = current_frame / end_frame;
@@ -203,7 +204,7 @@ unsafe fn force_ground_attach(fighter: &mut L2CFighterCommon) {
     };
 
     let mut threshold = ParamModule::get_float(fighter.object(), ParamType::Common, "waveland_distance_threshold");
-    let correction = ecb_y_offsets[id];
+    let correction = VarModule::get_float(fighter.object(), vars::common::ECB_Y_OFFSETS);
     fighter_pos.y += correction;
     loop {
         let prev_y_pos = VarModule::get_float(fighter.battle_object, vars::common::Y_POS);
@@ -234,16 +235,14 @@ unsafe fn force_ground_attach(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn sub_escape_air_waveland_check(fighter: &mut L2CFighterCommon) {
-    let id = VarModule::get_int(fighter.battle_object, vars::common::COSTUME_SLOT_NUMBER) as usize;
     if VarModule::is_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_MAGNET) {
-        let id = hdr::get_player_number(&mut *fighter.module_accessor);
         let mut fighter_pos = Vector3f {
             x: PostureModule::pos_x(fighter.module_accessor),
             y: PostureModule::pos_y(fighter.module_accessor),
             z: PostureModule::pos_z(fighter.module_accessor),
         };
         let mut threshold = ParamModule::get_float(fighter.object(), ParamType::Common, "waveland_distance_threshold");
-        fighter_pos.y += ecb_y_offsets[id];
+        fighter_pos.y += VarModule::get_float(fighter.object(), vars::common::ECB_Y_OFFSETS);
         VarModule::set_float(fighter.battle_object, vars::common::Y_POS, fighter_pos.y);
         VarModule::set_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR, GroundModule::get_distance_to_floor(fighter.module_accessor, &fighter_pos, fighter_pos.y, true));
         let dist = VarModule::get_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR);

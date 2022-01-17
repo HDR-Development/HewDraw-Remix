@@ -1,5 +1,23 @@
 use super::*;
 use globals::*;
+
+utils::import_noreturn!(common::shoto_status::{
+    fgc_pre_dashback,
+    fgc_end_dashback,
+    ryu_idkwhatthisis2
+});
+
+extern "Rust" {
+    // from common::shoto_status
+    fn ryu_kara_cancel(fighter: &mut L2CFighterCommon) -> L2CValue;
+    fn ryu_attack_main_uniq_chk(fighter: &mut L2CFighterCommon) -> L2CValue;
+    fn fgc_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue;
+    fn ryu_attack_main_uniq_chk4(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue;
+    fn ryu_final_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue;
+    fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue;
+}
+
+
 // status script import
  
 pub fn install() {
@@ -33,7 +51,7 @@ pub unsafe fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 pub unsafe fn pre_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fgc_pre_dashback(fighter);
+    common::shoto_status::fgc_pre_dashback(fighter);
     original!(fighter)
 }
 
@@ -44,7 +62,7 @@ pub unsafe fn main_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 pub unsafe fn end_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fgc_end_dashback(fighter);
+    common::shoto_status::fgc_end_dashback(fighter);
     original!(fighter)
 }
 
@@ -160,7 +178,7 @@ unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     // }
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RESTART) {
         if !MotionModule::is_end(fighter.module_accessor) {
-            ryu_idkwhatthisis2(fighter);
+            common::shoto_status::ryu_idkwhatthisis2(fighter);
         }
         else {
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());

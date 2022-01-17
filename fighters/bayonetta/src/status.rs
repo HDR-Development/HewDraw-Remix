@@ -46,6 +46,10 @@ unsafe fn main_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(bayonetta_attack_main_loop as *const () as _))
 }
 
+extern "Rust" {
+    fn only_jabs(fighter: &mut L2CFighterCommon) -> bool;
+}
+
 unsafe extern "C" fn bayonetta_attack_main_hit_uniq_chk(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if param_1.get_bool() == false {
         fighter.attack_uniq_chk();

@@ -2,6 +2,22 @@ use super::*;
 use globals::*;
 // status script import
  
+utils::import_noreturn!(common::shoto_status::{
+    fgc_pre_dashback,
+    fgc_end_dashback,
+    ryu_idkwhatthisis2
+});
+
+extern "Rust" {
+    // from common::shoto_status
+    fn ryu_kara_cancel(fighter: &mut L2CFighterCommon) -> L2CValue;
+    fn ryu_attack_main_uniq_chk(fighter: &mut L2CFighterCommon) -> L2CValue;
+    fn fgc_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue;
+    fn ryu_attack_main_uniq_chk4(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue;
+    fn ryu_final_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue;
+    fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue;
+}
+
 pub fn install() {
     install_status_scripts!(
         pre_turndash,
@@ -35,7 +51,7 @@ pub unsafe fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 pub unsafe fn pre_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fgc_pre_dashback(fighter);
+    common::shoto_status::fgc_pre_dashback(fighter);
     original!(fighter)
 }
 
@@ -46,7 +62,7 @@ pub unsafe fn main_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 pub unsafe fn end_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fgc_end_dashback(fighter);
+    common::shoto_status::fgc_end_dashback(fighter);
     original!(fighter)
 }
 
@@ -59,9 +75,9 @@ pub unsafe fn pre_superspecial(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mut agent_base = fighter.fighter_base.agent_base;
     let id = VarModule::get_int(fighter.battle_object, vars::common::COSTUME_SLOT_NUMBER) as usize;
 
-    // Only use meter if you didn't cancel directly from a different supper
-    if !super_cancel[id] {
-        meter::use_meter_level(&mut agent_base, boma, 4);
+    // Only use meter if you didn't cancel directly from a different super
+    if  !VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL) {
+        MeterModule::drain(boma.object(), 4);
     }
     original!(fighter)
 }
@@ -76,8 +92,8 @@ pub unsafe fn pre_superspecial2(fighter: &mut L2CFighterCommon) -> L2CValue {
     let id = VarModule::get_int(fighter.battle_object, vars::common::COSTUME_SLOT_NUMBER) as usize;
 
     // Only use meter if you didn't cancel directly from a different supper
-    if !super_cancel[id] {
-        meter::use_meter_level(&mut agent_base, boma, 4);
+    if  !VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL) {
+        MeterModule::drain(boma.object(), 4);
     }
     original!(fighter)
 }

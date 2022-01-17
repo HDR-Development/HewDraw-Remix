@@ -1,4 +1,4 @@
-#![feature(asm)]#![allow(unused)]
+#![feature(asm)]#![allow(unused)]#![allow(snake_case)]
 
 pub mod acmd;
 
@@ -8,6 +8,8 @@ pub mod opff;
 use smash::{
     lib::{
         L2CValue,
+        LuaConst,
+        L2CAgent,
     },
     app::{
         *,

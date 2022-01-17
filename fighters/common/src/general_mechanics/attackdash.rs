@@ -17,7 +17,7 @@ pub fn install() {
 #[common_status_script(status = FIGHTER_STATUS_KIND_ATTACK_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE,
     symbol = "_ZN7lua2cpp16L2CFighterCommon21status_pre_AttackDashEv")]
 unsafe fn status_pre_AttackDash(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let ground_correct_kind = if ParamModule::get_flag(fighter.module_accessor, ParamType::Shared, "attack_dash_cliff_stop") {
+    let ground_correct_kind = if ParamModule::is_flag(fighter.object(), ParamType::Shared, "attack_dash_cliff_stop") {
         *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP
     } else {
         *GROUND_CORRECT_KIND_KEEP
@@ -105,7 +105,7 @@ unsafe extern "C" fn sub_attack_dash_uniq(fighter: &mut L2CFighterCommon, arg: L
         }
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_DASH_WORK_INT_FRAME);
         if !VarModule::is_flag(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_DISABLE)
-            && VarModule::countdown_int(fighter.battle_object, common::ATTACK_DASH_CANCEL_FRAME, 0) {
+            && VarModule::countdown_int(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_FRAME, 0) {
             VarModule::on_flag(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_DISABLE);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START);

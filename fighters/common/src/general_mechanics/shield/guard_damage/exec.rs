@@ -1,4 +1,3 @@
-use interpolation::Lerp;
 // status imports
 use super::*;
 use globals::*;

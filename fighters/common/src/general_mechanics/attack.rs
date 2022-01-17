@@ -18,8 +18,9 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     }
 }
 
-#[inline(always)]
-pub unsafe fn only_jabs(fighter: &mut L2CFighterCommon) -> bool {
+
+
+pub unsafe extern "Rust" fn only_jabs(fighter: &mut L2CFighterCommon) -> bool {
     return !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)
     && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CATCH)
     && fighter.global_table[CMD_CAT1].get_i32() & (
@@ -29,6 +30,7 @@ pub unsafe fn only_jabs(fighter: &mut L2CFighterCommon) -> bool {
         *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH
     ) == 0;
 }
+
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_attack_combo_none_uniq_chk_button)]
 unsafe fn attack_combo_none_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {

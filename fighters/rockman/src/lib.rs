@@ -1,4 +1,4 @@
-#![feature(asm)]#![allow(unused)]
+#![feature(asm)]#![allow(unused)]#![allow(snake_case)]
 
 pub mod acmd;
 
@@ -8,6 +8,7 @@ pub mod opff;
 use smash::{
     lib::{
         L2CValue,
+        LuaConst,
     },
     app::{
         *,
@@ -34,6 +35,7 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+#[macro_use] extern crate smash_script;
 
 pub fn install(is_runtime: bool) {
     acmd::install();

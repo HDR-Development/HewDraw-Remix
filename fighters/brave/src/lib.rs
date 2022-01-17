@@ -1,8 +1,9 @@
-#![feature(asm)]#![allow(unused)]
+#![feature(asm)]#![allow(unused)]#![allow(snake_case)]
 
 use smash::{
     lib::{
         L2CValue,
+        LuaConst,
     },
     app::{
         *,

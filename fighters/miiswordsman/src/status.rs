@@ -30,7 +30,7 @@ pub fn install() {
 
 #[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_FINAL_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn pre_final_hold(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, miiswordsman::WAVE_SPECIAL_N);
+    VarModule::off_flag(fighter.battle_object, vars::miiswordsman::WAVE_SPECIAL_N);
     original!(fighter)
 }
 
@@ -95,7 +95,7 @@ unsafe fn special_s1_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_HENSOKU_SLASH_WORK_FLAG_HIT);
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
-        side_special_cancel[id] = true;
+        VarModule::on_flag(fighter.object(), vars::common::SIDE_SPECIAL_CANCEL);
     }
     // Commented out but this was the original script
     // if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
@@ -175,26 +175,26 @@ unsafe extern "C" fn miiswordsman_specials1attack_mainloop(fighter: &mut L2CFigh
     }
     if MotionModule::frame(fighter.module_accessor) >= 15.0 {
         VarModule::on_flag(fighter.battle_object, vars::common::SIDE_SPECIAL_CANCEL);
-        if hdr::compare_cat(ControlModule::get_command_flag_cat(fighter.module_accessor, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N) {
+        if compare_mask(ControlModule::get_command_flag_cat(fighter.module_accessor, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N) {
             fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), true.into());
             return 1.into()
         }
-        if (hdr::compare_cat(ControlModule::get_command_flag_cat(fighter.module_accessor, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) && hdr::is_stick_forward(sv_system::battle_object_module_accessor(fighter.lua_state_agent)))
-            || (hdr::compare_cat(ControlModule::get_command_flag_cat(fighter.module_accessor, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) && hdr::is_stick_forward(sv_system::battle_object_module_accessor(fighter.lua_state_agent))) {
+        if (compare_mask(ControlModule::get_command_flag_cat(fighter.module_accessor, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) && fighter.is_stick_forward())
+            || (compare_mask(ControlModule::get_command_flag_cat(fighter.module_accessor, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) && fighter.is_stick_forward()) {
             fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), true.into());
             return 1.into()
         }
-        if (hdr::compare_cat(ControlModule::get_command_flag_cat(fighter.module_accessor, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) && hdr::is_stick_backward(sv_system::battle_object_module_accessor(fighter.lua_state_agent)))
-            || (hdr::compare_cat(ControlModule::get_command_flag_cat(fighter.module_accessor, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) && hdr::is_stick_backward(sv_system::battle_object_module_accessor(fighter.lua_state_agent))) {
+        if (compare_mask(ControlModule::get_command_flag_cat(fighter.module_accessor, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) && fighter.is_stick_forward())
+            || (compare_mask(ControlModule::get_command_flag_cat(fighter.module_accessor, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) && fighter.is_stick_forward()) {
             fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), true.into());
             return 1.into()
         }
-        if hdr::compare_cat(ControlModule::get_command_flag_cat(fighter.module_accessor, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3
+        if compare_mask(ControlModule::get_command_flag_cat(fighter.module_accessor, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3
                                 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4) {
             fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), true.into());
             return 1.into()
         }
-        if hdr::compare_cat(ControlModule::get_command_flag_cat(fighter.module_accessor, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3
+        if compare_mask(ControlModule::get_command_flag_cat(fighter.module_accessor, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3
                                 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4) {
             fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), true.into());
             return 1.into()
@@ -216,7 +216,7 @@ unsafe extern "C" fn miiswordsman_specials1attack_mainloop(fighter: &mut L2CFigh
                     return L2CValue::I32(1);
                 }
                 // Transition into the attack upon special button press
-                if hdr::compare_cat(ControlModule::get_pad_flag(fighter.module_accessor), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER){
+                if compare_mask(ControlModule::get_pad_flag(fighter.module_accessor), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER){
                     fighter.change_status(FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_HIT.into(), false.into());
                 }
                 return L2CValue::I32(0);
@@ -422,7 +422,7 @@ unsafe extern "C" fn special_s2_dash_main(fighter: &mut L2CFighterCommon) -> L2C
     // custom [
     // Jump and Attack cancels
     let pad_flag = ControlModule::get_pad_flag(fighter.module_accessor);
-    if moveset_utils::jump_checker_buffer(sv_system::battle_object_module_accessor(fighter.lua_state_agent), ControlModule::get_command_flag_cat(fighter.module_accessor, 0)) {
+    if fighter.is_input_jump() {
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND && MotionModule::frame(fighter.module_accessor) > 7.0 {
             if PostureModule::lr(fighter.module_accessor) * fighter.global_table[STICK_X].get_f32() < 0.0 {
                 PostureModule::reverse_lr(fighter.module_accessor);
@@ -431,18 +431,18 @@ unsafe extern "C" fn special_s2_dash_main(fighter: &mut L2CFighterCommon) -> L2C
             return 1.into()
         }
     }
-    else if hdr::compare_cat(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || hdr::compare_cat(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
+    else if compare_mask(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || compare_mask(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
         fighter.change_status(FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK.into(),true.into());
         return 1.into()
     }
     // Wall Jump
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
-        if !VarModule::is_flag(fighter.battle_object, miiswordsman::SPECIAL_WALL_JUMP) {
+        if !VarModule::is_flag(fighter.battle_object, vars::common::SPECIAL_WALL_JUMP) {
             let touch_right = GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
             let touch_left = GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
             if touch_left || touch_right {
-                if hdr::compare_cat(ControlModule::get_command_flag_cat(fighter.module_accessor, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH | *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON) {
-                    VarModule::on_flag(fighter.battle_object, miiswordsman::SPECIAL_WALL_JUMP);
+                if compare_mask(ControlModule::get_command_flag_cat(fighter.module_accessor, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH | *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON) {
+                    VarModule::on_flag(fighter.battle_object, vars::common::SPECIAL_WALL_JUMP);
                     fighter.change_status(FIGHTER_STATUS_KIND_WALL_JUMP.into(),true.into());
                     return 1.into()
                 }
@@ -514,9 +514,9 @@ unsafe extern "C" fn special_s2_attack_main(fighter: &mut L2CFighterCommon) -> L
     // custom [
     // Jump cancels
     let pad_flag = ControlModule::get_pad_flag(fighter.module_accessor);
-    if moveset_utils::jump_checker_buffer(sv_system::battle_object_module_accessor(fighter.lua_state_agent), ControlModule::get_command_flag_cat(fighter.module_accessor, 0)) && MotionModule::frame(fighter.module_accessor) > 5.0 && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+    if fighter.is_input_jump() && MotionModule::frame(fighter.module_accessor) > 5.0 && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
-            if hdr::get_jump_count(sv_system::battle_object_module_accessor(fighter.lua_state_agent)) < hdr::get_jump_count_max(sv_system::battle_object_module_accessor(fighter.lua_state_agent)) {
+            if fighter.get_jump_count() < fighter.get_jump_count_max() {
                 fighter.change_status(FIGHTER_STATUS_KIND_JUMP_AERIAL.into(), false.into());
                 return 1.into()
             }
@@ -589,7 +589,7 @@ unsafe extern "C" fn special_s2_attack_main_helper(fighter: &mut L2CFighterCommo
 
 #[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn pre_special_s2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, miiswordsman::GALE_STAB_EDGE_CANCEL);
+    VarModule::off_flag(fighter.battle_object, vars::miiswordsman::GALE_STAB_EDGE_CANCEL);
     original!(fighter)
 }
 
@@ -624,7 +624,7 @@ unsafe extern "C" fn special_s2_end_Main(fighter: &mut L2CFighterCommon) -> L2CV
                 }
                 else {
                     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-                        VarModule::on_flag(fighter.battle_object, miiswordsman::GALE_STAB_EDGE_CANCEL);
+                        VarModule::on_flag(fighter.battle_object, vars::miiswordsman::GALE_STAB_EDGE_CANCEL);
                         special_s2_end_helper(fighter);
                         sub_special_s2_end(fighter);
                         return 0.into()
@@ -635,7 +635,7 @@ unsafe extern "C" fn special_s2_end_Main(fighter: &mut L2CFighterCommon) -> L2CV
                 // custom [
                 if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_AIR {
                     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-                        VarModule::on_flag(fighter.battle_object, miiswordsman::GALE_STAB_EDGE_CANCEL);
+                        VarModule::on_flag(fighter.battle_object, vars::miiswordsman::GALE_STAB_EDGE_CANCEL);
                     }
                 }
                 if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_GROUND {
@@ -695,7 +695,7 @@ unsafe extern "C" fn special_s2_end_helper(fighter: &mut L2CFighterCommon) {
     else {
         // OG [ GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP)); ]
         // custom [
-        if VarModule::is_flag(fighter.battle_object, miiswordsman::GALE_STAB_EDGE_CANCEL) {
+        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::GALE_STAB_EDGE_CANCEL) {
             GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         }
         else {
@@ -735,7 +735,7 @@ unsafe fn pre_chakram_hop(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let lua_state = weapon.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    VarModule::off_flag(owner_module_accessor, miiswordsman::CHAKRAM_STICK_ATTACK);
+    VarModule::off_flag(owner_module_accessor.object(), vars::miiswordsman::CHAKRAM_STICK_ATTACK);
     original!(weapon)
 }
 
@@ -743,7 +743,7 @@ unsafe fn pre_chakram_hop(weapon: &mut L2CWeaponCommon) -> L2CValue {
 
 #[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn pre_special_hi2_rush(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, miiswordsman::SKYWARD_SLASH_DASH_HIT);
+    VarModule::off_flag(fighter.battle_object, vars::miiswordsman::SKYWARD_SLASH_DASH_HIT);
     original!(fighter)
 }
 
@@ -751,7 +751,7 @@ unsafe fn pre_special_hi2_rush(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe fn exec_special_hi2_rush(fighter: &mut L2CFighterCommon) -> L2CValue {
     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-        VarModule::on_flag(fighter.battle_object, miiswordsman::SKYWARD_SLASH_DASH_HIT);
+        VarModule::on_flag(fighter.battle_object, vars::miiswordsman::SKYWARD_SLASH_DASH_HIT);
         //println!("SSD Hit");
     }
     return 0.into()
@@ -761,11 +761,11 @@ unsafe fn exec_special_hi2_rush(fighter: &mut L2CFighterCommon) -> L2CValue {
 // not running for some reason
 #[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe fn exec_special_hi2_rush_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, miiswordsman::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(fighter.battle_object, miiswordsman::IS_HEAVY_ATTACK) && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+    if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         //println!("SSD Success");
         if MotionModule::frame(fighter.module_accessor) >= 30.0 {
             //println!("SSD Fall Act");
-            VarModule::off_flag(fighter.battle_object, miiswordsman::SKYWARD_SLASH_DASH_HIT);
+            VarModule::off_flag(fighter.battle_object, vars::miiswordsman::SKYWARD_SLASH_DASH_HIT);
             VarModule::on_flag(fighter.battle_object, vars::common::UP_SPECIAL_CANCEL);
             fighter.change_status(
                 L2CValue::I32(*FIGHTER_STATUS_KIND_FALL),
@@ -998,7 +998,7 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_lw1") || MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_lw1") {
         if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
             //println!("Kinesis activation");
-            VarModule::on_flag(fighter.battle_object, miiswordsman::SPECIAL_LW1_ATTACK_TRIGGER);
+            VarModule::on_flag(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_ATTACK_TRIGGER);
             fighter.change_status(
                 L2CValue::I32(*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW1_HIT),
                 L2CValue::Bool(false)

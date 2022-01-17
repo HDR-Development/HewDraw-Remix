@@ -142,7 +142,7 @@ pub unsafe fn status_pre_Landing(fighter: &mut L2CFighterCommon) -> L2CValue {
         y: PostureModule::pos_y(fighter.module_accessor),
         z: PostureModule::pos_z(fighter.module_accessor)
     };
-    fighter_pos.y += ecb_y_offsets[id];
+    fighter_pos.y += VarModule::get_float(fighter.object(), vars::common::ECB_Y_OFFSETS);
     VarModule::set_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR, GroundModule::get_distance_to_floor(fighter.module_accessor, &fighter_pos, fighter_pos.y, true));
     let dist = VarModule::get_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR);
     if (0.0 <= dist || VarModule::is_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_MAGNET)) && dist < 0.1 {
@@ -161,7 +161,7 @@ pub unsafe fn status_pre_LandingLight(fighter: &mut L2CFighterCommon) -> L2CValu
         y: PostureModule::pos_y(fighter.module_accessor),
         z: PostureModule::pos_z(fighter.module_accessor)
     };
-    fighter_pos.y += ecb_y_offsets[id];
+    fighter_pos.y += VarModule::get_float(fighter.object(), vars::common::ECB_Y_OFFSETS);
     VarModule::set_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR, GroundModule::get_distance_to_floor(fighter.module_accessor, &fighter_pos, fighter_pos.y, true));
     let dist = VarModule::get_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR);
     if dist < 0.1 {
@@ -183,7 +183,7 @@ pub unsafe fn status_LandingAttackAirSub(fighter: &mut L2CFighterCommon) -> L2CV
         y: PostureModule::pos_y(fighter.module_accessor),
         z: PostureModule::pos_z(fighter.module_accessor)
     };
-    fighter_pos.y += ecb_y_offsets[id];
+    fighter_pos.y += VarModule::get_float(fighter.object(), vars::common::ECB_Y_OFFSETS);
     VarModule::set_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR, GroundModule::get_distance_to_floor(fighter.module_accessor, &fighter_pos, fighter_pos.y, true));
     let dist = VarModule::get_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR);
     if dist < 0.1 {
@@ -205,7 +205,7 @@ pub unsafe fn status_pre_landing_fall_special(fighter: &mut L2CFighterCommon) ->
         y: PostureModule::pos_y(fighter.module_accessor),
         z: PostureModule::pos_z(fighter.module_accessor)
     };
-    fighter_pos.y += ecb_y_offsets[id];
+    fighter_pos.y += VarModule::get_float(fighter.object(), vars::common::ECB_Y_OFFSETS);
     VarModule::set_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR, GroundModule::get_distance_to_floor(fighter.module_accessor, &fighter_pos, fighter_pos.y, true));
     let dist = VarModule::get_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR);
     if dist < 0.1 {

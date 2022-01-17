@@ -85,7 +85,7 @@ unsafe extern "C" fn status_walk_main_common(fighter: &mut L2CFighterCommon, arg
     let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
     let dash_speed: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0);
     let walk_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("walk_speed_max"), 0);
-	let stick_x = fighter.global_table[hdr_modules::consts::globals::STICK_X].get_f32();
+	let stick_x = fighter.global_table[STICK_X].get_f32();
 	let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::CURR_DASH_SPEED);
 	let mut lr_modifier = 1.0;
 

@@ -181,12 +181,24 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     let dash_speed: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0);
     let run_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("run_speed_max"), 0);
     let dash_stick_x: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dash_stick_x"));
-    let stick_x = fighter.global_table[hdr_modules::consts::globals::STICK_X].get_f32();
+    let stick_x = fighter.global_table[STICK_X].get_f32();
     
     // Cstick is a macro for attack + direction, so we cannot tell the difference between the A button being input or the cstick being input (ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_ATTACK) returns true either way)
     // So, we check for the previous frame's held button, which lets us know if a button was held before cstick was input, thus allowing Aidou/Bidou inputs
-    let enable_bidou = hdr::check_buttons_any(ControlModule::get_button_prev(fighter.module_accessor), &[*CONTROL_PAD_BUTTON_ATTACK, *CONTROL_PAD_BUTTON_ATTACK_RAW, *CONTROL_PAD_BUTTON_SPECIAL, *CONTROL_PAD_BUTTON_SPECIAL_RAW, *CONTROL_PAD_BUTTON_SMASH]);  // attack, attack raw, special, special raw, attack+special smash macro
+    let bidou_buttons = &[
+        Buttons::Attack,
+        Buttons::AttackRaw,
+        Buttons::Special,
+        Buttons::SpecialRaw,
+        Buttons::Smash
+    ];
 
+    let mut enable_bidou = false;
+    for button in bidou_buttons.iter() {
+        if fighter.boma().was_prev_button_on(*button) {
+            enable_bidou = true;
+        }
+    }
     if fighter.global_table[DASH_CALLBACK].get_bool() {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[DASH_CALLBACK].get_ptr());
         interrupt_if!(callable(fighter).get_bool());
@@ -485,7 +497,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
         }
         let added_speed = fighter.global_table[STICK_X].get_f32().signum() * ((run_accel_mul + (run_accel_add * fighter.global_table[STICK_X].get_f32().abs())));
         let moonwalk_speed = prev_speed + added_speed;
-        let moonwalk_speed_clamped = clamp(moonwalk_speed, -run_speed_max, run_speed_max);
+        let moonwalk_speed_clamped = moonwalk_speed.clamp(-run_speed_max, run_speed_max);
 
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
@@ -510,7 +522,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
                 let speed_stop = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
                 let added_speed = speed_stop - (PostureModule::lr(fighter.module_accessor) * -2.0 * ground_brake);
-                let added_speed_clamped = clamp(added_speed, -run_speed_max, run_speed_max);
+                let added_speed_clamped = added_speed.clamp(-run_speed_max, run_speed_max);
 
                 fighter.clear_lua_stack();
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
@@ -581,7 +593,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     if fighter.global_table[CURRENT_FRAME].get_i32() == 0 && stick_x.abs() >= dash_stick_x {
         // apply speed on f2 of dash
         //println!("Changing current dash speed: {}", applied_speed);
-        let applied_speed_clamped = clamp(applied_speed, -run_speed_max, run_speed_max);
+        let applied_speed_clamped = applied_speed.clamp(-run_speed_max, run_speed_max);
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed_clamped);
         app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
@@ -627,7 +639,7 @@ unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 			applied_speed = (initial_speed + (-2.0 * ground_brake * PostureModule::lr(fighter.module_accessor)));
 		}
 
-        let applied_speed_clamped = clamp(applied_speed, -run_speed_max, run_speed_max);
+        let applied_speed_clamped = applied_speed.clamp(-run_speed_max, run_speed_max);
 
 		fighter.clear_lua_stack();
 		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
@@ -644,7 +656,7 @@ unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 	else if [*FIGHTER_STATUS_KIND_RUN, *FIGHTER_STATUS_KIND_WALK].contains(&StatusModule::status_kind_next(fighter.module_accessor)) {
 		//println!("run next");
 		let applied_speed = (initial_speed + (-2.0 * ground_brake * PostureModule::lr(fighter.module_accessor)));
-        let applied_speed_clamped = clamp(applied_speed, -run_speed_max, run_speed_max);
+        let applied_speed_clamped = applied_speed.clamp(-run_speed_max, run_speed_max);
 
 		fighter.clear_lua_stack();
 		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
@@ -666,7 +678,7 @@ unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
 		let speed_stop = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
 		let added_speed = speed_stop - (PostureModule::lr(fighter.module_accessor) * -2.0 * ground_brake);
-		let added_speed_clamped = clamp(added_speed, -run_speed_max, run_speed_max);
+		let added_speed_clamped = added_speed.clamp(-run_speed_max, run_speed_max);
 
 		fighter.clear_lua_stack();
 		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);

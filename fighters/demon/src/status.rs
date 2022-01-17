@@ -1,9 +1,23 @@
 use super::*;
 use globals::*;
-utils::import!(common::djc::attack_air_main_status);
-// status script import
 
+utils::import_noreturn!(common::shoto_status::{
+    fgc_pre_dashback,
+    fgc_end_dashback,
+    ryu_idkwhatthisis2
+});
+
+extern "Rust" {
+    // from common::shoto_status
+    fn ryu_kara_cancel(fighter: &mut L2CFighterCommon) -> L2CValue;
+    fn ryu_attack_main_uniq_chk(fighter: &mut L2CFighterCommon) -> L2CValue;
+    fn fgc_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue;
+    fn ryu_attack_main_uniq_chk4(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue;
+    fn ryu_final_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue;
+    fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue;
+}
  
+#[skyline::hook(offset = offsets::demon_on_link_capture_event())]
 unsafe fn demon_ongrab(arg1: u64, arg2: u64, arg3: u64) -> u64 {
     let boma = *(arg2 as *const u64).add(4) as *mut BattleObjectModuleAccessor;
     let catches = [*FIGHTER_STATUS_KIND_CATCH, *FIGHTER_STATUS_KIND_CATCH_DASH, *FIGHTER_STATUS_KIND_CATCH_TURN];
@@ -65,7 +79,7 @@ pub unsafe fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "demon", status = FIGHTER_DEMON_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 pub unsafe fn pre_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fgc_pre_dashback(fighter);
+    common::shoto_status::fgc_pre_dashback(fighter);
     original!(fighter)
 }
 
@@ -76,7 +90,7 @@ pub unsafe fn main_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "demon", status = FIGHTER_DEMON_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 pub unsafe fn end_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fgc_end_dashback(fighter);
+    common::shoto_status::fgc_end_dashback(fighter);
     original!(fighter)
 }
 
@@ -94,6 +108,10 @@ unsafe fn demon_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_KIND_NONE, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_NEXT_STATUS);
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_ATTACK_WORK_INT_100_HIT_NEAR_COUNT_CLIFF_STOP);
     fighter.sub_shift_status_main(L2CValue::Ptr(demon_attack_main_loop as *const () as _))
+}
+
+extern "Rust" {
+    fn only_jabs(fighter: &mut L2CFighterCommon) -> bool;
 }
 
 unsafe extern "C" fn demon_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -284,19 +302,6 @@ unsafe extern "C" fn demon_attackcombo_main_loop_helper_second(fighter: &mut L2C
     status
 }
 
-// for DJC
-// FIGHTER_STATUS_KIND_ATTACK_AIR //
-
-#[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-pub unsafe fn init_attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.sub_attack_air_inherit_jump_aerial_motion_uniq_process_init();
-    0.into()
-}
-
-#[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
-    attack_air_main_status(fighter)
-}
 
 pub fn install() {
     skyline::install_hooks!(demon_ongrab);
@@ -308,7 +313,6 @@ pub fn install() {
         status_dash,
         demon_attack_main,
         demon_attackcombo_main,
-        //init_attack_air,
-        //attack_air
+        
     );
 }

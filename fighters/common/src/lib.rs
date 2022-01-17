@@ -5,11 +5,17 @@ use smash::app::lua_bind::*;
 use smash::lua2cpp::*;
 use smash::lib::{*, lua_const::*};
 use smash::phx::*;
-use utils::{*, consts::*, util::*};
 use smash::app::*;
+use smash::app;
 use smash::hash40;
 
-use utils::ext::*;
+use utils::{
+    *,
+    util::*,
+    ext::*,
+    consts::*,
+};
+use smashline::*;
 
 #[macro_use] extern crate smash_script;
 
