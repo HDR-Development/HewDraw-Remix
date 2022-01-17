@@ -22,9 +22,11 @@ use smashline::*;
 pub mod djc;
 pub mod opff;
 pub mod misc;
-pub mod general_mechanics;
+pub mod general_statuses;
+pub mod function_hooks;
 
 pub fn install() {
     djc::install();
-    general_mechanics::install();
+    general_statuses::install();
+    function_hooks::install();
 }
