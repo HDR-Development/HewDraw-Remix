@@ -159,6 +159,7 @@ pub mod vars {
         pub const LEDGE_POS_Z: i32 = 0x11;
         pub const MP_SPEED_RATIO: i32 = 0x12;
         pub const ANGLE_GRAB_STICK_Y: i32 = 0x13;
+        pub const GET_DIST_TO_FLOOR: i32 = 0x14;
        
     }
 

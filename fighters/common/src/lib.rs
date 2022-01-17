@@ -7,6 +7,7 @@ use smash::lib::{*, lua_const::*};
 use smash::phx::*;
 use utils::{*, consts::*, util::*};
 use smash::app::*;
+use smash::hash40;
 
 use utils::ext::*;
 
@@ -15,7 +16,9 @@ use utils::ext::*;
 pub mod djc;
 pub mod opff;
 pub mod misc;
+pub mod general_mechanics;
 
 pub fn install() {
     djc::install();
+    general_mechanics::install();
 }

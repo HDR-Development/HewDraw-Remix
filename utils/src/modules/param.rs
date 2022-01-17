@@ -377,7 +377,7 @@ impl ParamModule {
     /// The integer specified
     /// # Example
     /// ```
-    /// let dacus_start_frame = ParamModule::get_int(fighter.module_accessor, ParamType::Shared, "dacus_frame_min");
+    /// let dacus_start_frame = ParamModule::get_int(fighter.battle_object, ParamType::Shared, "dacus_frame_min");
     /// if fighter.global_table[STATUS_FRAME] >= dacus_start_frame && should_dacus {
     ///     // perform dacus here
     /// }
@@ -428,8 +428,8 @@ impl ParamModule {
     /// The hash specified
     /// # Example
     /// ```
-    /// let frame_window_start = ParamModule::get_float(fighter.module_accessor, ParamType::Shared, "gentleman_combo_start_frame");
-    /// let frame_window_end = ParamModule::get_float(fighter.module_accessor, ParamType::Shared, "gentleman_combo_end_frame");
+    /// let frame_window_start = ParamModule::get_float(fighter.object(), ParamType::Shared, "gentleman_combo_start_frame");
+    /// let frame_window_end = ParamModule::get_float(fighter.object(), ParamType::Shared, "gentleman_combo_end_frame");
     /// let target_motion = ParamModule::get_hash(fighter.module_accessor, ParamType::Shared, "gentleman_combo_target_motion");
     /// let current_frame = MotionModule::frame(fighter.module_accessor);
     /// if frame_window_start <= current_frame && current_frame < frame_window_end && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
