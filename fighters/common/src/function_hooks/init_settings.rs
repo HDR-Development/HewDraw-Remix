@@ -85,7 +85,7 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
 
         // clear platform drop input when entering airdodge (to avoid buffering waveland platdrop with the same down input as the actual waveland)
         if [*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE, *FIGHTER_STATUS_KIND_JUMP_SQUAT].contains(&status_kind) {
-            VarModule::off_flag(boma, common::ENABLE_WAVELAND_PLATDROP);
+            VarModule::off_flag(boma.object(), vars::common::ENABLE_WAVELAND_PLATDROP);
         }
 
         // Repeated tilt scaling; UNUSED

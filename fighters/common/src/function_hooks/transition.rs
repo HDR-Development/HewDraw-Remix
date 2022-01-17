@@ -17,12 +17,12 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
     // Disallow airdodge out of tumble until you reach your stable fall speed
     if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR
         && ([*FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR].contains(&status_kind)
-        || (status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FALL && VarModule::is_flag(boma, common::DISABLE_AIRDODGE)))  {
+        || (status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FALL && VarModule::is_flag(boma.object(), vars::common::DISABLE_AIRDODGE)))  {
         return false;
     }
 
     // Disallow run_brake => squat during sticky walk
-    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT && status_kind == *FIGHTER_STATUS_KIND_RUN_BRAKE && VarModule::is_flag(boma, common::IS_STICKY_WALK) {
+    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT && status_kind == *FIGHTER_STATUS_KIND_RUN_BRAKE && VarModule::is_flag(boma.object(), vars::common::IS_STICKY_WALK) {
         return false;
     }
 
@@ -45,7 +45,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
     }
 
 
-    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI && VarModule::is_flag(boma, common::UP_SPECIAL_CANCEL) {
+    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI && VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL) {
         return false;
     }
 
@@ -134,7 +134,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
 
         // Disable Mii Swordfighter nspecial if the Tornado projectile is still active
         if fighter_kind == *FIGHTER_KIND_MIISWORDSMAN {
-            if VarModule::get_int(boma, common::GIMMICK_TIMER) > 0 && flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N {
+            if VarModule::get_int(boma.object(), vars::common::GIMMICK_TIMER) > 0 && flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N {
                 return false;
             }
         }
