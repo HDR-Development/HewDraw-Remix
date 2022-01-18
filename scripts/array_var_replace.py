@@ -29,7 +29,7 @@ def insert_text(filename, text:str):
 
 index_values = [
   "id",
-  "hdr::get_player_number(boma)",
+  "WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;",
   "player_number",
   "get_player_number(boma)"
 ]

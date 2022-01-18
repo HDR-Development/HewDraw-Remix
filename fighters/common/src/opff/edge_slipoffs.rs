@@ -23,8 +23,8 @@ pub unsafe fn init_settings_edges(boma: &mut BattleObjectModuleAccessor, situati
                               arg7: i32, arg8: i32, arg9: i32, arg10: i32) -> u32 {
     /* "fix" forces GroundModule::correct to be called for the statuses we need */
     let mut fix = arg4;
-    let category = get_category(boma);
-    let fighter_kind = get_kind(boma);
+    let category = boma.category();
+    let fighter_kind = boma.kind();
     let status_kind = StatusModule::status_kind(boma);
 
     if category == *BATTLE_OBJECT_CATEGORY_FIGHTER {
@@ -83,8 +83,8 @@ pub unsafe fn init_settings_edges(boma: &mut BattleObjectModuleAccessor, situati
 unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, kind: GroundCorrectKind) -> u64 {
     let status_kind = StatusModule::status_kind(boma);
     let situation_kind = StatusModule::situation_kind(boma);
-    let fighter_kind = get_kind(boma);
-    let category = get_category(boma);
+    let fighter_kind = boma.kind();
+    let category = boma.category();
 
     // It seems like everything gets caught as "landing"
     if category == *BATTLE_OBJECT_CATEGORY_FIGHTER {

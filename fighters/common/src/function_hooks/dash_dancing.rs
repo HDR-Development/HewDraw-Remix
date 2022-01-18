@@ -49,7 +49,7 @@ pub unsafe fn status_turndash_main_hook(fighter: &mut L2CFighterCommon) -> L2CVa
 	let run_accel_mul = WorkModule::get_param_float(boma, hash40("run_accel_mul"), 0);
 	let run_accel_add = WorkModule::get_param_float(boma, hash40("run_accel_add"), 0);
 	let prev_speed = VarModule::get_float(fighter.object(), vars::common::CURR_DASH_SPEED);
-	let stick_x = fighter.global_table[hdr_modules::consts::globals::STICK_X].get_f32();
+	let stick_x = fighter.global_table[STICK_X].get_f32();
 	let mut applied_speed = (dash_speed * PostureModule::lr(boma)) + (stick_x.signum() * ((run_accel_mul + (run_accel_add * stick_x.abs())))) + prev_speed;
 	let run_speed_max = WorkModule::get_param_float(boma, hash40("run_speed_max"), 0);
 	let td_frame = VarModule::get_int(fighter.object(), vars::common::TURN_DASH_FRAME);
@@ -115,15 +115,15 @@ pub unsafe fn status_turndash_end_hook(fighter: &mut L2CFighterCommon) -> L2CVal
 		app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
 		initial_speed = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
 	}
-	else if is_moonwalk[get_player_number(boma)] {
+	else if VarModule::is_flag(boma.object(), vars::common::IS_MOONWALK) {
 		// println!("moonwalk off");
-		is_moonwalk[get_player_number(boma)] = false;
+		VarModule::off_flag(boma.object(), vars::common::IS_MOONWALK);
 
 		fighter.clear_lua_stack();
 		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
 		let speed_stop = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
 		let added_speed = speed_stop - (PostureModule::lr(fighter.module_accessor) * -2.0 * ground_brake);
-		let added_speed_clamped = clamp(added_speed, -run_speed_max, run_speed_max);
+		let added_speed_clamped = added_speed.clamp(-run_speed_max, run_speed_max);
 
 		fighter.clear_lua_stack();
 		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
@@ -182,7 +182,7 @@ pub unsafe fn status_dash_main_common_hook(fighter: &mut L2CFighterCommon, arg: 
     let dash_speed: f32 = WorkModule::get_param_float(boma, hash40("dash_speed"), 0);
     let run_speed_max = WorkModule::get_param_float(boma, hash40("run_speed_max"), 0);
 	let mut pivot_boost: smash::phx::Vector3f = smash::phx::Vector3f {x: dash_speed * 0.75, y: 0.0, z: 0.0};
-    let stick_x = fighter.global_table[hdr_modules::consts::globals::STICK_X].get_f32();
+    let stick_x = fighter.global_table[STICK_X].get_f32();
 	let td_frame = VarModule::get_int(fighter.object(), vars::common::TURN_DASH_FRAME);
     VarModule::set_int(fighter.object(), vars::common::TURN_DASH_FRAME, td_frame + 1);
     // println!("frame: {}", VarModule::get_int(fighter.object(), vars::common::TURN_DASH_FRAME));
@@ -200,7 +200,7 @@ pub unsafe fn status_dash_main_common_hook(fighter: &mut L2CFighterCommon, arg: 
 
         if VarModule::get_int(fighter.object(), vars::common::TURN_DASH_FRAME) == 1 && stick_x != 0.0 {
             // println!("Changing current dash speed: {}", applied_speed);
-            let applied_speed_clamped = clamp(applied_speed, -run_speed_max, run_speed_max);
+            let applied_speed_clamped = applied_speed.clamp(-run_speed_max, run_speed_max);
             fighter.clear_lua_stack();
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed_clamped);
             app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
@@ -236,7 +236,7 @@ pub unsafe fn status_dash_main_common_hook(fighter: &mut L2CFighterCommon, arg: 
 		}
 		if VarModule::get_int(fighter.object(), vars::common::TURN_DASH_FRAME) == 2 && stick_x != 0.0 {
 			// println!("Changing current turndash speed");
-			let applied_speed_clamped = clamp(applied_speed, -run_speed_max, run_speed_max);
+			let applied_speed_clamped = applied_speed.clamp(-run_speed_max, run_speed_max);
 			fighter.clear_lua_stack();
 			lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, applied_speed_clamped);
 			app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
@@ -244,7 +244,7 @@ pub unsafe fn status_dash_main_common_hook(fighter: &mut L2CFighterCommon, arg: 
 		}
 		if VarModule::get_int(fighter.object(), vars::common::TURN_DASH_FRAME) == 3 && stick_x != 0.0 {
 			applied_speed = (stick_x.signum() * ((run_accel_mul + (run_accel_add * stick_x.abs())))) + prev_speed;
-			let applied_speed_clamped = clamp(applied_speed, -run_speed_max, run_speed_max);
+			let applied_speed_clamped = applied_speed.clamp(-run_speed_max, run_speed_max);
 			fighter.clear_lua_stack();
 			lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, applied_speed_clamped);
 			app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
@@ -252,7 +252,7 @@ pub unsafe fn status_dash_main_common_hook(fighter: &mut L2CFighterCommon, arg: 
 		}
 		if VarModule::get_int(fighter.object(), vars::common::TURN_DASH_FRAME) == 4 {
 			applied_speed = (stick_x.signum() * ((run_accel_mul + (run_accel_add * stick_x.abs())))) + prev_speed;
-			let applied_speed_clamped = clamp(applied_speed, -run_speed_max, run_speed_max);
+			let applied_speed_clamped = applied_speed.clamp(-run_speed_max, run_speed_max);
 			fighter.clear_lua_stack();
 			lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed_clamped);
 			app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
@@ -320,15 +320,15 @@ pub unsafe fn status_dash_end_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 		initial_speed = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
 	}
-	else if is_moonwalk[get_player_number(boma)] {
+	else if VarModule::is_flag(boma.object(), vars::common::IS_MOONWALK) {
 		// println!("moonwalk off");
-		is_moonwalk[get_player_number(boma)] = false;
+		VarModule::off_flag(boma.object(), vars::common::IS_MOONWALK);
 
 		fighter.clear_lua_stack();
 		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
 		let speed_stop = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
 		let added_speed = speed_stop - (PostureModule::lr(fighter.module_accessor) * -2.0 * ground_brake);
-		let added_speed_clamped = clamp(added_speed, -run_speed_max, run_speed_max);
+		let added_speed_clamped = added_speed.clamp(-run_speed_max, run_speed_max);
 
 		fighter.clear_lua_stack();
 		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
@@ -382,7 +382,7 @@ pub unsafe fn status_walk_main_common_hook(fighter: &mut L2CFighterCommon, arg: 
     let ground_brake = WorkModule::get_param_float(boma, hash40("ground_brake"), 0);
     let dash_speed: f32 = WorkModule::get_param_float(boma, hash40("dash_speed"), 0);
     let walk_speed_max = WorkModule::get_param_float(boma, hash40("walk_speed_max"), 0);
-	let stick_x = fighter.global_table[hdr_modules::consts::globals::STICK_X].get_f32();
+	let stick_x = fighter.global_table[STICK_X].get_f32();
 	let prev_speed = VarModule::get_float(fighter.object(), vars::common::CURR_DASH_SPEED);
 	let mut lr_modifier = 1.0;
 
@@ -455,7 +455,7 @@ pub unsafe fn status_run_main_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ground_brake = WorkModule::get_param_float(boma, hash40("ground_brake"), 0);
     let dash_speed: f32 = WorkModule::get_param_float(boma, hash40("dash_speed"), 0);
     let run_speed_max = WorkModule::get_param_float(boma, hash40("run_speed_max"), 0);
-	let stick_x = fighter.global_table[hdr_modules::consts::globals::STICK_X].get_f32();
+	let stick_x = fighter.global_table[STICK_X].get_f32();
 	let prev_speed = VarModule::get_float(fighter.object(), vars::common::CURR_DASH_SPEED);
 
 	fighter.clear_lua_stack();
@@ -517,7 +517,7 @@ pub unsafe fn status_turnrun_main_hook(fighter: &mut L2CFighterCommon) -> L2CVal
     let run_accel_mul = WorkModule::get_param_float(boma, hash40("run_accel_mul"), 0);
     let run_accel_add = WorkModule::get_param_float(boma, hash40("run_accel_add"), 0);
     let run_speed_max = WorkModule::get_param_float(boma, hash40("run_speed_max"), 0);
-	let stick_x = fighter.global_table[hdr_modules::consts::globals::STICK_X].get_f32();
+	let stick_x = fighter.global_table[STICK_X].get_f32();
 	let prev_speed = VarModule::get_float(fighter.object(), vars::common::CURR_DASH_SPEED);
 
 	if StatusModule::is_changing(boma) {

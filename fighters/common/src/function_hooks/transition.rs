@@ -9,10 +9,9 @@ use globals::*;
 //=================================================================
 #[skyline::hook(replace=WorkModule::is_enable_transition_term)]
 unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, flag: i32) -> bool {
-    let fighter_category = get_category(boma);
-    let fighter_kind = get_kind(boma);
+    let fighter_kind = boma.kind();
     let status_kind = StatusModule::status_kind(boma);
-    let id = hdr::get_player_number(boma);
+    let id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 
     // Disallow airdodge out of tumble until you reach your stable fall speed
     if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR
@@ -49,7 +48,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
         return false;
     }
 
-    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S && side_special_cancel[id] {
+    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S && VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL) {
         return false;
     }
 
@@ -66,7 +65,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3
     ];
     if attacks.contains(&flag) {
-        if hdr::check_buttons_any(ControlModule::get_button_prev(boma), &[*CONTROL_PAD_BUTTON_ATTACK, *CONTROL_PAD_BUTTON_ATTACK_RAW]) && ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_CSTICK_ON) && ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_ATTACK) {  // smash stick input
+        if boma.was_prev_button_on(Buttons::AttackAll) && ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_CSTICK_ON) && ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_ATTACK) {  // smash stick input
             for x in attacks.iter() {
                 WorkModule::unable_transition_term_group_ex(boma, *x);
             }
@@ -75,7 +74,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
     }
 
     // Fighters
-    if fighter_category == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+    if boma.is_fighter() {
         // Disable transition to double jump if you have float juice and are holding down
         if [*FIGHTER_KIND_SAMUSD, *FIGHTER_KIND_GANON, *FIGHTER_KIND_MEWTWO, *FIGHTER_KIND_REFLET].contains(&fighter_kind) {
             if [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON].contains(&flag) {
@@ -110,10 +109,10 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
 
         // Meta Knight - Disable use of specials midair again after hitting them during the current airtime
         if fighter_kind == FIGHTER_KIND_METAKNIGHT {
-            if     (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N && neutral_special_hit[id])
-                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S && side_special_hit[id])
-                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI && up_special_hit[id])
-                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW && down_special_hit[id]) {
+            if     (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N && VarModule::is_flag(boma.object(), vars::common::NEUTRAL_SPECIAL_HIT))
+                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S && VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_HIT))
+                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI && VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_HIT))
+                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW && VarModule::is_flag(boma.object(), vars::common::DOWN_SPECIAL_HIT)) {
                 return false;
             }
         }

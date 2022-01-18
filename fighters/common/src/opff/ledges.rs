@@ -157,7 +157,7 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
     if  !VarModule::is_flag(boma.object(), vars::common::LEDGE_OCCUPYING) {
         println!("Ledge not occupied: Player {}", player_number);
     }
-    println!("Ledge position X: {}", ledge_pos[player_number].x);
+    println!("Ledge position X: {}", VarModule::get_float(boma.object(), vars::common::LEDGE_POS).x);
     println!("Player: {}", player_number);
     */
 }

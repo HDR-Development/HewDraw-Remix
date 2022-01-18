@@ -7,9 +7,7 @@ use globals::*;
 //=================================================================
 #[skyline::hook(replace=smash::app::sv_animcmd::ATTACK)]
 unsafe fn ATTACK_hook(lua_state: u64) {
-    if crate::vars::DEBUG {
-        // visualizer::handle_attack(lua_state);
-    }
+    
 
     // No longer requiring reverse hits
     return original!()(lua_state);

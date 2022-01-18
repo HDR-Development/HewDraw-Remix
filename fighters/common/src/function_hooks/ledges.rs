@@ -7,7 +7,7 @@ use globals::*;
 //=================================================================
 #[skyline::hook(replace=GroundModule::entry_cliff)]
 unsafe fn entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64{
-    //println!("Grabbing ledge... player number: {}", hdr::get_player_number(boma));
+    //println!("Grabbing ledge... player number: {}", WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;);
     //println!("Current status kind: {}", StatusModule::status_kind(boma));
     //println!("Previous status kind: {}", StatusModule::prev_status_kind(boma, 0));
     original!()(boma)
@@ -22,25 +22,24 @@ unsafe fn entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64{
 unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
     let situation_kind = StatusModule::situation_kind(boma);
     let status_kind = StatusModule::status_kind(boma);
-    let fighter_category = get_category(boma);
-    let fighter_kind = get_kind(boma);
+    let fighter_kind = boma.kind();
 
     let rising: f32 = KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY); // Rising while jumping/airdodging
 
-    let tether_only = fighter_category == *BATTLE_OBJECT_CATEGORY_FIGHTER
+    let tether_only = boma.is_fighter()
                         && [*FIGHTER_KIND_JACK, *FIGHTER_KIND_PFUSHIGISOU].contains(&fighter_kind)
                         && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI;
 
-    let tether_zair = fighter_category == *BATTLE_OBJECT_CATEGORY_FIGHTER
+    let tether_zair = boma.is_fighter()
                         && [*FIGHTER_KIND_LUCAS, *FIGHTER_KIND_YOUNGLINK, *FIGHTER_KIND_TOONLINK, *FIGHTER_KIND_SAMUS, *FIGHTER_KIND_SAMUSD, *FIGHTER_KIND_SZEROSUIT].contains(&fighter_kind)
                         && [*FIGHTER_STATUS_KIND_AIR_LASSO, *FIGHTER_STATUS_KIND_AIR_LASSO_REACH, *FIGHTER_STATUS_KIND_AIR_LASSO_HANG, *FIGHTER_STATUS_KIND_AIR_LASSO_REWIND].contains(&status_kind);
 
-    let tether_special = fighter_category == *BATTLE_OBJECT_CATEGORY_FIGHTER
+    let tether_special = boma.is_fighter()
                         && ( (fighter_kind == *FIGHTER_KIND_SZEROSUIT && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S)
                           || (fighter_kind == *FIGHTER_KIND_SHIZUE    && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S)
                           || (fighter_kind == *FIGHTER_KIND_TANTAN    && (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI || status_kind == *FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_AIR)) );
 
-    let tether_aerial = fighter_category == *BATTLE_OBJECT_CATEGORY_FIGHTER
+    let tether_aerial = boma.is_fighter()
                         && ( (fighter_kind == *FIGHTER_KIND_SIMON   && status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR)
                           || (fighter_kind == *FIGHTER_KIND_RICHTER && status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR)
                           || (fighter_kind == *FIGHTER_KIND_MASTER  && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI) );
@@ -48,20 +47,26 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
 
     // Ledgehog code
     let pos = GroundModule::hang_cliff_pos_3f(boma);
-    let entry_id = hdr::get_player_number(boma);
+    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32;
     for i in 0..8 {
-        if i == entry_id || ledge_pos[i].x == 0.0 {
+        let battle_object = if let Some(battle_object) = ::utils::util::get_battle_object_from_entry_id(i) {
+            battle_object
+        } else {
+            continue;
+        };
+
+        if i == entry_id || VarModule::get_float(battle_object, vars::common::LEDGE_POS_X) == 0.0 {
             continue;
         }
 
-        if pos.x == ledge_pos[i].x && pos.y == ledge_pos[i].y {
+        if pos.x == VarModule::get_float(battle_object, vars::common::LEDGE_POS_X) && pos.y == VarModule::get_float(battle_object, vars::common::LEDGE_POS_Y) {
             if !(tether_only || tether_zair || tether_special || tether_aerial) {
                 return 0;
             }
         }
     }
 
-    if fighter_category == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+    if boma.is_fighter() {
         // Character specific ledge grabbing rules
         // If check_cliff_entry_specializer returns 0, disable ledge grabbing
         // If check_cliff_entry_specializer returns 1, run the rising check
@@ -90,8 +95,8 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
 //=================================================================
 #[skyline::hook(replace=GroundModule::leave_cliff)]
 unsafe fn leave_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
-    let entry_id = hdr::get_player_number(boma);
-    ledge_pos[entry_id] = Vector3f {x: 0.0, y: 0.0, z: 0.0};
+    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    VarModule::set_vec3(boma.object(), vars::common::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
     original!()(boma)
 }
 
@@ -105,13 +110,13 @@ pub fn install() {
 //== GroundModule::can_entry_cliff specializer
 //=================================================================
 unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -> i32 {
-    let fighter_kind = get_kind(boma);
+    let fighter_kind = boma.kind();
     let status_kind = StatusModule::status_kind(boma);
     let motion_kind = MotionModule::motion_kind(boma);
     let prev_status_kind = StatusModule::prev_status_kind(boma, 0);
     let prev_status_kind_2 = StatusModule::prev_status_kind(boma, 1);
     let frame = MotionModule::frame(boma);
-    let entry_id = hdr::get_player_number(boma);
+    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 
     if fighter_kind == *FIGHTER_KIND_MARIO {
         if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
@@ -903,7 +908,7 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
 
     if(fighter_kind == *FIGHTER_KIND_PICKEL){
         if(status_kind == *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_GLIDING){
-            if(glide_timer[entry_id] < 40.0 /*40 frames of up b travel time*/){
+            if VarModule::get_float(boma.object(), vars::common::GLIDE_TIMER) < 40.0 /*40 frames of up b travel time*/ {
                 return 1;
             }
         }

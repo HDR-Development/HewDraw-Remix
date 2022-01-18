@@ -151,6 +151,7 @@ pub mod vars {
         pub const GIMMICK_TIMER: i32 = 0x9;
         pub const ATTACK_DASH_CANCEL_FRAME: i32 = 0xA;
         pub const AIR_ESCAPE_MAGNET_FRAME: i32 = 0xB;
+        pub const TURN_DASH_FRAME: i32 = 0xC;
 
         // float
         pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0;

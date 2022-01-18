@@ -11,7 +11,7 @@ unsafe fn change_kinetic_hook(boma: &mut BattleObjectModuleAccessor, kinetic_typ
     let mut kinetic_type_new = kinetic_type;
 
     /*   --------------  SPACIE LASER MOMENTUM  -----------------  */
-    match crate::hooks::function_hooks::momentum_transfer::change_kinetic_momentum_related(boma, kinetic_type_new) {
+    match crate::function_hooks::momentum_transfer::change_kinetic_momentum_related(boma, kinetic_type_new) {
         Some(x) => kinetic_type_new = x,
         None => ()
     }

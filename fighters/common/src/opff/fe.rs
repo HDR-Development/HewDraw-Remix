@@ -76,7 +76,7 @@ pub unsafe extern "Rust" fn fe_common(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn fe_moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    let fighter_kind = get_kind(boma);
+    let fighter_kind = boma.kind();
     up_special_reverse(boma, fighter_kind, status_kind, stick_x, facing, frame);
     dancing_blade_stall(boma, id, status_kind, situation_kind, frame);
     sword_length(boma);

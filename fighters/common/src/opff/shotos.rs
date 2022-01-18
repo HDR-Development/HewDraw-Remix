@@ -98,7 +98,7 @@ unsafe fn hadoken_fadc_sfs_cancels(fighter: &mut L2CFighterCommon, boma: &mut Ba
     let mut agent_base = fighter.fighter_base.agent_base;
     let cat1 = cat[0];
     let cat4 = cat[3];
-    let fighter_kind = get_kind(boma);
+    let fighter_kind = boma.kind();
 
     let frame = MotionModule::frame(boma);
 
