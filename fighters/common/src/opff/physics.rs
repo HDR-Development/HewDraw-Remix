@@ -50,7 +50,7 @@ unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
     ]) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
     && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
     && boma.is_situation(*SITUATION_KIND_AIR)
-    && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) >= ParamModule::get_int(boma.object(), ParamType::Common, "ecb_shift_air_trans_frame")
+    && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= ParamModule::get_int(boma.object(), ParamType::Common, "ecb_shift_air_trans_frame")
     && app::sv_information::is_ready_go()
     {
         let group = ParamModule::get_int(boma.object(), ParamType::Shared, "ecb_group_shift");
@@ -61,12 +61,15 @@ unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
             groups::LARGE   => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.large"),
             groups::XLARGE  => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.x_large"),
             groups::XXLARGE => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.xx_large"),
-            _ => 0.0
+            _ => panic!(String::from("malformed parammodule file! unknown group number for ecb shift: ").to_owned().push_str(&group.to_string()))
         };
 
         if boma.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR) {
             sh_amount += ParamModule::get_float(boma.object(), ParamType::Common, "ecb_shift_for_waveland");
         }
+
+        // this is required for other ecb shift opterations to perform correctly.
+        VarModule::set_float(boma.object(), vars::common::ECB_Y_OFFSETS, sh_amount);
 
         GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, sh_amount));
     }
