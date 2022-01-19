@@ -396,7 +396,7 @@ impl ParamModule {
                 .flatten()
                 .map(|x| x.get_int())
                 .flatten()
-                .unwrap_or(0)
+                .unwrap_or_else(|| panic!("Could not retrieve Common ParamModule int: {}", key))
             },
             ParamType::Shared => {
                 let index = unsafe {
@@ -407,7 +407,7 @@ impl ParamModule {
                     .read()
                     .as_ref()
                     .map(|x| x.get_int(index as i32, key))
-                    .unwrap_or(0)
+                    .unwrap_or_else(|| panic!("Could not retrieve Shared ParamModule int: {}", key))
             },
             ParamType::Agent => module.agent_params
                 .as_ref()
@@ -415,7 +415,7 @@ impl ParamModule {
                 .flatten()
                 .map(|x| x.get_int())
                 .flatten()
-                .unwrap_or(0)
+                .unwrap_or_else(|| panic!("Could not retrieve Agent ParamModule int: {}", key))
         }
     }
 
@@ -497,7 +497,7 @@ impl ParamModule {
                 .flatten()
                 .map(|x| x.get_float())
                 .flatten()
-                .unwrap_or(0.0),
+                .unwrap_or_else(|| panic!("Could not retrieve Common ParamModule float: {}", key)),
             ParamType::Shared => {
                 let index = unsafe {
                     (*module.owner).kind
@@ -507,7 +507,7 @@ impl ParamModule {
                     .read()
                     .as_ref()
                     .map(|x| x.get_float(index as i32, key))
-                    .unwrap_or(0.0)
+                    .unwrap_or_else(|| panic!("Could not retrieve Shared ParamModule float: {}", key))
             },
             ParamType::Agent => module.agent_params
                 .as_ref()
@@ -515,7 +515,7 @@ impl ParamModule {
                 .flatten()
                 .map(|x| x.get_float())
                 .flatten()
-                .unwrap_or(0.0)
+                .unwrap_or_else(|| panic!("Could not retrieve Agent ParamModule float: {}", key))
         }
     }
 
@@ -546,7 +546,7 @@ impl ParamModule {
                 .flatten()
                 .map(|x| x.get_flag())
                 .flatten()
-                .unwrap_or(false),
+                .unwrap_or_else(|| panic!("Could not retrieve Common ParamModule flag: {}", key)),
             ParamType::Shared => {
                 let index = unsafe {
                     (*module.owner).kind
@@ -556,7 +556,7 @@ impl ParamModule {
                     .read()
                     .as_ref()
                     .map(|x| x.is_flag(index as i32, key))
-                    .unwrap_or(false)
+                    .unwrap_or_else(|| panic!("Could not retrieve Shared ParamModule flag: {}", key))
             },
             ParamType::Agent => module.agent_params
                 .as_ref()
@@ -564,7 +564,7 @@ impl ParamModule {
                 .flatten()
                 .map(|x| x.get_flag())
                 .flatten()
-                .unwrap_or(false)
+                .unwrap_or_else(|| panic!("Could not retrieve Agent ParamModule flag: {}", key))
         }
     }
 
@@ -591,7 +591,8 @@ impl ParamModule {
                 .flatten()
                 .map(|x| x.get_string())
                 .flatten()
-                .map_or_else(|| String::new(), |x| x.clone()),
+                .unwrap_or_else(|| panic!("Could not retrieve Common ParamModule string: {}", key))
+                .clone(),
             ParamType::Shared => {
                 let index = unsafe {
                     (*module.owner).kind
@@ -601,7 +602,8 @@ impl ParamModule {
                     .read()
                     .as_ref()
                     .map(|x| x.get_string(index as i32, key))
-                    .map_or_else(|| String::new(), |x| x.to_string())
+                    .unwrap_or_else(|| panic!("Could not retrieve Shared ParamModule string: {}", key))
+                    .to_string()
             },
             ParamType::Agent => module.agent_params
                 .as_ref()
@@ -609,7 +611,8 @@ impl ParamModule {
                 .flatten()
                 .map(|x| x.get_string())
                 .flatten()
-                .map_or_else(|| String::new(), |x| x.clone())
+                .unwrap_or_else(|| panic!("Could not retrieve Agent ParamModule string: {}", key))
+                .clone()
         }
     }
 }

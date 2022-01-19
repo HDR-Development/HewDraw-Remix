@@ -22,7 +22,7 @@ unsafe fn demon_ongrab(arg1: u64, arg2: u64, arg3: u64) -> u64 {
     let boma = *(arg2 as *const u64).add(4) as *mut BattleObjectModuleAccessor;
     let catches = [*FIGHTER_STATUS_KIND_CATCH, *FIGHTER_STATUS_KIND_CATCH_DASH, *FIGHTER_STATUS_KIND_CATCH_TURN];
     let status_kind = StatusModule::status_kind(boma);
-    if catches.into_iter().any(|x| *x == status_kind) && WorkModule::is_flag(boma, *FIGHTER_DEMON_INSTANCE_WORK_ID_FLAG_ENABLE_RAGE_SYSTEM) {
+    if catches.iter().any(|x| *x == status_kind) && WorkModule::is_flag(boma, *FIGHTER_DEMON_INSTANCE_WORK_ID_FLAG_ENABLE_RAGE_SYSTEM) {
         1
     } else {
         original!()(arg1, arg2, arg3)

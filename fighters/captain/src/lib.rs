@@ -1,4 +1,4 @@
-#![feature(asm)]#![allow(unused)]#![allow(snake_case)]
+#![feature(asm)]#![allow(unused)]#![allow(non_snake_case)]
 // use ::common::prelude::*;
 
 pub mod acmd;

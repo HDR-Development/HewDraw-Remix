@@ -1,6 +1,5 @@
-#![allow(unused_imports)]
-#![allow(unused_variables)]
-#![allow(unused_parens)]
+#![allow(unused)]
+#![allow(non_snake_case)]
 use smash::app::lua_bind::*;
 use smash::lua2cpp::*;
 use smash::lib::{*, lua_const::*};

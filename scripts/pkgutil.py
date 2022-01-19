@@ -14,8 +14,6 @@ def collect_plugin(package_name: str, package_path: str, build_type: str, plugin
     os.path.join(plugin_source), 
     os.path.join(plugin_destination, plugin_name))
   
-  # get development nro, if it exists
-
   return
 
 def collect_romfs(package_name: str, context_path: str):
@@ -25,7 +23,7 @@ def collect_romfs(package_name: str, context_path: str):
   shutil.copytree(
     os.path.join(romfs_source), 
     os.path.join(romfs_destination))
-
+  shutil.copyfile(os.path.join("romfs/config.json"), os.path.join(romfs_destination, "config.json"))
   return
 
 def build(build_type: str, dev_args: str):

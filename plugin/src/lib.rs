@@ -1,4 +1,4 @@
-#![feature(asm)]#![allow(unused)]#![allow(snake_case)]#![allow(unused_imports)]#![allow(unused_variables)]
+#![feature(asm)]#![allow(unused)]#![allow(non_snake_case)]#![allow(unused_imports)]#![allow(unused_variables)]
 #![feature(proc_macro_hygiene)]
 
 #[smashline::installer]
