@@ -72,6 +72,12 @@ unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
         VarModule::set_float(boma.object(), vars::common::ECB_Y_OFFSETS, sh_amount);
 
         GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, sh_amount));
+    } else {
+
+        // reset the rhombus to 0,0
+        GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, 0.0));
+        VarModule::set_float(boma.object(), vars::common::ECB_Y_OFFSETS, 0.0);
+
     }
 }
 
