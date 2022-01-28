@@ -190,7 +190,7 @@ unsafe fn run_squat(boma: &mut BattleObjectModuleAccessor, status_kind: i32, sti
 unsafe fn glide_toss(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, facing: f32) {
     if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B])
     {
-        let max_ditcit_frame = ParamModule::get_float(boma.object(), ParamType::Common, "ditcit_frame");
+        let max_ditcit_frame = ParamModule::get_float(boma.object(), ParamType::Common, "glide_toss_cancel_frame");
         VarModule::set_flag(boma.object(), vars::common::CAN_GLIDE_TOSS, MotionModule::frame(boma) <= max_ditcit_frame);
         return;
     }
