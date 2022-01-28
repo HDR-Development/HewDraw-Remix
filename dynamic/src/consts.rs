@@ -157,6 +157,7 @@ pub mod vars {
         pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0;
         pub const CURRENT_MOMENTUM: i32 = 0x1;
         pub const JUMPSQUAT_VELOCITY: i32 = 0x2;
+        /// This const is set in a fighter reset because the params used to calculate change depending on situation
         pub const JUMP_SPEED_RATIO: i32 = 0x3;
         pub const DOUBLE_JUMP_FRAME: i32 = 0x4;
         pub const GROUND_VEL: i32 = 0x5;
