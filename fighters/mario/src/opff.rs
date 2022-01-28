@@ -213,12 +213,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     noknok_timer(fighter, boma, id);
     noknok_reset(fighter, id, status_kind);
     noknok_training(fighter, id, status_kind);
-
-    if fighter.is_button_on(Buttons::AppealHi) {
-        utils::util::trigger_match_reset();
-    } else if fighter.is_button_on(Buttons::AppealLw) {
-        utils::util::trigger_match_exit();
-    }
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MARIO )]
