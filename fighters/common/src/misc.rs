@@ -9,6 +9,17 @@ use utils::*;
 
 use globals::*;
 
+pub fn install() {
+    smashline::install_agent_resets!(fighter_reset);
+}
+
+#[smashline::fighter_reset]
+pub fn fighter_reset(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        let ratio = (WorkModule::get_param_float(fighter.module_accessor, hash40("jump_speed_x_max"), 0) / WorkModule::get_param_float(fighter.module_accessor, hash40("run_speed_max"), 0));
+        VarModule::set_float(fighter.battle_object, vars::common::JUMP_SPEED_RATIO, ratio);
+    }
+}
 
 pub unsafe fn calc_melee_momentum(fighter: &mut L2CFighterCommon, aerial_attack: bool, attack_cancel: bool, walking: bool) -> f32 {
   let fighter_kind = fighter.global_table[FIGHTER_KIND].get_i32();

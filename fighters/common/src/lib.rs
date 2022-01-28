@@ -26,6 +26,7 @@ pub mod function_hooks;
 
 pub fn install() {
     djc::install();
+    misc::install();
     general_statuses::install();
     function_hooks::install();
 }
