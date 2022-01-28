@@ -8,7 +8,7 @@ on:
       - '**/.gitignore'
       - 'scripts/**'
   pull_request:
-    branches: [ dev, stable ]
+    #branches: [ dev, stable ]
     paths-ignore:
       - '**/README.md'
       - '**/.gitignore'
