@@ -13,6 +13,7 @@ pub mod directional_influence;
 pub mod hitstun;
 pub mod change_status;
 pub mod is_flag;
+pub mod controls;
 
 pub fn install() {
     reverse_hits::install();
@@ -26,6 +27,7 @@ pub fn install() {
     hitstun::install();
     change_status::install();
     is_flag::install();
+    controls::install();
     //momentum_transfer::install();
     //dash_dancing::install();
 }

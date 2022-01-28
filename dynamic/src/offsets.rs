@@ -31,6 +31,12 @@ extern "C" {
 
     #[link_name = "offsets_fighter_handle_damage"]
     fn offsets_fighter_handle_damage() -> usize;
+
+    #[link_name = "offsets_p_p_game_state"]
+    fn offsets_p_p_game_state() -> usize;
+
+    #[link_name = "offsets_map_controls"]
+    fn offsets_map_controls() -> usize;
 }
 
 
@@ -97,5 +103,17 @@ pub fn get_battle_object_from_id() -> usize {
 pub fn fighter_handle_damage() -> usize {
     unsafe {
         offsets_fighter_handle_damage()
+    }
+}
+
+pub fn p_p_game_state() -> usize {
+    unsafe {
+        offsets_p_p_game_state()
+    }
+}
+
+pub fn map_controls() -> usize {
+    unsafe {
+        offsets_map_controls()
     }
 }

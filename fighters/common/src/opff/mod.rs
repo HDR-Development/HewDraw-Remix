@@ -57,6 +57,24 @@ pub unsafe fn fighter_common_opff(fighter: &mut L2CFighterCommon) {
     }
 }
 
+/// Performs salty runback check based off of the button input
+/// This is to make it WiFi safe
+unsafe fn salty_check(fighter: &mut L2CFighterCommon) -> bool {
+    if fighter.is_button_on(Buttons::StockShare) {
+        if fighter.is_button_on(Buttons::AttackRaw) && !fighter.is_button_on(!(Buttons::AttackRaw | Buttons::StockShare)) {
+            utils::util::trigger_match_reset();
+            true
+        } else if fighter.is_button_on(Buttons::SpecialRaw) && !fighter.is_button_on(!(Buttons::SpecialRaw | Buttons::StockShare)) {
+            utils::util::trigger_match_exit();
+            true
+        } else {
+            false
+        }
+    } else {
+        false
+    }
+}
+
 pub unsafe fn moveset_edits(fighter: &mut L2CFighterCommon, info: &FrameInfo) {
     let boma = &mut *info.boma;
 
@@ -64,6 +82,9 @@ pub unsafe fn moveset_edits(fighter: &mut L2CFighterCommon, info: &FrameInfo) {
 
 
     // General Engine Edits
+    if salty_check(fighter) {
+        return;
+    }
     physics::run(fighter, info.lua_state, &mut *info.agent, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
     shields::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
     tech::run(fighter, info.lua_state, &mut *info.agent, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing, info.frame);
