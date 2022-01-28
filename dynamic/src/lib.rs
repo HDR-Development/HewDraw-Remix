@@ -7,6 +7,9 @@ pub mod ext;
 mod modules;
 pub mod frame_info;
 
+#[macro_use]
+extern crate modular_bitfield;
+
 pub use hdr_macros::{
     export,
     import,
