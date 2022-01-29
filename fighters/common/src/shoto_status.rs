@@ -20,7 +20,7 @@ use globals::*;
 
 // FIGHTER_RYU_STATUS_KIND_DASH_BACK (it's the same for theo ther fgc char statuses) //
 
-#[utils::export(shoto_status::fgc_pre_dashback)]
+#[utils::export(common::shoto_status)]
 pub unsafe fn fgc_pre_dashback(fighter: &mut L2CFighterCommon) {
     let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
 	let mut initial_speed = VarModule::get_float(fighter.battle_object, vars::common::CURR_DASH_SPEED);
@@ -39,7 +39,7 @@ pub unsafe fn fgc_pre_dashback(fighter: &mut L2CFighterCommon) {
     VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, initial_speed);
 }
 
-
+#[no_mangle]
 pub unsafe extern "Rust" fn fgc_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("dash_b"), 0.0, 1.0, false, 0.0, false, false);
     fighter.status_DashCommon();
@@ -376,7 +376,7 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
     // 0.into()
 }
 
-#[utils::export(shoto_status::fgc_end_dashback)]
+#[utils::export(common::shoto_status)]
 pub unsafe fn fgc_end_dashback(fighter: &mut L2CFighterCommon) {
     let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
 	let mut initial_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
@@ -448,6 +448,7 @@ pub unsafe fn fgc_end_dashback(fighter: &mut L2CFighterCommon) {
 	// println!("end dash total speed: {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL));
 }
 
+#[no_mangle]
 pub unsafe extern "Rust" fn ryu_attack_main_uniq_chk(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StatusModule::is_changing(fighter.module_accessor) {
         let combo_count = ComboModule::count(fighter.module_accessor) as i32;
@@ -466,6 +467,7 @@ pub unsafe extern "Rust" fn ryu_attack_main_uniq_chk(fighter: &mut L2CFighterCom
 }
 
 
+#[no_mangle]
 pub unsafe extern "C" fn ryu_attack_main_uniq_chk2(fighter: &mut L2CFighterCommon, mot1: L2CValue, mot2: L2CValue) {
     ryu_attack_main_uniq_chk3(fighter);
     fighter.attack_mtrans_pre_process();
@@ -489,7 +491,7 @@ pub unsafe extern "C" fn ryu_attack_main_uniq_chk2(fighter: &mut L2CFighterCommo
     }
 }
 
-#[utils::export(shoto_status::ryu_attack_main_uniq_chk3)]
+#[utils::export(common::shoto_status)]
 unsafe extern "C" fn ryu_attack_main_uniq_chk3(fighter: &mut L2CFighterCommon) {
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_RYU_STATUS_ATTACK_INT_BUTTON_ON_FRAME);
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_RYU_STATUS_ATTACK_INT_FRAME);
@@ -664,6 +666,7 @@ pub unsafe extern "Rust" fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situa
     val.into()
 }
 
+#[no_mangle]
 pub unsafe extern "Rust" fn ryu_kara_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
     let val;
     let special_n_command = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND);
@@ -704,7 +707,7 @@ pub unsafe extern "Rust" fn ryu_kara_cancel(fighter: &mut L2CFighterCommon) -> L
 //     }
 // }
 
-#[utils::export(shoto_status::ryu_idkwhatthisis2)]
+#[utils::export(common::shoto_status)]
 pub unsafe extern "C" fn ryu_idkwhatthisis2(fighter: &mut L2CFighterCommon) {
     if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_RELEASE_BUTTON);

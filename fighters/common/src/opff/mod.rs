@@ -19,7 +19,7 @@ pub mod cancels;
 pub mod var_resets;
 pub mod gentleman;
 pub mod momentum_transfer_line;
-//pub mod shotos;
+pub mod shotos;
 //pub mod magic;
 pub mod gimmick;
 pub mod floats;
