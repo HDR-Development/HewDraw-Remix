@@ -63,6 +63,8 @@ jobs:
       shell: bash
       run: |
         echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}-$(git rev-parse --short HEAD))"
+      outputs:
+        version_string: ${{ steps.vars.outputs.version_string }}
 
     # build the project
     - run: |
@@ -79,8 +81,6 @@ jobs:
       with:
         name: hdr-ryujinx
         path: distributions/hdr-ryujinx.zip
-    - outputs:
-      version_string: ${{ steps.vars.outputs.version_string }}
 
   # upload a nightly
   upload_nightly:
