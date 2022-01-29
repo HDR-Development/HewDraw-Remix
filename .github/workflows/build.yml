@@ -29,8 +29,38 @@ jobs:
         python-version: '3.9' # Version range or exact version of a Python version to use, using SemVer's version range syntax
     - name: checkout version
       uses: actions/checkout@v2
+      with: 
+        fetch-depth: 0
+    - name: semantic version
+      uses: paulhatch/semantic-version@v4.0.2
+      id: semantic-version
+      with:
+        # The prefix to use to identify tags
+        tag_prefix: "v"
+        # A string which, if present in a git commit, indicates that a change represents a
+        # major (breaking) change, supports regular expressions wrapped with '/'
+        major_pattern: "(MAJOR)"
+        # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
+        minor_pattern: "(MINOR)"
+        # A string to determine the format of the version output
+        format: "${major}.${minor}.${patch}-"
+        # Named version, will be used as suffix for name version tag
+        namespace: hdr
+        # Indicate whether short tags like 'v1' should be supported. If false only full
+        # tags like 'v1.0.0' will be recognized.
+        short_tags: false
+        # If this is set to true, *every* commit will be treated as a new version.
+        bump_each_commit: false
+    - name: collect version string
+      id: vars
+      shell: bash
+      run: |
+        echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
+    # build the project
     - run: |
-        PATH=$PATH:/root/.cargo/bin && cd scripts && python3 make_dist.py release && cd ..
+        PATH=$PATH:/root/.cargo/bin && HDR_VERSION="${{ steps.semantic-version.outputs.version }}${{ steps.vars.outputs.sha_short }}" && cd scripts && python3 make_dist.py release && cd ..
       env:
         HOME: /root
     - name: Upload hdr-switch artifact
