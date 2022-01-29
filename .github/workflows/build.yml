@@ -16,12 +16,15 @@ on:
       
 
 jobs:
+  # build the plugin
   plugin_build:
     env:
       PLUGIN_NAME: hdr
     runs-on: ubuntu-latest
     container: 
       image: jugeeya/cargo-skyline:2.1.0
+    outputs:
+      version_string: ${{ steps.version.outputs.version_string }}
     steps:
     - name: setup python
       uses: actions/setup-python@v2
@@ -58,14 +61,14 @@ jobs:
         # If this is set to true, *every* commit will be treated as a new version.
         bump_each_commit: false
     - name: collect version string
-      id: vars
+      id: version
       shell: bash
       run: |
         echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}-$(git rev-parse --short HEAD))"
 
     # build the project
     - run: |
-        PATH=$PATH:/root/.cargo/bin && HDR_VERSION="${{ steps.vars.outputs.version_string }}" && cd scripts && python3 make_dist.py release && cd ..
+        PATH=$PATH:/root/.cargo/bin && HDR_VERSION="${{ steps.version.outputs.version_string }}" && cd scripts && python3 make_dist.py release && cd ..
       env:
         HOME: /root
     - name: Upload hdr-switch artifact
@@ -78,6 +81,8 @@ jobs:
       with:
         name: hdr-ryujinx
         path: distributions/hdr-ryujinx.zip
+
+  # upload a nightly
   upload_nightly:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/dev'
@@ -101,12 +106,14 @@ jobs:
         allow_override: true
         gzip: false
         tag: nightly
-        name: nightly ${{ steps.vars.outputs.version_string }}
+        name: nightly ${{ needs.plugin_build.outputs.version_string }}
         body: >
           Nightly built off of the latest code in the repository. 
         files: >
           hdr-switch/*
           hdr-ryujinx/*
+
+  # upload a beta
   upload_beta:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/stable'
@@ -130,7 +137,7 @@ jobs:
         allow_override: true
         gzip: false
         tag: beta
-        name: beta ${{ steps.vars.outputs.version_string }}
+        name: beta ${{ needs.plugin_build.outputs.version_string }}
         body: >
           Beta built off of the latest code in the repository. 
         files: >
