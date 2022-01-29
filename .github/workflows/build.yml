@@ -27,10 +27,45 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.9' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+    - name: Install git 
+      run: |
+        apt-get update
+        apt-get install -y git
+        git --version
+        echo "Path is ... $PATH"
+        PATH=$PATH:$(which git)
+        echo "Path is ... $PATH"
     - name: checkout version
       uses: actions/checkout@v2
+      with: 
+        fetch-depth: 0
+    - name: semantic version
+      uses: paulhatch/semantic-version@v4.0.2
+      id: semantic-version
+      with:
+        # The prefix to use to identify tags
+        tag_prefix: "v"
+        # A string which, if present in a git commit, indicates that a change represents a
+        # major (breaking) change, supports regular expressions wrapped with '/'
+        major_pattern: "(MAJOR)"
+        # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
+        minor_pattern: "(MINOR)"
+        # A string to determine the format of the version output
+        format: "${major}.${minor}.${patch}"
+        # Indicate whether short tags like 'v1' should be supported. If false only full
+        # tags like 'v1.0.0' will be recognized.
+        short_tags: false
+        # If this is set to true, *every* commit will be treated as a new version.
+        bump_each_commit: false
+    - name: collect version string
+      id: vars
+      shell: bash
+      run: |
+        echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}-$(git rev-parse --short HEAD))"
+
+    # build the project
     - run: |
-        PATH=$PATH:/root/.cargo/bin && cd scripts && python3 make_dist.py release && cd ..
+        PATH=$PATH:/root/.cargo/bin && HDR_VERSION="${{ steps.vars.outputs.version_string }}" && cd scripts && python3 make_dist.py release && cd ..
       env:
         HOME: /root
     - name: Upload hdr-switch artifact
@@ -66,7 +101,7 @@ jobs:
         allow_override: true
         gzip: false
         tag: nightly
-        name: nightly
+        name: nightly ${{ steps.vars.outputs.version_string }}
         body: >
           Nightly built off of the latest code in the repository. 
         files: >
@@ -95,7 +130,7 @@ jobs:
         allow_override: true
         gzip: false
         tag: beta
-        name: beta
+        name: beta ${{ steps.vars.outputs.version_string }}
         body: >
           Beta built off of the latest code in the repository. 
         files: >
