@@ -106,7 +106,7 @@ jobs:
         allow_override: true
         gzip: false
         tag: nightly
-        name: nightly ${{ jobs.plugin_build.outputs.version_string }}
+        name: nightly ${{ needs.plugin_build.outputs.version_string }}
         body: >
           Nightly built off of the latest code in the repository. 
         files: >
@@ -137,7 +137,7 @@ jobs:
         allow_override: true
         gzip: false
         tag: beta
-        name: beta ${{ jobs.plugin_build.outputs.version_string }}
+        name: beta ${{ needs.plugin_build.outputs.version_string }}
         body: >
           Beta built off of the latest code in the repository. 
         files: >
