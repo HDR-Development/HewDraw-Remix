@@ -55,7 +55,7 @@ jobs:
         # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
         minor_pattern: "(MINOR)"
         # A string to determine the format of the version output
-        format: "${major}.${minor}.${patch}"
+        format: "v${major}.${minor}.${patch}"
         # Indicate whether short tags like 'v1' should be supported. If false only full
         # tags like 'v1.0.0' will be recognized.
         short_tags: false
