@@ -23,6 +23,8 @@ jobs:
     runs-on: ubuntu-latest
     container: 
       image: jugeeya/cargo-skyline:2.1.0
+    outputs:
+      version_string: ${{ steps.version.outputs.version_string }}
     steps:
     - name: setup python
       uses: actions/setup-python@v2
@@ -59,16 +61,14 @@ jobs:
         # If this is set to true, *every* commit will be treated as a new version.
         bump_each_commit: false
     - name: collect version string
-      id: vars
+      id: version
       shell: bash
       run: |
         echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}-$(git rev-parse --short HEAD))"
-      outputs:
-        version_string: ${{ steps.vars.outputs.version_string }}
 
     # build the project
     - run: |
-        PATH=$PATH:/root/.cargo/bin && HDR_VERSION="${{ steps.vars.outputs.version_string }}" && cd scripts && python3 make_dist.py release && cd ..
+        PATH=$PATH:/root/.cargo/bin && HDR_VERSION="${{ steps.version.outputs.version_string }}" && cd scripts && python3 make_dist.py release && cd ..
       env:
         HOME: /root
     - name: Upload hdr-switch artifact
