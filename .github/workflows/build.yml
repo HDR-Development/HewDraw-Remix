@@ -16,6 +16,7 @@ on:
       
 
 jobs:
+  # build the plugin
   plugin_build:
     env:
       PLUGIN_NAME: hdr
@@ -78,6 +79,10 @@ jobs:
       with:
         name: hdr-ryujinx
         path: distributions/hdr-ryujinx.zip
+    - outputs:
+      version_string: ${{ steps.vars.outputs.version_string }}
+
+  # upload a nightly
   upload_nightly:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/dev'
@@ -101,12 +106,14 @@ jobs:
         allow_override: true
         gzip: false
         tag: nightly
-        name: "nightly ${{ steps.vars.outputs.version_string }}"
+        name: nightly ${{ jobs.plugin_build.outputs.version_string }}
         body: >
           Nightly built off of the latest code in the repository. 
         files: >
           hdr-switch/*
           hdr-ryujinx/*
+
+  # upload a beta
   upload_beta:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/stable'
@@ -130,7 +137,7 @@ jobs:
         allow_override: true
         gzip: false
         tag: beta
-        name: "beta ${{ steps.vars.outputs.version_string }}"
+        name: beta ${{ jobs.plugin_build.outputs.version_string }}
         body: >
           Beta built off of the latest code in the repository. 
         files: >
