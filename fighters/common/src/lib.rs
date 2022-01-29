@@ -23,6 +23,7 @@ pub mod opff;
 pub mod misc;
 pub mod general_statuses;
 pub mod function_hooks;
+pub mod shoto_status;
 
 pub fn install() {
     djc::install();

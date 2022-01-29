@@ -1,8 +1,5 @@
-use utils::{
-    *,
-    ext::*,
-    consts::*
-};
+use super::*;
+use smash::app::BattleObjectModuleAccessor;
 
 // Dtilt and Utilt repeat increment
 unsafe fn dtilt_utilt_repeat_increment(boma: &mut BattleObjectModuleAccessor) {
