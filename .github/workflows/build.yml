@@ -51,9 +51,7 @@ jobs:
         # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
         minor_pattern: "(MINOR)"
         # A string to determine the format of the version output
-        format: "${major}.${minor}.${patch}-"
-        # Named version, will be used as suffix for name version tag
-        namespace: hdr
+        format: "${major}.${minor}.${patch}"
         # Indicate whether short tags like 'v1' should be supported. If false only full
         # tags like 'v1.0.0' will be recognized.
         short_tags: false
@@ -63,12 +61,11 @@ jobs:
       id: vars
       shell: bash
       run: |
-        echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}$(git rev-parse --short HEAD))"
 
     # build the project
     - run: |
-        PATH=$PATH:/root/.cargo/bin && HDR_VERSION="${{ steps.semantic-version.outputs.version }}${{ steps.vars.outputs.sha_short }}" && cd scripts && python3 make_dist.py release && cd ..
+        PATH=$PATH:/root/.cargo/bin && HDR_VERSION="${{ steps.vars.outputs.version_string }}" && cd scripts && python3 make_dist.py release && cd ..
       env:
         HOME: /root
     - name: Upload hdr-switch artifact
@@ -104,7 +101,7 @@ jobs:
         allow_override: true
         gzip: false
         tag: nightly
-        name: nightly
+        name: nightly ${{ steps.vars.outputs.version_string }}
         body: >
           Nightly built off of the latest code in the repository. 
         files: >
@@ -133,7 +130,7 @@ jobs:
         allow_override: true
         gzip: false
         tag: beta
-        name: beta
+        name: beta ${{ steps.vars.outputs.version_string }}
         body: >
           Beta built off of the latest code in the repository. 
         files: >
