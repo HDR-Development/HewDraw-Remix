@@ -113,7 +113,7 @@ jobs:
         prerelease: true
         allow_override: true
         gzip: false
-        tag: nightly-${{ needs.plugin_build.outputs.commit_hash }}
+        tag: nightly-${{ needs.plugin_build.outputs.version_string }}
         name: nightly ${{ needs.plugin_build.outputs.version_string }}
         body: >
           Nightly built off of the latest code in the repository. 
@@ -149,7 +149,7 @@ jobs:
         prerelease: true
         allow_override: true
         gzip: false
-        tag: beta-${{ needs.plugin_build.outputs.commit_hash }}
+        tag: beta-${{ needs.plugin_build.outputs.version_string }}
         commitish: ${{ needs.plugin_build.outputs.commit_hash }}
         name: beta ${{ needs.plugin_build.outputs.version_string }}
         body: >
