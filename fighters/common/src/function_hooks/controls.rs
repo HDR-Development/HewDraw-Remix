@@ -25,9 +25,9 @@ unsafe fn map_controls_hook(
     && controller.current_buttons.a()
     && (controller.current_buttons.minus() || controller.current_buttons.plus())
     {
-        if controller.current_buttons.x() {
+        if controller.current_buttons.y() {
             (*out).buttons = Buttons::StockShare | Buttons::AttackRaw;
-        } else if controller.current_buttons.y() {
+        } else if controller.current_buttons.x() {
             (*out).buttons = Buttons::StockShare | Buttons::SpecialRaw;
         }
     }
