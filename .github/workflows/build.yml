@@ -61,7 +61,7 @@ jobs:
       id: vars
       shell: bash
       run: |
-        echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}$(git rev-parse --short HEAD))"
+        echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}-$(git rev-parse --short HEAD))"
 
     # build the project
     - run: |
