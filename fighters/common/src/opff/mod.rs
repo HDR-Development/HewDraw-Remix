@@ -24,6 +24,7 @@ pub mod shotos;
 pub mod gimmick;
 pub mod floats;
 pub mod other;
+pub mod fe;
 
 /*
 pub fn install() {
