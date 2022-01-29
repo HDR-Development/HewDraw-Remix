@@ -25,6 +25,7 @@ jobs:
       image: jugeeya/cargo-skyline:2.1.0
     outputs:
       version_string: ${{ steps.version.outputs.version_string }}
+      commit_hash: ${{ steps.version.outputs.commit_hash }}
     steps:
     - name: setup python
       uses: actions/setup-python@v2
@@ -65,6 +66,7 @@ jobs:
       shell: bash
       run: |
         echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}-$(git rev-parse --short HEAD))"
+        echo "##[set-output name=commit_hash;]$(echo $(git rev-parse --short HEAD))"
 
     # build the project
     - run: |
@@ -106,6 +108,7 @@ jobs:
         allow_override: true
         gzip: false
         tag: nightly
+        commitish: ${{ needs.plugin_build.outputs.commit_hash }}
         name: nightly ${{ needs.plugin_build.outputs.version_string }}
         body: >
           Nightly built off of the latest code in the repository. 
@@ -137,6 +140,7 @@ jobs:
         allow_override: true
         gzip: false
         tag: beta
+        commitish: ${{ needs.plugin_build.outputs.commit_hash }}
         name: beta ${{ needs.plugin_build.outputs.version_string }}
         body: >
           Beta built off of the latest code in the repository. 
