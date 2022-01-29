@@ -1,11 +1,5 @@
-use smash::app::utility::*;
+use super::*;
 use smash::app::BattleObjectModuleAccessor;
-use smash::hash40;
-use smash::phx::{Vector2f, Vector3f, Hash40};
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
-use crate::utils::hdr;
-
 // Up Special Reverse
 unsafe fn up_special_reverse(boma: &mut BattleObjectModuleAccessor, fighter_kind: i32, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
     // No reversal for Chrom
@@ -71,7 +65,7 @@ unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
 #[no_mangle]
 pub unsafe extern "Rust" fn fe_common(fighter: &mut L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        fe_moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        fe_moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
 
