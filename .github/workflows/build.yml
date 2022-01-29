@@ -67,6 +67,7 @@ jobs:
       run: |
         echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}-$(git rev-parse --short HEAD))"
         echo "##[set-output name=commit_hash;]$(echo $(git rev-parse --short HEAD))"
+        echo $(git rev-parse --short HEAD)
 
     # build the project
     - run: |
@@ -91,10 +92,15 @@ jobs:
     needs:
       - plugin_build
     steps:
-    - name: delete old betas
+    # print the outputs from the build job
+    - run: |
+        echo "Version string: ${{ needs.plugin_build.outputs.version_string }}"
+        echo "Commit hash: ${{ needs.plugin_build.outputs.commit_hash }}"
+    - name: delete old nightlies
       uses: dev-drprasad/delete-older-releases@v0.2.0
       with:
         keep_latest: 0
+        #delete_tags: true
         delete_tag_pattern: nightly # defaults to ""
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -107,8 +113,7 @@ jobs:
         prerelease: true
         allow_override: true
         gzip: false
-        tag: nightly
-        commitish: ${{ needs.plugin_build.outputs.commit_hash }}
+        tag: nightly-${{ needs.plugin_build.outputs.commit_hash }}
         name: nightly ${{ needs.plugin_build.outputs.version_string }}
         body: >
           Nightly built off of the latest code in the repository. 
@@ -123,10 +128,15 @@ jobs:
     needs:
       - plugin_build
     steps:
+    # print the outputs from the build job
+    - run: |
+        echo "Version string: ${{ needs.plugin_build.outputs.version_string }}"
+        echo "Commit hash: ${{ needs.plugin_build.outputs.commit_hash }}"
     - name: delete old betas
       uses: dev-drprasad/delete-older-releases@v0.2.0
       with:
         keep_latest: 0
+        #delete_tags: true
         delete_tag_pattern: beta # defaults to ""
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -139,7 +149,7 @@ jobs:
         prerelease: true
         allow_override: true
         gzip: false
-        tag: beta
+        tag: beta-${{ needs.plugin_build.outputs.commit_hash }}
         commitish: ${{ needs.plugin_build.outputs.commit_hash }}
         name: beta ${{ needs.plugin_build.outputs.version_string }}
         body: >
