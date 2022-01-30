@@ -17,7 +17,7 @@ fn change_version_string_hook(arg: u64, string: *const c_char) {
     let original_str = unsafe { skyline::from_c_str(string) };
     if original_str.contains("Ver.") {
         let new_str = format!(
-            "{}\nHDR Ver. {}\0",
+            "{}, HDR Ver. {}\0",
             original_str,
             env!("CARGO_PKG_VERSION")
         );
