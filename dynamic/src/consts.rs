@@ -223,6 +223,24 @@ pub mod vars {
         pub use super::shotos::*;
     }
 
+    pub mod luigi {
+        // flag
+        /// This flag stores whether or not Luigi currently has a misfire stored.
+        pub const IS_MISFIRE_STORED: i32 = 0x1000;
+        
+        // int
+        /// This int stores the number of remaining green missile's luigi must do before getting a misfire
+        pub const REMAINING_SPECIAL_S_UNTIL_MISFIRE: i32 = 0x1000;
+        /// This int stores the handle of the charge smoke effect for killing it if we store misfire
+        pub const CHARGE_SMOKE_EFFECT_HANDLE: i32 = 0x1001;
+        /// This int stores the handle of the pulsing effect for killing it if we store misfire
+        pub const CHARGE_PULSE_EFFECT_HANDLE: i32 = 0x1002;
+
+        // float
+        /// This float holds the current multiplier on damage for misfire
+        pub const MISFIRE_DAMAGE_MULTIPLIER: i32 = 0x1000;
+    }
+
     pub mod mario {
         // flags
         pub const FIREBRAND_SPAWNED: i32 = 0x1000;

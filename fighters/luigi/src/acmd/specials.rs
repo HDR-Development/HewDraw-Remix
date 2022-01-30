@@ -176,7 +176,7 @@ unsafe fn effect_specialshold(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("luigi_rocket_hold"), Hash40::new("top"), 0, 6, 0,  0, 1, 0, 1, true);
         let handle = EffectModule::get_last_handle(fighter.module_accessor) as u32;
-        VarModule::set_int(fighter.battle_object, CHARGE_PULSE_EFFECT_HANDLE, handle as i32);
+        VarModule::set_int(fighter.battle_object, vars::luigi::CHARGE_PULSE_EFFECT_HANDLE, handle as i32);
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE) {
             LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.8, 0.0);
         }
@@ -185,7 +185,7 @@ unsafe fn effect_specialshold(fighter: &mut L2CAgentBase) {
         if is_excute(fighter) {
             FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 10, 00, 4, 0, 0, 0, false);
             let handle = EffectModule::get_last_handle(fighter.module_accessor) as u32;
-            VarModule::set_int(fighter.battle_object, CHARGE_SMOKE_EFFECT_HANDLE, handle as i32);
+            VarModule::set_int(fighter.battle_object, vars::luigi::CHARGE_SMOKE_EFFECT_HANDLE, handle as i32);
             if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE) {
                 LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.7, 0.3);
             }
@@ -201,7 +201,7 @@ unsafe fn effect_specialairshold(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("luigi_rocket_hold"), Hash40::new("top"), 0, 6, 0,  0, 1, 0, 1, true);
         let handle = EffectModule::get_last_handle(fighter.module_accessor) as u32;
-        VarModule::set_int(fighter.battle_object, CHARGE_PULSE_EFFECT_HANDLE, handle as i32);
+        VarModule::set_int(fighter.battle_object, vars::luigi::CHARGE_PULSE_EFFECT_HANDLE, handle as i32);
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE) {
             LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.8, 0.0);
         }
@@ -211,8 +211,8 @@ unsafe fn effect_specialairshold(fighter: &mut L2CAgentBase) {
 #[acmd_script(agent = "luigi", script = "game_specialsdischarge", category = ACMD_GAME)]
 unsafe fn game_specialsdischarge(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let misfire_multiplier = VarModule::get_float(fighter.battle_object, MISFIRE_DAMAGE_RATIO);
-    VarModule::set_float(fighter.battle_object, MISFIRE_DAMAGE_RATIO, 1.0);
+    let misfire_multiplier = VarModule::get_float(fighter.battle_object, vars::luigi::MISFIRE_DAMAGE_MULTIPLIER);
+    VarModule::set_float(fighter.battle_object, vars::luigi::MISFIRE_DAMAGE_MULTIPLIER, 1.0);
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         SA_SET(fighter, *SITUATION_KIND_AIR);
