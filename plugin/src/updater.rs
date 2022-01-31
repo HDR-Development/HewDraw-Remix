@@ -36,9 +36,12 @@ fn get_version(current: &Version, release: Option<&Version>, prerelease: Option<
 }
 
 pub fn check_for_updates() {
-    if Path::new("sd:/ryujinx.txt").exists() {
-        println!("Auto updater exiting as Ryujinx was encountered.");
-        return;
+    unsafe { // Ryujinx skip based on text addr
+        let text_addr = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64;
+        if text_addr == 0x8400000 {
+            println!("HDR cannot auto-update on Ryujinx");
+            return;
+        }
     }
 
     let release = ReleaseFinderConfig::new("HewDraw-Remix")
