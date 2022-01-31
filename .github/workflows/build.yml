@@ -22,7 +22,7 @@ jobs:
       PLUGIN_NAME: hdr
     runs-on: ubuntu-latest
     container: 
-      image: jugeeya/cargo-skyline:2.1.0
+      image: jugeeya/cargo-skyline:2.1.0-dkp
     outputs:
       version_string: ${{ steps.version.outputs.version_string }}
       commit_hash: ${{ steps.version.outputs.commit_hash }}
