@@ -3,6 +3,7 @@
 
 use skyline::libc::c_char;
 
+#[cfg(feature = "updater")]
 mod updater;
 
 #[smashline::installer]
@@ -36,13 +37,16 @@ pub fn main() {
     { utils::init(); }
     fighters::install();
 
-    std::thread::Builder::new()
-        .stack_size(0x40_0000)
-        .spawn(|| {
-            updater::check_for_updates();
-        })
-        .unwrap()
-        .join();
+    #[cfg(feature = "updater")]
+    {
+        std::thread::Builder::new()
+            .stack_size(0x40_0000)
+            .spawn(|| {
+                updater::check_for_updates();
+            })
+            .unwrap()
+            .join();
+    }
 
     skyline::install_hook!(change_version_string_hook);
 }
