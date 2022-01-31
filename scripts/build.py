@@ -29,10 +29,17 @@ if "nodev" in sys.argv:
 
 release_arg = ""
 build_type = "debug"
+is_publish = False
 if "release" in sys.argv or "--release" in sys.argv:
   release_arg = "--release"
   build_type = "release"
+elif "publish" in sys.argv or "--publish" in sys.argv:
+  release_arg = "--release"
+  build_type = "release"
+  is_publish = True
 
+if is_publish:
+  allow_dev_build = False
 
 # if staging folder exists, delete it
 if "build" in os.listdir('.'):
@@ -60,7 +67,7 @@ for arg in sys.argv:
     for char in char_list:
       dev_characters.add(char)
 
-if (is_dev_build):
+if (is_dev_build and not is_publish):
     
   # special build commands for regular vs development plugins
   dev_args = ""
@@ -124,7 +131,10 @@ if (is_dev_build):
 
 else:
   # simple build
-  pkgutil.build(release_arg, "")
+  if is_publish:
+    pkgutil.build(release_arg, "--features updater")
+  else:
+    pkgutil.build(release_arg, "")
 
   # collect switch package
   pkgutil.collect_plugin("hdr-switch", 
