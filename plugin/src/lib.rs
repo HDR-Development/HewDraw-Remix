@@ -3,6 +3,8 @@
 
 use skyline::libc::c_char;
 
+mod updater;
+
 #[smashline::installer]
 pub fn install() {
     fighters::install();
@@ -33,6 +35,14 @@ pub fn main() {
     #[cfg(not(feature = "runtime"))]
     { utils::init(); }
     fighters::install();
+
+    std::thread::Builder::new()
+        .stack_size(0x40_0000)
+        .spawn(|| {
+            updater::check_for_updates();
+        })
+        .unwrap()
+        .join();
 
     skyline::install_hook!(change_version_string_hook);
 }
