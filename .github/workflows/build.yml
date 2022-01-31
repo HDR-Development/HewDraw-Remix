@@ -71,7 +71,7 @@ jobs:
 
     # build the project
     - run: |
-        export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="${{ steps.version.outputs.version_string }}" && cd scripts && python3 make_dist.py release && cd ..
+        export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="${{ steps.version.outputs.version_string }}" && cd scripts && python3 make_dist.py publish && cd ..
       env:
         HOME: /root
     - name: Upload hdr-switch artifact
