@@ -73,10 +73,10 @@ unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
     wait(lua_state, 2.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        WorkModule::on_flag(boma, *FIGHTER_TRAIL_STATUS_ATTACK_AIR_F_FLAG_CHECK_COMBO_BUTTON_ON);
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_TRAIL_STATUS_ATTACK_AIR_F_FLAG_CHECK_COMBO_BUTTON_ON);
         WorkModule::on_flag(boma, *FIGHTER_TRAIL_STATUS_ATTACK_AIR_F_FLAG_ENABLE_COMBO);
     }
     frame(lua_state, 36.0);
@@ -129,10 +129,10 @@ unsafe fn game_attackairf2(fighter: &mut L2CAgentBase) {
     wait(lua_state, 2.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
-        WorkModule::on_flag(boma, *FIGHTER_TRAIL_STATUS_ATTACK_AIR_N_FLAG_CHECK_COMBO_BUTTON_ON);
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_TRAIL_STATUS_ATTACK_AIR_N_FLAG_CHECK_COMBO_BUTTON_ON);
         WorkModule::on_flag(boma, *FIGHTER_TRAIL_STATUS_ATTACK_AIR_N_FLAG_ENABLE_COMBO);
     }
     frame(lua_state, 30.0);

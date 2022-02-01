@@ -55,9 +55,50 @@ unsafe fn fair_cancels(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, id: usize) {
+    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S {
+        if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_SPECIAL_HI {
+            VarModule::on_flag(boma.object(), vars::trail::UP_SPECIAL_TO_SIDE_SPECIAL);
+        }
+        else {
+            VarModule::off_flag(boma.object(), vars::trail::UP_SPECIAL_TO_SIDE_SPECIAL);
+        }
+    }
+    if status_kind == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_ATTACK {
+        if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
+            VarModule::off_flag(boma.object(), vars::trail::SIDE_SPECIAL_HIT);
+        }
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+            VarModule::on_flag(boma.object(), vars::trail::SIDE_SPECIAL_HIT);
+        }
+    }
+    if status_kind == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_SEARCH {
+        if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
+            VarModule::off_flag(boma.object(), vars::trail::IS_SIDE_SPECIAL_INPUT);
+        }
+        if compare_mask(ControlModule::get_command_flag_cat(boma, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY) {
+            VarModule::on_flag(boma.object(), vars::trail::IS_SIDE_SPECIAL_INPUT);
+        }
+    }
+    if status_kind == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END && VarModule::is_flag(boma.object(), vars::trail::SIDE_SPECIAL_HIT) {
+        if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_ATTACK
+        && fighter.global_table[CURRENT_FRAME].get_i32() == 10
+        && !VarModule::is_flag(boma.object(), vars::trail::UP_SPECIAL_TO_SIDE_SPECIAL) {
+            if situation_kind == *SITUATION_KIND_GROUND {
+                CancelModule::enable_cancel(boma);
+            }
+            else if !VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL) {
+                VarModule::on_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL);
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
+            }
+        }
+    }
+}
+
+pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     jab_2_ftilt_cancel(boma, cat[0], status_kind, situation_kind, motion_kind);
     fair_cancels(boma, cat[0], status_kind, situation_kind, motion_kind);
+    side_special_hit_check(fighter, boma, status_kind, situation_kind, id);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_TRAIL)]
@@ -75,6 +116,6 @@ pub unsafe fn trail_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         } else {
             info.status_kind
         };
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

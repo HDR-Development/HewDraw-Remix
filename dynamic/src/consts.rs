@@ -263,6 +263,9 @@ pub mod vars {
     pub mod trail {
         // flags
         pub const ATTACK_12_INTO_S3: i32 = 0x1000;
+        pub const UP_SPECIAL_TO_SIDE_SPECIAL: i32 = 0x1001;
+        pub const SIDE_SPECIAL_HIT: i32 = 0x1002;
+        pub const IS_SIDE_SPECIAL_INPUT: i32 = 0x1003;
     }
 
     pub mod samus {

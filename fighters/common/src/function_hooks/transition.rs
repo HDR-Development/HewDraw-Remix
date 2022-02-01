@@ -138,6 +138,13 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
             }
         }
 
+        if fighter_kind == *FIGHTER_KIND_TRAIL {
+            if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S
+            && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI
+            && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+                return false;
+            }
+        }
     }
     original!()(boma, flag)
 }
