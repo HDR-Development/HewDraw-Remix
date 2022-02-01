@@ -22,7 +22,7 @@ jobs:
       PLUGIN_NAME: hdr
     runs-on: ubuntu-latest
     container: 
-      image: jugeeya/cargo-skyline:2.1.0
+      image: jugeeya/cargo-skyline:2.1.0-dkp
     outputs:
       version_string: ${{ steps.version.outputs.version_string }}
       commit_hash: ${{ steps.version.outputs.commit_hash }}
@@ -71,7 +71,7 @@ jobs:
 
     # build the project
     - run: |
-        PATH=$PATH:/root/.cargo/bin && export HDR_VERSION="${{ steps.version.outputs.version_string }}" && cd scripts && python3 make_dist.py release && cd ..
+        export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="${{ steps.version.outputs.version_string }}" && cd scripts && python3 make_dist.py publish && cd ..
       env:
         HOME: /root
     - name: Upload hdr-switch artifact
