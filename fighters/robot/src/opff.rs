@@ -8,7 +8,7 @@ unsafe fn gyro_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i
     if status_kind == *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_LW_END {
         if frame > 10.0 {
             if situation_kind == *SITUATION_KIND_GROUND {
-                if boma.is_cat_flag(Cat1::Walk) {
+                if boma.is_cat_flag(Cat1::Dash) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
                 }
                 if boma.is_cat_flag(Cat1::Turn) {

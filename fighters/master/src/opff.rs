@@ -45,7 +45,7 @@ unsafe fn areadbhar_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_ki
         *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind) {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             if situation_kind == *SITUATION_KIND_GROUND {
-                if boma.is_cat_flag(Cat1::Walk) {
+                if boma.is_cat_flag(Cat1::Dash) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
                 }
                 if boma.is_cat_flag(Cat1::Turn) {
@@ -62,7 +62,7 @@ unsafe fn dsmash_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind:
         *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind) {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             if frame > 28.0 {
-                if boma.is_cat_flag(Cat1::Walk) {
+                if boma.is_cat_flag(Cat1::Dash) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
                 }
                 if boma.is_cat_flag(Cat1::Turn) {
