@@ -162,7 +162,7 @@ unsafe fn nspecial_cancels(fighter: &mut L2CFighterCommon) {
     //PM-like neutral-b canceling
     if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE)
     && fighter.is_situation(*SITUATION_KIND_AIR)
-    && fighter.is_cat_flag(Cat1::JumpButton)
+    && fighter.is_cat_flag(Cat1::AirEscape)
     {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
         ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
