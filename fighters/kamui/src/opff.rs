@@ -10,7 +10,7 @@ unsafe fn dragon_fang_shot_dash_cancel(boma: &mut BattleObjectModuleAccessor, st
             if boma.is_cat_flag(Cat1::Walk) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
             }
-            if boma.is_cat_flag(Cat1::Turn) {
+            if boma.is_cat_flag(Cat1::TurnDash) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_TURN_DASH, false);
             }
         }

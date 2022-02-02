@@ -78,13 +78,13 @@ unsafe fn up_b_wall_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
             if frame >= 23.0 && frame <= 25.0 {
                 if  !VarModule::is_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP) {
                     if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32) {
-                        if boma.is_cat_flag(Cat1::Turn) {
+                        if boma.is_cat_flag(Cat1::TurnDash) {
                             VarModule::on_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP);
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                         }
                     }
                     if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32) {
-                        if boma.is_cat_flag(Cat1::Turn) {
+                        if boma.is_cat_flag(Cat1::TurnDash) {
                             VarModule::on_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP);
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                         }
