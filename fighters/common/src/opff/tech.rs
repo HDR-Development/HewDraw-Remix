@@ -232,7 +232,7 @@ unsafe fn shield_lock_tech(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 
     if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD])
-    && boma.is_cat_flag(Cat1::Jump)
+    && boma.is_cat_flag(Cat1::JumpButton)
     && ((boma.is_button_on(Buttons::SpecialAll) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_GUARD_HOLD_SPECIAL_BUTTON))
         || boma.is_button_on(Buttons::GuardHold))
     {
