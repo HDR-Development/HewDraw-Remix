@@ -12,7 +12,7 @@ unsafe fn cross_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: 
                 if boma.is_cat_flag(Cat1::Dash) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
                 }
-                if boma.is_cat_flag(Cat1::Turn) {
+                if boma.is_cat_flag(Cat1::TurnDash) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_TURN_DASH, false);
                 }
             }
