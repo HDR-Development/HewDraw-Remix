@@ -10,6 +10,13 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
                 return 0;
             }
         }
+
+        
+        if StatusModule::status_kind(boma) == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_DASH && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
+            if next_status == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_JUMP {
+                return 0;
+            }
+        }
     }
     original!()(boma, next_status, arg3)
 }

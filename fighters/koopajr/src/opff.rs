@@ -32,6 +32,15 @@ unsafe fn clown_cannon_dash_cancel(boma: &mut BattleObjectModuleAccessor, status
     }
 }
 
+// Bowser Jr. Kart Real Jumpsquat Jump Cancel
+unsafe fn kart_jump_true_jumpsquat(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
+    if status_kind == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_DASH && situation_kind == *SITUATION_KIND_GROUND {
+        if boma.is_input_jump() {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
+        }
+    }
+}
+
 // Bowser Jr. Kart Jump Waveland
 unsafe fn kart_jump_waveland(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     if status_kind == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_JUMP && situation_kind == *SITUATION_KIND_AIR {
@@ -50,6 +59,7 @@ unsafe fn upB_kart_respawn(boma: &mut BattleObjectModuleAccessor, status_kind: i
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     clown_cannon_shield_cancel(boma, status_kind, situation_kind, frame);
     clown_cannon_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
+    kart_jump_true_jumpsquat(boma, status_kind, situation_kind, cat[0]);
     kart_jump_waveland(boma, status_kind, situation_kind, cat[0]);
     upB_kart_respawn(boma, status_kind);
 }
