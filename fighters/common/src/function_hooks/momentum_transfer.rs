@@ -7,31 +7,20 @@ use crate::misc::calc_melee_momentum;
 //== The chonky meat of the code; includes some status script hooks
 //===================================================================
 
-/* Moves that should bypass the momentum logic (in terms of the jump status script) */
-const MOMENTUM_EXCEPTION_MOVES: [smash::lib::LuaConst ; 1] = [
-    FIGHTER_SONIC_STATUS_KIND_SPIN_JUMP
-];
+pub fn install() {
+    skyline::nro::add_hook(nro_main).unwrap();
+}
 
-//Jump (runs once at the beginning of the status)
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_Jump_sub)]
-pub unsafe fn status_jump_sub_hook(fighter: &mut L2CFighterCommon, param_2: L2CValue, param_3: L2CValue) -> L2CValue {
-    let boma = app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    let mut l2c_agent = L2CAgent::new(fighter.lua_state_agent);
-    let fighter_kind = boma.kind();
-    //println!("Pre-jump horizontal velocity: {}", KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN));
-
-    if !MOMENTUM_EXCEPTION_MOVES.iter().any(|x| *x == StatusModule::status_kind(boma) ) {
-        l2c_agent.clear_lua_stack();
-        l2c_agent.push_lua_stack(&mut L2CValue::new_int(*FIGHTER_KINETIC_ENERGY_ID_CONTROL as u64));
-        l2c_agent.push_lua_stack(&mut L2CValue::new_num(calc_melee_momentum(fighter, false, false, false)));
-        sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-        l2c_agent.clear_lua_stack();
-        //println!("Post-jump horizontal velocity: {}", KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN));
-        VarModule::set_float(boma.object(), vars::common::CURRENT_MOMENTUM, KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN)); // Set the current momentum to what was just calculated
+fn nro_main(nro: &skyline::nro::NroInfo) {
+    match nro.name {
+        "common" => {
+            skyline::install_hooks!(
+                // lua2cpp_common.nro hooks here
+                status_attack_air_hook
+            );
+        }
+        _ => (),
     }
-
-    original!()(fighter, param_2, param_3)
-
 }
 
 //Aerials (runs once at the beginning of the status)
