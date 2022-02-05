@@ -2,7 +2,7 @@
 
 pub mod acmd;
 
-//pub mod status;
+pub mod status;
 pub mod opff;
 
 use smash::{
@@ -20,7 +20,9 @@ use smash::{
         lua_bind::*
     },
     hash40,
-    lib::lua_const::*,
+    lib::{
+        lua_const::*
+    },
     lua2cpp::*,
     phx::*
 };
@@ -36,8 +38,30 @@ use utils::{
 };
 use smashline::*;
 
+#[smashline::fighter_reset]
+fn luigi_reset(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        if fighter.kind() != *FIGHTER_KIND_LUIGI {
+            return;
+        }
+    
+        VarModule::off_flag(fighter.battle_object, vars::luigi::IS_MISFIRE_STORED);
+        VarModule::set_float(fighter.battle_object, vars::luigi::MISFIRE_DAMAGE_MULTIPLIER, 1.0);
+        VarModule::set_int(fighter.battle_object, vars::luigi::CHARGE_SMOKE_EFFECT_HANDLE, -1);
+        VarModule::set_int(fighter.battle_object, vars::luigi::CHARGE_PULSE_EFFECT_HANDLE, -1);
+        calculate_misfire_number(fighter);
+    }
+}
+
+pub fn calculate_misfire_number(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        VarModule::set_int(fighter.battle_object, vars::luigi::REMAINING_SPECIAL_S_UNTIL_MISFIRE, app::sv_math::rand(hash40("fighter"), 8))
+    }
+}
+
 pub fn install(is_runtime: bool) {
     acmd::install();
-    //status::install();
+    status::install();
     opff::install(is_runtime);
+    smashline::install_agent_resets!(luigi_reset);
 }
