@@ -102,45 +102,24 @@ unsafe extern "C" fn sub_attack_dash_uniq(fighter: &mut L2CFighterCommon, arg: L
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
         }
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_DASH_WORK_INT_FRAME);
-        // Summary of this block:
-        // * When encountering this block, we can be in one of three states:
-        //      * We are before the dacus window begins
-        //      * We are during the dacus window
-        //      * We are after the dacus window ends
-        // * If we are before the dacus window begins, then our ATTACK_DASH_CANCEL_FRAME will not be 0 and ATTACK_DASH_CANCEL_DISABLE will be true
-        // * If we are during the dacus window, then our ATTACK_DASH_CANCEL_FRAME will not be 0 and ATTACK_DASH_CANCEL_DISABLE will be false
-        // * If we are after the dacus window, then our ATTACK_DASH_CANCEL_FRAME will be 0 and ATTACK_DASH_CANCEL_DISABLE will be true
-        // * There is an alternative way to handle this using fighter.global_table[CURRENT_FRAME] however I didn't want to change this functionality
-        //   in a breaking way yet.
-        // Here we are checking if it is false, meaning we are in the dacus window
-        println!(
-            "Countdown: {}, Disable: {}",
-            VarModule::get_int(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_FRAME),
-            VarModule::is_flag(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_DISABLE)
-        );
-        if !VarModule::is_flag(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_DISABLE) {
-            // Then we confirm that ATTACK_DASH_CANCEL_FRAME currently does not equal 0 **and** it just became zero on this frame
-            if VarModule::get_int(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_FRAME) >= 0
-            && VarModule::countdown_int(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_FRAME, 0)
-            {
-                // Then we disable dacus via the flag as well as the transition terms
-                VarModule::on_flag(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_DISABLE);
-                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
-                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START);
-            }
-        // Here we know that ATTACK_DASH_CANCEL_DISABLE is true, meaning we are either before or after the dacus window
-        // So we check to make sure that our ATTACK_DASH_CANCEL_FRAME != 0 (we are before dacus window) and that it just became 0
-        } else if VarModule::get_int(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_FRAME) >= 0
-            && VarModule::countdown_int(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_FRAME, 0)
-        {
-            // If that passes, we enable DACUS by turning off the disable flag and enable the transition terms
+        
+        // We check the current frame of the dash attack (and add one because it our range is [min, max))
+        // and if it is in the range we turn off the disable flag (enabling DACUS)
+        // and also enable the transition terms in order to dacus
+        // If we are outside of that range we just turn them off
+
+        // Add one because it is 0 based
+        let current_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_DASH_WORK_INT_FRAME) + 1;
+        let start_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "dacus_enable.start_frame");
+        let end_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "dacus_enable.end_frame");
+        if start_frame <= current_frame && current_frame < end_frame {
             VarModule::off_flag(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_DISABLE);
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START);
-            // We want to get the duration of the dacus window and decrement that one moving forwards
-            let cancel_duration_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "dacus_enable.end_frame")
-                - ParamModule::get_int(fighter.battle_object, ParamType::Common, "dacus_enable.start_frame");
-            VarModule::set_int(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_FRAME, cancel_duration_frame);
+        } else {
+            VarModule::on_flag(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_DISABLE);
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START);
         }
     } else {
         let frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_DASH_WORK_INT_FRAME);
