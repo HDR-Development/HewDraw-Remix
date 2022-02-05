@@ -192,6 +192,7 @@ unsafe fn glide_toss(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModu
     {
         let max_ditcit_frame = ParamModule::get_float(boma.object(), ParamType::Common, "glide_toss_cancel_frame");
         VarModule::set_flag(boma.object(), vars::common::CAN_GLIDE_TOSS, MotionModule::frame(boma) <= max_ditcit_frame);
+        VarModule::set_float(boma.object(), vars::common::ROLL_DIR, facing);
         return;
     }
 
