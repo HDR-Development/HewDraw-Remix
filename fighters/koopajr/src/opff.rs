@@ -21,10 +21,10 @@ unsafe fn clown_cannon_dash_cancel(boma: &mut BattleObjectModuleAccessor, status
     if status_kind == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_N_SHOOT {
         if frame > 13.0 {
             if situation_kind == *SITUATION_KIND_GROUND {
-                if boma.is_cat_flag(Cat1::Walk) {
+                if boma.is_cat_flag(Cat1::Dash) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
                 }
-                if boma.is_cat_flag(Cat1::Turn) {
+                if boma.is_cat_flag(Cat1::TurnDash) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_TURN_DASH, false);
                 }
             }
@@ -35,7 +35,7 @@ unsafe fn clown_cannon_dash_cancel(boma: &mut BattleObjectModuleAccessor, status
 // Bowser Jr. Kart Jump Waveland
 unsafe fn kart_jump_waveland(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     if status_kind == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_JUMP && situation_kind == *SITUATION_KIND_AIR {
-        if boma.is_cat_flag(Cat1::JumpButton) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
+        if boma.is_cat_flag(Cat1::AirEscape) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
         }
     }

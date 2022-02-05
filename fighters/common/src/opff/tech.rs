@@ -168,7 +168,7 @@ unsafe fn dash_drop(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
         *FIGHTER_STATUS_KIND_TURN_DASH
     ])
     {
-        boma.is_status(*FIGHTER_STATUS_KIND_PASS);
+        boma.change_status_req(*FIGHTER_STATUS_KIND_PASS, true);
     }
 }
 
