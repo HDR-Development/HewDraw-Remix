@@ -28,6 +28,6 @@ pub fn install() {
     change_status::install();
     is_flag::install();
     controls::install();
-    //momentum_transfer::install();
+    momentum_transfer::install();
     //dash_dancing::install();
 }
