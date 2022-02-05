@@ -27,10 +27,10 @@ unsafe fn thunder_dash_airdodge_cancel(boma: &mut BattleObjectModuleAccessor, st
             }
         } else if situation_kind == *SITUATION_KIND_GROUND {
             if frame > 17.0 {
-                if boma.is_cat_flag(Cat1::Walk) {
+                if boma.is_cat_flag(Cat1::Dash) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
                 }
-                if boma.is_cat_flag(Cat1::Turn) {
+                if boma.is_cat_flag(Cat1::TurnDash) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_TURN_DASH, false);
                 }
             }
