@@ -78,13 +78,13 @@ unsafe fn up_b_wall_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
             if frame >= 23.0 && frame <= 25.0 {
                 if  !VarModule::is_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP) {
                     if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32) {
-                        if boma.is_cat_flag(Cat1::Turn) {
+                        if boma.is_cat_flag(Cat1::TurnDash) {
                             VarModule::on_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP);
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                         }
                     }
                     if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32) {
-                        if boma.is_cat_flag(Cat1::Turn) {
+                        if boma.is_cat_flag(Cat1::TurnDash) {
                             VarModule::on_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP);
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                         }
@@ -122,7 +122,7 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
     if status_kind == *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_CHARGE {
         if situation_kind == *SITUATION_KIND_AIR {
-            if boma.is_cat_flag(Cat1::JumpButton) {
+            if boma.is_cat_flag(Cat1::AirEscape) {
                 WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
                 ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
