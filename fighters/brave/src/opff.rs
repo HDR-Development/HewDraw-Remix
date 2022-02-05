@@ -20,9 +20,9 @@ unsafe fn dash_cancel_frizz(fighter: &mut L2CFighterCommon) {
     && fighter.is_motion_one_of(&[Hash40::new("special_n1"), Hash40::new("special_n2")])
     && fighter.motion_frame() > 17.0 
     {
-        if fighter.is_cat_flag(Cat1::Walk) {
+        if fighter.is_cat_flag(Cat1::Dash) {
             fighter.change_status_req(*FIGHTER_STATUS_KIND_DASH, false);
-        } else if fighter.is_cat_flag(Cat1::Turn) {
+        } else if fighter.is_cat_flag(Cat1::TurnDash) {
             fighter.change_status_req(*FIGHTER_STATUS_KIND_TURN_DASH, false);
         }
     }
