@@ -50,11 +50,11 @@ unsafe fn catch_lean(boma: &mut BattleObjectModuleAccessor, lean_frame: f32, ret
     let stick_y = ControlModule::get_stick_y(boma);
     let frame = MotionModule::frame(boma);
     let end_frame = MotionModule::end_frame(boma);
-    let grab_y = VarModule::get_float(boma.object(), vars::common::ANGLE_GRAB_STICK_Y);
+    let grab_y = VarModule::get_float(boma.object(), vars::gaogaen::ANGLE_GRAB_STICK_Y);
     if frame >= 0.0 && frame < lean_frame {
         // linear interpolate to stick position,
         // while getting stick position still
-        VarModule::set_float(boma.object(), vars::common::ANGLE_GRAB_STICK_Y, stick_y);
+        VarModule::set_float(boma.object(), vars::gaogaen::ANGLE_GRAB_STICK_Y, stick_y);
         rotate_bust(boma, max_angle, min_angle, stick_y * ((frame as f32) / 7.0));
     } else if frame >= lean_frame && frame < return_frame {
         // rotate at selected angle for each frame

@@ -175,14 +175,13 @@ pub mod vars {
         pub const LEDGE_POS_Y: i32 = 0x10;
         pub const LEDGE_POS_Z: i32 = 0x11;
         pub const MP_SPEED_RATIO: i32 = 0x12;
-        pub const ANGLE_GRAB_STICK_Y: i32 = 0x13;
-        pub const GET_DIST_TO_FLOOR: i32 = 0x14;
-        pub const ECB_Y_OFFSETS: i32 = 0x15;
-        pub const CURR_DASH_SPEED: i32 = 0x16;
-        pub const MOONWALK_SPEED: i32 = 0x17;
-        pub const ESCAPE_AIR_SLIDE_SPEED_X: i32 = 0x18;
-        pub const ESCAPE_AIR_SLIDE_SPEED_Y: i32 = 0x19;
-        pub const Y_POS: i32 = 0x1A;
+        pub const GET_DIST_TO_FLOOR: i32 = 0x13;
+        pub const ECB_Y_OFFSETS: i32 = 0x14;
+        pub const CURR_DASH_SPEED: i32 = 0x15;
+        pub const MOONWALK_SPEED: i32 = 0x16;
+        pub const ESCAPE_AIR_SLIDE_SPEED_X: i32 = 0x17;
+        pub const ESCAPE_AIR_SLIDE_SPEED_Y: i32 = 0x18;
+        pub const Y_POS: i32 = 0x19;
        
     }
 
@@ -274,11 +273,6 @@ pub mod vars {
     pub mod robot {
         // flags
         pub const BOOST_ATTACK: i32 = 0x1000;
-    }
-
-    pub mod gaogen {
-        // floats
-        pub const ANGLE_GRAB_STICK_Y: i32 = 0x1000;
     }
 
     pub mod palutena {
