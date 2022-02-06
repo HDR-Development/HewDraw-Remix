@@ -1,2 +1,3 @@
 fighter/common/hdr/param/common.xml
 fighter/common/hdr/param/fighter_param.xml
+fighter/luigi/param/hdr.xml

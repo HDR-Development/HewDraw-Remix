@@ -327,8 +327,16 @@ fn agent_param_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
             panic!("Unable to parse param file {:#x}. Reason: {:?}", hash, e);
         }
     };
-    if let Some(loaded_data) = GLOBAL_AGENT_PARAMS.write().get_mut(&Hash40_2::new_raw(hash)) {
+    let hash = Hash40_2::new_raw(hash);
+    let agent = match AGENT_PARAM_REVERSE.get(&hash) {
+        Some((agent, _)) => *agent,
+        None => panic!("Failed to find agent kind hash in param file reverse lookup!")
+    };
+    let mut params = GLOBAL_AGENT_PARAMS.write();
+    if let Some(loaded_data) = params.get_mut(&agent) {
         *loaded_data = Arc::new(param_listing);
+    } else {
+        params.insert(agent, Arc::new(param_listing));
     }
     Some(size)
 }
@@ -368,6 +376,19 @@ impl ParamModule {
         }
     }
 
+    /// Attempts to pull the agent param listing from the global agent params
+    /// # Arguments
+    /// * `owner` - The owning `BattleObject` instance
+    fn try_get_agent_params(owner: *mut BattleObject) {
+        let module = require_param_module!(owner);
+        if module.agent_params.is_some() { return; }
+
+        let kind = unsafe {
+            (*module.owner).agent_kind_hash
+        };
+        module.agent_params = GLOBAL_AGENT_PARAMS.read().get(&kind).map(|x| x.clone());
+    }
+
     /// Retrieves an integer from the specified ParamModule instance
     /// # Arguments
     /// * `owner` - The owning `BattleObject` instance
@@ -385,7 +406,7 @@ impl ParamModule {
     #[export_name = "ParamModule__get_int"]
     pub extern "Rust" fn get_int(object: *mut BattleObject, ty: ParamType, key: &str) -> i32 {
         let module = require_param_module!(object);
-
+        Self::try_get_agent_params(module.owner);
         match ty {
             ParamType::Common => {
                 let read = GLOBAL_COMMON_PARAM.read();
@@ -439,7 +460,7 @@ impl ParamModule {
     #[export_name = "ParamModule__get_hash"]
     pub extern "Rust" fn get_hash(object: *mut BattleObject, ty: ParamType, key: &str) -> Hash40_2 {
         let module = require_param_module!(object);
-
+        Self::try_get_agent_params(module.owner);
         match ty {
             ParamType::Common => GLOBAL_COMMON_PARAM
                 .read()
@@ -488,7 +509,7 @@ impl ParamModule {
     #[export_name = "ParamModule__get_float"]
     pub extern "Rust" fn get_float(object: *mut BattleObject, ty: ParamType, key: &str) -> f32 {
         let module = require_param_module!(object);
-
+        Self::try_get_agent_params(module.owner);
         match ty {
             ParamType::Common => GLOBAL_COMMON_PARAM
                 .read()
@@ -537,7 +558,7 @@ impl ParamModule {
     #[export_name = "ParamModule__is_flag"]
     pub extern "Rust" fn is_flag(object: *mut BattleObject, ty: ParamType, key: &str) -> bool {
         let module = require_param_module!(object);
-
+        Self::try_get_agent_params(module.owner);
         match ty {
             ParamType::Common => GLOBAL_COMMON_PARAM
                 .read()
@@ -582,7 +603,7 @@ impl ParamModule {
     #[export_name = "ParamModule__get_string"]
     pub extern "Rust" fn get_string(object: *mut BattleObject, ty: ParamType, key: &str) -> String {
         let module = require_param_module!(object);
-
+        Self::try_get_agent_params(module.owner);
         match ty {
             ParamType::Common => GLOBAL_COMMON_PARAM
                 .read()
