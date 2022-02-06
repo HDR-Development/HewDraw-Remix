@@ -55,9 +55,9 @@ unsafe fn status_AttackDash(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_dash"), 0.0, 1.0, false, 0.0, false, false);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH);
-    VarModule::off_flag(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_DISABLE);
-    let cancel_frame = ParamModule::get_int(fighter.battle_object, ParamType::Shared, "attack_dash_cancel_frame");
-    VarModule::set_int(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_FRAME, cancel_frame);
+    VarModule::on_flag(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_DISABLE);
+    let cancel_start_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "dacus_enable.start_frame");
+    VarModule::set_int(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_FRAME, cancel_start_frame);
     let catch_dash_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("catch_dash_frame"));
     //VarModule::off_flag(fighter.battle_object, vars::common::ATTACK_DASH_SLIDEOFF);
     WorkModule::set_int(fighter.module_accessor, catch_dash_frame, *FIGHTER_STATUS_ATTACK_DASH_WORK_INT_CATCH_FRAME);
@@ -79,8 +79,6 @@ unsafe fn status_AttackDash(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.sub_attack_dash_uniq(L2CValue::Bool(false));
     }
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START);
     VarModule::off_flag(fighter.battle_object, vars::common::IS_DACUS);
     fighter.global_table[SUB_STATUS] = L2CValue::Ptr(sub_attack_dash_uniq as *const () as _);
     fighter.sub_shift_status_main(L2CValue::Ptr(status_AttackDash_Main as *const () as _))
@@ -104,8 +102,21 @@ unsafe extern "C" fn sub_attack_dash_uniq(fighter: &mut L2CFighterCommon, arg: L
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
         }
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_DASH_WORK_INT_FRAME);
-        if !VarModule::is_flag(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_DISABLE)
-            && VarModule::countdown_int(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_FRAME, 0) {
+        
+        // We check the current frame of the dash attack (and add one because it our range is [min, max))
+        // and if it is in the range we turn off the disable flag (enabling DACUS)
+        // and also enable the transition terms in order to dacus
+        // If we are outside of that range we just turn them off
+
+        // Add one because it is 0 based
+        let current_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_DASH_WORK_INT_FRAME) + 1;
+        let start_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "dacus_enable.start_frame");
+        let end_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "dacus_enable.end_frame");
+        if start_frame <= current_frame && current_frame < end_frame {
+            VarModule::off_flag(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_DISABLE);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START);
+        } else {
             VarModule::on_flag(fighter.battle_object, vars::common::ATTACK_DASH_CANCEL_DISABLE);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START);

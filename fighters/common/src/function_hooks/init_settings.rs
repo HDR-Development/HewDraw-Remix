@@ -107,7 +107,8 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
         */
 
         //Sword trails
-        if VarModule::is_flag(boma.object(), vars::roy::TRAIL_EFFECT) {
+        if (boma.kind() == *FIGHTER_KIND_ROY || boma.kind() == *FIGHTER_KIND_CHROM) 
+        && VarModule::is_flag(boma.object(), vars::roy::TRAIL_EFFECT) {
             EffectModule::kill_joint_id(boma, Hash40::new("sword1"), false, false);
             if fighter_kind == *FIGHTER_KIND_ROY {
                 EffectModule::req_follow(boma, Hash40::new("roy_fire_small"), Hash40::new("sword1"), &Vector3f{x: 0.0, y: 0.0, z: 0.0}, &Vector3f{x: 0.0, y: 0.0, z: 0.0}, 1.0, false, 0, 0, 0, 0, 0, false, false);

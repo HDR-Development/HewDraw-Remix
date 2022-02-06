@@ -169,12 +169,111 @@ unsafe fn game_specialairlw(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script(agent = "luigi", script = "effect_specialshold", category = ACMD_EFFECT)]
+unsafe fn effect_specialshold(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("luigi_rocket_hold"), Hash40::new("top"), 0, 6, 0,  0, 1, 0, 1, true);
+        let handle = EffectModule::get_last_handle(fighter.module_accessor) as u32;
+        VarModule::set_int(fighter.battle_object, vars::luigi::CHARGE_PULSE_EFFECT_HANDLE, handle as i32);
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE) {
+            LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.8, 0.0);
+        }
+    }
+    for _ in 0..100 {
+        if is_excute(fighter) {
+            FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 10, 00, 4, 0, 0, 0, false);
+            let handle = EffectModule::get_last_handle(fighter.module_accessor) as u32;
+            VarModule::set_int(fighter.battle_object, vars::luigi::CHARGE_SMOKE_EFFECT_HANDLE, handle as i32);
+            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE) {
+                LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.7, 0.3);
+            }
+        }
+        wait(lua_state, 10.0);
+    }
+}
+
+#[acmd_script(agent = "luigi", script = "effect_specialairshold", category = ACMD_EFFECT)]
+unsafe fn effect_specialairshold(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("luigi_rocket_hold"), Hash40::new("top"), 0, 6, 0,  0, 1, 0, 1, true);
+        let handle = EffectModule::get_last_handle(fighter.module_accessor) as u32;
+        VarModule::set_int(fighter.battle_object, vars::luigi::CHARGE_PULSE_EFFECT_HANDLE, handle as i32);
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE) {
+            LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.8, 0.0);
+        }
+    }
+}
+
+#[acmd_script(agent = "luigi", script = "game_specialsdischarge", category = ACMD_GAME)]
+unsafe fn game_specialsdischarge(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let misfire_multiplier = VarModule::get_float(fighter.battle_object, vars::luigi::MISFIRE_DAMAGE_MULTIPLIER);
+    VarModule::set_float(fighter.battle_object, vars::luigi::MISFIRE_DAMAGE_MULTIPLIER, 1.0);
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        SA_SET(fighter, *SITUATION_KIND_AIR);
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_LUIGI_SPECIAL_S_RAM);
+        CORRECT(fighter, *GROUND_CORRECT_KIND_AIR);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("neck"), 25.0 * misfire_multiplier, 361, 100, 0, 20, 5.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_HEAD);
+        AttackModule::set_attack_keep_rumble(fighter.module_accessor, 0, true);
+        JostleModule::set_status(fighter.module_accessor, false);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_RAM_FLAG_GROUND_CHECK);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("neck"), 25.0 * misfire_multiplier, 361, 100, 0, 20, 5.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_HEAD);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_RAM_TRANSITION_TERM_ID_GROUND);
+    }
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_RAM_FLAG_BRAKE);
+    }
+}
+
+#[acmd_script(agent = "luigi", script = "effect_specialsdischarge", category = ACMD_EFFECT)]
+unsafe fn effect_specialsdischarge(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("luigi_rocket_bomb"), Hash40::new("top"), 0, 4, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.8, 0.0);
+    }
+
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("luigi_rocket_jet2"), Hash40::new("top"), 0, 4, 4, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.7, 0.3);
+        EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         game_specialn,
         game_specialairn,
         game_speciallw,
         game_specialairlw,
+        game_specialsdischarge,
+
+        effect_specialshold,
+        effect_specialairshold,
+        effect_specialsdischarge
     );
 }
 

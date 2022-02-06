@@ -168,7 +168,7 @@ unsafe fn dash_drop(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
         *FIGHTER_STATUS_KIND_TURN_DASH
     ])
     {
-        boma.is_status(*FIGHTER_STATUS_KIND_PASS);
+        boma.change_status_req(*FIGHTER_STATUS_KIND_PASS, true);
     }
 }
 
@@ -192,6 +192,7 @@ unsafe fn glide_toss(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModu
     {
         let max_ditcit_frame = ParamModule::get_float(boma.object(), ParamType::Common, "glide_toss_cancel_frame");
         VarModule::set_flag(boma.object(), vars::common::CAN_GLIDE_TOSS, MotionModule::frame(boma) <= max_ditcit_frame);
+        VarModule::set_float(boma.object(), vars::common::ROLL_DIR, facing);
         return;
     }
 
@@ -232,7 +233,7 @@ unsafe fn shield_lock_tech(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 
     if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD])
-    && boma.is_cat_flag(Cat1::Jump)
+    && boma.is_cat_flag(Cat1::JumpButton)
     && ((boma.is_button_on(Buttons::SpecialAll) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_GUARD_HOLD_SPECIAL_BUTTON))
         || boma.is_button_on(Buttons::GuardHold))
     {
