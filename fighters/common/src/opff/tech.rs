@@ -180,7 +180,7 @@ unsafe fn run_squat(boma: &mut BattleObjectModuleAccessor, status_kind: i32, sti
     if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_RUN, *FIGHTER_STATUS_KIND_RUN_BRAKE])
     && boma.stick_y() < WorkModule::get_param_float(boma, hash40("common"), hash40("squat_stick_y"))
     {
-        boma.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
+        boma.change_status_req(*FIGHTER_STATUS_KIND_SQUAT, false);
     }
 }
 

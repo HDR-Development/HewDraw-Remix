@@ -55,7 +55,15 @@ fn luigi_reset(fighter: &mut L2CFighterCommon) {
 
 pub fn calculate_misfire_number(fighter: &mut L2CFighterCommon) {
     unsafe {
-        VarModule::set_int(fighter.battle_object, vars::luigi::REMAINING_SPECIAL_S_UNTIL_MISFIRE, app::sv_math::rand(hash40("fighter"), 8))
+        let max = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "misfire.remaining_missile_max");
+        let min = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "misfire.remaining_missile_min");
+        let range = max - min;
+        let remaining = app::sv_math::rand(hash40("fighter"), range + 1);
+        VarModule::set_int(
+            fighter.battle_object,
+            vars::luigi::REMAINING_SPECIAL_S_UNTIL_MISFIRE,
+            remaining + min
+        );
     }
 }
 
