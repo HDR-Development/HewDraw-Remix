@@ -213,6 +213,10 @@ pub mod vars {
         pub const ANGLE_GRAB_STICK_Y: i32 = 0x1000;
     }
 
+    pub mod jack {
+        // floats
+    }
+
     pub mod kamui {
         // flag
         pub const BAIR_BOOST: i32 = 0x1000;
