@@ -69,6 +69,20 @@ impl Vec4Ext for Vector4f {
     }
 }
 
+pub struct AsHash40(pub(crate) Hash40);
+
+impl From<&str> for AsHash40 {
+    fn from(other: &str) -> Self {
+        Self(Hash40::new(other))
+    }
+}
+
+impl From<u64> for AsHash40 {
+    fn from(other: u64) -> Self {
+        Self(Hash40::new_raw(other))
+    }
+}
+
 #[derive(Copy, Clone)]
 pub enum CommandCat {
     Cat1(Cat1),
@@ -375,6 +389,18 @@ pub trait BomaExt {
     unsafe fn is_fighter(&mut self) -> bool;
     unsafe fn is_weapon(&mut self) -> bool;
     unsafe fn kind(&mut self) -> i32;
+
+    // Work/Param accessor shortcuts
+    unsafe fn get_work_int(&mut self, what: i32) -> i32;
+    unsafe fn get_work_float(&mut self, what: i32) -> f32;
+    unsafe fn is_work_flag(&mut self, what: i32) -> bool;
+    unsafe fn set_work_int(&mut self, value: i32, what: i32);
+    unsafe fn set_work_float(&mut self, value: f32, what: i32);
+    unsafe fn off_work_flag(&mut self, what: i32);
+    unsafe fn on_work_flag(&mut self, what: i32);
+    unsafe fn set_work_flag(&mut self, value: bool, what: i32);
+    unsafe fn work_param_int<A: Into<AsHash40>, B: Into<AsHash40>>(&mut self, object: A, name: B) -> i32;
+    unsafe fn work_param_float<A: Into<AsHash40>, B: Into<AsHash40>>(&mut self, object: A, name: B) -> f32;
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -570,6 +596,50 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn get_jump_count_max(&mut self) -> i32 {
         return WorkModule::get_int(self, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX);
+    }
+
+    unsafe fn get_work_int(&mut self, what: i32) -> i32 {
+        WorkModule::get_int(self, what)
+    }
+
+    unsafe fn get_work_float(&mut self, what: i32) -> f32 {
+        WorkModule::get_float(self, what)
+    }
+
+    unsafe fn is_work_flag(&mut self, what: i32) -> bool {
+        WorkModule::is_flag(self, what)
+    }
+
+    unsafe fn set_work_int(&mut self, value: i32, what: i32) {
+        WorkModule::set_int(self, value, what)
+    }
+
+    unsafe fn set_work_float(&mut self, value: f32, what: i32) {
+        WorkModule::set_float(self, value, what)
+    }
+
+    unsafe fn off_work_flag(&mut self, what: i32) {
+        WorkModule::off_flag(self, what)
+    }
+
+    unsafe fn on_work_flag(&mut self, what: i32) {
+        WorkModule::on_flag(self, what)
+    }
+
+    unsafe fn set_work_flag(&mut self, value: bool, what: i32) {
+        WorkModule::set_flag(self, value, what)
+    }
+
+    unsafe fn work_param_int<A: Into<AsHash40>, B: Into<AsHash40>>(&mut self, object: A, name: B) -> i32 {
+        let object = object.into();
+        let name = name.into();
+        WorkModule::get_param_int(self, object.0.hash, name.0.hash)
+    }
+
+    unsafe fn work_param_float<A: Into<AsHash40>, B: Into<AsHash40>>(&mut self, object: A, name: B) -> f32 {
+        let object = object.into();
+        let name = name.into();
+        WorkModule::get_param_float(self, object.0.hash, name.0.hash)
     }
 }
 
