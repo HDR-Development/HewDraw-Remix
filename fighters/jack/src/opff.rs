@@ -34,7 +34,7 @@ unsafe fn aerial_grappling_hook_stall(fighter: &mut L2CFighterCommon) {
     }
 }
 
-/// Gets the last damage dealt and sets it adds it to rebel's guage
+/// Gets the last damage dealt and adds it to rebel's guage
 unsafe fn damage_to_meter(fighter: &mut L2CFighterCommon) {
     const MULTIPLIER: f32 = 0.6;
 
@@ -47,7 +47,8 @@ unsafe fn damage_to_meter(fighter: &mut L2CFighterCommon) {
     // TODO: Add this as a real lua_const for FIGHTER_JACK_INSTANCE_WORK_ID_FLOAT_REBEL_GAUGE
     WorkModule::add_float(fighter.module_accessor, last_damage * MULTIPLIER, 0x4D);
 
-    // Set the const to 0.0 since we don't have a different way to detect when we hit someone (need to implement something beter for this, probably in MeterModule refactor)
+    // Set the const to 0.0 since we don't have a different way to detect when we hit someone
+    // (need to implement something beter for this, probably in MeterModule refactor)
     VarModule::set_float(fighter.battle_object, vars::common::LAST_ATTACK_DAMAGE_DEALT, 0.0);
 }
 
