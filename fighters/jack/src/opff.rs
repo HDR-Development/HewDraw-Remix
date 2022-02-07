@@ -3,57 +3,47 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
-unsafe fn wings_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if status_kind == *FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_RUSH {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_END, true);
-        }
+
+/// Allows Joker to cancel Wings of Rebellion by pressing Shield during the move
+unsafe fn wings_cancel(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_RUSH)
+    && fighter.is_button_on(Buttons::Guard) {
+        fighter.change_status_req(*FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_END, true);
     }
 }
 
-// Joker Arsene Grappling Hook
-unsafe fn arsene_grappling_hook(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, motion_kind: u64) {
-    if motion_kind == hash40("special_hi_start") {//&& situation_kind == *SITUATION_KIND_GROUND {
-        MotionModule::change_motion_kind(boma, smash::phx::Hash40::new("special_hi"));
+/// Changes Joker's aerial grappling hook to also have the pull down hitbox that grounded grappling hook does
+/// TODO: Change this to be in ACMD instead, if possible
+unsafe fn aerial_grappling_hook(fighter: &mut L2CFighterCommon) {
+    if fighter.is_motion(Hash40::new("special_hi_start")) {
+        MotionModule::change_motion_kind(fighter.module_accessor, Hash40::new("special_hi"));
     }
 }
 
-// Joker Aerial Grappling Hook stall
-unsafe fn aerial_grappling_hook_stall(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
-    if motion_kind == hash40("special_air_hi_throw") {
-        if frame < 36.0 {
-            KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        }
-        if frame >= 36.0 {
-            KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        }
+/// Disables gravity during the first 36 frames of Joker's grapple throw if he is in air.
+/// This prevents Joker from dying due to gravity
+unsafe fn aerial_grappling_hook_stall(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_motion(Hash40::new("special_air_hi_throw")) {
+        return;
     }
-}
 
-// Lengthen knife
-unsafe fn knife_length(boma: &mut BattleObjectModuleAccessor) {
-	let long_sword_scale = Vector3f{x: 1.01, y: 1.1, z: 1.01};
-	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("knife"), &long_sword_scale);
-}
-
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    wings_cancel(boma, status_kind);
-    arsene_grappling_hook(boma, situation_kind, motion_kind);
-    aerial_grappling_hook_stall(boma, motion_kind, frame);
-	knife_length(boma);
+    if fighter.motion_frame() < 36.0 {
+        KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    } else {
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    }
 }
 
 #[utils::macros::opff(FIGHTER_KIND_JACK )]
-pub fn jack_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    unsafe {
-        common::opff::fighter_common_opff(fighter);
-		jack_frame(fighter)
-    }
-}
-
-pub unsafe fn jack_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
-    }
+pub unsafe fn jack_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    common::opff::fighter_common_opff(fighter);
+    wings_cancel(fighter);
+    aerial_grappling_hook(fighter);
+    aerial_grappling_hook_stall(fighter);
+    // Sets Joker's knife to be a little bit longer
+    ModelModule::set_joint_scale(
+        fighter.module_accessor,
+        Hash40::new("knife"),
+        &Vector3f::new(1.01, 1.1, 1.01)
+    );
 }
