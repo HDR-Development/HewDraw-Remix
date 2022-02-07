@@ -23,7 +23,7 @@ unsafe fn wavedash_turn_clear(boma: &mut BattleObjectModuleAccessor, cat1: i32, 
         //WorkModule::unable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN);
         //println!("Turn after wavedash disabled!");
 
-        if boma.is_cat_flag(Cat1::Dash) {
+        if boma.is_cat_flag(Cat1::Turn) {
             ControlModule::clear_command(boma, true);
         }
 
