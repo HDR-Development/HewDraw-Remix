@@ -12,7 +12,7 @@ unsafe fn koopajr_special_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopajr", script = "game_specialirlw" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "koopajr", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn koopajr_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
