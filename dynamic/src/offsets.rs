@@ -37,6 +37,18 @@ extern "C" {
 
     #[link_name = "offsets_map_controls"]
     fn offsets_map_controls() -> usize;
+
+    #[link_name = "offsets_once_per_game_frame"]
+    fn offsets_once_per_game_frame() -> usize;
+
+    #[link_name = "offsets_on_rule_select"]
+    fn offsets_on_rule_select() -> usize;
+
+    #[link_name = "offsets_global_frame_counter"]
+    fn offsets_global_frame_counter() -> usize;
+
+    #[link_name = "offsets_get_match_mode"]
+    fn offsets_get_match_mode() -> usize;
 }
 
 
@@ -115,5 +127,29 @@ pub fn p_p_game_state() -> usize {
 pub fn map_controls() -> usize {
     unsafe {
         offsets_map_controls()
+    }
+}
+
+pub fn once_per_game_frame() -> usize {
+    unsafe {
+        offsets_once_per_game_frame()
+    }
+}
+
+pub fn on_rule_select() -> usize {
+    unsafe {
+        offsets_on_rule_select()
+    }
+}
+
+pub fn global_frame_counter() -> usize {
+    unsafe {
+        offsets_global_frame_counter()
+    }
+}
+
+pub fn get_match_mode() -> usize {
+    unsafe {
+        offsets_get_match_mode()
     }
 }

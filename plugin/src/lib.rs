@@ -48,5 +48,5 @@ pub fn main() {
             .join();
     }
 
-    skyline::install_hook!(change_version_string_hook);
+    skyline::install_hooks!(change_version_string_hook);
 }
