@@ -9,6 +9,7 @@ use utils_dyn::ext::*;
 use smash::phx::Vector3f;
 use crate::util;
 
+const TAG_DURATION: usize = 60 * 30;
 struct TagInfo {
     pub target_die_frame: usize,
     pub target_id: u32,
@@ -182,7 +183,7 @@ impl TagInfo {
             if !self.is_init {
                 let id = Self::find_random_active_fighter();
                 self.switch_to_id(id);
-                self.target_die_frame += 60 * 10;
+                self.target_die_frame += TAG_DURATION;
                 self.is_init = true;
             }
 
@@ -196,7 +197,7 @@ impl TagInfo {
 
             self.handle_die();
             self.find_new_target();
-            self.target_die_frame += 60 * 10;
+            self.target_die_frame += TAG_DURATION;
         }
     }
 }
