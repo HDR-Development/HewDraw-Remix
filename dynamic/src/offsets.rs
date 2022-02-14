@@ -37,6 +37,12 @@ extern "C" {
 
     #[link_name = "offsets_map_controls"]
     fn offsets_map_controls() -> usize;
+
+    #[link_name = "offsets_kill_zoom_regular"]
+    fn offsets_kill_zoom_regular() -> usize;
+
+    #[link_name = "offsets_kill_zoom_throw"]
+    fn offsets_kill_zoom_throw() -> usize;
 }
 
 
@@ -115,5 +121,17 @@ pub fn p_p_game_state() -> usize {
 pub fn map_controls() -> usize {
     unsafe {
         offsets_map_controls()
+    }
+}
+
+pub fn kill_zoom_regular() -> usize {
+    unsafe {
+        offsets_kill_zoom_regular()
+    }
+}
+
+pub fn kill_zoom_throw() -> usize {
+    unsafe {
+        offsets_kill_zoom_throw()
     }
 }

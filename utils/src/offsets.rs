@@ -65,6 +65,16 @@ mod offsets_impl {
     pub const fn map_controls() -> usize {
         0x17504a0
     }
+
+    #[export_name = "offsets_kill_zoom_regular"]
+    pub const fn kill_zoom_regular() -> usize {
+        0x633dc0
+    }
+
+    #[export_name = "offsets_kill_zoom_throw"]
+    pub const fn kill_zoom_throw() -> usize {
+        0x637384
+    }
 }
 
 #[cfg(not(feature = "no-offset-search"))]
@@ -87,6 +97,8 @@ mod offsets_impl {
         pub fighter_handle_damage: usize,
         pub p_p_game_state: usize,
         pub map_controls: usize,
+        pub kill_zoom_regular: usize,
+        pub kill_zoom_throw: usize,
     }
 
     static EXEC_COMMAND_SEARCH_CODE: &[u8] = &[
@@ -217,6 +229,30 @@ mod offsets_impl {
         0x3f, 0x04, 0x00, 0x31, // cmn w1, #0x1
     ];
 
+    static KILL_ZOOM_REGULAR_SEARCH_CODE: &[u8] = &[
+        0xd4, 0x62, 0x42, 0xf9, // ldr x20, [x22, #0x4c0]
+        0x88, 0x02, 0x40, 0xf9, // ldr x8, [x20]
+        0x08, 0x3d, 0x40, 0xf9, // ldr x8, [x8, #0x78]
+        0xe1, 0x03, 0x1e, 0x32, // orr w1, wzr, #4
+        0xe0, 0x03, 0x14, 0xaa, // mov x0, x20
+        0x00, 0x01, 0x3f, 0xd6, // blr x8
+    ];
+
+    const KILL_ZOOM_REGULAR_OFFSET_TO_START: usize = 0x4;
+
+    static KILL_ZOOM_THROW_SEARCH_CODE: &[u8] = &[
+        0xe4, 0x03, 0x1f, 0x2a, // mov w4, wzr
+        0xff, 0x03, 0x00, 0x39, // strb wzr, [sp]
+        0x00, 0x01, 0x3f, 0xd6, // blr x8
+        0xe2, 0x03, 0x00, 0x32, // orr w2, wzr, #1
+        0xe0, 0x03, 0x13, 0xaa, // mov x0, x19
+        0xe1, 0x03, 0x1f, 0x2a, // mov w1, wzr
+        0xe3, 0x03, 0x14, 0x2a, // mov w3, w20
+        0xe4, 0x03, 0x1f, 0xaa, // mov x4, xzr
+    ];
+
+    const KILL_ZOOM_THROW_OFFSET_FROM_START: usize = 0x20;
+
     const GET_GAME_STATE_OFFSET_FROM_START: usize = 0x28;
 
     fn offset_from_adrp(adrp_offset: usize) -> usize {
@@ -254,7 +290,9 @@ mod offsets_impl {
                 get_battle_object_from_id: 0,
                 fighter_handle_damage: 0,
                 p_p_game_state: 0,
-                map_controls: 0
+                map_controls: 0,
+                kill_zoom_regular: 0,
+                kill_zoom_throw: 0
             };
 
             offsets.exec_command = byte_search(EXEC_COMMAND_SEARCH_CODE).expect("Unable to find exec command hook!") - EXEC_COMMAND_OFFSET_FROM_START;
@@ -275,6 +313,8 @@ mod offsets_impl {
                 adrp_offset + ldr_offset
             };
             offsets.map_controls = byte_search(MAP_CONTROLS_SEARCH_CODE).expect("Unable to find control mapping function!");
+            offsets.kill_zoom_regular = byte_search(KILL_ZOOM_REGULAR_SEARCH_CODE).expect("Unable to find the regular kill zoom function!") - KILL_ZOOM_REGULAR_OFFSET_TO_START;
+            offsets.kill_zoom_throw = byte_search(KILL_ZOOM_THROW_SEARCH_CODE).expect("Unable to find the throw kill zoom function!") + KILL_ZOOM_THROW_OFFSET_FROM_START;
             offsets
         };
     }
@@ -342,6 +382,16 @@ mod offsets_impl {
     #[export_name = "offsets_map_controls"]
     pub fn map_controls() -> usize {
         CORE_OFFSETS.map_controls
+    }
+
+    #[export_name = "offsets_kill_zoom_regular"]
+    pub fn kill_zoom_regular() -> usize {
+        CORE_OFFSETS.kill_zoom_regular
+    }
+
+    #[export_name = "offsets_kill_zoom_throw"]
+    pub fn kill_zoom_throw() -> usize {
+        CORE_OFFSETS.kill_zoom_throw
     }
 }
 

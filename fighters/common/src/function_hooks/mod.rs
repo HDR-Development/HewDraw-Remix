@@ -30,4 +30,11 @@ pub fn install() {
     controls::install();
     momentum_transfer::install();
     //dash_dancing::install();
+
+    // Handles getting rid of the kill zoom
+    unsafe {
+        const NOP: u32 = 0xD503201Fu32;
+        skyline::patching::patch_data(utils::offsets::kill_zoom_regular(), &NOP);
+        skyline::patching::patch_data(utils::offsets::kill_zoom_throw(), &NOP);
+    }
 }
