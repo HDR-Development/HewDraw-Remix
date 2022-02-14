@@ -34,7 +34,6 @@ pub fn install() {
     // Handles getting rid of the kill zoom
     unsafe {
         const NOP: u32 = 0xD503201Fu32;
-        println!("{:#x}", utils::offsets::kill_zoom_throw());
         skyline::patching::patch_data(utils::offsets::kill_zoom_regular(), &NOP);
         skyline::patching::patch_data(utils::offsets::kill_zoom_throw(), &NOP);
     }
