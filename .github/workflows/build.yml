@@ -150,7 +150,6 @@ jobs:
         allow_override: true
         gzip: false
         tag: beta-${{ needs.plugin_build.outputs.version_string }}
-        commitish: ${{ needs.plugin_build.outputs.commit_hash }}
         name: beta ${{ needs.plugin_build.outputs.version_string }}
         body: >
           Beta built off of the latest code in the repository. 
