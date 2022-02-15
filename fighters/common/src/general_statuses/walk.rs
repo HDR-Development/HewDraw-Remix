@@ -1,0 +1,149 @@
+// status imports
+use super::*;
+use globals::*;
+
+macro_rules! interrupt {
+    () => { return L2CValue::I32(1); };
+    ($fighter:ident, $status:expr, $repeat:expr) => {{ $fighter.change_status($status.into(), $repeat.into()); interrupt!(); }}
+}
+
+#[common_status_script(status = FIGHTER_STATUS_KIND_WALK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon15status_pre_WalkEv")]
+unsafe fn status_pre_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
+
+	let mut initial_speed = VarModule::get_float(fighter.battle_object, vars::common::CURR_DASH_SPEED);
+
+	if ![*FIGHTER_STATUS_KIND_DASH].contains(&StatusModule::prev_status_kind(fighter.module_accessor, 0)) {
+		//println!("not after dash");
+		initial_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
+	}
+
+	//println!("walk initial speed: {}", initial_speed);
+
+	VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, initial_speed);
+
+    call_original!(fighter)
+}
+
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon18status_Walk_CommonEv")]
+unsafe fn status_walk_common(fighter: &mut L2CFighterCommon) {
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WALK_FLAG_SLIP);
+    WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL);
+    WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ITEM);
+    WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_CATCH);
+    WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ATTACK);
+    WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ESCAPE);
+    WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD);
+    WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
+    WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND);
+    WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN);
+    WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK);
+    WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_SLIP);
+
+    VarModule::off_flag(fighter.battle_object, vars::common::IS_BACKDASH);
+    VarModule::off_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH);
+}
+
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon19sub_walk_uniq_checkEv")]
+unsafe extern "C" fn sub_walk_uniq_check(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WALK_FLAG_SLIP) {
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_SLIP);
+    }
+    else {
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_SLIP);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WALK_FLAG_SLIP);
+    }
+    return 0.into()
+}
+
+#[common_status_script(status = FIGHTER_STATUS_KIND_WALK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon11status_WalkEv")]
+unsafe fn status_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
+    status_walk_common(fighter);
+    if !StopModule::is_stop(fighter.module_accessor) {
+        sub_walk_uniq_check(fighter);
+    }
+    fighter.global_table[SUB_STATUS2].assign(&L2CValue::Ptr(sub_walk_uniq_check as *const () as _));
+    fighter.sub_shift_status_main(L2CValue::Ptr(status_walk_main as *const () as _))
+}
+
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon16status_Walk_MainEv")]
+unsafe extern "C" fn status_walk_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let arg1 = *FIGHTER_STATUS_KIND_WALK_BRAKE;
+    let arg2 = fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor);
+    let arg3 = true;
+    let arg4 = 0;
+    status_walk_main_common(fighter, arg1.into(), arg2.into(), arg3.into(), arg4.into());
+    0.into()
+}
+
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon23status_Walk_Main_commonEN3lib8L2CValueES2_S2_S2_")]
+unsafe extern "C" fn status_walk_main_common(fighter: &mut L2CFighterCommon, arg1: L2CValue, arg2: L2CValue, arg3: L2CValue, arg4: L2CValue) -> L2CValue {
+    let walk_accel_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("walk_accel_mul"), 0);
+    let walk_accel_add = WorkModule::get_param_float(fighter.module_accessor, hash40("walk_accel_add"), 0);
+    let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
+    let dash_speed: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0);
+    let walk_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("walk_speed_max"), 0);
+	let stick_x = fighter.global_table[STICK_X].get_f32();
+	let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::CURR_DASH_SPEED);
+	let mut lr_modifier = 1.0;
+
+    if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+        VarModule::on_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH);
+    }
+    if stick_x == 0.0 {
+        VarModule::off_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH);
+    }
+
+	if [hash40("walk_slow_b"), hash40("walk_middle_b"), hash40("walk_fast_b")].contains(&MotionModule::motion_kind(fighter.module_accessor)) { // for auto-turn characters
+		lr_modifier = -1.0;
+	}
+
+	fighter.clear_lua_stack();
+	lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+	let mut speed_motion = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+
+	if prev_speed * PostureModule::lr(fighter.module_accessor) * lr_modifier < 0.0 {
+		let applied_speed = (stick_x.signum() * ((walk_accel_mul + (walk_accel_add * stick_x.abs())))) + prev_speed;
+		//println!("negative speed");
+		fighter.clear_lua_stack();
+		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+		app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+		fighter.clear_lua_stack();
+		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed - speed_motion);
+		app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+		VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, applied_speed);
+	}
+	else if KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
+		fighter.clear_lua_stack();
+		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+		app::sv_kinetic_energy::unable(fighter.lua_state_agent);
+	}
+
+	fighter.clear_lua_stack();
+	lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+	let speed_control = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+	//println!("walk speed_control: {}", speed_control);
+	fighter.clear_lua_stack();
+	lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+	speed_motion = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+	//println!("run speed_motion: {}", speed_motion);
+	//println!("walk total speed: {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
+
+    call_original!(fighter, arg1, arg2, arg3, arg4)
+}
+
+pub fn install() {
+    install_hooks!(
+        status_walk_common,
+        sub_walk_uniq_check,
+        status_walk_main,
+        status_walk_main_common
+    );
+
+    install_status_scripts!(
+        status_pre_walk,
+        status_walk
+    );
+}

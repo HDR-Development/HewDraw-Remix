@@ -279,7 +279,7 @@ impl BufferModule {
     /// # Returns
     /// The number of frames the input has been held
     #[export_name = "BufferModule__persist_lifetime_one"]
-    pub fn persist_lifetime_one(object: *mut BattleObject, category: i32, flag: i32) -> i32 {
+    pub extern "Rust" fn persist_lifetime_one(object: *mut BattleObject, category: i32, flag: i32) -> i32 {
         require_buffer_module!(object).cats[category as usize].hold_frame[flag as usize]
     }
 
@@ -291,7 +291,7 @@ impl BufferModule {
     /// # Returns
     /// The max amount of frames a specific input can have hold buffer for.
     #[export_name = "BufferModule__persist_lifetime_max_one"]
-    pub fn persist_lifetime_max_one(object: *mut BattleObject, category: i32, flag: i32) -> i32 {
+    pub extern "Rust" fn persist_lifetime_max_one(object: *mut BattleObject, category: i32, flag: i32) -> i32 {
         require_buffer_module!(object).cats[category as usize].hold_frame_max[flag as usize]
     }
 }

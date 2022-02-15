@@ -1,3 +1,4 @@
+#!/usr/bin/python3.9
 from os import write
 from xml import etree
 import xml.etree.ElementTree as ET
@@ -9,7 +10,7 @@ path = pathlib.Path(__file__).parent.parent.resolve()
 romfs_src_path = path.joinpath("romfs/source")
 
 if len(sys.argv) < 2:
-    print('new_fighter_param.py <param_name> -t <param_type> -d <default_value> <param_name>')
+    print('new_fighter_param.py -t <param_type> -d <default_value> <param_name>')
     sys.exit(2)
 
 try:

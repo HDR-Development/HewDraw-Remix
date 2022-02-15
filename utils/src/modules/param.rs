@@ -302,9 +302,19 @@ fn fighter_param_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
 }
 
 #[arc_callback]
-fn common_param_callback(hash: u64, data: &mut [u8]) -> Option<usize> {
+fn common_param_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
     assert_eq!(hash, hash40("fighter/common/hdr/param/common.prc"));
-    load_original_file(hash, data)
+    let size = load_original_file(hash, &mut data).expect("Unable to load file for 'fighter/common/hdr/param/common.prc'");
+    let exact_data = &data[..size];
+    let listing = match prc::read_stream(&mut std::io::Cursor::new(exact_data)) {
+        Ok(struc) => ParamListing::from(ParamKind::Struct(struc)),
+        Err(e) => {
+            panic!("Unable to parse 'fighter/common/hdr/param/common.prc'. Reason: {:?}", e)
+        }
+    };
+
+    *GLOBAL_COMMON_PARAM.write() = Some(listing);
+    Some(size)
 }
 
 #[arc_callback]
@@ -317,8 +327,16 @@ fn agent_param_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
             panic!("Unable to parse param file {:#x}. Reason: {:?}", hash, e);
         }
     };
-    if let Some(loaded_data) = GLOBAL_AGENT_PARAMS.write().get_mut(&Hash40_2::new_raw(hash)) {
+    let hash = Hash40_2::new_raw(hash);
+    let agent = match AGENT_PARAM_REVERSE.get(&hash) {
+        Some((agent, _)) => *agent,
+        None => panic!("Failed to find agent kind hash in param file reverse lookup!")
+    };
+    let mut params = GLOBAL_AGENT_PARAMS.write();
+    if let Some(loaded_data) = params.get_mut(&agent) {
         *loaded_data = Arc::new(param_listing);
+    } else {
+        params.insert(agent, Arc::new(param_listing));
     }
     Some(size)
 }
@@ -358,6 +376,19 @@ impl ParamModule {
         }
     }
 
+    /// Attempts to pull the agent param listing from the global agent params
+    /// # Arguments
+    /// * `owner` - The owning `BattleObject` instance
+    fn try_get_agent_params(owner: *mut BattleObject) {
+        let module = require_param_module!(owner);
+        if module.agent_params.is_some() { return; }
+
+        let kind = unsafe {
+            (*module.owner).agent_kind_hash
+        };
+        module.agent_params = GLOBAL_AGENT_PARAMS.read().get(&kind).map(|x| x.clone());
+    }
+
     /// Retrieves an integer from the specified ParamModule instance
     /// # Arguments
     /// * `owner` - The owning `BattleObject` instance
@@ -367,7 +398,7 @@ impl ParamModule {
     /// The integer specified
     /// # Example
     /// ```
-    /// let dacus_start_frame = ParamModule::get_int(fighter.module_accessor, ParamType::Shared, "dacus_frame_min");
+    /// let dacus_start_frame = ParamModule::get_int(fighter.battle_object, ParamType::Shared, "dacus_frame_min");
     /// if fighter.global_table[STATUS_FRAME] >= dacus_start_frame && should_dacus {
     ///     // perform dacus here
     /// }
@@ -375,16 +406,19 @@ impl ParamModule {
     #[export_name = "ParamModule__get_int"]
     pub extern "Rust" fn get_int(object: *mut BattleObject, ty: ParamType, key: &str) -> i32 {
         let module = require_param_module!(object);
-
+        Self::try_get_agent_params(module.owner);
         match ty {
-            ParamType::Common => GLOBAL_COMMON_PARAM
-                .read()
+            ParamType::Common => {
+                let read = GLOBAL_COMMON_PARAM.read();
+                println!("{}", read.is_none());
+                read
                 .as_ref()
                 .map(|x| x.index(key))
                 .flatten()
                 .map(|x| x.get_int())
                 .flatten()
-                .unwrap_or(0),
+                .unwrap_or_else(|| panic!("Could not retrieve Common ParamModule int: {}", key))
+            },
             ParamType::Shared => {
                 let index = unsafe {
                     (*module.owner).kind
@@ -394,7 +428,7 @@ impl ParamModule {
                     .read()
                     .as_ref()
                     .map(|x| x.get_int(index as i32, key))
-                    .unwrap_or(0)
+                    .unwrap_or_else(|| panic!("Could not retrieve Shared ParamModule int: {}", key))
             },
             ParamType::Agent => module.agent_params
                 .as_ref()
@@ -402,7 +436,7 @@ impl ParamModule {
                 .flatten()
                 .map(|x| x.get_int())
                 .flatten()
-                .unwrap_or(0)
+                .unwrap_or_else(|| panic!("Could not retrieve Agent ParamModule int: {}", key))
         }
     }
 
@@ -415,8 +449,8 @@ impl ParamModule {
     /// The hash specified
     /// # Example
     /// ```
-    /// let frame_window_start = ParamModule::get_float(fighter.module_accessor, ParamType::Shared, "gentleman_combo_start_frame");
-    /// let frame_window_end = ParamModule::get_float(fighter.module_accessor, ParamType::Shared, "gentleman_combo_end_frame");
+    /// let frame_window_start = ParamModule::get_float(fighter.object(), ParamType::Shared, "gentleman_combo_start_frame");
+    /// let frame_window_end = ParamModule::get_float(fighter.object(), ParamType::Shared, "gentleman_combo_end_frame");
     /// let target_motion = ParamModule::get_hash(fighter.module_accessor, ParamType::Shared, "gentleman_combo_target_motion");
     /// let current_frame = MotionModule::frame(fighter.module_accessor);
     /// if frame_window_start <= current_frame && current_frame < frame_window_end && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
@@ -426,7 +460,7 @@ impl ParamModule {
     #[export_name = "ParamModule__get_hash"]
     pub extern "Rust" fn get_hash(object: *mut BattleObject, ty: ParamType, key: &str) -> Hash40_2 {
         let module = require_param_module!(object);
-
+        Self::try_get_agent_params(module.owner);
         match ty {
             ParamType::Common => GLOBAL_COMMON_PARAM
                 .read()
@@ -475,7 +509,7 @@ impl ParamModule {
     #[export_name = "ParamModule__get_float"]
     pub extern "Rust" fn get_float(object: *mut BattleObject, ty: ParamType, key: &str) -> f32 {
         let module = require_param_module!(object);
-
+        Self::try_get_agent_params(module.owner);
         match ty {
             ParamType::Common => GLOBAL_COMMON_PARAM
                 .read()
@@ -484,7 +518,7 @@ impl ParamModule {
                 .flatten()
                 .map(|x| x.get_float())
                 .flatten()
-                .unwrap_or(0.0),
+                .unwrap_or_else(|| panic!("Could not retrieve Common ParamModule float: {}", key)),
             ParamType::Shared => {
                 let index = unsafe {
                     (*module.owner).kind
@@ -494,7 +528,7 @@ impl ParamModule {
                     .read()
                     .as_ref()
                     .map(|x| x.get_float(index as i32, key))
-                    .unwrap_or(0.0)
+                    .unwrap_or_else(|| panic!("Could not retrieve Shared ParamModule float: {}", key))
             },
             ParamType::Agent => module.agent_params
                 .as_ref()
@@ -502,7 +536,7 @@ impl ParamModule {
                 .flatten()
                 .map(|x| x.get_float())
                 .flatten()
-                .unwrap_or(0.0)
+                .unwrap_or_else(|| panic!("Could not retrieve Agent ParamModule float: {}", key))
         }
     }
 
@@ -524,7 +558,7 @@ impl ParamModule {
     #[export_name = "ParamModule__is_flag"]
     pub extern "Rust" fn is_flag(object: *mut BattleObject, ty: ParamType, key: &str) -> bool {
         let module = require_param_module!(object);
-
+        Self::try_get_agent_params(module.owner);
         match ty {
             ParamType::Common => GLOBAL_COMMON_PARAM
                 .read()
@@ -533,7 +567,7 @@ impl ParamModule {
                 .flatten()
                 .map(|x| x.get_flag())
                 .flatten()
-                .unwrap_or(false),
+                .unwrap_or_else(|| panic!("Could not retrieve Common ParamModule flag: {}", key)),
             ParamType::Shared => {
                 let index = unsafe {
                     (*module.owner).kind
@@ -543,7 +577,7 @@ impl ParamModule {
                     .read()
                     .as_ref()
                     .map(|x| x.is_flag(index as i32, key))
-                    .unwrap_or(false)
+                    .unwrap_or_else(|| panic!("Could not retrieve Shared ParamModule flag: {}", key))
             },
             ParamType::Agent => module.agent_params
                 .as_ref()
@@ -551,7 +585,7 @@ impl ParamModule {
                 .flatten()
                 .map(|x| x.get_flag())
                 .flatten()
-                .unwrap_or(false)
+                .unwrap_or_else(|| panic!("Could not retrieve Agent ParamModule flag: {}", key))
         }
     }
 
@@ -569,7 +603,7 @@ impl ParamModule {
     #[export_name = "ParamModule__get_string"]
     pub extern "Rust" fn get_string(object: *mut BattleObject, ty: ParamType, key: &str) -> String {
         let module = require_param_module!(object);
-
+        Self::try_get_agent_params(module.owner);
         match ty {
             ParamType::Common => GLOBAL_COMMON_PARAM
                 .read()
@@ -578,7 +612,8 @@ impl ParamModule {
                 .flatten()
                 .map(|x| x.get_string())
                 .flatten()
-                .map_or_else(|| String::new(), |x| x.clone()),
+                .unwrap_or_else(|| panic!("Could not retrieve Common ParamModule string: {}", key))
+                .clone(),
             ParamType::Shared => {
                 let index = unsafe {
                     (*module.owner).kind
@@ -588,7 +623,8 @@ impl ParamModule {
                     .read()
                     .as_ref()
                     .map(|x| x.get_string(index as i32, key))
-                    .map_or_else(|| String::new(), |x| x.to_string())
+                    .unwrap_or_else(|| panic!("Could not retrieve Shared ParamModule string: {}", key))
+                    .to_string()
             },
             ParamType::Agent => module.agent_params
                 .as_ref()
@@ -596,7 +632,8 @@ impl ParamModule {
                 .flatten()
                 .map(|x| x.get_string())
                 .flatten()
-                .map_or_else(|| String::new(), |x| x.clone())
+                .unwrap_or_else(|| panic!("Could not retrieve Agent ParamModule string: {}", key))
+                .clone()
         }
     }
 }

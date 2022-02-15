@@ -10,4 +10,5 @@ skyline = { git = "https://github.com/ultimate-research/skyline-rs.git" }
 skyline_smash = { git = "https://github.com/blu-dev/skyline-smash", features = ["weak_l2cvalue"] }
 smash_script = { git = "https://github.com/blu-dev/smash-script.git", branch = "development" }
 smashline = { git = "https://github.com/blu-dev/smashline.git", branch = "development" }
-utils = { path = "../../utils" }
+utils = { package = "dynamic", path = "../../dynamic" }
+interpolation = "0.2.0" # for f32::lerp

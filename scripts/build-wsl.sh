@@ -16,7 +16,6 @@ files=$(find "$repo_root/romfs/build" -type f -name "*.prc" -print)
 for file in $files;
 do
     local_path=${file#"$repo_root/romfs/build"}
-    echo $file $local_path
     full_rom_path=$base_path$local_path
     mkdir -p $(dirname "$full_rom_path")
     cp $file $full_rom_path
