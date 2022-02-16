@@ -1,5 +1,9 @@
 import pathlib, shutil, os
 
+def run_command(command: str) -> str:
+  os.system(command + " > tmp")
+  return open("tmp", "r").read()
+
 def collect_plugin(package_name: str, package_path: str, build_type: str, plugin_name: str, build_subdir: str = None):
   print("COLLECTING " + package_name + " plugins!")
   # get nro

@@ -49,6 +49,12 @@ extern "C" {
 
     #[link_name = "offsets_get_match_mode"]
     fn offsets_get_match_mode() -> usize;
+
+    #[link_name = "offsets_kill_zoom_regular"]
+    fn offsets_kill_zoom_regular() -> usize;
+
+    #[link_name = "offsets_kill_zoom_throw"]
+    fn offsets_kill_zoom_throw() -> usize;
 }
 
 
@@ -151,5 +157,15 @@ pub fn global_frame_counter() -> usize {
 pub fn get_match_mode() -> usize {
     unsafe {
         offsets_get_match_mode()
+=======
+pub fn kill_zoom_regular() -> usize {
+    unsafe {
+        offsets_kill_zoom_regular()
+    }
+}
+
+pub fn kill_zoom_throw() -> usize {
+    unsafe {
+        offsets_kill_zoom_throw()
     }
 }

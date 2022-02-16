@@ -3,18 +3,9 @@ name: rust build
 on:
   push:
     branches: [ dev, stable ] # CHANGE "master" TO "main" IF THAT IS THE NAME OF YOUR MAIN BRANCH!
-    paths-ignore:
-      - '**/README.md'
-      - '**/.gitignore'
-      - 'scripts/**'
   pull_request:
     branches: [ dev, stable ]
-    paths-ignore:
-      - '**/README.md'
-      - '**/.gitignore'
-      - 'scripts/**'
       
-
 jobs:
   # build the plugin
   plugin_build:
@@ -68,6 +59,24 @@ jobs:
         echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}-$(git rev-parse --short HEAD))"
         echo "##[set-output name=commit_hash;]$(echo $(git rev-parse --short HEAD))"
         echo $(git rev-parse --short HEAD)
+        echo target ref: ${{ github.event.pull_request.base.ref }}
+        echo head ref: ${{ github.ref }}
+    
+    # if this is a nightly BUILD (aka, accepted PR to dev), OR a beta PR (a PR into stable) make changelog against stable
+    - name: make nightly build or beta pr changes file
+      id: nightly_changelog
+      if: (github.event.pull_request.base.ref == 'stable') || (github.ref == 'refs/heads/dev' && github.event.pull_request.base.ref == '')
+      shell: bash
+      run: |
+        cd scripts && python3 make_changelog.py stable && cd ..
+    
+    # if this is a new beta BUILD, make changelog against the last beta
+    - name: make beta build changelog file
+      id: stable_changelog
+      if: github.ref == 'refs/heads/stable'
+      shell: bash
+      run: |
+        cd scripts && export LAST_BETA=$(python3 get_last_beta.py) && echo $LAST_BETA && python3 make_changelog.py $LAST_BETA && cd ..
 
     # build the project
     - run: |
@@ -84,6 +93,12 @@ jobs:
       with:
         name: hdr-ryujinx
         path: distributions/hdr-ryujinx.zip
+    - name: Upload change_summary.txt
+      uses: actions/upload-artifact@v2
+      with:
+        name: change_summary
+        path: scripts/change_summary.txt
+        if-no-files-found: ignore # 'error', 'warn', or 'ignore' are available, defaults to `warn`
 
   # upload a nightly
   upload_nightly:
@@ -120,6 +135,7 @@ jobs:
         files: >
           hdr-switch/*
           hdr-ryujinx/*
+          change_summary/*
 
   # upload a beta
   upload_beta:
@@ -150,10 +166,10 @@ jobs:
         allow_override: true
         gzip: false
         tag: beta-${{ needs.plugin_build.outputs.version_string }}
-        commitish: ${{ needs.plugin_build.outputs.commit_hash }}
         name: beta ${{ needs.plugin_build.outputs.version_string }}
         body: >
           Beta built off of the latest code in the repository. 
         files: >
           hdr-switch/*
           hdr-ryujinx/*
+          change_summary/*
