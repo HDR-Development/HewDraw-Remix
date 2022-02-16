@@ -72,7 +72,7 @@ jobs:
         echo head ref: ${{ github.ref }}
     
     # if this is a nightly BUILD (aka, accepted PR to dev), OR a beta PR (a PR into stable) make changelog against stable
-    - name: make nightly accrued changes file
+    - name: make nightly build or beta pr changes file
       id: nightly_changelog
       if: github.ref == 'dev' || github.event.pull_request.base.ref == 'stable'
       shell: bash
@@ -80,7 +80,7 @@ jobs:
         cd scripts && python3 make_changelog.py stable && cd ..
     
     # if this is a new beta BUILD, make changelog against the last beta
-    - name: make stable changelog file
+    - name: make beta build changelog file
       id: stable_changelog
       if: github.event.pull_request.base.ref == 'stable'
       shell: bash
