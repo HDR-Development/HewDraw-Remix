@@ -32,19 +32,22 @@ final_lines = dict()
 
 
 for line in cleaned_lines:
-    commit_hash = line.split(" ")[0]
-    commit_text = pkgutil.run_command("git log -1 --pretty=format:%b " + commit_hash).strip()
+    line_split = line.split(" ")
+    commit_hash = line_split[0]
+    pr_number = line_split[4]
+
+    commit_text =  commit_hash + ' "' + pkgutil.run_command("git log -1 --pretty=format:%b " + commit_hash).strip() + '"'
 
     line_add = commit_hash + " : " + commit_text
     print("adding line: " + line_add)
     if commit_text.strip() == "":
         print("empty commit: " + line)
     else:
-        final_lines[commit_hash] = commit_text
+        final_lines[pr_number] = commit_text
 
 file_output = ""
-for hash,text in final_lines.items():
-    file_output += hash + ' -> "' + text + '"\n\n'
+for pr_number,text in final_lines.items():
+    file_output += "PR " + pr_number + ' -> ' + text + '\n\n'
 
 print("\nfile output is:\n" + file_output)
 
