@@ -69,11 +69,18 @@ jobs:
         echo "##[set-output name=commit_hash;]$(echo $(git rev-parse --short HEAD))"
         echo $(git rev-parse --short HEAD)
     
-    - name: make changelog file
+    - name: make dev changelog file
       id: changelog
+      if: github.ref == 'refs/heads/dev'
       shell: bash
       run: |
-        export GIT_HASH=$(git rev-parse --short HEAD) && echo "hash: ${GIT_HASH}" && cd scripts && python3 make_changelog.py && cd ..
+        echo "this is a pr to dev" && export GIT_HASH=$(git rev-parse --short HEAD) && echo "hash: ${GIT_HASH}" && cd scripts && python3 make_changelog.py && cd ..
+    - name: make stable changelog file
+      id: changelog
+      if: github.ref == 'refs/heads/stable'
+      shell: bash
+      run: |
+        echo "this is a pr to stable" && export GIT_HASH=$(git rev-parse --short HEAD) && echo "hash: ${GIT_HASH}" && cd scripts && python3 make_changelog.py && cd ..
 
     # build the project
     - run: |
