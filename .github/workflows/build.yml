@@ -68,6 +68,12 @@ jobs:
         echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}-$(git rev-parse --short HEAD))"
         echo "##[set-output name=commit_hash;]$(echo $(git rev-parse --short HEAD))"
         echo $(git rev-parse --short HEAD)
+    
+    - name: make changelog file
+      id: changelog
+      shell: bash
+      run: |
+        export GIT_HASH=$(git rev-parse --short HEAD) && echo "hash: ${GIT_HASH}" && $(git checkout stable) && git checkout ${GIT_HASH} && cd scripts && python3 make_changelog.py && cd ..
 
     # build the project
     - run: |
@@ -84,11 +90,6 @@ jobs:
       with:
         name: hdr-ryujinx
         path: distributions/hdr-ryujinx.zip
-    - name: make changelog file
-      id: changelog
-      shell: bash
-      run: |
-        export GIT_HASH=$(git rev-parse --short HEAD) && echo "hash: ${GIT_HASH}" && $(git checkout stable) && git checkout ${GIT_HASH} && cd scripts && python3 make_changelog.py && cd ..
     - name: Upload change_summary.txt
       uses: actions/upload-artifact@v2
       with:
