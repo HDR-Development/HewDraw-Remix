@@ -68,7 +68,7 @@ jobs:
         echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}-$(git rev-parse --short HEAD))"
         echo "##[set-output name=commit_hash;]$(echo $(git rev-parse --short HEAD))"
         echo $(git rev-parse --short HEAD)
-        echo target ref: ${{ if: github.event.pull_request.base.ref }}
+        echo target ref: ${{ github.event.pull_request.base.ref }}
     
     - name: make dev changelog file
       id: dev_changelog
