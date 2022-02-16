@@ -7,7 +7,7 @@ branch_name = pkgutil.run_command("git rev-parse --abbrev-ref HEAD > tmp").strip
 print("current branch is " + branch_name)
 
 # build the git command
-git_command = "git log --oneline " + branch_name + "...stable"
+git_command = "git log --oneline " + branch_name + "...origin/stable"
 print("git command is:\n" + git_command)
 log_output = pkgutil.run_command(git_command)
 print(log_output)

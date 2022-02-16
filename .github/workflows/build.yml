@@ -73,7 +73,7 @@ jobs:
       id: changelog
       shell: bash
       run: |
-        export GIT_HASH=$(git rev-parse --short HEAD) && echo "hash: ${GIT_HASH}" && $(git checkout stable) && git checkout ${GIT_HASH} && cd scripts && python3 make_changelog.py && cd ..
+        export GIT_HASH=$(git rev-parse --short HEAD) && echo "hash: ${GIT_HASH}" && cd scripts && python3 make_changelog.py && cd ..
 
     # build the project
     - run: |
