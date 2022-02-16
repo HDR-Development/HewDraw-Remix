@@ -22,7 +22,6 @@ for line in all_lines:
     if line != "" and "Merge " in line and not "Merge branch 'dev'" in line:
         cleaned_lines.add(line.strip())
 
-#cleaned_lines = reversed(cleaned_lines)
 
 # show cleaned lines
 print("merge lines:\n")

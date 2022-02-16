@@ -69,20 +69,23 @@ jobs:
         echo "##[set-output name=commit_hash;]$(echo $(git rev-parse --short HEAD))"
         echo $(git rev-parse --short HEAD)
         echo target ref: ${{ github.event.pull_request.base.ref }}
+        echo head ref: ${{ github.ref }}
     
-    # build a changelog file for dev or stable PRs
-    - name: make dev changelog file
-      id: dev_changelog
-      if: github.event.pull_request.base.ref == 'dev'
+    # if this is a nightly BUILD (aka, accepted PR to dev), OR a beta PR (a PR into stable) make changelog against stable
+    - name: make nightly accrued changes file
+      id: nightly_changelog
+      if: github.ref == 'dev' || github.event.pull_request.base.ref == 'stable'
       shell: bash
       run: |
-        cd scripts && python3 make_changelog.py ${{ github.event.pull_request.base.ref }} && cd ..
+        cd scripts && python3 make_changelog.py stable && cd ..
+    
+    # if this is a new beta BUILD, make changelog against the last beta
     - name: make stable changelog file
       id: stable_changelog
       if: github.event.pull_request.base.ref == 'stable'
       shell: bash
       run: |
-        cd scripts && python3 make_changelog.py  ${{ github.event.pull_request.base.ref }} && cd ..
+        export LAST_BETA=$(python3 get_last_beta.py) && echo $LAST_BETA && cd scripts && python3 make_changelog.py $LAST_BETA && cd ..
 
     # build the project
     - run: |
