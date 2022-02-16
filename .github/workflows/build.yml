@@ -103,11 +103,11 @@ jobs:
         name: hdr-ryujinx
         path: distributions/hdr-ryujinx.zip
     - name: Upload change_summary.txt
-      if: github.event.pull_request.base.ref == 'dev' || github.event.pull_request.base.ref == 'stable'
       uses: actions/upload-artifact@v2
       with:
-        name: change_summary.txt
+        name: change_summary
         path: scripts/change_summary.txt
+        if-no-files-found: ignore # 'error', 'warn', or 'ignore' are available, defaults to `warn`
 
   # upload a nightly
   upload_nightly:
