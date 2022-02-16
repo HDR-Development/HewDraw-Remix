@@ -85,7 +85,7 @@ jobs:
       if: github.event.pull_request.base.ref == 'stable'
       shell: bash
       run: |
-        export LAST_BETA=$(python3 get_last_beta.py) && echo $LAST_BETA && cd scripts && python3 make_changelog.py $LAST_BETA && cd ..
+        cd scripts && export LAST_BETA=$(python3 get_last_beta.py) && echo $LAST_BETA && python3 make_changelog.py $LAST_BETA && cd ..
 
     # build the project
     - run: |
