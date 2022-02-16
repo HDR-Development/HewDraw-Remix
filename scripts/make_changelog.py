@@ -16,7 +16,7 @@ print(log_output)
 all_lines = log_output.split("\n")
 cleaned_lines = []
 for line in all_lines:
-    if line is not "" and "Merge pull request" not in line:
+    if line != "" and "Merge pull request" not in line:
         cleaned_lines.append(line.strip())
 
 # build the output file
