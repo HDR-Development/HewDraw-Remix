@@ -144,7 +144,7 @@ jobs:
         files: >
           hdr-switch/*
           hdr-ryujinx/*
-          change_summary.txt
+          change_summary/*
 
   # upload a beta
   upload_beta:
@@ -181,4 +181,4 @@ jobs:
         files: >
           hdr-switch/*
           hdr-ryujinx/*
-          change_summary.txt
+          change_summary/*
