@@ -74,7 +74,7 @@ jobs:
     # if this is a nightly BUILD (aka, accepted PR to dev), OR a beta PR (a PR into stable) make changelog against stable
     - name: make nightly build or beta pr changes file
       id: nightly_changelog
-      if: github.ref == 'dev' || github.event.pull_request.base.ref == 'stable'
+      if: (github.event.pull_request.base.ref == 'stable') || (github.ref == 'refs/heads/dev' && github.event.pull_request.base.ref == '')
       shell: bash
       run: |
         cd scripts && python3 make_changelog.py stable && cd ..
@@ -82,7 +82,7 @@ jobs:
     # if this is a new beta BUILD, make changelog against the last beta
     - name: make beta build changelog file
       id: stable_changelog
-      if: github.event.pull_request.base.ref == 'stable'
+      if: github.ref == 'refs/heads/stable'
       shell: bash
       run: |
         cd scripts && export LAST_BETA=$(python3 get_last_beta.py) && echo $LAST_BETA && python3 make_changelog.py $LAST_BETA && cd ..
@@ -103,11 +103,11 @@ jobs:
         name: hdr-ryujinx
         path: distributions/hdr-ryujinx.zip
     - name: Upload change_summary.txt
-      if: github.event.pull_request.base.ref == 'dev' || github.event.pull_request.base.ref == 'stable'
       uses: actions/upload-artifact@v2
       with:
-        name: change_summary.txt
+        name: change_summary
         path: scripts/change_summary.txt
+        if-no-files-found: ignore # 'error', 'warn', or 'ignore' are available, defaults to `warn`
 
   # upload a nightly
   upload_nightly:
@@ -144,7 +144,7 @@ jobs:
         files: >
           hdr-switch/*
           hdr-ryujinx/*
-          change_summary.txt
+          change_summary/*
 
   # upload a beta
   upload_beta:
@@ -181,4 +181,4 @@ jobs:
         files: >
           hdr-switch/*
           hdr-ryujinx/*
-          change_summary.txt
+          change_summary/*
