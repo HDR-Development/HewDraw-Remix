@@ -1,13 +1,16 @@
 #!/usr/bin/python3
 import shutil, os, sys, pkgutil
 
+if len(sys.argv) <= 1 or len(sys.argv) > 2:
+    exit("NO BRANCH REF NAME GIVEN! Invalid arguments.")
+
 # determine branch name
 branch_name = pkgutil.run_command("git rev-parse --abbrev-ref HEAD > tmp").strip()
 
 print("current branch is " + branch_name)
 
 # build the git command
-git_command = "git log --oneline " + branch_name + "...origin/engine"
+git_command = "git log --oneline " + branch_name + "...origin/" + sys.argv[1]
 print("git command is:\n" + git_command)
 log_output = pkgutil.run_command(git_command)
 print(log_output)

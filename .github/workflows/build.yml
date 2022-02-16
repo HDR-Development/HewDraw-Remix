@@ -70,18 +70,19 @@ jobs:
         echo $(git rev-parse --short HEAD)
         echo target ref: ${{ github.event.pull_request.base.ref }}
     
+    # build a changelog file for dev or stable PRs
     - name: make dev changelog file
       id: dev_changelog
       if: github.event.pull_request.base.ref == 'dev'
       shell: bash
       run: |
-        echo "this is a pr to dev" && export GIT_HASH=$(git rev-parse --short HEAD) && echo "hash: ${GIT_HASH}" && cd scripts && python3 make_changelog.py && cd ..
+        cd scripts && python3 make_changelog.py ${{ github.event.pull_request.base.ref }} && cd ..
     - name: make stable changelog file
       id: stable_changelog
       if: github.event.pull_request.base.ref == 'stable'
       shell: bash
       run: |
-        echo "this is a pr to stable" && export GIT_HASH=$(git rev-parse --short HEAD) && echo "hash: ${GIT_HASH}" && cd scripts && python3 make_changelog.py && cd ..
+        cd scripts && python3 make_changelog.py  ${{ github.event.pull_request.base.ref }} && cd ..
 
     # build the project
     - run: |
