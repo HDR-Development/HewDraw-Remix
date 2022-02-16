@@ -68,17 +68,17 @@ jobs:
         echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}-$(git rev-parse --short HEAD))"
         echo "##[set-output name=commit_hash;]$(echo $(git rev-parse --short HEAD))"
         echo $(git rev-parse --short HEAD)
-        echo head ref: ${{ github.head_ref}}
+        echo target ref: ${{ if: github.event.pull_request.base.ref }}
     
     - name: make dev changelog file
       id: dev_changelog
-      if: github.head_ref == 'refs/heads/dev'
+      if: github.event.pull_request.base.ref == 'refs/heads/dev'
       shell: bash
       run: |
         echo "this is a pr to dev" && export GIT_HASH=$(git rev-parse --short HEAD) && echo "hash: ${GIT_HASH}" && cd scripts && python3 make_changelog.py && cd ..
     - name: make stable changelog file
       id: stable_changelog
-      if: github.head_ref == 'refs/heads/stable'
+      if: github.event.pull_request.base.ref == 'refs/heads/stable'
       shell: bash
       run: |
         echo "this is a pr to stable" && export GIT_HASH=$(git rev-parse --short HEAD) && echo "hash: ${GIT_HASH}" && cd scripts && python3 make_changelog.py && cd ..
