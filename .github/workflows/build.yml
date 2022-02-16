@@ -70,13 +70,13 @@ jobs:
         echo $(git rev-parse --short HEAD)
     
     - name: make dev changelog file
-      id: changelog
+      id: dev changelog
       if: github.ref == 'refs/heads/dev'
       shell: bash
       run: |
         echo "this is a pr to dev" && export GIT_HASH=$(git rev-parse --short HEAD) && echo "hash: ${GIT_HASH}" && cd scripts && python3 make_changelog.py && cd ..
     - name: make stable changelog file
-      id: changelog
+      id: stable changelog
       if: github.ref == 'refs/heads/stable'
       shell: bash
       run: |
