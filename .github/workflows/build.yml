@@ -84,6 +84,16 @@ jobs:
       with:
         name: hdr-ryujinx
         path: distributions/hdr-ryujinx.zip
+    - name: make changelog file
+      id: changelog
+      shell: bash
+      run: |
+        cd scripts && python3 make_changelog.py && cd ..
+    - name: Upload change_summary.txt
+      uses: actions/upload-artifact@v2
+      with:
+        name: change_summary.txt
+        path: scripts/change_summary.txt
 
   # upload a nightly
   upload_nightly:
