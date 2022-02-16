@@ -7,7 +7,7 @@ branch_name = pkgutil.run_command("git rev-parse --abbrev-ref HEAD > tmp").strip
 print("current branch is " + branch_name)
 
 # build the git command
-git_command = "git log --pretty=%B " + branch_name + "...stable"
+git_command = "git log --oneline " + branch_name + "...stable"
 print("git command is:\n" + git_command)
 log_output = pkgutil.run_command(git_command)
 print(log_output)
@@ -24,7 +24,11 @@ file_output = ""
 print("cleaned lines:\n")
 for line in cleaned_lines:
     print(line)
-    file_output += line + "\n"
+    if len(line.split(")")) > 1:
+        commit_text = line.split(")", 1)[1]
+    else:
+        commit_text = line.split(" ", 1)[1]
+    file_output += line.split(" ")[0] + " : " + commit_text + "\n"
 
 os.system("echo '" + file_output + "' > change_summary.txt")
 
