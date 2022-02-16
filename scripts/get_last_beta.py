@@ -18,4 +18,5 @@ for line in log_lines:
     # if this is the entry for a beta pr
     if "Merge pull request #" in line and "from HDR-Development/dev" in line:
         commit_hash = line.split(" ", 1)[0]
+        print(commit_hash)
         exit(commit_hash)
