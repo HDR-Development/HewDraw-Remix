@@ -78,7 +78,7 @@ jobs:
         echo "this is a pr to dev" && export GIT_HASH=$(git rev-parse --short HEAD) && echo "hash: ${GIT_HASH}" && cd scripts && python3 make_changelog.py && cd ..
     - name: make stable changelog file
       id: stable_changelog
-      if: head_ref.ref == 'refs/heads/stable'
+      if: github.head_ref == 'refs/heads/stable'
       shell: bash
       run: |
         echo "this is a pr to stable" && export GIT_HASH=$(git rev-parse --short HEAD) && echo "hash: ${GIT_HASH}" && cd scripts && python3 make_changelog.py && cd ..
