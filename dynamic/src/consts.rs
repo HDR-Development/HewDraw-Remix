@@ -49,6 +49,7 @@ pub mod globals {
     // 0x30
     // 0x31
     // 0x32 some substatus
+    pub const MOVE_CUSTOMIZER: i32 = 0x3D;
     pub const STATUS_CHANGE_CALLBACK: i32 = 0x3E;
     pub const DASH_POST_TRANSITION_CALLBACK: i32 = 0x57;
 }
@@ -211,6 +212,11 @@ pub mod vars {
     pub mod gaogaen {
         // floats
         pub const ANGLE_GRAB_STICK_Y: i32 = 0x1000;
+    }
+
+    pub mod jack {
+        // floats
+        pub const REBEL_GAUGE_ON_SUMMON: i32 = 0x1000;
     }
 
     pub mod kamui {
