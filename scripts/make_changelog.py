@@ -49,6 +49,9 @@ file_output = ""
 for pr_number,text in final_lines.items():
     file_output += "PR " + pr_number + ' -> ' + text + '\n\n'
 
+if file_output == "":
+    file_output = "(no changes found)"
+
 print("\nfile output is:\n" + file_output)
 
 with open('change_summary.txt', "w") as myfile:
