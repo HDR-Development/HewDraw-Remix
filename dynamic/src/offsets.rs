@@ -157,7 +157,9 @@ pub fn global_frame_counter() -> usize {
 pub fn get_match_mode() -> usize {
     unsafe {
         offsets_get_match_mode()
-=======
+    }
+}
+
 pub fn kill_zoom_regular() -> usize {
     unsafe {
         offsets_kill_zoom_regular()
