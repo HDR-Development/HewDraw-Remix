@@ -68,6 +68,24 @@ jobs:
         echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}-$(git rev-parse --short HEAD))"
         echo "##[set-output name=commit_hash;]$(echo $(git rev-parse --short HEAD))"
         echo $(git rev-parse --short HEAD)
+        echo target ref: ${{ github.event.pull_request.base.ref }}
+        echo head ref: ${{ github.ref }}
+    
+    # if this is a nightly BUILD (aka, accepted PR to dev), OR a beta PR (a PR into stable) make changelog against stable
+    - name: make nightly build or beta pr changes file
+      id: nightly_changelog
+      if: github.ref == 'dev' || github.event.pull_request.base.ref == 'stable'
+      shell: bash
+      run: |
+        cd scripts && python3 make_changelog.py stable && cd ..
+    
+    # if this is a new beta BUILD, make changelog against the last beta
+    - name: make beta build changelog file
+      id: stable_changelog
+      if: github.event.pull_request.base.ref == 'stable'
+      shell: bash
+      run: |
+        export LAST_BETA=$(python3 get_last_beta.py) && echo $LAST_BETA && cd scripts && python3 make_changelog.py $LAST_BETA && cd ..
 
     # build the project
     - run: |
@@ -84,6 +102,12 @@ jobs:
       with:
         name: hdr-ryujinx
         path: distributions/hdr-ryujinx.zip
+    - name: Upload change_summary.txt
+      if: github.event.pull_request.base.ref == 'dev' || github.event.pull_request.base.ref == 'stable'
+      uses: actions/upload-artifact@v2
+      with:
+        name: change_summary.txt
+        path: scripts/change_summary.txt
 
   # upload a nightly
   upload_nightly:
@@ -120,6 +144,7 @@ jobs:
         files: >
           hdr-switch/*
           hdr-ryujinx/*
+          change_summary.txt
 
   # upload a beta
   upload_beta:
@@ -156,3 +181,4 @@ jobs:
         files: >
           hdr-switch/*
           hdr-ryujinx/*
+          change_summary.txt
