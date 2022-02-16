@@ -3,18 +3,9 @@ name: rust build
 on:
   push:
     branches: [ dev, stable ] # CHANGE "master" TO "main" IF THAT IS THE NAME OF YOUR MAIN BRANCH!
-    paths-ignore:
-      - '**/README.md'
-      - '**/.gitignore'
-      - 'scripts/**'
   pull_request:
     branches: [ dev, stable ]
-    paths-ignore:
-      - '**/README.md'
-      - '**/.gitignore'
-      - 'scripts/**'
       
-
 jobs:
   # build the plugin
   plugin_build:
