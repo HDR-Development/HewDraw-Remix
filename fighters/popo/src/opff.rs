@@ -6,8 +6,8 @@ use globals::*;
  
 
 // Ice Climbers Cheer Cancel (Techy)
-unsafe fn cheer_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, fighter_kind: i32, status_kind: i32) {
-    if fighter_kind == *FIGHTER_KIND_NANA {
+unsafe fn cheer_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if boma.kind() == *FIGHTER_KIND_NANA {
         if status_kind == *FIGHTER_POPO_STATUS_KIND_THROW_NANA {
             MotionModule::set_frame(boma, MotionModule::end_frame(boma), true);
             StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_WAIT, true);
@@ -16,8 +16,8 @@ unsafe fn cheer_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 }
 
 // Ice Climbers Spotdodge Desync
-unsafe fn spotdodge_desync(boma: &mut BattleObjectModuleAccessor, fighter_kind: i32, status_kind: i32) {
-    if fighter_kind == *FIGHTER_KIND_NANA {
+unsafe fn spotdodge_desync(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if boma.kind() == *FIGHTER_KIND_NANA {
         if ![*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B].contains(&status_kind){
             BufferModule::disable_persist(boma.object());
         } else if [*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B].contains(&StatusModule::status_kind_next(boma)) {
@@ -27,8 +27,8 @@ unsafe fn spotdodge_desync(boma: &mut BattleObjectModuleAccessor, fighter_kind: 
 }
 
 // Clear JC grab flag
-unsafe fn clear_jc_grab_flag(id: usize, fighter_kind: i32, status_kind: i32) {
-    if fighter_kind == *FIGHTER_KIND_POPO {
+unsafe fn clear_jc_grab_flag(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32) {
+    if boma.kind() == *FIGHTER_KIND_POPO {
         //VarModule::set_flag(boma.object(), vars::common::POPO_JC_GRAB,
         //[*FIGHTER_STATUS_KIND_CATCH,
         //    *FIGHTER_STATUS_KIND_CATCH_PULL,
@@ -38,8 +38,8 @@ unsafe fn clear_jc_grab_flag(id: usize, fighter_kind: i32, status_kind: i32) {
 
 pub static mut nana_boma: [u64; 8] = [0; 8];
 
-unsafe fn get_nana_boma(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, fighter_kind: i32, id: usize) {
-    if fighter_kind == *FIGHTER_KIND_NANA {
+unsafe fn get_nana_boma(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
+    if boma.kind() == *FIGHTER_KIND_NANA {
         let mut nana_boma_deez = boma;
         nana_boma[id] = (&mut *nana_boma_deez as *mut BattleObjectModuleAccessor) as u64;
     }
@@ -49,9 +49,9 @@ static mut effect_on: bool = false;
 static mut nana_pos_x: f32 = 0.0;
 static mut nana_pos_y: f32 = 0.0;
 
-unsafe fn nana_death_effect(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, fighter_kind: i32, status_kind: i32, frame: f32) {
+unsafe fn nana_death_effect(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
 
-    if fighter_kind == *FIGHTER_KIND_POPO {
+    if boma.kind() == *FIGHTER_KIND_POPO {
         if status_kind == *FIGHTER_STATUS_KIND_STANDBY {
             effect_on = true;
             nana_pos_x = PostureModule::pos_x(nana_boma[id] as *mut BattleObjectModuleAccessor);
@@ -67,12 +67,7 @@ unsafe fn nana_death_effect(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    let fighter_kind = boma.kind();
-    cheer_cancel(fighter, boma, fighter_kind, status_kind);
-    spotdodge_desync(boma, fighter_kind, status_kind);
-    clear_jc_grab_flag(id, fighter_kind, status_kind);
-    get_nana_boma(fighter, boma, fighter_kind, id);
-    nana_death_effect(fighter, boma, id, fighter_kind, status_kind, frame);
+    // nothing lol
 }
 
 
@@ -84,7 +79,11 @@ pub unsafe extern "Rust" fn ice_climbers_common(fighter: &mut L2CFighterCommon) 
 }
 
 pub unsafe fn ice_climbers_moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    
+    cheer_cancel(fighter, boma, status_kind);
+    spotdodge_desync(boma, status_kind);
+    clear_jc_grab_flag(boma, id, status_kind);
+    get_nana_boma(fighter, boma, id);
+    nana_death_effect(fighter, boma, id, status_kind, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_POPO )]
