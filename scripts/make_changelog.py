@@ -1,16 +1,24 @@
 #!/usr/bin/python3
 import shutil, os, sys, pkgutil
 
-if len(sys.argv) <= 1 or len(sys.argv) > 2:
-    exit("NO BRANCH REF NAME GIVEN! Invalid arguments.")
+if len(sys.argv) <= 2 or len(sys.argv) > 3:
+    print("args:")
+    for arg in sys.argv:
+        print(arg)
+    exit("Invalid arguments! should be 'python3 make_changelog.py <hash or branch> <origin or local>'")
 
 # determine branch name
 branch_name = pkgutil.run_command("git rev-parse --abbrev-ref HEAD > tmp").strip()
 
 print("current branch is " + branch_name)
 
+if sys.argv[2] == "origin":
+    origin_str = "origin/"
+else:
+    origin_str = ""
+
 # build the git command
-git_command = "git log --oneline " + branch_name + "...origin/" + sys.argv[1]
+git_command = "git log --oneline " + branch_name + "..." + origin_str + sys.argv[1]
 print("git command is:\n" + git_command)
 log_output = pkgutil.run_command(git_command)
 print(log_output)
