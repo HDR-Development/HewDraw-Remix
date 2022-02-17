@@ -126,7 +126,7 @@ if (is_dev_build and not is_publish):
     build_type, "libhdr.nro", "standalone")
   
   # collect ryujinx romfs
-  pkgutil.collect_romfs("hdr-ryujinx", "sd")
+  pkgutil.collect_romfs("hdr-ryujinx", "sdcard")
 
 
 else:
@@ -151,7 +151,7 @@ else:
     build_type, "libhdr.nro")
   
   # collect ryujinx romfs
-  pkgutil.collect_romfs("hdr-ryujinx", "sd")
+  pkgutil.collect_romfs("hdr-ryujinx", "sdcard")
 
 os.chdir(current_dir)
 
