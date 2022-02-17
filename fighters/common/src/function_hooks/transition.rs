@@ -2,13 +2,6 @@ use super::*;
 use globals::*;
 
 
-pub fn get_fighter_common_from_accessor<'a>(boma: &'a mut BattleObjectModuleAccessor) -> &'a mut L2CFighterCommon {
-    unsafe {
-        let lua_module = *(boma as *mut BattleObjectModuleAccessor as *mut u64).add(0x190 / 8);
-        std::mem::transmute(*((lua_module + 0x1D8) as *mut *mut L2CFighterCommon))
-    }
-}
-
 //=================================================================
 //== WorkModule::is_enable_transition_term
 //== Note: Disable transition terms
