@@ -4,7 +4,11 @@ use globals::*;
 
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon30sub_status_end_guard_on_commonEN3lib8L2CValueE")]
 unsafe fn sub_status_end_guard_on_common(fighter: &mut L2CFighterCommon, arg: L2CValue) {
-    if fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_GUARD && fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_GUARD_DAMAGE {
+    let status = fighter.global_table[STATUS_KIND].get_i32();
+    if status != *FIGHTER_STATUS_KIND_GUARD
+    && (status != *FIGHTER_STATUS_KIND_GUARD_DAMAGE
+    || (status == *FIGHTER_STATUS_KIND_GUARD_DAMAGE
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD))) {
         effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new_raw(0xafae75f05), true, true);
         effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new_raw(0x10da0b43c8), true, true);
     } else if !arg.get_bool() {

@@ -34,6 +34,16 @@ pub unsafe fn sub_guard_on_uniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -
     if !arg.get_bool() {
         fighter_status_guard::landing_effect_control(fighter);
     } else {
+        let just_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
+        if 0 < just_frame {
+            WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
+            if (just_frame - 1) == 0 {
+                ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, app::ShieldStatus(*SHIELD_STATUS_NONE), 0);
+                let type_of_guard = app::FighterUtil::get_shield_type_of_guard(fighter.global_table[0x2].get_i32()) as i32;
+                ShieldModule::set_shield_type(fighter.module_accessor, app::ShieldType(type_of_guard), *FIGHTER_SHIELD_KIND_GUARD, 0);
+                ReflectorModule::set_status(fighter.module_accessor, 0, app::ShieldStatus(*SHIELD_STATUS_NONE), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
+            }
+        }
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_SHIELD_LOCK) {
             let shield_dec1 = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_dec1"));
             let shield_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("shield_frame"), 0);

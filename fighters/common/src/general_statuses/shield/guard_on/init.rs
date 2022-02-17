@@ -4,7 +4,21 @@ use globals::*;
 
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon48sub_ftStatusUniqProcessGuardOn_initStatus_commonEv")]
 unsafe fn sub_ftStatusUniqProcessGuardOn_initStatus_common(fighter: &mut L2CFighterCommon) {
-    ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, app::ShieldStatus(*SHIELD_STATUS_NONE), 0);
+    // Original
+    ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
+    // Additions
+    if FighterUtil::is_valid_just_shield(fighter.module_accessor) {
+        let shield_just_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("shield_just_frame")) as f32;
+        let just_shield_check_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("just_shield_check_frame"), 0);
+        let just_frame = (shield_just_frame * just_shield_check_frame + 0.5) as i32;
+        WorkModule::set_int(fighter.module_accessor, just_frame, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
+        ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(*SHIELD_TYPE_JUST_SHIELD), *FIGHTER_SHIELD_KIND_GUARD, 0);
+        if FighterUtil::is_valid_just_shield_reflector(fighter.module_accessor) {
+            ReflectorModule::set_status(fighter.module_accessor, 0, ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
+        }
+        fighter.FighterStatusGuard__set_just_shield_scale();
+    }
+    // Also Original, but moved down
     let hit_stop_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), 0x20d241cd64);
     ShieldModule::set_hit_stop_mul(fighter.module_accessor, hit_stop_mul);
     let recovery_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("guard_off_disable_shield_recovery"));

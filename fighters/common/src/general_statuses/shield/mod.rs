@@ -11,6 +11,6 @@ pub fn install() {
     //guard::install();
     guard_damage::install();
     guard_off::install();
-    //guard_on::install();
-    //misc::install();
+    guard_on::install();
+    misc::install();
 }

@@ -95,16 +95,6 @@ unsafe fn status_GuardOff_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon18sub_guard_off_uniqEN3lib8L2CValueE")]
 unsafe fn sub_guard_off_uniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
     if arg.get_bool() {
-        let just_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
-        if 0 < just_frame {
-            WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
-            if (just_frame - 1) == 0 {
-                ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, app::ShieldStatus(*SHIELD_STATUS_NONE), 0);
-                let type_of_guard = app::FighterUtil::get_shield_type_of_guard(fighter.global_table[0x2].get_i32()) as i32;
-                ShieldModule::set_shield_type(fighter.module_accessor, app::ShieldType(type_of_guard), *FIGHTER_SHIELD_KIND_GUARD, 0);
-                ReflectorModule::set_status(fighter.module_accessor, 0, app::ShieldStatus(*SHIELD_STATUS_NONE), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
-            }
-        }
         let cancel_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_OFF_WORK_INT_CANCEL_FRAME);
         if 0 < cancel_frame {
             WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_OFF_WORK_INT_CANCEL_FRAME);
@@ -128,10 +118,6 @@ unsafe fn status_GuardOff_Common(fighter: &mut L2CFighterCommon) -> L2CValue {
     for x in enables.iter() {
         WorkModule::enable_transition_term(fighter.module_accessor, *x);
     }
-    let shield_just_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("shield_just_frame")) as f32;
-    let just_shield_check_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("just_shield_check_frame"), 0);
-    let just_frame = ((shield_just_frame * just_shield_check_frame) + 0.5).round() as i32;
-    WorkModule::set_int(fighter.module_accessor, just_frame, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
     let guard_off_cancel_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("guard_off_cancel_frame"));
     WorkModule::set_int(fighter.module_accessor, guard_off_cancel_frame, *FIGHTER_STATUS_GUARD_OFF_WORK_INT_CANCEL_FRAME);
     let fighter_guard_off_cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new("guard_off"), true);
