@@ -27,7 +27,7 @@ print(log_output)
 all_lines = log_output.split("\n")
 cleaned_lines = set()
 for line in all_lines:
-    if line != "" and "Merge pull" in line and not "Merge branch 'dev'" in line and not "from HDR-Development/dev" in line:
+    if line != "" and "Merge pull" in line and not "Merge branch 'dev'" in line:# and not "from HDR-Development/devkit" in line:
         cleaned_lines.add(line.strip())
 
 
