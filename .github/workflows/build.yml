@@ -118,7 +118,7 @@ jobs:
       uses: dev-drprasad/delete-older-releases@v0.2.0
       with:
         keep_latest: 0
-        #delete_tags: true
+        delete_tags: true
         delete_tag_pattern: nightly # defaults to ""
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -155,7 +155,7 @@ jobs:
       uses: dev-drprasad/delete-older-releases@v0.2.0
       with:
         keep_latest: 0
-        #delete_tags: true
+        delete_tags: true
         delete_tag_pattern: beta # defaults to ""
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
