@@ -3,18 +3,9 @@ name: rust build
 on:
   push:
     branches: [ dev, stable ] # CHANGE "master" TO "main" IF THAT IS THE NAME OF YOUR MAIN BRANCH!
-    paths-ignore:
-      - '**/README.md'
-      - '**/.gitignore'
-      - 'scripts/**'
   pull_request:
     branches: [ dev, stable ]
-    paths-ignore:
-      - '**/README.md'
-      - '**/.gitignore'
-      - 'scripts/**'
       
-
 jobs:
   # build the plugin
   plugin_build:
@@ -77,19 +68,22 @@ jobs:
       if: (github.event.pull_request.base.ref == 'stable') || (github.ref == 'refs/heads/dev' && github.event.pull_request.base.ref == '')
       shell: bash
       run: |
-        cd scripts && python3 make_changelog.py stable && cd ..
+        cd scripts && python3 make_changelog.py stable origin && cd ..
     
     # if this is a new beta BUILD, make changelog against the last beta
     - name: make beta build changelog file
       id: stable_changelog
       if: github.ref == 'refs/heads/stable'
       shell: bash
+      # do black magic to get the most recently tagged beta commit short hash, and then make the changelog file
       run: |
-        cd scripts && export LAST_BETA=$(python3 get_last_beta.py) && echo $LAST_BETA && python3 make_changelog.py $LAST_BETA && cd ..
+        cd scripts && export LAST_BETA=$(git rev-parse --short $(echo $(git for-each-ref --sort=-taggerdate --count=1 refs/tags/beta*) | head -n1 | awk '{print $1;}')) \
+        && echo $LAST_BETA && python3 make_changelog.py $LAST_BETA local && cd ..
 
     # build the project
     - run: |
-        export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="${{ steps.version.outputs.version_string }}" && cd scripts && python3 make_dist.py publish && cd ..
+        export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="${{ steps.version.outputs.version_string }}" \
+        && cd scripts && python3 make_dist.py publish && cd ..
       env:
         HOME: /root
     - name: Upload hdr-switch artifact

@@ -38,7 +38,7 @@ fn get_version(current: &Version, release: Option<&Version>, prerelease: Option<
 pub fn check_for_updates() {
     unsafe { // Ryujinx skip based on text addr
         let text_addr = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64;
-        if text_addr == 0x8400000 {
+        if text_addr == 0x8004000 {
             println!("HDR cannot auto-update on Ryujinx");
             return;
         }
