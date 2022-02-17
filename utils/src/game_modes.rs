@@ -53,7 +53,7 @@ fn detect_new_game(game_state_ptr: u64) -> bool {
 unsafe fn on_rule_select_hook(_: &skyline::hooks::InlineCtx) {
     unsafe { // Ryujinx handle separately
         let text_addr = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64;
-        if text_addr == 0x8400000 {
+        if text_addr == 0x8004000 {
             if ninput::any::is_down(ninput::Buttons::R) && ninput::any::is_down(ninput::Buttons::L) {
                 CURRENT_CUSTOM_MODE = Some(CustomMode::SmashballTag);
             } else {
