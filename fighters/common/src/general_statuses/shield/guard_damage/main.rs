@@ -180,7 +180,7 @@ unsafe fn status_GuardDamage_common(fighter: &mut L2CFighterCommon, arg: L2CValu
         let shield_lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_LR);
         ColorBlendModule::set_last_attack_direction(fighter.module_accessor, &Vector3f{x: -shield_lr, y: 0.0, z: 0.0});
         EffectModule::req_common(fighter.module_accessor, Hash40::new("just_shield"), 0.0);
-        if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_GUARD_OFF {
+        if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_GUARD_ON {
             EffectModule::req_screen(fighter.module_accessor, Hash40::new_raw(0x12698ccf2b), false, false, false);
         }
         let shield_se = app::FighterUtil::get_just_shield_se(fighter.global_table[0x2].get_i32());
