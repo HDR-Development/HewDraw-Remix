@@ -310,8 +310,6 @@ mod offsets_impl {
 
     const KILL_ZOOM_THROW_OFFSET_FROM_START: usize = 0x20;
 
-    const GET_GAME_STATE_OFFSET_FROM_START: usize = 0x28;
-
     fn offset_from_adrp(adrp_offset: usize) -> usize {
         unsafe {
             let adrp = *offset_to_addr::<u32>(adrp_offset);
@@ -359,7 +357,7 @@ mod offsets_impl {
                 once_per_game_frame: 0,
                 on_rule_select: 0,
                 global_frame_counter: 0,
-                get_match_mode: 0
+                get_match_mode: 0,
                 kill_zoom_regular: 0,
                 kill_zoom_throw: 0
             };
@@ -479,6 +477,7 @@ mod offsets_impl {
     #[export_name = "offsets_get_match_mode"]
     pub fn get_match_mode() -> usize {
         CORE_OFFSETS.get_match_mode
+    }
 
     #[export_name = "offsets_kill_zoom_regular"]
     pub fn kill_zoom_regular() -> usize {
