@@ -8,8 +8,9 @@ wording:
   patch:
     - (bugfix)
     - (balance)
+    - (refactor)
   minor:
-    - (rework)
+    - (character-rework)
     - (feature)
   major:
     - (major)

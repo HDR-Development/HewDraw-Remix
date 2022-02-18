@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: deepakputhraya/action-pr-title@master
       with:
-        allowed_prefixes: '(bugfix),(balance),(rework),(feature),(major)' # title should start with the given prefix
+        allowed_prefixes: '(bugfix),(balance),(char-rework),(feature),(major)' # title should start with the given prefix
         prefix_case_sensitive: false # title prefix are case insensitive
   comment_bad_pr:
     runs-on: ubuntu-latest
@@ -23,7 +23,12 @@ jobs:
         with:
           message: |
             This PR has no versioning info! Reopen this PR with a title that starts with one of the following options:
-            `(bugfix)`, `(balance)`, `(rework)`, `(feature)`, or `(major)`. 
+            `(bugfix)` - fixing a bug, or making a minor improvement
+            `(balance)` - relatively small balance changes
+            `(refactor)` - a code refactor/addition/cleanup that should have no significant gameplay impact
+            `(character-rework)` - somewhat significant rework of one or more characters 
+            `(feature)` - a new feature
+            `(major)` - a major addition/change (this should be extremely rare)
             
             Example title:
             `(bugfix) Fix falling through the floor on training reset`
