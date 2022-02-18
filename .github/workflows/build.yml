@@ -50,7 +50,7 @@ jobs:
     # if this is a nightly BUILD (aka, accepted PR to dev), OR a beta PR (a PR into stable) make changelog against stable
     - name: make nightly build or beta pr changes file
       id: nightly_changelog
-      if: steps.get_release_type.outputs.release_type == "nightly"
+      if: steps.get_release_type.outputs.release_type == 'nightly'
       shell: bash
       run: |
         cd scripts && python3 make_changelog.py stable origin && cd ..
@@ -58,7 +58,7 @@ jobs:
     # if this is a new beta BUILD, make changelog against the last beta
     - name: make beta build changelog file
       id: stable_changelog
-      if: steps.get_release_type.outputs.release_type == "beta"
+      if: steps.get_release_type.outputs.release_type == 'beta'
       shell: bash
       # do black magic to get the most recently tagged beta commit short hash, and then make the changelog file
       run: |
@@ -68,7 +68,7 @@ jobs:
     # if this is a new release BUILD, make changelog against the last beta
     - name: make beta build changelog file
       id: stable_changelog
-      if: steps.get_release_type.outputs.release_type == "release"
+      if: steps.get_release_type.outputs.release_type == 'release'
       shell: bash
       # do black magic to get the most recently tagged beta commit short hash, and then make the changelog file
       run: |
