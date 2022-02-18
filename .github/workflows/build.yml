@@ -57,7 +57,7 @@ jobs:
     
     # if this is a new beta BUILD, make changelog against the last beta
     - name: make beta build changelog file
-      id: stable_changelog
+      id: beta_changelog
       if: steps.get_release_type.outputs.release_type == 'beta'
       shell: bash
       # do black magic to get the most recently tagged beta commit short hash, and then make the changelog file
@@ -67,7 +67,7 @@ jobs:
 
     # if this is a new release BUILD, make changelog against the last beta
     - name: make beta build changelog file
-      id: stable_changelog
+      id: release_changelog
       if: steps.get_release_type.outputs.release_type == 'release'
       shell: bash
       # do black magic to get the most recently tagged beta commit short hash, and then make the changelog file
