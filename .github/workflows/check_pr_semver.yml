@@ -30,3 +30,4 @@ jobs:
             
             Example title:
             (bugfix) Fix falling through the floor on training reset'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
