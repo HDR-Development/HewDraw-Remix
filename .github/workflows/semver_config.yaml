@@ -1,5 +1,6 @@
 force:
   strict: true
+  debug: true
 wording:
   patch:
     - (bugfix)
