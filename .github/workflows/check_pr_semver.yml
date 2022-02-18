@@ -22,12 +22,9 @@ jobs:
       - uses: mshick/add-pr-comment@v1
         with:
           message: |
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: 'This PR has no versioning info! Reopen this PR with a title that starts with one of the following options:
-            (bugfix), (balance), (rework), (feature), or (major). 
+            This PR has no versioning info! Reopen this PR with a title that starts with one of the following options:
+            `(bugfix)`, `(balance)`, `(rework)`, `(feature)`, or `(major)`. 
             
             Example title:
-            (bugfix) Fix falling through the floor on training reset'
+            `(bugfix) Fix falling through the floor on training reset`
           repo-token: ${{ secrets.GITHUB_TOKEN }}
