@@ -109,6 +109,8 @@ jobs:
       uses: paulhatch/semantic-version@v4.0.2
       id: semantic-version
       with:
+        # The prefix to use to identify tags
+        tag_prefix: "nightly v"
         # A string which, if present in a git commit, indicates that a change represents a
         # major (breaking) change, supports regular expressions wrapped with '/'
         major_pattern: '//^(\(bugfix\)|\(balance\)|\(refactor\))$//'
