@@ -35,6 +35,35 @@ jobs:
       with: 
         fetch-depth: 0
 
+    # set if this is a nightly build
+    - name: set if nightly build
+      id: set_if_nightly
+      if: github.event.pull_request.base.ref == 'stable' || (github.ref == 'refs/heads/dev' && github.event.pull_request.base.ref == '')
+      shell: bash
+      run: >
+        export BUILD_TYPE = "nightly"
+
+    # set if this is a beta build
+    - name: set if beta build
+      id: set_if_beta
+      if: github.ref == 'refs/heads/stable'
+      shell: bash
+      # if we didnt already set that its a nightly, then set beta
+      run: >
+        if [[ -z "$BUILD_TYPE" ]]; then
+          export BUILD_TYPE = "beta"
+        fi
+
+    # check if we need to default to a release build
+    - name: check if default to release build
+      id: set_if_release
+      shell: bash
+      # if it wasnt a nightly or a beta, then set release
+      run: >
+        if [[ -z "$BUILD_TYPE" ]]; then
+          export BUILD_TYPE = "release"
+        fi
+
     # check what kind of build this is
     - name: determine if release, beta, or nightly
       id: get_release_type
@@ -47,6 +76,8 @@ jobs:
         else 
           echo "##[set-output name=release_type;]$(echo release)"; 
         fi
+        echo "##[set-output name=release_type;]$(echo $BUILD_TYPE)"; 
+
     
     # if this is a nightly BUILD (aka, accepted PR to dev), OR a beta PR (a PR into stable) make changelog against stable
     - name: make nightly build or beta pr changes file
@@ -83,9 +114,10 @@ jobs:
       with:
         config_file: semver_config.yaml
         repository_local: true
-    - name: Echo Semver
+
+    - name: Decide if PR version or real semver for build
       run: |
-        echo "Semantic version detected: ${{ steps.semver.outputs.semantic_version }}"
+        echo "##[set-output name=commit_hash;]$(echo $(git rev-parse --short HEAD))"
 
     # make the version string
     - name: collect version string
