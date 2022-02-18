@@ -1,0 +1,11 @@
+on:
+  workflow_run:
+    workflows:
+      - check_pr_semver  # Replace with your test workflow's name
+    types: [ completed ]
+
+jobs:
+  comment-failure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: quipper/comment-failure-action@v0.1.1
