@@ -19,16 +19,14 @@ jobs:
     needs: [validate_semver]
     if: always() && (needs.validate_semver.result == 'failure')
     steps:
-      - uses: actions/github-script@v5
+      - uses: mshick/add-pr-comment@v1
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'This PR has no versioning info! Reopen this PR with a title that starts with one of the following options:\n
-                (bugfix), (balance), (rework), (feature), or (major). \n
-                Example title:
-                  (bugfix) Fix falling through the floor on training reset'
-            })
+          message: |
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: 'This PR has no versioning info! Reopen this PR with a title that starts with one of the following options:
+            (bugfix), (balance), (rework), (feature), or (major). 
+            
+            Example title:
+            (bugfix) Fix falling through the floor on training reset'
