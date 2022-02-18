@@ -1,0 +1,16 @@
+name: rust build
+
+on:
+  pull_request:
+    branches: [ dev ]
+
+        
+jobs:
+  # validate the PR title
+  validate_pr_title:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: deepakputhraya/action-pr-title@v1
+      with:
+        allowed_prefixes: '(bugfix),(balance),(rework),(feature),(major)' # title should start with the given prefix
+        prefix_case_sensitive: false # title prefix are case insensitive
