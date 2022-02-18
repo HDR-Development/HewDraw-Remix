@@ -41,7 +41,7 @@ jobs:
       if: github.event.pull_request.base.ref == 'stable' || (github.ref == 'refs/heads/dev' && github.event.pull_request.base.ref == '')
       shell: bash
       run: >
-        export BUILD_TYPE = "nightly"
+        export BUILD_TYPE="nightly"
 
     # set if this is a beta build
     - name: set if beta build
@@ -51,7 +51,7 @@ jobs:
       # if we didnt already set that its a nightly, then set beta
       run: >
         if [[ -z "$BUILD_TYPE" ]]; then
-          export BUILD_TYPE = "beta"
+          export BUILD_TYPE="beta"
         fi
 
     # check if we need to default to a release build
@@ -61,7 +61,7 @@ jobs:
       # if it wasnt a nightly or a beta, then set release
       run: >
         if [[ -z "$BUILD_TYPE" ]]; then
-          export BUILD_TYPE = "release"
+          export BUILD_TYPE="release"
         fi
 
     # collect what kind of build this is into the single outputs field
