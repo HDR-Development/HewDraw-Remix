@@ -100,20 +100,34 @@ jobs:
         cd scripts && export LAST_RELEASE=$(git rev-parse --short $(echo $(git for-each-ref --sort=-taggerdate --count=1 refs/tags/release*) | head -n1 | awk '{print $1;}')) \
         && echo $LAST_RELEASE && python3 make_changelog.py $LAST_RELEASE local && cd ..
 
-    # generate semantic version
-    - name: Semver run
-      id: semver
-      uses: lukaszraczylo/semver-generator@v1
+    - name: semantic version
+      uses: paulhatch/semantic-version@v4.0.2
+      id: semantic-version
       with:
-        config_file: semver_config.yaml
-        repository_local: true
+        # A string which, if present in a git commit, indicates that a change represents a
+        # major (breaking) change, supports regular expressions wrapped with '/'
+        major_pattern: "/^(\(bugfix\)|\(balance\)|\(refactor\))$/"
+        # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
+        minor_pattern: "/^(\(char-rework\)|\(feature\))$/"
+        # A string to determine the format of the version output
+        format: "1.${major}.${minor}"
+        # Optional path to check for changes. If any changes are detected in the path the
+        # 'changed' output will true. Enter multiple paths separated by spaces.
+        change_path: "src/my-service"
+        # Named version, will be used as suffix for name version tag
+        namespace: my-service
+        # Indicate whether short tags like 'v1' should be supported. If false only full
+        # tags like 'v1.0.0' will be recognized.
+        short_tags: true
+        # If this is set to true, *every* commit will be treated as a new version.
+        bump_each_commit: false
 
     # make the version string
     - name: collect version string
       id: version
       shell: bash
       run: |
-        echo "##[set-output name=version_string;]$(echo ${{ steps.semver.outputs.semantic_version }}+$(git rev-parse --short HEAD))"
+        echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}+$(git rev-parse --short HEAD))"
         echo "##[set-output name=commit_hash;]$(echo $(git rev-parse --short HEAD))"
         echo $(git rev-parse --short HEAD)
         echo target ref: ${{ github.event.pull_request.base.ref }}
