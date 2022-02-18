@@ -75,7 +75,7 @@ jobs:
     - name: output build type
       id: display_type
       run: >
-        echo "${{ steps.get_release_type.outputs.release_type }}"
+        echo "${{ steps.get_release_type.outputs.release_type }}" 
     
     # if this is a nightly BUILD (aka, accepted PR to dev), OR a beta PR (a PR into stable) make changelog against stable
     - name: make nightly build or beta pr changes file
@@ -129,6 +129,7 @@ jobs:
       run: |
         echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}+$(git rev-parse --short HEAD))"
         echo "##[set-output name=commit_hash;]$(echo $(git rev-parse --short HEAD))"
+        echo "generated semver text was: ${{ steps.semantic-version.outputs.version }}"
         echo $(git rev-parse --short HEAD)
         echo target ref: ${{ github.event.pull_request.base.ref }}
         echo head ref: ${{ github.ref }}
