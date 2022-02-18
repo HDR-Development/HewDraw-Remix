@@ -3,7 +3,7 @@ name: comment failed check
 on:
   workflow_run:
     workflows:
-      - check_pr_semver  # Replace with your test workflow's name
+      - validate_semver  # Replace with your test workflow's name
     types: [ completed ]
 
 jobs:
