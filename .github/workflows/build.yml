@@ -103,7 +103,7 @@ jobs:
     # generate semantic version
     - name: Semver run
       id: semver
-      uses: lukaszraczylo/semver-generator@v1
+      uses: lukaszraczylo/semver-generator@v1.4.6
       with:
         config_file: semver_config.yaml
         repository_local: true
