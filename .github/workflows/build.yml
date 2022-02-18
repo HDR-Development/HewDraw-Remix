@@ -64,18 +64,11 @@ jobs:
           export BUILD_TYPE = "release"
         fi
 
-    # check what kind of build this is
+    # collect what kind of build this is into the single outputs field
     - name: determine if release, beta, or nightly
       id: get_release_type
       shell: bash
       run: >
-        if [[ ${{github.event.pull_request.base.ref}} == 'stable' || (${{github.ref}} == 'refs/heads/dev' && ${{github.event.pull_request.base.ref}} == '') ]]; then 
-          echo "##[set-output name=release_type;]$(echo nightly)"; 
-        elif [[ ${{github.ref}} == 'refs/heads/stable' ]]; then 
-          echo "##[set-output name=release_type;]$(echo beta)"; 
-        else 
-          echo "##[set-output name=release_type;]$(echo release)"; 
-        fi
         echo "##[set-output name=release_type;]$(echo $BUILD_TYPE)"; 
 
     
