@@ -1,3 +1,5 @@
+name: comment failed check
+
 on:
   workflow_run:
     workflows:

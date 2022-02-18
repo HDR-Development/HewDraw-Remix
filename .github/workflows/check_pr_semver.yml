@@ -1,4 +1,4 @@
-name: rust build
+name: validate pr title semver
 
 on:
   pull_request:
