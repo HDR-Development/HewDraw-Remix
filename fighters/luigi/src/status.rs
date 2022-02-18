@@ -78,7 +78,9 @@ unsafe extern "C" fn special_s_charge_main_loop(fighter: &mut L2CFighterCommon) 
         && fighter.is_button_on(Buttons::Guard | Buttons::GuardHold) {
             VarModule::on_flag(fighter.battle_object, vars::luigi::IS_MISFIRE_STORED);
             let mult = VarModule::get_float(fighter.battle_object, vars::luigi::MISFIRE_DAMAGE_MULTIPLIER);
-            VarModule::set_float(fighter.battle_object, vars::luigi::MISFIRE_DAMAGE_MULTIPLIER, (mult * 0.95).max(0.8));
+            let diminish_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "misfire.storage_diminish_mul");
+            let diminish_min = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "misfire.storage_diminish_min");
+            VarModule::set_float(fighter.battle_object, vars::luigi::MISFIRE_DAMAGE_MULTIPLIER, (mult * diminish_mul).max(diminish_min));
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE);
             let smoke_eff = VarModule::get_int(fighter.battle_object, vars::luigi::CHARGE_SMOKE_EFFECT_HANDLE);
             let pulse_eff = VarModule::get_int(fighter.battle_object, vars::luigi::CHARGE_PULSE_EFFECT_HANDLE);

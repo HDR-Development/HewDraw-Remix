@@ -275,17 +275,17 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
         boma.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
     }
 
-    let new_status = if boma.is_cat_flag(Cat4::SpecialNCommand) {
+    let new_status = if boma.is_cat_flag(Cat1::SpecialN) {
         *FIGHTER_STATUS_KIND_SPECIAL_N
-    } else if boma.is_cat_flag(Cat1::SpecialN) {
+    } else if boma.is_cat_flag(Cat4::SpecialNCommand) {
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND
-    } else if boma.is_cat_flag(Cat4::SpecialSCommand) {
-        *FIGHTER_STATUS_KIND_SPECIAL_S
     } else if boma.is_cat_flag(Cat1::SpecialS) {
+        *FIGHTER_STATUS_KIND_SPECIAL_S
+    } else if boma.is_cat_flag(Cat4::SpecialSCommand) {
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND
-    } else if boma.is_cat_flag(Cat4::SpecialHiCommand) {
-        *FIGHTER_STATUS_KIND_SPECIAL_HI
     } else if boma.is_cat_flag(Cat1::SpecialHi) {
+        *FIGHTER_STATUS_KIND_SPECIAL_HI
+    } else if boma.is_cat_flag(Cat4::SpecialHiCommand) {
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND
     } else if boma.is_cat_flag(Cat1::SpecialLw) {
         *FIGHTER_STATUS_KIND_SPECIAL_LW
