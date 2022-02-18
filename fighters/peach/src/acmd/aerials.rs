@@ -5,11 +5,11 @@ unsafe fn peach_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.333);
+        MotionModule::set_rate(boma, 3.0);
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
+        MotionModule::set_rate(boma, 1.0);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
@@ -90,11 +90,11 @@ unsafe fn peach_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.75);
+        MotionModule::set_rate(boma, 1.333);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
+        MotionModule::set_rate(boma, 1.0);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {

@@ -57,7 +57,7 @@ unsafe fn power_wave_dash_cancel_super_cancels(fighter: &mut L2CFighterCommon, b
         if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_ATTACK_S3 {
             if frame > 36.0 {
                 if situation_kind == *SITUATION_KIND_GROUND {
-                    if boma.is_cat_flag(Cat1::Walk) {
+                    if boma.is_cat_flag(Cat1::Dash) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
                     }
                 }
@@ -65,7 +65,7 @@ unsafe fn power_wave_dash_cancel_super_cancels(fighter: &mut L2CFighterCommon, b
         } else {
             if frame > 33.0 {
                 if situation_kind == *SITUATION_KIND_GROUND {
-                    if boma.is_cat_flag(Cat1::Walk) {
+                    if boma.is_cat_flag(Cat1::Dash) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
                     }
                 }
@@ -340,13 +340,13 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
                 if boma.is_input_jump() {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT,true);
                 }
-                if boma.is_cat_flag(Cat1::Walk) {
+                if boma.is_cat_flag(Cat1::Dash) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH,false);
                 }
             }
             if status_kind == *FIGHTER_STATUS_KIND_ATTACK_S3
                 && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && frame > 13.0 {
-                if boma.is_cat_flag(Cat1::Walk) &&  !VarModule::is_flag(boma.object(), vars::common::MAGIC_CANCEL_ADDITIONAL) {
+                if boma.is_cat_flag(Cat1::Dash) &&  !VarModule::is_flag(boma.object(), vars::common::MAGIC_CANCEL_ADDITIONAL) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH,false);
                 }
             }

@@ -24,10 +24,13 @@ pub mod misc;
 pub mod general_statuses;
 pub mod function_hooks;
 pub mod shoto_status;
+// pub mod tag;
+
 
 pub fn install() {
     djc::install();
     misc::install();
+    // tag::install();
     general_statuses::install();
     function_hooks::install();
 }
