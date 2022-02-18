@@ -106,9 +106,9 @@ jobs:
       with:
         # A string which, if present in a git commit, indicates that a change represents a
         # major (breaking) change, supports regular expressions wrapped with '/'
-        major_pattern: "/^(\(bugfix\)|\(balance\)|\(refactor\))$/"
+        major_pattern: "//^(\(bugfix\)|\(balance\)|\(refactor\))$//"
         # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
-        minor_pattern: "/^(\(char-rework\)|\(feature\))$/"
+        minor_pattern: "//^(\(char-rework\)|\(feature\))$//"
         # A string to determine the format of the version output
         format: "1.${major}.${minor}"
         # Optional path to check for changes. If any changes are detected in the path the
