@@ -35,16 +35,17 @@ jobs:
       with: 
         fetch-depth: 0
 
+    # check what kind of build this is
     - name: determine if release, beta, or nightly
       id: get_release_type
       shell: bash
-      run: |
-        if [[ ${{github.event.pull_request.base.ref}} == 'stable' || (${{github.ref}} == 'refs/heads/dev' && ${{github.event.pull_request.base.ref}} == '') ]]; then \
-          echo "##[set-output name=release_type;]$(echo nightly)"; \
-        elif [[ ${{github.ref}} == 'refs/heads/stable' ]]; then \
-          echo "##[set-output name=release_type;]$(echo beta)"; \
-        else \
-          echo "##[set-output name=release_type;]$(echo release)"; \
+      run: >
+        if [[ ${{github.event.pull_request.base.ref}} == 'stable' || (${{github.ref}} == 'refs/heads/dev' && ${{github.event.pull_request.base.ref}} == '') ]]; then 
+          echo "##[set-output name=release_type;]$(echo nightly)"; 
+        elif [[ ${{github.ref}} == 'refs/heads/stable' ]]; then 
+          echo "##[set-output name=release_type;]$(echo beta)"; 
+        else 
+          echo "##[set-output name=release_type;]$(echo release)"; 
         fi
     
     # if this is a nightly BUILD (aka, accepted PR to dev), OR a beta PR (a PR into stable) make changelog against stable
