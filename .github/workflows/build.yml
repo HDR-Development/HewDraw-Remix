@@ -38,6 +38,7 @@ jobs:
     # collect what kind of build this is into the single outputs field
     - name: determine if release, beta, or nightly
       id: get_release_type
+      if: github.event.workflow_run.event == 'pull_request'
       shell: bash
       run: >
         echo "##[set-output name=release_type;]$(python3 scripts/get_build_type.py ref:${{github.ref}} prbase:${{github.event.pull_request.base.ref}})"; 
@@ -66,7 +67,7 @@ jobs:
         && echo $LAST_BETA && python3 make_changelog.py $LAST_BETA local && cd ..
 
     # if this is a new release BUILD, make changelog against the last beta
-    - name: make beta build changelog file
+    - name: make release build changelog file
       id: release_changelog
       if: steps.get_release_type.outputs.release_type == 'release'
       shell: bash
