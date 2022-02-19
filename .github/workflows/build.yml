@@ -40,10 +40,10 @@ jobs:
       id: set_if_nightly
       if: github.event.pull_request.base.ref == 'stable' || (github.ref == 'refs/heads/dev' && github.event.pull_request.base.ref == '')
       shell: bash
-      run: >
-        echo "nightly" > build_type.txt;
-        echo "its a nightly build!";
-        more build_type.txt;
+      run: |
+        echo "nightly" > build_type.txt
+        echo "its a nightly build!"
+        more build_type.txt
         
 
     # set if this is a beta build
