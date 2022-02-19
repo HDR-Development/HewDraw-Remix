@@ -758,7 +758,7 @@ pub fn install() {
         //status_turn_dash_sub,
 
         status_DashCommon,
-        //status_Dash_sub,
+        status_Dash_sub,
         status_dash_main,
         status_dash_main_common
     );
