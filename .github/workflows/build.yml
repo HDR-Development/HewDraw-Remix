@@ -41,9 +41,9 @@ jobs:
       if: github.event.pull_request.base.ref == 'stable' || (github.ref == 'refs/heads/dev' && github.event.pull_request.base.ref == '')
       shell: bash
       run: >
-        echo "nightly" > build_type.txt
-        echo "its a nightly build!"
-        more build_type.txt
+        echo "nightly" > build_type.txt;
+        echo "its a nightly build!";
+        more build_type.txt;
         
 
     # set if this is a beta build
@@ -56,7 +56,7 @@ jobs:
         if [[ ! -f "build_type.txt" ]]; then
           echo "beta" > build_type.txt
           echo "its a beta build"
-        fi
+        fi;
         more build_type.txt
 
     # check if we need to default to a release build
@@ -68,7 +68,7 @@ jobs:
         if [[ ! -f "build_type.txt" ]]; then
           echo "release" > build_type.txt
           echo "its a release build"
-        fi
+        fi;
         more build_type.txt
 
     # collect what kind of build this is into the single outputs field
