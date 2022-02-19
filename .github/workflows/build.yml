@@ -43,6 +43,8 @@ jobs:
       run: >
         echo "nightly" > build_type.txt
         echo "its a nightly build!"
+        more build_type.txt
+        
 
     # set if this is a beta build
     - name: set if beta build
@@ -55,6 +57,7 @@ jobs:
           echo "beta" > build_type.txt
           echo "its a beta build"
         fi
+        more build_type.txt
 
     # check if we need to default to a release build
     - name: check if default to release build
@@ -66,13 +69,14 @@ jobs:
           echo "release" > build_type.txt
           echo "its a release build"
         fi
+        more build_type.txt
 
     # collect what kind of build this is into the single outputs field
     - name: determine if release, beta, or nightly
       id: get_release_type
       shell: bash
       run: >
-        echo "##[set-output name=release_type;]$(echo $(more build_type.txt))"; 
+        echo "##[set-output name=release_type;]$(more build_type.txt)"; 
         echo "Build type: $(more build_type.txt)"
 
     - name: output build type
