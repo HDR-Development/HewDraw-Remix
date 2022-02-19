@@ -35,30 +35,31 @@ jobs:
       with: 
         fetch-depth: 0
 
+    # collect what kind of build this is into the single outputs field
     - name: determine if release, beta, or nightly
       id: get_release_type
+      if: github.event.workflow_run.event != 'pull_request'
       shell: bash
-      run: |
-        if [[ ${{github.event.pull_request.base.ref}} == 'stable' || (${{github.ref}} == 'refs/heads/dev' && ${{github.event.pull_request.base.ref}} == '') ]]; then \
-          echo "##[set-output name=release_type;]$(echo nightly)"; \
-        elif [[ ${{github.ref}} == 'refs/heads/stable' ]]; then \
-          echo "##[set-output name=release_type;]$(echo beta)"; \
-        else \
-          echo "##[set-output name=release_type;]$(echo release)"; \
-        fi
+      run: >
+        echo "##[set-output name=release_type;]$(python3 scripts/get_build_type.py ref:${{github.ref}} prbase:${{github.event.pull_request.base.ref}})"; 
+
+    - name: output build type
+      id: display_type
+      run: >
+        echo "${{ steps.get_release_type.outputs.release_type }}" 
     
     # if this is a nightly BUILD (aka, accepted PR to dev), OR a beta PR (a PR into stable) make changelog against stable
     - name: make nightly build or beta pr changes file
       id: nightly_changelog
-      if: steps.get_release_type.outputs.release_type == nightly
+      if: steps.get_release_type.outputs.release_type == 'nightly'
       shell: bash
       run: |
         cd scripts && python3 make_changelog.py stable origin && cd ..
     
     # if this is a new beta BUILD, make changelog against the last beta
     - name: make beta build changelog file
-      id: stable_changelog
-      if: steps.get_release_type.outputs.release_type == beta
+      id: beta_changelog
+      if: steps.get_release_type.outputs.release_type == 'beta'
       shell: bash
       # do black magic to get the most recently tagged beta commit short hash, and then make the changelog file
       run: |
@@ -66,33 +67,29 @@ jobs:
         && echo $LAST_BETA && python3 make_changelog.py $LAST_BETA local && cd ..
 
     # if this is a new release BUILD, make changelog against the last beta
-    - name: make beta build changelog file
-      id: stable_changelog
-      if: steps.get_release_type.outputs.release_type == release
+    - name: make release build changelog file
+      id: release_changelog
+      if: steps.get_release_type.outputs.release_type == 'release'
       shell: bash
       # do black magic to get the most recently tagged beta commit short hash, and then make the changelog file
       run: |
         cd scripts && export LAST_RELEASE=$(git rev-parse --short $(echo $(git for-each-ref --sort=-taggerdate --count=1 refs/tags/release*) | head -n1 | awk '{print $1;}')) \
         && echo $LAST_RELEASE && python3 make_changelog.py $LAST_RELEASE local && cd ..
 
-    # generate semantic version
-    - name: Semver run
-      id: semver
-      uses: lukaszraczylo/semver-generator@v1
-      with:
-        config_file: semver_config.yaml
-        repository_local: true
-    - name: Echo Semver
+    - name: semantic version
+      id: semantic-version
+      shell: bash
       run: |
-        echo "Semantic version detected: ${{ steps.semver.outputs.semantic_version }}"
+        echo "##[set-output name=version;]$(python3 scripts/generate_version_string.py)"; 
 
     # make the version string
     - name: collect version string
       id: version
       shell: bash
       run: |
-        echo "##[set-output name=version_string;]$(echo ${{ steps.semver.outputs.semantic_version }}+$(git rev-parse --short HEAD))"
+        echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}+$(git rev-parse --short HEAD))"
         echo "##[set-output name=commit_hash;]$(echo $(git rev-parse --short HEAD))"
+        echo "generated semver text was: ${{ steps.semantic-version.outputs.version }}"
         echo $(git rev-parse --short HEAD)
         echo target ref: ${{ github.event.pull_request.base.ref }}
         echo head ref: ${{ github.ref }}
@@ -135,7 +132,7 @@ jobs:
       uses: dev-drprasad/delete-older-releases@v0.2.0
       with:
         keep_latest: 0
-        #delete_tags: true
+        delete_tags: true
         delete_tag_pattern: nightly # defaults to ""
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -172,7 +169,7 @@ jobs:
       uses: dev-drprasad/delete-older-releases@v0.2.0
       with:
         keep_latest: 0
-        #delete_tags: true
+        delete_tags: true
         delete_tag_pattern: beta # defaults to ""
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
