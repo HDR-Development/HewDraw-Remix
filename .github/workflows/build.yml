@@ -35,13 +35,6 @@ jobs:
       with: 
         fetch-depth: 0
 
-    # get the build type
-    - name: get build type with script
-      id: build_type_script
-      shell: bash
-      run: |
-        echo
-
     # collect what kind of build this is into the single outputs field
     - name: determine if release, beta, or nightly
       id: get_release_type
