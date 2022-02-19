@@ -19,4 +19,8 @@ if ref == 'refs/heads/stable':
     print("beta")
     exit()
 
+if "refs/pull" in ref:
+    print("pull_request")
+    exit()
+
 print("release")
