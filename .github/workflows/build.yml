@@ -76,23 +76,10 @@ jobs:
         && echo $LAST_RELEASE && python3 make_changelog.py $LAST_RELEASE local && cd ..
 
     - name: semantic version
-      uses: paulhatch/semantic-version@v4.0.2
       id: semantic-version
-      with:
-        # The prefix to use to identify tags
-        tag_prefix: "nightly v"
-        # A string which, if present in a git commit, indicates that a change represents a
-        # major (breaking) change, supports regular expressions wrapped with '/'
-        major_pattern: '//^(\(bugfix\)|\(balance\)|\(refactor\))$//'
-        # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
-        minor_pattern: '//^(\(char-rework\)|\(feature\))$//'
-        # A string to determine the format of the version output
-        format: "1.${major}.${minor}"
-        # Indicate whether short tags like 'v1' should be supported. If false only full
-        # tags like 'v1.0.0' will be recognized.
-        short_tags: true
-        # If this is set to true, *every* commit will be treated as a new version.
-        bump_each_commit: false
+      shell: bash
+      run: |
+        echo "##[set-output name=version;]$(python3 scripts/generate_version_string.py)"; 
 
     # make the version string
     - name: collect version string

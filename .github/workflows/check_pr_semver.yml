@@ -28,6 +28,7 @@ jobs:
             `(refactor)` - a code refactor/addition/cleanup that should have no significant gameplay impact
             `(char-rework)` - somewhat significant rework of one or more characters 
             `(feature)` - a new feature
+            `(major)` - a major change to the project or gameplay
             
             Example title:
             `(bugfix) Fix falling through the floor on training reset`
