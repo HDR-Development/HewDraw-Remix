@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 import shutil, os, sys, pkgutil
 
+debug = False
+if len(sys.argv) > 1:
+    debug = True
+
 major = 0
 minor = 0
 patch = 0
@@ -21,18 +25,23 @@ for line in pkgutil.run_command("git log --oneline").split("\n"):
             major += 1
             minor = 0
             patch = 0
-            print(commit_body)
-            print(str(major) + "." + str(minor) + "." + str(patch))
+            if debug:
+                print(commit_body)
+                print(str(major) + "." + str(minor) + "." + str(patch))
         elif any(minor_term in commit_body for minor_term in minor_terms):
             minor += 1
             patch = 0
-            print(commit_body)
-            print(str(major) + "." + str(minor) + "." + str(patch))
+            if debug:
+                print(commit_body)
+                print(str(major) + "." + str(minor) + "." + str(patch))
         elif any(patch_term in commit_body for patch_term in patch_terms):
             patch += 1
-            print(commit_body)
-            print(str(major) + "." + str(minor) + "." + str(patch))
+            if debug:
+                print(commit_body)
+                print(str(major) + "." + str(minor) + "." + str(patch))
 
-print("final:")
+if debug:
+    print("final:")
+    
 print(str(major) + "." + str(minor) + "." + str(patch))
 
