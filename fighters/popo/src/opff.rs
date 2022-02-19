@@ -81,7 +81,7 @@ pub unsafe extern "Rust" fn ice_climbers_common(fighter: &mut L2CFighterCommon) 
 pub unsafe fn ice_climbers_moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     cheer_cancel(fighter, boma, status_kind);
     spotdodge_desync(boma, status_kind);
-    clear_jc_grab_flag(boma, id, status_kind);
+    //clear_jc_grab_flag(boma, id, status_kind);
     get_nana_boma(fighter, boma, id);
     nana_death_effect(fighter, boma, id, status_kind, frame);
 }
