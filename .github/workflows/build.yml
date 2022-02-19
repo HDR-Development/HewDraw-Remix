@@ -38,6 +38,7 @@ jobs:
     # collect what kind of build this is into the single outputs field
     - name: determine if release, beta, or nightly
       id: get_release_type
+      if: github.event.workflow_run.event == 'pull_request'
       shell: bash
       run: >
         echo "##[set-output name=release_type;]$(python3 scripts/get_build_type.py ref:${{github.ref}} prbase:${{github.event.pull_request.base.ref}})"; 
@@ -66,7 +67,7 @@ jobs:
         && echo $LAST_BETA && python3 make_changelog.py $LAST_BETA local && cd ..
 
     # if this is a new release BUILD, make changelog against the last beta
-    - name: make beta build changelog file
+    - name: make release build changelog file
       id: release_changelog
       if: steps.get_release_type.outputs.release_type == 'release'
       shell: bash
@@ -76,23 +77,10 @@ jobs:
         && echo $LAST_RELEASE && python3 make_changelog.py $LAST_RELEASE local && cd ..
 
     - name: semantic version
-      uses: paulhatch/semantic-version@v4.0.2
       id: semantic-version
-      with:
-        # The prefix to use to identify tags
-        tag_prefix: "nightly v"
-        # A string which, if present in a git commit, indicates that a change represents a
-        # major (breaking) change, supports regular expressions wrapped with '/'
-        major_pattern: '//^(\(bugfix\)|\(balance\)|\(refactor\))$//'
-        # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
-        minor_pattern: '//^(\(char-rework\)|\(feature\))$//'
-        # A string to determine the format of the version output
-        format: "1.${major}.${minor}"
-        # Indicate whether short tags like 'v1' should be supported. If false only full
-        # tags like 'v1.0.0' will be recognized.
-        short_tags: true
-        # If this is set to true, *every* commit will be treated as a new version.
-        bump_each_commit: false
+      shell: bash
+      run: |
+        echo "##[set-output name=version;]$(python3 scripts/generate_version_string.py)"; 
 
     # make the version string
     - name: collect version string
