@@ -20,11 +20,11 @@ fn change_version_string_hook(arg: u64, string: *const c_char) {
     let original_str = unsafe { skyline::from_c_str(string) };
     if original_str.contains("Ver.") {
         let romfs_version = match std::fs::read_to_string("mods:/ui/romfs_version.txt") {
-            Ok(version_value) => version_value,
+            Ok(version_value) => version_value.strip(),
             Err(_) => String::from("UNKNOWN ROMFS VERSION!"),
         };
         let new_str = format!(
-            "{}\nHDR Ver. {}, romfs-{}\0",
+            "{}, HDR Ver. {}, romfs-{}\0",
             original_str,
             env!("CARGO_PKG_VERSION"),
             romfs_version
