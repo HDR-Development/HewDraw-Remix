@@ -28,11 +28,14 @@ if "nodev" in sys.argv:
   allow_build_dev = False
 
 release_arg = ""
-build_type = "debug"
+build_type = "release"
 is_publish = False
 if "release" in sys.argv or "--release" in sys.argv:
   release_arg = "--release"
   build_type = "release"
+if "debug" in sys.argv or "--debug" in sys.argv:
+  release_arg = "--debug"
+  build_type = "debug"
 elif "publish" in sys.argv or "--publish" in sys.argv:
   release_arg = "--release"
   build_type = "release"
