@@ -87,7 +87,7 @@ jobs:
       id: version
       shell: bash
       run: |
-        echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}+$(git rev-parse --short HEAD))"
+        echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}-$(git rev-parse --short HEAD))"
         echo "##[set-output name=commit_hash;]$(echo $(git rev-parse --short HEAD))"
         echo "generated semver text was: ${{ steps.semantic-version.outputs.version }}"
         echo $(git rev-parse --short HEAD)
