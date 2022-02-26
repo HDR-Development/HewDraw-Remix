@@ -7,11 +7,6 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
     let mut next_status = status_kind;
 
     if boma.is_fighter() {
-        if [*FIGHTER_STATUS_KIND_RUN, *FIGHTER_STATUS_KIND_RUN_BRAKE].contains(&StatusModule::status_kind(boma)) && !CancelModule::is_enable_cancel(boma) {
-            if [*FIGHTER_STATUS_KIND_WAIT, *FIGHTER_STATUS_KIND_TURN].contains(&next_status) {
-                return 0;
-            }
-        }
         if boma.kind() == *FIGHTER_KIND_TRAIL {
             if StatusModule::status_kind(boma) == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_SEARCH {
                 if next_status == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_TURN {
@@ -37,6 +32,6 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
 
 pub fn install() {
     skyline::install_hooks!(
-        change_status_request_from_script_hook
+        //change_status_request_from_script_hook
     );
 }
