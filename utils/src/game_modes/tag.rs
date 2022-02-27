@@ -130,9 +130,10 @@ impl TagInfo {
     }
 
     /// remaining_frames: how many frames are left before a player is killed
-    pub fn update_eff(&mut self, remaining_frames: usize) {
+    pub fn update_eff(&mut self) {
         if let Some(target) = self.get_target() {
             unsafe {
+                let remaining_frames = self.target_die_frame - util::get_global_frame_count();
                 let boma = &mut *(*target).module_accessor;
                 if !EffectModule::is_exist_effect(boma, self.aura_effect_handle) {
                     self.aura_effect_handle = EffectModule::req_follow(
@@ -208,7 +209,7 @@ impl TagInfo {
             self.handle_active_id_change();
 
             if self.target_die_frame > util::get_global_frame_count() {
-                self.update_eff(self.target_die_frame - util::get_global_frame_count());
+                self.update_eff();
                 return;
             }
 
