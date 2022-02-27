@@ -13,9 +13,7 @@ unsafe fn sub_ftStatusUniqProcessGuardOn_initStatus_common(fighter: &mut L2CFigh
         let just_frame = (shield_just_frame * just_shield_check_frame + 0.5) as i32;
         WorkModule::set_int(fighter.module_accessor, just_frame, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
         ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(*SHIELD_TYPE_JUST_SHIELD), *FIGHTER_SHIELD_KIND_GUARD, 0);
-        if FighterUtil::is_valid_just_shield_reflector(fighter.module_accessor) {
-            ReflectorModule::set_status(fighter.module_accessor, 0, ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
-        }
+        ReflectorModule::set_status(fighter.module_accessor, 0, ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
         fighter.FighterStatusGuard__set_just_shield_scale();
     }
     // Also Original, but moved down
