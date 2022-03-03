@@ -24,6 +24,12 @@ mod groups {
 /// Shifts fighter's ECB (Environment Collision Box) rhombus up to around their knees when they are in the air for over
 /// a certain amount of frames *and* they are in the proper status
 unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
+    if !smash::app::sv_information::is_ready_go() {
+        GroundModule::set_rhombus_offset(boma, &Vector2f::zero());
+        VarModule::set_float(boma.object(), vars::common::ECB_Y_OFFSETS, 0.0);
+        return;
+    }
+
     if !boma.is_prev_status_one_of(&[
         *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
         *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
@@ -49,36 +55,40 @@ unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
         *FIGHTER_STATUS_KIND_BURY_WAIT
     ]) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
     && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
-    && boma.is_situation(*SITUATION_KIND_AIR)
-    && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) >= ParamModule::get_int(boma.object(), ParamType::Common, "ecb_shift_air_trans_frame")
-    && app::sv_information::is_ready_go()
     {
-        let group = ParamModule::get_int(boma.object(), ParamType::Shared, "ecb_group_shift");
-    
-        let mut sh_amount: f32 = match group {
-            groups::SMALL   => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.small"),
-            groups::MEDIUM  => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.medium"),
-            groups::LARGE   => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.large"),
-            groups::XLARGE  => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.x_large"),
-            groups::XXLARGE => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.xx_large"),
-            _ => panic!("malformed parammodule file! unknown group number for ecb shift: {}", group.to_string())
+        let offset = if boma.is_situation(*SITUATION_KIND_AIR) {
+            if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) < ParamModule::get_int(boma.object(), ParamType::Common, "ecb_shift_air_trans_frame") {
+                return;
+            }
+
+            let group = ParamModule::get_int(boma.object(), ParamType::Shared, "ecb_group_shift");
+            
+            let mut sh_amount: f32 = match group {
+                groups::SMALL   => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.small"),
+                groups::MEDIUM  => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.medium"),
+                groups::LARGE   => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.large"),
+                groups::XLARGE  => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.x_large"),
+                groups::XXLARGE => ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.xx_large"),
+                _ => panic!("malformed parammodule file! unknown group number for ecb shift: {}", group.to_string())
+            };
+
+            if boma.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR) {
+                sh_amount += ParamModule::get_float(boma.object(), ParamType::Common, "ecb_shift_for_waveland");
+            }
+
+            // this is required for other ecb shift operations to perform correctly.
+            VarModule::set_float(boma.object(), vars::common::ECB_Y_OFFSETS, sh_amount);
+
+            sh_amount
+        } else if boma.is_situation(*SITUATION_KIND_GROUND) {
+            0.0
+        } else {
+            VarModule::get_float(boma.object(), vars::common::ECB_Y_OFFSETS)
         };
 
-        if boma.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR) {
-            sh_amount += ParamModule::get_float(boma.object(), ParamType::Common, "ecb_shift_for_waveland");
-        }
-
-        // this is required for other ecb shift operations to perform correctly.
-        VarModule::set_float(boma.object(), vars::common::ECB_Y_OFFSETS, sh_amount);
-
-        GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, sh_amount));
-    } else {
-
-        // reset the rhombus to 0,0
-        GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, 0.0));
-        VarModule::set_float(boma.object(), vars::common::ECB_Y_OFFSETS, 0.0);
-
+        GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, offset));
     }
+    
 }
 
 //=================================================================
