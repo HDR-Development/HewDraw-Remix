@@ -83,24 +83,6 @@ pub fn check_for_updates() {
         return;
     }
 
-    println!("release found: {}",
-        match release.as_ref()
-        .map(|x| x.get_release_tag())
-        .flatten() {
-            Some(x) => x,
-            _ => "none"
-        }
-    );
-
-    println!("prerelease found: {}",
-        match prerelease.as_ref()
-        .map(|x| x.get_release_tag())
-        .flatten() {
-            Some(x) => x,
-            _ => "none"
-        }
-    );
-
     // Get the release version after getting rid of everything before the "v" (SemVer comes after "v")
     let release_version = release
         .as_ref()
