@@ -1,0 +1,35 @@
+name: validate_semver
+
+on:
+  pull_request:
+    branches: [ dev ]
+
+        
+jobs:
+  # validate the PR title
+  validate_semver:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: deepakputhraya/action-pr-title@master
+      with:
+        allowed_prefixes: '(bugfix),(balance),(refactor),(char-rework),(feature),(major)' #',(major)' # title should start with the given prefix
+        prefix_case_sensitive: false # title prefix are case insensitive
+  comment_bad_pr:
+    runs-on: ubuntu-latest
+    needs: [validate_semver]
+    if: always() && (needs.validate_semver.result == 'failure')
+    steps:
+      - uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            This PR has no versioning info! Reopen this PR with a title that starts with one of the following options:
+            `(bugfix)` - fixing a bug, or making a minor improvement
+            `(balance)` - relatively small balance changes
+            `(refactor)` - a code refactor/addition/cleanup that should have no significant gameplay impact
+            `(char-rework)` - somewhat significant rework of one or more characters 
+            `(feature)` - a new feature
+            `(major)` - a major change to the project or gameplay
+            
+            Example title:
+            `(bugfix) Fix falling through the floor on training reset`
+          repo-token: ${{ secrets.GITHUB_TOKEN }}

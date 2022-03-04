@@ -4,6 +4,7 @@ extern crate lazy_static;
 pub mod offsets;
 
 mod modules;
+mod game_modes;
 
 pub use utils_dyn::ext;
 pub use utils_dyn::consts;
@@ -17,6 +18,7 @@ pub use modules::*;
 pub fn init() {
     modules::init();
     singletons::init();
+    game_modes::install();
 
     std::panic::set_hook(Box::new(|info| {
         let location = info.location().unwrap();

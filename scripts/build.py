@@ -1,4 +1,4 @@
-#!/usr/bin/python3.9
+#!/usr/bin/python3
 import shutil, os, sys, pkgutil, characters
 
 if "help" in sys.argv or "--help" in sys.argv or "-h" in sys.argv:
@@ -27,12 +27,15 @@ allow_build_dev = True
 if "nodev" in sys.argv:
   allow_build_dev = False
 
-release_arg = ""
-build_type = "debug"
+release_arg = "--release"
+build_type = "release"
 is_publish = False
 if "release" in sys.argv or "--release" in sys.argv:
   release_arg = "--release"
   build_type = "release"
+if "debug" in sys.argv or "--debug" in sys.argv:
+  release_arg = ""
+  build_type = "debug"
 elif "publish" in sys.argv or "--publish" in sys.argv:
   release_arg = "--release"
   build_type = "release"
@@ -65,6 +68,11 @@ for arg in sys.argv:
 
     # add each character to the set
     for char in char_list:
+      if char not in characters:
+        print("fighter " + char + " does not exist! (are you using the ingame name for the character?) Valid names are:\n")
+        for char_ok in characters:
+          print(char_ok)
+        exit()
       dev_characters.add(char)
 
 if (is_dev_build and not is_publish):
@@ -83,8 +91,10 @@ if (is_dev_build and not is_publish):
   os.environ["CARGO_TARGET_DIR"] = os.path.join("target", "development")
   
   if allow_build_dev:
+    print("release arg: " + release_arg)
     pkgutil.build(release_arg, dev_args)
-
+    print("subpath: " + development_subpath)
+    print("type: " + build_type)
     pkgutil.collect_plugin("hdr-switch", os.path.join(switch_rom_path, development_subpath), build_type, "development.nro", "development")
     pkgutil.collect_plugin("hdr-ryujinx", os.path.join(ryujinx_rom_path, development_subpath), build_type, "development.nro", "development")
 
