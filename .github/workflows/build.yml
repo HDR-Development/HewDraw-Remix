@@ -96,12 +96,18 @@ jobs:
         echo head ref: ${{ github.ref }}
         [[ "${{ steps.get_release_type.outputs.release_type }}" == "nightly" ]] && echo "##[set-output name=is_prerelease;]true)"
 
-    # build the project
     - run: |
-        export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="${{ steps.version.outputs.version_string }}" \
-        && cd scripts && python3 make_dist.py publish && cd ..
-      env:
-        HOME: /root
+        echo "is prerelease: ${{ steps.version.outputs.is_prerelease }}"
+        mkdir distributions
+        echo "lol" > distributions/hdr-switch.zip
+        echo "lol" > distributions/hdr-ryujinx.zip
+
+    # build the project
+    #- run: |
+    #    export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="${{ steps.version.outputs.version_string }}" \
+    #    && cd scripts && python3 make_dist.py publish && cd ..
+    #  env:
+    #    HOME: /root
     - name: Upload hdr-switch artifact
       uses: actions/upload-artifact@v2
       with:
