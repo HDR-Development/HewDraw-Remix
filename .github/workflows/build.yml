@@ -17,6 +17,8 @@ jobs:
     outputs:
       version_string: ${{ steps.version.outputs.version_string }}
       commit_hash: ${{ steps.version.outputs.commit_hash }}
+      is_prerelease: ${{ steps.version.outputs.is_prerelease }}
+      build_type: ${{ steps.get_release_type.outputs.release_type }}
     steps:
     - name: setup python
       uses: actions/setup-python@v2
@@ -119,9 +121,10 @@ jobs:
         path: scripts/change_summary.txt
         if-no-files-found: ignore # 'error', 'warn', or 'ignore' are available, defaults to `warn`
 
+
  
   # upload a build
-  upload_beta:
+  upload_build:
     runs-on: ubuntu-latest
     if: (github.ref == 'refs/heads/stable' || github.ref == 'refs/heads/dev') && github.event.workflow_run.event != 'pull_request'
     needs:
@@ -138,7 +141,7 @@ jobs:
       with:
         keep_latest: 0
         delete_tags: true
-        delete_tag_pattern: ${{ steps.get_release_type.outputs.release_type }} # defaults to ""
+        delete_tag_pattern: ${{ needs.plugin_build.outputs.build_type }} # defaults to ""
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Download all artifacts
@@ -147,13 +150,13 @@ jobs:
       uses: meeDamian/github-release@2.0
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        prerelease: false
+        prerelease: ${{ needs.plugin_build.outputs.is_prerelease }}
         allow_override: true
         gzip: false
         tag: ${{ needs.plugin_build.outputs.version_string }}
         name: ${{ needs.plugin_build.outputs.version_string }}
         body: >
-          ${{ steps.get_release_type.outputs.release_type }} built off of the latest code in the repository. 
+          ${{ needs.plugin_build.outputs.build_type }} built off of the latest code in the repository. 
         files: >
           hdr-switch/*
           hdr-ryujinx/*
