@@ -93,6 +93,8 @@ jobs:
         echo $(git rev-parse --short HEAD)
         echo target ref: ${{ github.event.pull_request.base.ref }}
         echo head ref: ${{ github.ref }}
+        ([[ "${{ steps.get_release_type.outputs.release_type }}" == "nightly" ]] && echo "##[set-output name=is_prerelease;]true") || echo "not nightly"
+        ([[ "${{ steps.get_release_type.outputs.release_type }}" == "beta" ]] && echo "##[set-output name=is_prerelease;]false") || echo "not beta"
 
     # build the project
     - run: |
@@ -129,6 +131,8 @@ jobs:
     - run: |
         echo "Version string: ${{ needs.plugin_build.outputs.version_string }}"
         echo "Commit hash: ${{ needs.plugin_build.outputs.commit_hash }}"
+        echo "Build type: ${{ needs.plugin_build.outputs.build_type }}"
+        echo "Is prerelease: ${{ needs.plugin_build.outputs.is_prerelease }}"
     - name: delete old builds
       uses: dev-drprasad/delete-older-releases@v0.2.0
       with:
