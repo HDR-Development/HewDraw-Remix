@@ -64,6 +64,16 @@ pub fn check_for_updates() {
         }
     };
 
+    match release.as_ref() {
+      Some(i) => println!("Found a release!"),
+      _ => println!("No release.")
+    }
+
+    match prerelease.as_ref() {
+        Some(i) => println!("Found a prerelease!"),
+        _ => println!("No prerelease.")
+      }
+
     // Get the current version
     let current_version = Version::parse(env!("CARGO_PKG_VERSION").trim_start_matches("v")).unwrap();
     
