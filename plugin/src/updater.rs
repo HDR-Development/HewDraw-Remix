@@ -85,7 +85,7 @@ pub fn check_for_updates() {
 
     println("release found: {}",
         match release.as_ref()
-        .map(|x| x.get_release_tag().split("v").last())
+        .map(|x| x.get_release_tag())
         .flatten() {
             Some(x) => x,
             _ => "none"
@@ -94,7 +94,7 @@ pub fn check_for_updates() {
 
     println("prerelease found: {}",
         match prerelease.as_ref()
-        .map(|x| x.get_release_tag().split("v").last())
+        .map(|x| x.get_release_tag())
         .flatten() {
             Some(x) => x,
             _ => "none"
