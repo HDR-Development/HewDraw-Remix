@@ -61,6 +61,12 @@ pub fn check_for_updates() {
     // Get the current version
     let current_version = Version::parse(env!("CARGO_PKG_VERSION").trim_start_matches("v")).unwrap();
 
+    
+    // Don't update dev or release builds
+    if current_version.pre.as_str() == "dev" || current_version.pre.is_empty() {
+        return;
+    }
+
     // Get the release version after getting rid of everything before the "v" (SemVer comes after "v")
     let release_version = release
         .as_ref()
@@ -76,12 +82,7 @@ pub fn check_for_updates() {
         .flatten()
         .map(|x| Version::parse(x).ok())
         .flatten();
-
-    // Don't bother updating if we are a dev build because it's in development
-    if current_version.pre.as_str() == "dev" {
-        return;
-    }
-    
+ 
     // get which version to update to and get the asset
     let ver = get_version(&current_version, release_version.as_ref(), prerelease_version.as_ref());
 
