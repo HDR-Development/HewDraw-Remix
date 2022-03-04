@@ -134,7 +134,7 @@ pub fn check_for_updates() {
         return;
     }
 
-    println!("downloading the build...")
+    println!("downloading the build...");
 
     let asset = match ver {
         WhichVersion::Prerelease => prerelease.unwrap().get_asset_by_name("hdr-switch.zip"),
