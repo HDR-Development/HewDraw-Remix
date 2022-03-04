@@ -17,6 +17,7 @@ jobs:
     outputs:
       version_string: ${{ steps.version.outputs.version_string }}
       commit_hash: ${{ steps.version.outputs.commit_hash }}
+      is_prerelease: ${{ steps.version.outputs.is_prerelease }}
     steps:
     - name: setup python
       uses: actions/setup-python@v2
@@ -93,6 +94,7 @@ jobs:
         echo $(git rev-parse --short HEAD)
         echo target ref: ${{ github.event.pull_request.base.ref }}
         echo head ref: ${{ github.ref }}
+        [[ "${{ steps.get_release_type.outputs.release_type }}" == "nightly" ]] && echo "##[set-output name=is_prerelease;]true)"
 
     # build the project
     - run: |
@@ -116,6 +118,7 @@ jobs:
         name: change_summary
         path: scripts/change_summary.txt
         if-no-files-found: ignore # 'error', 'warn', or 'ignore' are available, defaults to `warn`
+
 
  
   # upload a build
@@ -143,7 +146,7 @@ jobs:
       uses: meeDamian/github-release@2.0
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        prerelease: false
+        prerelease: ${{ needs.plugin_build.outputs.is_prerelease }}
         allow_override: true
         gzip: false
         tag: ${{ needs.plugin_build.outputs.version_string }}
