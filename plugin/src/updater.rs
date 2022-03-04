@@ -115,7 +115,7 @@ pub fn check_for_updates() {
     // prompt user if they want to update
     let should_update = match ver {
         WhichVersion::Prerelease => skyline_web::Dialog::yes_no("A new version of HDR (nightly) was encountered.<br>Do you want to install it?"),
-        WhichVersion::Release => skyline_web::Dialog::yes_no("A new version of HDR was encountered.<br>Do you want to install it?"),
+        WhichVersion::Release => skyline_web::Dialog::yes_no("A new version of HDR (beta) was encountered.<br>Do you want to install it?"),
         WhichVersion::Current => { println!("Don't need to update."); return },
     };
 
