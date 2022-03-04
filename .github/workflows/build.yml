@@ -94,7 +94,7 @@ jobs:
         echo $(git rev-parse --short HEAD)
         echo target ref: ${{ github.event.pull_request.base.ref }}
         echo head ref: ${{ github.ref }}
-        [[ "${{ steps.get_release_type.outputs.release_type }}" == "nightly" ]] && echo "##[set-output name=is_prerelease;]true)"
+        [[ "${{ steps.get_release_type.outputs.release_type }}" == "nightly" ]] && echo "##[set-output name=is_prerelease;]true"
 
     - run: |
         echo "is prerelease: ${{ steps.version.outputs.is_prerelease }}"
