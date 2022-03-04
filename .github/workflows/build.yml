@@ -117,45 +117,9 @@ jobs:
         path: scripts/change_summary.txt
         if-no-files-found: ignore # 'error', 'warn', or 'ignore' are available, defaults to `warn`
 
-  # upload a nightly
-  upload_nightly:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/dev'
-    needs:
-      - plugin_build
-    steps:
-    # print the outputs from the build job
-    - run: |
-        echo "Version string: ${{ needs.plugin_build.outputs.version_string }}"
-        echo "Commit hash: ${{ needs.plugin_build.outputs.commit_hash }}"
-    - name: delete old nightlies
-      uses: dev-drprasad/delete-older-releases@v0.2.0
-      with:
-        keep_latest: 0
-        delete_tags: true
-        delete_tag_pattern: nightly # defaults to ""
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Download all artifacts
-      uses: actions/download-artifact@v2
-    - name: Update Nightly
-      uses: meeDamian/github-release@2.0
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        prerelease: true
-        allow_override: true
-        gzip: false
-        tag: nightly-${{ needs.plugin_build.outputs.version_string }}
-        name: nightly ${{ needs.plugin_build.outputs.version_string }}
-        body: >
-          Nightly built off of the latest code in the repository. 
-        files: >
-          hdr-switch/*
-          hdr-ryujinx/*
-          change_summary/*
-
-  # upload a beta
-  upload_beta:
+ 
+  # upload a build
+  upload_build:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/stable'
     needs:

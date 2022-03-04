@@ -74,6 +74,8 @@ pub fn check_for_updates() {
         _ => println!("No prerelease.")
       }
 
+    println("Current version: {}", env!("CARGO_PKG_VERSION"))
+
     // Get the current version
     let current_version = Version::parse(env!("CARGO_PKG_VERSION").trim_start_matches("v")).unwrap();
     
