@@ -179,7 +179,7 @@ jobs:
       uses: meeDamian/github-release@2.0
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        prerelease: true
+        prerelease: false
         allow_override: true
         gzip: false
         tag: beta-${{ needs.plugin_build.outputs.version_string }}

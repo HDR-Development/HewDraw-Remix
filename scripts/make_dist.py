@@ -1,4 +1,4 @@
-#!/usr/bin/python3.9
+#!/usr/bin/python3
 import shutil, os, sys, pathlib
 
 exec(open("build.py").read())

@@ -1,4 +1,4 @@
-#!/usr/bin/python3.9
+#!/usr/bin/python3
 import shutil, os, sys, pkgutil, characters
 
 if "help" in sys.argv or "--help" in sys.argv or "-h" in sys.argv:
