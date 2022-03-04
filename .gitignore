@@ -10,3 +10,4 @@ distributions/
 scripts/change_summary.txt
 scripts/log.txt
 scripts/tmp
+rust-toolchain
