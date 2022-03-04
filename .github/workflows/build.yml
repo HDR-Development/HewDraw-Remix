@@ -80,7 +80,7 @@ jobs:
       id: semantic-version
       shell: bash
       run: |
-        echo "##[set-output name=version;]$(python3 scripts/generate_version_string.py)"; 
+        echo "##[set-output name=version;]v$(python3 scripts/generate_version_string.py)"; 
 
     # make the version string
     - name: collect version string
@@ -117,47 +117,11 @@ jobs:
         path: scripts/change_summary.txt
         if-no-files-found: ignore # 'error', 'warn', or 'ignore' are available, defaults to `warn`
 
-  # upload a nightly
-  upload_nightly:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/dev'
-    needs:
-      - plugin_build
-    steps:
-    # print the outputs from the build job
-    - run: |
-        echo "Version string: ${{ needs.plugin_build.outputs.version_string }}"
-        echo "Commit hash: ${{ needs.plugin_build.outputs.commit_hash }}"
-    - name: delete old nightlies
-      uses: dev-drprasad/delete-older-releases@v0.2.0
-      with:
-        keep_latest: 0
-        delete_tags: true
-        delete_tag_pattern: nightly # defaults to ""
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Download all artifacts
-      uses: actions/download-artifact@v2
-    - name: Update Nightly
-      uses: meeDamian/github-release@2.0
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        prerelease: true
-        allow_override: true
-        gzip: false
-        tag: nightly-${{ needs.plugin_build.outputs.version_string }}
-        name: nightly ${{ needs.plugin_build.outputs.version_string }}
-        body: >
-          Nightly built off of the latest code in the repository. 
-        files: >
-          hdr-switch/*
-          hdr-ryujinx/*
-          change_summary/*
-
-  # upload a beta
+ 
+  # upload a build
   upload_beta:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/stable'
+    if: (github.ref == 'refs/heads/stable' || github.ref == 'refs/heads/dev') && github.event.workflow_run.event != 'pull_request'
     needs:
       - plugin_build
     steps:
@@ -165,27 +129,27 @@ jobs:
     - run: |
         echo "Version string: ${{ needs.plugin_build.outputs.version_string }}"
         echo "Commit hash: ${{ needs.plugin_build.outputs.commit_hash }}"
-    - name: delete old betas
+    - name: delete old builds
       uses: dev-drprasad/delete-older-releases@v0.2.0
       with:
         keep_latest: 0
         delete_tags: true
-        delete_tag_pattern: beta # defaults to ""
+        delete_tag_pattern: ${{ steps.get_release_type.outputs.release_type }} # defaults to ""
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Download all artifacts
       uses: actions/download-artifact@v2
-    - name: Update Beta
+    - name: Update Build
       uses: meeDamian/github-release@2.0
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         prerelease: false
         allow_override: true
         gzip: false
-        tag: beta-${{ needs.plugin_build.outputs.version_string }}
-        name: beta ${{ needs.plugin_build.outputs.version_string }}
+        tag: ${{ needs.plugin_build.outputs.version_string }}
+        name: ${{ needs.plugin_build.outputs.version_string }}
         body: >
-          Beta built off of the latest code in the repository. 
+          ${{ steps.get_release_type.outputs.release_type }} built off of the latest code in the repository. 
         files: >
           hdr-switch/*
           hdr-ryujinx/*
