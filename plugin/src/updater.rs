@@ -78,8 +78,6 @@ pub fn check_for_updates() {
 
     // Get the current version
     let current_version = Version::parse(env!("CARGO_PKG_VERSION").trim_start_matches("v")).unwrap();
-    
-    println!("Current version: {}", env!("CARGO_PKG_VERSION"));
 
     // Don't update dev or release builds
     if current_version.pre.as_str() == "dev" || current_version.pre.is_empty() {
