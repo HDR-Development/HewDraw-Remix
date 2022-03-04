@@ -83,7 +83,7 @@ pub fn check_for_updates() {
         return;
     }
 
-    println("release found: {}",
+    println!("release found: {}",
         match release.as_ref()
         .map(|x| x.get_release_tag())
         .flatten() {
@@ -92,7 +92,7 @@ pub fn check_for_updates() {
         }
     );
 
-    println("prerelease found: {}",
+    println!("prerelease found: {}",
         match prerelease.as_ref()
         .map(|x| x.get_release_tag())
         .flatten() {
