@@ -21,10 +21,10 @@ fn change_version_string_hook(arg: u64, string: *const c_char) {
     if original_str.contains("Ver.") {
         let romfs_version = match std::fs::read_to_string("mods:/ui/romfs_version.txt") {
             Ok(version_value) => version_value.trim().to_string(),
-            Err(_) => String::from("UNKNOWN ROMFS VERSION!"),
+            Err(_) => String::from("UNKNOWN"),
         };
         let new_str = format!(
-            "{}, HDR Ver. {}, romfs-{}\0",
+            "{}\nHDR Ver. {}\nAssets Ver. {}\0",
             original_str,
             env!("CARGO_PKG_VERSION"),
             romfs_version
