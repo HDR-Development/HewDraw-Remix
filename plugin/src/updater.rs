@@ -93,6 +93,7 @@ pub fn check_for_updates() {
         WhichVersion::Current => return,
     };
 
+    // return if we shouldnt update
     if !should_update {
         return;
     }
