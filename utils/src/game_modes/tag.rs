@@ -1,7 +1,7 @@
 use parking_lot::RwLock;
-use smash::app::{self, BattleObject, lua_bind::*};
+use smash::app::{self, BattleObject, BattleObjectModuleAccessor, lua_bind::*};
 use smash::lib::lua_const::*;
-use smash::phx::Hash40;
+use smash::phx::{Hash40, Vector4f};
 use smash::hash40;
 use crate::modules::*;
 use utils_dyn::consts::*;
@@ -92,6 +92,7 @@ impl TagInfo {
                 if EffectModule::is_exist_effect((*current_target).module_accessor, self.aura_effect_handle) {
                     EffectModule::kill((*current_target).module_accessor, self.aura_effect_handle, true, true);
                 }
+                ColorBlendModule::cancel_main_color((*current_target).module_accessor, 0);
             }
         }
         self.target_id = id;
@@ -128,12 +129,15 @@ impl TagInfo {
         }
     }
 
+    /// remaining_frames: how many frames are left before a player is killed
     pub fn update_eff(&mut self) {
         if let Some(target) = self.get_target() {
             unsafe {
-                if !EffectModule::is_exist_effect((*target).module_accessor, self.aura_effect_handle) {
+                let remaining_frames = self.target_die_frame - util::get_global_frame_count();
+                let boma = &mut *(*target).module_accessor;
+                if !EffectModule::is_exist_effect(boma, self.aura_effect_handle) {
                     self.aura_effect_handle = EffectModule::req_follow(
-                        (*target).module_accessor,
+                        boma,
                         Hash40::new("sys_final_aura"),
                         Hash40::new("head"),
                         &Vector3f::zero(),
@@ -149,6 +153,18 @@ impl TagInfo {
                         true
                     ) as u32;
                 }
+
+                // check if we need to change color due to impending timeout
+                if remaining_frames < 60 {
+                    ColorBlendModule::set_main_color(boma, &Vector4f{ x: 1.0, y: 0.2, z: 0.2, w: 0.7 }, &Vector4f{ x: 1.0, y: 0.2, z: 0.2, w: 0.7 }, 1.0, 0.5, 10, true);
+                } else if remaining_frames < 120 {
+                    ColorBlendModule::set_main_color(boma, &Vector4f{ x: 0.7, y: 0.2, z: 0.2, w: 0.7 }, &Vector4f{ x: 0.7, y: 0.2, z: 0.2, w: 0.7 }, 1.0, 0.5, 10, true);
+                } else if remaining_frames < 180 {
+                    ColorBlendModule::set_main_color(boma, &Vector4f{ x: 0.4, y: 0.2, z: 0.2, w: 0.7 }, &Vector4f{ x: 0.4, y: 0.2, z: 0.2, w: 0.7 }, 1.0, 0.5, 10, true);
+                } else {
+                    ColorBlendModule::cancel_main_color(boma, 0);
+                }
+
             }
         }
     }
@@ -173,6 +189,8 @@ impl TagInfo {
 
     pub fn update(&mut self) {
         unsafe {
+
+            // skip this frame because the match hasnt started
             if !app::sv_information::is_ready_go() {
                 if self.is_init {
                     self.target_die_frame += 1;
