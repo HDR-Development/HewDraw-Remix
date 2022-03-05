@@ -69,6 +69,26 @@ pub unsafe fn koopajr_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
+#[smashline::weapon_frame( agent = WEAPON_KIND_KOOPAJR_REMAINCLOWN)]
+pub fn koopajr_weapon_remainclown_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    unsafe {
+        let boma = weapon.boma();
+        println!("Remainclown frame, status kind: {}", StatusModule::status_kind(boma));
+        if StatusModule::status_kind(boma) == *WEAPON_KOOPAJR_REMAINCLOWN_STATUS_KIND_FALL {
+            println!("Remainclown frame is status_kind_fall");
+            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+                println!("Remainclown frame hit someone, trying to change to explosion status now");
+                StatusModule::change_status_request_from_script(boma, *WEAPON_KOOPAJR_REMAINCLOWN_STATUS_KIND_BURST, true);
+            }
+        }
+    }
+}
+
+pub fn install_remainclown() {
+    println!("[REMAIN CLOWN] Installing");
+    smashline::install_agent_frame!(koopajr_weapon_remainclown_frame);
+}
+
 #[smashline::weapon_frame( agent = WEAPON_KIND_KOOPAJR_CANNONBALL )]
 pub fn koopajr_weapon_frame_wrapper(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe {
