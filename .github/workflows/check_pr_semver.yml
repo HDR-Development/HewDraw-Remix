@@ -13,7 +13,8 @@ jobs:
     - name: check title
       run: |
         export TITLE='${{ github.event.pull_request.title }}'
-        [[ $TITLE == *(bugfix)* ]] || [[ $TITLE == *(balance)* ]] || [[ $TITLE == *(refactor)* ]] || [[ $TITLE == *(char-rework)* ]] || [[ $TITLE == *(feature)* ]] || [[ $TITLE == *(major)* ]] || [[ $TITLE == *(no-semver)* ]]
+        echo $TITLE
+        [[ $TITLE == *"(bugfix)"* ]] || [[ $TITLE == *"(balance)"* ]] || [[ $TITLE == *"(refactor)"* ]] || [[ $TITLE == *"(char-rework)"* ]] || [[ $TITLE == *"(feature)"* ]] || [[ $TITLE == *"(major)"* ]] || [[ $TITLE == *"(no-semver)"* ]]
   comment_bad_pr:
     runs-on: ubuntu-latest
     needs: [validate_semver]
