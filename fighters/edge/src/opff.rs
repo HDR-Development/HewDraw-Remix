@@ -37,10 +37,18 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
+// Change jab combo to be a single hit like Ganon, using jab 3
+unsafe fn jab3_as_jab1(boma: &mut BattleObjectModuleAccessor, motion_kind: u64) {
+    if motion_kind == hash40("attack_11") {
+        MotionModule::change_motion(boma, Hash40::new("attack_13"), 0.0, 1.0, false, 0.0, false, false);
+    }
+}
+
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //sword_length(boma);
     limit_blade_rush_jc(boma, cat[0], status_kind, situation_kind);
     nspecial_cancels(boma, status_kind, situation_kind, cat[1]);
+    jab3_as_jab1(boma, motion_kind);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_EDGE )]
