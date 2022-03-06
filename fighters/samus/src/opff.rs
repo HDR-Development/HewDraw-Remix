@@ -48,8 +48,8 @@ unsafe fn shinespark_reset(boma: &mut BattleObjectModuleAccessor, id: usize, sta
         *FIGHTER_STATUS_KIND_RUN_BRAKE,
         *FIGHTER_STATUS_KIND_TURN_RUN,
         *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE].contains(&status_kind) {
-            VarModule::off_flag(boma.object(), vars::common::SHINESPARK_READY);
-            VarModule::off_flag(boma.object(), vars::common::SHINESPARK_USED);
+            VarModule::off_flag(boma.object(), vars::samus::SHINESPARK_READY);
+            VarModule::off_flag(boma.object(), vars::samus::SHINESPARK_USED);
     }
 }
 
