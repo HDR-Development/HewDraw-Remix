@@ -89,9 +89,7 @@ pub mod vars {
         pub const FOOTSTOOL_AIRDODGE_LOCKOUT: i32 = 31;
         pub const CAN_ESCAPE_TUMBLE: i32 = 32;
         pub const SUPER_CANCEL: i32 = 33;
-        pub const SHINESPARK_USED: i32 = 34;
         pub const SPECIAL_AUTOCANCEL: i32 = 35;
-        pub const SHINESPARK_READY: i32 = 36;
         pub const ILLUSION_SHORTEN: i32 = 37;
         pub const SOARING_SLASH_HIT: i32 = 38;
         pub const DOUBLE_JUMP_STOP: i32 = 39;
@@ -145,7 +143,6 @@ pub mod vars {
         pub const FLOAT_DURATION: i32 = 0x3;
         pub const FLOAT_STYLE: i32 = 0x4;
         pub const GIMMICK_READY_GLOW_TIMER: i32 = 0x5;
-        pub const SNAKE_GRENADE_COUNTER: i32 = 0x6;
         pub const HITFALL_BUFFER: i32 = 0x7;
         pub const JUMP_SQUAT_FRAME: i32 = 0x8;
         pub const GIMMICK_TIMER: i32 = 0x9;
