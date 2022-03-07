@@ -148,6 +148,15 @@ jobs:
         echo "Commit hash: ${{ needs.plugin_build.outputs.commit_hash }}"
         echo "Build type: ${{ needs.plugin_build.outputs.build_type }}"
         echo "Is prerelease: ${{ needs.plugin_build.outputs.is_prerelease }}"
+
+    # github changelog
+    - name: "Generate release changelog"
+      id: github_changelog
+      uses: heinrichreimer/github-changelog-generator-action@v2.3
+      with:
+        onlyLastTag: true
+        token: ${{ secrets.GITHUB_TOKEN }} 
+
     - name: delete old builds
       uses: dev-drprasad/delete-older-releases@v0.2.0
       with:
@@ -168,7 +177,8 @@ jobs:
         tag: ${{ needs.plugin_build.outputs.version_string }}
         name: ${{ needs.plugin_build.outputs.version_string }}
         body: >
-          ${{ needs.plugin_build.outputs.build_type }} built off of the latest code in the repository. 
+          ${{ needs.plugin_build.outputs.build_type }} built off of the latest code in the repository.\n
+          ${{steps.github_changelog.outputs.changelog}}
         files: >
           hdr-switch/*
           hdr-ryujinx/*
