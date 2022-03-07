@@ -111,11 +111,19 @@ jobs:
         echo "build arg is: ${{ steps.build_arg.outputs.arg }}"
 
     # build the project
+    #- run: |
+    #    export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="${{ steps.version.outputs.version_string }}" \
+    #    && cd scripts && python3 make_dist.py ${{ steps.build_arg.outputs.arg }} && cd ..
+    #  env:
+    #    HOME: /root
+
+    # mock upload files
     - run: |
-        export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="${{ steps.version.outputs.version_string }}" \
-        && cd scripts && python3 make_dist.py ${{ steps.build_arg.outputs.arg }} && cd ..
-      env:
-        HOME: /root
+        mkdir distributions
+        echo lol > build/hdr-switch.zip
+        echo lol > build/hdr-ryujinx.zip
+        echo lol > change_summary.txt
+
     - name: Upload hdr-switch artifact
       uses: actions/upload-artifact@v2
       with:
@@ -148,6 +156,11 @@ jobs:
         echo "Commit hash: ${{ needs.plugin_build.outputs.commit_hash }}"
         echo "Build type: ${{ needs.plugin_build.outputs.build_type }}"
         echo "Is prerelease: ${{ needs.plugin_build.outputs.is_prerelease }}"
+    - name: Build Changelog
+      id: github_release
+      uses: mikepenz/release-changelog-builder-action@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: delete old builds
       uses: dev-drprasad/delete-older-releases@v0.2.0
       with:
@@ -168,7 +181,8 @@ jobs:
         tag: ${{ needs.plugin_build.outputs.version_string }}
         name: ${{ needs.plugin_build.outputs.version_string }}
         body: >
-          ${{ needs.plugin_build.outputs.build_type }} built off of the latest code in the repository. 
+          ${{ needs.plugin_build.outputs.build_type }} built off of the latest code in the repository.
+          ${{steps.github_release.outputs.changelog}}
         files: >
           hdr-switch/*
           hdr-ryujinx/*
