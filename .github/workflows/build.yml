@@ -140,6 +140,17 @@ jobs:
         name: change_summary
         path: scripts/change_summary.txt
         if-no-files-found: ignore # 'error', 'warn', or 'ignore' are available, defaults to `warn`
+    
+    
+    - name: Build Changelog
+      id: github_release
+      uses: mikepenz/release-changelog-builder-action@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: view changelog
+      run: |
+        echo ${{steps.github_release.outputs.changelog}}
 
 
  
