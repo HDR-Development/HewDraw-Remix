@@ -102,8 +102,8 @@ jobs:
       id: build_arg
       shell: bash
       run: |
-        ([[ "${{ github.event_name }}" == "pull_request" ]] && export BUILD_ARG="build")
-        ([[ "${{ github.event_name }}" == "push" ]] && export BUILD_ARG="publish")
+        ([[ "${{ github.event_name }}" == "pull_request" ]] && export BUILD_ARG="build") || echo "should be a push"
+        ([[ "${{ github.event_name }}" == "push" ]] && export BUILD_ARG="publish") || echo "should be a pull request"
         echo "##[set-output name=arg;]$BUILD_ARG"
         echo "build arg is: $BUILD_ARG"
 
