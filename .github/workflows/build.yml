@@ -169,6 +169,11 @@ jobs:
         echo "Build type: ${{ needs.plugin_build.outputs.build_type }}"
         echo "Is prerelease: ${{ needs.plugin_build.outputs.is_prerelease }}"
 
+    - name: checkout version
+      uses: actions/checkout@v2
+      with: 
+        fetch-depth: 0
+
     # github changelog
     - name: "Generate release changelog"
       id: github_changelog
@@ -176,6 +181,9 @@ jobs:
       with:
         onlyLastTag: true
         token: ${{ secrets.GITHUB_TOKEN }} 
+    - name: view changelog
+      run: |
+        echo "${{steps.github_changelog.outputs.changelog}}"
 
     - name: delete old builds
       uses: dev-drprasad/delete-older-releases@v0.2.0
