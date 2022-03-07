@@ -120,8 +120,8 @@ jobs:
     # mock upload files
     - run: |
         mkdir distributions
-        echo lol > build/hdr-switch.zip
-        echo lol > build/hdr-ryujinx.zip
+        echo lol > distributions/hdr-switch.zip
+        echo lol > distributions/hdr-ryujinx.zip
         echo lol > change_summary.txt
 
     - name: Upload hdr-switch artifact
