@@ -111,11 +111,19 @@ jobs:
         echo "build arg is: ${{ steps.build_arg.outputs.arg }}"
 
     # build the project
+    #- run: |
+    #    export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="${{ steps.version.outputs.version_string }}" \
+    #    && cd scripts && python3 make_dist.py ${{ steps.build_arg.outputs.arg }} && cd ..
+    #  env:
+    #    HOME: /root
+
+    # mock upload files
     - run: |
-        export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="${{ steps.version.outputs.version_string }}" \
-        && cd scripts && python3 make_dist.py ${{ steps.build_arg.outputs.arg }} && cd ..
-      env:
-        HOME: /root
+        mkdir distributions
+        echo lol > distributions/hdr-switch.zip
+        echo lol > distributions/hdr-ryujinx.zip
+        echo lol > change_summary.txt
+
     - name: Upload hdr-switch artifact
       uses: actions/upload-artifact@v2
       with:
@@ -132,6 +140,18 @@ jobs:
         name: change_summary
         path: scripts/change_summary.txt
         if-no-files-found: ignore # 'error', 'warn', or 'ignore' are available, defaults to `warn`
+    
+    
+    - name: "Generate release changelog"
+      id: github_changelog
+      uses: heinrichreimer/github-changelog-generator-action@v2.3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }} 
+        onlyLastTag: true
+
+    - name: view changelog
+      run: |
+        echo "${{steps.github_changelog.outputs.changelog}}"
 
 
  
