@@ -24,6 +24,9 @@ extern "Rust" {
     #[link_name = "MeterModule__add"]
     fn MeterModule__add(object: *mut BattleObject, amount: f32);
 
+    #[link_name = "MeterModule__reset"]
+    fn MeterModule__reset(object: *mut BattleObject);
+
     #[link_name = "MeterModule__update"]
     fn MeterModule__update(object: *mut BattleObject, show_flash_on_change: bool);
 
@@ -70,6 +73,11 @@ pub mod MeterModule {
     pub fn add(object: *mut BattleObject, amount: f32) {
         unsafe {
             MeterModule__add(object, amount)
+        }
+    }
+    pub fn reset(object: *mut BattleObject) {
+        unsafe {
+            MeterModule__reset(object)
         }
     }
     pub fn update(object: *mut BattleObject, show_flash_on_change: bool) {
