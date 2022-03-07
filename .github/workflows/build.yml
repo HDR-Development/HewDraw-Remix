@@ -167,7 +167,7 @@ jobs:
       uses: heinrichreimer/github-changelog-generator-action@v2.3
       with:
         onlyLastTag: true
-        token: ${{ secrets.GITHUB_TOKEN }} 
+        token: ${{ secrets.RELEASE_TOKEN }} 
     - name: view changelog
       run: |
         echo "${{steps.github_changelog.outputs.changelog}}"
