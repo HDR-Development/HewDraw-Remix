@@ -98,10 +98,17 @@ jobs:
         ([[ "${{ steps.get_release_type.outputs.release_type }}" == "nightly" ]] && echo "##[set-output name=is_prerelease;]true") || echo "not nightly"
         ([[ "${{ steps.get_release_type.outputs.release_type }}" == "beta" ]] && echo "##[set-output name=is_prerelease;]false") || echo "not beta"
 
+    - name: determine build argument
+      id: build_arg
+      shell: bash
+      run: |
+        ([[ "${{ github.event.workflow_run.event }}" == "pull_request" ]] && echo "##[set-output name=arg;]build") && echo "pr build!"
+        ([[ "${{ github.event.workflow_run.event }}" == "push" ]] && echo "##[set-output name=arg;]publish") && echo "commit build!"
+
     # build the project
     - run: |
         export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="${{ steps.version.outputs.version_string }}" \
-        && cd scripts && python3 make_dist.py publish && cd ..
+        && cd scripts && python3 make_dist.py ${{ steps.build_arg.outputs.arg }} && cd ..
       env:
         HOME: /root
     - name: Upload hdr-switch artifact
