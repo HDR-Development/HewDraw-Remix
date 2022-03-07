@@ -205,7 +205,6 @@ jobs:
         tag: ${{ needs.plugin_build.outputs.version_string }}
         name: ${{ needs.plugin_build.outputs.version_string }}
         body: >
-          ${{ needs.plugin_build.outputs.build_type }} built off of the latest code in the repository.\n
           ${{steps.github_changelog.outputs.changelog}}
         files: >
           hdr-switch/*
