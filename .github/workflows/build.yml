@@ -102,8 +102,10 @@ jobs:
       id: build_arg
       shell: bash
       run: |
-        ([[ "${{ github.event.workflow_run.event }}" == "pull_request" ]] && echo "##[set-output name=arg;]build") || echo "its a push build!"
-        ([[ "${{ github.event.workflow_run.event }}" == "push" ]] && echo "##[set-output name=arg;]publish") || echo "its a pr build!"
+        ([[ "${{ github.event_name }}" == "pull_request" ]] && export BUILD_ARG="build")
+        ([[ "${{ github.event_name }}" == "push" ]] && export BUILD_ARG="publish")
+        echo "##[set-output name=arg;]$BUILD_ARG"
+        echo "build arg is: $BUILD_ARG"
 
     # build the project
     - run: |
