@@ -142,15 +142,15 @@ jobs:
         if-no-files-found: ignore # 'error', 'warn', or 'ignore' are available, defaults to `warn`
     
     
-    - name: Build Changelog
-      id: github_release
-      uses: mikepenz/release-changelog-builder-action@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: "Generate release changelog"
+      id: github_changelog
+      uses: heinrichreimer/github-changelog-generator-action@v2.3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }} 
 
     - name: view changelog
       run: |
-        echo ${{steps.github_release.outputs.changelog}}
+        echo ${{steps.github_changelog.outputs.changelog}}
 
 
  
@@ -167,11 +167,14 @@ jobs:
         echo "Commit hash: ${{ needs.plugin_build.outputs.commit_hash }}"
         echo "Build type: ${{ needs.plugin_build.outputs.build_type }}"
         echo "Is prerelease: ${{ needs.plugin_build.outputs.is_prerelease }}"
-    - name: Build Changelog
-      id: github_release
-      uses: mikepenz/release-changelog-builder-action@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # github changelog
+    - name: "Generate release changelog"
+      id: github_changelog
+      uses: heinrichreimer/github-changelog-generator-action@v2.3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }} 
+
     - name: delete old builds
       uses: dev-drprasad/delete-older-releases@v0.2.0
       with:
@@ -193,7 +196,7 @@ jobs:
         name: ${{ needs.plugin_build.outputs.version_string }}
         body: >
           ${{ needs.plugin_build.outputs.build_type }} built off of the latest code in the repository.
-          ${{steps.github_release.outputs.changelog}}
+          ${{steps.github_changelog.outputs.changelog}}
         files: >
           hdr-switch/*
           hdr-ryujinx/*
