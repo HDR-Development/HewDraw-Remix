@@ -33,8 +33,8 @@ pub unsafe fn land_cancel_and_b_reverse(boma: &mut BattleObjectModuleAccessor, i
 // Shinkespark charge
 unsafe fn shinespark_charge(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
     if [*FIGHTER_STATUS_KIND_RUN, *FIGHTER_STATUS_KIND_TURN_RUN].contains(&status_kind) && frame > 30.0 {
-        if  !VarModule::is_flag(boma.object(), vars::common::SHINESPARK_READY) {
-            VarModule::on_flag(boma.object(), vars::common::SHINESPARK_READY);
+        if  !VarModule::is_flag(boma.object(), vars::samus::SHINESPARK_READY) {
+            VarModule::on_flag(boma.object(), vars::samus::SHINESPARK_READY);
         }
     }
 }
@@ -48,8 +48,8 @@ unsafe fn shinespark_reset(boma: &mut BattleObjectModuleAccessor, id: usize, sta
         *FIGHTER_STATUS_KIND_RUN_BRAKE,
         *FIGHTER_STATUS_KIND_TURN_RUN,
         *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE].contains(&status_kind) {
-            VarModule::off_flag(boma.object(), vars::common::SHINESPARK_READY);
-            VarModule::off_flag(boma.object(), vars::common::SHINESPARK_USED);
+            VarModule::off_flag(boma.object(), vars::samus::SHINESPARK_READY);
+            VarModule::off_flag(boma.object(), vars::samus::SHINESPARK_USED);
     }
 }
 

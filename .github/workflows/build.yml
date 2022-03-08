@@ -19,6 +19,7 @@ jobs:
       commit_hash: ${{ steps.version.outputs.commit_hash }}
       is_prerelease: ${{ steps.version.outputs.is_prerelease }}
       build_type: ${{ steps.get_release_type.outputs.release_type }}
+      changelog: ${{ steps.github_changelog.outputs.changelog }}
     steps:
     - name: setup python
       uses: actions/setup-python@v2
@@ -98,12 +99,32 @@ jobs:
         ([[ "${{ steps.get_release_type.outputs.release_type }}" == "nightly" ]] && echo "##[set-output name=is_prerelease;]true") || echo "not nightly"
         ([[ "${{ steps.get_release_type.outputs.release_type }}" == "beta" ]] && echo "##[set-output name=is_prerelease;]false") || echo "not beta"
 
+    - name: determine build argument
+      id: build_arg
+      shell: bash
+      run: |
+        ([[ "${{ github.event_name }}" == "pull_request" ]] && echo "##[set-output name=arg;]build") || echo "should be a push"
+        ([[ "${{ github.event_name }}" == "push" ]] && echo "##[set-output name=arg;]publish") || echo "should be a pull request"
+        
+    - name: echo build argument
+      id: echo_build
+      run: |
+        echo "build arg is: ${{ steps.build_arg.outputs.arg }}"
+
     # build the project
     - run: |
         export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="${{ steps.version.outputs.version_string }}" \
-        && cd scripts && python3 make_dist.py publish && cd ..
+        && cd scripts && python3 make_dist.py ${{ steps.build_arg.outputs.arg }} && cd ..
       env:
         HOME: /root
+
+    ## mock upload files
+    #- run: |
+    #    mkdir distributions
+    #    echo lol > distributions/hdr-switch.zip
+    #    echo lol > distributions/hdr-ryujinx.zip
+    #    echo lol > change_summary.txt
+
     - name: Upload hdr-switch artifact
       uses: actions/upload-artifact@v2
       with:
@@ -120,9 +141,28 @@ jobs:
         name: change_summary
         path: scripts/change_summary.txt
         if-no-files-found: ignore # 'error', 'warn', or 'ignore' are available, defaults to `warn`
+   
+    # build regex exclusion for tags
+    - name: build changelog tag regex
+      id: tag_regex
+      run: |
+        ([[ "${{ steps.get_release_type.outputs.release_type }}" == "nightly" ]] && echo "##[set-output name=regex;]/beta/") || echo "lol"
+        ([[ "${{ steps.get_release_type.outputs.release_type }}" == "beta" ]] && echo "##[set-output name=regex;]/nightly/") || echo "lol"
+
+    # github changelog
+    - name: "Generate release changelog"
+      id: github_changelog
+      uses: heinrichreimer/github-changelog-generator-action@v2.3
+      with:
+        onlyLastTag: true
+        excludeTagsRegex: ${{ steps.tag_regex.outputs.regex }}
+        token: ${{ secrets.RELEASE_TOKEN }} 
+    - name: view changelog
+      id: output_changelog
+      run: |
+        echo "${{steps.github_changelog.outputs.changelog}}"
 
 
- 
   # upload a build
   upload_build:
     runs-on: ubuntu-latest
@@ -136,6 +176,7 @@ jobs:
         echo "Commit hash: ${{ needs.plugin_build.outputs.commit_hash }}"
         echo "Build type: ${{ needs.plugin_build.outputs.build_type }}"
         echo "Is prerelease: ${{ needs.plugin_build.outputs.is_prerelease }}"
+
     - name: delete old builds
       uses: dev-drprasad/delete-older-releases@v0.2.0
       with:
@@ -155,8 +196,7 @@ jobs:
         gzip: false
         tag: ${{ needs.plugin_build.outputs.version_string }}
         name: ${{ needs.plugin_build.outputs.version_string }}
-        body: >
-          ${{ needs.plugin_build.outputs.build_type }} built off of the latest code in the repository. 
+        body: '${{needs.plugin_build.outputs.changelog}}'
         files: >
           hdr-switch/*
           hdr-ryujinx/*

@@ -134,11 +134,15 @@ pub fn check_for_updates() {
         return;
     }
 
+    println!("downloading the build...");
+
     let asset = match ver {
         WhichVersion::Prerelease => prerelease.unwrap().get_asset_by_name("hdr-switch.zip"),
         WhichVersion::Release => release.unwrap().get_asset_by_name("hdr-switch.zip"),
         WhichVersion::Current => unreachable!(),
     };
+
+    println!("building zip reader...");
 
     // get the zip reader on the zip archive to extract to SD root
     let mut zip = match asset {
@@ -151,6 +155,8 @@ pub fn check_for_updates() {
         },
         None => return
     };
+
+    println!("Unzipping data...");
 
     // try to extract the zip to the SD root and restart the application
     match zip.extract("sd:/") {
