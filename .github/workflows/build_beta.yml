@@ -9,7 +9,6 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs: 
-      version: ${{ steps.get_last_beta.outputs.tag_name }}
       changelog: ${{ steps.github_changelog.outputs.changelog }}
     steps:
 
@@ -28,17 +27,7 @@ jobs:
       run: |
         echo ${{ steps.get_last_beta.outputs.tag_name }}
 
-    # tag push
-    - uses: jefflinse/pr-semver-bump@v1
-      name: Bump and Tag Version
-      id: push_tag
-      with:
-        mode: bump
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        minor-label: semver:feature
-        patch-label: semver:patch
-        with-v: true
-
+    
     - name: checkout version
       uses: actions/checkout@v2
       with: 
@@ -49,7 +38,7 @@ jobs:
       id: github_changelog
       uses: heinrichreimer/github-changelog-generator-action@v2.3
       with:
-        sinceTag: ${{ steps.push_tag.outputs.old-version }}
+        sinceTag: ${{ steps.get_last_beta.outputs.tag_name }}
         stripHeaders: true
         token: ${{ secrets.GITHUB_TOKEN }} 
 
@@ -88,6 +77,14 @@ jobs:
         echo lol > distributions/hdr-switch.zip
         echo lol > distributions/hdr-ryujinx.zip
 
+    - id: trimmed_tag
+      run: |
+        export UNTRIMMED=${{github.ref}}
+        export TRIMMED=${UNTRIMMED#"heads/tags/"}
+        echo "untrimmed: $UNTRIMMED"
+        echo "trimmed: $TRIMMED"
+        echo "##[set-output name=tag;]$TRIMMED";
+
     # upload asset
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
@@ -97,7 +94,7 @@ jobs:
         prerelease: true
         file_glob: true
         asset_name: the_asset
-        release_name: ${{ needs.version_and_changelog.outputs.version }}-nightly
-        tag: ${{ needs.version_and_changelog.outputs.version }}
+        release_name: ${{ steps.trimmed_tag.outputs.tag }}-beta
+        tag: ${{ steps.trimmed_tag.outputs.tag }}
         overwrite: true
         body: ${{ needs.version_and_changelog.outputs.changelog }}
