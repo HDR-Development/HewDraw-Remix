@@ -1,10 +1,10 @@
 name: rust build
 
 on:
-  push:
-    branches: [ dev, stable ] # CHANGE "master" TO "main" IF THAT IS THE NAME OF YOUR MAIN BRANCH!
-  pull_request:
-    branches: [ dev, stable ]
+  #push:
+  #  branches: [ dev, stable ] # CHANGE "master" TO "main" IF THAT IS THE NAME OF YOUR MAIN BRANCH!
+  #pull_request:
+  #  branches: [ dev, stable ]
       
 jobs:
   # build the plugin
