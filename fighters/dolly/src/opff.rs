@@ -696,6 +696,12 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 pub fn dolly_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
+        MeterModule::update(fighter.object(), true);
+        if fighter.is_button_on(Buttons::AppealAll) {
+            MeterModule::show(fighter.object());
+        } else {
+            MeterModule::stop_show(fighter.object());
+        }
 		dolly_frame(fighter)
     }
 }
