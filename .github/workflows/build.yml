@@ -19,6 +19,7 @@ jobs:
       commit_hash: ${{ steps.version.outputs.commit_hash }}
       is_prerelease: ${{ steps.version.outputs.is_prerelease }}
       build_type: ${{ steps.get_release_type.outputs.release_type }}
+      changelog: ${{ steps.github_changelog.outputs.changelog }}
     steps:
     - name: setup python
       uses: actions/setup-python@v2
@@ -141,6 +142,18 @@ jobs:
         path: scripts/change_summary.txt
         if-no-files-found: ignore # 'error', 'warn', or 'ignore' are available, defaults to `warn`
    
+    # github changelog
+    - name: "Generate release changelog"
+      id: github_changelog
+      uses: heinrichreimer/github-changelog-generator-action@v2.3
+      with:
+        onlyLastTag: true
+        token: ${{ secrets.RELEASE_TOKEN }} 
+    - name: view changelog
+      id: output_changelog
+      run: |
+        echo "${{steps.github_changelog.outputs.changelog}}"
+
 
   # upload a build
   upload_build:
@@ -155,22 +168,6 @@ jobs:
         echo "Commit hash: ${{ needs.plugin_build.outputs.commit_hash }}"
         echo "Build type: ${{ needs.plugin_build.outputs.build_type }}"
         echo "Is prerelease: ${{ needs.plugin_build.outputs.is_prerelease }}"
-
-    - name: checkout version
-      uses: actions/checkout@v2
-      with: 
-        fetch-depth: 0
-
-    # github changelog
-    - name: "Generate release changelog"
-      id: github_changelog
-      uses: heinrichreimer/github-changelog-generator-action@v2.3
-      with:
-        onlyLastTag: true
-        token: ${{ secrets.RELEASE_TOKEN }} 
-    - name: view changelog
-      run: |
-        echo "${{steps.github_changelog.outputs.changelog}}"
 
     - name: delete old builds
       uses: dev-drprasad/delete-older-releases@v0.2.0
@@ -191,7 +188,8 @@ jobs:
         gzip: false
         tag: ${{ needs.plugin_build.outputs.version_string }}
         name: ${{ needs.plugin_build.outputs.version_string }}
-        body: "lol"
+        body: ">
+          ${{needs.plugin_build.outputs.changelog}}"
         files: >
           hdr-switch/*
           hdr-ryujinx/*
