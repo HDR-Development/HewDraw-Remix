@@ -27,6 +27,13 @@ jobs:
         run: |
           echo lol > asset.txt
 
+      # build changelog
+      - name: Build Changelog
+        id: changelog
+        uses: mikepenz/release-changelog-builder-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       # upload asset
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
@@ -37,4 +44,4 @@ jobs:
           asset_name: the_asset
           tag: ${{ steps.push_tag.outputs.version }}
           overwrite: true
-          body: "This is my release text"
+          body: ${{ steps.changelog.outputs.changelog }}
