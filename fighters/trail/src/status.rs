@@ -8,7 +8,8 @@ pub fn install() {
         init_attack_air,
         attack_air,
         init_attack_air_n,
-        init_attack_air_f
+        init_attack_air_f,
+        end_special_s_end
     );
 }
 
@@ -214,5 +215,13 @@ unsafe extern "C" fn sub_attack_air_f(fighter: &mut L2CFighterCommon) {
 #[status_script(agent = "trail", status = FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 pub unsafe fn init_attack_air_f(fighter: &mut L2CFighterCommon) -> L2CValue {
     sub_attack_air_f(fighter);
+    0.into()
+}
+
+// FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END
+
+#[status_script(agent = "trail", status = FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+pub unsafe fn end_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::off_flag(fighter.battle_object, vars::trail::STOP_SIDE_SPECIAL);
     0.into()
 }

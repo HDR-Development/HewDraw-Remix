@@ -56,6 +56,18 @@ unsafe fn special_cancel_flag_reset(boma: &mut BattleObjectModuleAccessor, statu
         }
     }
 
+    // Side Special Cancel (doesn't reset on hit)
+    if VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL_NO_HIT) {
+        if situation_kind != SITUATION_KIND_AIR
+            || [*FIGHTER_STATUS_KIND_DEAD,
+                *FIGHTER_STATUS_KIND_REBIRTH,
+                *FIGHTER_STATUS_KIND_WIN,
+                *FIGHTER_STATUS_KIND_LOSE,
+                *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
+            VarModule::off_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL_NO_HIT);
+        }
+    }
+
     // Aerial Special Used
     if VarModule::is_flag(boma.object(), vars::common::AIR_SPECIAL_USED) {
         if situation_kind != *SITUATION_KIND_AIR

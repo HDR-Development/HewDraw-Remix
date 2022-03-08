@@ -135,6 +135,7 @@ pub mod vars {
         pub const PERFECT_WAVEDASH: i32 = 78;
         pub const ENABLE_AIR_ESCAPE_JUMPSQUAT: i32 = 79;
         pub const SHOULD_WAVELAND: i32 = 80;
+        pub const SIDE_SPECIAL_CANCEL_NO_HIT: i32 = 81;
 
         
 
@@ -283,6 +284,7 @@ pub mod vars {
         pub const UP_SPECIAL_TO_SIDE_SPECIAL: i32 = 0x1001;
         pub const SIDE_SPECIAL_HIT: i32 = 0x1002;
         pub const IS_SIDE_SPECIAL_INPUT: i32 = 0x1003;
+        pub const STOP_SIDE_SPECIAL: i32 = 0x1004;
     }
 
     pub mod samus {
