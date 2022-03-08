@@ -190,6 +190,12 @@ pub unsafe fn shotos_moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
 
     // Magic Series
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
+
+    if fighter.is_button_on(Buttons::AppealAll) {
+        MeterModule::show(fighter.battle_object);
+    } else {
+        MeterModule::stop_show(fighter.battle_object);
+    }
 }
 
 unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {

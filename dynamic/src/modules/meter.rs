@@ -1,5 +1,11 @@
 use smash::app::BattleObject;
 extern "Rust" {
+    #[link_name = "MeterModule__show"]
+    fn MeterModule__show(object: *mut BattleObject);
+
+    #[link_name = "MeterModule__stop_show"]
+    fn MeterModule__stop_show(object: *mut BattleObject);
+
     #[link_name = "MeterModule__meter_per_level"]
     fn MeterModule__meter_per_level(object: *mut BattleObject) -> f32;
 
@@ -35,6 +41,16 @@ extern "Rust" {
 #[allow(non_snake_case)]
 pub mod MeterModule {
     use super::*;
+    pub fn show(object: *mut BattleObject) {
+        unsafe {
+            MeterModule__show(object)
+        }
+    }
+    pub fn stop_show(object: *mut BattleObject) {
+        unsafe {
+            MeterModule__stop_show(object)
+        }
+    }
     pub fn meter_per_level(object: *mut BattleObject) -> f32 {
         unsafe {
             MeterModule__meter_per_level(object)

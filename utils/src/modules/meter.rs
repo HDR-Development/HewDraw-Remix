@@ -93,7 +93,27 @@ impl MeterModule {
         module.remaining_show_frames = ParamModule::get_int(object, ParamType::Common, "meter_flash_frame_count");
     }
 
-    fn display(object: *mut BattleObject, new_levels: i32) {
+    #[export_name = "MeterModule__show"]
+    pub extern "Rust" fn show(object: *mut BattleObject) {
+        let module = require_meter_module!(object);
+        if module.remaining_show_frames == -1 {
+            module.remaining_show_frames = -2;
+        }
+
+        if module.remaining_show_frames < 0 {
+            Self::display(module.owner, 0);
+        }
+    }
+
+    #[export_name = "MeterModule__stop_show"]
+    pub extern "Rust" fn stop_show(object: *mut BattleObject) {
+        let module = require_meter_module!(object);
+        if module.remaining_show_frames != -1 && module.remaining_show_frames < 0 {
+            module.remaining_show_frames = 0;
+        }
+    }
+
+    pub extern "Rust" fn display(object: *mut BattleObject, new_levels: i32) {
         unsafe {
             let is_loss = new_levels < 0;
             let total_levels = if is_loss {
