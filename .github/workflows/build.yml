@@ -176,13 +176,13 @@ jobs:
         delete_tags: true
         delete_tag_pattern: ${{ needs.plugin_build.outputs.build_type }} # defaults to ""
       env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Download all artifacts
       uses: actions/download-artifact@v2
     - name: Update Build
       uses: meeDamian/github-release@2.0
       with:
-        token: ${{ secrets.RELEASE_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         prerelease: ${{ needs.plugin_build.outputs.is_prerelease }}
         allow_override: true
         gzip: false
