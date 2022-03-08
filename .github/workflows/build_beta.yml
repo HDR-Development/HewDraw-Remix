@@ -16,6 +16,7 @@ jobs:
       run: echo "ref is ${{ github.ref }}"
 
     - name: get_last_beta
+      id: get_last_beta
       uses: cardinalby/git-get-release-action@v1
       env:
         GITHUB_TOKEN: ${{ github.token }}
