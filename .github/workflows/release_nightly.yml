@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: checkout version
-        uses: actions/checkout@v2
-
-      - name: 'Get Previous tag'
-        id: tag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+      - id: latest_release
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+          owner: HDR-Development
+          repo: HewDraw-Remix
+          excludes: draft
 
       # download artifacts
       - name: Download all artifacts
@@ -26,7 +26,7 @@ jobs:
         shell: bash
         run: |
           ls
-          echo "##[set-output name=is_prerelease;]$(cat CHANGELOG.md)"
+          echo "##[set-output name=changelog;]$(cat CHANGELOG.md)"
 
       # upload asset
       - name: Upload binaries to release
@@ -37,8 +37,8 @@ jobs:
           prerelease: true
           file_glob: true
           asset_name: the_asset
-          release_name: ${{ steps.tag.outputs.tag }}-nightly
-          tag: ${{ steps.tag.outputs.tag }}
+          release_name: ${{ steps.latest_release.outputs.release }}-nightly
+          tag: ${{ steps.latest_release.outputs.release }}
           overwrite: true
           body: ${{ steps.github_changelog.outputs.changelog }}
 
