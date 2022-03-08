@@ -18,7 +18,11 @@ pub fn fighter_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let ratio = (WorkModule::get_param_float(fighter.module_accessor, hash40("jump_speed_x_max"), 0) / WorkModule::get_param_float(fighter.module_accessor, hash40("run_speed_max"), 0));
         VarModule::set_float(fighter.battle_object, vars::common::JUMP_SPEED_RATIO, ratio);
+        if fighter.kind() == *FIGHTER_KIND_KEN || fighter.kind() == *FIGHTER_KIND_RYU || fighter.kind() == *FIGHTER_KIND_DOLLY {
+            MeterModule::reset(fighter.battle_object);
+        }
     }
+
 }
 
 pub unsafe fn calc_melee_momentum(fighter: &mut L2CFighterCommon, aerial_attack: bool, attack_cancel: bool, walking: bool) -> f32 {
