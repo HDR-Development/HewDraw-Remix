@@ -147,8 +147,8 @@ jobs:
       id: tag_regex
       shell: bash
       run: |
-        ([[ "${{ steps.get_release_type.outputs.release_type }}" == "nightly" ]] && echo "##[set-output name=regex;]/beta/") || echo "lol"
-        ([[ "${{ steps.get_release_type.outputs.release_type }}" == "beta" ]] && echo "##[set-output name=regex;]/nightly/") || echo "lol"
+        ([[ "${{ steps.get_release_type.outputs.release_type }}" == "nightly" ]] && echo "##[set-output name=regex;]beta") || echo "lol"
+        ([[ "${{ steps.get_release_type.outputs.release_type }}" == "beta" ]] && echo "##[set-output name=regex;]nightly") || echo "lol"
 
     - name: display regex
       id: show_regex
