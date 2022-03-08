@@ -59,18 +59,18 @@ jobs:
     - name: checkout version
       uses: actions/checkout@v2
 
-    # build the project
-    - run: |
-        export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="${{ needs.version_and_changelog.outputs.version }}-nightly" \
-        && cd scripts && python3 make_dist.py publish && cd ..
-      env:
-        HOME: /root
-
-    ## mock upload files
+    ## build the project
     #- run: |
-    #    mkdir distributions
-    #    echo lol > distributions/hdr-switch.zip
-    #    echo lol > distributions/hdr-ryujinx.zip
+    #    export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="${{ needs.version_and_changelog.outputs.version }}-nightly" \
+    #    && cd scripts && python3 make_dist.py publish && cd ..
+    #  env:
+    #    HOME: /root
+
+    # mock upload files
+    - run: |
+        mkdir distributions
+        echo lol > distributions/hdr-switch.zip
+        echo lol > distributions/hdr-ryujinx.zip
 
     - name: Upload hdr-switch artifact
       uses: actions/upload-artifact@v2
