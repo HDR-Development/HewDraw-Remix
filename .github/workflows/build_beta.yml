@@ -2,13 +2,10 @@ name: make beta
 
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: The version tag (like v1.4.3) to make into a beta
-        required: true
 
 jobs:
   greet:
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
 
     steps:
