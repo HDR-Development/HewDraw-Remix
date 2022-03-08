@@ -161,7 +161,7 @@ jobs:
       uses: heinrichreimer/github-changelog-generator-action@v2.3
       with:
         onlyLastTag: true
-        excludeTagsRegex: ${{ steps.tag_regex.outputs.regex }}
+        excludeTagsRegex: '/${{ steps.tag_regex.outputs.regex }}/'
         token: ${{ secrets.RELEASE_TOKEN }} 
     - name: view changelog
       id: output_changelog
