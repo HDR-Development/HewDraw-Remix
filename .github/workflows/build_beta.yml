@@ -6,6 +6,7 @@ on:
 jobs:
   version_and_changelog:
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags')
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs: 
@@ -79,9 +80,10 @@ jobs:
         echo lol > distributions/hdr-ryujinx.zip
 
     - id: trimmed_tag
+      shell: bash
       run: |
         export UNTRIMMED=${{github.ref}}
-        export TRIMMED=${UNTRIMMED#"heads/tags/"}
+        export TRIMMED=${UNTRIMMED#"refs/tags/"}
         echo "untrimmed: $UNTRIMMED"
         echo "trimmed: $TRIMMED"
         echo "##[set-output name=tag;]$TRIMMED";
