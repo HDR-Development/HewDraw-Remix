@@ -43,6 +43,24 @@ unsafe fn map_controls_hook(
     }
 }
 
+#[skyline::hook(offset = offsets::analog_trigger_l(), inline)]
+unsafe fn analog_trigger_l(ctx: &mut skyline::hooks::InlineCtx) {
+    if *ctx.registers[9].x.as_ref() & 0x40 != 0 {
+        *ctx.registers[11].x.as_mut() = 0;
+    } else {
+        *ctx.registers[11].w.as_mut() = 0x27FF;
+    }
+}
+
+#[skyline::hook(offset = offsets::analog_trigger_r(), inline)]
+unsafe fn analog_trigger_r(ctx: &mut skyline::hooks::InlineCtx) {
+    if *ctx.registers[8].x.as_ref() & 0x80 != 0 {
+        *ctx.registers[11].x.as_mut() = 0;
+    } else {
+        *ctx.registers[11].w.as_mut() = 0x27FF;
+    }
+}
+
 pub fn install() {
-    skyline::install_hook!(map_controls_hook);
+    skyline::install_hooks!(map_controls_hook, analog_trigger_l, analog_trigger_r);
 }

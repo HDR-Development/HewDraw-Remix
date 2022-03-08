@@ -55,6 +55,12 @@ extern "C" {
 
     #[link_name = "offsets_kill_zoom_throw"]
     fn offsets_kill_zoom_throw() -> usize;
+
+    #[link_name = "offsets_analog_trigger_l"]
+    fn offsets_analog_trigger_l() -> usize;
+
+    #[link_name = "offsets_analog_trigger_r"]
+    fn offsets_analog_trigger_r() -> usize;
 }
 
 
@@ -169,5 +175,17 @@ pub fn kill_zoom_regular() -> usize {
 pub fn kill_zoom_throw() -> usize {
     unsafe {
         offsets_kill_zoom_throw()
+    }
+}
+
+pub fn analog_trigger_l() -> usize {
+    unsafe {
+        offsets_analog_trigger_l()
+    }
+}
+
+pub fn analog_trigger_r() -> usize {
+    unsafe {
+        offsets_analog_trigger_r()
     }
 }
