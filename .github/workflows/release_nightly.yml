@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      - name: checkout version
+        uses: actions/checkout@v2
+
       - name: 'Get Previous tag'
         id: tag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
