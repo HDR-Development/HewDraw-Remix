@@ -26,18 +26,24 @@ jobs:
         with: 
           fetch-depth: 0
 
-      # build changelog
-      - name: Build Changelog
-        id: changelog
-        uses: mikepenz/release-changelog-builder-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # github changelog
+    - name: "Generate release changelog"
+      id: github_changelog
+      uses: heinrichreimer/github-changelog-generator-action@v2.3
+      with:
+        onlyLastTag: true
+        excludeTagsRegex: '/${{ steps.tag_regex.outputs.regex }}/'
+        token: ${{ secrets.RELEASE_TOKEN }} 
+    - name: view changelog
+      id: output_changelog
+      run: |
+        echo "${{steps.github_changelog.outputs.changelog}}"
 
       # make fake asset
       - name: make asset
         shell: bash
         run: |
-          echo lol > asset.txt
+          echo "lol" > asset.txt
 
       # upload asset
       - name: Upload binaries to release
@@ -49,4 +55,4 @@ jobs:
           asset_name: the_asset
           tag: ${{ steps.push_tag.outputs.version }}
           overwrite: true
-          body: ${{ steps.changelog.outputs.changelog }}
+          body: ${{ steps.github_changelog.outputs.changelog }}
