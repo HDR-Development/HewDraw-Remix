@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v2
         with: 
           fetch-depth: 0
- 
+  
         # github changelog
       - name: "Generate release changelog"
         id: github_changelog
