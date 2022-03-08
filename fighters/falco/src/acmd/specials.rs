@@ -186,29 +186,29 @@ unsafe fn falco_special_air_n_start_sound(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "falco", script = "sound_specialairhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn falco_special_air_hi_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        PLAY_SEQUENCE(fighter, Hash40::new("seq_falco_rnd_firebird"));
-        PLAY_SE(fighter, Hash40::new("se_falco_special_h02"));
-    }
+// #[acmd_script( agent = "falco", script = "sound_specialairhi" , category = ACMD_SOUND , low_priority)]
+// unsafe fn falco_special_air_hi_sound(fighter: &mut L2CAgentBase) {
+//     let lua_state = fighter.lua_state_agent;
+//     let boma = sv_system::battle_object_module_accessor(lua_state);
+//     frame(lua_state, 1.0);
+//     if is_excute(fighter) {
+//         PLAY_SEQUENCE(fighter, Hash40::new("seq_falco_rnd_firebird"));
+//         PLAY_SE(fighter, Hash40::new("se_falco_special_h02"));
+//     }
 
-}
+// }
 
-#[acmd_script( agent = "falco", script = "sound_specialhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn falco_special_hi_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        PLAY_SEQUENCE(fighter, Hash40::new("seq_falco_rnd_firebird"));
-        PLAY_SE(fighter, Hash40::new("se_falco_special_h02"));
-    }
+// #[acmd_script( agent = "falco", script = "sound_specialhi" , category = ACMD_SOUND , low_priority)]
+// unsafe fn falco_special_hi_sound(fighter: &mut L2CAgentBase) {
+//     let lua_state = fighter.lua_state_agent;
+//     let boma = sv_system::battle_object_module_accessor(lua_state);
+//     frame(lua_state, 1.0);
+//     if is_excute(fighter) {
+//         PLAY_SEQUENCE(fighter, Hash40::new("seq_falco_rnd_firebird"));
+//         PLAY_SE(fighter, Hash40::new("se_falco_special_h02"));
+//     }
 
-}
+// }
 
 pub fn install() {
     install_acmd_scripts!(
@@ -221,8 +221,8 @@ pub fn install() {
         falco_special_air_lw_sound,
         falco_special_n_start_sound,
         falco_special_air_n_start_sound,
-        falco_special_air_hi_sound,
-        falco_special_hi_sound,
+        // falco_special_air_hi_sound,
+        // falco_special_hi_sound,
     );
 }
 
