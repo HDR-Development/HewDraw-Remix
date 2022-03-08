@@ -37,7 +37,7 @@ jobs:
           sinceTag: ${{ steps.push_tag.outputs.old-version }}
           token: ${{ secrets.GITHUB_TOKEN }} 
 
-      - name: Upload hdr-switch artifact
+      - name: Upload changelog
         uses: actions/upload-artifact@v2
         with:
           name: changelog
@@ -56,6 +56,9 @@ jobs:
       with:
         python-version: '3.9' # Version range or exact version of a Python version to use, using SemVer's version range syntax
     
+    - name: checkout version
+        uses: actions/checkout@v2
+
     # build the project
     - run: |
         export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="${{ needs.version_and_changelog.outputs.version }}-nightly" \
