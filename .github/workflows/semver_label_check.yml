@@ -7,7 +7,6 @@ jobs:
     name: Validate Release Label and Notes
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
       - uses: jefflinse/pr-semver-bump@v1
         name: Validate Pull Request Metadata
         with:
