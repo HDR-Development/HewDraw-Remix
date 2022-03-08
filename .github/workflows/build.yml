@@ -142,12 +142,20 @@ jobs:
         path: scripts/change_summary.txt
         if-no-files-found: ignore # 'error', 'warn', or 'ignore' are available, defaults to `warn`
    
+    # build regex exclusion for tags
+    - name: build changelog tag regex
+      id: tag_regex
+      run: |
+        ([[ "${{ steps.get_release_type.outputs.release_type }}" == "nightly" ]] && echo "##[set-output name=regex;]/beta/") || echo "lol"
+        ([[ "${{ steps.get_release_type.outputs.release_type }}" == "beta" ]] && echo "##[set-output name=regex;]/nightly/") || echo "lol"
+
     # github changelog
     - name: "Generate release changelog"
       id: github_changelog
       uses: heinrichreimer/github-changelog-generator-action@v2.3
       with:
         onlyLastTag: true
+        excludeTagsRegex: ${{ steps.tag_regex.outputs.regex }}
         token: ${{ secrets.RELEASE_TOKEN }} 
     - name: view changelog
       id: output_changelog
