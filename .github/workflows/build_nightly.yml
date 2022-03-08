@@ -37,13 +37,6 @@ jobs:
           sinceTag: ${{ steps.push_tag.outputs.old-version }}
           token: ${{ secrets.GITHUB_TOKEN }} 
 
-      # put changelog in file
-      - name: put changelog in file
-        id: output_changelog
-        run: |
-          ls
-          sudo echo "${{steps.github_changelog.outputs.changelog}}" > CHANGELOG.md
-
       - name: Upload hdr-switch artifact
         uses: actions/upload-artifact@v2
         with:
