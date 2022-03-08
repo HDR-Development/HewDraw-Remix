@@ -6,6 +6,9 @@ on:
       version:
         description: The version tag (like v1.4.3) to make into a beta
         required: true
+  push:
+    branches:
+      - dev
 
 jobs:
   greet:
