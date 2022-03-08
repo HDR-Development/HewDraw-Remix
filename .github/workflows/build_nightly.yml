@@ -36,6 +36,7 @@ jobs:
         uses: heinrichreimer/github-changelog-generator-action@v2.3
         with:
           sinceTag: ${{ steps.push_tag.outputs.old-version }}
+          stripHeaders: true
           token: ${{ secrets.GITHUB_TOKEN }} 
 
       - name: Upload changelog
