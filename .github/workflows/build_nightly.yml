@@ -11,6 +11,7 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs: 
       version: ${{ steps.push_tag.outputs.version }}
+      changelog: ${{ steps.github_changelog.outputs.changelog }}
     steps:
   
       # tag push
@@ -72,14 +73,16 @@ jobs:
         echo lol > distributions/hdr-switch.zip
         echo lol > distributions/hdr-ryujinx.zip
 
-    - name: Upload hdr-switch artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: hdr-switch
-        path: distributions/hdr-switch.zip
-    - name: Upload hdr-ryujinx artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: hdr-ryujinx
-        path: distributions/hdr-ryujinx.zip
-        
+    # upload asset
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: '*'
+          prerelease: true
+          file_glob: true
+          asset_name: the_asset
+          release_name: ${{ needs.version_and_changelog.outputs.version }}-nightly
+          tag: ${{ needs.version_and_changelog.outputs.version }}
+          overwrite: true
+          body: ${{ needs.version_and_changelog.outputs.changelog }}
