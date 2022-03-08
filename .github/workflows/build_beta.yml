@@ -23,7 +23,7 @@ jobs:
       with:
         releaseNameRegEx: beta
 
-    - id: echo found release info
+    - id: echo_release_info
       shell: bash
       run: |
         echo ${{ steps.get_last_beta.outputs.tag_name }}
