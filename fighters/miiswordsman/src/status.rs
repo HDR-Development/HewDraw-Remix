@@ -21,8 +21,8 @@ pub fn install() {
         pre_special_hi3_end,
         special_hi3_end,
         //special_lw,
-        miiswordsman_speciallw1hit_main,
-        special_lw3_end
+        //miiswordsman_speciallw1hit_main,
+        //special_lw3_end
     );
 }
 

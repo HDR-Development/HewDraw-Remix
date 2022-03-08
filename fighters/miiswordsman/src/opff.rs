@@ -213,8 +213,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     //aerial_acrobatics(fighter, boma, id, status_kind, situation_kind, cat[0], motion_kind, frame);
     gale_strike_timer(fighter, boma, id);
     skyward_slash_dash_act(fighter, boma, id, status_kind, situation_kind, frame);
-    kinesis_blade(fighter, boma, status_kind, motion_kind);
-    hitgrab_transition(fighter, boma, status_kind, motion_kind);
+    //kinesis_blade(fighter, boma, status_kind, motion_kind);
+    //hitgrab_transition(fighter, boma, status_kind, motion_kind);
 
 }
 
