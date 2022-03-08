@@ -21,12 +21,6 @@ jobs:
           patch-label: semver:patch
           with-v: true
 
-      # make fake asset
-      - name: make asset
-        shell: bash
-        run: |
-          echo lol > asset.txt
-
       - name: checkout version
         uses: actions/checkout@v2
         with: 
@@ -38,6 +32,12 @@ jobs:
         uses: mikepenz/release-changelog-builder-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # make fake asset
+      - name: make asset
+        shell: bash
+        run: |
+          echo lol > asset.txt
 
       # upload asset
       - name: Upload binaries to release
