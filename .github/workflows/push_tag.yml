@@ -27,6 +27,11 @@ jobs:
         run: |
           echo lol > asset.txt
 
+      - name: checkout version
+        uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
+
       # build changelog
       - name: Build Changelog
         id: changelog
