@@ -9,7 +9,7 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-
+ 
       # tag push
       - uses: rymndhng/release-on-push-action@master
         id: push_tag
