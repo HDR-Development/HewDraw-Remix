@@ -1,0 +1,13 @@
+name: make beta
+
+on:
+  workflow_dispatch:
+
+jobs:
+  greet:
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Send greeting
+      run: echo "ref is ${{ github.ref }}, version is ${{ github.event.inputs.version }}"
