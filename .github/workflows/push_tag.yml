@@ -29,9 +29,9 @@ jobs:
         # github changelog
       - name: "Generate release changelog"
         id: github_changelog
-        uses: charmixer/auto-changelog-action@v1
+        uses: heinrichreimer/github-changelog-generator-action@v2.3
         with:
-          since_tag: ${{ steps.push_tag.outputs.old-version }}
+          sinceTag: ${{ steps.push_tag.outputs.old-version }}
           token: ${{ secrets.GITHUB_TOKEN }} 
       - name: view changelog
         id: output_changelog
