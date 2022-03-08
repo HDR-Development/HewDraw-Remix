@@ -74,15 +74,15 @@ jobs:
         echo lol > distributions/hdr-ryujinx.zip
 
     # upload asset
-      - name: Upload binaries to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: '*'
-          prerelease: true
-          file_glob: true
-          asset_name: the_asset
-          release_name: ${{ needs.version_and_changelog.outputs.version }}-nightly
-          tag: ${{ needs.version_and_changelog.outputs.version }}
-          overwrite: true
-          body: ${{ needs.version_and_changelog.outputs.changelog }}
+    - name: Upload binaries to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: '*'
+        prerelease: true
+        file_glob: true
+        asset_name: the_asset
+        release_name: ${{ needs.version_and_changelog.outputs.version }}-nightly
+        tag: ${{ needs.version_and_changelog.outputs.version }}
+        overwrite: true
+        body: ${{ needs.version_and_changelog.outputs.changelog }}
