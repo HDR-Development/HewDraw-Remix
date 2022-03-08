@@ -93,7 +93,27 @@ impl MeterModule {
         module.remaining_show_frames = ParamModule::get_int(object, ParamType::Common, "meter_flash_frame_count");
     }
 
-    fn display(object: *mut BattleObject, new_levels: i32) {
+    #[export_name = "MeterModule__show"]
+    pub extern "Rust" fn show(object: *mut BattleObject) {
+        let module = require_meter_module!(object);
+        if module.remaining_show_frames == -1 {
+            module.remaining_show_frames = -2;
+        }
+
+        if module.remaining_show_frames < 0 {
+            Self::display(module.owner, 0);
+        }
+    }
+
+    #[export_name = "MeterModule__stop_show"]
+    pub extern "Rust" fn stop_show(object: *mut BattleObject) {
+        let module = require_meter_module!(object);
+        if module.remaining_show_frames != -1 && module.remaining_show_frames < 0 {
+            module.remaining_show_frames = 0;
+        }
+    }
+
+    pub extern "Rust" fn display(object: *mut BattleObject, new_levels: i32) {
         unsafe {
             let is_loss = new_levels < 0;
             let total_levels = if is_loss {
@@ -237,6 +257,20 @@ impl MeterModule {
         module.last_levels_added += Self::level(module.owner) - count;
     }
 
+    #[export_name = "MeterModule__reset"]
+    pub extern "Rust" fn reset(object: *mut BattleObject) {
+        let module = require_meter_module!(object);
+        module.current_meter = 0.0;
+        module.damage_gain_mul = 1.0;
+        module.has_hit = false;
+        module.last_levels_added = 0;
+        module.last_levels_consumed = 0;
+        module.remaining_show_frames = 0;
+        module.watch = false;
+        module.watching_frame = 0.0;
+        module.watching_motion = Hash40::new("invalid");
+    }
+
     #[export_name = "MeterModule__update"]
     pub extern "Rust" fn update(object: *mut BattleObject, show_flash_on_change: bool) {
         let module = require_meter_module!(object);
@@ -245,13 +279,13 @@ impl MeterModule {
 
         let new_levels = if module.watch && module.has_hit {
             let difference = VarModule::get_float(module.owner, vars::common::LAST_ATTACK_DAMAGE_DEALT);
+            let current = Self::level(module.owner);
             module.current_meter += difference * module.damage_gain_mul;
             module.watch = false;
             module.watching_motion = Hash40::new("invalid");
             module.watching_frame = 0.0;
             module.damage_gain_mul = 1.0;
-            let current = Self::level(module.owner);
-            module.current_meter = dbg!(module.current_meter).min(ParamModule::get_float(module.owner, ParamType::Common, "meter_max_damage"));
+            module.current_meter = module.current_meter.min(ParamModule::get_float(module.owner, ParamType::Common, "meter_max_damage"));
             Self::level(module.owner) - current
         } else {
             0
@@ -289,8 +323,8 @@ unsafe fn fighter_handle_damage_hook(fighter: *mut smash::app::BattleObject, arg
             continue;
         }
         if let Some(object_id) = crate::util::get_active_battle_object_id_from_entry_id(x) {
-            let object = crate::util::get_battle_object_from_id(dbg!(object_id));
-            if dbg!(!object.is_null()) && dbg!(super::is_hdr_object((*object).vtable as _)) {
+            let object = crate::util::get_battle_object_from_id(object_id);
+            if !object.is_null() && super::is_hdr_object((*object).vtable as _) {
                 VarModule::set_float(object, vars::common::LAST_ATTACK_DAMAGE_DEALT, damage_received);
                 VarModule::set_int(object, vars::common::LAST_ATTACK_RECEIVER_ENTRY_ID, (*fighter).battle_object_id as i32);
                 MeterModule::signal_hit(object);
