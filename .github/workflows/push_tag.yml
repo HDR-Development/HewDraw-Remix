@@ -28,7 +28,8 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file_glob: asset*
+          file: asset*
+          file_glob: true
           asset_name: the_asset
           tag: ${{ steps.push_tag.outputs.tag_name }}
           overwrite: true
