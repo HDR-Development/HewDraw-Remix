@@ -51,8 +51,10 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: asset*
+          prerelease: true
           file_glob: true
           asset_name: the_asset
+          release_name: ${{ steps.push_tag.outputs.version }}-nightly
           tag: ${{ steps.push_tag.outputs.version }}
           overwrite: true
           body: ${{ steps.github_changelog.outputs.changelog }}
