@@ -1,0 +1,16 @@
+name: make beta
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: The version tag (like v1.4.3) to make into a beta
+        required: true
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Send greeting
+      run: echo "ref is ${{ github.ref }}, version is ${{ github.event.inputs.version }}"
