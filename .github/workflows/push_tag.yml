@@ -9,7 +9,27 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
+
+      # tag push
       - uses: rymndhng/release-on-push-action@master
+        id: push_tag
         with:
-          bump_version_scheme: minor
+          bump_version_scheme: patch
           use_github_release_notes: true
+
+      # make fake asset
+      - name: make asset
+        shell: bash
+        run: |
+          echo lol > asset.txt
+
+      # upload asset
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file_glob: asset*
+          asset_name: the_asset
+          tag: ${{ steps.push_tag.outputs.tag_name }}
+          overwrite: true
+          body: "This is my release text"
