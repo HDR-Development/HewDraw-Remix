@@ -111,14 +111,14 @@ jobs:
       run: |
         echo "build arg is: ${{ steps.build_arg.outputs.arg }}"
 
-     build the project
+    # build the project
     - run: |
         export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="${{ steps.version.outputs.version_string }}" \
         && cd scripts && python3 make_dist.py ${{ steps.build_arg.outputs.arg }} && cd ..
       env:
         HOME: /root
 
-    # mock upload files
+    ## mock upload files
     #- run: |
     #    mkdir distributions
     #    echo lol > distributions/hdr-switch.zip
