@@ -17,6 +17,8 @@ jobs:
         with:
           mode: bump
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+          minor-label: semver:feature
+          patch-label: semver:patch
 
       # make fake asset
       - name: make asset
