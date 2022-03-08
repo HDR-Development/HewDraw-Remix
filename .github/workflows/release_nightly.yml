@@ -4,7 +4,8 @@ on:
     workflows: ['build_nightly']
     types: [completed]
 
-# upload a build
+jobs:
+  # upload a build
   release_nightly:
     runs-on: ubuntu-latest
     steps:
