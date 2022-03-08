@@ -15,7 +15,7 @@ major_terms = {"(major)"}
 
 
 merge_lines = []
-for line in pkgutil.run_command("git log --oneline").split("\n"):
+for line in reversed(pkgutil.run_command("git log --oneline").split("\n")):
     if "Merge pull request #" in line:
         hash = line.split(" ", 1)[0]
     
@@ -42,6 +42,6 @@ for line in pkgutil.run_command("git log --oneline").split("\n"):
 
 if debug:
     print("final:")
-    
+
 print(str(major) + "." + str(minor) + "." + str(patch))
 

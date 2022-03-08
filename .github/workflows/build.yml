@@ -17,6 +17,9 @@ jobs:
     outputs:
       version_string: ${{ steps.version.outputs.version_string }}
       commit_hash: ${{ steps.version.outputs.commit_hash }}
+      is_prerelease: ${{ steps.version.outputs.is_prerelease }}
+      build_type: ${{ steps.get_release_type.outputs.release_type }}
+      changelog: ${{ steps.github_changelog.outputs.changelog }}
     steps:
     - name: setup python
       uses: actions/setup-python@v2
@@ -80,26 +83,48 @@ jobs:
       id: semantic-version
       shell: bash
       run: |
-        echo "##[set-output name=version;]$(python3 scripts/generate_version_string.py)"; 
+        echo "##[set-output name=version;]v$(python3 scripts/generate_version_string.py)"; 
 
     # make the version string
     - name: collect version string
       id: version
       shell: bash
       run: |
-        echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}+$(git rev-parse --short HEAD))"
+        echo "##[set-output name=version_string;]$(echo ${{ steps.semantic-version.outputs.version }}-${{ steps.get_release_type.outputs.release_type }})"
         echo "##[set-output name=commit_hash;]$(echo $(git rev-parse --short HEAD))"
         echo "generated semver text was: ${{ steps.semantic-version.outputs.version }}"
         echo $(git rev-parse --short HEAD)
         echo target ref: ${{ github.event.pull_request.base.ref }}
         echo head ref: ${{ github.ref }}
+        ([[ "${{ steps.get_release_type.outputs.release_type }}" == "nightly" ]] && echo "##[set-output name=is_prerelease;]true") || echo "not nightly"
+        ([[ "${{ steps.get_release_type.outputs.release_type }}" == "beta" ]] && echo "##[set-output name=is_prerelease;]false") || echo "not beta"
+
+    - name: determine build argument
+      id: build_arg
+      shell: bash
+      run: |
+        ([[ "${{ github.event_name }}" == "pull_request" ]] && echo "##[set-output name=arg;]build") || echo "should be a push"
+        ([[ "${{ github.event_name }}" == "push" ]] && echo "##[set-output name=arg;]publish") || echo "should be a pull request"
+        
+    - name: echo build argument
+      id: echo_build
+      run: |
+        echo "build arg is: ${{ steps.build_arg.outputs.arg }}"
 
     # build the project
     - run: |
         export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="${{ steps.version.outputs.version_string }}" \
-        && cd scripts && python3 make_dist.py publish && cd ..
+        && cd scripts && python3 make_dist.py ${{ steps.build_arg.outputs.arg }} && cd ..
       env:
         HOME: /root
+
+    ## mock upload files
+    #- run: |
+    #    mkdir distributions
+    #    echo lol > distributions/hdr-switch.zip
+    #    echo lol > distributions/hdr-ryujinx.zip
+    #    echo lol > change_summary.txt
+
     - name: Upload hdr-switch artifact
       uses: actions/upload-artifact@v2
       with:
@@ -116,11 +141,24 @@ jobs:
         name: change_summary
         path: scripts/change_summary.txt
         if-no-files-found: ignore # 'error', 'warn', or 'ignore' are available, defaults to `warn`
+   
+    # github changelog
+    - name: "Generate release changelog"
+      id: github_changelog
+      uses: heinrichreimer/github-changelog-generator-action@v2.3
+      with:
+        onlyLastTag: true
+        token: ${{ secrets.RELEASE_TOKEN }} 
+    - name: view changelog
+      id: output_changelog
+      run: |
+        echo "${{steps.github_changelog.outputs.changelog}}"
 
-  # upload a nightly
-  upload_nightly:
+
+  # upload a build
+  upload_build:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/dev'
+    if: (github.ref == 'refs/heads/stable' || github.ref == 'refs/heads/dev') && github.event.workflow_run.event != 'pull_request'
     needs:
       - plugin_build
     steps:
@@ -128,64 +166,29 @@ jobs:
     - run: |
         echo "Version string: ${{ needs.plugin_build.outputs.version_string }}"
         echo "Commit hash: ${{ needs.plugin_build.outputs.commit_hash }}"
-    - name: delete old nightlies
-      uses: dev-drprasad/delete-older-releases@v0.2.0
-      with:
-        keep_latest: 0
-        delete_tags: true
-        delete_tag_pattern: nightly # defaults to ""
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Download all artifacts
-      uses: actions/download-artifact@v2
-    - name: Update Nightly
-      uses: meeDamian/github-release@2.0
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        prerelease: true
-        allow_override: true
-        gzip: false
-        tag: nightly-${{ needs.plugin_build.outputs.version_string }}
-        name: nightly ${{ needs.plugin_build.outputs.version_string }}
-        body: >
-          Nightly built off of the latest code in the repository. 
-        files: >
-          hdr-switch/*
-          hdr-ryujinx/*
-          change_summary/*
+        echo "Build type: ${{ needs.plugin_build.outputs.build_type }}"
+        echo "Is prerelease: ${{ needs.plugin_build.outputs.is_prerelease }}"
 
-  # upload a beta
-  upload_beta:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/stable'
-    needs:
-      - plugin_build
-    steps:
-    # print the outputs from the build job
-    - run: |
-        echo "Version string: ${{ needs.plugin_build.outputs.version_string }}"
-        echo "Commit hash: ${{ needs.plugin_build.outputs.commit_hash }}"
-    - name: delete old betas
+    - name: delete old builds
       uses: dev-drprasad/delete-older-releases@v0.2.0
       with:
         keep_latest: 0
         delete_tags: true
-        delete_tag_pattern: beta # defaults to ""
+        delete_tag_pattern: ${{ needs.plugin_build.outputs.build_type }} # defaults to ""
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Download all artifacts
       uses: actions/download-artifact@v2
-    - name: Update Beta
+    - name: Update Build
       uses: meeDamian/github-release@2.0
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        prerelease: true
+        prerelease: ${{ needs.plugin_build.outputs.is_prerelease }}
         allow_override: true
         gzip: false
-        tag: beta-${{ needs.plugin_build.outputs.version_string }}
-        name: beta ${{ needs.plugin_build.outputs.version_string }}
-        body: >
-          Beta built off of the latest code in the repository. 
+        tag: ${{ needs.plugin_build.outputs.version_string }}
+        name: ${{ needs.plugin_build.outputs.version_string }}
+        body: '${{needs.plugin_build.outputs.changelog}}'
         files: >
           hdr-switch/*
           hdr-ryujinx/*

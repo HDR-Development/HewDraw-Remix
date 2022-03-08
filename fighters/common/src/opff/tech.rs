@@ -179,6 +179,7 @@ unsafe fn run_squat(boma: &mut BattleObjectModuleAccessor, status_kind: i32, sti
     //let crouch_thresh: f32 = WorkModule::get_param_float(boma, hash40("common"), hash40("pass_stick_y"));
     if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_RUN, *FIGHTER_STATUS_KIND_RUN_BRAKE])
     && boma.stick_y() < WorkModule::get_param_float(boma, hash40("common"), hash40("squat_stick_y"))
+    && !VarModule::is_flag(boma.object(), vars::common::IS_STICKY_WALK)
     {
         boma.change_status_req(*FIGHTER_STATUS_KIND_SQUAT, false);
     }
