@@ -87,6 +87,14 @@ jobs:
         echo "untrimmed: $UNTRIMMED"
         echo "trimmed: $TRIMMED"
         echo "##[set-output name=tag;]$TRIMMED";
+      
+    - uses: dev-drprasad/delete-tag-and-release@v0.2.0
+      with:
+        delete_release: true # default: false
+        tag_name: ${{ steps.trimmed_tag.outputs.tag }} # tag name to delete
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
     # upload asset
     - name: Upload binaries to release
