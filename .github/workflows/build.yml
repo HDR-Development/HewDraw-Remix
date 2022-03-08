@@ -188,8 +188,7 @@ jobs:
         gzip: false
         tag: ${{ needs.plugin_build.outputs.version_string }}
         name: ${{ needs.plugin_build.outputs.version_string }}
-        body: ">
-          ${{needs.plugin_build.outputs.changelog}}"
+        body: '${{needs.plugin_build.outputs.changelog}}'
         files: >
           hdr-switch/*
           hdr-ryujinx/*
