@@ -7,6 +7,7 @@ on:
 jobs:
   # upload a build
   release_nightly:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
 
