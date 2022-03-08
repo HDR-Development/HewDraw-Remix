@@ -19,6 +19,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           minor-label: semver:feature
           patch-label: semver:patch
+          with-v: true
 
       # make fake asset
       - name: make asset
