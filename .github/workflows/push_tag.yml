@@ -11,11 +11,12 @@ jobs:
     steps:
  
       # tag push
-      - uses: rymndhng/release-on-push-action@master
+      - uses: jefflinse/pr-semver-bump@v1
+        name: Bump and Tag Version
         id: push_tag
         with:
-          bump_version_scheme: patch
-          use_github_release_notes: true
+          mode: bump
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       # make fake asset
       - name: make asset
@@ -31,6 +32,6 @@ jobs:
           file: asset*
           file_glob: true
           asset_name: the_asset
-          tag: ${{ steps.push_tag.outputs.tag_name }}
+          tag: ${{ steps.push_tag.outputs.version }}
           overwrite: true
           body: "This is my release text"
