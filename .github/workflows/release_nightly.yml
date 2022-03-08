@@ -12,6 +12,8 @@ jobs:
 
       - name: checkout version
         uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
 
       - name: 'Get Previous tag'
         id: tag
