@@ -1,6 +1,6 @@
 name: rust build
 
-on:
+#on:
   #push:
   #  branches: [ dev, stable ] # CHANGE "master" TO "main" IF THAT IS THE NAME OF YOUR MAIN BRANCH!
   #pull_request:
