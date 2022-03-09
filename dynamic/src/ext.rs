@@ -367,6 +367,7 @@ pub trait BomaExt {
     unsafe fn get_jump_count(&mut self) -> i32;
     unsafe fn get_jump_count_max(&mut self) -> i32;
     unsafe fn motion_frame(&mut self) -> f32;
+    unsafe fn is_in_hitlag(&mut self) -> bool;
 
 
     unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32;
@@ -546,6 +547,14 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn motion_frame(&mut self) -> f32 {
         return MotionModule::frame(self);
+    }
+
+    unsafe fn is_in_hitlag(&mut self) -> bool{
+        let hitlag_frame = WorkModule::get_int(self, *FIGHTER_INSTANCE_WORK_ID_INT_HIT_STOP_ATTACK_SUSPEND_FRAME);
+        if hitlag_frame > 0 {
+            return true;
+        }
+        return false;
     }
 
     unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32 {
