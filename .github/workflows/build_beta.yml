@@ -1,0 +1,112 @@
+name: make beta
+
+on:
+  workflow_dispatch:
+
+jobs:
+  version_and_changelog:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags')
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs: 
+      changelog: ${{ steps.github_changelog.outputs.changelog }}
+      version: ${{ steps.get_last_beta.outputs.tag_name }}
+    steps:
+
+    - name: echo ref
+      run: echo "ref is ${{ github.ref }}"
+
+    - name: get_last_beta
+      id: get_last_beta
+      uses: cardinalby/git-get-release-action@v1
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      with:
+        releaseNameRegEx: beta
+
+    - id: echo_release_info
+      shell: bash
+      run: |
+        echo ${{ steps.get_last_beta.outputs.tag_name }}
+
+    
+    - name: checkout version
+      uses: actions/checkout@v2
+      with: 
+        fetch-depth: 0
+
+    # github changelog
+    - name: "Generate release changelog"
+      id: github_changelog
+      uses: heinrichreimer/github-changelog-generator-action@v2.3
+      with:
+        sinceTag: ${{ steps.get_last_beta.outputs.tag_name }}
+        stripHeaders: true
+        token: ${{ secrets.GITHUB_TOKEN }} 
+
+    - name: Upload changelog
+      uses: actions/upload-artifact@v2
+      with:
+        name: changelog
+        path: CHANGELOG.md
+
+  plugin_build:
+    env:
+      PLUGIN_NAME: hdr
+    runs-on: ubuntu-latest
+    needs: version_and_changelog
+    container: 
+      image: jugeeya/cargo-skyline:2.1.0-dkp
+    steps:
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+    
+    - name: checkout version
+      uses: actions/checkout@v2
+
+    # build the project
+    - run: |
+        export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="${{ needs.version_and_changelog.outputs.version }}-nightly" \
+        && cd scripts && python3 make_dist.py publish && cd ..
+      env:
+        HOME: /root
+
+    ## mock upload files
+    #- run: |
+    #    mkdir distributions
+    #    echo lol > distributions/hdr-switch.zip
+    #    echo lol > distributions/hdr-ryujinx.zip
+
+    - id: trimmed_tag
+      shell: bash
+      run: |
+        export UNTRIMMED=${{github.ref}}
+        export TRIMMED=${UNTRIMMED#"refs/tags/"}
+        echo "untrimmed: $UNTRIMMED"
+        echo "trimmed: $TRIMMED"
+        echo "##[set-output name=tag;]$TRIMMED";
+      
+    - uses: dev-drprasad/delete-tag-and-release@v0.2.0
+      with:
+        delete_release: true # default: false
+        tag_name: ${{ steps.trimmed_tag.outputs.tag }} # tag name to delete
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+    # upload asset
+    - name: Upload binaries to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: distributions/*
+        prerelease: false
+        file_glob: true
+        asset_name: the_asset
+        release_name: ${{ steps.trimmed_tag.outputs.tag }}-beta
+        tag: ${{ steps.trimmed_tag.outputs.tag }}
+        overwrite: true
+        body: ${{ needs.version_and_changelog.outputs.changelog }}
