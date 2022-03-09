@@ -5,7 +5,7 @@ on:
       - dev
 
 jobs:
-  plugin_build:
+  pr_build:
     env:
       PLUGIN_NAME: hdr
     runs-on: ubuntu-latest
