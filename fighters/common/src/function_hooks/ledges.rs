@@ -337,9 +337,14 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
     }
 
     if fighter_kind == *FIGHTER_KIND_YOUNGLINK {
-        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
-            if frame < 42.0 {
-                return 0;
+        if status_kind == *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END {
+            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+                if frame < 42.0 {
+                    return 0;
+                }
+            }
+            else {
+                return 1;
             }
         }
     }
@@ -516,9 +521,14 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
     }
 
     if fighter_kind == *FIGHTER_KIND_TOONLINK {
-        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
-            if frame < 42.0 {
-                return 0;
+        if status_kind == *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END {
+            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+                if frame < 42.0 {
+                    return 0;
+                }
+            }
+            else {
+                return 1;
             }
         }
     }
