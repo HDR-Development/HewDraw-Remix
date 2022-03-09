@@ -15,7 +15,7 @@ fn get_version(current: &Version, release: Option<&Version>, prerelease: Option<
     if current.pre.as_str() == "nightly" {
         println!("Currently on nightly.");
         if let Some(prerelease) = prerelease {
-            if current != prerelease {
+            if current < prerelease {
                 WhichVersion::Prerelease
             } else {
                 WhichVersion::Current
@@ -26,7 +26,7 @@ fn get_version(current: &Version, release: Option<&Version>, prerelease: Option<
     } else if current.pre.as_str() == "beta" {
         println!("Currently on beta.");
         if let Some(release) = release {
-            if current != release {
+            if current < release {
                 WhichVersion::Release
             } else {
                 WhichVersion::Current
