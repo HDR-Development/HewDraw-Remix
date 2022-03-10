@@ -63,14 +63,14 @@ unsafe fn sonic_special_n_homing_game(fighter: &mut L2CAgentBase) {
 
     let mut bone_hash = match WorkModule::is_flag(boma, *FIGHTER_SONIC_STATUS_SPECIAL_N_HOMING_FLAG_IS_KIRBY){
         true => Hash40::new("rot"),
-        false => Hash40::new("hip"),
+        false => Hash40::new("hip")
     };
 
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);
         FT_MOTION_RATE(fighter, 0.013);
-        ATTACK(fighter, 0, 0, Hash40::new(bone_hash), 8.0, 72, 120, 0, 15, 5.0, 0.5, 1.5, 0.0, Some(0.5), Some(1.5), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, bone_hash, 8.0, 72, 120, 0, 15, 5.0, 0.5, 1.5, 0.0, Some(0.5), Some(1.5), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.5);
         AttackModule::set_captured_same_time_attack(boma, 0, true);
         AttackModule::set_attack_keep_rumble(boma, 0, true);
