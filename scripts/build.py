@@ -10,6 +10,22 @@ if "help" in sys.argv or "--help" in sys.argv or "-h" in sys.argv:
   print("\t./build.py release dev=captain\n")
   exit(0)
 
+# handle fallback exe on windows
+if os.name == 'nt':
+  print("windows build!")
+  user_profile = os.environ['USERPROFILE']
+  
+  if not user_profile:
+    exit("user profile not found!")
+  else:
+    print("user profile: " + user_profile)
+
+  fallback = os.path.join(user_profile, '.rustup', 'fallback', 'cargo.exe')
+  print("checking for fallback cargo in: " + fallback)
+  if os.path.exists(fallback):
+    print("fallback found: " + fallback)
+    os.remove(fallback)
+ 
 characters = characters.characters
 
 is_dev_build = False
