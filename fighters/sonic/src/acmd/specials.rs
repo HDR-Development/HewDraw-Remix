@@ -60,9 +60,10 @@ unsafe fn sonic_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
 unsafe fn sonic_special_n_homing_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+
     let mut bone_hash = match WorkModule::is_flag(boma, *FIGHTER_SONIC_STATUS_SPECIAL_N_HOMING_FLAG_IS_KIRBY){
-        true => hash40("rot"),
-        false => hash40("hip"),
+        true => Hash40::new("rot"),
+        false => Hash40::new("hip"),
     };
 
     frame(lua_state, 3.0);
