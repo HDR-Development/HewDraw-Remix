@@ -223,11 +223,21 @@ unsafe fn status_end_turn(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon13sub_exit_TurnEv")]
+unsafe extern "C" fn sub_exit_Turn(fighter: &mut L2CFighterCommon) {
+    if StatusModule::status_kind_next(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ESCAPE_F
+    || StatusModule::status_kind_next(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ESCAPE_B {
+        PostureModule::reverse_lr(fighter.module_accessor);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    }
+}
+
 pub fn install() {
     install_hooks!(
         status_pre_turncommon,
         status_turn_main,
-        status_turncommon
+        status_turncommon,
+        sub_exit_Turn
     );
 
     install_status_scripts!(
