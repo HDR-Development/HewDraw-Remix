@@ -358,7 +358,7 @@ mod offsets_impl {
         unsafe {
             let bl = *offset_to_addr::<u32>(bl_offset);
             let imm = bl & 0b0_00000_11111111111111111111111111;
-            bl as usize
+            (imm * 4) as usize
         }
     }
 
@@ -412,6 +412,7 @@ mod offsets_impl {
             offsets.get_match_mode = {
                 let offset = byte_search(GET_MATCH_MODE_SEARCH_CODE).expect("Unable to find get_match_mode!") - GET_MATCH_MODE_OFFSET_TO_START;
                 let bl_offset = offset_from_bl(offset);
+                println!("OFFSET: {:#X} BL_OFFSET: {:#X}", offset, bl_offset);
                 offset + bl_offset
             };
             offsets.kill_zoom_regular = byte_search(KILL_ZOOM_REGULAR_SEARCH_CODE).expect("Unable to find the regular kill zoom function!") - KILL_ZOOM_REGULAR_OFFSET_TO_START;
