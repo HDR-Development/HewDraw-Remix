@@ -453,5 +453,5 @@ unsafe fn sub_jump_squat_uniq_check_sub_mini_attack(fighter: &mut L2CFighterComm
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon42sub_status_JumpSquat_check_stick_lr_updateEv")]
 unsafe fn sub_status_JumpSquat_check_stick_lr_update(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
-    L2CValue::Bool((prev_status == *FIGHTER_STATUS_KIND_DASH || prev_status == *FIGHTER_STATUS_KIND_TURN) && !VarModule::is_flag(fighter.battle_object, vars::common::IS_MOONWALK_JUMP))
+    L2CValue::Bool(prev_status == *FIGHTER_STATUS_KIND_DASH && !VarModule::is_flag(fighter.battle_object, vars::common::IS_MOONWALK_JUMP))
 }

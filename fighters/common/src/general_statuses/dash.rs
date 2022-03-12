@@ -693,6 +693,9 @@ unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 	if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_RUN {
 		VarModule::off_flag(fighter.battle_object, vars::common::ENABLE_BOOST_RUN);
 	}
+    if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_JUMP_SQUAT {
+        VarModule::off_flag(fighter.battle_object, vars::common::IS_MOONWALK_JUMP);
+    }
 	
 	VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, initial_speed);
 
