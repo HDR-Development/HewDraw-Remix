@@ -22,7 +22,7 @@ jobs:
 
     # build the project
     - run: |
-        export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="1.69.420-pr" \
+        export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin \
         && cd scripts && python3 make_dist.py build && cd ..
       env:
         HOME: /root

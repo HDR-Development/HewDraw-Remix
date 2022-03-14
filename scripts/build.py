@@ -57,6 +57,25 @@ elif "publish" in sys.argv or "--publish" in sys.argv:
   build_type = "release"
   is_publish = True
 
+# check for version arguments
+version = 'v1.69.420-dev'
+for arg in sys.argv:
+  if "version=" in arg:
+    version = arg.split('=')[1]
+
+# populate version file
+version_file = os.path.join('plugin', 'hdr_version.txt')
+print("checking for version file in " + version_file + "!" )
+
+# deleting existing version file
+if os.path.exists(version_file):
+  os.remove(version_file)
+
+# write the version file
+with open(version_file, 'x') as version_handle:
+  version_handle.write(version)
+
+
 if is_publish:
   allow_dev_build = False
 
