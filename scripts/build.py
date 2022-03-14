@@ -12,21 +12,24 @@ if "help" in sys.argv or "--help" in sys.argv or "-h" in sys.argv:
   exit(0)
 
 # handle fallback exe on windows
-if os.name == 'nt':
-  print("windows build!")
-  user_profile = os.environ['rustup_home']
-  
-  if not user_profile:
-    exit("user profile not found!")
-  else:
-    print("user profile: " + user_profile)
+def handle_fallback():
+  if os.name == 'nt':
+    print("windows build!")
+    user_profile = os.environ['rustup_home']
 
-  fallback = os.path.join(user_profile, 'fallback', 'cargo.exe')
-  print("checking for fallback cargo in: " + fallback)
-  if os.path.exists(fallback):
-    print("fallback found: " + fallback)
-    os.remove(fallback)
- 
+    if not user_profile:
+      exit("user profile not found!")
+    else:
+      print("user profile: " + user_profile)
+
+    fallback = os.path.join(user_profile, 'fallback', 'cargo.exe')
+    print("checking for fallback cargo in: " + fallback)
+    if os.path.exists(fallback):
+      print("fallback found: " + fallback)
+      os.remove(fallback)
+
+handle_fallback()
+
 characters = characters.characters
 
 is_dev_build = False
@@ -142,6 +145,7 @@ if (is_dev_build and not is_publish):
 
   if not "dev-only" in sys.argv:
     # build the regular plugin with args
+    handle_fallback()
     os.environ["CARGO_TARGET_DIR"] = os.path.join("target", "standalone")
     pkgutil.build(release_arg, plugin_args)
 
