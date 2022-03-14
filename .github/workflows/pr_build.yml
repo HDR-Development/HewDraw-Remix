@@ -23,7 +23,7 @@ jobs:
     # build the project
     - run: |
         export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin \
-        && cd scripts && python3 make_dist.py build && cd ..
+        && cd scripts && python3 make_dist.py build version=1.69.420-pr name=hdr-pr && cd ..
       env:
         HOME: /root
 

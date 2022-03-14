@@ -22,10 +22,10 @@ def collect_plugin(package_name: str, package_path: str, build_type: str, plugin
   
   return
 
-def collect_romfs(package_name: str, context_path: str):
+def collect_romfs(package_name: str, context_path: str, mod_name: str):
   print("COLLECTING " + package_name + " romfs!")
   romfs_source = os.path.join("romfs/build")
-  romfs_destination = os.path.join("build", package_name, context_path, "ultimate/mods/hdr")
+  romfs_destination = os.path.join("build", package_name, context_path, "ultimate/mods", mod_name)
   shutil.copytree(
     os.path.join(romfs_source), 
     os.path.join(romfs_destination))
