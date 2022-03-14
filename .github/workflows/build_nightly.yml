@@ -63,8 +63,8 @@ jobs:
 
     # build the project
     - run: |
-        export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin && export HDR_VERSION="${{ needs.version_and_changelog.outputs.version }}-nightly" \
-        && cd scripts && python3 make_dist.py publish name=hdr && cd ..
+        export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin \
+        && cd scripts && python3 make_dist.py publish version=${{ needs.version_and_changelog.outputs.version }}-nightly name=hdr && cd ..
       env:
         HOME: /root
 
