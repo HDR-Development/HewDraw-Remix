@@ -4,10 +4,11 @@ import shutil, os, sys, pkgutil, characters
 if "help" in sys.argv or "--help" in sys.argv or "-h" in sys.argv:
   print("no arguments required for simple build. To build parts of the project"
     + " as a development reloadable plugin, use argument 'dev=mario,luigi,captain'"
-    + " to specify which character crates to build into the reloadable dev plugin.")
+    + " to specify which character crates to build into the reloadable dev plugin."
+    + " to specify what mod folder name to build as, use 'name=hdr-pr' or 'name=hdr', etc.")
   print("For example:")
   print("\t./build.py debug dev=mario,luigi,captain\n")
-  print("\t./build.py release dev=captain\n")
+  print("\t./build.py release dev=captain name=hdr-dev\n")
   exit(0)
 
 # handle fallback exe on windows
@@ -64,6 +65,12 @@ if is_publish:
 if "build" in os.listdir('.'):
   shutil.rmtree('build')
 os.mkdir('build')
+
+# search for mod name plugin args
+mod_name = "hdr-dev"
+for arg in sys.argv:
+  if "name=" in arg:
+    mod_name = arg.split('=')[1]
 
 
 # search for dev plugin args
@@ -144,7 +151,7 @@ if (is_dev_build and not is_publish):
     build_type, "libhdr.nro", "standalone")
 
     # collect switch romfs
-  pkgutil.collect_romfs("hdr-switch", "")
+  pkgutil.collect_romfs("hdr-switch", "", mod_name)
 
   # collect ryujinx plugin
   pkgutil.collect_plugin("hdr-ryujinx", 
@@ -152,7 +159,7 @@ if (is_dev_build and not is_publish):
     build_type, "libhdr.nro", "standalone")
   
   # collect ryujinx romfs
-  pkgutil.collect_romfs("hdr-ryujinx", "sdcard")
+  pkgutil.collect_romfs("hdr-ryujinx", "sdcard", mod_name)
 
 
 else:
@@ -168,7 +175,7 @@ else:
     build_type, "libhdr.nro")
 
   # collect switch romfs
-  pkgutil.collect_romfs("hdr-switch", "")
+  pkgutil.collect_romfs("hdr-switch", "", mod_name)
 
 
   # collect ryujinx plugin
@@ -177,7 +184,7 @@ else:
     build_type, "libhdr.nro")
   
   # collect ryujinx romfs
-  pkgutil.collect_romfs("hdr-ryujinx", "sdcard")
+  pkgutil.collect_romfs("hdr-ryujinx", "sdcard", mod_name)
 
 os.chdir(current_dir)
 
