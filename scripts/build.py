@@ -112,7 +112,7 @@ if (is_dev_build and not is_publish):
     print("subpath: " + development_subpath)
     print("type: " + build_type)
     pkgutil.collect_plugin("hdr-switch", os.path.join(switch_rom_path, development_subpath), build_type, "development.nro", "development")
-    pkgutil.collect_plugin("hdr-ryujinx", os.path.join("sdcard", os.path.join(switch_rom_path, development_subpath)), build_type, "development.nro", "development")
+    pkgutil.collect_plugin("hdr-ryujinx", os.path.join("sdcard", switch_rom_path, development_subpath), build_type, "development.nro", "development")
 
   # setup normal nro
   non_dev_characters = characters.copy()
