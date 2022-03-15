@@ -4,30 +4,21 @@ use super::*;
 use globals::*;
 
  
-unsafe fn duck_jump_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32, frame: f32) {
-    if status_kind == *FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_FLY {
-        if frame > 20.0 {
-            if boma.is_cat_flag(Cat1::SpecialHi) {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_END, true);
-            }
-        }
+unsafe fn duck_jump_cancel(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_FLY)
+    && fighter.motion_frame() > 20.0
+    && fighter.is_cat_flag(Cat1::SpecialHi) {
+        fighter.change_status_req(*FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_END, true);
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    duck_jump_cancel(boma, status_kind, cat[0], frame);
-
-    // Frame Data
-    frame_data(boma, status_kind, motion_kind, frame);
-}
-
-unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if frame <= 16.0 {
-            MotionModule::set_rate(boma, 2.0);
+unsafe fn frame_data(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
+        if fighter.motion_frame() <= 16.0 {
+            fighter.set_rate(2.0);
         }
-        if frame > 16.0 {
-            MotionModule::set_rate(boma, 1.0);
+        if fighter.motion_frame() > 16.0 {
+            fighter.set_rate(1.0);
         }
     }
 }
@@ -36,12 +27,28 @@ unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, mo
 pub fn duckhunt_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-		duckhunt_frame(fighter)
+        duck_jump_cancel(fighter);
+        frame_data(fighter);
     }
 }
 
-pub unsafe fn duckhunt_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+#[smashline::weapon_frame_callback]
+pub fn gunman_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    unsafe { 
+        if weapon.kind() != WEAPON_KIND_DUCKHUNT_GUNMAN {
+            return
+        }
+        let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+        if weapon.is_status(*WEAPON_DUCKHUNT_GUNMAN_STATUS_KIND_READY) {
+            let duckhunt = utils::util::get_battle_object_from_id(owner_id);
+            let duckhunt_boma = &mut *(*duckhunt).module_accessor;
+            if duckhunt_boma.is_cat_flag(Cat1::SpecialLw) && duckhunt_boma.is_button_trigger(Buttons::Special | Buttons::SpecialRaw) && WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LIFE) > 20 {
+                PLAY_STATUS(weapon, Hash40::new("se_duckhunt_special_l09"));
+                WorkModule::set_int(weapon.module_accessor, 20, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
+            }
+        } 
     }
 }
+
+//FIGHTER_DUCKHUNT_STATUS_SPECIAL_LW_INT_GUNMAN_INIT_STATUS
+//FIGHTER_DUCKHUNT_INSTANCE_WORK_ID_FLAG_GUNMAN_OK

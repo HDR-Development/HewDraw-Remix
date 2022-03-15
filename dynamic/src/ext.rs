@@ -367,6 +367,7 @@ pub trait BomaExt {
     unsafe fn get_jump_count(&mut self) -> i32;
     unsafe fn get_jump_count_max(&mut self) -> i32;
     unsafe fn motion_frame(&mut self) -> f32;
+    unsafe fn set_rate(&mut self, motion_rate: f32);
     unsafe fn is_in_hitlag(&mut self) -> bool;
 
 
@@ -538,6 +539,10 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn is_motion(&mut self, kind: Hash40) -> bool {
         return MotionModule::motion_kind(self) == kind.hash;
+    }
+
+    unsafe fn set_rate(&mut self, motion_rate: f32) {
+        MotionModule::set_rate(self, motion_rate);
     }
 
     unsafe fn is_motion_one_of(&mut self, kinds: &[Hash40]) -> bool {

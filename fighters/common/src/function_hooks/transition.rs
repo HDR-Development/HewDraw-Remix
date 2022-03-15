@@ -158,6 +158,13 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
                 }
             }
         }
+
+        //Disable Duck Hunt Gunman if Gunman is present
+        if boma.kind() == *FIGHTER_KIND_DUCKHUNT 
+        && WorkModule::is_flag(boma, *FIGHTER_DUCKHUNT_INSTANCE_WORK_ID_FLAG_GUNMAN_OK) 
+        && flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
+            return false;
+        }       
     }
     original!()(boma, flag)
 }
