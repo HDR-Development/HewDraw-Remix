@@ -1,7 +1,8 @@
 use utils::{
     *,
     ext::*,
-    consts::*
+    consts::*,
+    consts::globals::*
 };
 use smash::app::BattleObjectModuleAccessor;
 use smash::phx::{Vector2f, Vector3f};
@@ -97,9 +98,11 @@ unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
 
 /// Sets the extra traction flag depending on current speed and current status in order to prevent
 /// the game feeling too slippery
-unsafe fn extra_traction(boma: &mut BattleObjectModuleAccessor) {    
-    let speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
+unsafe fn extra_traction(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {    
+    let speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
     let max_walk = WorkModule::get_param_float(boma, hash40("walk_speed_max"), 0);
+    let ground_brake = WorkModule::get_param_float(boma, hash40("ground_brake"), 0);
+
     if speed_x.abs() > max_walk
     && boma.is_situation(*SITUATION_KIND_GROUND)
     && boma.is_status_one_of(&[
@@ -110,7 +113,6 @@ unsafe fn extra_traction(boma: &mut BattleObjectModuleAccessor) {
         *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL,
         *FIGHTER_STATUS_KIND_CATCH_PULL,
         *FIGHTER_STATUS_KIND_JUMP_SQUAT,
-        *FIGHTER_STATUS_KIND_WAIT,
         *FIGHTER_STATUS_KIND_SQUAT,
         *FIGHTER_STATUS_KIND_SQUAT_RV,
         *FIGHTER_STATUS_KIND_ATTACK,
@@ -123,11 +125,10 @@ unsafe fn extra_traction(boma: &mut BattleObjectModuleAccessor) {
         *FIGHTER_STATUS_KIND_ATTACK_HI4,
         *FIGHTER_STATUS_KIND_ATTACK_LW4_START,
         *FIGHTER_STATUS_KIND_ATTACK_LW4
-    ]) 
-    {
-        VarModule::on_flag(boma.object(), vars::common::ENABLE_DOUBLE_TRACTION);
-    } else {
-        VarModule::off_flag(boma.object(), vars::common::ENABLE_DOUBLE_TRACTION);
+    ])
+    && fighter.global_table[CURRENT_FRAME].get_i32() > 0 {
+        let added_traction: smash::phx::Vector3f = smash::phx::Vector3f {x: -1.0 * PostureModule::lr(boma) * ground_brake * speed_x.signum(), y: 0.0, z: 0.0};
+        KineticModule::add_speed(boma, &added_traction);
     }
 }
 
@@ -151,7 +152,7 @@ unsafe fn grab_jump_refresh(boma: &mut BattleObjectModuleAccessor) {
 
 pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mut L2CAgent, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     ecb_shifts(boma);
-    extra_traction(boma);
+    extra_traction(fighter, boma);
     grab_jump_refresh(boma);
 
     //WorkModule::unable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_D); //Melee style spike knockdown (courtesey of zabimaru), leaving it commented here just to have it saved somewhere
