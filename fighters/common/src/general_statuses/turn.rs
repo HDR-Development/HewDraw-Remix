@@ -115,7 +115,7 @@ unsafe extern "C" fn status_turn_main(fighter: &mut L2CFighterCommon) -> L2CValu
                         }
                     }
                     if stick_x * -1.0 * turn_work_lr < dash_stick_x && (VarModule::is_flag(fighter.battle_object, vars::common::IS_BACKDASH) || VarModule::is_flag(fighter.battle_object, vars::common::IS_LATE_PIVOT)) {
-                        if StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_DASH && StatusModule::prev_status_kind(fighter.module_accessor, 1) != *FIGHTER_STATUS_KIND_WAIT {
+                        if StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_DASH {
                             // perfect pivot
                             if MotionModule::frame(fighter.module_accessor) <= 1.0 || (VarModule::is_flag(fighter.battle_object, vars::common::IS_LATE_PIVOT) && MotionModule::frame(fighter.module_accessor) <= 7.0) {
                                 VarModule::off_flag(fighter.battle_object, vars::common::IS_BACKDASH);
