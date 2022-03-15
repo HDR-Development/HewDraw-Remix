@@ -21,6 +21,28 @@ unsafe fn frame_data(fighter: &mut L2CFighterCommon) {
             fighter.set_rate(1.0);
         }
     }
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
+        if fighter.motion_frame() <= 6.0 {
+            fighter.set_rate(0.7);
+        }
+        if fighter.motion_frame() > 6.0 {
+            fighter.set_rate(0.9);
+        }
+    }
+}
+
+extern "Rust" {
+    fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
+}
+
+unsafe fn gunman_timer(fighter: &mut L2CFighterCommon) {
+    let timer = VarModule::get_int(fighter.object(), vars::duckhunt::GUNMAN_TIMER);
+    if  timer != 0 {
+        VarModule::set_int(fighter.object(), vars::duckhunt::GUNMAN_TIMER, (timer-1));
+    }
+    if timer == 1 {
+        gimmick_flash(fighter);
+    }
 }
 
 #[utils::macros::opff(FIGHTER_KIND_DUCKHUNT )]
@@ -29,6 +51,7 @@ pub fn duckhunt_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         common::opff::fighter_common_opff(fighter);
         duck_jump_cancel(fighter);
         frame_data(fighter);
+        gunman_timer(fighter);
     }
 }
 
@@ -42,11 +65,67 @@ pub fn gunman_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
         if weapon.is_status(*WEAPON_DUCKHUNT_GUNMAN_STATUS_KIND_READY) {
             let duckhunt = utils::util::get_battle_object_from_id(owner_id);
             let duckhunt_boma = &mut *(*duckhunt).module_accessor;
-            if duckhunt_boma.is_cat_flag(Cat1::SpecialLw) && duckhunt_boma.is_button_trigger(Buttons::Special | Buttons::SpecialRaw) && WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LIFE) > 20 {
+            if duckhunt_boma.is_cat_flag(Cat1::SpecialLw) && duckhunt_boma.is_button_trigger(Buttons::Special | Buttons::SpecialRaw) && WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LIFE) > 25 {
                 PLAY_STATUS(weapon, Hash40::new("se_duckhunt_special_l09"));
-                WorkModule::set_int(weapon.module_accessor, 20, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
+                let gunman_kind = WorkModule::get_int(weapon.boma(), *WEAPON_DUCKHUNT_GUNMAN_INSTANCE_WORK_ID_KIND);
+                if PostureModule::lr(weapon.boma()) == -1.0 {
+                    match gunman_kind {
+                        0 => {
+                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 13.3, 0.74, 0, 0, 0, 1, true);
+                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 13.3, -0.78, 0, 0, 0, 1, true);
+                        }
+                        1 => {
+                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 15.66, 0.42, 0, 0, 0, 1, true);
+                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 15.66, -0.5, 0, 0, 0, 1, true);
+                        }
+                        2 => {
+                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 16.92, 0.26, 0, 0, 0, 1, true);
+                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 16.92, -1.29, 0, 0, 0, 1, true);
+                        }
+                        3 => {
+                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 10.9, 0.85, 0, 0, 0, 1, true);
+                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 10.9, -0.64, 0, 0, 0, 1, true);
+                        }
+                        4 => {
+                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 14.17, 0.4, 0, 0, 0, 1, true);
+                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 14.16, -1.36, 0, 0, 0, 1, true);
+                        }
+                        _ => {
+                            return
+                        }
+                    }
+                }
+                if PostureModule::lr(weapon.boma()) == 1.0 {
+                    match gunman_kind {
+                        0 => {
+                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 13.3, 0.74, 0, 0, 0, 1, true);
+                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 13.3, -0.78, 0, 0, 0, 1, true);
+                        }
+                        1 => {
+                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 15.66, 0.42, 0, 0, 0, 1, true);
+                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 15.66, -0.5, 0, 0, 0, 1, true);
+                        }
+                        2 => {
+                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 16.92, 0.26, 0, 0, 0, 1, true);
+                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 16.92, -1.29, 0, 0, 0, 1, true);
+                        }
+                        3 => {
+                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 10.9, 0.85, 0, 0, 0, 1, true);
+                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 10.9, -0.64, 0, 0, 0, 1, true);
+                        }
+                        4 => {
+                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 14.17, 0.4, 0, 0, 0, 1, true);
+                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 14.16, -1.36, 0, 0, 0, 1, true);
+                        }
+                        _ => {
+                            return
+                        }
+                    }
+                }
+                WorkModule::set_int(weapon.module_accessor, 25, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
             }
-        } 
+            VarModule::set_int(duckhunt, vars::duckhunt::GUNMAN_TIMER, 180);
+        }
     }
 }
 

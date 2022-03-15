@@ -110,15 +110,78 @@ unsafe fn duckhunt_gunman_ready_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_duckhunt_special_l02"));
     }
-    frame(lua_state, 280.0);
+    frame(lua_state, 275.0);
     if is_excute(fighter) {
         PLAY_STATUS(fighter, Hash40::new("se_duckhunt_special_l09"));
     } 
 }
 
-#[acmd_script( agent = "duckhunt_gunman" , scripts = ["effect_readyr" , "effect_readyl"] , category = ACMD_EFFECT , low_priority)]
-unsafe fn duckhunt_gunman_ready_effect(fighter: &mut L2CAgentBase) {
-    
+#[acmd_script( agent = "duckhunt_gunman" , script = "effect_readyl" , category = ACMD_EFFECT , low_priority)]
+unsafe fn duckhunt_gunman_ready_effectl(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    frame(lua_state, 275.0);
+    let gunman_kind = WorkModule::get_int(fighter.boma(), *WEAPON_DUCKHUNT_GUNMAN_INSTANCE_WORK_ID_KIND);
+    if is_excute(fighter) {
+        match gunman_kind {
+            0 => {
+                EFFECT_FOLLOW(fighter, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 13.3, 0.74, 0, 0, 0, 1, true);
+                EFFECT_FOLLOW(fighter, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 13.3, -0.78, 0, 0, 0, 1, true);
+            }
+            1 => {
+                EFFECT_FOLLOW(fighter, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 15.66, 0.42, 0, 0, 0, 1, true);
+                EFFECT_FOLLOW(fighter, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 15.66, -0.5, 0, 0, 0, 1, true);
+            }
+            2 => {
+                EFFECT_FOLLOW(fighter, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 16.92, 0.26, 0, 0, 0, 1, true);
+                EFFECT_FOLLOW(fighter, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 16.92, -1.29, 0, 0, 0, 1, true);
+            }
+            3 => {
+                EFFECT_FOLLOW(fighter, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 10.9, 0.85, 0, 0, 0, 1, true);
+                EFFECT_FOLLOW(fighter, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 10.9, -0.64, 0, 0, 0, 1, true);
+            }
+            4 => {
+                EFFECT_FOLLOW(fighter, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 14.17, 0.4, 0, 0, 0, 1, true);
+                EFFECT_FOLLOW(fighter, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 14.16, -1.36, 0, 0, 0, 1, true);
+            }
+            _ => {
+                return
+            }
+        }
+    }
+}
+
+#[acmd_script( agent = "duckhunt_gunman" , script = "effect_readyr" , category = ACMD_EFFECT , low_priority)]
+unsafe fn duckhunt_gunman_ready_effectr(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    frame(lua_state, 275.0);
+    let gunman_kind = WorkModule::get_int(fighter.boma(), *WEAPON_DUCKHUNT_GUNMAN_INSTANCE_WORK_ID_KIND);
+    if is_excute(fighter) {
+        match gunman_kind {    
+            0 => {
+                EFFECT_FOLLOW(fighter, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 13.3, 0.74, 0, 0, 0, 1, true);
+                EFFECT_FOLLOW(fighter, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 13.3, -0.78, 0, 0, 0, 1, true);
+            }
+            1 => {
+                EFFECT_FOLLOW(fighter, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 15.66, 0.42, 0, 0, 0, 1, true);
+                EFFECT_FOLLOW(fighter, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 15.66, -0.5, 0, 0, 0, 1, true);
+            }
+            2 => {
+                EFFECT_FOLLOW(fighter, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 16.92, 0.26, 0, 0, 0, 1, true);
+                EFFECT_FOLLOW(fighter, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 16.92, -1.29, 0, 0, 0, 1, true);
+            }
+            3 => {
+                EFFECT_FOLLOW(fighter, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 10.9, 0.85, 0, 0, 0, 1, true);
+                EFFECT_FOLLOW(fighter, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 10.9, -0.64, 0, 0, 0, 1, true);
+            }
+            4 => {
+                EFFECT_FOLLOW(fighter, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 14.17, 0.4, 0, 0, 0, 1, true);
+                EFFECT_FOLLOW(fighter, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 14.16, -1.36, 0, 0, 0, 1, true);
+            }
+            _ => {
+                return
+            }
+        }
+    }
 }
 
 pub fn install() {
@@ -129,7 +192,8 @@ pub fn install() {
         turn_dash_game,
         duckhunt_can_explode_game,
         duckhunt_clay_fly_game,
-        duckhunt_gunman_ready_effect,
+        duckhunt_gunman_ready_effectr,
+        duckhunt_gunman_ready_effectl,
         duckhunt_gunman_ready_sound,
     );
 }
