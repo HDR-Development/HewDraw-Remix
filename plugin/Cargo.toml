@@ -1,7 +1,7 @@
 [package]
 name = "hdr"
 version = "0.0.0-dev"
-authors = ["jam1garner <jam1.mcleod@hotmail.com>"]
+authors = ["hdr-dev-team"]
 edition = "2018"
 
 [package.metadata.skyline]
