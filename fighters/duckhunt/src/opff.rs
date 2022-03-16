@@ -68,58 +68,30 @@ pub fn gunman_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
             if duckhunt_boma.is_cat_flag(Cat1::SpecialLw) && duckhunt_boma.is_button_trigger(Buttons::Special | Buttons::SpecialRaw) && WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LIFE) > 25 {
                 PLAY_STATUS(weapon, Hash40::new("se_duckhunt_special_l09"));
                 let gunman_kind = WorkModule::get_int(weapon.boma(), *WEAPON_DUCKHUNT_GUNMAN_INSTANCE_WORK_ID_KIND);
-                if PostureModule::lr(weapon.boma()) == -1.0 {
-                    match gunman_kind {
-                        0 => {
-                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 13.3, 0.74, 0, 0, 0, 1, true);
-                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 13.3, -0.78, 0, 0, 0, 1, true);
-                        }
-                        1 => {
-                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 15.66, 0.42, 0, 0, 0, 1, true);
-                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 15.66, -0.5, 0, 0, 0, 1, true);
-                        }
-                        2 => {
-                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 16.92, 0.26, 0, 0, 0, 1, true);
-                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 16.92, -1.29, 0, 0, 0, 1, true);
-                        }
-                        3 => {
-                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 10.9, 0.85, 0, 0, 0, 1, true);
-                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 10.9, -0.64, 0, 0, 0, 1, true);
-                        }
-                        4 => {
-                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 14.17, 0.4, 0, 0, 0, 1, true);
-                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5, 14.16, -1.36, 0, 0, 0, 1, true);
-                        }
-                        _ => {
-                            return
-                        }
+                let lr = PostureModule::lr(weapon.boma());
+                match gunman_kind {
+                    0 => {
+                        EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5*lr, 13.3, 0.74, 0, 0, 0, 1, true);
+                        EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5*lr, 13.3, -0.78, 0, 0, 0, 1, true);
                     }
-                }
-                if PostureModule::lr(weapon.boma()) == 1.0 {
-                    match gunman_kind {
-                        0 => {
-                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 13.3, 0.74, 0, 0, 0, 1, true);
-                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 13.3, -0.78, 0, 0, 0, 1, true);
-                        }
-                        1 => {
-                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 15.66, 0.42, 0, 0, 0, 1, true);
-                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 15.66, -0.5, 0, 0, 0, 1, true);
-                        }
-                        2 => {
-                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 16.92, 0.26, 0, 0, 0, 1, true);
-                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 16.92, -1.29, 0, 0, 0, 1, true);
-                        }
-                        3 => {
-                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 10.9, 0.85, 0, 0, 0, 1, true);
-                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 10.9, -0.64, 0, 0, 0, 1, true);
-                        }
-                        4 => {
-                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 14.17, 0.4, 0, 0, 0, 1, true);
-                            EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), -0.5, 14.16, -1.36, 0, 0, 0, 1, true);
-                        }
-                        _ => {
-                            return
-                        }
+                    1 => {
+                        EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5*lr, 15.66, 0.42, 0, 0, 0, 1, true);
+                        EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5*lr, 15.66, -0.5, 0, 0, 0, 1, true);
+                    }
+                    2 => {
+                        EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5*lr, 16.92, 0.26, 0, 0, 0, 1, true);
+                        EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5*lr, 16.92, -1.29, 0, 0, 0, 1, true);
+                    }
+                    3 => {
+                        EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5*lr, 10.9, 0.85, 0, 0, 0, 1, true);
+                        EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5*lr, 10.9, -0.64, 0, 0, 0, 1, true);
+                    }
+                    4 => {
+                        EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5*lr, 14.17, 0.4, 0, 0, 0, 1, true);
+                        EFFECT_FOLLOW(weapon, Hash40::new("duckhunt_wildegunman_light"), Hash40::new("top"), 0.5*lr, 14.16, -1.36, 0, 0, 0, 1, true);
+                    }
+                    _ => {
+                        return
                     }
                 }
                 WorkModule::set_int(weapon.module_accessor, 25, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);

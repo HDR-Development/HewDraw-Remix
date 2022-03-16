@@ -165,7 +165,6 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
             && flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
                     return false
             }
-            println!("TIMER: {}", VarModule::get_int(boma.object(), vars::duckhunt::GUNMAN_TIMER));
         }
     }   
     original!()(boma, flag)
