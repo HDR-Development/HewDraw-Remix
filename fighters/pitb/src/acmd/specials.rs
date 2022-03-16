@@ -45,7 +45,14 @@ unsafe fn pitb_special_lw_start_r_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.667);
     }
-    
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 69, 85, 0, 77, 7.5, 0.0, 7.0, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_NONE);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
 }
 
 #[acmd_script( agent = "pitb", script = "game_speciallwstartl" , category = ACMD_GAME , low_priority)]
@@ -60,7 +67,14 @@ unsafe fn pitb_special_lw_start_l_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.667);
     }
-    
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 69, 85, 0, 77, 7.5, 0.0, 7.0, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_NONE);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
 }
 
 #[acmd_script( agent = "pitb", script = "game_specialairlwstartr" , category = ACMD_GAME , low_priority)]
@@ -75,10 +89,17 @@ unsafe fn pitb_special_air_lw_start_r_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.667);
     }
-    
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 69, 85, 0, 77, 7.5, 0.0, 7.0, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_NONE);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
 }
 
-#[acmd_script( agent = "pitb", script = "game_speciallwstartl" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "pitb", script = "game_specialairlwstartl" , category = ACMD_GAME , low_priority)]
 unsafe fn pitb_special_air_lw_start_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -90,7 +111,14 @@ unsafe fn pitb_special_air_lw_start_l_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.667);
     }
-    
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 69, 85, 0, 77, 7.5, 0.0, 7.0, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_NONE);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
 }
 
 #[acmd_script( agent = "pitb", script = "game_speciallwhold" , category = ACMD_GAME , low_priority)]
@@ -102,14 +130,6 @@ unsafe fn pitb_special_lw_hold_game(fighter: &mut L2CAgentBase) {
         shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_SHIELD, 1, *FIGHTER_PIT_SHIELD_GROUP_KIND_SPECIAL_LW);
         shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_LW);
         shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, 1, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_LW);
-    }
-    frame(lua_state, 4.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 69, 85, 0, 77, 7.5, 0.0, 7.0, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_NONE);
-    }
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
     }
     
 }
@@ -123,14 +143,6 @@ unsafe fn pitb_special_air_lw_hold_game(fighter: &mut L2CAgentBase) {
         shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_SHIELD, 1, *FIGHTER_PIT_SHIELD_GROUP_KIND_SPECIAL_LW);
         shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_LW);
         shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, 1, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_LW);
-    }
-    frame(lua_state, 4.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 69, 85, 0, 77, 7.5, 0.0, 7.0, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_NONE);
-    }
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
     }
     
 }
