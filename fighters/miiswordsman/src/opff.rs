@@ -188,7 +188,7 @@ unsafe fn kinesis_blade(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
 // Transition into hitgrab on hit
 unsafe fn hitgrab_transition(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64) {
 	if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW && ((motion_kind == hash40("special_lw3") && MotionModule::frame(boma) > 16.0) || (motion_kind == hash40("special_air_lw3") && MotionModule::frame(boma) > 10.0)){
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !StopModule::is_stop(boma) {
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !fighter.is_in_hitlag() {
             //println!("Swordfighter gon' give it to ya");
             StatusModule::change_status_request(boma, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END, false);
         }
@@ -213,8 +213,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     //aerial_acrobatics(fighter, boma, id, status_kind, situation_kind, cat[0], motion_kind, frame);
     gale_strike_timer(fighter, boma, id);
     skyward_slash_dash_act(fighter, boma, id, status_kind, situation_kind, frame);
-    kinesis_blade(fighter, boma, status_kind, motion_kind);
-    hitgrab_transition(fighter, boma, status_kind, motion_kind);
+    //kinesis_blade(fighter, boma, status_kind, motion_kind);
+    //hitgrab_transition(fighter, boma, status_kind, motion_kind);
 
 }
 

@@ -9,7 +9,7 @@ unsafe fn hit_cancel_blade_switch(boma: &mut BattleObjectModuleAccessor, cat1: i
        || ([*FIGHTER_STATUS_KIND_ATTACK].contains(&status_kind) && motion_kind == hash40("attack_13")){
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             if boma.is_cat_flag(Cat1::SpecialLw) {
-                if !StopModule::is_stop(boma) {
+                if !boma.is_in_hitlag() {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW,true);
                 }
             }
@@ -25,7 +25,7 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
 pub fn eflame_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-		eflame_frame(fighter)
+		eflame_frame(fighter);
     }
 }
 

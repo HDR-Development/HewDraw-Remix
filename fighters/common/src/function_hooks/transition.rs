@@ -1,6 +1,7 @@
 use super::*;
 use globals::*;
 
+
 //=================================================================
 //== WorkModule::is_enable_transition_term
 //== Note: Disable transition terms
@@ -20,17 +21,28 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
         return false;
     }
 
-    // Disallow run_brake => squat during sticky walk
-    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT && status_kind == *FIGHTER_STATUS_KIND_RUN_BRAKE && VarModule::is_flag(boma.object(), vars::common::IS_STICKY_WALK) {
-        return false;
+    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN {
+        if ([*FIGHTER_STATUS_KIND_DASH, *FIGHTER_STATUS_KIND_TURN_DASH].contains(&status_kind) && MotionModule::frame(boma) < ((MotionModule::end_frame(boma) * 0.5645).ln()) * 9.2157) {
+            return false;
+        }
+        if status_kind == *FIGHTER_STATUS_KIND_RUN_BRAKE && VarModule::is_flag(boma.object(), vars::common::IS_STICKY_WALK) {
+            let fighter = get_fighter_common_from_accessor(boma);
+            if fighter.global_table[CURRENT_FRAME].get_i32() < 20 {
+                return false;
+            }
+        }
     }
 
-    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN && [*FIGHTER_STATUS_KIND_DASH, *FIGHTER_STATUS_KIND_TURN_DASH].contains(&status_kind) && MotionModule::frame(boma) < ((MotionModule::end_frame(boma) * 0.5645).ln()) * 9.2157 {
-        return false;
-    }
-
-    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT && ([*FIGHTER_STATUS_KIND_DASH, *FIGHTER_STATUS_KIND_TURN_DASH].contains(&status_kind) && MotionModule::frame(boma) < ((MotionModule::end_frame(boma) * 0.5645).ln()) * 9.2157) {
-        return false;
+    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT {
+        if ([*FIGHTER_STATUS_KIND_DASH, *FIGHTER_STATUS_KIND_TURN_DASH].contains(&status_kind) && MotionModule::frame(boma) < ((MotionModule::end_frame(boma) * 0.5645).ln()) * 9.2157) {
+            return false;
+        }
+        if status_kind == *FIGHTER_STATUS_KIND_RUN_BRAKE && VarModule::is_flag(boma.object(), vars::common::IS_STICKY_WALK) {
+            let fighter = get_fighter_common_from_accessor(boma);
+            if fighter.global_table[CURRENT_FRAME].get_i32() < 20 {
+                return false;
+            }
+        }
     }
 
     if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK && [*FIGHTER_STATUS_KIND_DASH, *FIGHTER_STATUS_KIND_TURN_DASH].contains(&status_kind) && MotionModule::frame(boma) < ((MotionModule::end_frame(boma) * 0.5645).ln()) * 9.2157 {
@@ -48,7 +60,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
         return false;
     }
 
-    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S && VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL) {
+    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S && (VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL) || VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL_NO_HIT)) {
         return false;
     }
 
@@ -138,6 +150,14 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
             }
         }
 
+        if fighter_kind == *FIGHTER_KIND_TRAIL {
+            if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S {
+                if (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT))
+                || VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_HIT) {
+                    return false;
+                }
+            }
+        }
     }
     original!()(boma, flag)
 }

@@ -104,7 +104,7 @@ unsafe fn side_special_cancels(fighter: &mut L2CFighterCommon) {
             } 
 
             if fighter.is_situation(*SITUATION_KIND_GROUND) {
-                fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, false);
+                fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
                 return;
             }
 

@@ -1,4 +1,5 @@
 use smash::app::{BattleObject, BattleObjectModuleAccessor};
+use smash::lua2cpp::L2CFighterCommon;
 use crate::offsets;
 
 #[macro_export]
@@ -73,12 +74,82 @@ pub fn offset_to_addr<T>(offset: usize) -> *const T {
     }
 }
 
+pub fn get_match_mode() -> (u32, u32) {
+    #[skyline::from_offset(offsets::get_match_mode())]
+    fn get_mode_internal(main: &mut u32, sub: &mut u32);
+
+    let mut main = 0u32;
+    let mut sub = 0u32;
+    unsafe {
+        get_mode_internal(&mut main, &mut sub);
+    }
+    (main, sub)
+}
+
+pub fn get_global_frame_count() -> usize {
+    unsafe {
+        *offset_to_addr::<usize>(offsets::global_frame_counter())
+    }
+}
+
 #[skyline::from_offset(offsets::get_battle_object_from_id())]
 pub fn get_battle_object_from_id(id: u32) -> *mut BattleObject;
 
 pub fn get_battle_object_from_accessor(boma: *mut BattleObjectModuleAccessor) -> *mut BattleObject {
     unsafe {
         get_battle_object_from_id((*boma).battle_object_id)
+    }
+}
+
+pub fn get_fighter_common_from_accessor<'a>(boma: &'a mut BattleObjectModuleAccessor) -> &'a mut L2CFighterCommon {
+    unsafe {
+        let lua_module = *(boma as *mut BattleObjectModuleAccessor as *mut u64).add(0x190 / 8);
+        std::mem::transmute(*((lua_module + 0x1D8) as *mut *mut L2CFighterCommon))
+    }
+}
+
+pub fn get_fighter_common_from_entry_id(entry_id: u32) -> Option<&'static mut L2CFighterCommon> {
+    if let Some(object) = get_battle_object_from_entry_id(entry_id) {
+        unsafe {
+            Some(get_fighter_common_from_accessor(std::mem::transmute((*object).module_accessor)))
+        }
+    } else {
+        None
+    }
+}
+
+pub fn get_lua_state_from_entry_id(entry_id: u32) -> Option<u64> {
+    get_fighter_common_from_entry_id(entry_id).map(|x| x.lua_state_agent)
+}
+
+pub fn get_active_battle_object_id_from_entry_id(entry_id: u32) -> Option<u32> {
+    use smash::lib::lua_const::*;
+    use smash::app::lua_bind::*;
+    let object = get_battle_object_from_entry_id(entry_id)?;
+    if object.is_null() { return None; }
+    let object = unsafe { &mut *object };
+    let kind = object.kind as i32;
+    let status = unsafe {
+        StatusModule::status_kind(object.module_accessor)
+    };
+    if status != *FIGHTER_STATUS_KIND_NONE && status != *FIGHTER_STATUS_KIND_STANDBY {
+        return Some(object.battle_object_id);
+    }
+    if kind == *FIGHTER_KIND_ELIGHT || kind == *FIGHTER_KIND_EFLAME {
+        Some(object.battle_object_id + 0x10000)
+    } else if kind == *FIGHTER_KIND_PZENIGAME || kind == *FIGHTER_KIND_PFUSHIGISOU || kind == *FIGHTER_KIND_PLIZARDON {
+        let next_id = object.battle_object_id + 0x10000;
+        let next_object = unsafe { &mut *get_battle_object_from_id(next_id) };
+        let next_status = unsafe {
+            StatusModule::status_kind(next_object.module_accessor)
+        };
+        if next_status != *FIGHTER_STATUS_KIND_NONE && next_status != *FIGHTER_STATUS_KIND_STANDBY {
+            Some(next_id)
+        } else {
+            Some(next_id + 0x10000)
+        }
+    } else {
+        Some(object.battle_object_id)
     }
 }
 
