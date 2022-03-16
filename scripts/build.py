@@ -15,18 +15,31 @@ if "help" in sys.argv or "--help" in sys.argv or "-h" in sys.argv:
 def handle_fallback():
   if os.name == 'nt':
     print("windows build!")
-    user_profile = os.environ['rustup_home']
+    try:
+      user_profile = os.environ['USERPROFILE']
+    except:
+      user_profile = ""
 
-    if not user_profile:
-      exit("user profile not found!")
-    else:
+    try:
+      rustup_home = os.environ['rustup_home']
+    except:
+      rustup_home = ""
+
+    if user_profile:
       print("user profile: " + user_profile)
+      fallback = os.path.join(user_profile, '.rustup', 'fallback', 'cargo.exe')
+      print("checking for fallback cargo in: " + fallback)
+      if os.path.exists(fallback):
+        print("fallback found: " + fallback)
+        os.remove(fallback)
 
-    fallback = os.path.join(user_profile, 'fallback', 'cargo.exe')
-    print("checking for fallback cargo in: " + fallback)
-    if os.path.exists(fallback):
-      print("fallback found: " + fallback)
-      os.remove(fallback)
+    if rustup_home:
+      print("rustup home: " + rustup_home)
+      fallback = os.path.join(rustup_home, 'fallback', 'cargo.exe')
+      print("checking for fallback cargo in: " + fallback)
+      if os.path.exists(fallback):
+        print("fallback found: " + fallback)
+        os.remove(fallback)
 
 handle_fallback()
 
