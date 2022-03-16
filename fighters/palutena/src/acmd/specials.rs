@@ -19,7 +19,9 @@ unsafe fn palutena_special_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW))
-           && !ArticleModule::is_exist(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD) {
+           && !ArticleModule::is_exist(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD)
+           && !(VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER) > 0) {
+            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 1); // Start counting the cooldown timer
             VarModule::set_float(fighter.battle_object, vars::palutena::SPECIAL_LW_LR, PostureModule::lr(fighter.module_accessor));
             VarModule::on_flag(fighter.battle_object, vars::palutena::SPECIAL_LW_AEGIS_REFLECTOR);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_LW_REFLECT, true);
@@ -56,7 +58,9 @@ unsafe fn palutena_special_air_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW))
-           && !ArticleModule::is_exist(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD) {
+           && !ArticleModule::is_exist(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD)
+           && !(VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER) > 0) {
+            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 1); // Start counting the cooldown timer
             VarModule::set_float(fighter.battle_object, vars::palutena::SPECIAL_LW_LR, PostureModule::lr(fighter.module_accessor));
             VarModule::on_flag(fighter.battle_object, vars::palutena::SPECIAL_LW_AEGIS_REFLECTOR);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_LW_REFLECT, true);
@@ -84,6 +88,7 @@ unsafe fn palutena_special_lw_reflect_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::palutena::SPECIAL_LW_AEGIS_REFLECTOR) {
+            FT_MOTION_RATE(fighter, 1.5);
             PostureModule::set_lr(boma, VarModule::get_float(fighter.battle_object, vars::palutena::SPECIAL_LW_LR));
             PostureModule::update_rot_y_lr(boma);
         }
@@ -125,12 +130,13 @@ unsafe fn palutena_special_lw_reflect_effect(fighter: &mut L2CAgentBase) {
             EFFECT_FOLLOW(fighter, Hash40::new("palutena_wand_light_trace"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
             EffectModule::enable_sync_init_pos_last(boma);
             EFFECT_FOLLOW(fighter, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+            EFFECT(fighter, Hash40::new("palutena_throw_twinkle"), Hash40::new("top"), 0.0, 16.0, -8.0, 0, 0, 0, 0.95, 0, 0, 0, 0, 0, 0, true);
         }
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::palutena::SPECIAL_LW_AEGIS_REFLECTOR) {
-            EFFECT(fighter, Hash40::new("palutena_throw_twinkle"), Hash40::new("top"), 0.0, 16.0, -8.0, 0, 0, 0, 0.95, 0, 0, 0, 0, 0, 0, true);
+            EFFECT(fighter, Hash40::new("palutena_mirror_break"), Hash40::new("top"), 0.0, 16.0, -8.0, 0, 0, 0, 0.225, 0, 0, 0, 0, 0, 0, true);
         }
         else{
             EFFECT(fighter, Hash40::new("palutena_mirror"), Hash40::new("top"), 12.0, 12.0, 0, 0, 22.5, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
@@ -159,6 +165,7 @@ unsafe fn palutena_special_air_lw_reflect_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::palutena::SPECIAL_LW_AEGIS_REFLECTOR) {
+            FT_MOTION_RATE(fighter, 1.5);
             PostureModule::set_lr(boma, VarModule::get_float(fighter.battle_object, vars::palutena::SPECIAL_LW_LR));
             PostureModule::update_rot_y_lr(boma);
         }
@@ -199,12 +206,13 @@ unsafe fn palutena_special_air_lw_reflect_effect(fighter: &mut L2CAgentBase) {
             EFFECT_FOLLOW(fighter, Hash40::new("palutena_wand_light_trace"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
             EffectModule::enable_sync_init_pos_last(boma);
             EFFECT_FOLLOW(fighter, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+            EFFECT(fighter, Hash40::new("palutena_throw_twinkle"), Hash40::new("top"), 0.0, 16.0, -8.0, 0, 0, 0, 0.95, 0, 0, 0, 0, 0, 0, true);
         }
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::palutena::SPECIAL_LW_AEGIS_REFLECTOR) {
-            EFFECT(fighter, Hash40::new("palutena_throw_twinkle"), Hash40::new("top"), 0.0, 16.0, -8.0, 0, 0, 0, 0.95, 0, 0, 0, 0, 0, 0, true);
+            EFFECT(fighter, Hash40::new("palutena_mirror_break"), Hash40::new("top"), 0.0, 16.0, -8.0, 0, 0, 0, 0.225, 0, 0, 0, 0, 0, 0, true);
         }
         else{
             EFFECT(fighter, Hash40::new("palutena_mirror"), Hash40::new("top"), 12.0, 12.0, 0, 0, 22.5, 0, 0.8, 0, 0, 0, 0, 0, 0, false);

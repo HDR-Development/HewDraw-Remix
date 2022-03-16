@@ -4,8 +4,12 @@ use super::*;
 use globals::*;
 
  
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     palutena_teleport_cancel(boma, id, status_kind, situation_kind, cat[0]);
+    palutena_counter_b_reverse(boma, id, status_kind, situation_kind, stick_x, facing, frame, cat[0]);
+    aegis_reflector_timer(fighter, boma, id);
+    aegis_reflector_reset(fighter, id, status_kind);
+    aegis_reflector_training(fighter, id, status_kind);
 }
 
 pub unsafe fn palutena_teleport_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32) {
@@ -65,6 +69,60 @@ pub unsafe fn palutena_teleport_cancel(boma: &mut BattleObjectModuleAccessor, id
     }
 }
 
+pub unsafe fn palutena_counter_b_reverse(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, stick_x: f32, facing: f32, frame: f32, cat1: i32) {
+    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
+        if frame < 5.0 {
+            if stick_x * facing < 0.0 {
+                PostureModule::reverse_lr(boma);
+                PostureModule::update_rot_y_lr(boma);
+                if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(boma.object(), vars::common::B_REVERSED) {
+                    let b_reverse = Vector3f{x: -1.0, y: 1.0, z: 1.0};
+                    KineticModule::mul_speed(boma, &b_reverse, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                    VarModule::on_flag(boma.object(), vars::common::B_REVERSED);
+                }
+            }
+        }
+    }
+}
+
+extern "Rust" {
+    fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
+}
+
+
+// Aegis Reflector Timer Count
+unsafe fn aegis_reflector_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
+    let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER);
+    if gimmick_timerr > 0 && gimmick_timerr < 901 {
+        if gimmick_timerr > 899 {
+            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
+            gimmick_flash(boma);
+        } else {
+            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, gimmick_timerr + 1);
+        }
+    }
+}
+
+// Aegis Reflector Timer Death Reset
+unsafe fn aegis_reflector_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
+    if [*FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_WIN,
+        *FIGHTER_STATUS_KIND_LOSE,
+        *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
+        VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
+    }
+}
+
+// Training Mode Aegis Reflector timer taunt reset
+unsafe fn aegis_reflector_training(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
+    if is_training_mode() {
+        if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
+            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
+        }
+    }
+}
+
 #[utils::macros::opff(FIGHTER_KIND_PALUTENA )]
 pub fn palutena_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
@@ -75,7 +133,7 @@ pub fn palutena_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn palutena_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
 
