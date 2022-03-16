@@ -78,3 +78,20 @@ pub unsafe fn palutena_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
+
+#[smashline::weapon_frame_callback]
+pub fn reflection_board_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    unsafe { 
+        if weapon.kind() != WEAPON_KIND_PALUTENA_REFLECTIONBOARD {
+            return
+        }
+        if weapon.is_status(*WEAPON_PALUTENA_REFLECTIONBOARD_STATUS_KIND_SHOOT) {
+            let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+            let palutena = utils::util::get_battle_object_from_id(owner_id);
+            let palutena_boma = &mut *(*palutena).module_accessor;
+            if AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_ATTACK){
+                StatusModule::change_status_request_from_script(weapon.module_accessor, *WEAPON_PALUTENA_REFLECTIONBOARD_STATUS_KIND_BREAK, false);
+            }
+        }
+    }
+}

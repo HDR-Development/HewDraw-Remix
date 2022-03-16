@@ -8,6 +8,10 @@ use super::*;
 unsafe fn palutena_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        VarModule::off_flag(fighter.battle_object, vars::palutena::SPECIAL_LW_AEGIS_REFLECTOR);
+    }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 6.8, 6.8);
@@ -17,6 +21,7 @@ unsafe fn palutena_special_lw_game(fighter: &mut L2CAgentBase) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW))
            && !ArticleModule::is_exist(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD) {
             VarModule::set_float(fighter.battle_object, vars::palutena::SPECIAL_LW_LR, PostureModule::lr(fighter.module_accessor));
+            VarModule::on_flag(fighter.battle_object, vars::palutena::SPECIAL_LW_AEGIS_REFLECTOR);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_LW_REFLECT, true);
         }
         else{
@@ -33,13 +38,17 @@ unsafe fn palutena_special_lw_game(fighter: &mut L2CAgentBase) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 3.0, 3.2);
         search!(fighter, *MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR, 0);
     }
-    
+
 }
 
 #[acmd_script( agent = "palutena", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn palutena_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        VarModule::off_flag(fighter.battle_object, vars::palutena::SPECIAL_LW_AEGIS_REFLECTOR);
+    }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 6.8, 6.8);
@@ -49,6 +58,7 @@ unsafe fn palutena_special_air_lw_game(fighter: &mut L2CAgentBase) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW))
            && !ArticleModule::is_exist(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD) {
             VarModule::set_float(fighter.battle_object, vars::palutena::SPECIAL_LW_LR, PostureModule::lr(fighter.module_accessor));
+            VarModule::on_flag(fighter.battle_object, vars::palutena::SPECIAL_LW_AEGIS_REFLECTOR);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_LW_REFLECT, true);
         }
         else{
@@ -73,18 +83,29 @@ unsafe fn palutena_special_lw_reflect_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        PostureModule::set_lr(boma, VarModule::get_float(fighter.battle_object, vars::palutena::SPECIAL_LW_LR));
-        PostureModule::update_rot_y_lr(boma);
-        shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PALUTENA_REFLECTOR_KIND_REFLECTOR, *FIGHTER_REFLECTOR_GROUP_EXTEND);
-        ArticleModule::generate_article(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD, false, 0);
+        if VarModule::is_flag(fighter.battle_object, vars::palutena::SPECIAL_LW_AEGIS_REFLECTOR) {
+            PostureModule::set_lr(boma, VarModule::get_float(fighter.battle_object, vars::palutena::SPECIAL_LW_LR));
+            PostureModule::update_rot_y_lr(boma);
+        }
+        else {
+            shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PALUTENA_REFLECTOR_KIND_REFLECTOR, *FIGHTER_REFLECTOR_GROUP_EXTEND);
+        }
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        shield!(fighter, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, *FIGHTER_PALUTENA_REFLECTOR_KIND_REFLECTOR, *FIGHTER_REFLECTOR_GROUP_EXTEND);
+        if !VarModule::is_flag(fighter.battle_object, vars::palutena::SPECIAL_LW_AEGIS_REFLECTOR) {
+            shield!(fighter, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, *FIGHTER_PALUTENA_REFLECTOR_KIND_REFLECTOR, *FIGHTER_REFLECTOR_GROUP_EXTEND);
+        }
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.6);
+        if VarModule::is_flag(fighter.battle_object, vars::palutena::SPECIAL_LW_AEGIS_REFLECTOR) {
+            ArticleModule::generate_article(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD, false, 0);
+            FT_MOTION_RATE(fighter, 0.75);
+        }
+        else{
+            FT_MOTION_RATE(fighter, 0.6);
+        }
     }
     frame(lua_state, 35.0);
     if is_excute(fighter) {
@@ -98,18 +119,29 @@ unsafe fn palutena_special_air_lw_reflect_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        PostureModule::set_lr(boma, VarModule::get_float(fighter.battle_object, vars::palutena::SPECIAL_LW_LR));
-        PostureModule::update_rot_y_lr(boma);
-        shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PALUTENA_REFLECTOR_KIND_REFLECTOR, *FIGHTER_REFLECTOR_GROUP_EXTEND);
-        ArticleModule::generate_article(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD, false, 0);
+        if VarModule::is_flag(fighter.battle_object, vars::palutena::SPECIAL_LW_AEGIS_REFLECTOR) {
+            PostureModule::set_lr(boma, VarModule::get_float(fighter.battle_object, vars::palutena::SPECIAL_LW_LR));
+            PostureModule::update_rot_y_lr(boma);
+        }
+        else {
+            shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PALUTENA_REFLECTOR_KIND_REFLECTOR, *FIGHTER_REFLECTOR_GROUP_EXTEND);
+        }
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        shield!(fighter, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, *FIGHTER_PALUTENA_REFLECTOR_KIND_REFLECTOR, *FIGHTER_REFLECTOR_GROUP_EXTEND);
+        if !VarModule::is_flag(fighter.battle_object, vars::palutena::SPECIAL_LW_AEGIS_REFLECTOR) {
+            shield!(fighter, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, *FIGHTER_PALUTENA_REFLECTOR_KIND_REFLECTOR, *FIGHTER_REFLECTOR_GROUP_EXTEND);
+        }
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.6);
+        if VarModule::is_flag(fighter.battle_object, vars::palutena::SPECIAL_LW_AEGIS_REFLECTOR) {
+            ArticleModule::generate_article(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD, false, 0);
+            FT_MOTION_RATE(fighter, 0.75);
+        }
+        else{
+            FT_MOTION_RATE(fighter, 0.6);
+        }
     }
     frame(lua_state, 35.0);
     if is_excute(fighter) {
