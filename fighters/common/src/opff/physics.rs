@@ -98,37 +98,54 @@ unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
 
 /// Sets the extra traction flag depending on current speed and current status in order to prevent
 /// the game feeling too slippery
-unsafe fn extra_traction(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {    
+unsafe fn extra_traction(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    fighter.clear_lua_stack();
+    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+	let motion_accel = smash::app::sv_kinetic_energy::get_accel(fighter.lua_state_agent);
     let speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
     let max_walk = WorkModule::get_param_float(boma, hash40("walk_speed_max"), 0);
     let ground_brake = WorkModule::get_param_float(boma, hash40("ground_brake"), 0);
 
     if speed_x.abs() > max_walk
-    && boma.is_situation(*SITUATION_KIND_GROUND)
-    && boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_WAIT,
-        *FIGHTER_STATUS_KIND_LANDING_LIGHT,
-        *FIGHTER_STATUS_KIND_LANDING,
-        *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
-        *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL,
-        *FIGHTER_STATUS_KIND_CATCH_PULL,
-        *FIGHTER_STATUS_KIND_JUMP_SQUAT,
-        *FIGHTER_STATUS_KIND_SQUAT,
-        *FIGHTER_STATUS_KIND_SQUAT_RV,
-        *FIGHTER_STATUS_KIND_ATTACK,
-        *FIGHTER_STATUS_KIND_ATTACK_S3,
-        *FIGHTER_STATUS_KIND_ATTACK_HI3,
-        *FIGHTER_STATUS_KIND_ATTACK_LW3,
-        *FIGHTER_STATUS_KIND_ATTACK_S4_START,
-        *FIGHTER_STATUS_KIND_ATTACK_S4,
-        *FIGHTER_STATUS_KIND_ATTACK_HI4_START,
-        *FIGHTER_STATUS_KIND_ATTACK_HI4,
-        *FIGHTER_STATUS_KIND_ATTACK_LW4_START,
-        *FIGHTER_STATUS_KIND_ATTACK_LW4
-    ])
-    && fighter.global_table[CURRENT_FRAME].get_i32() > 0 {
+    && boma.is_situation(*SITUATION_KIND_GROUND) {
         let added_traction: smash::phx::Vector3f = smash::phx::Vector3f {x: -1.0 * PostureModule::lr(boma) * ground_brake * speed_x.signum(), y: 0.0, z: 0.0};
-        KineticModule::add_speed(boma, &added_traction);
+        
+        if boma.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_WAIT,
+            *FIGHTER_STATUS_KIND_LANDING_LIGHT,
+            *FIGHTER_STATUS_KIND_LANDING,
+            *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
+            *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL,
+            *FIGHTER_STATUS_KIND_CATCH_PULL,
+            *FIGHTER_STATUS_KIND_JUMP_SQUAT,
+            *FIGHTER_STATUS_KIND_SQUAT,
+            *FIGHTER_STATUS_KIND_SQUAT_RV,
+            *FIGHTER_STATUS_KIND_SQUAT_WAIT
+        ]) {
+            KineticModule::add_speed(boma, &added_traction);
+        }
+        if boma.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_ATTACK,
+            *FIGHTER_STATUS_KIND_ATTACK_S3,
+            *FIGHTER_STATUS_KIND_ATTACK_HI3,
+            *FIGHTER_STATUS_KIND_ATTACK_LW3,
+            *FIGHTER_STATUS_KIND_ATTACK_S4_START,
+            *FIGHTER_STATUS_KIND_ATTACK_S4,
+            *FIGHTER_STATUS_KIND_ATTACK_HI4_START,
+            *FIGHTER_STATUS_KIND_ATTACK_HI4,
+            *FIGHTER_STATUS_KIND_ATTACK_LW4_START,
+            *FIGHTER_STATUS_KIND_ATTACK_LW4
+        ]) {
+            if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
+                VarModule::off_flag(boma.object(), vars::common::IS_MOTION_BASED_ATTACK);
+            }
+            if motion_accel.x == 0.0 && !VarModule::is_flag(boma.object(), vars::common::IS_MOTION_BASED_ATTACK) {
+                VarModule::on_flag(boma.object(), vars::common::IS_MOTION_BASED_ATTACK);
+            }
+            if VarModule::is_flag(boma.object(), vars::common::IS_MOTION_BASED_ATTACK) {
+                KineticModule::add_speed(boma, &added_traction);
+            }
+        }
     }
 }
 

@@ -112,7 +112,7 @@ pub mod vars {
         pub const IS_MOONWALK: i32 = 57;
         pub const CAN_GLIDE_TOSS: i32 = 58;
         pub const IS_MOONWALK_JUMP: i32 = 59;
-        pub const ENABLE_DOUBLE_TRACTION: i32 = 60;
+        pub const IS_MOTION_BASED_ATTACK: i32 = 60;
         pub const PREV_FLAG_DISABLE_ESCAPE_AIR: i32 = 61;
         pub const ENABLE_WAVELAND_PLATDROP: i32 = 62;
         pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 63;
