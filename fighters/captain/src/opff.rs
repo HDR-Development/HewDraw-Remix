@@ -9,7 +9,7 @@ unsafe fn air_falcon_kick_jump_reset(fighter: &mut L2CFighterCommon) {
         *FIGHTER_CAPTAIN_STATUS_KIND_SPECIAL_LW_END,
         *FIGHTER_CAPTAIN_STATUS_KIND_SPECIAL_LW_WALL_END
     ])
-    && fighter.get_num_used_jumps() == fighter.get_num_used_jumps_max()
+    && fighter.get_num_used_jumps() == fighter.get_jump_count_max()
     {
         WorkModule::dec_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
     }

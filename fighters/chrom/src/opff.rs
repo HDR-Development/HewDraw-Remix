@@ -97,7 +97,7 @@ unsafe fn side_special_cancels(fighter: &mut L2CFighterCommon) {
 
         utils::hash40!("special_s4_hi") | utils::hash40!("special_air_s4_hi") if fighter.is_input_jump() => {
             if fighter.is_situation(*SITUATION_KIND_AIR)
-            && fighter.get_num_used_jumps() < fighter.get_num_used_jumps_max()
+            && fighter.get_num_used_jumps() < fighter.get_jump_count_max()
             {
                 fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                 return;

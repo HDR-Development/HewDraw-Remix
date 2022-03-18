@@ -115,7 +115,7 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
     }
 
     if fighter.is_input_jump()
-    && fighter.get_num_used_jumps() < fighter.get_num_used_jumps_max()
+    && fighter.get_num_used_jumps() < fighter.get_jump_count_max()
     {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
         return;

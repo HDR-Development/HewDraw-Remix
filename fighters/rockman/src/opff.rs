@@ -10,7 +10,7 @@ unsafe fn jc_light_utilt_hit(boma: &mut BattleObjectModuleAccessor, id: usize, s
             if  !VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK) {
                 if boma.is_input_jump() {
                     if situation_kind == *SITUATION_KIND_AIR {
-                        if boma.get_num_used_jumps() < boma.get_num_used_jumps_max() {
+                        if boma.get_num_used_jumps() < boma.get_jump_count_max() {
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                         }
                     } else if situation_kind == *SITUATION_KIND_GROUND {
@@ -28,7 +28,7 @@ unsafe fn jc_dtilt_hit(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && frame > 12.0 {
             if boma.is_input_jump() {
                 if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_num_used_jumps() < boma.get_num_used_jumps_max() {
+                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                     }
                 } else if situation_kind == *SITUATION_KIND_GROUND {
