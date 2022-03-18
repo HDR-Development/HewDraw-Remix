@@ -9,10 +9,6 @@ unsafe fn cross_chop_cancel_dj_reset(fighter: &mut L2CFighterCommon) {
         if fighter.get_num_used_jumps() == fighter.get_jump_count_max() {
             WorkModule::set_int(fighter.module_accessor, fighter.get_jump_count_max() - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
         }
-        if fighter.is_button_on(Buttons::Guard) {
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true); 
-            VarModule::on_flag(fighter.object(), vars::common::UP_SPECIAL_CANCEL);
-        }
     }
 }
 
