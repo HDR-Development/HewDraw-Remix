@@ -376,6 +376,20 @@ pub trait BomaExt {
     unsafe fn is_fighter(&mut self) -> bool;
     unsafe fn is_weapon(&mut self) -> bool;
     unsafe fn kind(&mut self) -> i32;
+
+    // WORK
+    unsafe fn get_int(&mut self, what: i32) -> i32;
+    unsafe fn get_float(&mut self, what: i32) -> f32;
+    unsafe fn get_int64(&mut self, what: i32) -> u64;
+    unsafe fn is_flag(&mut self, what: i32) -> bool;
+    unsafe fn set_int(&mut self, value: i32, what: i32);
+    unsafe fn set_float(&mut self, value: f32, what: i32);
+    unsafe fn set_int64(&mut self, value: i64, what: i32);
+    unsafe fn on_flag(&mut self, what: i32);
+    unsafe fn off_flag(&mut self, what: i32);
+    unsafe fn get_param_int(&mut self, obj: &str, field: &str) -> i32;
+    unsafe fn get_param_float(&mut self, obj: &str, field: &str) -> f32;
+    unsafe fn get_param_int64(&mut self, obj: &str, field: &str) -> u64;
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -580,6 +594,60 @@ impl BomaExt for BattleObjectModuleAccessor {
     unsafe fn get_jump_count_max(&mut self) -> i32 {
         return WorkModule::get_int(self, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX);
     }
+
+    unsafe fn get_int(&mut self, what: i32) -> i32 {
+        WorkModule::get_int(self, what)
+    }
+
+    unsafe fn get_float(&mut self, what: i32) -> f32 {
+        WorkModule::get_float(self, what)
+    }
+
+    unsafe fn get_int64(&mut self, what: i32) -> u64 {
+        WorkModule::get_int64(self, what)
+    }
+
+    unsafe fn is_flag(&mut self, what: i32) -> bool {
+        WorkModule::is_flag(self, what)
+    }
+
+    unsafe fn set_int(&mut self, value: i32, what: i32) {
+        WorkModule::set_int(self, value, what)
+    }
+
+    unsafe fn set_float(&mut self, value: f32, what: i32) {
+        WorkModule::set_float(self, value, what)
+    }
+
+    unsafe fn set_int64(&mut self, value: i64, what: i32) {
+        WorkModule::set_int64(self, value, what)
+    }
+
+    unsafe fn on_flag(&mut self, what: i32) {
+        WorkModule::on_flag(self, what)
+    }
+
+    unsafe fn off_flag(&mut self, what: i32) {
+        WorkModule::off_flag(self, what)
+    }
+
+    unsafe fn get_param_int(&mut self, obj: &str, field: &str) -> i32 {
+        WorkModule::get_param_int(self, Hash40::new(obj).hash, Hash40::new(field).hash)
+    }
+
+    unsafe fn get_param_float(&mut self, obj: &str, field: &str) -> f32 {
+        let obj = obj.into();
+        let field = field.into();
+        WorkModule::get_param_float(self, Hash40::new(obj).hash, Hash40::new(field).hash)
+    }
+
+    unsafe fn get_param_int64(&mut self, obj: &str, field: &str) -> u64 {
+        let obj = obj.into();
+        let field = field.into();
+        WorkModule::get_param_int64(self, Hash40::new(obj).hash, Hash40::new(field).hash)
+    }
+
+
 }
 
 pub trait LuaUtil {
