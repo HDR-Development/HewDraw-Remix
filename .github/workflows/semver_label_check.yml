@@ -1,6 +1,6 @@
 name: validate pr labels
 on:
-  pull_request:
+  pull_request_target:
     types: [labeled, unlabeled, opened, edited, reopened, synchronize, ready_for_review]
 jobs:
   check-pr:
@@ -11,6 +11,6 @@ jobs:
         name: Validate Pull Request Metadata
         with:
           mode: validate
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.RELEASE_TOKEN }}
           minor-label: semver:feature
           patch-label: semver:patch
