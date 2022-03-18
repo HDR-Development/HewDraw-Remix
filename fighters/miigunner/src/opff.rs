@@ -39,7 +39,7 @@ unsafe fn absorb_vortex_jc_turnaround_shinejump_cancel(boma: &mut BattleObjectMo
             if (status_kind == *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD && frame > 3.0)
                 || (status_kind != *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD) {
                 if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_jump_count() < boma.get_jump_count_max() {
+                    if boma.get_num_used_jumps() < boma.get_num_used_jumps_max() {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                     }
 

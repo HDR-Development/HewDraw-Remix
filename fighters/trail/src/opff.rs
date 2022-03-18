@@ -82,7 +82,7 @@ unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon,
                     fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
                     return;
                 }
-                else if fighter.get_jump_count() < fighter.get_jump_count_max() {
+                else if fighter.get_num_used_jumps() < fighter.get_num_used_jumps_max() {
                     fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                     return;
                 }
@@ -107,7 +107,7 @@ unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon,
                     fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
                     return;
                 }
-                else if fighter.get_jump_count() < fighter.get_jump_count_max() {
+                else if fighter.get_num_used_jumps() < fighter.get_num_used_jumps_max() {
                     fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                     return;
                 }
