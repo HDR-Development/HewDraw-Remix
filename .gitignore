@@ -12,3 +12,6 @@ scripts/log.txt
 scripts/tmp
 rust-toolchain
 plugin/hdr_version.txt
+**/package.zip
+**/package/
+**/zips/
