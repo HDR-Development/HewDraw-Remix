@@ -87,3 +87,26 @@ jobs:
         tag: ${{ needs.version_and_changelog.outputs.version }}
         overwrite: true
         body: ${{ needs.version_and_changelog.outputs.changelog }}
+
+    - id: romfs_version
+      uses: pozetroninc/github-action-get-latest-release@master
+      with:
+        repository: HDR-Development/romfs-release
+
+    - name: make package
+      run: |
+        python3 scripts/full_package.py ${{ needs.version_and_changelog.outputs.version }} ${{ steps.romfs_version.outputs.release }}
+
+    - name: Upload full package to nightlies
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.RELEASE_TOKEN }}
+        file: package.zip
+        prerelease: true
+        file_glob: true
+        asset_name: the_asset
+        repo_name: HDR-Development/HDR-Nightlies
+        release_name: ${{ needs.version_and_changelog.outputs.version }}-nightly
+        tag: ${{ needs.version_and_changelog.outputs.version }}
+        overwrite: true
+        body: ${{ needs.version_and_changelog.outputs.changelog }}
