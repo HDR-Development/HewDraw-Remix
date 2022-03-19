@@ -40,6 +40,4 @@ pub fn install(is_runtime: bool) {
     acmd::install();
     //status::install();
     opff::install(is_runtime);
-    use opff::*;
-    smashline::install_agent_frame_callback!(reflection_board_callback);
 }
