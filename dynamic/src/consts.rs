@@ -303,9 +303,6 @@ pub mod vars {
     pub mod palutena {
         // floats
         pub const SPECIAL_LW_LR: i32 = 0x1000;
-
-        // flags
-        pub const SPECIAL_LW_AEGIS_REFLECTOR: i32 = 0x1000;
     }
 
     pub mod miiswordsman {
