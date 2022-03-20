@@ -206,6 +206,11 @@ pub mod vars {
         pub const UNABLE_CANCEL_S3_DASH: i32 = 0x1051;
     }
 
+    pub mod duckhunt {
+        // int
+        pub const GUNMAN_TIMER: i32 = 0x1000;
+    }
+
     pub mod gaogaen {
         // floats
         pub const ANGLE_GRAB_STICK_Y: i32 = 0x1000;

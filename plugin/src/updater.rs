@@ -3,6 +3,7 @@ use std::{path::Path, io::Cursor};
 use gh_updater::ReleaseFinderConfig;
 use semver::Version;
 use zip::ZipArchive;
+use super::*;
 
 #[derive(Copy, Clone, PartialEq, Eq)]
 enum WhichVersion {
@@ -40,14 +41,8 @@ fn get_version(current: &Version, release: Option<&Version>, prerelease: Option<
 }
 
 pub fn check_for_updates() {
-    unsafe { // Ryujinx skip based on text addr
-        let text_addr = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64;
-        if text_addr == 0x8004000 {
-            println!("HDR cannot auto-update on Ryujinx");
-            return;
-        } else {
-            println!("Checking for HDR updates...");
-        }
+    if is_on_ryujinx() {
+        return
     }
 
     let release = ReleaseFinderConfig::new("HewDraw-Remix")

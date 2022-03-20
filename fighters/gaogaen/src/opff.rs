@@ -4,29 +4,28 @@ use super::*;
 use globals::*;
 
  
-unsafe fn cross_chop_cancel_dj_reset(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, cat1: i32) {
-    if status_kind == *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_TURN {
-        if boma.get_jump_count() == boma.get_jump_count_max() {
-            WorkModule::set_int(boma, boma.get_jump_count_max() - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+unsafe fn cross_chop_cancel_dj_reset(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_TURN) {
+        if fighter.get_num_used_jumps() == fighter.get_jump_count_max() {
+            WorkModule::set_int(fighter.module_accessor, fighter.get_jump_count_max() - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
         }
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
-            VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL);
+        if fighter.is_button_on(Buttons::Guard) {
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true); 
+            VarModule::on_flag(fighter.object(), vars::common::UP_SPECIAL_CANCEL);
         }
     }
 }
 
 // Incineroar Fthrow Movement
-unsafe fn fthrow_movement(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_THROW {
-        if motion_kind == hash40("throw_f") {
-            if situation_kind == *SITUATION_KIND_GROUND {
-                if stick_x != 0.0 {
-                    let motion_vec = x_motion_vec(1.0, stick_x);
-                    KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-                }
-            }
-        }
+unsafe fn fthrow_movement(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_THROW) 
+     && fighter.is_motion(smash::phx::Hash40::new("throw_f"))
+     && fighter.is_situation(*SITUATION_KIND_GROUND) 
+     && fighter.stick_x() != 0.0 {
+
+        let motion_vec = x_motion_vec(1.0, fighter.stick_x());
+        KineticModule::add_speed_outside(fighter.module_accessor, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
+        
     }
 }
 
@@ -65,33 +64,23 @@ unsafe fn catch_lean(boma: &mut BattleObjectModuleAccessor, lean_frame: f32, ret
     }
 }
 
-unsafe fn angled_grab(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    
-    if status_kind == *FIGHTER_STATUS_KIND_CATCH {
-        catch_lean(boma, 7.0, 30.0, 50.0, 30.0);
-    } else if status_kind == *FIGHTER_STATUS_KIND_CATCH_TURN {
-        catch_lean(boma, 12.0, 30.0, 30.0, 15.0);
-    } else if status_kind == *FIGHTER_STATUS_KIND_CATCH_DASH {
-        catch_lean(boma, 11.0, 30.0, 30.0, 15.0);
-    }
-}
+unsafe fn angled_grab(fighter: &mut L2CFighterCommon) {
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    cross_chop_cancel_dj_reset(boma, id, status_kind, cat[0]);
-    fthrow_movement(boma, status_kind, situation_kind, motion_kind, stick_x);
-    angled_grab(boma, status_kind); 
+    if fighter.is_status(*FIGHTER_STATUS_KIND_CATCH) {
+        catch_lean(fighter.boma(), 7.0, 30.0, 50.0, 30.0);
+    } else if fighter.is_status(*FIGHTER_STATUS_KIND_CATCH_TURN) {
+        catch_lean(fighter.boma(), 12.0, 30.0, 30.0, 15.0);
+    } else if  fighter.is_status(*FIGHTER_STATUS_KIND_CATCH_DASH) {
+        catch_lean(fighter.boma(), 11.0, 30.0, 30.0, 15.0);
+    }
 }
 
 #[utils::macros::opff(FIGHTER_KIND_GAOGAEN )]
-pub fn gaogaen_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub fn gaogaen_opff(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-		gaogaen_frame(fighter)
-    }
-}
-
-pub unsafe fn gaogaen_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+		cross_chop_cancel_dj_reset(fighter);
+        fthrow_movement(fighter);
+        angled_grab(fighter); 
     }
 }
