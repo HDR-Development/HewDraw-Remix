@@ -347,6 +347,10 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
             
             VarModule::set_float(fighter.battle_object, vars::common::ESCAPE_AIR_SLIDE_SPEED_X, escape_air_slide_speed * WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X));
             VarModule::set_float(fighter.battle_object, vars::common::ESCAPE_AIR_SLIDE_SPEED_Y, escape_air_slide_speed * WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y));
+
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE, 0.0, 0.0);
+            app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
         }
         else {
             if MotionModule::frame(fighter.module_accessor) < 29.0 {

@@ -1,7 +1,7 @@
 name: Comment PR artifacts links
 on:
   workflow_run:
-    workflows: ['rust build']
+    workflows: ['pr_build']
     types: [completed]
 jobs:
   pr_comment:

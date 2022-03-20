@@ -51,6 +51,12 @@ unsafe fn kart_jump_waveland(boma: &mut BattleObjectModuleAccessor, status_kind:
 }
 
 unsafe fn upB_kart_respawn(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if WorkModule::is_flag(boma, *FIGHTER_KOOPAJR_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_INTERRUPT)
+    && boma.is_situation(*SITUATION_KIND_GROUND) {
+        WorkModule::off_flag(boma, *FIGHTER_KOOPAJR_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_INTERRUPT);
+        boma.change_status_req(*FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_LANDING, false);
+    }
+    
     if [*FIGHTER_STATUS_KIND_DAMAGE_AIR, *FIGHTER_STATUS_KIND_DAMAGE_FALL, *FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL].contains(&status_kind) && WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) == 0.0 && WorkModule::is_flag(boma, *FIGHTER_KOOPAJR_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_INTERRUPT) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_DAMAGE_END, false);
     }

@@ -270,14 +270,6 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
             }
         }
     }
-	
-	
-    if x1 == hash40("ground_brake") {
-        //if double_traction_check[hdr::get_player_number(&mut *boma)] {
-        if VarModule::is_flag(boma_reference.object(), vars::common::ENABLE_DOUBLE_TRACTION){
-            return original!()(x0, hash40("ground_brake"), 0) * 2.0;
-        }
-    }
 
     /*if x1 == hash40("air_speed_x_stable") {
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_JUMP_SQUAT {

@@ -89,9 +89,7 @@ pub mod vars {
         pub const FOOTSTOOL_AIRDODGE_LOCKOUT: i32 = 31;
         pub const CAN_ESCAPE_TUMBLE: i32 = 32;
         pub const SUPER_CANCEL: i32 = 33;
-        pub const SHINESPARK_USED: i32 = 34;
         pub const SPECIAL_AUTOCANCEL: i32 = 35;
-        pub const SHINESPARK_READY: i32 = 36;
         pub const ILLUSION_SHORTEN: i32 = 37;
         pub const SOARING_SLASH_HIT: i32 = 38;
         pub const DOUBLE_JUMP_STOP: i32 = 39;
@@ -114,7 +112,7 @@ pub mod vars {
         pub const IS_MOONWALK: i32 = 57;
         pub const CAN_GLIDE_TOSS: i32 = 58;
         pub const IS_MOONWALK_JUMP: i32 = 59;
-        pub const ENABLE_DOUBLE_TRACTION: i32 = 60;
+        pub const IS_MOTION_BASED_ATTACK: i32 = 60;
         pub const PREV_FLAG_DISABLE_ESCAPE_AIR: i32 = 61;
         pub const ENABLE_WAVELAND_PLATDROP: i32 = 62;
         pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 63;
@@ -135,6 +133,7 @@ pub mod vars {
         pub const PERFECT_WAVEDASH: i32 = 78;
         pub const ENABLE_AIR_ESCAPE_JUMPSQUAT: i32 = 79;
         pub const SHOULD_WAVELAND: i32 = 80;
+        pub const SIDE_SPECIAL_CANCEL_NO_HIT: i32 = 81;
 
         
 
@@ -145,7 +144,6 @@ pub mod vars {
         pub const FLOAT_DURATION: i32 = 0x3;
         pub const FLOAT_STYLE: i32 = 0x4;
         pub const GIMMICK_READY_GLOW_TIMER: i32 = 0x5;
-        pub const SNAKE_GRENADE_COUNTER: i32 = 0x6;
         pub const HITFALL_BUFFER: i32 = 0x7;
         pub const JUMP_SQUAT_FRAME: i32 = 0x8;
         pub const GIMMICK_TIMER: i32 = 0x9;
@@ -175,14 +173,13 @@ pub mod vars {
         pub const LEDGE_POS_Y: i32 = 0x10;
         pub const LEDGE_POS_Z: i32 = 0x11;
         pub const MP_SPEED_RATIO: i32 = 0x12;
-        pub const ANGLE_GRAB_STICK_Y: i32 = 0x13;
-        pub const GET_DIST_TO_FLOOR: i32 = 0x14;
-        pub const ECB_Y_OFFSETS: i32 = 0x15;
-        pub const CURR_DASH_SPEED: i32 = 0x16;
-        pub const MOONWALK_SPEED: i32 = 0x17;
-        pub const ESCAPE_AIR_SLIDE_SPEED_X: i32 = 0x18;
-        pub const ESCAPE_AIR_SLIDE_SPEED_Y: i32 = 0x19;
-        pub const Y_POS: i32 = 0x1A;
+        pub const GET_DIST_TO_FLOOR: i32 = 0x13;
+        pub const ECB_Y_OFFSETS: i32 = 0x14;
+        pub const CURR_DASH_SPEED: i32 = 0x15;
+        pub const MOONWALK_SPEED: i32 = 0x16;
+        pub const ESCAPE_AIR_SLIDE_SPEED_X: i32 = 0x17;
+        pub const ESCAPE_AIR_SLIDE_SPEED_Y: i32 = 0x18;
+        pub const Y_POS: i32 = 0x19;
        
     }
 
@@ -209,6 +206,11 @@ pub mod vars {
         pub const UNABLE_CANCEL_S3_DASH: i32 = 0x1051;
     }
 
+    pub mod duckhunt {
+        // int
+        pub const GUNMAN_TIMER: i32 = 0x1000;
+    }
+
     pub mod gaogaen {
         // floats
         pub const ANGLE_GRAB_STICK_Y: i32 = 0x1000;
@@ -221,6 +223,24 @@ pub mod vars {
 
     pub mod ken {
         pub use super::shotos::*;
+    }
+
+    pub mod luigi {
+        // flag
+        /// This flag stores whether or not Luigi currently has a misfire stored.
+        pub const IS_MISFIRE_STORED: i32 = 0x1000;
+        
+        // int
+        /// This int stores the number of remaining green missile's luigi must do before getting a misfire
+        pub const REMAINING_SPECIAL_S_UNTIL_MISFIRE: i32 = 0x1000;
+        /// This int stores the handle of the charge smoke effect for killing it if we store misfire
+        pub const CHARGE_SMOKE_EFFECT_HANDLE: i32 = 0x1001;
+        /// This int stores the handle of the pulsing effect for killing it if we store misfire
+        pub const CHARGE_PULSE_EFFECT_HANDLE: i32 = 0x1002;
+
+        // float
+        /// This float holds the current multiplier on damage for misfire
+        pub const MISFIRE_DAMAGE_MULTIPLIER: i32 = 0x1000;
     }
 
     pub mod mario {
@@ -263,6 +283,10 @@ pub mod vars {
     pub mod trail {
         // flags
         pub const ATTACK_12_INTO_S3: i32 = 0x1000;
+        pub const UP_SPECIAL_TO_SIDE_SPECIAL: i32 = 0x1001;
+        pub const SIDE_SPECIAL_HIT: i32 = 0x1002;
+        pub const IS_SIDE_SPECIAL_INPUT: i32 = 0x1003;
+        pub const STOP_SIDE_SPECIAL: i32 = 0x1004;
     }
 
     pub mod samus {
@@ -274,11 +298,6 @@ pub mod vars {
     pub mod robot {
         // flags
         pub const BOOST_ATTACK: i32 = 0x1000;
-    }
-
-    pub mod gaogen {
-        // floats
-        pub const ANGLE_GRAB_STICK_Y: i32 = 0x1000;
     }
 
     pub mod palutena {

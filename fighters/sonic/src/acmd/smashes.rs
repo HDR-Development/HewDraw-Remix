@@ -175,8 +175,8 @@ pub fn install() {
         sonic_attack_s4_s_game,
         sonic_attack_s4_lw_game,
         sonic_attack_hi4_game,
-        sonic_attack_lw4_game,
-        sonic_attack_lw4_effect,
+        //sonic_attack_lw4_game,
+        //sonic_attack_lw4_effect,
     );
 }
 
