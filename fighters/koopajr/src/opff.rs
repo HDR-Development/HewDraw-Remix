@@ -79,10 +79,9 @@ pub unsafe fn koopajr_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub fn koopajr_weapon_remainclown_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe {
         let boma = weapon.boma();
-        if StatusModule::status_kind(boma) == *WEAPON_KOOPAJR_REMAINCLOWN_STATUS_KIND_FALL {
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                StatusModule::change_status_request_from_script(boma, *WEAPON_KOOPAJR_REMAINCLOWN_STATUS_KIND_BURST, true);
-            }
+        if StatusModule::status_kind(boma) == *WEAPON_KOOPAJR_REMAINCLOWN_STATUS_KIND_FALL
+        && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+            StatusModule::change_status_request_from_script(boma, *WEAPON_KOOPAJR_REMAINCLOWN_STATUS_KIND_BURST, true);
         }
     }
 }
