@@ -107,6 +107,8 @@ for arg in sys.argv:
   if "name=" in arg:
     mod_name = arg.split('=')[1]
 
+switch_hdr_dir = "ultimate/mods/" + mod_name
+ryujinx_hdr_dir = "sdcard/ultimate/mods/" + mod_name
 
 # search for dev plugin args
 dev_characters = set()
@@ -183,16 +185,16 @@ if (is_dev_build and not is_publish):
 
   # collect switch plugin
   pkgutil.collect_plugin("hdr-switch", 
-    os.path.join(switch_rom_path, plugin_subpath), 
-    build_type, "libhdr.nro", "standalone")
+    os.path.join(switch_hdr_dir), 
+    build_type, "plugin.nro", "standalone")
 
     # collect switch romfs
   pkgutil.collect_romfs("hdr-switch", "", mod_name)
 
   # collect ryujinx plugin
   pkgutil.collect_plugin("hdr-ryujinx", 
-    os.path.join(ryujinx_rom_path, plugin_subpath), 
-    build_type, "libhdr.nro", "standalone")
+    os.path.join(ryujinx_hdr_dir), 
+    build_type, "plugin.nro", "standalone")
   
   # collect ryujinx romfs
   pkgutil.collect_romfs("hdr-ryujinx", "sdcard", mod_name)
@@ -207,8 +209,8 @@ else:
 
   # collect switch package
   pkgutil.collect_plugin("hdr-switch", 
-    os.path.join(switch_rom_path, plugin_subpath), 
-    build_type, "libhdr.nro")
+    os.path.join(switch_hdr_dir), 
+    build_type, "plugin.nro")
 
   # collect switch romfs
   pkgutil.collect_romfs("hdr-switch", "", mod_name)
@@ -216,8 +218,8 @@ else:
 
   # collect ryujinx plugin
   pkgutil.collect_plugin("hdr-ryujinx", 
-    os.path.join(ryujinx_rom_path, plugin_subpath), 
-    build_type, "libhdr.nro")
+    os.path.join(ryujinx_hdr_dir), 
+    build_type, "plugin.nro")
   
   # collect ryujinx romfs
   pkgutil.collect_romfs("hdr-ryujinx", "sdcard", mod_name)
