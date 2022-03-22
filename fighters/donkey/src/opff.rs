@@ -129,7 +129,7 @@ unsafe fn down_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut Battle
 pub unsafe fn dk_bair_rotation(fighter: &mut L2CFighterCommon) {
     if fighter.is_motion(Hash40::new("attack_air_b")) {
         // angle bair down slightly
-        fighter.set_joint_rotate("legl", Vector3f::new(0.0, 0.0, -10.0))
+        fighter.set_joint_rotate("legl", Vector3f::new(0.0, 0.0, -20.0))
     }
 }
 
