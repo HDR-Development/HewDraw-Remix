@@ -107,7 +107,7 @@ jobs:
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
-        repo_token: ${{ secrets.RELEASE_TOKEN }}
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: distributions/*
         prerelease: false
         file_glob: true
@@ -150,7 +150,7 @@ jobs:
     - name: Upload full package to nightlies
       uses: svenstaro/upload-release-action@v2
       with:
-        repo_token: ${{ secrets.RELEASE_TOKEN }}
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: package.zip
         prerelease: false
         file_glob: true
