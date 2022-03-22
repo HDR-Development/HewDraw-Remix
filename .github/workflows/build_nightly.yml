@@ -87,10 +87,11 @@ jobs:
         tag: ${{ needs.version_and_changelog.outputs.version }}
         overwrite: true
         body: ${{ needs.version_and_changelog.outputs.changelog }}
-
+    
   full_package:
     runs-on: ubuntu-latest
     needs: [version_and_changelog, plugin_build]
+    steps:
     - id: romfs_version
       uses: pozetroninc/github-action-get-latest-release@master
       with:

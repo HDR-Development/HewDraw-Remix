@@ -2,11 +2,12 @@ name: make beta
 
 on:
   workflow_dispatch:
-    romfs_version:
-      type: string
-      description: The romfs version tag to use
-      required: true
-      default: latest
+    inputs:
+      romfs_version:
+        type: string
+        description: The romfs version tag to use
+        required: true
+        default: latest
 jobs:
   version_and_changelog:
     runs-on: ubuntu-latest
