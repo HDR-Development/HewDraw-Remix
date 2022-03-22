@@ -27,7 +27,6 @@ def download_and_extract(owner: str, repo: str, tag: str, asset: str, extract_di
     else:
         print("getting release from url: " + url)
 
-    print(url)
     urllib.request.urlretrieve(url, asset)
     with zipfile.ZipFile(asset, 'r') as zip_ref: 
         if extract_directory:

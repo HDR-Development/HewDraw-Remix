@@ -123,10 +123,21 @@ jobs:
       with:
         repository: HDR-Development/romfs-release
 
+    # validate that the chosen release exists
+    - name: get the specified release
+      uses: cardinalby/git-get-release-action@v1
+      if: github.event.inputs.romfs_version != 'latest'
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      with:
+        tag: ${{ github.event.inputs.romfs_version }}   
+        repo: 'HDR-Development/romfs-release'
+
     - name: make package with chosen version
       if: github.event.inputs.romfs_version != 'latest'
       run: |
         python3 scripts/full_package.py ${{ needs.version_and_changelog.outputs.version }} ${{ github.event.inputs.romfs_version }} 
+
 
     - name: make package with latest
       if: github.event.inputs.romfs_version == 'latest'
