@@ -2,6 +2,8 @@
 #![feature(proc_macro_hygiene)]
 
 use skyline::libc::c_char;
+#[cfg(feature = "main_nro")]
+use skyline_web::*;
 use std::{path::Path, fs};
 
 #[cfg(feature = "updater")]
@@ -27,7 +29,10 @@ fn change_version_string_hook(arg: u64, string: *const c_char) {
         let hdr_version = match std::fs::read_to_string("mods:/ui/hdr_version.txt") {
             Ok(version_value) => version_value.trim().to_string(),
             Err(_) => {
+                
+                #[cfg(feature = "main_nro")]
                 skyline_web::DialogOk::ok("hdr-assets is not enabled! Please enable hdr-assets in arcropolis config.");
+                
                 String::from("UNKNOWN")
             }
         };
@@ -61,7 +66,9 @@ pub fn main() {
             .join();
     }
 
-    quick_validate_install();
+    #[cfg(feature = "main_nro")] {
+        quick_validate_install();
+    }
 
     skyline::install_hooks!(change_version_string_hook);
 }
@@ -79,6 +86,7 @@ pub fn is_on_ryujinx() -> bool {
     }
 }
 
+#[cfg(feature = "main_nro")]
 pub fn quick_validate_install() {
     let has_smashline_development_hook = Path::new("sd:/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/libsmashline_hook_development.nro").is_file();
     if has_smashline_development_hook {
