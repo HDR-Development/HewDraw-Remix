@@ -8,7 +8,7 @@ jobs:
   version_and_changelog:
     runs-on: ubuntu-latest
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
     outputs: 
       version: ${{ steps.push_tag.outputs.version }}
       changelog: ${{ steps.github_changelog.outputs.changelog }}
@@ -20,7 +20,7 @@ jobs:
         id: push_tag
         with:
           mode: bump
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.RELEASE_TOKEN }}
           minor-label: semver:feature
           patch-label: semver:patch
           with-v: true
@@ -37,7 +37,7 @@ jobs:
         with:
           sinceTag: ${{ steps.push_tag.outputs.old-version }}
           stripHeaders: true
-          token: ${{ secrets.GITHUB_TOKEN }} 
+          token: ${{ secrets.RELEASE_TOKEN }}
 
       - name: Upload changelog
         uses: actions/upload-artifact@v2
@@ -78,7 +78,7 @@ jobs:
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        repo_token: ${{ secrets.RELEASE_TOKEN }}
         file: distributions/*
         prerelease: true
         file_glob: true
