@@ -1,7 +1,5 @@
 HewDraw Remix!
 
-Welcome to the new and open source HDR repository!
+Welcome to the open source HDR repository!
 
-Be aware, this new repository is still under construction and the vast majority of the HDR codebase has not been ported yet.
-
-Enjoy.
+FOR RELEASES, PLEASE GO TO https://github.com/HDR-Development/HDR-Releases/releases

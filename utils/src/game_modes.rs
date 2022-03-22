@@ -85,6 +85,12 @@ unsafe fn on_rule_select_hook(_: &skyline::hooks::InlineCtx) {
 
 #[skyline::hook(offset = offsets::once_per_game_frame())]
 unsafe fn once_per_game_frame(game_state_ptr: u64) {
+
+    // check if current match mode is not regular smash, if so sub out the custom mode
+    if utils_dyn::util::get_match_mode().0 != 1 {
+        CURRENT_CUSTOM_MODE = None;
+    }
+
     if detect_new_game(game_state_ptr) {
         match get_custom_mode() {
             Some(CustomMode::SmashballTag) => tag::clear(),

@@ -26,7 +26,7 @@ unsafe fn straight_lunge_cancels(boma: &mut BattleObjectModuleAccessor, status_k
         if frame > 25.0 {
             if boma.is_input_jump() {
                 if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_jump_count() < boma.get_jump_count_max() {
+                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                     }
                 } else if situation_kind == *SITUATION_KIND_GROUND {

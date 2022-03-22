@@ -44,7 +44,7 @@ unsafe fn dair_jc(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, ca
         if boma.is_input_jump() {
             if frame > 30.0 {
                 if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_jump_count() < boma.get_jump_count_max() {
+                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                     }
                 }

@@ -358,7 +358,7 @@ mod offsets_impl {
         unsafe {
             let bl = *offset_to_addr::<u32>(bl_offset);
             let imm = bl & 0b0_00000_11111111111111111111111111;
-            bl as usize
+            (imm * 4) as usize
         }
     }
 
