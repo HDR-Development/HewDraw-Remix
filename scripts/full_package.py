@@ -4,6 +4,10 @@ import urllib.request, shutil, os, sys
 from urllib.request import urlopen
 from shutil import copyfileobj
 import zipfile
+import hashlib
+import glob
+import hash_package
+
 
 if "help" in sys.argv or "--help" in sys.argv or "-h" in sys.argv or len(sys.argv) != 3:
   print("provide arguments for, in order, HewDraw-Remix version and romfs version")
@@ -60,3 +64,13 @@ shutil.move("libsmashline_hook_development.nro", "package/atmosphere/contents/01
 
 print("making package.zip")
 shutil.make_archive("package", 'zip', 'package')
+
+
+hash_package.hash_folder("package", "content_hashes.txt")
+
+# move the stuff to artifacts folder
+if os.path.exists("artifacts"):
+    os.remove("artifacts")
+os.mkdir("artifacts")
+shutil.move("package.zip", "artifacts")
+shutil.move("content_hashes.txt", "artifacts")
