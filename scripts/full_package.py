@@ -19,6 +19,14 @@ os.mkdir("package")
 
 def download_and_extract(owner: str, repo: str, tag: str, asset: str, extract_directory = None):
     url = "https://github.com/" + owner + "/" + repo + "/releases/download/" + tag + "/" + asset
+
+    # special case for packaging "latest"
+    if tag == 'latest':
+        url = "https://github.com/" + owner + "/" + repo + "/releases/latest/download/" + asset
+        print("getting latest from url: " + url)
+    else:
+        print("getting release from url: " + url)
+
     print(url)
     urllib.request.urlretrieve(url, asset)
     with zipfile.ZipFile(asset, 'r') as zip_ref: 
