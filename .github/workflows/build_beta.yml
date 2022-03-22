@@ -49,7 +49,7 @@ jobs:
       with:
         sinceTag: ${{ steps.get_last_beta.outputs.tag_name }}
         stripHeaders: true
-        token: ${{ secrets.RELEASE_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN  }}
 
     - name: Upload changelog
       uses: actions/upload-artifact@v2
