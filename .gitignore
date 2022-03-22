@@ -15,3 +15,5 @@ plugin/hdr_version.txt
 **/package.zip
 **/package/
 **/zips/
+*.zip
+**/content_hashes.txt

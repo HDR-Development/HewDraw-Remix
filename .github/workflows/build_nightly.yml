@@ -64,7 +64,7 @@ jobs:
     # build the project
     - run: |
         export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin \
-        && cd scripts && python3 make_dist.py publish version=${{ needs.version_and_changelog.outputs.version }}-nightly name=hdr && cd ..
+        && cd scripts && python3 make_dist.py build version=${{ needs.version_and_changelog.outputs.version }}-nightly name=hdr && cd ..
       env:
         HOME: /root
 
@@ -88,6 +88,9 @@ jobs:
         overwrite: true
         body: ${{ needs.version_and_changelog.outputs.changelog }}
 
+  full_package:
+    runs-on: ubuntu-latest
+    needs: [version_and_changelog, plugin_build]
     - id: romfs_version
       uses: pozetroninc/github-action-get-latest-release@master
       with:
@@ -101,10 +104,10 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
-        file: package.zip
-        prerelease: true
+        file: artifacts/*
+        prerelease: false
         file_glob: true
-        asset_name: the_asset
+        asset_name: package
         repo_name: HDR-Development/HDR-Nightlies
         release_name: ${{ needs.version_and_changelog.outputs.version }}-nightly
         tag: ${{ needs.version_and_changelog.outputs.version }}

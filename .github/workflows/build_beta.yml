@@ -2,7 +2,11 @@ name: make beta
 
 on:
   workflow_dispatch:
-
+    romfs_version:
+      type: string
+      description: The romfs version tag to use
+      required: true
+      default: latest
 jobs:
   version_and_changelog:
     runs-on: ubuntu-latest
@@ -108,5 +112,48 @@ jobs:
         asset_name: the_asset
         release_name: ${{ steps.trimmed_tag.outputs.tag }}-beta
         tag: ${{ steps.trimmed_tag.outputs.tag }}
+        overwrite: true
+        body: ${{ needs.version_and_changelog.outputs.changelog }}
+
+  full_package:
+    runs-on: ubuntu-latest
+    needs: [version_and_changelog, plugin_build]
+    - id: romfs_latest
+      uses: pozetroninc/github-action-get-latest-release@master
+      with:
+        repository: HDR-Development/romfs-release
+
+    # validate that the chosen release exists
+    - name: get the specified release
+      uses: cardinalby/git-get-release-action@v1
+      if: github.event.inputs.romfs_version != 'latest'
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      with:
+        tag: ${{ github.event.inputs.romfs_version }}   
+        repo: 'HDR-Development/romfs-release'
+
+    - name: make package with chosen version
+      if: github.event.inputs.romfs_version != 'latest'
+      run: |
+        python3 scripts/full_package.py ${{ needs.version_and_changelog.outputs.version }} ${{ github.event.inputs.romfs_version }} 
+
+
+    - name: make package with latest
+      if: github.event.inputs.romfs_version == 'latest'
+      run: |
+        python3 scripts/full_package.py ${{ needs.version_and_changelog.outputs.version }} ${{ steps.romfs_latest.outputs.release }}
+
+    - name: Upload full package to nightlies
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.RELEASE_TOKEN }}
+        file: package.zip
+        prerelease: false
+        file_glob: true
+        asset_name: the_asset
+        repo_name: HDR-Development/HDR-Releases
+        release_name: ${{ needs.version_and_changelog.outputs.version }}-nightly
+        tag: ${{ needs.version_and_changelog.outputs.version }}
         overwrite: true
         body: ${{ needs.version_and_changelog.outputs.changelog }}
