@@ -16,10 +16,10 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         next_status = *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END;
     }
     
-    if StatusModule::status_kind(boma) == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_DASH && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
-        if next_status == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_JUMP {
-            return 0;
-        }
+    if StatusModule::status_kind(boma) == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_DASH
+    && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
+    && next_status == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_JUMP {
+        next_status = *FIGHTER_STATUS_KIND_JUMP_SQUAT;
     }
 
     original!()(boma, next_status, arg3)
