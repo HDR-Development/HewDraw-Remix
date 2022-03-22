@@ -16,4 +16,4 @@ plugin/hdr_version.txt
 **/package/
 **/zips/
 *.zip
-scripts/content_hashes.txt
+**/content_hashes.txt

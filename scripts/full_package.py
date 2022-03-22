@@ -47,7 +47,6 @@ os.makedirs("package/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/
 download_and_extract("HDR-Development", "HewDraw-Remix", hdr_version, "hdr-switch.zip")
 download_and_extract("HDR-Development", "romfs-release", romfs_version, "romfs.zip")
 download_and_extract("Raytwo", "ARCropolis", "v3.1.0", "release.zip")
-download_and_extract("Raytwo", "ARCropolis", "v3.1.0", "release.zip")
 download_and_extract("skyline-dev", "skyline", "beta", "skyline.zip", "/atmosphere/contents/01006A800016E000/")
 
 #print("getting libnro_hook.nro")

@@ -1,9 +1,4 @@
-from codecs import ignore_errors
-from time import sleep
-import urllib.request, shutil, os, sys
-from urllib.request import urlopen
-from shutil import copyfileobj
-import zipfile
+import os
 import hashlib
 import glob
 
@@ -11,10 +6,13 @@ import glob
 # hash_folder("package", "content_hashes.txt")
 # returns: the file name that was created
 def hash_folder(folder_path: str, file_name: str):
+    # create output file
     if os.path.exists(file_name):
         os.remove(file_name)
+
     original_dir = os.getcwd()
     os.chdir(folder_path)
+    # get all files in the directory
     files = glob.glob('**/*.*', recursive=True)
     os.chdir(original_dir)
     all_hashes = []
@@ -29,10 +27,12 @@ def hash_folder(folder_path: str, file_name: str):
             all_hashes.append(os.path.join("/", file) + ":" + md5_returned)
             #print(os.path.join("/", file) + ":" + md5_returned)
 
+    # build full output
     file_str = ""
     for line in all_hashes:
         file_str += line + "\n"
 
+    # write output to file
     with open(file_name, 'w') as f:
         f.write(file_str)
 
