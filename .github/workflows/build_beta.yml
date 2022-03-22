@@ -5,9 +5,9 @@ on:
     inputs:
       romfs_version:
         type: string
-        description: The romfs version tag to use
+        description: 'The romfs version tag to use'
         required: true
-        default: latest
+        default: 'latest'
 jobs:
   version_and_changelog:
     runs-on: ubuntu-latest
