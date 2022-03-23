@@ -104,6 +104,13 @@ jobs:
       run: |
         python3 scripts/full_package.py ${{ needs.version_and_changelog.outputs.version }} ${{ steps.romfs_version.outputs.release }}
 
+    - uses: actions/download-artifact@v3
+      with:
+        name: changelog
+        
+    - name: Display structure of downloaded files
+      run: ls -R && cp CHANGELOG.md artifacts
+
     - name: Upload full package to nightlies
       uses: svenstaro/upload-release-action@v2
       with:
