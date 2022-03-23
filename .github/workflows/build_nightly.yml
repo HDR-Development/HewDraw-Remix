@@ -118,7 +118,7 @@ jobs:
         file: artifacts/*
         prerelease: false
         file_glob: true
-        asset_name: package
+        asset_name: artifacts
         repo_name: HDR-Development/HDR-Nightlies
         release_name: ${{ needs.version_and_changelog.outputs.version }}-nightly
         tag: ${{ needs.version_and_changelog.outputs.version }}
