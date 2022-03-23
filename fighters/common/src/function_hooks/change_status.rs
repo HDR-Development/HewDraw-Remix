@@ -15,7 +15,13 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         || VarModule::is_flag(boma.object(), vars::trail::STOP_SIDE_SPECIAL)) { 
         next_status = *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END;
     }
-    //println!("next status: {}", next_status);
+    
+    if StatusModule::status_kind(boma) == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_DASH
+    && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
+    && next_status == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_JUMP {
+        next_status = *FIGHTER_STATUS_KIND_JUMP_SQUAT;
+    }
+
     original!()(boma, next_status, arg3)
 }
 

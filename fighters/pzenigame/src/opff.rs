@@ -41,7 +41,7 @@ unsafe fn withdraw_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
         if VarModule::get_float(boma.object(), vars::common::WITHDRAW_FRAME) > 15.0 {
             if boma.is_input_jump() {
                 if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_jump_count() < boma.get_jump_count_max() {
+                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                     }
                 } else if situation_kind == *SITUATION_KIND_GROUND {
@@ -57,7 +57,7 @@ unsafe fn withdraw_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
     if [*FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_END].contains(&status_kind) && frame < 10.0 {
         if boma.is_input_jump() {
             if situation_kind == *SITUATION_KIND_AIR {
-                if boma.get_jump_count() < boma.get_jump_count_max() {
+                if boma.get_num_used_jumps() < boma.get_jump_count_max() {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                 }
             } else if situation_kind == *SITUATION_KIND_GROUND {
