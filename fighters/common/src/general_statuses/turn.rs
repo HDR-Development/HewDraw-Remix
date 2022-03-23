@@ -90,54 +90,54 @@ unsafe extern "C" fn status_turn_main(fighter: &mut L2CFighterCommon) -> L2CValu
         if fighter.global_table[STICK_X].get_f32() == 0.0 {
             VarModule::off_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH);
         }
-        if !status_turncommon(fighter).get_bool() {
-            //println!("turncommon false");
-            if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-                if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0 || fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0 || VarModule::is_flag(fighter.battle_object, vars::common::IS_TURNDASH_INPUT) || VarModule::is_flag(fighter.battle_object, vars::common::IS_BACKDASH) || VarModule::is_flag(fighter.battle_object, vars::common::IS_LATE_PIVOT) {
-                    let dash_stick_x: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dash_stick_x"));
-                    let stick_x = fighter.global_table[STICK_X].get_f32();
-                    let turn_work_lr: f32 = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_TURN_WORK_FLOAT_LR);
+        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+            if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0 || fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0 || VarModule::is_flag(fighter.battle_object, vars::common::IS_TURNDASH_INPUT) || VarModule::is_flag(fighter.battle_object, vars::common::IS_BACKDASH) || VarModule::is_flag(fighter.battle_object, vars::common::IS_LATE_PIVOT) {
+                let dash_stick_x: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dash_stick_x"));
+                let stick_x = fighter.global_table[STICK_X].get_f32();
+                let turn_work_lr: f32 = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_TURN_WORK_FLOAT_LR);
 
-                    if stick_x * turn_work_lr >= dash_stick_x {
-                        if MotionModule::frame(fighter.module_accessor) >= 1.0 {
-                            //println!("backdash in turn");
-                            VarModule::on_flag(fighter.battle_object, vars::common::IS_BACKDASH);
-                            VarModule::on_flag(fighter.battle_object, vars::common::IS_TURNDASH_INPUT);
-                            interrupt!(fighter, FIGHTER_STATUS_KIND_TURN, true);
-                        }
+                if stick_x * turn_work_lr >= dash_stick_x {
+                    if MotionModule::frame(fighter.module_accessor) >= 1.0 {
+                        //println!("backdash in turn");
+                        VarModule::on_flag(fighter.battle_object, vars::common::IS_BACKDASH);
+                        VarModule::on_flag(fighter.battle_object, vars::common::IS_TURNDASH_INPUT);
+                        interrupt!(fighter, FIGHTER_STATUS_KIND_TURN, true);
                     }
+                }
 
-                    if !VarModule::is_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH) && stick_x * -1.0 * turn_work_lr >= dash_stick_x {
-                        if MotionModule::frame(fighter.module_accessor) >= 1.0 {
-                            //println!("dash in turn");
+                if !VarModule::is_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH) && stick_x * -1.0 * turn_work_lr >= dash_stick_x {
+                    if MotionModule::frame(fighter.module_accessor) >= 1.0 {
+                        //println!("dash in turn");
+                        VarModule::off_flag(fighter.battle_object, vars::common::IS_BACKDASH);
+                        interrupt!(fighter, FIGHTER_STATUS_KIND_DASH, true);
+                    }
+                }
+                if stick_x * -1.0 * turn_work_lr < dash_stick_x && (VarModule::is_flag(fighter.battle_object, vars::common::IS_BACKDASH) || VarModule::is_flag(fighter.battle_object, vars::common::IS_LATE_PIVOT)) {
+                    if StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_DASH {
+                        // perfect pivot
+                        if MotionModule::frame(fighter.module_accessor) <= 1.0 || (VarModule::is_flag(fighter.battle_object, vars::common::IS_LATE_PIVOT) && MotionModule::frame(fighter.module_accessor) <= 7.0) {
                             VarModule::off_flag(fighter.battle_object, vars::common::IS_BACKDASH);
-                            interrupt!(fighter, FIGHTER_STATUS_KIND_DASH, true);
-                        }
-                    }
-                    if stick_x * -1.0 * turn_work_lr < dash_stick_x && (VarModule::is_flag(fighter.battle_object, vars::common::IS_BACKDASH) || VarModule::is_flag(fighter.battle_object, vars::common::IS_LATE_PIVOT)) {
-                        if StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_DASH {
-                            // perfect pivot
-                            if MotionModule::frame(fighter.module_accessor) <= 1.0 || (VarModule::is_flag(fighter.battle_object, vars::common::IS_LATE_PIVOT) && MotionModule::frame(fighter.module_accessor) <= 7.0) {
-                                VarModule::off_flag(fighter.battle_object, vars::common::IS_BACKDASH);
-                                let dash_speed: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0);
-                                let mut multiplier = -0.75;
-                                if VarModule::is_flag(fighter.battle_object, vars::common::IS_LATE_PIVOT) {
-                                    multiplier = -0.5
-                                }
-                                VarModule::off_flag(fighter.battle_object, vars::common::IS_LATE_PIVOT);
-                                let pivot_boost: smash::phx::Vector3f = smash::phx::Vector3f {x: dash_speed * multiplier, y: 0.0, z: 0.0};
-                                KineticModule::clear_speed_all(fighter.module_accessor);
-                                KineticModule::add_speed(fighter.module_accessor, &pivot_boost);
+                            let dash_speed: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0);
+                            let mut multiplier = -0.75;
+                            if VarModule::is_flag(fighter.battle_object, vars::common::IS_LATE_PIVOT) {
+                                multiplier = -0.5
                             }
+                            VarModule::off_flag(fighter.battle_object, vars::common::IS_LATE_PIVOT);
+                            let pivot_boost: smash::phx::Vector3f = smash::phx::Vector3f {x: dash_speed * multiplier, y: 0.0, z: 0.0};
+                            KineticModule::clear_speed_all(fighter.module_accessor);
+                            KineticModule::add_speed(fighter.module_accessor, &pivot_boost);
                         }
                     }
                 }
             }
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-            let speed_control = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-            //println!("turn speed_control: {}", speed_control);
-            //println!("turn total speed: {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
+        }
+        /***fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        let speed_control = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+        println!("turn speed_control: {}", speed_control);
+        println!("turn total speed: {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
+        ***/
+        if !status_turncommon(fighter).get_bool() {
             return L2CValue::I32(0);
         }
     }
