@@ -315,7 +315,7 @@ unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
 
     unsafe fn get_aerial_direction(boma: &mut BattleObjectModuleAccessor) -> AerialDirection {
         if boma.is_cat_flag(Cat1::AttackS3 | Cat1::AttackS4) {
-            if boma.stick_x() < 0.0 {
+            if boma.stick_x() * PostureModule::lr(boma) < 0.0 {
                 AerialDirection::Backward
             } else {
                 AerialDirection::Forward
