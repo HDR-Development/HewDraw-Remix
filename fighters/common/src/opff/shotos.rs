@@ -303,34 +303,6 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
-    #[derive(PartialEq, Eq)]
-    enum AerialDirection {
-        Neutral,
-        Forward,
-        Backward,
-        Up,
-        Down,
-        None
-    }
-
-    unsafe fn get_aerial_direction(boma: &mut BattleObjectModuleAccessor) -> AerialDirection {
-        if boma.is_cat_flag(Cat1::AttackS3 | Cat1::AttackS4) {
-            if boma.stick_x() * PostureModule::lr(boma) < 0.0 {
-                AerialDirection::Backward
-            } else {
-                AerialDirection::Forward
-            }
-        } else if boma.is_cat_flag(Cat1::AttackHi3 | Cat1::AttackHi4) {
-            AerialDirection::Up
-        } else if boma.is_cat_flag(Cat1::AttackLw3 | Cat1::AttackLw4) {
-            AerialDirection::Down
-        } else if boma.is_cat_flag(Cat1::AttackAirN | Cat1::AttackN) {
-            AerialDirection::Neutral
-        } else {
-            AerialDirection::None
-        }
-    }
-
     if boma.is_input_jump()
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
     && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX)
@@ -339,13 +311,16 @@ unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
         return;
     }
 
-    let dir = get_aerial_direction(boma);
+    let dir = boma.get_aerial();
+    if dir == None {
+        return;
+    }
     match MotionModule::motion_kind(boma) {
-        super::hash40!("attack_air_n") if matches!(dir, AerialDirection::None | AerialDirection::Neutral) => return,
-        super::hash40!("attack_air_f") if matches!(dir, AerialDirection::None | AerialDirection::Neutral | AerialDirection::Forward) => return,
+        super::hash40!("attack_air_n") if matches!(dir, Some(AerialKind::Nair)) => return,
+        super::hash40!("attack_air_f") if matches!(dir, Some(AerialKind::Nair) | Some(AerialKind::Fair)) => return,
         super::hash40!("attack_air_b") => return,
-        super::hash40!("attack_air_hi") if !matches!(dir, AerialDirection::Backward | AerialDirection::Down) => return,
-        super::hash40!("attack_air_lw") if !matches!(dir, AerialDirection::Backward) => return,
+        super::hash40!("attack_air_hi") if !matches!(dir, Some(AerialKind::Bair) | Some(AerialKind::Dair)) => return,
+        super::hash40!("attack_air_lw") if !matches!(dir, Some(AerialKind::Bair)) => return,
         _ => {
             boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
         }
