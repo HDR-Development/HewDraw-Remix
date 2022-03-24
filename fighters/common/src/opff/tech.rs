@@ -177,9 +177,8 @@ unsafe fn dash_drop(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
 //=================================================================
 unsafe fn run_squat(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_y: f32) {
     //let crouch_thresh: f32 = WorkModule::get_param_float(boma, hash40("common"), hash40("pass_stick_y"));
-    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_RUN, *FIGHTER_STATUS_KIND_RUN_BRAKE])
+    if boma.is_status(*FIGHTER_STATUS_KIND_RUN_BRAKE)
     && boma.stick_y() < WorkModule::get_param_float(boma, hash40("common"), hash40("squat_stick_y"))
-    && !VarModule::is_flag(boma.object(), vars::common::IS_STICKY_WALK)
     {
         boma.change_status_req(*FIGHTER_STATUS_KIND_SQUAT, false);
     }
@@ -376,5 +375,6 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mu
     respawn_taunt(boma, status_kind);
 
     freeze_stages(boma);
+    println!("x vel: {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
 }
     

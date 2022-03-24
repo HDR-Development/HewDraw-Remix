@@ -138,7 +138,7 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleA
     
     
     damage_slideoff_airdodge_disable(boma, status_kind);
-    sliding_smash_disable(fighter, boma, status_kind, fighter_kind);
+    //sliding_smash_disable(fighter, boma, status_kind, fighter_kind);
     buffered_cstick_aerial_fixes(fighter, boma, status_kind);
     airdodge_refresh_on_hit_disable(boma, status_kind);
     tumble_timer(fighter, boma, status_kind);

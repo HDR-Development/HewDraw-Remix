@@ -126,7 +126,7 @@ pub mod vars {
         pub const DISABLE_BACKDASH: i32 = 71;
         pub const IS_LATE_PIVOT: i32 = 72;
         pub const IS_TURNDASH_INPUT: i32 = 73;
-        pub const IS_BACKDASH: i32 = 74;
+        pub const IS_SMASH_TURN: i32 = 74;
         pub const IS_STICKY_WALK: i32 = 75;
         pub const ENABLE_BOOST_RUN: i32 = 76;
         pub const UP_SPECIAL_JUMP_REFRESH_WINDOW: i32 = 77;

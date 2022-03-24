@@ -41,7 +41,7 @@ unsafe fn status_walk_common(fighter: &mut L2CFighterCommon) {
     WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK);
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_SLIP);
 
-    VarModule::off_flag(fighter.battle_object, vars::common::IS_BACKDASH);
+    VarModule::off_flag(fighter.battle_object, vars::common::IS_SMASH_TURN);
     VarModule::off_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH);
 }
 
