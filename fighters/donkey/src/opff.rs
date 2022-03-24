@@ -126,6 +126,12 @@ unsafe fn down_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut Battle
     }
 }
 
+pub unsafe fn dk_bair_rotation(fighter: &mut L2CFighterCommon) {
+    if fighter.is_motion(Hash40::new("attack_air_b")) {
+        // angle bair down slightly
+        fighter.set_joint_rotate("legl", Vector3f::new(0.0, 0.0, -20.0))
+    }
+}
 
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
@@ -145,7 +151,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 pub fn donkey_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-		donkey_frame(fighter)
+		donkey_frame(fighter);
+        dk_bair_rotation(fighter);
     }
 }
 

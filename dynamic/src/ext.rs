@@ -347,6 +347,7 @@ pub trait BomaExt {
     unsafe fn is_flick_y(&mut self, sensitivity: f32) -> bool;
     unsafe fn is_input_jump(&mut self) -> bool;
     unsafe fn get_aerial(&mut self) -> Option<AerialKind>;
+    unsafe fn set_joint_rotate(&mut self, bone_name: &str, rotation: Vector3f);
     /// returns whether or not the stick x is pointed in the "forwards" direction for
     /// a character
     unsafe fn is_stick_forward(&mut self) -> bool;
@@ -589,6 +590,11 @@ impl BomaExt for BattleObjectModuleAccessor {
     unsafe fn get_jump_count_max(&mut self) -> i32 {
         return WorkModule::get_int(self, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX);
     }
+
+    unsafe fn set_joint_rotate(&mut self, bone_name: &str, rotation: Vector3f) {
+        ModelModule::set_joint_rotate(self, Hash40::new(&bone_name), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
+    }
+
 }
 
 pub trait LuaUtil {
