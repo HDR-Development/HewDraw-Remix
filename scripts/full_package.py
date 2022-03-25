@@ -17,9 +17,9 @@ hdr_version = sys.argv[1]
 romfs_version = sys.argv[2]
 
 shutil.rmtree("package", True)
-if os.path.exists("package.zip"):
-    os.remove("package.zip")
-os.mkdir("package")
+if os.path.exists("switch-package.zip"):
+    os.remove("switch-package.zip")
+os.mkdir("switch-package")
 
 def download_and_extract(owner: str, repo: str, tag: str, asset: str, extract_directory = None):
     url = "https://github.com/" + owner + "/" + repo + "/releases/download/" + tag + "/" + asset
@@ -35,14 +35,14 @@ def download_and_extract(owner: str, repo: str, tag: str, asset: str, extract_di
     with zipfile.ZipFile(asset, 'r') as zip_ref: 
         if extract_directory:
             extract_home = extract_directory
-            os.makedirs("package" + extract_home, exist_ok=True)
+            os.makedirs("switch-package" + extract_home, exist_ok=True)
         else:
             extract_home = ""
-        zip_ref.extractall("package" + extract_home)
+        zip_ref.extractall("switch-package" + extract_home)
         sleep(1)
     os.remove(asset)
 
-os.makedirs("package/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/")
+os.makedirs("switch-package/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/")
 
 download_and_extract("HDR-Development", "HewDraw-Remix", hdr_version, "hdr-switch.zip")
 download_and_extract("HDR-Development", "romfs-release", romfs_version, "romfs.zip")
@@ -59,17 +59,17 @@ download_and_extract("skyline-dev", "skyline", "beta", "skyline.zip", "/atmosphe
 
 print("getting libsmashline_hook_development.nro")
 urllib.request.urlretrieve("https://github.com/blu-dev/smashline_hook/releases/download/1.1.1/libsmashline_hook_development.nro", "libsmashline_hook_development.nro")
-shutil.move("libsmashline_hook_development.nro", "package/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/")
+shutil.move("libsmashline_hook_development.nro", "switch-package/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/")
 
-print("making package.zip")
-shutil.make_archive("package", 'zip', 'package')
+print("making switch-package.zip")
+shutil.make_archive("switch-package", 'zip', 'switch-package')
 
 
-hash_package.hash_folder("package", "content_hashes.txt")
+hash_package.hash_folder("switch-package", "content_hashes.txt")
 
 # move the stuff to artifacts folder
 if os.path.exists("artifacts"):
     os.remove("artifacts")
 os.mkdir("artifacts")
-shutil.move("package.zip", "artifacts")
+shutil.move("switch-package.zip", "artifacts")
 shutil.move("content_hashes.txt", "artifacts")
