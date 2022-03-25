@@ -103,34 +103,17 @@ unsafe fn extra_traction(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     let max_walk = WorkModule::get_param_float(boma, hash40("walk_speed_max"), 0);
     let ground_brake = WorkModule::get_param_float(boma, hash40("ground_brake"), 0);
     let added_traction: smash::phx::Vector3f = smash::phx::Vector3f {x: -1.0 * PostureModule::lr(boma) * ground_brake * speed_x.signum(), y: 0.0, z: 0.0};
-
-    if boma.is_status_one_of(&[
+    let double_traction_statuses = [
         *FIGHTER_STATUS_KIND_WAIT,
         *FIGHTER_STATUS_KIND_CATCH_PULL,
         *FIGHTER_STATUS_KIND_JUMP_SQUAT,
         *FIGHTER_STATUS_KIND_SQUAT,
         *FIGHTER_STATUS_KIND_SQUAT_RV,
-        *FIGHTER_STATUS_KIND_SQUAT_WAIT
-    ])
-    && speed_x.abs() > max_walk
-    && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-        KineticModule::add_speed(boma, &added_traction);
-    }
-
-    // landing statuses apply traction 1 frame later than the rest
-    if boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SQUAT_WAIT,
         *FIGHTER_STATUS_KIND_LANDING_LIGHT,
         *FIGHTER_STATUS_KIND_LANDING,
         *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
-        *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL
-    ])
-    && fighter.global_table[CURRENT_FRAME].get_i32() > 0
-    && speed_x.abs() > max_walk
-    && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-        KineticModule::add_speed(boma, &added_traction);
-    }
-        
-    if boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL,
         *FIGHTER_STATUS_KIND_ATTACK,
         *FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_HI3,
@@ -144,23 +127,30 @@ unsafe fn extra_traction(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         *FIGHTER_STATUS_KIND_ATTACK_LW4_START,
         *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD,
         *FIGHTER_STATUS_KIND_ATTACK_LW4
-    ]) {
+    ];
+
+    if boma.is_status_one_of(&double_traction_statuses) {
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-	    let motion_accel = smash::app::sv_kinetic_energy::get_accel(fighter.lua_state_agent);
+        let motion_accel = smash::app::sv_kinetic_energy::get_accel(fighter.lua_state_agent);
 
-        // reset flag at beginning of any attack status
+        // reset flag at beginning of any status
         if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
             VarModule::off_flag(boma.object(), vars::common::IS_MOTION_BASED_ATTACK);
         }
-        // if we detect that the current attack is motion-based (shifts your character's position), disable traction for the entire attack 
+        // if we detect that the current animation is trans-motion-based (shifts your character's position), disable traction for the entire attack 
         if motion_accel.x != 0.0 && !VarModule::is_flag(boma.object(), vars::common::IS_MOTION_BASED_ATTACK) {
             VarModule::on_flag(boma.object(), vars::common::IS_MOTION_BASED_ATTACK);
         }
         if speed_x.abs() > max_walk
         && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
         && !VarModule::is_flag(boma.object(), vars::common::IS_MOTION_BASED_ATTACK) {
-            KineticModule::add_speed(boma, &added_traction);
+            if boma.is_prev_status_one_of(&double_traction_statuses) {
+                KineticModule::add_speed(boma, &added_traction);
+            }
+            else if fighter.global_table[CURRENT_FRAME].get_i32() > 0 {
+                KineticModule::add_speed(boma, &added_traction);
+            }
         }
     }
 }
