@@ -134,6 +134,7 @@ pub mod vars {
         pub const ENABLE_AIR_ESCAPE_JUMPSQUAT: i32 = 79;
         pub const SHOULD_WAVELAND: i32 = 80;
         pub const SIDE_SPECIAL_CANCEL_NO_HIT: i32 = 81;
+        pub const JUMP_NEXT: i32 = 82;
 
         
 
