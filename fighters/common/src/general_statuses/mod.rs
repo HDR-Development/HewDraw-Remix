@@ -54,8 +54,7 @@ pub unsafe fn sub_wait_common_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_DamageAir_Main)]
 pub unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
-    BufferModule::clear_persist_one(fighter.battle_object, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+    ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
     call_original!(fighter)
 }
 
@@ -118,7 +117,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
         skyline::install_hooks!(
             sub_wait_common_Main, 
             damage_fly_common_init, 
-            damage_air_main, 
+            //damage_air_main,
             status_Landing_MainSub,
             status_pre_Landing,
             status_pre_LandingLight,
