@@ -14,6 +14,7 @@ pub mod hitstun;
 pub mod change_status;
 pub mod is_flag;
 pub mod controls;
+pub mod jumps;
 
 pub fn install() {
     reverse_hits::install();
@@ -29,6 +30,7 @@ pub fn install() {
     is_flag::install();
     controls::install();
     momentum_transfer::install();
+    jumps::install();
     //dash_dancing::install();
 
     unsafe {
