@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">18</float>
+    </struct>
+    <struct index="1">
+      <float hash="p2_x">-5</float>
+    </struct>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_spiral">
+    <struct index="0">
+      <int hash="rewind_frame">18</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+    <hash40 index="4">dummy</hash40>
+    <hash40 index="5">dummy</hash40>
+  </list>
+  <list hash="air_lasso_data">
+    <struct index="0">
+      <float hash="rewind_frame">18</float>
+    </struct>
+  </list>
+  <struct hash="param_attack">
+    <float hash="walk_speed_max_mul">0.825</float>
+    <float hash="walk_accel_mul_mul">0.75</float>
+    <float hash="walk_accel_add_mul">0.55</float>
+  </struct>
+  <list hash="param_special_n">
+    <struct index="0">
+      <float hash="start_speed_x_mul_ground">0.65</float>
+      <float hash="start_speed_x_mul_air">0.65</float>
+      <float hash="start_control_accel_x_mul_air">0.75</float>
+      <float hash="start_control_max_speed_x_mul_air">0.65</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_s">
+    <struct index="0">
+      <float hash="start_speed_x_mul_ground">0.65</float>
+      <float hash="start_speed_x_mul_air">0.65</float>
+      <float hash="start_control_accel_x_mul_air">0.75</float>
+      <float hash="start_control_max_speed_x_mul_air">0.65</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_punch">
+    <struct index="0">
+      <int hash="beam_frame">12</int>
+    </struct>
+  </list>
+</struct>

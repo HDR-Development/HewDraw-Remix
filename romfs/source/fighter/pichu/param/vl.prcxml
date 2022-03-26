@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">12.75</float>
+    </struct>
+    <struct index="1">
+      <float hash="p1_y">9.75</float>
+    </struct>
+  </list>
+  <list hash="param_special_s">
+    <struct index="0">
+      <float hash="special_s_move_spd_x_">1.5</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="special_hi_warp_spd_add_">7</float>
+      <float hash="special_hi_warp_xmax_">0.8</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+</struct>
