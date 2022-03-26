@@ -21,8 +21,8 @@ pub fn install() {
         pre_special_hi3_end,
         special_hi3_end,
         //special_lw,
-        miiswordsman_speciallw1hit_main,
-        special_lw3_end
+        //miiswordsman_speciallw1hit_main,
+        //special_lw3_end
     );
 }
 
@@ -516,7 +516,7 @@ unsafe extern "C" fn special_s2_attack_main(fighter: &mut L2CFighterCommon) -> L
     let pad_flag = ControlModule::get_pad_flag(fighter.module_accessor);
     if fighter.is_input_jump() && MotionModule::frame(fighter.module_accessor) > 5.0 && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
-            if fighter.get_jump_count() < fighter.get_jump_count_max() {
+            if fighter.get_num_used_jumps() < fighter.get_jump_count_max() {
                 fighter.change_status(FIGHTER_STATUS_KIND_JUMP_AERIAL.into(), false.into());
                 return 1.into()
             }

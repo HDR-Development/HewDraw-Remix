@@ -1,7 +1,7 @@
 [package]
 name = "hdr"
 version = "0.0.0-dev"
-authors = ["jam1garner <jam1.mcleod@hotmail.com>"]
+authors = ["hdr-dev-team"]
 edition = "2018"
 
 [package.metadata.skyline]
@@ -30,6 +30,7 @@ skyline-web = { git = "https://github.com/blu-dev/skyline-web", branch = "less-p
 [features]
 default = ["skyline-web", "pitb","eflame","pfushigisou","purin","younglink","plizardon","shulk","chrom","miifighter","gamewatch","krool","samusd","ryu","rosetta","yoshi","lucas","link","lucario","zelda","kamui","wolf","nana","tantan","koopag","ridley","gekkouga","ike","roy","rockman","peach","elight","gaogaen","falco","ness","kirby","pikachu","daisy","sheik","mariod","luigi","captain","mario","jack","palutena","dolly","pickel","wiifit","pzenigame","pichu","pit","ken","brave","richter","miiswordsman","robin","master","robot","szerosuit","ganon","wario","diddy","shizue","littlemac","pacman","edge","marth","trail","mewtwo","metaknight","toonlink","koopajr","sonic","donkey","inkling","packun","miigunner","buddy","pikmin","cloud","fox","duckhunt","lucina","murabito","bayonetta","samus","koopa","simon","popo","dedede","snake","demon"]
 dev = ["utils/no-offset-search"]
+main_nro = ["skyline-web"]
 runtime = ["fighters/ignore-common", "fighters/runtime"]
 updater = ["semver", "zip", "gh-updater", "skyline-web"]
 pitb = ["fighters/include-pitb"]

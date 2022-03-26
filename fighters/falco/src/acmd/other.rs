@@ -16,6 +16,27 @@ unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
     }    
 }
 
+#[acmd_script( agent = "falco", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn falco_dash_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_falco_dash_start"));
+    }
+    wait(lua_state, 14.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_falco_step_right_m"));
+    }
+    wait(lua_state, 4.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_falco_step_left_m"));
+    }
+
+}
+
+
+
 #[acmd_script( agent = "falco", script = "game_turndash" , category = ACMD_GAME , low_priority)]
 unsafe fn falco_turn_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -84,12 +105,65 @@ unsafe fn falco_blaster_bullet_fly_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "falco", script = "sound_escapeair" , category = ACMD_SOUND )]
+unsafe fn escape_air_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_falco_escapeair"));
+        PLAY_SE(fighter, Hash40::new("vc_falco_ottotto"));
+    }
+
+}
+
+#[acmd_script( agent = "falco", script = "sound_escapeairslide" , category = ACMD_SOUND )]
+unsafe fn escape_air_slide_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("falco"));
+        PLAY_SE(fighter, Hash40::new("vc_falco_ottotto"));
+    }
+
+}
+
+#[acmd_script( agent = "falco", script = "sound_escapen" , category = ACMD_SOUND )]
+unsafe fn escape_n_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_falco_escapeair"));
+        PLAY_SE(fighter, Hash40::new("vc_falco_ottotto"));
+    }
+
+}
+
+#[acmd_script( agent = "falco", script = "sound_passivewalljump" , category = ACMD_SOUND )]
+unsafe fn wall_jump_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_falco_jump02"));
+        PLAY_SE(fighter, Hash40::new("vc_falco_passive"));
+    }
+
+}
+
 pub fn install() {
     install_acmd_scripts!(
         dash_effect,
+        falco_dash_sound,
         falco_turn_dash_game,
 		falco_catch_game,
         falco_blaster_bullet_fly_game,
+        escape_air_sound,
+        escape_air_slide_sound,
+        escape_n_sound,
+        wall_jump_sound,
     );
 }
 

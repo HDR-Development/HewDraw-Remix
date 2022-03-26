@@ -95,6 +95,16 @@ mod offsets_impl {
     pub const fn kill_zoom_throw() -> usize {
         0x637384
     }
+
+    #[export_name = "offsets_analog_trigger_l"]
+    pub const fn analog_trigger_l() -> usize {
+        0x3665e60
+    }
+
+    #[export_name = "offsets_analog_trigger_r"]
+    pub const fn analog_trigger_r() -> usize {
+        0x3665e74
+    }
 }
 
 #[cfg(not(feature = "no-offset-search"))]
@@ -123,6 +133,8 @@ mod offsets_impl {
         pub get_match_mode: usize,
         pub kill_zoom_regular: usize,
         pub kill_zoom_throw: usize,
+        pub analog_trigger_l: usize,
+        pub analog_trigger_r: usize,
     }
 
     static EXEC_COMMAND_SEARCH_CODE: &[u8] = &[
@@ -310,6 +322,18 @@ mod offsets_impl {
 
     const KILL_ZOOM_THROW_OFFSET_FROM_START: usize = 0x20;
 
+    static ANALOG_TRIGGER_L_SEARCH_CODE: &[u8] = &[
+        0x29, 0x01, 0x7a, 0xb2, // orr x9, x9, #0x40
+        0x1f, 0x01, 0x0b, 0x6b, // cmp w8, w11
+        0x28, 0xc1, 0x8a, 0x9a, // csel x8, x9, x10, gt
+        0xe9, 0x2b, 0x40, 0xb9, // ldr w9, [sp, #0x28]
+        0x0a, 0xf9, 0x78, 0x92, // and x10, x8, #0xffffffffffffff7f
+        0x08, 0x01, 0x79, 0xb2, // orr x8, x8, #0x80
+        0x3f, 0x01, 0x0b, 0x6b, // cmp w9, w11
+    ];
+
+    const ANALOG_TRIGGER_R_OFFSET_FROM_L: usize = 0x14;
+
     fn offset_from_adrp(adrp_offset: usize) -> usize {
         unsafe {
             let adrp = *offset_to_addr::<u32>(adrp_offset);
@@ -334,7 +358,7 @@ mod offsets_impl {
         unsafe {
             let bl = *offset_to_addr::<u32>(bl_offset);
             let imm = bl & 0b0_00000_11111111111111111111111111;
-            bl as usize
+            (imm * 4) as usize
         }
     }
 
@@ -359,7 +383,9 @@ mod offsets_impl {
                 global_frame_counter: 0,
                 get_match_mode: 0,
                 kill_zoom_regular: 0,
-                kill_zoom_throw: 0
+                kill_zoom_throw: 0,
+                analog_trigger_l: 0,
+                analog_trigger_r: 0
             };
 
             offsets.exec_command = byte_search(EXEC_COMMAND_SEARCH_CODE).expect("Unable to find exec command hook!") - EXEC_COMMAND_OFFSET_FROM_START;
@@ -390,6 +416,8 @@ mod offsets_impl {
             };
             offsets.kill_zoom_regular = byte_search(KILL_ZOOM_REGULAR_SEARCH_CODE).expect("Unable to find the regular kill zoom function!") - KILL_ZOOM_REGULAR_OFFSET_TO_START;
             offsets.kill_zoom_throw = byte_search(KILL_ZOOM_THROW_SEARCH_CODE).expect("Unable to find the throw kill zoom function!") + KILL_ZOOM_THROW_OFFSET_FROM_START;
+            offsets.analog_trigger_l = byte_search(ANALOG_TRIGGER_L_SEARCH_CODE).expect("Unable to find the analog trigger l");
+            offsets.analog_trigger_r = offsets.analog_trigger_l + ANALOG_TRIGGER_R_OFFSET_FROM_L;
             offsets
         };
     }
@@ -487,6 +515,16 @@ mod offsets_impl {
     #[export_name = "offsets_kill_zoom_throw"]
     pub fn kill_zoom_throw() -> usize {
         CORE_OFFSETS.kill_zoom_throw
+    }
+
+    #[export_name = "offsets_analog_trigger_l"]
+    pub fn analog_trigger_l() -> usize {
+        CORE_OFFSETS.analog_trigger_l
+    }
+
+    #[export_name = "offsets_analog_trigger_r"]
+    pub fn analog_trigger_r() -> usize {
+        CORE_OFFSETS.analog_trigger_r
     }
 }
 

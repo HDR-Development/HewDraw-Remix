@@ -60,7 +60,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
         return false;
     }
 
-    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S && VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL) {
+    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S && (VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL) || VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL_NO_HIT)) {
         return false;
     }
 
@@ -150,7 +150,23 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
             }
         }
 
-    }
+        if fighter_kind == *FIGHTER_KIND_TRAIL {
+            if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S {
+                if (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT))
+                || VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_HIT) {
+                    return false;
+                }
+            }
+        }
+
+        //Disable Duck Hunt Down Special on a timer
+        if boma.kind() == *FIGHTER_KIND_DUCKHUNT  {
+            if VarModule::get_int(boma.object(), vars::duckhunt::GUNMAN_TIMER) != 0 
+            && flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
+                    return false
+            }
+        }
+    }   
     original!()(boma, flag)
 }
 

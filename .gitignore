@@ -10,3 +10,10 @@ distributions/
 scripts/change_summary.txt
 scripts/log.txt
 scripts/tmp
+rust-toolchain
+plugin/hdr_version.txt
+**/package.zip
+**/package/
+**/zips/
+*.zip
+**/content_hashes.txt
