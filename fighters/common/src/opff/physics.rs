@@ -105,7 +105,6 @@ unsafe fn extra_traction(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     let added_traction: smash::phx::Vector3f = smash::phx::Vector3f {x: -1.0 * PostureModule::lr(boma) * ground_brake * speed_x.signum(), y: 0.0, z: 0.0};
     let double_traction_statuses = [
         *FIGHTER_STATUS_KIND_WAIT,
-        *FIGHTER_STATUS_KIND_CATCH_PULL,
         *FIGHTER_STATUS_KIND_JUMP_SQUAT,
         *FIGHTER_STATUS_KIND_SQUAT,
         *FIGHTER_STATUS_KIND_SQUAT_RV,
