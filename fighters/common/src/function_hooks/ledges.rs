@@ -103,7 +103,7 @@ unsafe fn leave_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
 pub fn install() {
     //skyline::install_hook!(entry_cliff_hook);
     skyline::install_hook!(can_entry_cliff_hook);
-    skyline::install_hook!(leave_cliff_hook);
+    //skyline::install_hook!(leave_cliff_hook);
 }
 
 //=================================================================
