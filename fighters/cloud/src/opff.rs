@@ -1,6 +1,7 @@
 use super::*;
+use globals::*;
 
-utils::import_noreturn!(common::opff::fighter_common_opff);
+utils::import_noreturn!(common::opff::{fighter_common_opff, b_reverse});
 
 unsafe fn dspecial_cancels(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_CLOUD_STATUS_KIND_SPECIAL_LW_END)
@@ -13,22 +14,8 @@ unsafe fn dspecial_cancels(fighter: &mut L2CFighterCommon) {
 
 // Cloud Limit Charge start and release B-Reverse
 unsafe fn limit_charge_start_b_rev(fighter: &mut L2CFighterCommon) {
-    if fighter.is_situation(*SITUATION_KIND_AIR)
-    && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_LW,
-        *FIGHTER_CLOUD_STATUS_KIND_SPECIAL_LW_CHARGE,
-        *FIGHTER_CLOUD_STATUS_KIND_SPECIAL_LW_END
-    ])
-    && fighter.motion_frame() < 5.0
-    && fighter.is_stick_backward()
-    {
-        PostureModule::reverse_lr(fighter.module_accessor);
-        PostureModule::update_rot_y_lr(fighter.module_accessor);
-        if VarModule::is_flag(fighter.battle_object, vars::common::B_REVERSED) {
-            return;
-        }
-        KineticModule::mul_speed(fighter.module_accessor, &Vector3f::new(-1.0, 1.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        VarModule::on_flag(fighter.battle_object, vars::common::B_REVERSED);
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
+        common::opff::b_reverse(fighter);
     }
 }
 

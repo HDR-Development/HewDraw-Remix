@@ -1,7 +1,8 @@
 use utils::{
     *,
     ext::*,
-    consts::*
+    consts::*,
+    consts::globals::*
 };
 use smash::app::BattleObjectModuleAccessor;
 use smash::phx::{Vector2f, Vector3f, Vector4f};
@@ -361,6 +362,25 @@ pub unsafe fn respawn_taunt(boma: &mut BattleObjectModuleAccessor, status_kind: 
     };
 
     MotionModule::change_motion(boma, motion, 0.0, 1.0, false, 0.0, false, false);
+}
+
+#[utils::export(common::opff)]
+pub unsafe fn b_reverse(fighter: &mut L2CFighterCommon) {
+    if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
+        if fighter.is_stick_backward() {
+            PostureModule::reverse_lr(fighter.module_accessor);
+            PostureModule::update_rot_y_lr(fighter.module_accessor);
+        }
+    }
+    if fighter.global_table[CURRENT_FRAME].get_i32() == 3 {
+        if fighter.is_stick_backward()
+        && !VarModule::is_flag(fighter.battle_object, vars::common::B_REVERSED) {
+            PostureModule::reverse_lr(fighter.module_accessor);
+            PostureModule::update_rot_y_lr(fighter.module_accessor);
+            KineticModule::mul_speed(fighter.module_accessor, &Vector3f::new(-1.0, 1.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            VarModule::on_flag(fighter.battle_object, vars::common::B_REVERSED);
+        }
+    }
 }
 
 pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mut L2CAgent, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32, curr_frame: f32) {

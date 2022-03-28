@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::fighter_common_opff);
+utils::import_noreturn!(common::opff::{fighter_common_opff, b_reverse});
 use super::*;
 use globals::*;
 
@@ -63,17 +63,7 @@ unsafe fn barrel_pull(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 // DK Giant Punch charge B-Reverse
 unsafe fn giant_punch_b_reverse(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if frame < 5.0 {
-            if stick_x * facing < 0.0 {
-                PostureModule::reverse_lr(boma);
-                PostureModule::update_rot_y_lr(boma);
-                if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(boma.object(), vars::common::B_REVERSED) {
-                    let b_reverse = Vector3f{x: -1.0, y: 1.0, z: 1.0};
-                    KineticModule::mul_speed(boma, &b_reverse, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                    VarModule::on_flag(boma.object(), vars::common::B_REVERSED);
-                }
-            }
-        }
+        common::opff::b_reverse(fighter);
     }
 }
 
