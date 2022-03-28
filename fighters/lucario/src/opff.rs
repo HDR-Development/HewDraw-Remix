@@ -50,8 +50,8 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
     let cat1 = cat[0];
     // Level 1: Jab and Dash Attack Cancels
     if [*FIGHTER_STATUS_KIND_ATTACK, *FIGHTER_STATUS_KIND_ATTACK_DASH].contains(&status_kind) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-            || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
+            || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag()) {
             // Check for tilt attack inputs
             if boma.is_cat_flag(Cat1::AttackS3) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S3,false);
@@ -90,9 +90,9 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
 
             // Check for jump inputs during dash attack (on hit)
             if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH
-                && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+                && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
                 if boma.is_input_jump()
-                    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+                    && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT,true);
                 }
             }
@@ -104,8 +104,8 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
     if [*FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_HI3,
         *FIGHTER_STATUS_KIND_ATTACK_LW3].contains(&status_kind) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-            || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
+            || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag()) {
             // Check for smash attack inputs
             if boma.is_cat_flag(Cat1::AttackS4) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START,true);
@@ -134,7 +134,7 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
             // Check for jump inputs during utilt
             if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI3 {
                 if boma.is_input_jump()
-                    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+                    && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT,true);
                 }
             }
@@ -145,8 +145,8 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
     if [*FIGHTER_STATUS_KIND_ATTACK_S4,
         *FIGHTER_STATUS_KIND_ATTACK_HI4,
         *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-            || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
+            || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag()) {
 
             // Check for special attack inputs
             if boma.is_cat_flag(Cat1::SpecialN) {
@@ -165,7 +165,7 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
             // Check for jump inputs
             if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI4 {
                 if boma.is_input_jump()
-                    & AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+                    & (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT,true);
                 }
             }
@@ -174,11 +174,11 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
 
     // Aerial Cancels
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-            || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
+            || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag()) {
             // Check for jump inputs
             if boma.is_input_jump()
-                && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+                && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
                 if boma.get_num_used_jumps() < boma.get_jump_count_max() {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL,false);
                 }
@@ -201,12 +201,12 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
 
     // Extreme Speed Cancels
     if status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-            || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
+            || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag()) {
 
             // Check for jump inputs
             if boma.is_input_jump()
-                && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+                && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
                 if boma.get_num_used_jumps() < boma.get_jump_count_max() {
                     if situation_kind == *SITUATION_KIND_AIR {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL,false);
