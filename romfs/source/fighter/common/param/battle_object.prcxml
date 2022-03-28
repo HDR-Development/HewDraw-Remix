@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <float hash="damage_frame_mul">0.45</float>
+  <float hash="damage_level1">16.875</float>
+  <float hash="damage_level2">23.625</float>
+  <float hash="damage_level3">36</float>
+  <float hash="damage_angle_ground_max">44</float>
+  <float hash="damage_fly_quake_l">90</float>
+  <int hash="damage_fly_speed_up_reaction_frame_min">998</int>
+  <int hash="damage_fly_speed_up_reaction_frame_max">999</int>
+  <int hash="damage_fly_speed_up_end_rate">32</int>
+  <int hash="damage_fly_speed_up_max_mag">3</int>
+  <float hash="damage_fly_speed_up_angle_rate">85</float>
+  <float hash="hitstop_frame_add">3</float>
+  <float hash="hitstop_frame_mul">0.45</float>
+  <float hash="hitstop_elec_mul">1.25</float>
+  <int hash="just_shield_hitstop_frame_add">22</int>
+  <int hash="just_shield_hitstop_frame_max">23</int>
+  <float hash="just_shield_reflect_attack_mul">0.5</float>
+  <float hash="just_shield_reflect_speed_mul">0.9</float>
+  <int hash="just_shield_reflect_count_max">7</int>
+  <float hash="jostle_team_overlap_rate">0.66</float>
+  <float hash="damage_angle_air">0.785398</float>
+  <float hash="fly_top_angle_lw">0.785398</float>
+  <float hash="fly_top_angle_hi">2.35619</float>
+  <list hash="0x192e58d48b">
+    <hash40 index="0">dummy</hash40>
+    <float index="1">1</float>
+    <float index="2">1</float>
+    <float index="3">1</float>
+    <float index="4">1</float>
+    <float index="5">1</float>
+    <float index="6">1</float>
+  </list>
+  <list hash="0x1af80fd893">
+    <float index="0">1</float>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+    <hash40 index="4">dummy</hash40>
+    <hash40 index="5">dummy</hash40>
+    <hash40 index="6">dummy</hash40>
+  </list>
+</struct>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <float hash="fly_effect_smoke_speed">3.08</float>
+  <float hash="fly_effect_aura_speed">999</float>
+</struct>

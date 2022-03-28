@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">15.5</float>
+    </struct>
+  </list>
+  <struct hash="param_adjust">
+    <float hash="attack_point">0</float>
+    <float hash="move_point">0</float>
+  </struct>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="special_hi_pass_mul">0.91</float>
+      <float hash="special_air_hi_pass_mul">0.91</float>
+      <int hash="special_hi_landing_frame">20</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <float hash="buoyancy">1.5</float>
+      <float hash="buoyancy_max">1.5</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+</struct>
