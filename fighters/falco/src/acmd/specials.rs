@@ -89,7 +89,7 @@ unsafe fn falco_special_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "falco", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
-unsafe fn falco_special_lw_r_game(fighter: &mut L2CAgentBase) {
+unsafe fn falco_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -210,10 +210,8 @@ pub fn install() {
         falco_special_air_s_end_game,
         falco_special_hi_hold,
         falco_special_hi_game,
-        // falco_special_lw_game,
         falco_special_air_lw_game,
-        falco_special_lw_r_game,
-        falco_special_air_lw_r_game,
+        falco_special_lw_game,
         falco_special_air_lw_sound,
         falco_special_n_start_sound,
         falco_special_air_n_start_sound,
