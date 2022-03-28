@@ -80,19 +80,16 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
 
         for i in 0..8 {
             if let Some(object_id) = ::utils::util::get_active_battle_object_id_from_entry_id(i) {
-                let battle_object = if let Some(battle_object) = ::utils::util::get_battle_object_from_entry_id(object_id) {
-                    battle_object
-                } else {
-                    continue;
-                };
+                let object = ::utils::util::get_battle_object_from_id(object_id);
+                if !object.is_null() {
+                    if i == player_number || VarModule::get_float(object, vars::common::LEDGE_POS_X) == 0.0 {
+                        continue;
+                    }
 
-                if i == player_number || VarModule::get_float(battle_object, vars::common::LEDGE_POS_X) == 0.0 {
-                    continue;
-                }
-
-                if ledge_try_pos.x == VarModule::get_float(battle_object, vars::common::LEDGE_POS_X) && ledge_try_pos.y == VarModule::get_float(battle_object, vars::common::LEDGE_POS_Y) {
-                    //println!("Sending tethering player {} into ledge trump as they are trying to rewind to an occupied ledge.", player_number);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_CLIFF_ROBBED, false);
+                    if ledge_try_pos.x == VarModule::get_float(object, vars::common::LEDGE_POS_X) && ledge_try_pos.y == VarModule::get_float(object, vars::common::LEDGE_POS_Y) {
+                        //println!("Sending tethering player {} into ledge trump as they are trying to rewind to an occupied ledge.", player_number);
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_CLIFF_ROBBED, false);
+                    }
                 }
             }
         }
