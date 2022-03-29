@@ -6,7 +6,7 @@ use globals::*;
  
 unsafe fn side_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, motion_kind: u64) {
     if status_kind == *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S3 {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
             // Up
             if [hash40("special_s3_hi"), hash40("special_air_s3_hi")].contains(&motion_kind) {
                 // Check for tilt attack inputs
@@ -74,7 +74,7 @@ unsafe fn side_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kin
     }
     // Jump cancel 4th hit high
     if status_kind == *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S4 {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
             if [hash40("special_s4_hi"), hash40("special_air_s4_hi")].contains(&motion_kind) && MotionModule::frame(boma) > 13.0 {
                 if boma.is_input_jump() {
                     if situation_kind == *SITUATION_KIND_AIR {
