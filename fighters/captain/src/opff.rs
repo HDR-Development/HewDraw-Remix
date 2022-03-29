@@ -1,6 +1,6 @@
 use super::*;
  
-utils::import_noreturn!(common::opff::fighter_common_opff);
+utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
 
 unsafe fn air_falcon_kick_jump_reset(fighter: &mut L2CFighterCommon) {
     if fighter.is_situation(*SITUATION_KIND_AIR)
@@ -16,18 +16,8 @@ unsafe fn air_falcon_kick_jump_reset(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn falcon_punch_b_reverse(fighter: &mut L2CFighterCommon) {
-    let frame = fighter.motion_frame();
-    if fighter.is_motion(Hash40::new("special_air_n"))
-    && frame < 5.0
-    && fighter.is_stick_backward()
-    {
-        PostureModule::reverse_lr(fighter.module_accessor);
-        PostureModule::update_rot_y_lr(fighter.module_accessor);
-        if VarModule::is_flag(fighter.battle_object, vars::common::B_REVERSED) {
-            return;
-        }
-        KineticModule::mul_speed(fighter.module_accessor, &Vector3f::new(-1.0, 1.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        VarModule::on_flag(fighter.battle_object, vars::common::B_REVERSED);
+    if fighter.is_motion(Hash40::new("special_air_n")) {
+        common::opff::check_b_reverse(fighter);
     }
 }
 
