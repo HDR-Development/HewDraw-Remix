@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">22.5</float>
+    </struct>
+  </list>
+  <list hash="param_critical">
+    <struct index="0">
+      <float hash="rate">12.5</float>
+    </struct>
+  </list>
+  <list hash="param_metal_critical">
+    <struct index="0">
+      <float hash="rate">12.5</float>
+    </struct>
+  </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="jump_distance_m">58</float>
+      <float hash="jump_max_speed_x_m">1.5</float>
+      <float hash="jump_distance_l">80</float>
+      <float hash="jump_max_speed_x_l">1.35</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <float hash="start_accel_y_mul_air">0.5</float>
+      <int hash="cure_limit_num">3</int>
+      <float hash="deathball1_offset_y">15</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+</struct>
