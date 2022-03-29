@@ -22,7 +22,7 @@ unsafe fn shine_jump_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: 
     if [*FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT,
         *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
         *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind) {
-        if boma.is_input_jump() {
+        if boma.is_input_jump() && !boma.is_in_hitlag() {
             if situation_kind == *SITUATION_KIND_AIR {
                 if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);

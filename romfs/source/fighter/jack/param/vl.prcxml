@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">20</float>
+    </struct>
+    <struct index="1">
+      <float hash="p1_x">65</float>
+      <float hash="p1_y">65</float>
+    </struct>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <struct hash="param_private">
+    <float hash="rebel_gauge_damage_add">0.6</float>
+    <float hash="rebel_gauge_add_dead">1</float>
+    <int hash="doyle_frame">3600</int>
+  </struct>
+  <list hash="rebel_gauge_damage_rate">
+    <float index="0">45</float>
+    <float index="1">45</float>
+    <float index="2">45</float>
+    <float index="3">45</float>
+    <float index="4">45</float>
+    <float index="5">45</float>
+    <float index="6">45</float>
+  </list>
+  <list hash="param_special_n">
+    <struct index="0">
+      <float hash="start_speed_mul_x">1</float>
+      <float hash="air_accel_y">0.05</float>
+      <int hash="landing_frame">4</int>
+    </struct>
+    <struct index="1">
+      <float hash="start_speed_mul_x">1</float>
+      <int hash="landing_frame">9</int>
+    </struct>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_hi">
+    <hash40 index="0">dummy</hash40>
+    <struct index="1">
+      <float hash="rush_angle_max_f">-35</float>
+      <float hash="rush_angle_max_b">40</float>
+      <float hash="rush_speed">3.92</float>
+      <int hash="rush_brake_frame">1</int>
+      <float hash="end_speed_rate_x">0.1</float>
+      <float hash="end_speed_rate_y">0.06</float>
+    </struct>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_wirerope">
+    <struct index="0">
+      <int hash="rewind_frame">18</int>
+    </struct>
+  </list>
+  <list hash="air_lasso_data">
+    <struct index="0">
+      <float hash="rewind_frame">18</float>
+    </struct>
+  </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <float hash="guard_rebel_gauge">5.4368</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+</struct>

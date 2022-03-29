@@ -1,10 +1,10 @@
 // opff import
-utils::import_noreturn!(common::opff::fighter_common_opff);
+utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
 use super::*;
 use globals::*;
 
  
-pub unsafe fn land_cancel_and_b_reverse(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, stick_x: f32, facing: f32, frame: f32) {
+pub unsafe fn land_cancel_and_b_reverse(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S1G,
         *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S1A,
@@ -13,20 +13,7 @@ pub unsafe fn land_cancel_and_b_reverse(boma: &mut BattleObjectModuleAccessor, i
         if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
         }
-        if situation_kind == *SITUATION_KIND_AIR{
-            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-            if frame < 5.0 {
-                if stick_x * facing < 0.0 {
-                    PostureModule::reverse_lr(boma);
-                    PostureModule::update_rot_y_lr(boma);
-                    if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(boma.object(), vars::common::B_REVERSED) {
-                        let b_reverse = Vector3f{x: -1.0, y: 1.0, z: 1.0};
-                        KineticModule::mul_speed(boma, &b_reverse, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                        VarModule::on_flag(boma.object(), vars::common::B_REVERSED);
-                    }
-                }
-            }
-        }
+        common::opff::check_b_reverse(fighter);
     }
 }
 
@@ -79,7 +66,7 @@ pub unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kin
 #[no_mangle]
 pub unsafe extern "Rust" fn common_samus(fighter: &mut L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        land_cancel_and_b_reverse(&mut *info.boma, info.id, info.status_kind, info.situation_kind, info.stick_x, info.facing, info.frame);
+        land_cancel_and_b_reverse(fighter, &mut *info.boma, info.id, info.status_kind, info.situation_kind);
         morphball_crawl(&mut *info.boma, info.status_kind, info.frame);
         nspecial_cancels(&mut *info.boma, info.status_kind, info.situation_kind);
     }

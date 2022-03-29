@@ -14,6 +14,7 @@ pub mod hitstun;
 pub mod change_status;
 pub mod is_flag;
 pub mod controls;
+pub mod jumps;
 
 pub fn install() {
     reverse_hits::install();
@@ -29,12 +30,15 @@ pub fn install() {
     is_flag::install();
     controls::install();
     momentum_transfer::install();
+    jumps::install();
     //dash_dancing::install();
 
-    // Handles getting rid of the kill zoom
     unsafe {
+        // Handles getting rid of the kill zoom
         const NOP: u32 = 0xD503201Fu32;
         skyline::patching::patch_data(utils::offsets::kill_zoom_regular(), &NOP);
         skyline::patching::patch_data(utils::offsets::kill_zoom_throw(), &NOP);
+        // Changes full hops to calculate vertical velocity identically to short hops
+        skyline::patching::patch_data(0x6d2188, &0x52800015u32);
     }
 }

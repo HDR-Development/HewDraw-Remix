@@ -8,7 +8,7 @@ unsafe fn psi_magnet_jump_cancel_turnaround(boma: &mut BattleObjectModuleAccesso
     if [*FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HIT,
         *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_END,
         *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD].contains(&status_kind) {
-        if boma.is_input_jump() {
+        if boma.is_input_jump() && !boma.is_in_hitlag() {
             if (status_kind == *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD && frame > 3.0)
                 || (status_kind != *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD) {
                 if situation_kind == *SITUATION_KIND_AIR {

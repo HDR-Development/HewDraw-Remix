@@ -134,6 +134,7 @@ pub mod vars {
         pub const ENABLE_AIR_ESCAPE_JUMPSQUAT: i32 = 79;
         pub const SHOULD_WAVELAND: i32 = 80;
         pub const SIDE_SPECIAL_CANCEL_NO_HIT: i32 = 81;
+        pub const JUMP_NEXT: i32 = 82;
 
         
 
@@ -303,6 +304,9 @@ pub mod vars {
     pub mod palutena {
         // floats
         pub const SPECIAL_LW_LR: i32 = 0x1000;
+
+        // flags
+        pub const SPECIAL_LW_AEGIS_REFLECTOR: i32 = 0x1000;
     }
 
     pub mod miiswordsman {
