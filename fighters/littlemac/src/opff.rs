@@ -48,29 +48,15 @@ unsafe fn straight_lunge_cancels(boma: &mut BattleObjectModuleAccessor, status_k
 }
 
 // B-Reverse Straight Lunge charge
-unsafe fn straight_lunge_charge_b_rev(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
-    if [*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START].contains(&status_kind) {
-        if MotionModule::frame(boma) < 1.0 {
-            if fighter.is_stick_backward() {
-                PostureModule::reverse_lr(fighter.module_accessor);
-                PostureModule::update_rot_y_lr(fighter.module_accessor);
-            }
-        }
-        if fighter.global_table[CURRENT_FRAME].get_i32() == 3 {
-            if fighter.is_stick_backward()
-            && !VarModule::is_flag(fighter.battle_object, vars::common::B_REVERSED) {
-                PostureModule::reverse_lr(fighter.module_accessor);
-                PostureModule::update_rot_y_lr(fighter.module_accessor);
-                KineticModule::mul_speed(fighter.module_accessor, &Vector3f::new(-1.0, 1.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                VarModule::on_flag(fighter.battle_object, vars::common::B_REVERSED);
-            }
-        }
+unsafe fn straight_lunge_charge_b_rev(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START]) {
+        common::opff::b_reverse(fighter);
     }
 }
 
 // B-Reverse Rising Uppercut
-unsafe fn rising_uppercut_b_rev(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
-    if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_HI_START].contains(&status_kind) {
+unsafe fn rising_uppercut_b_rev(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_HI_START]) {
         common::opff::b_reverse(fighter);
     }
 }
@@ -106,8 +92,8 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     normal_side_special(boma, status_kind);
     straight_lunge_cancels(boma, status_kind, situation_kind, cat[0], cat[1], frame);
-    straight_lunge_charge_b_rev(fighter, boma, id, status_kind, stick_x, facing, frame);
-    rising_uppercut_b_rev(fighter, boma, id, status_kind, stick_x, facing, frame);
+    straight_lunge_charge_b_rev(fighter);
+    rising_uppercut_b_rev(fighter);
     tech_roll_help(boma, motion_kind, facing, frame);
     nspecial_cancels(boma, status_kind, situation_kind, cat[0]);
 }

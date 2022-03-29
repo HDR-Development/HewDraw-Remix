@@ -1,10 +1,10 @@
 // opff import
-utils::import_noreturn!(common::opff::fighter_common_opff);
+utils::import_noreturn!(common::opff::{fighter_common_opff, b_reverse});
 use super::*;
 use globals::*;
 
  
-unsafe fn holy_water_ac_b_rev(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32, frame: f32) {
+unsafe fn holy_water_ac_b_rev(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
         if frame > 19.0 {
             if boma.is_cat_flag(Cat1::AirEscape) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
@@ -13,17 +13,7 @@ unsafe fn holy_water_ac_b_rev(boma: &mut BattleObjectModuleAccessor, id: usize, 
                 }
             }
         }
-        if frame < 5.0 {
-            if stick_x * facing < 0.0 {
-                PostureModule::reverse_lr(boma);
-                PostureModule::update_rot_y_lr(boma);
-                if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(boma.object(), vars::common::B_REVERSED) {
-                    let b_reverse = Vector3f{x: -1.0, y: 1.0, z: 1.0};
-                    KineticModule::mul_speed(boma, &b_reverse, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                    VarModule::on_flag(boma.object(), vars::common::B_REVERSED);
-                }
-            }
-        }
+        common::opff::b_reverse(fighter);
     }
 }
 
@@ -60,8 +50,8 @@ unsafe fn land_cancel_cross(boma: &mut BattleObjectModuleAccessor, id: usize, si
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    holy_water_ac_b_rev(boma, id, status_kind, situation_kind, cat[0], stick_x, facing, frame);
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+    holy_water_ac_b_rev(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
     cross_ff_land_cancel(boma, id, status_kind, situation_kind, cat[1], stick_y);
     air_cross_air_off(boma, id, status_kind, situation_kind);
     land_cancel_cross(boma, id, situation_kind);
@@ -77,6 +67,6 @@ pub fn simon_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn simon_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

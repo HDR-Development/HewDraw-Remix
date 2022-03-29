@@ -32,8 +32,8 @@ unsafe fn dtaunt_counter(boma: &mut BattleObjectModuleAccessor, motion_kind: u64
 }
 
 // Warlock Punch B-Reverse
-unsafe fn warlock_punch_b_reverse(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, motion_kind: u64, stick_x: f32, facing: f32, frame: f32) {
-    if motion_kind == hash40("special_air_n") {
+unsafe fn warlock_punch_b_reverse(fighter: &mut L2CFighterCommon) {
+    if fighter.is_motion(Hash40::new("special_air_n")) {
         common::opff::b_reverse(fighter);
     }
 }
@@ -69,7 +69,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     aerial_wiz_foot_jump_reset_bounce(boma, status_kind, situation_kind);
     wizards_foot_b_reverse(boma, id, status_kind, stick_x, facing, frame);
     //dtaunt_counter(boma, motion_kind, frame);
-    warlock_punch_b_reverse(fighter, boma, id, motion_kind, stick_x, facing, frame);
+    warlock_punch_b_reverse(fighter);
     repeated_warlock_punch_turnaround(boma, status_kind, stick_x, facing, frame);
 }
 

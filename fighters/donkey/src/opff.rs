@@ -61,8 +61,8 @@ unsafe fn barrel_pull(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 }
 
 // DK Giant Punch charge B-Reverse
-unsafe fn giant_punch_b_reverse(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
+unsafe fn giant_punch_b_reverse(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
         common::opff::b_reverse(fighter);
     }
 }
@@ -129,7 +129,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     barrel_timer(fighter, boma, id);
     barrel_reset(fighter, id, status_kind);
     barrel_training(fighter, id, status_kind);
-    giant_punch_b_reverse(fighter, boma, id, status_kind, stick_x, facing, frame);
+    giant_punch_b_reverse(fighter);
     nspecial_cancels(fighter, boma, status_kind, situation_kind);
     barrel_pull(fighter, boma, status_kind, situation_kind);
     headbutt_aerial_stall(fighter, boma, id, status_kind, situation_kind, frame);

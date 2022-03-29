@@ -17,8 +17,8 @@ unsafe fn heros_bow_ff(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
 }
 
 // Toon Link Bomb pull B-Reverse
-unsafe fn bomb_pull_b_reverse(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
+unsafe fn bomb_pull_b_reverse(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
         common::opff::b_reverse(fighter);
     }
 }
@@ -36,7 +36,7 @@ extern "Rust" {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     heros_bow_ff(boma, status_kind, situation_kind, cat[1], stick_y);
-    bomb_pull_b_reverse(fighter, boma, id, status_kind, stick_x, facing, frame);
+    bomb_pull_b_reverse(fighter);
 	sword_length(boma);
     
 

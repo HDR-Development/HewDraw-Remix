@@ -13,8 +13,8 @@ unsafe fn jetpack_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32
 }
 
 // Propellerpack B-Reverse
-unsafe fn propellerpack_b_rev(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
-    if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START].contains(&status_kind) {
+unsafe fn propellerpack_b_rev(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START]) {
         common::opff::b_reverse(fighter);
     }
 }
@@ -35,7 +35,7 @@ unsafe fn crownerang_item_grab(boma: &mut BattleObjectModuleAccessor, status_kin
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     jetpack_cancel(boma, status_kind, cat[0]);
     //crownerang_item_grab(boma, status_kind, cat[0]);
-    propellerpack_b_rev(fighter, boma, id, status_kind, stick_x, facing, frame);
+    propellerpack_b_rev(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_KROOL )]

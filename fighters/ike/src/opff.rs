@@ -18,8 +18,8 @@ unsafe fn aether_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
 }
 
 // Ike Quick Draw B-Reverse
-unsafe fn quickdraw_b_reverse(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S {
+unsafe fn quickdraw_b_reverse(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) {
         common::opff::b_reverse(fighter);
     }
 }
@@ -61,7 +61,7 @@ unsafe fn jump_attack_cancels(boma: &mut BattleObjectModuleAccessor, id: usize, 
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     aether_drift(boma, status_kind, situation_kind, stick_x, facing);
-    quickdraw_b_reverse(fighter, boma, id, status_kind, stick_x, facing, frame);
+    quickdraw_b_reverse(fighter);
     jump_attack_cancels(boma, id, status_kind, situation_kind, cat[0], stick_x, facing);
 }
 

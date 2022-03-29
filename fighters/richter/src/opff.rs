@@ -21,15 +21,15 @@ unsafe fn cross_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: 
 }
 
 // Richter Holy Water B-Reverse
-unsafe fn holy_water_b_rev(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
+unsafe fn holy_water_b_rev(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
         common::opff::b_reverse(fighter);
     }
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     cross_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
-    holy_water_b_rev(fighter, boma, id, status_kind, stick_x, facing, frame);
+    holy_water_b_rev(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_RICHTER )]
