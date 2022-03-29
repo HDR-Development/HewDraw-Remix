@@ -61,7 +61,6 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
         *FIGHTER_STATUS_KIND_CLIFF_JUMP2,
         *FIGHTER_STATUS_KIND_CLIFF_JUMP3])
     && MotionModule::frame(boma) > (FighterMotionModuleImpl::get_cancel_frame(boma, Hash40::new_raw(MotionModule::motion_kind(boma)), true) * 0.75) {
-        println!("de-occupy ledge");
         VarModule::set_vec3(boma.object(), vars::common::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
     }
 
