@@ -27,6 +27,8 @@
   </list>
   <list hash="param_special_s">
     <struct index="0">
+      <int hash="sp_s_smash_f">3</int>
+      <int hash="missile_max_req">3</int>
       <int hash="supermissile_max_req">2</int>
     </struct>
     <hash40 index="1">dummy</hash40>
@@ -34,8 +36,19 @@
     <hash40 index="3">dummy</hash40>
   </list>
   <list hash="param_missile">
+    <hash40 index="0">dummy</hash40>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_supermissile">
     <struct index="0">
-      <float hash="h_angle">3</float>
+      <float hash="s_spd_x0">0.6</float>
+      <float hash="s_spd_y0">0</float>
+      <float hash="s_acc_f">14</float>
+      <float hash="s_acc_x">.08</float>
+      <float hash="s_spd_x_max">1.75</float>
+      <float hash="s_rot">0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
