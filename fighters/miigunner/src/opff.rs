@@ -35,7 +35,7 @@ unsafe fn absorb_vortex_jc_turnaround_shinejump_cancel(boma: &mut BattleObjectMo
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_HIT,
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_END,
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_LOOP].contains(&status_kind) {
-        if boma.is_input_jump() {
+        if boma.is_input_jump() && !boma.is_in_hitlag() {
             if (status_kind == *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD && frame > 3.0)
                 || (status_kind != *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD) {
                 if situation_kind == *SITUATION_KIND_AIR {
