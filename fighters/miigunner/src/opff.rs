@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, b_reverse});
+utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
 use super::*;
 use globals::*;
 
@@ -84,7 +84,7 @@ unsafe fn missile_land_cancel_b_rev(fighter: &mut L2CFighterCommon, boma: &mut B
         if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
         }
-        common::opff::b_reverse(fighter);
+        common::opff::check_b_reverse(fighter);
     }
 }
 

@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, b_reverse});
+utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
 use super::*;
 use globals::*;
 
@@ -50,14 +50,14 @@ unsafe fn straight_lunge_cancels(boma: &mut BattleObjectModuleAccessor, status_k
 // B-Reverse Straight Lunge charge
 unsafe fn straight_lunge_charge_b_rev(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START]) {
-        common::opff::b_reverse(fighter);
+        common::opff::check_b_reverse(fighter);
     }
 }
 
 // B-Reverse Rising Uppercut
 unsafe fn rising_uppercut_b_rev(fighter: &mut L2CFighterCommon) {
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_HI_START]) {
-        common::opff::b_reverse(fighter);
+        common::opff::check_b_reverse(fighter);
     }
 }
 

@@ -1,7 +1,7 @@
 use super::*;
 use globals::*;
 
-utils::import_noreturn!(common::opff::{fighter_common_opff, b_reverse});
+utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
 
 unsafe fn dspecial_cancels(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_CLOUD_STATUS_KIND_SPECIAL_LW_END)
@@ -15,7 +15,7 @@ unsafe fn dspecial_cancels(fighter: &mut L2CFighterCommon) {
 // Cloud Limit Charge start and release B-Reverse
 unsafe fn limit_charge_start_b_rev(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-        common::opff::b_reverse(fighter);
+        common::opff::check_b_reverse(fighter);
     }
 }
 

@@ -365,7 +365,7 @@ pub unsafe fn respawn_taunt(boma: &mut BattleObjectModuleAccessor, status_kind: 
 }
 
 #[utils::export(common::opff)]
-pub unsafe fn b_reverse(fighter: &mut L2CFighterCommon) {
+pub unsafe fn check_b_reverse(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
         if fighter.is_stick_backward() {
             PostureModule::reverse_lr(fighter.module_accessor);
