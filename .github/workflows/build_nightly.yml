@@ -104,6 +104,31 @@ jobs:
       run: |
         python3 scripts/full_package.py ${{ needs.version_and_changelog.outputs.version }} ${{ steps.romfs_version.outputs.release }}
 
+    # get the most recent latest full release
+    - id: package_latest
+      uses: pozetroninc/github-action-get-latest-release@master
+      with:
+        repository: HDR-Development/HDR-Nightlies
+
+    # build the upgrade.zip and upgrade_deletions.txt
+    - name: make upgrade artifacts
+      run: |
+        python3 scripts/make_diff.py nightly
+
+    # upload the upgrade data to the previous release for auto updater
+    - name: Upload upgrade data to previous release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.RELEASE_TOKEN }}
+        file: upgrade_artifacts/*
+        prerelease: false
+        file_glob: true
+        asset_name: upgrade
+        repo_name: HDR-Development/HDR-Nightlies
+        tag: ${{ steps.package_latest.outputs.release }}
+        overwrite: true
+
+
     - uses: actions/download-artifact@v3
       with:
         name: changelog
