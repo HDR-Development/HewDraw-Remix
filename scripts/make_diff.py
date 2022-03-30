@@ -28,6 +28,5 @@ urllib.request.urlretrieve(url, "switch-package-previous.zip")
 
 diff_lib.create_diff("switch-package-previous.zip", "artifacts/switch-package.zip", "upgrade")
 
-shutil.move("upgrade.zip", "artifacts")
-shutil.move("upgrade_deletions.txt", "artifacts")
+
 
