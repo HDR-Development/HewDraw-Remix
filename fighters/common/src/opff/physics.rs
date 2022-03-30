@@ -213,12 +213,10 @@ unsafe fn dash_energy(fighter: &mut L2CFighterCommon) {
             let run_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("run_speed_max"), 0);
 
             let mut applied_speed = (initial_speed * 0.25) - (ground_brake * PostureModule::lr(fighter.module_accessor));  // Only retain a fraction of your momentum into a re-dash or backdash; makes for snappy dash dancing (Melee functionality)
-
             if (is_dash_input && VarModule::is_flag(fighter.battle_object, vars::common::IS_MOONWALK) && FighterMotionModuleImpl::is_valid_cancel_frame(fighter.module_accessor, -1, true)) || fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0 {  // if the jump button is held, retain full momentum into next status
                 //println!("full momentum");
                 applied_speed = initial_speed - (ground_brake * PostureModule::lr(fighter.module_accessor));
             }
-
             let applied_speed_clamped = applied_speed.clamp(-run_speed_max, run_speed_max);
 
             fighter.clear_lua_stack();
