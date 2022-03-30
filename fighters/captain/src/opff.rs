@@ -1,6 +1,6 @@
 use super::*;
  
-utils::import_noreturn!(common::opff::{fighter_common_opff, b_reverse});
+utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
 
 unsafe fn air_falcon_kick_jump_reset(fighter: &mut L2CFighterCommon) {
     if fighter.is_situation(*SITUATION_KIND_AIR)
@@ -17,7 +17,7 @@ unsafe fn air_falcon_kick_jump_reset(fighter: &mut L2CFighterCommon) {
 
 unsafe fn falcon_punch_b_reverse(fighter: &mut L2CFighterCommon) {
     if fighter.is_motion(Hash40::new("special_air_n")) {
-        common::opff::b_reverse(fighter);
+        common::opff::check_b_reverse(fighter);
     }
 }
 

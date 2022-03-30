@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, b_reverse});
+utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
 use super::*;
 use globals::*;
 
@@ -34,7 +34,7 @@ unsafe fn dtaunt_counter(boma: &mut BattleObjectModuleAccessor, motion_kind: u64
 // Warlock Punch B-Reverse
 unsafe fn warlock_punch_b_reverse(fighter: &mut L2CFighterCommon) {
     if fighter.is_motion(Hash40::new("special_air_n")) {
-        common::opff::b_reverse(fighter);
+        common::opff::check_b_reverse(fighter);
     }
 }
 

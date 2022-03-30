@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, b_reverse});
+utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
 use super::*;
 use globals::*;
 
@@ -19,7 +19,7 @@ unsafe fn heros_bow_ff(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
 // Toon Link Bomb pull B-Reverse
 unsafe fn bomb_pull_b_reverse(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-        common::opff::b_reverse(fighter);
+        common::opff::check_b_reverse(fighter);
     }
 }
 

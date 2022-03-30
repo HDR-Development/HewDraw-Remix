@@ -4,7 +4,7 @@ use utils::{
     consts::*
 };
 use smash::app::BattleObjectModuleAccessor;
-use smash::phx::{Vector2f, Vector3f};
+use smash::phx::{Vector2f, Vector3f, Hash40};
 use smash::app::lua_bind::*;
 use smash::lib::lua_const::*;
 use smash::hash40;
@@ -60,7 +60,7 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
         *FIGHTER_STATUS_KIND_CLIFF_JUMP1,
         *FIGHTER_STATUS_KIND_CLIFF_JUMP2,
         *FIGHTER_STATUS_KIND_CLIFF_JUMP3])
-    && MotionModule::frame(boma) > (MotionModule::end_frame(boma) * 0.75) {
+    && MotionModule::frame(boma) > (FighterMotionModuleImpl::get_cancel_frame(boma, Hash40::new_raw(MotionModule::motion_kind(boma)), true) * 0.75) {
         VarModule::set_vec3(boma.object(), vars::common::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
     }
 
