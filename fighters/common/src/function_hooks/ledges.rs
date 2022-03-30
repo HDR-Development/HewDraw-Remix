@@ -49,19 +49,18 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
     let pos = GroundModule::hang_cliff_pos_3f(boma);
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32;
     for i in 0..8 {
-        let battle_object = if let Some(battle_object) = ::utils::util::get_battle_object_from_entry_id(i) {
-            battle_object
-        } else {
-            continue;
-        };
+        if let Some(object_id) = ::utils::util::get_active_battle_object_id_from_entry_id(i) {
+            let object = ::utils::util::get_battle_object_from_id(object_id);
+            if !object.is_null() {
+                if i == entry_id || VarModule::get_float(object, vars::common::LEDGE_POS_X) == 0.0 {
+                    continue;
+                }
 
-        if i == entry_id || VarModule::get_float(battle_object, vars::common::LEDGE_POS_X) == 0.0 {
-            continue;
-        }
-
-        if pos.x == VarModule::get_float(battle_object, vars::common::LEDGE_POS_X) && pos.y == VarModule::get_float(battle_object, vars::common::LEDGE_POS_Y) {
-            if !(tether_only || tether_zair || tether_special || tether_aerial) {
-                return 0;
+                if pos.x == VarModule::get_float(object, vars::common::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::LEDGE_POS_Y) {
+                    if !(tether_only || tether_zair || tether_special || tether_aerial) {
+                        return 0;
+                    }
+                }
             }
         }
     }
@@ -103,7 +102,7 @@ unsafe fn leave_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
 pub fn install() {
     //skyline::install_hook!(entry_cliff_hook);
     skyline::install_hook!(can_entry_cliff_hook);
-    skyline::install_hook!(leave_cliff_hook);
+    //skyline::install_hook!(leave_cliff_hook);
 }
 
 //=================================================================
