@@ -19,3 +19,5 @@ plugin/hdr_version.txt
 **/content_hashes.txt
 **/diff/
 scripts/artifacts/upgrade_deletions.txt
+**/upgrade/
+**/upgrade_artifacts/

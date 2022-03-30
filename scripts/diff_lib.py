@@ -32,8 +32,8 @@ def create_diff(zip1: str, zip2: str, output_name: str):
 
             # removing old diffs
             shutil.rmtree('diff', True)
-            if output_name in os.listdir('.'):
-                os.remove(output_name)
+            if (output_name + ".zip") in os.listdir('.'):
+                os.remove(output_name + ".zip")
 
             for file in changed_files:
                 zip2.extract(file, "diff")

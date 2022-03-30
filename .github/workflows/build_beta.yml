@@ -139,16 +139,41 @@ jobs:
         tag: ${{ github.event.inputs.romfs_version }}   
         repo: 'HDR-Development/romfs-release'
 
+    # make package depending on version chosen
     - name: make package with chosen version
       if: github.event.inputs.romfs_version != 'latest'
       run: |
         python3 scripts/full_package.py ${{ needs.version_and_changelog.outputs.version }} ${{ github.event.inputs.romfs_version }} 
 
-
     - name: make package with latest
       if: github.event.inputs.romfs_version == 'latest'
       run: |
         python3 scripts/full_package.py ${{ needs.version_and_changelog.outputs.version }} ${{ steps.romfs_latest.outputs.release }}
+
+
+    # get the most recent latest full release
+    - id: package_latest
+      uses: pozetroninc/github-action-get-latest-release@master
+      with:
+        repository: HDR-Development/HDR-Releases
+
+    # build the upgrade.zip and upgrade_deletions.txt
+    - name: make upgrade artifacts
+      run: |
+        python3 scripts/make_diff.py beta
+
+    # upload the upgrade data to the previous release for auto updater
+    - name: Upload upgrade data to previous release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.RELEASE_TOKEN }}
+        file: upgrade_artifacts/*
+        prerelease: false
+        file_glob: true
+        asset_name: upgrade
+        repo_name: HDR-Development/HDR-Releases
+        tag: ${{ steps.package_latest.outputs.release }}
+        overwrite: true
 
     - uses: actions/download-artifact@v3
       with:
@@ -167,7 +192,7 @@ jobs:
         file_glob: true
         asset_name: artifacts
         repo_name: HDR-Development/HDR-Releases
-        release_name: ${{ needs.version_and_changelog.outputs.version }}-nightly
+        release_name: ${{ needs.version_and_changelog.outputs.version }}-beta
         tag: ${{ needs.version_and_changelog.outputs.version }}
         overwrite: true
         body: ${{ needs.version_and_changelog.outputs.changelog }}

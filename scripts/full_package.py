@@ -19,6 +19,8 @@ romfs_version = sys.argv[2]
 shutil.rmtree("package", True)
 if os.path.exists("switch-package.zip"):
     os.remove("switch-package.zip")
+if os.path.exists("switch-package"):
+    shutil.rmtree("switch-package")
 os.mkdir("switch-package")
 
 def download_and_extract(owner: str, repo: str, tag: str, asset: str, extract_directory = None):
@@ -42,7 +44,7 @@ def download_and_extract(owner: str, repo: str, tag: str, asset: str, extract_di
         sleep(1)
     os.remove(asset)
 
-os.makedirs("switch-package/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/")
+os.makedirs("switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
 
 download_and_extract("HDR-Development", "HewDraw-Remix", hdr_version, "hdr-switch.zip")
 download_and_extract("HDR-Development", "romfs-release", romfs_version, "romfs.zip")
@@ -51,15 +53,15 @@ download_and_extract("skyline-dev", "skyline", "beta", "skyline.zip", "/atmosphe
 
 #print("getting libnro_hook.nro")
 #urllib.request.urlretrieve("https://github.com/ultimate-research/nro-hook-plugin/releases/download/v0.3.0/libnro_hook.nro", "libnro_hook.nro")
-#shutil.move("libnro_hook.nro", "package/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/")
+#shutil.move("libnro_hook.nro", "package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
 
 #print("getting libsmashline_hook.nro")
 #urllib.request.urlretrieve("https://github.com/blu-dev/smashline_hook/releases/download/1.1.1/libsmashline_hook.nro", "libsmashline_hook.nro")
-#shutil.move("libsmashline_hook.nro", "package/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/")
+#shutil.move("libsmashline_hook.nro", "package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
 
 print("getting libsmashline_hook_development.nro")
 urllib.request.urlretrieve("https://github.com/blu-dev/smashline_hook/releases/download/1.1.1/libsmashline_hook_development.nro", "libsmashline_hook_development.nro")
-shutil.move("libsmashline_hook_development.nro", "switch-package/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/")
+shutil.move("libsmashline_hook_development.nro", "switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
 
 print("making switch-package.zip")
 shutil.make_archive("switch-package", 'zip', 'switch-package')
@@ -69,7 +71,7 @@ hash_package.hash_folder("switch-package", "content_hashes.txt")
 
 # move the stuff to artifacts folder
 if os.path.exists("artifacts"):
-    os.remove("artifacts")
+    shutil.rmtree("artifacts")
 os.mkdir("artifacts")
 shutil.move("switch-package.zip", "artifacts")
 shutil.move("content_hashes.txt", "artifacts")
