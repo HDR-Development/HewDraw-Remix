@@ -20,6 +20,15 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_DownDamage_Main)]
 unsafe fn status_DownDamage_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if StopModule::is_stop(fighter.module_accessor) {
+        if fighter.is_cat_flag(Cat2::DownToDownStandFB) {
+            VarModule::on_flag(fighter.battle_object, vars::common::IS_JAB_LOCK_ROLL);
+            VarModule::set_int(fighter.battle_object, vars::common::DOWN_STAND_FB_KIND, ControlModule::get_down_stand_fb_kind(fighter.module_accessor) as i32);
+        }
+        else {
+            VarModule::off_flag(fighter.battle_object, vars::common::IS_JAB_LOCK_ROLL);
+        }
+    }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DOWN_DAMAGE_FLAG_START_AIR)
     || (!WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DOWN_DAMAGE_FLAG_START_AIR)
         && (!WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL) || fighter.global_table[SITUATION_KIND] != SITUATION_KIND_AIR)) {
@@ -46,11 +55,26 @@ unsafe fn status_DownDamage_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DOWN_WAIT)
         && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
         && MotionModule::is_end(fighter.module_accessor) {
-            fighter.change_status(
+            /***fighter.change_status(
                 L2CValue::I32(*FIGHTER_STATUS_KIND_DOWN_WAIT_CONTINUE),
                 L2CValue::Bool(false)
             );
             return 0.into();
+            ***/
+            if VarModule::is_flag(fighter.battle_object, vars::common::IS_JAB_LOCK_ROLL) {
+                fighter.change_status(
+                    L2CValue::I32(*FIGHTER_STATUS_KIND_DOWN_STAND_FB),
+                    L2CValue::Bool(true)
+                );
+                return 0.into();
+            }
+            else {
+                fighter.change_status(
+                    L2CValue::I32(*FIGHTER_STATUS_KIND_DOWN_STAND),
+                    L2CValue::Bool(true)
+                );
+                return 0.into();
+            }
         }
         fighter.sub_down_chk_reflect_wall();
         if !StatusModule::is_changing(fighter.module_accessor) {
