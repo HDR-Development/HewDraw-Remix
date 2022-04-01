@@ -86,6 +86,12 @@ jobs:
     #    echo lol > distributions/hdr-switch.zip
     #    echo lol > distributions/hdr-ryujinx.zip
 
+    - name: Upload version
+      uses: actions/upload-artifact@v2
+      with:
+        name: version
+        path: plugin/hdr_version.txt
+
     - id: trimmed_tag
       shell: bash
       run: |
@@ -179,8 +185,15 @@ jobs:
       with:
         name: changelog
         
-    - name: Display structure of downloaded files
+    - name: Display structure of downloaded changelog
       run: ls -R && cp CHANGELOG.md artifacts
+
+    - uses: actions/download-artifact@v3
+      with:
+        name: version
+        
+    - name: Display structure of downloaded version
+      run: ls -R && cp hdr_version.txt artifacts
 
 
     - name: Upload full package to betas
