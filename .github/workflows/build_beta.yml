@@ -168,8 +168,9 @@ jobs:
       run: |
         python3 scripts/make_diff.py beta
 
-    - run: |
-      ls && echo && ls upgrade_artifacts
+    - name: show upgrade artifacts
+      run: |
+        ls && echo && ls upgrade_artifacts
 
     # upload the upgrade data to the previous release for auto updater
     - name: Upload upgrade data to previous release
