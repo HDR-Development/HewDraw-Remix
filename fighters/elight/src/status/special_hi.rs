@@ -12,7 +12,7 @@ pub unsafe fn special_hi_common_check_spreadbullet(fighter: &mut L2CFighterCommo
     }
 
     if ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL as u8) != 0
-    || ControlMdoule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK as u8) != 0
+    || ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK as u8) != 0
     {
         fighter.on_flag(*FIGHTER_ELIGHT_STATUS_SPECIAL_HI_FLAG_SPREADBULLET);
     }
