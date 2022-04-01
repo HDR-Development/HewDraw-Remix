@@ -170,7 +170,7 @@ jobs:
 
     - name: show upgrade artifacts
       run: |
-        ls && echo && ls upgrade_artifacts
+        ls && stat * && echo && ls upgrade_artifacts && stat upgrade_artifacts/*
 
     # upload the upgrade data to the previous release for auto updater
     - name: Upload upgrade data to previous release
