@@ -18,6 +18,7 @@ extern "C" {
     fn change_version_string(arg: u64, string: *const c_char);
 }
 
+#[cfg(feature = "main_nro")]
 #[skyline::hook(replace = change_version_string)]
 fn change_version_string_hook(arg: u64, string: *const c_char) {
     let original_str = unsafe { skyline::from_c_str(string) };
@@ -68,9 +69,9 @@ pub fn main() {
 
     #[cfg(feature = "main_nro")] {
         quick_validate_install();
+        skyline::install_hooks!(change_version_string_hook);
     }
 
-    skyline::install_hooks!(change_version_string_hook);
 }
 
 pub fn is_on_ryujinx() -> bool {

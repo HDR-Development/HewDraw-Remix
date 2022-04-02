@@ -11,6 +11,24 @@ if "help" in sys.argv or "--help" in sys.argv or "-h" in sys.argv:
   print("\t./build.py release dev=captain name=hdr-dev\n")
   exit(0)
 
+is_dev_build = False
+plugin_subpath = "skyline/plugins/"
+development_subpath = "smashline/"
+ryujinx_rom_path = "mods/contents/01006a800016e000/skyline/romfs"
+switch_rom_path = "atmosphere/contents/01006a800016e000/romfs"
+
+def install_with_ip(ip: str):
+  plugin_subpath = "skyline/plugins/"
+  development_subpath = "smashline/"
+  switch_rom_path = "atmosphere/contents/01006a800016e000/romfs"
+
+  if os.name == 'nt':
+    os.system('curl.exe -T ..\\plugin\\target\\standalone\\aarch64-skyline-switch\\release\\libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
+    os.system('curl.exe -T ..\\plugin\\target\\development\\aarch64-skyline-switch\\release\\libhdr.nro ftp://' + ip + ':5000/' + switch_rom_path + '/' + development_subpath + 'development.nro')
+  else:
+    # os.system('curl -T ../plugin/target/standalone/aarch64-skyline-switch/release/libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
+    os.system('curl -T ../plugin/target/development/aarch64-skyline-switch/release/libhdr.nro ftp://' + ip + ':5000/' + switch_rom_path + '/' + development_subpath + 'development.nro')
+
 # handle fallback exe on windows
 def handle_fallback():
   if os.name == 'nt':
@@ -44,12 +62,6 @@ def handle_fallback():
 handle_fallback()
 
 characters = characters.characters
-
-is_dev_build = False
-plugin_subpath = "skyline/plugins/"
-development_subpath = "smashline/"
-ryujinx_rom_path = "mods/contents/01006a800016e000/skyline/romfs"
-switch_rom_path = "atmosphere/contents/01006a800016e000/romfs"
 
 current_dir = os.getcwd()
 os.chdir('..')
@@ -226,4 +238,10 @@ else:
 
 os.chdir(current_dir)
 
-
+for arg in sys.argv:
+  if "ip" in arg:
+    if not "=" in arg:
+      print("ip specified but not ip argument given!")
+      break
+    install_with_ip(arg.split('=')[1])
+    break
