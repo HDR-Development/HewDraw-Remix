@@ -25,23 +25,11 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
         if ([*FIGHTER_STATUS_KIND_DASH, *FIGHTER_STATUS_KIND_TURN_DASH].contains(&status_kind) && MotionModule::frame(boma) < ((MotionModule::end_frame(boma) * 0.5645).ln()) * 9.2157) {
             return false;
         }
-        if status_kind == *FIGHTER_STATUS_KIND_RUN_BRAKE && VarModule::is_flag(boma.object(), vars::common::IS_STICKY_WALK) {
-            let fighter = get_fighter_common_from_accessor(boma);
-            if fighter.global_table[CURRENT_FRAME].get_i32() < 20 {
-                return false;
-            }
-        }
     }
 
     if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT {
         if ([*FIGHTER_STATUS_KIND_DASH, *FIGHTER_STATUS_KIND_TURN_DASH].contains(&status_kind) && MotionModule::frame(boma) < ((MotionModule::end_frame(boma) * 0.5645).ln()) * 9.2157) {
             return false;
-        }
-        if status_kind == *FIGHTER_STATUS_KIND_RUN_BRAKE && VarModule::is_flag(boma.object(), vars::common::IS_STICKY_WALK) {
-            let fighter = get_fighter_common_from_accessor(boma);
-            if fighter.global_table[CURRENT_FRAME].get_i32() < 20 {
-                return false;
-            }
         }
     }
 
