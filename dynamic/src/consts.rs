@@ -126,7 +126,7 @@ pub mod vars {
         pub const DISABLE_BACKDASH: i32 = 71;
         pub const IS_LATE_PIVOT: i32 = 72;
         pub const IS_TURNDASH_INPUT: i32 = 73;
-        pub const IS_BACKDASH: i32 = 74;
+        pub const IS_SMASH_TURN: i32 = 74;
         pub const IS_STICKY_WALK: i32 = 75;
         pub const ENABLE_BOOST_RUN: i32 = 76;
         pub const UP_SPECIAL_JUMP_REFRESH_WINDOW: i32 = 77;
@@ -135,7 +135,7 @@ pub mod vars {
         pub const SHOULD_WAVELAND: i32 = 80;
         pub const SIDE_SPECIAL_CANCEL_NO_HIT: i32 = 81;
         pub const JUMP_NEXT: i32 = 82;
-
+        pub const IS_JAB_LOCK_ROLL: i32 = 83;
         
 
         // int
@@ -151,6 +151,7 @@ pub mod vars {
         pub const ATTACK_DASH_CANCEL_FRAME: i32 = 0xA;
         pub const AIR_ESCAPE_MAGNET_FRAME: i32 = 0xB;
         pub const TURN_DASH_FRAME: i32 = 0xC;
+        pub const DOWN_STAND_FB_KIND: i32 = 0xD;
 
         // float
         pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0;
