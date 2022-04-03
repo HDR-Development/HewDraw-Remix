@@ -52,6 +52,11 @@ fn change_version_string_hook(arg: u64, string: *const c_char) {
 
 #[skyline::main(name = "hdr")]
 pub fn main() {
+    #[cfg(feature = "main_nro")] {
+        quick_validate_install();
+        skyline::install_hooks!(change_version_string_hook);
+    }
+
     #[cfg(not(feature = "runtime"))]
     { utils::init(); }
     fighters::install();
@@ -67,10 +72,7 @@ pub fn main() {
             .join();
     }
 
-    #[cfg(feature = "main_nro")] {
-        quick_validate_install();
-        skyline::install_hooks!(change_version_string_hook);
-    }
+    
 
 }
 
@@ -89,14 +91,14 @@ pub fn is_on_ryujinx() -> bool {
 
 #[cfg(feature = "main_nro")]
 pub fn quick_validate_install() {
-    let has_smashline_development_hook = Path::new("sd:/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/libsmashline_hook_development.nro").is_file();
-    if has_smashline_development_hook {
-        println!("libsmashline_hook_development.nro is present");
+    let has_smashline_hook = Path::new("sd:/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/libsmashline_hook.nro").is_file();
+    if has_smashline_hook {
+        println!("libsmashline_hook.nro is present");
     } else {
         if is_on_ryujinx() {
-            println!("No libsmashline_hook_development.nro found! We will likely crash.");
+            println!("No libsmashline_hook.nro found! We will likely crash.");
         } else {
-            skyline_web::DialogOk::ok("No libsmashline_hook_development.nro found! We will likely crash.");
+            skyline_web::DialogOk::ok("No libsmashline_hook.nro found! We will likely crash.");
         }
     }
 
@@ -111,31 +113,26 @@ pub fn quick_validate_install() {
         }
     }
 
+    
     let has_nro_hook = Path::new("sd:/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/libnro_hook.nro").is_file();
     if has_nro_hook {
+        println!("libnro_hook.nro is present");
+    } else {
         if is_on_ryujinx() {
-            println!("libnro_hook.nro found! This will conflict with hdr! Expect a crash soon.");
+            println!("No libnro_hook.nro found! We will likely crash.");
         } else {
-            let should_delete = skyline_web::Dialog::yes_no("libnro_hook.nro found! This will conflict with hdr! Would you like to delete it?");
-            if should_delete {
-                fs::remove_file("sd:/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/libnro_hook.nro");
-                unsafe {
-                    skyline::nn::oe::RequestToRelaunchApplication();
-                }
-            } else {
-                skyline_web::DialogOk::ok("Warning, we will likely crash soon because of this conflict.");
-            }
+            skyline_web::DialogOk::ok("No libnro_hook.nro found! We will likely crash.");
         }
     }
 
-    let has_smashline_hook = Path::new("sd:/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/libsmashline_hook.nro").is_file();
-    if has_smashline_hook {
+    let has_smashline_development_hook = Path::new("sd:/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/libsmashline_hook_development.nro").is_file();
+    if has_smashline_development_hook {
         if is_on_ryujinx() {
-            println!("libsmashline_hook.nro found! This will conflict with hdr! Expect a crash soon.");
+            println!("libsmashline_hook_development.nro found! This will conflict with hdr! Expect a crash soon.");
         } else {
-            let should_delete = skyline_web::Dialog::yes_no("libsmashline_hook.nro found! This will conflict with hdr! Would you like to delete it?");
+            let should_delete = skyline_web::Dialog::yes_no("libsmashline_hook_development.nro found! This will conflict with hdr! Would you like to delete it?");
             if should_delete {
-                fs::remove_file("sd:/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/libsmashline_hook.nro");
+                fs::remove_file("sd:/atmosphere/contents/01006a800016e000/romfs/skyline/plugins/libsmashline_hook_development.nro");
                 unsafe {
                     skyline::nn::oe::RequestToRelaunchApplication();
                 }

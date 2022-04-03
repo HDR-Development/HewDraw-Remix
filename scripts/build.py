@@ -215,9 +215,9 @@ if (is_dev_build and not is_publish):
 else:
   # simple build
   if is_publish:
-    pkgutil.build(release_arg, "--features updater")
+    pkgutil.build(release_arg, "--features=\"updater\",\"main_nro\"")
   else:
-    pkgutil.build(release_arg, "")
+    pkgutil.build(release_arg, "--features=\"main_nro\"")
 
   # collect switch package
   pkgutil.collect_plugin("hdr-switch", 
