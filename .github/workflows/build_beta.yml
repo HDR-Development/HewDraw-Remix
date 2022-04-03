@@ -54,6 +54,7 @@ jobs:
         compareLink: false
         simpleList: true
 
+
     - name: Upload changelog
       uses: actions/upload-artifact@v2
       with:
