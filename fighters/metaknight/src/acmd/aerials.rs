@@ -105,7 +105,7 @@ unsafe fn metaknight_attack_air_f_game(fighter: &mut L2CAgentBase) {
 unsafe fn metaknight_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 4.0);
+    frame(lua_state, 3.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("metaknight_air_f"), Hash40::new("top"), 0, 0, 2, 0, 0, 0, 1.0, true);
         LAST_EFFECT_SET_RATE(fighter, 3.0);
