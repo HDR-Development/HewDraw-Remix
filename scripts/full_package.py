@@ -63,6 +63,11 @@ shutil.move("libsmashline_hook.nro", "switch-package/atmosphere/contents/01006A8
 #urllib.request.urlretrieve("https://github.com/blu-dev/smashline_hook/releases/download/1.1.1/libsmashline_hook_development.nro", "libsmashline_hook_development.nro")
 #shutil.move("libsmashline_hook_development.nro", "switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
 
+print("getting hdr-launcher.nro")
+urllib.request.urlretrieve("https://github.com/HDR-Development/hdr-launcher/releases/latest/download/hdr-launcher.nro", "hdr-launcher.nro")
+shutil.move("hdr-launcher.nro", "switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
+
+
 print("making switch-package.zip")
 shutil.make_archive("switch-package", 'zip', 'switch-package')
 
