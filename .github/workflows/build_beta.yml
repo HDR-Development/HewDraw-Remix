@@ -64,6 +64,8 @@ jobs:
     needs: version_and_changelog
     container: 
       image: jugeeya/cargo-skyline:2.1.0-dkp
+    outputs: 
+      trimmed_tag: ${{ steps.trimmed_tag.outputs.tag }}
     steps:
     - name: setup python
       uses: actions/setup-python@v2
@@ -212,6 +214,6 @@ jobs:
         asset_name: artifacts
         repo_name: HDR-Development/HDR-Releases
         release_name: ${{ needs.version_and_changelog.outputs.version }}-beta
-        tag: ${{ needs.version_and_changelog.outputs.version }}
+        tag: ${{ needs.plugin_build.outputs.trimmed_tag }}
         overwrite: true
         body: ${{ needs.version_and_changelog.outputs.changelog }}
