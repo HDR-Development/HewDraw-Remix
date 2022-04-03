@@ -164,7 +164,8 @@ if (is_dev_build and not is_publish):
   
   if allow_build_dev:
     print("release arg: " + release_arg)
-    pkgutil.build(release_arg, dev_args)
+    retval = pkgutil.build(release_arg, dev_args)
+    
     print("subpath: " + development_subpath)
     print("type: " + build_type)
     pkgutil.collect_plugin("hdr-switch", os.path.join(switch_rom_path, development_subpath), build_type, "development.nro", "development")
