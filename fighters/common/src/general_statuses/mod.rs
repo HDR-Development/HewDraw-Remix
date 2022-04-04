@@ -22,6 +22,7 @@ mod attackhi4;
 mod attacklw4;
 mod passive;
 mod damagefall;
+mod downdamage;
 // [LUA-REPLACE-REBASE]
 // [SHOULD-CHANGE]
 // Reimplement the whole status script (already done) instead of doing this.
@@ -370,6 +371,7 @@ pub fn install() {
     attacklw4::install();
     passive::install();
     damagefall::install();
+    downdamage::install();
 
     smashline::install_status_scripts!(
         damage_fly_end,

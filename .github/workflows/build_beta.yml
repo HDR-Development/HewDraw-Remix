@@ -17,7 +17,6 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
     outputs: 
       changelog: ${{ steps.github_changelog.outputs.changelog }}
-      version: ${{ steps.get_last_beta.outputs.tag_name }}
     steps:
 
     - name: echo ref
@@ -50,6 +49,10 @@ jobs:
         sinceTag: ${{ steps.get_last_beta.outputs.tag_name }}
         stripHeaders: true
         token: ${{ secrets.GITHUB_TOKEN  }}
+        verbose: false
+        compareLink: false
+        simpleList: true
+
 
     - name: Upload changelog
       uses: actions/upload-artifact@v2
@@ -64,19 +67,30 @@ jobs:
     needs: version_and_changelog
     container: 
       image: jugeeya/cargo-skyline:2.1.0-dkp
+    outputs: 
+      trimmed_tag: ${{ steps.trimmed_tag.outputs.tag }}
     steps:
     - name: setup python
       uses: actions/setup-python@v2
       with:
         python-version: '3.9' # Version range or exact version of a Python version to use, using SemVer's version range syntax
     
+    - id: trimmed_tag
+      shell: bash
+      run: |
+        export UNTRIMMED=${{github.ref}}
+        export TRIMMED=${UNTRIMMED#"refs/tags/"}
+        echo "untrimmed: $UNTRIMMED"
+        echo "trimmed: $TRIMMED"
+        echo "##[set-output name=tag;]$TRIMMED";
+
     - name: checkout version
       uses: actions/checkout@v2
 
     # build the project
     - run: |
         export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin \
-        && cd scripts && python3 make_dist.py build version=${{ needs.version_and_changelog.outputs.version }}-beta name=hdr && cd ..
+        && cd scripts && python3 make_dist.py build version=${{ steps.trimmed_tag.outputs.tag }}-beta name=hdr && cd ..
       env:
         HOME: /root
 
@@ -92,21 +106,12 @@ jobs:
         name: version
         path: plugin/hdr_version.txt
 
-    - id: trimmed_tag
-      shell: bash
-      run: |
-        export UNTRIMMED=${{github.ref}}
-        export TRIMMED=${UNTRIMMED#"refs/tags/"}
-        echo "untrimmed: $UNTRIMMED"
-        echo "trimmed: $TRIMMED"
-        echo "##[set-output name=tag;]$TRIMMED";
-      
-    - uses: dev-drprasad/delete-tag-and-release@v0.2.0
-      with:
-        delete_release: true # default: false
-        tag_name: ${{ steps.trimmed_tag.outputs.tag }} # tag name to delete
-      env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+    #- uses: dev-drprasad/delete-tag-and-release@v0.2.0
+    #  with:
+    #    delete_release: true # default: false
+    #    tag_name: ${{ steps.trimmed_tag.outputs.tag }} # tag name to delete
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
 
 
     # upload asset
@@ -149,12 +154,12 @@ jobs:
     - name: make package with chosen version
       if: github.event.inputs.romfs_version != 'latest'
       run: |
-        python3 scripts/full_package.py ${{ needs.version_and_changelog.outputs.version }} ${{ github.event.inputs.romfs_version }} 
+        python3 scripts/full_package.py ${{ needs.plugin_build.outputs.trimmed_tag }} ${{ github.event.inputs.romfs_version }} 
 
     - name: make package with latest
       if: github.event.inputs.romfs_version == 'latest'
       run: |
-        python3 scripts/full_package.py ${{ needs.version_and_changelog.outputs.version }} ${{ steps.romfs_latest.outputs.release }}
+        python3 scripts/full_package.py ${{ needs.plugin_build.outputs.trimmed_tag }} ${{ steps.romfs_latest.outputs.release }}
 
 
     # get the most recent latest full release
@@ -177,7 +182,7 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
-        file: upgrade_artifacts/*
+        file: upgrade_artifacts/upgrade.zip
         prerelease: false
         file_glob: true
         asset_name: upgrade
@@ -209,7 +214,7 @@ jobs:
         file_glob: true
         asset_name: artifacts
         repo_name: HDR-Development/HDR-Releases
-        release_name: ${{ needs.version_and_changelog.outputs.version }}-beta
-        tag: ${{ needs.version_and_changelog.outputs.version }}
+        release_name: HDR Update ${{ needs.plugin_build.outputs.trimmed_tag }}-beta
+        tag: ${{ needs.plugin_build.outputs.trimmed_tag }}
         overwrite: true
         body: ${{ needs.version_and_changelog.outputs.changelog }}
