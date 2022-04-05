@@ -11,7 +11,7 @@ unsafe fn slaughter_high_kick(boma: &mut BattleObjectModuleAccessor, cat1: i32, 
                                     | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4)
                && boma.is_stick_backward() {
                 VarModule::on_flag(boma.object(), vars::demon::SLAUGHTER_HIGH_KICK);
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_5,false);
+                boma.change_status_req(*FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_5, false);
             }
         }
     }
@@ -20,8 +20,27 @@ unsafe fn slaughter_high_kick(boma: &mut BattleObjectModuleAccessor, cat1: i32, 
     }
 }
 
+unsafe fn korean_back_dash(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, stick_y: f32) {
+    if boma.is_status(*FIGHTER_DEMON_STATUS_KIND_DASH_BACK)
+    && boma.stick_y() < WorkModule::get_param_float(boma, hash40("common"), hash40("squat_stick_y"))
+    {
+        boma.change_status_req(*FIGHTER_STATUS_KIND_SQUAT, false);
+    }
+
+    if boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SQUAT,
+        *FIGHTER_STATUS_KIND_SQUAT_WAIT,
+        *FIGHTER_STATUS_KIND_SQUAT_RV,
+    ])
+    && compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH)
+    {
+        boma.change_status_req(*FIGHTER_DEMON_STATUS_KIND_DASH_BACK, false);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     slaughter_high_kick(boma, cat[0], status_kind, situation_kind, motion_kind);
+    korean_back_dash(boma, cat[0], status_kind, stick_y);
     common::opff::backdash_energy(fighter);
 }
 
