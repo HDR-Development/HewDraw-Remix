@@ -34,8 +34,19 @@ unsafe fn dair_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     }
 }
 
+// Banjo Wondering Fail on command
+unsafe fn wonderwing_fail(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32){
+    if ((fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) && frame > 16.0)
+    || (fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_END) && frame < 3.0))
+    && boma.is_button_on(Buttons::Attack)
+    {
+        fighter.change_status_req(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL, true);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     dair_bounce(fighter, boma, motion_kind, frame);
+    wonderwing_fail(fighter, boma, situation_kind, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_BUDDY)]
