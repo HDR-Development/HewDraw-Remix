@@ -36,16 +36,21 @@ def collect_romfs(package_name: str, context_path: str, mod_name: str):
   shutil.copyfile(os.path.join("plugin/hdr_version.txt"), os.path.join(romfs_destination, "ui/hdr_version.txt"))
   return
 
-def build(build_type: str, dev_args: str):
+## returns whether the build was successful
+def build(build_type: str, dev_args: str) -> bool:
   build_command = "cargo skyline build " + build_type + " " + dev_args
   print("BUILD COMMAND:")
   print(build_command)
 
   # build the plugin
   os.chdir('plugin')
-  os.system(build_command)
+  retval = os.system(build_command)
   os.chdir('..')
 
+  if retval == 0:
+    return True
+  else:
+    exit("### build failed! ###")
 
 # inform the user of their foolishness in running this file itself
 if __name__ == '__main__':
