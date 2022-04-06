@@ -32,7 +32,7 @@ unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 45, 85, 0, 64, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 45, 80, 0, 64, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
     frame(lua_state, 13.0);
@@ -63,7 +63,7 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
         VarModule::off_flag(fighter.battle_object, vars::buddy::IS_BURY_DTHROW);
         if boma.is_button_on(Buttons::Attack) {
             VarModule::on_flag(fighter.battle_object, vars::buddy::IS_BURY_DTHROW);
-            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 6.0, 48, 100, 0, 50, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_bury_r"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 7.0, 48, 100, 0, 48, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_bury_r"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
             ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_bury_r"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         }
         else{
@@ -107,7 +107,7 @@ unsafe fn effect_throwlw(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::buddy::IS_BURY_DTHROW) {
             LANDING_EFFECT(fighter, Hash40::new("sys_action_smoke_h"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-            EFFECT_FOLLOW(fighter, Hash40::new("buddy_special_s_hold"), Hash40::new("virtualcenter"), 1.5, 0, 0, 0, 0, 0, 0.5, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("buddy_special_s_hold"), Hash40::new("virtualcenter"), 1.5, 0, 0, 0, 0, 0, 0.7, true);
             EffectModule::enable_sync_init_pos_last(boma);
         }
         else{
@@ -139,12 +139,46 @@ unsafe fn effect_throwlw(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "buddy", script = "sound_throwlw" , category = ACMD_SOUND , low_priority)]
+unsafe fn sound_throwlw(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::buddy::IS_BURY_DTHROW) {
+            PLAY_SE(fighter, Hash40::new("se_buddy_special_s01"));    
+        }
+        else{
+            PLAY_SE(fighter, Hash40::new("se_buddy_jump01"));
+        }
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::buddy::IS_BURY_DTHROW) {
+            PLAY_SE(fighter, Hash40::new("vc_buddy_damagefly02"));
+        }
+        else{
+            PLAY_SE(fighter, Hash40::new("vc_buddy_attack05"));
+        }
+    }
+    frame(lua_state, 31.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_throw_03"));
+    }
+    frame(lua_state, 34.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_kick_hit_l"));
+        PLAY_SE(fighter, Hash40::new("se_common_down_m_01"));
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         game_throwf,
         game_throwb,
         game_throwlw,
         effect_throwlw,
+        sound_throwlw,
     );
 }
 
