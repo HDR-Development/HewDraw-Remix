@@ -5,6 +5,7 @@ pub fn install() {
     install_acmd_scripts!(
         buddy_attack_s4_game,
         buddy_attack_hi4_game,
+        buddy_attack_lw4_game,
     );
 }
 
