@@ -252,6 +252,52 @@ unsafe fn status_end_turnrun(fighter: &mut L2CFighterCommon) -> L2CValue {
 	call_original!(fighter)
 }
 
+#[common_status_script(status = FIGHTER_STATUS_KIND_RUN_BRAKE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
+    symbol = "_ZN7lua2cpp16L2CFighterCommon15status_RunBrakeEv")]
+unsafe fn status_runbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.sub_status_RunBrake();
+    fighter.sub_shift_status_main(L2CValue::Ptr(status_runbrake_main as *const () as _))
+}
+
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon20status_RunBrake_MainEv")]
+unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U)
+    && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0
+    && {
+        fighter.clear_lua_stack();
+        fighter.push_lua_stack(&mut L2CValue::new_int(0x1daca540be));
+        app::sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+        fighter.pop_lua_stack(1).get_bool()
+    } {
+        interrupt!(fighter, *FIGHTER_STATUS_KIND_APPEAL, false);
+    }
+
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW)
+    && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW != 0
+    && {
+        fighter.clear_lua_stack();
+        fighter.push_lua_stack(&mut L2CValue::new_int(0x1daca540be));
+        app::sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+        fighter.pop_lua_stack(1).get_bool()
+    } {
+        interrupt!(fighter, *FIGHTER_STATUS_KIND_APPEAL, false);
+    }
+
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S)
+    && (fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L != 0
+    || fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R != 0)
+    && {
+        fighter.clear_lua_stack();
+        fighter.push_lua_stack(&mut L2CValue::new_int(0x1daca540be));
+        app::sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+        fighter.pop_lua_stack(1).get_bool()
+    } {
+        interrupt!(fighter, *FIGHTER_STATUS_KIND_APPEAL, false);
+    }
+
+	call_original!(fighter)
+}
+
 #[common_status_script(status = FIGHTER_STATUS_KIND_RUN_BRAKE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
     symbol = "_ZN7lua2cpp16L2CFighterCommon19status_end_RunBrakeEv")]
 unsafe fn status_end_runbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -268,7 +314,8 @@ pub fn install() {
     install_hooks!(
         status_run_sub,
         status_run_main,
-        status_turnrun_main
+        status_turnrun_main,
+        status_runbrake_main
     );
 
     install_status_scripts!(
@@ -278,6 +325,7 @@ pub fn install() {
         status_pre_turnrun,
 		status_turnrun,
         status_end_turnrun,
+        status_runbrake,
         status_end_runbrake
     );
 }
