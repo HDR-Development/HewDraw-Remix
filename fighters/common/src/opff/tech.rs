@@ -363,6 +363,23 @@ pub unsafe fn respawn_taunt(boma: &mut BattleObjectModuleAccessor, status_kind: 
     MotionModule::change_motion(boma, motion, 0.0, 1.0, false, 0.0, false, false);
 }
 
+// Teeter cancelling
+pub unsafe fn teeter_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    
+    if (boma.is_situation(*SITUATION_KIND_GROUND)
+    && GroundModule::get_correct(boma) == *GROUND_CORRECT_KIND_GROUND
+    && KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL).abs() > 0.0) {
+        // Conditions for transitioning to teeter animation in sub_ground_check_ottotto
+        if (GroundModule::is_ottotto(boma, 1.5) // Original value: 0.86
+        && fighter.global_table[STICK_X].get_f32().abs() < 0.75) {
+            fighter.change_status(
+                FIGHTER_STATUS_KIND_OTTOTTO.into(),
+                true.into()
+            );
+        }
+    }
+}
+
 #[utils::export(common::opff)]
 pub unsafe fn check_b_reverse(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
@@ -393,6 +410,7 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mu
     waveland_plat_drop(boma, cat[1], status_kind);
     hitfall(boma, status_kind, situation_kind, fighter_kind, cat);
     respawn_taunt(boma, status_kind);
+    teeter_cancel(fighter, boma);
 
     freeze_stages(boma);
 }
