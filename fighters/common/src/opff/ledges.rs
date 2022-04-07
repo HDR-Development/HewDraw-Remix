@@ -70,13 +70,7 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
     let is_near_ledge = (current_position_x - ledge_try_pos.x).abs() < 10.0 && (current_position_y - ledge_try_pos.y).abs() < 50.0 && (current_position_z - ledge_try_pos.z).abs() < 10.0;
 
 
-    if *FIGHTER_STATUS_KIND_AIR_LASSO_REWIND == status_kind && is_near_ledge {
-        /*
-       println!("Tether attempting to wind to ledge... status kind: {}", status_kind);
-        println!("FIGHTER_STATUS_KIND_CLIFF_CATCH: {}", *FIGHTER_STATUS_KIND_CLIFF_CATCH);
-        println!("FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE: {}", *FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE);
-        println!("FIGHTER_STATUS_KIND_CLIFF_WAIT: {}", *FIGHTER_STATUS_KIND_CLIFF_WAIT);
-        */
+    if status_kind == *FIGHTER_STATUS_KIND_AIR_LASSO_REWIND {
 
         for i in 0..8 {
             if let Some(object_id) = ::utils::util::get_active_battle_object_id_from_entry_id(i) {
@@ -87,8 +81,10 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
                     }
 
                     if ledge_try_pos.x == VarModule::get_float(object, vars::common::LEDGE_POS_X) && ledge_try_pos.y == VarModule::get_float(object, vars::common::LEDGE_POS_Y) {
-                        //println!("Sending tethering player {} into ledge trump as they are trying to rewind to an occupied ledge.", player_number);
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_CLIFF_ROBBED, false);
+                        VarModule::on_flag(boma.object(), vars::common::SHOULD_TRUMP_TETHER);
+                    }
+                    else{
+                        VarModule::off_flag(boma.object(), vars::common::SHOULD_TRUMP_TETHER);
                     }
                 }
             }
