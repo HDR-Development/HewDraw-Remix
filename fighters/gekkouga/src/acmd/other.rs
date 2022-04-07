@@ -5,6 +5,12 @@ use super::*;
 unsafe fn gekkouga_jump_aerial_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        if WorkModule::is_flag(boma, *FIGHTER_GEKKOUGA_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_LW_BOUND){
+            let bounce_speed_mul = Vector3f { x: 1.0, y: 0.75, z: 1.0 };
+            KineticModule::mul_speed(boma, &bounce_speed_mul, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        }
+    }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_GEKKOUGA_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_LW_BOUND);
@@ -85,6 +91,18 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "gekkouga_shuriken", script = "game_shot" , category = ACMD_GAME , low_priority)]
+unsafe fn gekkouga_shuriken_shot_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+	if is_excute(fighter) {
+		ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 55, 45, 0, 35, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -1.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 11.0, 75, 85, 0, 35, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -5.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
+		attack!(fighter, *MA_MSC_CMD_ATTACK_SET_LERP, 0, 1);
+	}
+    
+}
+
 pub fn install() {
     install_acmd_scripts!(
         gekkouga_jump_aerial_b_game,
@@ -92,6 +110,7 @@ pub fn install() {
         dash_game,
         dash_effect,
         turn_dash_game,
+        gekkouga_shuriken_shot_game,
     );
 }
 
