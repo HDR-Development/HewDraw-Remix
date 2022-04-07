@@ -161,6 +161,36 @@ unsafe fn gamewatch_special_air_s5_game(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "gamewatch", script = "game_specials9", category = ACMD_GAME, low_priority)]
+unsafe fn gamewatch_special_s9_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_S_FLAG_FIX_PANEL);
+        VisibilityModule::set_default_int64(boma, Hash40::new("panel").hash as i64);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 25.0, 361, 80, 0, 100, 6.0, 0.0, 10.6, 8.9, None, None, None, 2.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BAT, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 25.0, 361, 80, 0, 100, 3.0, 0.0, 7.0, 5.6, None, None, None, 2.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BAT, *ATTACK_REGION_OBJECT);
+        AttackModule::set_poison_param(boma, 0, 361, 45, 1.0, false);
+    }
+
+}
+
+#[acmd_script( agent = "gamewatch", script = "game_specialairs9", category = ACMD_GAME, low_priority)]
+unsafe fn gamewatch_special_air_s9_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_S_FLAG_FIX_PANEL);
+        VisibilityModule::set_default_int64(boma, Hash40::new("panel").hash as i64);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 25.0, 361, 80, 0, 100, 6.0, 0.0, 10.6, 8.9, None, None, None, 2.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BAT, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 25.0, 361, 80, 0, 100, 3.0, 0.0, 7.0, 5.6, None, None, None, 2.0, 2.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BAT, *ATTACK_REGION_OBJECT);
+        AttackModule::set_poison_param(boma, 0, 361, 45, 1.0, false);
+    }
+
+}
+
 #[acmd_script( agent = "gamewatch", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn gamewatch_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -284,6 +314,8 @@ pub fn install() {
         gamewatch_special_air_s4_game,
         gamewatch_special_s5_game,
         gamewatch_special_air_s5_game,
+        gamewatch_special_s9_game,
+        gamewatch_special_air_s9_game,
         gamewatch_special_hi_game,
         gamewatch_special_air_hi_game,
     );
