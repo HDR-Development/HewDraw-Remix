@@ -129,6 +129,7 @@ pub unsafe fn airdodge_refresh_on_hit_disable(boma: &mut BattleObjectModuleAcces
     VarModule::set_flag(boma.object(), vars::common::PREV_FLAG_DISABLE_ESCAPE_AIR, WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR));
 }
 
+// counter which checks how long cstick has overridden left stick directional input
 pub unsafe fn cstick_override_detection(fighter: &mut L2CFighterCommon) {
     if VarModule::get_int(fighter.battle_object, vars::common::CSTICK_LIFE) > 0 {
         VarModule::inc_int(fighter.battle_object, vars::common::CSTICK_LIFE);
