@@ -152,6 +152,7 @@ pub mod vars {
         pub const AIR_ESCAPE_MAGNET_FRAME: i32 = 0xB;
         pub const TURN_DASH_FRAME: i32 = 0xC;
         pub const DOWN_STAND_FB_KIND: i32 = 0xD;
+        pub const CSTICK_LIFE: i32 = 0xE;
 
         // float
         pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0;

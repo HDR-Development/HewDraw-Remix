@@ -129,6 +129,18 @@ pub unsafe fn airdodge_refresh_on_hit_disable(boma: &mut BattleObjectModuleAcces
     VarModule::set_flag(boma.object(), vars::common::PREV_FLAG_DISABLE_ESCAPE_AIR, WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR));
 }
 
+pub unsafe fn cstick_override_detection(fighter: &mut L2CFighterCommon) {
+    if VarModule::get_int(fighter.battle_object, vars::common::CSTICK_LIFE) > 0 {
+        VarModule::inc_int(fighter.battle_object, vars::common::CSTICK_LIFE);
+    }
+    if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+        VarModule::set_int(fighter.battle_object, vars::common::CSTICK_LIFE, 1);
+    }
+    if VarModule::get_int(fighter.battle_object, vars::common::CSTICK_LIFE) > 2 {  // ideally replace this hardcoded 2 with "stick_life" from substick_parameter.prc
+        VarModule::set_int(fighter.battle_object, vars::common::CSTICK_LIFE, 0);
+    }
+}
+
 pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     
     
@@ -136,5 +148,6 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleA
     //sliding_smash_disable(fighter, boma, status_kind, fighter_kind);
     buffered_cstick_aerial_fixes(fighter, boma, status_kind);
     airdodge_refresh_on_hit_disable(boma, status_kind);
+    cstick_override_detection(fighter);
 }
 

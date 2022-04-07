@@ -18,7 +18,8 @@ pub fn install() {
         uniq_process_JumpSquat_exec_status,
         uniq_process_JumpSquat_exec_status_param,
         sub_jump_squat_uniq_check_sub,
-        sub_jump_squat_uniq_check_sub_mini_attack
+        sub_jump_squat_uniq_check_sub_mini_attack,
+        sub_status_JumpSquat_check_stick_lr_update
     );
 }
 /***
@@ -76,7 +77,8 @@ unsafe extern "C" fn status_pre_JumpSquat_param(fighter: &mut L2CFighterCommon, 
 #[common_status_script(status = FIGHTER_STATUS_KIND_JUMP_SQUAT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
     symbol = "_ZN7lua2cpp16L2CFighterCommon16status_JumpSquatEv")]
 unsafe fn status_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.status_JumpSquat_common(L2CValue::Bool(false));
+    let lr_update = fighter.sub_status_JumpSquat_check_stick_lr_update();
+    fighter.status_JumpSquat_common(lr_update);
     fighter.sub_shift_status_main(L2CValue::Ptr(status_JumpSquat_Main as *const () as _))
 }
 
@@ -191,6 +193,11 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
     }
     // I think this int might be referring to how many frames we check for tap jump?
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE);
+    // `lr_update` comes from a dif subroutine
+    if lr_update.get_bool() {
+        PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    }
     ControlModule::reset_flick_y(fighter.module_accessor);
     ControlModule::reset_flick_sub_y(fighter.module_accessor);
     fighter.global_table[FLICK_Y].assign(&0xFE.into());
@@ -441,4 +448,10 @@ unsafe fn sub_jump_squat_uniq_check_sub_mini_attack(fighter: &mut L2CFighterComm
         }
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
     }
+}
+
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon42sub_status_JumpSquat_check_stick_lr_updateEv")]
+unsafe fn sub_status_JumpSquat_check_stick_lr_update(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
+    L2CValue::Bool(prev_status == *FIGHTER_STATUS_KIND_DASH && VarModule::get_int(fighter.battle_object, vars::common::CSTICK_LIFE) > 0)
 }
