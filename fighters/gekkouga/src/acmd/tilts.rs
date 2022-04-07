@@ -161,6 +161,43 @@ unsafe fn gekkouga_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "gekkouga", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
+unsafe fn gekkouga_attack_hi3_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gekkouga_attack_hi"), Hash40::new("gekkouga_attack_hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true, *EF_FLIP_XY);
+        EFFECT_FLW_POS(fighter, Hash40::new("gekkouga_splash"), Hash40::new("top"), 0, 5, 0, 0, 0, 0, 1.2, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), -5.5, 0, -2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("gekkouga_attack_arc"), Hash40::new("gekkouga_attack_arc"), Hash40::new("top"), -2, 13, 1.5, 152, -35, 97, 0.9, true, *EF_FLIP_YZ, 0.6);
+        LAST_EFFECT_SET_COLOR(fighter, 2, 2, 2);
+        LAST_EFFECT_SET_RATE(fighter, 2);
+        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("gekkouga_attack_arc"), Hash40::new("gekkouga_attack_arc"), Hash40::new("top"), -2, 13, 1.5, 152, -35, 97, 0.75, true, *EF_FLIP_YZ, 0.5);
+        LAST_EFFECT_SET_COLOR(fighter, 1.4, 1.4, 1.4);
+        LAST_EFFECT_SET_RATE(fighter, 2);
+        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("gekkouga_attack_arc"), Hash40::new("gekkouga_attack_arc"), Hash40::new("top"), -2, 13, 1.5, 152, -35, 97, 0.55, true, *EF_FLIP_YZ, 0.4);
+        LAST_EFFECT_SET_COLOR(fighter, 0.8, 0.8, 0.8);
+        LAST_EFFECT_SET_RATE(fighter, 2);
+        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("gekkouga_attack_arc"), Hash40::new("gekkouga_attack_arc"), Hash40::new("top"), -2, 13, 1.5, 152, -35, 97, 0.3, true, *EF_FLIP_YZ, 0.3);
+        LAST_EFFECT_SET_COLOR(fighter, 0.6, 0.6, 0.6);
+        LAST_EFFECT_SET_RATE(fighter, 2);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_spin_wind_s"), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("gekkouga_attack_arc"), true, true);
+    }
+    
+}
+
 #[acmd_script( agent = "gekkouga", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn gekkouga_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -211,6 +248,7 @@ pub fn install() {
         gekkouga_attack_s3_lw_game,
         gekkouga_attack_s3_lw_effect,
         gekkouga_attack_hi3_game,
+        gekkouga_attack_hi3_effect,
         gekkouga_attack_lw3_game,
         gekkouga_attack_lw3_effect,
     );
