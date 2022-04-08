@@ -94,7 +94,7 @@ unsafe fn metaknight_attack_air_f_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 34.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        FT_MOTION_RATE(fighter, 1.500);
+        //FT_MOTION_RATE(fighter, 1.200);
     }
     
 }
