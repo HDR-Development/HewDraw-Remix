@@ -189,7 +189,7 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
         app::sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
         fighter.pop_lua_stack(1).get_bool()
     } {
-        fighter.change_status(*FIGHTER_STATUS_KIND_APPEAL, false.into());
+        fighter.change_status(FIGHTER_STATUS_KIND_APPEAL.into(), false.into());
         return 1.into();
     }
     if 0 < WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_ENABLE_ATTACK_FRAME)
