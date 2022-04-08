@@ -17,8 +17,33 @@ unsafe fn hit_cancel_blade_switch(boma: &mut BattleObjectModuleAccessor, cat1: i
     }
 }
 
+unsafe fn lightning_buster_cancel(boma: &mut BattleObjectModuleAccessor,  motion_kind: u64, frame: f32) {
+    
+    if (motion_kind == hash40("special_n") || motion_kind == hash40("special_air_n"))
+        && frame > 10.0 && frame < 29.0 
+        && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK)
+    {
+        if !boma.is_in_hitlag() {
+            MotionModule::set_frame_sync_anim_cmd(boma, 29.0, true, true, false);   
+        }
+    }
+}
+
+unsafe fn photon_edge_shorten(boma: &mut BattleObjectModuleAccessor,  status_kind: i32) {
+
+    if status_kind == *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_FORWARD
+        && ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL)
+    {
+        if !boma.is_in_hitlag() {
+            boma.change_status_req(*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END, false);
+        }
+    }
+}
+
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     hit_cancel_blade_switch(boma, cat[0], status_kind, situation_kind, motion_kind);
+    lightning_buster_cancel(boma, motion_kind, frame);
+    photon_edge_shorten(boma, status_kind);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_ELIGHT )]
