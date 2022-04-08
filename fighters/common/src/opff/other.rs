@@ -46,9 +46,15 @@ pub unsafe fn ecb_visualizer(boma: &mut BattleObjectModuleAccessor) {
     EffectModule::req_2d(boma, Hash40::new("sys_ripstick_bullet"), &pos_bottom, &Vector3f::zero(), 0.25, 0);
 }
 
-pub unsafe fn damage_slideoff_airdodge_disable(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+pub unsafe fn buffer_clearing(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    // disables buffered airdodge inputs during low-angle knockback edge slideoff states (prevents late tech inputs from triggering airdodge)
 	if [*FIGHTER_STATUS_KIND_DOWN, *FIGHTER_STATUS_KIND_DOWN_WAIT, *FIGHTER_STATUS_KIND_SLIP_WAIT, *FIGHTER_STATUS_KIND_DAMAGE].contains(&status_kind) {
         ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+    }
+    // disables buffered wiggle inputs during high knockback
+    if [*FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL].contains(&status_kind) {
+        ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_DASH);
+        ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_TURN_DASH);
     }
 }
 
@@ -123,24 +129,12 @@ pub unsafe fn airdodge_refresh_on_hit_disable(boma: &mut BattleObjectModuleAcces
     VarModule::set_flag(boma.object(), vars::common::PREV_FLAG_DISABLE_ESCAPE_AIR, WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR));
 }
 
-pub unsafe fn tumble_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FALL {
-        if fighter.global_table[CURRENT_FRAME].get_i32() <= 20 {
-            VarModule::on_flag(boma.object(), vars::common::DISABLE_AIRDODGE);
-        }
-        else {
-            VarModule::off_flag(boma.object(), vars::common::DISABLE_AIRDODGE);
-        }
-    }
-}
-
 pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     
     
-    damage_slideoff_airdodge_disable(boma, status_kind);
-    sliding_smash_disable(fighter, boma, status_kind, fighter_kind);
+    buffer_clearing(boma, status_kind);
+    //sliding_smash_disable(fighter, boma, status_kind, fighter_kind);
     buffered_cstick_aerial_fixes(fighter, boma, status_kind);
     airdodge_refresh_on_hit_disable(boma, status_kind);
-    tumble_timer(fighter, boma, status_kind);
 }
 

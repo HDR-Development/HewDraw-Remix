@@ -48,10 +48,10 @@ unsafe fn teleport_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i3
 // Neutral Special Cancels
 unsafe fn neutral_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
             if boma.is_input_jump() {
                 if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_jump_count() < boma.get_jump_count_max() {
+                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, true);
                     }
                 } else if situation_kind == *SITUATION_KIND_GROUND {

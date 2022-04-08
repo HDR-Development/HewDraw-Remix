@@ -112,7 +112,7 @@ pub mod vars {
         pub const IS_MOONWALK: i32 = 57;
         pub const CAN_GLIDE_TOSS: i32 = 58;
         pub const IS_MOONWALK_JUMP: i32 = 59;
-        pub const ENABLE_DOUBLE_TRACTION: i32 = 60;
+        pub const IS_MOTION_BASED_ATTACK: i32 = 60;
         pub const PREV_FLAG_DISABLE_ESCAPE_AIR: i32 = 61;
         pub const ENABLE_WAVELAND_PLATDROP: i32 = 62;
         pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 63;
@@ -126,7 +126,7 @@ pub mod vars {
         pub const DISABLE_BACKDASH: i32 = 71;
         pub const IS_LATE_PIVOT: i32 = 72;
         pub const IS_TURNDASH_INPUT: i32 = 73;
-        pub const IS_BACKDASH: i32 = 74;
+        pub const IS_SMASH_TURN: i32 = 74;
         pub const IS_STICKY_WALK: i32 = 75;
         pub const ENABLE_BOOST_RUN: i32 = 76;
         pub const UP_SPECIAL_JUMP_REFRESH_WINDOW: i32 = 77;
@@ -134,7 +134,8 @@ pub mod vars {
         pub const ENABLE_AIR_ESCAPE_JUMPSQUAT: i32 = 79;
         pub const SHOULD_WAVELAND: i32 = 80;
         pub const SIDE_SPECIAL_CANCEL_NO_HIT: i32 = 81;
-
+        pub const JUMP_NEXT: i32 = 82;
+        pub const IS_JAB_LOCK_ROLL: i32 = 83;
         
 
         // int
@@ -150,6 +151,7 @@ pub mod vars {
         pub const ATTACK_DASH_CANCEL_FRAME: i32 = 0xA;
         pub const AIR_ESCAPE_MAGNET_FRAME: i32 = 0xB;
         pub const TURN_DASH_FRAME: i32 = 0xC;
+        pub const DOWN_STAND_FB_KIND: i32 = 0xD;
 
         // float
         pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0;
@@ -303,6 +305,9 @@ pub mod vars {
     pub mod palutena {
         // floats
         pub const SPECIAL_LW_LR: i32 = 0x1000;
+
+        // flags
+        pub const SPECIAL_LW_AEGIS_REFLECTOR: i32 = 0x1000;
     }
 
     pub mod miiswordsman {

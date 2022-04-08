@@ -17,7 +17,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
     // Disallow airdodge out of tumble until you reach your stable fall speed
     if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR
         && ([*FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR].contains(&status_kind)
-        || (status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FALL && VarModule::is_flag(boma.object(), vars::common::DISABLE_AIRDODGE)))  {
+        || (status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FALL && get_fighter_common_from_accessor(boma).global_table[CURRENT_FRAME].get_i32() <= 20))  {
         return false;
     }
 
@@ -25,23 +25,11 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
         if ([*FIGHTER_STATUS_KIND_DASH, *FIGHTER_STATUS_KIND_TURN_DASH].contains(&status_kind) && MotionModule::frame(boma) < ((MotionModule::end_frame(boma) * 0.5645).ln()) * 9.2157) {
             return false;
         }
-        if status_kind == *FIGHTER_STATUS_KIND_RUN_BRAKE && VarModule::is_flag(boma.object(), vars::common::IS_STICKY_WALK) {
-            let fighter = get_fighter_common_from_accessor(boma);
-            if fighter.global_table[CURRENT_FRAME].get_i32() < 20 {
-                return false;
-            }
-        }
     }
 
     if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT {
         if ([*FIGHTER_STATUS_KIND_DASH, *FIGHTER_STATUS_KIND_TURN_DASH].contains(&status_kind) && MotionModule::frame(boma) < ((MotionModule::end_frame(boma) * 0.5645).ln()) * 9.2157) {
             return false;
-        }
-        if status_kind == *FIGHTER_STATUS_KIND_RUN_BRAKE && VarModule::is_flag(boma.object(), vars::common::IS_STICKY_WALK) {
-            let fighter = get_fighter_common_from_accessor(boma);
-            if fighter.global_table[CURRENT_FRAME].get_i32() < 20 {
-                return false;
-            }
         }
     }
 

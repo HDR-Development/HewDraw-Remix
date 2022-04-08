@@ -12,3 +12,12 @@ scripts/log.txt
 scripts/tmp
 rust-toolchain
 plugin/hdr_version.txt
+**/*.zip
+**/*package/
+**/zips/
+*.zip
+**/content_hashes.txt
+**/diff/
+scripts/artifacts/upgrade_deletions.txt
+**/upgrade/
+**/upgrade_artifacts/

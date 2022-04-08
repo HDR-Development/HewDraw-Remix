@@ -23,7 +23,8 @@ unsafe fn jab_cancels(fighter: &mut L2CFighterCommon) {
         return;
     }
 
-    if !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+    if !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    || fighter.is_in_hitlag() {
         return;
     }
 
@@ -44,7 +45,8 @@ unsafe fn jab_cancels(fighter: &mut L2CFighterCommon) {
 
 unsafe fn dash_attack_cancels(fighter: &mut L2CFighterCommon) {
     if !fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_DASH)
-    || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+    || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    || fighter.is_in_hitlag() {
         return;
     }
 
@@ -67,6 +69,7 @@ unsafe fn tilt_cancels(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_ATTACK_LW3
     ])
     || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    || fighter.is_in_hitlag()
     {
         return;
     }
@@ -110,12 +113,13 @@ unsafe fn tilt_cancels(fighter: &mut L2CFighterCommon) {
 unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
     if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F])
     || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    || fighter.is_in_hitlag()
     {
         return;
     }
 
-    if fighter.is_input_jump()
-    && fighter.get_jump_count() < fighter.get_jump_count_max()
+    if fighter.is_input_jump() && !fighter.is_in_hitlag()
+    && fighter.get_num_used_jumps() < fighter.get_jump_count_max()
     {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
         return;

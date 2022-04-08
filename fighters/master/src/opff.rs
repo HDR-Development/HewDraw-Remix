@@ -29,7 +29,7 @@ unsafe fn amyr_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situa
         *FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_LANDING_1,
         *FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_LANDING_2,
         *FIGHTER_STATUS_KIND_SPECIAL_LW].contains(&status_kind) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
             if situation_kind == *SITUATION_KIND_GROUND {
                 if boma.is_input_jump() {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
@@ -43,7 +43,7 @@ unsafe fn amyr_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situa
 unsafe fn areadbhar_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     if [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_FRONT,
         *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
             if situation_kind == *SITUATION_KIND_GROUND {
                 if boma.is_cat_flag(Cat1::Dash) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
@@ -60,7 +60,7 @@ unsafe fn areadbhar_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_ki
 unsafe fn dsmash_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32, frame: f32) {
     if [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_FRONT,    // ?
         *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
             if frame > 28.0 {
                 if boma.is_cat_flag(Cat1::Dash) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);

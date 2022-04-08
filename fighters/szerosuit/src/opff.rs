@@ -25,8 +25,8 @@ unsafe fn flip_jump_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
         || motion_kind == hash40("special_lw_start")
         || motion_kind == hash40("special_air_lw_start") {
         if frame > 20.0 {
-            if boma.is_input_jump() {
-                if boma.get_jump_count() < boma.get_jump_count_max() {
+            if boma.is_input_jump() && !boma.is_in_hitlag() {
+                if boma.get_num_used_jumps() < boma.get_jump_count_max() {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                 }
             }

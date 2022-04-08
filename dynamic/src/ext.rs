@@ -347,6 +347,7 @@ pub trait BomaExt {
     unsafe fn is_flick_y(&mut self, sensitivity: f32) -> bool;
     unsafe fn is_input_jump(&mut self) -> bool;
     unsafe fn get_aerial(&mut self) -> Option<AerialKind>;
+    unsafe fn set_joint_rotate(&mut self, bone_name: &str, rotation: Vector3f);
     /// returns whether or not the stick x is pointed in the "forwards" direction for
     /// a character
     unsafe fn is_stick_forward(&mut self) -> bool;
@@ -364,7 +365,11 @@ pub trait BomaExt {
     unsafe fn is_prev_situation(&mut self, kind: i32) -> bool;
     unsafe fn is_motion(&mut self, motion: Hash40) -> bool;
     unsafe fn is_motion_one_of(&mut self, motions: &[Hash40]) -> bool;
-    unsafe fn get_jump_count(&mut self) -> i32;
+
+    /// gets the number of jumps that have been used
+    unsafe fn get_num_used_jumps(&mut self) -> i32;
+
+    /// gets the max allowed number of jumps for this character
     unsafe fn get_jump_count_max(&mut self) -> i32;
     unsafe fn motion_frame(&mut self) -> f32;
     unsafe fn set_rate(&mut self, motion_rate: f32);
@@ -592,7 +597,7 @@ impl BomaExt for BattleObjectModuleAccessor {
         return smash::app::utility::get_kind(self);
     }
 
-    unsafe fn get_jump_count(&mut self) -> i32 {
+    unsafe fn get_num_used_jumps(&mut self) -> i32 {
         return WorkModule::get_int(self, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
     }
 
@@ -652,6 +657,10 @@ impl BomaExt for BattleObjectModuleAccessor {
         WorkModule::get_param_int64(self, Hash40::new(obj).hash, Hash40::new(field).hash)
     }
 
+
+    unsafe fn set_joint_rotate(&mut self, bone_name: &str, rotation: Vector3f) {
+        ModelModule::set_joint_rotate(self, Hash40::new(&bone_name), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
+    }
 
 }
 

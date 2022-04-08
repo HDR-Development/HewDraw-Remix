@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::fighter_common_opff);
+utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
 use super::*;
 use globals::*;
 
@@ -32,19 +32,9 @@ unsafe fn dtaunt_counter(boma: &mut BattleObjectModuleAccessor, motion_kind: u64
 }
 
 // Warlock Punch B-Reverse
-unsafe fn warlock_punch_b_reverse(boma: &mut BattleObjectModuleAccessor, id: usize, motion_kind: u64, stick_x: f32, facing: f32, frame: f32) {
-    if motion_kind == hash40("special_air_n") {
-        if frame < 5.0 {
-            if stick_x * facing < 0.0 {
-                PostureModule::reverse_lr(boma);
-                PostureModule::update_rot_y_lr(boma);
-                if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(boma.object(), vars::common::B_REVERSED) {
-                    let b_reverse = Vector3f{x: -1.0, y: 1.0, z: 1.0};
-                    KineticModule::mul_speed(boma, &b_reverse, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                    VarModule::on_flag(boma.object(), vars::common::B_REVERSED);
-                }
-            }
-        }
+unsafe fn warlock_punch_b_reverse(fighter: &mut L2CFighterCommon) {
+    if fighter.is_motion(Hash40::new("special_air_n")) {
+        common::opff::check_b_reverse(fighter);
     }
 }
 
@@ -75,11 +65,11 @@ unsafe fn repeated_warlock_punch_turnaround(boma: &mut BattleObjectModuleAccesso
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     aerial_wiz_foot_jump_reset_bounce(boma, status_kind, situation_kind);
     wizards_foot_b_reverse(boma, id, status_kind, stick_x, facing, frame);
     //dtaunt_counter(boma, motion_kind, frame);
-    warlock_punch_b_reverse(boma, id, motion_kind, stick_x, facing, frame);
+    warlock_punch_b_reverse(fighter);
     repeated_warlock_punch_turnaround(boma, status_kind, stick_x, facing, frame);
 }
 
@@ -93,6 +83,6 @@ pub fn ganon_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn ganon_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
