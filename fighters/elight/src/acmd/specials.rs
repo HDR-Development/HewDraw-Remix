@@ -54,6 +54,47 @@ unsafe fn game_specialairhi1(fighter: &mut L2CAgentBase) {
     manage_sword_motion(fighter, Hash40::new("to_close"));
 }
 
+#[acmd_script(agent = "elight", script = "game_specialairhi2", category = ACMD_GAME)]
+unsafe fn game_specialairhi2(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    frame(lua_state, 1.0);
+
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, GROUND_CLIFF_CHECK_KIND_NONE);
+    }
+
+    manage_sword_motion(fighter, Hash40::new("to_open"));
+
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_SPREADBULLET, false, -1);
+    }
+
+    frame(lua_state, 24.0);
+
+    if is_excute(fighter) {
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_SPREADBULLET, false, -1);
+    }
+
+    frame(lua_state, 25.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_SPREADBULLET, false, -1);
+    }
+
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_SPREADBULLET, false, -1);
+    }
+
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_SPREADBULLET, false, -1);
+    }
+
+    frame(lua_state, 29.0);
+    manage_sword_motion(fighter, Hash40::new("to_close"));
+}
+
 #[acmd_script(agent = "elight", script = "effect_specialairhi1", category = ACMD_EFFECT)]
 unsafe fn effect_specialairhi1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -79,6 +120,96 @@ unsafe fn effect_specialairhi1(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("elight_sword_beam_m"), true, true);
         EFFECT_FOLLOW(fighter, Hash40::new("elight_sword_close_m"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
         LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(fighter, -0.3);
+    }
+}
+
+#[acmd_script(agent = "elight", script = "effect_specialairhi2", category = ACMD_EFFECT)]
+unsafe fn effect_specialairhi2(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("sword1"), 12, 0, -1.7, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.2);
+    }
+    
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("elight_sword_open"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(fighter, -0.3);
+    }
+    
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("elight_sword_open"), true, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("elight_sword_beam_m"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(fighter, -0.3);
+        EFFECT(fighter, Hash40::new("elight_lay_dust_shot"), Hash40::new("sword1"), 6, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("elight_sword_beam_m"), true, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("elight_sword_close_m"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(fighter, -0.3);
+    }
+}
+
+#[acmd_script(agent = "elight", script = "sound_specialairhi1", category = ACMD_SOUND)]
+unsafe fn sound_specialairhi1(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new_raw(0x1a1b87a0dc));
+    }
+    
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_elight_special_h02_01_shot"));
+    }
+}
+
+#[acmd_script(agent = "elight", script = "sound_specialairhi2", category = ACMD_SOUND)]
+unsafe fn sound_specialairhi2(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new_raw(0x1a9d13d272));
+    }
+    
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_elight_special_h03_shot"));
+    }
+}
+
+#[acmd_script(agent = "elight", script = "expression_specialairhi1", category = ACMD_EFFECT)]
+unsafe fn expression_specialairhi1(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
+    }
+    
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_beams"), 0, false, 0x50000000);
+    }
+}
+
+
+#[acmd_script(agent = "elight", script = "expression_specialairhi2", category = ACMD_EFFECT)]
+unsafe fn expression_specialairhi2(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
+    }
+    
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_79_beams"), 0, false, 0x50000000);
     }
 }
 
@@ -152,9 +283,17 @@ unsafe fn game_specialairhijump(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         game_specialairhi1,
+        game_specialairhi2,
         game_specialairhijump,
 
-        effect_specialairhi1
+        effect_specialairhi1,
+        effect_specialairhi2,
+
+        sound_specialairhi1,
+        sound_specialairhi2,
+
+        expression_specialairhi1,
+        expression_specialairhi2,
     );
 }
 
