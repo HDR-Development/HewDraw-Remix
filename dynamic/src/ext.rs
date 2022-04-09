@@ -311,6 +311,7 @@ pub trait MainShift {
 
 pub trait FastShift {
     fn fast_shift(&mut self, new_main: unsafe extern "C" fn(&mut L2CFighterBase) -> L2CValue) -> L2CValue;
+    fn change_to_custom_status(&mut self, id: i32, clear_cat: bool, common: bool);
 }
 
 impl MainShift for L2CFighterCommon {
@@ -325,6 +326,20 @@ impl FastShift for L2CFighterBase {
     fn fast_shift(&mut self, new_main: unsafe extern "C" fn(&mut L2CFighterBase) -> L2CValue) -> L2CValue {
         unsafe {
             self.fastshift(L2CValue::Ptr(new_main as *const () as _))
+        }
+    }
+
+    fn change_to_custom_status(&mut self, id: i32, clear_cat: bool, common: bool) {
+        use crate::CustomStatusModule;
+
+        let kind = if common {
+            CustomStatusModule::get_common_status_kind(self.battle_object, id)
+        } else {
+            CustomStatusModule::get_agent_status_kind(self.battle_object, id)
+        };
+
+        unsafe {
+            self.change_status(kind.into(), clear_cat.into())
         }
     }
 }
@@ -1052,4 +1067,12 @@ impl StatusInfo {
         self
     }
 
+}
+
+pub fn is_hdr_available() -> bool {
+    let mut symbol = 0usize;
+    unsafe {
+        skyline::nn::ro::LookupSymbol(&mut symbol, "hdr_is_available\0".as_ptr());
+    }
+    symbol != 0
 }

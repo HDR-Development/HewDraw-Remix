@@ -57,14 +57,14 @@ unsafe fn special_hi_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         // [v] this makes the angle to the right going clockwise (negative angle) and the angle to the left counter clockwise (positive angle)
         //      it also gets the back and front limits
         let angle = angle_from_vertical * stick.x.signum() * -1.0;
-        let back = fighter.get_param_float("param_special_hi", "jump_angle_limit_back");
-        let front = fighter.get_param_float("param_special_hi", "jump_angle_limit_front");
+        let back = 10.0; // fighter.get_param_float("param_special_hi", "jump_angle_limit_back");
+        let front = 30.0; // fighter.get_param_float("param_special_hi", "jump_angle_limit_front");
 
         // [v] reverse the params depending on LR
         let angle = if PostureModule::lr(fighter.module_accessor) < 0.0 {
-            angle.clamp(-front, back)
-        } else {
             angle.clamp(-back, front)
+        } else {
+            angle.clamp(-front, back)
         };
 
         // [v] convert the angle to radians and apply the new angle
@@ -97,7 +97,8 @@ unsafe extern "C" fn special_hi_jump_main_loop(fighter: &mut L2CFighterCommon) -
 
     // [v] exit early if the animation is not over, since the end of this function
     //      forces a status change one way or the other
-    if !MotionModule::is_end(fighter.module_accessor) {
+    // [h] instead of checking MotionModule::is_end we check for if we are beyond the input frame
+    if fighter.motion_frame() < 15.0 {
         return 0.into();
     }
 
@@ -106,11 +107,21 @@ unsafe extern "C" fn special_hi_jump_main_loop(fighter: &mut L2CFighterCommon) -
         fighter.on_flag(*FIGHTER_ELIGHT_STATUS_SPECIAL_HI_FLAG_SPREADBULLET);
     }
 
+    if fighter.is_button_on(Buttons::Special) {
+        VarModule::set_int(fighter.battle_object, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK1);
+    } else if fighter.is_button_on(Buttons::Attack) {
+        VarModule::set_int(fighter.battle_object, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK2);
+    }
+
     // [v] if we are using spreadbullet then switch to Attack2 and not Attack1
-    if fighter.is_flag(*FIGHTER_ELIGHT_STATUS_SPECIAL_HI_FLAG_SPREADBULLET) {
-        fighter.change_status(FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK2.into(), false.into());
-    } else {
-        fighter.change_status(FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK1.into(), false.into());
+    // [h] instead of using the spreadbullet flag, we use a custom VarModule int to
+    //      determine what kind of action we are going into here. it is initialized
+    //      in the SpecialHi script and then changed depending on the inputs
+    match dbg!(VarModule::get_int(fighter.battle_object, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION)) {
+        vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK1 => fighter.change_status(FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK1.into(), false.into()),
+        vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK2 => fighter.change_status(FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK2.into(), false.into()),
+        vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_FALL    => fighter.change_to_custom_status(statuses::elight::SPECIAL_HI_FINISH2, false, false),
+        _ => {} // undefined behavior
     }
 
     0.into()

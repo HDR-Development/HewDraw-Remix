@@ -13,7 +13,8 @@ unsafe fn hit_cancel_blade_switch(fighter: &mut smash::lua2cpp::L2CFighterCommon
         *FIGHTER_STATUS_KIND_ATTACK_DASH,
         *FIGHTER_STATUS_KIND_ATTACK_S4,
         *FIGHTER_STATUS_KIND_ATTACK_HI4,
-        *FIGHTER_STATUS_KIND_ATTACK_LW4
+        *FIGHTER_STATUS_KIND_ATTACK_LW4,
+        *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP
     ]) || fighter.is_motion(Hash40::new("attack_13")))
     && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     && fighter.is_cat_flag(Cat1::SpecialLw)
