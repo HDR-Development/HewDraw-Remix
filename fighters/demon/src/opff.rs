@@ -9,11 +9,11 @@ unsafe fn slaughter_high_kick_devastator(boma: &mut BattleObjectModuleAccessor, 
         if WorkModule::is_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_HI_3_FLAG_CHECK_STEP){
             if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3
                                     | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4){
-               if boma.is_stick_backward() {
+               if boma.is_stick_backward() && !boma.is_in_hitlag() {
                     VarModule::on_flag(boma.object(), vars::demon::SLAUGHTER_HIGH_KICK);
                     boma.change_status_req(*FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_5, false);
                }
-               if boma.is_stick_forward() {
+               if boma.is_stick_forward() && !boma.is_in_hitlag() {
                     VarModule::on_flag(boma.object(), vars::demon::DEVASTATOR);
                     boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK, false);
                }
@@ -40,6 +40,35 @@ unsafe fn jaw_breaker(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_k
         VarModule::off_flag(boma.object(), vars::demon::JAW_BREAKER);
     }
 }
+unsafe fn lightning_screw_uppercut(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
+    if motion_kind == hash40("attack_stand_21") {
+        if frame < 18.0{
+            if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
+                VarModule::on_flag(boma.object(), vars::demon::LIGHTNING_SCREW_UPPERCUT);
+                
+            }
+        }
+        else{
+            if VarModule::is_flag(boma.object(), vars::demon::LIGHTNING_SCREW_UPPERCUT){
+                MotionModule::change_motion_force_inherit_frame(boma, Hash40::new("attack_stand_22"), 0.0, 1.2, 0.0);
+            }
+        }
+        
+    }
+    if motion_kind == hash40("attack_stand_22") && frame > 15.0 {
+        if VarModule::is_flag(boma.object(), vars::demon::LIGHTNING_SCREW_UPPERCUT){
+            MotionModule::change_motion_force_inherit_frame(boma, Hash40::new("attack_stand_23"), 0.0, 1.15, 0.0);
+        }
+    }
+    if motion_kind == hash40("attack_stand_23") && frame > 15.0 {
+        if VarModule::is_flag(boma.object(), vars::demon::LIGHTNING_SCREW_UPPERCUT){
+            boma.change_status_req(*FIGHTER_DEMON_STATUS_KIND_ATTACK_STEP_2L, false);
+        }
+    }
+    if ![hash40("attack_stand_21"), hash40("attack_stand_22"), hash40("attack_stand_23"), hash40("attack_step_2l")].contains(&motion_kind) {
+        VarModule::off_flag(boma.object(), vars::demon::LIGHTNING_SCREW_UPPERCUT);
+    }
+}
 
 unsafe fn korean_back_dash(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, stick_y: f32) {
     if boma.is_status(*FIGHTER_DEMON_STATUS_KIND_DASH_BACK)
@@ -63,6 +92,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     slaughter_high_kick_devastator(boma, cat[0], status_kind, situation_kind, motion_kind);
     jaw_breaker(boma, cat[0], status_kind, situation_kind, motion_kind, frame);
     korean_back_dash(boma, cat[0], status_kind, stick_y);
+    lightning_screw_uppercut(boma, cat[0], status_kind, situation_kind, motion_kind, frame);
     common::opff::backdash_energy(fighter);
 }
 
