@@ -36,7 +36,27 @@ use utils::{
 };
 use smashline::*;
 
+unsafe extern "C" fn jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_pre_Jump()
+}
+
+unsafe extern "C" fn jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_Jump()
+}
+
+unsafe extern "C" fn jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_end_Jump()
+}
+
 pub fn install(is_runtime: bool) {
+    CustomStatusManager::add_new_agent_status_script(
+        Hash40::new("fighter_kind_elight"),
+        0,
+        StatusInfo::new()
+            .with_pre(jump_pre)
+            .with_main(jump)
+            .with_end(jump_end)
+    );
     acmd::install();
     status::install();
     opff::install(is_runtime);
