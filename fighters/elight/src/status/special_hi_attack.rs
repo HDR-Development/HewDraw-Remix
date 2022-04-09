@@ -64,6 +64,8 @@ unsafe fn special_hi_attack2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "elight", status = FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK1, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_hi_attack1_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // [v] special_hi_attack1 and special_hi_attack2 both use the same inner block they just start
+    //      with different motions
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi1"), 0.0, 1.0, false, 0.0, false, false);
     fighter.main_shift(special_hi_attack_main_loop)
 }
@@ -71,15 +73,19 @@ unsafe fn special_hi_attack1_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "elight", status = FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_hi_attack2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // [v] special_hi_attack1 and special_hi_attack2 both use the same inner block they just start
+    //      with different motions
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi2"), 0.0, 1.0, false, 0.0, false, false);
     fighter.main_shift(special_hi_attack_main_loop)
 }
 
 unsafe extern "C" fn special_hi_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // [v] check if you have grabbed a ledge
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
 
+    // [v] no extra logic, just transition immediatley into the finish script
     if MotionModule::is_end(fighter.module_accessor) {
         fighter.change_status(FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_FINISH.into(), false.into());
     }
@@ -89,11 +95,13 @@ unsafe extern "C" fn special_hi_attack_main_loop(fighter: &mut L2CFighterCommon)
 
 #[status_script(agent = "elight", status = FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK1, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn special_hi_attack1_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // [v] empty status
     0.into()
 }
 
 #[status_script(agent = "elight", status = FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn special_hi_attack2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // [v] empty status
     0.into()
 }
 
