@@ -128,6 +128,16 @@ unsafe fn game_attackhi32(fighter: &mut L2CAgentBase) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         AttackModule::clear_all(boma);
     }
+    frame(lua_state, 25.0);
+    if is_excute(fighter) {
+        if !VarModule::is_flag(fighter.battle_object, vars::demon::JAW_BREAKER){
+            FT_MOTION_RATE(fighter, 5.0/(35.0-25.0));
+        }
+    }
+    frame(lua_state, 35.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
     
 }
 
@@ -141,13 +151,16 @@ unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+        FT_MOTION_RATE(fighter, 2.0/(16.0-12.0));
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_FLAG_CHECK_STEP);
+
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
         // Ground-only
         ATTACK(fighter, 0, 0, Hash40::new("armr"), 11.0, 271, 20, 0, 100, 4.0, 7.0, 0.0, 0.0, None, None, None, 0.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_ATTACKLW3, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 1, 0, Hash40::new("armr"), 11.0, 271, 20, 0, 100, 3.0, 3.5, 0.0, 0.0, None, None, None, 0.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_ATTACKLW3, *ATTACK_REGION_PUNCH);
@@ -163,6 +176,14 @@ unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
     wait(lua_state, 3.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 7.0/(30.0-20.0));
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
     }
     
 }

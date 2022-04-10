@@ -167,7 +167,7 @@ unsafe fn kazuya_electric_wind_god_fist_game(fighter: &mut L2CAgentBase) {
 unsafe fn kazuya_spinning_demon_to_left_hook_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 9.0);
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
         KineticModule::add_speed(boma, &Vector3f::new(0.1, 0.0, 0.0));
     }
