@@ -190,7 +190,7 @@ pub unsafe fn shotos_moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
     training_mode_full_meter(fighter, boma, status_kind);
 
     // Magic Series
-    magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
+    //magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
 
     if fighter.is_button_on(Buttons::AppealAll) {
         MeterModule::show(fighter.battle_object);

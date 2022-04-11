@@ -261,6 +261,10 @@ pub mod vars {
         pub const IS_MAGIC_SERIES_CANCEL: i32 = 0x1001;
         pub const SHOULD_COMBOS_SCALE: i32 = 0x1002;
         pub const REPEAT_INCREMENTED: i32 = 0x1003;
+        pub const IS_ENABLE_MAGIC_SERIES_CANCEL: i32 = 0x1004;
+        pub const IS_ENABLE_FADC: i32 = 0x1005;
+        pub const IS_TARGET_COMBO_1: i32 = 0x1006;
+        pub const IS_TARGET_COMBO_2: i32 = 0x1006;
 
         // ints
         pub const REPEAT_COUNT_LW: i32 = 0x1000;
