@@ -104,19 +104,19 @@ unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
     // Jab 1 cancels
     if boma.is_motion(Hash40::new("attack_11_w")) {
         if boma.is_cat_flag(Cat1::AttackS3) {
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_S3
+            new_status = *FIGHTER_STATUS_KIND_ATTACK_S3;
         } else if boma.is_cat_flag(Cat1::AttackHi3) {
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_HI3
+            new_status = *FIGHTER_STATUS_KIND_ATTACK_HI3;
         } else if boma.is_cat_flag(Cat1::AttackLw3) {
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_LW3
+            new_status = *FIGHTER_STATUS_KIND_ATTACK_LW3;
         }
         // Tilt cat flags override smash cat flags, need to check smashes separately after tilts so the smash input can be properly detecetd
         if boma.is_cat_flag(Cat1::AttackS4) {
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_S4_START
+            new_status = *FIGHTER_STATUS_KIND_ATTACK_S4_START;
         } else if boma.is_cat_flag(Cat1::AttackHi4) {
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_HI4_START
+            new_status = *FIGHTER_STATUS_KIND_ATTACK_HI4_START;
         } else if boma.is_cat_flag(Cat1::AttackLw4) {
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_LW4_START
+            new_status = *FIGHTER_STATUS_KIND_ATTACK_LW4_START;
         } 
         if !(  boma.is_cat_flag(Cat1::AttackS3)
             || boma.is_cat_flag(Cat1::AttackHi3)
@@ -130,11 +130,11 @@ unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
     // Jab 2 cancels
     else if boma.is_motion(Hash40::new("attack_12")) {
         if boma.is_cat_flag(Cat1::AttackS4) {
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_S4_START
+            new_status = *FIGHTER_STATUS_KIND_ATTACK_S4_START;
         } else if boma.is_cat_flag(Cat1::AttackHi4) {
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_HI4_START
+            new_status = *FIGHTER_STATUS_KIND_ATTACK_HI4_START;
         } else if boma.is_cat_flag(Cat1::AttackLw4) {
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_LW4_START
+            new_status = *FIGHTER_STATUS_KIND_ATTACK_LW4_START;
         } else {
             return;
         }
@@ -157,11 +157,11 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
     || boma.is_motion(Hash40::new("attack_lw3_s")) 
     || boma.is_motion(Hash40::new("attack_s3_s")) {
         if boma.is_cat_flag(Cat1::AttackS4) {
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_S4_START
+            new_status = *FIGHTER_STATUS_KIND_ATTACK_S4_START;
         } else if boma.is_cat_flag(Cat1::AttackHi4) {
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_HI4_START
+            new_status = *FIGHTER_STATUS_KIND_ATTACK_HI4_START;
         } else if boma.is_cat_flag(Cat1::AttackLw4) {
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_LW4_START
+            new_status = *FIGHTER_STATUS_KIND_ATTACK_LW4_START;
         } else {
             return;
         }
@@ -187,17 +187,17 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
 
     if !boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4){
         if boma.is_cat_flag(Cat1::SpecialN) {
-            new_status = *FIGHTER_STATUS_KIND_SPECIAL_N
+            new_status = *FIGHTER_STATUS_KIND_SPECIAL_N;
         } else if boma.is_cat_flag(Cat4::SpecialNCommand) {
-            new_status = *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND
+            new_status = *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND;
         } else if boma.is_cat_flag(Cat1::SpecialS) {
-            new_status = *FIGHTER_STATUS_KIND_SPECIAL_S
+            new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
         } else if boma.is_cat_flag(Cat4::SpecialSCommand) {
-            new_status = *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND
+            new_status = *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND;
         } else if boma.is_cat_flag(Cat1::SpecialHi) {
-            new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI
+            new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI;
         } else if boma.is_cat_flag(Cat4::SpecialHiCommand) {
-            new_status = *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND
+            new_status = *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND;
         } else if boma.is_cat_flag(Cat1::SpecialLw) {
             new_status = *FIGHTER_STATUS_KIND_SPECIAL_LW
         } else if boma.is_cat_flag(Cat4::Command1) {
