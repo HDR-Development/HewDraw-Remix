@@ -17,21 +17,40 @@ unsafe fn ken_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         MeterModule::watch_damage(fighter.battle_object, true);
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+        if VarModule::is_flag(fighter.battle_object, vars::ken::SHOULD_COMBOS_SCALE) {
+            
+        }
+        else{
+            WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+        }
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        // Kamabaraigeri hit 1
+        if VarModule::is_flag(fighter.battle_object, vars::ken::SHOULD_COMBOS_SCALE) {
+            ATTACK(fighter, 0, 0, Hash40::new("legr"), 3.0, 366, 55, 0, 45, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+            ATTACK(fighter, 1, 0, Hash40::new("kneer"), 3.0, 366, 55, 0, 45, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+            ATTACK(fighter, 2, 0, Hash40::new("kneer"), 3.0, 366, 55, 0, 45, 5.0, 6.0, 0.0, 0.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+         }
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-        if VarModule::is_flag(fighter.battle_object, vars::ken::SHOULD_COMBOS_SCALE) {
-            VarModule::off_flag(fighter.battle_object, vars::ken::SHOULD_COMBOS_SCALE);
-            ATTACK(fighter, 0, 0, Hash40::new("legr"), 12.0, 361, 55, 0, 45, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
-            ATTACK(fighter, 1, 0, Hash40::new("kneer"), 12.0, 361, 55, 0, 45, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
-            ATTACK(fighter, 2, 0, Hash40::new("kneer"), 12.0, 361, 55, 0, 45, 4.5, 6.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
-         }
-         else {
+        // Regular fsmash
+        if !VarModule::is_flag(fighter.battle_object, vars::ken::SHOULD_COMBOS_SCALE) {
             ATTACK(fighter, 0, 0, Hash40::new("legr"), 13.0, 361, 120, 0, 28, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
             ATTACK(fighter, 1, 0, Hash40::new("kneer"), 16.0, 361, 120, 0, 28, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
             ATTACK(fighter, 2, 0, Hash40::new("kneer"), 16.0, 361, 120, 0, 28, 3.5, 6.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+         }
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        // Kamabaraigeri hit 2
+        if VarModule::is_flag(fighter.battle_object, vars::ken::SHOULD_COMBOS_SCALE) {
+            MeterModule::watch_damage(fighter.battle_object, true); // Handle the second hit
+            ATTACK(fighter, 0, 1, Hash40::new("legr"), 7.0, 44, 55, 0, 65, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+            ATTACK(fighter, 1, 1, Hash40::new("kneer"), 7.0, 44, 55, 0, 65, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+            ATTACK(fighter, 2, 1, Hash40::new("kneer"), 7.0, 44, 55, 0, 65, 4.5, 6.0, 0.0, 0.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
          }
     }
     frame(lua_state, 17.0);
@@ -39,6 +58,12 @@ unsafe fn ken_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         MeterModule::watch_damage(fighter.battle_object, false);
         WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::ken::SHOULD_COMBOS_SCALE) {
+            FT_MOTION_RATE(fighter, 12.0/(MotionModule::end_frame(boma) + 1.0 - 30.0));
+        }
     }
     
 }

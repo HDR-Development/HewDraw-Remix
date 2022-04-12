@@ -6,8 +6,9 @@ use globals::*;
  
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
-    special_fadc_cancels(boma);
+    special_fadc_super_cancels(boma);
     target_combos(boma);
+    kamabaraigeri(boma, frame);
 }
 
 // symbol-based call for the shotos' common opff
@@ -30,7 +31,55 @@ pub unsafe fn ken_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-unsafe fn special_fadc_cancels(boma: &mut BattleObjectModuleAccessor) {
+// boma: its a boma
+// start_frame: frame to start interpolating the leg rotation
+// bend_frame: frame to interpolate to the intended angle amount until
+// return_frame: frame to start interpolating back to regular angle
+// straight_frame: frame the leg should be at the regular angle again
+unsafe fn fsmash_leg_rotate(boma: &mut BattleObjectModuleAccessor, start_frame: f32, bend_frame: f32, return_frame: f32, straight_frame: f32) {
+    let frame = MotionModule::frame(boma);
+    let end_frame = MotionModule::end_frame(boma);
+    let max_y_rotation = 20.0;
+    let max_z_rotation = 75.0;
+    let mut rotation = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+        
+    if frame >= start_frame && frame < return_frame {
+        // this has to be called every frame, or you snap back to the normal joint angle
+        // interpolate to the respective leg bend angle
+        let calc_y_rotate = max_y_rotation * (frame / (bend_frame - start_frame));
+        let y_rotation = calc_y_rotate.clamp(0.0, max_y_rotation);
+        let calc_z_rotate = max_z_rotation * (frame / (bend_frame - start_frame));
+        let z_rotation = calc_z_rotate.clamp(0.0, max_z_rotation);
+        rotation = Vector3f{x: 0.0, y: y_rotation, z: z_rotation};
+        ModelModule::set_joint_rotate(boma, Hash40::new("kneer"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
+    } else if frame >= return_frame && frame < straight_frame {
+        // linear interpolate back to normal
+        let calc_y_rotate = max_y_rotation *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
+        let y_rotation = calc_y_rotate.clamp(0.0, max_y_rotation);
+        let calc_z_rotate = max_z_rotation *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
+        let z_rotation = calc_z_rotate.clamp(0.0, max_z_rotation);
+        rotation = Vector3f{x: 0.0, y: y_rotation, z: z_rotation};
+        ModelModule::set_joint_rotate(boma, Hash40::new("kneer"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
+    }
+}
+
+// Kamabaraigeri: A special move from USFIV where Ken hits you with a roundhouse knee before extending his leg into a kick
+// Activated here via canceling into fsmash through magic series
+// Can be canceled into the axe kick like his other command kicks via holding the attack button
+unsafe fn kamabaraigeri(boma: &mut BattleObjectModuleAccessor, frame: f32) {
+    if boma.is_motion(Hash40::new("attack_s4_s")){
+        if VarModule::is_flag(boma.object(), vars::ken::SHOULD_COMBOS_SCALE) {
+            fsmash_leg_rotate(boma, 9.0, 12.0, 14.0, 16.0);
+        }
+        if frame >= (MotionModule::end_frame(boma) - 1.0) {
+            // Fix getting stuck in the anim due to not setting the charge flag
+            boma.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
+        }
+    }
+}
+
+
+unsafe fn special_fadc_super_cancels(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S,
                                *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
                                *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END,
@@ -45,8 +94,17 @@ unsafe fn special_fadc_cancels(boma: &mut BattleObjectModuleAccessor) {
             if boma.is_cat_flag(Cat1::SpecialLw){
                 if !StopModule::is_stop(boma) {
                     if MeterModule::drain(boma.object(), 1){
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
+                        boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_LW, true);
                     }
+                }
+            }
+            if boma.is_cat_flag(Cat4::SpecialSCommand | Cat4::SpecialHiCommand){
+                if !StopModule::is_stop(boma){
+                    if MeterModule::drain(boma.object(), 10) {
+                        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+                        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+                        boma.change_status_req(*FIGHTER_STATUS_KIND_FINAL, true);
+                    } 
                 }
             }
         }
@@ -56,6 +114,9 @@ unsafe fn special_fadc_cancels(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
+// Target combos:
+// 1: Prox jab into far heavy jab
+// 2: Prox ftilt into light ftilt
 unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_motion(Hash40::new("attack_11_near_s")){
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD){
@@ -233,14 +294,6 @@ unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
     
 }
 
-unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_cat_flag(Cat4::SpecialSCommand | Cat4::SpecialHiCommand)
-    {
-        super_fs_cancel(boma);
-        return;
-    }
-}
-
 unsafe fn magic_flag_reset(boma: &mut BattleObjectModuleAccessor) {
     if !(boma.is_motion_one_of(&[Hash40::new("attack_12"),
                                  Hash40::new("attack_s3_s_w"),
@@ -269,17 +322,6 @@ unsafe fn magic_flag_reset(boma: &mut BattleObjectModuleAccessor) {
                                    *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2])){
             VarModule::off_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
         }
-}
-
-unsafe fn super_fs_cancel(boma: &mut BattleObjectModuleAccessor) -> bool {
-    if MeterModule::drain(boma.object(), 10) {
-        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FINAL, true);
-        true
-    } else {
-        false
-    }
 }
 
 unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
@@ -311,15 +353,4 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         return;
     }
 
-    if boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_HI,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
-        *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END
-    ]) {
-        special_cancels(boma);
-        return;
-    }
 }
