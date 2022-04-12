@@ -208,6 +208,7 @@ pub mod vars {
         pub const UNABLE_CANCEL_S3_DASH: i32 = 0x1051;
         pub const IS_CHAIN_CANCEL: i32 = 0x1052;
         pub const IS_SHATTER_STRIKE: i32 = 0x1053;
+        pub const IS_STARTED_SPECIAL_B_GROUNDED: i32 = 0x1054;
     }
 
     pub mod duckhunt {
