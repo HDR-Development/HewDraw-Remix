@@ -5,7 +5,7 @@ pub unsafe fn special_hi_common_check_spreadbullet(fighter: &mut L2CFighterCommo
     //      the special button you aren't forced into spreadbullet. it should be
     //      noted how here it requires the `trigger` instead of holding it, so if you
     //      hold the button it also doesn't trigger until right before the move would come out
-    let frame = dbg!(fighter.get_int(*FIGHTER_ELIGHT_STATUS_SPECIAL_HI_INT_FRAME_FROM_START));
+    let frame = fighter.get_int(*FIGHTER_ELIGHT_STATUS_SPECIAL_HI_INT_FRAME_FROM_START);
 
     if frame <= 0 {
         return;
