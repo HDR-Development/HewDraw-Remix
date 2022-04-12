@@ -67,14 +67,6 @@ unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
             }
         }
     }
-    if VarModule::is_flag(boma.object(), vars::shotos::IS_TARGET_COMBO_2){
-        WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_NEAR_OPPONENT);
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_RELEASE_BUTTON);
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK);
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK_BRANCH_FRAME_FIRST);
-        ControlModule::clear_command(boma, true);
-        ControlModule::reset_button(boma);
-    }
     if boma.is_motion(Hash40::new("attack_near_w")){
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD){
             if boma.is_cat_flag(Cat1::AttackS3) && !VarModule::is_flag(boma.object(), vars::shotos::IS_TARGET_COMBO_2) {
@@ -83,20 +75,39 @@ unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
             }
             if VarModule::is_flag(boma.object(), vars::shotos::IS_TARGET_COMBO_2){
                 if !StopModule::is_stop(boma){
-                    MotionModule::change_motion(boma, Hash40::new("attack_s3_w"), -1.0, 1.0, false, 0.0, false, false);
+                    MotionModule::change_motion(boma, Hash40::new("attack_s3_s_w"), -1.0, 1.0, false, 0.0, false, false);
                 }
             }
         }
     }
+    if VarModule::is_flag(boma.object(), vars::shotos::IS_TARGET_COMBO_2){
+        /*
+        WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_NEAR_OPPONENT);
+        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_RELEASE_BUTTON);
+        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK);
+        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK_BRANCH_FRAME_FIRST);
+        */
+        //ControlModule::clear_command(boma, true);
+        //ControlModule::reset_button(boma);
+    }
+    /*
+    if boma.is_motion(Hash40::new("attack_s3_s_s")){
+        if VarModule::is_flag(boma.object(), vars::shotos::IS_TARGET_COMBO_2){
+            MotionModule::change_motion(boma, Hash40::new("attack_s3_s_w"), -1.0, 1.0, false, 0.0, false, false);
+        }
+    }
+    */
     if !(boma.is_motion_one_of(&[Hash40::new("attack_11_near_s"),
                                  Hash40::new("attack_11_s")])){
         VarModule::off_flag(boma.object(), vars::shotos::IS_TARGET_COMBO_1);
     }
+    
     if !(boma.is_motion_one_of(&[Hash40::new("attack_near_w"),
-                                 Hash40::new("attack_s3_s"),
+                                 Hash40::new("attack_s3_s_s"),
                                  Hash40::new("attack_s3_w")])){
         VarModule::off_flag(boma.object(), vars::shotos::IS_TARGET_COMBO_2);
     }
+    
 }
 
 unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
@@ -155,7 +166,7 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_motion(Hash40::new("attack_hi3_w"))
     || boma.is_motion(Hash40::new("attack_lw3_w"))
     || boma.is_motion(Hash40::new("attack_lw3_s")) 
-    || boma.is_motion(Hash40::new("attack_s3_s")) {
+    || boma.is_motion(Hash40::new("attack_s3_s_w")) {
         if boma.is_cat_flag(Cat1::AttackS4) {
             new_status = *FIGHTER_STATUS_KIND_ATTACK_S4_START;
         } else if boma.is_cat_flag(Cat1::AttackHi4) {
@@ -232,8 +243,8 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
 
 unsafe fn magic_flag_reset(boma: &mut BattleObjectModuleAccessor) {
     if !(boma.is_motion_one_of(&[Hash40::new("attack_12"),
-                                 Hash40::new("attack_s3_w"),
-                                 Hash40::new("attack_s3_s"),
+                                 Hash40::new("attack_s3_s_w"),
+                                 Hash40::new("attack_s3_s_s"),
                                  Hash40::new("attack_near_w"),
                                  Hash40::new("attack_hi3_w"),
                                  Hash40::new("attack_hi3_s"),
