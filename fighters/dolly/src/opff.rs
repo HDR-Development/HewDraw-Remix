@@ -30,14 +30,12 @@ unsafe fn power_wave_dash_cancel_super_cancels(fighter: &mut L2CFighterCommon, b
                 WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2);
 
                 // Buster Wolf
-                if compare_mask(cat4, *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND
-                                        | *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_R_COMMAND) {
+                if boma.is_cat_flag(Cat4::SuperSpecialCommand){
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, false);
                 }
 
                 // Power Geyser
-                if compare_mask(cat4, *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND
-                                        | *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_R_COMMAND) {
+                if boma.is_cat_flag(Cat4::SuperSpecial2Command){
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, false);
                 }
             }
@@ -124,6 +122,16 @@ unsafe fn burn_knuckle_land_cancel(boma: &mut BattleObjectModuleAccessor, id: us
     }
 }
 
+// Power Dunk break
+unsafe fn power_dunk_break(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK]) {
+        if VarModule::is_flag(boma.object(), vars::dolly::IS_TARGET_COMBO_1) {
+            //KineticModule::mul_speed(boma, &Vector3f::new(1.0, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_MOTION);
+            //KineticModule::mul_speed(boma, &Vector3f::new(1.0, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_STOP);
+        }
+    }
+}
+
 // Terrry Super Special Meter Activation
 unsafe fn super_special_meter_activation(boma: &mut BattleObjectModuleAccessor) {
     if MeterModule::level(boma.object()) >= 4 {
@@ -155,12 +163,13 @@ unsafe fn super_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
     if status_kind == *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL {
             
         // Power Geyser -> Buster Wolf
-        if compare_mask(cat4, *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND
-                            | *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_R_COMMAND) {
-            if MeterModule::drain(boma.object(), 2) {
-                WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2);
-                VarModule::on_flag(boma.object(), vars::common::SUPER_CANCEL);
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, false);
+        if boma.is_cat_flag(Cat4::SuperSpecial2Command) {
+            if !StopModule::is_stop(boma){
+                if MeterModule::drain(boma.object(), 2) {
+                    WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2);
+                    VarModule::on_flag(boma.object(), vars::common::SUPER_CANCEL);
+                    StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, false);
+                }
             }
         }
     }
@@ -169,12 +178,13 @@ unsafe fn super_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW].contains(&status_kind)
         || motion_kind == 0x13434c5490 as u64 {
         // Buster Wolf -> Power Geyser
-        if compare_mask(cat4, *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND
-                            | *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_R_COMMAND) {
-            if MeterModule::drain(boma.object(), 2) {
-                WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL);
-                VarModule::on_flag(boma.object(), vars::common::SUPER_CANCEL);
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, false);
+        if boma.is_cat_flag(Cat4::SuperSpecialCommand){
+            if !StopModule::is_stop(boma){
+                if MeterModule::drain(boma.object(), 2) {
+                    WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL);
+                    VarModule::on_flag(boma.object(), vars::common::SUPER_CANCEL);
+                    StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, false);
+                }
             }
         }
     }
@@ -223,6 +233,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     super_cancels(fighter, boma, id, status_kind, cat[3], motion_kind);
     shield_stop_run_drop(boma, status_kind, stick_y, situation_kind);
     full_meter_training_taunt(fighter, boma, status_kind);
+    power_dunk_break(boma);
     special_cancels(boma);
     ex_special_scripting(boma);
 
@@ -235,6 +246,12 @@ unsafe fn ex_special_scripting(boma: &mut BattleObjectModuleAccessor) {
     if VarModule::is_flag(boma.object(), vars::dolly::IS_USE_EX_SPECIAL){
         if boma.is_motion(Hash40::new("special_b_attack_w")){
             MotionModule::change_motion(boma, Hash40::new("special_b_attack"), -1.0, 1.0, false, 0.0, false, false);
+        }
+    }
+    // Fix geting stuck in fsmash after shatter strike due to not setting the smash charge flag
+    if VarModule::is_flag(boma.object(), vars::dolly::IS_SHATTER_STRIKE){
+        if boma.is_motion(Hash40::new("attack_s4_s")) && (MotionModule::frame(boma) >= (MotionModule::end_frame(boma) - 1.0)){
+            boma.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
         }
     }
 }
@@ -265,11 +282,11 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
             if WorkModule::is_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL) {
                 WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL);
                 WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2);
-                if boma.is_cat_flag(Cat4::SuperSpecialCommand) || boma.is_cat_flag(Cat4::SuperSpecialRCommand) {
+                if boma.is_cat_flag(Cat4::SuperSpecialCommand) {
                     is_input_cancel = true;
                     new_status = *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL;
                 }
-                else if boma.is_cat_flag(Cat4::SuperSpecial2Command) || boma.is_cat_flag(Cat4::SuperSpecial2RCommand){
+                else if boma.is_cat_flag(Cat4::SuperSpecial2Command){
                     is_input_cancel = true;
                     new_status = *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2;
                 }
@@ -403,6 +420,7 @@ unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
         if boma.is_cat_flag(Cat4::SpecialN2Command) {
             is_input_cancel = true;
             ControlModule::clear_command(boma, false);
+            WorkModule::off_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
             new_status = *FIGHTER_STATUS_KIND_ATTACK_DASH;
         }
     }
@@ -422,14 +440,7 @@ unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
         if boma.is_cat_flag(Cat4::SpecialN2Command) {
             is_input_cancel = true;
             ControlModule::clear_command(boma, false);
-            new_status = *FIGHTER_STATUS_KIND_ATTACK_DASH;
-        }
-    }
-    else if boma.is_motion(Hash40::new("attack_13")) {
-        // Power Charge
-        if boma.is_cat_flag(Cat4::SpecialN2Command) {
-            is_input_cancel = true;
-            ControlModule::clear_command(boma, false);
+            WorkModule::off_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
             new_status = *FIGHTER_STATUS_KIND_ATTACK_DASH;
         }
     }
@@ -466,6 +477,7 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
         if boma.is_cat_flag(Cat4::SpecialN2Command) {
             is_input_cancel = true;
             ControlModule::clear_command(boma, false);
+            WorkModule::off_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
             new_status = *FIGHTER_STATUS_KIND_ATTACK_DASH;
         }
     }
@@ -490,6 +502,7 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
         if boma.is_cat_flag(Cat4::SpecialN2Command) {
             is_input_cancel = true;
             ControlModule::clear_command(boma, false);
+            WorkModule::off_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
             new_status = *FIGHTER_STATUS_KIND_ATTACK_DASH;
         }
     }
@@ -510,6 +523,7 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
         if boma.is_cat_flag(Cat4::SpecialN2Command) {
             is_input_cancel = true;
             ControlModule::clear_command(boma, false);
+            WorkModule::off_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
             new_status = *FIGHTER_STATUS_KIND_ATTACK_DASH;
         }
     }
@@ -524,7 +538,7 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
     }
     if is_input_metered_cancel{
         if !StopModule::is_stop(boma) && !VarModule::is_flag(boma.object(), vars::dolly::UNABLE_CANCEL_S3_DASH){
-            if MeterModule::drain(boma.object(), 1) {
+            if MeterModule::drain(boma.object(), 2) {
                 if new_status == *FIGHTER_STATUS_KIND_JUMP_SQUAT {
                     boma.change_status_req(new_status, true);
                 }
@@ -543,32 +557,11 @@ unsafe fn dash_attack_cancels(boma: &mut BattleObjectModuleAccessor) {
     if WorkModule::is_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL);
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2);
-        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD){
-            // Power Wave
-            if boma.is_cat_flag(Cat1::SpecialN) {
-                is_input_cancel = true;
-                new_status = *FIGHTER_STATUS_KIND_SPECIAL_N;
-            }
-            // Burn Knuckle
-            else if boma.is_cat_flag(Cat4::SpecialNCommand) {
-                is_input_cancel = true;
-                new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND;
-            }
-            else if boma.is_cat_flag(Cat1::SpecialS) && boma.is_stick_forward() {
-                is_input_cancel = true;
-                new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
-            }
-            // Crack Shoot
-            else if boma.is_cat_flag(Cat4::SpecialSCommand) {
-                is_input_cancel = true;   
-                new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND;
-            }
-            else if boma.is_cat_flag(Cat1::SpecialS) && boma.is_stick_backward() {
-                is_input_cancel = true;
-                new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B;
-            }
+        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD)
+        && !VarModule::is_flag(boma.object(), vars::dolly::IS_USE_EX_SPECIAL)
+        && !VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK){
             // Rising Tackle
-            else if boma.is_cat_flag(Cat1::SpecialHi) {
+             if boma.is_cat_flag(Cat1::SpecialHi) {
                 is_input_cancel = true;
                 new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI
             }
@@ -586,11 +579,11 @@ unsafe fn dash_attack_cancels(boma: &mut BattleObjectModuleAccessor) {
                 new_status = *FIGHTER_STATUS_KIND_SPECIAL_LW
             }
         }
-        if boma.is_cat_flag(Cat4::SuperSpecialCommand) || boma.is_cat_flag(Cat4::SuperSpecialRCommand) {
+        if boma.is_cat_flag(Cat4::SuperSpecialCommand) {
             is_input_cancel = true;
             new_status = *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL;
         }
-        else if boma.is_cat_flag(Cat4::SuperSpecial2Command) || boma.is_cat_flag(Cat4::SuperSpecial2RCommand){
+        else if boma.is_cat_flag(Cat4::SuperSpecial2Command) {
             is_input_cancel = true;
             new_status = *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2;
         }
@@ -661,6 +654,7 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
         if boma.is_cat_flag(Cat4::SpecialN2Command) {
             is_input_cancel = true;
             ControlModule::clear_command(boma, false);
+            WorkModule::off_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
             new_status = *FIGHTER_STATUS_KIND_ATTACK_DASH;
         }
     }
@@ -688,6 +682,7 @@ unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
         super::hash40!("attack_air_hi") => return,
         super::hash40!("attack_air_lw") => return,
         _ => {
+            VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
             boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
         }
     }
@@ -701,7 +696,12 @@ unsafe fn magic_flag_reset(boma: &mut BattleObjectModuleAccessor) {
                                  Hash40::new("attack_lw3"),
                                  Hash40::new("attack_s4"),
                                  Hash40::new("attack_hi4"),
-                                 Hash40::new("attack_lw4")])
+                                 Hash40::new("attack_lw4"),
+                                 Hash40::new("attack_air_n"),
+                                 Hash40::new("attack_air_f"),
+                                 Hash40::new("attack_air_b"),
+                                 Hash40::new("attack_air_hi"),
+                                 Hash40::new("attack_air_lw")])
         || boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N,
                                    *FIGHTER_STATUS_KIND_SPECIAL_S,
                                    *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND,
