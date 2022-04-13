@@ -23,9 +23,12 @@ unsafe fn gentleman(boma: &mut BattleObjectModuleAccessor, status_kind: i32, fig
     } else if fighter_kind == *FIGHTER_KIND_MEWTWO {
         jab_finisher_start = 8.0;
         jab_finisher_end = 16.0;
-    } else if fighter_kind == *FIGHTER_KIND_GAMEWATCH || fighter_kind == *FIGHTER_KIND_PFUSHIGISOU {
+    } else if fighter_kind == *FIGHTER_KIND_PFUSHIGISOU {
         jab_finisher_start = 6.0;
         jab_finisher_end = 14.0;
+    } else if fighter_kind == *FIGHTER_KIND_GAMEWATCH {
+        jab_finisher_start = 6.0;
+        jab_finisher_end = 13.0;
     } else if fighter_kind == *FIGHTER_KIND_DEDEDE {
         jab_finisher_start = 16.0;
         jab_finisher_end = 24.0;
@@ -34,7 +37,7 @@ unsafe fn gentleman(boma: &mut BattleObjectModuleAccessor, status_kind: i32, fig
         jab_finisher_end = 21.0;
     }
     if status_kind == FIGHTER_STATUS_KIND_ATTACK {
-        if [*FIGHTER_KIND_ZELDA, *FIGHTER_KIND_MEWTWO, *FIGHTER_KIND_GAMEWATCH, *FIGHTER_KIND_PALUTENA].contains(&fighter_kind) {
+        if [*FIGHTER_KIND_ZELDA, *FIGHTER_KIND_MEWTWO, *FIGHTER_KIND_PALUTENA].contains(&fighter_kind) {
             if MotionModule::motion_kind(boma) == hash40("attack_11") {
                 if MotionModule::frame(boma) > jab_finisher_start && MotionModule::frame(boma) < jab_finisher_end {
                     if boma.is_pad_flag(PadFlag::SpecialTrigger) {
@@ -57,6 +60,17 @@ unsafe fn gentleman(boma: &mut BattleObjectModuleAccessor, status_kind: i32, fig
                         else{
                             MotionModule::change_motion(boma, Hash40::new("attack_100_end"), 0.0, 1.0, false, 0.0, false, false);
                         }
+                        MotionModule::set_rate(boma, 1.25);
+                    }
+                }
+            }
+        } else if fighter_kind == *FIGHTER_KIND_GAMEWATCH {
+            if MotionModule::motion_kind(boma) == hash40("attack_11") {
+                if MotionModule::frame(boma) > jab_finisher_start && MotionModule::frame(boma) < jab_finisher_end {
+                    if boma.is_pad_flag(PadFlag::AttackTrigger) {
+                        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
+                        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+                        MotionModule::change_motion(boma, Hash40::new("attack_100_end"), 0.0, 1.0, false, 0.0, false, false);
                         MotionModule::set_rate(boma, 1.25);
                     }
                 }

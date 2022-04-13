@@ -13,7 +13,7 @@ use smash::hash40;
 use smash::phx::Hash40;
 use smash_script::{self, *, macros::*};
 
-mod groups {
+pub mod groups {
     pub const SMALL: i32 = 0;
     pub const MEDIUM: i32 = 1;
     pub const LARGE: i32 = 2;
