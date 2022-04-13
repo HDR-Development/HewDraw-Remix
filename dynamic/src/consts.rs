@@ -135,7 +135,7 @@ pub mod vars {
         pub const SHOULD_WAVELAND: i32 = 80;
         pub const SIDE_SPECIAL_CANCEL_NO_HIT: i32 = 81;
         pub const JUMP_NEXT: i32 = 82;
-
+        pub const IS_JAB_LOCK_ROLL: i32 = 83;
         
 
         // int
@@ -150,6 +150,8 @@ pub mod vars {
         pub const ATTACK_DASH_CANCEL_FRAME: i32 = 0x8;
         pub const AIR_ESCAPE_MAGNET_FRAME: i32 = 0x9;
         pub const TURN_DASH_FRAME: i32 = 0xA;
+        pub const DOWN_STAND_FB_KIND: i32 = 0xB;
+        pub const CSTICK_LIFE: i32 = 0xC;
 
         // float
         pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0;

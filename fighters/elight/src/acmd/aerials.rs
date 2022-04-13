@@ -226,6 +226,10 @@ unsafe fn elight_attack_air_hi_game(fighter: &mut L2CAgentBase) {
         }
         AttackModule::clear_all(boma);
     }
+    frame(lua_state, 25.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
     frame(lua_state, 43.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.8);
