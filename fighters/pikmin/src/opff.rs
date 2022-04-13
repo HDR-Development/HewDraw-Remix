@@ -84,19 +84,48 @@ unsafe fn pikmin_antenna_indicator(fighter: &mut L2CFighterCommon) {
         if pikmin_id != *BATTLE_OBJECT_ID_INVALID as u32
         && sv_battle_object::is_active(pikmin_id) {
             let variation = WorkModule::get_int((*pikmin).module_accessor, *WEAPON_PIKMIN_PIKMIN_INSTANCE_WORK_ID_INT_VARIATION);
-            let color = match variation {
-                0 => Vector3f{x: 1.0, y: 0.2, z: 0.2}, // Red
-                1 => Vector3f{x: 1.0, y: 1.0, z: 0.2}, // Yellow
-                2 => Vector3f{x: 0.2, y: 0.2, z: 1.0}, // Blue
-                3 => Vector3f{x: 0.8, y: 0.8, z: 0.8}, // White
-                _ => Vector3f{x: 0.4, y: 0.2, z: 0.8}  // Purple
+            let r_param;
+            let g_param;
+            let b_param;
+            match variation {
+                0 => {
+                    r_param = "antenna.light_strong";
+                    g_param = "antenna.light_weak";
+                    b_param = "antenna.light_weak";
+                }, // Red
+                1 => {
+                    r_param = "antenna.light_strong";
+                    g_param = "antenna.light_strong";
+                    b_param = "antenna.light_weak";
+                }, // Yellow
+                2 => {
+                    r_param = "antenna.light_weak";
+                    g_param = "antenna.light_weak";
+                    b_param = "antenna.light_strong";
+                }, // Blue
+                3 => {
+                    r_param = "antenna.light_medium_high";
+                    g_param = "antenna.light_medium_high";
+                    b_param = "antenna.light_medium_high";
+                }, // White
+                _ => {
+                    r_param = "antenna.light_medium_low";
+                    g_param = "antenna.light_weak";
+                    b_param = "antenna.light_medium_high";
+                }  // Purple
             };
+            let r = ParamModule::get_float(fighter.battle_object, ParamType::Agent, r_param);
+            let g = ParamModule::get_float(fighter.battle_object, ParamType::Agent, g_param);
+            let b = ParamModule::get_float(fighter.battle_object, ParamType::Agent, b_param);
+            let alpha = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "antenna.light_bright_alpha");
             EffectModule::set_alpha(fighter.module_accessor, antenna_eff, 1.0);
-            EffectModule::set_rgb(fighter.module_accessor, antenna_eff, color.x, color.y, color.z);
+            EffectModule::set_rgb(fighter.module_accessor, antenna_eff, r, g, b);
         }
         else {
             // No Pikmin, make it transparent and grey.
-            EffectModule::set_rgb(fighter.module_accessor, antenna_eff, 0.8, 0.8, 0.8);
+            let rgb = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "antenna.light_medium_high");
+            EffectModule::set_rgb(fighter.module_accessor, antenna_eff, rgb, rgb, rgb);
+            let alpha = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "antenna.light_dim_alpha");
             EffectModule::set_alpha(fighter.module_accessor, antenna_eff, 0.05);
         }
     }
