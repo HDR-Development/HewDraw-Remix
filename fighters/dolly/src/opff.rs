@@ -554,31 +554,10 @@ unsafe fn dash_attack_cancels(boma: &mut BattleObjectModuleAccessor) {
 
     let mut new_status = 0;
     let mut is_input_cancel = false;
+    let mut is_input_metered_cancel = false;
     if WorkModule::is_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL);
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2);
-        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD)
-        && !VarModule::is_flag(boma.object(), vars::dolly::IS_USE_EX_SPECIAL)
-        && !VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK){
-            // Rising Tackle
-             if boma.is_cat_flag(Cat1::SpecialHi) {
-                is_input_cancel = true;
-                new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI
-            }
-            else if boma.is_cat_flag(Cat4::SpecialHi2Command) {
-                is_input_cancel = true;
-                new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_COMMAND;
-            }
-            // Power Dunk
-            else if boma.is_cat_flag(Cat4::SpecialHiCommand) {
-                is_input_cancel = true;
-                new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND;
-            }
-            else if boma.is_cat_flag(Cat1::SpecialLw) {
-                is_input_cancel = true;
-                new_status = *FIGHTER_STATUS_KIND_SPECIAL_LW
-            }
-        }
         if boma.is_cat_flag(Cat4::SuperSpecialCommand) {
             is_input_cancel = true;
             new_status = *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL;
@@ -588,8 +567,27 @@ unsafe fn dash_attack_cancels(boma: &mut BattleObjectModuleAccessor) {
             new_status = *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2;
         }
     }
-    else{
-        return;
+    if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD)
+    && !VarModule::is_flag(boma.object(), vars::dolly::IS_USE_EX_SPECIAL)
+    && !VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK){
+        // Rising Tackle
+            if boma.is_cat_flag(Cat1::SpecialHi) {
+            is_input_cancel = true;
+            new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI
+        }
+        else if boma.is_cat_flag(Cat4::SpecialHi2Command) {
+            is_input_cancel = true;
+            new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_COMMAND;
+        }
+        // Power Dunk
+        else if boma.is_cat_flag(Cat4::SpecialHiCommand) {
+            is_input_cancel = true;
+            new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND;
+        }
+        else if boma.is_cat_flag(Cat1::SpecialLw) {
+            is_input_cancel = true;
+            new_status = *FIGHTER_STATUS_KIND_SPECIAL_LW
+        }
     }
 
     if is_input_cancel{
