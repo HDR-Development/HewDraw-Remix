@@ -144,14 +144,14 @@ pub mod vars {
         pub const FLOAT_TIMER: i32 = 0x2;
         pub const FLOAT_DURATION: i32 = 0x3;
         pub const FLOAT_STYLE: i32 = 0x4;
-        pub const GIMMICK_READY_GLOW_TIMER: i32 = 0x5;
-        pub const HITFALL_BUFFER: i32 = 0x7;
-        pub const JUMP_SQUAT_FRAME: i32 = 0x8;
-        pub const GIMMICK_TIMER: i32 = 0x9;
-        pub const ATTACK_DASH_CANCEL_FRAME: i32 = 0xA;
-        pub const AIR_ESCAPE_MAGNET_FRAME: i32 = 0xB;
-        pub const TURN_DASH_FRAME: i32 = 0xC;
-        pub const DOWN_STAND_FB_KIND: i32 = 0xD;
+        pub const HITFALL_BUFFER: i32 = 0x5;
+        pub const JUMP_SQUAT_FRAME: i32 = 0x6;
+        pub const GIMMICK_TIMER: i32 = 0x7;
+        pub const ATTACK_DASH_CANCEL_FRAME: i32 = 0x8;
+        pub const AIR_ESCAPE_MAGNET_FRAME: i32 = 0x9;
+        pub const TURN_DASH_FRAME: i32 = 0xA;
+        pub const DOWN_STAND_FB_KIND: i32 = 0xB;
+        pub const CSTICK_LIFE: i32 = 0xC;
 
         // float
         pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0;
