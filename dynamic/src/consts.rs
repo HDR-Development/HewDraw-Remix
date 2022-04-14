@@ -213,6 +213,16 @@ pub mod vars {
         pub const GUNMAN_TIMER: i32 = 0x1000;
     }
 
+    pub mod elight {
+        // flags
+        pub const CHECK_FOR_LB_CANCEL_INPUT: i32 = 0x1000;
+        pub const CAN_TRANSITION_TO_LB_FINISHER: i32 = 0x1001;
+        pub const IS_LIGHTNING_BUSTER_CANCEL: i32 = 0x1002;
+
+        // ints
+        pub const LIGHTNING_BUSTER_FINISH_LEVEL: i32 = 0x1000;
+    }
+
     pub mod gaogaen {
         // floats
         pub const ANGLE_GRAB_STICK_Y: i32 = 0x1000;
