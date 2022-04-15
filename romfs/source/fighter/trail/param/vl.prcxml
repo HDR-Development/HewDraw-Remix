@@ -9,4 +9,9 @@
       <float hash="p1_y">16.8</float>
     </struct>
   </list>
+  <struct hash="param_private">
+    <float hash="attack_air_hit_speed_x_mul">1</float>
+    <float hash="attack_air_hit_accel_x_mul">1</float>
+    <float hash="attack_air_hit_speed_max_x_mul">1</float>
+  </struct>
 </struct>

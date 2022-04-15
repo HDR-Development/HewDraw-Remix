@@ -4,6 +4,58 @@ use super::*;
 use globals::*;
 
  
+unsafe fn nair_fair_momentum_handling(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    // Fair/nair's external velocity setting might be handled via an on hit event or smth as I could not locate them in the status scripts, once we find those and edit as appropriate we should come back and remove this functionality here
+    // - Calc
+    if boma.is_motion(Hash40::new("attack_air_n")){
+        WorkModule::on_flag(boma, *FIGHTER_TRAIL_STATUS_ATTACK_AIR_N_FLAG_HIT_SPEED_Y);
+    }
+    
+    // Fair momentum handling now moved to OPFF since params that affect both nair and fair's momentum on hit were standardized to give nair regular momentum
+    if boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F){
+        if boma.is_motion(Hash40::new("attack_air_f")) || boma.is_motion(Hash40::new("attack_air_f2")){
+            if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD){
+                let initial_x_mul = 0.35;
+                let control_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) as *mut smash::app::KineticEnergy;
+                smash::app::lua_bind::KineticEnergy::mul_speed(control_energy, &Vector3f::new(0.1, 1.0, 1.0));
+                println!("is_infliction triggered!");
+            }
+            
+            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD){
+                //let x_mul = WorkModule::get_param_float(boma, hash40("param_private"), hash40("attack_air_hit_speed_max_x_mul"))
+                // Max airspeed multiplier
+                let max_x_mul = 0.65;
+                // Max air accel adjustment
+                let max_accel_x_adjustment = -0.35;
+                let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
+                let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
+                let air_speed_y_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_y_stable"), 0);
+                let air_accel_x_add = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_add"), 0);
+                let air_accel_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_mul"), 0);
+                let facing = PostureModule::lr(boma);
+    
+                let stick_x = ControlModule::get_stick_x(boma);
+                let stick_threshold = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("walk_stick_x"));
+                if stick_x.abs() > stick_threshold {
+                    // Apply acceleration opposite to your current drift to mimic vanilla's accel reduction on hit after fair
+                    KineticModule::add_speed(boma, &Vector3f::new(max_accel_x_adjustment * (air_accel_x_add * stick_x.signum() + air_accel_x_mul * stick_x) * facing, 0.0, 0.0));
+                }
+                
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, max_x_mul * air_speed_x_stable, -1.0 * air_speed_y_stable);
+                app::sv_kinetic_energy::set_limit_speed(fighter.lua_state_agent);
+                fighter.clear_lua_stack();
+                
+                fighter.clear_lua_stack();
+                println!("is_infliction_status triggered! setting limit speed to... {}", air_speed_x_stable * max_x_mul);
+                println!("fall speed is... {}", air_speed_y_stable);
+            }
+        }
+        
+    }
+}
+    
+
 unsafe fn jab_2_ftilt_cancel(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64) {
     if [*FIGHTER_STATUS_KIND_ATTACK].contains(&status_kind) && motion_kind == hash40("attack_12") {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
@@ -24,7 +76,7 @@ unsafe fn jab_2_ftilt_cancel(boma: &mut BattleObjectModuleAccessor, cat1: i32, s
 // Fair 2 -> aerial cancel
 unsafe fn fair_cancels(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64) {
     // Check for aerial attack inputs during fair 2
-    if status_kind == *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F && motion_kind == hash40("attack_air_f2") {
+    if status_kind == *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F && motion_kind == hash40("attack_air_f2") && WorkModule::is_flag(boma, *FIGHTER_TRAIL_STATUS_ATTACK_AIR_F_FLAG_ENABLE_COMBO); {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N
                                     | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3
@@ -134,6 +186,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     jab_2_ftilt_cancel(boma, cat[0], status_kind, situation_kind, motion_kind);
     fair_cancels(boma, cat[0], status_kind, situation_kind, motion_kind);
     side_special_hit_check(fighter, boma, status_kind, situation_kind, id);
+    nair_fair_momentum_handling(fighter, boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_TRAIL)]
