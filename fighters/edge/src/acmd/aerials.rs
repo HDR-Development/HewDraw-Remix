@@ -62,11 +62,19 @@ unsafe fn sephiroth_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         EFFECT_DETACH_KIND(fighter, Hash40::new("edge_light_finger_snapping"), -1);
-        EFFECT_FLW_POS_NO_STOP(fighter, Hash40::new("edge_attack_dash_aura"), Hash40::new("handr"), 2, 0, 0, 0, 0, 0, 2, true);
-        EFFECT_FLW_POS_NO_STOP(fighter, Hash40::new("edge_attack_dash2"), Hash40::new("handr"), 2, 1, 0, 0, 0, 0, 1, true);
-        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash"), Hash40::new("handr"), 2, 1, 0, 0, 0, 0, 1, true);
-        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash"), Hash40::new("legl"), 1, 0, 0, 0, 0, 0, 1, true);
-        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash"), Hash40::new("kneer"), 1, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash_aura"), Hash40::new("handr"), 2, 0, 0, 0, 0, 0, 1.25, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash2"), Hash40::new("handr"), 2, 1, 0, 0, 0, 0, 0.8, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.1);
+        EffectModule::enable_sync_init_pos_last(boma);
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash"), Hash40::new("handr"), 2, 1, 0, 0, 0, 0, 0.7, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.1);
+        EffectModule::enable_sync_init_pos_last(boma);
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash"), Hash40::new("legl"), 1, 0, 0, 0, 0, 0, 0.7, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.1);
+        EffectModule::enable_sync_init_pos_last(boma);
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash"), Hash40::new("kneer"), 1, 0, 0, 0, 0, 0, 0.7, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.1);
         EffectModule::enable_sync_init_pos_last(boma);
     }
     frame(lua_state, 15.0);
@@ -138,6 +146,47 @@ unsafe fn sephiroth_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "edge", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
+unsafe fn sephiroth_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_sword_light3"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.4);
+
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash"), Hash40::new("swordl2"), 22, 0, 0.8, 0, 0, 0, 0.7, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.1);
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash_aura"), Hash40::new("swordl2"), 22, 0, 0.8, 0, 0, 0, 0.7, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.1);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_speedline"), Hash40::new("swordl2"), -26, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.25);
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_sword_flash2"), Hash40::new("swordl2"), 22, 0, 0.8, 0, 0, 0, 1.2, true);
+
+        EFFECT(fighter, Hash40::new("edge_attack_dash2"), Hash40::new("swordl2"), 22.0, 0, 0.8, 0, 0, 0, 0.65, 0, 0, 0, 0, 0, 0, true);
+        //EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash2"), Hash40::new("swordl2"), 22.0, 0, 0.8, 0, 0, 0, 0.65, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.0);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("edge_attack_dash"), -1);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("edge_sword_flash2"), -1);
+        EFFECT_OFF_KIND(fighter, Hash40::new("edge_attack_speedline"), false, false);
+        EFFECT_OFF_KIND(fighter, Hash40::new("edge_attack_dash"), false, false);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("edge_attack_dash_aura"), -1);
+    }
+}
+
 #[acmd_script( agent = "edge", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn sephiroth_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -185,6 +234,54 @@ unsafe fn sephiroth_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "edge", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
+unsafe fn sephiroth_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_sword_smash_flash"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash"), Hash40::new("swordl2"), 11.0, 0, 0.8, 0, 0, 0, 0.8, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.8);
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash"), Hash40::new("swordl2"), 15.0, 0, 0.8, 0, 0, 0, 0.8, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.8);
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash_aura"), Hash40::new("swordl2"), 11.0, 0, 0.8, 0, 0, 0, 0.8, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.8);
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash_aura"), Hash40::new("swordl2"), 15.0, 0, 0.8, 0, 0, 0, 0.8, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.8);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_sword_flare"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
+        AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_edge_sword3"), Hash40::new("tex_edge_sword4"), 5, Hash40::new("swordl2"), -4.0, 0.0, -0.6, Hash40::new("swordl2"), 29.0, 0.0, 1.4, true, Hash40::new("null"), Hash40::new("swordl2"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_sword_light3"), Hash40::new("swordl2"), 0, 0, 0, 0, -180, -90, 1, true);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_slash_arc"), Hash40::new("top"), -2, 12.0, -1.6, 0, -150, 15, 1.17, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("edge_slash_arc"), -1);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("edge_sword_flare"), false, false);
+        AFTER_IMAGE_OFF(fighter, 5);
+        EFFECT_DETACH_KIND(fighter, Hash40::new("edge_attack_dash"), -1);
+        EFFECT_DETACH_KIND(fighter, Hash40::new("edge_attack_dash_aura"), -1);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("edge_attack_dash"), false, false);
+        EFFECT_OFF_KIND(fighter, Hash40::new("edge_attack_dash_aura"), false, false);
+    }
+}
+
 #[acmd_script( agent = "edge", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn sephiroth_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -223,8 +320,68 @@ unsafe fn sephiroth_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 52.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }   
+}
+
+#[acmd_script( agent = "edge", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn sephiroth_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_sword_smash_flash"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
     }
-    
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 16, 19, 12, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash"), Hash40::new("swordl2"), 11.0, 0, 0.8, 0, 0, 0, 0.725, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.9);
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash"), Hash40::new("swordl2"), 15.0, 0, 0.8, 0, 0, 0, 0.725, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.9);
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash_aura"), Hash40::new("swordl2"), 11.0, 0, 0.8, 0, 0, 0, 0.725, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.9);
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash_aura"), Hash40::new("swordl2"), 15.0, 0, 0.8, 0, 0, 0, 0.725, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.9);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_sword_flare"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
+        AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_edge_sword1"), Hash40::new("tex_edge_sword2"), 6, Hash40::new("swordl2"), -4.0, 0.0, -0.6, Hash40::new("swordl2"), 29.0, 0.0, 1.4, true, Hash40::new("null"), Hash40::new("swordl2"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_sword_light3"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.2);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_slash_light"), Hash40::new("top"), 0, 10, -2.7, 2.5, 120, 90, 1.05, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("edge_slash_light"), -1);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_sword_smash_flash"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.2);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("edge_sword_flare"), false, false);
+        AFTER_IMAGE_OFF(fighter, 5);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(fighter) {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("edge_attack_dash"), -1);
+        EFFECT_DETACH_KIND(fighter, Hash40::new("edge_attack_dash_aura"), -1);
+    }
+    frame(lua_state, 32.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("edge_attack_dash"), false, false);
+        EFFECT_OFF_KIND(fighter, Hash40::new("edge_attack_dash_aura"), false, false);
+    }
 }
 
 #[acmd_script( agent = "edge", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
@@ -256,15 +413,24 @@ unsafe fn sephiroth_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
         SET_SPEED_EX(fighter, 0, -4.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-        ATTACK(fighter, 0, 0, Hash40::new("swordl1"), 15.0, 270, 90, 0, 35, 5.5, 19.0, 0.0, 2.8, Some(18.0), Some(0.0), Some(2.8), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("swordl1"), 15.0, 270, 85, 0, 20, 5.5, 19.0, 0.0, 2.8, Some(18.0), Some(0.0), Some(2.8), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 2, 0, Hash40::new("swordl1"), 10.0, 48, 76, 0, 58, 6.0, 11.0, 0.0, 1.5, Some(18.0), Some(0.0), Some(2.8), 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        //ATTACK(fighter, 0, 0, Hash40::new("swordl1"), 10.0, 48, 76, 0, 58, 4.0, 0.5, 0.0, 1.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("swordl1"), 10.0, 52, 76, 0, 58, 4.0, 5.0, 0.0, 1.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 2, 0, Hash40::new("swordl1"), 10.0, 52, 76, 0, 58, 4.0, 9.5, 0.0, 1.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 3, 0, Hash40::new("swordl1"), 10.0, 52, 76, 0, 58, 4.0, 15.0, 0.0, 1.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        // Ground only
+        ATTACK(fighter, 4, 0, Hash40::new("swordl1"), 15.0, 270, 90, 0, 35, 4.0, 20.0, 0.0, 1.0,  None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        // Air only
+        ATTACK(fighter, 5, 0, Hash40::new("swordl1"), 15.0, 270, 90, 0, 35, 4.0, 20.0, 0.0, 1.0,  None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("swordl1"), 10.0, 48, 76, 0, 58, 4.0, 9.5, 0.0, 1.5, Some(19.0), Some(0.0), Some(2.8), 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("swordl1"), 10.0, 48, 76, 0, 58, 4.0, 9.5, 0.0, 1.5, Some(19.0), Some(0.0), Some(2.8), 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 2, 0, Hash40::new("swordl1"), 10.0, 48, 76, 0, 58, 4.0, 9.5, 0.0, 1.5, Some(19.0), Some(0.0), Some(2.8), 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("swordl1"), 10.0, 48, 76, 0, 58, 3.0, 5.0, 0.0, 1.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 2, 0, Hash40::new("swordl1"), 10.0, 48, 76, 0, 58, 3.0, 9.5, 0.0, 1.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 3, 0, Hash40::new("swordl1"), 10.0, 48, 76, 0, 58, 3.0, 15.0, 0.0, 1.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        // Ground only
+        ATTACK(fighter, 4, 0, Hash40::new("swordl1"), 10.0, 48, 76, 0, 58, 3.0, 20.0, 0.0, 1.0,  None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        // Air only
+        ATTACK(fighter, 5, 0, Hash40::new("swordl1"), 10.0, 48, 76, 0, 58, 3.0, 20.0, 0.0, 1.0,  None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 38.0);
     if is_excute(fighter) {
@@ -282,14 +448,71 @@ unsafe fn sephiroth_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "edge", script = "effect_attackairlw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn sephiroth_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("swordl2"), 13, 0, -3.5, 0, 0, 0, 0.8, 1, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_sword_light3"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.4);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.8);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash"), Hash40::new("swordl2"), 19.0, 0, 0.8, 0, 0, 0, 0.9, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.1);
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash_aura"), Hash40::new("swordl2"), 19.0, 0, 0.8, 0, 0, 0, 0.9, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.1);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_gokumon_wind"), Hash40::new("top"), -2.2, 30, 1.7, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("edge_sword_light3"), true, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_gokumon_speedline"), Hash40::new("top"), 0, 0, 0, 0, 46, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_sword_light3"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.8);
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_sword_flash2"), Hash40::new("swordl2"), 22, 0, 0.8, 0, 0, 0, 1.2, true);
+
+        EFFECT_FLW_POS(fighter, Hash40::new("edge_attack_dash2"), Hash40::new("swordl2"), 19.0, 0, 0.8, 0, 0, 0, 0.65, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.0);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("edge_sword_flash2"), -1);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("edge_attack_dash"), -1);
+        EFFECT_DETACH_KIND(fighter, Hash40::new("edge_attack_dash_aura"), -1);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("edge_attack_dash"), false, false);
+        EFFECT_OFF_KIND(fighter, Hash40::new("edge_attack_dash_aura"), false, false);
+    }
+    
+}
+
 pub fn install() {
     install_acmd_scripts!(
         sephiroth_attack_air_n_game,
         sephiroth_attack_air_n_effect,
         sephiroth_attack_air_f_game,
+        sephiroth_attack_air_f_effect,
         sephiroth_attack_air_b_game,
+        sephiroth_attack_air_b_effect,
         sephiroth_attack_air_hi_game,
+        sephiroth_attack_air_hi_effect,
         sephiroth_attack_air_lw_game,
+        sephiroth_attack_air_lw_effect,
     );
 }
 
