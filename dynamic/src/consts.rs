@@ -250,6 +250,14 @@ pub mod vars {
         pub const FIREBRAND_SPAWNED: i32 = 0x1000;
     }
 
+    pub mod master {
+        // ints
+        pub const IS_ENABLE_SPECIAL_S_DASH_CANCEL: i32 = 0x1000;
+
+        // ints
+        pub const AYMR_CHARGE_LEVEL: i32 = 0x1000;
+    }
+
     pub mod roy {
         // flags
         pub const TRAIL_EFFECT: i32 = 0x1000;
