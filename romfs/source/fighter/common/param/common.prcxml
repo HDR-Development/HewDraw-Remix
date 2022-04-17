@@ -16,7 +16,7 @@
   <float hash="shield_dec1">0.255</float>
   <float hash="shield_recovery1">0.07</float>
   <float hash="shield_damage_mul">1.4</float>
-  <float hash="shield_setoff_mul">0.9</float>
+  <float hash="shield_setoff_mul">0.55</float>
   <float hash="shield_setoff_mul_fighter_shot">0.5156</float>
   <float hash="shield_stiff_mul_attack_4">1</float>
   <float hash="shield_stiff_mul_attack_air">1</float>
@@ -38,6 +38,7 @@
   <int hash="hit_stop_delay_flick_frame">2</int>
   <int hash="hit_stop_delay_flick_max_count">50</int>
   <float hash="hit_stop_delay_auto_mul">0.5</float>
+  <float hash="attack_hit_slow_rate">0.01</float>
   <float hash="damage_reaction_mul_max">1</float>
   <list hash="pattern_power_mul">
     <hash40 index="0">dummy</hash40>
