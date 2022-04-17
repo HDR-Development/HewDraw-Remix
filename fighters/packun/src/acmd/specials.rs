@@ -2,6 +2,19 @@
 use super::*;
 
 
+#[acmd_script( agent = "packun", script = "game_specialnend" , category = ACMD_GAME , low_priority)]
+unsafe fn packun_special_n_end_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        ArticleModule::remove_exist(boma, *FIGHTER_PACKUN_GENERATE_ARTICLE_SPIKEBALL, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        FT_MOTION_RATE(fighter, 1);
+        VarModule::on_flag(boma.object(), vars::packun::IS_ENABLE_STANCE_CHANGE_TO_BRUTE);
+    }
+    
+}
+
 #[acmd_script( agent = "packun", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn packun_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -116,6 +129,7 @@ unsafe fn packun_special_air_hi_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        packun_special_n_end_game,
         packun_special_hi_game,
         packun_special_air_hi_game,
     );

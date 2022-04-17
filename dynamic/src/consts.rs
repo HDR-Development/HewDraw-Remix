@@ -250,6 +250,24 @@ pub mod vars {
         pub const FIREBRAND_SPAWNED: i32 = 0x1000;
     }
 
+    pub mod packun {
+        // ints
+        pub const CURRENT_STANCE: i32 = 0x1000; // 0 = Normal, 1 = Poison, 2 = Brute
+
+        // flags
+        pub const IS_ENABLE_STANCE_CHANGE: i32 = 0x1000;
+        pub const IS_ENABLE_STANCE_CHANGE_TO_TOXIN: i32 = 0x1001;
+        pub const IS_ENABLE_STANCE_CHANGE_TO_BRUTE: i32 = 0x1002;
+        pub const IS_ENABLE_STANCE_CHANGE_TO_FIRE: i32 = 0x1003;
+        pub const SHOULD_IGNORE_CURRENT_STANCE_MESH_VIS: i32 = 0x1004;
+        pub const IS_BRUTE_PTOOIE: i32 = 0x1005;
+        pub const IS_TOXIN_PTOOIE: i32 = 0x1006;
+        pub const IS_TOXIN_PTOOIE_BURST: i32 = 0x1007;
+        pub const IS_BRUTE_SPECIAL_S_PROJECTILE: i32 = 0x1008;
+        pub const IS_TOXIN_SPECIAL_S_PROJECTILE: i32 = 0x1009;
+        pub const CAN_TRANSITION_ATTACK_HI3_TO_HI32: i32 = 0x100A;
+    }
+
     pub mod roy {
         // flags
         pub const TRAIL_EFFECT: i32 = 0x1000;
