@@ -184,8 +184,3 @@ pub fn install() {
     #[cfg(feature = "include-demon")]
     { demon::install(cfg!(feature = "runtime")); }
 }
-
-pub fn delayed_install() {
-    #[cfg(feature = "include-elight")]
-    { elight::delayed_install(); }
-}
