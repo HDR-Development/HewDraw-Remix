@@ -14,22 +14,6 @@ pub fn install() {
     fighters::install();
 }
 
-#[cfg(not(feature = "main_nro"))]
-#[export_name = "hdr_delayed_install"]
-pub extern "Rust" fn delayed_install() {
-    fighters::delayed_install();
-}
-
-#[cfg(feature = "main_nro")]
-extern "Rust" {
-    #[link_name = "hdr_delayed_install"]
-    fn delayed_install();
-}
-
-#[cfg(feature = "main_nro")]
-#[export_name = "hdr_is_available"]
-pub extern "Rust" fn is_available() -> bool { true }
-
 extern "C" {
     fn change_version_string(arg: u64, string: *const c_char);
 }
@@ -76,8 +60,6 @@ pub fn main() {
     #[cfg(not(feature = "runtime"))]
     { utils::init(); }
     fighters::install();
-    #[cfg(feature = "main_nro")]
-    { if !(delayed_install as *const ()).is_null() { unsafe { delayed_install(); } } }
 
     #[cfg(feature = "updater")]
     {
