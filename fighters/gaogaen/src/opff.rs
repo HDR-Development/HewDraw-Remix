@@ -50,22 +50,6 @@ unsafe fn cross_chop_techniques(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn revenge_command_dash(fighter: &mut L2CFighterCommon) {
-    if fighter.is_motion(Hash40::new("special_lw_start")){
-        if VarModule::is_flag(fighter.object(), vars::gaogaen::IS_SPECIAL_LW_COMMAND_DASH){
-            if StopModule::is_damage(fighter.module_accessor){
-                VarModule::on_flag(fighter.object(), vars::gaogaen::DID_SPECIAL_LW_COMMAND_DASH_TANK_DAMAGE);
-                DamageModule::reset_no_reaction_mode_status(fighter.module_accessor);
-            }
-            if VarModule::is_flag(fighter.object(), vars::gaogaen::IS_ENABLE_SPECIAL_LW_LARIAT_INPUT){
-                if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW){
-                    VarModule::on_flag(fighter.object(), vars::gaogaen::IS_INPUT_SPECIAL_LW_LARIAT);
-                }
-            }
-        }
-    }
-}
-
 // Incineroar Fthrow Movement
 unsafe fn fthrow_movement(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_THROW) 
@@ -185,7 +169,6 @@ pub fn gaogaen_opff(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		cross_chop_techniques(fighter);
-        revenge_command_dash(fighter);
         fthrow_movement(fighter);
         angled_grab(fighter); 
         alolan_whip_special_grabs(fighter);
