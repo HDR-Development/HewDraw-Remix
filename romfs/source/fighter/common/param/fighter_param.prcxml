@@ -1902,13 +1902,13 @@
     </struct>
     <struct index="66">
       <float hash="walk_speed_max">0.87</float>
-      <float hash="ground_brake">0.061</float>
-      <float hash="dash_speed">1.64</float>
+      <float hash="ground_brake">0.08</float>
+      <float hash="dash_speed">1.6</float>
       <float hash="run_accel_mul">0.05571</float>
-      <float hash="run_speed_max">1.505</float>
+      <float hash="run_speed_max">1.45</float>
       <int hash="jump_squat_frame">4</int>
       <float hash="jump_speed_x_mul">0.8</float>
-      <float hash="jump_speed_x_max">1.416</float>
+      <float hash="jump_speed_x_max">1.365</float>
       <float hash="jump_initial_y">11.297</float>
       <float hash="air_accel_x_mul">0.055</float>
       <float hash="air_speed_x_stable">0.92</float>

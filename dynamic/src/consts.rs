@@ -232,6 +232,23 @@ pub mod vars {
     }
 
     pub mod gaogaen {
+        // flags
+        pub const IS_SPECIAL_S_ALTERNATE_GRAB:             i32 = 0x1000;
+        pub const IS_SPECIAL_S_GROUND_GRAB:                i32 = 0x1001;
+        pub const IS_SPECIAL_S_AIR_GRAB:                   i32 = 0x1002;
+        pub const IS_HIT_SPECIAL_HI_RISE:                  i32 = 0x1003;
+        pub const IS_INPUT_CROSS_CHOP_CANCEL:              i32 = 0x1004;
+        pub const SHOULD_CROSS_CHOP_DIVE_EARLY:            i32 = 0x1005;
+        pub const IS_SPECIAL_LW_COMMAND_DASH:              i32 = 0x1006;
+        pub const IS_ENABLE_SPECIAL_LW_LARIAT_INPUT:       i32 = 0x1007;
+        pub const IS_INPUT_SPECIAL_LW_LARIAT:              i32 = 0x1008;
+        pub const DID_SPECIAL_LW_COMMAND_DASH_TANK_DAMAGE: i32 = 0x1009;
+        pub const SHOULD_APPLY_REVENGE_BUFFS:              i32 = 0x100A;
+        
+
+        // ints
+        pub const SPECIAL_N_STRENGTH_LEVEL: i32 = 0x1000;
+
         // floats
         pub const ANGLE_GRAB_STICK_Y: i32 = 0x1000;
     }
