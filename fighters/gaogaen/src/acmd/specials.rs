@@ -298,7 +298,7 @@ unsafe fn gaogaen_special_s_start_game(fighter: &mut L2CAgentBase) {
             // OTG Grab
             if VarModule::is_flag(boma.object(), vars::gaogaen::IS_SPECIAL_S_GROUND_GRAB){
                 ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 45, 100, 30, 0, 5.0, 0.0, 5.0, 2.0, Some(0.0), Some(5.0), Some(5.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-                damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 9.99);
+                //damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 9.99);
             }
             // Anti-air grab
             else if VarModule::is_flag(boma.object(), vars::gaogaen::IS_SPECIAL_S_AIR_GRAB){
@@ -377,7 +377,7 @@ unsafe fn gaogaen_special_s_start_game(fighter: &mut L2CAgentBase) {
         grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         GrabModule::set_rebound(boma, false);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+        //damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
     }
     frame(lua_state, 39.0);
     if is_excute(fighter) {
