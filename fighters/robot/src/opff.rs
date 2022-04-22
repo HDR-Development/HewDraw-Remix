@@ -50,10 +50,10 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
 }
 
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    gyro_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
+    //gyro_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
 
     // Magic Series
-    neutral_special_cancels(boma, status_kind, situation_kind, cat[0]);
+    //neutral_special_cancels(boma, status_kind, situation_kind, cat[0]);
     dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
 }
 
