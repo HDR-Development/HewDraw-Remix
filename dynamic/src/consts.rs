@@ -265,6 +265,8 @@ pub mod vars {
         pub const IS_ENABLE_FADC: i32 = 0x1005;
         pub const IS_TARGET_COMBO_1: i32 = 0x1006;
         pub const IS_TARGET_COMBO_2: i32 = 0x1007;
+        pub const IS_CURRENT_HADOKEN_EX: i32 = 0x1008;
+        pub const IS_ENABLE_AIRDASH_CANCEL: i32 = 0x1009;
 
         // ints
         pub const REPEAT_COUNT_LW: i32 = 0x1000;
