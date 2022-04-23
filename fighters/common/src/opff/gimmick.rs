@@ -7,38 +7,39 @@ use smash::app::{
 	self,
 	BattleObjectModuleAccessor,
 };
-use smash::phx::{Vector2f, Vector3f, Vector4f};
+use smash::phx::{Vector2f, Vector3f, Vector4f, Hash40};
 use smash::app::lua_bind::*;
 use smash::lib::lua_const::*;
 use smash::hash40;
+use smash_script::macros::{EFFECT_FOLLOW, EFFECT_FOLLOW_FLIP, LAST_EFFECT_SET_RATE, LAST_EFFECT_SET_COLOR};
+use crate::get_fighter_common_from_accessor;
+use super::physics::groups;
 
 #[no_mangle]
 pub unsafe extern "Rust" fn gimmick_flash(boma: &mut BattleObjectModuleAccessor) {
 	if !app::sv_information::is_ready_go() {
 		return
 	}
-	
-    let cbm_vec1 = Vector4f{x: 1.0, y: 0.8, z: 0.35, w: 0.25};
-    let cbm_vec2 = Vector4f{x: 1.0, y: 0.8, z: 0.35, w: 0.00};
-    ColorBlendModule::set_main_color(boma, &cbm_vec1, &cbm_vec2, 0.5, 0.5, 5, true);
+    let fighter = get_fighter_common_from_accessor(boma);
+    let lr = PostureModule::lr(fighter.module_accessor);
+    let group = ParamModule::get_int(fighter.battle_object, ParamType::Shared, "ecb_group_shift");
+    let mut flash_y_offset: f32 = match group {
+        groups::SMALL   => 10.0,
+        groups::MEDIUM  => 13.0,
+        groups::LARGE   => 16.0,
+        groups::XLARGE  => 19.0,
+        groups::XXLARGE => 22.0,
+        _ => panic!("malformed parammodule file! unknown group number for ecb shift: {}", group.to_string())
+    };
 
-    VarModule::set_int(boma.object(), vars::common::GIMMICK_READY_GLOW_TIMER, 1);
-}
+    app::FighterUtil::flash_eye_info(fighter.module_accessor);
 
-pub unsafe fn gimmick_ready_glow_timer_counting(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    
-    if VarModule::get_int(boma.object(), vars::common::GIMMICK_READY_GLOW_TIMER) > 0 && VarModule::get_int(boma.object(), vars::common::GIMMICK_READY_GLOW_TIMER) < 121 { // 250/5 = 50F
-        if VarModule::get_int(boma.object(), vars::common::GIMMICK_READY_GLOW_TIMER) > 119 {
-            ColorBlendModule::cancel_main_color(boma, 0);
-        } else {
-            VarModule::inc_int(boma.object(), vars::common::GIMMICK_READY_GLOW_TIMER);
-        }
+    if WorkModule::get_param_int(fighter.module_accessor, hash40("param_motion"), hash40("flip")) != 0 {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_flash"), Hash40::new("sys_flash"), Hash40::new("top"), -5, flash_y_offset, 2, 0, 0, 0, 0.7, true, *EF_FLIP_YZ);
     }
-    if [*FIGHTER_STATUS_KIND_WIN, *FIGHTER_STATUS_KIND_LOSE, *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-        VarModule::set_int(boma.object(), vars::common::GIMMICK_READY_GLOW_TIMER, 0);
+    else {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_flash"), Hash40::new("top"), -5.0 * lr, flash_y_offset, 2, 0, 0, 0, 0.7, true);
     }
-}
-
-pub unsafe fn run(boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
-    gimmick_ready_glow_timer_counting(boma, status_kind);
+    LAST_EFFECT_SET_RATE(fighter, 0.5);
+    LAST_EFFECT_SET_COLOR(fighter, 0.831, 0.686, 0.216);	
 }

@@ -63,34 +63,11 @@ unsafe fn up_special_drift(boma: &mut BattleObjectModuleAccessor, fighter_kind: 
         motion_value = value_toon;
     }
 
-    /*
-    let motion_value = match fighter_kind {
-        *FIGHTER_KIND_LINK as i32 => 0.55,
-        *FIGHTER_KIND_YOUNGLINK => 0.55,
-        *FIGHTER_KIND_TOONLINK => 1.0,
-        _ => 0.0
-    };
-    */
-
     if status_kind == *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_HOLD {
         if situation_kind == *SITUATION_KIND_GROUND {
             if stick_x != 0.0 {
                 let motion_vec = x_motion_vec(value_walk, stick_x);
                 KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-            }
-        }
-    }
-
-    // not including Link bc this stuff is handled within his status scripts
-    if fighter_kind != *FIGHTER_KIND_LINK {
-        if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END].contains(&status_kind) {
-            if situation_kind == *SITUATION_KIND_GROUND {
-                if frame < 46.0 {
-                    if stick_x != 0.0 {
-                        let motion_vec = x_motion_vec(motion_value, stick_x);
-                        KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-                    }
-                }
             }
         }
     }
@@ -116,9 +93,9 @@ unsafe fn up_special_land_cancel(boma: &mut BattleObjectModuleAccessor, fighter_
 pub unsafe extern "Rust" fn links_common(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         let fighter_kind = (&mut *info.boma).kind();
-        land_cancel_flags(&mut *info.boma, info.fighter_kind, info.motion_kind.hash, info.status_kind, info.situation_kind);
+        //land_cancel_flags(&mut *info.boma, info.fighter_kind, info.motion_kind.hash, info.status_kind, info.situation_kind);
         up_special_drift(&mut *info.boma, info.fighter_kind, info.status_kind, info.situation_kind, info.stick_x, info.facing, info.frame);
-        up_special_land_cancel(&mut *info.boma, info.fighter_kind, info.status_kind);
+        //up_special_land_cancel(&mut *info.boma, info.fighter_kind, info.status_kind);
     }
 }
 
