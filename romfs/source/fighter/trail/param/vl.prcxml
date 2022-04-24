@@ -13,5 +13,7 @@
     <float hash="attack_air_hit_speed_x_mul">1</float>
     <float hash="attack_air_hit_accel_x_mul">1</float>
     <float hash="attack_air_hit_speed_max_x_mul">1</float>
+    <float hash="0x1b989845bd">10</float>
+    <float hash="0x1bef9f752b">12</float>
   </struct>
 </struct>

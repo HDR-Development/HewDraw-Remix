@@ -2204,9 +2204,10 @@
       <float hash="damage_fly_top_speed_y_stable">2.14</float>
       <float hash="dive_speed_y">2.889</float>
       <float hash="weight">88</float>
-      <float hash="landing_attack_air_frame_f">11</float>
+      <float hash="landing_attack_air_frame_n">8</float>
+      <float hash="landing_attack_air_frame_f">9</float>
       <float hash="landing_attack_air_frame_hi">9</float>
-      <float hash="landing_attack_air_frame_lw">12</float>
+      <float hash="landing_attack_air_frame_lw">10</float>
       <bool hash="wall_jump_type">true</bool>
     </struct>
     <struct index="77">
