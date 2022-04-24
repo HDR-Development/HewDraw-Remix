@@ -234,11 +234,11 @@ unsafe fn zelda_phantom_attack_s_effect(fighter: &mut L2CAgentBase) {
 		if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
 			EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
 		}
-		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 1.0, 0, 0, 0, 1, true);
+		//EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 1.0, 0, 0, 0, 1, true);
+		//LAST_EFFECT_SET_RATE(fighter, 0.5);
+		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 8.0, 0, 0, 0, 0.5, true);
 		LAST_EFFECT_SET_RATE(fighter, 0.5);
-		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 8.0, 0, 0, 0, 1, true);
-		LAST_EFFECT_SET_RATE(fighter, 0.5);
-		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 16.0, 0, 0, 0, 1, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 16.0, 0, 0, 0, 0.75, true);
 		LAST_EFFECT_SET_RATE(fighter, 0.5);
 	}
 	frame(lua_state, 3.0);
@@ -251,11 +251,11 @@ unsafe fn zelda_phantom_attack_s_effect(fighter: &mut L2CAgentBase) {
 		}
 		AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_zelda_phantomsword1"), Hash40::new("tex_zelda_phantomsword2"), 6, Hash40::new("handr"), 1.5, 0.4, -1.0, Hash40::new("handr"), 1.5, 0.4, 24.4, true, Hash40::new("zelda_phantom_sword"), Hash40::new("handr"), 1.85, 0.35, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.5);
 
-		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 1.0, 0, 0, 0, 1, true);
+		//EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 1.0, 0, 0, 0, 1, true);
+		//LAST_EFFECT_SET_RATE(fighter, 0.75);
+		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 8.0, 0, 0, 0, 0.5, true);
 		LAST_EFFECT_SET_RATE(fighter, 0.75);
-		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 8.0, 0, 0, 0, 1, true);
-		LAST_EFFECT_SET_RATE(fighter, 0.75);
-		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 16.0, 0, 0, 0, 1, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 16.0, 0, 0, 0, 0.75, true);
 		LAST_EFFECT_SET_RATE(fighter, 0.75);
 	}
 	frame(lua_state, 7.0);
@@ -344,13 +344,13 @@ unsafe fn zelda_phantom_attack_l_effect(fighter: &mut L2CAgentBase) {
 		LAST_EFFECT_SET_RATE(fighter, 0.75);
 		*/
 
-		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 1.0, 0, 0, 0, 1, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 1.0, 0, 0, 0, 0.35, true);
 		LAST_EFFECT_SET_RATE(fighter, 0.5);
 		LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.0, 1.0);
-		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 8.0, 0, 0, 0, 1, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 8.0, 0, 0, 0, 0.5, true);
 		LAST_EFFECT_SET_RATE(fighter, 0.5);
 		LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.0, 1.0);
-		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 16.0, 0, 0, 0, 1, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 16.0, 0, 0, 0, 0.75, true);
 		LAST_EFFECT_SET_RATE(fighter, 0.5);
 		LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.0, 1.0);
 	}
@@ -370,13 +370,13 @@ unsafe fn zelda_phantom_attack_l_effect(fighter: &mut L2CAgentBase) {
 		if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
 			EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
 		}
-		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 1.0, 0, 0, 0, 1, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 1.0, 0, 0, 0, 0.35, true);
 		LAST_EFFECT_SET_RATE(fighter, 0.5);
 		LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.0, 1.0);
-		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 8.0, 0, 0, 0, 1, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 8.0, 0, 0, 0, 0.5, true);
 		LAST_EFFECT_SET_RATE(fighter, 0.5);
 		LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.0, 1.0);
-		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 16.0, 0, 0, 0, 1, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_start"), Hash40::new("handr"), 0, 0, 16.0, 0, 0, 0, 0.75, true);
 		LAST_EFFECT_SET_RATE(fighter, 0.5);
 		LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.0, 1.0);
 	}
@@ -476,7 +476,7 @@ unsafe fn zelda_phantom_attack_max_effect(fighter: &mut L2CAgentBase) {
 			EFFECT_FOLLOW(fighter, Hash40::new("zelda_phantom_line"), Hash40::new("top"), 5, 10, -7, 0, 0, 0, 1, true);
 		}
 		
-		EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk_hi_flash"), Hash40::new("handr"), 0, 0, 16.0, 0, 0, 0, 3.0, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk_hi_flash"), Hash40::new("handr"), 0, 0, 16.0, 0, 0, 0, 2.0, true);
 	}
 	frame(lua_state, 4.0);
 	if is_excute(fighter) {
