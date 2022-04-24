@@ -7,7 +7,15 @@ unsafe fn blue_eggs_land_cancels(fighter: &mut L2CFighterCommon) {
     && fighter.is_situation(*SITUATION_KIND_GROUND)
     && fighter.is_prev_situation(*SITUATION_KIND_AIR)
     {
-        fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
+        // Current FAF in motion list is 50, frame is 0 indexed so subtract a frame
+        let special_n_fire_cancel_frame_ground = 49.0;
+        // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
+        let landing_lag = 12.0;
+        if MotionModule::frame(fighter.module_accessor) < (special_n_fire_cancel_frame_ground - landing_lag) {
+            MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, special_n_fire_cancel_frame_ground - landing_lag, true, true, false);
+        }
+        
+        //fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
     }
 }
 
