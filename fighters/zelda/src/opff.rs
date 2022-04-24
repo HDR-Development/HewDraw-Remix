@@ -1,8 +1,7 @@
 // opff import
-utils::import_noreturn!(common::opff::fighter_common_opff);
+utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
 use super::*;
 use globals::*;
-
  
 unsafe fn teleport_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, id: usize) {
     if status_kind == *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2 {
@@ -62,8 +61,16 @@ unsafe fn neutral_special_cancels(boma: &mut BattleObjectModuleAccessor, status_
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+ 
+unsafe fn phantom_b_rev(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
+        common::opff::check_b_reverse(fighter);
+    }
+}
+
+pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     teleport_cancel(boma, status_kind, id);
+    //phantom_b_rev(fighter);
 
     // Magic Series
     neutral_special_cancels(boma, status_kind, situation_kind, cat[0]);
@@ -79,6 +86,73 @@ pub fn zelda_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn zelda_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+    }
+}
+
+#[smashline::weapon_frame_callback]
+pub fn phantom_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    unsafe { 
+        if weapon.kind() != WEAPON_KIND_ZELDA_PHANTOM {
+            return
+        }
+        GroundModule::correct(weapon.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+        if weapon.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_BUILD) {
+            let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+            let zelda = utils::util::get_battle_object_from_id(owner_id);
+            let zelda_boma = &mut *(*zelda).module_accessor;
+            let remaining_hitstun = WorkModule::get_float(zelda_boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
+            if zelda_boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD,
+                                            *FIGHTER_STATUS_KIND_ESCAPE,
+                                            *FIGHTER_STATUS_KIND_ESCAPE,
+                                            *FIGHTER_STATUS_KIND_ESCAPE_F,
+                                            *FIGHTER_STATUS_KIND_ESCAPE_B,
+                                            *FIGHTER_STATUS_KIND_ESCAPE_AIR,
+                                            *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE,
+                                            *FIGHTER_STATUS_KIND_CATCH,
+                                            *FIGHTER_STATUS_KIND_CATCH_DASH,
+                                            *FIGHTER_STATUS_KIND_CATCH_TURN,
+                                            *FIGHTER_STATUS_KIND_CATCH_PULL,
+                                            *FIGHTER_STATUS_KIND_CATCH_WAIT,
+                                            *FIGHTER_STATUS_KIND_CATCH_ATTACK,
+                                            *FIGHTER_STATUS_KIND_CATCH_CUT,
+                                            *FIGHTER_STATUS_KIND_SHOULDERED_DONKEY,
+                                            *FIGHTER_STATUS_KIND_CATCHED_RIDLEY,
+                                            *FIGHTER_STATUS_KIND_CATCHED_REFLET,
+                                            *FIGHTER_STATUS_KIND_CATCHED_GANON,
+                                            *FIGHTER_STATUS_KIND_CATCHED_AIR_GANON,
+                                            *FIGHTER_STATUS_KIND_CATCHED_CUT_GANON,
+                                            *FIGHTER_STATUS_KIND_DAMAGE,
+                                            *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+                                            *FIGHTER_STATUS_KIND_DAMAGE_FALL,
+                                            *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+                                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+                                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+                                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+                                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+                                            *FIGHTER_STATUS_KIND_DAMAGE_FALL,
+                                            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+                                            *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_LW_CHARGE,
+                                            *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_LW_END])
+            || WorkModule::is_flag(zelda_boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
+            || WorkModule::is_flag(zelda_boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
+            || (remaining_hitstun > 0.0){
+                return
+            }
+
+            if zelda_boma.is_cat_flag(Cat1::SpecialLw){
+                StatusModule::change_status_force(weapon.module_accessor, *WEAPON_ZELDA_PHANTOM_STATUS_KIND_ATTACK, false);
+            }
+        }
+        /*
+        if weapon.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_BUILD) {
+            let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+            let palutena = utils::util::get_battle_object_from_id(owner_id);
+            let palutena_boma = &mut *(*palutena).module_accessor;
+            if AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_ATTACK){
+                StatusModule::change_status_request_from_script(weapon.module_accessor, *WEAPON_PALUTENA_REFLECTIONBOARD_STATUS_KIND_BREAK, false);
+            }
+        }
+        */
     }
 }

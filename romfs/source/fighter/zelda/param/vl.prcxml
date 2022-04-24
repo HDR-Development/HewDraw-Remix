@@ -7,7 +7,7 @@
   </list>
   <list hash="param_special_s">
     <struct index="0">
-      <int hash="no_bang">6</int>
+      <int hash="no_bang">3</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -40,10 +40,25 @@
   </list>
   <list hash="param_phantom">
     <struct index="0">
-      <float hash="attack_add_charge">0.9</float>
+      <float hash="speed">3</float>
+      <float hash="hp_add_charge">0</float>
+      <float hash="speed_charge">0</float>
+      <float hash="attack_add_charge">0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
+  </list>
+  <list size="1" hash="shield_data_phantom">
+    <struct index="0">
+      <hash40 hash="node">handl</hash40>
+      <float hash="offset1_x">4</float>
+      <float hash="offset1_y">-0.5</float>
+      <float hash="offset1_z">3</float>
+      <float hash="offset2_x">1.5</float>
+      <float hash="offset2_y">-2.5</float>
+      <float hash="offset2_z">-2.5</float>
+      <float hash="size">1.5</float>
+    </struct>
   </list>
 </struct>
