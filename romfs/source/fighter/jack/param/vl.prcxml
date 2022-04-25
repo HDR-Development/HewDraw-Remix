@@ -43,7 +43,7 @@
     <struct index="1">
       <float hash="rush_angle_max_f">-35</float>
       <float hash="rush_angle_max_b">40</float>
-      <float hash="rush_speed">3.92</float>
+      <float hash="rush_speed">3.95</float>
       <int hash="rush_brake_frame">1</int>
       <float hash="end_speed_rate_x">0.1</float>
       <float hash="end_speed_rate_y">0.06</float>
