@@ -121,34 +121,18 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
-// Fireball double article fix
-unsafe fn special_n_article_fix(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
-    if [*FIGHTER_STATUS_KIND_SPECIAL_N].contains(&status_kind) {
-        //if situation_kind == *SITUATION_KIND_GROUND {
-            if frame <= 1.0 /*frame >= 13.0 && frame < 15.0*/ {
-                //println!("Reset fireball projectile flag");
-                VarModule::off_flag(boma.object(), vars::common::SPECIAL_PROJECTILE_SPAWNED);
-            }
-        //}
-        /*
-        else if situation_kind == *SITUATION_KIND_AIR {
-            if frame >= 14.0 && frame < 15.0{
-                VarModule::on_flag(boma.object(), vars::common::SPECIAL_PROJECTILE_SPAWNED);
-                println!("=== PROJECTILE SPAWNED FROM AERIAL VERSION");
-            }
-        }
-        */
-    }
-    /*
-    else{
-        if VarModule::is_flag(boma.object(), vars::common::SPECIAL_PROJECTILE_SPAWNED){
-            VarModule::off_flag(boma.object(), vars::common::SPECIAL_PROJECTILE_SPAWNED);
+// Double fireball handling
+unsafe fn double_fireball(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) && VarModule::is_flag(boma.object(), vars::mario::CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL) {
+        let restart_frame = 10.0;
+        if boma.is_cat_flag(Cat1::SpecialN) || boma.is_cat_flag(Cat1::SpecialS) || boma.is_cat_flag(Cat1::SpecialHi) || boma.is_cat_flag(Cat1::SpecialLw){
+            VarModule::off_flag(fighter.battle_object, vars::mario::IS_SPECIAL_N_FIREBRAND);
+            VarModule::off_flag(boma.object(), vars::mario::CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL);
+            VarModule::on_flag(boma.object(), vars::common::DOUBLE_FIREBALL);
+            //MotionModule::set_frame_sync_anim_cmd(boma, restart_frame, true, true, false);
+            boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_N, false);
         }
     }
-
-    if  !VarModule::is_flag(boma.object(), vars::common::SPECIAL_PROJECTILE_SPAWNED){
-    }
-    */
 }
 
 
@@ -199,7 +183,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     up_b_wall_jump(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
     fludd_b_reverse(fighter);
     dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
-    special_n_article_fix(fighter, boma, id, status_kind, situation_kind, frame);
+    double_fireball(fighter, boma);
     noknok_timer(fighter, boma, id);
     noknok_reset(fighter, id, status_kind);
     noknok_training(fighter, id, status_kind);

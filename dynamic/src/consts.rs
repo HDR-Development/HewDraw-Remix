@@ -247,7 +247,9 @@ pub mod vars {
 
     pub mod mario {
         // flags
-        pub const FIREBRAND_SPAWNED: i32 = 0x1000;
+        pub const IS_SPECIAL_N_FIREBRAND:              i32 = 0x1000;
+        pub const IS_SPECIAL_N_DOUBLE_FIREBALL:        i32 = 0x1001;
+        pub const CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL: i32 = 0x1002;
     }
 
     pub mod roy {
