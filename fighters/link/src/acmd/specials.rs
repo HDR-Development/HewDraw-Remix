@@ -54,41 +54,41 @@ unsafe fn special_hi_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("link_kaiten"), Hash40::new("top"), 0, 11, 0, -10, -120, 0, 0.75, true);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.5);
         FOOT_EFFECT(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.5);
         LAST_EFFECT_SET_RATE(fighter, 1.3);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("link_kaiten"), Hash40::new("top"), 0, 10, 0, 10, 180, 0, 0.75, true);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.5);
         FOOT_EFFECT(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.5);
         LAST_EFFECT_SET_RATE(fighter, 1.3);
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("link_kaiten"), Hash40::new("top"), 0, 10, 0, -10, -250, 5, 0.75, true);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.5);
         FOOT_EFFECT(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.5);
         LAST_EFFECT_SET_RATE(fighter, 1.3);
     }
     frame(lua_state, 26.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("link_kaiten"), Hash40::new("top"), 0, 10, 0, -10, 0, 5, 0.75, true);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.5);
         FOOT_EFFECT(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.5);
         LAST_EFFECT_SET_RATE(fighter, 1.3);
     }
     frame(lua_state, 36.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("link_kaiten"), Hash40::new("top"), 0, 10, 0, 0, -100, 10, 0.75, true);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.5);
         FOOT_EFFECT(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.5);
         LAST_EFFECT_SET_RATE(fighter, 1.3);
     }
     frame(lua_state, 44.0);
@@ -121,22 +121,22 @@ unsafe fn special_air_hi_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("link_kaiten_air"), Hash40::new("top"), 0, 18, 0, 0, -90, 25, 0.75, true);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.5);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("link_kaiten_air"), Hash40::new("top"), 0, 16, 0, -20, -150, 30, 0.75, true);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.5);
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("link_kaiten_air"), Hash40::new("top"), 0, 17, 0, 0, -120, 20, 0.75, true);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.5);
     }
     frame(lua_state, 27.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("link_kaiten_air"), Hash40::new("top"), 0, 16, 0, 25, -170, 15, 0.75, true);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.5);
     }
     frame(lua_state, 42.0);
     if is_excute(fighter) {

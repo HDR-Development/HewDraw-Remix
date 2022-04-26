@@ -109,7 +109,10 @@ pub fn link_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		link_frame(fighter);
-        links_common(fighter)
+        links_common(fighter);
+
+        // sword slightly smaller
+        // ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("sword1"), &Vector3f::new(0.90, 1.0, 1.0));
     };
 }
 
