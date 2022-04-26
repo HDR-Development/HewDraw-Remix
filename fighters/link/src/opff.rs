@@ -111,8 +111,10 @@ pub fn link_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 		link_frame(fighter);
         links_common(fighter);
 
-        // sword slightly smaller
-        // ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("sword1"), &Vector3f::new(0.90, 1.0, 1.0));
+        // sword slightly smaller during utilt, 
+        if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_HI3]) {
+            ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("sword1"), &Vector3f::new(0.85, 1.0, 1.0));
+        }
     };
 }
 
