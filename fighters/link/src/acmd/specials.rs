@@ -40,6 +40,120 @@ unsafe fn special_hi(fighter: &mut L2CAgentBase) {
     
 }
 
+
+#[acmd_script( agent = "link", script = "effect_specialhi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn special_hi_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_link_sword1"), Hash40::new("tex_link_sword2"), 4, Hash40::new("sword1"), 1.0, 0.0, 0.0, Hash40::new("sword1"), 14.6, 0.2, -0.2, true, Hash40::new("null"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.6, 0.2);
+        EFFECT_FOLLOW(fighter, Hash40::new("link_sword_flare"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 0.75, true);
+        FLASH(fighter, 1, 0.6, 0, 0.1);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("link_kaiten"), Hash40::new("top"), 0, 11, 0, -10, -120, 0, 0.75, true);
+        FOOT_EFFECT(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        LAST_EFFECT_SET_RATE(fighter, 1.3);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("link_kaiten"), Hash40::new("top"), 0, 10, 0, 10, 180, 0, 0.75, true);
+        FOOT_EFFECT(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        LAST_EFFECT_SET_RATE(fighter, 1.3);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("link_kaiten"), Hash40::new("top"), 0, 10, 0, -10, -250, 5, 0.75, true);
+        FOOT_EFFECT(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        LAST_EFFECT_SET_RATE(fighter, 1.3);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("link_kaiten"), Hash40::new("top"), 0, 10, 0, -10, 0, 5, 0.75, true);
+        FOOT_EFFECT(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        LAST_EFFECT_SET_RATE(fighter, 1.3);
+    }
+    frame(lua_state, 36.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("link_kaiten"), Hash40::new("top"), 0, 10, 0, 0, -100, 10, 0.75, true);
+        FOOT_EFFECT(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        LAST_EFFECT_SET_RATE(fighter, 1.3);
+    }
+    frame(lua_state, 44.0);
+    if is_excute(fighter) {
+        FLASH_FRM(fighter, 5, 0, 0, 0, 0);
+        AFTER_IMAGE_OFF(fighter, 6);
+        EFFECT_OFF_KIND(fighter, Hash40::new("link_kaiten"), false, false);
+        LANDING_EFFECT(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 47.0);
+    if is_excute(fighter) {
+        COL_NORMAL(fighter);
+    }
+    frame(lua_state, 52.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("link_sword_flare"), false, false);
+    }
+}
+
+#[acmd_script( agent = "link", script = "effect_specialairhi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn special_air_hi_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_link_sword1"), Hash40::new("tex_link_sword2"), 4, Hash40::new("sword1"), 1.0, 0.0, 0.0, Hash40::new("sword1"), 14.6, 0.2, -0.2, true, Hash40::new("null"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.6, 0.2);
+        EFFECT_FOLLOW(fighter, Hash40::new("link_sword_flare"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
+        FLASH(fighter, 1, 0.6, 0, 0.1);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("link_kaiten_air"), Hash40::new("top"), 0, 18, 0, 0, -90, 25, 0.75, true);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("link_kaiten_air"), Hash40::new("top"), 0, 16, 0, -20, -150, 30, 0.75, true);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("link_kaiten_air"), Hash40::new("top"), 0, 17, 0, 0, -120, 20, 0.75, true);
+    }
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("link_kaiten_air"), Hash40::new("top"), 0, 16, 0, 25, -170, 15, 0.75, true);
+    }
+    frame(lua_state, 42.0);
+    if is_excute(fighter) {
+        AFTER_IMAGE_OFF(fighter, 3);
+    }
+    frame(lua_state, 44.0);
+    if is_excute(fighter) {
+        AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_link_sword1"), Hash40::new("tex_link_sword2"), 6, Hash40::new("sword1"), 1.0, 0.0, 0.0, Hash40::new("sword1"), 14.6, 0.2, -0.2, true, Hash40::new("null"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.6, 0.2);
+    }
+    frame(lua_state, 49.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("sword1"), 13, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        AFTER_IMAGE_OFF(fighter, 4);
+    }
+    frame(lua_state, 53.0);
+    if is_excute(fighter) {
+        FLASH_FRM(fighter, 5, 0, 0, 0, 0);
+        EFFECT_OFF_KIND(fighter, Hash40::new("link_kaiten"), false, false);
+    }
+    frame(lua_state, 54.0);
+    if is_excute(fighter) {
+        COL_NORMAL(fighter);
+        EFFECT_OFF_KIND(fighter, Hash40::new("link_sword_flare"), false, false);
+    }
+}
+
 #[acmd_script( agent = "link", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn special_air_hi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -207,6 +321,8 @@ pub fn install() {
     install_acmd_scripts!(
         special_hi,
         special_air_hi,
+        special_air_hi_effect,
+        special_hi_effect
     );
 }
 
