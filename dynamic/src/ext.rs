@@ -1,7 +1,9 @@
 use smash::app::{
     self,
     *,
-    lua_bind::*
+    lua_bind::*,
+    FighterKineticEnergyMotion,
+    FighterKineticEnergyController,
 };
 use smash::lua2cpp::*;
 use smash::lib::{
@@ -411,6 +413,10 @@ pub trait BomaExt {
     unsafe fn get_param_int(&mut self, obj: &str, field: &str) -> i32;
     unsafe fn get_param_float(&mut self, obj: &str, field: &str) -> f32;
     unsafe fn get_param_int64(&mut self, obj: &str, field: &str) -> u64;
+
+    // ENERGY
+    unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion;
+    unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController;
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -677,6 +683,15 @@ impl BomaExt for BattleObjectModuleAccessor {
         ModelModule::set_joint_rotate(self, Hash40::new(&bone_name), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
     }
 
+    /// gets the FighterKineticEnergyMotion object
+    unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion {
+        std::mem::transmute::<u64, &mut app::FighterKineticEnergyMotion>(KineticModule::get_energy(self, *FIGHTER_KINETIC_ENERGY_ID_MOTION))
+    }
+
+    /// gets the FighterKineticEnergyController object
+    unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController {
+        std::mem::transmute::<u64, &mut smash::app::FighterKineticEnergyController>(KineticModule::get_energy(self, *FIGHTER_KINETIC_ENERGY_ID_CONTROL))
+    }
 }
 
 pub trait LuaUtil {

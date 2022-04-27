@@ -349,6 +349,17 @@ pub mod vars {
         pub const IS_CHARGE_FINISHED: i32 = 0x1000;
     }
 
+    pub mod metaknight {
+        /// u64 effect handle
+        pub const META_QUICK_EFFECT_HANDLE: i32 = 0;
+
+        /// i32 timer for color flashing when meta quick is ready
+        pub const META_QUICK_READY_FLASH_TIMER: i32 = 0;
+
+        /// flag whether we need to set metaknight speed values next frame
+        pub const SHOULD_SET_SPEEDS: i32 = 0;
+    }
+
 
 }
 

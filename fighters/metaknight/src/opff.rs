@@ -17,6 +17,7 @@ unsafe fn dim_cape_early_attack_cancel(boma: &mut BattleObjectModuleAccessor, st
 // Meta Knight Special Fall Hit Reset
 // Set flags for each special move
 unsafe fn flag_resets(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, motion_kind: u64, frame: f32) {
+    
     if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
         if status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_N_SPIN {
             VarModule::on_flag(boma.object(), vars::common::NEUTRAL_SPECIAL_HIT);
@@ -86,7 +87,8 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
 pub fn metaknight_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-		metaknight_frame(fighter)
+		metaknight_frame(fighter);
+        meta_quick::run(fighter);
     }
 }
 
