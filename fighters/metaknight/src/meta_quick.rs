@@ -14,8 +14,10 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     println!("Gimmick Timer: {}", VarModule::get_int(fighter.object(), vars::common::GIMMICK_TIMER));
     
     // if we have full meter, enable meta quick
-    if MeterModule::level(fighter.object()) >= 0 {
-        if fighter.is_status(*FIGHTER_STATUS_KIND_APPEAL) {
+    if MeterModule::level(fighter.object()) >= 10 {
+        if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_ON])
+            && fighter.is_cat_flag(Cat2::AppealAll) {
+
             MeterModule::drain(fighter.object(), 10);
             
             // 10 seconds of quick
@@ -81,8 +83,8 @@ unsafe fn is_meta_quick(fighter: &mut smash::lua2cpp::L2CFighterCommon) -> bool 
 /// length: how many frames meta quick should be active
 unsafe fn start_meta_quick(fighter: &mut smash::lua2cpp::L2CFighterCommon, length: i32) {
     VarModule::set_int(fighter.object(), vars::common::GIMMICK_TIMER, length);
-
-    // TODO: play a cool sfx or screen effect
+    SoundModule::stop_all_sound(fighter.boma());
+    PLAY_SE(fighter, Hash40::new("vc_metaknight_appeal01"));
 }
 
 
