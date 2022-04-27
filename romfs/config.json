@@ -6,6 +6,9 @@
 		],
 		"fighter/luigi/cmn": [
 			"fighter/luigi/param/hdr.prc"
+		],
+		"fighter/pikmin/cmn": [
+		    "fighter/pikmin/param/hdr.prc"
 		]
 	}
 }

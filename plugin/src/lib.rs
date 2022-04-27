@@ -20,7 +20,7 @@ pub extern "Rust" fn delayed_install() {
     fighters::delayed_install();
 }
 
-#[cfg(feature = "main_nro")]
+#[cfg(feature = "add_status")]
 extern "Rust" {
     #[link_name = "hdr_delayed_install"]
     fn delayed_install();
@@ -76,8 +76,11 @@ pub fn main() {
     #[cfg(not(feature = "runtime"))]
     { utils::init(); }
     fighters::install();
-    #[cfg(feature = "main_nro")]
+    #[cfg(all(not(feature = "add_status"), feature = "main_nro"))]
     { if !(delayed_install as *const ()).is_null() { unsafe { delayed_install(); } } }
+
+    #[cfg(all(feature = "add_status", not(all(not(feature = "add_status"), feature = "main_nro"))))]
+    { fighters::delayed_install(); }
 
     #[cfg(feature = "updater")]
     {
