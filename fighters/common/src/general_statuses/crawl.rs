@@ -56,15 +56,6 @@ pub unsafe fn status_sub_squat_walk_init_hook(fighter: &mut L2CFighterCommon) ->
     let crawl_speed_ratio = (squat_walk_max_speed * end_frame / trans_tra_end_frame_vec.z).abs();
     WorkModule::set_float(boma, crawl_speed_ratio, *FIGHTER_STATUS_SQUAT_WALK_WORK_FLOAT_SPEED_MAX_RATIO);
 
-    println!("-------------------------");
-    println!("speed_x: {}", speed_x);
-    println!("speed_forward: {}", speed_forward);
-    println!("squat_walk_max_speed: {}", squat_walk_max_speed);
-    println!("trans_tra_end_frame_vec_x: {}", trans_tra_end_frame_vec.x);
-    println!("trans_tra_end_frame_vec_y: {}", trans_tra_end_frame_vec.y);
-    println!("trans_tra_end_frame_vec_z: {}", trans_tra_end_frame_vec.z);
-    println!("end_frame: {}", end_frame);
-
     return 0.into();
 }
 
