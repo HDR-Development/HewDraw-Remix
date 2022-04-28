@@ -61,7 +61,7 @@ pub unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_DamageFlyCommon_init)]
 pub unsafe fn damage_fly_common_init(fighter: &mut L2CFighterCommon) {
-    ControlModule::set_command_life_extend(fighter.module_accessor, 10);
+    ControlModule::set_command_life_extend(fighter.module_accessor, 5);
     original!()(fighter)
 }
 
