@@ -1,5 +1,5 @@
 use super::*;
-pub mod reverse_hits;
+pub mod effect;
 pub mod edge_slipoffs;
 pub mod ledges;
 pub mod get_param;
@@ -17,7 +17,7 @@ pub mod controls;
 pub mod jumps;
 
 pub fn install() {
-    reverse_hits::install();
+    effect::install();
     edge_slipoffs::install();
     ledges::install();
     get_param::install();

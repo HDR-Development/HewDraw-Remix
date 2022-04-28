@@ -130,7 +130,7 @@ pub fn install() {
         gamewatch_landing_air_lw_expression,
         gamewatch_catch_game,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
         sound_appealhil,
         sound_appealhir,
