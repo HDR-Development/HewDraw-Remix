@@ -357,7 +357,7 @@ pub mod vars {
         pub const META_QUICK_READY_FLASH_TIMER: i32 = 0;
 
         /// flag whether we need to set metaknight speed values next frame
-        pub const SHOULD_SET_SPEEDS: i32 = 0;
+        pub const COMPLETED_SET_SPEEDS: i32 = 0;
     }
 
 

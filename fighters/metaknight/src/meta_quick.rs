@@ -1,5 +1,4 @@
 // opff import
-utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
@@ -33,12 +32,13 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         update_meta_quick_timer(fighter);
         show_quick_active_effect(fighter);
 
-        // handle the speed/accel aspects of meta quick
-        if fighter.global_table[CURRENT_FRAME].get_i32() <= 2 && !VarModule::is_flag(fighter.object(), vars::metaknight::SHOULD_SET_SPEEDS) {
+        // state machine which handles the speed/accel aspects of meta quick
+        // at the beginning of the status, 
+        if fighter.global_table[CURRENT_FRAME].get_i32() <= 2 && !VarModule::is_flag(fighter.object(), vars::metaknight::COMPLETED_SET_SPEEDS) {
             
             println!("we are setting speeds!");
             // set the X motion speed multiplier (where movement is baked into an anim)
-            lua_bind::FighterKineticEnergyMotion::set_speed_mul(fighter.get_motion_energy(), 1.5);
+            lua_bind::FighterKineticEnergyMotion::set_speed_mul(fighter.get_motion_energy(), 1.3);
 
             // set the X motion accel multiplier for control energy (used in the air, during walk, fall, etc)
             lua_bind::FighterKineticEnergyController::mul_x_accel_mul( fighter.get_controller_energy(), 1.5);
@@ -50,10 +50,10 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
             lua_bind::FighterKineticEnergyController::mul_x_speed_max(fighter.get_controller_energy(), 1.5);
 
             // we no longer need to set these values
-            VarModule::on_flag(fighter.object(), vars::metaknight::SHOULD_SET_SPEEDS);
+            VarModule::on_flag(fighter.object(), vars::metaknight::COMPLETED_SET_SPEEDS);
         }
         if fighter.global_table[CURRENT_FRAME].get_i32() > 3 {
-            VarModule::off_flag(fighter.object(), vars::metaknight::SHOULD_SET_SPEEDS)
+            VarModule::off_flag(fighter.object(), vars::metaknight::COMPLETED_SET_SPEEDS)
         }
         
     } else {
@@ -71,7 +71,7 @@ unsafe fn update_meta_quick_timer(fighter: &mut smash::lua2cpp::L2CFighterCommon
 }
 
 /// check if meta quick is currently running
-unsafe fn is_meta_quick(fighter: &mut smash::lua2cpp::L2CFighterCommon) -> bool {
+pub unsafe fn is_meta_quick(fighter: &mut smash::lua2cpp::L2CFighterCommon) -> bool {
     let timer = VarModule::get_int(fighter.object(), vars::common::GIMMICK_TIMER);
     if timer > 0 {
         return true;
