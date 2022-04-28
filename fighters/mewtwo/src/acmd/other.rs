@@ -74,7 +74,7 @@ pub fn install() {
     install_acmd_scripts!(
         mewtwo_catch_game,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
     );
 }

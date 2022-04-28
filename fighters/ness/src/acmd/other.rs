@@ -73,7 +73,7 @@ unsafe fn ness_pkflash_bang_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        dash_effect,
+        //dash_effect,
 		ness_turn_dash_game,
         ness_pkfire_pillar_game,
         ness_pkfire_pillar_air_game,

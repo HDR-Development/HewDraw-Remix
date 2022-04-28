@@ -95,7 +95,7 @@ unsafe fn lucas_jump_aerial_b_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        dash_effect,
+        //dash_effect,
         //lucas_jump_aerial_f_game,
         //lucas_jump_aerial_b_game,
     );
