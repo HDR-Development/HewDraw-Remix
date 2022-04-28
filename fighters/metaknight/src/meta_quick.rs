@@ -56,9 +56,16 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
             VarModule::off_flag(fighter.object(), vars::metaknight::COMPLETED_SET_SPEEDS)
         }
         
+        // set the increased jump speed max multiplier for momentum transfer
+        VarModule::set_float(fighter.object(), vars::common::JUMP_SPEED_MAX_MUL, 1.5);
+
     } else {
         kill_quick_effect(fighter);
+
+        // set the regular jump speed max multiplier for momentum transfer
+        VarModule::set_float(fighter.object(), vars::common::JUMP_SPEED_MAX_MUL, 1.0);
     }
+    println!("Jump speed max mul: {}", VarModule::get_float(fighter.object(), vars::common::JUMP_SPEED_MAX_MUL));
 }
 
 /// decrement meta quick timer

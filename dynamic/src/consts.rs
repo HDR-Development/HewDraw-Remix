@@ -184,6 +184,9 @@ pub mod vars {
         pub const ESCAPE_AIR_SLIDE_SPEED_X: i32 = 0x17;
         pub const ESCAPE_AIR_SLIDE_SPEED_Y: i32 = 0x18;
         pub const Y_POS: i32 = 0x19;
+        /// this multiplier can be set to a value between 0.1 and 3.0 to increase
+        /// a character's jump speed max for momentum transfer (meta quick, etc)
+        pub const JUMP_SPEED_MAX_MUL: i32 = 0x1A;
        
     }
 

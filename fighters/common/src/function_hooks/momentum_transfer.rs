@@ -29,7 +29,16 @@ pub unsafe fn status_attack_air_hook(fighter: &mut L2CFighterCommon, param_1: L2
     let boma = app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
     let fighter_kind = boma.kind();
     let ratio = VarModule::get_float(fighter.object(), vars::common::JUMP_SPEED_RATIO);
-    let jump_speed_x_max = WorkModule::get_param_float(boma, hash40("run_speed_max"), 0) * ratio;
+
+    // get the multiplier for any special mechanics that require additional jump speed max (meta quick, etc)
+    let mut jump_speed_max_mul = VarModule::get_float(fighter.object(), vars::common::JUMP_SPEED_MAX_MUL);
+    match jump_speed_max_mul {
+        // if its not between 0.1 and 2.0, it is likely not a real value and we should ignore it
+        0.1..=3.0 => {},
+        _ => { jump_speed_max_mul = 1.0 }
+    }
+
+    let mut jump_speed_x_max = WorkModule::get_param_float(boma, hash40("run_speed_max"), 0) * ratio * jump_speed_max_mul;
 
     let mut l2c_agent = L2CAgent::new(fighter.lua_state_agent);
     let new_speed = VarModule::get_float(fighter.object(), vars::common::CURRENT_MOMENTUM).clamp(-jump_speed_x_max, jump_speed_x_max);
