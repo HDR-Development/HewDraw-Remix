@@ -29,7 +29,6 @@ pub unsafe fn calc_melee_momentum(fighter: &mut L2CFighterCommon, aerial_attack:
     let fighter_kind = fighter.global_table[FIGHTER_KIND].get_i32();
     let jump_speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("jump_speed_x"), 0);
     let jump_speed_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("jump_speed_x_mul"), 0);
-    let dash_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0);
     let run_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("run_speed_max"), 0);
     let stick_x = ControlModule::get_stick_x(fighter.module_accessor);
     let ratio = VarModule::get_float(fighter.battle_object, vars::common::JUMP_SPEED_RATIO);
@@ -39,7 +38,7 @@ pub unsafe fn calc_melee_momentum(fighter: &mut L2CFighterCommon, aerial_attack:
     // get the multiplier for any special mechanics that require additional jump speed max (meta quick, etc)
     let mut jump_speed_max_mul = VarModule::get_float(fighter.object(), vars::common::JUMP_SPEED_MAX_MUL);
     match jump_speed_max_mul {
-        // if its not between 0.1 and 2.0, it is likely not a real value and we should ignore it
+        // if its not between 0.1 and 3.0, it is likely not a real value and we should ignore it
         0.1..=3.0 => {},
         _ => { jump_speed_max_mul = 1.0 }
     }

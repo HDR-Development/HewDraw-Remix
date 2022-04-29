@@ -44,7 +44,7 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         if is_meta_quick(fighter) {
             
             // set the X motion speed multiplier (where movement is baked into an anim)
-            lua_bind::FighterKineticEnergyMotion::set_speed_mul(fighter.get_motion_energy(), 1.2);
+            lua_bind::FighterKineticEnergyMotion::set_speed_mul(fighter.get_motion_energy(), 1.1);
 
             // set the X motion accel multiplier for control energy (used in the air, during walk, fall, etc)
             lua_bind::FighterKineticEnergyController::mul_x_accel_mul( fighter.get_controller_energy(), 1.3);
@@ -54,21 +54,27 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
             // set the X speed max multiplier for control energy (used in the air, during walk, fall, etc)
             lua_bind::FighterKineticEnergyController::mul_x_speed_max(fighter.get_controller_energy(), 1.3);
+            
+            // set the dash speed multiplier
+            VarModule::set_float(fighter.object(), vars::common::DASH_SPEED_MUL, 1.25);
 
         } else {
             // metaknight has slightly lowered stats when not in meta quick
 
             // set the X motion speed multiplier (where movement is baked into an anim)
-            lua_bind::FighterKineticEnergyMotion::set_speed_mul(fighter.get_motion_energy(), 0.5);
+            lua_bind::FighterKineticEnergyMotion::set_speed_mul(fighter.get_motion_energy(), 0.70);
 
             // set the X motion accel multiplier for control energy (used in the air, during walk, fall, etc)
-            lua_bind::FighterKineticEnergyController::mul_x_accel_mul( fighter.get_controller_energy(), 0.5);
+            lua_bind::FighterKineticEnergyController::mul_x_accel_mul( fighter.get_controller_energy(), 0.70);
 
             // set the X motion accel multiplier for control energy (used in the air, during walk, fall, etc)
-            lua_bind::FighterKineticEnergyController::mul_x_accel_add( fighter.get_controller_energy(), 0.5);
+            lua_bind::FighterKineticEnergyController::mul_x_accel_add( fighter.get_controller_energy(), 0.70);
 
             // set the X speed max multiplier for control energy (used in the air, during walk, fall, etc)
-            lua_bind::FighterKineticEnergyController::mul_x_speed_max(fighter.get_controller_energy(), 0.5);
+            lua_bind::FighterKineticEnergyController::mul_x_speed_max(fighter.get_controller_energy(), 0.70);
+
+            // set the dash speed multiplier
+            VarModule::set_float(fighter.object(), vars::common::DASH_SPEED_MUL, 0.70);
         }
         // we no longer need to set these values
         VarModule::on_flag(fighter.object(), vars::metaknight::COMPLETED_SET_SPEEDS);
