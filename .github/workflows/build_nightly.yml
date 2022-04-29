@@ -214,7 +214,7 @@ jobs:
         file: to-nightly.zip
         prerelease: false
         file_glob: false
-        asset_name: to-nightly
+        asset_name: to-nightly.zip
         repo_name: HDR-Development/HDR-Releases
         tag: ${{ steps.latest_beta.outputs.release }}
         overwrite: true
@@ -258,7 +258,7 @@ jobs:
         file: to-beta.zip
         prerelease: false
         file_glob: false
-        asset_name: to-beta
+        asset_name: to-beta.zip
         repo_name: HDR-Development/HDR-Nightlies
         tag: ${{ needs.version_and_changelog.outputs.version }}
         overwrite: true
