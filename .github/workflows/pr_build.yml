@@ -13,11 +13,9 @@ jobs:
       image: jugeeya/cargo-skyline:2.1.0-dkp
     steps:
     - name: test continue on failed
-      continue-on-error: true
       run: exit 1
 
     - name: test failed, retry
-      if: ${{ failure() }}
       run: echo "we retried!"
 
 
@@ -30,17 +28,17 @@ jobs:
       uses: actions/checkout@v2
 
     # build the project
-    - run: |
-        export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin \
-        && cd scripts && python3 make_dist.py build version=1.69.420-pr name=hdr-pr && cd ..
-      env:
-        HOME: /root
-
-    ## mock upload files
     #- run: |
-    #    mkdir distributions
-    #    echo lol > distributions/hdr-switch.zip
-    #    echo lol > distributions/hdr-ryujinx.zip
+    #    export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin \
+    #    && cd scripts && python3 make_dist.py build version=1.69.420-pr name=hdr-pr && cd ..
+    #  env:
+    #    HOME: /root
+
+    # mock upload files
+    - run: |
+        mkdir distributions
+        echo lol > distributions/hdr-switch.zip
+        echo lol > distributions/hdr-ryujinx.zip
 
     - name: Upload hdr-switch
       uses: actions/upload-artifact@v2
