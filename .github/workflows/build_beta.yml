@@ -50,12 +50,13 @@ jobs:
         stripHeaders: true
         token: ${{ secrets.GITHUB_TOKEN  }}
         verbose: false
+        issuesWoLabels: false
         compareLink: false
         simpleList: true
 
 
     - name: Upload changelog
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: changelog
         path: CHANGELOG.md
@@ -101,7 +102,7 @@ jobs:
     #    echo lol > distributions/hdr-ryujinx.zip
 
     - name: Upload version
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: version
         path: plugin/hdr_version.txt
