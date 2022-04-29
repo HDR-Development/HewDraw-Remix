@@ -16,7 +16,6 @@ jobs:
       run: exit 1
 
     - name: test failed, retry
-      if: ${{ failure() }}
       run: echo "we retried!"
 
 
