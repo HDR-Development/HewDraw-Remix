@@ -12,11 +12,11 @@ jobs:
     container: 
       image: jugeeya/cargo-skyline:2.1.0-dkp
     steps:
-    - testing: test continue on failed
+    - name: test continue on failed
       continue-on-error: true
       run: exit 1
 
-    - testingfailed: test failed, retry
+    - name: test failed, retry
       if: ${{ failure() }}
       run: echo "we retried!"
 
