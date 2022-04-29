@@ -29,9 +29,9 @@ unsafe fn sephiroth_attack_11_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 16.0/(36.0-16.0));
+        FT_MOTION_RATE(fighter, 16.0/(23.0-16.0));
     }
-    frame(lua_state, 36.0);
+    frame(lua_state, 23.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
     }
