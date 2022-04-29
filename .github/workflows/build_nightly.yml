@@ -41,9 +41,19 @@ jobs:
 
       - name: Upload changelog
         uses: actions/upload-artifact@v2
+        # we want to keep going if this failed, because we will try again
+        continue-on-error: true
         with:
           name: changelog
           path: CHANGELOG.md
+      
+      - name: upload changelog retry
+        if: ${{ !success() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: changelog
+          path: CHANGELOG.md
+
 
   plugin_build:
     env:
