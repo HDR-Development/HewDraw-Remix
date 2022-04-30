@@ -85,7 +85,7 @@ unsafe fn dedede_attack_dash_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 18.0/(25.0-1.0));
+        FT_MOTION_RATE(fighter, 20.0/(25.0-1.0));
     }
     frame(lua_state, 25.0);
     if is_excute(fighter) {
