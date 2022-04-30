@@ -9,17 +9,8 @@ unsafe fn dedede_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
-    frame(lua_state, 35.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.250);
-    }
-    frame(lua_state, 39.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
-    }
     frame(lua_state, 40.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
         ATTACK(fighter, 0, 0, Hash40::new("hammer2"), 0.0, 0, 0, 0, 0, 3.5, -6.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HAMMER);
         ATTACK(fighter, 1, 0, Hash40::new("hammer2"), 0.0, 0, 0, 0, 0, 3.5, -12.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HAMMER);
         ATTACK(fighter, 2, 0, Hash40::new("hammer2"), 16.0, 45, 70, 0, 85, 5.5, 1.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_dedede_hammer"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
@@ -35,7 +26,7 @@ unsafe fn dedede_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 44.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 1, Hash40::new("top"), 12.0, 60, 75, 0, 40, 6.0, 0.0, 5.0, 5.0, Some(0.0), Some(5.0), Some(25.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_dedede_hammer"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
+        ATTACK(fighter, 0, 1, Hash40::new("top"), 12.0, 60, 75, 0, 40, 6.0, 0.0, 5.0, 5.0, Some(0.0), Some(5.0), Some(20.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_dedede_hammer"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
@@ -54,15 +45,15 @@ unsafe fn dedede_attack_hi4_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.476);
+        FT_MOTION_RATE(fighter, 3.0/(16.0-12.0));
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
+        FT_MOTION_RATE(fighter, 1.0);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
+        FT_MOTION_RATE(fighter, 1.0);
         HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_INVINCIBLE);
         HIT_NODE(fighter, Hash40::new("handl"), *HIT_STATUS_INVINCIBLE);
         HIT_NODE(fighter, Hash40::new("handr"), *HIT_STATUS_INVINCIBLE);
@@ -93,7 +84,7 @@ unsafe fn dedede_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.476);
+        FT_MOTION_RATE(fighter, 3.0/(13.0-9.0));
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
