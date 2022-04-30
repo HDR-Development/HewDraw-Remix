@@ -17,7 +17,7 @@ unsafe fn nspecial_cancels(fighter: &mut L2CFighterCommon) {
 unsafe fn dash_cancel_frizz(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_N_SHOOT)
     && fighter.is_situation(*SITUATION_KIND_GROUND)
-    && fighter.is_motion_one_of(&[Hash40::new("special_n1"), Hash40::new("special_n2")])
+    && fighter.is_motion(Hash40::new("special_n1"))
     && fighter.motion_frame() > 17.0 
     {
         if fighter.is_cat_flag(Cat1::Dash) {
@@ -28,13 +28,25 @@ unsafe fn dash_cancel_frizz(fighter: &mut L2CFighterCommon) {
     }
 }
 
+// Hero woosh cancel
+unsafe fn woosh_cancel(fighter: &mut L2CFighterCommon) {
+    if fighter.is_motion_one_of(&[Hash40::new("special_hi1"), Hash40::new("special_air_hi1"), Hash40::new("special_hi_empty"), Hash40::new("special_air_hi_empty")]){
+        if MotionModule::frame(fighter.module_accessor) >= 40.0{
+            VarModule::on_flag(fighter.battle_object, vars::common::UP_SPECIAL_CANCEL);
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
+        }
+    }
+
+}
+
 #[utils::macros::opff(FIGHTER_KIND_BRAVE )]
 pub unsafe fn brave_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
 
     nspecial_cancels(fighter);
     dash_cancel_frizz(fighter);
+    woosh_cancel(fighter);
 
     // Extend sword length
-    ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("sword1"), &Vector3f::new(1.125, 1.05, 1.045));
+    ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("sword1"), &Vector3f::new(1.1, 1.05, 1.045));
 }
