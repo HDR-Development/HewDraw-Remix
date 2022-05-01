@@ -1017,6 +1017,14 @@ unsafe fn roy_special_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
     }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 15.0/(40.0-30.0));
+    }
+    frame(lua_state, 40.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
     
 }
 
@@ -1076,15 +1084,15 @@ pub fn install() {
         roy_special_air_s1_effect,
         roy_special_s2_hi_effect,
         roy_special_air_s2_hi_effect,
-        roy_special_s2_lw_game,
+        //roy_special_s2_lw_game,
         roy_special_s2_lw_effect,
-        roy_special_air_s2_lw_game,
+        //roy_special_air_s2_lw_game,
         roy_special_air_s2_lw_effect,
         roy_special_s3_hi_effect,
         roy_special_air_s3_hi_effect,
-        roy_special_s3_s_game,
+        //roy_special_s3_s_game,
         roy_special_s3_s_effect,
-        roy_special_air_s3_s_game,
+        //roy_special_air_s3_s_game,
         roy_special_air_s3_s_effect,
         roy_special_s3_lw_effect,
         roy_special_air_s3_lw_effect,
