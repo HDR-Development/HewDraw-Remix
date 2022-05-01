@@ -17,7 +17,8 @@ unsafe fn snake_special_hi_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_CYPHER, false, 0);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 361, 45, 0, 20, 8.5, 0.0, 3.5, 0.0, Some(0.0), Some(8.0), Some(0.0), 0.8, 1.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 361, 55, 0, 30, 5.5, 0.0, 8.75, -2.0, None, None, None, 0.8, 1.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 361, 55, 0, 30, 5.5, 0.0, 8.75, 2.0, None, None, None, 0.8, 1.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
@@ -40,7 +41,8 @@ unsafe fn snake_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_CYPHER, false, 0);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 361, 45, 0, 20, 8.5, 0.0, 3.5, 0.0, Some(0.0), Some(8.0), Some(0.0), 0.8, 1.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 361, 55, 0, 30, 5.5, 0.0, 8.75, -2.0, None, None, None, 0.8, 1.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 361, 55, 0, 30, 5.5, 0.0, 8.75, 2.0, None, None, None, 0.8, 1.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
@@ -153,11 +155,8 @@ unsafe fn snake_special_n_start_game(fighter: &mut L2CAgentBase) {
                 }
             }
         }
-        else if !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-            // TODO: remove this
-            ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE, false, 0);
-            ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN, false, 0);
-        }
+        ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE, false, 0);
+        ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN, false, 0);
         if ArticleModule::is_exist(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN) {
             ArticleModule::set_visibility_whole(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN, false, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         }
@@ -204,10 +203,8 @@ unsafe fn snake_special_air_n_start_game(fighter: &mut L2CAgentBase) {
                 }
             }
         }
-        else if(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)){  }else{
-            ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE, false, 0);
-            ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN, false, 0);
-        }
+        ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE, false, 0);
+        ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN, false, 0);
         if(ArticleModule::is_exist(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN)){
             ArticleModule::set_visibility_whole(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN, false, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         }

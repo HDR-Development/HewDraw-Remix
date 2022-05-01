@@ -68,6 +68,182 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
+#[acmd_script( agent = "snake_trenchmortar", script = "game_impact" , category = ACMD_GAME , low_priority)]
+unsafe fn snake_trenchmortar_bullet_impact_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, 0);
+        KineticModule::unable_energy(boma, *WEAPON_SNAKE_TRENCHMORTAR_BULLET_KINETIC_ENERGY_ID_GRAVITY);
+        VisibilityModule::set_int64(boma, hash40("main") as i64, hash40("impact") as i64);
+        AttackModule::clear_all(boma);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 77, 80, 0, 45, 12.0, 0.0, 0.0, 2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, true, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BOMB);
+        QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *WEAPON_SNAKE_TRENCHMORTAR_BULLET_STATUS_FLAG_ENABLE_ADVANCE_STATUS);
+    }
+}
+
+#[acmd_script( agent = "snake_c4", script = "game_sticktarget" , category = ACMD_GAME , low_priority)]
+unsafe fn snake_c4_stick_target_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        
+    }
+}
+
+#[acmd_script( agent = "snake_c4", script = "effect_stickother" , category = ACMD_EFFECT , low_priority)]
+unsafe fn snake_c4_stick_other_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_light"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 0.4, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_flash"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 0.65, true);
+    }
+    for _ in 0..5 {
+        wait(lua_state, 150.0);
+        if is_excute(fighter) {
+            //EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_light"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 0.3, true);
+        }
+        wait(lua_state, 150.0);
+        if is_excute(fighter) {
+            //EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_light"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 0.3, true);
+        }
+        wait(lua_state, 150.0);
+        if is_excute(fighter) {
+            //EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_light"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 0.3, true);
+        }
+        wait(lua_state, 150.0);
+        if is_excute(fighter) {
+            //EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_light"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 0.3, true);
+            //EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_flash"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 0.5, true);
+        }
+    }
+    wait(lua_state, 150.0);
+    if is_excute(fighter) {
+        //EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_light"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 0.3, true);
+    }
+    wait(lua_state, 150.0);
+    if is_excute(fighter) {
+        //EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_light"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 0.3, true);
+    }
+    wait(lua_state, 150.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_light"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 1.0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_flash"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 1.0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("snake_missile_smoke"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 1.5, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("snake_missile_smoke2"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 1.5, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("snake_missile_smoke3"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 1.5, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("snake_missile_smoke4"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 1.5, true);
+    }
+    for _ in 0..10 {
+        wait(lua_state, 10.0);
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("snake_missile_smoke"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 1.5, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("snake_missile_smoke2"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 1.5, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("snake_missile_smoke3"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 1.5, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("snake_missile_smoke4"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 1.5, true);
+        }
+    }
+    wait(lua_state, 10.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("snake_missile_smoke"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 10.0, true);
+    }
+}
+
+#[acmd_script( agent = "snake_c4", script = "effect_sticktarget" , category = ACMD_EFFECT , low_priority)]
+unsafe fn snake_c4_stick_target_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_light"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 0.4, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_flash"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 0.65, true);
+    }
+    for _ in 0..5 {
+        wait(lua_state, 150.0);
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_light"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 0.3, true);
+        }
+        wait(lua_state, 150.0);
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_light"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 0.3, true);
+        }
+        wait(lua_state, 150.0);
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_light"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 0.3, true);
+        }
+        wait(lua_state, 150.0);
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_light"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 0.3, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_flash"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 0.5, true);
+        }
+    }
+    wait(lua_state, 150.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_light"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 0.3, true);
+    }
+    wait(lua_state, 150.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_light"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 0.3, true);
+    }
+    wait(lua_state, 150.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_light"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 1.0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("snake_c4_flash"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 1.0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("snake_missile_smoke"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 1.5, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("snake_missile_smoke2"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 1.5, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("snake_missile_smoke3"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 1.5, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("snake_missile_smoke4"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 1.5, true);
+    }
+    for _ in 0..10 {
+        wait(lua_state, 10.0);
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("snake_missile_smoke"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 1.5, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("snake_missile_smoke2"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 1.5, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("snake_missile_smoke3"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 1.5, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("snake_missile_smoke4"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 1.5, true);
+        }
+    }
+    wait(lua_state, 10.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("snake_missile_smoke"), Hash40::new("top"), 0, 1.025, 0.7, 0, 0, 0, 10.0, true);
+    }
+}
+
+#[acmd_script( agent = "snake_c4", script = "game_explosion" , category = ACMD_GAME , low_priority)]
+unsafe fn snake_c4_explosion_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        // Hitbox for opponents
+        ATTACK(fighter, 0, 0, Hash40::new("rot"), 16.0, 84, 90, 0, 40, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BOMB);
+        // Snake-only hitbox
+        ATTACK(fighter, 1, 0, Hash40::new("rot"), 16.0, 84, 90, 0, 40, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BOMB);
+        VisibilityModule::set_whole(boma, false);
+        QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_erase"), 0, false, 0);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        AttackModule::set_size(boma, 0, 17.0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, 0);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        if !WorkModule::is_flag(boma, *WEAPON_SNAKE_C4_INSTANCE_WORK_ID_FLAG_GROUND){
+            AttackModule::clear_all(boma);
+        }
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        if WorkModule::is_flag(boma, *WEAPON_SNAKE_C4_INSTANCE_WORK_ID_FLAG_GROUND){
+            AttackModule::clear_all(boma);
+        }
+    }
+}
 
 pub fn install() {
     install_acmd_scripts!(
@@ -75,6 +251,11 @@ pub fn install() {
         dash_game,
         //dash_effect,
         turn_dash_game,
+        snake_trenchmortar_bullet_impact_game,
+        snake_c4_stick_target_game,
+        snake_c4_stick_target_effect,
+        snake_c4_stick_other_effect,
+        snake_c4_explosion_game,
     );
 }
 
