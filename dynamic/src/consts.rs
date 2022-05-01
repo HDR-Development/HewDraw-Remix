@@ -236,6 +236,11 @@ pub mod vars {
         pub const ANGLE_GRAB_STICK_Y: i32 = 0x1000;
     }
 
+    pub mod inkling {
+        // flag
+        pub const IS_ENABLE_SPECIAL_S_JUMP_EARLY_CANCEL: i32 = 0x1000;
+    }
+
     pub mod kamui {
         // flag
         pub const BAIR_BOOST: i32 = 0x1000;

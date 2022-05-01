@@ -17,7 +17,7 @@ const INKLING_COLORS: [Vector3f;8] = [
     Vector3f {x:0.04, y:0.0462798, z:0.114017},  // (purple)
 ];
 
-unsafe fn inkling_moveset(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, id: usize){
+unsafe fn dair_splatter(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, id: usize){
     if motion_kind == hash40("attack_air_lw") && AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
         let pos = Vector3f {x:0.,y:-2.,z:0.};
         let rot = Vector3f {x:0.,y:90.,z:0.};
@@ -28,8 +28,37 @@ unsafe fn inkling_moveset(boma: &mut BattleObjectModuleAccessor, motion_kind: u6
     }
 }
 
+unsafe fn roller_jump_cancel(boma: &mut BattleObjectModuleAccessor){
+    if boma.is_status(*FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_END) && boma.is_situation(*SITUATION_KIND_GROUND) && MotionModule::frame(boma) > 15.0 {
+        if boma.is_input_jump() {
+            if PostureModule::lr(boma) * ControlModule::get_stick_x(boma) < 0.0 {
+                PostureModule::reverse_lr(boma);
+            }
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
+        }
+    }
+    if boma.is_motion(Hash40::new("special_s_jump_end")){
+        VarModule::on_flag(boma.object(), vars::inkling::IS_ENABLE_SPECIAL_S_JUMP_EARLY_CANCEL)
+    }
+    else if boma.is_motion(Hash40::new("special_air_s_jump_end")){
+        if VarModule::is_flag(boma.object(), vars::inkling::IS_ENABLE_SPECIAL_S_JUMP_EARLY_CANCEL) && MotionModule::frame(boma) > 5.0{
+            CancelModule::enable_cancel(boma);
+        }
+    }
+    else{
+        VarModule::off_flag(boma.object(), vars::inkling::IS_ENABLE_SPECIAL_S_JUMP_EARLY_CANCEL)
+    }
+    /*
+    if WorkModule::is_flag(boma, *FIGHTER_INKLING_STATUS_SPECIAL_S_FLAG_JUMP) {
+        DamageModule::add_damage(boma, 1.0, 0);
+        WorkModule::unable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH)
+    }
+    */
+}
+
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    inkling_moveset(boma, motion_kind, id);
+    dair_splatter(boma, motion_kind, id);
+    roller_jump_cancel(boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_INKLING )]
