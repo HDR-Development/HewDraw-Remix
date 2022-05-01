@@ -7,6 +7,7 @@ unsafe fn game_specialairsend(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.2);
         KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
     
