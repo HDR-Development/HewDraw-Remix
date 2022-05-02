@@ -2,9 +2,10 @@
 
 pub mod acmd;
 
-//pub mod status;
+pub mod status;
 pub mod opff;
 
+use skyline::nro::NroInfo;
 use smash::{
     lib::{
         L2CValue,
@@ -38,6 +39,14 @@ use smashline::*;
 
 pub fn install(is_runtime: bool) {
     acmd::install();
-    //status::install();
+    status::install();
     opff::install(is_runtime);
+
+    if !is_runtime || is_hdr_available() {
+        status::add_statuses();
+    }
+}
+
+pub fn delayed_install() {
+    status::add_statuses();
 }

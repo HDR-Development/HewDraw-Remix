@@ -17,16 +17,21 @@ pub unsafe fn land_cancel_and_b_reverse(fighter: &mut L2CFighterCommon, boma: &m
     }
 }
 
-// Shinkespark charge
+extern "Rust" {
+    fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
+}
+
+// Shinespark charge
 unsafe fn shinespark_charge(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
     if [*FIGHTER_STATUS_KIND_RUN, *FIGHTER_STATUS_KIND_TURN_RUN].contains(&status_kind) && frame > 30.0 {
         if  !VarModule::is_flag(boma.object(), vars::samus::SHINESPARK_READY) {
             VarModule::on_flag(boma.object(), vars::samus::SHINESPARK_READY);
+            gimmick_flash(boma);
         }
     }
 }
 
-// Shinkespark Reset
+// Shinespark Reset
 unsafe fn shinespark_reset(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32) {
     if ![*FIGHTER_STATUS_KIND_ATTACK_DASH,
         *FIGHTER_STATUS_KIND_DASH,

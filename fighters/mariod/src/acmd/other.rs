@@ -62,7 +62,7 @@ unsafe fn mariod_turn_dash_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        dash_effect,
+        //dash_effect,
         mariod_turn_dash_game,
 		mariod_catch_game,
     );

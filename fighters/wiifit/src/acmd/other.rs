@@ -60,7 +60,7 @@ unsafe fn wiifit_catch_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        dash_effect,
+        //dash_effect,
         wiifit_turn_dash_game,
 		wiifit_catch_game,
     );

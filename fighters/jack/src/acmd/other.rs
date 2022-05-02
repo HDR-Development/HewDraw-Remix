@@ -129,7 +129,7 @@ pub fn install() {
         jack_appeal_lw_l_game,
         jack_appeal_lw_r_game,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
     );
 }

@@ -1,6 +1,123 @@
 
 use super::*;
 
+#[acmd_script( agent = "edge", script = "game_specialn1" , category = ACMD_GAME , low_priority)]
+unsafe fn edge_special_n1_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, 0);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 5.0/(35.0-15.0));
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        //FT_MOTION_RATE(fighter, 1.0);
+    }
+    frame(lua_state, 35.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_N_FLAG_ENABLE_FALL_SPEED);
+    }
+}
+
+#[acmd_script( agent = "edge", script = "game_specialairn1" , category = ACMD_GAME , low_priority)]
+unsafe fn edge_special_air_n1_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, 0);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 5.0/(35.0-15.0));
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        //FT_MOTION_RATE(fighter, 1.0);
+    }
+    frame(lua_state, 35.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_N_FLAG_ENABLE_FALL_SPEED);
+    }
+}
+
+#[acmd_script( agent = "edge", script = "game_specialn2" , category = ACMD_GAME , low_priority)]
+unsafe fn edge_special_n2_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, 0);
+    }
+    frame(lua_state, 35.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.4);
+        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_N_FLAG_ENABLE_FALL_SPEED);
+    }
+    frame(lua_state, 60.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
+}
+
+#[acmd_script( agent = "edge", script = "game_specialairn2" , category = ACMD_GAME , low_priority)]
+unsafe fn edge_special_air_n2_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_EDGE_GENERATE_ARTICLE_FIRE, false, 0);
+    }
+    frame(lua_state, 35.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.4);
+        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_N_FLAG_ENABLE_FALL_SPEED);
+    }
+    frame(lua_state, 60.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
+}
+
+
 #[acmd_script( agent = "edge", script = "game_specialhi1end" , category = ACMD_GAME , low_priority)]
 unsafe fn edge_special_hi1_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -67,6 +184,10 @@ unsafe fn edge_special_air_hi_2_end_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        edge_special_n1_game,
+        edge_special_air_n1_game,
+        edge_special_n2_game,
+        edge_special_air_n2_game,
         edge_special_hi1_end_game,
         edge_special_hi2_end_game,
         edge_special_air_hi_2_end_game
