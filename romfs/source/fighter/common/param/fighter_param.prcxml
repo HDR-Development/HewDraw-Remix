@@ -1062,12 +1062,12 @@
       <float hash="item_lift_speed_max">1.15252</float>
     </struct>
     <struct index="37">
-      <float hash="walk_speed_max">0.825</float>
-      <float hash="ground_brake">0.045</float>
+      <float hash="walk_speed_max">0.82</float>
+      <float hash="ground_brake">0.0475</float>
       <float hash="dash_speed">1.625</float>
       <float hash="run_accel_mul">0.04</float>
       <float hash="run_accel_add">0.02</float>
-      <float hash="run_speed_max">1.715</float>
+      <float hash="run_speed_max">1.725</float>
       <int hash="jump_squat_frame">4</int>
       <float hash="jump_speed_x_max">1.5</float>
       <float hash="jump_initial_y">17.0741</float>

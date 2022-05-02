@@ -472,12 +472,15 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
 
     if fighter_kind == *FIGHTER_KIND_LUCAS {
         if status_kind == *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_ATTACK {
+            /*
             if frame > 5.0 && frame < 15.0 {
                 return 1;
             }
             else{
                 return -1;
             }
+            */
+            return 0;
         }
     }
 
