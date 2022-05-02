@@ -39,7 +39,7 @@
       <float hash="accel_y">0.0035</float>
       <float hash="landing_frame">20</float>
       <float hash="start_xmul">0.5</float>
-      <float hash="attack_speed">3.7</float>
+      <float hash="attack_speed">3.5</float>
       <float hash="attack_brake">0.08</float>
       <float hash="attack_end_brake">0</float>
       <float hash="attack_wall_speed_xmul">1.0</float>
