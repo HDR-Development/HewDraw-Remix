@@ -348,7 +348,7 @@ pub fn install() {
         miiswordsman_catch_dash_game,
         miiswordsman_catch_turn_game,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
         miiswordsman_tornadoshot_fly_game,
         miiswordsman_wave_fly_game,

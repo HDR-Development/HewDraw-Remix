@@ -110,7 +110,7 @@ unsafe fn ken_catch_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        dash_effect,
+        //dash_effect,
         dashb_effect,
         ken_turn_dash_game,
 		ken_attack_near_w_game,
