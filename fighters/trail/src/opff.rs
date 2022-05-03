@@ -76,7 +76,7 @@ unsafe fn jab_2_ftilt_cancel(boma: &mut BattleObjectModuleAccessor, cat1: i32, s
 // Fair 2 -> aerial cancel
 unsafe fn fair_cancels(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64) {
     // Check for aerial attack inputs during fair 2
-    if status_kind == *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F && motion_kind == hash40("attack_air_f2") && WorkModule::is_flag(boma, *FIGHTER_TRAIL_STATUS_ATTACK_AIR_F_FLAG_ENABLE_COMBO) {
+    if status_kind == *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F && motion_kind == hash40("attack_air_f2") /*&& WorkModule::is_flag(boma, *FIGHTER_TRAIL_STATUS_ATTACK_AIR_F_FLAG_ENABLE_COMBO)*/ {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N
                                     | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3
@@ -86,23 +86,54 @@ unsafe fn fair_cancels(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_
                 && ControlModule::get_attack_air_kind(boma) != *FIGHTER_COMMAND_ATTACK_AIR_KIND_F
                 && ControlModule::get_attack_air_kind(boma) != *FIGHTER_COMMAND_ATTACK_AIR_KIND_B {
                 if !boma.is_in_hitlag() {
+                    VarModule::on_flag(boma.object(), vars::trail::COMBO_PLUS_AIR);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
                 }
             }
-            //if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_HI
-            if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3
-                                    | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4) {
-                if !boma.is_in_hitlag() {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
-                }
+        }
+    }
+}
+
+// Magic cancels
+unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor) {
+    // Fire airdodge cancel
+    if boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1_SHOOT) && boma.is_motion(Hash40::new("special_air_n1")) && MotionModule::frame(boma) > 1.0 {
+        //DamageModule::add_damage(boma, 1.0, 0);
+        if boma.is_cat_flag(Cat1::AirEscape) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
+        }
+    }
+    // Thunder land cancel
+    if boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N3)
+    && boma.is_situation(*SITUATION_KIND_GROUND)
+    && boma.is_prev_situation(*SITUATION_KIND_AIR)
+    {
+        // Current FAF in motion list is 70, frame is 0 indexed so subtract a frame
+        let special_n_fire_cancel_frame_ground = 69.0;
+        // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
+        let landing_lag = 12.0;
+        if MotionModule::frame(boma) < (special_n_fire_cancel_frame_ground - landing_lag) {
+            VarModule::on_flag(boma.object(), vars::trail::IS_LAND_CANCEL_THUNDER);
+            MotionModule::set_frame_sync_anim_cmd(boma, special_n_fire_cancel_frame_ground - landing_lag, true, true, false);
+        }
+    }
+}
+
+// Actionability after hitting aerial sweep
+unsafe fn aerial_sweep_hit_actionability(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI){
+        if MotionModule::frame(boma) > 37.0 {
+            if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
+                DamageModule::add_damage(boma, 1.0, 0);
+                VarModule::on_flag(boma.object(), vars::trail::UP_SPECIAL_HIT);
+                VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL);
             }
-            //if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_AIR_LW
-            if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3
-                                    | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4) {
-                if !boma.is_in_hitlag() {                                        
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
-                }
+        }
+        if VarModule::is_flag(boma.object(), vars::trail::UP_SPECIAL_HIT) && MotionModule::frame(boma) > MotionModule::end_frame(boma) - 10.0 {
+            if boma.get_num_used_jumps() < boma.get_jump_count_max(){
+                WorkModule::inc_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
             }
+            boma.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
         }
     }
 }
@@ -187,6 +218,8 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     fair_cancels(boma, cat[0], status_kind, situation_kind, motion_kind);
     side_special_hit_check(fighter, boma, status_kind, situation_kind, id);
     nair_fair_momentum_handling(fighter, boma);
+    magic_cancels(boma);
+    aerial_sweep_hit_actionability(boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_TRAIL)]

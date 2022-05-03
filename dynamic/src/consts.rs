@@ -307,8 +307,15 @@ pub mod vars {
         pub const SIDE_SPECIAL_HIT: i32 = 0x1002;
         pub const IS_SIDE_SPECIAL_INPUT: i32 = 0x1003;
         pub const STOP_SIDE_SPECIAL: i32 = 0x1004;
-        pub const COMBO_PLUS: i32 = 0x1005;
-        pub const SHOULD_PRORATE_ATTACK: i32 = 0x1006;
+        pub const UP_SPECIAL_HIT: i32 = 0x1005;
+        pub const COMBO_PLUS_GROUND: i32 = 0x1006;
+        pub const COMBO_PLUS_AIR: i32 = 0x1007;
+        pub const SHOULD_PRORATE_ATTACK: i32 = 0x1008;
+        pub const IS_LAND_CANCEL_THUNDER: i32 = 0x1009;
+        pub const IS_GRAND_MAGIC: i32 = 0x100A;
+        pub const IS_CURRENT_FIRAGA_GRAND_MAGIC: i32 = 0x100B;
+        pub const IS_CURRENT_BLIZZAGA_GRAND_MAGIC: i32 = 0x100C;
+        pub const IS_CURRENT_THUNDAGA_GRAND_MAGIC: i32 = 0x100D;
     }
 
     pub mod samus {
