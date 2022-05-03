@@ -10,8 +10,8 @@ unsafe fn mario_special_n_game(fighter: &mut L2CAgentBase) {
         VarModule::off_flag(fighter.battle_object, vars::mario::IS_SPECIAL_N_FIREBRAND);
         VarModule::off_flag(boma.object(), vars::mario::CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL);
         VarModule::off_flag(fighter.battle_object, vars::mario::IS_SPECIAL_N_DOUBLE_FIREBALL);
-        if VarModule::is_flag(fighter.battle_object, vars::common::DOUBLE_FIREBALL) {
-            VarModule::off_flag(fighter.battle_object, vars::common::DOUBLE_FIREBALL);
+        if VarModule::is_flag(fighter.battle_object, vars::mario::SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG) {
+            VarModule::off_flag(fighter.battle_object, vars::mario::SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG);
             VarModule::on_flag(fighter.battle_object, vars::mario::IS_SPECIAL_N_DOUBLE_FIREBALL);
             FT_MOTION_RATE(fighter, 5.0/(10.0-1.0));
         }
@@ -250,8 +250,8 @@ unsafe fn mario_special_air_n_game(fighter: &mut L2CAgentBase) {
         VarModule::off_flag(fighter.battle_object, vars::mario::IS_SPECIAL_N_FIREBRAND);
         VarModule::off_flag(boma.object(), vars::mario::CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL);
         VarModule::off_flag(fighter.battle_object, vars::mario::IS_SPECIAL_N_DOUBLE_FIREBALL);
-        if VarModule::is_flag(fighter.battle_object, vars::common::DOUBLE_FIREBALL) {
-            VarModule::off_flag(fighter.battle_object, vars::common::DOUBLE_FIREBALL);
+        if VarModule::is_flag(fighter.battle_object, vars::mario::SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG) {
+            VarModule::off_flag(fighter.battle_object, vars::mario::SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG);
             VarModule::on_flag(fighter.battle_object, vars::mario::IS_SPECIAL_N_DOUBLE_FIREBALL);
             FT_MOTION_RATE(fighter, 5.0/(10.0-1.0));
         }

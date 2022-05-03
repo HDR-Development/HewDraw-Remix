@@ -128,7 +128,7 @@ unsafe fn double_fireball(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
         if boma.is_cat_flag(Cat1::SpecialN) || boma.is_cat_flag(Cat1::SpecialS) || boma.is_cat_flag(Cat1::SpecialHi) || boma.is_cat_flag(Cat1::SpecialLw){
             VarModule::off_flag(fighter.battle_object, vars::mario::IS_SPECIAL_N_FIREBRAND);
             VarModule::off_flag(boma.object(), vars::mario::CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL);
-            VarModule::on_flag(boma.object(), vars::common::DOUBLE_FIREBALL);
+            VarModule::on_flag(boma.object(), vars::mario::SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG);
             //MotionModule::set_frame_sync_anim_cmd(boma, restart_frame, true, true, false);
             boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_N, false);
         }
