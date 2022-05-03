@@ -268,6 +268,11 @@ pub mod vars {
         pub const FIREBRAND_SPAWNED: i32 = 0x1000;
     }
 
+    pub mod mariod {
+        // flags
+        pub const IS_SPECIAL_N_CHILL_PILL: i32 = 0x1000;
+    }
+
     pub mod roy {
         // flags
         pub const TRAIL_EFFECT: i32 = 0x1000;

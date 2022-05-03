@@ -10,31 +10,42 @@ unsafe fn mariod_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::common::FIREBRAND_ACTIVATED);
-        FT_MOTION_RATE(fighter, 1.149);
+        FT_MOTION_RATE(fighter, 16.0/(14.0-1.0));
+        VarModule::off_flag(fighter.battle_object, vars::mariod::IS_SPECIAL_N_CHILL_PILL);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)){ 
+            VarModule::on_flag(fighter.battle_object, vars::mariod::IS_SPECIAL_N_CHILL_PILL);
+        }
+
+        if VarModule::is_flag(fighter.battle_object, vars::mariod::IS_SPECIAL_N_CHILL_PILL){
+            FT_MOTION_RATE(fighter, 3.0/(14.0-10.0));
+        } 
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        if !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if (!VarModule::is_flag(fighter.battle_object, vars::common::SPECIAL_PROJECTILE_SPAWNED)) {
-                ArticleModule::generate_article(boma, *FIGHTER_MARIOD_GENERATE_ARTICLE_DRCAPSULE, false, 0);
-            }
-        }
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK)  {
-            VarModule::on_flag(fighter.battle_object, vars::common::FIREBRAND_ACTIVATED);
-            ATTACK(fighter, 0, 0, Hash40::new("arml"), 10.0, 65, 100, 0, 30, 7.5, 6.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 0, Hash40::new("arml"), 10.0, 65, 100, 0, 30, 5.5, 2.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 0, Hash40::new("shoulderl"), 10.0, 65, 100, 0, 30, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_PUNCH);
+        if VarModule::is_flag(fighter.battle_object, vars::mariod::IS_SPECIAL_N_CHILL_PILL){
+            ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 10.0, 69, 60, 0, 45, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARIOD_CAPSULE, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 1, 0, Hash40::new("arml"), 10.0, 69, 60, 0, 45, 5.5, 4.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARIOD_CAPSULE, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 2, 0, Hash40::new("arml"), 10.0, 69, 60, 0, 45, 7.5, 6.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARIOD_CAPSULE, *ATTACK_REGION_PUNCH);
             HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
-            HIT_NODE(fighter, Hash40::new("handl"), *HIT_STATUS_XLU);
+            HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
             HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
+            FT_MOTION_RATE(fighter, 1.0);
+        }
+        else {
+            ArticleModule::generate_article(boma, *FIGHTER_MARIOD_GENERATE_ARTICLE_DRCAPSULE, false, 0);
         }
     }
-    frame(lua_state, 18.0);
+    frame(lua_state, 22.0);
     if is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        if VarModule::is_flag(fighter.battle_object, vars::mariod::IS_SPECIAL_N_CHILL_PILL){
+            AttackModule::clear_all(boma);
+            HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
+            FT_MOTION_RATE(fighter, 1.2);
+        }
     }
-    
 }
 
 #[acmd_script( agent = "mariod", script = "game_specialairn" , category = ACMD_GAME , low_priority)]
@@ -42,29 +53,41 @@ unsafe fn mariod_special_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::common::FIREBRAND_ACTIVATED);
-        FT_MOTION_RATE(fighter, 1.149);
+        FT_MOTION_RATE(fighter, 16.0/(14.0-1.0));
+        VarModule::off_flag(fighter.battle_object, vars::mariod::IS_SPECIAL_N_CHILL_PILL);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)){ 
+            VarModule::on_flag(fighter.battle_object, vars::mariod::IS_SPECIAL_N_CHILL_PILL);
+        }
+
+        if VarModule::is_flag(fighter.battle_object, vars::mariod::IS_SPECIAL_N_CHILL_PILL){
+            FT_MOTION_RATE(fighter, 3.0/(14.0-10.0));
+        } 
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        if !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if (!VarModule::is_flag(fighter.battle_object, vars::common::SPECIAL_PROJECTILE_SPAWNED)) {
-                ArticleModule::generate_article(boma, *FIGHTER_MARIOD_GENERATE_ARTICLE_DRCAPSULE, false, 0);
-            }
-        }
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK)  {
-            VarModule::on_flag(fighter.battle_object, vars::common::FIREBRAND_ACTIVATED);
-            ATTACK(fighter, 0, 0, Hash40::new("arml"), 10.0, 65, 100, 0, 30, 7.5, 6.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 0, Hash40::new("arml"), 10.0, 65, 100, 0, 30, 5.5, 2.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 0, Hash40::new("shoulderl"), 10.0, 65, 100, 0, 30, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_PUNCH);
+        if VarModule::is_flag(fighter.battle_object, vars::mariod::IS_SPECIAL_N_CHILL_PILL){
+            ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 10.0, 69, 60, 0, 45, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARIOD_CAPSULE, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 1, 0, Hash40::new("arml"), 10.0, 69, 60, 0, 45, 5.5, 4.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARIOD_CAPSULE, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 2, 0, Hash40::new("arml"), 10.0, 69, 60, 0, 45, 7.5, 6.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARIOD_CAPSULE, *ATTACK_REGION_PUNCH);
             HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
-            HIT_NODE(fighter, Hash40::new("handl"), *HIT_STATUS_XLU);
+            HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
             HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
+            FT_MOTION_RATE(fighter, 1.0);
+        }
+        else {
+            ArticleModule::generate_article(boma, *FIGHTER_MARIOD_GENERATE_ARTICLE_DRCAPSULE, false, 0);
         }
     }
-    frame(lua_state, 18.0);
+    frame(lua_state, 22.0);
     if is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        if VarModule::is_flag(fighter.battle_object, vars::mariod::IS_SPECIAL_N_CHILL_PILL){
+            AttackModule::clear_all(boma);
+            HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
+            FT_MOTION_RATE(fighter, 1.2);
+        }
     }
     
 }
