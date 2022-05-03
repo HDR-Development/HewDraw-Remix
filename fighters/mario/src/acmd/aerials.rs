@@ -120,7 +120,6 @@ unsafe fn mario_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 3.0/(4.5-1.0));
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
