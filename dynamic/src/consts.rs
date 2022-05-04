@@ -270,7 +270,10 @@ pub mod vars {
 
     pub mod mariod {
         // flags
-        pub const IS_SPECIAL_N_CHILL_PILL: i32 = 0x1000;
+        pub const IS_SPECIAL_N_CHILL_PILL:       i32 = 0x1000;
+        pub const IS_SPECIAL_S_ELECTRIC_BLANKET: i32 = 0x1001;
+        pub const IS_SPECIAL_HI_UNABLE_CANCEL: i32 = 0x1002;
+        pub const IS_SPECIAL_HI_SWEETSPOT_HIT: i32 = 0x1003;
     }
 
     pub mod roy {
