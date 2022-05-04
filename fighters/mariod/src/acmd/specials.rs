@@ -38,7 +38,7 @@ unsafe fn mariod_special_n_game(fighter: &mut L2CAgentBase) {
             ArticleModule::generate_article(boma, *FIGHTER_MARIOD_GENERATE_ARTICLE_DRCAPSULE, false, 0);
         }
     }
-    frame(lua_state, 22.0);
+    frame(lua_state, 18.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::mariod::IS_SPECIAL_N_CHILL_PILL){
             AttackModule::clear_all(boma);
@@ -201,7 +201,7 @@ unsafe fn mariod_special_air_n_game(fighter: &mut L2CAgentBase) {
             ArticleModule::generate_article(boma, *FIGHTER_MARIOD_GENERATE_ARTICLE_DRCAPSULE, false, 0);
         }
     }
-    frame(lua_state, 22.0);
+    frame(lua_state, 18.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::mariod::IS_SPECIAL_N_CHILL_PILL){
             AttackModule::clear_all(boma);
