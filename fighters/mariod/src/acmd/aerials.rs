@@ -34,6 +34,9 @@ unsafe fn mariod_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("mariod_smash_aura"), Hash40::new("legl"), 2.0, 0.0, 0.0, 0, 0, 0, 0.8, true);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("mariod_smash_impact"), Hash40::new("legl"), 2.0, 0.0, 0.0, 0, 0, 0, 0.9, true);
         LAST_EFFECT_SET_RATE(fighter, 0.7);
     }

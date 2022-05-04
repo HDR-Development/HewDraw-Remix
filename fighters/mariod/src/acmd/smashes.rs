@@ -173,6 +173,48 @@ unsafe fn mariod_attack_lw4_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "mariod", script = "effect_attacklw4" , category = ACMD_EFFECT , low_priority)]
+unsafe fn mariod_attack_lw4_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("toel"), 0, 0, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mariod_smash_arc"), Hash40::new("mariod_smash_arc"), Hash40::new("top"), 0, 3, 2, 0, -10, 0, 1.1, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mariod_smash_aura"), Hash40::new("mariod_smash_aura"), Hash40::new("hip"), -7.0, 0.0, 0.0, 0, 0, 0, 0.8, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(fighter, 0.8);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mariod_smash_impact"), Hash40::new("mariod_smash_impact"), Hash40::new("top"), 1.0, 3.6, 12.5, 0, 0, 0, 0.8, true, *EF_FLIP_YZ);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT_FLIP(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 2, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_NONE);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mariod_smash_arc"), Hash40::new("mariod_smash_arc"), Hash40::new("top"), 0, 3, -2, 0, 180, 0, 1.1, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mariod_smash_aura"), Hash40::new("mariod_smash_aura"), Hash40::new("hip"), -7.0, 0.0, 0.0, 0, 0, 0, 0.8, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(fighter, 0.8);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mariod_smash_impact"), Hash40::new("mariod_smash_impact"), Hash40::new("top"), 1.0, 3.6, -11.5, 0, 0, 0, 0.8, true, *EF_FLIP_YZ);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("mariod_smash_impact"), true, true);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("mariod_smash_aura"), false, true);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         mariod_attack_s4_hi_game,
@@ -181,6 +223,7 @@ pub fn install() {
         mariod_attack_hi4_game,
         mariod_attack_hi4_effect,
         mariod_attack_lw4_game,
+        mariod_attack_lw4_effect,
     );
 }
 
