@@ -123,7 +123,7 @@ unsafe fn mariod_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mariod_smash_impact"), Hash40::new("mariod_smash_impact"), Hash40::new("head"), 2.0, 0, 0, 0, 0, 0, 0.8, true, *EF_FLIP_YZ);
-        LAST_EFFECT_SET_RATE(fighter, 0.25);
+        LAST_EFFECT_SET_RATE(fighter, 0.8);
         EFFECT_FLIP(fighter, Hash40::new("mariod_smash_arc"), Hash40::new("mariod_smash_arc"), Hash40::new("top"), 1, 7, 2, -30, -100, -80, 1.1, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
@@ -131,14 +131,15 @@ unsafe fn mariod_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 5, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
     }
-    frame(lua_state, 25.0);
-    if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("mariod_smash_aura"), false, true);
-    }
-    frame(lua_state, 30.0);
+    frame(lua_state, 16.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("mariod_smash_impact"), true, true);
     }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("mariod_smash_aura"), false, true);
+    }
+    
 }
 
 #[acmd_script( agent = "mariod", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
