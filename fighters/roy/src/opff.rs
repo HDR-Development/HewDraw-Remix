@@ -15,7 +15,7 @@ pub unsafe fn double_edge_dance_vertical_momentum(boma: &mut BattleObjectModuleA
         VarModule::off_flag(boma.object(), vars::common::SPECIAL_STALL_USED);
     }
 }
- 
+
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     double_edge_dance_vertical_momentum(boma);
 }

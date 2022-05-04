@@ -70,7 +70,7 @@ unsafe fn roy_attack_air_f_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        FT_MOTION_RATE(fighter, 5.0/(13.75-1.0));
+        FT_MOTION_RATE(fighter, 7.0/(13.75-1.0));
     }
     frame(lua_state, 13.75);
     if is_excute(fighter) {
@@ -108,7 +108,7 @@ unsafe fn roy_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("sword1"), 14.0, 50, 111, 0, 25, 4.25, 0.0, 0.0, 2.2, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ROY_HIT, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 1, 0, Hash40::new("armr"), 14.0, 50, 111, 0, 25, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ROY_HIT, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 2, 0, Hash40::new("shoulderl"), 14.0, 50, 111, 0, 25, 3.9, 0.0, 0.0, -1.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ROY_HIT, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 2, 0, Hash40::new("shoulderl"), 14.0, 50, 111, 0, 25, 2.5, 0.0, 0.0, -1.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ROY_HIT, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 3, 0, Hash40::new("sword1"), 11.0, 40, 95, 0, 20, 3.5, 0.0, 0.0, 9.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_SWORD);
     }
     wait(lua_state, 4.0);
@@ -120,6 +120,32 @@ unsafe fn roy_attack_air_b_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     
+}
+
+#[acmd_script( agent = "roy", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
+unsafe fn roy_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_fire"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 0.8, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.3);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_roy_sword1"), Hash40::new("tex_roy_sword2"), 7, Hash40::new("sword1"), 0.0, 0.0, -0.8, Hash40::new("sword1"), -0.0, -0.0, 14.5, true, Hash40::new("roy_sword"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.3, 0.2);
+
+        EFFECT_FOLLOW(fighter, Hash40::new("roy_attack_fire"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 0.9, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.1);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        AFTER_IMAGE_OFF(fighter, 2);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("roy_fire"), false, false);
+    }
 }
 
 #[acmd_script( agent = "roy", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
@@ -248,6 +274,8 @@ pub fn install() {
         roy_attack_air_n_game,
         roy_attack_air_f_game,
         roy_attack_air_b_game,
+        roy_attack_air_b_game,
+        roy_attack_air_b_effect,
         roy_attack_air_hi_game,
         roy_attack_air_lw_game,
         roy_attack_air_lw_effect,
