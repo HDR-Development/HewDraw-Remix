@@ -7,7 +7,7 @@ unsafe fn zelda_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 6.0/(10.0-1.0));
+        FT_MOTION_RATE(fighter, 7.0/(10.0-1.0));
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
@@ -54,7 +54,7 @@ unsafe fn zelda_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 6.0/(10.0-1.0));
+        FT_MOTION_RATE(fighter, 7.0/(10.0-1.0));
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
@@ -101,7 +101,7 @@ unsafe fn zelda_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 6.0/(10.0-1.0));
+        FT_MOTION_RATE(fighter, 7.0/(10.0-1.0));
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
