@@ -64,7 +64,7 @@ unsafe fn purin_catch_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        dash_effect,
+        //dash_effect,
         purin_turn_dash_game,
 		purin_catch_game,
     );

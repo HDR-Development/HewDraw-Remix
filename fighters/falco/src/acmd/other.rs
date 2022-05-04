@@ -155,7 +155,7 @@ unsafe fn wall_jump_sound(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        dash_effect,
+        //dash_effect,
         falco_dash_sound,
         falco_turn_dash_game,
 		falco_catch_game,

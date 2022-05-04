@@ -88,7 +88,7 @@ pub fn install() {
         sheik_landing_air_lw_game,
         sheik_catch_game,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
         sheik_needle_move_game,
     );
