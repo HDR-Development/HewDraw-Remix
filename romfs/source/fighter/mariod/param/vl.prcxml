@@ -11,8 +11,8 @@
   </struct>
   <list hash="param_special_s">
     <struct index="0">
-      <float hash="special_s_attack_spd_y">0.45</float>
-      <float hash="special_s_attack_acl_y">0.0305</float>
+      <float hash="special_s_attack_spd_y">0.5</float>
+      <float hash="special_s_attack_acl_y">0.03</float>
       <float hash="special_s_attack_max_y">0.75</float>
       <float hash="special_s_start_mul_spd_x">1.5</float>
     </struct>
