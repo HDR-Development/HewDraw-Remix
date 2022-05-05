@@ -128,7 +128,7 @@ pub fn install() {
         mario_utauntr,
         mario_utauntl,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
         //escape_air_slide_game,
         mario_fireball_regular_game,

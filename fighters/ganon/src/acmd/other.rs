@@ -120,7 +120,7 @@ unsafe fn ganon_appeal_lw_l_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        dash_effect,
+        //dash_effect,
         ganon_turn_dash_game,
 		ganon_catch_game,
         ganon_appeal_hi_r_game,

@@ -49,6 +49,8 @@ pub mod globals {
     // 0x30
     // 0x31
     // 0x32 some substatus
+    pub const USE_SPECIAL_S_CALLBACK: i32 = 0x39;
+    pub const USE_SPECIAL_HI_CALLBACK: i32 = 0x3A;
     pub const STATUS_CHANGE_CALLBACK: i32 = 0x3E;
     pub const DASH_POST_TRANSITION_CALLBACK: i32 = 0x57;
 }
@@ -144,14 +146,14 @@ pub mod vars {
         pub const FLOAT_TIMER: i32 = 0x2;
         pub const FLOAT_DURATION: i32 = 0x3;
         pub const FLOAT_STYLE: i32 = 0x4;
-        pub const GIMMICK_READY_GLOW_TIMER: i32 = 0x5;
-        pub const HITFALL_BUFFER: i32 = 0x7;
-        pub const JUMP_SQUAT_FRAME: i32 = 0x8;
-        pub const GIMMICK_TIMER: i32 = 0x9;
-        pub const ATTACK_DASH_CANCEL_FRAME: i32 = 0xA;
-        pub const AIR_ESCAPE_MAGNET_FRAME: i32 = 0xB;
-        pub const TURN_DASH_FRAME: i32 = 0xC;
-        pub const DOWN_STAND_FB_KIND: i32 = 0xD;
+        pub const HITFALL_BUFFER: i32 = 0x5;
+        pub const JUMP_SQUAT_FRAME: i32 = 0x6;
+        pub const GIMMICK_TIMER: i32 = 0x7;
+        pub const ATTACK_DASH_CANCEL_FRAME: i32 = 0x8;
+        pub const AIR_ESCAPE_MAGNET_FRAME: i32 = 0x9;
+        pub const TURN_DASH_FRAME: i32 = 0xA;
+        pub const DOWN_STAND_FB_KIND: i32 = 0xB;
+        pub const CSTICK_LIFE: i32 = 0xC;
 
         // float
         pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0;
@@ -217,6 +219,22 @@ pub mod vars {
     pub mod duckhunt {
         // int
         pub const GUNMAN_TIMER: i32 = 0x1000;
+    }
+
+    pub mod elight {
+        // int
+
+        /// This is used to determine how to end the SpecialHiJump status script
+        pub const SPECIAL_HI_JUMP_RESERVE_ACTION: i32 = 0x1000;
+
+        // flags
+        pub const DISABLE_SPECIAL_HI_JUMP: i32 = 0x1000;
+        pub const DISABLE_SPECIAL_S:       i32 = 0x1001;
+
+        // not IDs but symbolic consts
+        pub const SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK1: i32 = 0x0;
+        pub const SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK2: i32 = 0x1;
+        pub const SPECIAL_HI_JUMP_RESERVE_ACTION_FALL:    i32 = 0x2;
     }
 
     pub mod gaogaen {
@@ -338,4 +356,10 @@ pub mod vars {
     }
 
 
+}
+
+pub mod statuses {
+    pub mod elight {
+        pub const SPECIAL_HI_FINISH2: i32 = 0;
+    }
 }
