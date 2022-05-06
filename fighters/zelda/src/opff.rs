@@ -72,11 +72,17 @@ unsafe fn phantom_b_rev(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn dins_fire_land_cancel(boma: &mut BattleObjectModuleAccessor){
+    if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_S_END) && boma.is_situation(*SITUATION_KIND_GROUND) && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
+        boma.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     teleport_tech(boma, status_kind, id);
+    dins_fire_land_cancel(boma);
     //phantom_b_rev(fighter);
 
-    // Magic Series
     neutral_special_cancels(boma, status_kind, situation_kind, cat[0]);
 }
 
