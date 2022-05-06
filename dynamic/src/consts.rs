@@ -268,6 +268,11 @@ pub mod vars {
         pub const FIREBRAND_SPAWNED: i32 = 0x1000;
     }
 
+    pub mod pickel {
+        // flags
+        pub const IS_CURRENT_ATTACK_LW3_SOUL_FIRE: i32 = 0x1000;
+    }
+
     pub mod roy {
         // flags
         pub const TRAIL_EFFECT: i32 = 0x1000;
