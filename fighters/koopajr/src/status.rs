@@ -224,19 +224,8 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
         if sub_escape_air_common_strans_main(fighter).get_bool() {
             return L2CValue::Bool(true);
         }
-        if VarModule::is_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND) {
-            // VarModule::off_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND);
-            // GroundModule::attach_ground(fighter.module_accessor, false);
-            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING);
-            force_ground_attach(fighter);
-            fighter.change_status(FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_LANDING.into(), false.into());
-            VarModule::off_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND);
+        if fighter.handle_waveland(true) {
             return true.into();
-            // fighter.change_status(
-            //     L2CValue::I32(*FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_LANDING),
-            //     L2CValue::Bool(false)
-            // );
-            // return true.into();
         }
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING) {
             fighter.change_status(
