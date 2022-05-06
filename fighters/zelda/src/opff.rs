@@ -3,10 +3,18 @@ utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
 use super::*;
 use globals::*;
  
-unsafe fn teleport_tech(boma: &mut BattleObjectModuleAccessor, status_kind: i32, id: usize) {
-    if status_kind == *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2 {
+unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2) {
         if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3, false);
+            if boma.is_stick_backward()
+            && !VarModule::is_flag(boma.object(), vars::common::B_REVERSED) {
+                PostureModule::reverse_lr(boma);
+                PostureModule::update_rot_y_lr(boma);
+                KineticModule::mul_speed(boma, &Vector3f::new(-1.0, 1.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                VarModule::on_flag(boma.object(), vars::common::B_REVERSED);
+            }
+            boma.change_status_req(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3, false);
+            ControlModule::clear_command(boma, false);
         }
     }
 
@@ -16,7 +24,7 @@ unsafe fn teleport_tech(boma: &mut BattleObjectModuleAccessor, status_kind: i32,
     let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
     let warp_speed = WorkModule::get_param_float(boma, hash40("param_special_hi"), hash40("wrap_speed_add")) + WorkModule::get_param_float(boma, hash40("param_special_hi"), hash40("wrap_speed_multi"));
 
-    if status_kind == *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2 {
+    if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2) {
         // Manipulate ECB for landing purposes
         GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, 0.0));
         if touch_right || touch_left || VarModule::is_flag(boma.object(), vars::common::IS_TELEPORT_WALL_RIDE) {
@@ -33,7 +41,7 @@ unsafe fn teleport_tech(boma: &mut BattleObjectModuleAccessor, status_kind: i32,
             }
         }
     }
-    else if status_kind == *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3 {
+    else if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3) {
         // Manipulate ECB for landing purposes
         GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, 0.0));
         if touch_right || touch_left {
@@ -79,7 +87,7 @@ unsafe fn dins_fire_land_cancel(boma: &mut BattleObjectModuleAccessor){
 }
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    teleport_tech(boma, status_kind, id);
+    teleport_tech(fighter, boma);
     dins_fire_land_cancel(boma);
     //phantom_b_rev(fighter);
 
