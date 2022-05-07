@@ -330,6 +330,29 @@ unsafe fn kazuya_flash_tornado_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "demon", script = "game_attacksquat3" , category = ACMD_GAME , low_priority)]
+unsafe fn kazuya_crouching_spin_kick_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+    HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_XLU);
+    HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
+    ATTACK(fighter, 0, 0, Hash40::new("legl"), 9.0, 55, 10, 0, 90, 4.0, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_KICK, *ATTACK_REGION_KICK);
+    ATTACK(fighter, 1, 0, Hash40::new("kneel"), 9.0, 55, 10, 0, 90, 3.5, 1.0, 0.0, 2.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_KICK, *ATTACK_REGION_KICK);
+    ATTACK(fighter, 2, 0, Hash40::new("kneel"), 9.0, 55, 10, 0, 90, 2.75, 0.0, 0.0, 2.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_KICK, *ATTACK_REGION_KICK);
+    AttackModule::set_add_reaction_frame(boma, 0, 10.0, false);
+    ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 1.5);
+    ATK_SET_SHIELD_SETOFF_MUL(fighter, 1, 1.5);
+    ATK_SET_SHIELD_SETOFF_MUL(fighter, 2, 1.5);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
+        AttackModule::clear_all(boma);
+    }
+}
+
 #[acmd_script( agent = "demon", script = "game_attacksquat4" , category = ACMD_GAME , low_priority)]
 unsafe fn kazuya_demon_god_fist_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -391,6 +414,7 @@ pub fn install() {
         kazuya_triple_spin_kicks_1_game,
         kazuya_triple_spin_kicks_2_game,
         kazuya_flash_tornado_game,
+        kazuya_crouching_spin_kick_game,
         kazuya_demon_god_fist_game,
     );
 }
