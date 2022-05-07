@@ -108,7 +108,7 @@ pub fn install() {
         gekkouga_jump_aerial_b_game,
         gekkouga_catch_game,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
         gekkouga_shuriken_shot_game,
     );
