@@ -411,6 +411,8 @@ pub trait BomaExt {
     unsafe fn get_param_int(&mut self, obj: &str, field: &str) -> i32;
     unsafe fn get_param_float(&mut self, obj: &str, field: &str) -> f32;
     unsafe fn get_param_int64(&mut self, obj: &str, field: &str) -> u64;
+
+    unsafe fn is_passable_collision_touch(&mut self, touch_mask: u32) -> bool;
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -675,6 +677,37 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn set_joint_rotate(&mut self, bone_name: &str, rotation: Vector3f) {
         ModelModule::set_joint_rotate(self, Hash40::new(&bone_name), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
+    }
+
+    unsafe fn is_passable_collision_touch(&mut self, touch_mask: u32) -> bool {
+        let ground_module = *(self as *mut BattleObjectModuleAccessor as *const u64).add(0x58 / 8);
+        let collision_info = *(ground_module as *const u64).add(0x28 / 0x8);
+        let mut result = false;
+        for x in 0..8 {
+            if touch_mask & (1 << x) == 0 {
+                continue;
+            }
+
+            let line = *((collision_info + 0x10 + 0x30 * x) as *const u64);
+            if line == 0 {
+                continue;
+            }
+
+            if !*(line as *const bool).add(0x100) {
+                return false;
+            }
+
+            if *(line as *const u32).add(0xC4 / 0x4) & (1 << 0x14) != 0 {
+                return false;
+            }
+
+            if *(line as *const u32).add(0xc4 / 0x4) & (1 << 0xd) == 0 {
+                return false;
+            }
+            result = true;
+        }
+
+        result
     }
 
 }
