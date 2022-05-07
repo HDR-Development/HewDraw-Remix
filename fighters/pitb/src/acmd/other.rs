@@ -78,7 +78,7 @@ unsafe fn pitb_catch_game(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         pitb_dash_game,
-        dash_effect,
+        //dash_effect,
 		pitb_turn_dash_game,
 		pitb_catch_game,
     );

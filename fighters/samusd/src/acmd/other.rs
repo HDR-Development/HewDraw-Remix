@@ -57,7 +57,7 @@ unsafe fn samusd_cshot_shoot_game(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
         samusd_cshot_shoot_game,
     );
