@@ -37,7 +37,7 @@ unsafe fn status_pre_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
         VarModule::off_flag(fighter.battle_object, vars::common::PERFECT_WAVEDASH);
         return 0.into();
     }
-    if fighter.handle_waveland(false) {
+    if fighter.handle_waveland(true, false) {
         if (fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DAMAGE_FALL || fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DAMAGE_FLY) {
             if app::FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32)
             && passive_fb_value <= stick_x.abs() {
@@ -258,7 +258,7 @@ unsafe fn sub_escape_air_waveland_check(fighter: &mut L2CFighterCommon) {
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon19sub_escape_air_uniqEN3lib8L2CValueE")]
 unsafe extern "C" fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
     if arg.get_bool() {
-        if fighter.handle_waveland(true) {
+        if fighter.handle_waveland(true, true) {
             return 1.into();
         }
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
@@ -486,7 +486,7 @@ unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterC
     let stick_x = fighter.global_table[STICK_X].get_f32();
     let passive_fb_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("passive_fb_cont_value"));
     // lazy eval gaurantees that we don't call handle_waveland if we are on the ground
-    if situation_kind == *SITUATION_KIND_GROUND || fighter.handle_waveland(false) {
+    if situation_kind == *SITUATION_KIND_GROUND || fighter.handle_waveland(true, false) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_GROUND) {
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB)
                 && app::FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32)

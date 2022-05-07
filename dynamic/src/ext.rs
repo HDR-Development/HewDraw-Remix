@@ -413,7 +413,7 @@ pub trait BomaExt {
     unsafe fn get_param_int64(&mut self, obj: &str, field: &str) -> u64;
 
     // tech/general subroutine
-    unsafe fn handle_waveland(&mut self, change_status: bool) -> bool;
+    unsafe fn handle_waveland(&mut self, require_airdodge: bool, change_status: bool) -> bool;
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -680,16 +680,14 @@ impl BomaExt for BattleObjectModuleAccessor {
         ModelModule::set_joint_rotate(self, Hash40::new(&bone_name), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
     }
 
-    unsafe fn handle_waveland(&mut self, change_status: bool) -> bool {
-        if !self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE])
-        || (MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU)) {
-            println!("wrong status");
+    unsafe fn handle_waveland(&mut self, require_airdodge: bool, change_status: bool) -> bool {
+        if require_airdodge && (!self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE])
+        || (MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU))) {
             return false;
         }
 
         // must check this because it is for allowing the player to screw up a perfect WD and be punished with a non-perfect WD (otherwise they'd have like, 8 frames for perfect WD lol)
         if !crate::VarModule::is_flag(self.object(), crate::consts::vars::common::ENABLE_AIR_ESCAPE_MAGNET) {
-            println!("no magnet");
             return false;
         }
 
@@ -707,7 +705,6 @@ impl BomaExt for BattleObjectModuleAccessor {
             }
             true
         } else {
-            println!("{:?}", out_pos);
             false
         }
     }
