@@ -32,6 +32,7 @@
       <float hash="speed_max_y">1.15</float>
       <float hash="hovering_speed_max_x">0.9</float>
       <float hash="energy_max_frame">100</float>
+      <float hash="recovery_energy">0.2</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

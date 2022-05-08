@@ -316,6 +316,10 @@ pub mod vars {
     }
 
     pub mod robot {
+        // ints
+        pub const PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE: i32 = 0x1000;
+        pub const PREV_FUEL_THRESHOLD:                  i32 = 0x1001;
+
         // flags
         pub const BOOST_ATTACK: i32 = 0x1000;
     }
