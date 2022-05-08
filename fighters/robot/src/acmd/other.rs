@@ -86,7 +86,7 @@ pub fn install() {
     install_acmd_scripts!(
         robot_catch_game,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
         robot_beam_fly_max_effect,
     );

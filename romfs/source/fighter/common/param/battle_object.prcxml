@@ -3,7 +3,8 @@
   <float hash="damage_frame_mul">0.45</float>
   <float hash="damage_level1">16.875</float>
   <float hash="damage_level2">23.625</float>
-  <float hash="damage_level3">36</float>
+  <float hash="damage_level3">40.5</float>
+  <float hash="damage_speed_mul">0.03</float>
   <float hash="damage_angle_ground_max">44</float>
   <float hash="down_damage_s_reaction">999</float>
   <float hash="damage_fly_quake_l">90</float>
