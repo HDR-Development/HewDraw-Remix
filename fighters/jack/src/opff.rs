@@ -4,11 +4,19 @@ use super::*;
 use globals::*;
 
  
-unsafe fn wings_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+unsafe fn wings_of_rebellion_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if status_kind == *FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_RUSH {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_END, true);
         }
+        if boma.get_num_used_jumps() < boma.get_jump_count_max() {
+            if boma.get_aerial() != None {
+                WorkModule::inc_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+                VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL);
+                boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
+            }
+        }
+        
     }
 }
 
@@ -57,7 +65,7 @@ unsafe fn knife_length(boma: &mut BattleObjectModuleAccessor) {
 }
 
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    wings_cancel(boma, status_kind);
+    wings_of_rebellion_cancel(boma, status_kind);
     //arsene_grappling_hook(boma, situation_kind, motion_kind);
     aerial_grappling_hook_stall(boma, motion_kind, frame);
 	knife_length(boma);
