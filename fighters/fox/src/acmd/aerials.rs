@@ -110,6 +110,68 @@ unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "fox", script = "effect_attackairf" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_attackairf(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0, 6.5, 2, 0, 15, 220, 0.9, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 6.5, 2, 0, 115, 220, 0.8, true);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.5);
+        LAST_EFFECT_SET_RATE(fighter, 1.2);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0, 7.7, 2, 8, 25, 195, 0.9, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 7.7, 2, 8, 125, 195, 0.8, true);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        LAST_EFFECT_SET_RATE(fighter, 1.2);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_arc_b"), true, true);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0, 7.5, 2, 5, 20, 205, 0.9, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 7.5, 2, 5, 120, 205, 0.8, true);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
+        LAST_EFFECT_SET_RATE(fighter, 1.2);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_arc_b"), true, true);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0, 6.5, 2, 13, 25, 205, 0.9, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 6.5, 2, 13, 115, 205, 0.8, true);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.3);
+        LAST_EFFECT_SET_RATE(fighter, 1.2);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_arc_b"), true, true);
+    }
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0, 7.5, 2, 23, 7, 200, 1.2, true);
+        //EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 7.5, 2, -23, 180, 180, 1.1, true);
+        //LAST_EFFECT_SET_ALPHA(fighter, 0.6);
+        //LAST_EFFECT_SET_RATE(fighter, 1);
+    }
+    frame(lua_state, 32.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_arc_b"), true, true);
+    }
+}
+
 #[acmd_script( agent = "fox", script = "game_landingairf" , category = ACMD_GAME , low_priority)]
 unsafe fn game_landingairf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -271,6 +333,7 @@ pub fn install() {
     install_acmd_scripts!(
         game_attackairn,
         game_attackairf,
+        effect_attackairf,
         game_landingairf,
         game_attackairb,
         effect_attackairb,
