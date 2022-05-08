@@ -14,10 +14,19 @@ pub fn install() {
         status_pre_Jump_Common_param,
         status_pre_Jump_sub,
         status_pre_Jump_sub_param,
-        status_Jump_Main,
+        //status_Jump_Main,
         status_Jump_sub,
         //status_pre_JumpAerial_sub
     );
+    skyline::nro::add_hook(nro_hook);
+}
+
+fn nro_hook(info: &skyline::nro::NroInfo) {
+    if info.name == "common" {
+        skyline::install_hooks!(
+            status_Jump_Main
+        );
+    }
 }
 
 #[common_status_script(status = FIGHTER_STATUS_KIND_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE,
@@ -119,8 +128,9 @@ unsafe fn status_Jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(status_Jump_Main as *const () as _))
 }
 
-#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon16status_Jump_MainEv")]
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_Jump_Main)]
 unsafe extern "C" fn status_Jump_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    println!("jump main");
     VarModule::set_float(fighter.battle_object, vars::common::CURRENT_MOMENTUM, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
     VarModule::set_float(fighter.battle_object, vars::common::CURRENT_MOMENTUM_SPECIALS, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
     let ret = if fighter.sub_transition_group_check_air_cliff().get_bool() {
