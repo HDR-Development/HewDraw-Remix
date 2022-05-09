@@ -195,7 +195,9 @@ pub mod vars {
         pub const IS_SPECIAL_HI_CANCELED_INTO: i32 = 0x1003;
 
         //ints
-        pub const NUM_RECOVERY_RESOURCE_USED: i32 = 0x1000;
+        pub const NUM_RECOVERY_RESOURCE_USED:         i32 = 0x1000;
+        pub const NUM_SPECIAL_S_CANCEL_THIS_AIRTIME:  i32 = 0x1001;
+        pub const NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME: i32 = 0x1002;
     }
 
     pub mod brave {

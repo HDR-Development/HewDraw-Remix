@@ -128,10 +128,13 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
     if !fighter.is_situation(*SITUATION_KIND_AIR){
         VarModule::off_flag(fighter.battle_object, vars::bayonetta::IS_SPECIAL_S_CANCELED_INTO);
         VarModule::off_flag(fighter.battle_object, vars::bayonetta::IS_SPECIAL_HI_CANCELED_INTO);
+        VarModule::set_int(fighter.battle_object, vars::bayonetta::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME, 0);
+        VarModule::set_int(fighter.battle_object, vars::bayonetta::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME, 0);
     }
 
     if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F])
     || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    || fighter.is_motion_one_of(&[Hash40::new("attack_air_n_hold"), Hash40::new("attack_air_f_hold"), Hash40::new("attack_air_f2_hold"), Hash40::new("attack_air_f3_hold"), Hash40::new("attack_air_hi_hold"), Hash40::new("attack_air_lw_hold")])
     {
         return;
     }
@@ -150,15 +153,27 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
     }
 
     if fighter.is_cat_flag(Cat1::SpecialS) {
+        /*
         if !VarModule::is_flag(fighter.battle_object, vars::bayonetta::IS_SPECIAL_S_CANCELED_INTO){
+            is_input_cancel = true;
+            new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
+        }
+        */
+        if VarModule::get_int(fighter.battle_object, vars::bayonetta::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME) < 2{
             is_input_cancel = true;
             new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
         }
     }
 
     if fighter.is_cat_flag(Cat1::SpecialHi) {
+        /*
         if !VarModule::is_flag(fighter.battle_object, vars::bayonetta::IS_SPECIAL_HI_CANCELED_INTO){
             VarModule::on_flag(fighter.battle_object, vars::bayonetta::IS_SPECIAL_HI_CANCELED_INTO);
+            is_input_cancel = true;
+            new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI;
+        }
+        */
+        if VarModule::get_int(fighter.battle_object, vars::bayonetta::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME) < 2{
             is_input_cancel = true;
             new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI;
         }
@@ -167,10 +182,12 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
     if is_input_cancel {
         if !fighter.is_in_hitlag(){
             if new_status == *FIGHTER_STATUS_KIND_SPECIAL_S {
-                VarModule::on_flag(fighter.battle_object, vars::bayonetta::IS_SPECIAL_S_CANCELED_INTO);
+                //VarModule::on_flag(fighter.battle_object, vars::bayonetta::IS_SPECIAL_S_CANCELED_INTO);
+                VarModule::inc_int(fighter.battle_object, vars::bayonetta::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME);
             }
             else if new_status == *FIGHTER_STATUS_KIND_SPECIAL_HI {
-                VarModule::on_flag(fighter.battle_object, vars::bayonetta::IS_SPECIAL_HI_CANCELED_INTO);
+                //VarModule::on_flag(fighter.battle_object, vars::bayonetta::IS_SPECIAL_HI_CANCELED_INTO);
+                VarModule::inc_int(fighter.battle_object, vars::bayonetta::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME);
             }
             fighter.change_status_req(new_status, false);
             return;
@@ -194,7 +211,7 @@ unsafe fn special_cancels(fighter: &mut L2CFighterCommon) {
     // Special Cancels
     if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U)
     && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-    && fighter.motion_frame() > 33.0
+    && fighter.motion_frame() > 31.0
     {
         CancelModule::enable_cancel(fighter.module_accessor);
     }
@@ -247,13 +264,13 @@ unsafe fn recovery_resource_management(fighter: &mut L2CFighterCommon) {
 unsafe fn abk_flight_drift(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U) && fighter.motion_frame() < 25.0 && !StopModule::is_stop(fighter.module_accessor){
         let stick_y =  ControlModule::get_stick_y(fighter.module_accessor);
-        if stick_y != 0.0 {
+        if stick_y != 0.0 && !fighter.is_in_hitlag(){
             KineticModule::add_speed_outside(fighter.module_accessor, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &Vector3f::new(0.0, 1.0 * stick_y, 0.0));
         }
     }
     else if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D) && fighter.motion_frame() > 6.0 && fighter.motion_frame() < 25.0 && !StopModule::is_stop(fighter.module_accessor){
         let stick_x =  ControlModule::get_stick_x(fighter.module_accessor);
-        if stick_x != 0.0 {
+        if stick_x != 0.0 && !fighter.is_in_hitlag() {
             KineticModule::add_speed_outside(fighter.module_accessor, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &Vector3f::new(1.0 * stick_x, 0.0, 0.0));
         }
     }
