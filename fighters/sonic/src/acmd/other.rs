@@ -60,7 +60,7 @@ unsafe fn sonic_catch_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        dash_effect,
+        //dash_effect,
         sonic_turn_dash_game,
 		sonic_catch_game,
     );
