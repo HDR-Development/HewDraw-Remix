@@ -130,16 +130,6 @@ unsafe fn hadoken_fadc_sfs_cancels(fighter: &mut L2CFighterCommon, boma: &mut Ba
     }
 }
 
-// Shotos Special hit cancels
-// Only for Ken?
-unsafe fn special_hit_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if boma.kind() == *FIGHTER_KIND_KEN
-    && boma.is_status_one_of(&[*FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1, *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2])
-    {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
-    }
-}
-
 // Shotos Shield Stop and Run Drop
 unsafe fn shield_stop_run_drop(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if !boma.is_status(*FIGHTER_RYU_STATUS_KIND_DASH_BACK) {
@@ -184,8 +174,7 @@ pub unsafe fn shotos_moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
     //dtilt_utilt_repeat_increment(boma, id, motion_kind); // UNUSED
     tatsumaki_ex_land_cancel_hover(boma, status_kind, situation_kind);
 	//ex_shoryuken(boma, status_kind, situation_kind, motion_kind);
-    hadoken_fadc_sfs_cancels(fighter, boma, id, status_kind, cat, frame);
-    special_hit_cancels(boma, status_kind);
+    //hadoken_fadc_sfs_cancels(fighter, boma, id, status_kind, cat, frame);
     shield_stop_run_drop(boma, status_kind);
     training_mode_full_meter(fighter, boma, status_kind);
 
