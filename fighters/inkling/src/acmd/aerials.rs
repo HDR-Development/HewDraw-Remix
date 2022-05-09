@@ -67,7 +67,7 @@ unsafe fn inkling_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 40.0);
+    frame(lua_state, 35.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -80,11 +80,11 @@ unsafe fn inkling_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.833);
+        FT_MOTION_RATE(fighter, 4.0/(6.0-1.0));
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
+        FT_MOTION_RATE(fighter, 1.0);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
