@@ -1996,7 +1996,7 @@
       <int hash="jump_squat_frame">4</int>
       <float hash="jump_speed_x_max">1.25</float>
       <float hash="jump_initial_y">10.3675</float>
-      <float hash="mini_jump_y">15.1</float>
+      <float hash="mini_jump_y">14.5</float>
       <float hash="jump_aerial_y">28</float>
       <float hash="air_accel_x_mul">0.05</float>
       <float hash="air_speed_x_stable">0.96</float>
