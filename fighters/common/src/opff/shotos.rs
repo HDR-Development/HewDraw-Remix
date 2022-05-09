@@ -124,7 +124,7 @@ unsafe fn hadoken_fadc_sfs_cancels(fighter: &mut L2CFighterCommon, boma: &mut Ba
 
     if frame > 15.0
     && boma.is_cat_flag(Cat1::SpecialLw)
-    && MeterModule::drain(boma.object(), 1)
+    && MeterModule::drain(boma.object(), 2)
     {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
     }
@@ -174,7 +174,7 @@ pub unsafe fn shotos_moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
     //dtilt_utilt_repeat_increment(boma, id, motion_kind); // UNUSED
     tatsumaki_ex_land_cancel_hover(boma, status_kind, situation_kind);
 	//ex_shoryuken(boma, status_kind, situation_kind, motion_kind);
-    //hadoken_fadc_sfs_cancels(fighter, boma, id, status_kind, cat, frame);
+    hadoken_fadc_sfs_cancels(fighter, boma, id, status_kind, cat, frame);
     shield_stop_run_drop(boma, status_kind);
     training_mode_full_meter(fighter, boma, status_kind);
 
