@@ -66,6 +66,34 @@ unsafe fn master_special_air_n_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "master", script = "game_specialn" , category = ACMD_GAME , low_priority)]
+unsafe fn master_special_n_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ArticleModule::shoot_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_ARROW1, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
+        FT_MOTION_RATE(fighter, 0.8);
+    }
+    frame(lua_state, 35.0);
+    if is_excute(fighter) {
+        ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_BOW, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+
+#[acmd_script( agent = "master", script = "game_specialairn" , category = ACMD_GAME , low_priority)]
+unsafe fn master_special_air_n_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ArticleModule::shoot_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_ARROW1, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
+        FT_MOTION_RATE(fighter, 0.8);
+    }
+    frame(lua_state, 35.0);
+    if is_excute(fighter) {
+        ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_BOW, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+
 #[acmd_script( agent = "master", script = "game_specialsf" , category = ACMD_GAME , low_priority)]
 unsafe fn master_special_s_front_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -368,7 +396,7 @@ unsafe fn master_special_air_hi_overtake_game(fighter: &mut L2CAgentBase) {
         ArticleModule::change_motion(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, smash::phx::Hash40::new("special_air_hi_overtake"), false, 0.0);
         if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
             // Hold input throw
-            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 2, 10.0, 260, 100, 0, 14, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_KICK);
+            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW_MEWTWO, 2, 10.0, 260, 100, 0, 14, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_KICK);
         }
         else{
             // Normal throw
@@ -394,8 +422,8 @@ unsafe fn master_special_air_hi_overtake_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if WorkModule::is_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_HI_FLAG_TARGET_AIR){
             if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
-                //ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW_MEWTWO, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
-                ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
+                ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW_MEWTWO, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
+                //ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
             }
             else{
                 ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
@@ -936,6 +964,8 @@ pub fn install() {
     install_acmd_scripts!(
         master_special_n_start_game,
         master_special_air_n_start_game,
+        master_special_n_game,
+        master_special_air_n_game,
         master_special_s_front_game,
         master_special_s_front_effect,
         master_special_s_front_dash_game,
