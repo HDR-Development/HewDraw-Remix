@@ -482,6 +482,101 @@ unsafe fn gaogaen_special_s_start_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "gaogaen", script = "effect_specialsthrow" , category = ACMD_EFFECT , low_priority)]
+unsafe fn gaogaen_special_s_throw_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_catch"), Hash40::new("sys_catch"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.9, true, *EF_FLIP_YZ);
+        // OTG/Anti-air grab effects
+        if VarModule::is_flag(boma.object(), vars::gaogaen::IS_SPECIAL_S_ALTERNATE_GRAB) {
+            // OTG grab
+            if VarModule::is_flag(boma.object(), vars::gaogaen::IS_SPECIAL_S_GROUND_GRAB){
+                EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("bust"), 0.0, 0, 0, 0, 0, 0, 0.25, true);
+                
+                EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("arml"), 1.0, 0, 0, 0, 0, 0, 0.3, true);
+                EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("arml"), 7.0, 0, 0, 0, 0, 0, 0.35, true);
+
+                EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("armr"), 1.0, 0, 0, 0, 0, 0, 0.3, true);
+                EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("armr"), 7.0, 0, 0, 0, 0, 0, 0.35, true);
+            }
+            // Anti-air grab
+            else if VarModule::is_flag(boma.object(), vars::gaogaen::IS_SPECIAL_S_AIR_GRAB){
+                EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("bust"), 0.0, 0, 0, 0, 0, 0, 0.3, true);
+
+                EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("arml"), 1.0, 0, 0, 0, 0, 0, 0.35, true);
+                EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("arml"), 7.0, 0, 0, 0, 0, 0, 0.4, true);
+    
+                EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("armr"), 1.0, 0, 0, 0, 0, 0, 0.35, true);
+                EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("armr"), 7.0, 0, 0, 0, 0, 0, 0.4, true);
+            }
+        }
+    }
+    frame(lua_state, 6.0);
+    for _ in 0..12{
+        if is_excute(fighter) {
+            // OTG/Anti-air grab effects
+            if VarModule::is_flag(boma.object(), vars::gaogaen::IS_SPECIAL_S_ALTERNATE_GRAB) {
+                // OTG grab
+                if VarModule::is_flag(boma.object(), vars::gaogaen::IS_SPECIAL_S_GROUND_GRAB){
+                    EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("bust"), 0.0, 0, 0, 0, 0, 0, 0.25, true);
+                    
+                    EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("arml"), 1.0, 0, 0, 0, 0, 0, 0.3, true);
+                    EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("arml"), 7.0, 0, 0, 0, 0, 0, 0.35, true);
+
+                    EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("armr"), 1.0, 0, 0, 0, 0, 0, 0.3, true);
+                    EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("armr"), 7.0, 0, 0, 0, 0, 0, 0.35, true);
+                }
+                // Anti-air grab
+                else if VarModule::is_flag(boma.object(), vars::gaogaen::IS_SPECIAL_S_AIR_GRAB){
+                    EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("bust"), 0.0, 0, 0, 0, 0, 0, 0.3, true);
+
+                    EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("arml"), 1.0, 0, 0, 0, 0, 0, 0.35, true);
+                    EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("arml"), 7.0, 0, 0, 0, 0, 0, 0.4, true);
+        
+                    EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("armr"), 1.0, 0, 0, 0, 0, 0, 0.35, true);
+                    EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("armr"), 7.0, 0, 0, 0, 0, 0, 0.4, true);
+                }
+            }
+        }
+    wait(lua_state, 2.0);
+    }
+    frame(lua_state, 31.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -2, 0, 0, 0, 180, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 32.0);
+    for _ in 0..8{
+        if is_excute(fighter) {
+            // OTG/Anti-air grab effects
+            if VarModule::is_flag(boma.object(), vars::gaogaen::IS_SPECIAL_S_ALTERNATE_GRAB) {
+                // OTG grab
+                if VarModule::is_flag(boma.object(), vars::gaogaen::IS_SPECIAL_S_GROUND_GRAB){
+                    EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("bust"), 0.0, 0, 0, 0, 0, 0, 0.25, true);
+                    
+                    EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("arml"), 1.0, 0, 0, 0, 0, 0, 0.3, true);
+                    EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("arml"), 7.0, 0, 0, 0, 0, 0, 0.35, true);
+
+                    EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("armr"), 1.0, 0, 0, 0, 0, 0, 0.3, true);
+                    EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("armr"), 7.0, 0, 0, 0, 0, 0, 0.35, true);
+                }
+                // Anti-air grab
+                else if VarModule::is_flag(boma.object(), vars::gaogaen::IS_SPECIAL_S_AIR_GRAB){
+                    EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("bust"), 0.0, 0, 0, 0, 0, 0, 0.3, true);
+
+                    EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("arml"), 1.0, 0, 0, 0, 0, 0, 0.35, true);
+                    EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("arml"), 7.0, 0, 0, 0, 0, 0, 0.4, true);
+        
+                    EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("armr"), 1.0, 0, 0, 0, 0, 0, 0.35, true);
+                    EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("armr"), 7.0, 0, 0, 0, 0, 0, 0.4, true);
+                }
+            }
+        }
+    wait(lua_state, 2.0);
+    }
+}
+
 #[acmd_script( agent = "gaogaen", script = "game_specialslariat" , category = ACMD_GAME , low_priority)]
 unsafe fn gaogaen_special_s_lariat_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1133,6 +1228,7 @@ pub fn install() {
         gaogaen_special_air_n_game,
         gaogaen_special_s_start_game,
         gaogaen_special_s_start_effect,
+        gaogaen_special_s_throw_effect,
         gaogaen_special_s_lariat_game,
         gaogaen_special_air_s_lariat_game,
         gaogaen_special_s_shoulder_game,
