@@ -111,7 +111,7 @@ pub fn install() {
         roy_landing_air_lw_game,
         roy_catch_game,
         roy_dash_game,
-        dash_effect,
+        //dash_effect,
         roy_turn_dash_game,
         roy_appeallwr_game,
         roy_appeallwl_game,

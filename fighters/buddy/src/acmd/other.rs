@@ -89,7 +89,7 @@ pub fn install() {
     install_acmd_scripts!(
         buddy_catch_game,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
         buddy_bullet_bakyun_game
     );

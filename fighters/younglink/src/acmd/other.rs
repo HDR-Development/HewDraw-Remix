@@ -89,7 +89,7 @@ pub fn install() {
         younglink_appeal_lw_r_game,
         younglink_appeal_lw_l_game,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
     );
 }
