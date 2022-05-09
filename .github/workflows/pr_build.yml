@@ -34,12 +34,12 @@ jobs:
     #    echo lol > distributions/hdr-ryujinx.zip
 
     - name: Upload hdr-switch
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: hdr-switch
         path: distributions/hdr-switch.zip
     - name: Upload hdr-ryujinx
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: hdr-ryujinx
         path: distributions/hdr-ryujinx.zip

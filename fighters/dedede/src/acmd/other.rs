@@ -92,7 +92,7 @@ pub fn install() {
         expression_landingheavy,
         dedede_catch_game,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
     );
 }

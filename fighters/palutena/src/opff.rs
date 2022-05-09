@@ -117,7 +117,7 @@ unsafe fn aegis_reflector_reset(fighter: &mut L2CFighterCommon, id: usize, statu
 // Training Mode Aegis Reflector timer taunt reset
 unsafe fn aegis_reflector_training(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
     if is_training_mode() {
-        if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
+        if status_kind == *FIGHTER_STATUS_KIND_APPEAL || !smash::app::sv_information::is_ready_go() {
             VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
         }
     }

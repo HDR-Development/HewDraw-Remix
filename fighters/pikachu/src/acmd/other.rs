@@ -47,7 +47,7 @@ unsafe fn pikachu_kaminari_regular_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-      dash_effect,
+      //dash_effect,
 		pikachu_turn_dash_game,
         pikachu_kaminari_regular_game,
 	);

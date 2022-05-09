@@ -181,7 +181,7 @@ if (is_dev_build and not is_publish):
   plugin_args = " --no-default-features "
   if len(non_dev_characters) > 0:
     # add each non dev character
-    plugin_args += '--features="main_nro",'
+    plugin_args += '--features="main_nro","add_status",'
     no_comma = True
     for arg in iter(non_dev_characters):
       if no_comma:
@@ -216,9 +216,9 @@ if (is_dev_build and not is_publish):
 else:
   # simple build
   if is_publish:
-    pkgutil.build(release_arg, "--features=\"updater\",\"main_nro\"")
+    pkgutil.build(release_arg, "--features=\"updater\",\"main_nro\",\"add_status\"")
   else:
-    pkgutil.build(release_arg, "--features=\"main_nro\"")
+    pkgutil.build(release_arg, "--features=\"main_nro\",\"add_status\"")
 
   # collect switch package
   pkgutil.collect_plugin("hdr-switch", 

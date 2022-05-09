@@ -76,7 +76,7 @@ unsafe fn captain_catch_dash_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        dash_effect,
+        //dash_effect,
         captain_turn_dash_game,
 		captain_catch_game,
         captain_catch_dash_game,
