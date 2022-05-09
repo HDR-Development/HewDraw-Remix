@@ -126,7 +126,7 @@ pub fn install() {
         szerosuit_catch_effect,
         szerosuit_catch_expression,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
     );
 }

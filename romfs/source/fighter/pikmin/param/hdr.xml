@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <struct hash="antenna">
+        <float hash="light_weak">0.2</float>
+        <float hash="light_medium_low">0.4</float>
+        <float hash="light_medium_high">0.8</float>
+        <float hash="light_strong">1.0</float>
+        <float hash="light_bright_alpha">1.0</float>
+        <float hash="light_dim_alpha">0.05</float>
+    </struct>
+</struct>

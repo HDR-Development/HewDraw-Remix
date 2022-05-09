@@ -221,7 +221,7 @@ pub fn install() {
     install_acmd_scripts!(
         master_catch_game,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
         master_arrow1_fly_game,
         master_arrow2_search_game,

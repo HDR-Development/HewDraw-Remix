@@ -58,7 +58,7 @@ unsafe fn peach_catch_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        dash_effect,
+        //dash_effect,
         peach_turn_dash_game,
 		peach_catch_game,
     );
