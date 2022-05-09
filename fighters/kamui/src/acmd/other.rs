@@ -78,7 +78,7 @@ pub fn install() {
     install_acmd_scripts!(
         kamui_catch_game,
         kamui_dash_game,
-        dash_effect,
+        //dash_effect,
         kamui_turn_dash_game,
     );
 }

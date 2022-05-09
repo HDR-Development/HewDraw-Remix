@@ -137,7 +137,7 @@ unsafe fn toonlink_air_catch_effect(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        dash_effect,
+        //dash_effect,
         toonlink_turn_dash_game,
 		toonlink_jump_aerial_f_effect,
         toonlink_jump_aerial_b_effect,

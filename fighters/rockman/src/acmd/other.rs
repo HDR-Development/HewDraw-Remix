@@ -80,7 +80,7 @@ unsafe fn rockman_crashbomb_stick_game(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
         rockman_hardknuckle_regular_game,
     );

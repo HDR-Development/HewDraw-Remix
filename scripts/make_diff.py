@@ -21,11 +21,15 @@ if not os.path.exists("artifacts/switch-package.zip"):
 
 if sys.argv[1] == "nightly":
     release_type = "Nightlies"
-else:
+    url = "https://github.com/HDR-Development/HDR-" + release_type + "/releases/latest/download/switch-package.zip"
+elif sys.argv[1] == "beta":
     release_type = "Releases"
+    url = "https://github.com/HDR-Development/HDR-" + release_type + "/releases/latest/download/switch-package.zip"
+else:
+    release_type = "direct_url"
+    url = sys.argv[1]
 
-url = "https://github.com/HDR-Development/HDR-" + release_type + "/releases/latest/download/switch-package.zip"
-print("getting latest from url: " + url)
+print("type: " + release_type + ", getting latest from url: " + url)
 
 urllib.request.urlretrieve(url, "switch-package-previous.zip")
 
