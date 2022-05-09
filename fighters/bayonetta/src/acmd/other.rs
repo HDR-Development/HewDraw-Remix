@@ -260,7 +260,7 @@ pub fn install() {
     install_acmd_scripts!(
         bayonetta_catch_game,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
         bayonetta_wickedweavearm_attack_s4_hi_game,
         bayonetta_wickedweavearm_attack_s4_game,

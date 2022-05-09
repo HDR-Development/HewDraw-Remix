@@ -11,6 +11,14 @@
     <float hash="run_speed_max_mul">1.065</float>
     <float hash="air_speed_x_stable_mul">1.125</float>
   </struct>
+  <list hash="param_special_n">
+    <struct index="0">
+      <int hash="cancel_start_frame">15</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_special_hi">
     <struct index="0">
       <int hash="landing_fix_frame">25</int>
