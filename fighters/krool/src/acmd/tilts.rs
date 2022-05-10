@@ -21,6 +21,7 @@ unsafe fn krool_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
             VarModule::on_flag(boma.object(), vars::common::IS_HEAVY_ATTACK);
         }
         if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK) {
+            WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_OFF);
             FT_MOTION_RATE(fighter, 20.0/(9.5-8.0));
         }
         else{
@@ -60,6 +61,9 @@ unsafe fn krool_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 3.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK) {
+            FT_MOTION_RATE(fighter, 1.2);
+        }
     }
     
 }
@@ -83,6 +87,7 @@ unsafe fn krool_attack_s3_s_game(fighter: &mut L2CAgentBase) {
             VarModule::on_flag(boma.object(), vars::common::IS_HEAVY_ATTACK);
         }
         if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK) {
+            WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_OFF);
             FT_MOTION_RATE(fighter, 20.0/(9.5-8.0));
         }
         else{
@@ -122,6 +127,9 @@ unsafe fn krool_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 3.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK) {
+            FT_MOTION_RATE(fighter, 1.2);
+        }
     }
     
 }
@@ -198,6 +206,7 @@ unsafe fn krool_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
         }
         if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK) {
             FT_MOTION_RATE(fighter, 20.0/(9.5-8.0));
+            WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_OFF);
         }
         else{
             FT_MOTION_RATE(fighter, 1.0/(10.0-8.0));
@@ -236,6 +245,9 @@ unsafe fn krool_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 3.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK) {
+            FT_MOTION_RATE(fighter, 1.2);
+        }
     }
     
 }
@@ -348,6 +360,9 @@ unsafe fn krool_attack_lw3_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 1.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK) {
+            FT_MOTION_RATE(fighter, 1.2);
+        }
     }
 }
 
