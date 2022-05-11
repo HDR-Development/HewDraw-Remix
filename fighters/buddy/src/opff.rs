@@ -32,37 +32,37 @@ unsafe fn grenade_ac(fighter: &mut L2CFighterCommon) {
 }
 
 // Banjo Dair bounce
-unsafe fn dair_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32){
-    if motion_kind == hash40("attack_air_lw")
-    && frame < 45.0
+unsafe fn dair_bounce(fighter: &mut L2CFighterCommon){
+    if fighter.is_motion(Hash40::new("attack_air_lw"))
+    && fighter.motion_frame() < 45.0
     {
         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-            MotionModule::set_frame_sync_anim_cmd(boma, 45.0, true, true, false);
+            MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 45.0, true, true, false);
         }
     }
 }
 
 // Banjo Wondering Fail on command
-unsafe fn wonderwing_fail(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32){
-    if ((fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) && frame > 16.0)
-    || (fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_END) && frame < 3.0))
-    && boma.is_button_on(Buttons::Attack)
+unsafe fn wonderwing_fail(fighter: &mut L2CFighterCommon){
+    if ((fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) && fighter.motion_frame() > 16.0)
+    || (fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_END) && fighter.motion_frame() < 3.0))
+    && fighter.is_button_on(Buttons::Attack)
     {
         fighter.change_status_req(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL, true);
     }
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    dair_bounce(fighter, boma, motion_kind, frame);
-    wonderwing_fail(fighter, boma, situation_kind, frame);
+    dair_bounce(fighter);
+    wonderwing_fail(fighter);
+    blue_eggs_land_cancels(fighter);
+    grenade_ac(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_BUDDY)]
 pub unsafe fn buddy_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
     buddy_frame(fighter);
-    blue_eggs_land_cancels(fighter);
-    grenade_ac(fighter);
 }
 
 pub unsafe fn buddy_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
