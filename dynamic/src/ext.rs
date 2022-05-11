@@ -711,7 +711,7 @@ impl BomaExt for BattleObjectModuleAccessor {
         let ecb_bottom = *GroundModule::get_rhombus(self, true).add(1);
         let line_bottom = Vector2f::new(ecb_bottom.x, shift + ecb_bottom.y - crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold"));
         let mut out_pos = Vector2f::zero();
-        let result = GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut out_pos, true);
+        let result = GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, shift + ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut out_pos, true);
         if result != 0 { // pretty sure it returns a pointer, at least it defo returns a non-0 value if success
             let pos = PostureModule::pos(self);
             PostureModule::set_pos(self, &Vector3f::new((*pos).x, out_pos.y + 0.01, (*pos).z));
