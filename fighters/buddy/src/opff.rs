@@ -55,7 +55,7 @@ unsafe fn wonderwing_fail(fighter: &mut L2CFighterCommon){
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     dair_bounce(fighter);
-    wonderwing_fail(fighter);
+    //wonderwing_fail(fighter);
     blue_eggs_land_cancels(fighter);
     grenade_ac(fighter);
 }
