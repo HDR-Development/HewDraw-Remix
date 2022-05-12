@@ -86,6 +86,21 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
                     else{
                         VarModule::off_flag(boma.object(), vars::common::SHOULD_TRUMP_TETHER);
                     }
+
+                    let module_accessor = &mut *(*object).module_accessor;
+                    if module_accessor.is_fighter()
+                    && module_accessor.kind() == *FIGHTER_KIND_POPO {
+                        let nana_object_id = WorkModule::get_int(module_accessor, *FIGHTER_POPO_INSTANCE_WORK_ID_INT_PARTNER_OBJECT_ID) as u32;
+                        let object = ::utils::util::get_battle_object_from_id(nana_object_id);
+                        if !object.is_null() {
+                            if ledge_try_pos.x == VarModule::get_float(object, vars::common::LEDGE_POS_X) && ledge_try_pos.y == VarModule::get_float(object, vars::common::LEDGE_POS_Y) {
+                                VarModule::on_flag(boma.object(), vars::common::SHOULD_TRUMP_TETHER);
+                            }
+                            else{
+                                VarModule::off_flag(boma.object(), vars::common::SHOULD_TRUMP_TETHER);
+                            }
+                        }
+                    }
                 }
             }
         }
