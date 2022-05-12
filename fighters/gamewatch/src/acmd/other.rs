@@ -105,6 +105,24 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "gamewatch", script = "sound_appealhil", category = ACMD_SOUND, low_priority)]
+unsafe fn sound_appealhil(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_gamewatch_special_s01"));
+    }
+}
+
+#[acmd_script( agent = "gamewatch", script = "sound_appealhir", category = ACMD_SOUND, low_priority)]
+unsafe fn sound_appealhir(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_gamewatch_special_s01"));
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         gamewatch_landing_air_f_game,
@@ -112,8 +130,10 @@ pub fn install() {
         gamewatch_landing_air_lw_expression,
         gamewatch_catch_game,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
+        sound_appealhil,
+        sound_appealhir,
     );
 }
 

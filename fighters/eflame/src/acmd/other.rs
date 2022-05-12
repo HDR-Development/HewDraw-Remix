@@ -18,7 +18,7 @@ unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        dash_effect
+        //dash_effect
     );
 }
 

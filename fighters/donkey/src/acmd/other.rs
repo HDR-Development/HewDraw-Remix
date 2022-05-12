@@ -69,7 +69,7 @@ unsafe fn heavy_item_throw_b(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-    dash_effect,
+    //dash_effect,
 		dk_turn_dash_game,
     heavy_item_throw_f,
     heavy_item_throw_b,

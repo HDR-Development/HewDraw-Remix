@@ -1,4 +1,7 @@
-#![feature(asm)]#![allow(unused)]#![allow(non_snake_case)]#![allow(unused_imports)]#![allow(unused_variables)]
+#![feature(asm)]
+#![deny(deprecated)]
+#![allow(unused)]
+#![allow(non_snake_case)]#![allow(unused_imports)]#![allow(unused_variables)]
 #![feature(proc_macro_hygiene)]
 
 use skyline::libc::c_char;
@@ -13,6 +16,22 @@ mod updater;
 pub fn install() {
     fighters::install();
 }
+
+#[cfg(not(feature = "main_nro"))]
+#[export_name = "hdr_delayed_install"]
+pub extern "Rust" fn delayed_install() {
+    fighters::delayed_install();
+}
+
+#[cfg(feature = "add_status")]
+extern "Rust" {
+    #[link_name = "hdr_delayed_install"]
+    fn delayed_install();
+}
+
+#[cfg(feature = "main_nro")]
+#[export_name = "hdr_is_available"]
+pub extern "Rust" fn is_available() -> bool { true }
 
 extern "C" {
     fn change_version_string(arg: u64, string: *const c_char);
@@ -60,6 +79,11 @@ pub fn main() {
     #[cfg(not(feature = "runtime"))]
     { utils::init(); }
     fighters::install();
+    #[cfg(all(not(feature = "add_status"), feature = "main_nro"))]
+    { if !(delayed_install as *const ()).is_null() { unsafe { delayed_install(); } } }
+
+    #[cfg(all(feature = "add_status", not(all(not(feature = "add_status"), feature = "main_nro"))))]
+    { fighters::delayed_install(); }
 
     #[cfg(feature = "updater")]
     {

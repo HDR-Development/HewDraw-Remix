@@ -103,7 +103,7 @@ pub fn install() {
     install_acmd_scripts!(
         palutena_catch_game,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
 		//palutena_explosiveflame_reserve_effect,
         palutena_reflectionboard_shoot_game,

@@ -160,7 +160,7 @@ pub fn install() {
     install_acmd_scripts!(
         gaogaen_catch_game,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
         gaogaen_catchturn_game,
         gaogaen_catchdash_game,
