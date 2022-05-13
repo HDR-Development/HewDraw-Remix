@@ -593,15 +593,3 @@ pub unsafe fn status_runbrake_end_hook(fighter: &mut L2CFighterCommon) -> L2CVal
 
 	ret
 }
-
-extern "C" {
-    #[link_name = "\u{1}_ZN7lua2cpp14L2CFighterBase13change_statusEN3lib8L2CValueES2_"]
-    fn change_status(fighter: &mut L2CFighterCommon, status_kind: L2CValue, arg3: L2CValue);
-}
-
-#[skyline::hook(replace=change_status)]
-unsafe fn change_status_hook(fighter: &mut L2CFighterCommon, status: L2CValue, arg3: L2CValue) {
-	let mut status_kind = status.get_i32();
-	// println!("change status: {}", status_kind);
-	original!()(fighter, status, arg3)
-}
