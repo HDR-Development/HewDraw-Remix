@@ -51,7 +51,7 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     ff_chef_land_cancel(boma, status_kind, situation_kind, cat[1], stick_y);
     parachute_dj(boma, status_kind, situation_kind, cat[0]);
     fair_repositioning(boma, status_kind, motion_kind, frame);
-    //jc_oil_panic_reflect(boma, status_kind, situation_kind);
+    //jc_oil_panic_reflect(boma, status_kind, situation_kind); 
     jc_judge_four(boma, motion_kind, situation_kind);
 
     // Frame Data
