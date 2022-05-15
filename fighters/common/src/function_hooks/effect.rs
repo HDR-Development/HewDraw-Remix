@@ -1,8 +1,8 @@
 use super::*;
 use globals::*;
 
-const shockwave_fx: [u64 ; 2] = [hash40("sys_crown"), hash40("sys_crown_collision")];
-const smoke_fx: [u64 ; 15] = [hash40("sys_atk_smoke"),
+const SHOCKWAVE_FX: [u64 ; 2] = [hash40("sys_crown"), hash40("sys_crown_collision")];
+const SMOKE_FX: [u64 ; 15] = [hash40("sys_atk_smoke"),
                             hash40("sys_atk_smoke2"),
                             hash40("sys_bound_smoke"),
                             hash40("sys_dash_smoke"),
@@ -41,10 +41,10 @@ unsafe fn EFFECT_hook(lua_state: u64) {
         // Index of effect name
         if i == 0 {
             let effect_name = hitbox_params[i as usize].get_hash();
-            if shockwave_fx.contains(&effect_name.hash) {
+            if SHOCKWAVE_FX.contains(&effect_name.hash) {
                 reduce_size = true;
             }
-            if smoke_fx.contains(&effect_name.hash) {
+            if SMOKE_FX.contains(&effect_name.hash) {
                 reduce_alpha = true;
             }
             l2c_agent.push_lua_stack(&mut hitbox_params[i as usize]);
@@ -88,10 +88,10 @@ unsafe fn EFFECT_FOLLOW_hook(lua_state: u64) {
         // Index of effect name
         if i == 0 {
             let effect_name = hitbox_params[i as usize].get_hash();
-            if shockwave_fx.contains(&effect_name.hash) {
+            if SHOCKWAVE_FX.contains(&effect_name.hash) {
                 reduce_size = true;
             }
-            if smoke_fx.contains(&effect_name.hash) {
+            if SMOKE_FX.contains(&effect_name.hash) {
                 reduce_alpha = true;
             }
             //let mut aux: L2CValue = L2CValue::new_int(*ATTACK_LR_CHECK_POS as u64);
@@ -136,10 +136,10 @@ unsafe fn EFFECT_FOLLOW_FLIP_hook(lua_state: u64) {
         // Index of effect name
         if i == 0 {
             let effect_name = hitbox_params[i as usize].get_hash();
-            if shockwave_fx.contains(&effect_name.hash) {
+            if SHOCKWAVE_FX.contains(&effect_name.hash) {
                 reduce_size = true;
             }
-            if smoke_fx.contains(&effect_name.hash) {
+            if SMOKE_FX.contains(&effect_name.hash) {
                 reduce_alpha = true;
             }
             //let mut aux: L2CValue = L2CValue::new_int(*ATTACK_LR_CHECK_POS as u64);
@@ -291,6 +291,24 @@ unsafe fn LANDING_EFFECT_FLIP_hook(lua_state: u64) {
     l2c_agent.clear_lua_stack();
 }
 
+#[skyline::hook(replace=EffectModule::req_on_joint)]
+unsafe fn req_on_joint_hook(boma: &mut BattleObjectModuleAccessor, effHash: smash::phx::Hash40, boneHash: smash::phx::Hash40, pos: &smash::phx::Vector3f, rot: &smash::phx::Vector3f, size: f32, arg7: &smash::phx::Vector3f, arg8: &smash::phx::Vector3f, arg9: bool, arg10: u32, arg11: i32, arg12: i32) -> u64 {
+    let mut eff_size = size;
+    if SHOCKWAVE_FX.contains(&effHash.hash) {
+        eff_size = size * 0.7;
+    }
+    original!()(boma, effHash, boneHash, pos, rot, eff_size, arg7, arg8, arg9, arg10, arg11, arg12)
+}
+
+#[skyline::hook(replace=EffectModule::req_follow)]
+unsafe fn req_follow_hook(boma: &mut BattleObjectModuleAccessor, effHash: smash::phx::Hash40, boneHash: smash::phx::Hash40, pos: &smash::phx::Vector3f, rot: &smash::phx::Vector3f, size: f32, arg7: bool, arg8: u32, arg9: i32, arg10: i32, arg11: i32, arg12: i32, arg13: bool, arg14: bool) -> u64 {
+    let mut eff_size = size;
+    if SHOCKWAVE_FX.contains(&effHash.hash) {
+        eff_size = size * 0.7;
+    }
+    original!()(boma, effHash, boneHash, pos, rot, eff_size, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
+}
+
 pub fn install() {
     skyline::install_hooks!(
         EFFECT_hook,
@@ -299,6 +317,8 @@ pub fn install() {
         FOOT_EFFECT_hook,
         FOOT_EFFECT_FLIP_hook,
         LANDING_EFFECT_hook,
-        LANDING_EFFECT_FLIP_hook
+        LANDING_EFFECT_FLIP_hook,
+        req_on_joint_hook,
+        req_follow_hook
     );
 }
