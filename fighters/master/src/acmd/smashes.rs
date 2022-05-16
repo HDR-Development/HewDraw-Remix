@@ -608,7 +608,7 @@ unsafe fn master_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
         LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
         EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("master_spearflare"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true, 2);
         LAST_EFFECT_SET_RATE(fighter, 0.9);
-        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("master_smash_s_wind"), Hash40::new("top"), 0, 19, 34.5, -18, 0, 0, 1, true);
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("master_smash_s_wind"), Hash40::new("top"), 0, 1, 34, 16, 0, 0, 1, true);
         EffectModule::enable_sync_init_pos_last(boma);
         if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
             
