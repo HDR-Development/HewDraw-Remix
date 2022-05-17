@@ -24,7 +24,6 @@ unsafe fn sora_attack_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         VarModule::off_flag(boma.object(), vars::trail::SHOULD_PRORATE_ATTACK);
         if VarModule::is_flag(boma.object(), vars::trail::COMBO_PLUS_AIR){
-            DamageModule::add_damage(boma, 1.0, 0);
             VarModule::on_flag(boma.object(), vars::trail::SHOULD_PRORATE_ATTACK);
             VarModule::off_flag(boma.object(), vars::trail::COMBO_PLUS_AIR);
         }
