@@ -30,7 +30,7 @@
   <float hash="0x16f170b6e2">0.37</float>
   <float hash="0x16ad11d8d5">0.4</float>
   <float hash="0x16911ce78c">0.875</float>
-  <float hash="jostle_team_overlap_rate">0.66</float>
+  <float hash="jostle_team_overlap_rate">0.3</float>
   <float hash="damage_angle_air">0.785398</float>
   <float hash="fly_top_angle_lw">0.785398</float>
   <float hash="fly_top_angle_hi">2.35619</float>
