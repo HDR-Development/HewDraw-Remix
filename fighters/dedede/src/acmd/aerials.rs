@@ -7,7 +7,7 @@ unsafe fn dedede_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 3.0/(5.0-1.0));
+        FT_MOTION_RATE(fighter, 2.0/(5.0-1.0));
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
@@ -36,12 +36,32 @@ unsafe fn dedede_attack_air_n_game(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "dedede", script = "expression_landingairn" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn dedede_landing_air_n_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 4);
+        //QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_lands_hv"), 0, false, 0x50000000 /* default value */);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 7);
+    }
+}
+
 #[acmd_script( agent = "dedede", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn dedede_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 3.0/(5.0-1.0));
+    }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 12.0);
@@ -52,7 +72,7 @@ unsafe fn dedede_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0/(13.0-12.5));
         ATTACK(fighter, 0, 0, Hash40::new("hammer2"), 13.0, 361, 90, 0, 20, 5.0, -12.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_dedede_hammer"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
-        ATTACK(fighter, 1, 0, Hash40::new("hammer2"), 15.0, 361, 100, 0, 15, 8.0, -2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_dedede_hammer"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
+        ATTACK(fighter, 1, 0, Hash40::new("hammer2"), 15.0, 42, 100, 0, 20, 8.0, -2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_dedede_hammer"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
@@ -67,6 +87,21 @@ unsafe fn dedede_attack_air_f_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 
+}
+
+#[acmd_script( agent = "dedede", script = "expression_landingairf" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn dedede_landing_air_f_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
+        //QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_lands_hv"), 0, false, 0x50000000 /* default value */);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 10);
+    }
 }
 
 #[acmd_script( agent = "dedede", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
@@ -110,10 +145,37 @@ unsafe fn dedede_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0.0, 10.0, -14.0, 0, 0, 0, 1.65, true, 1.0);
-        LAST_EFFECT_SET_RATE(fighter, 1.5);
+        EFFECT_FOLLOW(fighter, Hash40::new("dedede_air_n"), Hash40::new("top"), 0, 11.0, -15.0, 0, 0, 0, 0.65, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.1);
     }
 
+}
+
+#[acmd_script( agent = "dedede", script = "sound_attackairb" , category = ACMD_SOUND , low_priority)]
+unsafe fn dedede_attack_air_b_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_dedede_attackair_n01"));
+        PLAY_SE(fighter, Hash40::new("se_dedede_hammer_swing_s"));
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_dedede_rnd_attack01"));
+    }
+}
+
+#[acmd_script( agent = "dedede", script = "expression_landingairb" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn dedede_landing_air_b_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
+        //QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_lands_hv"), 0, false, 0x50000000 /* default value */);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 8);
+    }
 }
 
 #[acmd_script( agent = "dedede", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
@@ -127,10 +189,10 @@ unsafe fn dedede_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     for _ in 0..7 {
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("hammer1"), 1.0, 367, 60, 0, 30, 6.0, 17.0, 0.0, -3.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
-            ATTACK(fighter, 1, 0, Hash40::new("hammer1"), 1.0, 367, 60, 0, 30, 6.0, 17.0, 0.0, 3.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
-            ATTACK(fighter, 2, 0, Hash40::new("hammer1"), 1.0, 95, 50, 0, 40, 4.0, 9.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
-            ATTACK(fighter, 3, 0, Hash40::new("hammer1"), 1.0, 95, 50, 0, 40, 4.0, 3.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
+            ATTACK(fighter, 0, 0, Hash40::new("hammer1"), 1.3, 367, 60, 0, 30, 6.0, 17.0, 0.0, -3.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
+            ATTACK(fighter, 1, 0, Hash40::new("hammer1"), 1.3, 367, 60, 0, 30, 6.0, 17.0, 0.0, 3.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
+            ATTACK(fighter, 2, 0, Hash40::new("hammer1"), 1.3, 95, 50, 0, 40, 4.0, 9.0, 0.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
+            ATTACK(fighter, 3, 0, Hash40::new("hammer1"), 1.3, 95, 50, 0, 40, 4.0, 3.0, 0.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
             //AttackModule::set_add_reaction_frame(boma, 0, -1.0, false);
             //AttackModule::set_add_reaction_frame(boma, 1, -1.0, false);
             //AttackModule::set_add_reaction_frame(boma, 2, -1.0, false);
@@ -143,10 +205,10 @@ unsafe fn dedede_attack_air_hi_game(fighter: &mut L2CAgentBase) {
         wait(lua_state, 1.0);
     }
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("hammer1"), 5.0, 75, 160, 0, 55, 6.5, 17.0, 0.0, -3.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_dedede_hammer"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
-        ATTACK(fighter, 1, 0, Hash40::new("hammer1"), 5.0, 75, 160, 0, 55, 6.5, 17.0, 0.0, 3.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_dedede_hammer"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
-        ATTACK(fighter, 2, 0, Hash40::new("hammer1"), 5.0, 75, 160, 0, 55, 5.0, 9.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_dedede_hammer"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
-        ATTACK(fighter, 3, 0, Hash40::new("hammer1"), 5.0, 75, 160, 0, 55, 5.0, 3.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_dedede_hammer"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
+        ATTACK(fighter, 0, 0, Hash40::new("hammer1"), 5.0, 80, 160, 0, 55, 6.5, 17.0, 0.0, -3.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_dedede_hammer"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
+        ATTACK(fighter, 1, 0, Hash40::new("hammer1"), 5.0, 80, 160, 0, 55, 6.5, 17.0, 0.0, 3.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_dedede_hammer"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
+        ATTACK(fighter, 2, 0, Hash40::new("hammer1"), 5.0, 80, 160, 0, 55, 5.0, 9.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_dedede_hammer"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
+        ATTACK(fighter, 3, 0, Hash40::new("hammer1"), 5.0, 80, 160, 0, 55, 5.0, 3.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_dedede_hammer"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
     }
     wait(lua_state, 3.0);
     if is_excute(fighter) {
@@ -157,6 +219,17 @@ unsafe fn dedede_attack_air_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 
+}
+
+#[acmd_script( agent = "dedede", script = "expression_landingairhi" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn dedede_landing_air_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        //QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_lands_hv"), 0, false, 0x50000000 /* default value */);
+    }
 }
 
 #[acmd_script( agent = "dedede", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
@@ -199,13 +272,30 @@ unsafe fn dedede_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "dedede", script = "expression_landingairlw" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn dedede_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_lands_hv"), 0, false, 0x50000000 /* default value */);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         dedede_attack_air_n_game,
+        dedede_landing_air_n_expression,
         dedede_attack_air_f_game,
+        dedede_landing_air_f_expression,
         dedede_attack_air_b_game,
         dedede_attack_air_b_effect,
+        dedede_attack_air_b_sound,
+        dedede_landing_air_b_expression,
         dedede_attack_air_hi_game,
+        dedede_landing_air_hi_expression,
         dedede_attack_air_lw_game,
+        dedede_landing_air_lw_expression,
     );
 }
