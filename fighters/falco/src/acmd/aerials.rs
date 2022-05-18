@@ -107,7 +107,7 @@ unsafe fn falco_attack_air_f_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 22.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE(fighter, 16.0/(43.0-22.0));
+        //FT_MOTION_RATE(fighter, 16.0/(43.0-22.0));
     }
     frame(lua_state, 43.0);
     if is_excute(fighter) {
