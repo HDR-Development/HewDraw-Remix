@@ -349,6 +349,11 @@ pub mod vars {
         pub const IS_CHARGE_FINISHED: i32 = 0x1000;
     }
 
+    pub mod littlemac {
+        // flags
+        pub const IS_DREAMLAND_EXPRESS: i32 = 0x1000;
+    }
+
 
 }
 

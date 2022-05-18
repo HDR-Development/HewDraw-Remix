@@ -33,7 +33,7 @@ unsafe fn littlemac_attack_12_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+        VarModule::off_flag(fighter.battle_object, vars::littlemac::IS_DREAMLAND_EXPRESS);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK);
         ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 3.0, 80, 25, 0, 28, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.9, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 1, 0, Hash40::new("armr"), 3.0, 80, 25, 0, 28, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.9, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -77,20 +77,20 @@ unsafe fn littlemac_attack_12_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 18.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+            VarModule::on_flag(fighter.battle_object, vars::littlemac::IS_DREAMLAND_EXPRESS);
         }
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+            VarModule::on_flag(fighter.battle_object, vars::littlemac::IS_DREAMLAND_EXPRESS);
         }
     }
     FT_MOTION_RATE(fighter, 0.5);
     frame(lua_state, 20.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+            VarModule::on_flag(fighter.battle_object, vars::littlemac::IS_DREAMLAND_EXPRESS);
         }
     }
     frame(lua_state, 21.0);
@@ -109,7 +109,7 @@ unsafe fn littlemac_attack_13_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::littlemac::IS_DREAMLAND_EXPRESS) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 70, 71, 0, 49, 3.5, 0.0, 8.0, 6.0, None, None, None, 2.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
             ATTACK(fighter, 1, 0, Hash40::new("arml"), 5.0, 70, 71, 0, 49, 3.2, 2.0, 0.0, 0.0, None, None, None, 2.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
             ATTACK(fighter, 2, 0, Hash40::new("shoulderl"), 5.0, 70, 71, 0, 49, 3.0, 0.0, 0.0, 0.0, None, None, None, 2.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -147,7 +147,7 @@ unsafe fn littlemac_attack_13_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+        if VarModule::is_flag(fighter.battle_object, vars::littlemac::IS_DREAMLAND_EXPRESS) && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             EFFECT_FOLLOW(fighter, Hash40::new("sys_level_up"), Hash40::new("handl"), 0.0, 0.0, 0.0, 0, 0, 0, 0.25, true);
         }
         FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 0.5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -164,7 +164,7 @@ unsafe fn littlemac_attack_13_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::littlemac::IS_DREAMLAND_EXPRESS) {
             PLAY_SE(fighter, Hash40::new("vc_littlemac_special_n03"));
         } else {
             PLAY_SEQUENCE(fighter, Hash40::new("seq_littlemac_rnd_combo03"));

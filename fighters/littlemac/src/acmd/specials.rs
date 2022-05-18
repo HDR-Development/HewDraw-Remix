@@ -40,6 +40,35 @@ unsafe fn littlemac_special_n2_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "littlemac", script = "sound_specialn2" , category = ACMD_SOUND , low_priority)]
+unsafe fn littlemac_special_n2_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_littlemac_rnd_special_n2"));
+        PLAY_SE(fighter, Hash40::new("se_littlemac_special_n03"));
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) {
+            PLAY_SE(fighter, Hash40::new("vc_littlemac_appeal04"));
+        }
+        else if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_S_L) ||
+            ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_S_R)) {
+            PLAY_SE(fighter, Hash40::new("vc_littlemac_appeal05"));
+        }
+        else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_LW) {
+            PLAY_SE(fighter, Hash40::new("vc_littlemac_appeal06"));
+        }
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_littlemac_swing_ll"));
+    }
+
+}
+
 #[acmd_script( agent = "littlemac", script = "game_specialairn2" , category = ACMD_GAME , low_priority)]
 unsafe fn littlemac_special_air_n2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -74,6 +103,35 @@ unsafe fn littlemac_special_air_n2_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_KO_GRAVITY);
     }
     
+}
+
+#[acmd_script( agent = "littlemac", script = "sound_specialairn2" , category = ACMD_SOUND , low_priority)]
+unsafe fn littlemac_special_air_n2_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_littlemac_rnd_special_n2"));
+        PLAY_SE(fighter, Hash40::new("se_littlemac_special_n03"));
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) {
+            PLAY_SE(fighter, Hash40::new("vc_littlemac_appeal04"));
+        }
+        else if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_S_L) ||
+            ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_S_R)) {
+            PLAY_SE(fighter, Hash40::new("vc_littlemac_appeal05"));
+        }
+        else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_LW) {
+            PLAY_SE(fighter, Hash40::new("vc_littlemac_appeal06"));
+        }
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_littlemac_swing_ll"));
+    }
+
 }
 
 #[acmd_script( agent = "littlemac", script = "game_specialsjump", category = ACMD_GAME, low_priority)]
@@ -137,16 +195,56 @@ unsafe fn littlemac_special_air_s_blow_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "littlemac", script = "game_specialhistart" , category = ACMD_GAME , low_priority)]
+unsafe fn littlemac_special_hi_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        WHOLE_HIT(fighter, *HIT_STATUS_XLU);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 103, 100, 155, 0, 2.0, 0.0, 6.0, 10.0, Some(0.0), Some(12.0), Some(10.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0, 95, 100, 160, 0, 3.0, 0.0, 5.0, 5.0, Some(0.0), Some(12.0), Some(5.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "littlemac", script = "game_specialairhistart" , category = ACMD_GAME , low_priority)]
+unsafe fn littlemac_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        WHOLE_HIT(fighter, *HIT_STATUS_XLU);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 103, 100, 185, 0, 2.0, 0.0, 6.0, 10.0, Some(0.0), Some(12.0), Some(10.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0, 95, 100, 180, 0, 3.0, 0.0, 5.0, 5.0, Some(0.0), Some(12.0), Some(5.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 3.0, 103, 100, 155, 0, 2.0, 0.0, 6.0, 10.0, Some(0.0), Some(12.0), Some(10.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 3, 0, Hash40::new("top"), 3.0, 95, 100, 160, 0, 3.0, 0.0, 5.0, 5.0, Some(0.0), Some(12.0), Some(5.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
 #[acmd_script( agent = "littlemac", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn littlemac_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
         SA_SET(fighter, *SITUATION_KIND_AIR);
+        WHOLE_HIT(fighter, *HIT_STATUS_XLU);
     }
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 367, 50, 0, 40, 6.5, 0.0, 26.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 1.0, 90, 0, 180, 0, 3.0, 0.0, 18.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
@@ -258,9 +356,13 @@ unsafe fn littlemac_special_air_lw_hit_game(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         littlemac_special_n2_game,
+        littlemac_special_n2_sound,
         littlemac_special_air_n2_game,
+        littlemac_special_air_n2_sound,
         littlemac_special_s_jump_game,
         littlemac_special_air_s_blow_game,
+        littlemac_special_air_hi_start_game,
+        littlemac_special_hi_start_game,
         littlemac_special_hi_game,
         littlemac_special_lw_hit_game,
         littlemac_special_air_lw_hit_game,
