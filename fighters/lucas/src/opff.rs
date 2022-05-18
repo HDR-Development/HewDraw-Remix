@@ -218,8 +218,8 @@ unsafe fn pk_fire_ff(boma: &mut BattleObjectModuleAccessor, stick_y: f32) {
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     psi_magnet_jc(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     pk_thunder_cancel(boma, id, status_kind, situation_kind);
-    pk_thunder_wall_ride_shorten(fighter, boma, id, status_kind, situation_kind);
-    djc_momentum_helper(boma, id, status_kind, frame);
+    //pk_thunder_wall_ride_shorten(fighter, boma, id, status_kind, situation_kind);
+    //djc_momentum_helper(boma, id, status_kind, frame);
     pk_fire_ff(boma, stick_y);
 }
 

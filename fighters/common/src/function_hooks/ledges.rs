@@ -480,7 +480,7 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
                 return -1;
             }
             */
-            return 0;
+            return 1;
         }
     }
 
