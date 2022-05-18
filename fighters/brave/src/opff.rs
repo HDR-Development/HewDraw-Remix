@@ -35,14 +35,18 @@ unsafe fn uspecial_b_rev(fighter: &mut L2CFighterCommon) {
 
 // Hero dash cancel Frizz
 unsafe fn dash_cancel_frizz(fighter: &mut L2CFighterCommon) {
+    let mut brave_fighter = app::Fighter{battle_object: *(fighter.battle_object)};
     if fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_N_SHOOT)
     && fighter.is_situation(*SITUATION_KIND_GROUND)
     && fighter.is_motion(Hash40::new("special_n1"))
-    && fighter.motion_frame() > 17.0 
+    && fighter.motion_frame() > 19.0 && fighter.motion_frame() < 43.0 // after F20 and before the FAF
+    && (WorkModule::get_float(fighter.module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLOAT_SP) > 12.0)
     {
         if fighter.is_cat_flag(Cat1::Dash) {
+            FighterSpecializer_Brave::add_sp(&mut brave_fighter, -12.0);
             fighter.change_status_req(*FIGHTER_STATUS_KIND_DASH, false);
         } else if fighter.is_cat_flag(Cat1::TurnDash) {
+            FighterSpecializer_Brave::add_sp(&mut brave_fighter, -12.0);
             fighter.change_status_req(*FIGHTER_STATUS_KIND_TURN_DASH, false);
         }
     }
@@ -66,7 +70,7 @@ pub unsafe fn brave_frame_wrapper(fighter: &mut L2CFighterCommon) {
     nspecial_cancels(fighter);
     dspecial_cancels(fighter);
     uspecial_b_rev(fighter);
-    //dash_cancel_frizz(fighter);
+    dash_cancel_frizz(fighter);
     woosh_cancel(fighter);
 
     // Extend sword length

@@ -11,8 +11,8 @@
     <float hash="recover_sp">1</float>
     <float hash="sp_recover_damage_mul">0.5</float>
     <float hash="sp_recover_shield_mul">0.5</float>
-    <float hash="sp_special_n1">10</float>
-    <float hash="sp_special_n2">20</float>
+    <float hash="sp_special_n1">7</float>
+    <float hash="sp_special_n2">18</float>
     <float hash="sp_special_n3">40</float>
     <float hash="sp_special_s1">12</float>
     <float hash="sp_special_s2">20</float>
@@ -33,8 +33,8 @@
   </list>
   <list hash="param_special_n">
     <struct index="0">
-      <float hash="sp_special_n1">10</float>
-      <float hash="sp_special_n2">20</float>
+      <float hash="sp_special_n1">7</float>
+      <float hash="sp_special_n2">18</float>
       <float hash="sp_special_n3">40</float>
     </struct>
     <hash40 index="1">dummy</hash40>

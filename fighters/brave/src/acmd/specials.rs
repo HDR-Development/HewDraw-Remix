@@ -12,7 +12,6 @@ unsafe fn brave_special_n1_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if WorkModule::is_flag(boma, *FIGHTER_BRAVE_STATUS_SPECIAL_N_FLAG_SUCCESS_SP){
             ArticleModule::generate_article(boma, *FIGHTER_BRAVE_GENERATE_ARTICLE_FIREBALL, false, 0);
-            FT_MOTION_RATE(fighter, 24.0/(44.0-10.0));
         }
     }
     frame(lua_state, 24.0);
@@ -277,7 +276,7 @@ unsafe fn brave_special_s2_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 14.0/(10.0-1.0));
+        FT_MOTION_RATE(fighter, 13.0/(10.0-1.0));
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
@@ -301,7 +300,7 @@ unsafe fn brave_special_air_s2_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 14.0/(10.0-1.0));
+        FT_MOTION_RATE(fighter, 13.0/(10.0-1.0));
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {

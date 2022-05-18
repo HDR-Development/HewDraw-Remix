@@ -7,7 +7,7 @@ unsafe fn brave_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        //FT_MOTION_RATE(fighter, 5.0/(7.0-1.0));
+        FT_MOTION_RATE(fighter, 5.0/(7.0-1.0));
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
@@ -15,7 +15,7 @@ unsafe fn brave_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        //FT_MOTION_RATE(fighter, 1.0);
+        FT_MOTION_RATE(fighter, 1.0);
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
