@@ -1,7 +1,7 @@
 use super::*;
 use globals::*;
 
-const SHOCKWAVE_FX: [u64 ; 2] = [hash40("sys_crown"), hash40("sys_crown_collision")];
+const SHOCKWAVE_FX: [u64 ; 3] = [hash40("sys_crown"), hash40("sys_crown_collision"), 0xde89fce0a];
 const SMOKE_FX: [u64 ; 15] = [hash40("sys_atk_smoke"),
                             hash40("sys_atk_smoke2"),
                             hash40("sys_bound_smoke"),
@@ -291,6 +291,37 @@ unsafe fn LANDING_EFFECT_FLIP_hook(lua_state: u64) {
     l2c_agent.clear_lua_stack();
 }
 
+#[skyline::hook(replace=smash::app::sv_animcmd::DOWN_EFFECT)]
+unsafe fn DOWN_EFFECT_hook(lua_state: u64) {
+    let mut l2c_agent: L2CAgent = L2CAgent::new(lua_state);
+
+    let mut hitbox_params: [L2CValue ; 16] = [L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void(), L2CValue::new_void()];
+
+    for i in 0..16 {
+        hitbox_params[i as usize] = l2c_agent.pop_lua_stack(i + 1);
+    }
+
+    l2c_agent.clear_lua_stack();
+
+    for i in 0..16 {
+        // Index of effect name
+        if i == 8 {
+            let size = hitbox_params[i as usize].get_f32();
+            let mut new_size: L2CValue = L2CValue::new_num(size * 0.7);
+            l2c_agent.push_lua_stack(&mut new_size);
+        }
+        else {
+            l2c_agent.push_lua_stack(&mut hitbox_params[i as usize]);
+        }
+    }
+
+    original!()(lua_state);
+    l2c_agent.clear_lua_stack();
+    l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.7));
+    sv_animcmd::LAST_EFFECT_SET_ALPHA(lua_state);
+    l2c_agent.clear_lua_stack();
+}
+
 #[skyline::hook(replace=EffectModule::req_on_joint)]
 unsafe fn req_on_joint_hook(boma: &mut BattleObjectModuleAccessor, effHash: smash::phx::Hash40, boneHash: smash::phx::Hash40, pos: &smash::phx::Vector3f, rot: &smash::phx::Vector3f, size: f32, arg7: &smash::phx::Vector3f, arg8: &smash::phx::Vector3f, arg9: bool, arg10: u32, arg11: i32, arg12: i32) -> u64 {
     let mut eff_size = size;
@@ -298,15 +329,6 @@ unsafe fn req_on_joint_hook(boma: &mut BattleObjectModuleAccessor, effHash: smas
         eff_size = size * 0.7;
     }
     original!()(boma, effHash, boneHash, pos, rot, eff_size, arg7, arg8, arg9, arg10, arg11, arg12)
-}
-
-#[skyline::hook(replace=EffectModule::req_follow)]
-unsafe fn req_follow_hook(boma: &mut BattleObjectModuleAccessor, effHash: smash::phx::Hash40, boneHash: smash::phx::Hash40, pos: &smash::phx::Vector3f, rot: &smash::phx::Vector3f, size: f32, arg7: bool, arg8: u32, arg9: i32, arg10: i32, arg11: i32, arg12: i32, arg13: bool, arg14: bool) -> u64 {
-    let mut eff_size = size;
-    if SHOCKWAVE_FX.contains(&effHash.hash) {
-        eff_size = size * 0.7;
-    }
-    original!()(boma, effHash, boneHash, pos, rot, eff_size, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
 }
 
 pub fn install() {
@@ -318,7 +340,7 @@ pub fn install() {
         FOOT_EFFECT_FLIP_hook,
         LANDING_EFFECT_hook,
         LANDING_EFFECT_FLIP_hook,
-        req_on_joint_hook,
-        req_follow_hook
+        DOWN_EFFECT_hook,
+        req_on_joint_hook
     );
 }
