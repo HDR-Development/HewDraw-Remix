@@ -69,7 +69,7 @@ unsafe fn snake_special_lw_blast_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 27.0);
     if is_excute(fighter) {
-        if !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)) {
+        if !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)) {
             WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_EXPLODING_FLAG_C4_STARTUP);
         }
     }
@@ -98,7 +98,7 @@ unsafe fn snake_special_lw_squat_blast_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 24.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
-        if !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)) {
+        if !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)) {
             WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_EXPLODING_FLAG_C4_STARTUP);
         }
     }
@@ -123,7 +123,7 @@ unsafe fn snake_special_air_lw_blast_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 27.0);
     if is_excute(fighter) {
-        if !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)) {
+        if !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)) {
             WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_EXPLODING_FLAG_C4_STARTUP);
         }
     }
