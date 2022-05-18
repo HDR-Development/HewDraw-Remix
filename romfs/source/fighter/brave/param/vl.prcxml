@@ -31,6 +31,16 @@
       <float hash="rate">12.5</float>
     </struct>
   </list>
+  <list hash="param_special_n">
+    <struct index="0">
+      <float hash="sp_special_n1">10</float>
+      <float hash="sp_special_n2">20</float>
+      <float hash="sp_special_n3">40</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_special_s">
     <struct index="0">
       <int hash="hold_frame_m">9</int>
@@ -52,8 +62,10 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
+      <float hash="start_speed_x_mul_air">0.85</float>
+      <float hash="start_control_max_speed_x_mul_air">0.85</float>
       <float hash="start_accel_y_mul_air">0.5</float>
-      <float hash="start_max_speed_y_mul_air">0.35</float>
+      <float hash="start_max_speed_y_mul_air">0.4</float>
       <int hash="cure_limit_num">3</int>
       <float hash="deathball1_offset_y">15</float>
       <int hash="speed_up_frame">480</int>
