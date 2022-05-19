@@ -7,7 +7,7 @@
   </list>
   <list hash="param_snakegrenade">
     <struct index="0">
-      <int hash="life">120</int>
+      <int hash="life">150</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

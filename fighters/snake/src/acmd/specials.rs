@@ -139,6 +139,7 @@ unsafe fn snake_special_n_start_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
+        /*
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) || (ControlModule::get_stick_y(boma) >= 0.5)){
             if VarModule::get_int(fighter.battle_object, vars::snake::SNAKE_GRENADE_COUNTER) < 2 {
                 if(get_num_of_active_item(*ITEM_KIND_SENSORBOMB) < 1){
@@ -155,6 +156,7 @@ unsafe fn snake_special_n_start_game(fighter: &mut L2CAgentBase) {
                 }
             }
         }
+        */
         ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE, false, 0);
         ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN, false, 0);
         if ArticleModule::is_exist(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN) {
@@ -187,6 +189,7 @@ unsafe fn snake_special_air_n_start_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
+        /*
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) || (ControlModule::get_stick_y(boma) >= 0.5)){
             if VarModule::get_int(fighter.battle_object, vars::snake::SNAKE_GRENADE_COUNTER) < 2 {
                 if(get_num_of_active_item(*ITEM_KIND_SENSORBOMB) < 1){
@@ -203,6 +206,7 @@ unsafe fn snake_special_air_n_start_game(fighter: &mut L2CAgentBase) {
                 }
             }
         }
+        */
         ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE, false, 0);
         ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN, false, 0);
         if(ArticleModule::is_exist(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE_PIN)){
