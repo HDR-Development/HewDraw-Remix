@@ -928,9 +928,10 @@
       <int hash="jump_squat_frame">5</int>
       <float hash="jump_speed_x">0.8</float>
       <float hash="jump_speed_x_mul">0.75</float>
-      <float hash="jump_speed_x_max">1.55</float>
+      <float hash="jump_speed_x_max">1.75</float>
       <float hash="jump_initial_y">10.6893</float>
-      <float hash="mini_jump_y">16.6</float>
+      <float hash="mini_jump_y">14</float>
+      <float hash="jump_aerial_y">27</float>
       <float hash="air_speed_x_stable">0.925</float>
       <float hash="air_brake_x">0.01</float>
       <float hash="air_accel_y">0.103</float>
@@ -2282,6 +2283,7 @@
       <float hash="landing_attack_air_frame_hi">14</float>
       <float hash="landing_attack_air_frame_lw">30</float>
       <int hash="landing_heavy_frame">4</int>
+      <int hash="attack_combo_max">1</int>
       <float hash="combo_attack_12_end">0</float>
       <float hash="combo_attack_13_end">0</float>
       <bool hash="wall_jump_type">true</bool>
