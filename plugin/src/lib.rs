@@ -1,4 +1,7 @@
-#![feature(asm)]#![allow(unused)]#![allow(non_snake_case)]#![allow(unused_imports)]#![allow(unused_variables)]
+#![feature(asm)]
+#![deny(deprecated)]
+#![allow(unused)]
+#![allow(non_snake_case)]#![allow(unused_imports)]#![allow(unused_variables)]
 #![feature(proc_macro_hygiene)]
 
 use skyline::libc::c_char;
