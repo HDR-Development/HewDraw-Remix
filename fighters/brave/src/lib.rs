@@ -1,4 +1,7 @@
-#![feature(asm)]#![allow(unused)]#![allow(non_snake_case)]
+#![feature(asm)]
+#![deny(deprecated)]
+#![allow(unused)]
+#![allow(non_snake_case)]
 
 use smash::{
     lib::{
