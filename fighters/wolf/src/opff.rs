@@ -8,7 +8,7 @@ unsafe fn airdodge_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i3
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_AIR {
             KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-            if frame > 10.0 {
+            if frame > 16.0 {
                 if boma.is_cat_flag(Cat1::AirEscape) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
                 }
@@ -90,17 +90,6 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
 
     // Frame Data
     //frame_data(boma, status_kind, motion_kind, frame);
-}
-
-unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if frame <= 13.0 {
-            MotionModule::set_rate(boma, 1.4);
-        }
-        if frame > 13.0 {
-            MotionModule::set_rate(boma, 1.0);
-        }
-    }
 }
 
 #[utils::macros::opff(FIGHTER_KIND_WOLF )]
