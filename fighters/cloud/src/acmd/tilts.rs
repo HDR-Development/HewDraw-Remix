@@ -69,8 +69,8 @@ unsafe fn cloud_attack_lw3_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("kneer"), 6.0, 80, 75, 0, 80, 3.5, 0.0, -1.0, 1.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.2, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATTACK(fighter, 2, 0, Hash40::new("kneer"), 7.0, 80, 75, 0, 80, 4.0, 6.0, -1.0, 1.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.2, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
-        HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
-        HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_XLU);
+        //HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
+        //HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_XLU);
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
