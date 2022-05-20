@@ -8,7 +8,7 @@ unsafe fn game_specialn3(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
         VarModule::off_flag(boma.object(), vars::trail::IS_LAND_CANCEL_THUNDER);
     }
-    frame(lua_state, 26.0);
+    frame(lua_state, 18.0);
     if is_excute(fighter) {
         WorkModule::set_int(boma, 0, *FIGHTER_TRAIL_STATUS_SPECIAL_N3_INT_THUNDER_NUM);
         if !VarModule::is_flag(boma.object(), vars::trail::IS_LAND_CANCEL_THUNDER){
@@ -35,6 +35,42 @@ unsafe fn game_specialn3(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
     }
 }
+
+#[acmd_script( agent = "trail", script = "game_specialairn3" , category = ACMD_GAME , low_priority)]
+unsafe fn game_specialairn3(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
+        }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        WorkModule::set_int(boma, 0, *FIGHTER_TRAIL_STATUS_SPECIAL_N3_INT_THUNDER_NUM);
+        ArticleModule::generate_article(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_CLOUD, false, 0);
+         }
+         WorkModule::on_flag(boma,  *FIGHTER_TRAIL_STATUS_SPECIAL_N3_FLAG_CHANGE_MAGIC);
+         
+        wait(lua_state, 14.0);
+        if is_excute(fighter) {
+        WorkModule::set_int(boma, 1, *FIGHTER_TRAIL_STATUS_SPECIAL_N3_INT_THUNDER_NUM);
+        ArticleModule::generate_article(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_CLOUD, false, 0);
+        }
+        wait(lua_state, 12.0);
+        if is_excute(fighter) {
+        WorkModule::set_int(boma, 2, *FIGHTER_TRAIL_STATUS_SPECIAL_N3_INT_THUNDER_NUM);
+        ArticleModule::generate_article(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_CLOUD, false, 0);
+        }
+        frame(lua_state, 60.0);
+        if is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
+        }
+        frame(lua_state, 70.0);
+        if is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+        }
+
+    }
+
 
 #[acmd_script( agent = "trail", script = "game_specials1" , category = ACMD_GAME , low_priority)]
 unsafe fn game_specials1(fighter: &mut L2CAgentBase) {
@@ -649,8 +685,35 @@ unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "trail_fire", script = "game_fly" , category = ACMD_GAME , low_priority)]
+unsafe fn game_trail_fire_fly(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.6, 361, 24, 0, 42, 3.8, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -1.2, -1.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+        AttackModule::enable_safe_pos(boma);
+        AttackModule::set_add_reaction_frame_revised(boma, 0, 0.0, false);
+        ATK_SET_SHIELD_SETOFF_MUL2(fighter, 0, 1.05);
+    }
+    wait(lua_state, 10.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.2, 361, 22, 0, 36, 3.8, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -0.8, -1.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+        AttackModule::set_add_reaction_frame_revised(boma, 0, 0.0, false);
+        ATK_SET_SHIELD_SETOFF_MUL2(fighter, 0, 1.05);
+    }
+    wait(lua_state, 10.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.8, 361, 20, 0, 32, 3.8, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -0.8, -1.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+        AttackModule::set_add_reaction_frame_revised(boma, 0, 0.0, false);
+        ATK_SET_SHIELD_SETOFF_MUL2(fighter, 0, 1.05);
+    }
+
+}
+
 pub fn install() {
     install_acmd_scripts!(
+        game_trail_fire_fly,
+        game_specialairn3,
         game_specialn3,
         game_specials1,
         game_specials2,

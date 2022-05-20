@@ -207,7 +207,7 @@ unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.8);
+        FT_MOTION_RATE(fighter, 0.5);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
