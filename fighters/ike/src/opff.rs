@@ -66,7 +66,7 @@ unsafe fn quickdraw_instakill(fighter: &mut smash::lua2cpp::L2CFighterCommon, bo
     let cbm_vec2 = Vector4f{ /* Red */ x: 0.125, /* Green */ y: 0.4, /* Blue */ z: 1.0, /* Alpha */ w: 0.45}; // Diffuse vector
 
     if fighter.is_status(*FIGHTER_IKE_STATUS_KIND_SPECIAL_S_HOLD) && fighter.is_situation(*SITUATION_KIND_GROUND){
-        if WorkModule::get_int(boma, *FIGHTER_IKE_STATUS_SPECIAL_S_WORK_INT_CHARGE_COUNT) > 100 {
+        if WorkModule::get_int(boma, *FIGHTER_IKE_STATUS_SPECIAL_S_WORK_INT_CHARGE_COUNT) > 160 {
             if !VarModule::is_flag(boma.object(), vars::ike::IS_QUICK_DRAW_INSTAKILL){
                 VarModule::on_flag(boma.object(), vars::ike::IS_QUICK_DRAW_INSTAKILL);
                 EFFECT_FOLLOW(fighter, Hash40::new("ike_volcano_hold"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1.0, false);
