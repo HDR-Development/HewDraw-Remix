@@ -138,6 +138,7 @@ pub mod vars {
         pub const SIDE_SPECIAL_CANCEL_NO_HIT: i32 = 81;
         pub const JUMP_NEXT: i32 = 82;
         pub const IS_JAB_LOCK_ROLL: i32 = 83;
+        pub const SHOULD_TRUMP_TETHER: i32 = 84;
         
 
         // int
@@ -234,6 +235,11 @@ pub mod vars {
     pub mod gaogaen {
         // floats
         pub const ANGLE_GRAB_STICK_Y: i32 = 0x1000;
+    }
+
+    pub mod ike {
+        // flags
+        pub const IS_QUICK_DRAW_INSTAKILL: i32 = 0x1000;
     }
 
     pub mod kamui {
@@ -355,6 +361,11 @@ pub mod vars {
         
         // flags
         pub const IS_CHARGE_FINISHED: i32 = 0x1000;
+    }
+
+    pub mod littlemac {
+        // flags
+        pub const IS_DREAMLAND_EXPRESS: i32 = 0x1000;
     }
 
 
