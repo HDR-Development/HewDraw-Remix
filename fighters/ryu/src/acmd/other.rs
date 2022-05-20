@@ -179,7 +179,7 @@ unsafe fn ryu_hadoken_move_s_effect(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        dash_effect,
+        //dash_effect,
         ryu_turn_dash_game,
 		ryu_attack_near_w_game,
         ryu_catch_game,

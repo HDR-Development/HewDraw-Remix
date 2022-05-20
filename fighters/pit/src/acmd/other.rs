@@ -60,7 +60,7 @@ unsafe fn pit_bowarrow_fly_game(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         pit_catch_game,
-        dash_effect,
+        //dash_effect,
         pit_bowarrow_fly_game,
     );
 }
