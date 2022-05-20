@@ -109,15 +109,15 @@ unsafe fn fuel_indicator_effect(fighter: &mut smash::lua2cpp::L2CFighterCommon, 
 
     // Respawn the effect if it's been removed
     let fuel_effect_indicator_handle = VarModule::get_int(boma.object(), vars::robot::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE);
-    if !EffectModule::is_exist_effect(boma, fuel_effect_indicator_handle as u32){
+    if !EffectModule::is_exist_effect(boma, fuel_effect_indicator_handle as u32) && !high_fuel { // Don't spawn the effect at high fuel
         //EFFECT_FOLLOW(fighter, Hash40::new("robot_lamp_l"), Hash40::new("waist2"), 5.0, 0, 0, 0, 0, 0, 2.0, true);
         let new_fuel_effect_indicator_handle = EffectModule::req_follow(
             boma,
             Hash40::new("robot_lamp_l"),
-            Hash40::new("waist2"),
+            Hash40::new("waist1"),
             &Vector3f::zero(),
             &Vector3f::zero(),
-            3.0,
+            2.0,
             true,
             0,
             0,
@@ -137,35 +137,40 @@ unsafe fn fuel_indicator_effect(fighter: &mut smash::lua2cpp::L2CFighterCommon, 
     if is_fuel_threshold_changed{
         EffectModule::kill(boma, current_fuel_effect_indicator_handle as u32, true, true);
         //EFFECT_FOLLOW(fighter, Hash40::new("robot_lamp_l"), Hash40::new("waist2"), 5.0, 0, 0, 0, 0, 0, 2.0, true);
-        let new_fuel_effect_indicator_handle = EffectModule::req_follow(
-            boma,
-            Hash40::new("robot_lamp_l"),
-            Hash40::new("waist1"),
-            &Vector3f::new(0.0, 0.0, 0.0),
-            &Vector3f::zero(),
-            2.75,
-            true,
-            0,
-            0,
-            0,
-            0,
-            0,
-            true,
-            true
-        ) as u32;
-        LAST_EFFECT_SET_RATE(fighter, 0.5);
-        //VarModule::set_int(boma.object(), vars::robot::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE, EffectModule::get_last_handle(boma) as i32);
-        VarModule::set_int(boma.object(), vars::robot::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE, new_fuel_effect_indicator_handle as i32);
-        if low_fuel {
-            // Don't change the effect color since it's already red
-        }
-        else if mid_fuel {
-            // Yellow fuel indicator
-            LAST_EFFECT_SET_COLOR(fighter, 2.0, 2.5, 0.1);
-        }
-        else {
-            // Blue fuel indicator
-            LAST_EFFECT_SET_COLOR(fighter, 0.0, 1.1, 1.2);
+        if !high_fuel{ // Don't spawn the effect if high fuel
+            let new_fuel_effect_indicator_handle = EffectModule::req_follow(
+                boma,
+                Hash40::new("robot_lamp_l"),
+                Hash40::new("waist1"),
+                &Vector3f::new(0.0, 0.0, 0.0),
+                &Vector3f::zero(),
+                2.0,
+                true,
+                0,
+                0,
+                0,
+                0,
+                0,
+                true,
+                true
+            ) as u32;
+            LAST_EFFECT_SET_RATE(fighter, 0.5);
+            //VarModule::set_int(boma.object(), vars::robot::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE, EffectModule::get_last_handle(boma) as i32);
+            VarModule::set_int(boma.object(), vars::robot::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE, new_fuel_effect_indicator_handle as i32);
+            if low_fuel {
+                // Don't change the effect color since it's already red
+            }
+            else if mid_fuel {
+                // Yellow fuel indicator
+                LAST_EFFECT_SET_COLOR(fighter, 2.0, 2.5, 0.1);
+            }
+            /*
+            // High fuel
+            else {
+                // Blue fuel indicator
+                LAST_EFFECT_SET_COLOR(fighter, 0.0, 1.1, 1.2);
+            }
+            */
         }
     }
     
