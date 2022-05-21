@@ -475,7 +475,7 @@ unsafe fn pickel_attack_lw3_effect(fighter: &mut L2CAgentBase) {
         if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK){
             EFFECT(fighter, Hash40::new("pickel_flint"), Hash40::new("haver"), 1, 7.2, 1, 0, 0, 0, 1.75, 0, 0, 0, 0, 0, 0, true);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.075, false);
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1.3, false);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1.0, false);
             LAST_EFFECT_SET_RATE(fighter, 0.5);
         }
         else{
