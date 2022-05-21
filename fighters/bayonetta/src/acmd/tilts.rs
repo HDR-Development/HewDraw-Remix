@@ -11,7 +11,7 @@ unsafe fn bayonetta_attack_s3_s_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 5.0/(20.0-1.0));
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_R_LEG, true, false, false, 10, 3, 10, 5, true);
         //HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_XLU);
-        //HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_XLU);
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
@@ -50,7 +50,7 @@ unsafe fn bayonetta_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 28.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        //HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
+        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION);
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_MOTION_STOP);
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_CHECK_END);
