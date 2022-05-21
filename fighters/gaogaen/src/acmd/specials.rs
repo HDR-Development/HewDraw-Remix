@@ -914,7 +914,7 @@ unsafe fn gaogaen_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        if fighter.is_button_on(Buttons::Special) || fighter.is_button_on(Buttons::SpecialRaw) {
+        if (fighter.is_button_on(Buttons::Special) || fighter.is_button_on(Buttons::SpecialRaw)) && fighter.is_button_on(Buttons::Attack) {
             VarModule::on_flag(boma.object(), vars::gaogaen::SHOULD_CROSS_CHOP_DIVE_EARLY);
             WorkModule::off_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
         }
