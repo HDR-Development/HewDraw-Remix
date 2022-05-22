@@ -201,6 +201,12 @@ pub mod vars {
     pub mod demon {
         // flags
         pub const SLAUGHTER_HIGH_KICK: i32 = 0x1000;
+        pub const DEVASTATOR: i32 = 0x1001;
+        pub const JAW_BREAKER: i32 = 0x1002;
+        pub const SLICING_BLADE: i32 = 0x1003;
+        pub const SPINNING_DEMON: i32 = 0x1004;
+        pub const LIGHTNING_SCREW_UPPERCUT: i32 = 0x1005;
+        pub const TWIN_FANG_DOUBLE_KICK: i32 = 0x1006;
     }
 
     pub mod dolly {
