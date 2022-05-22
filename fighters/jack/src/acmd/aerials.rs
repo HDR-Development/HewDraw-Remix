@@ -438,7 +438,7 @@ unsafe fn jack_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         let landing_frame_joker = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_attack_air_frame_lw"), 0);
-        let landing_frame_arsene = landing_frame_joker + 1.0;
+        let landing_frame_arsene = landing_frame_joker + 3.0;
         if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
             FT_MOTION_RATE(fighter, landing_frame_arsene/landing_frame_joker);
         } 
