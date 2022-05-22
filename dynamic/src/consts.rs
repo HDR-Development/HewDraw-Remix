@@ -193,6 +193,11 @@ pub mod vars {
         pub const IS_CRITICAL_HIT: i32 = 0x1000;
     }
 
+    pub mod buddy {
+        // flags
+        pub const IS_BURY_DTHROW: i32 = 0x1000;
+    }
+
     pub mod chrom {
         // flags
         pub use super::roy::TRAIL_EFFECT;
