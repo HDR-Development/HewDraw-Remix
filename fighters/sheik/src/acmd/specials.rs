@@ -91,6 +91,7 @@ unsafe fn sheik_special_lw_attack_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        FT_MOTION_RATE(fighter, 1.75);
     }
     
 }

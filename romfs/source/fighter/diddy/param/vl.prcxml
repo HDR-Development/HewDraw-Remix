@@ -28,8 +28,10 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="special_hi_charge_gravity_mul">0.05</float>
-      <float hash="special_hi_jet_start_spd_y">3.15</float>
-      <float hash="special_hi_jet_start_spd_y_mul">0.026</float>
+      <float hash="special_hi_jet_start_spd_y">3.05</float>
+      <float hash="special_hi_jet_start_spd_y_mul">0.021</float>
+      <float hash="special_hi_ground_hit_explosion_gap">50</float>
+      <float hash="special_hi_ground_hit_explosion_gap_wall">100</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -40,7 +42,7 @@
       <float hash="special_lw_throw_ang">135</float>
       <float hash="special_lw_throw_spd_x">1.35</float>
       <float hash="special_lw_smash_throw_spd_mul">1.55</float>
-      <int hash="special_lw_banana_num_max">2</int>
+      <int hash="special_lw_banana_num_max">1</int>
       <int hash="special_lw_interval">150</int>
     </struct>
     <hash40 index="1">dummy</hash40>
