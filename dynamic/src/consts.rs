@@ -251,6 +251,25 @@ pub mod vars {
         pub use super::shotos::*;
     }
 
+    pub mod lucas {
+        // flag
+        pub const SPECIAL_HI_ATTACK_IS_TOUCH_WALL: i32 = 0x1000;
+        pub const SPECIAL_HI_ATTACK_IS_LEAVE_WALL: i32 = 0x1001;
+        pub const SPECIAL_HI_ATTACK_IS_FLIPPED_MOMENTUM_AFTER_WALLTOUCH: i32 = 0x1002;
+        pub const SPECIAL_HI_ATTACK_IS_SET_WALL_LEAVE_MOMENTUM: i32 = 0x1003;
+
+        // float
+        /// Holds the initial y velocity you have during up b to compare once you've touched a wall to reflect your speed the other direction if it changes
+        pub const SPECIAL_HI_ATTACK_Y_MOMENTUM: i32 = 0x1000;
+        pub const SPECIAL_HI_ATTACK_Y_INIT_MOMENTUM: i32 = 0x1001;
+        pub const SPECIAL_HI_ATTACK_Y_DIRECTION: i32 = 0x1002;
+        pub const SPECIAL_HI_ATTACK_X_MOMENTUM: i32 = 0x1003;
+        pub const SPECIAL_HI_ATTACK_X_INIT_MOMENTUM: i32 = 0x1004;
+        pub const SPECIAL_HI_ATTACK_X_DIRECTION: i32 = 0x1005;
+        pub const SPECIAL_HI_ATTACK_WALL_TOUCH_FRAME: i32 = 0x1006;
+        pub const SPECIAL_HI_ATTACK_WALL_LEAVE_FRAME: i32 = 0x1007;
+    }
+
     pub mod luigi {
         // flag
         /// This flag stores whether or not Luigi currently has a misfire stored.
