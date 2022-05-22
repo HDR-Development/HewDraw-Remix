@@ -31,7 +31,7 @@ pub fn marth_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		marth_frame(fighter);
-        //fe_common(fighter);
+        fe_common(fighter);
     }
 }
 
