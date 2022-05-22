@@ -193,6 +193,11 @@ pub mod vars {
         pub const IS_CRITICAL_HIT: i32 = 0x1000;
     }
 
+    pub mod buddy {
+        // flags
+        pub const IS_BURY_DTHROW: i32 = 0x1000;
+    }
+
     pub mod chrom {
         // flags
         pub use super::roy::TRAIL_EFFECT;
@@ -246,6 +251,11 @@ pub mod vars {
     pub mod ike {
         // flags
         pub const IS_QUICK_DRAW_INSTAKILL: i32 = 0x1000;
+    }
+
+    pub mod inkling {
+        // flag
+        pub const IS_ENABLE_SPECIAL_S_JUMP_EARLY_CANCEL: i32 = 0x1000;
     }
 
     pub mod kamui {
@@ -305,6 +315,11 @@ pub mod vars {
 
         // ints
         pub const AYMR_CHARGE_LEVEL: i32 = 0x1000;
+    }
+    
+    pub mod pickel {
+        // flags
+        pub const IS_CURRENT_ATTACK_LW3_SOUL_FIRE: i32 = 0x1000;
     }
 
     pub mod roy {
