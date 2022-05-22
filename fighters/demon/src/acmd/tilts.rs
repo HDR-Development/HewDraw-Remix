@@ -61,12 +61,12 @@ unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 3, 0, Hash40::new("arml"), 6.0, 70, 5, 0, 46, 5.0, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 4, 0, Hash40::new("arml"), 6.0, 70, 5, 0, 46, 3.0, 5.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 5, 0, Hash40::new("shoulderl"), 6.0, 70, 5, 0, 46, 4.0, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
-        AttackModule::set_add_reaction_frame_revised(boma, 0, 1.0, false);
-        AttackModule::set_add_reaction_frame_revised(boma, 1, 1.0, false);
-        AttackModule::set_add_reaction_frame_revised(boma, 2, 1.0, false);
-        AttackModule::set_add_reaction_frame_revised(boma, 3, 3.0, false);
-        AttackModule::set_add_reaction_frame_revised(boma, 4, 3.0, false);
-        AttackModule::set_add_reaction_frame_revised(boma, 5, 3.0, false);
+        //AttackModule::set_add_reaction_frame_revised(boma, 0, 1.0, false);
+        //AttackModule::set_add_reaction_frame_revised(boma, 1, 1.0, false);
+        //AttackModule::set_add_reaction_frame_revised(boma, 2, 1.0, false);
+        //AttackModule::set_add_reaction_frame_revised(boma, 3, 3.0, false);
+        //AttackModule::set_add_reaction_frame_revised(boma, 4, 3.0, false);
+        //AttackModule::set_add_reaction_frame_revised(boma, 5, 3.0, false);
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
