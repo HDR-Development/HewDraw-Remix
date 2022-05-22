@@ -322,6 +322,9 @@ pub mod vars {
         pub const IS_CURRENT_FIRAGA_GRAND_MAGIC: i32 = 0x100B;
         pub const IS_CURRENT_BLIZZAGA_GRAND_MAGIC: i32 = 0x100C;
         pub const IS_CURRENT_THUNDAGA_GRAND_MAGIC: i32 = 0x100D;
+
+        // floats
+        pub const SONIC_BLADE_Y: i32 = 0x1000;
     }
 
     pub mod samus {
