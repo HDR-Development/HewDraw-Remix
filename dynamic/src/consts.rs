@@ -408,6 +408,16 @@ pub mod vars {
         pub const IS_CHARGE_FINISHED: i32 = 0x1000;
     }
 
+    pub mod miifighter {
+        // floats
+        pub const CHARGE_ATTACK_LEVEL: i32 = 0x1000;
+        
+        // flags
+        pub const IS_COUNTER_THROW_PARRIED_ATTACK: i32 = 0x1000;
+        pub const IS_CURRENT_IRONBALL_HEAVY:       i32 = 0x1001;
+
+    }
+    
     pub mod littlemac {
         // flags
         pub const IS_DREAMLAND_EXPRESS: i32 = 0x1000;
