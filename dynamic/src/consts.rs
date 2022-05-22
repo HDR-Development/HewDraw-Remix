@@ -188,9 +188,27 @@ pub mod vars {
        
     }
 
+    pub mod bayonetta {
+        // flags
+        pub const IS_ENABLE_SPECIAL_CANCEL: i32 = 0x1000;
+        pub const SHOULD_PRORATE_DAMAGE: i32 = 0x1001;
+        pub const IS_SPECIAL_S_CANCELED_INTO: i32 = 0x1002;
+        pub const IS_SPECIAL_HI_CANCELED_INTO: i32 = 0x1003;
+
+        //ints
+        pub const NUM_RECOVERY_RESOURCE_USED:         i32 = 0x1000;
+        pub const NUM_SPECIAL_S_CANCEL_THIS_AIRTIME:  i32 = 0x1001;
+        pub const NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME: i32 = 0x1002;
+    }
+
     pub mod brave {
         // flags
         pub const IS_CRITICAL_HIT: i32 = 0x1000;
+    }
+
+    pub mod buddy {
+        // flags
+        pub const IS_BURY_DTHROW: i32 = 0x1000;
     }
 
     pub mod chrom {
@@ -201,6 +219,12 @@ pub mod vars {
     pub mod demon {
         // flags
         pub const SLAUGHTER_HIGH_KICK: i32 = 0x1000;
+        pub const DEVASTATOR: i32 = 0x1001;
+        pub const JAW_BREAKER: i32 = 0x1002;
+        pub const SLICING_BLADE: i32 = 0x1003;
+        pub const SPINNING_DEMON: i32 = 0x1004;
+        pub const LIGHTNING_SCREW_UPPERCUT: i32 = 0x1005;
+        pub const TWIN_FANG_DOUBLE_KICK: i32 = 0x1006;
     }
 
     pub mod dolly {
@@ -233,6 +257,23 @@ pub mod vars {
     }
 
     pub mod gaogaen {
+        // flags
+        pub const IS_SPECIAL_S_ALTERNATE_GRAB:             i32 = 0x1000;
+        pub const IS_SPECIAL_S_GROUND_GRAB:                i32 = 0x1001;
+        pub const IS_SPECIAL_S_AIR_GRAB:                   i32 = 0x1002;
+        pub const IS_HIT_SPECIAL_HI_RISE:                  i32 = 0x1003;
+        pub const IS_INPUT_CROSS_CHOP_CANCEL:              i32 = 0x1004;
+        pub const SHOULD_CROSS_CHOP_DIVE_EARLY:            i32 = 0x1005;
+        pub const IS_SPECIAL_LW_COMMAND_DASH:              i32 = 0x1006;
+        pub const IS_ENABLE_SPECIAL_LW_LARIAT_INPUT:       i32 = 0x1007;
+        pub const IS_INPUT_SPECIAL_LW_LARIAT:              i32 = 0x1008;
+        pub const DID_SPECIAL_LW_COMMAND_DASH_TANK_DAMAGE: i32 = 0x1009;
+        pub const SHOULD_APPLY_REVENGE_BUFFS:              i32 = 0x100A;
+        
+
+        // ints
+        pub const SPECIAL_N_STRENGTH_LEVEL: i32 = 0x1000;
+
         // floats
         pub const ANGLE_GRAB_STICK_Y: i32 = 0x1000;
     }
@@ -242,6 +283,11 @@ pub mod vars {
         pub const IS_QUICK_DRAW_INSTAKILL: i32 = 0x1000;
     }
 
+    pub mod inkling {
+        // flag
+        pub const IS_ENABLE_SPECIAL_S_JUMP_EARLY_CANCEL: i32 = 0x1000;
+    }
+
     pub mod kamui {
         // flag
         pub const BAIR_BOOST: i32 = 0x1000;
@@ -249,6 +295,25 @@ pub mod vars {
 
     pub mod ken {
         pub use super::shotos::*;
+    }
+
+    pub mod lucas {
+        // flag
+        pub const SPECIAL_HI_ATTACK_IS_TOUCH_WALL: i32 = 0x1000;
+        pub const SPECIAL_HI_ATTACK_IS_LEAVE_WALL: i32 = 0x1001;
+        pub const SPECIAL_HI_ATTACK_IS_FLIPPED_MOMENTUM_AFTER_WALLTOUCH: i32 = 0x1002;
+        pub const SPECIAL_HI_ATTACK_IS_SET_WALL_LEAVE_MOMENTUM: i32 = 0x1003;
+
+        // float
+        /// Holds the initial y velocity you have during up b to compare once you've touched a wall to reflect your speed the other direction if it changes
+        pub const SPECIAL_HI_ATTACK_Y_MOMENTUM: i32 = 0x1000;
+        pub const SPECIAL_HI_ATTACK_Y_INIT_MOMENTUM: i32 = 0x1001;
+        pub const SPECIAL_HI_ATTACK_Y_DIRECTION: i32 = 0x1002;
+        pub const SPECIAL_HI_ATTACK_X_MOMENTUM: i32 = 0x1003;
+        pub const SPECIAL_HI_ATTACK_X_INIT_MOMENTUM: i32 = 0x1004;
+        pub const SPECIAL_HI_ATTACK_X_DIRECTION: i32 = 0x1005;
+        pub const SPECIAL_HI_ATTACK_WALL_TOUCH_FRAME: i32 = 0x1006;
+        pub const SPECIAL_HI_ATTACK_WALL_LEAVE_FRAME: i32 = 0x1007;
     }
 
     pub mod luigi {
@@ -271,7 +336,23 @@ pub mod vars {
 
     pub mod mario {
         // flags
-        pub const FIREBRAND_SPAWNED: i32 = 0x1000;
+        pub const IS_SPECIAL_N_FIREBRAND:                i32 = 0x1000;
+        pub const SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG: i32 = 0x1001;
+        pub const IS_SPECIAL_N_DOUBLE_FIREBALL:          i32 = 0x1002;
+        pub const CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL:   i32 = 0x1003;
+    }
+
+    pub mod pickel {
+        // flags
+        pub const IS_CURRENT_ATTACK_LW3_SOUL_FIRE: i32 = 0x1000;
+    }
+
+    pub mod mariod {
+        // flags
+        pub const IS_SPECIAL_N_CHILL_PILL:       i32 = 0x1000;
+        pub const IS_SPECIAL_S_ELECTRIC_BLANKET: i32 = 0x1001;
+        pub const IS_SPECIAL_HI_UNABLE_CANCEL: i32 = 0x1002;
+        pub const IS_SPECIAL_HI_SWEETSPOT_HIT: i32 = 0x1003;
     }
 
     pub mod roy {
@@ -285,11 +366,18 @@ pub mod vars {
         pub const IS_MAGIC_SERIES_CANCEL: i32 = 0x1001;
         pub const SHOULD_COMBOS_SCALE: i32 = 0x1002;
         pub const REPEAT_INCREMENTED: i32 = 0x1003;
+        pub const IS_ENABLE_MAGIC_SERIES_CANCEL: i32 = 0x1004;
+        pub const IS_ENABLE_FADC: i32 = 0x1005;
+        pub const IS_TARGET_COMBO_1: i32 = 0x1006;
+        pub const IS_TARGET_COMBO_2: i32 = 0x1007;
+        pub const IS_CURRENT_HADOKEN_EX: i32 = 0x1008;
+        pub const IS_ENABLE_AIRDASH_CANCEL: i32 = 0x1009;
 
         // ints
         pub const REPEAT_COUNT_LW: i32 = 0x1000;
         pub const REPEAT_COUNT_HI: i32 = 0x1001;
         pub const EX_SPECIAL_SCRIPTING: i32 = 0x1002;
+        pub const AIR_CHAIN_COMBO_NUM: i32 = 0x1003;
     }
 
     pub mod ryu {
@@ -355,6 +443,16 @@ pub mod vars {
         pub const IS_CHARGE_FINISHED: i32 = 0x1000;
     }
 
+    pub mod miifighter {
+        // floats
+        pub const CHARGE_ATTACK_LEVEL: i32 = 0x1000;
+        
+        // flags
+        pub const IS_COUNTER_THROW_PARRIED_ATTACK: i32 = 0x1000;
+        pub const IS_CURRENT_IRONBALL_HEAVY:       i32 = 0x1001;
+
+    }
+    
     pub mod littlemac {
         // flags
         pub const IS_DREAMLAND_EXPRESS: i32 = 0x1000;
