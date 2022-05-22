@@ -188,6 +188,19 @@ pub mod vars {
        
     }
 
+    pub mod bayonetta {
+        // flags
+        pub const IS_ENABLE_SPECIAL_CANCEL: i32 = 0x1000;
+        pub const SHOULD_PRORATE_DAMAGE: i32 = 0x1001;
+        pub const IS_SPECIAL_S_CANCELED_INTO: i32 = 0x1002;
+        pub const IS_SPECIAL_HI_CANCELED_INTO: i32 = 0x1003;
+
+        //ints
+        pub const NUM_RECOVERY_RESOURCE_USED:         i32 = 0x1000;
+        pub const NUM_SPECIAL_S_CANCEL_THIS_AIRTIME:  i32 = 0x1001;
+        pub const NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME: i32 = 0x1002;
+    }
+
     pub mod brave {
         // flags
         pub const IS_CRITICAL_HIT: i32 = 0x1000;
