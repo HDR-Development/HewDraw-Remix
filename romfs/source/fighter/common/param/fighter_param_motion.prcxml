@@ -1488,8 +1488,6 @@
       <float hash="escape_f_cancel_frame">33</float>
       <float hash="escape_air_stiff_start_frame">500</float>
       <float hash="escape_air_cancel_frame">50</float>
-      <float hash="escape_air_slide_hit_xlu_frame">2</float>
-      <float hash="escape_air_slide_hit_normal_frame">6</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">2</float>
       <float hash="escape_air_slide_penalty_hit_normal_frame">6</float>
       <float hash="escape_air_slide_back_distance">1</float>
@@ -1500,7 +1498,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">9</float>
+      <float hash="escape_air_slide_cancel_frame">50</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.957</float>
     </struct>
