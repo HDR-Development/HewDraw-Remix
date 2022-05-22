@@ -61,6 +61,21 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
                         return 0;
                     }
                 }
+
+                let module_accessor = &mut *(*object).module_accessor;
+                if module_accessor.is_fighter()
+                && module_accessor.kind() == *FIGHTER_KIND_POPO {
+                    let nana_object_id = WorkModule::get_int(module_accessor, *FIGHTER_POPO_INSTANCE_WORK_ID_INT_PARTNER_OBJECT_ID) as u32;
+                    let object = ::utils::util::get_battle_object_from_id(nana_object_id);
+                    if !object.is_null() {
+        
+                        if pos.x == VarModule::get_float(object, vars::common::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::LEDGE_POS_Y) {
+                            if !(tether_only || tether_zair || tether_special || tether_aerial) {
+                                return 0;
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -472,12 +487,15 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
 
     if fighter_kind == *FIGHTER_KIND_LUCAS {
         if status_kind == *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_ATTACK {
+            /*
             if frame > 5.0 && frame < 15.0 {
                 return 1;
             }
             else{
                 return -1;
             }
+            */
+            return 1;
         }
     }
 

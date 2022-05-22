@@ -138,6 +138,7 @@ pub mod vars {
         pub const SIDE_SPECIAL_CANCEL_NO_HIT: i32 = 81;
         pub const JUMP_NEXT: i32 = 82;
         pub const IS_JAB_LOCK_ROLL: i32 = 83;
+        pub const SHOULD_TRUMP_TETHER: i32 = 84;
         
 
         // int
@@ -200,6 +201,12 @@ pub mod vars {
     pub mod demon {
         // flags
         pub const SLAUGHTER_HIGH_KICK: i32 = 0x1000;
+        pub const DEVASTATOR: i32 = 0x1001;
+        pub const JAW_BREAKER: i32 = 0x1002;
+        pub const SLICING_BLADE: i32 = 0x1003;
+        pub const SPINNING_DEMON: i32 = 0x1004;
+        pub const LIGHTNING_SCREW_UPPERCUT: i32 = 0x1005;
+        pub const TWIN_FANG_DOUBLE_KICK: i32 = 0x1006;
     }
 
     pub mod dolly {
@@ -236,6 +243,11 @@ pub mod vars {
         pub const ANGLE_GRAB_STICK_Y: i32 = 0x1000;
     }
 
+    pub mod ike {
+        // flags
+        pub const IS_QUICK_DRAW_INSTAKILL: i32 = 0x1000;
+    }
+
     pub mod kamui {
         // flag
         pub const BAIR_BOOST: i32 = 0x1000;
@@ -243,6 +255,25 @@ pub mod vars {
 
     pub mod ken {
         pub use super::shotos::*;
+    }
+
+    pub mod lucas {
+        // flag
+        pub const SPECIAL_HI_ATTACK_IS_TOUCH_WALL: i32 = 0x1000;
+        pub const SPECIAL_HI_ATTACK_IS_LEAVE_WALL: i32 = 0x1001;
+        pub const SPECIAL_HI_ATTACK_IS_FLIPPED_MOMENTUM_AFTER_WALLTOUCH: i32 = 0x1002;
+        pub const SPECIAL_HI_ATTACK_IS_SET_WALL_LEAVE_MOMENTUM: i32 = 0x1003;
+
+        // float
+        /// Holds the initial y velocity you have during up b to compare once you've touched a wall to reflect your speed the other direction if it changes
+        pub const SPECIAL_HI_ATTACK_Y_MOMENTUM: i32 = 0x1000;
+        pub const SPECIAL_HI_ATTACK_Y_INIT_MOMENTUM: i32 = 0x1001;
+        pub const SPECIAL_HI_ATTACK_Y_DIRECTION: i32 = 0x1002;
+        pub const SPECIAL_HI_ATTACK_X_MOMENTUM: i32 = 0x1003;
+        pub const SPECIAL_HI_ATTACK_X_INIT_MOMENTUM: i32 = 0x1004;
+        pub const SPECIAL_HI_ATTACK_X_DIRECTION: i32 = 0x1005;
+        pub const SPECIAL_HI_ATTACK_WALL_TOUCH_FRAME: i32 = 0x1006;
+        pub const SPECIAL_HI_ATTACK_WALL_LEAVE_FRAME: i32 = 0x1007;
     }
 
     pub mod luigi {
@@ -355,6 +386,11 @@ pub mod vars {
         
         // flags
         pub const IS_CHARGE_FINISHED: i32 = 0x1000;
+    }
+
+    pub mod littlemac {
+        // flags
+        pub const IS_DREAMLAND_EXPRESS: i32 = 0x1000;
     }
 
 
