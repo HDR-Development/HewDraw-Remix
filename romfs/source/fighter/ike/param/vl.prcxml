@@ -25,6 +25,7 @@
       <float hash="special_s_ground_atk_spd_mul">0.5</float>
       <float hash="special_s_air_atk_spd_mul">0.3</float>
       <float hash="special_s_atk_power_charge_mul">0.08333334</float>
+      <int hash="special_s_charge_frame_max">180</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
