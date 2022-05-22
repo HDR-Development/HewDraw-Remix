@@ -240,7 +240,7 @@ unsafe fn dolly_wave_hit_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        dash_effect,
+        //dash_effect,
         dolly_escape_attack_game,
 		dolly_turn_dash_game,
         dolly_catch_game,
