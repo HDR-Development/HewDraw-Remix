@@ -342,6 +342,14 @@ pub mod vars {
         pub const CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL:   i32 = 0x1003;
     }
 
+    pub mod master {
+        // ints
+        pub const IS_ENABLE_SPECIAL_S_DASH_CANCEL: i32 = 0x1000;
+
+        // ints
+        pub const AYMR_CHARGE_LEVEL: i32 = 0x1000;
+    }
+    
     pub mod pickel {
         // flags
         pub const IS_CURRENT_ATTACK_LW3_SOUL_FIRE: i32 = 0x1000;
