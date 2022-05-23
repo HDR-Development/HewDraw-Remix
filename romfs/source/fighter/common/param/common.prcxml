@@ -17,6 +17,7 @@
   <float hash="shield_recovery1">0.07</float>
   <float hash="shield_damage_mul">1.4</float>
   <float hash="shield_setoff_mul">0.55</float>
+  <float hash="dash_s4_frame">2</float>
   <float hash="shield_setoff_mul_fighter_shot">0.5156</float>
   <float hash="shield_stiff_mul_attack_4">1</float>
   <float hash="shield_stiff_mul_attack_air">1</float>
