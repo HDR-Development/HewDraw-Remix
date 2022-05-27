@@ -34,32 +34,31 @@ unsafe fn ryu_turn_dash_game(fighter: &mut L2CAgentBase) {
 unsafe fn ryu_attack_near_w_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
     if is_excute(fighter) {
+        //VarModule::off_flag(boma.object(), vars::shotos::IS_TARGET_COMBO_2);
         MeterModule::watch_damage(fighter.battle_object, true);
         VarModule::off_flag(fighter.battle_object, vars::ryu::IS_MAGIC_SERIES_CANCEL);
-         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
-        FT_MOTION_RATE(fighter, 1.000);
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 180, 100, 20, 0, 3.5, 0.0, 12.5, 9.0, Some(0.0), Some(6.0), Some(9.0), 2.0, 0.67, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 75, 23, 0, 16, 3.5, 0.0, 12.5, 9.0, Some(0.0), Some(6.0), Some(9.0), 2.0, 0.67, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 2, 0, Hash40::new("top"), 5.0, 180, 100, 20, 0, 3.5, 0.0, 12.5, 11.0, Some(0.0), Some(6.0), Some(11.0), 2.0, 0.67, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 3, 0, Hash40::new("top"), 5.0, 75, 23, 0, 16, 3.5, 0.0, 12.5, 11.0, Some(0.0), Some(6.0), Some(11.0), 2.0, 0.67, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 180, 100, 9, 0, 3.5, 0.0, 12.5, 9.0, Some(0.0), Some(6.0), Some(9.0), 2.0, 0.67, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0, 75, 23, 0, 16, 3.5, 0.0, 12.5, 9.0, Some(0.0), Some(6.0), Some(9.0), 2.0, 0.67, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 3.0, 180, 100, 9, 0, 3.5, 0.0, 12.5, 11.0, Some(0.0), Some(6.0), Some(11.0), 2.0, 0.67, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 3, 0, Hash40::new("top"), 3.0, 75, 23, 0, 16, 3.5, 0.0, 12.5, 11.0, Some(0.0), Some(6.0), Some(11.0), 2.0, 0.67, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
         AttackModule::set_add_reaction_frame(boma, 0, 7.0, false);
         AttackModule::set_add_reaction_frame(boma, 1, 4.0, false);
         AttackModule::set_add_reaction_frame(boma, 2, 7.0, false);
         AttackModule::set_add_reaction_frame(boma, 3, 4.0, false);
      }
-    wait(lua_state, 2.0);
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         MeterModule::watch_damage(fighter.battle_object, false);
         WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
-    frame(lua_state, 25.0);
+    frame(lua_state, 26.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
     }
@@ -93,12 +92,100 @@ unsafe fn ryu_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "ryu", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
+unsafe fn ryu_escape_air_slide_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(boma.object(), vars::ryu::IS_ENABLE_AIRDASH_CANCEL){
+            HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
+        }
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
+    }
+}
+
+#[acmd_script( agent = "ryu_hadoken", script = "game_moves" , category = ACMD_GAME , low_priority)]
+unsafe fn ryu_hadoken_move_s_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+    if is_excute(fighter) {
+        if VarModule::is_flag(owner_module_accessor.object(), vars::ryu::IS_CURRENT_HADOKEN_EX){
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 69, 10, 0, 70, 3.5, 0.0, 0.5, -0.5, Some(0.0), Some(-5.2), Some(-0.5), 2.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 69, 10, 0, 70, 2.8, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-3.0), 2.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
+            ATTACK(fighter, 2, 0, Hash40::new("top"), 9.0, 69, 10, 0, 70, 2.8, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-3.0), 2.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
+            AttackModule::set_add_reaction_frame(boma, 0, 2.0, false);
+            AttackModule::set_add_reaction_frame(boma, 1, 2.0, false);
+            AttackModule::set_add_reaction_frame(boma, 2, 2.0, false);
+            ATK_SET_SHIELD_SETOFF_MUL_arg4(fighter, 0, 1, 2, 1.08);
+        }
+        else{
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 0, 10, 0, 68, 3.5, 0.0, 0.5, -0.5, Some(0.0), Some(-5.2), Some(-0.5), 1.4, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_ENERGY);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0, 0, 10, 0, 68, 2.8, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-3.0), 1.4, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_ENERGY);
+            ATTACK(fighter, 2, 0, Hash40::new("top"), 8.0, 60, 10, 0, 67, 2.8, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-3.0), 1.4, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_ENERGY);
+            ATK_SET_SHIELD_SETOFF_MUL_arg4(fighter, 0, 1, 2, 1.06);
+        }
+        
+    }
+    wait(lua_state, 5.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(owner_module_accessor.object(), vars::ryu::IS_CURRENT_HADOKEN_EX){
+        }
+        else{
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 0, 10, 0, 58, 3.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-2.5), 1.4, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_ENERGY);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0, 0, 10, 0, 68, 2.5, 0.0, 1.3, -1.25, Some(0.0), Some(-1.3), Some(-1.25), 1.4, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_ENERGY);
+            ATTACK(fighter, 2, 0, Hash40::new("top"), 8.0, 60, 10, 0, 58, 2.5, 0.0, 1.3, -1.25, Some(0.0), Some(-1.3), Some(-1.25), 1.4, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_ENERGY);
+            ATK_SET_SHIELD_SETOFF_MUL_arg4(fighter, 0, 1, 2, 1.06);
+        }
+    }
+}
+
+#[acmd_script( agent = "ryu_hadoken", script = "effect_moves" , category = ACMD_EFFECT , low_priority)]
+unsafe fn ryu_hadoken_move_s_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+    if is_excute(fighter) {
+        if WorkModule::is_flag(boma, *WEAPON_RYU_HADOKEN_INSTANCE_WORK_ID_FLAG_COMMAND) {
+            EFFECT_FOLLOW(fighter, Hash40::new("ryu_hadoken_bullet2"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.65, false);
+        }
+        else{
+            EFFECT_FOLLOW(fighter, Hash40::new("ryu_hadoken_bullet"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, false);
+        }
+        if VarModule::is_flag(owner_module_accessor.object(), vars::ryu::IS_CURRENT_HADOKEN_EX){
+            LAST_EFFECT_SET_COLOR(fighter, 2.0, 2.0, 1.0);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, false);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder"), Hash40::new("top"), 0, 0, -0.5, 0, 0, 0, 1.5, false);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder"), Hash40::new("top"), 0, 0, -1.0, 0, 0, 0, 2.0, false);
+
+            EFFECT_FOLLOW(fighter, Hash40::new("ryu_savingattack_aura"), Hash40::new("top"), 0, 0, -1.0, 0, 0, 0, 3.0, false);
+            EFFECT_FOLLOW(fighter, Hash40::new("ryu_savingattack_impact"), Hash40::new("top"), 0, 0, -1.0, 0, 0, 0, 0.5, false);
+            EFFECT_FOLLOW(fighter, Hash40::new("ryu_savingattack_hit2"), Hash40::new("top"), 0, 0, -1.0, 180, 0, 0, 1.0, false);
+        }
+        else{
+
+        }
+        
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         //dash_effect,
         ryu_turn_dash_game,
 		ryu_attack_near_w_game,
         ryu_catch_game,
+        ryu_escape_air_slide_game,
+        ryu_hadoken_move_s_game,
+        ryu_hadoken_move_s_effect,
     );
 }
 

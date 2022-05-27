@@ -8,7 +8,7 @@ unsafe fn airdodge_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i3
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_AIR {
             KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-            if frame > 17.0 {
+            if frame > 16.0 {
                 if boma.is_cat_flag(Cat1::AirEscape) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
                 }
@@ -19,6 +19,9 @@ unsafe fn airdodge_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i3
 
 // Wolf Shine Jump Cancels
 unsafe fn shine_jump_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= 1 {
+        GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+    }
     if [*FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT,
         *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
         *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind) {
@@ -87,17 +90,6 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
 
     // Frame Data
     //frame_data(boma, status_kind, motion_kind, frame);
-}
-
-unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if frame <= 13.0 {
-            MotionModule::set_rate(boma, 1.4);
-        }
-        if frame > 13.0 {
-            MotionModule::set_rate(boma, 1.0);
-        }
-    }
 }
 
 #[utils::macros::opff(FIGHTER_KIND_WOLF )]
