@@ -345,6 +345,14 @@ pub mod vars {
         pub const CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL:   i32 = 0x1003;
     }
 
+    pub mod master {
+        // ints
+        pub const IS_ENABLE_SPECIAL_S_DASH_CANCEL: i32 = 0x1000;
+
+        // ints
+        pub const AYMR_CHARGE_LEVEL: i32 = 0x1000;
+    }
+    
     pub mod pickel {
         // flags
         pub const IS_CURRENT_ATTACK_LW3_SOUL_FIRE: i32 = 0x1000;
@@ -404,6 +412,18 @@ pub mod vars {
         pub const SIDE_SPECIAL_HIT: i32 = 0x1002;
         pub const IS_SIDE_SPECIAL_INPUT: i32 = 0x1003;
         pub const STOP_SIDE_SPECIAL: i32 = 0x1004;
+        pub const UP_SPECIAL_HIT: i32 = 0x1005;
+        pub const COMBO_PLUS_GROUND: i32 = 0x1006;
+        pub const COMBO_PLUS_AIR: i32 = 0x1007;
+        pub const SHOULD_PRORATE_ATTACK: i32 = 0x1008;
+        pub const IS_LAND_CANCEL_THUNDER: i32 = 0x1009;
+        pub const IS_GRAND_MAGIC: i32 = 0x100A;
+        pub const IS_CURRENT_FIRAGA_GRAND_MAGIC: i32 = 0x100B;
+        pub const IS_CURRENT_BLIZZAGA_GRAND_MAGIC: i32 = 0x100C;
+        pub const IS_CURRENT_THUNDAGA_GRAND_MAGIC: i32 = 0x100D;
+
+        // floats
+        pub const SONIC_BLADE_Y: i32 = 0x1000;
     }
 
     pub mod samus {
@@ -413,6 +433,10 @@ pub mod vars {
     }
 
     pub mod robot {
+        // ints
+        pub const PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE: i32 = 0x1000;
+        pub const PREV_FUEL_THRESHOLD:                  i32 = 0x1001;
+
         // flags
         pub const BOOST_ATTACK: i32 = 0x1000;
     }

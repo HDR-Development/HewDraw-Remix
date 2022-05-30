@@ -29,7 +29,7 @@
   <list hash="param_cshot">
     <struct index="0">
       <int hash="life">180</int>
-      <float hash="min_speed">3</float>
+      <float hash="min_speed">2.6</float>
       <float hash="max_speed">0.6</float>
       <float hash="min_scale">0.4</float>
     </struct>
@@ -37,9 +37,30 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_special_s">
+    <struct index="0">
+      <int hash="missile_max_req">1</int>
+      <int hash="supermissile_max_req">2</int>
+      <float hash="sp_s_spd_x_div">1</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_missile">
     <struct index="0">
-      <float hash="h_angle">3</float>
+      <int hash="h_life">60</int>
+      <float hash="h_angle">0.75</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_supermissile">
+    <struct index="0">
+      <int hash="s_life">30</int>
+      <float hash="s_spd_x0">2.0</float>
+      <int hash="s_acc_f">10</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
