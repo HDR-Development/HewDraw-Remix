@@ -21,7 +21,7 @@ palette = "0.6.0"
 
 [build-dependencies]
 hdr-macros = { path = "../hdr-macros" }
-prc-rs = { git = "https://github.com/ultimate-research/prc-rs", features = ["indexmap-std", "xml"] }
+prc-rs = { git = "https://github.com/ultimate-research/prc-rs", features = ["indexmap-std"] }
 walkdir = "2.3.2"
 
 [features]
