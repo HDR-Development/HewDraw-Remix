@@ -10,7 +10,7 @@ skyline = { git = "https://github.com/ultimate-research/skyline-rs" }
 skyline_smash = { git = "https://github.com/blu-dev/skyline-smash", features = ["weak_l2cvalue"] }
 lazy_static = "1.4.0"
 arcropolis-api = { git = "https://github.com/Raytwo/arcropolis_api" }
-prc-rs = { git = "https://github.com/ultimate-research/prc-rs", features = ["indexmap-std", "xml"] }
+prc-rs = { git = "https://github.com/ultimate-research/prc-rs", features = ["indexmap-std", "xml-feat"] }
 parking_lot = "0.11.2"
 hdr-macros = { path = "../hdr-macros" }
 utils-dyn = { package = "dynamic", path = "../dynamic" }
