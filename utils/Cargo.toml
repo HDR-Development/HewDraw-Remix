@@ -17,7 +17,6 @@ utils-dyn = { package = "dynamic", path = "../dynamic" }
 ninput = { git = "https://github.com/blu-dev/ninput" }
 skyline-web = { git = "https://github.com/skyline-rs/skyline-web" }
 smash_script = { git = "https://github.com/blu-dev/smash-script", branch = "development" }
-palette = "0.6.0"
 
 [build-dependencies]
 hdr-macros = { path = "../hdr-macros" }
