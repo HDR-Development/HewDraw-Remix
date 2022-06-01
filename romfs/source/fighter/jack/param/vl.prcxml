@@ -14,16 +14,16 @@
   <struct hash="param_private">
     <float hash="rebel_gauge_damage_add">0.6</float>
     <float hash="rebel_gauge_add_dead">1</float>
-    <int hash="doyle_frame">3600</int>
+    <int hash="doyle_frame">2700</int>
   </struct>
   <list hash="rebel_gauge_damage_rate">
-    <float index="0">45</float>
-    <float index="1">45</float>
-    <float index="2">45</float>
-    <float index="3">45</float>
-    <float index="4">45</float>
-    <float index="5">45</float>
-    <float index="6">45</float>
+    <float index="0">33.75</float>
+    <float index="1">33.75</float>
+    <float index="2">33.75</float>
+    <float index="3">33.75</float>
+    <float index="4">33.75</float>
+    <float index="5">33.75</float>
+    <float index="6">33.75</float>
   </list>
   <list hash="param_special_n">
     <struct index="0">
@@ -41,12 +41,13 @@
   <list hash="param_special_hi">
     <hash40 index="0">dummy</hash40>
     <struct index="1">
-      <float hash="rush_angle_max_f">-35</float>
-      <float hash="rush_angle_max_b">40</float>
-      <float hash="rush_speed">3.92</float>
+      <float hash="rush_angle">90</float>
+      <float hash="rush_angle_max_f">-90</float>
+      <float hash="rush_angle_max_b">25</float>
+      <float hash="rush_speed">3.5</float>
       <int hash="rush_brake_frame">1</int>
-      <float hash="end_speed_rate_x">0.1</float>
-      <float hash="end_speed_rate_y">0.06</float>
+      <float hash="end_speed_rate_x">0.15</float>
+      <float hash="end_speed_rate_y">0.12</float>
     </struct>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>

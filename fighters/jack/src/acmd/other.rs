@@ -119,6 +119,17 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "jack_fire", script = "game_hit" , category = ACMD_GAME , low_priority)]
+unsafe fn jack_fire_hit_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 60, 50, 0, 25, 8.5, 0.0, 1.5, 0.0, Some(0.0), Some(3.5), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+        AttackModule::set_poison_param(boma, 0, 361, 45, 1.0, false);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, 0);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         jack_catch_game,
@@ -131,6 +142,7 @@ pub fn install() {
         dash_game,
         //dash_effect,
         turn_dash_game,
+        jack_fire_hit_game,
     );
 }
 
