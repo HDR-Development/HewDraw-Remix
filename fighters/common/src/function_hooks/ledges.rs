@@ -219,12 +219,15 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
 
     if fighter_kind == *FIGHTER_KIND_NESS {
         if status_kind == *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_ATTACK {
+            /*
             if frame > 5.0 && frame < 15.0 {
                 return 1;
             }
             else{
                 return -1;
             }
+            */
+            return 1;
         }
     }
 
@@ -478,21 +481,26 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
     }
 
     if fighter_kind == *FIGHTER_KIND_DIDDY {
+        /*
         if status_kind == *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_HI_UPPER {
             if frame < 28.0 {
                 return 0;
             }
         }
+        */
     }
 
     if fighter_kind == *FIGHTER_KIND_LUCAS {
         if status_kind == *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_ATTACK {
+            /*
             if frame > 5.0 && frame < 15.0 {
                 return 1;
             }
             else{
                 return -1;
             }
+            */
+            return 1;
         }
     }
 
