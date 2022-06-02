@@ -73,12 +73,22 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "robot_beam", script = "effect_flymax" , category = ACMD_EFFECT , low_priority)]
+unsafe fn robot_beam_fly_max_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("robot_robobeam_l"), Hash40::new("top"), 0, 0, 2.5, 0, 0, 0, 0.65, true);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         robot_catch_game,
         dash_game,
         //dash_effect,
         turn_dash_game,
+        robot_beam_fly_max_effect,
     );
 }
 

@@ -19,6 +19,9 @@ unsafe fn laser_fastfall_landcancel(boma: &mut BattleObjectModuleAccessor, statu
 
 // Fox Shine Jump Cancels
 unsafe fn shine_jump_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= 1 {
+        GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+    }
     if [*FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT,
         *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
         *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind) {
