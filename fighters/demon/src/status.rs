@@ -304,7 +304,7 @@ unsafe extern "C" fn demon_attackcombo_main_loop_helper_second(fighter: &mut L2C
 
 
 pub fn install() {
-    skyline::install_hooks!(demon_ongrab);
+    //skyline::install_hooks!(demon_ongrab);
     install_status_scripts!(
         pre_turndash,
         pre_dashback,

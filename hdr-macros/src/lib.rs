@@ -154,7 +154,7 @@ pub fn hash40(item: TokenStream) -> TokenStream {
     };
 
     let str = literal.value();
-    let hash = hash40::to_hash40(str.as_str());
+    let hash = hash40::hash40(str.as_str());
     syn::LitInt::new(format!("{}", hash.0).as_str(), literal.span()).to_token_stream().into()
 }
 
@@ -202,7 +202,9 @@ pub fn agent_params(item: TokenStream) -> TokenStream {
                 let agent = agent.trim_start().trim_end();
                 let file = file.trim_start().trim_end();
                 if let Ok(metadata) = std::fs::metadata(rom_path.join(file)) {
-                    writeln!(output, "{}:{}:{}", agent, file, metadata.len()).expect("Unknown error writing to output!");
+                    writeln!(output, "fighter_kind_{}:{}:{}", agent, file, metadata.len()).expect("Unknown error writing to output!");
+                } else {
+                    panic!("Missing romfs file {}", file);
                 }
             }
         }

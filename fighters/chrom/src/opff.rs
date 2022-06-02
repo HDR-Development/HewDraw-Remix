@@ -36,6 +36,7 @@ unsafe fn soaring_slash_cancel(fighter: &mut L2CFighterCommon) {
 unsafe fn side_special_cancels(fighter: &mut L2CFighterCommon) {
     if !fighter.is_status_one_of(&[*FIGHTER_ROY_STATUS_KIND_SPECIAL_S3, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S4])
     || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    || fighter.is_in_hitlag()
     {
         return;
     }
@@ -95,16 +96,16 @@ unsafe fn side_special_cancels(fighter: &mut L2CFighterCommon) {
             fighter.is_situation(*SITUATION_KIND_AIR)
         },
 
-        utils::hash40!("special_s4_hi") | utils::hash40!("special_air_s4_hi") if fighter.is_input_jump() => {
+        utils::hash40!("special_s4_hi") | utils::hash40!("special_air_s4_hi") if fighter.is_input_jump() && !fighter.is_in_hitlag() => {
             if fighter.is_situation(*SITUATION_KIND_AIR)
-            && fighter.get_jump_count() < fighter.get_jump_count_max()
+            && fighter.get_num_used_jumps() < fighter.get_jump_count_max()
             {
                 fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                 return;
             } 
 
             if fighter.is_situation(*SITUATION_KIND_GROUND) {
-                fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, false);
+                fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
                 return;
             }
 

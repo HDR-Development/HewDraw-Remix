@@ -14,7 +14,7 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
     if status_kind == *FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_N_CHARGE {
         if situation_kind == *SITUATION_KIND_AIR {
-            if boma.is_cat_flag(Cat1::JumpButton) {
+            if boma.is_cat_flag(Cat1::AirEscape) {
                 WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
                 ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
@@ -39,9 +39,9 @@ unsafe fn withdraw_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
         VarModule::add_float(boma.object(), vars::common::WITHDRAW_FRAME, 1.0);
         // JC Lockout: frame 30
         if VarModule::get_float(boma.object(), vars::common::WITHDRAW_FRAME) > 15.0 {
-            if boma.is_input_jump() {
+            if boma.is_input_jump() && !boma.is_in_hitlag() {
                 if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_jump_count() < boma.get_jump_count_max() {
+                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                     }
                 } else if situation_kind == *SITUATION_KIND_GROUND {
@@ -55,9 +55,9 @@ unsafe fn withdraw_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
     }
 
     if [*FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_END].contains(&status_kind) && frame < 10.0 {
-        if boma.is_input_jump() {
+        if boma.is_input_jump() && !boma.is_in_hitlag() {
             if situation_kind == *SITUATION_KIND_AIR {
-                if boma.get_jump_count() < boma.get_jump_count_max() {
+                if boma.get_num_used_jumps() < boma.get_jump_count_max() {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                 }
             } else if situation_kind == *SITUATION_KIND_GROUND {

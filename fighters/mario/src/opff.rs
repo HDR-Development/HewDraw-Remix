@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::fighter_common_opff);
+utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
 use super::*;
 use globals::*;
 
@@ -78,13 +78,13 @@ unsafe fn up_b_wall_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
             if frame >= 23.0 && frame <= 25.0 {
                 if  !VarModule::is_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP) {
                     if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32) {
-                        if boma.is_cat_flag(Cat1::Turn) {
+                        if boma.is_cat_flag(Cat1::TurnDash) {
                             VarModule::on_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP);
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                         }
                     }
                     if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32) {
-                        if boma.is_cat_flag(Cat1::Turn) {
+                        if boma.is_cat_flag(Cat1::TurnDash) {
                             VarModule::on_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP);
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                         }
@@ -96,19 +96,9 @@ unsafe fn up_b_wall_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
 }
 
 // F.L.U.D.D. B-Reverse
-unsafe fn fludd_b_reverse(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
-    if [*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_CHARGE, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT].contains(&status_kind) {
-        if frame < 5.0 {
-            if stick_x * facing < 0.0 {
-                PostureModule::reverse_lr(boma);
-                PostureModule::update_rot_y_lr(boma);
-                if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(boma.object(), vars::common::B_REVERSED) {
-                    let b_reverse = Vector3f{x: -1.0, y: 1.0, z: 1.0};
-                    KineticModule::mul_speed(boma, &b_reverse, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                    VarModule::on_flag(boma.object(), vars::common::B_REVERSED);
-                }
-            }
-        }
+unsafe fn fludd_b_reverse(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT]) {
+        common::opff::check_b_reverse(fighter);
     }
 }
 
@@ -122,7 +112,7 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
     if status_kind == *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_CHARGE {
         if situation_kind == *SITUATION_KIND_AIR {
-            if boma.is_cat_flag(Cat1::JumpButton) {
+            if boma.is_cat_flag(Cat1::AirEscape) {
                 WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
                 ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
@@ -131,34 +121,18 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
-// Fireball double article fix
-unsafe fn special_n_article_fix(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
-    if [*FIGHTER_STATUS_KIND_SPECIAL_N].contains(&status_kind) {
-        //if situation_kind == *SITUATION_KIND_GROUND {
-            if frame <= 1.0 /*frame >= 13.0 && frame < 15.0*/ {
-                //println!("Reset fireball projectile flag");
-                VarModule::off_flag(boma.object(), vars::common::SPECIAL_PROJECTILE_SPAWNED);
-            }
-        //}
-        /*
-        else if situation_kind == *SITUATION_KIND_AIR {
-            if frame >= 14.0 && frame < 15.0{
-                VarModule::on_flag(boma.object(), vars::common::SPECIAL_PROJECTILE_SPAWNED);
-                println!("=== PROJECTILE SPAWNED FROM AERIAL VERSION");
-            }
-        }
-        */
-    }
-    /*
-    else{
-        if VarModule::is_flag(boma.object(), vars::common::SPECIAL_PROJECTILE_SPAWNED){
-            VarModule::off_flag(boma.object(), vars::common::SPECIAL_PROJECTILE_SPAWNED);
+// Double fireball handling
+unsafe fn double_fireball(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) && VarModule::is_flag(boma.object(), vars::mario::CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL) {
+        let restart_frame = 10.0;
+        if boma.is_cat_flag(Cat1::SpecialN) || boma.is_cat_flag(Cat1::SpecialS) || boma.is_cat_flag(Cat1::SpecialHi) || boma.is_cat_flag(Cat1::SpecialLw){
+            VarModule::off_flag(fighter.battle_object, vars::mario::IS_SPECIAL_N_FIREBRAND);
+            VarModule::off_flag(boma.object(), vars::mario::CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL);
+            VarModule::on_flag(boma.object(), vars::mario::SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG);
+            //MotionModule::set_frame_sync_anim_cmd(boma, restart_frame, true, true, false);
+            boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_N, false);
         }
     }
-
-    if  !VarModule::is_flag(boma.object(), vars::common::SPECIAL_PROJECTILE_SPAWNED){
-    }
-    */
 }
 
 
@@ -207,9 +181,9 @@ unsafe fn noknok_training(fighter: &mut L2CFighterCommon, id: usize, status_kind
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //dair_mash_rise(fighter, boma, id, motion_kind, situation_kind, frame);
     up_b_wall_jump(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
-    fludd_b_reverse(fighter, boma, id, status_kind, stick_x, facing, frame);
+    fludd_b_reverse(fighter);
     dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
-    special_n_article_fix(fighter, boma, id, status_kind, situation_kind, frame);
+    double_fireball(fighter, boma);
     noknok_timer(fighter, boma, id);
     noknok_reset(fighter, id, status_kind);
     noknok_training(fighter, id, status_kind);

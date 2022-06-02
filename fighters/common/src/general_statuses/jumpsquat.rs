@@ -282,7 +282,9 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
             if VarModule::is_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_JUMPSQUAT) {
                 // check if we are doing directional airdodge
                 let stick = app::sv_math::vec2_length(fighter.global_table[STICK_X].get_f32(), fighter.global_table[STICK_Y].get_f32());
-                if stick >= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_stick")) {
+                if stick >= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_stick"))
+                    && fighter.global_table[STICK_Y].get_f32() <= 0.0
+                {
                     VarModule::on_flag(fighter.battle_object, vars::common::PERFECT_WAVEDASH);
                     // change kinetic/ground properties for wavedash
                     GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_NONE));
@@ -453,5 +455,7 @@ unsafe fn sub_jump_squat_uniq_check_sub_mini_attack(fighter: &mut L2CFighterComm
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon42sub_status_JumpSquat_check_stick_lr_updateEv")]
 unsafe fn sub_status_JumpSquat_check_stick_lr_update(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
-    L2CValue::Bool((prev_status == *FIGHTER_STATUS_KIND_DASH || prev_status == *FIGHTER_STATUS_KIND_TURN) && !VarModule::is_flag(fighter.battle_object, vars::common::IS_MOONWALK_JUMP))
+    // only allow jumpsquat to flip you around if your previous status was Dash and your directional input was caused by cstick (cstick input 2 frames within jumpsquat)
+    // allows for cstick IRAR
+    L2CValue::Bool(prev_status == *FIGHTER_STATUS_KIND_DASH && VarModule::get_int(fighter.battle_object, vars::common::CSTICK_LIFE) > 0)
 }

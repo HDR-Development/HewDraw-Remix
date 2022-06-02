@@ -3,6 +3,12 @@
 		"0xecf7a127b": [
 			"fighter/common/hdr/param/fighter_param.prc",
 			"fighter/common/hdr/param/common.prc"
+		],
+		"fighter/luigi/cmn": [
+			"fighter/luigi/param/hdr.prc"
+		],
+		"fighter/pikmin/cmn": [
+		    "fighter/pikmin/param/hdr.prc"
 		]
 	}
 }

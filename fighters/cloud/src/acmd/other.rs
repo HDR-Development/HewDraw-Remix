@@ -6,16 +6,16 @@ unsafe fn cloud_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.778);
+        FT_MOTION_RATE(fighter, 4.0/(7.0-1.0));
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.000);
+        GrabModule::set_rebound(boma, true);
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        GrabModule::set_rebound(boma, true);
-    }
-    frame(lua_state, 9.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
-        CATCH(fighter, 0, Hash40::new("top"), 4.3, 0.0, 7.1, 0.0, Some(0.0), Some(7.1), Some(9.2), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 0, Hash40::new("top"), 4.3, 0.0, 7.1, 0.0, Some(0.0), Some(7.1), Some(7.7), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(fighter);
     wait(lua_state, 2.0);
@@ -77,7 +77,7 @@ pub fn install() {
     install_acmd_scripts!(
         cloud_catch_game,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
     );
 }

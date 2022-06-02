@@ -8,7 +8,7 @@ pub fn install() {
     );
 }
 
-#[utils::export(popo::ics_dash)]
+#[utils::export(popo)]
 pub unsafe fn ics_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_Dash_Sub();
     fighter.sub_shift_status_main(L2CValue::Ptr(ics_dash_main as *const () as _))

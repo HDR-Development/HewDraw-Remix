@@ -4,8 +4,8 @@ use globals::*;
 
 pub fn install() {
     smashline::install_hooks!(
-        sub_attack_air_inherit_jump_aerial_motion_uniq_process_init,
-        sub_attack_air_inherit_jump_aerial_motion_uniq_process_exec
+        sub_attack_air_inherit_jump_aerial_motion_uniq_process_init_impl,
+        sub_attack_air_inherit_jump_aerial_motion_uniq_process_exec_impl
     );
 }
 
@@ -44,7 +44,7 @@ pub unsafe extern "C" fn attack_air_main_status_loop(fighter: &mut L2CFighterCom
 // TAGS: DJC, Double Jump Cancel, FIGHTER_STATUS_KIND_ATTACK_AIR
 /// Inherits the double jump animation movement when doing an aerial (init)
 #[smashline::hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon59sub_attack_air_inherit_jump_aerial_motion_uniq_process_initEv")]
-pub unsafe extern "C" fn sub_attack_air_inherit_jump_aerial_motion_uniq_process_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn sub_attack_air_inherit_jump_aerial_motion_uniq_process_init_impl(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[FIGHTER_KIND] == FIGHTER_KIND_DEMON {
         call_original!(fighter)
     } else {
@@ -71,10 +71,17 @@ pub unsafe extern "C" fn sub_attack_air_inherit_jump_aerial_motion_uniq_process_
     }
 }
 
+#[utils::export(common::djc)]
+fn sub_attack_air_inherit_jump_aerial_motion_uniq_process_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    unsafe {
+        sub_attack_air_inherit_jump_aerial_motion_uniq_process_init_impl(fighter) 
+    }
+}
+
 // TAGS: DJC, Double Jump Cancel, FIGHTER_STATUS_KIND_ATTACK_AIR
 /// Inherits the double jump animation movement when doing an aerial (exec)
 #[smashline::hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon59sub_attack_air_inherit_jump_aerial_motion_uniq_process_execEv")]
-pub unsafe extern "C" fn sub_attack_air_inherit_jump_aerial_motion_uniq_process_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn sub_attack_air_inherit_jump_aerial_motion_uniq_process_exec_impl(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_JUMP_AERIAL
     && fighter.global_table[FIGHTER_KIND] != FIGHTER_KIND_DEMON
     && fighter.global_table[CURRENT_FRAME].get_i32() <= dbg!(ParamModule::get_int(fighter.battle_object, ParamType::Common, "djc_leniency_frame"))
@@ -82,4 +89,11 @@ pub unsafe extern "C" fn sub_attack_air_inherit_jump_aerial_motion_uniq_process_
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
     }
     call_original!(fighter)
+}
+
+#[utils::export(common::djc)]
+fn sub_attack_air_inherit_jump_aerial_motion_uniq_process_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    unsafe {
+        sub_attack_air_inherit_jump_aerial_motion_uniq_process_exec_impl(fighter)
+    }
 }

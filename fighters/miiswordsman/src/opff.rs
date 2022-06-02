@@ -11,7 +11,7 @@ unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleO
         let pad_flag = ControlModule::get_pad_flag(boma);
         if boma.is_input_jump() {
             if situation_kind == *SITUATION_KIND_AIR && frame > 8.0 {
-                if boma.get_jump_count() < boma.get_jump_count_max() {
+                if boma.get_num_used_jumps() < boma.get_jump_count_max() {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                 }
             } else if situation_kind == *SITUATION_KIND_GROUND {
@@ -42,9 +42,9 @@ unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleO
     if [*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK].contains(&status_kind) {
         // Jump cancels
         let pad_flag = ControlModule::get_pad_flag(boma);
-        if boma.is_input_jump() && frame > 6.0 && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+        if boma.is_input_jump() && frame > 6.0 && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
             if situation_kind == *SITUATION_KIND_AIR {
-                if boma.get_jump_count() < boma.get_jump_count_max() {
+                if boma.get_num_used_jumps() < boma.get_jump_count_max() {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                 }
             } else if situation_kind == *SITUATION_KIND_GROUND {
@@ -60,7 +60,7 @@ unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleO
 // Mii Swordfighter Aerial Power Thrust Jump Reset
 unsafe fn aerial_power_thrust_jump_reset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, motion_kind: u64) {
     if motion_kind == hash40("special_lw3") || status_kind == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END {
-        if boma.get_jump_count() == boma.get_jump_count_max() {
+        if boma.get_num_used_jumps() == boma.get_jump_count_max() {
             WorkModule::set_int(boma, boma.get_jump_count_max() - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
         }
     }
@@ -188,7 +188,7 @@ unsafe fn kinesis_blade(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
 // Transition into hitgrab on hit
 unsafe fn hitgrab_transition(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64) {
 	if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW && ((motion_kind == hash40("special_lw3") && MotionModule::frame(boma) > 16.0) || (motion_kind == hash40("special_air_lw3") && MotionModule::frame(boma) > 10.0)){
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !StopModule::is_stop(boma) {
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !fighter.is_in_hitlag() {
             //println!("Swordfighter gon' give it to ya");
             StatusModule::change_status_request(boma, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END, false);
         }
@@ -213,8 +213,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     //aerial_acrobatics(fighter, boma, id, status_kind, situation_kind, cat[0], motion_kind, frame);
     gale_strike_timer(fighter, boma, id);
     skyward_slash_dash_act(fighter, boma, id, status_kind, situation_kind, frame);
-    kinesis_blade(fighter, boma, status_kind, motion_kind);
-    hitgrab_transition(fighter, boma, status_kind, motion_kind);
+    //kinesis_blade(fighter, boma, status_kind, motion_kind);
+    //hitgrab_transition(fighter, boma, status_kind, motion_kind);
 
 }
 

@@ -107,7 +107,7 @@ unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
     frame(lua_state, 18.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE(fighter, 0.850);
+        MotionModule::set_rate(boma, 1.176);
     }
     frame(lua_state, 37.0);
     if is_excute(fighter) {

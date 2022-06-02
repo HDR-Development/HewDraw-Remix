@@ -1,8 +1,6 @@
-use utils::{
-    *,
-    ext::*,
-    consts::*
-};
+use super::*;
+use smash::app::BattleObjectModuleAccessor;
+use globals::*;
 
 // Dtilt and Utilt repeat increment
 unsafe fn dtilt_utilt_repeat_increment(boma: &mut BattleObjectModuleAccessor) {
@@ -126,19 +124,9 @@ unsafe fn hadoken_fadc_sfs_cancels(fighter: &mut L2CFighterCommon, boma: &mut Ba
 
     if frame > 15.0
     && boma.is_cat_flag(Cat1::SpecialLw)
-    && MeterModule::drain(boma.object(), 1)
+    && MeterModule::drain(boma.object(), 2)
     {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
-    }
-}
-
-// Shotos Special hit cancels
-// Only for Ken?
-unsafe fn special_hit_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if boma.kind() == *FIGHTER_KIND_KEN
-    && boma.is_status_one_of(&[*FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1, *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2])
-    {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
     }
 }
 
@@ -187,12 +175,18 @@ pub unsafe fn shotos_moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
     tatsumaki_ex_land_cancel_hover(boma, status_kind, situation_kind);
 	//ex_shoryuken(boma, status_kind, situation_kind, motion_kind);
     hadoken_fadc_sfs_cancels(fighter, boma, id, status_kind, cat, frame);
-    special_hit_cancels(boma, status_kind);
     shield_stop_run_drop(boma, status_kind);
     training_mode_full_meter(fighter, boma, status_kind);
 
     // Magic Series
-    magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
+    //magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
+
+    if fighter.is_button_on(Buttons::AppealAll) {
+        MeterModule::show(fighter.battle_object);
+    } else {
+        MeterModule::stop_show(fighter.battle_object);
+    }
+    backdash_energy(fighter);
 }
 
 unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
@@ -278,17 +272,17 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
         boma.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
     }
 
-    let new_status = if boma.is_cat_flag(Cat4::SpecialNCommand) {
+    let new_status = if boma.is_cat_flag(Cat1::SpecialN) {
         *FIGHTER_STATUS_KIND_SPECIAL_N
-    } else if boma.is_cat_flag(Cat1::SpecialN) {
+    } else if boma.is_cat_flag(Cat4::SpecialNCommand) {
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND
-    } else if boma.is_cat_flag(Cat4::SpecialSCommand) {
-        *FIGHTER_STATUS_KIND_SPECIAL_S
     } else if boma.is_cat_flag(Cat1::SpecialS) {
+        *FIGHTER_STATUS_KIND_SPECIAL_S
+    } else if boma.is_cat_flag(Cat4::SpecialSCommand) {
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND
-    } else if boma.is_cat_flag(Cat4::SpecialHiCommand) {
-        *FIGHTER_STATUS_KIND_SPECIAL_HI
     } else if boma.is_cat_flag(Cat1::SpecialHi) {
+        *FIGHTER_STATUS_KIND_SPECIAL_HI
+    } else if boma.is_cat_flag(Cat4::SpecialHiCommand) {
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND
     } else if boma.is_cat_flag(Cat1::SpecialLw) {
         *FIGHTER_STATUS_KIND_SPECIAL_LW
@@ -300,34 +294,6 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
-    #[derive(PartialEq, Eq)]
-    enum AerialDirection {
-        Neutral,
-        Forward,
-        Backward,
-        Up,
-        Down,
-        None
-    }
-
-    unsafe fn get_aerial_direction(boma: &mut BattleObjectModuleAccessor) -> AerialDirection {
-        if boma.is_cat_flag(Cat1::AttackS3 | Cat1::AttackS4) {
-            if boma.stick_x() < 0.0 {
-                AerialDirection::Backward
-            } else {
-                AerialDirection::Forward
-            }
-        } else if boma.is_cat_flag(Cat1::AttackHi3 | Cat1::AttackHi4) {
-            AerialDirection::Up
-        } else if boma.is_cat_flag(Cat1::AttackLw3 | Cat1::AttackLw4) {
-            AerialDirection::Down
-        } else if boma.is_cat_flag(Cat1::AttackAirN | Cat1::AttackN) {
-            AerialDirection::Neutral
-        } else {
-            AerialDirection::None
-        }
-    }
-
     if boma.is_input_jump()
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
     && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX)
@@ -336,13 +302,16 @@ unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
         return;
     }
 
-    let dir = get_aerial_direction(boma);
+    let dir = boma.get_aerial();
+    if dir == None {
+        return;
+    }
     match MotionModule::motion_kind(boma) {
-        super::hash40!("attack_air_n") if matches!(dir, AerialDirection::None | AerialDirection::Neutral) => return,
-        super::hash40!("attack_air_f") if matches!(dir, AerialDirection::None | AerialDirection::Neutral | AerialDirection::Forward) => return,
+        super::hash40!("attack_air_n") if matches!(dir, Some(AerialKind::Nair)) => return,
+        super::hash40!("attack_air_f") if matches!(dir, Some(AerialKind::Nair) | Some(AerialKind::Fair)) => return,
         super::hash40!("attack_air_b") => return,
-        super::hash40!("attack_air_hi") if !matches!(dir, AerialDirection::Backward | AerialDirection::Down) => return,
-        super::hash40!("attack_air_lw") if !matches!(dir, AerialDirection::Backward) => return,
+        super::hash40!("attack_air_hi") if !matches!(dir, Some(AerialKind::Bair) | Some(AerialKind::Dair)) => return,
+        super::hash40!("attack_air_lw") if !matches!(dir, Some(AerialKind::Bair)) => return,
         _ => {
             boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
         }
@@ -408,4 +377,67 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         special_cancels(boma);
         return;
     }
+}
+
+#[utils::export(common::opff)]
+pub unsafe fn backdash_energy(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status_one_of(&[*FIGHTER_RYU_STATUS_KIND_DASH_BACK, *FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, *FIGHTER_DEMON_STATUS_KIND_DASH_BACK]) {
+        let bidou_buttons = &[
+        Buttons::Attack,
+        Buttons::AttackRaw,
+        Buttons::Special,
+        Buttons::SpecialRaw,
+        Buttons::Smash
+        ];
+
+        let mut enable_bidou = false;
+        for button in bidou_buttons.iter() {
+            if fighter.boma().was_prev_button_on(*button) {
+                enable_bidou = true;
+            }
+        }
+
+        if ControlModule::check_button_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+            // prevent game from thinking you are inputting a dashback on the frame the cstick stops overriding left stick (0.625 -> -1.0)
+            VarModule::on_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH);
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
+        }
+        if fighter.global_table[STICK_X].get_f32() == 0.0 {
+            // if you return stick to neutral after a cstick dash, allow dashbacks again
+            VarModule::off_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
+        }
+
+        let is_dash_input: bool = (fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0) || (enable_bidou && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) && fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor) > 0.6);
+        let is_backdash_input: bool = (fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0) || (enable_bidou && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) && fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor) < -0.6);
+
+        if (WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH)
+        && (!ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) || ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON))
+        && is_dash_input)  // if valid backdash input
+        || (WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("re_dash_frame")) as f32 <= MotionModule::frame(fighter.module_accessor)  // if current frame is after redash frame
+        && is_backdash_input) {  // OR valid re-dash input
+            let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
+            let mut initial_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
+            let run_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("run_speed_max"), 0);
+
+            let mut applied_speed = (initial_speed * 0.25) + (ground_brake * PostureModule::lr(fighter.module_accessor));  // Only retain a fraction of your momentum into a re-dash or backdash; makes for snappy dash dancing (Melee functionality)
+            if (is_backdash_input && VarModule::is_flag(fighter.battle_object, vars::common::IS_MOONWALK) && FighterMotionModuleImpl::is_valid_cancel_frame(fighter.module_accessor, -1, true)) || fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0 {  // if the jump button is held, retain full momentum into next status
+                //println!("full momentum");
+                applied_speed = initial_speed + (ground_brake * PostureModule::lr(fighter.module_accessor));
+            }
+            let applied_speed_clamped = applied_speed.clamp(-run_speed_max, run_speed_max);
+
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
+            app::sv_kinetic_energy::unable(fighter.lua_state_agent);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+            app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed_clamped);
+            app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+        }
+    }
+    let end_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
+    VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, end_speed);
 }

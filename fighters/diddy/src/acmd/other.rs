@@ -55,7 +55,7 @@ unsafe fn diddy_catch_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        dash_effect,
+        //dash_effect,
         diddy_turn_dash_game,
 		diddy_catch_game,
     );

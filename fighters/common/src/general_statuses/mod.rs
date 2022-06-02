@@ -22,6 +22,8 @@ mod attackhi4;
 mod attacklw4;
 mod passive;
 mod damagefall;
+mod downdamage;
+mod crawl;
 // [LUA-REPLACE-REBASE]
 // [SHOULD-CHANGE]
 // Reimplement the whole status script (already done) instead of doing this.
@@ -54,63 +56,61 @@ pub unsafe fn sub_wait_common_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_DamageAir_Main)]
 pub unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
-    BufferModule::clear_persist_one(fighter.battle_object, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+    ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
     call_original!(fighter)
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_DamageFlyCommon_init)]
 pub unsafe fn damage_fly_common_init(fighter: &mut L2CFighterCommon) {
-    BufferModule::set_persist_lifetime(fighter.battle_object, 15);
-    BufferModule::enable_persist(fighter.battle_object);
+    ControlModule::set_command_life_extend(fighter.module_accessor, 5);
     original!()(fighter)
 }
 
 #[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
     symbol = "_ZN7lua2cpp16L2CFighterCommon20status_end_DamageFlyEv")]
 pub unsafe fn damage_fly_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    BufferModule::disable_persist(fighter.battle_object);
+    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
     original!()(fighter)
 }
 
 #[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
     symbol = "_ZN7lua2cpp16L2CFighterCommon28status_end_DamageFlyReflectDEv")]
 pub unsafe fn damage_fly_reflect_d_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    BufferModule::disable_persist(fighter.battle_object);
+    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
     original!()(fighter)
 }
 
 #[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_JUMP_BOARD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
     symbol = "_ZN7lua2cpp16L2CFighterCommon36status_end_DamageFlyReflectJumpBoardEv")]
 pub unsafe fn damage_fly_reflect_jump_board_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    BufferModule::disable_persist(fighter.battle_object);
+    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
     original!()(fighter)
 }
 
 #[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
     symbol = "_ZN7lua2cpp16L2CFighterCommon29status_end_DamageFlyReflectLREv")]
 pub unsafe fn damage_fly_reflect_lr_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    BufferModule::disable_persist(fighter.battle_object);
+    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
     original!()(fighter)
 }
 
 #[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
     symbol = "_ZN7lua2cpp16L2CFighterCommon28status_end_DamageFlyReflectUEv")]
 pub unsafe fn damage_fly_reflect_u_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    BufferModule::disable_persist(fighter.battle_object);
+    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
     original!()(fighter)
 }
 
 #[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
     symbol = "_ZN7lua2cpp16L2CFighterCommon24status_end_DamageFlyRollEv")]
 pub unsafe fn damage_fly_roll_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    BufferModule::disable_persist(fighter.battle_object);
+    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
     original!()(fighter)
 }
 
 #[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 pub unsafe fn damage_fly_meteor_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    BufferModule::disable_persist(fighter.battle_object);
+    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
     original!()(fighter)
 }
 
@@ -119,7 +119,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
         skyline::install_hooks!(
             sub_wait_common_Main, 
             damage_fly_common_init, 
-            damage_air_main, 
+            //damage_air_main,
             status_Landing_MainSub,
             status_pre_Landing,
             status_pre_LandingLight,
@@ -372,6 +372,8 @@ pub fn install() {
     attacklw4::install();
     passive::install();
     damagefall::install();
+    downdamage::install();
+    crawl::install();
 
     smashline::install_status_scripts!(
         damage_fly_end,

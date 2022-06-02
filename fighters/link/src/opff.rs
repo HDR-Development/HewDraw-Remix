@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::fighter_common_opff);
+utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
 use super::*;
 use globals::*;
 
@@ -15,19 +15,9 @@ unsafe fn bow_fastfall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
 }
 
 // Link Remote Bomb pull and detonation B-Reverse
-unsafe fn bomb_n_deton_b_reverse(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    if [*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_LINK_STATUS_KIND_SPECIAL_LW_BLAST].contains(&status_kind) {
-        if frame < 5.0 {
-            if stick_x * facing < 0.0 {
-                PostureModule::reverse_lr(boma);
-                PostureModule::update_rot_y_lr(boma);
-                if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(boma.object(), vars::common::B_REVERSED) {
-                    let b_reverse = Vector3f{x: -1.0, y: 1.0, z: 1.0};
-                    KineticModule::mul_speed(boma, &b_reverse, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                    VarModule::on_flag(boma.object(), vars::common::B_REVERSED);
-                }
-            }
-        }
+unsafe fn bomb_n_deton_b_reverse(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_LINK_STATUS_KIND_SPECIAL_LW_BLAST]) {
+        common::opff::check_b_reverse(fighter);
     }
 }
 
@@ -73,34 +63,11 @@ unsafe fn up_special_drift(boma: &mut BattleObjectModuleAccessor, fighter_kind: 
         motion_value = value_toon;
     }
 
-    /*
-    let motion_value = match fighter_kind {
-        *FIGHTER_KIND_LINK as i32 => 0.55,
-        *FIGHTER_KIND_YOUNGLINK => 0.55,
-        *FIGHTER_KIND_TOONLINK => 1.0,
-        _ => 0.0
-    };
-    */
-
     if status_kind == *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_HOLD {
         if situation_kind == *SITUATION_KIND_GROUND {
             if stick_x != 0.0 {
                 let motion_vec = x_motion_vec(value_walk, stick_x);
                 KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-            }
-        }
-    }
-
-    // not including Link bc this stuff is handled within his status scripts
-    if fighter_kind != *FIGHTER_KIND_LINK {
-        if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END].contains(&status_kind) {
-            if situation_kind == *SITUATION_KIND_GROUND {
-                if frame < 46.0 {
-                    if stick_x != 0.0 {
-                        let motion_vec = x_motion_vec(motion_value, stick_x);
-                        KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-                    }
-                }
             }
         }
     }
@@ -126,15 +93,15 @@ unsafe fn up_special_land_cancel(boma: &mut BattleObjectModuleAccessor, fighter_
 pub unsafe extern "Rust" fn links_common(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         let fighter_kind = (&mut *info.boma).kind();
-        land_cancel_flags(&mut *info.boma, info.fighter_kind, info.motion_kind.hash, info.status_kind, info.situation_kind);
+        //land_cancel_flags(&mut *info.boma, info.fighter_kind, info.motion_kind.hash, info.status_kind, info.situation_kind);
         up_special_drift(&mut *info.boma, info.fighter_kind, info.status_kind, info.situation_kind, info.stick_x, info.facing, info.frame);
-        up_special_land_cancel(&mut *info.boma, info.fighter_kind, info.status_kind);
+        //up_special_land_cancel(&mut *info.boma, info.fighter_kind, info.status_kind);
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     bow_fastfall(boma, status_kind, situation_kind, cat[1], stick_y);
-    bomb_n_deton_b_reverse(boma, id, status_kind, situation_kind, stick_x, stick_y, facing, frame);
+    bomb_n_deton_b_reverse(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_LINK )]
@@ -148,6 +115,6 @@ pub fn link_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn link_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

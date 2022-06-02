@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">15</float>
+    </struct>
+    <struct index="1">
+      <float hash="p1_x">50</float>
+      <float hash="p1_y">40</float>
+      <float hash="p2_x">5</float>
+      <float hash="p2_y">-24</float>
+    </struct>
+    <hash40 index="2">dummy</hash40>
+    <struct index="3">
+      <float hash="p1_y">12.5</float>
+    </struct>
+  </list>
+  <list hash="param_himohebi2">
+    <struct index="0">
+      <int hash="rewind_frame">20</int>
+    </struct>
+  </list>
+  <list hash="air_lasso_data">
+    <struct index="0">
+      <float hash="rewind_frame">20</float>
+    </struct>
+  </list>
+  <list hash="param_pkfreeze">
+    <struct index="0">
+      <float hash="accel_x">0.042</float>
+      <int hash="bang_time">5</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="accel_y">0.0035</float>
+      <float hash="landing_frame">20</float>
+      <float hash="start_xmul">0.5</float>
+      <float hash="attack_speed">3.5</float>
+      <float hash="attack_brake">0.08</float>
+      <float hash="attack_end_brake">0</float>
+      <float hash="attack_wall_speed_xmul">1.0</float>
+      <float hash="reflect_speed_y">0</float>
+      <float hash="bound_angle">100</float>
+      <int hash="critical_frame">0</int>
+      <int hash="critical_slow_rate">1</int>
+      <float hash="critical_zoom_rate">1</float>
+      <int hash="critical_zoom_in_frame">0</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_hi_bound">
+    <struct index="0">
+      <int hash="critical_frame">25</int>
+      <float hash="critical_zoom_rate">2</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <int hash="stop_y_time">0</int>
+      <float hash="accel_y">0.06</float>
+      <int hash="time">7</int>
+      <float hash="start_ymul">0</float>
+      <float hash="recover_mul">1</float>
+      <float hash="phy_magnet_offset_y">6.3</float>
+      <float hash="phy_magnet_offset_z">9.25</float>
+      <float hash="phy_magnet_size">5.5</float>
+      <float hash="phy_magnet_effect_scale">0.25</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+</struct>

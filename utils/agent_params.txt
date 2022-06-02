@@ -1,0 +1,2 @@
+luigi: fighter/luigi/param/hdr.prc
+pikmin: fighter/pikmin/param/hdr.prc

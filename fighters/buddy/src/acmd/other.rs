@@ -10,7 +10,7 @@ unsafe fn buddy_catch_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        CATCH(fighter, 0, Hash40::new("top"), 4.2, 0.0, 6.6, 0.0, Some(0.0), Some(6.6), Some(10.5), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA)
+        CATCH(fighter, 0, Hash40::new("top"), 4.2, 0.0, 6.6, 0.0, Some(0.0), Some(6.6), Some(9.5), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA)
     }
     game_CaptureCutCommon(fighter);
     wait(lua_state, 2.0);
@@ -89,7 +89,7 @@ pub fn install() {
     install_acmd_scripts!(
         buddy_catch_game,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
         buddy_bullet_bakyun_game
     );

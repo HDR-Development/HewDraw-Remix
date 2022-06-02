@@ -10,6 +10,7 @@ use smash::lib::{
 };
 use smash::phx::*;
 use bitflags::bitflags;
+use modular_bitfield::specifiers::*;
 
 pub trait Vec2Ext {
     fn new(x: f32, y: f32) -> Self where Self: Sized;
@@ -310,6 +311,7 @@ pub trait MainShift {
 
 pub trait FastShift {
     fn fast_shift(&mut self, new_main: unsafe extern "C" fn(&mut L2CFighterBase) -> L2CValue) -> L2CValue;
+    fn change_to_custom_status(&mut self, id: i32, clear_cat: bool, common: bool);
 }
 
 impl MainShift for L2CFighterCommon {
@@ -324,6 +326,20 @@ impl FastShift for L2CFighterBase {
     fn fast_shift(&mut self, new_main: unsafe extern "C" fn(&mut L2CFighterBase) -> L2CValue) -> L2CValue {
         unsafe {
             self.fastshift(L2CValue::Ptr(new_main as *const () as _))
+        }
+    }
+
+    fn change_to_custom_status(&mut self, id: i32, clear_cat: bool, common: bool) {
+        use crate::CustomStatusModule;
+
+        let kind = if common {
+            CustomStatusModule::get_common_status_kind(self.battle_object, id)
+        } else {
+            CustomStatusModule::get_agent_status_kind(self.battle_object, id)
+        };
+
+        unsafe {
+            self.change_status(kind.into(), clear_cat.into())
         }
     }
 }
@@ -346,6 +362,7 @@ pub trait BomaExt {
     unsafe fn is_flick_y(&mut self, sensitivity: f32) -> bool;
     unsafe fn is_input_jump(&mut self) -> bool;
     unsafe fn get_aerial(&mut self) -> Option<AerialKind>;
+    unsafe fn set_joint_rotate(&mut self, bone_name: &str, rotation: Vector3f);
     /// returns whether or not the stick x is pointed in the "forwards" direction for
     /// a character
     unsafe fn is_stick_forward(&mut self) -> bool;
@@ -363,9 +380,15 @@ pub trait BomaExt {
     unsafe fn is_prev_situation(&mut self, kind: i32) -> bool;
     unsafe fn is_motion(&mut self, motion: Hash40) -> bool;
     unsafe fn is_motion_one_of(&mut self, motions: &[Hash40]) -> bool;
-    unsafe fn get_jump_count(&mut self) -> i32;
+
+    /// gets the number of jumps that have been used
+    unsafe fn get_num_used_jumps(&mut self) -> i32;
+
+    /// gets the max allowed number of jumps for this character
     unsafe fn get_jump_count_max(&mut self) -> i32;
     unsafe fn motion_frame(&mut self) -> f32;
+    unsafe fn set_rate(&mut self, motion_rate: f32);
+    unsafe fn is_in_hitlag(&mut self) -> bool;
 
 
     unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32;
@@ -374,6 +397,23 @@ pub trait BomaExt {
     unsafe fn is_fighter(&mut self) -> bool;
     unsafe fn is_weapon(&mut self) -> bool;
     unsafe fn kind(&mut self) -> i32;
+
+    // WORK
+    unsafe fn get_int(&mut self, what: i32) -> i32;
+    unsafe fn get_float(&mut self, what: i32) -> f32;
+    unsafe fn get_int64(&mut self, what: i32) -> u64;
+    unsafe fn is_flag(&mut self, what: i32) -> bool;
+    unsafe fn set_int(&mut self, value: i32, what: i32);
+    unsafe fn set_float(&mut self, value: f32, what: i32);
+    unsafe fn set_int64(&mut self, value: i64, what: i32);
+    unsafe fn on_flag(&mut self, what: i32);
+    unsafe fn off_flag(&mut self, what: i32);
+    unsafe fn get_param_int(&mut self, obj: &str, field: &str) -> i32;
+    unsafe fn get_param_float(&mut self, obj: &str, field: &str) -> f32;
+    unsafe fn get_param_int64(&mut self, obj: &str, field: &str) -> u64;
+
+    // tech/general subroutine
+    unsafe fn handle_waveland(&mut self, require_airdodge: bool, change_status: bool) -> bool;
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -538,6 +578,10 @@ impl BomaExt for BattleObjectModuleAccessor {
         return MotionModule::motion_kind(self) == kind.hash;
     }
 
+    unsafe fn set_rate(&mut self, motion_rate: f32) {
+        MotionModule::set_rate(self, motion_rate);
+    }
+
     unsafe fn is_motion_one_of(&mut self, kinds: &[Hash40]) -> bool {
         let kind = MotionModule::motion_kind(self);
         return kinds.contains(&Hash40::new_raw(kind));
@@ -545,6 +589,14 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn motion_frame(&mut self) -> f32 {
         return MotionModule::frame(self);
+    }
+
+    unsafe fn is_in_hitlag(&mut self) -> bool{
+        let hitlag_frame = WorkModule::get_int(self, *FIGHTER_INSTANCE_WORK_ID_INT_HIT_STOP_ATTACK_SUSPEND_FRAME);
+        if hitlag_frame > 0 {
+            return true;
+        }
+        return false;
     }
 
     unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32 {
@@ -563,13 +615,116 @@ impl BomaExt for BattleObjectModuleAccessor {
         return smash::app::utility::get_kind(self);
     }
 
-    unsafe fn get_jump_count(&mut self) -> i32 {
+    unsafe fn get_num_used_jumps(&mut self) -> i32 {
         return WorkModule::get_int(self, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
     }
 
     unsafe fn get_jump_count_max(&mut self) -> i32 {
         return WorkModule::get_int(self, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX);
     }
+
+    unsafe fn get_int(&mut self, what: i32) -> i32 {
+        WorkModule::get_int(self, what)
+    }
+
+    unsafe fn get_float(&mut self, what: i32) -> f32 {
+        WorkModule::get_float(self, what)
+    }
+
+    unsafe fn get_int64(&mut self, what: i32) -> u64 {
+        WorkModule::get_int64(self, what)
+    }
+
+    unsafe fn is_flag(&mut self, what: i32) -> bool {
+        WorkModule::is_flag(self, what)
+    }
+
+    unsafe fn set_int(&mut self, value: i32, what: i32) {
+        WorkModule::set_int(self, value, what)
+    }
+
+    unsafe fn set_float(&mut self, value: f32, what: i32) {
+        WorkModule::set_float(self, value, what)
+    }
+
+    unsafe fn set_int64(&mut self, value: i64, what: i32) {
+        WorkModule::set_int64(self, value, what)
+    }
+
+    unsafe fn on_flag(&mut self, what: i32) {
+        WorkModule::on_flag(self, what)
+    }
+
+    unsafe fn off_flag(&mut self, what: i32) {
+        WorkModule::off_flag(self, what)
+    }
+
+    unsafe fn get_param_int(&mut self, obj: &str, field: &str) -> i32 {
+        WorkModule::get_param_int(self, Hash40::new(obj).hash, Hash40::new(field).hash)
+    }
+
+    unsafe fn get_param_float(&mut self, obj: &str, field: &str) -> f32 {
+        let obj = obj.into();
+        let field = field.into();
+        WorkModule::get_param_float(self, Hash40::new(obj).hash, Hash40::new(field).hash)
+    }
+
+    unsafe fn get_param_int64(&mut self, obj: &str, field: &str) -> u64 {
+        let obj = obj.into();
+        let field = field.into();
+        WorkModule::get_param_int64(self, Hash40::new(obj).hash, Hash40::new(field).hash)
+    }
+
+
+    unsafe fn set_joint_rotate(&mut self, bone_name: &str, rotation: Vector3f) {
+        ModelModule::set_joint_rotate(self, Hash40::new(&bone_name), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
+    }
+
+    unsafe fn handle_waveland(&mut self, require_airdodge: bool, change_status: bool) -> bool {
+        dbg!(MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU));
+        if require_airdodge && (!self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE])
+        || (MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU))) {
+            return false;
+        }
+
+        // must check this because it is for allowing the player to screw up a perfect WD and be punished with a non-perfect WD (otherwise they'd have like, 8 frames for perfect WD lol)
+        if !crate::VarModule::is_flag(self.object(), crate::consts::vars::common::ENABLE_AIR_ESCAPE_MAGNET) {
+            return false;
+        }
+
+        // ecb is top, bottom, left, right
+        let shift = if self.is_situation(*SITUATION_KIND_AIR) && self.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) < crate::ParamModule::get_int(self.object(), crate::ParamType::Common, "ecb_shift_air_trans_frame") {
+            let group = crate::ParamModule::get_int(self.object(), crate::ParamType::Shared, "ecb_group_shift");
+            let shift = match group {
+                0 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.small"),
+                1 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.medium"),
+                2 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.large"),
+                3 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.x_large"),
+                4 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.xx_large"),
+                _ => panic!("malformed parammodule file! unknown group number for ecb shift: {}", group)
+            };
+            shift + crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_shift_for_waveland")
+        } else {
+            0.0
+        };
+
+        let ecb_bottom = *GroundModule::get_rhombus(self, true).add(1);
+        let line_bottom = Vector2f::new(ecb_bottom.x, shift + ecb_bottom.y - crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold"));
+        let mut out_pos = Vector2f::zero();
+        let result = GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, shift + ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut out_pos, true);
+        if result != 0 { // pretty sure it returns a pointer, at least it defo returns a non-0 value if success
+            let pos = PostureModule::pos(self);
+            PostureModule::set_pos(self, &Vector3f::new((*pos).x, out_pos.y + 0.01, (*pos).z));
+            GroundModule::attach_ground(self, true);
+            if change_status {
+                StatusModule::change_status_request(self, *FIGHTER_STATUS_KIND_LANDING, false);
+            }
+            true
+        } else {
+            false
+        }
+    }
+
 }
 
 pub trait LuaUtil {
@@ -640,4 +795,332 @@ impl GetObjects for BattleObjectModuleAccessor {
     unsafe fn get_object(this: &mut Self) -> &'static mut BattleObject {
         std::mem::transmute(super::util::get_battle_object_from_id(this.battle_object_id))
     }
+}
+
+/// Enum for the kinds of controls that are mapped
+/// Can map any of these over any button
+#[repr(C)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub enum InputKind {
+    Attack = 0x0,
+    Special = 0x1,
+    Jump = 0x2,
+    Guard = 0x3,
+    Grab = 0x4,
+    SmashAttack = 0x5,
+    AppealHi = 0xA,
+    AppealS = 0xB,
+    AppealLw = 0xC
+}
+
+/// 0x50 Byte struct containing the information for controller mappings
+#[derive(Debug)]
+#[repr(C)]
+pub struct ControllerMapping {
+    pub gc_l: InputKind,
+    pub gc_r: InputKind,
+    pub gc_z: InputKind,
+    pub gc_dup: InputKind,
+    pub gc_dlr: InputKind,
+    pub gc_ddown: InputKind,
+    pub gc_a: InputKind,
+    pub gc_b: InputKind,
+    pub gc_cstick: InputKind,
+    pub gc_y: InputKind,
+    pub gc_x: InputKind,
+    pub gc_rumble: bool,
+    pub gc_absmash: bool,
+    pub gc_tapjump: bool,
+    pub gc_sensitivity: u8,
+    // 0xF
+    pub pro_l: InputKind,
+    pub pro_r: InputKind,
+    pub pro_zl: InputKind,
+    pub pro_zr: InputKind,
+    pub pro_dup: InputKind,
+    pub pro_dlr: InputKind,
+    pub pro_ddown: InputKind,
+    pub pro_a: InputKind,
+    pub pro_b: InputKind,
+    pub pro_cstick: InputKind,
+    pub pro_y: InputKind,
+    pub pro_x: InputKind,
+    pub pro_rumble: bool,
+    pub pro_absmash: bool,
+    pub pro_tapjump: bool,
+    pub pro_sensitivity: u8,
+    // 0x1F
+    pub joy_shoulder: InputKind,
+    pub joy_zshoulder: InputKind,
+    pub joy_sl: InputKind,
+    pub joy_sr: InputKind,
+    pub joy_up: InputKind,
+    pub joy_right: InputKind,
+    pub joy_down: InputKind,
+    pub joy_left: InputKind,
+    pub joy_rumble: bool,
+    pub joy_absmash: bool,
+    pub joy_tapjump: bool,
+    pub joy_sensitivity: u8,
+    // 0x2B
+    pub _2b: u8,
+    pub _2c: u8,
+    pub _2d: u8,
+    pub _2e: u8,
+    pub _2f: u8,
+    pub _30: u8,
+    pub _31: u8,
+    pub _32: u8,
+    pub is_absmash: bool,
+    pub _34: [u8; 0x1C]
+}
+
+/// Controller class used internally by the game
+#[repr(C)]
+pub struct Controller {
+    pub vtable: *const u64,
+    pub current_buttons: ButtonBitfield,
+    pub previous_buttons: ButtonBitfield,
+    pub left_stick_x: f32,
+    pub left_stick_y: f32,
+    pub left_trigger: f32,
+    pub _left_padding: u32,
+    pub right_stick_x: f32,
+    pub right_stick_y: f32,
+    pub right_trigger: f32,
+    pub _right_padding: u32,
+    pub gyro: [f32; 4],
+    pub button_timespan: AutorepeatInfo,
+    pub lstick_timespan: AutorepeatInfo,
+    pub rstick_timespan: AutorepeatInfo,
+    pub just_down: ButtonBitfield,
+    pub just_release: ButtonBitfield,
+    pub autorepeat_keys: u32,
+    pub autorepeat_threshold: u32,
+    pub autorepeat_initial_press_threshold: u32,
+    pub style: ControllerStyle,
+    pub controller_id: u32,
+    pub primary_controller_color1: u32,
+    pub primary_controller_color2: u32,
+    pub secondary_controller_color1: u32,
+    pub secondary_controller_color2: u32,
+    pub led_pattern: u8,
+    pub button_autorepeat_initial_press: bool,
+    pub lstick_autorepeat_initial_press: bool,
+    pub rstick_autorepeat_initial_press: bool,
+    pub is_valid_controller: bool,
+    pub _xB9: [u8; 2],
+    pub is_connected: bool,
+    pub is_left_connected: bool,
+    pub is_right_connected: bool,
+    pub is_wired: bool,
+    pub is_left_wired: bool,
+    pub is_right_wired: bool,
+    pub _xC1: [u8; 3],
+    pub npad_number: u32,
+    pub _xC8: [u8; 8]
+}
+
+/// Re-ordered bitfield the game uses for buttons
+#[bitfield]
+#[derive(Debug, Default, Copy, Clone)]
+pub struct ButtonBitfield {
+    pub dpad_up: bool,
+    pub dpad_right: bool,
+    pub dpad_down: bool,
+    pub dpad_left: bool,
+    pub x: bool,
+    pub a: bool,
+    pub b: bool,
+    pub y: bool,
+    pub l: bool,
+    pub r: bool,
+    pub zl: bool,
+    pub zr: bool,
+    pub left_sl: bool,
+    pub left_sr: bool,
+    pub right_sl: bool,
+    pub right_sr: bool,
+    pub stick_l: bool,
+    pub stick_r: bool,
+    pub plus: bool,
+    pub minus: bool,
+    pub l_up: bool,
+    pub l_right: bool,
+    pub l_down: bool,
+    pub l_left: bool,
+    pub r_up: bool,
+    pub r_right: bool,
+    pub r_down: bool,
+    pub r_left: bool,
+    pub unused: B4
+}
+
+#[repr(C)]
+pub struct AutorepeatInfo {
+    field: [u8; 0x18]
+}
+
+/// Controller style declaring what kind of controller is being used
+#[derive(PartialEq, Eq)]
+#[repr(u32)]
+pub enum ControllerStyle {
+    Handheld = 0x1,
+    DualJoycon = 0x2,
+    LeftJoycon = 0x3,
+    RightJoycon = 0x4,
+    ProController = 0x5,
+    DebugPag = 0x6, // I assume
+    GCController = 0x7
+}
+
+/// 8 byte struct containig all button inputs
+#[derive(Copy, Clone)]
+#[repr(C)]
+pub struct MappedInputs {
+    pub buttons: Buttons,
+    pub lstick_x: i8,
+    pub lstick_y: i8,
+    pub rstick_x: i8,
+    pub rstick_y: i8
+}
+
+pub type StatusFunc = unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue;
+
+pub struct StatusInfo {
+    pub pre: Option<StatusFunc>,
+    pub main: Option<StatusFunc>,
+    pub end: Option<StatusFunc>,
+    pub init: Option<StatusFunc>,
+    pub exec: Option<StatusFunc>,
+    pub exec_stop: Option<StatusFunc>,
+    pub exec_post: Option<StatusFunc>,
+    pub exit: Option<StatusFunc>,
+    pub map_correction: Option<StatusFunc>,
+    pub fix_camera: Option<StatusFunc>,
+    pub fix_pos_slow: Option<StatusFunc>,
+    pub check_damage: Option<StatusFunc>,
+    pub check_attack: Option<StatusFunc>,
+    pub on_change_lr: Option<StatusFunc>,
+    pub leave_stop: Option<StatusFunc>,
+    pub notify_event_gimmick: Option<StatusFunc>,
+    pub calc_param: Option<StatusFunc>
+}
+
+impl StatusInfo {
+    pub fn new() -> StatusInfo {
+        StatusInfo {
+            pre: None,
+            main: None,
+            end: None,
+            init: None,
+            exec: None,
+            exec_stop: None,
+            exec_post: None,
+            exit: None,
+            map_correction: None,
+            fix_camera: None,
+            fix_pos_slow: None,
+            check_damage: None,
+            check_attack: None,
+            on_change_lr: None,
+            leave_stop: None,
+            notify_event_gimmick: None,
+            calc_param: None,
+        }
+    }
+
+    pub fn with_pre(mut self, pre: StatusFunc) -> Self {
+        self.pre = Some(pre);
+        self
+    }
+
+    pub fn with_main(mut self, main: StatusFunc) -> Self {
+        self.main = Some(main);
+        self
+    }
+
+    pub fn with_end(mut self, end: StatusFunc) -> Self {
+        self.end = Some(end);
+        self
+    }
+
+    pub fn with_init(mut self, init: StatusFunc) -> Self {
+        self.init = Some(init);
+        self
+    }
+
+    pub fn with_exec(mut self, exec: StatusFunc) -> Self {
+        self.exec = Some(exec);
+        self
+    }
+
+    pub fn with_exec_stop(mut self, exec_stop: StatusFunc) -> Self {
+        self.exec_stop = Some(exec_stop);
+        self
+    }
+
+    pub fn with_exec_post(mut self, exec_post: StatusFunc) -> Self {
+        self.exec_post = Some(exec_post);
+        self
+    }
+
+    pub fn with_exit(mut self, exit: StatusFunc) -> Self {
+        self.exit = Some(exit);
+        self
+    }
+
+    pub fn with_map_correction(mut self, map_correction: StatusFunc) -> Self {
+        self.map_correction = Some(map_correction);
+        self
+    }
+
+    pub fn with_fix_camera(mut self, fix_camera: StatusFunc) -> Self {
+        self.fix_camera = Some(fix_camera);
+        self
+    }
+
+    pub fn with_fix_pos_slow(mut self, fix_pos_slow: StatusFunc) -> Self {
+        self.fix_pos_slow = Some(fix_pos_slow);
+        self
+    }
+
+    pub fn with_check_damage(mut self, check_damage: StatusFunc) -> Self {
+        self.check_damage = Some(check_damage);
+        self
+    }
+
+    pub fn with_check_attack(mut self, check_attack: StatusFunc) -> Self {
+        self.check_attack = Some(check_attack);
+        self
+    }
+
+    pub fn with_on_change_lr(mut self, on_change_lr: StatusFunc) -> Self {
+        self.on_change_lr = Some(on_change_lr);
+        self
+    }
+
+    pub fn with_leave_stop(mut self, leave_stop: StatusFunc) -> Self {
+        self.leave_stop = Some(leave_stop);
+        self
+    }
+
+    pub fn with_notify_event_gimmick(mut self, notify_event_gimmick: StatusFunc) -> Self {
+        self.notify_event_gimmick = Some(notify_event_gimmick);
+        self
+    }
+
+    pub fn with_calc_param(mut self, calc_param: StatusFunc) -> Self {
+        self.calc_param = Some(calc_param);
+        self
+    }
+
+}
+
+pub fn is_hdr_available() -> bool {
+    let mut symbol = 0usize;
+    unsafe {
+        skyline::nn::ro::LookupSymbol(&mut symbol, "hdr_is_available\0".as_ptr());
+    }
+    symbol != 0
 }

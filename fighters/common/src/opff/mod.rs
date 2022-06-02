@@ -19,11 +19,12 @@ pub mod cancels;
 pub mod var_resets;
 pub mod gentleman;
 pub mod momentum_transfer_line;
-//pub mod shotos;
+pub mod shotos;
 //pub mod magic;
 pub mod gimmick;
 pub mod floats;
 pub mod other;
+pub mod fe;
 
 /*
 pub fn install() {
@@ -57,6 +58,25 @@ pub unsafe fn fighter_common_opff(fighter: &mut L2CFighterCommon) {
     }
 }
 
+/// Performs salty runback check based off of the button input
+/// This is to make it WiFi safe
+unsafe fn salty_check(fighter: &mut L2CFighterCommon) -> bool {
+    if fighter.is_button_on(Buttons::StockShare) {
+        if fighter.is_button_on(Buttons::AttackRaw) && !fighter.is_button_on(!(Buttons::AttackRaw | Buttons::StockShare)) {
+            utils::util::trigger_match_reset();
+            utils::game_modes::signal_new_game();
+            true
+        } else if fighter.is_button_on(Buttons::SpecialRaw) && !fighter.is_button_on(!(Buttons::SpecialRaw | Buttons::StockShare)) {
+            utils::util::trigger_match_exit();
+            true
+        } else {
+            false
+        }
+    } else {
+        false
+    }
+}
+
 pub unsafe fn moveset_edits(fighter: &mut L2CFighterCommon, info: &FrameInfo) {
     let boma = &mut *info.boma;
 
@@ -64,6 +84,9 @@ pub unsafe fn moveset_edits(fighter: &mut L2CFighterCommon, info: &FrameInfo) {
 
 
     // General Engine Edits
+    if salty_check(fighter) {
+        return;
+    }
     physics::run(fighter, info.lua_state, &mut *info.agent, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
     shields::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
     tech::run(fighter, info.lua_state, &mut *info.agent, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing, info.frame);
@@ -73,7 +96,6 @@ pub unsafe fn moveset_edits(fighter: &mut L2CFighterCommon, info: &FrameInfo) {
     var_resets::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
     gentleman::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
     //magic::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
-    gimmick::run(boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
     other::run(fighter, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
     momentum_transfer_line::run(fighter, info.lua_state, &mut *info.agent, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
     // Function hooks are in src/hooks/function_hooks

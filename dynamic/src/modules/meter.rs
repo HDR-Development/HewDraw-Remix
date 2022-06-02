@@ -1,5 +1,11 @@
 use smash::app::BattleObject;
 extern "Rust" {
+    #[link_name = "MeterModule__show"]
+    fn MeterModule__show(object: *mut BattleObject);
+
+    #[link_name = "MeterModule__stop_show"]
+    fn MeterModule__stop_show(object: *mut BattleObject);
+
     #[link_name = "MeterModule__meter_per_level"]
     fn MeterModule__meter_per_level(object: *mut BattleObject) -> f32;
 
@@ -24,6 +30,9 @@ extern "Rust" {
     #[link_name = "MeterModule__add"]
     fn MeterModule__add(object: *mut BattleObject, amount: f32);
 
+    #[link_name = "MeterModule__reset"]
+    fn MeterModule__reset(object: *mut BattleObject);
+
     #[link_name = "MeterModule__update"]
     fn MeterModule__update(object: *mut BattleObject, show_flash_on_change: bool);
 
@@ -32,6 +41,16 @@ extern "Rust" {
 #[allow(non_snake_case)]
 pub mod MeterModule {
     use super::*;
+    pub fn show(object: *mut BattleObject) {
+        unsafe {
+            MeterModule__show(object)
+        }
+    }
+    pub fn stop_show(object: *mut BattleObject) {
+        unsafe {
+            MeterModule__stop_show(object)
+        }
+    }
     pub fn meter_per_level(object: *mut BattleObject) -> f32 {
         unsafe {
             MeterModule__meter_per_level(object)
@@ -70,6 +89,11 @@ pub mod MeterModule {
     pub fn add(object: *mut BattleObject, amount: f32) {
         unsafe {
             MeterModule__add(object, amount)
+        }
+    }
+    pub fn reset(object: *mut BattleObject) {
+        unsafe {
+            MeterModule__reset(object)
         }
     }
     pub fn update(object: *mut BattleObject, show_flash_on_change: bool) {

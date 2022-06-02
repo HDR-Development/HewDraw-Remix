@@ -1,7 +1,8 @@
 use utils::{
     *,
     ext::*,
-    consts::*
+    consts::*,
+    consts::globals::*
 };
 use smash::app::BattleObjectModuleAccessor;
 use smash::phx::{Vector2f, Vector3f, Vector4f};
@@ -168,7 +169,7 @@ unsafe fn dash_drop(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
         *FIGHTER_STATUS_KIND_TURN_DASH
     ])
     {
-        boma.is_status(*FIGHTER_STATUS_KIND_PASS);
+        boma.change_status_req(*FIGHTER_STATUS_KIND_PASS, true);
     }
 }
 
@@ -177,10 +178,10 @@ unsafe fn dash_drop(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
 //=================================================================
 unsafe fn run_squat(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_y: f32) {
     //let crouch_thresh: f32 = WorkModule::get_param_float(boma, hash40("common"), hash40("pass_stick_y"));
-    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_RUN, *FIGHTER_STATUS_KIND_RUN_BRAKE])
+    if boma.is_status(*FIGHTER_STATUS_KIND_RUN_BRAKE)
     && boma.stick_y() < WorkModule::get_param_float(boma, hash40("common"), hash40("squat_stick_y"))
     {
-        boma.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
+        boma.change_status_req(*FIGHTER_STATUS_KIND_SQUAT, false);
     }
 }
 
@@ -190,8 +191,9 @@ unsafe fn run_squat(boma: &mut BattleObjectModuleAccessor, status_kind: i32, sti
 unsafe fn glide_toss(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, facing: f32) {
     if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B])
     {
-        let max_ditcit_frame = ParamModule::get_float(boma.object(), ParamType::Common, "ditcit_frame");
+        let max_ditcit_frame = ParamModule::get_float(boma.object(), ParamType::Common, "glide_toss_cancel_frame");
         VarModule::set_flag(boma.object(), vars::common::CAN_GLIDE_TOSS, MotionModule::frame(boma) <= max_ditcit_frame);
+        VarModule::set_float(boma.object(), vars::common::ROLL_DIR, facing);
         return;
     }
 
@@ -232,7 +234,7 @@ unsafe fn shield_lock_tech(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 
     if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD])
-    && boma.is_cat_flag(Cat1::Jump)
+    && boma.is_cat_flag(Cat1::JumpButton)
     && ((boma.is_button_on(Buttons::SpecialAll) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_GUARD_HOLD_SPECIAL_BUTTON))
         || boma.is_button_on(Buttons::GuardHold))
     {
@@ -361,6 +363,55 @@ pub unsafe fn respawn_taunt(boma: &mut BattleObjectModuleAccessor, status_kind: 
     MotionModule::change_motion(boma, motion, 0.0, 1.0, false, 0.0, false, false);
 }
 
+// Teeter cancelling
+pub unsafe fn teeter_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    
+    if (boma.is_situation(*SITUATION_KIND_GROUND)
+    && boma.is_status_one_of(
+    &[*FIGHTER_STATUS_KIND_WAIT,
+        *FIGHTER_STATUS_KIND_DASH,
+        *FIGHTER_STATUS_KIND_APPEAL,
+        *FIGHTER_STATUS_KIND_LANDING,
+        *FIGHTER_STATUS_KIND_LANDING_LIGHT,
+        *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
+        *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL,
+        *FIGHTER_STATUS_KIND_LANDING_DAMAGE_LIGHT]
+    )
+    && GroundModule::get_correct(boma) == *GROUND_CORRECT_KIND_GROUND
+    && (KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL)
+    - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND)
+    - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN)).abs() > 0.0) {
+
+        // Conditions for transitioning to teeter animation in sub_ground_check_ottotto
+        if (GroundModule::is_ottotto(boma, 1.72) // Original value: 0.86
+        && fighter.global_table[STICK_X].get_f32().abs() < 0.75) {
+            fighter.change_status(
+                FIGHTER_STATUS_KIND_OTTOTTO.into(),
+                true.into()
+            );
+        }
+    }
+}
+
+#[utils::export(common::opff)]
+pub unsafe fn check_b_reverse(fighter: &mut L2CFighterCommon) {
+    if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
+        if fighter.is_stick_backward() {
+            PostureModule::reverse_lr(fighter.module_accessor);
+            PostureModule::update_rot_y_lr(fighter.module_accessor);
+        }
+    }
+    if fighter.global_table[CURRENT_FRAME].get_i32() == 3 {
+        if fighter.is_stick_backward()
+        && !VarModule::is_flag(fighter.battle_object, vars::common::B_REVERSED) {
+            PostureModule::reverse_lr(fighter.module_accessor);
+            PostureModule::update_rot_y_lr(fighter.module_accessor);
+            KineticModule::mul_speed(fighter.module_accessor, &Vector3f::new(-1.0, 1.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            VarModule::on_flag(fighter.battle_object, vars::common::B_REVERSED);
+        }
+    }
+}
+
 pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mut L2CAgent, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32, curr_frame: f32) {
     tumble_exit(boma, cat[0], status_kind, situation_kind);
     non_tumble_di(fighter, lua_state, l2c_agent, boma, status_kind);
@@ -372,6 +423,7 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mu
     waveland_plat_drop(boma, cat[1], status_kind);
     hitfall(boma, status_kind, situation_kind, fighter_kind, cat);
     respawn_taunt(boma, status_kind);
+    teeter_cancel(fighter, boma);
 
     freeze_stages(boma);
 }

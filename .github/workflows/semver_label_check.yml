@@ -1,0 +1,16 @@
+name: validate pr labels
+on:
+  pull_request:
+    types: [labeled, unlabeled, opened, edited, reopened, synchronize, ready_for_review]
+jobs:
+  check-pr:
+    name: Validate Release Label and Notes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: jefflinse/pr-semver-bump@v1
+        name: Validate Pull Request Metadata
+        with:
+          mode: validate
+          repo-token: ${{ secrets.RELEASE_TOKEN }}
+          minor-label: semver:feature
+          patch-label: semver:patch

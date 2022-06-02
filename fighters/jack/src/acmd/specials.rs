@@ -1,6 +1,185 @@
 
 use super::*;
 
+#[acmd_script( agent = "jack", script = "effect_specialn1" , category = ACMD_EFFECT , low_priority)]
+unsafe fn jack_special_n1_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("jack_gun_muzzle"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        //EFFECT(fighter, Hash40::new("sys_staff_shot"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        //EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 10.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 20.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 30.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 40.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 50.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 60.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+    }
+}
+
+#[acmd_script( agent = "jack", script = "effect_specialairn1" , category = ACMD_EFFECT , low_priority)]
+unsafe fn jack_special_air_n1_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("jack_gun_muzzle"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        //EFFECT(fighter, Hash40::new("sys_staff_shot"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        //EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 10.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 20.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 30.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 40.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 50.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 60.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+    }
+}
+
+#[acmd_script( agent = "jack", script = "effect_specialn2" , category = ACMD_EFFECT , low_priority)]
+unsafe fn jack_special_n2_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("jack_gun_muzzle"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        //EFFECT(fighter, Hash40::new("sys_staff_shot"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        //EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 10.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 20.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 30.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 40.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 50.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 60.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+    }
+}
+
+#[acmd_script( agent = "jack", script = "effect_specialairn2" , category = ACMD_EFFECT , low_priority)]
+unsafe fn jack_special_air_n2_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("jack_gun_muzzle"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        //EFFECT(fighter, Hash40::new("sys_staff_shot"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        //EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 10.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 20.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 30.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 40.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 50.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 60.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+    }
+}
+
+#[acmd_script( agent = "jack", script = "effect_specialn3" , category = ACMD_EFFECT , low_priority)]
+unsafe fn jack_special_n3_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("jack_gun_muzzle"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        //EFFECT(fighter, Hash40::new("sys_staff_shot"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        //EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 10.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 20.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 30.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 40.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 50.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 60.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+    }
+}
+
+#[acmd_script( agent = "jack", script = "effect_specialairn3" , category = ACMD_EFFECT , low_priority)]
+unsafe fn jack_special_air_n3_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("jack_gun_muzzle"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        //EFFECT(fighter, Hash40::new("sys_staff_shot"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        //EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 1.9, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 10.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 20.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 30.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 40.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 50.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+        EFFECT(fighter, Hash40::new("sys_genesis_beam"), Hash40::new("gunl"), 0, 0.8, 60.0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 20.0);
+    }
+}
+
+#[acmd_script( agent = "jack", script = "effect_specialnlanding" , category = ACMD_EFFECT , low_priority)]
+unsafe fn jack_special_n_landing_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("jack_gun_muzzle"), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("jack_gunspecial_muzzle"), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_genesis_beam"), true, true);
+        LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+    }
+}
 
 #[acmd_script( agent = "jack", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_special_air_hi_game(fighter: &mut L2CAgentBase) {
@@ -75,9 +254,34 @@ unsafe fn jack_special_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "jack", script = "game_specialairhif" , category = ACMD_GAME , low_priority)]
+unsafe fn jack_special_air_hi_f_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        DamageModule::add_damage(boma, 1.0, 0);
+        KineticModule::mul_speed(boma, &Vector3f::new(0.8, 1.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_STOP);
+        ArticleModule::change_motion(boma, *FIGHTER_JACK_GENERATE_ARTICLE_WING, Hash40::new("special_hi2_f"), false, 0.0);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+    frame(lua_state, 34.0);
+    frame(lua_state, 37.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_JACK_STATUS_SPECIAL_HI2_FLAG_APPEAR_DOYLE);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
+        jack_special_n1_effect,
+        jack_special_air_n1_effect,
+        jack_special_n2_effect,
+        jack_special_air_n2_effect,
+        jack_special_n3_effect,
+        jack_special_air_n3_effect,
+        jack_special_n_landing_effect,
         jack_special_air_hi_game,
+        jack_special_air_hi_f_game,
     );
 }
 

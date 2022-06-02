@@ -31,6 +31,36 @@ extern "C" {
 
     #[link_name = "offsets_fighter_handle_damage"]
     fn offsets_fighter_handle_damage() -> usize;
+
+    #[link_name = "offsets_p_p_game_state"]
+    fn offsets_p_p_game_state() -> usize;
+
+    #[link_name = "offsets_map_controls"]
+    fn offsets_map_controls() -> usize;
+
+    #[link_name = "offsets_once_per_game_frame"]
+    fn offsets_once_per_game_frame() -> usize;
+
+    #[link_name = "offsets_on_rule_select"]
+    fn offsets_on_rule_select() -> usize;
+
+    #[link_name = "offsets_global_frame_counter"]
+    fn offsets_global_frame_counter() -> usize;
+
+    #[link_name = "offsets_get_match_mode"]
+    fn offsets_get_match_mode() -> usize;
+
+    #[link_name = "offsets_kill_zoom_regular"]
+    fn offsets_kill_zoom_regular() -> usize;
+
+    #[link_name = "offsets_kill_zoom_throw"]
+    fn offsets_kill_zoom_throw() -> usize;
+
+    #[link_name = "offsets_analog_trigger_l"]
+    fn offsets_analog_trigger_l() -> usize;
+
+    #[link_name = "offsets_analog_trigger_r"]
+    fn offsets_analog_trigger_r() -> usize;
 }
 
 
@@ -97,5 +127,65 @@ pub fn get_battle_object_from_id() -> usize {
 pub fn fighter_handle_damage() -> usize {
     unsafe {
         offsets_fighter_handle_damage()
+    }
+}
+
+pub fn p_p_game_state() -> usize {
+    unsafe {
+        offsets_p_p_game_state()
+    }
+}
+
+pub fn map_controls() -> usize {
+    unsafe {
+        offsets_map_controls()
+    }
+}
+
+pub fn once_per_game_frame() -> usize {
+    unsafe {
+        offsets_once_per_game_frame()
+    }
+}
+
+pub fn on_rule_select() -> usize {
+    unsafe {
+        offsets_on_rule_select()
+    }
+}
+
+pub fn global_frame_counter() -> usize {
+    unsafe {
+        offsets_global_frame_counter()
+    }
+}
+
+pub fn get_match_mode() -> usize {
+    unsafe {
+        offsets_get_match_mode()
+    }
+}
+
+pub fn kill_zoom_regular() -> usize {
+    unsafe {
+        offsets_kill_zoom_regular()
+    }
+}
+
+pub fn kill_zoom_throw() -> usize {
+    unsafe {
+        offsets_kill_zoom_throw()
+    }
+}
+
+pub fn analog_trigger_l() -> usize {
+    unsafe {
+        offsets_analog_trigger_l()
+    }
+}
+
+pub fn analog_trigger_r() -> usize {
+    unsafe {
+        offsets_analog_trigger_r()
     }
 }
