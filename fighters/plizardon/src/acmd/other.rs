@@ -111,7 +111,7 @@ pub fn install() {
         plizardon_appeal_lw_l_game,
         plizardon_catch_game,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
     );
 }

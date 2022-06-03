@@ -417,6 +417,8 @@ pub trait BomaExt {
     // ENERGY
     unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion;
     unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController;
+    // tech/general subroutine
+    unsafe fn handle_waveland(&mut self, require_airdodge: bool, change_status: bool) -> bool;
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -683,6 +685,7 @@ impl BomaExt for BattleObjectModuleAccessor {
         ModelModule::set_joint_rotate(self, Hash40::new(&bone_name), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
     }
 
+
     /// gets the FighterKineticEnergyMotion object
     unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion {
         std::mem::transmute::<u64, &mut app::FighterKineticEnergyMotion>(KineticModule::get_energy(self, *FIGHTER_KINETIC_ENERGY_ID_MOTION))
@@ -692,6 +695,52 @@ impl BomaExt for BattleObjectModuleAccessor {
     unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController {
         std::mem::transmute::<u64, &mut smash::app::FighterKineticEnergyController>(KineticModule::get_energy(self, *FIGHTER_KINETIC_ENERGY_ID_CONTROL))
     }
+
+    unsafe fn handle_waveland(&mut self, require_airdodge: bool, change_status: bool) -> bool {
+        dbg!(MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU));
+        if require_airdodge && (!self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE])
+        || (MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU))) {
+            return false;
+        }
+
+        // must check this because it is for allowing the player to screw up a perfect WD and be punished with a non-perfect WD (otherwise they'd have like, 8 frames for perfect WD lol)
+        if !crate::VarModule::is_flag(self.object(), crate::consts::vars::common::ENABLE_AIR_ESCAPE_MAGNET) {
+            return false;
+        }
+
+        // ecb is top, bottom, left, right
+        let shift = if self.is_situation(*SITUATION_KIND_AIR) && self.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) < crate::ParamModule::get_int(self.object(), crate::ParamType::Common, "ecb_shift_air_trans_frame") {
+            let group = crate::ParamModule::get_int(self.object(), crate::ParamType::Shared, "ecb_group_shift");
+            let shift = match group {
+                0 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.small"),
+                1 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.medium"),
+                2 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.large"),
+                3 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.x_large"),
+                4 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.xx_large"),
+                _ => panic!("malformed parammodule file! unknown group number for ecb shift: {}", group)
+            };
+            shift + crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_shift_for_waveland")
+        } else {
+            0.0
+        };
+
+        let ecb_bottom = *GroundModule::get_rhombus(self, true).add(1);
+        let line_bottom = Vector2f::new(ecb_bottom.x, shift + ecb_bottom.y - crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold"));
+        let mut out_pos = Vector2f::zero();
+        let result = GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, shift + ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut out_pos, true);
+        if result != 0 { // pretty sure it returns a pointer, at least it defo returns a non-0 value if success
+            let pos = PostureModule::pos(self);
+            PostureModule::set_pos(self, &Vector3f::new((*pos).x, out_pos.y + 0.01, (*pos).z));
+            GroundModule::attach_ground(self, true);
+            if change_status {
+                StatusModule::change_status_request(self, *FIGHTER_STATUS_KIND_LANDING, false);
+            }
+            true
+        } else {
+            false
+        }
+    }
+
 }
 
 pub trait LuaUtil {

@@ -73,7 +73,7 @@ pub fn install() {
     install_acmd_scripts!(
         marth_catch_game,
         marth_dash_game,
-        dash_effect,
+        //dash_effect,
         marth_turn_dash_game,
     );
 }

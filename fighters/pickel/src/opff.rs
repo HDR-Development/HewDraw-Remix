@@ -74,6 +74,18 @@ unsafe fn buildwalk_crouch_disable(boma: &mut BattleObjectModuleAccessor, status
     }
 }
 
+unsafe fn build_ecb_shift(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_AERIAL,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK].contains(&status_kind) {
+        GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, 0.0));
+    }
+}
+
 // Logging for deciphering ACMD scripts
 unsafe fn logging_for_acmd(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
 
@@ -92,6 +104,7 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     elytra_cancel(boma, id, status_kind, situation_kind, cat[0], frame);
     hitstun_tumble_glow(boma, id, status_kind);
     buildwalk_crouch_disable(boma, status_kind);
+    build_ecb_shift(boma, status_kind);
     //logging_for_acmd(boma, status_kind);
 }
 

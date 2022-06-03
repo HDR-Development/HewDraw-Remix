@@ -188,7 +188,7 @@ pub fn install() {
     install_acmd_scripts!(
         duckhunt_catch_game,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
         duckhunt_can_explode_game,
         duckhunt_clay_fly_game,

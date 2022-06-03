@@ -31,6 +31,7 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
 
     // Set the max float duration for the current character
     if fighter_kind == *FIGHTER_KIND_SAMUSD {
+        VarModule::set_int(boma.object(), vars::common::FLOAT_STYLE, 1);
         VarModule::set_int(boma.object(), vars::common::FLOAT_DURATION,  50);
         motion_value = 1.0;
     }

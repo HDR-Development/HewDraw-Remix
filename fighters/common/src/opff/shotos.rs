@@ -124,19 +124,9 @@ unsafe fn hadoken_fadc_sfs_cancels(fighter: &mut L2CFighterCommon, boma: &mut Ba
 
     if frame > 15.0
     && boma.is_cat_flag(Cat1::SpecialLw)
-    && MeterModule::drain(boma.object(), 1)
+    && MeterModule::drain(boma.object(), 2)
     {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
-    }
-}
-
-// Shotos Special hit cancels
-// Only for Ken?
-unsafe fn special_hit_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if boma.kind() == *FIGHTER_KIND_KEN
-    && boma.is_status_one_of(&[*FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1, *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2])
-    {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
     }
 }
 
@@ -185,12 +175,11 @@ pub unsafe fn shotos_moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
     tatsumaki_ex_land_cancel_hover(boma, status_kind, situation_kind);
 	//ex_shoryuken(boma, status_kind, situation_kind, motion_kind);
     hadoken_fadc_sfs_cancels(fighter, boma, id, status_kind, cat, frame);
-    special_hit_cancels(boma, status_kind);
     shield_stop_run_drop(boma, status_kind);
     training_mode_full_meter(fighter, boma, status_kind);
 
     // Magic Series
-    magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
+    //magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
 
     if fighter.is_button_on(Buttons::AppealAll) {
         MeterModule::show(fighter.battle_object);

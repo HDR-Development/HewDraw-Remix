@@ -55,10 +55,10 @@ unsafe fn bayonetta_attack_12_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0, 361, 8, 0, 42, 3.05, 0.0, 10.6, 7.2, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 2, 0, Hash40::new("top"), 3.0, 361, 8, 0, 38, 4.0, 0.0, 10.3, 11.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 3, 0, Hash40::new("top"), 3.0, 361, 8, 0, 38, 3.0, 0.0, 4.5, 6.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        AttackModule::set_add_reaction_frame(boma, 0, 10.0, false);
-        AttackModule::set_add_reaction_frame(boma, 1, 10.0, false);
-        AttackModule::set_add_reaction_frame(boma, 2, 10.0, false);
-        AttackModule::set_add_reaction_frame(boma, 3, 10.0, false);
+        AttackModule::set_add_reaction_frame(boma, 0, 5.0, false);
+        AttackModule::set_add_reaction_frame(boma, 1, 5.0, false);
+        AttackModule::set_add_reaction_frame(boma, 2, 5.0, false);
+        AttackModule::set_add_reaction_frame(boma, 3, 5.0, false);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
@@ -87,8 +87,9 @@ unsafe fn bayonetta_attack_13_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 70, 25, 0, 37, 7.0, 0.0, 7.0, 10.0, Some(0.0), Some(10.5), Some(10.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        AttackModule::set_add_reaction_frame(boma, 0, 8.0, false);
+        FT_MOTION_RATE(fighter, 1.0);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 65, 25, 0, 40, 7.0, 0.0, 7.0, 10.0, Some(0.0), Some(10.5), Some(10.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        //AttackModule::set_add_reaction_frame(boma, 0, 8.0, false);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
@@ -96,9 +97,6 @@ unsafe fn bayonetta_attack_13_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 1.250);
     }
     frame(lua_state, 15.0);
-    if is_excute(fighter) {
-    }
-    frame(lua_state, 17.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
     }
@@ -156,12 +154,15 @@ unsafe fn bayonetta_attack_dash_game(fighter: &mut L2CAgentBase) {
      }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
+        /*
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK)
          }
          else {
             FT_MOTION_RATE(fighter, 0.250);
         }
+        */
+        FT_MOTION_RATE(fighter, 0.250);
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
