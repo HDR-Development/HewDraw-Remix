@@ -133,14 +133,14 @@ unsafe fn power_dunk_break(boma: &mut BattleObjectModuleAccessor) {
 }
 
 // Terrry Super Special Meter Activation
-unsafe fn super_special_meter_activation(boma: &mut BattleObjectModuleAccessor) {
-    if MeterModule::level(boma.object()) >= 4 {
-        WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
-    }
-    else {
-        WorkModule::off_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
-    }
-}
+// unsafe fn super_special_meter_activation(boma: &mut BattleObjectModuleAccessor) {
+//     if MeterModule::level(boma.object()) >= 4 {
+//         WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
+//     }
+//     else {
+//         WorkModule::off_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
+//     }
+// }
 
 // Cancel supers early
 unsafe fn cancel_supers_early(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
@@ -228,7 +228,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     power_wave_dash_cancel_super_cancels(fighter, boma, id, status_kind, situation_kind, cat, motion_kind, frame);
     special_super_cancels_triple_geyser(fighter, boma, id, status_kind, cat[3], motion_kind);
     //burn_knuckle_land_cancel(boma, id, status_kind, situation_kind, motion_kind); // UNUSED
-    super_special_meter_activation(boma);
+    // super_special_meter_activation(boma);
     cancel_supers_early(boma, status_kind, situation_kind, frame);
     super_cancels(fighter, boma, id, status_kind, cat[3], motion_kind);
     shield_stop_run_drop(boma, status_kind, stick_y, situation_kind);
