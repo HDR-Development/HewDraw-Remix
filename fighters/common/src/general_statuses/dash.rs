@@ -552,15 +552,20 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
 
     interrupt_if!(fighter.sub_ground_check_stop_wall().get_bool());
 
-    if fighter.global_table[CURRENT_FRAME].get_i32() == 0 && stick_x.abs() >= dash_stick_x {
-        // apply speed on f1 of dash (takes effect on f2 ingame)
-        let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::CURR_DASH_SPEED);
-        let applied_speed = (dash_speed * PostureModule::lr(fighter.module_accessor)) + (stick_x.signum() * ((run_accel_mul + (run_accel_add * stick_x.abs())))) + prev_speed;  // initial dash speed + 1f of run acceleration + previous status' last speed
-        //println!("Changing current dash speed: {}", applied_speed);
-        let applied_speed_clamped = applied_speed.clamp(-run_speed_max, run_speed_max);
+    // f3 perfect pivots
+    if StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_TURN 
+    && StatusModule::prev_status_kind(fighter.module_accessor, 1) == *FIGHTER_STATUS_KIND_DASH  // if you are in a backdash
+    && fighter.global_table[CURRENT_FRAME].get_i32() == 1  // AND you are on f2 of current dash
+    && stick_x.abs() < dash_stick_x  // AND stick_x < dash stick threshold
+    && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {  // AND cstick is off
+        // trigger late perfect pivot
+        VarModule::on_flag(fighter.battle_object, vars::common::IS_LATE_PIVOT);
+        PostureModule::reverse_lr(fighter.module_accessor);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
         fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed_clamped);
-        app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        app::sv_kinetic_energy::unable(fighter.lua_state_agent);
+        interrupt!(fighter, FIGHTER_STATUS_KIND_TURN, true);
     }
 
     // moonwalk stuff
