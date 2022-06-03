@@ -197,7 +197,7 @@ unsafe fn hitgrab_transition(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
 
 // Lengthen sword
 unsafe fn sword_length(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-	let long_sword_scale = Vector3f{x: 1.015, y: 1.3, z: 1.045};
+	let long_sword_scale = Vector3f{x: 1.015, y: 1.2, z: 1.045};
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("havel"), &long_sword_scale);
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("haver"), &long_sword_scale);
 }
