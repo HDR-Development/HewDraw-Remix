@@ -414,12 +414,17 @@ pub unsafe fn check_b_reverse(fighter: &mut L2CFighterCommon) {
 
 /// checks if the fighter input a turnaround standing grab, ala pivot grab turnaround
 pub unsafe fn grab_turnaround(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_CATCH) 
-        && fighter.motion_frame() < 5.0
-        && fighter.stick_x() * PostureModule::lr(fighter.boma()) < -0.33 {
-
-        PostureModule::reverse_lr(fighter.boma());
-        PostureModule::update_rot_y_lr(fighter.boma());
+    if fighter.is_status(*FIGHTER_STATUS_KIND_CATCH) {
+        if fighter.motion_frame() < 5.0
+            && fighter.stick_x() * PostureModule::lr(fighter.boma()) < -0.33
+            && !VarModule::is_flag(fighter.object(), vars::common::DID_TURNAROUND_GRAB) {
+            
+            PostureModule::reverse_lr(fighter.boma());
+            PostureModule::update_rot_y_lr(fighter.boma());
+            VarModule::on_flag(fighter.object(), vars::common::DID_TURNAROUND_GRAB);
+        }
+    } else {
+        VarModule::off_flag(fighter.object(), vars::common::DID_TURNAROUND_GRAB);
     }
 }
 
