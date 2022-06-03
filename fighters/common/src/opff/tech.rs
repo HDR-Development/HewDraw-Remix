@@ -393,6 +393,15 @@ pub unsafe fn teeter_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
     }
 }
 
+// Aerial Glide Toss helper (keep airdodge if you AGT)
+pub unsafe fn aerial_glide_toss(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    
+    if boma.is_prev_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR)
+    && boma.is_status(*FIGHTER_STATUS_KIND_ITEM_THROW) {
+        WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR);
+    }
+}
+
 #[utils::export(common::opff)]
 pub unsafe fn check_b_reverse(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
@@ -424,6 +433,7 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mu
     hitfall(boma, status_kind, situation_kind, fighter_kind, cat);
     respawn_taunt(boma, status_kind);
     teeter_cancel(fighter, boma);
+    aerial_glide_toss(fighter, boma);
 
     freeze_stages(boma);
 }

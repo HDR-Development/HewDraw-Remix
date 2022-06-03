@@ -457,7 +457,8 @@ unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterC
     let pad = fighter.global_table[PAD_FLAG].get_i32();
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW)
         && pad & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
-        && ItemModule::is_have_item(fighter.module_accessor, 0) {
+        && ItemModule::is_have_item(fighter.module_accessor, 0)
+        && curr_frame <= 3 {
             fighter.clear_lua_stack();
             lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_NO_THROW);
             smash::app::sv_module_access::item(fighter.lua_state_agent);
