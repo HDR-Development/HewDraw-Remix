@@ -419,6 +419,10 @@ pub trait BomaExt {
     unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController;
     // tech/general subroutine
     unsafe fn handle_waveland(&mut self, require_airdodge: bool, change_status: bool) -> bool;
+
+    // other
+    unsafe fn apply_status_speed_mul(&mut self, mul: f32);
+
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -739,6 +743,25 @@ impl BomaExt for BattleObjectModuleAccessor {
         } else {
             false
         }
+    }
+
+    /// applies the given multiplier to various speed stats of the given fighter. 
+    /// This should only be called once per status, or you will get some multiplicative effects
+    unsafe fn apply_status_speed_mul(&mut self, mul: f32) {
+        // set the X motion speed multiplier (where movement is baked into an anim)
+        lua_bind::FighterKineticEnergyMotion::set_speed_mul(self.get_motion_energy(), 1.2);
+
+        // set the X motion accel multiplier for control energy (used in the air, during walk, fall, etc)
+        lua_bind::FighterKineticEnergyController::mul_x_accel_mul( self.get_controller_energy(), 1.2);
+
+        // set the X motion accel multiplier for control energy (used in the air, during walk, fall, etc)
+        lua_bind::FighterKineticEnergyController::mul_x_accel_add( self.get_controller_energy(), 1.2);
+
+        // set the X speed max multiplier for control energy (used in the air, during walk, fall, etc)
+        lua_bind::FighterKineticEnergyController::mul_x_speed_max(self.get_controller_energy(), 1.2);
+        
+        // set the dash speed multiplier
+        //VarModule::set_float(fighter.object(), vars::common::DASH_SPEED_MUL, 1.25);
     }
 
 }
