@@ -125,10 +125,10 @@ unsafe fn mario_fireball_regular_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        mario_utauntr,
-        mario_utauntl,
+        //mario_utauntr,
+        //mario_utauntl,
         dash_game,
-        dash_effect,
+        //dash_effect,
         turn_dash_game,
         //escape_air_slide_game,
         mario_fireball_regular_game,

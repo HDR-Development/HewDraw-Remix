@@ -17,19 +17,17 @@ pub unsafe fn land_cancel_and_b_reverse(fighter: &mut L2CFighterCommon, boma: &m
     }
 }
 
+extern "Rust" {
+    fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
+}
+
 // Shinespark charge
 unsafe fn shinespark_charge(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
     if [*FIGHTER_STATUS_KIND_RUN, *FIGHTER_STATUS_KIND_TURN_RUN].contains(&status_kind) && frame > 30.0 {
         if  !VarModule::is_flag(boma.object(), vars::samus::SHINESPARK_READY) {
             VarModule::on_flag(boma.object(), vars::samus::SHINESPARK_READY);
+            gimmick_flash(boma);
         }
-    }
-
-    // Glow blue during "speed boost"
-    if VarModule::is_flag(boma.object(), vars::samus::SHINESPARK_READY) {
-        let cbm_t_vec1 = Vector4f{ /* Red */ x: 0.85, /* Green */ y: 0.85, /* Blue */ z: 0.85, /* Alpha */ w: 0.2};
-        let cbm_t_vec2 = Vector4f{ /* Red */ x: 0.172, /* Green */ y: 0.439, /* Blue */ z: 0.866, /* Alpha */ w: 0.8};
-        ColorBlendModule::set_main_color(boma, /* Brightness */ &cbm_t_vec1, /* Diffuse */ &cbm_t_vec2, 0.21, 2.2, 3, /* Display Color */ true);
     }
 }
 
@@ -44,7 +42,6 @@ unsafe fn shinespark_reset(boma: &mut BattleObjectModuleAccessor, id: usize, sta
         *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE].contains(&status_kind) {
             VarModule::off_flag(boma.object(), vars::samus::SHINESPARK_READY);
             VarModule::off_flag(boma.object(), vars::samus::SHINESPARK_USED);
-            ColorBlendModule::cancel_main_color(boma, 0);
     }
 }
 

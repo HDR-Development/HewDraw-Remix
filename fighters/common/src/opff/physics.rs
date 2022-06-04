@@ -57,6 +57,7 @@ unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
     ]) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
     && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
     {
+        /*
         let offset = if boma.is_situation(*SITUATION_KIND_AIR) {
             if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) < ParamModule::get_int(boma.object(), ParamType::Common, "ecb_shift_air_trans_frame") {
                 return;
@@ -86,7 +87,37 @@ unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
         } else {
             VarModule::get_float(boma.object(), vars::common::ECB_Y_OFFSETS)
         };
+        */
+        let mut offset = 0.0;
+        if boma.is_situation(*SITUATION_KIND_AIR) {
+            if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) > ParamModule::get_int(boma.object(), ParamType::Common, "ecb_shift_air_trans_frame") {
+                let group = ParamModule::get_int(boma.object(), ParamType::Shared, "ecb_group_shift");
+                
+                let mut sh_amount = 0.0;
+                match group {
+                    groups::SMALL   => sh_amount = ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.small"),
+                    groups::MEDIUM  => sh_amount = ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.medium"),
+                    groups::LARGE   => sh_amount = ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.large"),
+                    groups::XLARGE  => sh_amount = ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.x_large"),
+                    groups::XXLARGE => sh_amount = ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.xx_large"),
+                    _ => panic!("malformed parammodule file! unknown group number for ecb shift: {}", group.to_string())
+                };
+                
+                //let mut sh_amount = ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.xx_large");
+                if boma.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR) {
+                    sh_amount += ParamModule::get_float(boma.object(), ParamType::Common, "ecb_shift_for_waveland");
+                }
 
+                // this is required for other ecb shift operations to perform correctly.
+                VarModule::set_float(boma.object(), vars::common::ECB_Y_OFFSETS, sh_amount);
+                offset = sh_amount;
+            }
+
+        } else if boma.is_situation(*SITUATION_KIND_GROUND) {
+            offset = 0.0;
+        } else {
+            offset = VarModule::get_float(boma.object(), vars::common::ECB_Y_OFFSETS);
+        }
         GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, offset));
     }
     
@@ -125,7 +156,11 @@ unsafe fn extra_traction(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         *FIGHTER_STATUS_KIND_ATTACK_HI4,
         *FIGHTER_STATUS_KIND_ATTACK_LW4_START,
         *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD,
-        *FIGHTER_STATUS_KIND_ATTACK_LW4
+        *FIGHTER_STATUS_KIND_ATTACK_LW4,
+        *FIGHTER_STATUS_KIND_CATCH,
+        *FIGHTER_STATUS_KIND_CATCH_WAIT,
+        *FIGHTER_STATUS_KIND_CATCH_ATTACK,
+        *FIGHTER_STATUS_KIND_CATCH_PULL
     ];
 
     if boma.is_status_one_of(&double_traction_statuses) {

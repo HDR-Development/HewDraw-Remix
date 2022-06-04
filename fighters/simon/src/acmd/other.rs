@@ -71,7 +71,7 @@ unsafe fn simon_axe_fly_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        dash_effect,
+        //dash_effect,
         simon_catch_game,
         simon_axe_fly_game,
     );

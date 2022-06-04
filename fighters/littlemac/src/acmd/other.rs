@@ -37,7 +37,7 @@ unsafe fn littlemac_catch_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.778);
+        FT_MOTION_RATE(fighter, 0.667);
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
@@ -60,7 +60,7 @@ unsafe fn littlemac_catch_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        dash_effect,
+        //dash_effect,
         littlemac_turn_dash_game,
 		littlemac_catch_game,
     );

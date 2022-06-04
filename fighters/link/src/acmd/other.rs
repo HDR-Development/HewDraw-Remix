@@ -90,7 +90,7 @@ pub fn install() {
     install_acmd_scripts!(
         appeal_hi_l,
         appeal_hi_r,
-        dash_effect,
+        //dash_effect,
 		link_turn_dash_game,
         link_boomerang_fly_game,
         link_boomerang_turn_game,
