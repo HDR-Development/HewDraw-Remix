@@ -56,8 +56,7 @@ unsafe fn balloon_cancel(fighter: &mut L2CFighterCommon) {
         // Cancel balloon trip early if character is holding shield, allowing for movement
         if fighter.is_button_on(Buttons::Guard) || fighter.is_button_on(Buttons::Catch) || fighter.is_button_on(Buttons::AttackAll) {
             println!("Isa should cancel!");
-            VarModule::on_flag(fighter.object(), vars::common::UP_SPECIAL_CANCEL);
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL, true);
+            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH, true);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("bust"), 0.0, 0, 0, 0, 0, 0, 0.4, true);
             LAST_EFFECT_SET_RATE(fighter, 0.25);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("arml"), 1.0, 0, 0, 0, 0, 0, 0.4, true);
