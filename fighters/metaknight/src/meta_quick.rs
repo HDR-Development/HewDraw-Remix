@@ -12,12 +12,13 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     //println!("Meter Module: {}", MeterModule::meter(fighter.object()));
     //println!("Gimmick Timer: {}", VarModule::get_int(fighter.object(), vars::common::GIMMICK_TIMER));
     
-    // if we have full meter, enable meta quick
+    // if we have full meter, make meta quick available
     if MeterModule::level(fighter.object()) >= 10 {
-        if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_ON])
+        // if you press taunt while not in shield or dead, start meta quick
+        if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_DEAD])
             && fighter.is_cat_flag(Cat2::AppealAll) {
 
-            MeterModule::drain(fighter.object(), 1);
+            MeterModule::reset(fighter.object());
             
             // 8 seconds of quick per 50 damage
             start_meta_quick(fighter, 8 * 60);
@@ -35,11 +36,11 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         VarModule::add_int(fighter.object(), vars::common::GIMMICK_TIMER, 30);
     }
     
-    
+    // handle the main meta quick logic
     if is_meta_quick(fighter) {
         update_meta_quick_timer(fighter);
         show_quick_active_effect(fighter);
-
+        check_reset(fighter);
         // set the increased jump speed max multiplier for momentum transfer
         VarModule::set_float(fighter.object(), vars::common::JUMP_SPEED_MAX_MUL, 1.5);
     } else {
@@ -49,17 +50,43 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         VarModule::set_float(fighter.object(), vars::common::JUMP_SPEED_MAX_MUL, 1.0);
 
         // if you are initial dash, slow them down slightly
-        if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DASH, *FIGHTER_STATUS_KIND_TURN_DASH]) {
+        if fighter.is_status(*FIGHTER_STATUS_KIND_DASH) {
             let motion_vec = Vector3f {
-                x: -0.65 * PostureModule::lr(fighter.boma()) * (1.0 - (MotionModule::frame(fighter.boma()) / MotionModule::end_frame(fighter.boma()))),
+                x: -0.55 * PostureModule::lr(fighter.boma()) * (1.0 - (MotionModule::frame(fighter.boma()) / MotionModule::end_frame(fighter.boma()))),
                 y: 0.0, 
                 z: 0.0
             };
             KineticModule::add_speed_outside(fighter.boma(), *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
         }
+        // if you are in run slow them down slightly
+        if fighter.is_status(*FIGHTER_STATUS_KIND_RUN) {
+            let motion_vec = Vector3f {
+                x: -0.55 * PostureModule::lr(fighter.boma()),
+                y: 0.0, 
+                z: 0.0
+            };
+            KineticModule::add_speed_outside(fighter.boma(), *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
+        }
+
+    }
+}
+
+/// checks if meta quick should have its state reset due to death or match end
+unsafe fn check_reset(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    // we dont want meta quick *or* the ready effect to persist during these states
+    if fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_WIN,
+        *FIGHTER_STATUS_KIND_LOSE,]) {
+        VarModule::set_int(fighter.object(), vars::common::GIMMICK_TIMER, 0);
     }
 
-    //println!("Jump speed max mul: {}", VarModule::get_float(fighter.object(), vars::common::JUMP_SPEED_MAX_MUL));
+    // we don't want meta quick to persist during any of these states
+    if fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_ENTRY]) {
+        VarModule::set_int(fighter.object(), vars::common::GIMMICK_TIMER, 0);
+    }
 }
 
 /// decrement meta quick timer
@@ -128,8 +155,6 @@ unsafe fn show_quick_active_effect(fighter: &mut smash::lua2cpp::L2CFighterCommo
         VarModule::set_int64(fighter.object(), vars::metaknight::META_QUICK_EFFECT_HANDLE, aura_effect_handle);
     }
 }
-
-
 
 /// handle flashing to indicate that meta quick is available (similar to waft vfx)
 unsafe fn show_quick_ready_flash(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
