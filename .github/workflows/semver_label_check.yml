@@ -4,7 +4,7 @@ on:
     types: [labeled, unlabeled, opened, edited, reopened, synchronize, ready_for_review]
 jobs:
   check-pr:
-    name: Validate Release Label and Notes
+    name: Validate Release Labels
     runs-on: ubuntu-latest
     steps:
       - uses: jesusvasquez333/verify-pr-label-action@v1.4.0
