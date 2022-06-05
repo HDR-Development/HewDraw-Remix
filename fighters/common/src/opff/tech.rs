@@ -395,15 +395,16 @@ pub unsafe fn teeter_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
 
 // Aerial Glide Toss helper
 pub unsafe fn aerial_glide_toss(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    // Keep airdodge if you AGT (cant AGT again until you land)
+    // Keep airdodge if you AGT
     if boma.is_prev_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR)
-    && boma.is_status(*FIGHTER_STATUS_KIND_ITEM_THROW) {
+    && boma.is_status(*FIGHTER_STATUS_KIND_ITEM_THROW)
+    && MotionModule::frame(boma) == 1.0 {
         WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR);
-        VarModule::on_flag(boma.object(), vars::common::AGT_USED);
+        VarModule::inc_int(boma.object(), vars::common::AGT_USED_COUNTER);
     }
 
-    // Reset AGT used flag on landing/ledge/death
-    if VarModule::is_flag(boma.object(), vars::common::AGT_USED)
+    // Reset AGT used counter on landing/ledge/death
+    if VarModule::get_int(boma.object(), vars::common::AGT_USED_COUNTER) > 0
     && (!boma.is_situation(*SITUATION_KIND_AIR) ||
         boma.is_status_one_of(&[
             *FIGHTER_STATUS_KIND_DEAD,
@@ -412,7 +413,7 @@ pub unsafe fn aerial_glide_toss(fighter: &mut L2CFighterCommon, boma: &mut Battl
             *FIGHTER_STATUS_KIND_LOSE,
             *FIGHTER_STATUS_KIND_ENTRY
         ])) {
-        VarModule::off_flag(boma.object(), vars::common::AGT_USED);
+        VarModule::set_int(boma.object(), vars::common::AGT_USED_COUNTER, 0);
     }
 }
 

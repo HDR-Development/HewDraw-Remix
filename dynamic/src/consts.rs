@@ -139,7 +139,6 @@ pub mod vars {
         pub const JUMP_NEXT: i32 = 82;
         pub const IS_JAB_LOCK_ROLL: i32 = 83;
         pub const SHOULD_TRUMP_TETHER: i32 = 84;
-        pub const AGT_USED: i32 = 85;
         
 
         // int
@@ -156,6 +155,7 @@ pub mod vars {
         pub const TURN_DASH_FRAME: i32 = 0xA;
         pub const DOWN_STAND_FB_KIND: i32 = 0xB;
         pub const CSTICK_LIFE: i32 = 0xC;
+        pub const AGT_USED_COUNTER: i32 = 0xD;
 
         // float
         pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0;

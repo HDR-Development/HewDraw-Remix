@@ -458,8 +458,7 @@ unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterC
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW)
         && pad & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
         && ItemModule::is_have_item(fighter.module_accessor, 0)
-        && curr_frame <= 3
-        && VarModule::is_flag(fighter.battle_object, vars::common::AGT_USED) {
+        && curr_frame <= 3 {
             fighter.clear_lua_stack();
             lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_NO_THROW);
             smash::app::sv_module_access::item(fighter.lua_state_agent);
@@ -469,6 +468,8 @@ unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterC
                     L2CValue::I32(*FIGHTER_STATUS_KIND_ITEM_THROW),
                     L2CValue::Bool(false)
                 );
+                let mut staling_mul = (1.0 - 0.1 * (VarModule::get_int(fighter.object(), vars::common::AGT_USED_COUNTER) as f32)).max(0.0);
+                KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: staling_mul, y: staling_mul, z: staling_mul}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
                 return 1.into();
         }
     }
