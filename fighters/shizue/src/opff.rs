@@ -53,7 +53,6 @@ unsafe fn lloid_trap_fire_jc(boma: &mut BattleObjectModuleAccessor, status_kind:
 unsafe fn balloon_cancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_WAIT, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_FLAP]) {
         // Cancel balloon trip early if character is holding shield, allowing for movement
-        println!("Is uspecial!");
         if fighter.is_button_on(Buttons::Guard) || fighter.is_button_on(Buttons::Catch) || fighter.is_button_on(Buttons::AttackAll) {
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH, true);
             // EFFECT_FOLLOW(fighter, Hash40::new("shizue_putaway_catch"), Hash40::new("top"), 0, 8, 12, 0, 0, 0, 1, true);
