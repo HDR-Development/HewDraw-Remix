@@ -370,6 +370,7 @@ pub unsafe fn teeter_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
     && boma.is_status_one_of(
     &[*FIGHTER_STATUS_KIND_WAIT,
         *FIGHTER_STATUS_KIND_DASH,
+        *FIGHTER_STATUS_KIND_RUN_BRAKE,
         *FIGHTER_STATUS_KIND_APPEAL,
         *FIGHTER_STATUS_KIND_LANDING,
         *FIGHTER_STATUS_KIND_LANDING_LIGHT,
