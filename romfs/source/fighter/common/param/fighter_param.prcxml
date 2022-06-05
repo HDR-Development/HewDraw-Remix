@@ -1053,7 +1053,7 @@
       <float hash="landing_attack_air_frame_f">12</float>
       <float hash="landing_attack_air_frame_b">12</float>
       <float hash="landing_attack_air_frame_hi">12</float>
-      <float hash="landing_attack_air_frame_lw">24</float>
+      <float hash="landing_attack_air_frame_lw">14</float>
       <int hash="landing_heavy_frame">5</int>
       <float hash="tread_jump_speed_y_mul">0.825</float>
       <float hash="tread_mini_jump_speed_y_mul">0.825</float>
