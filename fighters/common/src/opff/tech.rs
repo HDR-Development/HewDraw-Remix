@@ -378,7 +378,6 @@ pub unsafe fn teeter_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
         *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL,
         *FIGHTER_STATUS_KIND_LANDING_DAMAGE_LIGHT]
     )
-    && GroundModule::get_correct(boma) == *GROUND_CORRECT_KIND_GROUND
     && (KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL)
     - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND)
     - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN)).abs() > 0.0) {
