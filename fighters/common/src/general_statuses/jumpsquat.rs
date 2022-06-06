@@ -100,7 +100,6 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 
     // begin testing for transitions out of jump squat
-    let situation_kind = fighter.global_table[SITUATION_KIND].get_i32();
     if fighter.global_table[FIGHTER_KIND].get_i32() != *FIGHTER_KIND_PICKEL || ![*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT].contains(&StatusModule::prev_status_kind(fighter.module_accessor, 0)) {
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH)
         && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0 {
@@ -123,7 +122,7 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
             L2CValue::Bool(false)
         );
     } else if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL)
-            && situation_kind == *SITUATION_KIND_AIR {
+    && fighter.is_situation(*SITUATION_KIND_AIR)  {
         fighter.change_status(
             L2CValue::I32(*FIGHTER_STATUS_KIND_FALL),
             L2CValue::Bool(false)
@@ -132,7 +131,7 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI)
             && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI != 0
-            && situation_kind == *SITUATION_KIND_GROUND {
+            && fighter.is_situation(*SITUATION_KIND_GROUND) {
             fighter.change_status(
                 L2CValue::I32(*FIGHTER_STATUS_KIND_SPECIAL_HI),
                 L2CValue::Bool(true)
@@ -148,7 +147,7 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
                     return L2CValue::I32(0);
                 }
                 if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_ATTACK_DASH_ATTACK_HI4 != 0
-                    && situation_kind == *SITUATION_KIND_GROUND {
+                    && fighter.is_situation(*SITUATION_KIND_GROUND) {
                     fighter.change_status(
                         L2CValue::I32(*FIGHTER_STATUS_KIND_ATTACK_HI4_START),
                         L2CValue::Bool(true)
@@ -240,6 +239,15 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
         for x in potential_enables.iter() {
             WorkModule::unable_transition_term(fighter.module_accessor, *x);
         }
+    }
+    
+    // if you are jumping oos, we do not want to trigger jc grab. This avoids getting grabs when buffering an aerial oos.
+    // if you are steve, you should not be able to jc grab or airdodge out of his special jump squat states
+
+    if fighter.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, *FIGHTER_STATUS_KIND_GUARD_OFF])
+    || (fighter.kind() == *FIGHTER_KIND_PICKEL
+    && fighter.is_prev_status_one_of(&[*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT])) {
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH);
     }
 
     let magnet_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "air_escape_snap_frame");
