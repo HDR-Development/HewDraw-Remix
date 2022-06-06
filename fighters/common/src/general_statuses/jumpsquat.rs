@@ -100,34 +100,38 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 
     // begin testing for transitions out of jump squat
-    if fighter.global_table[FIGHTER_KIND].get_i32() != *FIGHTER_KIND_PICKEL || ![*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT].contains(&StatusModule::prev_status_kind(fighter.module_accessor, 0)) {
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH)
-        && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0 {
-            fighter.change_status(
-                L2CValue::I32(*FIGHTER_STATUS_KIND_CATCH),
-                L2CValue::Bool(true)
-            );
-        }
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
-            fighter.change_status(
-                L2CValue::I32(*FIGHTER_STATUS_KIND_ESCAPE_AIR), // We don't want to change to ESCAPE_AIR_SLIDE in case they do a nair dodge
-                L2CValue::Bool(true)
-            );
-            return L2CValue::I32(0);
-        }
-    }
+
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START) {
         fighter.change_status(
             L2CValue::I32(*FIGHTER_STATUS_KIND_JUMP),
             L2CValue::Bool(false)
         );
-    } else if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL)
+        return 0.into();
+    }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL)
     && fighter.is_situation(*SITUATION_KIND_AIR)  {
         fighter.change_status(
             L2CValue::I32(*FIGHTER_STATUS_KIND_FALL),
             L2CValue::Bool(false)
         );
-    } else if !fighter.sub_transition_group_check_ground_item().get_bool() {
+        return 0.into();
+    }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH)
+    && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0 {
+        fighter.change_status(
+            L2CValue::I32(*FIGHTER_STATUS_KIND_CATCH),
+            L2CValue::Bool(true)
+        );
+        return 0.into();
+    }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
+        fighter.change_status(
+            L2CValue::I32(*FIGHTER_STATUS_KIND_ESCAPE_AIR), // We don't want to change to ESCAPE_AIR_SLIDE in case they do a nair dodge
+            L2CValue::Bool(true)
+        );
+        return 0.into();
+    }
+    if !fighter.sub_transition_group_check_ground_item().get_bool() {
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI)
             && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI != 0
@@ -242,11 +246,8 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
     }
     
     // if you are jumping oos, we do not want to trigger jc grab. This avoids getting grabs when buffering an aerial oos.
-    // if you are steve, you should not be able to jc grab or airdodge out of his special jump squat states
 
-    if fighter.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, *FIGHTER_STATUS_KIND_GUARD_OFF])
-    || (fighter.kind() == *FIGHTER_KIND_PICKEL
-    && fighter.is_prev_status_one_of(&[*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT])) {
+    if fighter.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, *FIGHTER_STATUS_KIND_GUARD_OFF]) {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH);
     }
 
@@ -285,7 +286,10 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
     let update_rate = MotionModule::update_rate(fighter.module_accessor);
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE != 0 || ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD_HOLD) {
-        VarModule::on_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+        if !(fighter.kind() == *FIGHTER_KIND_PICKEL 
+        && fighter.is_prev_status_one_of(&[*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT])) {
+            VarModule::on_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+        }
     }
     let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new_raw(motion_kind)) as u32 as f32;
     if end_frame <= (frame + update_rate) {
