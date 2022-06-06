@@ -140,13 +140,20 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
         } else if !fighter.sub_transition_specialflag_hoist().get_bool() {
             let cat2 = fighter.global_table[CMD_CAT2].get_i32();
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START)
-                && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)
-                && cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_ATTACK_DASH_ATTACK_HI4 != 0
-                && situation_kind == *SITUATION_KIND_GROUND {
-                fighter.change_status(
-                    L2CValue::I32(*FIGHTER_STATUS_KIND_ATTACK_HI4_START),
-                    L2CValue::Bool(true)
-                );
+            && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+                if fighter.global_table[0x58].get_bool() != false && {
+                    let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x58].get_ptr());
+                    callable(fighter).get_bool()
+                } {
+                    return L2CValue::I32(0);
+                }
+                if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_ATTACK_DASH_ATTACK_HI4 != 0
+                    && situation_kind == *SITUATION_KIND_GROUND {
+                    fighter.change_status(
+                        L2CValue::I32(*FIGHTER_STATUS_KIND_ATTACK_HI4_START),
+                        L2CValue::Bool(true)
+                    );
+                }
             }
         }
     }
@@ -210,7 +217,8 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW,
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_STAND
     ];
     for x in potential_enables.iter() {
         WorkModule::enable_transition_term(fighter.module_accessor, *x);
