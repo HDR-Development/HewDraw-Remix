@@ -247,7 +247,7 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
     
     // if you are jumping oos, we do not want to trigger jc grab. This avoids getting grabs when buffering an aerial oos.
 
-    if fighter.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, *FIGHTER_STATUS_KIND_GUARD_OFF]) {
+    if fighter.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, *FIGHTER_STATUS_KIND_GUARD_OFF]) {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH);
     }
 
