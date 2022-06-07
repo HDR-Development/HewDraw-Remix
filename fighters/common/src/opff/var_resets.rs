@@ -10,13 +10,13 @@ use smash::lib::lua_const::*;
 use smash::hash40;
 
 unsafe fn var_resets(boma: &mut BattleObjectModuleAccessor) {
-    let damage_statuses = &[*FIGHTER_STATUS_KIND_DEAD,
+    let death_statuses = &[*FIGHTER_STATUS_KIND_DEAD,
                                         *FIGHTER_STATUS_KIND_REBIRTH,
                                         *FIGHTER_STATUS_KIND_WIN,
                                         *FIGHTER_STATUS_KIND_LOSE,
                                         *FIGHTER_STATUS_KIND_ENTRY];
 
-    let death_statuses = &[*FIGHTER_STATUS_KIND_DAMAGE,
+    let damage_statuses = &[*FIGHTER_STATUS_KIND_DAMAGE,
                                         *FIGHTER_STATUS_KIND_DAMAGE_AIR,
                                         *FIGHTER_STATUS_KIND_DAMAGE_FLY,
                                         *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
