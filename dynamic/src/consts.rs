@@ -391,6 +391,14 @@ pub mod vars {
         pub const AIR_CHAIN_COMBO_NUM: i32 = 0x1003;
     }
 
+    pub mod shizue {
+        // flags
+        pub const IS_NOT_QUICK_RELEASE: i32 = 0x1000;
+
+        // floats
+        pub const STORED_BALLOON_POWER: i32 = 0x1000;
+    }
+
     pub mod ryu {
         pub use super::shotos::*;
     }
