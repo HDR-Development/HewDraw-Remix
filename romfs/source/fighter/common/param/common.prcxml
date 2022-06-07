@@ -63,9 +63,9 @@
   <int hash="cliff_wait_air_xlu_max_frame">10</int>
   <int hash="cliff_wait_damage_xlu_max_frame">1</int>
   <int hash="cliff_wait_xlu_min_frame">37</int>
-  <float hash="cliff_robbed_speed_x">0.001</float>
-  <float hash="cliff_robbed_speed_y">30</float>
-  <int hash="cliff_robbed_no_control_frame">35</int>
+  <float hash="cliff_robbed_speed_x">-0.5</float>
+  <float hash="cliff_robbed_speed_y">17.5</float>
+  <int hash="cliff_robbed_no_control_frame">40</int>
   <int hash="air_lasso_catch_num">6</int>
   <int hash="air_lasso_cliff_wait_frame">7</int>
   <int hash="air_lasso_landing_frame">25</int>
