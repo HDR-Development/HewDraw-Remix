@@ -767,7 +767,7 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     /// gets the current status kind for the fighter
     unsafe fn status(&mut self) -> i32 {
-        return StatusModule::status_kind(self.boma());
+        return StatusModule::status_kind(self);
     }
 
 }

@@ -478,15 +478,15 @@ pub mod vars {
 
     pub mod metaknight {
         /// u64 effect handle
-        pub const META_QUICK_EFFECT_HANDLE: i32 = 0;
+        pub const META_QUICK_EFFECT_HANDLE: i32 = 0x1000;
 
         /// i32 timer for color flashing when meta quick is ready
-        pub const META_QUICK_READY_FLASH_TIMER: i32 = 0;
-        pub const META_QUICK_STATUS: i32 = 2;
+        pub const META_QUICK_READY_FLASH_TIMER: i32 = 0x1000;
+        pub const META_QUICK_STATUS: i32 = 0x1001;
 
         /// flag whether we need to set metaknight speed values next frame
-        pub const COMPLETED_SET_SPEEDS: i32 = 0;
-        pub const META_QUICK_NEED_SET_SPEEDS: i32 = 1;
+        pub const COMPLETED_SET_SPEEDS: i32 = 0x1000;
+        pub const META_QUICK_NEED_SET_SPEEDS: i32 = 0x1001;
     }
     
     pub mod miifighter {

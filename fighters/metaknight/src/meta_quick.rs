@@ -12,6 +12,8 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     println!("Meter Module: {}", MeterModule::meter(fighter.object()));
     println!("Gimmick Timer: {}", VarModule::get_int(fighter.object(), vars::common::GIMMICK_TIMER));
     
+
+
     // if we have full meter, make meta quick available
     if MeterModule::level(fighter.object()) >= 10 {
         // if you press taunt while not in shield or dead, start meta quick
@@ -49,27 +51,18 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         kill_quick_effect(fighter);
     
         // set the regular jump speed max multiplier for momentum transfer
-        VarModule::set_float(fighter.object(), vars::common::JUMP_SPEED_MAX_MUL, 1.0);
+        VarModule::set_float(fighter.object(), vars::common::JUMP_SPEED_MAX_MUL, 0.75);
 
         // if you are initial dash, slow them down slightly
         if fighter.is_status(*FIGHTER_STATUS_KIND_DASH) {
             let motion_vec = Vector3f {
-                x: -0.55 * PostureModule::lr(fighter.boma()) * (1.0 - (MotionModule::frame(fighter.boma()) / MotionModule::end_frame(fighter.boma()))),
+                x: -0.25 * PostureModule::lr(fighter.boma()) * (1.0 - (MotionModule::frame(fighter.boma()) / MotionModule::end_frame(fighter.boma()))),
                 y: 0.0, 
                 z: 0.0
             };
             KineticModule::add_speed_outside(fighter.boma(), *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
         }
-        // if you are in run slow them down slightly
-        if fighter.is_status(*FIGHTER_STATUS_KIND_RUN) {
-            let motion_vec = Vector3f {
-                x: -0.55 * PostureModule::lr(fighter.boma()),
-                y: 0.0, 
-                z: 0.0
-            };
-            KineticModule::add_speed_outside(fighter.boma(), *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-        }
-
+        
     }
 }
 
@@ -90,16 +83,19 @@ unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         if VarModule::get_int(fighter.object(), vars::common::GIMMICK_TIMER) > 0 {
             fighter.apply_status_speed_mul(1.2);
         } else {
-            fighter.apply_status_speed_mul(0.85);
+            fighter.apply_status_speed_mul(0.9);
         }
         VarModule::off_flag(fighter.object(), vars::metaknight::META_QUICK_NEED_SET_SPEEDS);
     }
 
+    println!("current status: {}", fighter.status());
+    println!("meta quick status: {}", VarModule::get_int(fighter.object(), vars::metaknight::META_QUICK_STATUS));
     // if our status is changing, then we need to indicate that next frame we will need to set new speeds
     if fighter.status() != VarModule::get_int(fighter.object(), vars::metaknight::META_QUICK_STATUS) {
         println!("Status is changing!");
         VarModule::on_flag(fighter.object(), vars::metaknight::META_QUICK_NEED_SET_SPEEDS);
         VarModule::set_int(fighter.object(), vars::metaknight::META_QUICK_STATUS, fighter.status());
+        println!("new meta quick status: {}", VarModule::get_int(fighter.object(), vars::metaknight::META_QUICK_STATUS));
     }
 }
 
