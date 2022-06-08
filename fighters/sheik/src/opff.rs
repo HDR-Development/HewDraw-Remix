@@ -108,11 +108,13 @@ unsafe fn up_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
 }
 
 pub unsafe fn sheik_teleport_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, id: usize) {
+    /*
     if status_kind == *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_MOVE {
         if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_END, false);
         }
     }
+    */
 
     // Wall Ride momentum fixes
     let mut wall_ride = Vector3f{x: 1.0, y: 1.0, z: 1.0};
