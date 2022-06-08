@@ -27,8 +27,24 @@ unsafe fn shine_jc_turnaround(boma: &mut BattleObjectModuleAccessor, status_kind
             PostureModule::reverse_lr(boma);
             PostureModule::update_rot_y_lr(boma);
         }
+        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= 1 {
+            GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+        }
+        // Momentum handling
+        KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        let fighter_gravity = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut FighterKineticEnergyGravity;
+        if situation_kind == *SITUATION_KIND_AIR {
+            if frame <= 1.0{
+                KineticModule::mul_speed(boma, &Vector3f::new(0.5, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            }
+            if frame > 1.0 && frame <= 3.0 {
+                KineticModule::mul_speed(boma, &Vector3f::new(0.5, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            }
+            if frame > 3.0 {
+                smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.02666667);
+            }
+        }
         if frame > 3.0 {
-            KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
             if boma.is_input_jump() && !boma.is_in_hitlag() {
                 if situation_kind == *SITUATION_KIND_AIR {
                     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
@@ -76,20 +92,6 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     laser_ff_land_cancel(boma, status_kind, situation_kind, cat[1], stick_y);
     shine_jc_turnaround(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     phantasm_shorten(boma, id, motion_kind, frame);
-
-    // Frame Data
-    frame_data(boma, status_kind, motion_kind, frame);
-}
-
-unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
-    if [hash40("special_n_start"), hash40("special_air_n_start")].contains(&motion_kind) {
-        if frame < 4.0 {
-            MotionModule::set_rate(boma, 0.3);
-        }
-        if frame > 4.0 {
-            MotionModule::set_rate(boma, 1.0);
-        }
-    }
 }
 
 #[utils::macros::opff(FIGHTER_KIND_FALCO )]

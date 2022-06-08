@@ -10,7 +10,7 @@ jobs:
       PLUGIN_NAME: hdr
     runs-on: ubuntu-latest
     container: 
-      image: jugeeya/cargo-skyline:2.1.0-dkp
+      image: jugeeya/cargo-skyline:3.0.0-dkp-beta
     steps:
     - name: test continue on failed
       run: exit 1
@@ -41,12 +41,12 @@ jobs:
         echo lol > distributions/hdr-ryujinx.zip
 
     - name: Upload hdr-switch
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: hdr-switch
         path: distributions/hdr-switch.zip
     - name: Upload hdr-ryujinx
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: hdr-ryujinx
         path: distributions/hdr-ryujinx.zip

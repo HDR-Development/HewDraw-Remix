@@ -77,11 +77,6 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
         // Walk through other fighters
         JostleModule::set_team(boma, 0);
 
-        // Vanilla jostle during standing and dash grabs
-        if [*FIGHTER_STATUS_KIND_CATCH, *FIGHTER_STATUS_KIND_CATCH_DASH].contains(&status_kind) {
-            JostleModule::set_team(boma, 1);
-        }
-
         // clear platform drop input when entering airdodge (to avoid buffering waveland platdrop with the same down input as the actual waveland)
         if [*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE, *FIGHTER_STATUS_KIND_JUMP_SQUAT].contains(&status_kind) {
             VarModule::off_flag(boma.object(), vars::common::ENABLE_WAVELAND_PLATDROP);
