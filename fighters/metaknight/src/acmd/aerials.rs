@@ -89,7 +89,7 @@ unsafe fn metaknight_attack_air_f_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 1.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE(fighter, 1.200);
+        FT_MOTION_RATE(fighter, 1.100);
     }
     
     frame(lua_state, 30.0);

@@ -482,9 +482,11 @@ pub mod vars {
 
         /// i32 timer for color flashing when meta quick is ready
         pub const META_QUICK_READY_FLASH_TIMER: i32 = 0;
+        pub const META_QUICK_STATUS: i32 = 2;
 
         /// flag whether we need to set metaknight speed values next frame
         pub const COMPLETED_SET_SPEEDS: i32 = 0;
+        pub const META_QUICK_NEED_SET_SPEEDS: i32 = 1;
     }
     
     pub mod miifighter {

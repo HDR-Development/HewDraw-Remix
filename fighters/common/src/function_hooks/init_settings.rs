@@ -37,15 +37,6 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
 
     if boma.is_fighter() {
 
-        // meta quick logic, which must be run once per status explicitly, which is why it has to be here.
-        if fighter_kind == *FIGHTER_KIND_METAKNIGHT {
-            if VarModule::get_int(boma.object(), vars::common::GIMMICK_TIMER) > 0 {
-                boma.apply_status_speed_mul(1.2);
-            } else {
-                boma.apply_status_speed_mul(0.85);
-            }
-        }
-
         // Disable wiggle out of tumble flag during damage_fly states
         if [*FIGHTER_STATUS_KIND_DAMAGE_FLY,
             *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL].contains(&status_kind) {

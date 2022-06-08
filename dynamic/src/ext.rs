@@ -382,6 +382,7 @@ pub trait BomaExt {
     unsafe fn is_prev_situation(&mut self, kind: i32) -> bool;
     unsafe fn is_motion(&mut self, motion: Hash40) -> bool;
     unsafe fn is_motion_one_of(&mut self, motions: &[Hash40]) -> bool;
+    unsafe fn status(&mut self) -> i32;
 
     /// gets the number of jumps that have been used
     unsafe fn get_num_used_jumps(&mut self) -> i32;
@@ -749,19 +750,24 @@ impl BomaExt for BattleObjectModuleAccessor {
     /// This should only be called once per status, or you will get some multiplicative effects
     unsafe fn apply_status_speed_mul(&mut self, mul: f32) {
         // set the X motion speed multiplier (where movement is baked into an anim)
-        lua_bind::FighterKineticEnergyMotion::set_speed_mul(self.get_motion_energy(), 1.2);
+        lua_bind::FighterKineticEnergyMotion::set_speed_mul(self.get_motion_energy(), mul);
 
         // set the X motion accel multiplier for control energy (used in the air, during walk, fall, etc)
-        lua_bind::FighterKineticEnergyController::mul_x_accel_mul( self.get_controller_energy(), 1.2);
+        lua_bind::FighterKineticEnergyController::mul_x_accel_mul( self.get_controller_energy(), mul);
 
         // set the X motion accel multiplier for control energy (used in the air, during walk, fall, etc)
-        lua_bind::FighterKineticEnergyController::mul_x_accel_add( self.get_controller_energy(), 1.2);
+        lua_bind::FighterKineticEnergyController::mul_x_accel_add( self.get_controller_energy(), mul);
 
         // set the X speed max multiplier for control energy (used in the air, during walk, fall, etc)
-        lua_bind::FighterKineticEnergyController::mul_x_speed_max(self.get_controller_energy(), 1.2);
+        lua_bind::FighterKineticEnergyController::mul_x_speed_max(self.get_controller_energy(), mul);
         
         // set the dash speed multiplier
-        //VarModule::set_float(fighter.object(), vars::common::DASH_SPEED_MUL, 1.25);
+        //VarModule::set_float(fighter.object(), vars::common::DASH_SPEED_MUL, mul);
+    }
+
+    /// gets the current status kind for the fighter
+    unsafe fn status(&mut self) -> i32 {
+        return StatusModule::status_kind(self.boma());
     }
 
 }

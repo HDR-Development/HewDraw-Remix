@@ -9,8 +9,8 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     MeterModule::watch_damage(fighter.object(), true);
     MeterModule::set_damage_gain_mul(fighter.object(), 6.0);
     
-    //println!("Meter Module: {}", MeterModule::meter(fighter.object()));
-    //println!("Gimmick Timer: {}", VarModule::get_int(fighter.object(), vars::common::GIMMICK_TIMER));
+    println!("Meter Module: {}", MeterModule::meter(fighter.object()));
+    println!("Gimmick Timer: {}", VarModule::get_int(fighter.object(), vars::common::GIMMICK_TIMER));
     
     // if we have full meter, make meta quick available
     if MeterModule::level(fighter.object()) >= 10 {
@@ -18,7 +18,7 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_DEAD])
             && fighter.is_cat_flag(Cat2::AppealAll) {
 
-            MeterModule::reset(fighter.object());
+            MeterModule::drain(fighter.object(), 10);
             
             // 8 seconds of quick per 50 damage
             start_meta_quick(fighter, 8 * 60);
@@ -36,9 +36,11 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         VarModule::add_int(fighter.object(), vars::common::GIMMICK_TIMER, 30);
     }
     
+    check_apply_speeds(fighter);
+    update_meta_quick_timer(fighter);
+
     // handle the main meta quick logic
     if is_meta_quick(fighter) {
-        update_meta_quick_timer(fighter);
         show_quick_active_effect(fighter);
         check_reset(fighter);
         // set the increased jump speed max multiplier for momentum transfer
@@ -71,6 +73,36 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
+/// decrement meta quick timer
+unsafe fn update_meta_quick_timer(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    let timer = VarModule::get_int(fighter.object(), vars::common::GIMMICK_TIMER);
+    if timer > 0 {
+        VarModule::dec_int(fighter.object(), vars::common::GIMMICK_TIMER);
+    }
+    // do nothing
+}
+
+/// handle speed application
+unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    
+    // handle speed application once
+    if VarModule::is_flag(fighter.object(), vars::metaknight::META_QUICK_NEED_SET_SPEEDS) {
+        if VarModule::get_int(fighter.object(), vars::common::GIMMICK_TIMER) > 0 {
+            fighter.apply_status_speed_mul(1.2);
+        } else {
+            fighter.apply_status_speed_mul(0.85);
+        }
+        VarModule::off_flag(fighter.object(), vars::metaknight::META_QUICK_NEED_SET_SPEEDS);
+    }
+
+    // if our status is changing, then we need to indicate that next frame we will need to set new speeds
+    if fighter.status() != VarModule::get_int(fighter.object(), vars::metaknight::META_QUICK_STATUS) {
+        println!("Status is changing!");
+        VarModule::on_flag(fighter.object(), vars::metaknight::META_QUICK_NEED_SET_SPEEDS);
+        VarModule::set_int(fighter.object(), vars::metaknight::META_QUICK_STATUS, fighter.status());
+    }
+}
+
 /// checks if meta quick should have its state reset due to death or match end
 unsafe fn check_reset(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     // we dont want meta quick *or* the ready effect to persist during these states
@@ -87,15 +119,6 @@ unsafe fn check_reset(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_ENTRY]) {
         VarModule::set_int(fighter.object(), vars::common::GIMMICK_TIMER, 0);
     }
-}
-
-/// decrement meta quick timer
-unsafe fn update_meta_quick_timer(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    let timer = VarModule::get_int(fighter.object(), vars::common::GIMMICK_TIMER);
-    if timer > 0 {
-        VarModule::dec_int(fighter.object(), vars::common::GIMMICK_TIMER);
-    }
-    // do nothing
 }
 
 /// check if meta quick is currently running
@@ -116,6 +139,9 @@ unsafe fn start_meta_quick(fighter: &mut smash::lua2cpp::L2CFighterCommon, lengt
     if !(fighter.is_situation(*SITUATION_KIND_GROUND) && CancelModule::is_enable_cancel(fighter.boma())) {
         PLAY_SE(fighter, Hash40::new("vc_metaknight_appeal01"));
     }
+
+    // indicate that we will need to set the status speeds next frame
+    VarModule::on_flag(fighter.object(), vars::metaknight::META_QUICK_NEED_SET_SPEEDS);
 }
 
 
