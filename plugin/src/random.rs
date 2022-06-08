@@ -139,6 +139,7 @@ unsafe fn decide_fighter(arg1: u64, arg2: u64, arg3: u64, arg4: u64) -> u64 {
 unsafe fn copy_fighter_info2(dest: u64, src: u64) {
     let src_obj = *(src as *mut *mut u64).add(1);
     let src_obj = src_obj.add(0x1F0 / 8);
+    println!("WAS_RANDOM: {}", WAS_RANDOM);
     if WAS_RANDOM {
         *(src_obj as *mut u32).add(8) = rand::thread_rng().gen::<u32>() % 8;
     }

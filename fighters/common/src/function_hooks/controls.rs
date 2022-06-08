@@ -67,6 +67,8 @@ unsafe fn map_controls_hook(
         }
     }
 
+    let mappings = mappings.add(player_idx);
+
     if controller.style == ControllerStyle::GCController {
         if controller.just_down.l() && (*mappings).gc_l == InputKind::JumpMini {
             (*out).buttons |= sh_footstool_input;
