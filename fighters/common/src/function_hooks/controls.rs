@@ -67,7 +67,7 @@ unsafe fn map_controls_hook(
         }
     }
 
-    let mappings = mappings.add(player_idx);
+    let mappings = mappings.add(player_idx as usize);
 
     if controller.style == ControllerStyle::GCController {
         if controller.just_down.l() && (*mappings).gc_l == InputKind::JumpMini {
