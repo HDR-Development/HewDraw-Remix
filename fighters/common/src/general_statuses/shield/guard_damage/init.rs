@@ -22,7 +22,7 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter: &mut L2CF
         shield_power = max;
     }
 
-    if object_id != 0x50000000 {
+/*    if object_id != 0x50000000 {
         capture!(fighter, MA_MSC_CMD_CAPTURE_SET_IGNORE_OBJECT_ID, object_id);
         let mut cancel_frame = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
             shield_power
@@ -31,8 +31,10 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter: &mut L2CF
         };
         cancel_frame *= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_ignore_capture_rate"));
         WorkModule::set_int(fighter.module_accessor, cancel_frame as i32, *FIGHTER_INSTANCE_WORK_ID_INT_GUARD_INVALID_CAPTURE_FRAME);
-    }
-
+    } 
+*/
+// This block of code restricts an attacker from grabbing an opponent during their shield stun and shield release frames unless the opponent was hit by another item instead. By removing this, an opponent can be grabbed during their blockstun.
+    
     WorkModule::set_int(fighter.module_accessor, shield_power as i32, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME);
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
         let catch_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("shield_setoff_catch_frame"));
