@@ -105,6 +105,21 @@ jobs:
         tag: ${{ needs.version_and_changelog.outputs.version }}
         overwrite: true
         body: ${{ needs.version_and_changelog.outputs.changelog }}
+
+    # upload asset retry
+    - name: Upload assets retry
+      uses: svenstaro/upload-release-action@v2
+      if: ${{ !success() }}
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: distributions/*
+        prerelease: true
+        file_glob: true
+        asset_name: the_asset
+        release_name: ${{ needs.version_and_changelog.outputs.version }}-nightly
+        tag: ${{ needs.version_and_changelog.outputs.version }}
+        overwrite: true
+        body: ${{ needs.version_and_changelog.outputs.changelog }}
     
   ##############  handle the creasion of the full package installation  ##############
   full_package:
