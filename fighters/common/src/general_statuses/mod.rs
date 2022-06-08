@@ -125,11 +125,9 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_pre_LandingLight,
             status_LandingAttackAirSub,
             status_pre_landing_fall_special,
-            sub_air_check_fall_common_hook,
-            sub_DamageFlyCommon_hook,
-            check_damage_fall_transition_hook,
-            status_FreeMove_Main_hook,
-            sub_air_transition_group_check_air_attack_hook
+            sub_air_transition_group_check_air_attack_hook,
+            sub_transition_group_check_ground_jump_mini_attack,
+            sub_transition_group_check_air_escape
         );
     }
 }
@@ -240,120 +238,44 @@ unsafe fn sub_air_transition_group_check_air_attack_hook(fighter: &mut L2CFighte
     }
 }
 
-#[skyline::hook(replace = L2CFighterCommon_sub_DamageFlyCommon)]
-unsafe fn sub_DamageFlyCommon_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !fighter.sub_AirChkPassiveWallJump().get_bool() {
-        if !fighter.sub_AirChkPassiveWall().get_bool() {
-            if !fighter.sub_AirChkPassiveCeil().get_bool() {
-                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_END_REACTION) {
-                    if fighter.sub_transition_group_check_air_special().get_bool() {
-                        return L2CValue::Bool(true);
-                    }
-                }
-                if !fighter.sub_transition_group_check_air_item_throw().get_bool() {
-                    if !fighter.sub_transition_group_check_air_lasso().get_bool() {
-                        if !fighter.sub_transition_group_check_air_attack().get_bool() {
-                            if !fighter.sub_transition_group_check_air_escape().get_bool() {
-                                if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_END_REACTION) {
-                                    if !fighter.global_table[IS_STOPPING].get_bool() {
-                                        if fighter.sub_DamageFlyChkUniq().get_bool() {
-                                            return L2CValue::Bool(true);
-                                        }
-                                    }
-                                    return L2CValue::Bool(false);
-                                }
-                                if !fighter.sub_transition_group_check_air_tread_jump().get_bool() {
-                                    if !fighter.sub_transition_group_check_air_wall_jump().get_bool() {
-                                        if !fighter.sub_transition_group_check_air_jump_aerial().get_bool() {
-                                            if !fighter.global_table[IS_STOPPING].get_bool() {
-                                                if fighter.sub_DamageFlyChkUniq().get_bool() {
-                                                    return true.into();
-                                                }
-                                            }
-                                            return L2CValue::Bool(false);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+#[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_jump_mini_attack)]
+unsafe fn sub_transition_group_check_ground_jump_mini_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        if fighter.global_table[0x52].get_bool() {
+            let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x52].get_ptr());
+            return callable(fighter);
+        }
+        // Disable the grab button from being used to perform the "short hop aerial macro"
+        let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0
+        && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
+        && fighter.sub_check_button_jump().get_bool() {
+            fighter.change_status_jump_mini_attack(false.into());
+            return true.into();
         }
     }
-    L2CValue::Bool(true)
+    false.into()
 }
 
-#[skyline::hook(replace = L2CFighterCommon_sub_air_check_fall_common)]
-unsafe fn sub_air_check_fall_common_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.sub_transition_group_check_air_landing().get_bool() {
-        L2CValue::Bool(true)
-    } else if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_HAMMER) {
-        fighter.change_status(FIGHTER_STATUS_KIND_HAMMER_FALL.into(), false.into());
-        L2CValue::Bool(true)
-    } else if fighter.sub_transition_group_check_air_cliff().get_bool()
-                || fighter.sub_rocketbelt_hover_check().get_bool()
-                || fighter.sub_transition_group_check_air_special().get_bool()
-                || fighter.sub_transition_group_check_air_item_throw().get_bool()
-                || fighter.sub_transition_group_check_air_lasso().get_bool()
-                || fighter.sub_transition_group_check_air_attack().get_bool()
-                || fighter.sub_transition_group_check_air_escape().get_bool()
-                || fighter.sub_transition_group_check_air_tread_jump().get_bool()
-                || fighter.sub_transition_group_check_air_wall_jump().get_bool()
-                || fighter.sub_transition_group_check_air_jump_aerial().get_bool()
-    {
-        L2CValue::Bool(true)
-    } else {
-        L2CValue::Bool(false)
-    }
-}
-
-#[skyline::hook(replace = L2CFighterCommon_check_damage_fall_transition)]
-unsafe fn check_damage_fall_transition_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !fighter.sub_transition_group_check_air_special().get_bool() {
-        if !fighter.sub_transition_group_check_air_item_throw().get_bool() {
-            if !fighter.sub_transition_group_check_air_lasso().get_bool() {
-                if !fighter.sub_transition_group_check_air_attack().get_bool() {
-                    if !fighter.sub_transition_group_check_air_escape().get_bool() {
-                        if !fighter.sub_transition_group_check_air_wall_jump().get_bool() {
-                            if !fighter.sub_transition_group_check_air_jump_aerial().get_bool() {
-                                return L2CValue::Bool(false);
-                            }
-                        }
-                    }
-                }
-            }
+#[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_escape)]
+unsafe fn sub_transition_group_check_air_escape(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[0x2F].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x2F].get_ptr());
+        if callable(fighter).get_bool() {
+            return true.into();
         }
     }
-    L2CValue::Bool(true)
-}
-
-#[skyline::hook(replace = L2CFighterCommon_status_FreeMove_Main)]
-unsafe fn status_FreeMove_Main_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_AIR {
-        if fighter.sub_transition_group_check_ground_item().get_bool()
-        || fighter.sub_transition_group_check_ground_catch().get_bool()
-        || fighter.sub_transition_group_check_ground_escape().get_bool()
-        || fighter.sub_transition_group_check_ground_guard().get_bool()
-        || fighter.sub_transition_group_check_ground_special().get_bool() {
-            return 0.into();
-        }
-        if !fighter.sub_transition_group_check_ground_attack().get_bool() {
-            app::FighterUtil::exec_free_move(fighter.module_accessor);
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+        // Disable Airdodging if you're pressing Grab.
+        let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0
+        && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE != 0
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
+            fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_AIR.into(), true.into());
+            return true.into();
         }
     }
-    else {
-        if fighter.sub_transition_group_check_air_special().get_bool()
-        || fighter.sub_transition_group_check_air_item_throw().get_bool()
-        || fighter.sub_transition_group_check_air_lasso().get_bool()
-        || fighter.sub_transition_group_check_air_attack().get_bool() {
-            return 0.into();
-        }
-        if !fighter.sub_transition_group_check_air_escape().get_bool() {
-            app::FighterUtil::exec_free_move(fighter.module_accessor);
-        }
-    }
-    0.into()
+    false.into()
 }
 
 pub fn install() {
