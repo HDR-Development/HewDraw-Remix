@@ -1,4 +1,3 @@
-#![feature(asm)]
 #![deny(deprecated)]
 #![allow(unused)]
 #![allow(non_snake_case)]#![allow(unused_imports)]#![allow(unused_variables)]

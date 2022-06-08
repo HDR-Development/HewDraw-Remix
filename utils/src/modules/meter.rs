@@ -1,4 +1,4 @@
-use smash::app::BattleObject;
+use smash::app::{BattleObject, BattleObjectModuleAccessor};
 use smash::app::lua_bind::*;
 use smash::lib::lua_const::*;
 use smash::phx::*;
@@ -297,6 +297,14 @@ impl MeterModule {
         module.last_levels_consumed = 0;
         module.last_levels_added = 0;
 
+        unsafe {
+            if (*object).agent_kind_hash.hash == Hash40::new("fighter_kind_dolly").hash {
+                let boma = (*object).module_accessor;
+                let is_superspecial = !WorkModule::is_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
+                dolly_super_special_check(boma, is_superspecial as u8);
+            }
+        }
+
         if new_levels != 0 && show_flash_on_change {
             Self::display(module.owner, new_levels);
             Self::flash(module.owner);
@@ -333,6 +341,34 @@ unsafe fn fighter_handle_damage_hook(fighter: *mut smash::app::BattleObject, arg
     }
 }
 
+#[skyline::hook(offset = 0x970fd0)]
+pub unsafe extern "C" fn dolly_super_special_check(module_accessor: *mut smash::app::BattleObjectModuleAccessor, param_2: u8) {
+    original!()(module_accessor, param_2)
+}
+
+#[repr(C)]
+pub struct TempModule {
+  vtable: *const u64,
+  owner: *mut BattleObjectModuleAccessor,
+  // ...
+}
+
+#[skyline::hook(offset = 0x971230)]
+pub unsafe extern "C" fn dolly_super_special_check_param(work: &mut TempModule, _damage: &mut TempModule) -> u64 {
+    let module_accessor = work.owner;
+    if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) > 7 {
+        std::process::abort();
+    }
+    if MeterModule::level(module_accessor.as_mut().unwrap().object()) >= 4 {
+        return 1
+    }
+    0
+}
+
 pub fn init() {
-    skyline::install_hook!(fighter_handle_damage_hook);
+    skyline::install_hooks!(
+        fighter_handle_damage_hook,
+        dolly_super_special_check,
+        dolly_super_special_check_param
+    );
 }

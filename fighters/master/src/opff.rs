@@ -21,47 +21,12 @@ unsafe fn areadbhar_autocancel(boma: &mut BattleObjectModuleAccessor, id: usize,
     }
 }
 
-//Amyr Jump Cancel (Raging Storm)
-unsafe fn amyr_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
-    if [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_HIT,
-        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_TURN,
-        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_CANCEL,
-        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_LANDING_1,
-        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_LANDING_2,
-        *FIGHTER_STATUS_KIND_SPECIAL_LW].contains(&status_kind) {
-        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
-            if situation_kind == *SITUATION_KIND_GROUND {
-                if boma.is_input_jump() {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                }
-            }
-        }
-    }
-}
-
 // Areadbhar Dash Cancel (Raging Storm)
 unsafe fn areadbhar_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     if [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_FRONT,
         *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind) {
         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
             if situation_kind == *SITUATION_KIND_GROUND {
-                if boma.is_cat_flag(Cat1::Dash) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
-                }
-                if boma.is_cat_flag(Cat1::TurnDash) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_TURN_DASH, false);
-                }
-            }
-        }
-    }
-}
-
-// Dsmash Dash Cancel (Raging Storm)
-unsafe fn dsmash_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32, frame: f32) {
-    if [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_FRONT,    // ?
-        *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind) {
-        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
-            if frame > 28.0 {
                 if boma.is_cat_flag(Cat1::Dash) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
                 }
@@ -85,14 +50,21 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
+unsafe fn aymr_slowdown(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_HIT)  {
+        if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) && MotionModule::frame(boma) < 10.0{
+            SlowModule::set_whole(boma, 7, 100);
+        }
+    }
+}
+
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    areadbhar_autocancel(boma, id, status_kind, situation_kind, frame);
+    //areadbhar_autocancel(boma, id, status_kind, situation_kind, frame);
     nspecial_cancels(boma, status_kind, situation_kind);
+    aymr_slowdown(boma);
 
     // Magic Series
-    amyr_jc(boma, status_kind, situation_kind, cat[0]);
-    areadbhar_dash_cancel(boma, status_kind, situation_kind, cat[0]);
-    dsmash_dash_cancel(boma, status_kind, cat[0], frame);
+    //areadbhar_dash_cancel(boma, status_kind, situation_kind, cat[0]);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MASTER )]

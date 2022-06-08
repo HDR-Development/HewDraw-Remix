@@ -8,6 +8,12 @@ extern "C" {
     #[link_name = "offsets_demon_on_link_capture_event"]
     fn offsets_demon_on_link_capture_event() -> usize;
 
+    #[link_name = "offsets_dolly_super_special_check"]
+    fn offsets_dolly_super_special_check() -> usize;
+
+    #[link_name = "offsets_dolly_super_special_check_param"]
+    fn offsets_dolly_super_special_check_param() -> usize;
+
     #[link_name = "offsets_force_linear_histun"]
     fn offsets_force_linear_histun() -> usize;
 
@@ -79,6 +85,18 @@ pub fn get_command_flag_cat() -> usize {
 pub fn demon_on_link_capture_event() -> usize {
     unsafe {
         offsets_demon_on_link_capture_event()
+    }
+}
+
+pub fn dolly_super_special_check() -> usize {
+    unsafe {
+        offsets_dolly_super_special_check()
+    }
+}
+
+pub fn dolly_super_special_check_param() -> usize {
+    unsafe {
+        offsets_dolly_super_special_check_param()
     }
 }
 
