@@ -247,7 +247,7 @@ unsafe fn sub_transition_group_check_ground_jump_mini_attack(fighter: &mut L2CFi
         }
         // Disable the grab button from being used to perform the "short hop aerial macro"
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0 // Added "No Grab" check
         && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
         && fighter.sub_check_button_jump().get_bool() {
             fighter.change_status_jump_mini_attack(false.into());
@@ -268,7 +268,7 @@ unsafe fn sub_transition_group_check_air_escape(fighter: &mut L2CFighterCommon) 
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
         // Disable Airdodging if you're pressing Grab.
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0 // Added "No Grab" check
         && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE != 0
         && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
             fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_AIR.into(), true.into());
