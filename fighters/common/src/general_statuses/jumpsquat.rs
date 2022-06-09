@@ -100,7 +100,14 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 
     // begin testing for transitions out of jump squat
-
+    
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
+        fighter.change_status(
+            L2CValue::I32(*FIGHTER_STATUS_KIND_ESCAPE_AIR), // We don't want to change to ESCAPE_AIR_SLIDE in case they do a nair dodge
+            L2CValue::Bool(true)
+        );
+        return 0.into();
+    }
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START) {
         fighter.change_status(
             L2CValue::I32(*FIGHTER_STATUS_KIND_JUMP),
@@ -120,13 +127,6 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0 {
         fighter.change_status(
             L2CValue::I32(*FIGHTER_STATUS_KIND_CATCH),
-            L2CValue::Bool(true)
-        );
-        return 0.into();
-    }
-    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
-        fighter.change_status(
-            L2CValue::I32(*FIGHTER_STATUS_KIND_ESCAPE_AIR), // We don't want to change to ESCAPE_AIR_SLIDE in case they do a nair dodge
             L2CValue::Bool(true)
         );
         return 0.into();
