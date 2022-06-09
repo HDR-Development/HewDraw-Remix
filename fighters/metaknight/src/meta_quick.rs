@@ -104,15 +104,16 @@ unsafe fn check_reset(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     // we dont want meta quick *or* the ready effect to persist during these states
     if fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_WIN,
-        *FIGHTER_STATUS_KIND_LOSE,]) {
+        *FIGHTER_STATUS_KIND_LOSE,
+        *FIGHTER_STATUS_KIND_ENTRY,]) {
         VarModule::set_int(fighter.object(), vars::common::GIMMICK_TIMER, 0);
+        MeterModule::reset(fighter.object());
     }
 
     // we don't want meta quick to persist during any of these states
     if fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_DEAD,
-        *FIGHTER_STATUS_KIND_REBIRTH,
-        *FIGHTER_STATUS_KIND_ENTRY]) {
+        *FIGHTER_STATUS_KIND_REBIRTH]) {
         VarModule::set_int(fighter.object(), vars::common::GIMMICK_TIMER, 0);
     }
 }
