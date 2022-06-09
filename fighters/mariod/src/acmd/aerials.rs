@@ -11,7 +11,7 @@ unsafe fn mariod_attack_air_n_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 0, 0, Hash40::new("kneer"), 10.0, 50, 95, 0, 25, 3.7, 0.8, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_KICK);
         ATTACK(fighter, 1, 0, Hash40::new("kneel"), 10.0, 50, 95, 0, 25, 3.7, 0.9, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_KICK);
     }
-    frame(lua_state, 11.0);
+    frame(lua_state, 10.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("legr"), 14.0, 361, 100, 0, 20, 3.0, 0.8, 0.0, 0.0, None, None, None, 0.85, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATTACK(fighter, 1, 0, Hash40::new("kneel"), 14.0, 361, 100, 0, 20, 3.0, 0.9, 0.0, 0.0, None, None, None, 0.85, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -31,16 +31,16 @@ unsafe fn mariod_attack_air_n_game(fighter: &mut L2CAgentBase) {
 unsafe fn mariod_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("mariod_smash_aura"), Hash40::new("legl"), 2.0, 0.0, 0.0, 0, 0, 0, 0.8, true);
-    }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("mariod_smash_impact"), Hash40::new("legl"), 2.0, 0.0, 0.0, 0, 0, 0, 0.9, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("mariod_smash_aura"), Hash40::new("hip"), 2.0, 0.0, 0.0, 0, 0, 0, 0.8, true);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("mariod_smash_impact"), Hash40::new("hip"), 2.0, 0.0, 0.0, 0, 0, 0, 0.9, true);
         LAST_EFFECT_SET_RATE(fighter, 0.7);
     }
-    frame(lua_state, 29.0);
+    frame(lua_state, 27.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("mariod_smash_aura"), false, true);
     }
@@ -48,6 +48,21 @@ unsafe fn mariod_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("mariod_smash_impact"), true, true);
     }
+}
+
+#[acmd_script( agent = "mariod", script = "sound_attackairn" , category = ACMD_SOUND , low_priority)]
+unsafe fn sound_attackairn(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_spirits_floor_elec_spark2"));
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_spirits_floor_elec_spark1"));
+    }
+    
 }
 
 #[acmd_script( agent = "mariod", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
@@ -262,6 +277,7 @@ pub fn install() {
     install_acmd_scripts!(
         mariod_attack_air_n_game,
         mariod_attack_air_n_effect,
+        sound_attackairn,
         mariod_attack_air_f_game,
         mariod_attack_air_f_effect,
         mariod_attack_air_b_game,
