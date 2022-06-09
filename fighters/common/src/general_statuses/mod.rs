@@ -126,6 +126,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_LandingAttackAirSub,
             status_pre_landing_fall_special,
             sub_air_transition_group_check_air_attack_hook,
+            sub_transition_group_check_air_lasso,
             sub_transition_group_check_ground_jump_mini_attack,
             sub_transition_group_check_air_escape
         );
@@ -236,6 +237,30 @@ unsafe fn sub_air_transition_group_check_air_attack_hook(fighter: &mut L2CFighte
     } else {
         call_original!(fighter)
     }
+}
+
+#[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_lasso)]
+unsafe fn sub_transition_group_check_air_lasso(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+        // Disable Airdodging if you're pressing Grab.
+        let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+        let cat2 = fighter.global_table[CMD_CAT2].get_i32();
+        // original line
+        // if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_AIR_LASSO != 0 {
+        // Split the Air Lasso check into two inputs, so that if the buffer gets cleared and you're still holding Shield,
+        // you will never get an air tether. That's the theory, anyway.
+        if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_COMMON_GUARD != 0
+        && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO) {
+            let air_lasso = WorkModule::get_param_int(fighter.module_accessor, hash40("air_lasso_type"), 0);
+            if air_lasso != *FIGHTER_AIR_LASSO_TYPE_NONE
+            && !LinkModule::is_link(fighter.module_accessor, *FIGHTER_LINK_NO_CONSTRAINT) {
+                fighter.change_status(FIGHTER_STATUS_KIND_AIR_LASSO.into(), true.into());
+                return true.into();
+            }
+        }
+    }
+    false.into()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_jump_mini_attack)]
