@@ -9,6 +9,17 @@
     <float hash="attack_point">0</float>
     <float hash="move_point">0</float>
   </struct>
+  <list hash="param_drcapsule">
+    <struct index="0">
+      <int hash="life">90</int>
+      <float hash="speed">1.45</float>
+      <float hash="gravity_accel">0.072</float>
+      <float hash="angle">50</float>
+    </struct>
+	<hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_special_s">
     <struct index="0">
       <float hash="special_s_attack_spd_y">0.5</float>
