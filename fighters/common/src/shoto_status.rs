@@ -125,9 +125,8 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
     //     }
     // }
     // new
-    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE)
-    && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-        fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
+
+    if fighter.sub_transition_group_check_ground_guard().get_bool() {
         return 1.into();
     }
     if fighter.sub_transition_group_check_special_command().get_bool() {
