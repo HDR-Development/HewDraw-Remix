@@ -98,40 +98,80 @@ static mut COUNTER: usize = 0;
 static mut LAST_FIGHTER_FOUND: u64 = 0x0;
 static mut LAST_FIGHTER2_FOUND: u64 = 0x0;
 
+static mut WAS_RANDOM_SELECTION: bool = false;
+
 static mut WAS_RANDOM: bool = false;
+static mut IS_PRE_ENTRY: bool = false;
+
+const HASH_MASK: u64 = 0xFF_FFFFFFFF;
+const KEY_MASK: u64 = 0xFFFFFF_0000000000;
+const RANDOM_HASH: u64 = 0xfd5f7fa78;
+
+fn is_random(entry: u64) -> bool {
+    (entry & HASH_MASK) == RANDOM_HASH
+}
+
+fn key(entry: u64) -> u64 {
+    entry & KEY_MASK
+}
 
 #[skyline::hook(offset = 0x1a13780, inline)]
 unsafe fn change_random_early(ctx: &mut skyline::hooks::InlineCtx) {
     let obj = *ctx.registers[23].x.as_ref() as *mut u64;
     let obj = *(obj as *mut *mut u64).add(1);
-    if ninput::any::is_down_any(ninput::Buttons::ZL | ninput::Buttons::ZR) {
-        return;
+    println!("Entering change_random_early");
+    let ignore_random = ninput::any::is_down_any(ninput::Buttons::ZL | ninput::Buttons::ZR);
+    if ignore_random {
+        println!("Ignoring the melee random selection!");
     }
-    if (*obj.add(0x200 / 0x8) & 0xFF_FFFFFFFF) == 0xfd5f7fa78 || (*obj.add(0x208 / 0x8) & 0xFF_FFFFFFFF) == 0xfd5f7fa78 {
-        LAST_FIGHTER_FOUND = (*obj.add(0x200 / 0x8) & 0xFFFFFF_0000000000) | *REGULAR_CHARA_HASHES.choose(&mut rand::thread_rng()).unwrap_or(&0xfd5f7fa78);
-        if LAST_FIGHTER_FOUND & 0xFF_FFFFFFFF == smash::hash40("ui_chara_ptrainer") {
-            LAST_FIGHTER2_FOUND = (*obj.add(0x208 / 0x8) & 0xFFFFFF_0000000000) | *PT_CHARA_HASHES.choose(&mut rand::thread_rng()).unwrap_or(&0xfd5f7fa78);
+
+    let main_chara = *obj.add(0x200 / 0x8);
+    let sub_chara = *obj.add(0x208 / 0x8);
+
+    if !ignore_random && (is_random(main_chara) || is_random(sub_chara)) {
+        println!("The random pane was selected");
+
+        let chara_hash = REGULAR_CHARA_HASHES.choose(&mut rand::thread_rng()).copied().unwrap_or(RANDOM_HASH);
+
+        LAST_FIGHTER_FOUND = chara_hash | key(main_chara);
+        LAST_FIGHTER2_FOUND = if chara_hash == smash::hash40("ui_chara_ptrainer") {
+            PT_CHARA_HASHES.choose(&mut rand::thread_rng()).copied().unwrap_or(RANDOM_HASH) | key(sub_chara)
         } else {
-            LAST_FIGHTER2_FOUND = (*obj.add(0x208 / 0x8) & 0xFFFFFF_0000000000) | LAST_FIGHTER_FOUND;
-        }
-        COUNTER += 1;
-        if COUNTER >= REGULAR_CHARA_HASHES.len() {
-            COUNTER = 0;
-        }
+            chara_hash | key(sub_chara)
+        };
+
+        println!("Main character: {:#x}", LAST_FIGHTER_FOUND);
+        println!("Sub character: {:#x}", LAST_FIGHTER2_FOUND);
+        
+        println!("Setting x24 to {:#x}", *obj.add(0x200 / 0x8));
         *ctx.registers[24].x.as_mut() = LAST_FIGHTER_FOUND;
-        WAS_RANDOM = true;
+        WAS_RANDOM_SELECTION = true;
+    } else {
+        WAS_RANDOM_SELECTION = false;
     }
+
 }
 
+// only runs on random pane selected
 #[skyline::hook(offset = 0x1a0ca40)]
 unsafe fn decide_fighter(arg1: u64, arg2: u64, arg3: u64, arg4: u64) -> u64 {
-    let something = (arg1 as *mut u64).add(2);
-    if (*something & 0xFF_FFFFFFFF) == 0xfd5f7fa78 && WAS_RANDOM {
-        *something = LAST_FIGHTER_FOUND;
-        *something.add(1) = LAST_FIGHTER2_FOUND;
-        WAS_RANDOM = false;
+    println!("Entering decide_fighter");
+    if !WAS_RANDOM_SELECTION {
+        println!("decide_fighter called when the selection was not random");
     }
-    println!("{}", *(arg1 as *mut u32).add(1));
+
+    let p_main_chara = (arg1 as *mut u64).add(2);
+    let p_sub_chara = (arg1 as *mut u64).add(3);
+
+    if WAS_RANDOM_SELECTION && (is_random(*p_main_chara) || is_random(*p_sub_chara)) {
+        *p_main_chara = LAST_FIGHTER_FOUND;
+        *p_sub_chara = LAST_FIGHTER2_FOUND;
+    }
+    println!("Decided on fighter: {:#x}", *p_main_chara);
+
+    WAS_RANDOM_SELECTION = false;
+    println!("Cleared random selection flag");
+
     call_original!(arg1, arg2, arg3, arg4)
 }
 
@@ -139,36 +179,42 @@ unsafe fn decide_fighter(arg1: u64, arg2: u64, arg3: u64, arg4: u64) -> u64 {
 unsafe fn copy_fighter_info2(dest: u64, src: u64) {
     let src_obj = *(src as *mut *mut u64).add(1);
     let src_obj = src_obj.add(0x1F0 / 8);
-    println!("WAS_RANDOM: {}", WAS_RANDOM);
-    if WAS_RANDOM {
+    println!("Entering copy_fighter_info2");
+
+    if WAS_RANDOM_SELECTION {
         *(src_obj as *mut u32).add(8) = rand::thread_rng().gen::<u32>() % 8;
+
+        println!("Randomly selected slot to be {}", *(src_obj as *mut u32).add(8));
     }
     call_original!(dest, src);
 }
 
-#[skyline::hook(offset = 0x1842ec8, inline)]
-unsafe fn pre_entry_assign(ctx: &skyline::hooks::InlineCtx) {
-    let obj = *((*ctx.registers[1].x.as_ref() + 0x8) as *const u64);
-    let obj2 = (obj as *mut u64).add(0x1f0 / 0x8);
-    if (*obj2.add(2) & 0xFF_FFFFFFFF) == 0xfd5f7fa78 {
-        let chara = *REGULAR_CHARA_HASHES.choose(&mut rand::thread_rng()).unwrap_or(&0xfd5f7fa78);
-        let chara_2 = if chara == smash::hash40("ui_chara_ptrainer") {
-            *PT_CHARA_HASHES.choose(&mut rand::thread_rng()).unwrap_or(&0xfd5f7fa78)
-        } else {
-            chara
-        };
-        *obj2.add(2) = (*obj2.add(2) & 0xFFFFFF_0000000000) | chara;
-        *obj2.add(3) = (*obj2.add(3) & 0xFFFFFF_0000000000) | chara_2;
-        WAS_RANDOM = true;
-    }
-}
+// #[skyline::hook(offset = 0x1842ec8, inline)]
+// unsafe fn pre_entry_assign(ctx: &skyline::hooks::InlineCtx) {
+    // let obj = *((*ctx.registers[1].x.as_ref() + 0x8) as *const u64);
+    // let obj2 = (obj as *mut u64).add(0x1f0 / 0x8);
+    // if (*obj2.add(2) & 0xFF_FFFFFFFF) == 0xfd5f7fa78 {
+    //     let chara = *REGULAR_CHARA_HASHES.choose(&mut rand::thread_rng()).unwrap_or(&0xfd5f7fa78);
+    //     let chara_2 = if chara == smash::hash40("ui_chara_ptrainer") {
+    //         *PT_CHARA_HASHES.choose(&mut rand::thread_rng()).unwrap_or(&0xfd5f7fa78)
+    //     } else {
+    //         chara
+    //     };
+    //     *obj2.add(2) = (*obj2.add(2) & 0xFFFFFF_0000000000) | chara;
+    //     *obj2.add(3) = (*obj2.add(3) & 0xFFFFFF_0000000000) | chara_2;
+    //     println!("is random!");
+    //     WAS_RANDOM = true;
+    //     IS_PRE_ENTRY = true;
+    // }
+    // println!("HERE2");
+// }
 
 pub fn install() {
     skyline::install_hooks!(
         change_random_early,
         decide_fighter,
         copy_fighter_info2,
-        pre_entry_assign
+        // pre_entry_assign
     );
 
     unsafe {
