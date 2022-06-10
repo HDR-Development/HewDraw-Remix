@@ -9,8 +9,8 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     MeterModule::watch_damage(fighter.object(), true);
     MeterModule::set_damage_gain_mul(fighter.object(), 6.0);
     
-    println!("Meter Module: {}", MeterModule::meter(fighter.object()));
-    println!("Gimmick Timer: {}", VarModule::get_int(fighter.object(), vars::common::GIMMICK_TIMER));
+    //println!("Meter Module: {}", MeterModule::meter(fighter.object()));
+    //println!("Gimmick Timer: {}", VarModule::get_int(fighter.object(), vars::common::GIMMICK_TIMER));
     
 
 
@@ -81,21 +81,21 @@ unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     // handle speed application once
     if VarModule::is_flag(fighter.object(), vars::metaknight::META_QUICK_NEED_SET_SPEEDS) {
         if VarModule::get_int(fighter.object(), vars::common::GIMMICK_TIMER) > 0 {
-            fighter.apply_status_speed_mul(1.2);
+            apply_status_speed_mul(fighter, 1.2);
         } else {
-            fighter.apply_status_speed_mul(0.9);
+            apply_status_speed_mul(fighter, 0.9);
         }
         VarModule::off_flag(fighter.object(), vars::metaknight::META_QUICK_NEED_SET_SPEEDS);
     }
 
-    println!("current status: {}", fighter.status());
-    println!("meta quick status: {}", VarModule::get_int(fighter.object(), vars::metaknight::META_QUICK_STATUS));
+    //println!("current status: {}", fighter.status());
+    //println!("meta quick status: {}", VarModule::get_int(fighter.object(), vars::metaknight::META_QUICK_STATUS));
     // if our status is changing, then we need to indicate that next frame we will need to set new speeds
     if fighter.status() != VarModule::get_int(fighter.object(), vars::metaknight::META_QUICK_STATUS) {
-        println!("Status is changing!");
+        //println!("Status is changing!");
         VarModule::on_flag(fighter.object(), vars::metaknight::META_QUICK_NEED_SET_SPEEDS);
         VarModule::set_int(fighter.object(), vars::metaknight::META_QUICK_STATUS, fighter.status());
-        println!("new meta quick status: {}", VarModule::get_int(fighter.object(), vars::metaknight::META_QUICK_STATUS));
+        //println!("new meta quick status: {}", VarModule::get_int(fighter.object(), vars::metaknight::META_QUICK_STATUS));
     }
 }
 
@@ -202,4 +202,20 @@ unsafe fn show_quick_ready_flash(fighter: &mut smash::lua2cpp::L2CFighterCommon)
             VarModule::set_int(fighter.object(), vars::metaknight::META_QUICK_READY_FLASH_TIMER, 0);
         }
     }
+}
+
+/// applies the given multiplier to various speed stats of the given fighter. 
+/// This should only be called once per status, or you will get some multiplicative effects
+unsafe fn apply_status_speed_mul(fighter: &mut smash::lua2cpp::L2CFighterCommon, mul: f32) {
+    // set the X motion speed multiplier (where movement is baked into an anim)
+    lua_bind::FighterKineticEnergyMotion::set_speed_mul(self.get_motion_energy(), mul);
+
+    // set the X motion accel multiplier for control energy (used in the air, during walk, fall, etc)
+    lua_bind::FighterKineticEnergyController::mul_x_accel_mul( self.get_controller_energy(), mul);
+
+    // set the X motion accel multiplier for control energy (used in the air, during walk, fall, etc)
+    lua_bind::FighterKineticEnergyController::mul_x_accel_add( self.get_controller_energy(), mul);
+
+    // set the X speed max multiplier for control energy (used in the air, during walk, fall, etc)
+    lua_bind::FighterKineticEnergyController::mul_x_speed_max(self.get_controller_energy(), mul);
 }

@@ -177,15 +177,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     let run_accel_add = WorkModule::get_param_float(fighter.module_accessor, hash40("run_accel_mul"), 0);
     let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
 
-    // get the dash speed multiplier, for special mechanics that may wish to reduce dash speed (meta quick, etc)
-    let mut dash_speed_mul = VarModule::get_float(fighter.object(), vars::common::DASH_SPEED_MUL);
-    match dash_speed_mul {
-        // if its not between 0.1 and 3.0, it is likely not a real value and we should ignore it
-        0.1..=3.0 => {},
-        _ => { dash_speed_mul = 1.0 }
-    }
-
-    let dash_speed: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0) * dash_speed_mul;
+    let dash_speed: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0);
     let run_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("run_speed_max"), 0);
     let dash_stick_x: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dash_stick_x"));
     let stick_x = fighter.global_table[STICK_X].get_f32();

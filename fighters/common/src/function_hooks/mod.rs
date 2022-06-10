@@ -31,7 +31,6 @@ pub fn install() {
     controls::install();
     momentum_transfer::install();
     jumps::install();
-    //dash_dancing::install();
 
     unsafe {
         // Handles getting rid of the kill zoom

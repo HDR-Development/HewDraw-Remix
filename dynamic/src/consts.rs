@@ -188,10 +188,6 @@ pub mod vars {
         /// this multiplier can be set to a value between 0.1 and 3.0 to increase
         /// a character's jump speed max for momentum transfer (for meta quick, etc)
         pub const JUMP_SPEED_MAX_MUL: i32 = 0x1A;
-        /// this multiplier can be set to a value between 0.1 and 3.0 to increase
-        /// a character's initial dash speed (for meta quick, etc)
-        pub const DASH_SPEED_MUL: i32 = 0x1A;
-       
     }
 
     pub mod bayonetta {
