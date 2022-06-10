@@ -17,8 +17,13 @@ pub unsafe fn update() {
 
     //println!("doing turbo update!");
     for i in 0..8 {
-        if let Some(fighter) = util::get_fighter_common_from_entry_id(i) {
-            handle_turbo(fighter);
+        if let Some(object_id) = util::get_active_battle_object_id_from_entry_id(i) {
+            let object = util::get_battle_object_from_id(object_id);
+            if !object.is_null() {
+                if let Some(fighter) = util::get_fighter_common_from_entry_id(i) {
+                   handle_turbo(fighter);
+                }
+            }
         }
 
     }
