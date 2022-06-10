@@ -3,6 +3,7 @@ use utils_dyn::game_modes::CustomMode;
 use crate::offsets;
 
 pub mod tag;
+pub mod turbo;
 
 lazy_static! {
     static ref GAME_MODE_HTML: Vec<u8> = std::fs::read("mods:/ui/docs/gamemodes.html").unwrap();
@@ -79,6 +80,7 @@ unsafe fn on_rule_select_hook(_: &skyline::hooks::InlineCtx) {
 
     match response.get_last_url() {
         Ok("http://localhost/btn-tag") => CURRENT_CUSTOM_MODE = Some(CustomMode::SmashballTag),
+        Ok("http://localhost/btn-turbo") => CURRENT_CUSTOM_MODE = Some(CustomMode::TurboMode),
         _ => {}
     }
 }
@@ -100,6 +102,7 @@ unsafe fn once_per_game_frame(game_state_ptr: u64) {
 
     match get_custom_mode() {
         Some(CustomMode::SmashballTag) => tag::update(),
+        Some(CustomMode::TurboMode) => turbo::update(),
         _ => {}
     }
 
