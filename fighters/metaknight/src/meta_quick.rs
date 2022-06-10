@@ -208,14 +208,14 @@ unsafe fn show_quick_ready_flash(fighter: &mut smash::lua2cpp::L2CFighterCommon)
 /// This should only be called once per status, or you will get some multiplicative effects
 unsafe fn apply_status_speed_mul(fighter: &mut smash::lua2cpp::L2CFighterCommon, mul: f32) {
     // set the X motion speed multiplier (where movement is baked into an anim)
-    lua_bind::FighterKineticEnergyMotion::set_speed_mul(self.get_motion_energy(), mul);
+    lua_bind::FighterKineticEnergyMotion::set_speed_mul(fighter.get_motion_energy(), mul);
 
     // set the X motion accel multiplier for control energy (used in the air, during walk, fall, etc)
-    lua_bind::FighterKineticEnergyController::mul_x_accel_mul( self.get_controller_energy(), mul);
+    lua_bind::FighterKineticEnergyController::mul_x_accel_mul( fighter.get_controller_energy(), mul);
 
     // set the X motion accel multiplier for control energy (used in the air, during walk, fall, etc)
-    lua_bind::FighterKineticEnergyController::mul_x_accel_add( self.get_controller_energy(), mul);
+    lua_bind::FighterKineticEnergyController::mul_x_accel_add( fighter.get_controller_energy(), mul);
 
     // set the X speed max multiplier for control energy (used in the air, during walk, fall, etc)
-    lua_bind::FighterKineticEnergyController::mul_x_speed_max(self.get_controller_energy(), mul);
+    lua_bind::FighterKineticEnergyController::mul_x_speed_max(fighter.get_controller_energy(), mul);
 }
