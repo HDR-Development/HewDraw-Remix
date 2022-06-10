@@ -249,8 +249,8 @@ unsafe fn sub_transition_group_check_air_lasso(fighter: &mut L2CFighterCommon) -
         // if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_AIR_LASSO != 0 {
         // Split the Air Lasso check into two inputs, so that if the buffer gets cleared and you're still holding Shield,
         // you will never get an air tether. That's the theory, anyway.
-        if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_COMMON_GUARD != 0
-        && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE != 0
+        && cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_AIR_LASSO != 0
         && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO) {
             let air_lasso = WorkModule::get_param_int(fighter.module_accessor, hash40("air_lasso_type"), 0);
             if air_lasso != *FIGHTER_AIR_LASSO_TYPE_NONE
