@@ -1,6 +1,32 @@
 use super::*;
 use utils::ext::*;
 
+#[skyline::hook(offset = 0x16d948c, inline)]
+unsafe fn packed_packet_creation(ctx: &mut skyline::hooks::InlineCtx) {
+    // *ctx.registers[8].x.as_mut() |= 0xFC_00000000;
+    *ctx.registers[22].x.as_mut() = 0x2;
+    // println!("{:#x} | {:#x}", *ctx.registers[8].x.as_ref(), *ctx.registers[22].x.as_ref());
+}
+
+#[skyline::hook(offset = 0x16d94c0, inline)]
+unsafe fn write_packet(ctx: &mut skyline::hooks::InlineCtx) {
+    let raw = *ctx.registers[19].x.as_ref();
+
+    let mapped_inputs = *((raw + 0x49508) as *const MappedInputs);
+    let mut packet = 0u64;
+
+    *(&mut packet as *mut u64 as *mut i8) = mapped_inputs.lstick_x;
+    *(&mut packet as *mut u64 as *mut i8).add(1) = mapped_inputs.lstick_y;
+
+    let buttons = (mapped_inputs.buttons.bits() as u64) << 16;
+    packet |= buttons;
+
+    *(&mut packet as *mut u64 as *mut i8).add(6) = mapped_inputs.rstick_x;
+    *(&mut packet as *mut u64 as *mut i8).add(7) = mapped_inputs.rstick_y;
+
+    *ctx.registers[8].x.as_mut() = packet;
+}
+
 #[repr(C)]
 struct SomeControllerStruct {
     padding: [u8; 0x10],
@@ -23,8 +49,19 @@ unsafe fn map_controls_hook(
     controller_struct: &mut SomeControllerStruct,
     arg: bool
 ) {
+    let entry_count = (*mappings.add(player_idx as usize))._34[0];
     let ret = original!()(mappings, player_idx, out, controller_struct, arg);
     let controller = &mut controller_struct.controller;
+
+    println!("entry_count vs. current: {} vs. {}", entry_count, (*mappings.add(player_idx as usize))._34[0]);
+
+    if (*out).buttons.contains(Buttons::CStickOn) && (*mappings.add(player_idx as usize))._34[0] != entry_count {
+        (*out).rstick_x = (controller.left_stick_x * (i8::MAX as f32)) as i8;
+        (*out).rstick_y = (controller.left_stick_y * (i8::MAX as f32)) as i8;
+    } else {
+        (*out).rstick_x = (controller.right_stick_x * (i8::MAX as f32)) as i8;
+        (*out).rstick_y = (controller.right_stick_y * (i8::MAX as f32)) as i8;
+    }
 
     let mut sh_footstool_input = Buttons::empty();
     for x in 0..8 {
@@ -178,6 +215,106 @@ unsafe fn analog_trigger_r(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
+#[repr(C)]
+struct ControlModuleInternal {
+    vtable: *mut u8,
+    controller_index: i32,
+    buttons: Buttons,
+    stick_x: f32,
+    stick_y: f32,
+    padding: [f32; 2],
+    unk: [u32; 8],
+    clamped_lstick_x: f32,
+    clamped_lstick_y: f32,
+    padding2: [f32; 2],
+    clamped_rstick_x: f32,
+    clamped_rstick_y: f32,
+}
+
+unsafe fn get_mapped_controller_inputs(player: usize) -> &'static MappedInputs {
+    let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c30f0) as *const u64);
+    &*((base + 0x2b8 + 0x8 * (player as u64)) as *const MappedInputs)
+}
+
+static mut LAST_ALT_STICK: [f32; 2] = [0.0, 0.0];
+
+#[skyline::hook(offset = 0x3f7220)]
+unsafe fn parse_inputs(this: &mut ControlModuleInternal) {
+    const NEUTRAL: f32 = 0.2;
+    const CLAMP_MAX: f32 = 120.0;
+
+    // println!("this: {:#x}", this as *mut ControlModuleInternal as u64);
+
+    if this.controller_index == -1 {
+        return call_original!(this);
+    }
+
+    println!("this.controller_index: {}", this.controller_index);
+    // assert!(this.controller_index <= 7);
+
+    let inputs = get_mapped_controller_inputs(this.controller_index as usize);
+
+    let clamp_mul = 1.0 / CLAMP_MAX;
+
+    // let raw_lstick_x = ((inputs.lstick_x as f32) * clamp_mul).clamp(-1.0, 1.0);
+    // let raw_lstick_y = ((inputs.lstick_y as f32) * clamp_mul).clamp(-1.0, 1.0);
+
+    // let raw_lstick_x = if raw_lstick_x.abs() >= NEUTRAL { raw_lstick_x } else { 0.0 };
+    // let raw_lstick_y = if raw_lstick_y.abs() >= NEUTRAL { raw_lstick_y } else { 0.0 };
+
+    let raw_rstick_x = ((inputs.rstick_x as f32) * clamp_mul).clamp(-1.0, 1.0);
+    let raw_rstick_y = ((inputs.rstick_y as f32) * clamp_mul).clamp(-1.0, 1.0);
+
+    LAST_ALT_STICK[0] = if raw_rstick_x.abs() >= NEUTRAL { raw_rstick_x } else { 0.0 };
+    LAST_ALT_STICK[1] = if raw_rstick_y.abs() >= NEUTRAL { raw_rstick_y } else { 0.0 };
+
+    call_original!(this)
+}
+
+#[skyline::hook(offset = 0x6b9c5c, inline)]
+unsafe fn after_exec(ctx: &skyline::hooks::InlineCtx) {
+    let module = *ctx.registers[19].x.as_ref();
+    let internal_class = *(module as *const u64).add(0x110 / 0x8);
+    *(internal_class as *mut f32).add(0x40 / 0x4) = LAST_ALT_STICK[0];
+    *(internal_class as *mut f32).add(0x44 / 0x4) = LAST_ALT_STICK[1];
+}
+
+#[skyline::hook(offset = 0x16d7ee4, inline)]
+unsafe fn handle_incoming_packet(ctx: &mut skyline::hooks::InlineCtx) {
+    let packet = *ctx.registers[15].x.as_ref();
+
+    let mut inputs = MappedInputs {
+        buttons: Buttons::empty(),
+        lstick_x: 0,
+        lstick_y: 0,
+        rstick_x: 0,
+        rstick_y: 0
+    };
+
+    let raw_buttons = ((packet >> 16) & 0xFFFF_FFFF) as u32;
+    let lstick_x = (packet & 0xFF) as i8;
+    let lstick_y = ((packet & 0xFF00) >> 8) as i8;
+    let rstick_x = ((packet >> 0x30) & 0xFF) as i8;
+    let rstick_y = ((packet >> 0x38) & 0xFF) as i8;
+
+    inputs.buttons = Buttons::from_bits_unchecked(raw_buttons as _);
+    inputs.lstick_x = lstick_x;
+    inputs.lstick_y = lstick_y;
+    inputs.rstick_x = rstick_x;
+    inputs.rstick_y = rstick_y;
+
+    *ctx.registers[13].x.as_mut() = std::mem::transmute(inputs);
+}
+
 pub fn install() {
-    skyline::install_hooks!(map_controls_hook, analog_trigger_l, analog_trigger_r);
+    skyline::install_hooks!(
+        map_controls_hook,
+        analog_trigger_l,
+        analog_trigger_r,
+        packed_packet_creation,
+        write_packet,
+        parse_inputs,
+        handle_incoming_packet,
+        after_exec
+    );
 }
