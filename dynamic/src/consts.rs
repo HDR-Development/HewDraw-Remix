@@ -155,6 +155,7 @@ pub mod vars {
         pub const TURN_DASH_FRAME: i32 = 0xA;
         pub const DOWN_STAND_FB_KIND: i32 = 0xB;
         pub const CSTICK_LIFE: i32 = 0xC;
+        pub const AGT_USED_COUNTER: i32 = 0xD;
 
         // float
         pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0;
@@ -389,6 +390,14 @@ pub mod vars {
         pub const REPEAT_COUNT_HI: i32 = 0x1001;
         pub const EX_SPECIAL_SCRIPTING: i32 = 0x1002;
         pub const AIR_CHAIN_COMBO_NUM: i32 = 0x1003;
+    }
+
+    pub mod shizue {
+        // flags
+        pub const IS_NOT_QUICK_RELEASE: i32 = 0x1000;
+
+        // floats
+        pub const STORED_BALLOON_POWER: i32 = 0x1000;
     }
 
     pub mod ryu {

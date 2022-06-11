@@ -493,13 +493,13 @@ unsafe fn master_special_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 34.0);
     if is_excute(fighter) {
         if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) > 0 { 
-            if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
-                VarModule::set_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL, 2);
-                let motion_rate = 48.0/(42.0-34.0);
-                FT_MOTION_RATE(fighter, motion_rate);
-                ArticleModule::set_rate(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, 1.0/motion_rate);
-                DamageModule::set_damage_mul(boma, 1.25);
-            }
+            // if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
+            //     VarModule::set_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL, 2);
+            //     let motion_rate = 48.0/(42.0-34.0);
+            //     FT_MOTION_RATE(fighter, motion_rate);
+            //     ArticleModule::set_rate(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, 1.0/motion_rate);
+            //     DamageModule::set_damage_mul(boma, 1.25);
+            // }
             WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_START_SUPER_ARMOR);
             if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 1 {
                 let motion_rate = 5.0/(42.0-34.0);
@@ -573,8 +573,8 @@ unsafe fn master_special_lw_effect(fighter: &mut L2CAgentBase) {
             EFFECT_FOLLOW(fighter, Hash40::new("master_axe_hold_end"), Hash40::new("haver"), 0, 13, 0.6, 0, 0, 0, 1, true);
             LAST_EFFECT_SET_COLOR(fighter, 0.5, 0.5, 6.0);
 
-            COL_PRI(fighter, 200);
-            FLASH(fighter, 1.0, 0.115, 0.71, 0.75);
+            //COL_PRI(fighter, 200);
+            //FLASH(fighter, 1.0, 0.115, 0.71, 0.75);
         }
     }
     frame(lua_state, 35.0);
@@ -590,8 +590,8 @@ unsafe fn master_special_lw_effect(fighter: &mut L2CAgentBase) {
             EFFECT_FOLLOW(fighter, Hash40::new("master_axe_hold_end"), Hash40::new("haver"), 0, 13, 0.6, 0, 0, 0, 1, true);
             LAST_EFFECT_SET_COLOR(fighter, 0.3, 0.3, 0.3);
 
-            COL_PRI(fighter, 200);
-            FLASH(fighter, 0.325, 0.157, 0.05, 0.75);
+            //COL_PRI(fighter, 200);
+            //FLASH(fighter, 0.325, 0.157, 0.05, 0.75);
         }
     }
     frame(lua_state, 40.0);
@@ -653,13 +653,13 @@ unsafe fn master_special_air_lw_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 34.0);
     if is_excute(fighter) {
-        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)){
-            VarModule::set_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL, 2);
-            let motion_rate = 48.0/(42.0-34.0);
-            FT_MOTION_RATE(fighter, motion_rate);
-            ArticleModule::set_rate(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, 1.0/motion_rate);
-            DamageModule::set_damage_mul(boma, 1.25);
-        }
+        // if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)){
+        //     VarModule::set_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL, 2);
+        //     let motion_rate = 48.0/(42.0-34.0);
+        //     FT_MOTION_RATE(fighter, motion_rate);
+        //     ArticleModule::set_rate(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, 1.0/motion_rate);
+        //     DamageModule::set_damage_mul(boma, 1.25);
+        // }
         if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) > 0 {
             WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_START_SUPER_ARMOR);
         }
@@ -733,8 +733,8 @@ unsafe fn master_special_air_lw_effect(fighter: &mut L2CAgentBase) {
             EFFECT_FOLLOW(fighter, Hash40::new("master_axe_hold_end"), Hash40::new("haver"), 0, 13, 0.6, 0, 0, 0, 1, true);
             LAST_EFFECT_SET_COLOR(fighter, 0.5, 0.5, 6.0);
 
-            COL_PRI(fighter, 200);
-            FLASH(fighter, 1.0, 0.115, 0.71, 0.75);
+            //COL_PRI(fighter, 200);
+            //FLASH(fighter, 1.0, 0.115, 0.71, 0.75);
         }
     }
     frame(lua_state, 35.0);
@@ -750,8 +750,8 @@ unsafe fn master_special_air_lw_effect(fighter: &mut L2CAgentBase) {
             EFFECT_FOLLOW(fighter, Hash40::new("master_axe_hold_end"), Hash40::new("haver"), 0, 13, 0.6, 0, 0, 0, 1, true);
             LAST_EFFECT_SET_COLOR(fighter, 0.3, 0.3, 0.3);
 
-            COL_PRI(fighter, 200);
-            FLASH(fighter, 0.325, 0.157, 0.05, 0.75);
+            //COL_PRI(fighter, 200);
+            //FLASH(fighter, 0.325, 0.157, 0.05, 0.75);
         }
     }
     frame(lua_state, 40.0);
@@ -789,53 +789,53 @@ unsafe fn master_special_air_lw_effect(fighter: &mut L2CAgentBase) {
 unsafe fn master_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
-            ATTACK(fighter, 0, 1, Hash40::new("top"), 30.0, 270, 0, 0, 1, 7.0, 0.0, 0.0, -300.0, Some(0.0), Some(0.0), Some(300.0), 0.1, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
-            AttackModule::set_add_reaction_frame(boma, 0, 60.0, false);
-        }
-    }
-    frame(lua_state, 5.0);
-    if is_excute(fighter) {
-        if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
-            AttackModule::clear_all(boma);
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
-                //ATTACK(fighter, 0, 1, Hash40::new("top"), 30.0, 270, 0, 0, 10, 300.0, 0.0, 0.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_OBJECT);
-            }
-        }
-    }
-    frame(lua_state, 50.0);
-    if is_excute(fighter) {
-        if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
-                let motion_rate = 1.0;
-                FT_MOTION_RATE(fighter, motion_rate);
-                ArticleModule::set_rate(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, 1.0/motion_rate);
-            }
-            else{
-                let motion_rate = 7.0;
-                FT_MOTION_RATE(fighter, motion_rate);
-                ArticleModule::set_rate(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, 1.0/motion_rate);
-            }
-        }
-    }
-    frame(lua_state, 52.0);
-    if is_excute(fighter) {
-        if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
-            AttackModule::clear_all(boma);
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
-                ATTACK(fighter, 0, 2, Hash40::new("top"), 1.0, 270, 0, 0, 10, 7.0, 0.0, 0.0, -300.0, Some(0.0), Some(0.0), Some(300.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_OBJECT);
-                AttackModule::set_attack_level(boma, 0, 5 as u8);
-            }
-        }
-    }
-    frame(lua_state, 53.0);
-    if is_excute(fighter) {
-        if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
-            AttackModule::clear_all(boma);
-        }
-    }
+    // frame(lua_state, 1.0);
+    // if is_excute(fighter) {
+    //     if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
+    //         ATTACK(fighter, 0, 1, Hash40::new("top"), 30.0, 270, 0, 0, 1, 7.0, 0.0, 0.0, -300.0, Some(0.0), Some(0.0), Some(300.0), 0.1, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
+    //         AttackModule::set_add_reaction_frame(boma, 0, 60.0, false);
+    //     }
+    // }
+    // frame(lua_state, 5.0);
+    // if is_excute(fighter) {
+    //     if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
+    //         AttackModule::clear_all(boma);
+    //         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
+    //             //ATTACK(fighter, 0, 1, Hash40::new("top"), 30.0, 270, 0, 0, 10, 300.0, 0.0, 0.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_OBJECT);
+    //         }
+    //     }
+    // }
+    // frame(lua_state, 50.0);
+    // if is_excute(fighter) {
+    //     if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
+    //         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
+    //             let motion_rate = 1.0;
+    //             FT_MOTION_RATE(fighter, motion_rate);
+    //             ArticleModule::set_rate(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, 1.0/motion_rate);
+    //         }
+    //         else{
+    //             let motion_rate = 7.0;
+    //             FT_MOTION_RATE(fighter, motion_rate);
+    //             ArticleModule::set_rate(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, 1.0/motion_rate);
+    //         }
+    //     }
+    // }
+    // frame(lua_state, 52.0);
+    // if is_excute(fighter) {
+    //     if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
+    //         AttackModule::clear_all(boma);
+    //         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
+    //             ATTACK(fighter, 0, 2, Hash40::new("top"), 1.0, 270, 0, 0, 10, 7.0, 0.0, 0.0, -300.0, Some(0.0), Some(0.0), Some(300.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_OBJECT);
+    //             AttackModule::set_attack_level(boma, 0, 5 as u8);
+    //         }
+    //     }
+    // }
+    // frame(lua_state, 53.0);
+    // if is_excute(fighter) {
+    //     if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
+    //         AttackModule::clear_all(boma);
+    //     }
+    // }
     frame(lua_state, 54.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_PULL_AXE);
@@ -866,17 +866,17 @@ unsafe fn master_special_lw_hit_effect(fighter: &mut L2CAgentBase) {
         LANDING_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 17, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(fighter, 0.9);
     }
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
-            EFFECT_FOLLOW(fighter, Hash40::new("master_axe_slash_particle"), Hash40::new("top"), 0, 4, 0, -10, 0, 0, 3.0, true);
-            EFFECT_OFF_KIND(fighter, Hash40::new("master_axe_slash_air_reverb"), true, true);
-        }
-        else{
-            EFFECT_FOLLOW(fighter, Hash40::new("master_axe_slash_particle"), Hash40::new("top"), 0, 4, 0, -10, 0, 0, 1, true);
-            EFFECT_OFF_KIND(fighter, Hash40::new("master_axe_slash_air_reverb"), true, true);
-        }
-    }
+    // frame(lua_state, 1.0);
+    // if is_excute(fighter) {
+    //     if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
+    //         EFFECT_FOLLOW(fighter, Hash40::new("master_axe_slash_particle"), Hash40::new("top"), 0, 4, 0, -10, 0, 0, 3.0, true);
+    //         EFFECT_OFF_KIND(fighter, Hash40::new("master_axe_slash_air_reverb"), true, true);
+    //     }
+    //     else{
+    //         EFFECT_FOLLOW(fighter, Hash40::new("master_axe_slash_particle"), Hash40::new("top"), 0, 4, 0, -10, 0, 0, 1, true);
+    //         EFFECT_OFF_KIND(fighter, Hash40::new("master_axe_slash_air_reverb"), true, true);
+    //     }
+    // }
     frame(lua_state, 56.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("master_axe_rock"), Hash40::new("haver"), 0, 15, 1, 0, 0, 0, 1, true);
@@ -891,53 +891,53 @@ unsafe fn master_special_lw_hit_effect(fighter: &mut L2CAgentBase) {
 unsafe fn master_special_air_lw_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
-            ATTACK(fighter, 0, 1, Hash40::new("top"), 30.0, 270, 0, 0, 1, 300.0, 0.0, 0.0, 0.0, None, None, None, 0.1, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
-            AttackModule::set_add_reaction_frame(boma, 0, 60.0, false);
-        }
-    }
-    frame(lua_state, 5.0);
-    if is_excute(fighter) {
-        if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
-            AttackModule::clear_all(boma);
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
-                //ATTACK(fighter, 0, 1, Hash40::new("top"), 30.0, 270, 0, 0, 10, 300.0, 0.0, 0.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_OBJECT);
-            }
-        }
-    }
-    frame(lua_state, 50.0);
-    if is_excute(fighter) {
-        if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
-                let motion_rate = 1.0;
-                FT_MOTION_RATE(fighter, motion_rate);
-                ArticleModule::set_rate(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, 1.0/motion_rate);
-            }
-            else{
-                let motion_rate = 7.0;
-                FT_MOTION_RATE(fighter, motion_rate);
-                ArticleModule::set_rate(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, 1.0/motion_rate);
-            }
-        }
-    }
-    frame(lua_state, 52.0);
-    if is_excute(fighter) {
-        if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
-            AttackModule::clear_all(boma);
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
-                ATTACK(fighter, 0, 2, Hash40::new("top"), 1.0, 270, 0, 0, 10, 300.0, 0.0, 0.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_OBJECT);
-                AttackModule::set_attack_level(boma, 0, 5 as u8);
-            }
-        }
-    }
-    frame(lua_state, 53.0);
-    if is_excute(fighter) {
-        if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
-            AttackModule::clear_all(boma);
-        }
-    }
+    // frame(lua_state, 1.0);
+    // if is_excute(fighter) {
+    //     if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
+    //         ATTACK(fighter, 0, 1, Hash40::new("top"), 30.0, 270, 0, 0, 1, 300.0, 0.0, 0.0, 0.0, None, None, None, 0.1, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
+    //         AttackModule::set_add_reaction_frame(boma, 0, 60.0, false);
+    //     }
+    // }
+    // frame(lua_state, 5.0);
+    // if is_excute(fighter) {
+    //     if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
+    //         AttackModule::clear_all(boma);
+    //         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
+    //             //ATTACK(fighter, 0, 1, Hash40::new("top"), 30.0, 270, 0, 0, 10, 300.0, 0.0, 0.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_OBJECT);
+    //         }
+    //     }
+    // }
+    // frame(lua_state, 50.0);
+    // if is_excute(fighter) {
+    //     if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
+    //         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
+    //             let motion_rate = 1.0;
+    //             FT_MOTION_RATE(fighter, motion_rate);
+    //             ArticleModule::set_rate(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, 1.0/motion_rate);
+    //         }
+    //         else{
+    //             let motion_rate = 7.0;
+    //             FT_MOTION_RATE(fighter, motion_rate);
+    //             ArticleModule::set_rate(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, 1.0/motion_rate);
+    //         }
+    //     }
+    // }
+    // frame(lua_state, 52.0);
+    // if is_excute(fighter) {
+    //     if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
+    //         AttackModule::clear_all(boma);
+    //         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
+    //             ATTACK(fighter, 0, 2, Hash40::new("top"), 1.0, 270, 0, 0, 10, 300.0, 0.0, 0.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_OBJECT);
+    //             AttackModule::set_attack_level(boma, 0, 5 as u8);
+    //         }
+    //     }
+    // }
+    // frame(lua_state, 53.0);
+    // if is_excute(fighter) {
+    //     if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 2 {
+    //         AttackModule::clear_all(boma);
+    //     }
+    // }
     frame(lua_state, 54.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_PULL_AXE);
@@ -960,6 +960,45 @@ unsafe fn master_special_air_lw_hit_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+// #[acmd_script( agent = "master_axe", script = "game_speciallwhit" , category = ACMD_GAME , low_priority)]
+// unsafe fn master_axe_special_lw_hit_game(fighter: &mut L2CAgentBase) {
+//     let lua_state = fighter.lua_state_agent;
+//     let boma = fighter.boma();
+//     frame(lua_state, 2.0);
+//     if is_excute(fighter) {
+//         if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) == 0 {
+//             ATTACK(fighter, 1, 0, Hash40::new("haver"), 8.0, 88, 30, 0, 100, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
+//             ATTACK(fighter, 2, 0, Hash40::new("haver"), 8.0, 88, 30, 0, 100, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
+//             ATTACK(fighter, 3, 0, Hash40::new("haver"), 8.0, 88, 30, 0, 100, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
+//             ATTACK(fighter, 4, 0, Hash40::new("haver"), 8.0, 88, 30, 0, 100, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
+//         }
+//         else if VarModule::get_int(fighter.battle_object, vars::master::AYMR_CHARGE_LEVEL) > 0 {
+//             ATTACK(fighter, 1, 0, Hash40::new("haver"), 10.0, 88, 30, 0, 100, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
+//             ATTACK(fighter, 2, 0, Hash40::new("haver"), 10.0, 88, 30, 0, 100, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
+//             ATTACK(fighter, 3, 0, Hash40::new("haver"), 10.0, 88, 30, 0, 100, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
+//             ATTACK(fighter, 4, 0, Hash40::new("haver"), 10.0, 88, 30, 0, 100, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
+//         }
+//         AttackModule::clear(boma, 0, false);
+//         WorkModule::on_flag(boma, *WEAPON_MASTER_AXE_INSTANCE_WORK_ID_FLAG_MOVE_ATTACK);
+//     }
+//     frame(lua_state, 3.0);
+//     if is_excute(fighter) {
+//         WorkModule::on_flag(boma, *WEAPON_MASTER_AXE_INSTANCE_WORK_ID_FLAG_MOVE_ATTACK);
+//     }
+//     frame(lua_state, 4.0);
+//     if is_excute(fighter) {
+//         WorkModule::on_flag(boma, *WEAPON_MASTER_AXE_INSTANCE_WORK_ID_FLAG_MOVE_ATTACK);
+//     }
+//     frame(lua_state, 5.0);
+//     if is_excute(fighter) {
+//         WorkModule::on_flag(boma, *WEAPON_MASTER_AXE_INSTANCE_WORK_ID_FLAG_MOVE_ATTACK);
+//     }
+//     frame(lua_state, 6.0);
+//     if is_excute(fighter) {
+//         AttackModule::clear_all(boma);
+//     }
+// }
+
 pub fn install() {
     install_acmd_scripts!(
         master_special_n_start_game,
@@ -979,6 +1018,7 @@ pub fn install() {
         master_special_air_lw_game,
         master_special_lw_effect,
         master_special_air_lw_hit_game,
+        // master_axe_special_lw_hit_game,
     );
 }
 
