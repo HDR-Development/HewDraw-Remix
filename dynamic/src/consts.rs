@@ -186,7 +186,9 @@ pub mod vars {
         pub const ESCAPE_AIR_SLIDE_SPEED_X: i32 = 0x17;
         pub const ESCAPE_AIR_SLIDE_SPEED_Y: i32 = 0x18;
         pub const Y_POS: i32 = 0x19;
-       
+        /// this multiplier can be set to a value between 0.1 and 3.0 to increase
+        /// a character's jump speed max for momentum transfer (for meta quick, etc)
+        pub const JUMP_SPEED_MAX_MUL: i32 = 0x1A;
     }
 
     pub mod bayonetta {
@@ -479,6 +481,19 @@ pub mod vars {
         pub const IS_CHARGE_FINISHED: i32 = 0x1000;
     }
 
+    pub mod metaknight {
+        /// u64 effect handle
+        pub const META_QUICK_EFFECT_HANDLE: i32 = 0x1000;
+
+        /// i32 timer for color flashing when meta quick is ready
+        pub const META_QUICK_READY_FLASH_TIMER: i32 = 0x1000;
+        pub const META_QUICK_STATUS: i32 = 0x1001;
+
+        /// flag whether we need to set metaknight speed values next frame
+        pub const COMPLETED_SET_SPEEDS: i32 = 0x1000;
+        pub const META_QUICK_NEED_SET_SPEEDS: i32 = 0x1001;
+    }
+    
     pub mod miifighter {
         // floats
         pub const CHARGE_ATTACK_LEVEL: i32 = 0x1000;
