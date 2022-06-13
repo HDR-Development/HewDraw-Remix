@@ -216,6 +216,7 @@ unsafe fn fix_chara_replace(ctx: &skyline::hooks::InlineCtx) {
 
     *ptr2.add(0x2) = *ptr1.add(0x2);
     *ptr2.add(0x3) = *ptr1.add(0x3);
+    *ptr2.add(0x4) = *ptr1.add(0x4);
 }
 
 pub fn install() {
