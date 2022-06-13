@@ -100,39 +100,42 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 
     // begin testing for transitions out of jump squat
-    let situation_kind = fighter.global_table[SITUATION_KIND].get_i32();
-    if fighter.global_table[FIGHTER_KIND].get_i32() != *FIGHTER_KIND_PICKEL || ![*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT].contains(&StatusModule::prev_status_kind(fighter.module_accessor, 0)) {
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH)
-        && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0 {
-            fighter.change_status(
-                L2CValue::I32(*FIGHTER_STATUS_KIND_CATCH),
-                L2CValue::Bool(true)
-            );
-        }
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
-            fighter.change_status(
-                L2CValue::I32(*FIGHTER_STATUS_KIND_ESCAPE_AIR), // We don't want to change to ESCAPE_AIR_SLIDE in case they do a nair dodge
-                L2CValue::Bool(true)
-            );
-            return L2CValue::I32(0);
-        }
+    
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
+        fighter.change_status(
+            L2CValue::I32(*FIGHTER_STATUS_KIND_ESCAPE_AIR), // We don't want to change to ESCAPE_AIR_SLIDE in case they do a nair dodge
+            L2CValue::Bool(true)
+        );
+        return 0.into();
     }
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START) {
         fighter.change_status(
             L2CValue::I32(*FIGHTER_STATUS_KIND_JUMP),
             L2CValue::Bool(false)
         );
-    } else if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL)
-            && situation_kind == *SITUATION_KIND_AIR {
+        return 0.into();
+    }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL)
+    && fighter.is_situation(*SITUATION_KIND_AIR)  {
         fighter.change_status(
             L2CValue::I32(*FIGHTER_STATUS_KIND_FALL),
             L2CValue::Bool(false)
         );
-    } else if !fighter.sub_transition_group_check_ground_item().get_bool() {
+        return 0.into();
+    }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH)
+    && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0 {
+        fighter.change_status(
+            L2CValue::I32(*FIGHTER_STATUS_KIND_CATCH),
+            L2CValue::Bool(true)
+        );
+        return 0.into();
+    }
+    if !fighter.sub_transition_group_check_ground_item().get_bool() {
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI)
             && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI != 0
-            && situation_kind == *SITUATION_KIND_GROUND {
+            && fighter.is_situation(*SITUATION_KIND_GROUND) {
             fighter.change_status(
                 L2CValue::I32(*FIGHTER_STATUS_KIND_SPECIAL_HI),
                 L2CValue::Bool(true)
@@ -140,13 +143,20 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
         } else if !fighter.sub_transition_specialflag_hoist().get_bool() {
             let cat2 = fighter.global_table[CMD_CAT2].get_i32();
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START)
-                && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)
-                && cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_ATTACK_DASH_ATTACK_HI4 != 0
-                && situation_kind == *SITUATION_KIND_GROUND {
-                fighter.change_status(
-                    L2CValue::I32(*FIGHTER_STATUS_KIND_ATTACK_HI4_START),
-                    L2CValue::Bool(true)
-                );
+            && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+                if fighter.global_table[0x58].get_bool() != false && {
+                    let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x58].get_ptr());
+                    callable(fighter).get_bool()
+                } {
+                    return L2CValue::I32(0);
+                }
+                if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_ATTACK_DASH_ATTACK_HI4 != 0
+                    && fighter.is_situation(*SITUATION_KIND_GROUND) {
+                    fighter.change_status(
+                        L2CValue::I32(*FIGHTER_STATUS_KIND_ATTACK_HI4_START),
+                        L2CValue::Bool(true)
+                    );
+                }
             }
         }
     }
@@ -210,7 +220,8 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW,
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_STAND
     ];
     for x in potential_enables.iter() {
         WorkModule::enable_transition_term(fighter.module_accessor, *x);
@@ -232,6 +243,12 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
         for x in potential_enables.iter() {
             WorkModule::unable_transition_term(fighter.module_accessor, *x);
         }
+    }
+    
+    // if you are jumping oos, we do not want to trigger jc grab. This avoids getting grabs when buffering an aerial oos.
+
+    if fighter.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, *FIGHTER_STATUS_KIND_GUARD_OFF]) {
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH);
     }
 
     let magnet_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "air_escape_snap_frame");
@@ -269,7 +286,10 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
     let update_rate = MotionModule::update_rate(fighter.module_accessor);
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE != 0 || ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD_HOLD) {
-        VarModule::on_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+        if !(fighter.kind() == *FIGHTER_KIND_PICKEL 
+        && fighter.is_prev_status_one_of(&[*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT])) {
+            VarModule::on_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+        }
     }
     let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new_raw(motion_kind)) as u32 as f32;
     if end_frame <= (frame + update_rate) {

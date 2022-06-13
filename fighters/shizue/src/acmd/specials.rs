@@ -63,10 +63,14 @@ unsafe fn shizue_special_air_n_failure_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "shizue", script = "game_specialairhidetach", category = ACMD_GAME, low_priority)]
 unsafe fn shizue_special_air_hi_detach_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    frame(lua_state, 5.0);
+    frame(lua_state, 3.0);
     if is_excute(fighter) {
         VarModule::on_flag(fighter.object(), vars::common::UP_SPECIAL_CANCEL);
         StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL, true);
+        if VarModule::is_flag(fighter.object(), vars::shizue::IS_NOT_QUICK_RELEASE) {
+            VarModule::off_flag(fighter.object(), vars::shizue::IS_NOT_QUICK_RELEASE);
+            WorkModule::set_float(fighter.module_accessor, VarModule::get_float(fighter.object(), vars::shizue::STORED_BALLOON_POWER), *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME);
+        }
     }
 }
 

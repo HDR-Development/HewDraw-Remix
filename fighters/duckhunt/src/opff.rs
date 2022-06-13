@@ -65,6 +65,11 @@ pub fn gunman_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
         if weapon.is_status(*WEAPON_DUCKHUNT_GUNMAN_STATUS_KIND_READY) {
             let duckhunt = utils::util::get_battle_object_from_id(owner_id);
             let duckhunt_boma = &mut *(*duckhunt).module_accessor;
+
+            if duckhunt_boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_STANDBY]) {
+                return
+            }
+
             if duckhunt_boma.is_cat_flag(Cat1::SpecialLw) && duckhunt_boma.is_button_trigger(Buttons::Special | Buttons::SpecialRaw) && WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LIFE) > 25 {
                 PLAY_STATUS(weapon, Hash40::new("se_duckhunt_special_l09"));
                 let gunman_kind = WorkModule::get_int(weapon.boma(), *WEAPON_DUCKHUNT_GUNMAN_INSTANCE_WORK_ID_KIND);

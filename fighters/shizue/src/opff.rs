@@ -49,13 +49,28 @@ unsafe fn lloid_trap_fire_jc(boma: &mut BattleObjectModuleAccessor, status_kind:
     }
 }
 
-// Balloon trip cancel
+// Balloon Trip Cancel
 unsafe fn balloon_cancel(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_WAIT, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_FLAP]) {
+    if (MotionModule::frame(fighter.module_accessor) > 5.0 && fighter.is_motion_one_of(&[Hash40::new("special_hi"), Hash40::new("special_air_hi")])) || fighter.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_WAIT, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_FLAP]) {
         // Cancel balloon trip early if character is holding shield, allowing for movement
         if fighter.is_button_on(Buttons::Guard) || fighter.is_button_on(Buttons::Catch) || fighter.is_button_on(Buttons::AttackAll) {
+            // Check if the user canceled before the initial swing, punishing them by setting their fuel to 0, else set their fuel to 80% of what they had
+            if !fighter.is_motion_one_of(&[Hash40::new("special_hi"), Hash40::new("special_air_hi")]) {
+                if WorkModule::get_float(fighter.module_accessor, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME) > 100.0 {
+                    VarModule::set_float(fighter.object(), vars::shizue::STORED_BALLOON_POWER, WorkModule::get_float(fighter.module_accessor, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME) - 100.0);
+                }
+                else {
+                    VarModule::set_float(fighter.object(), vars::shizue::STORED_BALLOON_POWER, 1.0);
+                }
+                VarModule::on_flag(fighter.object(), vars::shizue::IS_NOT_QUICK_RELEASE);
+                EffectModule::req_follow(fighter.module_accessor, Hash40::new("shizue_putaway_catch"), Hash40::new("bust"), &Vector3f::zero(), &Vector3f::zero(), 0.8, true, 0, 0, 0, 0, 0, false, false);
+            } 
+            else {
+                VarModule::off_flag(fighter.object(), vars::shizue::IS_NOT_QUICK_RELEASE);
+                VarModule::set_float(fighter.object(), vars::shizue::STORED_BALLOON_POWER, 1.0);
+                EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_damage_aura"), Hash40::new("bust"), &Vector3f::zero(), &Vector3f::zero(), 0.8, true, 0, 0, 0, 0, 0, false, false);
+            }
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH, true);
-            // EFFECT_FOLLOW(fighter, Hash40::new("shizue_putaway_catch"), Hash40::new("top"), 0, 8, 12, 0, 0, 0, 1, true);
         }
     }
 }
