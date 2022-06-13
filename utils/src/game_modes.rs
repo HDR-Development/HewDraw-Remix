@@ -9,6 +9,7 @@ lazy_static! {
     static ref GAME_MODE_HTML: Vec<u8> = std::fs::read("mods:/ui/docs/gamemodes.html").unwrap();
     static ref GAME_MODE_JS: Vec<u8> = std::fs::read("mods:/ui/docs/gamemodes.js").unwrap();
     static ref TAG_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/tag.webp").unwrap();
+    static ref TURBO_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/turbo.webp").unwrap();
 }
 
 static mut CURRENT_CUSTOM_MODE: Option<CustomMode> = None;
@@ -74,6 +75,7 @@ unsafe fn on_rule_select_hook(_: &skyline::hooks::InlineCtx) {
         .file("help/html/USen/gamemodes.html", GAME_MODE_HTML.as_slice())
         .file("hdr/gamemodes.js", GAME_MODE_JS.as_slice())
         .file("hdr/tag.webp", TAG_WEBP.as_slice())
+        .file("hdr/turbo.webp", TURBO_WEBP.as_slice())
         .start_page("help/html/USen/gamemodes.html")
         .open()
         .unwrap();
