@@ -281,17 +281,6 @@ extern "C" {
     pub fn stage_id() -> i32;
 }
 
-pub unsafe fn freeze_stages(boma: &mut BattleObjectModuleAccessor) {
-
-    // determine the current stage id
-    //println!("stage id: {}", stage_id());
-
-    // warioware
-    if (stage_id() == 104) {
-        smash::app::FighterUtil::set_stage_pause_for_final(true, boma);
-    }
-}
-
 pub unsafe fn hitfall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, fighter_kind: i32, cat: [i32 ; 4]) {
     if boma.kind() == *FIGHTER_KIND_GAOGAEN
     && boma.is_situation(*SITUATION_KIND_AIR)
@@ -435,7 +424,5 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mu
     respawn_taunt(boma, status_kind);
     teeter_cancel(fighter, boma);
     clear_taunt(fighter);
-
-    freeze_stages(boma);
 }
     
