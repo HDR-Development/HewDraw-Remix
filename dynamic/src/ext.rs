@@ -1,7 +1,9 @@
 use smash::app::{
     self,
     *,
-    lua_bind::*
+    lua_bind::*,
+    FighterKineticEnergyMotion,
+    FighterKineticEnergyController,
 };
 use smash::lua2cpp::*;
 use smash::lib::{
@@ -381,6 +383,7 @@ pub trait BomaExt {
     unsafe fn is_prev_situation(&mut self, kind: i32) -> bool;
     unsafe fn is_motion(&mut self, motion: Hash40) -> bool;
     unsafe fn is_motion_one_of(&mut self, motions: &[Hash40]) -> bool;
+    unsafe fn status(&mut self) -> i32;
 
     /// gets the number of jumps that have been used
     unsafe fn get_num_used_jumps(&mut self) -> i32;
@@ -413,6 +416,9 @@ pub trait BomaExt {
     unsafe fn get_param_float(&mut self, obj: &str, field: &str) -> f32;
     unsafe fn get_param_int64(&mut self, obj: &str, field: &str) -> u64;
 
+    // ENERGY
+    unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion;
+    unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController;
     // tech/general subroutine
     unsafe fn handle_waveland(&mut self, require_airdodge: bool, change_status: bool) -> bool;
 }
@@ -715,6 +721,17 @@ impl BomaExt for BattleObjectModuleAccessor {
         ModelModule::set_joint_rotate(self, Hash40::new(&bone_name), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
     }
 
+
+    /// gets the FighterKineticEnergyMotion object
+    unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion {
+        std::mem::transmute::<u64, &mut app::FighterKineticEnergyMotion>(KineticModule::get_energy(self, *FIGHTER_KINETIC_ENERGY_ID_MOTION))
+    }
+
+    /// gets the FighterKineticEnergyController object
+    unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController {
+        std::mem::transmute::<u64, &mut smash::app::FighterKineticEnergyController>(KineticModule::get_energy(self, *FIGHTER_KINETIC_ENERGY_ID_CONTROL))
+    }
+
     unsafe fn handle_waveland(&mut self, require_airdodge: bool, change_status: bool) -> bool {
         dbg!(MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU));
         if require_airdodge && (!self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE])
@@ -758,6 +775,11 @@ impl BomaExt for BattleObjectModuleAccessor {
         } else {
             false
         }
+    }
+
+    /// gets the current status kind for the fighter
+    unsafe fn status(&mut self) -> i32 {
+        return StatusModule::status_kind(self);
     }
 
 }

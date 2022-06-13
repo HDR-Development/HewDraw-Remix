@@ -618,6 +618,7 @@
       <float hash="landing_attack_air_frame_lw">10</float>
       <float hash="tread_jump_speed_y_mul">0.82</float>
       <float hash="tread_mini_jump_speed_y_mul">0.82</float>
+      <float hash="passive_wall_jump_y_speed">3.43</float>
     </struct>
     <struct index="21">
       <float hash="walk_speed_max">1.6</float>
