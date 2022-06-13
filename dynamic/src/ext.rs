@@ -348,6 +348,7 @@ impl FastShift for L2CFighterBase {
 
 pub trait BomaExt {
     // INPUTS
+    unsafe fn clear_command_cat<T: Into<CommandCat>>(&mut self, flags: T);
     unsafe fn is_cat_flag<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool;
     unsafe fn is_cat_flag_all<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool;
     unsafe fn is_pad_flag(&mut self, pad_flag: PadFlag) -> bool;
@@ -423,6 +424,40 @@ pub trait BomaExt {
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
+    unsafe fn clear_command_cat<T: Into<CommandCat>>(&mut self, flags: T) {
+        let cat = flags.into();
+        let (index, bits) = match cat {
+            CommandCat::Cat1(cat) => (0, cat.bits()),
+            CommandCat::Cat2(cat) => (1, cat.bits()),
+            CommandCat::Cat3(cat) => (2, cat.bits()),
+            CommandCat::Cat4(cat) => (3, cat.bits())
+        };
+
+        #[repr(C)]
+        struct CmdCat {
+            mask: u32,
+            padding: u32,
+            length: usize,
+            lifetimes: *mut u8,
+            unk: u64,
+            custom_ptr: *mut *mut u64
+        }
+
+        let control_module = *(self as *mut BattleObjectModuleAccessor as *mut u64).add(0x48 / 0x8);
+
+        let cats = std::slice::from_raw_parts_mut((control_module + 0x568) as *mut CmdCat, 0x4);
+        cats[index].mask &= !(bits as u32);
+        let lifetimes = std::slice::from_raw_parts_mut(cats[index].lifetimes, cats[index].length);
+        let custom_ptr = std::slice::from_raw_parts_mut(cats[index].custom_ptr, cats[index].length);
+
+        for x in 0..32 {
+            if bits & (1 << x) != 0 {
+                lifetimes[x] = 0;
+                custom_ptr[x] = std::ptr::null_mut();
+            }
+        }
+    }
+
     unsafe fn is_cat_flag<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool {
         let cat = fighter_pad_cmd_flag.into();
         match cat {
@@ -821,7 +856,7 @@ impl GetObjects for BattleObjectModuleAccessor {
 
 /// Enum for the kinds of controls that are mapped
 /// Can map any of these over any button
-#[repr(C)]
+#[repr(u8)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum InputKind {
     Attack = 0x0,
@@ -832,7 +867,9 @@ pub enum InputKind {
     SmashAttack = 0x5,
     AppealHi = 0xA,
     AppealS = 0xB,
-    AppealLw = 0xC
+    AppealLw = 0xC,
+    Unset = 0xD,
+    JumpMini = 0x12, // this is ours :), also start at 0x12 to avoid masking errors
 }
 
 /// 0x50 Byte struct containing the information for controller mappings
@@ -865,8 +902,8 @@ pub struct ControllerMapping {
     pub pro_a: InputKind,
     pub pro_b: InputKind,
     pub pro_cstick: InputKind,
-    pub pro_y: InputKind,
     pub pro_x: InputKind,
+    pub pro_y: InputKind,
     pub pro_rumble: bool,
     pub pro_absmash: bool,
     pub pro_tapjump: bool,
@@ -878,8 +915,8 @@ pub struct ControllerMapping {
     pub joy_sr: InputKind,
     pub joy_up: InputKind,
     pub joy_right: InputKind,
-    pub joy_down: InputKind,
     pub joy_left: InputKind,
+    pub joy_down: InputKind,
     pub joy_rumble: bool,
     pub joy_absmash: bool,
     pub joy_tapjump: bool,
@@ -984,7 +1021,7 @@ pub struct AutorepeatInfo {
 }
 
 /// Controller style declaring what kind of controller is being used
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Debug, Copy, Clone)]
 #[repr(u32)]
 pub enum ControllerStyle {
     Handheld = 0x1,
