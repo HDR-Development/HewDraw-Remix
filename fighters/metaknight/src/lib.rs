@@ -6,6 +6,7 @@ pub mod acmd;
 
 //pub mod status;
 pub mod opff;
+pub mod meta_quick;
 
 use smash::{
     lib::{

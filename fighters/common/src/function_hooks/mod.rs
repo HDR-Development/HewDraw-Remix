@@ -8,7 +8,6 @@ pub mod transition;
 pub mod djcancel;
 pub mod init_settings;
 pub mod momentum_transfer;
-pub mod dash_dancing;
 pub mod directional_influence;
 pub mod hitstun;
 pub mod change_status;
@@ -31,7 +30,6 @@ pub fn install() {
     controls::install();
     momentum_transfer::install();
     jumps::install();
-    //dash_dancing::install();
 
     unsafe {
         // Handles getting rid of the kill zoom
