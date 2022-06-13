@@ -209,15 +209,25 @@ unsafe fn copy_fighter_info2(dest: u64, src: u64) {
     // println!("HERE2");
 // }
 
+#[skyline::hook(offset = 0x1797ff8, inline)]
+unsafe fn fix_chara_replace(ctx: &skyline::hooks::InlineCtx) {
+    let ptr1 = *ctx.registers[0].x.as_ref() as *mut u64;
+    let ptr2 = *ctx.registers[1].x.as_ref() as *mut u64;
+
+    *ptr2.add(0x2) = *ptr1.add(0x2);
+    *ptr2.add(0x3) = *ptr1.add(0x3);
+}
+
 pub fn install() {
     skyline::install_hooks!(
         change_random_early,
         decide_fighter,
         copy_fighter_info2,
+        fix_chara_replace
         // pre_entry_assign
     );
 
     unsafe {
-        skyline::patching::nop_data(0x1797ff8);
+        // skyline::patching::nop_data(0x1797ff8);
     }
 }
