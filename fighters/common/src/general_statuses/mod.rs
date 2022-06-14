@@ -243,15 +243,15 @@ unsafe fn sub_air_transition_group_check_air_attack_hook(fighter: &mut L2CFighte
 unsafe fn sub_transition_group_check_air_lasso(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
         // Disable Airdodging if you're pressing Grab.
-        let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-        let cat2 = fighter.global_table[CMD_CAT2].get_i32();
+        let is_guard_buffered = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) < ControlModule::get_command_life_count_max(fighter.module_accessor) as i32;  // checks if Guard input was pressed within max tap buffer window
+        let is_attack_buffered = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK as u8) < ControlModule::get_command_life_count_max(fighter.module_accessor) as i32;  // checks if Attack input was pressed within max tap buffer window
         // original line
         // if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_AIR_LASSO != 0 {
         // Split the Air Lasso check into two inputs, so that if the buffer gets cleared and you're still holding Shield,
         // you will never get an air tether. That's the theory, anyway.
         // check_button_on_trriger check is here strictly to preserve frame-perfect DJCZ tech, as get_trigger_count does not correctly update when X + Z + direction are input on same frame...
-        if (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) || ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) < ControlModule::get_command_life_count_max(fighter.module_accessor) as i32)  // checks if Shield input was pressed within max tap buffer window
-        && (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) || ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK as u8) < ControlModule::get_command_life_count_max(fighter.module_accessor) as i32) // checks if Attack input was pressed within max tap buffer window
+        if (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) || is_guard_buffered)
+        && (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) || is_attack_buffered)
         && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO) {
             let air_lasso = WorkModule::get_param_int(fighter.module_accessor, hash40("air_lasso_type"), 0);
             if air_lasso != *FIGHTER_AIR_LASSO_TYPE_NONE
