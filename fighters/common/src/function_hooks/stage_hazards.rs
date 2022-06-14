@@ -40,6 +40,7 @@ static HAZARDLESS_STAGE_IDS: &[u32] = &[
     0x68, // wario ware,
     0x6e, // halberd
     0x77, // summit
+    0xcb, // find mii (StreetPass)
     0xb9, // reset bomb forest
     0xec, // skyloft,
     0x107, // wrecking crew
