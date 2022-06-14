@@ -675,7 +675,6 @@ unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 		VarModule::off_flag(fighter.battle_object, vars::common::ENABLE_BOOST_RUN);
 	}
     if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_TURN {
-        println!("can pp off");
         VarModule::off_flag(fighter.battle_object, vars::common::CAN_PERFECT_PIVOT);
     }
 	

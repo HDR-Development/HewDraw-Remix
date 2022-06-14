@@ -239,13 +239,12 @@ unsafe fn dash_energy(fighter: &mut L2CFighterCommon) {
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
         }
 
-        // initial dash energy
         if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
             if stick_x.abs() >= dash_stick_x {
-                // apply speed on f2 of dash (CURRENT_FRAME counter hasn't updated yet)
+                // apply initial dash energy on f2 of dash (CURRENT_FRAME counter hasn't updated yet)
                 let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::CURR_DASH_SPEED);
                 let applied_speed = (dash_speed * PostureModule::lr(fighter.module_accessor)) + (stick_x.signum() * ((run_accel_mul + (run_accel_add * stick_x.abs())))) + prev_speed;  // initial dash speed + 1f of run acceleration + previous status' last speed
-                println!("Changing current dash speed: {}", applied_speed);
+                //println!("Changing current dash speed: {}", applied_speed);
                 let applied_speed_clamped = applied_speed.clamp(-run_speed_max, run_speed_max);
                 fighter.clear_lua_stack();
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed_clamped);
@@ -254,6 +253,7 @@ unsafe fn dash_energy(fighter: &mut L2CFighterCommon) {
             else if StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_TURN 
             && StatusModule::prev_status_kind(fighter.module_accessor, 1) == *FIGHTER_STATUS_KIND_DASH  // if you are in a backdash
             && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+                // apply late (F3) pivot energy
                 KineticModule::clear_speed_all(fighter.module_accessor);
                 if VarModule::is_flag(fighter.battle_object, vars::common::CAN_PERFECT_PIVOT) {
                     VarModule::off_flag(fighter.battle_object, vars::common::CAN_PERFECT_PIVOT);
