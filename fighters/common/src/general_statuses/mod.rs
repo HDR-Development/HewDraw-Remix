@@ -249,8 +249,9 @@ unsafe fn sub_transition_group_check_air_lasso(fighter: &mut L2CFighterCommon) -
         // if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_AIR_LASSO != 0 {
         // Split the Air Lasso check into two inputs, so that if the buffer gets cleared and you're still holding Shield,
         // you will never get an air tether. That's the theory, anyway.
-        if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_COMMON_GUARD != 0
-        && cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_AIR_LASSO != 0
+        // check_button_on_trriger check is here strictly to preserve frame-perfect DJCZ tech, as get_trigger_count does not correctly update when X + Z + direction are input on same frame...
+        if (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) || ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) < ControlModule::get_command_life_count_max(fighter.module_accessor) as i32)  // checks if Shield input was pressed within max tap buffer window
+        && (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) || ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK as u8) < ControlModule::get_command_life_count_max(fighter.module_accessor) as i32) // checks if Attack input was pressed within max tap buffer window
         && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO) {
             let air_lasso = WorkModule::get_param_int(fighter.module_accessor, hash40("air_lasso_type"), 0);
             if air_lasso != *FIGHTER_AIR_LASSO_TYPE_NONE
