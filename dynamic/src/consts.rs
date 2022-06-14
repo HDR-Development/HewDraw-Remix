@@ -139,6 +139,7 @@ pub mod vars {
         pub const JUMP_NEXT: i32 = 82;
         pub const IS_JAB_LOCK_ROLL: i32 = 83;
         pub const SHOULD_TRUMP_TETHER: i32 = 84;
+        pub const CAN_PERFECT_PIVOT: i32 = 85;
         
 
         // int

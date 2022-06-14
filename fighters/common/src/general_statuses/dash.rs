@@ -506,6 +506,12 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     && (!ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) || ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON))  // AND cstick is off, other than the first frame of its input
     && is_backdash_input {  // AND is a backdash input
         //println!("transition to backdash");
+        if fighter.global_table[CURRENT_FRAME].get_i32() <= 2 {
+            VarModule::on_flag(fighter.battle_object, vars::common::CAN_PERFECT_PIVOT);
+        }
+        else {
+            VarModule::off_flag(fighter.battle_object, vars::common::CAN_PERFECT_PIVOT);
+        }
         VarModule::on_flag(fighter.battle_object, vars::common::IS_SMASH_TURN);
         interrupt!(fighter, FIGHTER_STATUS_KIND_TURN, true);
     }
@@ -562,9 +568,6 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
         VarModule::on_flag(fighter.battle_object, vars::common::IS_LATE_PIVOT);
         PostureModule::reverse_lr(fighter.module_accessor);
         PostureModule::update_rot_y_lr(fighter.module_accessor);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-        app::sv_kinetic_energy::unable(fighter.lua_state_agent);
         interrupt!(fighter, FIGHTER_STATUS_KIND_TURN, true);
     }
 
@@ -671,6 +674,10 @@ unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 	if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_RUN {
 		VarModule::off_flag(fighter.battle_object, vars::common::ENABLE_BOOST_RUN);
 	}
+    if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_TURN {
+        println!("can pp off");
+        VarModule::off_flag(fighter.battle_object, vars::common::CAN_PERFECT_PIVOT);
+    }
 	
 	VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, initial_speed);
 
