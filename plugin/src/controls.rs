@@ -70,7 +70,7 @@ unsafe fn add_footstool_to_gc(ctx: &skyline::hooks::InlineCtx) {
 
 #[skyline::hook(offset = 0x1d326f8, inline)]
 unsafe fn add_footstool_to_fk(ctx: &skyline::hooks::InlineCtx) {
-    let button = dbg!(*ctx.registers[25].w.as_ref());
+    let button = *ctx.registers[25].w.as_ref();
     if [0x4, 0x5, 0x6, 0x9].contains(&button) {
         return;
     }
