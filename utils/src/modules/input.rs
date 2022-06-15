@@ -1,39 +1,44 @@
 use smash::app::{BattleObject, lua_bind::ControlModule, BattleObjectModuleAccessor};
+use utils_dyn::ext::{Buttons, CatHdr};
 
 use crate::offsets;
 use crate::util::get_battle_object_from_id;
 
-use super::BUFFER_MODULE_OFFSET;
+use super::INPUT_MODULE_OFFSET;
 
-macro_rules! get_buffer_module {
+macro_rules! get_input_module {
     ($object:ident) => {{
         unsafe {
             let vtable = *($object as *mut *mut *mut u64);
-            &mut *super::get_entry::<BufferModule>(vtable, BUFFER_MODULE_OFFSET).expect("Did not find BufferModule!")
+            &mut *super::get_entry::<InputModule>(vtable, INPUT_MODULE_OFFSET).expect("Did not find InputModule!")
         }
     }}
 }
 
-macro_rules! has_buffer_module {
+macro_rules! has_input_module {
     ($object:ident) => {{
         unsafe {
             if $object.is_null() {
                 false
             } else {
                 let vtable = *($object as *mut *mut *mut u64);
-                super::is_hdr_object(vtable as _) && !super::get_entry::<BufferModule>(vtable, BUFFER_MODULE_OFFSET).is_none()
+                super::is_hdr_object(vtable as _) && !super::get_entry::<InputModule>(vtable, INPUT_MODULE_OFFSET).is_none()
             }
         }
     }}
 }
 
-macro_rules! require_buffer_module {
+macro_rules! require_input_module {
     ($object:ident) => {{
-        if !has_buffer_module!($object) {
-            panic!("BattleObject does not contain reference to BufferModule!");
+        if !has_input_module!($object) {
+            panic!("BattleObject does not contain reference to InputModule!");
         }
-        get_buffer_module!($object)
+        get_input_module!($object)
     }}
+}
+
+struct HdrCat {
+    pub valid_frames: [u8; 32]
 }
 
 struct BufferState {
@@ -102,20 +107,21 @@ impl BufferState {
 /// An additional module to be used with Smash's `BattleObject` class. This handles manipulating and adjusting hold buffer
 /// depending on the situation to encourage more precise inputs with some exceptions to allow for overall better game health and feel.
 /// You can reference all of these calls from just passing the `BattleObject` into function. If a function is called on a `BattleObject` that does not have
-/// `BufferModule` set up, it will panic.
-pub struct BufferModule {
+/// `InputModule` set up, it will panic.
+pub struct InputModule {
     owner: *mut BattleObject,
-    cats: [BufferState; 4],
+    cats: [BufferState; 5],
+    hdr_cat: HdrCat,
     hold_all: bool,
     hold_all_frame_max: i32
 }
 
-impl BufferModule {
-    /// Constructs a new `BufferModule` instance with the specified `BattleObject` as its own
+impl InputModule {
+    /// Constructs a new `InputModule` instance with the specified `BattleObject` as its own
     /// # Arguments
     /// * `owner` - Owning `BattleObject` instance
     /// # Returns
-    /// New, constructed `BufferModule` with all settings set to default
+    /// New, constructed `InputModule` with all settings set to default
     pub(crate) fn new(owner: *mut BattleObject) -> Self {
         Self {
             owner,
@@ -123,8 +129,12 @@ impl BufferModule {
                 BufferState::new(),
                 BufferState::new(),
                 BufferState::new(),
+                BufferState::new(),
                 BufferState::new()
             ],
+            hdr_cat: HdrCat {
+                valid_frames: [0; 32]
+            },
             hold_all: false,
             hold_all_frame_max: -1
         }
@@ -135,9 +145,9 @@ impl BufferModule {
     /// * `object` - Owning `BattleObject` instance
     /// * `category` - Which command flag category the input is under (valid values are 0-3)
     /// * `flag` - Which flag in the category you are enabling hold buffer for
-    #[export_name = "BufferModule__persist_command_one"]
+    #[export_name = "InputModule__persist_command_one"]
     pub extern "Rust" fn persist_command_one(object: *mut BattleObject, category: i32, flag: i32) {
-        let module = require_buffer_module!(object);
+        let module = require_input_module!(object);
 
         let flag = flag & 0x1F;
         module.cats[category as usize].should_hold[(flag & 0x1F) as usize] = true;
@@ -150,9 +160,9 @@ impl BufferModule {
     /// * `category` - Which command flag category the input is under (valid values are 0-3)
     /// * `flag` - Which flag in the category you are enabling hold buffer for
     /// * `lifetime` - The maximum number of frames hold buffer is enabled for (-1 is infinite). This lifetime includes tap buffer frames.
-    #[export_name = "BufferModule__persist_command_one_with_lifetime"]
+    #[export_name = "InputModule__persist_command_one_with_lifetime"]
     pub extern "Rust" fn persist_command_one_with_lifetime(object: *mut BattleObject, category: i32, flag: i32, lifetime: i32) {
-        let module = require_buffer_module!(object);
+        let module = require_input_module!(object);
 
         Self::persist_command_one(object, category, flag);
         module.cats[category as usize].hold_frame_max[(flag & 0x1F) as usize] = lifetime;
@@ -162,17 +172,17 @@ impl BufferModule {
     /// # Arguments
     /// * `object` - Owning `BattleObject` instance
     /// * `lifetime` - The maximum number of frames hold buffer is enabled for (-1 is infinite). This lifetime includes tap buffer frames.
-    #[export_name = "BufferModule__set_persist_lifetime"]
+    #[export_name = "InputModule__set_persist_lifetime"]
     pub extern "Rust" fn set_persist_lifetime(object: *mut BattleObject, lifetime: i32) {
-        require_buffer_module!(object).hold_all_frame_max = lifetime;
+        require_input_module!(object).hold_all_frame_max = lifetime;
     }
 
     /// Enables global hold buffer on all inputs for this `BattleObject`
     /// # Arguments
     /// * `object` - Owning `BattleObject` instance
-    #[export_name = "BufferModule__enable_persist"]
+    #[export_name = "InputModule__enable_persist"]
     pub extern "Rust" fn enable_persist(object: *mut BattleObject) {
-        require_buffer_module!(object).hold_all = true;
+        require_input_module!(object).hold_all = true;
     }
 
     /// Disables global hold buffer for this `BattleObject`
@@ -181,9 +191,9 @@ impl BufferModule {
     /// # Note
     /// If specific inputs have hold buffer enabled, calling `disable_persist` will not disable those,
     /// only the global flag which enabled hold buffer on all inputs will be disabled
-    #[export_name = "BufferModule__disable_persist"]
+    #[export_name = "InputModule__disable_persist"]
     pub extern "Rust" fn disable_persist(object: *mut BattleObject) {
-        require_buffer_module!(object).hold_all = false;
+        require_input_module!(object).hold_all = false;
     }
 
     /// Clears all of the hold buffer information for every input
@@ -191,15 +201,16 @@ impl BufferModule {
     /// * `object` - Owning `BattleObject` instance
     /// # Note
     /// This function is similar to `ControlModule::clear_command_flag_cat` in that it resets all information regarding holding those inputs.
-    /// This does not impact anything in the `ControlModule` command information, only the `BufferModule` implementation
-    #[export_name = "BufferModule__clear_persist"]
+    /// This does not impact anything in the `ControlModule` command information, only the `InputModule` implementation
+    #[export_name = "InputModule__clear_persist"]
     pub extern "Rust" fn clear_persist(object: *mut BattleObject) {
-        let module = require_buffer_module!(object);
+        let module = require_input_module!(object);
 
         module.cats[0].clear();
         module.cats[1].clear();
         module.cats[2].clear();
         module.cats[3].clear();
+        module.cats[4].clear();
     }
 
     /// Clears the hold buffer information for one input
@@ -207,9 +218,9 @@ impl BufferModule {
     /// * `object` - Owning `BattleObject` instance
     /// * `category` - Which command flag category the input is under (valid values are 0-3)
     /// * `flag` - Which flag in the category you are clearing hold buffer for
-    #[export_name = "BufferModule__clear_persist_one"]
+    #[export_name = "InputModule__clear_persist_one"]
     pub extern "Rust" fn clear_persist_one(object: *mut BattleObject, category: i32, flag: i32) {
-        let module = require_buffer_module!(object);
+        let module = require_input_module!(object);
         let cat = &mut module.cats[category as usize];
         cat.on_last_frame &= !(1 << (flag as usize));
         cat.should_hold[flag as usize] = false;
@@ -220,18 +231,18 @@ impl BufferModule {
     /// Updates the hold buffer information
     /// # Arguments
     /// * `object` - Owning `BattleObject` instance
-    /// * `cats` - `ControlModule` command flag information to update `BufferModule` with.
+    /// * `cats` - `ControlModule` command flag information to update `InputModule` with.
     /// # Note
-    /// This method is not intended to be used by users of `BufferModule`. It is instead used internally with a hook to update every frame.
-    #[export_name = "BufferModule__exec"]
-    pub extern "Rust" fn exec(object: *mut BattleObject, cats: &mut [&mut [u8]; 4]) {
-        let module = require_buffer_module!(object);
+    /// This method is not intended to be used by users of `InputModule`. It is instead used internally with a hook to update every frame.
+    #[export_name = "InputModule__exec"]
+    pub extern "Rust" fn exec(object: *mut BattleObject, cats: &mut [&mut [u8]; 5]) {
+        let module = require_input_module!(object);
 
         let press_frame = unsafe {
             ControlModule::get_command_life_count_max((*module.owner).module_accessor) as i32
         };
 
-        for x in 0..4 {
+        for x in 0..5 {
             module.cats[x].update(cats[x], module.hold_all_frame_max, press_frame -1, module.hold_all);
         }
     }
@@ -241,9 +252,9 @@ impl BufferModule {
     /// * `object` - Owning `BattleObject` instance
     /// # Returns
     /// A boolean representing whether or not global hold buffer is enabled.
-    #[export_name = "BufferModule__is_persist"]
+    #[export_name = "InputModule__is_persist"]
     pub extern "Rust" fn is_persist(object: *mut BattleObject) -> bool {
-        require_buffer_module!(object).hold_all
+        require_input_module!(object).hold_all
     }
 
     /// Checks whether or not hold buffer is enabled for a specific input
@@ -253,9 +264,9 @@ impl BufferModule {
     /// * `flag` - Which flag in the category you are checking hold buffer for
     /// # Returns
     /// A boolean representing whether or not hold buffer is enabled for a specific input.
-    #[export_name = "BufferModule__is_persist_one"]
+    #[export_name = "InputModule__is_persist_one"]
     pub extern "Rust" fn is_persist_one(object: *mut BattleObject, category: i32, flag: i32) -> bool {
-        require_buffer_module!(object).cats[category as usize].should_hold[flag as usize]
+        require_input_module!(object).cats[category as usize].should_hold[flag as usize]
     }
 
     /// Gets the max amount of global hold buffer frames (can vary depending on input)
@@ -266,9 +277,9 @@ impl BufferModule {
     /// #Note
     /// This returns whatever value was last last set with `set_persist_lifetime` and
     /// is a valid value even when `is_persist` is false.
-    #[export_name = "BufferModule__persist_lifetime"]
+    #[export_name = "InputModule__persist_lifetime"]
     pub extern "Rust" fn persist_lifetime(object: *mut BattleObject) -> i32 {
-        require_buffer_module!(object).hold_all_frame_max
+        require_input_module!(object).hold_all_frame_max
     }
 
     /// Gets the current amount of frames an object has been holding an input for
@@ -278,9 +289,9 @@ impl BufferModule {
     /// * `flag` - Which flag in the category you are checking hold buffer for
     /// # Returns
     /// The number of frames the input has been held
-    #[export_name = "BufferModule__persist_lifetime_one"]
+    #[export_name = "InputModule__persist_lifetime_one"]
     pub extern "Rust" fn persist_lifetime_one(object: *mut BattleObject, category: i32, flag: i32) -> i32 {
-        require_buffer_module!(object).cats[category as usize].hold_frame[flag as usize]
+        require_input_module!(object).cats[category as usize].hold_frame[flag as usize]
     }
 
     /// Gets the max amount of hold buffer frames for a specified input
@@ -290,9 +301,39 @@ impl BufferModule {
     /// * `flag` - Which flag in the category you are checking hold buffer for
     /// # Returns
     /// The max amount of frames a specific input can have hold buffer for.
-    #[export_name = "BufferModule__persist_lifetime_max_one"]
+    #[export_name = "InputModule__persist_lifetime_max_one"]
     pub extern "Rust" fn persist_lifetime_max_one(object: *mut BattleObject, category: i32, flag: i32) -> i32 {
-        require_buffer_module!(object).cats[category as usize].hold_frame_max[flag as usize]
+        require_input_module!(object).cats[category as usize].hold_frame_max[flag as usize]
+    }
+
+    #[export_name = "InputModule__clear_command_one_proper"]
+    pub extern "Rust" fn clear_commands(object: *mut BattleObject, category: i32, flags: i32) {
+        if category == 4 {
+            if !has_input_module!(object) {
+                return;
+            }
+
+            let module = require_input_module!(object);
+
+            for x in 0..32 {
+                if flags & (1 << x) != 0{
+                    module.hdr_cat.valid_frames[x] = 0;
+                }
+            }
+
+            return;
+        }
+
+        let cats = unsafe {
+            let control_module = *((*object).module_accessor as *const u64).add(0x48 / 8);
+            std::slice::from_raw_parts_mut((control_module + 0x568) as *mut CommandFlagCat, 4)
+        };
+
+        for x in 0..cats[category as usize].count {
+            if flags & (1 << x) != 0 {
+                cats[category as usize].lifetimes_mut()[x] = 0;
+            }
+        }
     }
 }
 
@@ -328,6 +369,30 @@ impl CommandFlagCat {
 
 #[skyline::hook(offset = offsets::get_command_flag_cat())]
 fn get_command_flag_cat_replace(control_module: u64, cat: i32) -> u32 {
+    let boma = unsafe {
+        *(control_module as *mut *mut BattleObjectModuleAccessor).add(1)
+    };
+    let battle_object = unsafe {
+        get_battle_object_from_id((*boma).battle_object_id)
+    };
+
+    if cat == 4 {
+        if !has_input_module!(battle_object) {
+            return 0;
+        }
+
+        let bm = require_input_module!(battle_object);
+
+        let mut output = 0;
+        for x in 0..32 {
+            if bm.hdr_cat.valid_frames[x] != 0 {
+                output |= 1 << x;
+            }
+        }
+
+        return output;
+    }
+
     let cats = unsafe {
         std::slice::from_raw_parts((control_module + 0x568) as *mut CommandFlagCat, 4)
     };
@@ -343,10 +408,36 @@ fn get_command_flag_cat_replace(control_module: u64, cat: i32) -> u32 {
     output
 }
 
-#[skyline::hook(offset = offsets::exec_command())]
-fn exec_command_hook(control_module: u64, flag: bool) {
-    call_original!(control_module, flag);
-    
+fn exec_internal(input_module: &mut InputModule, control_module: u64, call_original: impl Fn()) {
+    let triggered_buttons: Buttons = unsafe {
+        Buttons::from_bits_unchecked(
+            ControlModule::get_button((*input_module.owner).module_accessor)
+            & !ControlModule::get_button_prev((*input_module.owner).module_accessor)
+        )
+    };
+
+    let buttons: Buttons = unsafe {
+        Buttons::from_bits_unchecked(
+            ControlModule::get_button((*input_module.owner).module_accessor)
+        )
+    };
+
+    let shfootstool_offset = CatHdr::ShorthopFootstool.bits().trailing_zeros() as usize;
+    if triggered_buttons.intersects(Buttons::ShFootstool) {
+        if input_module.hdr_cat.valid_frames[shfootstool_offset] == 0 {
+            input_module.hdr_cat.valid_frames[shfootstool_offset] = unsafe {
+                ControlModule::get_command_life_count_max((*input_module.owner).module_accessor) as u8
+            };
+        }
+    }
+
+    if dbg!(input_module.hdr_cat.valid_frames[shfootstool_offset]) != 0
+    && !(input_module.hdr_cat.valid_frames[shfootstool_offset] == 1 && buttons.intersects(Buttons::ShFootstool)) {
+        input_module.hdr_cat.valid_frames[shfootstool_offset] -= 1;
+    }
+
+    call_original();
+
     let cats = unsafe {
         std::slice::from_raw_parts_mut((control_module + 0x568) as *mut CommandFlagCat, 4)
     };
@@ -356,18 +447,29 @@ fn exec_command_hook(control_module: u64, flag: bool) {
         cats[1].lifetimes_mut(),
         cats[2].lifetimes_mut(),
         cats[3].lifetimes_mut(),
+        &mut input_module.hdr_cat.valid_frames
     ];
 
     let boma = unsafe {
         *(control_module as *mut *mut BattleObjectModuleAccessor).add(1)
     };
 
+    InputModule::exec(input_module.owner, &mut lifetimes);
+}
+
+#[skyline::hook(offset = offsets::exec_command())]
+fn exec_command_hook(control_module: u64, flag: bool) {
+    let boma = unsafe {
+        *(control_module as *mut *mut BattleObjectModuleAccessor).add(1)
+    };
     let battle_object = unsafe {
         get_battle_object_from_id((*boma).battle_object_id)
     };
 
-    if has_buffer_module!(battle_object) {
-        BufferModule::exec(battle_object, &mut lifetimes);
+    if has_input_module!(battle_object) {
+        exec_internal(require_input_module!(battle_object), control_module, || call_original!(control_module, flag));
+    } else {
+        call_original!(control_module, flag);
     }
 }
 
