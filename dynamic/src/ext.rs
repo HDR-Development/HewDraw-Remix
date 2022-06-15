@@ -76,7 +76,8 @@ pub enum CommandCat {
     Cat1(Cat1),
     Cat2(Cat2),
     Cat3(Cat3),
-    Cat4(Cat4)
+    Cat4(Cat4),
+    CatHdr(CatHdr)
 }
 
 impl Into<CommandCat> for Cat1 {
@@ -100,6 +101,12 @@ impl Into<CommandCat> for Cat3 {
 impl Into<CommandCat> for Cat4 {
     fn into(self) -> CommandCat {
         CommandCat::Cat4(self)
+    }
+}
+
+impl Into<CommandCat> for CatHdr {
+    fn into(self) -> CommandCat {
+        CommandCat::CatHdr(self)
     }
 }
 
@@ -229,6 +236,10 @@ bitflags! {
         const Command323Catch       = 0x4000000;
     }
 
+    pub struct CatHdr: i32 {
+        const ShorthopFootstool = 0x1;
+    }
+
     pub struct PadFlag: i32 {
         const AttackTrigger  = 0x1;
         const AttrckRelease  = 0x2;
@@ -259,6 +270,7 @@ bitflags! {
         const FlickJump   = 0x8000;
         const GuardHold   = 0x10000;
         const SpecialRaw2 = 0x20000;
+        const ShFootstool = 0x40000;
 
         const SpecialAll  = 0x20802;
         const AttackAll   = 0x201;
@@ -294,6 +306,14 @@ impl Cat4 {
     pub fn new(boma: *mut BattleObjectModuleAccessor) -> Self {
         unsafe {
             Cat4::from_bits_unchecked(ControlModule::get_command_flag_cat(boma, 3))
+        }
+    }
+}
+
+impl CatHdr {
+    pub fn new(boma: *mut BattleObjectModuleAccessor) -> Self {
+        unsafe {
+            CatHdr::from_bits_unchecked(ControlModule::get_command_flag_cat(boma, 4))
         }
     }
 }
@@ -348,7 +368,7 @@ impl FastShift for L2CFighterBase {
 
 pub trait BomaExt {
     // INPUTS
-    unsafe fn clear_command_cat<T: Into<CommandCat>>(&mut self, flags: T);
+    unsafe fn clear_commands<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T);
     unsafe fn is_cat_flag<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool;
     unsafe fn is_cat_flag_all<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool;
     unsafe fn is_pad_flag(&mut self, pad_flag: PadFlag) -> bool;
@@ -424,38 +444,17 @@ pub trait BomaExt {
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
-    unsafe fn clear_command_cat<T: Into<CommandCat>>(&mut self, flags: T) {
-        let cat = flags.into();
-        let (index, bits) = match cat {
+    unsafe fn clear_commands<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) {
+        let cat = fighter_pad_cmd_flag.into();
+        let (cat, bits) = match cat {
             CommandCat::Cat1(cat) => (0, cat.bits()),
             CommandCat::Cat2(cat) => (1, cat.bits()),
             CommandCat::Cat3(cat) => (2, cat.bits()),
-            CommandCat::Cat4(cat) => (3, cat.bits())
+            CommandCat::Cat4(cat) => (3, cat.bits()),
+            CommandCat::CatHdr(cat) => (4, cat.bits())
         };
 
-        #[repr(C)]
-        struct CmdCat {
-            mask: u32,
-            padding: u32,
-            length: usize,
-            lifetimes: *mut u8,
-            unk: u64,
-            custom_ptr: *mut *mut u64
-        }
-
-        let control_module = *(self as *mut BattleObjectModuleAccessor as *mut u64).add(0x48 / 0x8);
-
-        let cats = std::slice::from_raw_parts_mut((control_module + 0x568) as *mut CmdCat, 0x4);
-        cats[index].mask &= !(bits as u32);
-        let lifetimes = std::slice::from_raw_parts_mut(cats[index].lifetimes, cats[index].length);
-        let custom_ptr = std::slice::from_raw_parts_mut(cats[index].custom_ptr, cats[index].length);
-
-        for x in 0..32 {
-            if bits & (1 << x) != 0 {
-                lifetimes[x] = 0;
-                custom_ptr[x] = std::ptr::null_mut();
-            }
-        }
+        crate::modules::InputModule::clear_commands(self.object(), cat, bits);
     }
 
     unsafe fn is_cat_flag<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool {
@@ -464,7 +463,8 @@ impl BomaExt for BattleObjectModuleAccessor {
             CommandCat::Cat1(cat) => Cat1::new(self).intersects(cat),
             CommandCat::Cat2(cat) => Cat2::new(self).intersects(cat),
             CommandCat::Cat3(cat) => Cat3::new(self).intersects(cat),
-            CommandCat::Cat4(cat) => Cat4::new(self).intersects(cat)
+            CommandCat::Cat4(cat) => Cat4::new(self).intersects(cat),
+            CommandCat::CatHdr(cat) => CatHdr::new(self).intersects(cat)
         }
     }
 
@@ -474,7 +474,8 @@ impl BomaExt for BattleObjectModuleAccessor {
             CommandCat::Cat1(cat) => Cat1::new(self).contains(cat),
             CommandCat::Cat2(cat) => Cat2::new(self).contains(cat),
             CommandCat::Cat3(cat) => Cat3::new(self).contains(cat),
-            CommandCat::Cat4(cat) => Cat4::new(self).contains(cat)
+            CommandCat::Cat4(cat) => Cat4::new(self).contains(cat),
+            CommandCat::CatHdr(cat) => CatHdr::new(self).intersects(cat)
         }
     }
 

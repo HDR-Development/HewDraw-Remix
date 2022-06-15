@@ -41,6 +41,17 @@ unsafe fn get_player_idx_from_boma(boma: u64) -> i32 {
     *((next + 0x8) as *const i32)
 }
 
+macro_rules! apply_button_mappings {
+    ($controller:ident, $mappings:ident, $(($button:ident, $mapped:ident, $kind:ident, $output:expr))*) => {{
+        let mut buttons = Buttons::empty();
+        $(
+                if $controller.current_buttons.$button() && (*$mappings).$mapped == InputKind::$kind {
+                    buttons |= $output;
+                }
+        )*
+    }}
+}
+
 #[skyline::hook(offset = offsets::map_controls())]
 unsafe fn map_controls_hook(
     mappings: *mut ControllerMapping,
@@ -63,113 +74,67 @@ unsafe fn map_controls_hook(
         (*out).rstick_y = (controller.right_stick_y * (i8::MAX as f32)) as i8;
     }
 
-    let mut sh_footstool_input = Buttons::empty();
-    for x in 0..8 {
-        if !smash::app::sv_information::is_ready_go() {
-            if *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *const u32).add(0x52e6b44 / 0x4) < 1200 {
-                break;
-            }
-        }
-        let addr = *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *const u64).add(0x52b6548 / 0x8);
-
-        if addr == 0 || *(addr as *const u64) == 0 {
-            break;
-        }
-
-        
-        let src_object = util::get_battle_object_from_entry_id(x);
-        if src_object.is_none() {
-            continue;
-        }
-        let src_object = src_object.unwrap();
-
-        let active_object = util::get_active_battle_object_id_from_entry_id(x);
-        if active_object.is_none() {
-            continue;
-        }
-
-        let active_object = util::get_battle_object_from_id(active_object.unwrap());
-        if get_player_idx_from_boma((*src_object).module_accessor as u64) == player_idx {
-            let boma = (*active_object).boma();
-            if boma.is_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
-                sh_footstool_input = Buttons::empty();
-            } else if boma.is_situation(*SITUATION_KIND_GROUND) {
-                sh_footstool_input = Buttons::Jump | Buttons::JumpMini;
-            } else {
-                if boma.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) >= 5 {
-                    sh_footstool_input = Buttons::AppealAll;
-                }
-            }
-            break;
-        }
-    }
-
     let mappings = mappings.add(player_idx as usize);
 
     if controller.style == ControllerStyle::GCController {
-        if controller.just_down.l() && (*mappings).gc_l == InputKind::JumpMini {
-            (*out).buttons |= sh_footstool_input;
-        } else if controller.just_down.r() && (*mappings).gc_r == InputKind::JumpMini {
-            (*out).buttons |= sh_footstool_input;
-        } else if (controller.just_down.zl() || controller.just_down.zr()) && (*mappings).gc_z == InputKind::JumpMini {
-            (*out).buttons |= sh_footstool_input;
-        } else if controller.just_down.a() && (*mappings).gc_a == InputKind::JumpMini {
-            (*out).buttons |= sh_footstool_input;
-        } else if controller.just_down.b() && (*mappings).gc_b == InputKind::JumpMini {
-            (*out).buttons |= sh_footstool_input;
-        } else if controller.just_down.x() && (*mappings).gc_x == InputKind::JumpMini {
-            (*out).buttons |= sh_footstool_input;
-        } else if controller.just_down.y() && (*mappings).gc_y == InputKind::JumpMini {
-            (*out).buttons |= sh_footstool_input;
-        }
+        apply_button_mappings!(
+            controller,
+            mappings,
+                (l, gc_l, JumpMini, Buttons::ShFootstool)
+                (r, gc_r, JumpMini, Buttons::ShFootstool)
+                (zl, gc_z, JumpMini, Buttons::ShFootstool)
+                (zr, gc_z, JumpMini, Buttons::ShFootstool)
+                (a, gc_a, JumpMini, Buttons::ShFootstool)
+                (b, gc_b, JumpMini, Buttons::ShFootstool)
+                (x, gc_x, JumpMini, Buttons::ShFootstool)
+                (y, gc_y, JumpMini, Buttons::ShFootstool)
+        );
     } else if controller.style == ControllerStyle::LeftJoycon || controller.style == ControllerStyle::RightJoycon {
-        if (controller.just_down.l() || controller.just_down.r()) && (*mappings).joy_shoulder == InputKind::JumpMini {
-            (*out).buttons |= sh_footstool_input;
-        } else if (controller.just_down.zl() || controller.just_down.zr()) && (*mappings).joy_zshoulder == InputKind::JumpMini {
-            (*out).buttons |= sh_footstool_input;
-        } else if (controller.just_down.left_sl() || controller.just_down.right_sl()) && (*mappings).joy_sl == InputKind::JumpMini {
-            (*out).buttons |= sh_footstool_input;
-        } else if (controller.just_down.left_sr() || controller.just_down.right_sr()) && (*mappings).joy_sl == InputKind::JumpMini {
-            (*out).buttons |= sh_footstool_input;
-        } else if controller.style == ControllerStyle::LeftJoycon {
-            if controller.just_down.dpad_left() && (*mappings).joy_down == InputKind::JumpMini {
-                (*out).buttons |= sh_footstool_input;
-            } else if controller.just_down.dpad_right() && (*mappings).joy_up == InputKind::JumpMini {
-                (*out).buttons |= sh_footstool_input;
-            } else if controller.just_down.dpad_up() && (*mappings).joy_left == InputKind::JumpMini {
-                (*out).buttons |= sh_footstool_input;
-            } else if controller.just_down.dpad_down() && (*mappings).joy_right == InputKind::JumpMini {
-                (*out).buttons |= sh_footstool_input;
-            }
+        apply_button_mappings!(
+            controller,
+            mappings,
+                (l, joy_shoulder, JumpMini, Buttons::ShFootstool)
+                (r, joy_shoulder, JumpMini, Buttons::ShFootstool)
+                (zl, joy_zshoulder, JumpMini, Buttons::ShFootstool)
+                (zr, joy_zshoulder, JumpMini, Buttons::ShFootstool)
+                (left_sl, joy_sl, JumpMini, Buttons::ShFootstool)
+                (left_sr, joy_sr, JumpMini, Buttons::ShFootstool)
+                (right_sl, joy_sl, JumpMini, Buttons::ShFootstool)
+                (right_sr, joy_sr, JumpMini, Buttons::ShFootstool)
+        );
+
+        if controller.style == ControllerStyle::LeftJoycon {
+            apply_button_mappings!(
+                controller,
+                mappings,
+                    (dpad_left, joy_down, JumpMini, Buttons::ShFootstool)
+                    (dpad_right, joy_up, JumpMini, Buttons::ShFootstool)
+                    (dpad_up, joy_left, JumpMini, Buttons::ShFootstool)
+                    (dpad_down, joy_right, JumpMini, Buttons::ShFootstool)
+            );
         } else {
-            if controller.just_down.a() && (*mappings).joy_down == InputKind::JumpMini {
-                (*out).buttons |= sh_footstool_input;
-            } else if controller.just_down.y() && (*mappings).joy_up == InputKind::JumpMini {
-                (*out).buttons |= sh_footstool_input;
-            } else if controller.just_down.b() && (*mappings).joy_left == InputKind::JumpMini {
-                (*out).buttons |= sh_footstool_input;
-            } else if controller.just_down.x() && (*mappings).joy_right == InputKind::JumpMini {
-                (*out).buttons |= sh_footstool_input;
-            }
+            apply_button_mappings!(
+                controller,
+                mappings,
+                    (a, joy_down, JumpMini, Buttons::ShFootstool)
+                    (y, joy_up, JumpMini, Buttons::ShFootstool)
+                    (b, joy_left, JumpMini, Buttons::ShFootstool)
+                    (x, joy_right, JumpMini, Buttons::ShFootstool)
+            );
         }
     } else {
-        if controller.just_down.l() && (*mappings).pro_l == InputKind::JumpMini {
-            (*out).buttons |= sh_footstool_input;
-        } else if controller.just_down.r() && (*mappings).pro_r == InputKind::JumpMini {
-            (*out).buttons |= sh_footstool_input;
-        } else if controller.just_down.zl() && (*mappings).pro_zl == InputKind::JumpMini {
-            (*out).buttons |= sh_footstool_input;
-        } else if controller.just_down.zr() && (*mappings).pro_zr == InputKind::JumpMini {
-            (*out).buttons |= sh_footstool_input;
-        } else if controller.just_down.a() && (*mappings).pro_a == InputKind::JumpMini {
-            (*out).buttons |= sh_footstool_input;
-        } else if controller.just_down.b() && (*mappings).pro_b == InputKind::JumpMini {
-            (*out).buttons |= sh_footstool_input;
-        } else if controller.just_down.x() && (*mappings).pro_x == InputKind::JumpMini {
-            (*out).buttons |= sh_footstool_input;
-        } else if controller.just_down.y() && (*mappings).pro_y == InputKind::JumpMini {
-            (*out).buttons |= sh_footstool_input;
-        }
+        apply_button_mappings!(
+            controller,
+            mappings,
+                (l, pro_l, JumpMini, Buttons::ShFootstool)
+                (r, pro_r, JumpMini, Buttons::ShFootstool)
+                (zl, pro_zl, JumpMini, Buttons::ShFootstool)
+                (zr, pro_zr, JumpMini, Buttons::ShFootstool)
+                (a, pro_a, JumpMini, Buttons::ShFootstool)
+                (b, pro_b, JumpMini, Buttons::ShFootstool)
+                (x, pro_x, JumpMini, Buttons::ShFootstool)
+                (y, pro_y, JumpMini, Buttons::ShFootstool)
+        );
     }
 
     // Check if the button combos are being pressed and then force Stock Share + AttackRaw/SpecialRaw depending on input
