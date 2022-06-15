@@ -115,6 +115,12 @@ unsafe fn status_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
         motion_rate = 1.0 / ((intan_frame as f32) / ((intan_frame - add_xlu_frame) as f32));
     }
     MotionModule::set_rate(fighter.module_accessor, motion_rate);
+
+    // prevents knockback speed from applying into wavelands (boosted wavelands out of hitstun)
+    fighter.clear_lua_stack();
+    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE, 0.0, 0.0);
+    app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+
     fighter.sub_shift_status_main(L2CValue::Ptr(status_EscapeAir_Main as *const () as _))
 }
 
@@ -347,10 +353,6 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
             
             VarModule::set_float(fighter.battle_object, vars::common::ESCAPE_AIR_SLIDE_SPEED_X, escape_air_slide_speed * WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X));
             VarModule::set_float(fighter.battle_object, vars::common::ESCAPE_AIR_SLIDE_SPEED_Y, escape_air_slide_speed * WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y));
-
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE, 0.0, 0.0);
-            app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
         }
         else {
             if MotionModule::frame(fighter.module_accessor) < 29.0 {
@@ -457,7 +459,8 @@ unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterC
     let pad = fighter.global_table[PAD_FLAG].get_i32();
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW)
         && pad & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
-        && ItemModule::is_have_item(fighter.module_accessor, 0) {
+        && ItemModule::is_have_item(fighter.module_accessor, 0)
+        && curr_frame <= 3 {
             fighter.clear_lua_stack();
             lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_NO_THROW);
             smash::app::sv_module_access::item(fighter.lua_state_agent);
@@ -467,6 +470,10 @@ unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterC
                     L2CValue::I32(*FIGHTER_STATUS_KIND_ITEM_THROW),
                     L2CValue::Bool(false)
                 );
+                let staling_mul = (1.0 - 0.1 * (VarModule::get_int(fighter.object(), vars::common::AGT_USED_COUNTER) as f32)).max(0.0);
+                KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: staling_mul, y: staling_mul, z: staling_mul}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR);
+                VarModule::inc_int(fighter.object(), vars::common::AGT_USED_COUNTER);
                 return 1.into();
         }
     }

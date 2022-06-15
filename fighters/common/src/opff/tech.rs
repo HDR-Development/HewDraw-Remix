@@ -281,17 +281,6 @@ extern "C" {
     pub fn stage_id() -> i32;
 }
 
-pub unsafe fn freeze_stages(boma: &mut BattleObjectModuleAccessor) {
-
-    // determine the current stage id
-    //println!("stage id: {}", stage_id());
-
-    // warioware
-    if (stage_id() == 104) {
-        smash::app::FighterUtil::set_stage_pause_for_final(true, boma);
-    }
-}
-
 pub unsafe fn hitfall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, fighter_kind: i32, cat: [i32 ; 4]) {
     if boma.kind() == *FIGHTER_KIND_GAOGAEN
     && boma.is_situation(*SITUATION_KIND_AIR)
@@ -370,6 +359,7 @@ pub unsafe fn teeter_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
     && boma.is_status_one_of(
     &[*FIGHTER_STATUS_KIND_WAIT,
         *FIGHTER_STATUS_KIND_DASH,
+        *FIGHTER_STATUS_KIND_RUN_BRAKE,
         *FIGHTER_STATUS_KIND_APPEAL,
         *FIGHTER_STATUS_KIND_LANDING,
         *FIGHTER_STATUS_KIND_LANDING_LIGHT,
@@ -377,7 +367,6 @@ pub unsafe fn teeter_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
         *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL,
         *FIGHTER_STATUS_KIND_LANDING_DAMAGE_LIGHT]
     )
-    && GroundModule::get_correct(boma) == *GROUND_CORRECT_KIND_GROUND
     && (KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL)
     - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND)
     - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN)).abs() > 0.0) {
@@ -424,7 +413,5 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mu
     hitfall(boma, status_kind, situation_kind, fighter_kind, cat);
     respawn_taunt(boma, status_kind);
     teeter_cancel(fighter, boma);
-
-    freeze_stages(boma);
 }
     

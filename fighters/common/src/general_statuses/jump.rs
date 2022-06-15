@@ -153,7 +153,7 @@ unsafe extern "C" fn status_Jump_Main(fighter: &mut L2CFighterCommon) -> L2CValu
     };
     
     // CAT1, FLAG_ATTACK_N
-    BufferModule::clear_persist_one(fighter.battle_object, 0, 0);
+    InputModule::clear_persist_one(fighter.battle_object, 0, 0);
     ret
 }
 
