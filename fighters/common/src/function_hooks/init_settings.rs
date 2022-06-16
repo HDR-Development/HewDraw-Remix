@@ -25,15 +25,15 @@ pub trait Vector3fExt {
 //=================================================================
 #[skyline::hook(replace=StatusModule::init_settings)]
 unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: smash::app::SituationKind, arg3: i32, arg4: u32,
-                             ground_cliff_check_kind: smash::app::GroundCliffCheckKind, arg6: bool,
-                             arg7: i32, arg8: i32, arg9: i32, arg10: i32) -> u64 {
+                             ground_cliff_check_kind: smash::app::GroundCliffCheckKind, jostle: bool,
+                             keep_flag: i32, keep_int: i32, keep_float: i32, arg10: i32) -> u64 {
     let id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     let fighter_kind = boma.kind();
     let status_kind = StatusModule::status_kind(boma);
     let situation_kind = StatusModule::situation_kind(boma);
                                 
     // Call edge_slippoffs init_settings
-    let fix = super::edge_slipoffs::init_settings_edges(boma, situation, arg3, arg4, ground_cliff_check_kind, arg6, arg7, arg8, arg9, arg10);
+    let fix = super::edge_slipoffs::init_settings_edges(boma, situation, arg3, arg4, ground_cliff_check_kind, jostle, keep_flag, keep_int, keep_float, arg10);
 
     if boma.is_fighter() {
 
@@ -120,7 +120,25 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
 
     }
 
-    original!()(boma, situation, arg3, fix, ground_cliff_check_kind, arg6, arg7, arg8, arg9, arg10)
+    // VarModule Status Variable reset checks
+    // This makes the assumption that if the KEEP_FLAG is not NONE, you want to clear the
+    // status variable array for that data type. Because Smash shares its space between
+    // INT and INT64, I have included both of them under a single check.
+    let mut mask = 0;
+    if keep_flag == *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG {
+        mask += VarModule::RESET_STATUS_FLAG;
+    }
+    if keep_int == *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT {
+        mask += VarModule::RESET_STATUS_INT;
+        mask += VarModule::RESET_STATUS_INT64;
+    }
+    if keep_float == *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT {
+        mask += VarModule::RESET_STATUS_FLOAT;
+    }
+    let object = boma.object();
+    VarModule::reset(object, mask);
+
+    original!()(boma, situation, arg3, fix, ground_cliff_check_kind, jostle, keep_flag, keep_int, keep_float, arg10)
 }
 
 pub fn install() {
