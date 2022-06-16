@@ -55,140 +55,154 @@ pub mod globals {
     pub const DASH_POST_TRANSITION_CALLBACK: i32 = 0x57;
 }
 
+/*
+WuBoy's VarModule Constant Overhaul!
+The way our variable constants are labelled is changing.
+
+Variables now have two categories:
+INSTANCE, which persists until manually changed. Represented by 0x0XXX.
+STATUS, which is automatically reset when the status changes. Represented by 0x1XXX.
+
+In addition, there are two sub-categories.
+Common, which is shared by every fighter. Represented by 0xX0XX.
+Agent, which is specific to a certain fighter/agent. Represented by 0xX1XX.
+
+This means for each combination, you have access to 256 common variables and 256 agent variables.
+That's a LOT of space, and I don't anticipate it all gets used up with proper variable application.
+*/
+
 pub mod vars {
     pub mod common {
         // flag
-        pub const IS_HEAVY_ATTACK: i32 = 0x0;
-        pub const FIREBRAND_ACTIVATED: i32 = 0x1;
-        pub const DOUBLE_FIREBALL: i32 = 0x2;
-        pub const NOKNOK_SHELL: i32 = 0x3;
-        pub const IS_IN_HITSTUN: i32 = 0x4;
-        pub const CSTICK_OVERRIDE: i32 = 0x5;
-        pub const CSTICK_OVERRIDE_SECOND: i32 = 0x6;
-        pub const IS_TAP_JUMP: i32 = 0x7;
-        pub const OMNI_FLOAT: i32 = 0x8;
-        pub const SIDE_SPECIAL_CANCEL: i32 = 0x9;
-        pub const DISABLE_UP_SPECIAL_JUMP_REFRESH: i32 = 0xA;
-        pub const HITSTUN_START: i32 = 0xB;
-        pub const AERIAL_NO_FLOAT: i32 = 0xC;
-        pub const FLOAT_PAUSE_AERIAL: i32 = 0xD;
-        pub const SMASH_CHECKS: i32 = 0xE;
-        pub const TILT_CHECKS: i32 = 0xF;
-        pub const JAB_DA_CHECKS: i32 = 0x10;
-        pub const AERIAL_CHECKS: i32 = 0x11;
-        pub const SPECIAL_STALL_USED: i32 = 0x12;
-        pub const SPECIAL_STALL: i32 = 0x13;
-        pub const UP_SPECIAL_INTERRUPT: i32 = 0x14;
-        pub const ENABLE_AIR_ESCAPE_MAGNET: i32 = 0x15;
-        pub const UP_SPECIAL_INTERRUPT_AIRTIME: i32 = 0x16;
-        pub const DITCIT_SLIDING: i32 = 0x17;
-        pub const AIR_CROSS: i32 = 0x18;
-        pub const FINAL_CUTTER_HIT: i32 = 25;
-        pub const SPECIAL_CHECKS: i32 = 26;
-        pub const DISABLE_AIRDODGE: i32 = 27;
-        pub const NEUTRAL_SPECIAL_HIT: i32 = 28;
-        pub const ILLUSION_SHORTENED: i32 = 30;
-        pub const FOOTSTOOL_AIRDODGE_LOCKOUT: i32 = 31;
-        pub const CAN_ESCAPE_TUMBLE: i32 = 32;
-        pub const SUPER_CANCEL: i32 = 33;
-        pub const SPECIAL_AUTOCANCEL: i32 = 35;
-        pub const ILLUSION_SHORTEN: i32 = 37;
-        pub const SOARING_SLASH_HIT: i32 = 38;
-        pub const DOUBLE_JUMP_STOP: i32 = 39;
-        pub const KIRBY_STAR_ROD: i32 = 40;
-        pub const IS_IN_TUMBLE: i32 = 41;
-        pub const SPECIAL_WALL_JUMP: i32 = 42;
-        pub const DOWN_SPECIAL_HIT: i32 = 43;
-        pub const MAGIC_CANCEL_ADDITIONAL: i32 = 44;
-        pub const TETHER_HOGGED: i32 = 45;
-        pub const AERIAL_COMMAND_MOMENTUM_RESET: i32 = 46;
-        pub const TUMBLE_START: i32 = 47;
-        pub const B_REVERSED: i32 = 48;
-        pub const AERIAL_COMMAND_RISING: i32 = 49;
-        pub const SIDE_SPECIAL_HIT: i32 = 50;
-        pub const TUMBLE_KB: i32 = 51;
-        pub const UP_SPECIAL_HIT: i32 = 52;
-        pub const AIR_SPECIAL_USED: i32 = 54;
-        pub const LEDGE_OCCUPYING: i32 = 55;
-        pub const DOUBLE_JUMP_CANCELED: i32 = 56;
-        pub const IS_MOONWALK: i32 = 57;
-        pub const CAN_GLIDE_TOSS: i32 = 58;
-        pub const IS_MOONWALK_JUMP: i32 = 59;
-        pub const IS_MOTION_BASED_ATTACK: i32 = 60;
-        pub const PREV_FLAG_DISABLE_ESCAPE_AIR: i32 = 61;
-        pub const ENABLE_WAVELAND_PLATDROP: i32 = 62;
-        pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 63;
-        pub const UP_SPECIAL_CANCEL: i32 = 64;
-        pub const IS_TELEPORT_WALL_RIDE: i32 = 65;
-        pub const SPIN_ATTACK_LAND_CANCEL: i32 = 66;
-        pub const AERIAL_COMMAND_RISEN: i32 = 67;
-        pub const DISABLE_SPECIAL_JC: i32 = 68;
-        pub const IS_DACUS: i32 = 69;
-        pub const ATTACK_DASH_CANCEL_DISABLE: i32 = 70;
-        pub const DISABLE_BACKDASH: i32 = 71;
-        pub const IS_LATE_PIVOT: i32 = 72;
-        pub const IS_TURNDASH_INPUT: i32 = 73;
-        pub const IS_SMASH_TURN: i32 = 74;
-        pub const IS_STICKY_WALK: i32 = 75;
-        pub const ENABLE_BOOST_RUN: i32 = 76;
-        pub const UP_SPECIAL_JUMP_REFRESH_WINDOW: i32 = 77;
-        pub const PERFECT_WAVEDASH: i32 = 78;
-        pub const ENABLE_AIR_ESCAPE_JUMPSQUAT: i32 = 79;
-        pub const SHOULD_WAVELAND: i32 = 80;
-        pub const SIDE_SPECIAL_CANCEL_NO_HIT: i32 = 81;
-        pub const JUMP_NEXT: i32 = 82;
-        pub const IS_JAB_LOCK_ROLL: i32 = 83;
-        pub const SHOULD_TRUMP_TETHER: i32 = 84;
+        pub const IS_HEAVY_ATTACK: i32 = 0x0000;
+        pub const NOKNOK_SHELL: i32 = 0x0003;
+        pub const IS_IN_HITSTUN: i32 = 0x0004;
+        pub const CSTICK_OVERRIDE: i32 = 0x0005;
+        pub const CSTICK_OVERRIDE_SECOND: i32 = 0x0006;
+        pub const IS_TAP_JUMP: i32 = 0x0007;
+        pub const OMNI_FLOAT: i32 = 0x0008;
+        pub const SIDE_SPECIAL_CANCEL: i32 = 0x0009;
+        pub const DISABLE_UP_SPECIAL_JUMP_REFRESH: i32 = 0x000A;
+        pub const HITSTUN_START: i32 = 0x000B;
+        pub const AERIAL_NO_FLOAT: i32 = 0x000C;
+        pub const FLOAT_PAUSE_AERIAL: i32 = 0x000D;
+        pub const SMASH_CHECKS: i32 = 0x000E;
+        pub const TILT_CHECKS: i32 = 0x000F;
+        pub const JAB_DA_CHECKS: i32 = 0x0010;
+        pub const AERIAL_CHECKS: i32 = 0x0011;
+        pub const SPECIAL_STALL_USED: i32 = 0x0012;
+        pub const SPECIAL_STALL: i32 = 0x0013;
+        pub const UP_SPECIAL_INTERRUPT: i32 = 0x0014;
+        pub const ENABLE_AIR_ESCAPE_MAGNET: i32 = 0x0015;
+        pub const UP_SPECIAL_INTERRUPT_AIRTIME: i32 = 0x0016;
+        pub const DITCIT_SLIDING: i32 = 0x0017;
+        pub const AIR_CROSS: i32 = 0x0018;
+        pub const FINAL_CUTTER_HIT: i32 = 0x0019;
+        pub const SPECIAL_CHECKS: i32 = 0x001A;
+        pub const DISABLE_AIRDODGE: i32 = 0x001B;
+        pub const NEUTRAL_SPECIAL_HIT: i32 = 0x001C;
+        pub const ILLUSION_SHORTENED: i32 = 0x001D;
+        pub const FOOTSTOOL_AIRDODGE_LOCKOUT: i32 = 0x001E;
+        pub const CAN_ESCAPE_TUMBLE: i32 = 0x001F;
+        pub const SUPER_CANCEL: i32 = 0x0020;
+        pub const SPECIAL_AUTOCANCEL: i32 = 0x0021;
+        pub const ILLUSION_SHORTEN: i32 = 0x0022;
+        pub const SOARING_SLASH_HIT: i32 = 0x0023;
+        pub const DOUBLE_JUMP_STOP: i32 = 0x0024;
+        pub const KIRBY_STAR_ROD: i32 = 0x0025;
+        pub const IS_IN_TUMBLE: i32 = 0x0026;
+        pub const SPECIAL_WALL_JUMP: i32 = 0x0027;
+        pub const DOWN_SPECIAL_HIT: i32 = 0x0028;
+        pub const MAGIC_CANCEL_ADDITIONAL: i32 = 0x0029;
+        pub const TETHER_HOGGED: i32 = 0x002A;
+        pub const AERIAL_COMMAND_MOMENTUM_RESET: i32 = 0x002B;
+        pub const TUMBLE_START: i32 = 0x002C;
+        pub const B_REVERSED: i32 = 0x002D;
+        pub const AERIAL_COMMAND_RISING: i32 = 0x002E;
+        pub const SIDE_SPECIAL_HIT: i32 = 0x002F;
+        pub const TUMBLE_KB: i32 = 0x0030;
+        pub const UP_SPECIAL_HIT: i32 = 0x0031;
+        pub const AIR_SPECIAL_USED: i32 = 0x0032;
+        pub const LEDGE_OCCUPYING: i32 = 0x0033;
+        pub const DOUBLE_JUMP_CANCELED: i32 = 0x0034;
+        pub const IS_MOONWALK: i32 = 0x0035;
+        pub const CAN_GLIDE_TOSS: i32 = 0x0036;
+        pub const IS_MOONWALK_JUMP: i32 = 0x0037;
+        pub const IS_MOTION_BASED_ATTACK: i32 = 0x0038;
+        pub const PREV_FLAG_DISABLE_ESCAPE_AIR: i32 = 0x0039;
+        pub const ENABLE_WAVELAND_PLATDROP: i32 = 0x003A;
+        pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 0x003B;
+        pub const UP_SPECIAL_CANCEL: i32 = 0x003C;
+        pub const IS_TELEPORT_WALL_RIDE: i32 = 0x003D;
+        pub const SPIN_ATTACK_LAND_CANCEL: i32 = 0x003E;
+        pub const AERIAL_COMMAND_RISEN: i32 = 0x003F;
+        pub const DISABLE_SPECIAL_JC: i32 = 0x0040;
+        pub const IS_DACUS: i32 = 0x0041;
+        pub const ATTACK_DASH_CANCEL_DISABLE: i32 = 0x0042;
+        pub const DISABLE_BACKDASH: i32 = 0x0043;
+        pub const IS_LATE_PIVOT: i32 = 0x0044;
+        pub const IS_TURNDASH_INPUT: i32 = 0x0045;
+        pub const IS_SMASH_TURN: i32 = 0x0046;
+        pub const IS_STICKY_WALK: i32 = 0x0047;
+        pub const ENABLE_BOOST_RUN: i32 = 0x0048;
+        pub const UP_SPECIAL_JUMP_REFRESH_WINDOW: i32 = 0x0049;
+        pub const PERFECT_WAVEDASH: i32 = 0x004A;
+        pub const ENABLE_AIR_ESCAPE_JUMPSQUAT: i32 = 0x004B;
+        pub const SHOULD_WAVELAND: i32 = 0x004C;
+        pub const SIDE_SPECIAL_CANCEL_NO_HIT: i32 = 0x004D;
+        pub const JUMP_NEXT: i32 = 0x004E;
+        pub const IS_JAB_LOCK_ROLL: i32 = 0x004F;
+        pub const SHOULD_TRUMP_TETHER: i32 = 0x0050;
         
 
         // int
-        pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0;
-        pub const COSTUME_SLOT_NUMBER: i32 = 0x1;
-        pub const FLOAT_TIMER: i32 = 0x2;
-        pub const FLOAT_DURATION: i32 = 0x3;
-        pub const FLOAT_STYLE: i32 = 0x4;
-        pub const HITFALL_BUFFER: i32 = 0x5;
-        pub const JUMP_SQUAT_FRAME: i32 = 0x6;
-        pub const GIMMICK_TIMER: i32 = 0x7;
-        pub const ATTACK_DASH_CANCEL_FRAME: i32 = 0x8;
-        pub const AIR_ESCAPE_MAGNET_FRAME: i32 = 0x9;
-        pub const TURN_DASH_FRAME: i32 = 0xA;
-        pub const DOWN_STAND_FB_KIND: i32 = 0xB;
-        pub const CSTICK_LIFE: i32 = 0xC;
-        pub const AGT_USED_COUNTER: i32 = 0xD;
+        pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
+        pub const COSTUME_SLOT_NUMBER: i32 = 0x0001;
+        pub const FLOAT_TIMER: i32 = 0x0002;
+        pub const FLOAT_DURATION: i32 = 0x0003;
+        pub const FLOAT_STYLE: i32 = 0x0004;
+        pub const HITFALL_BUFFER: i32 = 0x0005;
+        pub const JUMP_SQUAT_FRAME: i32 = 0x0006;
+        pub const GIMMICK_TIMER: i32 = 0x0007;
+        pub const ATTACK_DASH_CANCEL_FRAME: i32 = 0x0008;
+        pub const AIR_ESCAPE_MAGNET_FRAME: i32 = 0x0009;
+        pub const TURN_DASH_FRAME: i32 = 0x000A;
+        pub const DOWN_STAND_FB_KIND: i32 = 0x000B;
+        pub const CSTICK_LIFE: i32 = 0x000C;
+        pub const AGT_USED_COUNTER: i32 = 0x000D;
 
         // float
-        pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0;
-        pub const CURRENT_MOMENTUM: i32 = 0x1;
-        pub const JUMPSQUAT_VELOCITY: i32 = 0x2;
+        pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0000;
+        pub const CURRENT_MOMENTUM: i32 = 0x0001;
+        pub const JUMPSQUAT_VELOCITY: i32 = 0x0002;
         /// This const is set in a fighter reset because the params used to calculate change depending on situation
-        pub const JUMP_SPEED_RATIO: i32 = 0x3;
-        pub const DOUBLE_JUMP_FRAME: i32 = 0x4;
-        pub const GROUND_VEL: i32 = 0x5;
-        pub const RAR_LENIENCY: i32 = 0x6;
-        pub const CURRENT_MOMENTUM_SPECIALS: i32 = 0x7;
-        pub const DOUBLE_JUMP_TIMER: i32 = 0x8;
-        pub const GLIDE_TIMER: i32 = 0x9;
-        pub const BASE_RUN_SPEED_MAX: i32 = 0xA;
-        pub const SONIC_LIGHTSPEED_DASH_FRAME_COUNTER: i32 = 0xB;
-        pub const BASE_DASH_SPEED: i32 = 0xC;
-        pub const WITHDRAW_FRAME: i32 = 0xD;
-        pub const ROLL_DIR: i32 = 0xE;
-        pub const LEDGE_POS: i32 = 0xF;
-        pub const LEDGE_POS_X: i32 = 0xF;
-        pub const LEDGE_POS_Y: i32 = 0x10;
-        pub const LEDGE_POS_Z: i32 = 0x11;
-        pub const MP_SPEED_RATIO: i32 = 0x12;
-        pub const GET_DIST_TO_FLOOR: i32 = 0x13;
-        pub const ECB_Y_OFFSETS: i32 = 0x14;
-        pub const CURR_DASH_SPEED: i32 = 0x15;
-        pub const MOONWALK_SPEED: i32 = 0x16;
-        pub const ESCAPE_AIR_SLIDE_SPEED_X: i32 = 0x17;
-        pub const ESCAPE_AIR_SLIDE_SPEED_Y: i32 = 0x18;
-        pub const Y_POS: i32 = 0x19;
+        pub const JUMP_SPEED_RATIO: i32 = 0x0003;
+        pub const DOUBLE_JUMP_FRAME: i32 = 0x0004;
+        pub const GROUND_VEL: i32 = 0x0005;
+        pub const RAR_LENIENCY: i32 = 0x0006;
+        pub const CURRENT_MOMENTUM_SPECIALS: i32 = 0x0007;
+        pub const DOUBLE_JUMP_TIMER: i32 = 0x0008;
+        pub const GLIDE_TIMER: i32 = 0x0009;
+        pub const BASE_RUN_SPEED_MAX: i32 = 0x000A;
+        pub const SONIC_LIGHTSPEED_DASH_FRAME_COUNTER: i32 = 0x000B;
+        pub const BASE_DASH_SPEED: i32 = 0x000C;
+        pub const WITHDRAW_FRAME: i32 = 0x000D;
+        pub const ROLL_DIR: i32 = 0x000E;
+        pub const LEDGE_POS: i32 = 0x000F;
+        pub const LEDGE_POS_X: i32 = 0x000F;
+        pub const LEDGE_POS_Y: i32 = 0x0010;
+        pub const LEDGE_POS_Z: i32 = 0x0011;
+        pub const MP_SPEED_RATIO: i32 = 0x0012;
+        pub const GET_DIST_TO_FLOOR: i32 = 0x0013;
+        pub const ECB_Y_OFFSETS: i32 = 0x0014;
+        pub const CURR_DASH_SPEED: i32 = 0x0015;
+        pub const MOONWALK_SPEED: i32 = 0x0016;
+        pub const ESCAPE_AIR_SLIDE_SPEED_X: i32 = 0x0017;
+        pub const ESCAPE_AIR_SLIDE_SPEED_Y: i32 = 0x0018;
+        pub const Y_POS: i32 = 0x0019;
         /// this multiplier can be set to a value between 0.1 and 3.0 to increase
         /// a character's jump speed max for momentum transfer (for meta quick, etc)
-        pub const JUMP_SPEED_MAX_MUL: i32 = 0x1A;
+        pub const JUMP_SPEED_MAX_MUL: i32 = 0x001A;
     }
 
     pub mod bayonetta {
@@ -323,29 +337,42 @@ pub mod vars {
     }
 
     pub mod luigi {
-        // flag
-        /// This flag stores whether or not Luigi currently has a misfire stored.
-        pub const IS_MISFIRE_STORED: i32 = 0x1000;
-        
-        // int
-        /// This int stores the number of remaining green missile's luigi must do before getting a misfire
-        pub const REMAINING_SPECIAL_S_UNTIL_MISFIRE: i32 = 0x1000;
-        /// This int stores the handle of the charge smoke effect for killing it if we store misfire
-        pub const CHARGE_SMOKE_EFFECT_HANDLE: i32 = 0x1001;
-        /// This int stores the handle of the pulsing effect for killing it if we store misfire
-        pub const CHARGE_PULSE_EFFECT_HANDLE: i32 = 0x1002;
+        pub mod instance {
+            // flag
+            /// This flag stores whether or not Luigi currently has a misfire stored.
+            pub const IS_MISFIRE_STORED: i32 = 0x1000;
+            
+            // int
+            /// This int stores the number of remaining green missile's luigi must do before getting a misfire
+            pub const REMAINING_SPECIAL_S_UNTIL_MISFIRE: i32 = 0x1000;
+            /// This int stores the handle of the charge smoke effect for killing it if we store misfire
+            pub const CHARGE_SMOKE_EFFECT_HANDLE: i32 = 0x1001;
+            /// This int stores the handle of the pulsing effect for killing it if we store misfire
+            pub const CHARGE_PULSE_EFFECT_HANDLE: i32 = 0x1002;
 
-        // float
-        /// This float holds the current multiplier on damage for misfire
-        pub const MISFIRE_DAMAGE_MULTIPLIER: i32 = 0x1000;
+            // float
+            /// This float holds the current multiplier on damage for misfire
+            pub const MISFIRE_DAMAGE_MULTIPLIER: i32 = 0x1000;
+        }
+        pub mod status {
+            // flag
+            pub use super::super::mario::status::IS_SPECIAL_N_FIREBRAND;
+            pub use super::super::mario::status::IS_SPECIAL_N_DOUBLE_FIREBALL;
+        }
     }
 
     pub mod mario {
-        // flags
-        pub const IS_SPECIAL_N_FIREBRAND:                i32 = 0x1000;
-        pub const SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG: i32 = 0x1001;
-        pub const IS_SPECIAL_N_DOUBLE_FIREBALL:          i32 = 0x1002;
-        pub const CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL:   i32 = 0x1003;
+        pub mod instance {
+            // flags
+            pub const CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL:   i32 = 0x1000;
+            pub const SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG: i32 = 0x1001;
+        }
+
+        pub mod status {
+            // flags
+            pub const IS_SPECIAL_N_FIREBRAND:                i32 = 0x1100;
+            pub const IS_SPECIAL_N_DOUBLE_FIREBALL:          i32 = 0x1101;
+        }
     }
 
     pub mod master {
@@ -362,11 +389,15 @@ pub mod vars {
     }
 
     pub mod mariod {
-        // flags
-        pub const IS_SPECIAL_N_CHILL_PILL:       i32 = 0x1000;
-        pub const IS_SPECIAL_S_ELECTRIC_BLANKET: i32 = 0x1001;
-        pub const IS_SPECIAL_HI_UNABLE_CANCEL: i32 = 0x1002;
-        pub const IS_SPECIAL_HI_SWEETSPOT_HIT: i32 = 0x1003;
+        pub mod status {
+            // flags
+            pub const IS_SPECIAL_N_CHILL_PILL:       i32 = 0x1100;
+
+            pub const IS_SPECIAL_S_ELECTRIC_BLANKET: i32 = 0x1100;
+
+            pub const IS_SPECIAL_HI_UNABLE_CANCEL:   i32 = 0x1100;
+            pub const IS_SPECIAL_HI_SWEETSPOT_HIT:   i32 = 0x1101;
+        }
     }
 
     pub mod roy {
