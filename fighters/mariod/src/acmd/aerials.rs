@@ -54,6 +54,10 @@ unsafe fn mariod_attack_air_n_effect(fighter: &mut L2CAgentBase) {
 unsafe fn sound_attackairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_punch_kick_swing_s"));
+    }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_common_spirits_floor_elec_spark2"));
