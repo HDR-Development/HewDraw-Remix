@@ -273,13 +273,13 @@ unsafe fn jack_special_air_hi_f_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        jack_special_n1_effect,
-        jack_special_air_n1_effect,
-        jack_special_n2_effect,
-        jack_special_air_n2_effect,
-        jack_special_n3_effect,
-        jack_special_air_n3_effect,
-        jack_special_n_landing_effect,
+        //jack_special_n1_effect,
+        //jack_special_air_n1_effect,
+        //jack_special_n2_effect,
+        //jack_special_air_n2_effect,
+        //jack_special_n3_effect,
+        //jack_special_air_n3_effect,
+        //jack_special_n_landing_effect,
         jack_special_air_hi_game,
         jack_special_air_hi_f_game,
     );
