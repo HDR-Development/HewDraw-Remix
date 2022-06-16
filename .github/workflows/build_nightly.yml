@@ -91,7 +91,7 @@ jobs:
   ##############  handle uploading the files to the release  ##############
   upload_to_release:
     runs-on: ubuntu-latest
-    needs: [plugin_build]
+    needs: [plugin_build, version_and_changelog]
     steps:
     - uses: actions/download-artifact@v3
       with:
