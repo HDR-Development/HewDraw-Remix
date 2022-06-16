@@ -734,7 +734,7 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     unsafe fn handle_waveland(&mut self, require_airdodge: bool, change_status: bool) -> bool {
-        dbg!(MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU));
+        // MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU);
         if require_airdodge && (!self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE])
         || (MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU))) {
             return false;

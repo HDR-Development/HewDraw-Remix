@@ -34,7 +34,7 @@ unsafe fn flag_resets(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
 // Transition to fall
 unsafe fn transition_fall(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_FALL_SPECIAL {
-        println!("Side special hit: {}", VarModule::is_flag(boma.object(), vars::common::NEUTRAL_SPECIAL_HIT));
+        // println!("Side special hit: {}", VarModule::is_flag(boma.object(), vars::common::NEUTRAL_SPECIAL_HIT));
         let prev_status = StatusModule::prev_status_kind(boma, 0);
         if (prev_status == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_N_END && VarModule::is_flag(boma.object(), vars::common::NEUTRAL_SPECIAL_HIT))
             || (prev_status == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END && VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_HIT))
@@ -79,7 +79,7 @@ unsafe fn drill_rush_on_hit_cancel(fighter: &mut smash::lua2cpp::L2CFighterCommo
 
 // Lengthen sword
 unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
-	let long_sword_scale = Vector3f{x: 1.0, y: 1.15, z: 1.1};
+	let long_sword_scale = Vector3f{x: 1.0, y: 1.0, z: 1.0};
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("havel"), &long_sword_scale);
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("haver"), &long_sword_scale);
 }				 
@@ -98,6 +98,7 @@ pub fn metaknight_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) 
         common::opff::fighter_common_opff(fighter);
 		metaknight_frame(fighter);
         meta_quick::run(fighter);
+        // println!("motion: {:#x}", MotionModule::motion_kind(fighter.module_accessor));
     }
 }
 
