@@ -513,16 +513,23 @@ pub mod vars {
     }
 
     pub mod metaknight {
-        /// u64 effect handle
-        pub const META_QUICK_EFFECT_HANDLE: i32 = 0x1000;
-
         /// i32 timer for color flashing when meta quick is ready
         pub const META_QUICK_READY_FLASH_TIMER: i32 = 0x1000;
         pub const META_QUICK_STATUS: i32 = 0x1001;
 
+        /// u32 effect handle, 0xFFFF_FFFF for invalid
+        pub const META_QUICK_EFFECT_HANDLE: i32 = 0x1002;
+        
+        /// u32 effect handle for the charge, 0xFFFF_FFFF for invalid
+        pub const META_QUICK_CHARGE_EFFECT_HANDLE: i32 = 0x1003;
+        
+        /// u32 effect handle, 0xFFFF_FFFF for invalid
+        pub const META_QUICK_EFFECT_HANDLE2: i32 = 0x1004;
+
         /// flag whether we need to set metaknight speed values next frame
         pub const COMPLETED_SET_SPEEDS: i32 = 0x1000;
         pub const META_QUICK_NEED_SET_SPEEDS: i32 = 0x1001;
+        pub const META_QUICK_PLAY_VC: i32 = 0x1002;
     }
     
     pub mod miifighter {
@@ -546,5 +553,9 @@ pub mod vars {
 pub mod statuses {
     pub mod elight {
         pub const SPECIAL_HI_FINISH2: i32 = 0;
+    }
+
+    pub mod metaknight {
+        pub const METAQUICK_SUMMON: i32 = 0;
     }
 }

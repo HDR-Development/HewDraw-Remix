@@ -431,7 +431,7 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
         }
     }
 
-    if dbg!(input_module.hdr_cat.valid_frames[shfootstool_offset]) != 0
+    if input_module.hdr_cat.valid_frames[shfootstool_offset] != 0
     && !(input_module.hdr_cat.valid_frames[shfootstool_offset] == 1 && buttons.intersects(Buttons::ShFootstool)) {
         input_module.hdr_cat.valid_frames[shfootstool_offset] -= 1;
     }
