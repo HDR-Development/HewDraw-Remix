@@ -108,19 +108,19 @@ unsafe fn metaknight_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("metaknight_air_f"), Hash40::new("top"), 0, 0, 2, 0, 0, 0, 1.0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("metaknight_air_f"), Hash40::new("top"), 0, 0, 2, 0, 0, 0, 1.1, true);
         LAST_EFFECT_SET_RATE(fighter, 2.0);
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("metaknight_air_f"), Hash40::new("top"), 0, 0, 2, 0, 0, 0, 1.0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("metaknight_air_f"), Hash40::new("top"), 0, 0, 2, 0, 0, 0, 1.1, true);
         EffectModule::set_disable_render_offset_last(boma);
     }
     
     
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1.3, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1.0, true);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {

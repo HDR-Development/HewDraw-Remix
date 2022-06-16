@@ -151,9 +151,6 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     MeterModule::watch_damage(fighter.object(), true);
     MeterModule::set_damage_gain_mul(fighter.object(), 6.0);
     
-    //println!("Meter Module: {}", MeterModule::meter(fighter.object()));
-    //println!("Gimmick Timer: {}", VarModule::get_int(fighter.object(), vars::common::GIMMICK_TIMER));
-
     // logic for starting metaquick:
     // if our meter is >= 10, then we want to check for taunt
     // if we are pressing down taunt, then we want to enter metaquick
@@ -172,49 +169,7 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
                 EffectModule::req_common(fighter.module_accessor, Hash40::new("charge_max"), 0.0) as i32
             );
         }
-        // return;
-        // if !fighter.is_status_one_of(&[
-        //     *FIGHTER_STATUS_KIND_GUARD,
-        //     *FIGHTER_STATUS_KIND_GUARD_ON,
-        //     *FIGHTER_STATUS_KIND_DEAD,
-        //     *FIGHTER_STATUS_KIND_APPEAL
-        // ])
-        // && fighter.is_cat_flag(Cat2::AppealLw)
-        // && !(fighter.is_situation(*SITUATION_KIND_GROUND) && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW))
-        // {
-        //     MeterModule::drain(fighter.object(), 10);
-
-        //     start_meta_quick(fighter, 8 * 60);
-        // }
     }
-
-    // return;
-    
-
-
-    // if we have full meter, make meta quick available
-    // if MeterModule::level(fighter.object()) >= 10 {
-    //     // if you press taunt while not in shield or dead, start meta quick
-    //     if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_DEAD])
-    //         && fighter.is_cat_flag(Cat2::AppealAll) {
-
-    //         MeterModule::drain(fighter.object(), 10);
-            
-    //         // 8 seconds of quick per 50 damage
-    //         start_meta_quick(fighter, 8 * 60);
-    //     } else if VarModule::get_int(fighter.battle_object, vars::metaknight::META_QUICK_CHARGE_EFFECT_HANDLE) == -1 {
-    //         let handle = EffectModule::req_common(fighter.module_accessor, Hash40::new("charge_max"), 0.0) as u32;
-    //         EffectModule::set_rate(fighter.module_accessor, handle, 0.33);
-    //         VarModule::set_int(
-    //             fighter.battle_object,
-    //             vars::metaknight::META_QUICK_CHARGE_EFFECT_HANDLE,
-    //             handle as i32
-    //         );
-    //     }
-    // } else if VarModule::get_int(fighter.battle_object, vars::metaknight::META_QUICK_CHARGE_EFFECT_HANDLE) == -1 {
-    //     EffectModule::remove_common(fighter.module_accessor, Hash40::new("charge_max"));
-    //     VarModule::set_int(fighter.battle_object, vars::metaknight::META_QUICK_CHARGE_EFFECT_HANDLE, -1);
-    // }
 
     // during meta quick, if you deal damage, it should extend meta quick
     if is_meta_quick(fighter) && MeterModule::level(fighter.object()) >= 1 {
@@ -228,7 +183,6 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
     // handle the main meta quick logic
     if is_meta_quick(fighter) {
-        show_quick_active_effect(fighter);
         check_reset(fighter);
         // set the increased jump speed max multiplier for momentum transfer
         VarModule::set_float(fighter.object(), vars::common::JUMP_SPEED_MAX_MUL, 1.5);
@@ -266,9 +220,9 @@ unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     // handle speed application once
     if VarModule::is_flag(fighter.object(), vars::metaknight::META_QUICK_NEED_SET_SPEEDS) {
         if VarModule::get_int(fighter.object(), vars::common::GIMMICK_TIMER) > 0 {
-            apply_status_speed_mul(fighter, 1.2);
+            apply_status_speed_mul(fighter, 1.25);
         } else {
-            apply_status_speed_mul(fighter, 0.9);
+            apply_status_speed_mul(fighter, 0.95);
         }
         VarModule::off_flag(fighter.object(), vars::metaknight::META_QUICK_NEED_SET_SPEEDS);
     }
@@ -317,27 +271,6 @@ pub unsafe fn is_meta_quick(fighter: &mut smash::lua2cpp::L2CFighterCommon) -> b
 pub unsafe fn start_meta_quick(fighter: &mut smash::lua2cpp::L2CFighterCommon, length: i32) {
     VarModule::set_int(fighter.object(), vars::common::GIMMICK_TIMER, length);
 
-    // if (fighter.is_situation(*SITUATION_KIND_AIR)
-    // && fighter.is_status_one_of(&[
-    //     *FIGHTER_STATUS_KIND_JUMP,
-    //     *FIGHTER_STATUS_KIND_JUMP_AERIAL,
-    //     *FIGHTER_STATUS_KIND_FALL
-    // ]))
-    // || CancelModule::is_enable_cancel(fighter.module_accessor)
-    // {
-    //     fighter.change_to_custom_status(statuses::metaknight::METAQUICK_SUMMON, false, false);
-    // }
-    // else
-    // {
-    //     MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_SOUND, Hash40::new("sound_metaquicksummon"), -1);
-    // }
-
-    // // only play sfx if you aren't about to get a taunt instead
-    // if !(fighter.is_situation(*SITUATION_KIND_GROUND) && CancelModule::is_enable_cancel(fighter.boma())) {
-    //     // let mq_kind = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::metaknight::METAQUICK_SUMMON);
-    //     fighter.change_to_custom_status(statuses::metaknight::METAQUICK_SUMMON, false, false);
-    // }
-
     // indicate that we will need to set the status speeds next frame
     VarModule::on_flag(fighter.object(), vars::metaknight::META_QUICK_NEED_SET_SPEEDS);
 }
@@ -376,67 +309,6 @@ unsafe fn kill_quick_effect(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
             0
         );
     }
-
-    // let mut aura_effect_handle = VarModule::get_int64(fighter.object(), vars::metaknight::META_QUICK_EFFECT_HANDLE);
-    // if EffectModule::is_exist_effect(fighter.boma(), aura_effect_handle as u32) {
-    //     EffectModule::kill(fighter.boma(), aura_effect_handle as u32, true, true);
-    // }
-}
-
-/// handle the effect indicating that meta quick is currently active
-unsafe fn show_quick_active_effect(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-
-    // if the effect does not already exist, make one
-    // let mut aura_effect_handle = VarModule::get_int64(fighter.object(), vars::metaknight::META_QUICK_EFFECT_HANDLE);
-    // if !EffectModule::is_exist_effect(fighter.boma(), aura_effect_handle as u32) {
-    //     aura_effect_handle = EffectModule::req_follow(
-    //         fighter.boma(),
-    //         Hash40::new("sys_aura_light"),
-    //         Hash40::new("head"),
-    //         &Vector3f::zero(),
-    //         &Vector3f::zero(),
-    //         6.0,
-    //         true,
-    //         0,
-    //         0,
-    //         0,
-    //         0,
-    //         0,
-    //         true,
-    //         true
-    //     );
-
-    //     EffectModule::set_alpha(fighter.module_accessor, aura_effect_handle as u32, 1.0);
-    //     EffectModule::set_rgb(fighter.module_accessor, aura_effect_handle as u32, 101.0 / 255.0, 32.0 / 255.0, 153.0 / 255.0);
-        
-    //     // store the handle
-    //     VarModule::set_int64(fighter.object(), vars::metaknight::META_QUICK_EFFECT_HANDLE, aura_effect_handle);
-    // }
-}
-
-/// handle flashing to indicate that meta quick is available (similar to waft vfx)
-unsafe fn show_quick_ready_flash(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    // let flash_timer = VarModule::get_int(fighter.object(), vars::metaknight::META_QUICK_READY_FLASH_TIMER);
-    //println!("Quick Ready Flash Timer: {}", VarModule::get_int(fighter.object(), vars::metaknight::META_QUICK_READY_FLASH_TIMER));
-
-    // VarModule::inc_int(fighter.object(), vars::metaknight::META_QUICK_READY_FLASH_TIMER);
-    // match flash_timer {
-    //     0 => {
-           
-    //     }
-    //     1..=10 => {
-    //         let cmb_vec1 = Vector4f{x: 0.3, y: 0.3, z: 0.3, w: 0.4};
-    //         let cmb_vec2 = Vector4f{x: 0.3, y: 0.3, z: 0.3, w: 0.0};
-    //         ColorBlendModule::set_main_color(fighter.boma(), &cmb_vec1, &cmb_vec2, 1.0, 0.5, 2, true);
-    //     },
-    //     11 => {
-    //         ColorBlendModule::cancel_main_color(fighter.boma(), 0);
-    //     }
-    //     12..=49 => {},
-    //     _ => {
-    //         VarModule::set_int(fighter.object(), vars::metaknight::META_QUICK_READY_FLASH_TIMER, 0);
-    //     }
-    // }
 }
 
 /// applies the given multiplier to various speed stats of the given fighter. 
