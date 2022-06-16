@@ -399,12 +399,12 @@ pub unsafe fn backdash_energy(fighter: &mut L2CFighterCommon) {
 
         if ControlModule::check_button_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
             // prevent game from thinking you are inputting a dashback on the frame the cstick stops overriding left stick (0.625 -> -1.0)
-            VarModule::on_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH);
+            VarModule::on_flag(fighter.battle_object, vars::common::status::DISABLE_BACKDASH);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
         }
         if fighter.global_table[STICK_X].get_f32() == 0.0 {
             // if you return stick to neutral after a cstick dash, allow dashbacks again
-            VarModule::off_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH);
+            VarModule::off_flag(fighter.battle_object, vars::common::status::DISABLE_BACKDASH);
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
         }
 
@@ -421,7 +421,7 @@ pub unsafe fn backdash_energy(fighter: &mut L2CFighterCommon) {
             let run_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("run_speed_max"), 0);
 
             let mut applied_speed = (initial_speed * 0.25) + (ground_brake * PostureModule::lr(fighter.module_accessor));  // Only retain a fraction of your momentum into a re-dash or backdash; makes for snappy dash dancing (Melee functionality)
-            if (is_backdash_input && VarModule::is_flag(fighter.battle_object, vars::common::IS_MOONWALK) && FighterMotionModuleImpl::is_valid_cancel_frame(fighter.module_accessor, -1, true)) || fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0 {  // if the jump button is held, retain full momentum into next status
+            if (is_backdash_input && VarModule::is_flag(fighter.battle_object, vars::common::status::IS_MOONWALK) && FighterMotionModuleImpl::is_valid_cancel_frame(fighter.module_accessor, -1, true)) || fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0 {  // if the jump button is held, retain full momentum into next status
                 //println!("full momentum");
                 applied_speed = initial_speed + (ground_brake * PostureModule::lr(fighter.module_accessor));
             }

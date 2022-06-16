@@ -28,11 +28,11 @@ unsafe fn falcon_kick_b_reverse(fighter: &mut L2CFighterCommon) {
     && fighter.is_stick_backward() {
         PostureModule::reverse_lr(fighter.module_accessor);
         PostureModule::update_rot_y_lr(fighter.module_accessor);
-        if VarModule::is_flag(fighter.battle_object, vars::common::B_REVERSED) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::B_REVERSED) {
             return;
         }
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
-        VarModule::on_flag(fighter.battle_object, vars::common::B_REVERSED);
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::B_REVERSED);
     }
 }
 

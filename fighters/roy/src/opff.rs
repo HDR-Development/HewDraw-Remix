@@ -11,8 +11,8 @@ pub unsafe fn double_edge_dance_vertical_momentum(boma: &mut BattleObjectModuleA
         smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -2.0);
     }
 
-    if boma.is_situation(*SITUATION_KIND_GROUND) && VarModule::is_flag(boma.object(), vars::common::SPECIAL_STALL_USED) {
-        VarModule::off_flag(boma.object(), vars::common::SPECIAL_STALL_USED);
+    if boma.is_situation(*SITUATION_KIND_GROUND) && VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_STALL_USED) {
+        VarModule::off_flag(boma.object(), vars::common::instance::SPECIAL_STALL_USED);
     }
 }
 

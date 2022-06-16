@@ -36,7 +36,7 @@ unsafe fn cross_chop_techniques(fighter: &mut L2CFighterCommon) {
     if fighter.is_motion(Hash40::new("special_air_hi_turn")) {
         if MotionModule::frame(fighter.module_accessor) > 7.0 {
             if VarModule::is_flag(fighter.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL){
-                VarModule::on_flag(fighter.object(), vars::common::UP_SPECIAL_CANCEL);
+                VarModule::on_flag(fighter.object(), vars::common::instance::UP_SPECIAL_CANCEL);
                 fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
                 //return;
             }

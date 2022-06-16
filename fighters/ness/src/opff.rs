@@ -50,7 +50,7 @@ unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, st
                 VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT);
             }
             if VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME) {
-                VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL); // Disallow more up specials
+                VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL); // Disallow more up specials
             }
             StatusModule::change_status_request_from_script(boma, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_END, true);
         }

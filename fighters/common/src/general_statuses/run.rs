@@ -48,7 +48,7 @@ unsafe fn status_run_sub(fighter: &mut L2CFighterCommon) {
     }
 
     // new to hdr
-    if !VarModule::is_flag(fighter.battle_object, vars::common::IS_STICKY_WALK) {
+    if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_STICKY_WALK) {
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT);
     }
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
@@ -129,10 +129,10 @@ unsafe extern "C" fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue
     symbol = "_ZN7lua2cpp16L2CFighterCommon14status_end_RunEv")]
 unsafe fn status_end_run(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ![*FIGHTER_STATUS_KIND_TURN_RUN, *FIGHTER_STATUS_KIND_RUN_BRAKE].contains(&StatusModule::status_kind_next(fighter.module_accessor)) {
-        VarModule::off_flag(fighter.battle_object, vars::common::ENABLE_BOOST_RUN);
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::ENABLE_BOOST_RUN);
     }
 	if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_RUN_BRAKE {
-		VarModule::off_flag(fighter.battle_object, vars::common::IS_STICKY_WALK);
+		VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_STICKY_WALK);
 	}
     0.into()
 }
@@ -183,7 +183,7 @@ unsafe extern "C" fn status_turnrun_main(fighter: &mut L2CFighterCommon) -> L2CV
 	lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
 	let mut speed_control = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
 
-	if VarModule::is_flag(fighter.battle_object, vars::common::ENABLE_BOOST_RUN) && speed_control.abs() + (run_accel_mul + (run_accel_add * stick_x.abs())) > run_speed_max {
+	if VarModule::is_flag(fighter.battle_object, vars::common::instance::ENABLE_BOOST_RUN) && speed_control.abs() + (run_accel_mul + (run_accel_add * stick_x.abs())) > run_speed_max {
 		//println!("bypass max run speed");
 		let added_speed = stick_x.signum() * ((run_accel_mul + (run_accel_add * stick_x.abs())));
 
@@ -228,7 +228,7 @@ unsafe fn status_end_turnrun(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 	//println!("end turnrun total speed: {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
 
-	VarModule::off_flag(fighter.battle_object, vars::common::ENABLE_BOOST_RUN);
+	VarModule::off_flag(fighter.battle_object, vars::common::instance::ENABLE_BOOST_RUN);
 
 	call_original!(fighter)
 }
@@ -266,9 +266,9 @@ unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe fn status_end_runbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
 	//println!("end runbrake");
     if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_TURN_RUN {
-		VarModule::off_flag(fighter.battle_object, vars::common::ENABLE_BOOST_RUN);
+		VarModule::off_flag(fighter.battle_object, vars::common::instance::ENABLE_BOOST_RUN);
 	}
-	VarModule::off_flag(fighter.battle_object, vars::common::IS_STICKY_WALK);
+	VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_STICKY_WALK);
 
 	call_original!(fighter)
 }

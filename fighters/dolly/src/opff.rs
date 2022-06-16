@@ -569,7 +569,7 @@ unsafe fn dash_attack_cancels(boma: &mut BattleObjectModuleAccessor) {
     }
     if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD)
     && !VarModule::is_flag(boma.object(), vars::shotos::instance::IS_USE_EX_SPECIAL)
-    && !VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK){
+    && !VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
         // Rising Tackle
             if boma.is_cat_flag(Cat1::SpecialHi) {
             is_input_cancel = true;

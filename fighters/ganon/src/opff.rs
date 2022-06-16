@@ -45,9 +45,9 @@ unsafe fn wizards_foot_b_reverse(boma: &mut BattleObjectModuleAccessor, id: usiz
             if stick_x * facing < 0.0 {
                 PostureModule::reverse_lr(boma);
                 PostureModule::update_rot_y_lr(boma);
-                if  !VarModule::is_flag(boma.object(), vars::common::B_REVERSED) {
+                if  !VarModule::is_flag(boma.object(), vars::common::instance::B_REVERSED) {
                     KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
-                    VarModule::on_flag(boma.object(), vars::common::B_REVERSED);
+                    VarModule::on_flag(boma.object(), vars::common::instance::B_REVERSED);
                 }
             }
         }

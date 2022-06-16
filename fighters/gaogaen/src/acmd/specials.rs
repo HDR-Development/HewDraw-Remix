@@ -1084,7 +1084,7 @@ unsafe fn gaogaen_special_air_hi_turn_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 1.0);
         if VarModule::is_flag(boma.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL){
             VarModule::off_flag(boma.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL);
-            VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL);
+            VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
         }
         else{

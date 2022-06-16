@@ -210,9 +210,9 @@ unsafe extern "C" fn status_Jump_sub(fighter: &mut L2CFighterCommon, arg1: L2CVa
 }
 
 unsafe extern "C" fn bind_call_sub_fall_common_uniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
-    if !VarModule::is_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_MAGNET)
-            && VarModule::countdown_int(fighter.battle_object, vars::common::AIR_ESCAPE_MAGNET_FRAME, 0) {
-            VarModule::on_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_MAGNET);
+    if !VarModule::is_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET)
+            && VarModule::countdown_int(fighter.battle_object, vars::common::instance::AIR_ESCAPE_MAGNET_FRAME, 0) {
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET);
         }
     fighter.sub_fall_common_uniq(arg)
 }

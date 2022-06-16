@@ -118,7 +118,7 @@ unsafe fn miiswordsman_tornadoshot_fly_game(fighter: &mut L2CAgentBase) {
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     // Heavy
     //if heavy_attack[hdr::get_player_number(owner_module_accessor)]{
-    if VarModule::is_flag(owner_module_accessor.object(), vars::common::IS_HEAVY_ATTACK){
+    if VarModule::is_flag(owner_module_accessor.object(), vars::common::status::IS_HEAVY_ATTACK){
         if is_excute(fighter) {
             //disable_gale_strike[hdr::get_player_number(owner_module_accessor)] = true;
             AREA_WIND_2ND_RAD_arg9(fighter, 0, 2, 0.05, 200, 1, 3, 3, 25, 30);

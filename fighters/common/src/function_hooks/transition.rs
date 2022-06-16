@@ -44,11 +44,11 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
     }
 
 
-    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI && VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL) {
+    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI && VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL) {
         return false;
     }
 
-    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S && (VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL) || VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL_NO_HIT)) {
+    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S && (VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL) || VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL_NO_HIT)) {
         return false;
     }
 
@@ -133,7 +133,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
 
         // Disable Mii Swordfighter nspecial if the Tornado projectile is still active
         if fighter_kind == *FIGHTER_KIND_MIISWORDSMAN {
-            if VarModule::get_int(boma.object(), vars::common::GIMMICK_TIMER) > 0 && flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N {
+            if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) > 0 && flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N {
                 return false;
             }
         }

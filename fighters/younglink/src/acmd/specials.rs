@@ -178,8 +178,8 @@ unsafe fn younglink_special_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 17.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-            if VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER) == 0 {
-                VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 1);
+            if VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER) == 0 {
+                VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1);
                  ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_BOMBCHU), 0, 0, false, false);
             }
              else {
@@ -200,8 +200,8 @@ unsafe fn younglink_special_air_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 17.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-            if VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER) == 0 {
-                VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 1);
+            if VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER) == 0 {
+                VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1);
                  ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_BOMBCHU), 0, 0, false, false);
             }
              else {

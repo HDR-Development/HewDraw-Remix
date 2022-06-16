@@ -76,16 +76,16 @@ unsafe fn up_b_wall_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
         if situation_kind == *SITUATION_KIND_AIR {
             if frame >= 23.0 && frame <= 25.0 {
-                if  !VarModule::is_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP) {
+                if  !VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP) {
                     if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32) {
                         if boma.is_cat_flag(Cat1::TurnDash) {
-                            VarModule::on_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP);
+                            VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                         }
                     }
                     if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32) {
                         if boma.is_cat_flag(Cat1::TurnDash) {
-                            VarModule::on_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP);
+                            VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                         }
                     }
@@ -143,14 +143,14 @@ extern "Rust" {
 
 // NokNok Shell Timer Count
 unsafe fn noknok_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
-    let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER);
+    let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
     if gimmick_timerr > 0 && gimmick_timerr < 1801 {
         if gimmick_timerr > 1799 {
             VarModule::off_flag(boma.object(), vars::common::NOKNOK_SHELL);
-            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
+            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
             gimmick_flash(boma);
         } else {
-            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, gimmick_timerr + 1);
+            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, gimmick_timerr + 1);
         }
     }
 }

@@ -24,7 +24,7 @@ unsafe fn soaring_slash_cancel(fighter: &mut L2CFighterCommon) {
     && fighter.is_button_on(Buttons::Guard)
     {
         if VarModule::is_flag(fighter.battle_object, vars::common::SOARING_SLASH_HIT) {
-            VarModule::on_flag(fighter.battle_object, vars::common::UP_SPECIAL_CANCEL);
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
             fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
         } else {
             fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);

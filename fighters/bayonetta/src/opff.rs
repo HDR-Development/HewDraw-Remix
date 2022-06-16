@@ -239,8 +239,8 @@ unsafe fn recovery_resource_management(fighter: &mut L2CFighterCommon) {
     }
     else{
         if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) >= 2 {
-            VarModule::on_flag(fighter.battle_object, vars::common::SIDE_SPECIAL_CANCEL);
-            VarModule::on_flag(fighter.battle_object, vars::common::UP_SPECIAL_CANCEL);
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
             if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE,
                 *FIGHTER_STATUS_KIND_DAMAGE_AIR,
                 *FIGHTER_STATUS_KIND_DAMAGE_FLY,
@@ -254,8 +254,8 @@ unsafe fn recovery_resource_management(fighter: &mut L2CFighterCommon) {
             }
         }
         else{
-            VarModule::off_flag(fighter.battle_object, vars::common::SIDE_SPECIAL_CANCEL);
-            VarModule::off_flag(fighter.battle_object, vars::common::UP_SPECIAL_CANCEL);
+            VarModule::off_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
+            VarModule::off_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
         }
     }
     

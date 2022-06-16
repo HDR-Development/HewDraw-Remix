@@ -215,7 +215,7 @@ unsafe fn gamewatch_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     // frame(lua_state, 8.0);
     // if is_excute(fighter) {
-    //     VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+    //     VarModule::off_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK);
     // }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
@@ -223,7 +223,7 @@ unsafe fn gamewatch_attack_air_hi_game(fighter: &mut L2CAgentBase) {
         ArticleModule::generate_article(boma, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_BREATH, false, 0);
         ArticleModule::shoot(boma, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_BREATH, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
         //if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-        //    VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+        //    VarModule::on_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK);
             ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 367, 65, 0, 45, 7.0, 2.0, 25.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
             ATTACK(fighter, 1, 0, Hash40::new("top"), 4.0, 367, 65, 0, 45, 6.0, 0.0, 15.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
             ATTACK(fighter, 2, 0, Hash40::new("top"), 4.0, 367, 65, 0, 45, 4.0, 0.0, 9.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
@@ -243,7 +243,7 @@ unsafe fn gamewatch_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
-        //if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
+        //if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK) {
         ArticleModule::generate_article(boma, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_BREATH, false, 0);
         ArticleModule::shoot(boma, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_BREATH, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 78, 82, 0, 80, 7.5, 2.0, 25.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
@@ -251,7 +251,7 @@ unsafe fn gamewatch_attack_air_hi_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 2, 0, Hash40::new("top"), 9.0, 78, 82, 0, 80, 4.5, 0.0, 9.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
         FT_MOTION_RATE(fighter, 1.250);
         // }
-        // if !VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
+        // if !VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK) {
         //     FT_MOTION_RATE(fighter, 0.400);
         // }
     }
@@ -272,7 +272,7 @@ unsafe fn gamewatch_attack_air_hi_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
-        //if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
+        //if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK) {
         PLAY_SE(fighter, Hash40::new("se_gamewatch_wave08_mi"));
         //}
     }

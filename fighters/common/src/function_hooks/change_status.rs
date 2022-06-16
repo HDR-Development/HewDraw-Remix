@@ -8,8 +8,8 @@ unsafe fn change_status_request_hook(boma: &mut BattleObjectModuleAccessor, stat
     if boma.is_fighter() {
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_AIR_LASSO_REWIND
         && (next_status == *FIGHTER_STATUS_KIND_CLIFF_CATCH || next_status == *FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE || next_status == *FIGHTER_STATUS_KIND_CLIFF_WAIT)
-        &&  VarModule::is_flag(boma.object(), vars::common::SHOULD_TRUMP_TETHER) {
-            VarModule::off_flag(boma.object(), vars::common::SHOULD_TRUMP_TETHER);
+        &&  VarModule::is_flag(boma.object(), vars::common::instance::SHOULD_TRUMP_TETHER) {
+            VarModule::off_flag(boma.object(), vars::common::instance::SHOULD_TRUMP_TETHER);
             next_status = *FIGHTER_STATUS_KIND_CLIFF_ROBBED;
         }
     }

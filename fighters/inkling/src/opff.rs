@@ -22,7 +22,7 @@ unsafe fn dair_splatter(boma: &mut BattleObjectModuleAccessor, motion_kind: u64,
         let pos = Vector3f {x:0.,y:-2.,z:0.};
         let rot = Vector3f {x:0.,y:90.,z:0.};
         let handle2 = EffectModule::req_on_joint(boma,Hash40::new("inkling_blaster_muzzle"),Hash40::new("top"),&pos,&rot,2.2,&Vector3f::zero(), &Vector3f::zero(),false,0,0,0) as u32;
-        let costumenum = VarModule::get_int(boma.object(), vars::common::COSTUME_SLOT_NUMBER) as usize;
+        let costumenum = VarModule::get_int(boma.object(), vars::common::instance::COSTUME_SLOT_NUMBER) as usize;
         EffectModule::set_rgb(boma, handle2, INKLING_COLORS[costumenum].x, INKLING_COLORS[costumenum].y, INKLING_COLORS[costumenum].z);
         EffectModule::set_rate_last(boma, 0.5);
     }

@@ -95,7 +95,7 @@ unsafe fn special_s1_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_HENSOKU_SLASH_WORK_FLAG_HIT);
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
-        VarModule::on_flag(fighter.object(), vars::common::SIDE_SPECIAL_CANCEL);
+        VarModule::on_flag(fighter.object(), vars::common::instance::SIDE_SPECIAL_CANCEL);
     }
     // Commented out but this was the original script
     // if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
@@ -174,7 +174,7 @@ unsafe extern "C" fn miiswordsman_specials1attack_mainloop(fighter: &mut L2CFigh
         }
     }
     if MotionModule::frame(fighter.module_accessor) >= 15.0 {
-        VarModule::on_flag(fighter.battle_object, vars::common::SIDE_SPECIAL_CANCEL);
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
         if compare_mask(ControlModule::get_command_flag_cat(fighter.module_accessor, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N) {
             fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), true.into());
             return 1.into()
@@ -437,12 +437,12 @@ unsafe extern "C" fn special_s2_dash_main(fighter: &mut L2CFighterCommon) -> L2C
     }
     // Wall Jump
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
-        if !VarModule::is_flag(fighter.battle_object, vars::common::SPECIAL_WALL_JUMP) {
+        if !VarModule::is_flag(fighter.battle_object, vars::common::instance::SPECIAL_WALL_JUMP) {
             let touch_right = GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
             let touch_left = GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
             if touch_left || touch_right {
                 if compare_mask(ControlModule::get_command_flag_cat(fighter.module_accessor, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH | *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON) {
-                    VarModule::on_flag(fighter.battle_object, vars::common::SPECIAL_WALL_JUMP);
+                    VarModule::on_flag(fighter.battle_object, vars::common::instance::SPECIAL_WALL_JUMP);
                     fighter.change_status(FIGHTER_STATUS_KIND_WALL_JUMP.into(),true.into());
                     return 1.into()
                 }
@@ -761,12 +761,12 @@ unsafe fn exec_special_hi2_rush(fighter: &mut L2CFighterCommon) -> L2CValue {
 // not running for some reason
 #[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe fn exec_special_hi2_rush_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+    if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK) && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         //println!("SSD Success");
         if MotionModule::frame(fighter.module_accessor) >= 30.0 {
             //println!("SSD Fall Act");
             VarModule::off_flag(fighter.battle_object, vars::miiswordsman::status::SKYWARD_SLASH_DASH_HIT);
-            VarModule::on_flag(fighter.battle_object, vars::common::UP_SPECIAL_CANCEL);
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
             fighter.change_status(
                 L2CValue::I32(*FIGHTER_STATUS_KIND_FALL),
                 L2CValue::Bool(false)

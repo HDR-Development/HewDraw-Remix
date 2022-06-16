@@ -213,8 +213,8 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
         //KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         VarModule::off_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK);
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
-            VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK) {
+            VarModule::off_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK);
             // Use 30% fuel to boost
             let current_fuel = WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
             if current_fuel > boost_fuel_depletion {

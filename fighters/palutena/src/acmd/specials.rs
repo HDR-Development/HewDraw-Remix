@@ -20,8 +20,8 @@ unsafe fn palutena_special_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW))
            && !ArticleModule::is_exist(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD)
-           && !(VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER) > 0) {
-            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 1); // Start counting the cooldown timer
+           && !(VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER) > 0) {
+            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1); // Start counting the cooldown timer
             VarModule::set_float(fighter.battle_object, vars::palutena::status::SPECIAL_LW_LR, PostureModule::lr(fighter.module_accessor));
             VarModule::on_flag(fighter.battle_object, vars::palutena::status::SPECIAL_LW_AEGIS_REFLECTOR);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_LW_REFLECT, true);
@@ -59,8 +59,8 @@ unsafe fn palutena_special_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW))
            && !ArticleModule::is_exist(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD)
-           && !(VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER) > 0) {
-            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 1); // Start counting the cooldown timer
+           && !(VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER) > 0) {
+            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1); // Start counting the cooldown timer
             VarModule::set_float(fighter.battle_object, vars::palutena::status::SPECIAL_LW_LR, PostureModule::lr(fighter.module_accessor));
             VarModule::on_flag(fighter.battle_object, vars::palutena::status::SPECIAL_LW_AEGIS_REFLECTOR);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_LW_REFLECT, true);

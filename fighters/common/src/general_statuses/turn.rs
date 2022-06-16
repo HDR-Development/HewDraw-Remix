@@ -12,7 +12,7 @@ macro_rules! interrupt {
 unsafe fn status_pre_turn(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0 {
         // for IRAR
-        VarModule::off_flag(fighter.battle_object, vars::common::IS_SMASH_TURN);
+        VarModule::off_flag(fighter.battle_object, vars::common::status::IS_SMASH_TURN);
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_JUMP_SQUAT);
         return 1.into();
     }
@@ -81,18 +81,18 @@ unsafe extern "C" fn status_turn_main(fighter: &mut L2CFighterCommon) -> L2CValu
         let turn_work_lr: f32 = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_TURN_WORK_FLOAT_LR);
 
         if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
-            VarModule::on_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH);
+            VarModule::on_flag(fighter.battle_object, vars::common::status::DISABLE_BACKDASH);
         }
         if fighter.global_table[STICK_X].get_f32() == 0.0 {
-            VarModule::off_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH);
+            VarModule::off_flag(fighter.battle_object, vars::common::status::DISABLE_BACKDASH);
         }
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
         && stick_x * -1.0 * turn_work_lr < dash_stick_x  // if left stick is below dash threshold
-        && VarModule::is_flag(fighter.battle_object, vars::common::IS_SMASH_TURN)  // AND you are currently in a smash turn
+        && VarModule::is_flag(fighter.battle_object, vars::common::status::IS_SMASH_TURN)  // AND you are currently in a smash turn
         && StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_DASH  // AND your previous status was a dash (not turn)
         && MotionModule::frame(fighter.module_accessor) <= 1.0 {  // AND you are on frame 0 or frame 1 of your smash turn
             // perfect pivot
-            VarModule::off_flag(fighter.battle_object, vars::common::IS_SMASH_TURN);
+            VarModule::off_flag(fighter.battle_object, vars::common::status::IS_SMASH_TURN);
             let dash_speed: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0);
             let multiplier = -0.75;
             let pivot_boost: smash::phx::Vector3f = smash::phx::Vector3f {x: dash_speed * multiplier, y: 0.0, z: 0.0};
@@ -109,19 +109,19 @@ unsafe extern "C" fn status_turn_main(fighter: &mut L2CFighterCommon) -> L2CValu
             if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
                 if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0
                 || fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0
-                || VarModule::is_flag(fighter.battle_object, vars::common::IS_SMASH_TURN) {
+                || VarModule::is_flag(fighter.battle_object, vars::common::status::IS_SMASH_TURN) {
                     if stick_x * turn_work_lr >= dash_stick_x {
                         if MotionModule::frame(fighter.module_accessor) >= 1.0 {
                             //println!("backdash in turn");
-                            VarModule::on_flag(fighter.battle_object, vars::common::IS_SMASH_TURN);
+                            VarModule::on_flag(fighter.battle_object, vars::common::status::IS_SMASH_TURN);
                             interrupt!(fighter, FIGHTER_STATUS_KIND_TURN, true);
                         }
                     }
 
-                    if !VarModule::is_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH) && stick_x * -1.0 * turn_work_lr >= dash_stick_x {
+                    if !VarModule::is_flag(fighter.battle_object, vars::common::status::DISABLE_BACKDASH) && stick_x * -1.0 * turn_work_lr >= dash_stick_x {
                         if MotionModule::frame(fighter.module_accessor) >= 1.0 {
                             //println!("dash in turn");
-                            VarModule::off_flag(fighter.battle_object, vars::common::IS_SMASH_TURN);
+                            VarModule::off_flag(fighter.battle_object, vars::common::status::IS_SMASH_TURN);
                             interrupt!(fighter, FIGHTER_STATUS_KIND_DASH, true);
                         }
                     }
@@ -202,10 +202,10 @@ unsafe extern "C" fn status_turncommon(fighter: &mut L2CFighterCommon) -> L2CVal
 #[common_status_script(status = FIGHTER_STATUS_KIND_TURN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
     symbol = "_ZN7lua2cpp16L2CFighterCommon15status_end_TurnEv")]
 unsafe fn status_end_turn(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !VarModule::is_flag(fighter.battle_object, vars::common::IS_SMASH_TURN) {
-        VarModule::off_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH);
+    if !VarModule::is_flag(fighter.battle_object, vars::common::status::IS_SMASH_TURN) {
+        VarModule::off_flag(fighter.battle_object, vars::common::status::DISABLE_BACKDASH);
     }
-    VarModule::off_flag(fighter.battle_object, vars::common::IS_SMASH_TURN);
+    VarModule::off_flag(fighter.battle_object, vars::common::status::IS_SMASH_TURN);
     fighter.sub_exit_Turn();
     0.into()
 }

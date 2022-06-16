@@ -73,103 +73,163 @@ That's a LOT of space, and I don't anticipate it all gets used up with proper va
 
 pub mod vars {
     pub mod common {
+        pub mod instance {
+            pub const HITSTUN_START: i32 = 0x0000;
+            pub const IS_IN_HITSTUN: i32 = 0x0001;
+
+            pub const CSTICK_OVERRIDE: i32 = 0x0002;
+            pub const CSTICK_OVERRIDE_SECOND: i32 = 0x0003;
+
+            pub const IS_TAP_JUMP: i32 = 0x0004;
+
+            pub const OMNI_FLOAT: i32 = 0x0005;
+            pub const AERIAL_NO_FLOAT: i32 = 0x0006;
+            pub const FLOAT_PAUSE_AERIAL: i32 = 0x0007;
+
+            pub const SIDE_SPECIAL_CANCEL: i32 = 0x0008;
+            pub const UP_SPECIAL_CANCEL: i32 = 0x0009;
+
+            pub const JAB_DA_CHECKS: i32 = 0x000A;
+            pub const TILT_CHECKS: i32 = 0x000B;
+            pub const AERIAL_CHECKS: i32 = 0x000C;
+            pub const SMASH_CHECKS: i32 = 0x000D;
+
+            pub const SPECIAL_STALL: i32 = 0x000E;
+            pub const SPECIAL_STALL_USED: i32 = 0x000F;
+
+            pub const ENABLE_AIR_ESCAPE_MAGNET: i32 = 0x0010;
+
+            pub const DITCIT_SLIDING: i32 = 0x0011;
+
+            pub const FOOTSTOOL_AIRDODGE_LOCKOUT: i32 = 0x0012;
+
+            pub const CAN_ESCAPE_TUMBLE: i32 = 0x0013;
+
+            pub const SPECIAL_WALL_JUMP: i32 = 0x0014;
+
+            pub const TETHER_HOGGED: i32 = 0x0015;
+
+            pub const B_REVERSED: i32 = 0x0016; // Converted for now, but will likely get removed when B Reverse Reimplementation happens
+
+            pub const TUMBLE_KB: i32 = 0x0017;
+
+            pub const CAN_GLIDE_TOSS: i32 = 0x0019;
+
+            pub const IS_MOTION_BASED_ATTACK: i32 = 0x001A;
+
+            pub const PREV_FLAG_DISABLE_ESCAPE_AIR: i32 = 0x001B;
+
+            pub const ENABLE_WAVELAND_PLATDROP: i32 = 0x001C;
+
+            pub const IS_DACUS: i32 = 0x001D;
+
+            pub const IS_STICKY_WALK: i32 = 0x001E;
+            pub const ENABLE_BOOST_RUN: i32 = 0x001F;
+
+            pub const PERFECT_WAVEDASH: i32 = 0x0020;
+
+            pub const JUMP_NEXT: i32 = 0x0021;
+
+            pub const SHOULD_TRUMP_TETHER: i32 = 0x0022;
+
+            // ints
+
+            pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
+
+            pub const COSTUME_SLOT_NUMBER: i32 = 0x0001; // Unironically why does this need to exist? We have WorkModule.
+
+            pub const FLOAT_TIMER: i32 = 0x0002;
+            pub const FLOAT_DURATION: i32 = 0x0003;
+            pub const FLOAT_STYLE: i32 = 0x0004;
+
+            pub const HITFALL_BUFFER: i32 = 0x0005;
+
+            pub const JUMP_SQUAT_FRAME: i32 = 0x0006;
+
+            pub const GIMMICK_TIMER: i32 = 0x0007;
+
+            pub const AIR_ESCAPE_MAGNET_FRAME: i32 = 0x0008;
+
+            pub const CSTICK_LIFE: i32 = 0x0009;
+
+            pub const AGT_USED_COUNTER: i32 = 0x000A;
+
+        }
+        pub mod status {
+            // flags
+            pub const IS_HEAVY_ATTACK: i32 = 0x1000;
+
+            pub const DISABLE_BACKDASH: i32 = 0x1000;
+            pub const IS_SMASH_TURN: i32 = 0x1001;
+            pub const IS_MOONWALK: i32 = 0x1002;
+
+            pub const ATTACK_DASH_CANCEL_DISABLE: i32 = 0x1000;
+
+            pub const ENABLE_AIR_ESCAPE_JUMPSQUAT: i32 = 0x1000;
+
+            pub const SHOULD_WAVELAND: i32 = 0x1000;
+
+            pub const IS_JAB_LOCK_ROLL: i32 = 0x1000;
+
+            // ints
+
+            pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
+
+        }
         // flag
-        pub const IS_HEAVY_ATTACK: i32 = 0x0000;
-        pub const NOKNOK_SHELL: i32 = 0x0003;
-        pub const IS_IN_HITSTUN: i32 = 0x0004;
-        pub const CSTICK_OVERRIDE: i32 = 0x0005;
-        pub const CSTICK_OVERRIDE_SECOND: i32 = 0x0006;
-        pub const IS_TAP_JUMP: i32 = 0x0007;
-        pub const OMNI_FLOAT: i32 = 0x0008;
-        pub const SIDE_SPECIAL_CANCEL: i32 = 0x0009;
-        pub const DISABLE_UP_SPECIAL_JUMP_REFRESH: i32 = 0x000A;
-        pub const HITSTUN_START: i32 = 0x000B;
-        pub const AERIAL_NO_FLOAT: i32 = 0x000C;
-        pub const FLOAT_PAUSE_AERIAL: i32 = 0x000D;
-        pub const SMASH_CHECKS: i32 = 0x000E;
-        pub const TILT_CHECKS: i32 = 0x000F;
-        pub const JAB_DA_CHECKS: i32 = 0x0010;
-        pub const AERIAL_CHECKS: i32 = 0x0011;
-        pub const SPECIAL_STALL_USED: i32 = 0x0012;
-        pub const SPECIAL_STALL: i32 = 0x0013;
-        pub const UP_SPECIAL_INTERRUPT: i32 = 0x0014;
-        pub const ENABLE_AIR_ESCAPE_MAGNET: i32 = 0x0015;
-        pub const UP_SPECIAL_INTERRUPT_AIRTIME: i32 = 0x0016;
-        pub const DITCIT_SLIDING: i32 = 0x0017;
-        pub const AIR_CROSS: i32 = 0x0018;
-        pub const FINAL_CUTTER_HIT: i32 = 0x0019;
-        pub const SPECIAL_CHECKS: i32 = 0x001A;
-        pub const DISABLE_AIRDODGE: i32 = 0x001B;
-        pub const NEUTRAL_SPECIAL_HIT: i32 = 0x001C;
-        pub const ILLUSION_SHORTENED: i32 = 0x001D;
-        pub const FOOTSTOOL_AIRDODGE_LOCKOUT: i32 = 0x001E;
-        pub const CAN_ESCAPE_TUMBLE: i32 = 0x001F;
-        pub const SUPER_CANCEL: i32 = 0x0020;
-        pub const SPECIAL_AUTOCANCEL: i32 = 0x0021;
-        pub const ILLUSION_SHORTEN: i32 = 0x0022;
-        pub const SOARING_SLASH_HIT: i32 = 0x0023;
-        pub const DOUBLE_JUMP_STOP: i32 = 0x0024;
-        pub const KIRBY_STAR_ROD: i32 = 0x0025;
-        pub const IS_IN_TUMBLE: i32 = 0x0026;
-        pub const SPECIAL_WALL_JUMP: i32 = 0x0027;
-        pub const DOWN_SPECIAL_HIT: i32 = 0x0028;
-        pub const MAGIC_CANCEL_ADDITIONAL: i32 = 0x0029;
-        pub const TETHER_HOGGED: i32 = 0x002A;
-        pub const AERIAL_COMMAND_MOMENTUM_RESET: i32 = 0x002B;
-        pub const TUMBLE_START: i32 = 0x002C;
-        pub const B_REVERSED: i32 = 0x002D;
-        pub const AERIAL_COMMAND_RISING: i32 = 0x002E;
-        pub const SIDE_SPECIAL_HIT: i32 = 0x002F;
-        pub const TUMBLE_KB: i32 = 0x0030;
-        pub const UP_SPECIAL_HIT: i32 = 0x0031;
-        pub const AIR_SPECIAL_USED: i32 = 0x0032;
-        pub const LEDGE_OCCUPYING: i32 = 0x0033;
-        pub const DOUBLE_JUMP_CANCELED: i32 = 0x0034;
-        pub const IS_MOONWALK: i32 = 0x0035;
-        pub const CAN_GLIDE_TOSS: i32 = 0x0036;
-        pub const IS_MOONWALK_JUMP: i32 = 0x0037;
-        pub const IS_MOTION_BASED_ATTACK: i32 = 0x0038;
-        pub const PREV_FLAG_DISABLE_ESCAPE_AIR: i32 = 0x0039;
-        pub const ENABLE_WAVELAND_PLATDROP: i32 = 0x003A;
-        pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 0x003B;
-        pub const UP_SPECIAL_CANCEL: i32 = 0x003C;
-        pub const IS_TELEPORT_WALL_RIDE: i32 = 0x003D;
-        pub const SPIN_ATTACK_LAND_CANCEL: i32 = 0x003E;
-        pub const AERIAL_COMMAND_RISEN: i32 = 0x003F;
-        pub const DISABLE_SPECIAL_JC: i32 = 0x0040;
-        pub const IS_DACUS: i32 = 0x0041;
-        pub const ATTACK_DASH_CANCEL_DISABLE: i32 = 0x0042;
-        pub const DISABLE_BACKDASH: i32 = 0x0043;
-        pub const IS_LATE_PIVOT: i32 = 0x0044;
-        pub const IS_TURNDASH_INPUT: i32 = 0x0045;
-        pub const IS_SMASH_TURN: i32 = 0x0046;
-        pub const IS_STICKY_WALK: i32 = 0x0047;
-        pub const ENABLE_BOOST_RUN: i32 = 0x0048;
-        pub const UP_SPECIAL_JUMP_REFRESH_WINDOW: i32 = 0x0049;
-        pub const PERFECT_WAVEDASH: i32 = 0x004A;
-        pub const ENABLE_AIR_ESCAPE_JUMPSQUAT: i32 = 0x004B;
-        pub const SHOULD_WAVELAND: i32 = 0x004C;
-        pub const SIDE_SPECIAL_CANCEL_NO_HIT: i32 = 0x004D;
-        pub const JUMP_NEXT: i32 = 0x004E;
-        pub const IS_JAB_LOCK_ROLL: i32 = 0x004F;
-        pub const SHOULD_TRUMP_TETHER: i32 = 0x0050;
+        pub const NOKNOK_SHELL: i32 = 0x0003; // Mario and Bowser use this
+        pub const UP_SPECIAL_INTERRUPT: i32 = 0x000F; // Ness and Lucas use this
+        pub const UP_SPECIAL_INTERRUPT_AIRTIME: i32 = 0x0016; // Ness and Lucas use this
+
+        pub const AIR_CROSS: i32 = 0x0018; // Only Simon uses this
+        pub const FINAL_CUTTER_HIT: i32 = 0x0019; // Only Kirby uses this
+        pub const SPECIAL_CHECKS: i32 = 0x001A; // Only DK uses this
+        // pub const DISABLE_AIRDODGE: i32 = 0x001B; Unused
+        pub const NEUTRAL_SPECIAL_HIT: i32 = 0x001C; // Only Meta Knight uses this
+        pub const ILLUSION_SHORTENED: i32 = 0x001D; // Fox, Falco, and Wolf use this
+        
+        pub const SUPER_CANCEL: i32 = 0x0020; // Only Terry uses this
+        pub const SPECIAL_AUTOCANCEL: i32 = 0x0021; // Only Byleth uses this
+        pub const ILLUSION_SHORTEN: i32 = 0x0022; // Only Fox, Falco, and Wolf use this
+        pub const SOARING_SLASH_HIT: i32 = 0x0023; // Chrom and Lucina use this
+        pub const DOUBLE_JUMP_STOP: i32 = 0x0024; // Only Lucas uses this
+        pub const KIRBY_STAR_ROD: i32 = 0x0025; // Only... Kirby? uses this? Goes unused.
+        pub const IS_IN_TUMBLE: i32 = 0x0026; // Only Steve uses this
+        
+        pub const DOWN_SPECIAL_HIT: i32 = 0x0028; // Only Meta Knight uses this
+        pub const MAGIC_CANCEL_ADDITIONAL: i32 = 0x0029; // Unused
+        
+        pub const AERIAL_COMMAND_MOMENTUM_RESET: i32 = 0x002B; // Mario and Yoshi use this
+        pub const TUMBLE_START: i32 = 0x002C; // Only Steve uses this
+        
+        pub const AERIAL_COMMAND_RISING: i32 = 0x002E; // Mario and Yoshi use this
+        pub const SIDE_SPECIAL_HIT: i32 = 0x002F; // Only Meta Knight uses this
+        
+        pub const UP_SPECIAL_HIT: i32 = 0x0031; // Only Meta Knight uses this
+        pub const AIR_SPECIAL_USED: i32 = 0x0032; // Only Terry uses this
+        pub const LEDGE_OCCUPYING: i32 = 0x0033; // Unused
+        pub const DOUBLE_JUMP_CANCELED: i32 = 0x0034; // Only ever turned off, effectively unused
+        
+        pub const IS_MOONWALK_JUMP: i32 = 0x0037; // Unused
+        
+        pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 0x003B; // Luigi, Ivysaur, and Young Link use this
+        
+        pub const IS_TELEPORT_WALL_RIDE: i32 = 0x003D; // Mewtwo, Palutena, Sheik, and Zelda use this
+        pub const SPIN_ATTACK_LAND_CANCEL: i32 = 0x003E; // Link and Mii Sword use this
+        pub const AERIAL_COMMAND_RISEN: i32 = 0x003F; // Mario and Yoshi use this
+        pub const DISABLE_SPECIAL_JC: i32 = 0x0040; // Only Pikachu uses this
+        
+        pub const IS_LATE_PIVOT: i32 = 0x0044; // Unused
+        pub const IS_TURNDASH_INPUT: i32 = 0x0045; // Unused
+        
+        pub const UP_SPECIAL_JUMP_REFRESH_WINDOW: i32 = 0x0049; // Only ever turned off, effectively unused
+        
+        pub const SIDE_SPECIAL_CANCEL_NO_HIT: i32 = 0x004D; // Used by Kazuya and Sora
         
 
         // int
-        pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
-        pub const COSTUME_SLOT_NUMBER: i32 = 0x0001;
-        pub const FLOAT_TIMER: i32 = 0x0002;
-        pub const FLOAT_DURATION: i32 = 0x0003;
-        pub const FLOAT_STYLE: i32 = 0x0004;
-        pub const HITFALL_BUFFER: i32 = 0x0005;
-        pub const JUMP_SQUAT_FRAME: i32 = 0x0006;
-        pub const GIMMICK_TIMER: i32 = 0x0007;
-        pub const ATTACK_DASH_CANCEL_FRAME: i32 = 0x0008;
-        pub const AIR_ESCAPE_MAGNET_FRAME: i32 = 0x0009;
-        pub const TURN_DASH_FRAME: i32 = 0x000A;
-        pub const DOWN_STAND_FB_KIND: i32 = 0x000B;
-        pub const CSTICK_LIFE: i32 = 0x000C;
-        pub const AGT_USED_COUNTER: i32 = 0x000D;
+        
+        pub const TURN_DASH_FRAME: i32 = 0x000A; // Unused
 
         // float
         pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0000;

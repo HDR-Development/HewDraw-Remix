@@ -26,12 +26,12 @@ unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleO
         }
         // Wall Jump
         if situation_kind == *SITUATION_KIND_AIR {
-            if !VarModule::is_flag(fighter.battle_object, vars::common::SPECIAL_WALL_JUMP) {
+            if !VarModule::is_flag(fighter.battle_object, vars::common::instance::SPECIAL_WALL_JUMP) {
                 let touch_right = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
                 let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
                 if touch_left || touch_right {
                     if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH | *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON) {
-                        VarModule::on_flag(fighter.battle_object, vars::common::SPECIAL_WALL_JUMP);
+                        VarModule::on_flag(fighter.battle_object, vars::common::instance::SPECIAL_WALL_JUMP);
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                     }
                 }
@@ -112,7 +112,7 @@ unsafe fn aerial_acrobatics(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
 
     if status_kind == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK {
         if motion_kind == hash40("special_s1") || (motion_kind == hash40("special_air_s1") && frame >= 15.0){
-            VarModule::on_flag(fighter.battle_object, vars::common::SIDE_SPECIAL_CANCEL);
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
             if boma.is_cat_flag(Cat1::AttackN) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, true);
             }
@@ -138,9 +138,9 @@ unsafe fn aerial_acrobatics(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
 
 // Re-enable Gale Strike once tornado is gone
 unsafe fn gale_strike_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
-    let gimmick_timer = VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER);
+    let gimmick_timer = VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
 	if gimmick_timer > 0 {
-        VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, gimmick_timer - 1);
+        VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, gimmick_timer - 1);
     }
 }
 
@@ -153,12 +153,12 @@ unsafe fn skyward_slash_dash_act(fighter: &mut L2CFighterCommon, boma: &mut Batt
         }
     }
     if status_kind == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END {
-        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK) && situation_kind == *SITUATION_KIND_AIR {
+        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK) && situation_kind == *SITUATION_KIND_AIR {
             //println!("SSD Success");
             if frame >= 30.0 {
                 //println!("SSD Fall Act");
                 VarModule::off_flag(fighter.battle_object, vars::miiswordsman::status::SKYWARD_SLASH_DASH_HIT);
-                VarModule::on_flag(fighter.battle_object, vars::common::UP_SPECIAL_CANCEL);
+                VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
             }
         }

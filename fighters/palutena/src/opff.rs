@@ -21,14 +21,14 @@ pub unsafe fn palutena_teleport_cancel(boma: &mut BattleObjectModuleAccessor, id
     if [*FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_2,
         *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_3].contains(&status_kind) {
         if situation_kind == *SITUATION_KIND_AIR {
-            if  !VarModule::is_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP) {
+            if  !VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP) {
                 let touch_right = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
                 let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
                 let is_turn_dash = compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH);
                 let is_jump = compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP);
                 if (touch_right || touch_left) && (is_turn_dash || is_jump) {
-                    VarModule::on_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP);
-                    VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL);
+                    VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
+                    VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                 }
             }
@@ -75,10 +75,10 @@ pub unsafe fn palutena_counter_b_reverse(boma: &mut BattleObjectModuleAccessor, 
             if stick_x * facing < 0.0 {
                 PostureModule::reverse_lr(boma);
                 PostureModule::update_rot_y_lr(boma);
-                if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(boma.object(), vars::common::B_REVERSED) {
+                if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(boma.object(), vars::common::instance::B_REVERSED) {
                     let b_reverse = Vector3f{x: -1.0, y: 1.0, z: 1.0};
                     KineticModule::mul_speed(boma, &b_reverse, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                    VarModule::on_flag(boma.object(), vars::common::B_REVERSED);
+                    VarModule::on_flag(boma.object(), vars::common::instance::B_REVERSED);
                 }
             }
         }
@@ -92,13 +92,13 @@ extern "Rust" {
 
 // Aegis Reflector Timer Count
 unsafe fn aegis_reflector_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
-    let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER);
+    let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
     if gimmick_timerr > 0 && gimmick_timerr < 901 {
         if gimmick_timerr > 899 {
-            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
+            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
             gimmick_flash(boma);
         } else {
-            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, gimmick_timerr + 1);
+            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, gimmick_timerr + 1);
         }
     }
 }
@@ -110,7 +110,7 @@ unsafe fn aegis_reflector_reset(fighter: &mut L2CFighterCommon, id: usize, statu
         *FIGHTER_STATUS_KIND_WIN,
         *FIGHTER_STATUS_KIND_LOSE,
         *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-        VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
+        VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
     }
 }
 
@@ -118,7 +118,7 @@ unsafe fn aegis_reflector_reset(fighter: &mut L2CFighterCommon, id: usize, statu
 unsafe fn aegis_reflector_training(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
     if is_training_mode() {
         if status_kind == *FIGHTER_STATUS_KIND_APPEAL || !smash::app::sv_information::is_ready_go() {
-            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
+            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
         }
     }
 }

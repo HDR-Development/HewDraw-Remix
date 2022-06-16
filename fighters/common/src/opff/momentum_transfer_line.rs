@@ -23,7 +23,7 @@ use smash::hash40;
 pub unsafe fn momentum_transfer_helper(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mut L2CAgent, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, fighter_kind: i32, curr_frame: f32) {
 
 	if situation_kind == *SITUATION_KIND_AIR && ![*FIGHTER_STATUS_KIND_JUMP_SQUAT, *FIGHTER_STATUS_KIND_JUMP, *FIGHTER_STATUS_KIND_ESCAPE_AIR].contains(&status_kind) {
-		VarModule::on_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_MAGNET);
+		VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET);
 	}
 
 	if (fighter_kind == *FIGHTER_KIND_PFUSHIGISOU && status_kind == *FIGHTER_PFUSHIGISOU_STATUS_KIND_SPECIAL_LW_OUT)
@@ -44,17 +44,17 @@ pub unsafe fn momentum_transfer_helper(fighter: &mut L2CFighterCommon, lua_state
         VarModule::set_float(boma.object(), vars::common::GROUND_VEL, KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN));
     }
 
-	if fighter_kind == *FIGHTER_KIND_PICKEL && [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT].contains(&status_kind) && VarModule::get_int(boma.object(), vars::common::JUMP_SQUAT_FRAME) < WorkModule::get_param_int(boma, hash40("jump_squat_frame"), 0) {
+	if fighter_kind == *FIGHTER_KIND_PICKEL && [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT].contains(&status_kind) && VarModule::get_int(boma.object(), vars::common::instance::JUMP_SQUAT_FRAME) < WorkModule::get_param_int(boma, hash40("jump_squat_frame"), 0) {
 		VarModule::set_float(boma.object(), vars::common::JUMPSQUAT_VELOCITY, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
 	}
 
-	if fighter_kind == *FIGHTER_KIND_TANTAN && [*FIGHTER_TANTAN_STATUS_KIND_ATTACK_JUMP_SQUAT].contains(&status_kind) && VarModule::get_int(boma.object(), vars::common::JUMP_SQUAT_FRAME) < WorkModule::get_param_int(boma, hash40("jump_squat_frame"), 0) {
+	if fighter_kind == *FIGHTER_KIND_TANTAN && [*FIGHTER_TANTAN_STATUS_KIND_ATTACK_JUMP_SQUAT].contains(&status_kind) && VarModule::get_int(boma.object(), vars::common::instance::JUMP_SQUAT_FRAME) < WorkModule::get_param_int(boma, hash40("jump_squat_frame"), 0) {
 		VarModule::set_float(boma.object(), vars::common::JUMPSQUAT_VELOCITY, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
 	}
 
 	if KineticModule::get_kinetic_type(boma) == *FIGHTER_KINETIC_TYPE_JUMP {
-		if !VarModule::is_flag(boma.object(), vars::common::JUMP_NEXT) {
-			VarModule::on_flag(boma.object(), vars::common::JUMP_NEXT);
+		if !VarModule::is_flag(boma.object(), vars::common::instance::JUMP_NEXT) {
+			VarModule::on_flag(boma.object(), vars::common::instance::JUMP_NEXT);
 			/* Moves that should bypass the momentum logic (in terms of the jump status script) */
 			const MOMENTUM_EXCEPTION_MOVES: [smash::lib::LuaConst ; 1] = [
 				FIGHTER_SONIC_STATUS_KIND_SPIN_JUMP
@@ -72,7 +72,7 @@ pub unsafe fn momentum_transfer_helper(fighter: &mut L2CFighterCommon, lua_state
 		}
 	}
 	else {
-		VarModule::off_flag(boma.object(), vars::common::JUMP_NEXT);
+		VarModule::off_flag(boma.object(), vars::common::instance::JUMP_NEXT);
 	}
 }
 

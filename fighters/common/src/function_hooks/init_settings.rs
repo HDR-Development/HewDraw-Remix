@@ -40,7 +40,7 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
         // Disable wiggle out of tumble flag during damage_fly states
         if [*FIGHTER_STATUS_KIND_DAMAGE_FLY,
             *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL].contains(&status_kind) {
-            VarModule::off_flag(boma.object(), vars::common::CAN_ESCAPE_TUMBLE);
+            VarModule::off_flag(boma.object(), vars::common::instance::CAN_ESCAPE_TUMBLE);
         }
 
         // ken and ryu airdash effect
@@ -72,14 +72,14 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
         }
 
 
-        VarModule::off_flag(boma.object(), vars::common::B_REVERSED);
+        VarModule::off_flag(boma.object(), vars::common::instance::B_REVERSED);
 
         // Walk through other fighters
         JostleModule::set_team(boma, 0);
 
         // clear platform drop input when entering airdodge (to avoid buffering waveland platdrop with the same down input as the actual waveland)
         if [*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE, *FIGHTER_STATUS_KIND_JUMP_SQUAT].contains(&status_kind) {
-            VarModule::off_flag(boma.object(), vars::common::ENABLE_WAVELAND_PLATDROP);
+            VarModule::off_flag(boma.object(), vars::common::instance::ENABLE_WAVELAND_PLATDROP);
         }
 
         // Repeated tilt scaling; UNUSED

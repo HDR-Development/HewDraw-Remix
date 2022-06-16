@@ -68,7 +68,7 @@ unsafe fn sub_escape_air_common(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn force_ground_attach(fighter: &mut L2CFighterCommon) {
-    let id = VarModule::get_int(fighter.battle_object, vars::common::COSTUME_SLOT_NUMBER) as usize;
+    let id = VarModule::get_int(fighter.battle_object, vars::common::instance::COSTUME_SLOT_NUMBER) as usize;
     let mut fighter_pos = Vector3f {
         x: PostureModule::pos_x(fighter.module_accessor),
         y: PostureModule::pos_y(fighter.module_accessor),
@@ -182,7 +182,7 @@ unsafe extern "C" fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, arg: L2
 }
 
 unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let id = VarModule::get_int(fighter.battle_object, vars::common::COSTUME_SLOT_NUMBER) as usize;
+    let id = VarModule::get_int(fighter.battle_object, vars::common::instance::COSTUME_SLOT_NUMBER) as usize;
 
     // RoA airdodge stalling [
     if  MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_hi_jr_escape") {

@@ -124,7 +124,7 @@ unsafe fn dolly_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         MeterModule::watch_damage(fighter.battle_object, true);
-        VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+        VarModule::off_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK);
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
         VarModule::off_flag(boma.object(), vars::shotos::status::SHOULD_COMBOS_SCALE);
@@ -136,7 +136,7 @@ unsafe fn dolly_attack_air_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+            VarModule::on_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK);
              PostureModule::reverse_lr(boma);
             PostureModule::update_rot_y_lr(boma);
         }

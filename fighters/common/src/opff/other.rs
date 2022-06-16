@@ -19,19 +19,19 @@ unsafe fn hitstun_overlay_orange(boma: &mut BattleObjectModuleAccessor, id: usiz
     let cmb_vec1 = Vector4f{x: 0.949, y: 0.5137, z: 0.08643, w: 0.69};
     let cmb_vec2 = Vector4f{x: 0.949, y: 0.5137, z: 0.08643, w: 0.0};
     if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) > 0.0 {
-        if  !VarModule::is_flag(boma.object(), vars::common::IS_IN_HITSTUN) {
-            VarModule::on_flag(boma.object(), vars::common::HITSTUN_START);
+        if  !VarModule::is_flag(boma.object(), vars::common::instance::IS_IN_HITSTUN) {
+            VarModule::on_flag(boma.object(), vars::common::instance::HITSTUN_START);
         }
     } else {
-        if VarModule::is_flag(boma.object(), vars::common::IS_IN_HITSTUN) {
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_IN_HITSTUN) {
             ColorBlendModule::cancel_main_color(boma, 0);
         }
-        VarModule::off_flag(boma.object(), vars::common::IS_IN_HITSTUN);
+        VarModule::off_flag(boma.object(), vars::common::instance::IS_IN_HITSTUN);
     }
-    if VarModule::is_flag(boma.object(), vars::common::HITSTUN_START) {
-        VarModule::on_flag(boma.object(), vars::common::IS_IN_HITSTUN);
+    if VarModule::is_flag(boma.object(), vars::common::instance::HITSTUN_START) {
+        VarModule::on_flag(boma.object(), vars::common::instance::IS_IN_HITSTUN);
         ColorBlendModule::set_main_color(boma, &cmb_vec1, &cmb_vec2, 1.0, 0.5, 10, true);
-        VarModule::off_flag(boma.object(), vars::common::HITSTUN_START);
+        VarModule::off_flag(boma.object(), vars::common::instance::HITSTUN_START);
     }
 }
 
@@ -80,7 +80,7 @@ pub unsafe fn buffered_cstick_aerial_fixes(fighter: &mut L2CFighterCommon, boma:
         // if frame 2 of buffered aerial
         if fighter.global_table[CURRENT_FRAME].get_i32() == 1 {
             // this is first frame cstick stops overriding left stick if input on second-to-last frame of jumpsquat
-            if VarModule::is_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE_SECOND) {
+            if VarModule::is_flag(fighter.battle_object, vars::common::instance::CSTICK_OVERRIDE_SECOND) {
                 // set proper jump x speed using stick_x value on this frame
                 let new_speed = calc_melee_momentum(fighter, false, false, false);
                 fighter.clear_lua_stack();
@@ -88,7 +88,7 @@ pub unsafe fn buffered_cstick_aerial_fixes(fighter: &mut L2CFighterCommon, boma:
                 app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
                 VarModule::set_float(fighter.battle_object, vars::common::CURRENT_MOMENTUM, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND));
                 
-                if VarModule::is_flag(fighter.battle_object, vars::common::IS_TAP_JUMP) && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) && fighter.global_table[STICK_Y].get_f32() <= 0.0 {
+                if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_TAP_JUMP) && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) && fighter.global_table[STICK_Y].get_f32() <= 0.0 {
                     // setting shorthop speed here
                     let mini_jump_y = WorkModule::get_param_float(fighter.module_accessor, hash40("mini_jump_y"), 0);
                     let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
@@ -108,7 +108,7 @@ pub unsafe fn buffered_cstick_aerial_fixes(fighter: &mut L2CFighterCommon, boma:
         // if frame 3 of buffered aerial
         if fighter.global_table[CURRENT_FRAME].get_i32() == 2 {
             // this is first frame cstick stops overriding left stick if input on last frame of jumpsquat
-            if VarModule::is_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE) && !VarModule::is_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE_SECOND) {
+            if VarModule::is_flag(fighter.battle_object, vars::common::instance::CSTICK_OVERRIDE) && !VarModule::is_flag(fighter.battle_object, vars::common::instance::CSTICK_OVERRIDE_SECOND) {
                 // set proper jump x speed using stick_x value on this frame
                 let new_speed = calc_melee_momentum(fighter, false, false, false);
                 fighter.clear_lua_stack();
@@ -122,23 +122,23 @@ pub unsafe fn buffered_cstick_aerial_fixes(fighter: &mut L2CFighterCommon, boma:
 
 pub unsafe fn airdodge_refresh_on_hit_disable(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     
-    if [*FIGHTER_STATUS_KIND_DAMAGE, *FIGHTER_STATUS_KIND_DAMAGE_AIR, *FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR].contains(&status_kind) && VarModule::is_flag(boma.object(), vars::common::PREV_FLAG_DISABLE_ESCAPE_AIR) {
+    if [*FIGHTER_STATUS_KIND_DAMAGE, *FIGHTER_STATUS_KIND_DAMAGE_AIR, *FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR].contains(&status_kind) && VarModule::is_flag(boma.object(), vars::common::instance::PREV_FLAG_DISABLE_ESCAPE_AIR) {
         //println!("dont refresh!");
         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR);
     }
-    VarModule::set_flag(boma.object(), vars::common::PREV_FLAG_DISABLE_ESCAPE_AIR, WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR));
+    VarModule::set_flag(boma.object(), vars::common::instance::PREV_FLAG_DISABLE_ESCAPE_AIR, WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR));
 }
 
 // counter which checks how long cstick has overridden left stick directional input
 pub unsafe fn cstick_override_detection(fighter: &mut L2CFighterCommon) {
-    if VarModule::get_int(fighter.battle_object, vars::common::CSTICK_LIFE) > 0 {
-        VarModule::inc_int(fighter.battle_object, vars::common::CSTICK_LIFE);
+    if VarModule::get_int(fighter.battle_object, vars::common::instance::CSTICK_LIFE) > 0 {
+        VarModule::inc_int(fighter.battle_object, vars::common::instance::CSTICK_LIFE);
     }
     if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
-        VarModule::set_int(fighter.battle_object, vars::common::CSTICK_LIFE, 1);
+        VarModule::set_int(fighter.battle_object, vars::common::instance::CSTICK_LIFE, 1);
     }
-    if VarModule::get_int(fighter.battle_object, vars::common::CSTICK_LIFE) > 2 {  // ideally replace this hardcoded 2 with "stick_life" from substick_parameter.prc
-        VarModule::set_int(fighter.battle_object, vars::common::CSTICK_LIFE, 0);
+    if VarModule::get_int(fighter.battle_object, vars::common::instance::CSTICK_LIFE) > 2 {  // ideally replace this hardcoded 2 with "stick_life" from substick_parameter.prc
+        VarModule::set_int(fighter.battle_object, vars::common::instance::CSTICK_LIFE, 0);
     }
 }
 

@@ -143,7 +143,7 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         VarModule::set_int(fighter.battle_object, vars::metaknight::instance::META_QUICK_CHARGE_EFFECT_HANDLE, -1);
         VarModule::set_int(fighter.battle_object, vars::metaknight::instance::META_QUICK_EFFECT_HANDLE, -1);
         VarModule::set_int(fighter.battle_object, vars::metaknight::instance::META_QUICK_EFFECT_HANDLE2, -1);
-        VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
+        VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
         MeterModule::reset(fighter.battle_object);
     }
     // update MeterModule
@@ -175,7 +175,7 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if is_meta_quick(fighter) && MeterModule::level(fighter.object()) >= 1 {
         MeterModule::drain(fighter.object(), 1);
         // an additional 0.5 seconds of quick per 5 damage dealt
-        VarModule::add_int(fighter.object(), vars::common::GIMMICK_TIMER, 30);
+        VarModule::add_int(fighter.object(), vars::common::instance::GIMMICK_TIMER, 30);
     }
     
     check_apply_speeds(fighter);
@@ -207,9 +207,9 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 /// decrement meta quick timer
 unsafe fn update_meta_quick_timer(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    let timer = VarModule::get_int(fighter.object(), vars::common::GIMMICK_TIMER);
+    let timer = VarModule::get_int(fighter.object(), vars::common::instance::GIMMICK_TIMER);
     if timer > 0 {
-        VarModule::dec_int(fighter.object(), vars::common::GIMMICK_TIMER);
+        VarModule::dec_int(fighter.object(), vars::common::instance::GIMMICK_TIMER);
     }
     // do nothing
 }
@@ -219,7 +219,7 @@ unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     
     // handle speed application once
     if VarModule::is_flag(fighter.object(), vars::metaknight::instance::META_QUICK_NEED_SET_SPEEDS) {
-        if VarModule::get_int(fighter.object(), vars::common::GIMMICK_TIMER) > 0 {
+        if VarModule::get_int(fighter.object(), vars::common::instance::GIMMICK_TIMER) > 0 {
             apply_status_speed_mul(fighter, 1.25);
         } else {
             apply_status_speed_mul(fighter, 0.95);
@@ -245,7 +245,7 @@ unsafe fn check_reset(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_WIN,
         *FIGHTER_STATUS_KIND_LOSE,
         *FIGHTER_STATUS_KIND_ENTRY,]) {
-        VarModule::set_int(fighter.object(), vars::common::GIMMICK_TIMER, 0);
+        VarModule::set_int(fighter.object(), vars::common::instance::GIMMICK_TIMER, 0);
         MeterModule::reset(fighter.object());
     }
 
@@ -253,13 +253,13 @@ unsafe fn check_reset(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_DEAD,
         *FIGHTER_STATUS_KIND_REBIRTH]) {
-        VarModule::set_int(fighter.object(), vars::common::GIMMICK_TIMER, 0);
+        VarModule::set_int(fighter.object(), vars::common::instance::GIMMICK_TIMER, 0);
     }
 }
 
 /// check if meta quick is currently running
 pub unsafe fn is_meta_quick(fighter: &mut smash::lua2cpp::L2CFighterCommon) -> bool {
-    let timer = VarModule::get_int(fighter.object(), vars::common::GIMMICK_TIMER);
+    let timer = VarModule::get_int(fighter.object(), vars::common::instance::GIMMICK_TIMER);
     if timer > 0 {
         return true;
     }
@@ -269,7 +269,7 @@ pub unsafe fn is_meta_quick(fighter: &mut smash::lua2cpp::L2CFighterCommon) -> b
 /// start meta quick
 /// length: how many frames meta quick should be active
 pub unsafe fn start_meta_quick(fighter: &mut smash::lua2cpp::L2CFighterCommon, length: i32) {
-    VarModule::set_int(fighter.object(), vars::common::GIMMICK_TIMER, length);
+    VarModule::set_int(fighter.object(), vars::common::instance::GIMMICK_TIMER, length);
 
     // indicate that we will need to set the status speeds next frame
     VarModule::on_flag(fighter.object(), vars::metaknight::instance::META_QUICK_NEED_SET_SPEEDS);

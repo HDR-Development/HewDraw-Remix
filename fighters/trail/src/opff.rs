@@ -125,7 +125,7 @@ unsafe fn aerial_sweep_hit_actionability(boma: &mut BattleObjectModuleAccessor) 
         if MotionModule::frame(boma) > 37.0 {
             if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
                 VarModule::on_flag(boma.object(), vars::trail::status::UP_SPECIAL_HIT);
-                VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL);
+                VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
             }
         }
         if VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_HIT) && MotionModule::frame(boma) > MotionModule::end_frame(boma) - 10.0 {
