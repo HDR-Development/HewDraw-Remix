@@ -97,19 +97,11 @@ jobs:
       with:
         name: distributions
 
-    - name: prepare files
-      shell: bash
-      run: |
-        mkdir distributions
-        stat *
-        unzip distributions.zip -d distributions
-        stat *
-
     # upload asset
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
-        file: distributions/*
+        file: '*.zip'
         prerelease: true
         file_glob: true
         asset_name: the_asset
