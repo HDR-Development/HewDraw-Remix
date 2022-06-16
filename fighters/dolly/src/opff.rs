@@ -7,9 +7,9 @@ use globals::*;
 unsafe fn dtilt_repeat_increment(boma: &mut BattleObjectModuleAccessor, id: usize, motion_kind: u64) {
     if motion_kind == hash40("attack_lw3")
         && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-        &&  !VarModule::is_flag(boma.object(), vars::shotos::REPEAT_INCREMENTED) {
+        &&  !VarModule::is_flag(boma.object(), vars::shotos::status::REPEAT_INCREMENTED) {
         //VarModule::inc_int(boma.object(), vars::common::REPEAT_NUM_LW);
-        VarModule::on_flag(boma.object(), vars::shotos::REPEAT_INCREMENTED);
+        VarModule::on_flag(boma.object(), vars::shotos::status::REPEAT_INCREMENTED);
     }
 }
 
@@ -125,7 +125,7 @@ unsafe fn burn_knuckle_land_cancel(boma: &mut BattleObjectModuleAccessor, id: us
 // Power Dunk break
 unsafe fn power_dunk_break(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK]) {
-        if VarModule::is_flag(boma.object(), vars::dolly::IS_TARGET_COMBO_1) {
+        if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_TARGET_COMBO_1) {
             //KineticModule::mul_speed(boma, &Vector3f::new(1.0, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_MOTION);
             //KineticModule::mul_speed(boma, &Vector3f::new(1.0, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_STOP);
         }
@@ -243,13 +243,13 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 }
 
 unsafe fn ex_special_scripting(boma: &mut BattleObjectModuleAccessor) {
-    if VarModule::is_flag(boma.object(), vars::dolly::IS_USE_EX_SPECIAL){
+    if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_USE_EX_SPECIAL){
         if boma.is_motion(Hash40::new("special_b_attack_w")){
             MotionModule::change_motion(boma, Hash40::new("special_b_attack"), -1.0, 1.0, false, 0.0, false, false);
         }
     }
     // Fix geting stuck in fsmash after shatter strike due to not setting the smash charge flag
-    if VarModule::is_flag(boma.object(), vars::dolly::IS_SHATTER_STRIKE){
+    if VarModule::is_flag(boma.object(), vars::dolly::status::IS_SHATTER_STRIKE){
         if boma.is_motion(Hash40::new("attack_s4_s")) && (MotionModule::frame(boma) >= (MotionModule::end_frame(boma) - 1.0)){
             boma.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
         }
@@ -273,11 +273,11 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
                                *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND,
                                *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK]){
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
-            VarModule::on_flag(boma.object(), vars::shotos::IS_ENABLE_FADC);
+            VarModule::on_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC);
         }
 
         // If we detected that you've connected with a hitbox in any of the above statuses
-        if VarModule::is_flag(boma.object(), vars::shotos::IS_ENABLE_FADC){
+        if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC){
             // Super cancels
             if WorkModule::is_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL) {
                 WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL);
@@ -378,7 +378,7 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
 
     }
     else{
-        VarModule::off_flag(boma.object(), vars::shotos::IS_ENABLE_FADC);
+        VarModule::off_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC);
         return;
     }
     if is_input_cancel{
@@ -450,7 +450,7 @@ unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
 
     if is_input_cancel{
         if (!StopModule::is_stop(boma) )|| (new_status == *FIGHTER_STATUS_KIND_ATTACK_DASH) {
-            VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
+            VarModule::on_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
             boma.change_status_req(new_status, false);
         }
     }
@@ -532,12 +532,12 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
     }
     if is_input_cancel{
         if (!StopModule::is_stop(boma) )|| (new_status == *FIGHTER_STATUS_KIND_ATTACK_DASH) {
-            VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
+            VarModule::on_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
             boma.change_status_req(new_status, false);
         }
     }
     if is_input_metered_cancel{
-        if !StopModule::is_stop(boma) && !VarModule::is_flag(boma.object(), vars::dolly::UNABLE_CANCEL_S3_DASH){
+        if !StopModule::is_stop(boma) && !VarModule::is_flag(boma.object(), vars::dolly::status::UNABLE_CANCEL_S3_DASH){
             if MeterModule::drain(boma.object(), 2) {
                 if new_status == *FIGHTER_STATUS_KIND_JUMP_SQUAT {
                     boma.change_status_req(new_status, true);
@@ -568,7 +568,7 @@ unsafe fn dash_attack_cancels(boma: &mut BattleObjectModuleAccessor) {
         }
     }
     if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD)
-    && !VarModule::is_flag(boma.object(), vars::dolly::IS_USE_EX_SPECIAL)
+    && !VarModule::is_flag(boma.object(), vars::shotos::instance::IS_USE_EX_SPECIAL)
     && !VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK){
         // Rising Tackle
             if boma.is_cat_flag(Cat1::SpecialHi) {
@@ -592,7 +592,7 @@ unsafe fn dash_attack_cancels(boma: &mut BattleObjectModuleAccessor) {
 
     if is_input_cancel{
         if !StopModule::is_stop(boma){
-            VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
+            VarModule::on_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
             boma.change_status_req(new_status, false);
         }
     }
@@ -661,7 +661,7 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
     }
     if is_input_cancel{
         if (!StopModule::is_stop(boma) )|| (new_status == *FIGHTER_STATUS_KIND_ATTACK_DASH) {
-            VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
+            VarModule::on_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
             boma.change_status_req(new_status, false);
         }
     }
@@ -680,7 +680,7 @@ unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
         super::hash40!("attack_air_hi") => return,
         super::hash40!("attack_air_lw") => return,
         _ => {
-            VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
+            VarModule::on_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
             boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
         }
     }
@@ -713,7 +713,7 @@ unsafe fn magic_flag_reset(boma: &mut BattleObjectModuleAccessor) {
                                    *FIGHTER_STATUS_KIND_SPECIAL_LW,
                                    *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND,
                                    *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK])){
-            VarModule::off_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
+            VarModule::off_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
         }
 }
 
@@ -732,7 +732,7 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     
     magic_flag_reset(boma);
 
-    if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) /*&& VarModule::is_flag(boma.object(), vars::shotos::IS_ENABLE_MAGIC_SERIES_CANCEL)*/ {
+    if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) /*&& VarModule::is_flag(boma.object(), vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL)*/ {
         return;
     }
 

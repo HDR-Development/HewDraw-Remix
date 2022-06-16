@@ -85,7 +85,7 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
         // Repeated tilt scaling; UNUSED
         /*
         if [*FIGHTER_KIND_RYU, *FIGHTER_KIND_KEN, *FIGHTER_KIND_DOLLY].contains(&fighter_kind) {
-            VarModule::off_flag(boma.object(), vars::common::REPEAT_INCREMENTED);
+            VarModule::off_flag(boma.object(), vars::common::status::REPEAT_INCREMENTED);
             if status_kind != *FIGHTER_STATUS_KIND_ATTACK_HI3 {
                 if VarModule::get_int(boma.object(), vars::common::REPEAT_NUM_HI) > 0 {
                     VarModule::set_int(boma.object(), vars::common::REPEAT_NUM_HI, 0);
@@ -103,7 +103,7 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
 
         //Sword trails
         if (boma.kind() == *FIGHTER_KIND_ROY || boma.kind() == *FIGHTER_KIND_CHROM) 
-        && VarModule::is_flag(boma.object(), vars::roy::TRAIL_EFFECT) {
+        && VarModule::is_flag(boma.object(), vars::roy::instance::TRAIL_EFFECT) {
             EffectModule::kill_joint_id(boma, Hash40::new("sword1"), false, false);
             if fighter_kind == *FIGHTER_KIND_ROY {
                 EffectModule::req_follow(boma, Hash40::new("roy_fire_small"), Hash40::new("sword1"), &Vector3f{x: 0.0, y: 0.0, z: 0.0}, &Vector3f{x: 0.0, y: 0.0, z: 0.0}, 1.0, false, 0, 0, 0, 0, 0, false, false);
@@ -113,7 +113,7 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
             }
 
             if [*FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-                VarModule::off_flag(boma.object(), vars::roy::TRAIL_EFFECT);
+                VarModule::off_flag(boma.object(), vars::roy::instance::TRAIL_EFFECT);
                 EffectModule::kill_joint_id(boma, Hash40::new("sword1"), false, false);
             }
         }

@@ -38,15 +38,15 @@ unsafe fn roller_jump_cancel(boma: &mut BattleObjectModuleAccessor){
         }
     }
     if boma.is_motion(Hash40::new("special_s_jump_end")){
-        VarModule::on_flag(boma.object(), vars::inkling::IS_ENABLE_SPECIAL_S_JUMP_EARLY_CANCEL)
+        VarModule::on_flag(boma.object(), vars::inkling::status::IS_ENABLE_SPECIAL_S_JUMP_EARLY_CANCEL)
     }
     else if boma.is_motion(Hash40::new("special_air_s_jump_end")){
-        if VarModule::is_flag(boma.object(), vars::inkling::IS_ENABLE_SPECIAL_S_JUMP_EARLY_CANCEL) && MotionModule::frame(boma) > 5.0{
+        if VarModule::is_flag(boma.object(), vars::inkling::status::IS_ENABLE_SPECIAL_S_JUMP_EARLY_CANCEL) && MotionModule::frame(boma) > 5.0{
             CancelModule::enable_cancel(boma);
         }
     }
     else{
-        VarModule::off_flag(boma.object(), vars::inkling::IS_ENABLE_SPECIAL_S_JUMP_EARLY_CANCEL)
+        VarModule::off_flag(boma.object(), vars::inkling::status::IS_ENABLE_SPECIAL_S_JUMP_EARLY_CANCEL)
     }
     /*
     if WorkModule::is_flag(boma, *FIGHTER_INKLING_STATUS_SPECIAL_S_FLAG_JUMP) {

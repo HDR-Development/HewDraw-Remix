@@ -68,7 +68,7 @@ pub unsafe extern "C" fn metaquick_summon_main(fighter: &mut L2CFighterCommon) -
         Hash40::new("metaquick_summon_r")
     };
 
-    VarModule::on_flag(fighter.battle_object, vars::metaknight::META_QUICK_PLAY_VC);
+    VarModule::on_flag(fighter.battle_object, vars::metaknight::instance::META_QUICK_PLAY_VC);
     MotionModule::change_motion(fighter.module_accessor, motion, 0.0, 1.5, false, 0.0, false, false);
 
     // CancelModule::enable_cancel(fighter.module_accessor);
@@ -122,7 +122,7 @@ unsafe fn handle_start_metaquick(fighter: &mut L2CFighterCommon) {
             -1
         );
 
-        VarModule::off_flag(fighter.battle_object, vars::metaknight::META_QUICK_PLAY_VC);
+        VarModule::off_flag(fighter.battle_object, vars::metaknight::instance::META_QUICK_PLAY_VC);
         MotionAnimcmdModule::call_script_single(
             fighter.module_accessor,
             *FIGHTER_ANIMCMD_SOUND,
@@ -140,9 +140,9 @@ unsafe fn handle_start_metaquick(fighter: &mut L2CFighterCommon) {
 pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
     if lua_bind::FighterManager::is_result_mode(utils::singletons::FighterManager()) {
-        VarModule::set_int(fighter.battle_object, vars::metaknight::META_QUICK_CHARGE_EFFECT_HANDLE, -1);
-        VarModule::set_int(fighter.battle_object, vars::metaknight::META_QUICK_EFFECT_HANDLE, -1);
-        VarModule::set_int(fighter.battle_object, vars::metaknight::META_QUICK_EFFECT_HANDLE2, -1);
+        VarModule::set_int(fighter.battle_object, vars::metaknight::instance::META_QUICK_CHARGE_EFFECT_HANDLE, -1);
+        VarModule::set_int(fighter.battle_object, vars::metaknight::instance::META_QUICK_EFFECT_HANDLE, -1);
+        VarModule::set_int(fighter.battle_object, vars::metaknight::instance::META_QUICK_EFFECT_HANDLE2, -1);
         VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
         MeterModule::reset(fighter.battle_object);
     }
@@ -162,10 +162,10 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if MeterModule::level(fighter.object()) >= 10 {
         if fighter.is_cat_flag(Cat2::AppealLw) {
             handle_start_metaquick(fighter);
-        } else if VarModule::get_int(fighter.battle_object, vars::metaknight::META_QUICK_CHARGE_EFFECT_HANDLE) == -1 {
+        } else if VarModule::get_int(fighter.battle_object, vars::metaknight::instance::META_QUICK_CHARGE_EFFECT_HANDLE) == -1 {
             VarModule::set_int(
                 fighter.battle_object,
-                vars::metaknight::META_QUICK_CHARGE_EFFECT_HANDLE,
+                vars::metaknight::instance::META_QUICK_CHARGE_EFFECT_HANDLE,
                 EffectModule::req_common(fighter.module_accessor, Hash40::new("charge_max"), 0.0) as i32
             );
         }
@@ -218,23 +218,23 @@ unsafe fn update_meta_quick_timer(fighter: &mut smash::lua2cpp::L2CFighterCommon
 unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     
     // handle speed application once
-    if VarModule::is_flag(fighter.object(), vars::metaknight::META_QUICK_NEED_SET_SPEEDS) {
+    if VarModule::is_flag(fighter.object(), vars::metaknight::instance::META_QUICK_NEED_SET_SPEEDS) {
         if VarModule::get_int(fighter.object(), vars::common::GIMMICK_TIMER) > 0 {
             apply_status_speed_mul(fighter, 1.25);
         } else {
             apply_status_speed_mul(fighter, 0.95);
         }
-        VarModule::off_flag(fighter.object(), vars::metaknight::META_QUICK_NEED_SET_SPEEDS);
+        VarModule::off_flag(fighter.object(), vars::metaknight::instance::META_QUICK_NEED_SET_SPEEDS);
     }
 
     //println!("current status: {}", fighter.status());
-    //println!("meta quick status: {}", VarModule::get_int(fighter.object(), vars::metaknight::META_QUICK_STATUS));
+    //println!("meta quick status: {}", VarModule::get_int(fighter.object(), vars::metaknight::instance::META_QUICK_STATUS));
     // if our status is changing, then we need to indicate that next frame we will need to set new speeds
-    if fighter.status() != VarModule::get_int(fighter.object(), vars::metaknight::META_QUICK_STATUS) {
+    if fighter.status() != VarModule::get_int(fighter.object(), vars::metaknight::instance::META_QUICK_STATUS) {
         //println!("Status is changing!");
-        VarModule::on_flag(fighter.object(), vars::metaknight::META_QUICK_NEED_SET_SPEEDS);
-        VarModule::set_int(fighter.object(), vars::metaknight::META_QUICK_STATUS, fighter.status());
-        //println!("new meta quick status: {}", VarModule::get_int(fighter.object(), vars::metaknight::META_QUICK_STATUS));
+        VarModule::on_flag(fighter.object(), vars::metaknight::instance::META_QUICK_NEED_SET_SPEEDS);
+        VarModule::set_int(fighter.object(), vars::metaknight::instance::META_QUICK_STATUS, fighter.status());
+        //println!("new meta quick status: {}", VarModule::get_int(fighter.object(), vars::metaknight::instance::META_QUICK_STATUS));
     }
 }
 
@@ -272,24 +272,24 @@ pub unsafe fn start_meta_quick(fighter: &mut smash::lua2cpp::L2CFighterCommon, l
     VarModule::set_int(fighter.object(), vars::common::GIMMICK_TIMER, length);
 
     // indicate that we will need to set the status speeds next frame
-    VarModule::on_flag(fighter.object(), vars::metaknight::META_QUICK_NEED_SET_SPEEDS);
+    VarModule::on_flag(fighter.object(), vars::metaknight::instance::META_QUICK_NEED_SET_SPEEDS);
 }
 
 
 /// remove the effect indicating that meta quick is currently active, if it exists
 unsafe fn kill_quick_effect(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     let mut did_kill = false;
-    let handle = VarModule::get_int(fighter.battle_object, vars::metaknight::META_QUICK_EFFECT_HANDLE);
+    let handle = VarModule::get_int(fighter.battle_object, vars::metaknight::instance::META_QUICK_EFFECT_HANDLE);
     if handle != -1 {
         EffectModule::kill(fighter.module_accessor, handle as _, false, false);
-        VarModule::set_int(fighter.battle_object, vars::metaknight::META_QUICK_EFFECT_HANDLE, -1);
+        VarModule::set_int(fighter.battle_object, vars::metaknight::instance::META_QUICK_EFFECT_HANDLE, -1);
         did_kill = true;
     }
 
-    let handle2 = VarModule::get_int(fighter.battle_object, vars::metaknight::META_QUICK_EFFECT_HANDLE2);
+    let handle2 = VarModule::get_int(fighter.battle_object, vars::metaknight::instance::META_QUICK_EFFECT_HANDLE2);
     if handle2 != -1 {
         EffectModule::kill(fighter.module_accessor, handle2 as _, false, false);
-        VarModule::set_int(fighter.battle_object, vars::metaknight::META_QUICK_EFFECT_HANDLE2, -1);
+        VarModule::set_int(fighter.battle_object, vars::metaknight::instance::META_QUICK_EFFECT_HANDLE2, -1);
         did_kill = true;
     }
 

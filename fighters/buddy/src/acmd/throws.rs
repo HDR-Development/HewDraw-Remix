@@ -60,11 +60,11 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::buddy::IS_BURY_DTHROW);
+        VarModule::off_flag(fighter.battle_object, vars::buddy::status::IS_BURY_DTHROW);
         if (boma.is_button_on(Buttons::Attack) || boma.is_button_on(Buttons::Catch)) && WorkModule::get_int(boma, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN) > 0 {
-            VarModule::on_flag(fighter.battle_object, vars::buddy::IS_BURY_DTHROW);
+            VarModule::on_flag(fighter.battle_object, vars::buddy::status::IS_BURY_DTHROW);
         }
-        if VarModule::is_flag(fighter.battle_object, vars::buddy::IS_BURY_DTHROW) {
+        if VarModule::is_flag(fighter.battle_object, vars::buddy::status::IS_BURY_DTHROW) {
             ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 7.0, 48, 100, 0, 48, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_bury_r"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
             ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_bury_r"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         }
@@ -76,7 +76,7 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(fighter.battle_object, vars::buddy::IS_BURY_DTHROW) {
+        if !VarModule::is_flag(fighter.battle_object, vars::buddy::status::IS_BURY_DTHROW) {
             FT_MOTION_RATE(fighter, 10.0/(25.0-10.0));
         }
         else{
@@ -90,7 +90,7 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 34.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::buddy::IS_BURY_DTHROW) {
+        if VarModule::is_flag(fighter.battle_object, vars::buddy::status::IS_BURY_DTHROW) {
             WorkModule::on_flag(boma, *FIGHTER_BUDDY_STATUS_THROW_LW_FLAG_BURY);
         }
         else{
@@ -108,14 +108,14 @@ unsafe fn effect_throwlw(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::buddy::IS_BURY_DTHROW) {
+        if VarModule::is_flag(fighter.battle_object, vars::buddy::status::IS_BURY_DTHROW) {
             EFFECT_FOLLOW(fighter, Hash40::new("buddy_special_s_hold"), Hash40::new("virtualcenter"), 1.5, 0, 0, 0, 0, 0, 0.7, true);
             EffectModule::enable_sync_init_pos_last(boma);
         }
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::buddy::IS_BURY_DTHROW) {
+        if VarModule::is_flag(fighter.battle_object, vars::buddy::status::IS_BURY_DTHROW) {
             LANDING_EFFECT(fighter, Hash40::new("sys_action_smoke_h"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
         }
         else{
@@ -124,7 +124,7 @@ unsafe fn effect_throwlw(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::buddy::IS_BURY_DTHROW) {
+        if VarModule::is_flag(fighter.battle_object, vars::buddy::status::IS_BURY_DTHROW) {
             EFFECT(fighter, Hash40::new("buddy_special_s_start"), Hash40::new("top"), 0, 22, 2, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, true);
         }
         else{
@@ -142,7 +142,7 @@ unsafe fn effect_throwlw(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 33.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::buddy::IS_BURY_DTHROW) {
+        if VarModule::is_flag(fighter.battle_object, vars::buddy::status::IS_BURY_DTHROW) {
             LANDING_EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 10, 0, 1, 0, 0, 0, 0.65, 0, 0, 0, 0, 0, 0, false);
         }
         else{
@@ -157,7 +157,7 @@ unsafe fn sound_throwlw(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::buddy::IS_BURY_DTHROW) {
+        if VarModule::is_flag(fighter.battle_object, vars::buddy::status::IS_BURY_DTHROW) {
             PLAY_SE(fighter, Hash40::new("se_buddy_special_s01"));    
         }
         else{
@@ -166,7 +166,7 @@ unsafe fn sound_throwlw(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::buddy::IS_BURY_DTHROW) {
+        if VarModule::is_flag(fighter.battle_object, vars::buddy::status::IS_BURY_DTHROW) {
             PLAY_SE(fighter, Hash40::new("vc_buddy_damagefly02"));
         }
         else{

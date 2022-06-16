@@ -84,7 +84,7 @@ unsafe fn kamui_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::kamui::BAIR_BOOST);
+        VarModule::off_flag(fighter.battle_object, vars::kamui::status::BAIR_BOOST);
         FT_MOTION_RATE(fighter, 0.750);
     }
     frame(lua_state, 6.0);
@@ -94,9 +94,9 @@ unsafe fn kamui_attack_air_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            VarModule::on_flag(fighter.battle_object, vars::kamui::BAIR_BOOST);
+            VarModule::on_flag(fighter.battle_object, vars::kamui::status::BAIR_BOOST);
         }
-        if VarModule::is_flag(fighter.battle_object, vars::kamui::BAIR_BOOST) {
+        if VarModule::is_flag(fighter.battle_object, vars::kamui::status::BAIR_BOOST) {
             FT_MOTION_RATE(fighter, 3.0);
         }
     }
@@ -106,7 +106,7 @@ unsafe fn kamui_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::kamui::BAIR_BOOST) {
+        if VarModule::is_flag(fighter.battle_object, vars::kamui::status::BAIR_BOOST) {
             SET_SPEED_EX(fighter, 1.3, 0.25, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             ATTACK(fighter, 0, 0, Hash40::new("top"), 13.5, 361, 100, 0, 40, 7.5, 0.0, 10.0, -12.5, Some(0.0), Some(11.0), Some(-17.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_BODY);
         }
@@ -145,7 +145,7 @@ unsafe fn kamui_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         EFFECT_FLW_POS(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 12.3, -21, 0, 0, 0, 1.1, true);
-        if VarModule::is_flag(fighter.battle_object, vars::kamui::BAIR_BOOST) {
+        if VarModule::is_flag(fighter.battle_object, vars::kamui::status::BAIR_BOOST) {
             //EFFECT_FLW_POS(fighter, Hash40::new("kamui_ryusensya_shot"), Hash40::new("top"), 0, 12.3, -20, 0, 0, 0, 5.0, true);
             EFFECT(fighter, Hash40::new("kamui_counter_splash"), Hash40::new("top"), 0.0, 12.3, -15.0, 270, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
         }

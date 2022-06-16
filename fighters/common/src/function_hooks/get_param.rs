@@ -59,7 +59,7 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
     }
 	
 	if fighter_kind == *FIGHTER_KIND_RYU {
-		if VarModule::is_flag(boma_reference.object(), vars::shotos::IS_USE_EX_SPECIAL) && x1 == hash40("param_special_s") && (x2 == hash40("loop_num_w") || x2 == hash40("loop_num_m") || x2 == hash40("loop_num_s") || x2 == hash40("loop_num_w") || x2 == hash40("air_loop_num_m") || x2 == hash40("air_air_loop_num_s")) {
+		if VarModule::is_flag(boma_reference.object(), vars::shotos::instance::IS_USE_EX_SPECIAL) && x1 == hash40("param_special_s") && (x2 == hash40("loop_num_w") || x2 == hash40("loop_num_m") || x2 == hash40("loop_num_s") || x2 == hash40("loop_num_w") || x2 == hash40("air_loop_num_m") || x2 == hash40("air_air_loop_num_s")) {
 			return 3;
 		}
 	}
@@ -158,7 +158,7 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
 	
 	else if fighter_kind == *FIGHTER_KIND_MIIGUNNER {
 		if x1 == hash40("param_special_hi") && x2 == hash40("hi1_first_jump_y_speed") {
-			return 3.5 + 2.7 * VarModule::get_float(boma_reference.object(), vars::miigunner::CHARGE_ATTACK_LEVEL) / 29.0;
+			return 3.5 + 2.7 * VarModule::get_float(boma_reference.object(), vars::miigunner::status::CHARGE_ATTACK_LEVEL) / 29.0;
         }
     }
 
@@ -183,12 +183,12 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         }
         else if x1 == hash40("param_private") {
             if x2 == hash40("final_wave_speed") {
-                if VarModule::is_flag(boma_reference.object(), vars::miiswordsman::WAVE_SPECIAL_N) {
+                if VarModule::is_flag(boma_reference.object(), vars::miiswordsman::status::WAVE_SPECIAL_N) {
                     return 2.0;
                 }
             }
             else if x2 == hash40("final_wave_scale_max") {
-                if VarModule::is_flag(boma_reference.object(), vars::miiswordsman::WAVE_SPECIAL_N) {
+                if VarModule::is_flag(boma_reference.object(), vars::miiswordsman::status::WAVE_SPECIAL_N) {
                     return 0.5;
                 }
             }

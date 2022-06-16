@@ -110,10 +110,10 @@ unsafe fn ken_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::ken::SHOULD_COMBOS_SCALE);
-        if VarModule::is_flag(fighter.battle_object, vars::ken::IS_MAGIC_SERIES_CANCEL) {
-            VarModule::on_flag(fighter.battle_object, vars::ken::SHOULD_COMBOS_SCALE);
-            VarModule::off_flag(fighter.battle_object, vars::ken::IS_MAGIC_SERIES_CANCEL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE);
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
+            VarModule::on_flag(fighter.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE);
+            VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
         }
         MeterModule::watch_damage(fighter.battle_object, true);
         VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);

@@ -5,14 +5,14 @@ use globals::*;
 // Dtilt and Utilt repeat increment
 unsafe fn dtilt_utilt_repeat_increment(boma: &mut BattleObjectModuleAccessor) {
     if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-    && !VarModule::is_flag(boma.object(), vars::shotos::REPEAT_INCREMENTED)
+    && !VarModule::is_flag(boma.object(), vars::shotos::status::REPEAT_INCREMENTED)
     {
         if boma.is_motion(Hash40::new("attack_hi3_w")) {
-            VarModule::inc_int(boma.object(), vars::shotos::REPEAT_COUNT_HI);
-            VarModule::on_flag(boma.object(), vars::shotos::REPEAT_INCREMENTED);
+            VarModule::inc_int(boma.object(), vars::shotos::instance::REPEAT_COUNT_HI);
+            VarModule::on_flag(boma.object(), vars::shotos::status::REPEAT_INCREMENTED);
         } else if boma.is_motion(Hash40::new("attack_lw3_w")) {
-            VarModule::inc_int(boma.object(), vars::shotos::REPEAT_COUNT_LW);
-            VarModule::on_flag(boma.object(), vars::shotos::REPEAT_INCREMENTED);
+            VarModule::inc_int(boma.object(), vars::shotos::instance::REPEAT_COUNT_LW);
+            VarModule::on_flag(boma.object(), vars::shotos::status::REPEAT_INCREMENTED);
         }
     }
 }
@@ -38,7 +38,7 @@ unsafe fn tatsumaki_ex_land_cancel_hover(boma: &mut BattleObjectModuleAccessor, 
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
     }
 
-    if VarModule::is_flag(boma.object(), vars::shotos::IS_USE_EX_SPECIAL) {
+    if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_USE_EX_SPECIAL) {
         KineticModule::mul_speed(boma, &Vector3f::zero(), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
 
@@ -53,7 +53,7 @@ unsafe fn tatsumaki_ex_land_cancel_hover(boma: &mut BattleObjectModuleAccessor, 
 
 // Shotos EX Shoryuken
 unsafe fn ex_shoryuken(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, motion_kind: u64) {
-    if !VarModule::is_flag(boma.object(), vars::shotos::IS_USE_EX_SPECIAL) {
+    if !VarModule::is_flag(boma.object(), vars::shotos::instance::IS_USE_EX_SPECIAL) {
         return;
     }
 
@@ -212,7 +212,7 @@ unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
         }
     };
 
-    VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
+    VarModule::on_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
     StatusModule::change_status_request_from_script(boma, new_status, false);
 }
 
@@ -221,7 +221,7 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
     && boma.is_input_jump()
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
     {
-        VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
+        VarModule::on_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
         boma.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
         return;
     }
@@ -236,7 +236,7 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
         return;
     };
 
-    VarModule::on_flag(boma.object(), vars::shotos::IS_MAGIC_SERIES_CANCEL);
+    VarModule::on_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
     boma.change_status_req(new_status, true);
 }
 

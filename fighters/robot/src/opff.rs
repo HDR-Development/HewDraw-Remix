@@ -84,31 +84,31 @@ unsafe fn fuel_indicator_effect(fighter: &mut smash::lua2cpp::L2CFighterCommon, 
 
     // Bool to hold whether or not our fuel threshold has changed
     let mut is_fuel_threshold_changed = false;
-    let prev_fuel_threshold = VarModule::get_int(boma.object(), vars::robot::PREV_FUEL_THRESHOLD);
+    let prev_fuel_threshold = VarModule::get_int(boma.object(), vars::robot::instance::PREV_FUEL_THRESHOLD);
     if current_fuel < low_fuel_threshold{
-        if VarModule::get_int(boma.object(), vars::robot::PREV_FUEL_THRESHOLD) != 1 {
+        if VarModule::get_int(boma.object(), vars::robot::instance::PREV_FUEL_THRESHOLD) != 1 {
             is_fuel_threshold_changed = true;
         }
-        VarModule::set_int(boma.object(), vars::robot::PREV_FUEL_THRESHOLD, 1);
+        VarModule::set_int(boma.object(), vars::robot::instance::PREV_FUEL_THRESHOLD, 1);
         low_fuel = true;
     }
     else if current_fuel < mid_fuel_threshold{
-        if VarModule::get_int(boma.object(), vars::robot::PREV_FUEL_THRESHOLD) != 2 {
+        if VarModule::get_int(boma.object(), vars::robot::instance::PREV_FUEL_THRESHOLD) != 2 {
             is_fuel_threshold_changed = true;
         }
-        VarModule::set_int(boma.object(), vars::robot::PREV_FUEL_THRESHOLD, 2);
+        VarModule::set_int(boma.object(), vars::robot::instance::PREV_FUEL_THRESHOLD, 2);
         mid_fuel = true;
     }
     else{
-        if VarModule::get_int(boma.object(), vars::robot::PREV_FUEL_THRESHOLD) != 3 {
+        if VarModule::get_int(boma.object(), vars::robot::instance::PREV_FUEL_THRESHOLD) != 3 {
             is_fuel_threshold_changed = true;
         }
-        VarModule::set_int(boma.object(), vars::robot::PREV_FUEL_THRESHOLD, 3);
+        VarModule::set_int(boma.object(), vars::robot::instance::PREV_FUEL_THRESHOLD, 3);
         high_fuel = true;
     }
 
     // Respawn the effect if it's been removed
-    let fuel_effect_indicator_handle = VarModule::get_int(boma.object(), vars::robot::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE);
+    let fuel_effect_indicator_handle = VarModule::get_int(boma.object(), vars::robot::instance::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE);
     if !EffectModule::is_exist_effect(boma, fuel_effect_indicator_handle as u32) && !high_fuel { // Don't spawn the effect at high fuel
         //EFFECT_FOLLOW(fighter, Hash40::new("robot_lamp_l"), Hash40::new("waist2"), 5.0, 0, 0, 0, 0, 0, 2.0, true);
         let new_fuel_effect_indicator_handle = EffectModule::req_follow(
@@ -128,12 +128,12 @@ unsafe fn fuel_indicator_effect(fighter: &mut smash::lua2cpp::L2CFighterCommon, 
             true
         ) as u32;
         LAST_EFFECT_SET_RATE(fighter, 0.5);
-        //VarModule::set_int(boma.object(), vars::robot::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE, EffectModule::get_last_handle(boma) as i32);
-        VarModule::set_int(boma.object(), vars::robot::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE, new_fuel_effect_indicator_handle as i32);
+        //VarModule::set_int(boma.object(), vars::robot::instance::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE, EffectModule::get_last_handle(boma) as i32);
+        VarModule::set_int(boma.object(), vars::robot::instance::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE, new_fuel_effect_indicator_handle as i32);
     }
 
     // Kill the old effect and spawn the effect again with a new color if the fuel threshold has changed
-    let current_fuel_effect_indicator_handle = VarModule::get_int(boma.object(), vars::robot::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE) as u32;
+    let current_fuel_effect_indicator_handle = VarModule::get_int(boma.object(), vars::robot::instance::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE) as u32;
     if is_fuel_threshold_changed{
         EffectModule::kill(boma, current_fuel_effect_indicator_handle as u32, true, true);
         //EFFECT_FOLLOW(fighter, Hash40::new("robot_lamp_l"), Hash40::new("waist2"), 5.0, 0, 0, 0, 0, 0, 2.0, true);
@@ -155,8 +155,8 @@ unsafe fn fuel_indicator_effect(fighter: &mut smash::lua2cpp::L2CFighterCommon, 
                 true
             ) as u32;
             LAST_EFFECT_SET_RATE(fighter, 0.5);
-            //VarModule::set_int(boma.object(), vars::robot::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE, EffectModule::get_last_handle(boma) as i32);
-            VarModule::set_int(boma.object(), vars::robot::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE, new_fuel_effect_indicator_handle as i32);
+            //VarModule::set_int(boma.object(), vars::robot::instance::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE, EffectModule::get_last_handle(boma) as i32);
+            VarModule::set_int(boma.object(), vars::robot::instance::PASSIVE_FUEL_INDICATOR_EFFECT_HANDLE, new_fuel_effect_indicator_handle as i32);
             if low_fuel {
                 // Don't change the effect color since it's already red
             }

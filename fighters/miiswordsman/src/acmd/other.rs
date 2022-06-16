@@ -176,7 +176,7 @@ unsafe fn miiswordsman_wave_fly_game(fighter: &mut L2CAgentBase) {
 
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(owner_module_accessor.object(), vars::miiswordsman::WAVE_SPECIAL_N) {
+        if VarModule::is_flag(owner_module_accessor.object(), vars::miiswordsman::status::WAVE_SPECIAL_N) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 55, 60, 0, 38, 19.0, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
         }
         else {
@@ -185,7 +185,7 @@ unsafe fn miiswordsman_wave_fly_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(owner_module_accessor.object(), vars::miiswordsman::WAVE_SPECIAL_N) {
+        if VarModule::is_flag(owner_module_accessor.object(), vars::miiswordsman::status::WAVE_SPECIAL_N) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 55, 60, 0, 38, 19.0, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
         }
         else {
@@ -194,19 +194,19 @@ unsafe fn miiswordsman_wave_fly_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 26.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(owner_module_accessor.object(), vars::miiswordsman::WAVE_SPECIAL_N) {
+        if !VarModule::is_flag(owner_module_accessor.object(), vars::miiswordsman::status::WAVE_SPECIAL_N) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 45, 195, 0, 5, 19.0, 0.0, 0.0, 0.0, None, None, None, 0.0, 2.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
         }
     }
     frame(lua_state, 33.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(owner_module_accessor.object(), vars::miiswordsman::WAVE_SPECIAL_N) {
+        if !VarModule::is_flag(owner_module_accessor.object(), vars::miiswordsman::status::WAVE_SPECIAL_N) {
             notify_event_msc_cmd!(fighter, Hash40::new_raw(0x199c462b5d));
         }
     }
     frame(lua_state, 50.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(owner_module_accessor.object(), vars::miiswordsman::WAVE_SPECIAL_N) {
+        if VarModule::is_flag(owner_module_accessor.object(), vars::miiswordsman::status::WAVE_SPECIAL_N) {
             notify_event_msc_cmd!(fighter, Hash40::new_raw(0x199c462b5d));
         }
     }
@@ -220,7 +220,7 @@ unsafe fn miiswordsman_chakram_fly_game(fighter: &mut L2CAgentBase) {
     // Tap Input
     if !WorkModule::is_flag(boma, *WEAPON_MIISWORDSMAN_CHAKRAM_INSTANCE_WORK_ID_FLAG_FLICK){
         if is_excute(fighter) {
-            VarModule::on_flag(owner_module_accessor.object(), vars::miiswordsman::CHAKRAM_STICK_ATTACK);
+            VarModule::on_flag(owner_module_accessor.object(), vars::miiswordsman::instance::CHAKRAM_STICK_ATTACK);
             ATTACK(fighter, 0, 0, Hash40::new("top"), 1.5, 365, 40, 0, 30, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -0.5, 0.0, 8, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
             AttackModule::set_add_reaction_frame(boma, 0, -3.0, false);
             AttackModule::enable_safe_pos(boma);
@@ -235,7 +235,7 @@ unsafe fn miiswordsman_chakram_fly_game(fighter: &mut L2CAgentBase) {
     // Hold Input
     else{
         if is_excute(fighter) {
-            VarModule::on_flag(owner_module_accessor.object(), vars::miiswordsman::CHAKRAM_STICK_ATTACK);
+            VarModule::on_flag(owner_module_accessor.object(), vars::miiswordsman::instance::CHAKRAM_STICK_ATTACK);
             ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 125, 40, 0, 80, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
             AttackModule::enable_safe_pos(boma);
         }
@@ -275,7 +275,7 @@ unsafe fn miiswordsman_chakram_hop_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     if is_excute(fighter) {
-        VarModule::off_flag(owner_module_accessor.object(), vars::miiswordsman::CHAKRAM_STICK_ATTACK);
+        VarModule::off_flag(owner_module_accessor.object(), vars::miiswordsman::instance::CHAKRAM_STICK_ATTACK);
     }
 }
 
@@ -285,7 +285,7 @@ unsafe fn miiswordsman_chakram_stick_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     if is_excute(fighter) {
-        if VarModule::is_flag(owner_module_accessor.object(), vars::miiswordsman::CHAKRAM_STICK_ATTACK) {
+        if VarModule::is_flag(owner_module_accessor.object(), vars::miiswordsman::instance::CHAKRAM_STICK_ATTACK) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 80, 60, 0, 60, 4.5, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
             //SEARCH(fighter, 0, 0, Hash40::new("top"), 4.0, 0.0, 0.0, 0.0, None, None, None, *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, true);
         }
@@ -306,7 +306,7 @@ unsafe fn miiswordsman_chakram_stick_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    if VarModule::is_flag(owner_module_accessor.object(), vars::miiswordsman::CHAKRAM_STICK_ATTACK) {
+    if VarModule::is_flag(owner_module_accessor.object(), vars::miiswordsman::instance::CHAKRAM_STICK_ATTACK) {
         frame(lua_state, 1.0);
         if is_excute(fighter) {
             EFFECT(fighter, Hash40::new("sys_magicball_aura"), Hash40::new("top"), 0, 2.0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false);

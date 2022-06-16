@@ -167,7 +167,7 @@ unsafe fn miiswordsman_special_n2_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
-            VarModule::on_flag(fighter.battle_object, vars::miiswordsman::WAVE_SPECIAL_N);
+            VarModule::on_flag(fighter.battle_object, vars::miiswordsman::status::WAVE_SPECIAL_N);
             VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
             MotionModule::set_rate(boma, 0.3);
         }
@@ -274,7 +274,7 @@ unsafe fn miiswordsman_special_air_n2_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
-            VarModule::on_flag(fighter.battle_object, vars::miiswordsman::WAVE_SPECIAL_N);
+            VarModule::on_flag(fighter.battle_object, vars::miiswordsman::status::WAVE_SPECIAL_N);
             VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
             MotionModule::set_rate(boma, 0.3);
         }
@@ -2415,7 +2415,7 @@ unsafe fn miiswordsman_special_hi2_fall_game(fighter: &mut L2CAgentBase) {
         if !VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 0.8);
         }
-        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::SKYWARD_SLASH_DASH_HIT) {
+        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::SKYWARD_SLASH_DASH_HIT) {
             FT_MOTION_RATE(fighter, 0.5);
         }
     }
@@ -2570,10 +2570,10 @@ unsafe fn miiswordsman_special_lw1_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        let current_level = VarModule::get_int(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL);
+        let current_level = VarModule::get_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL);
         // Attack transition
-        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_ATTACK_TRIGGER) {
-            VarModule::off_flag(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_ATTACK_TRIGGER);
+        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_LW1_ATTACK_TRIGGER) {
+            VarModule::off_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_LW1_ATTACK_TRIGGER);
             if current_level > 0{
                 if current_level == 1 {
                     // println!("Changing to level 1");
@@ -2588,10 +2588,10 @@ unsafe fn miiswordsman_special_lw1_hit_game(fighter: &mut L2CAgentBase) {
         else{
             // Increment the level
             if current_level < 2 {
-                VarModule::set_int(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL, current_level + 1); // Add a charge level
+                VarModule::set_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL, current_level + 1); // Add a charge level
                 // println!("Kinesis increment");
             }
-            // println!("Kinesis Level: {}", VarModule::get_int(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL));
+            // println!("Kinesis Level: {}", VarModule::get_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL));
         }
     }
     frame(lua_state, 23.0);
@@ -2606,10 +2606,10 @@ unsafe fn miiswordsman_special_air_lw1_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        let current_level = VarModule::get_int(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL);
+        let current_level = VarModule::get_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL);
         // Attack transition
-        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_ATTACK_TRIGGER) {
-            VarModule::off_flag(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_ATTACK_TRIGGER);
+        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_LW1_ATTACK_TRIGGER) {
+            VarModule::off_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_LW1_ATTACK_TRIGGER);
             if current_level > 0{
                 if current_level == 1 {
                     // println!("Changing to level 1");
@@ -2624,10 +2624,10 @@ unsafe fn miiswordsman_special_air_lw1_hit_game(fighter: &mut L2CAgentBase) {
         else{
             // Increment the level
             if current_level < 2 {
-                VarModule::set_int(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL, current_level + 1); // Add a charge level
+                VarModule::set_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL, current_level + 1); // Add a charge level
                 // println!("Kinesis increment");
             }
-            // println!("Kinesis Level: {}", VarModule::get_int(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL));
+            // println!("Kinesis Level: {}", VarModule::get_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL));
         }
     }
     frame(lua_state, 23.0);
@@ -2644,7 +2644,7 @@ unsafe fn miiswordsman_special_lw1_hit_lv1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        VarModule::set_int(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL, 0); // Reset charge level
+        VarModule::set_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL, 0); // Reset charge level
         WorkModule::on_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_COUNTER_FLAG_GRAVITY_ON);
     }
     frame(lua_state, 1.0);
@@ -2680,7 +2680,7 @@ unsafe fn miiswordsman_special_air_lw1_hit_lv1_game(fighter: &mut L2CAgentBase) 
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        VarModule::set_int(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL, 0); // Reset charge level
+        VarModule::set_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL, 0); // Reset charge level
         WorkModule::on_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_COUNTER_FLAG_GRAVITY_ON);
     }
     frame(lua_state, 1.0);

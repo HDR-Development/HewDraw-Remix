@@ -212,13 +212,13 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 9.0/(15.0-1.0));
         //KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        VarModule::off_flag(fighter.battle_object, vars::robot::BOOST_ATTACK);
+        VarModule::off_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK);
         if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
             VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
             // Use 30% fuel to boost
             let current_fuel = WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
             if current_fuel > boost_fuel_depletion {
-                VarModule::on_flag(fighter.battle_object, vars::robot::BOOST_ATTACK);
+                VarModule::on_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK);
                 WorkModule::set_float(boma, current_fuel - boost_fuel_depletion, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
             }
         }
@@ -231,14 +231,14 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         /*
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            VarModule::on_flag(fighter.battle_object, vars::robot::BOOST_ATTACK);
+            VarModule::on_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK);
             FT_MOTION_RATE(fighter, 2.0);
         }
         else{
             FT_MOTION_RATE(fighter, 1.0);
         }
         */
-        if VarModule::is_flag(fighter.battle_object, vars::robot::BOOST_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK) {
             FT_MOTION_RATE(fighter, 15.0/(15.0-12.0));
             //FT_MOTION_RATE(fighter, 20.0/(15.0-12.0));
         }
@@ -253,7 +253,7 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::robot::BOOST_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK) {
             SET_SPEED_EX(fighter, 1.55, 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             //SET_SPEED_EX(fighter, 1.65, 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             //SET_SPEED_EX(fighter, 1.25, 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -294,13 +294,13 @@ unsafe fn robot_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("robot_nozzle_flare"), Hash40::new("knee"), 0, 0, 0, 90, -90, 0, 1, true);
-        if VarModule::is_flag(fighter.battle_object, vars::robot::BOOST_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK) {
             LAST_EFFECT_SET_COLOR(fighter, 0.5, 0.5, 1.0);
         }
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::robot::BOOST_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK) {
             EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 1.6, 20.0, -10.0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, true);
             LAST_EFFECT_SET_RATE(fighter, 0.75);
             LAST_EFFECT_SET_COLOR(fighter, 0.5, 0.5, 1.0);
@@ -311,7 +311,7 @@ unsafe fn robot_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::robot::BOOST_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK) {
             EFFECT_FOLLOW(fighter, Hash40::new("robot_atk_ab_jet"), Hash40::new("knee1"), 1.5, 0, 0, 0, 0, -90, 0.9, true);
             LAST_EFFECT_SET_RATE(fighter, 0.5);
             LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 10.0);
@@ -326,7 +326,7 @@ unsafe fn robot_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 35.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("robot_nozzle_flare"), Hash40::new("knee"), 0, 0, 0, 90, -90, 0, 1, true);
-        if VarModule::is_flag(fighter.battle_object, vars::robot::BOOST_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK) {
             LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 10.0);
         }
     }
@@ -343,7 +343,7 @@ unsafe fn robot_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::robot::BOOST_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK) {
             PLAY_SE(fighter, Hash40::new("vc_robot_attack05"));
         }
     }
@@ -365,7 +365,7 @@ unsafe fn robot_landing_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         let landing_frame_normal = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_attack_air_frame_lw"), 0);
         let landing_frame_boost = landing_frame_normal + 3.0;
-        if VarModule::is_flag(fighter.battle_object, vars::robot::BOOST_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK) {
             FT_MOTION_RATE(fighter, landing_frame_boost/landing_frame_normal);
         } 
     }
