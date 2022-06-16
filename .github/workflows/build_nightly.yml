@@ -93,13 +93,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: [plugin_build]
     steps:
-    
     - uses: actions/download-artifact@v3
       with:
         name: distributions
 
     - run: |
-      ls && unzip distributions.zip && ls
+        ls && unzip distributions.zip && ls
 
     # upload asset
     - name: Upload binaries to release
