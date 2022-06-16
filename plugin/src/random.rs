@@ -72,19 +72,19 @@ static REGULAR_CHARA_HASHES: &[u64] = &[
     smash::hash40("ui_chara_yoshi"),
     smash::hash40("ui_chara_younglink"),
     smash::hash40("ui_chara_zelda"),
-    smash::hash40("ui_chara_brave"),
-    smash::hash40("ui_chara_buddy"),
-    smash::hash40("ui_chara_demon"),
-    smash::hash40("ui_chara_dolly"),
-    smash::hash40("ui_chara_edge"),
-    smash::hash40("ui_chara_flame_first"),
-    smash::hash40("ui_chara_light_first"),
-    smash::hash40("ui_chara_jack"),
-    smash::hash40("ui_chara_master"),
-    smash::hash40("ui_chara_packun"),
-    smash::hash40("ui_chara_pickel"),
-    smash::hash40("ui_chara_tantan"),
-    smash::hash40("ui_chara_trail")
+    //smash::hash40("ui_chara_brave"),
+    //smash::hash40("ui_chara_buddy"),
+    //smash::hash40("ui_chara_demon"),
+    //smash::hash40("ui_chara_dolly"),
+    //smash::hash40("ui_chara_edge"),
+    //smash::hash40("ui_chara_flame_first"),
+    //smash::hash40("ui_chara_light_first"),
+    //smash::hash40("ui_chara_jack"),
+    //smash::hash40("ui_chara_master"),
+    //smash::hash40("ui_chara_packun"),
+    //smash::hash40("ui_chara_pickel"),
+    //smash::hash40("ui_chara_tantan"),
+    //smash::hash40("ui_chara_trail")
 ];
 
 static PT_CHARA_HASHES: &[u64] = &[
