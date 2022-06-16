@@ -12,7 +12,7 @@ unsafe fn younglink_special_s1_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
-        if !VarModule::is_flag(fighter.battle_object, vars::common::SPECIAL_PROJECTILE_SPAWNED) {
+        if !VarModule::is_flag(fighter.battle_object, vars::common::instance::SPECIAL_PROJECTILE_SPAWNED) {
             ArticleModule::generate_article(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_BOOMERANG, false, 0);
         }
     }
@@ -35,7 +35,7 @@ unsafe fn younglink_special_air_s1_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
         if !ArticleModule::is_exist(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_BOOMERANG) {
-            VarModule::on_flag(fighter.battle_object, vars::common::SPECIAL_PROJECTILE_SPAWNED);
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::SPECIAL_PROJECTILE_SPAWNED);
             ArticleModule::generate_article(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_BOOMERANG, false, 0);
         }
     }

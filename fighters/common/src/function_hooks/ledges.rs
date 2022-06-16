@@ -52,11 +52,11 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
         if let Some(object_id) = ::utils::util::get_active_battle_object_id_from_entry_id(i) {
             let object = ::utils::util::get_battle_object_from_id(object_id);
             if !object.is_null() {
-                if i == entry_id || VarModule::get_float(object, vars::common::LEDGE_POS_X) == 0.0 {
+                if i == entry_id || VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) == 0.0 {
                     continue;
                 }
 
-                if pos.x == VarModule::get_float(object, vars::common::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::LEDGE_POS_Y) {
+                if pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
                     if !(tether_only || tether_zair || tether_special || tether_aerial) {
                         return 0;
                     }
@@ -69,7 +69,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
                     let object = ::utils::util::get_battle_object_from_id(nana_object_id);
                     if !object.is_null() {
         
-                        if pos.x == VarModule::get_float(object, vars::common::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::LEDGE_POS_Y) {
+                        if pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
                             if !(tether_only || tether_zair || tether_special || tether_aerial) {
                                 return 0;
                             }
@@ -110,7 +110,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
 #[skyline::hook(replace=GroundModule::leave_cliff)]
 unsafe fn leave_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    VarModule::set_vec3(boma.object(), vars::common::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
+    VarModule::set_vec3(boma.object(), vars::common::instance::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
     original!()(boma)
 }
 
@@ -940,7 +940,7 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
 
     if(fighter_kind == *FIGHTER_KIND_PICKEL){
         if(status_kind == *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_GLIDING){
-            if VarModule::get_float(boma.object(), vars::common::GLIDE_TIMER) < 40.0 /*40 frames of up b travel time*/ {
+            if VarModule::get_float(boma.object(), vars::pickel::status::GLIDE_TIMER) < 40.0 /*40 frames of up b travel time*/ {
                 return 1;
             }
         }

@@ -9,10 +9,10 @@ unsafe fn mario_utauntr(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        if  !VarModule::is_flag(fighter.battle_object, vars::common::NOKNOK_SHELL) {
+        if  !VarModule::is_flag(fighter.battle_object, vars::mario::instance::NOKNOK_SHELL) {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
                 ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_GREENSHELL), 0, 0, false, false);
-                VarModule::on_flag(fighter.battle_object, vars::common::NOKNOK_SHELL);
+                VarModule::on_flag(fighter.battle_object, vars::mario::instance::NOKNOK_SHELL);
                 VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1);
             }
         }
@@ -26,10 +26,10 @@ unsafe fn mario_utauntl(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        if  !VarModule::is_flag(fighter.battle_object, vars::common::NOKNOK_SHELL) {
+        if  !VarModule::is_flag(fighter.battle_object, vars::mario::instance::NOKNOK_SHELL) {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
                 ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_GREENSHELL), 0, 0, false, false);
-                VarModule::on_flag(fighter.battle_object, vars::common::NOKNOK_SHELL);
+                VarModule::on_flag(fighter.battle_object, vars::mario::instance::NOKNOK_SHELL);
                 VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1);
             }
         }

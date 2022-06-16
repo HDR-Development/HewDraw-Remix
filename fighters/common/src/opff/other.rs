@@ -86,7 +86,7 @@ pub unsafe fn buffered_cstick_aerial_fixes(fighter: &mut L2CFighterCommon, boma:
                 fighter.clear_lua_stack();
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, new_speed);
                 app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-                VarModule::set_float(fighter.battle_object, vars::common::CURRENT_MOMENTUM, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND));
+                VarModule::set_float(fighter.battle_object, vars::common::instance::CURRENT_MOMENTUM, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND));
                 
                 if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_TAP_JUMP) && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) && fighter.global_table[STICK_Y].get_f32() <= 0.0 {
                     // setting shorthop speed here
@@ -114,7 +114,7 @@ pub unsafe fn buffered_cstick_aerial_fixes(fighter: &mut L2CFighterCommon, boma:
                 fighter.clear_lua_stack();
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, new_speed);
                 app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-                VarModule::set_float(fighter.battle_object, vars::common::CURRENT_MOMENTUM, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND));
+                VarModule::set_float(fighter.battle_object, vars::common::instance::CURRENT_MOMENTUM, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND));
             }
         }
     }

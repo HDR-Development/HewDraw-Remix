@@ -132,6 +132,14 @@ pub mod vars {
 
             pub const SHOULD_TRUMP_TETHER: i32 = 0x0022;
 
+            pub const UP_SPECIAL_INTERRUPT: i32 = 0x0023; // Ness and Lucas use this
+            pub const UP_SPECIAL_INTERRUPT_AIRTIME: i32 = 0x0024; // Ness and Lucas use this
+            
+            pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 0x0025; // Luigi, Ivysaur, and Young Link use this
+            pub const IS_TELEPORT_WALL_RIDE: i32 = 0x0026; // Mewtwo, Palutena, Sheik, and Zelda use this
+            pub const SPIN_ATTACK_LAND_CANCEL: i32 = 0x003E; // Link and Mii Sword use this
+            pub const SIDE_SPECIAL_CANCEL_NO_HIT: i32 = 0x004D; // Used by Kazuya and Sora
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -154,6 +162,34 @@ pub mod vars {
 
             pub const AGT_USED_COUNTER: i32 = 0x000A;
 
+            // floats
+
+            pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0000;
+
+            pub const CURRENT_MOMENTUM: i32 = 0x0001;
+            pub const JUMPSQUAT_VELOCITY: i32 = 0x0002;
+            /// This const is set in a fighter reset because the params used to calculate change depending on situation
+            pub const JUMP_SPEED_RATIO: i32 = 0x0003;
+            pub const DOUBLE_JUMP_FRAME: i32 = 0x0004;
+            pub const GROUND_VEL: i32 = 0x0005; // Only ever gets set, goes effectively unused.
+            pub const RAR_LENIENCY: i32 = 0x0006; // Only ever gets set, goes effectively unused.
+            pub const CURRENT_MOMENTUM_SPECIALS: i32 = 0x0007;
+            pub const DOUBLE_JUMP_TIMER: i32 = 0x0008; // Only used by Lucas, and it's commented out, goes unused.
+            pub const ROLL_DIR: i32 = 0x0009;
+            pub const LEDGE_POS: i32 = 0x000A;
+            pub const LEDGE_POS_X: i32 = 0x000A;
+            pub const LEDGE_POS_Y: i32 = 0x000B;
+            pub const LEDGE_POS_Z: i32 = 0x000C;
+            pub const GET_DIST_TO_FLOOR: i32 = 0x000D;
+            pub const ECB_Y_OFFSETS: i32 = 0x000E;
+            pub const CURR_DASH_SPEED: i32 = 0x000F;
+            pub const MOONWALK_SPEED: i32 = 0x0010;
+            pub const ESCAPE_AIR_SLIDE_SPEED_X: i32 = 0x0011;
+            pub const ESCAPE_AIR_SLIDE_SPEED_Y: i32 = 0x0012;
+            pub const Y_POS: i32 = 0x0013;
+            /// this multiplier can be set to a value between 0.1 and 3.0 to increase
+            /// a character's jump speed max for momentum transfer (for meta quick, etc)
+            pub const JUMP_SPEED_MAX_MUL: i32 = 0x0014;
         }
         pub mod status {
             // flags
@@ -176,93 +212,6 @@ pub mod vars {
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
 
         }
-        // flag
-        pub const NOKNOK_SHELL: i32 = 0x0003; // Mario and Bowser use this
-        pub const UP_SPECIAL_INTERRUPT: i32 = 0x000F; // Ness and Lucas use this
-        pub const UP_SPECIAL_INTERRUPT_AIRTIME: i32 = 0x0016; // Ness and Lucas use this
-
-        pub const AIR_CROSS: i32 = 0x0018; // Only Simon uses this
-        pub const FINAL_CUTTER_HIT: i32 = 0x0019; // Only Kirby uses this
-        pub const SPECIAL_CHECKS: i32 = 0x001A; // Only DK uses this
-        // pub const DISABLE_AIRDODGE: i32 = 0x001B; Unused
-        pub const NEUTRAL_SPECIAL_HIT: i32 = 0x001C; // Only Meta Knight uses this
-        pub const ILLUSION_SHORTENED: i32 = 0x001D; // Fox, Falco, and Wolf use this
-        
-        pub const SUPER_CANCEL: i32 = 0x0020; // Only Terry uses this
-        pub const SPECIAL_AUTOCANCEL: i32 = 0x0021; // Only Byleth uses this
-        pub const ILLUSION_SHORTEN: i32 = 0x0022; // Only Fox, Falco, and Wolf use this
-        pub const SOARING_SLASH_HIT: i32 = 0x0023; // Chrom and Lucina use this
-        pub const DOUBLE_JUMP_STOP: i32 = 0x0024; // Only Lucas uses this
-        pub const KIRBY_STAR_ROD: i32 = 0x0025; // Only... Kirby? uses this? Goes unused.
-        pub const IS_IN_TUMBLE: i32 = 0x0026; // Only Steve uses this
-        
-        pub const DOWN_SPECIAL_HIT: i32 = 0x0028; // Only Meta Knight uses this
-        pub const MAGIC_CANCEL_ADDITIONAL: i32 = 0x0029; // Unused
-        
-        pub const AERIAL_COMMAND_MOMENTUM_RESET: i32 = 0x002B; // Mario and Yoshi use this
-        pub const TUMBLE_START: i32 = 0x002C; // Only Steve uses this
-        
-        pub const AERIAL_COMMAND_RISING: i32 = 0x002E; // Mario and Yoshi use this
-        pub const SIDE_SPECIAL_HIT: i32 = 0x002F; // Only Meta Knight uses this
-        
-        pub const UP_SPECIAL_HIT: i32 = 0x0031; // Only Meta Knight uses this
-        pub const AIR_SPECIAL_USED: i32 = 0x0032; // Only Terry uses this
-        pub const LEDGE_OCCUPYING: i32 = 0x0033; // Unused
-        pub const DOUBLE_JUMP_CANCELED: i32 = 0x0034; // Only ever turned off, effectively unused
-        
-        pub const IS_MOONWALK_JUMP: i32 = 0x0037; // Unused
-        
-        pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 0x003B; // Luigi, Ivysaur, and Young Link use this
-        
-        pub const IS_TELEPORT_WALL_RIDE: i32 = 0x003D; // Mewtwo, Palutena, Sheik, and Zelda use this
-        pub const SPIN_ATTACK_LAND_CANCEL: i32 = 0x003E; // Link and Mii Sword use this
-        pub const AERIAL_COMMAND_RISEN: i32 = 0x003F; // Mario and Yoshi use this
-        pub const DISABLE_SPECIAL_JC: i32 = 0x0040; // Only Pikachu uses this
-        
-        pub const IS_LATE_PIVOT: i32 = 0x0044; // Unused
-        pub const IS_TURNDASH_INPUT: i32 = 0x0045; // Unused
-        
-        pub const UP_SPECIAL_JUMP_REFRESH_WINDOW: i32 = 0x0049; // Only ever turned off, effectively unused
-        
-        pub const SIDE_SPECIAL_CANCEL_NO_HIT: i32 = 0x004D; // Used by Kazuya and Sora
-        
-
-        // int
-        
-        pub const TURN_DASH_FRAME: i32 = 0x000A; // Unused
-
-        // float
-        pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0000;
-        pub const CURRENT_MOMENTUM: i32 = 0x0001;
-        pub const JUMPSQUAT_VELOCITY: i32 = 0x0002;
-        /// This const is set in a fighter reset because the params used to calculate change depending on situation
-        pub const JUMP_SPEED_RATIO: i32 = 0x0003;
-        pub const DOUBLE_JUMP_FRAME: i32 = 0x0004;
-        pub const GROUND_VEL: i32 = 0x0005;
-        pub const RAR_LENIENCY: i32 = 0x0006;
-        pub const CURRENT_MOMENTUM_SPECIALS: i32 = 0x0007;
-        pub const DOUBLE_JUMP_TIMER: i32 = 0x0008;
-        pub const GLIDE_TIMER: i32 = 0x0009;
-        pub const BASE_RUN_SPEED_MAX: i32 = 0x000A;
-        pub const SONIC_LIGHTSPEED_DASH_FRAME_COUNTER: i32 = 0x000B;
-        pub const BASE_DASH_SPEED: i32 = 0x000C;
-        pub const WITHDRAW_FRAME: i32 = 0x000D;
-        pub const ROLL_DIR: i32 = 0x000E;
-        pub const LEDGE_POS: i32 = 0x000F;
-        pub const LEDGE_POS_X: i32 = 0x000F;
-        pub const LEDGE_POS_Y: i32 = 0x0010;
-        pub const LEDGE_POS_Z: i32 = 0x0011;
-        pub const MP_SPEED_RATIO: i32 = 0x0012;
-        pub const GET_DIST_TO_FLOOR: i32 = 0x0013;
-        pub const ECB_Y_OFFSETS: i32 = 0x0014;
-        pub const CURR_DASH_SPEED: i32 = 0x0015;
-        pub const MOONWALK_SPEED: i32 = 0x0016;
-        pub const ESCAPE_AIR_SLIDE_SPEED_X: i32 = 0x0017;
-        pub const ESCAPE_AIR_SLIDE_SPEED_Y: i32 = 0x0018;
-        pub const Y_POS: i32 = 0x0019;
-        /// this multiplier can be set to a value between 0.1 and 3.0 to increase
-        /// a character's jump speed max for momentum transfer (for meta quick, etc)
-        pub const JUMP_SPEED_MAX_MUL: i32 = 0x001A;
     }
 
     pub mod bayonetta {
@@ -299,6 +248,10 @@ pub mod vars {
             // flags
             pub use super::super::roy::instance::TRAIL_EFFECT;
         }
+        pub mod status {
+            // flags
+            pub const SOARING_SLASH_HIT: i32 = 0x1100;
+        }
     }
 
     pub mod demon {
@@ -314,14 +267,25 @@ pub mod vars {
         }
     }
 
+    // Note: Terry starts his flags on 0xXX5X instead due to also using the shotos generic flags.
     pub mod dolly {
+        pub mod instance {
+            pub const SUPER_CANCEL: i32 = 0x0100;
+        }
         pub mod status {
             // flags
             pub const IS_USE_FIRE_KICK:      i32 = 0x1150;
             pub const UNABLE_CANCEL_S3_DASH: i32 = 0x1151;
             pub const IS_CHAIN_CANCEL:       i32 = 0x1152;
             pub const IS_SHATTER_STRIKE:     i32 = 0x1153;
-            pub const IS_STARTED_SPECIAL_B_GROUNDED: i32 = 0x1154;
+            pub const AIR_SPECIAL_F:         i32 = 0x1154;
+        }
+    }
+
+    pub mod donkey {
+        pub mod status {
+            // flags
+            pub const SPECIAL_CHECKS: i32 = 0x1100;
         }
     }
 
@@ -348,6 +312,25 @@ pub mod vars {
         pub const SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK1: i32 = 0x0;
         pub const SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK2: i32 = 0x1;
         pub const SPECIAL_HI_JUMP_RESERVE_ACTION_FALL:    i32 = 0x2;
+    }
+
+    pub mod fox {
+        pub mod status {
+            pub const ILLUSION_SHORTENED: i32 = 0x1100;
+            pub const ILLUSION_SHORTEN: i32 = 0x1101;
+        }
+    }
+
+    pub mod falco {
+        pub mod status {
+            pub use super::super::fox::status::*;
+        }
+    }
+
+    pub mod wolf {
+        pub mod status {
+            pub use super::super::fox::status::*;
+        }
     }
 
     pub mod gaogaen {
@@ -381,15 +364,29 @@ pub mod vars {
 
     pub mod inkling {
         pub mod status {
-            // flag
+            // flags
             pub const IS_ENABLE_SPECIAL_S_JUMP_EARLY_CANCEL: i32 = 0x1100;
         }
     }
 
     pub mod kamui {
         pub mod status {
-            // flag
+            // flags
             pub const BAIR_BOOST: i32 = 0x1100;
+        }
+    }
+
+    pub mod kirby {
+        pub mod status {
+            // flags
+            pub const FINAL_CUTTER_HIT: i32 = 0x1100;
+        }
+    }
+
+    pub mod koopa {
+        pub mod instance {
+            // flags
+            pub use super::super::mario::instance::NOKNOK_SHELL;
         }
     }
 
@@ -442,14 +439,29 @@ pub mod vars {
     pub mod mario {
         pub mod instance {
             // flags
-            pub const CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL:   i32 = 0x0100;
-            pub const SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG: i32 = 0x0101;
+            pub const NOKNOK_SHELL:                          i32 = 0x0100;
+            pub const CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL:   i32 = 0x0101;
+            pub const SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG: i32 = 0x0102;
         }
 
         pub mod status {
             // flags
-            pub const IS_SPECIAL_N_FIREBRAND:                i32 = 0x1100;
-            pub const IS_SPECIAL_N_DOUBLE_FIREBALL:          i32 = 0x1101;
+            pub const AERIAL_COMMAND_MOMENTUM_RESET: i32 = 0x1100;
+            pub const AERIAL_COMMAND_RISING:         i32 = 0x1101;
+            pub const AERIAL_COMMAND_RISEN:          i32 = 0x1102;
+
+            pub const IS_SPECIAL_N_FIREBRAND:       i32 = 0x1100;
+            pub const IS_SPECIAL_N_DOUBLE_FIREBALL: i32 = 0x1101;
+        }
+    }
+
+    pub mod yoshi {
+        pub mod status {
+            pub use super::super::mario::status::{
+                AERIAL_COMMAND_MOMENTUM_RESET,
+                AERIAL_COMMAND_RISING,
+                AERIAL_COMMAND_RISEN
+            };
         }
     }
 
@@ -457,6 +469,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const IS_ENABLE_SPECIAL_S_DASH_CANCEL: i32 = 0x1100;
+            pub const AIR_SPECIAL_S_AUTOCANCEL:        i32 = 0x1101;
 
             // ints
             pub const AYMR_CHARGE_LEVEL: i32 = 0x1100;
@@ -467,6 +480,24 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const IS_CURRENT_ATTACK_LW3_SOUL_FIRE: i32 = 0x1000;
+            pub const TUMBLE_START: i32 = 0x1001;
+            pub const IS_IN_TUMBLE: i32 = 0x1002;
+        }
+        pub mod status {
+            // floats
+            pub const GLIDE_TIMER: i32 = 0x1100;
+        }
+    }
+
+    pub mod pikachu {
+        pub mod instance {
+            pub const DISABLE_QA_JC: i32 = 0x0100;
+        }
+    }
+
+    pub mod pzenigame {
+        pub mod instance {
+            pub const WITHDRAW_FRAME: i32 = 0x0100;
         }
     }
 
@@ -522,6 +553,12 @@ pub mod vars {
         pub mod status {
             // flags
             pub const IS_NOT_QUICK_RELEASE: i32 = 0x1100;
+        }
+    }
+
+    pub mod simon {
+        pub mod status {
+            pub const AIR_CROSS: i32 = 0x1100;
         }
     }
 
@@ -634,6 +671,10 @@ pub mod vars {
             pub const COMPLETED_SET_SPEEDS: i32 = 0x0100;
             pub const META_QUICK_NEED_SET_SPEEDS: i32 = 0x0101;
             pub const META_QUICK_PLAY_VC: i32 = 0x0102;
+            pub const NEUTRAL_SPECIAL_HIT: i32 = 0x0103;
+            pub const SIDE_SPECIAL_HIT: i32 = 0x0104;
+            pub const UP_SPECIAL_HIT: i32 = 0x0105;
+            pub const DOWN_SPECIAL_HIT: i32 = 0x0106;
 
             // ints
             /// i32 timer for color flashing when meta quick is ready

@@ -76,7 +76,7 @@ pub unsafe fn pre_superspecial(fighter: &mut L2CFighterCommon) -> L2CValue {
     let id = VarModule::get_int(fighter.battle_object, vars::common::instance::COSTUME_SLOT_NUMBER) as usize;
 
     // Only use meter if you didn't cancel directly from a different super
-    if  !VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL) {
+    if  !VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL) {
         MeterModule::drain(boma.object(), 4);
     }
     original!(fighter)
@@ -92,7 +92,7 @@ pub unsafe fn pre_superspecial2(fighter: &mut L2CFighterCommon) -> L2CValue {
     let id = VarModule::get_int(fighter.battle_object, vars::common::instance::COSTUME_SLOT_NUMBER) as usize;
 
     // Only use meter if you didn't cancel directly from a different supper
-    if  !VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL) {
+    if  !VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL) {
         MeterModule::drain(boma.object(), 4);
     }
     original!(fighter)

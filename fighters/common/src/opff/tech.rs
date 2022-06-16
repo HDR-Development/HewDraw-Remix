@@ -193,7 +193,7 @@ unsafe fn glide_toss(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModu
     {
         let max_ditcit_frame = ParamModule::get_float(boma.object(), ParamType::Common, "glide_toss_cancel_frame");
         VarModule::set_flag(boma.object(), vars::common::instance::CAN_GLIDE_TOSS, MotionModule::frame(boma) <= max_ditcit_frame);
-        VarModule::set_float(boma.object(), vars::common::ROLL_DIR, facing);
+        VarModule::set_float(boma.object(), vars::common::instance::ROLL_DIR, facing);
         return;
     }
 
@@ -202,9 +202,9 @@ unsafe fn glide_toss(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModu
     {
         let multiplier = 2.8 * (MotionModule::end_frame(boma) - MotionModule::frame(boma)) / MotionModule::end_frame(boma);
         let speed_x = if boma.is_prev_status(*FIGHTER_STATUS_KIND_ESCAPE_F) {
-            multiplier * VarModule::get_float(boma.object(), vars::common::ROLL_DIR)
+            multiplier * VarModule::get_float(boma.object(), vars::common::instance::ROLL_DIR)
         } else if boma.is_prev_status(*FIGHTER_STATUS_KIND_ESCAPE_B) {
-            multiplier * VarModule::get_float(boma.object(), vars::common::ROLL_DIR) * -1.0
+            multiplier * VarModule::get_float(boma.object(), vars::common::instance::ROLL_DIR) * -1.0
         } else {
             return;
         };

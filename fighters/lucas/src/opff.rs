@@ -24,10 +24,10 @@ unsafe fn psi_magnet_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32,
 unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
    if status_kind == *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_HOLD {
         if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-            if  !VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT) {
-                VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT);
+            if  !VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT) {
+                VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT);
             }
-            if VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME) {
+            if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME) {
                 VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL); // Disallow more up specials
             }
             StatusModule::change_status_request_from_script(boma, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END, true);
@@ -37,8 +37,8 @@ unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, st
     if status_kind == *FIGHTER_STATUS_KIND_FALL_SPECIAL
         && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END
         && situation_kind == *SITUATION_KIND_AIR {
-        if VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT) &&  !VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME) {
-            VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME);
+        if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT) &&  !VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME) {
+            VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
         }
     }
@@ -47,10 +47,10 @@ unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, st
 // Lucas DJC and momentum tracker
 unsafe fn djc_momentum_helper(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL {
-        VarModule::set_float(boma.object(), vars::common::DOUBLE_JUMP_FRAME, frame);
+        VarModule::set_float(boma.object(), vars::common::instance::DOUBLE_JUMP_FRAME, frame);
     }
     /*
-    if VarModule::get_float(boma.object(), vars::common::DOUBLE_JUMP_FRAME) == 1.0 {
+    if VarModule::get_float(boma.object(), vars::common::instance::DOUBLE_JUMP_FRAME) == 1.0 {
         VarModule::set_float(boma.object(), vars::common::DOUBLE_JUMP_TIMER, 1.0);
     }
     if VarModule::get_float(boma.object(), vars::common::DOUBLE_JUMP_TIMER) > 0.0 && (status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL || status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR) {
@@ -70,9 +70,6 @@ unsafe fn djc_momentum_helper(boma: &mut BattleObjectModuleAccessor, id: usize, 
     }
     //println!("Lucas DJ timer: Frame {}", VarModule::get_float(boma.object(), vars::common::DOUBLE_JUMP_TIMER));
     */
-    if status_kind != *FIGHTER_STATUS_KIND_ATTACK_AIR {
-        VarModule::off_flag(boma.object(), vars::common::DOUBLE_JUMP_CANCELED);
-    }
 }
 
 // PK Thunder wall ride momentum "fix"

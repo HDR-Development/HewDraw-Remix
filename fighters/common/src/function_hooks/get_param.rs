@@ -51,7 +51,7 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
 
     if fighter_kind == *FIGHTER_KIND_WOLF {
         if x1 == hash40("param_special_s") && x2 == hash40("illusion_end_air_stop_y_frame") {
-            if VarModule::is_flag(boma_reference.object(), vars::common::ILLUSION_SHORTEN) {
+            if VarModule::is_flag(boma_reference.object(), vars::wolf::status::ILLUSION_SHORTEN) {
                 //println!("Wolf Flash Int");
 				return 20;
             }
@@ -86,14 +86,14 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
     if fighter_kind == *FIGHTER_KIND_FOX {
         if x1 == hash40("param_special_s") && x2 == hash40("illusion_end_air_speed_x") {
             //println!("Non-shortened Fox illusion end speed");
-			if VarModule::is_flag(boma_reference.object(), vars::common::ILLUSION_SHORTEN) {
+			if VarModule::is_flag(boma_reference.object(), vars::fox::status::ILLUSION_SHORTEN) {
                 //println!("Shortened Fox illusion end speed");
                 return 1.65;
             }
         }
 
         else if x1 == hash40("param_special_s") && x2 == hash40("illusion_end_air_brake_x") {
-            if VarModule::is_flag(boma_reference.object(), vars::common::ILLUSION_SHORTEN) {
+            if VarModule::is_flag(boma_reference.object(), vars::fox::status::ILLUSION_SHORTEN) {
                 //println!("Non-shortened Fox illusion end decel");
                 return 0.1;
             }
@@ -102,13 +102,13 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
 
     else if fighter_kind == *FIGHTER_KIND_FALCO {
         if x1 == hash40("param_special_s") && x2 == hash40("illusion_end_air_speed_x") {
-            if VarModule::is_flag(boma_reference.object(), vars::common::ILLUSION_SHORTEN) {
+            if VarModule::is_flag(boma_reference.object(), vars::falco::status::ILLUSION_SHORTEN) {
                 return 1.65;
             }
         }
 
         else if x1 == hash40("param_special_s") && x2 == hash40("illusion_end_air_brake_x") {
-            if VarModule::is_flag(boma_reference.object(), vars::common::ILLUSION_SHORTEN) {
+            if VarModule::is_flag(boma_reference.object(), vars::falco::status::ILLUSION_SHORTEN) {
                 return 0.1;
             }
         }
@@ -116,19 +116,19 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
 
     else if fighter_kind == *FIGHTER_KIND_WOLF {
         if x1 == hash40("param_special_s") && x2 == hash40("illusion_end_air_speed_x") {
-            if VarModule::is_flag(boma_reference.object(), vars::common::ILLUSION_SHORTEN) {
+            if VarModule::is_flag(boma_reference.object(), vars::wolf::status::ILLUSION_SHORTEN) {
                 return 1.5;
             }
         }
 
         else if x1 == hash40("param_special_s") && x2 == hash40("illusion_end_air_brake_x") {
-            if VarModule::is_flag(boma_reference.object(), vars::common::ILLUSION_SHORTEN) {
+            if VarModule::is_flag(boma_reference.object(), vars::wolf::status::ILLUSION_SHORTEN) {
                 return 0.125;
             }
         }
 
         else if x1 == hash40("param_special_s") && x2 == hash40("illusion_end_air_accel_y") {
-            if VarModule::is_flag(boma_reference.object(), vars::common::ILLUSION_SHORTEN) {
+            if VarModule::is_flag(boma_reference.object(), vars::wolf::status::ILLUSION_SHORTEN) {
                 //println!("Shorten gravity");
                 return 0.005;
             }

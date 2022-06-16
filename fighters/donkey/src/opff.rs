@@ -98,9 +98,9 @@ unsafe fn down_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut Battle
         *FIGHTER_DONKEY_STATUS_KIND_SPECIAL_LW_LOOP,
         *FIGHTER_DONKEY_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind) {
         if AttackModule::is_infliction(boma, 2) {
-            VarModule::on_flag(boma.object(), vars::common::SPECIAL_CHECKS);
+            VarModule::on_flag(boma.object(), vars::donkey::status::SPECIAL_CHECKS);
         }
-        if VarModule::is_flag(boma.object(), vars::common::SPECIAL_CHECKS) && frame > 5.0 {
+        if VarModule::is_flag(boma.object(), vars::donkey::status::SPECIAL_CHECKS) && frame > 5.0 {
             if boma.is_input_jump() {
                 if situation_kind == *SITUATION_KIND_AIR {
                     if boma.get_num_used_jumps() < boma.get_jump_count_max() {
@@ -112,7 +112,7 @@ unsafe fn down_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut Battle
             }
         }
     } else {
-        VarModule::off_flag(boma.object(), vars::common::SPECIAL_CHECKS);
+        VarModule::off_flag(boma.object(), vars::donkey::status::SPECIAL_CHECKS);
     }
 }
 

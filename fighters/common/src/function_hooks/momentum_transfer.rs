@@ -28,10 +28,10 @@ fn nro_main(nro: &skyline::nro::NroInfo) {
 pub unsafe fn status_attack_air_hook(fighter: &mut L2CFighterCommon, param_1: L2CValue){
     let boma = app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
     let fighter_kind = boma.kind();
-    let ratio = VarModule::get_float(fighter.object(), vars::common::JUMP_SPEED_RATIO);
+    let ratio = VarModule::get_float(fighter.object(), vars::common::instance::JUMP_SPEED_RATIO);
 
     // get the multiplier for any special mechanics that require additional jump speed max (meta quick, etc)
-    let mut jump_speed_max_mul = VarModule::get_float(fighter.object(), vars::common::JUMP_SPEED_MAX_MUL);
+    let mut jump_speed_max_mul = VarModule::get_float(fighter.object(), vars::common::instance::JUMP_SPEED_MAX_MUL);
     match jump_speed_max_mul {
         // if its not between 0.1 and 3.0, it is likely not a real value and we should ignore it
         0.1..=3.0 => {},
@@ -41,7 +41,7 @@ pub unsafe fn status_attack_air_hook(fighter: &mut L2CFighterCommon, param_1: L2
     let mut jump_speed_x_max = WorkModule::get_param_float(boma, hash40("run_speed_max"), 0) * ratio * jump_speed_max_mul;
 
     let mut l2c_agent = L2CAgent::new(fighter.lua_state_agent);
-    let new_speed = VarModule::get_float(fighter.object(), vars::common::CURRENT_MOMENTUM).clamp(-jump_speed_x_max, jump_speed_x_max);
+    let new_speed = VarModule::get_float(fighter.object(), vars::common::instance::CURRENT_MOMENTUM).clamp(-jump_speed_x_max, jump_speed_x_max);
 
     if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_JUMP
     || (fighter_kind == *FIGHTER_KIND_SONIC && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_SONIC_STATUS_KIND_SPIN_JUMP) {

@@ -95,14 +95,14 @@ unsafe fn heros_spin_movement(fighter: &mut L2CFighterCommon, boma: &mut BattleO
 unsafe fn land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, motion_kind: u64) {
     // Activate Land cancel flag
     if motion_kind == hash40("special_hi3") {
-        VarModule::on_flag(fighter.battle_object, vars::common::SPIN_ATTACK_LAND_CANCEL);
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::SPIN_ATTACK_LAND_CANCEL);
     }
     // Reset Land cancel flag
     if !(motion_kind == hash40("special_hi3") || motion_kind == hash40("special_air_hi3")) {
-        VarModule::off_flag(fighter.battle_object, vars::common::SPIN_ATTACK_LAND_CANCEL);
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::SPIN_ATTACK_LAND_CANCEL);
     }
     // Land cancel
-    if status_kind == *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL && VarModule::is_flag(fighter.battle_object, vars::common::SPIN_ATTACK_LAND_CANCEL) {
+    if status_kind == *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL && VarModule::is_flag(fighter.battle_object, vars::common::instance::SPIN_ATTACK_LAND_CANCEL) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
     }
 }

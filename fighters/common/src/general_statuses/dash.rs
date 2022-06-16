@@ -16,7 +16,7 @@ pub fn wm_param_to_int(boma: *mut app::BattleObjectModuleAccessor, param_cat: u6
     symbol = "_ZN7lua2cpp16L2CFighterCommon15status_pre_DashEv")]
 unsafe fn status_pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
-	let mut initial_speed = VarModule::get_float(fighter.battle_object, vars::common::CURR_DASH_SPEED);
+	let mut initial_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
 
 	if ![*FIGHTER_STATUS_KIND_DASH, *FIGHTER_STATUS_KIND_TURN].contains(&StatusModule::prev_status_kind(fighter.module_accessor, 0)) {
 		//println!("not after dash/turn");
@@ -29,7 +29,7 @@ unsafe fn status_pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 	lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, initial_speed);
 	app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
 
-    VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, initial_speed);
+    VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
 
     call_original!(fighter)
 }
@@ -114,7 +114,7 @@ unsafe fn status_DashCommon(fighter: &mut L2CFighterCommon) {
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_SQUAT);
         }
     }
-	VarModule::set_float(fighter.battle_object, vars::common::MOONWALK_SPEED, 0.0);
+	VarModule::set_float(fighter.battle_object, vars::common::instance::MOONWALK_SPEED, 0.0);
     VarModule::off_flag(fighter.battle_object, vars::common::instance::ENABLE_BOOST_RUN);
     VarModule::off_flag(fighter.battle_object, vars::common::status::IS_MOONWALK);
     VarModule::off_flag(fighter.battle_object, vars::common::status::IS_SMASH_TURN);
@@ -549,7 +549,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
 
     if fighter.global_table[CURRENT_FRAME].get_i32() == 0 && stick_x.abs() >= dash_stick_x {
         // apply speed on f1 of dash (takes effect on f2 ingame)
-        let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::CURR_DASH_SPEED);
+        let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
         let applied_speed = (dash_speed * PostureModule::lr(fighter.module_accessor)) + (stick_x.signum() * ((run_accel_mul + (run_accel_add * stick_x.abs())))) + prev_speed;  // initial dash speed + 1f of run acceleration + previous status' last speed
         //println!("Changing current dash speed: {}", applied_speed);
         let applied_speed_clamped = applied_speed.clamp(-run_speed_max, run_speed_max);
@@ -662,7 +662,7 @@ unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 		VarModule::off_flag(fighter.battle_object, vars::common::instance::ENABLE_BOOST_RUN);
 	}
 	
-	VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, initial_speed);
+	VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
 
 	//println!("end dash total speed: {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
 

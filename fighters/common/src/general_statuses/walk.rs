@@ -12,7 +12,7 @@ macro_rules! interrupt {
 unsafe fn status_pre_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
 
-	let mut initial_speed = VarModule::get_float(fighter.battle_object, vars::common::CURR_DASH_SPEED);
+	let mut initial_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
 
 	if ![*FIGHTER_STATUS_KIND_DASH].contains(&StatusModule::prev_status_kind(fighter.module_accessor, 0)) {
 		//println!("not after dash");
@@ -21,7 +21,7 @@ unsafe fn status_pre_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 	//println!("walk initial speed: {}", initial_speed);
 
-	VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, initial_speed);
+	VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
 
     call_original!(fighter)
 }
@@ -85,7 +85,7 @@ unsafe extern "C" fn status_walk_main_common(fighter: &mut L2CFighterCommon, arg
     let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
     let walk_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("walk_speed_max"), 0);
 	let stick_x = fighter.global_table[STICK_X].get_f32();
-	let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::CURR_DASH_SPEED);
+	let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
 	let mut lr_modifier = 1.0;
 
     if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
@@ -112,7 +112,7 @@ unsafe extern "C" fn status_walk_main_common(fighter: &mut L2CFighterCommon, arg
 		fighter.clear_lua_stack();
 		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed - speed_motion);
 		app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-		VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, applied_speed);
+		VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, applied_speed);
 	}
 	else if KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
 		fighter.clear_lua_stack();

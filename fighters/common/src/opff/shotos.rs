@@ -439,5 +439,5 @@ pub unsafe fn backdash_energy(fighter: &mut L2CFighterCommon) {
         }
     }
     let end_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
-    VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, end_speed);
+    VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, end_speed);
 }

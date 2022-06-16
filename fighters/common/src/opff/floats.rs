@@ -26,7 +26,7 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
 
     // Track double jump frame for float leniency window
     if status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL {
-        VarModule::set_float(boma.object(), vars::common::DOUBLE_JUMP_FRAME, MotionModule::frame(boma));
+        VarModule::set_float(boma.object(), vars::common::instance::DOUBLE_JUMP_FRAME, MotionModule::frame(boma));
     }
 
     // Set the max float duration for the current character
@@ -107,7 +107,7 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
                 } else if status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL {
                     // Return double jump within leniency window
-                    if VarModule::get_float(boma.object(), vars::common::DOUBLE_JUMP_FRAME) <= 2.0 {
+                    if VarModule::get_float(boma.object(), vars::common::instance::DOUBLE_JUMP_FRAME) <= 2.0 {
                         if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
                             WorkModule::set_int(boma, WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
                         }

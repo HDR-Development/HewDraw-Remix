@@ -28,7 +28,7 @@ unsafe fn status_turn(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon21status_pre_TurnCommonEv")]
 unsafe extern "C" fn status_pre_turncommon(fighter: &mut L2CFighterCommon) {
-    let mut initial_speed = VarModule::get_float(fighter.battle_object, vars::common::CURR_DASH_SPEED);
+    let mut initial_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
 
 	if ![*FIGHTER_STATUS_KIND_DASH].contains(&StatusModule::prev_status_kind(fighter.module_accessor, 0)) {
 		//println!("not after dash/turn");
@@ -41,8 +41,8 @@ unsafe extern "C" fn status_pre_turncommon(fighter: &mut L2CFighterCommon) {
 	lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, initial_speed);
 	app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
 	
-	VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, initial_speed);
-	VarModule::set_float(fighter.battle_object, vars::common::MOONWALK_SPEED, 0.0);
+	VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
+	VarModule::set_float(fighter.battle_object, vars::common::instance::MOONWALK_SPEED, 0.0);
 
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ITEM);

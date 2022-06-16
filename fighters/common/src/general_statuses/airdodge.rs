@@ -207,11 +207,11 @@ unsafe fn force_ground_attach(fighter: &mut L2CFighterCommon) {
     };
 
     let mut threshold = ParamModule::get_float(fighter.object(), ParamType::Common, "waveland_distance_threshold");
-    let correction = VarModule::get_float(fighter.object(), vars::common::ECB_Y_OFFSETS);
+    let correction = VarModule::get_float(fighter.object(), vars::common::instance::ECB_Y_OFFSETS);
     fighter_pos.y += correction;
     loop {
-        let prev_y_pos = VarModule::get_float(fighter.battle_object, vars::common::Y_POS);
-        let dist = VarModule::get_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR);
+        let prev_y_pos = VarModule::get_float(fighter.battle_object, vars::common::instance::Y_POS);
+        let dist = VarModule::get_float(fighter.battle_object, vars::common::instance::GET_DIST_TO_FLOOR);
         let new_dist = GroundModule::get_distance_to_floor(fighter.module_accessor, &fighter_pos, fighter_pos.y, true);
         if GroundModule::attach_ground(fighter.module_accessor, false) != 0 { break; }
         if new_dist == 0.0 {
@@ -220,7 +220,7 @@ unsafe fn force_ground_attach(fighter: &mut L2CFighterCommon) {
         else if new_dist > 0.0 && new_dist <= threshold {
             fighter_pos.y -= new_dist;
             PostureModule::set_pos(fighter.module_accessor, &fighter_pos);
-            VarModule::set_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR, new_dist);
+            VarModule::set_float(fighter.battle_object, vars::common::instance::GET_DIST_TO_FLOOR, new_dist);
         }
         else {
             //println!("break");
@@ -246,10 +246,10 @@ unsafe fn sub_escape_air_waveland_check(fighter: &mut L2CFighterCommon) {
             z: PostureModule::pos_z(fighter.module_accessor),
         };
         let mut threshold = ParamModule::get_float(fighter.object(), ParamType::Common, "waveland_distance_threshold");
-        fighter_pos.y += VarModule::get_float(fighter.object(), vars::common::ECB_Y_OFFSETS);
-        VarModule::set_float(fighter.battle_object, vars::common::Y_POS, fighter_pos.y);
-        VarModule::set_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR, GroundModule::get_distance_to_floor(fighter.module_accessor, &fighter_pos, fighter_pos.y, true));
-        let dist = VarModule::get_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR);
+        fighter_pos.y += VarModule::get_float(fighter.object(), vars::common::instance::ECB_Y_OFFSETS);
+        VarModule::set_float(fighter.battle_object, vars::common::instance::Y_POS, fighter_pos.y);
+        VarModule::set_float(fighter.battle_object, vars::common::instance::GET_DIST_TO_FLOOR, GroundModule::get_distance_to_floor(fighter.module_accessor, &fighter_pos, fighter_pos.y, true));
+        let dist = VarModule::get_float(fighter.battle_object, vars::common::instance::GET_DIST_TO_FLOOR);
         //println!("dist: {}", dist);
         if 0.0 <= dist && dist <= threshold {
             //println!("should_waveland");
@@ -351,16 +351,16 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
         if StatusModule::is_changing(fighter.module_accessor) {
             let escape_air_slide_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("escape_air_slide_speed"), 0);
             
-            VarModule::set_float(fighter.battle_object, vars::common::ESCAPE_AIR_SLIDE_SPEED_X, escape_air_slide_speed * WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X));
-            VarModule::set_float(fighter.battle_object, vars::common::ESCAPE_AIR_SLIDE_SPEED_Y, escape_air_slide_speed * WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y));
+            VarModule::set_float(fighter.battle_object, vars::common::instance::ESCAPE_AIR_SLIDE_SPEED_X, escape_air_slide_speed * WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X));
+            VarModule::set_float(fighter.battle_object, vars::common::instance::ESCAPE_AIR_SLIDE_SPEED_Y, escape_air_slide_speed * WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y));
         }
         else {
             if MotionModule::frame(fighter.module_accessor) < 29.0 {
                 KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_BRAKE);
                 
-                let x_speed = VarModule::get_float(fighter.battle_object, vars::common::ESCAPE_AIR_SLIDE_SPEED_X);
-                let y_speed = VarModule::get_float(fighter.battle_object, vars::common::ESCAPE_AIR_SLIDE_SPEED_Y);
+                let x_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::ESCAPE_AIR_SLIDE_SPEED_X);
+                let y_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::ESCAPE_AIR_SLIDE_SPEED_Y);
 
                 fighter.clear_lua_stack();
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.0);
@@ -376,8 +376,8 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
                     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
                 }
 
-                VarModule::set_float(fighter.battle_object, vars::common::ESCAPE_AIR_SLIDE_SPEED_X, x_speed * 0.9);
-                VarModule::set_float(fighter.battle_object, vars::common::ESCAPE_AIR_SLIDE_SPEED_Y, y_speed * 0.9);
+                VarModule::set_float(fighter.battle_object, vars::common::instance::ESCAPE_AIR_SLIDE_SPEED_X, x_speed * 0.9);
+                VarModule::set_float(fighter.battle_object, vars::common::instance::ESCAPE_AIR_SLIDE_SPEED_Y, y_speed * 0.9);
             }
         }
     }

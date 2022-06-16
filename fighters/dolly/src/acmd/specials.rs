@@ -2907,13 +2907,13 @@ unsafe fn dolly_super_special_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.0, 4.0);
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 10.0);
-        if VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL){
+        if VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL){
             SLOW_OPPONENT(fighter, 15.0, 40.0);
         }
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL){
+        if VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL){
             FT_MOTION_RATE(fighter, 15.0/(8.0-6.0));
         }
         else{
@@ -2934,7 +2934,7 @@ unsafe fn dolly_super_special_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 25.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL){
+        if VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL){
             FT_MOTION_RATE(fighter, 1.0);
         }
         else{
@@ -2958,7 +2958,7 @@ unsafe fn dolly_super_special_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("dolly_wave_aura"), Hash40::new("handr"), 1, 0, 0, 0, 0, 0, 1, true);
 
-        if VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL){
+        if VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL){
             EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 10, 13, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
             LAST_EFFECT_SET_RATE(fighter, 1.0);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_explosion_flash"), Hash40::new("handr"), 1, 0, 0, 0, 0, 0, 0.7, true);
@@ -3000,7 +3000,7 @@ unsafe fn dolly_super_special_2_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0.0);
-        if VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL){
+        if VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL){
             FT_MOTION_RATE(fighter, 1.0);
             SLOW_OPPONENT(fighter, 30.0, 30.0);
         }
@@ -3011,7 +3011,7 @@ unsafe fn dolly_super_special_2_start_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL){
+        if VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL){
             FT_MOTION_RATE(fighter, 1.0);
         }
         else{
@@ -3020,7 +3020,7 @@ unsafe fn dolly_super_special_2_start_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL){
+        if VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL){
             FT_MOTION_RATE(fighter, 15.0/(9.0-5.0));
         }
         else{
@@ -3030,7 +3030,7 @@ unsafe fn dolly_super_special_2_start_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL){
+        if VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL){
             FT_MOTION_RATE(fighter, 0.75);
         }
         else{
@@ -3084,7 +3084,7 @@ unsafe fn dolly_super_special_2_start_effect(fighter: &mut L2CAgentBase) {
 
         EFFECT_FOLLOW(fighter, Hash40::new("dolly_wave_hold"), Hash40::new("handr"), 1, 0, 0, 0, 0, 0, 1, true);
 
-        if VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL){
+        if VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL){
             EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), -15, 16, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
             LAST_EFFECT_SET_RATE(fighter, 1.0);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_explosion_flash"), Hash40::new("handr"), 1, 0, 0, 0, 0, 0, 0.65, true);

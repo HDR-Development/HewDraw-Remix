@@ -76,17 +76,17 @@ unsafe fn force_ground_attach(fighter: &mut L2CFighterCommon) {
     };
 
     let mut threshold = ParamModule::get_float(fighter.object(), ParamType::Common, "waveland_distance_threshold");
-    let correction = VarModule::get_float(fighter.object(), vars::common::ECB_Y_OFFSETS);
+    let correction = VarModule::get_float(fighter.object(), vars::common::instance::ECB_Y_OFFSETS);
     fighter_pos.y += correction;
     loop {
-        let prev_y_pos = VarModule::get_float(fighter.battle_object, vars::common::Y_POS);
-        let dist = VarModule::get_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR);
+        let prev_y_pos = VarModule::get_float(fighter.battle_object, vars::common::instance::Y_POS);
+        let dist = VarModule::get_float(fighter.battle_object, vars::common::instance::GET_DIST_TO_FLOOR);
         let new_dist = GroundModule::get_distance_to_floor(fighter.module_accessor, &fighter_pos, fighter_pos.y, true);
         if GroundModule::attach_ground(fighter.module_accessor, false) != 0 { break; }
         if new_dist <= threshold {
             fighter_pos.y -= new_dist;
             PostureModule::set_pos(fighter.module_accessor, &fighter_pos);
-            VarModule::set_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR, new_dist);
+            VarModule::set_float(fighter.battle_object, vars::common::instance::GET_DIST_TO_FLOOR, new_dist);
         }
         else {
             //println!("break");

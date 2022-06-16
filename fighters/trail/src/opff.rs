@@ -147,8 +147,8 @@ unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon,
         }
     }
     if status_kind == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_ATTACK {
-        if !VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL_NO_HIT) {
-            VarModule::on_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL_NO_HIT);
+        if !VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT) {
+            VarModule::on_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
         }
         if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
             VarModule::off_flag(boma.object(), vars::trail::status::SIDE_SPECIAL_HIT);

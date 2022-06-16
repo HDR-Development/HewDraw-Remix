@@ -7,7 +7,7 @@ use globals::*;
 unsafe fn status_pre_run(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
 
-	let mut initial_speed = VarModule::get_float(fighter.battle_object, vars::common::CURR_DASH_SPEED);
+	let mut initial_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
 
 	if ![*FIGHTER_STATUS_KIND_DASH, *FIGHTER_STATUS_KIND_TURN].contains(&StatusModule::prev_status_kind(fighter.module_accessor, 0)) {
 		//println!("not after dash/turn");
@@ -16,7 +16,7 @@ unsafe fn status_pre_run(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 	//println!("run initial speed: {}", initial_speed);
 
-	VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, initial_speed);
+	VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
 
     call_original!(fighter)
 }
@@ -70,7 +70,7 @@ unsafe extern "C" fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue
     let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
     let run_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("run_speed_max"), 0);
 	let stick_x = fighter.global_table[STICK_X].get_f32();
-	let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::CURR_DASH_SPEED);
+	let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
 
 	fighter.clear_lua_stack();
 	lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
@@ -88,7 +88,7 @@ unsafe extern "C" fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue
 		fighter.clear_lua_stack();
 		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed_clamped);
 		app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-		VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, added_speed);
+		VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, added_speed);
 	}
 	else if KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
 		fighter.clear_lua_stack();
@@ -147,7 +147,7 @@ unsafe fn status_pre_turnrun(fighter: &mut L2CFighterCommon) -> L2CValue {
 	app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
 
 	initial_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
-	VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, initial_speed);
+	VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
 
 	//println!("pre turnrun total speed: {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
 
@@ -167,7 +167,7 @@ unsafe extern "C" fn status_turnrun_main(fighter: &mut L2CFighterCommon) -> L2CV
     let run_accel_add = WorkModule::get_param_float(fighter.module_accessor, hash40("run_accel_mul"), 0);
     let run_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("run_speed_max"), 0);
 	let stick_x = fighter.global_table[STICK_X].get_f32();
-	let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::CURR_DASH_SPEED);
+	let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
 
 	if StatusModule::is_changing(fighter.module_accessor) {
 		let applied_speed = (stick_x.signum() * ((run_accel_mul + (run_accel_add * stick_x.abs())))) + prev_speed;
@@ -176,7 +176,7 @@ unsafe extern "C" fn status_turnrun_main(fighter: &mut L2CFighterCommon) -> L2CV
 		fighter.clear_lua_stack();
 		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed);
 		app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-		VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, applied_speed);
+		VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, applied_speed);
 	}
 
 	fighter.clear_lua_stack();
@@ -224,7 +224,7 @@ unsafe fn status_end_turnrun(fighter: &mut L2CFighterCommon) -> L2CValue {
 	app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
 
 	initial_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
-	VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, initial_speed);
+	VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
 
 	//println!("end turnrun total speed: {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
 

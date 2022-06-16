@@ -19,11 +19,11 @@ unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         if frame <= 28.0 {
             if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
                 // Tell the game that you've started rising
-                VarModule::on_flag(boma.object(), vars::common::AERIAL_COMMAND_RISING);
+                VarModule::on_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISING);
                 // Add vertical speed for the dair rise if you've activated the rise and this isn't your second time attempting to initiate the rise during your current airtime
-                if VarModule::is_flag(boma.object(), vars::common::AERIAL_COMMAND_RISING) &&  !VarModule::is_flag(boma.object(), vars::common::AERIAL_COMMAND_RISEN) {
+                if VarModule::is_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISING) &&  !VarModule::is_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISEN) {
                     // Reset momentum on the first special button press press
-                    if  !VarModule::is_flag(boma.object(), vars::common::AERIAL_COMMAND_MOMENTUM_RESET){
+                    if  !VarModule::is_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_MOMENTUM_RESET){
                         // Slow down the move to better facilitate recovering
                         MotionModule::set_rate(boma, 0.5);
                         // Have mario glow a bit to indicate that he's recovering
@@ -32,7 +32,7 @@ unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
                         KineticModule::clear_speed_energy_id(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                         KineticModule::clear_speed_energy_id(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
                         KineticModule::clear_speed_energy_id(boma, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                        VarModule::on_flag(boma.object(), vars::common::AERIAL_COMMAND_MOMENTUM_RESET);
+                        VarModule::on_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_MOMENTUM_RESET);
                     }
                     //KineticModule::add_speed(boma, &motion_vec);
                     if y_speed + motion_vec.y > max_rise_speed {
@@ -54,20 +54,20 @@ unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         }
     }
 
-    if VarModule::is_flag(boma.object(), vars::common::AERIAL_COMMAND_RISING) {
+    if VarModule::is_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISING) {
         if motion_kind != hash40("attack_air_lw")
             || (motion_kind == hash40("attack_air_lw") && frame > 28.0) {
             ColorBlendModule::cancel_main_color(boma, 0);
-            VarModule::on_flag(boma.object(), vars::common::AERIAL_COMMAND_RISEN);
-            VarModule::off_flag(boma.object(), vars::common::AERIAL_COMMAND_RISING);
-            VarModule::off_flag(boma.object(), vars::common::AERIAL_COMMAND_MOMENTUM_RESET);
+            VarModule::on_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISEN);
+            VarModule::off_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISING);
+            VarModule::off_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_MOMENTUM_RESET);
         }
     }
 
     // If grounded, reset aerial rise and momentum reset flags
-    if situation_kind == *SITUATION_KIND_GROUND && VarModule::is_flag(boma.object(), vars::common::AERIAL_COMMAND_RISEN) {
-        VarModule::off_flag(boma.object(), vars::common::AERIAL_COMMAND_RISEN);
-        VarModule::off_flag(boma.object(), vars::common::AERIAL_COMMAND_MOMENTUM_RESET);
+    if situation_kind == *SITUATION_KIND_GROUND && VarModule::is_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISEN) {
+        VarModule::off_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISEN);
+        VarModule::off_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_MOMENTUM_RESET);
     }
 }
 
@@ -146,7 +146,7 @@ unsafe fn noknok_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
     if gimmick_timerr > 0 && gimmick_timerr < 1801 {
         if gimmick_timerr > 1799 {
-            VarModule::off_flag(boma.object(), vars::common::NOKNOK_SHELL);
+            VarModule::off_flag(boma.object(), vars::mario::instance::NOKNOK_SHELL);
             VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
             gimmick_flash(boma);
         } else {
@@ -157,13 +157,13 @@ unsafe fn noknok_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 
 // NokNok shell flag reset
 unsafe fn noknok_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
-    if VarModule::is_flag(fighter.battle_object, vars::common::NOKNOK_SHELL) {
+    if VarModule::is_flag(fighter.battle_object, vars::mario::instance::NOKNOK_SHELL) {
         if [*FIGHTER_STATUS_KIND_DEAD,
             *FIGHTER_STATUS_KIND_REBIRTH,
             *FIGHTER_STATUS_KIND_WIN,
             *FIGHTER_STATUS_KIND_LOSE,
             *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-                VarModule::off_flag(fighter.battle_object, vars::common::NOKNOK_SHELL);
+                VarModule::off_flag(fighter.battle_object, vars::mario::instance::NOKNOK_SHELL);
         }
     }
 }
@@ -173,7 +173,7 @@ unsafe fn noknok_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i
 unsafe fn noknok_training(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
     if is_training_mode() {
         if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
-            VarModule::off_flag(fighter.battle_object, vars::common::NOKNOK_SHELL);
+            VarModule::off_flag(fighter.battle_object, vars::mario::instance::NOKNOK_SHELL);
         }
     }
 }

@@ -109,10 +109,10 @@ unsafe fn special_super_cancels_triple_geyser(fighter: &mut L2CFighterCommon, bo
 unsafe fn burn_knuckle_land_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, motion_kind: u64) {
     if motion_kind == hash40("special_air_f_start") {
         if situation_kind == *SITUATION_KIND_AIR {
-            VarModule::on_flag(boma.object(), vars::common::AIR_SPECIAL_USED);
+            VarModule::on_flag(boma.object(), vars::dolly::status::AIR_SPECIAL_F);
         }
     }
-    if VarModule::is_flag(boma.object(), vars::common::AIR_SPECIAL_USED) {
+    if VarModule::is_flag(boma.object(), vars::dolly::status::AIR_SPECIAL_F) {
         if [*FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_END,
             *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_ATTACK].contains(&status_kind) {
             if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
@@ -167,7 +167,7 @@ unsafe fn super_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
             if !StopModule::is_stop(boma){
                 if MeterModule::drain(boma.object(), 2) {
                     WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2);
-                    VarModule::on_flag(boma.object(), vars::common::SUPER_CANCEL);
+                    VarModule::on_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, false);
                 }
             }
@@ -182,14 +182,14 @@ unsafe fn super_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
             if !StopModule::is_stop(boma){
                 if MeterModule::drain(boma.object(), 2) {
                     WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL);
-                    VarModule::on_flag(boma.object(), vars::common::SUPER_CANCEL);
+                    VarModule::on_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, false);
                 }
             }
         }
     }
     else{
-        VarModule::off_flag(boma.object(), vars::common::SUPER_CANCEL);
+        VarModule::off_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL);
     }
 }
 

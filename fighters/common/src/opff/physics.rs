@@ -27,7 +27,7 @@ pub mod groups {
 unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
     if !smash::app::sv_information::is_ready_go() {
         GroundModule::set_rhombus_offset(boma, &Vector2f::zero());
-        VarModule::set_float(boma.object(), vars::common::ECB_Y_OFFSETS, 0.0);
+        VarModule::set_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS, 0.0);
         return;
     }
 
@@ -79,13 +79,13 @@ unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
             }
 
             // this is required for other ecb shift operations to perform correctly.
-            VarModule::set_float(boma.object(), vars::common::ECB_Y_OFFSETS, sh_amount);
+            VarModule::set_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS, sh_amount);
 
             sh_amount
         } else if boma.is_situation(*SITUATION_KIND_GROUND) {
             0.0
         } else {
-            VarModule::get_float(boma.object(), vars::common::ECB_Y_OFFSETS)
+            VarModule::get_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS)
         };
         */
         let mut offset = 0.0;
@@ -109,14 +109,14 @@ unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
                 }
 
                 // this is required for other ecb shift operations to perform correctly.
-                VarModule::set_float(boma.object(), vars::common::ECB_Y_OFFSETS, sh_amount);
+                VarModule::set_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS, sh_amount);
                 offset = sh_amount;
             }
 
         } else if boma.is_situation(*SITUATION_KIND_GROUND) {
             offset = 0.0;
         } else {
-            offset = VarModule::get_float(boma.object(), vars::common::ECB_Y_OFFSETS);
+            offset = VarModule::get_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS);
         }
         GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, offset));
     }
@@ -265,7 +265,7 @@ unsafe fn dash_energy(fighter: &mut L2CFighterCommon) {
             app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
 
             let end_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
-            VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, end_speed);
+            VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, end_speed);
         }
     }
 }

@@ -185,12 +185,12 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if is_meta_quick(fighter) {
         check_reset(fighter);
         // set the increased jump speed max multiplier for momentum transfer
-        VarModule::set_float(fighter.object(), vars::common::JUMP_SPEED_MAX_MUL, 1.5);
+        VarModule::set_float(fighter.object(), vars::common::instance::JUMP_SPEED_MAX_MUL, 1.5);
     } else {
         kill_quick_effect(fighter);
     
         // set the regular jump speed max multiplier for momentum transfer
-        VarModule::set_float(fighter.object(), vars::common::JUMP_SPEED_MAX_MUL, 0.75);
+        VarModule::set_float(fighter.object(), vars::common::instance::JUMP_SPEED_MAX_MUL, 0.75);
 
         // if you are initial dash, slow them down slightly
         if fighter.is_status(*FIGHTER_STATUS_KIND_DASH) {
