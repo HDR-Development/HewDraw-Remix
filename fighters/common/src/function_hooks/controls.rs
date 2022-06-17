@@ -81,14 +81,14 @@ unsafe fn map_controls_hook(
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-                (l, gc_l, JumpMini, Buttons::ShFootstool)
-                (r, gc_r, JumpMini, Buttons::ShFootstool)
-                (zl, gc_z, JumpMini, Buttons::ShFootstool)
-                (zr, gc_z, JumpMini, Buttons::ShFootstool)
-                (a, gc_a, JumpMini, Buttons::ShFootstool)
-                (b, gc_b, JumpMini, Buttons::ShFootstool)
-                (x, gc_x, JumpMini, Buttons::ShFootstool)
-                (y, gc_y, JumpMini, Buttons::ShFootstool)
+                (l, gc_l, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (r, gc_r, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (zl, gc_z, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (zr, gc_z, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (a, gc_a, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (b, gc_b, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (x, gc_x, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (y, gc_y, JumpMini, Buttons::JumpMini | Buttons::Jump)
         );
         (*out).buttons |= apply_button_mappings!(
             controller,
@@ -102,40 +102,65 @@ unsafe fn map_controls_hook(
                 (x, gc_x, SmashAttack, Buttons::AttackAll)
                 (y, gc_y, SmashAttack, Buttons::AttackAll)
         );
+        (*out).buttons |= apply_button_mappings!(
+            controller,
+            mappings,
+                (l, gc_l,   AppealHi, Buttons::AppealHi)
+                (r, gc_r,   AppealHi, Buttons::AppealHi)
+                (zl, gc_z,  AppealHi, Buttons::AppealHi)
+                (zr, gc_z,  AppealHi, Buttons::AppealHi)
+                (a, gc_a,   AppealHi, Buttons::AppealHi)
+                (b, gc_b,   AppealHi, Buttons::AppealHi)
+                (x, gc_x,   AppealHi, Buttons::AppealHi)
+                (y, gc_y,   AppealHi, Buttons::AppealHi)
+        );
     } else if controller.style == ControllerStyle::LeftJoycon || controller.style == ControllerStyle::RightJoycon {
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-                (l, joy_shoulder, JumpMini, Buttons::ShFootstool)
-                (r, joy_shoulder, JumpMini, Buttons::ShFootstool)
-                (zl, joy_zshoulder, JumpMini, Buttons::ShFootstool)
-                (zr, joy_zshoulder, JumpMini, Buttons::ShFootstool)
-                (left_sl, joy_sl, JumpMini, Buttons::ShFootstool)
-                (left_sr, joy_sr, JumpMini, Buttons::ShFootstool)
-                (right_sl, joy_sl, JumpMini, Buttons::ShFootstool)
-                (right_sr, joy_sr, JumpMini, Buttons::ShFootstool)
+                (l, joy_shoulder, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (r, joy_shoulder, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (zl, joy_zshoulder, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (zr, joy_zshoulder, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (left_sl, joy_sl, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (left_sr, joy_sr, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (right_sl, joy_sl, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (right_sr, joy_sr, JumpMini, Buttons::JumpMini | Buttons::Jump)
         );
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-                (l, joy_shoulder, SmashAttack, Buttons::AttackAll)
-                (r, joy_shoulder, SmashAttack, Buttons::AttackAll)
+                (l, joy_shoulder,   SmashAttack, Buttons::AttackAll)
+                (r, joy_shoulder,   SmashAttack, Buttons::AttackAll)
                 (zl, joy_zshoulder, SmashAttack, Buttons::AttackAll)
                 (zr, joy_zshoulder, SmashAttack, Buttons::AttackAll)
-                (left_sl, joy_sl, SmashAttack, Buttons::AttackAll)
-                (left_sr, joy_sr, SmashAttack, Buttons::AttackAll)
-                (right_sl, joy_sl, SmashAttack, Buttons::AttackAll)
-                (right_sr, joy_sr, SmashAttack, Buttons::AttackAll)
+                (left_sl, joy_sl,   SmashAttack, Buttons::AttackAll)
+                (left_sr, joy_sr,   SmashAttack, Buttons::AttackAll)
+                (right_sl, joy_sl,  SmashAttack, Buttons::AttackAll)
+                (right_sr, joy_sr,  SmashAttack, Buttons::AttackAll)
+        );
+
+        (*out).buttons |= apply_button_mappings!(
+            controller,
+            mappings,
+                (l, joy_shoulder,   AppealHi, Buttons::AppealHi)
+                (r, joy_shoulder,   AppealHi, Buttons::AppealHi)
+                (zl, joy_zshoulder, AppealHi, Buttons::AppealHi)
+                (zr, joy_zshoulder, AppealHi, Buttons::AppealHi)
+                (left_sl, joy_sl,   AppealHi, Buttons::AppealHi)
+                (left_sr, joy_sr,   AppealHi, Buttons::AppealHi)
+                (right_sl, joy_sl,  AppealHi, Buttons::AppealHi)
+                (right_sr, joy_sr,  AppealHi, Buttons::AppealHi)
         );
 
         if controller.style == ControllerStyle::LeftJoycon {
             (*out).buttons |= apply_button_mappings!(
                 controller,
                 mappings,
-                    (dpad_left, joy_down, JumpMini, Buttons::ShFootstool)
-                    (dpad_right, joy_up, JumpMini, Buttons::ShFootstool)
-                    (dpad_up, joy_left, JumpMini, Buttons::ShFootstool)
-                    (dpad_down, joy_right, JumpMini, Buttons::ShFootstool)
+                    (dpad_left, joy_down, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                    (dpad_right, joy_up, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                    (dpad_up, joy_left, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                    (dpad_down, joy_right, JumpMini, Buttons::JumpMini | Buttons::Jump)
             );
             (*out).buttons |= apply_button_mappings!(
                 controller,
@@ -145,14 +170,22 @@ unsafe fn map_controls_hook(
                     (dpad_up, joy_left, SmashAttack, Buttons::AttackAll)
                     (dpad_down, joy_right, SmashAttack, Buttons::AttackAll)
             );
+            (*out).buttons |= apply_button_mappings!(
+                controller,
+                mappings,
+                    (dpad_left, joy_down,   AppealHi, Buttons::AppealHi)
+                    (dpad_right, joy_up,    AppealHi, Buttons::AppealHi)
+                    (dpad_up, joy_left,     AppealHi, Buttons::AppealHi)
+                    (dpad_down, joy_right,  AppealHi, Buttons::AppealHi)
+            );
         } else {
             (*out).buttons |= apply_button_mappings!(
                 controller,
                 mappings,
-                    (a, joy_down, JumpMini, Buttons::ShFootstool)
-                    (y, joy_up, JumpMini, Buttons::ShFootstool)
-                    (b, joy_left, JumpMini, Buttons::ShFootstool)
-                    (x, joy_right, JumpMini, Buttons::ShFootstool)
+                    (a, joy_down, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                    (y, joy_up, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                    (b, joy_left, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                    (x, joy_right, JumpMini, Buttons::JumpMini | Buttons::Jump)
             );
             (*out).buttons |= apply_button_mappings!(
                 controller,
@@ -162,19 +195,27 @@ unsafe fn map_controls_hook(
                     (b, joy_left, SmashAttack, Buttons::AttackAll)
                     (x, joy_right, SmashAttack, Buttons::AttackAll)
             );
+            (*out).buttons |= apply_button_mappings!(
+                controller,
+                mappings,
+                    (a, joy_down,   AppealHi, Buttons::AppealHi)
+                    (y, joy_up,     AppealHi, Buttons::AppealHi)
+                    (b, joy_left,   AppealHi, Buttons::AppealHi)
+                    (x, joy_right,  AppealHi, Buttons::AppealHi)
+            );
         }
     } else {
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
-                (l, pro_l, JumpMini, Buttons::ShFootstool)
-                (r, pro_r, JumpMini, Buttons::ShFootstool)
-                (zl, pro_zl, JumpMini, Buttons::ShFootstool)
-                (zr, pro_zr, JumpMini, Buttons::ShFootstool)
-                (a, pro_a, JumpMini, Buttons::ShFootstool)
-                (b, pro_b, JumpMini, Buttons::ShFootstool)
-                (x, pro_x, JumpMini, Buttons::ShFootstool)
-                (y, pro_y, JumpMini, Buttons::ShFootstool)
+                (l, pro_l, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (r, pro_r, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (zl, pro_zl, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (zr, pro_zr, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (a, pro_a, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (b, pro_b, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (x, pro_x, JumpMini, Buttons::JumpMini | Buttons::Jump)
+                (y, pro_y, JumpMini, Buttons::JumpMini | Buttons::Jump)
         );
         (*out).buttons |= apply_button_mappings!(
             controller,
@@ -187,6 +228,18 @@ unsafe fn map_controls_hook(
                 (b, pro_b, SmashAttack, Buttons::AttackAll)
                 (x, pro_x, SmashAttack, Buttons::AttackAll)
                 (y, pro_y, SmashAttack, Buttons::AttackAll)
+        );
+        (*out).buttons |= apply_button_mappings!(
+            controller,
+            mappings,
+                (l, pro_l,      AppealHi, Buttons::AppealHi)
+                (r, pro_r,      AppealHi, Buttons::AppealHi)
+                (zl, pro_zl,    AppealHi, Buttons::AppealHi)
+                (zr, pro_zr,    AppealHi, Buttons::AppealHi)
+                (a, pro_a,      AppealHi, Buttons::AppealHi)
+                (b, pro_b,      AppealHi, Buttons::AppealHi)
+                (x, pro_x,      AppealHi, Buttons::AppealHi)
+                (y, pro_y,      AppealHi, Buttons::AppealHi)
         );
     }
 

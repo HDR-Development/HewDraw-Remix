@@ -426,7 +426,7 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
         )
     };
 
-    let shfootstool_offset = CatHdr::ShorthopFootstool.bits().trailing_zeros() as usize;
+    let shfootstool_offset = CatHdr::Shorthop.bits().trailing_zeros() as usize;
     if triggered_buttons.intersects(Buttons::ShFootstool) {
         if input_module.hdr_cat.valid_frames[shfootstool_offset] == 0 {
             input_module.hdr_cat.valid_frames[shfootstool_offset] = unsafe {

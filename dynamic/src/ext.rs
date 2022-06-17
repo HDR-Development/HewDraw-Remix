@@ -237,7 +237,7 @@ bitflags! {
     }
 
     pub struct CatHdr: i32 {
-        const ShorthopFootstool = 0x1;
+        const Shorthop = 0x1;
     }
 
     pub struct PadFlag: i32 {
