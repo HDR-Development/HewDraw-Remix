@@ -133,7 +133,7 @@ unsafe fn waveland_plat_drop(boma: &mut BattleObjectModuleAccessor, cat2: i32, s
     if boma.is_status(*FIGHTER_STATUS_KIND_LANDING)
     && VarModule::is_flag(boma.object(), vars::common::ENABLE_WAVELAND_PLATDROP)
     && GroundModule::is_passable_ground(boma)
-    && boma.prev_stick_y() > 0.0 && boma.stick_y() < pass_thresh
+    && boma.prev_stick_y() > -0.3 && boma.stick_y() < pass_thresh
     && boma.is_prev_status_one_of(&[
         *FIGHTER_STATUS_KIND_ESCAPE_AIR,
         *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE
