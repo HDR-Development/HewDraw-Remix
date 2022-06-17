@@ -129,11 +129,11 @@ unsafe fn non_tumble_di(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agen
 
 // plat drop if you input down during a waveland (airdodge landing lag)
 unsafe fn waveland_plat_drop(boma: &mut BattleObjectModuleAccessor, cat2: i32, status_kind: i32) {
-    let flick_y_sens = ParamModule::get_float(boma.object(), ParamType::Common, "general_flick_y_sens");
+    let pass_thresh = ParamModule::get_float(boma.object(), ParamType::Common, "waveland_pass_neutral_sens");
     if boma.is_status(*FIGHTER_STATUS_KIND_LANDING)
     && VarModule::is_flag(boma.object(), vars::common::ENABLE_WAVELAND_PLATDROP)
     && GroundModule::is_passable_ground(boma)
-    && boma.is_flick_y(flick_y_sens)
+    && boma.prev_stick_y() > -0.3 && boma.stick_y() < pass_thresh
     && boma.is_prev_status_one_of(&[
         *FIGHTER_STATUS_KIND_ESCAPE_AIR,
         *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE
@@ -143,12 +143,8 @@ unsafe fn waveland_plat_drop(boma: &mut BattleObjectModuleAccessor, cat2: i32, s
         return;
     }
 
-    if boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_ESCAPE_AIR,
-        *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE,
-        *FIGHTER_STATUS_KIND_LANDING
-    ])
-    && boma.stick_y() > ParamModule::get_float(boma.object(), ParamType::Common, "waveland_pass_neutral_sens")
+    if boma.is_status(*FIGHTER_STATUS_KIND_LANDING)
+        && boma.stick_y() > pass_thresh
     {
         VarModule::on_flag(boma.object(), vars::common::ENABLE_WAVELAND_PLATDROP);
     }
