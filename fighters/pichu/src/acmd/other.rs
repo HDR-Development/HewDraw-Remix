@@ -79,12 +79,22 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "pichu_dengekidama", script = "game_regular" , category = ACMD_GAME , low_priority)]
+unsafe fn pichu_dengekidama_game_regular(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 75, 50, 0, 35, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4.5, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         pichu_catch_game,
         dash_game,
         //dash_effect,
         turn_dash_game,
+        pichu_dengekidama_game_regular,
     );
 }
 
