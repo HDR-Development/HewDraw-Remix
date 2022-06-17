@@ -61,9 +61,9 @@ unsafe fn add_footstool_to_gc(ctx: &skyline::hooks::InlineCtx) {
     if ![0x3, 0x4, 0x5, 0x8].contains(&button) {
         let input_list_vector = &mut *((*ctx.registers[24].x.as_ref() + 0x148) as *mut CppVector<u8>);
 
-
-        if input_list_vector.len() < 6 {
-            input_list_vector.push(0x12);
+        if input_list_vector.len() < 7 {
+            input_list_vector.push(utils::ext::InputKind::JumpMini as u8);
+            input_list_vector.push(utils::ext::InputKind::SmashAttack as u8);
         }
     }
 }
@@ -76,9 +76,9 @@ unsafe fn add_footstool_to_fk(ctx: &skyline::hooks::InlineCtx) {
     }
     let input_list_vector = &mut *((*ctx.registers[24].x.as_ref() + 0x148) as *mut CppVector<u8>);
 
-
-    if input_list_vector.len() < 6 {
-        input_list_vector.push(0x12);
+    if input_list_vector.len() < 7 {
+        input_list_vector.push(utils::ext::InputKind::JumpMini as u8);
+        input_list_vector.push(utils::ext::InputKind::SmashAttack as u8);
     }
 }
 
@@ -86,8 +86,9 @@ unsafe fn add_footstool_to_fk(ctx: &skyline::hooks::InlineCtx) {
 unsafe fn add_footstool_to_jc(ctx: &skyline::hooks::InlineCtx) {
     let input_list_vector = &mut *((*ctx.registers[24].x.as_ref() + 0x148) as *mut CppVector<u8>);
     
-    if input_list_vector.len() < 6 {
-        input_list_vector.push(0x12);
+    if input_list_vector.len() < 7 {
+        input_list_vector.push(utils::ext::InputKind::JumpMini as u8);
+        input_list_vector.push(utils::ext::InputKind::SmashAttack as u8);
     }
 }
 

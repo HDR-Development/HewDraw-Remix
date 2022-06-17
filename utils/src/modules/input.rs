@@ -38,6 +38,8 @@ macro_rules! require_input_module {
 }
 
 struct HdrCat {
+    /// Represents the number of remaining buffered frames that each input will be considered active.
+    /// A value of zero for any entry means that input is not considered to be in the buffer.
     pub valid_frames: [u8; 32]
 }
 
@@ -381,11 +383,13 @@ fn get_command_flag_cat_replace(control_module: u64, cat: i32) -> u32 {
             return 0;
         }
 
-        let bm = require_input_module!(battle_object);
+        let im = require_input_module!(battle_object);
 
         let mut output = 0;
+        // this iterates across all 32 bits of the output bitmask, where valid_frames represents how many frames
+        // left any given custom input may have left in its internal buffer state.
         for x in 0..32 {
-            if bm.hdr_cat.valid_frames[x] != 0 {
+            if im.hdr_cat.valid_frames[x] != 0 {
                 output |= 1 << x;
             }
         }

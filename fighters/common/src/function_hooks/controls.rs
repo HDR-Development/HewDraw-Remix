@@ -89,6 +89,18 @@ unsafe fn map_controls_hook(
                 (x, gc_x, JumpMini, Buttons::ShFootstool)
                 (y, gc_y, JumpMini, Buttons::ShFootstool)
         );
+        apply_button_mappings!(
+            controller,
+            mappings,
+                (l, gc_l, SmashAttack, Buttons::AttackAll)
+                (r, gc_r, SmashAttack, Buttons::AttackAll)
+                (zl, gc_z, SmashAttack, Buttons::AttackAll)
+                (zr, gc_z, SmashAttack, Buttons::AttackAll)
+                (a, gc_a, SmashAttack, Buttons::AttackAll)
+                (b, gc_b, SmashAttack, Buttons::AttackAll)
+                (x, gc_x, SmashAttack, Buttons::AttackAll)
+                (y, gc_y, SmashAttack, Buttons::AttackAll)
+        );
     } else if controller.style == ControllerStyle::LeftJoycon || controller.style == ControllerStyle::RightJoycon {
         apply_button_mappings!(
             controller,
@@ -102,6 +114,18 @@ unsafe fn map_controls_hook(
                 (right_sl, joy_sl, JumpMini, Buttons::ShFootstool)
                 (right_sr, joy_sr, JumpMini, Buttons::ShFootstool)
         );
+        apply_button_mappings!(
+            controller,
+            mappings,
+                (l, joy_shoulder, SmashAttack, Buttons::AttackAll)
+                (r, joy_shoulder, SmashAttack, Buttons::AttackAll)
+                (zl, joy_zshoulder, SmashAttack, Buttons::AttackAll)
+                (zr, joy_zshoulder, SmashAttack, Buttons::AttackAll)
+                (left_sl, joy_sl, SmashAttack, Buttons::AttackAll)
+                (left_sr, joy_sr, SmashAttack, Buttons::AttackAll)
+                (right_sl, joy_sl, SmashAttack, Buttons::AttackAll)
+                (right_sr, joy_sr, SmashAttack, Buttons::AttackAll)
+        );
 
         if controller.style == ControllerStyle::LeftJoycon {
             apply_button_mappings!(
@@ -112,6 +136,14 @@ unsafe fn map_controls_hook(
                     (dpad_up, joy_left, JumpMini, Buttons::ShFootstool)
                     (dpad_down, joy_right, JumpMini, Buttons::ShFootstool)
             );
+            apply_button_mappings!(
+                controller,
+                mappings,
+                    (dpad_left, joy_down, SmashAttack, Buttons::AttackAll)
+                    (dpad_right, joy_up, SmashAttack, Buttons::AttackAll)
+                    (dpad_up, joy_left, SmashAttack, Buttons::AttackAll)
+                    (dpad_down, joy_right, SmashAttack, Buttons::AttackAll)
+            );
         } else {
             apply_button_mappings!(
                 controller,
@@ -120,6 +152,14 @@ unsafe fn map_controls_hook(
                     (y, joy_up, JumpMini, Buttons::ShFootstool)
                     (b, joy_left, JumpMini, Buttons::ShFootstool)
                     (x, joy_right, JumpMini, Buttons::ShFootstool)
+            );
+            apply_button_mappings!(
+                controller,
+                mappings,
+                    (a, joy_down, SmashAttack, Buttons::AttackAll)
+                    (y, joy_up, SmashAttack, Buttons::AttackAll)
+                    (b, joy_left, SmashAttack, Buttons::AttackAll)
+                    (x, joy_right, SmashAttack, Buttons::AttackAll)
             );
         }
     } else {
@@ -134,6 +174,18 @@ unsafe fn map_controls_hook(
                 (b, pro_b, JumpMini, Buttons::ShFootstool)
                 (x, pro_x, JumpMini, Buttons::ShFootstool)
                 (y, pro_y, JumpMini, Buttons::ShFootstool)
+        );
+        apply_button_mappings!(
+            controller,
+            mappings,
+                (l, pro_l, SmashAttack, Buttons::AttackAll)
+                (r, pro_r, SmashAttack, Buttons::AttackAll)
+                (zl, pro_zl, SmashAttack, Buttons::AttackAll)
+                (zr, pro_zr, SmashAttack, Buttons::AttackAll)
+                (a, pro_a, SmashAttack, Buttons::AttackAll)
+                (b, pro_b, SmashAttack, Buttons::AttackAll)
+                (x, pro_x, SmashAttack, Buttons::AttackAll)
+                (y, pro_y, SmashAttack, Buttons::AttackAll)
         );
     }
 
