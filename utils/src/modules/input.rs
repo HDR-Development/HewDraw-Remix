@@ -1,5 +1,5 @@
 use smash::app::{BattleObject, lua_bind::ControlModule, BattleObjectModuleAccessor};
-use utils_dyn::ext::{Buttons, CatHdr};
+use utils_dyn::ext::*;
 
 use crate::offsets;
 use crate::util::get_battle_object_from_id;
@@ -426,18 +426,18 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
         )
     };
 
-    let shfootstool_offset = CatHdr::Shorthop.bits().trailing_zeros() as usize;
-    if triggered_buttons.intersects(Buttons::ShFootstool) {
-        if input_module.hdr_cat.valid_frames[shfootstool_offset] == 0 {
-            input_module.hdr_cat.valid_frames[shfootstool_offset] = unsafe {
+    let tilt_attack_offset = CatHdr::TiltAttack.bits().trailing_zeros() as usize;
+    if triggered_buttons.intersects(Buttons::TiltAttack) {
+        if input_module.hdr_cat.valid_frames[tilt_attack_offset] == 0 {
+            input_module.hdr_cat.valid_frames[tilt_attack_offset] = unsafe {
                 ControlModule::get_command_life_count_max((*input_module.owner).module_accessor) as u8
             };
         }
     }
 
-    if input_module.hdr_cat.valid_frames[shfootstool_offset] != 0
-    && !(input_module.hdr_cat.valid_frames[shfootstool_offset] == 1 && buttons.intersects(Buttons::ShFootstool)) {
-        input_module.hdr_cat.valid_frames[shfootstool_offset] -= 1;
+    if input_module.hdr_cat.valid_frames[tilt_attack_offset] != 0
+    && !(input_module.hdr_cat.valid_frames[tilt_attack_offset] == 1 && buttons.intersects(Buttons::TiltAttack)) {
+        input_module.hdr_cat.valid_frames[tilt_attack_offset] -= 1;
     }
 
     call_original();
@@ -457,6 +457,14 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
     let boma = unsafe {
         *(control_module as *mut *mut BattleObjectModuleAccessor).add(1)
     };
+
+    if triggered_buttons.intersects(Buttons::TiltAttack) {
+        unsafe {
+            (*input_module.owner).clear_commands(Cat1::AttackS4);
+            (*input_module.owner).clear_commands(Cat1::AttackHi4);
+            (*input_module.owner).clear_commands(Cat1::AttackLw4);
+        }
+    }
 
     InputModule::exec(input_module.owner, &mut lifetimes);
 }

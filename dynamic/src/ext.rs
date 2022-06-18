@@ -237,7 +237,7 @@ bitflags! {
     }
 
     pub struct CatHdr: i32 {
-        const Shorthop = 0x1;
+        const TiltAttack = 0x1;
     }
 
     pub struct PadFlag: i32 {
@@ -270,7 +270,7 @@ bitflags! {
         const FlickJump   = 0x8000;
         const GuardHold   = 0x10000;
         const SpecialRaw2 = 0x20000;
-        const ShFootstool = 0x40000;
+        const TiltAttack  = 0x40000;
 
         const SpecialAll  = 0x20802;
         const AttackAll   = 0x201;
@@ -871,6 +871,7 @@ pub enum InputKind {
     AppealLw = 0xC,
     Unset = 0xD,
     JumpMini = 0x12, // this is ours :), also start at 0x12 to avoid masking errors
+    TiltAttack = 0x13, // also custom, this one is for tilts!
 }
 
 /// 0x50 Byte struct containing the information for controller mappings

@@ -114,6 +114,18 @@ unsafe fn map_controls_hook(
                 (x, gc_x,   AppealHi, Buttons::AppealHi)
                 (y, gc_y,   AppealHi, Buttons::AppealHi)
         );
+        (*out).buttons |= apply_button_mappings!(
+            controller,
+            mappings,
+                (l, gc_l,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (r, gc_r,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (zl, gc_z,  TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (zr, gc_z,  TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (a, gc_a,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (b, gc_b,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (x, gc_x,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (y, gc_y,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+        );
     } else if controller.style == ControllerStyle::LeftJoycon || controller.style == ControllerStyle::RightJoycon {
         (*out).buttons |= apply_button_mappings!(
             controller,
@@ -139,7 +151,6 @@ unsafe fn map_controls_hook(
                 (right_sl, joy_sl,  SmashAttack, Buttons::AttackAll)
                 (right_sr, joy_sr,  SmashAttack, Buttons::AttackAll)
         );
-
         (*out).buttons |= apply_button_mappings!(
             controller,
             mappings,
@@ -151,6 +162,18 @@ unsafe fn map_controls_hook(
                 (left_sr, joy_sr,   AppealHi, Buttons::AppealHi)
                 (right_sl, joy_sl,  AppealHi, Buttons::AppealHi)
                 (right_sr, joy_sr,  AppealHi, Buttons::AppealHi)
+        );
+        (*out).buttons |= apply_button_mappings!(
+            controller,
+            mappings,
+                (l, joy_shoulder,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (r, joy_shoulder,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (zl, joy_zshoulder, TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (zr, joy_zshoulder, TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (left_sl, joy_sl,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (left_sr, joy_sr,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (right_sl, joy_sl,  TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (right_sr, joy_sr,  TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
         );
 
         if controller.style == ControllerStyle::LeftJoycon {
@@ -178,6 +201,14 @@ unsafe fn map_controls_hook(
                     (dpad_up, joy_left,     AppealHi, Buttons::AppealHi)
                     (dpad_down, joy_right,  AppealHi, Buttons::AppealHi)
             );
+            (*out).buttons |= apply_button_mappings!(
+                controller,
+                mappings,
+                    (dpad_left, joy_down,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                    (dpad_right, joy_up,    TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                    (dpad_up, joy_left,     TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                    (dpad_down, joy_right,  TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+            );
         } else {
             (*out).buttons |= apply_button_mappings!(
                 controller,
@@ -202,6 +233,14 @@ unsafe fn map_controls_hook(
                     (y, joy_up,     AppealHi, Buttons::AppealHi)
                     (b, joy_left,   AppealHi, Buttons::AppealHi)
                     (x, joy_right,  AppealHi, Buttons::AppealHi)
+            );
+            (*out).buttons |= apply_button_mappings!(
+                controller,
+                mappings,
+                    (a, joy_down,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                    (y, joy_up,     TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                    (b, joy_left,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                    (x, joy_right,  TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
             );
         }
     } else {
@@ -240,6 +279,18 @@ unsafe fn map_controls_hook(
                 (b, pro_b,      AppealHi, Buttons::AppealHi)
                 (x, pro_x,      AppealHi, Buttons::AppealHi)
                 (y, pro_y,      AppealHi, Buttons::AppealHi)
+        );
+        (*out).buttons |= apply_button_mappings!(
+            controller,
+            mappings,
+                (l, pro_l,      TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (r, pro_r,      TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (zl, pro_zl,    TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (zr, pro_zr,    TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (a, pro_a,      TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (b, pro_b,      TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (x, pro_x,      TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
+                (y, pro_y,      TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
         );
     }
 
