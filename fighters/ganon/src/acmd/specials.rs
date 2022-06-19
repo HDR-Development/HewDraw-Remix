@@ -55,8 +55,8 @@ unsafe fn ganon_float_start_snd(fighter: &mut L2CAgentBase) {
 unsafe fn ganon_float_air_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    macros::FT_MOTION_RATE(fighter, 0.1);
-    frame(lua_state, 10.0);
+    macros::FT_MOTION_RATE(fighter, 1.0 / 13.0);
+    frame(lua_state, 13.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 16.0);
     if is_excute(fighter) {
