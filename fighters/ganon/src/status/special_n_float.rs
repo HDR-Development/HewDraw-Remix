@@ -31,16 +31,14 @@ unsafe extern "C" fn special_n_float_pre(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 unsafe extern "C" fn special_n_float_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let cancel = VarModule::is_flag(fighter.battle_object, vars::ganon::status::FLOAT_CANCEL);
     let frame =
-    if VarModule::is_flag(fighter.battle_object, vars::ganon::status::FLOAT_CANCEL) {
+    if cancel {
         59.0
     }
     else {
         0.0
     };
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("float"),
@@ -51,18 +49,23 @@ unsafe extern "C" fn special_n_float_main(fighter: &mut L2CFighterCommon) -> L2C
         false,
         false
     );
-    sv_kinetic_energy!(
-        set_accel,
-        fighter,
-        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-        -0.015 // hardcoded value for now
-    );
-    sv_kinetic_energy!(
-        set_stable_speed,
-        fighter,
-        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-        -0.05 // hardcoded value for now
-    );
+    if !cancel {
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+        sv_kinetic_energy!(
+            set_accel,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            -0.015 // hardcoded value for now
+        );
+        sv_kinetic_energy!(
+            set_stable_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            -0.05 // hardcoded value for now
+        );
+    }
     fighter.main_shift(special_n_float_main_loop)
 }
 
