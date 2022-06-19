@@ -55,10 +55,10 @@ unsafe fn ganon_float_start_snd(fighter: &mut L2CAgentBase) {
 unsafe fn ganon_float_air_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    macros::FT_MOTION_RATE(fighter, 1.0 / 13.0);
-    frame(lua_state, 13.0);
+    macros::FT_MOTION_RATE(fighter, 1.0 / 10.0);
+    frame(lua_state, 9.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
-    frame(lua_state, 16.0);
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
@@ -106,6 +106,9 @@ unsafe fn ganon_float_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ganon", script = "effect_float", category = ACMD_EFFECT , low_priority)]
 unsafe fn ganon_float_eff(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("ganon_final_hand_triforce"), Hash40::new("haver"), -1.1, -0.3, -0.2, 0, 0, 0, 1, true);
+    }
     for _ in 0..5 {
         if is_excute(fighter) {
             EFFECT_FOLLOW(fighter, Hash40::new("ganon_entry_aura"), Hash40::new("emit"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -113,6 +116,7 @@ unsafe fn ganon_float_eff(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 60.0);
     if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("ganon_final_hand_triforce"), false, false);
         EFFECT_OFF_KIND(fighter, Hash40::new("ganon_entry_aura"), false, false);
     }
 }
