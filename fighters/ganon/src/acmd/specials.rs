@@ -20,13 +20,16 @@ unsafe fn ganon_float_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS);
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
 
 #[acmd_script( agent = "ganon", script = "effect_floatstart", category = ACMD_EFFECT , low_priority)]
 unsafe fn ganon_float_start_eff(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("ganon_final_hand_triforce"), Hash40::new("haver"), -1.1, -0.3, -0.2, 0, 0, 0, 1, true);
+    }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_action_smoke_v"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.8, 0, 0, 0, 0, 0, 0, true);
@@ -52,16 +55,22 @@ unsafe fn ganon_float_start_snd(fighter: &mut L2CAgentBase) {
 unsafe fn ganon_float_air_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 22.0);
+    macros::FT_MOTION_RATE(fighter, 0.1);
+    frame(lua_state, 10.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    frame(lua_state, 16.0);
     if is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS);
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
 
 #[acmd_script( agent = "ganon", script = "effect_floatairstart", category = ACMD_EFFECT , low_priority)]
 unsafe fn ganon_float_air_start_eff(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("ganon_final_hand_triforce"), Hash40::new("haver"), -1.1, -0.3, -0.2, 0, 0, 0, 1, true);
+    }
     frame(lua_state, 2.0);
     for _ in 0..5 {
         if is_excute(fighter) {
@@ -184,9 +193,9 @@ unsafe fn ganon_special_air_lw_end_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        ganon_float_start_game,
-        ganon_float_air_start_game,
-        ganon_float_game,
+        ganon_float_start_game, ganon_float_start_eff, ganon_float_start_snd,
+        ganon_float_air_start_game, ganon_float_air_start_eff, ganon_float_air_start_snd,
+        ganon_float_game, ganon_float_eff,
         ganon_special_lw_game,
         ganon_special_air_lw_end_game,
     );
