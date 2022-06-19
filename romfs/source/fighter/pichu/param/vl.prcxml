@@ -43,8 +43,8 @@
       <float hash="special_s_tame_">0</float>
       <float hash="special_s_power_min_">8</float>
       <float hash="special_s_power_tame_">8</float>
-      <float hash="special_s_move_spd_x_">2.2</float>
-      <float hash="special_s_tame_spd_x_">2.2</float>
+      <float hash="special_s_move_spd_x_">1.7</float>
+      <float hash="special_s_tame_spd_x_">1.7</float>
       <float hash="special_s_move_spd_y_min_">0.2</float>
       <float hash="special_s_move_spd_y_max_">0.2</float>
       <float hash="special_s_slope_start_degree">0.05</float>
