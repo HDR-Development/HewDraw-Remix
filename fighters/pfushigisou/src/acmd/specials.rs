@@ -100,12 +100,64 @@ unsafe fn pfushigisou_special_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "pfushigisou", script = "game_solar_beam", category = ACMD_GAME, low_priority)]
+unsafe fn solar_beam_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        MotionModule::set_rate(fighter.boma(), 6.0);
+    }
+    
+    frame(lua_state, 65.0);
+    if is_excute(fighter) {
+        MotionModule::set_rate(fighter.boma(), 1.0);
+    }
+    frame(lua_state, 70.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 50, 87, 0, 70, 3.5, 0.0, 11.0, 14.0, Some(0.0), Some(111.0), Some(114.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BAT, *ATTACK_REGION_OBJECT);
+    }
+    wait(lua_state, 20.0);
+    if is_excute(fighter) {
+        MotionModule::set_frame_sync_anim_cmd(fighter.boma(), 230.0, true, true, false);
+        MotionModule::set_rate(fighter.boma(), 2.0);
+        AttackModule::clear_all(fighter.boma());
+    }
+}
+
+#[acmd_script( agent = "pfushigisou", script = "effect_solar_beam", category = ACMD_EFFECT, low_priority)]
+unsafe fn solar_beam_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    frame(lua_state, 70.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("finptrainer_solar_beam"), Hash40::new("top"), 0, 8.5, 11, -45, 0, 0, 1, true);
+        EffectModule::set_scale_last(fighter.boma(), &Vector3f::new(0.66, 1.0, 0.66));
+        LAST_EFFECT_SET_RATE(fighter, 10);
+    }
+    wait(lua_state, 15.0);
+    if is_excute(fighter) {
+        LAST_EFFECT_SET_RATE(fighter, 0.5);
+    }
+}
+
+#[acmd_script( agent = "pfushigisou", script = "sound_solar_beam", category = ACMD_SOUND, low_priority)]
+unsafe fn solar_beam_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    frame(lua_state, 70.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_step_electrop"));
+    }
+    
+}
+
 pub fn install() {
     install_acmd_scripts!(
         pfushigisou_special_s_game,
         pfushigisou_special_air_s_game,
         pfushigisou_special_hi_game,
         pfushigisou_special_air_hi_game,
+        solar_beam_effect,
+        solar_beam_game,
+        solar_beam_sound
     );
 }
 

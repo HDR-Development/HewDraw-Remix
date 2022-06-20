@@ -16,6 +16,11 @@ pub mod controls;
 pub mod jumps;
 pub mod stage_hazards;
 
+/// pokemon trainer switch on death (in common package so that you can runtime reload pokemon)
+#[skyline::hook(offset = 0xf96310)]
+unsafe fn ptrainer_death_switch_stub() {}
+
+
 pub fn install() {
     effect::install();
     edge_slipoffs::install();
@@ -40,5 +45,8 @@ pub fn install() {
         skyline::patching::patch_data(utils::offsets::kill_zoom_throw(), &NOP);
         // Changes full hops to calculate vertical velocity identically to short hops
         skyline::patching::patch_data(0x6d2188, &0x52800015u32);
+        skyline::install_hooks!(
+            ptrainer_death_switch_stub,
+        );
     }
 }
