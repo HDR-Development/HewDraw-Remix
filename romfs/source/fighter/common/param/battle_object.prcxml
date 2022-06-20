@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
-  <float hash="damage_frame_mul">0.45</float>
+  <float hash="damage_frame_mul">0.42</float>
   <float hash="damage_level1">16.875</float>
   <float hash="damage_level2">23.625</float>
   <float hash="damage_level3">40.5</float>
