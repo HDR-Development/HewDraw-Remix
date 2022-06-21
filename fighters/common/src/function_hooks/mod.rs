@@ -1,4 +1,5 @@
 use super::*;
+pub mod energy;
 pub mod effect;
 pub mod edge_slipoffs;
 pub mod ledges;
@@ -17,6 +18,7 @@ pub mod jumps;
 pub mod stage_hazards;
 
 pub fn install() {
+    energy::install();
     effect::install();
     edge_slipoffs::install();
     ledges::install();
