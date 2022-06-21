@@ -114,7 +114,7 @@ unsafe fn solar_beam_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 70.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 50, 87, 0, 70, 3.5, 0.0, 11.0, 14.0, Some(0.0), Some(111.0), Some(114.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BAT, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 50, 87, 0, 70, 3.5, 0.0, 11.0, 14.0, Some(0.0), Some(111.0), Some(114.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_OBJECT);
     }
     wait(lua_state, 20.0);
     if is_excute(fighter) {
@@ -142,11 +142,29 @@ unsafe fn solar_beam_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pfushigisou", script = "sound_solar_beam", category = ACMD_SOUND, low_priority)]
 unsafe fn solar_beam_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
+    let mut handle = 0;
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_pfushigisou_appeal03_02"));
+        
+    }
     frame(lua_state, 70.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_common_step_electrop"));
+        PLAY_SE(fighter, Hash40::new("vc_pfushigisou_special_n01"));
+        handle = SoundModule::play_status_se(fighter.boma(), Hash40::new("se_pfushigisou_final_lp"), false, false, false);
     }
     
+    for x in 0..5 {
+        if is_excute(fighter) {
+            if handle != 0 {
+                SoundModule::set_se_vol(fighter.boma(), handle as i32, (1.0 - (0.17 * (x as f32))), 0);
+            }
+        }
+        wait(lua_state, 10.0);
+    }
+    if is_excute(fighter) {
+        STOP_SE(fighter, Hash40::new("se_pfushigisou_final_lp"));
+    }
 }
 
 pub fn install() {

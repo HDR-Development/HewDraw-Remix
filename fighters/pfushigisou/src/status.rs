@@ -69,6 +69,17 @@ unsafe extern "C" fn solar_beam_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 
     GroundModule::attach_ground(fighter.boma(), true);
 */
+
+    // allow b reverse
+    if fighter.motion_frame() < 5.0
+      && fighter.is_stick_backward()
+      && !VarModule::is_flag(fighter.battle_object, vars::common::B_REVERSED) {
+        PostureModule::reverse_lr(fighter.module_accessor);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+        KineticModule::mul_speed(fighter.module_accessor, &Vector3f::new(-1.0, 1.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        VarModule::on_flag(fighter.battle_object, vars::common::B_REVERSED);
+    }
+
     if MotionModule::is_end(fighter.module_accessor) {
         // if the animation is over, transition to fall or wait
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
