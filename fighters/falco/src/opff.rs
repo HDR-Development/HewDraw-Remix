@@ -35,10 +35,10 @@ unsafe fn shine_jc_turnaround(boma: &mut BattleObjectModuleAccessor, status_kind
         let fighter_gravity = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut FighterKineticEnergyGravity;
         if situation_kind == *SITUATION_KIND_AIR {
             if frame <= 1.0{
-                KineticModule::mul_speed(boma, &Vector3f::new(0.5, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                KineticModule::mul_speed(boma, &Vector3f::new(0.0, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             }
             if frame > 1.0 && frame <= 3.0 {
-                KineticModule::mul_speed(boma, &Vector3f::new(0.5, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                KineticModule::mul_speed(boma, &Vector3f::new(0.0, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             }
             if frame > 3.0 {
                 smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.02666667);
