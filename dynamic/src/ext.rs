@@ -793,6 +793,7 @@ impl BomaExt for BattleObjectModuleAccessor {
     unsafe fn shift_ecb_on_landing(&mut self) {
         if self.is_situation(*SITUATION_KIND_GROUND) {
             if !self.is_prev_situation(*SITUATION_KIND_GROUND) {
+                // shift ECB back to normal offset
                 let mut fighter_pos = Vector3f {
                     x: PostureModule::pos_x(self),
                     y: PostureModule::pos_y(self),

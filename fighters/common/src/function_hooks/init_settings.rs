@@ -37,6 +37,11 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
 
     if boma.is_fighter() {
         
+        // Handles "fake" ECB shift on landing
+        // Because our aerial ECB shift code currently runs in opff, it runs a frame "late"
+        // which causes characters to appear stuck halfway into the ground on the first frame they land
+        // so we need to re-shift your character back up to the proper height on that single frame
+        // this is a "fake" ECB shift for 1 frame
         if !(&[
             *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
             *FIGHTER_STATUS_KIND_CAPTURE_WAIT,

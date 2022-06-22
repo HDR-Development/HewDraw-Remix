@@ -40,6 +40,8 @@ unsafe fn change_motion_kind_hook(boma: &mut BattleObjectModuleAccessor, motion_
 }
 
 unsafe fn change_motion_ecb_shift_check(boma: &mut BattleObjectModuleAccessor) {
+    // Same routine/justification as fake ECB shift in init_settings hook
+    // Only difference is that our status hasn't changed during a change_motion call
     if !boma.is_prev_status_one_of(&[
         *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
         *FIGHTER_STATUS_KIND_CAPTURE_WAIT,

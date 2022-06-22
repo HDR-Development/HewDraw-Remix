@@ -136,7 +136,11 @@ unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_TURN);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_LANDING_CLIFF_STOP);
 
-            if !VarModule::is_flag(fighter.battle_object, vars::common::PERFECT_WAVEDASH) && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND && fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) > ParamModule::get_int(fighter.object(), ParamType::Common, "ecb_shift_air_trans_frame") {
+            if !VarModule::is_flag(fighter.battle_object, vars::common::PERFECT_WAVEDASH)  // ECB never shifts during perfect waveland, no need to readjust on landing
+            && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND  // ECB must be touching ground to warrant readjustment
+            && fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) > ParamModule::get_int(fighter.object(), ParamType::Common, "ecb_shift_air_trans_frame")  // ECB doesn't shift during first 10 airborne frames, no need to readjust on landing
+            && StatusModule::prev_status_kind(fighter.module_accessor, 1) != *FIGHTER_STATUS_KIND_DAMAGE_FALL {  // ECB doesn't shift during tumble, no need to readjust on landing
+                // shift character back up to proper landing height (does same thing as ecb_shift_on_landing() boma ext)
                 let mut fighter_pos = Vector3f {
                     x: PostureModule::pos_x(fighter.module_accessor),
                     y: PostureModule::pos_y(fighter.module_accessor),
