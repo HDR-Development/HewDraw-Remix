@@ -22,55 +22,16 @@ pub fn install() {
 #[common_status_script(status = FIGHTER_STATUS_KIND_ESCAPE_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE,
     symbol = "_ZN7lua2cpp16L2CFighterCommon20status_pre_EscapeAirEv")]
 unsafe fn status_pre_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let id = VarModule::get_int(fighter.battle_object, vars::common::COSTUME_SLOT_NUMBER) as usize;
-    let stick = app::sv_math::vec2_length(fighter.global_table[STICK_X].get_f32(), fighter.global_table[STICK_Y].get_f32());
-    let stick_x = fighter.global_table[STICK_X].get_f32();
-    let passive_fb_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("passive_fb_cont_value"));
-
-    if !VarModule::is_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_MAGNET) && stick >= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_stick")) && fighter.global_table[STICK_Y].get_f32() < 0.0 {
-        VarModule::on_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_MAGNET);
-    }
-
-    if VarModule::is_flag(fighter.battle_object, vars::common::PERFECT_WAVEDASH) {
-        GroundModule::attach_ground(fighter.module_accessor, false);
-        fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
-        VarModule::off_flag(fighter.battle_object, vars::common::PERFECT_WAVEDASH);
-        return 0.into();
-    }
-    if fighter.handle_waveland(true, false) {
-        if (fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DAMAGE_FALL || fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DAMAGE_FLY) {
-            if app::FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32)
-            && passive_fb_value <= stick_x.abs() {
-                VarModule::off_flag(fighter.battle_object, vars::common::ENABLE_WAVELAND_PLATDROP);
-                VarModule::off_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND);
-                fighter.change_status(
-                    L2CValue::I32(*FIGHTER_STATUS_KIND_PASSIVE_FB),
-                    L2CValue::Bool(true)
-                );
-                return 0.into();
-            }
-            if app::FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
-                VarModule::off_flag(fighter.battle_object, vars::common::ENABLE_WAVELAND_PLATDROP);
-                VarModule::off_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND);
-                fighter.change_status(
-                    L2CValue::I32(*FIGHTER_STATUS_KIND_PASSIVE),
-                    L2CValue::Bool(false)
-                );
-                return 0.into();
-            }
-        }
-        VarModule::off_flag(fighter.battle_object, vars::common::ENABLE_WAVELAND_PLATDROP);
-        VarModule::off_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND);
+    // handles instant wavedashes/wavelands
+    // we make sure to include this before change_motion so we check for proximity to the ground using our jumpsquat animation's ECB, rather than airdodge anim's ECB
+    // a character's ECB x position can shift on the first frame of their airdodge anim, which sometimes makes them unable to wavedash on an edge even if standing on solid ground the previous frame
+    if VarModule::is_flag(fighter.battle_object, vars::common::PERFECT_WAVEDASH) || fighter.handle_waveland(false, false) {
+        VarModule::on_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND);
+        GroundModule::attach_ground(fighter.module_accessor, true);
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
         return 0.into();
     }
 
-    // let ground_correct = if VarModule::is_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_MAGNET) {
-    //     *GROUND_CORRECT_KIND_GROUND as u32
-    // } else {
-    //     *GROUND_CORRECT_KIND_AIR as u32
-    // };
-    // println!("{:X}", ground_correct);
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_AIR),
@@ -101,20 +62,25 @@ unsafe fn status_pre_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[common_status_script(status = FIGHTER_STATUS_KIND_ESCAPE_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
     symbol = "_ZN7lua2cpp16L2CFighterCommon16status_EscapeAirEv")]
 unsafe fn status_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.sub_escape_air_common();
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("escape_air_slide"), 0.0, 1.0, false, 0.0, false, false);
-    } else {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("escape_air"), 0.0, 1.0, false, 0.0, false, false);
+    ControlModule::reset_trigger(fighter.module_accessor);
+    if !VarModule::is_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND) {
+        fighter.sub_escape_air_common();
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("escape_air_slide"), 0.0, 1.0, false, 0.0, false, false);
+            VarModule::on_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_MAGNET);
+        } else {
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("escape_air"), 0.0, 1.0, false, 0.0, false, false);
+            VarModule::off_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_MAGNET);
+        }
+        let mut motion_rate = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_FLOAT_MOTION_RATE_PENALTY);
+        let start_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_ADD_XLU_START_FRAME);
+        if 0 < start_frame {
+            let intan_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_XLU_FRAME);
+            let add_xlu_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_ADD_XLU_START_FRAME);
+            motion_rate = 1.0 / ((intan_frame as f32) / ((intan_frame - add_xlu_frame) as f32));
+        }
+        MotionModule::set_rate(fighter.module_accessor, motion_rate);
     }
-    let mut motion_rate = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_FLOAT_MOTION_RATE_PENALTY);
-    let start_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_ADD_XLU_START_FRAME);
-    if 0 < start_frame {
-        let intan_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_XLU_FRAME);
-        let add_xlu_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_ADD_XLU_START_FRAME);
-        motion_rate = 1.0 / ((intan_frame as f32) / ((intan_frame - add_xlu_frame) as f32));
-    }
-    MotionModule::set_rate(fighter.module_accessor, motion_rate);
 
     // prevents knockback speed from applying into wavelands (boosted wavelands out of hitstun)
     fighter.clear_lua_stack();
@@ -125,6 +91,10 @@ unsafe fn status_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn status_EscapeAir_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND) {
+        fighter.set_situation(L2CValue::I32(*SITUATION_KIND_GROUND));
+        return 1.into();
+    }
     if !fighter.sub_escape_air_common_main().get_bool() {
         fighter.sub_escape_check_rumble();
     }
@@ -139,8 +109,8 @@ unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
     if status_kind == FIGHTER_STATUS_KIND_FALL || status_kind == FIGHTER_STATUS_KIND_LANDING {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
 
-            let current_frame = MotionModule::frame(fighter.module_accessor);
-            let end_frame = MotionModule::end_frame(fighter.module_accessor);
+            let current_frame = fighter.global_table[CURRENT_FRAME].get_i32() as f32;
+            let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("escape_air_slide"));
             let progress = current_frame / end_frame;
             let escape_air_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("landing_frame_escape_air_slide"));
             let escape_air_end_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("landing_frame_escape_air_slide_max"));
@@ -163,11 +133,21 @@ unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
             WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
         }
         if status_kind == FIGHTER_STATUS_KIND_LANDING {
-            if !MotionModule::is_end(fighter.module_accessor) {
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_TURN);
-            }
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_TURN);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_LANDING_CLIFF_STOP);
+
+            if !VarModule::is_flag(fighter.battle_object, vars::common::PERFECT_WAVEDASH) && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND && fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) > ParamModule::get_int(fighter.object(), ParamType::Common, "ecb_shift_air_trans_frame") {
+                let mut fighter_pos = Vector3f {
+                    x: PostureModule::pos_x(fighter.module_accessor),
+                    y: PostureModule::pos_y(fighter.module_accessor),
+                    z: PostureModule::pos_z(fighter.module_accessor)
+                };
+                fighter_pos.y += VarModule::get_float(fighter.object(), vars::common::ECB_Y_OFFSETS);
+                PostureModule::set_pos(fighter.module_accessor, &fighter_pos);
+            }
         }
+        VarModule::off_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND);
+        VarModule::off_flag(fighter.battle_object, vars::common::PERFECT_WAVEDASH);
     }
     0.into()
 }
@@ -175,7 +155,6 @@ unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
 // common air dodge init code
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon21sub_escape_air_commonEv")]
 unsafe fn sub_escape_air_common(fighter: &mut L2CFighterCommon) {
-    ControlModule::reset_trigger(fighter.module_accessor);
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
     WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW);
@@ -255,7 +234,6 @@ unsafe fn sub_escape_air_waveland_check(fighter: &mut L2CFighterCommon) {
             //println!("should_waveland");
             fighter_pos.y -= dist;
             PostureModule::set_pos(fighter.module_accessor, &fighter_pos);
-            VarModule::on_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND);
         }
     }
 }
@@ -265,6 +243,7 @@ unsafe fn sub_escape_air_waveland_check(fighter: &mut L2CFighterCommon) {
 unsafe extern "C" fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
     if arg.get_bool() {
         if fighter.handle_waveland(true, true) {
+            fighter.set_situation(L2CValue::I32(*SITUATION_KIND_GROUND));
             return 1.into();
         }
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
@@ -343,11 +322,11 @@ unsafe extern "C" fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, arg: L2
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon26sub_escape_air_common_mainEv")]
 unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let id = VarModule::get_int(fighter.battle_object, vars::common::COSTUME_SLOT_NUMBER) as usize;
+    let curr_frame = fighter.global_table[CURRENT_FRAME].get_i32();
     
 
-    // RoA airdodge stalling [
-    
-    if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("escape_air_slide") {
+    // RoA airdodge stalling
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
         if StatusModule::is_changing(fighter.module_accessor) {
             let escape_air_slide_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("escape_air_slide_speed"), 0);
             
@@ -355,7 +334,7 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
             VarModule::set_float(fighter.battle_object, vars::common::ESCAPE_AIR_SLIDE_SPEED_Y, escape_air_slide_speed * WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y));
         }
         else {
-            if MotionModule::frame(fighter.module_accessor) < 29.0 {
+            if curr_frame < 29 {
                 KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_BRAKE);
                 
@@ -372,7 +351,7 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, (x_speed * 0.9), (y_speed * 0.9));
                 app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
 
-                if MotionModule::frame(fighter.module_accessor) == 28.0 {
+                if curr_frame == 28 {
                     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
                 }
 
@@ -381,15 +360,14 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
             }
         }
     }
-    if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("escape_air") {
-        if MotionModule::frame(fighter.module_accessor) >= 1.0 && MotionModule::frame(fighter.module_accessor) < 30.0 {
+    else {
+        if curr_frame >= 1 && curr_frame < 30 {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
         }
-        if MotionModule::frame(fighter.module_accessor) == 30.0 {
+        if curr_frame == 30 {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         }
     }
-    // ]
     
     /***println!("");
     fighter.clear_lua_stack();
@@ -499,7 +477,6 @@ unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterC
                 && app::FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32)
                 && passive_fb_value <= stick_x.abs()
                 && (curr_frame as f32) < trigger_frame {
-                VarModule::off_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND);
                 fighter.change_status(
                     L2CValue::I32(*FIGHTER_STATUS_KIND_PASSIVE_FB),
                     L2CValue::Bool(true)
@@ -509,7 +486,6 @@ unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterC
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE)
                 && app::FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32)
                 && (curr_frame as f32) < trigger_frame {
-                VarModule::off_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND);
                 fighter.change_status(
                     L2CValue::I32(*FIGHTER_STATUS_KIND_PASSIVE),
                     L2CValue::Bool(false)
@@ -517,7 +493,9 @@ unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterC
                 return 1.into();
             }
         }
-        VarModule::off_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND);
+        if situation_kind != *SITUATION_KIND_GROUND {
+            fighter.set_situation(L2CValue::I32(*SITUATION_KIND_GROUND));
+        }
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
         return 1.into();
     }
