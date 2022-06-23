@@ -52,6 +52,25 @@ unsafe fn kamui_attack_hi3_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "kamui", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
+unsafe fn kamui_attack_hi3_effect(fighter: &mut L2CAgentBase){
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 5.0);
+    FT_MOTION_RATE(fighter, 0.680);
+    if is_excute(fighter){
+        FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter){
+	AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_kamui_sword1"), Hash40::new("tex_kamui_sword2"), 8, Hash40::new("haver"), 0.0, 0.1, 0.0, Hash40::new("haver"), -0.0, 15.0, 0.0, true, Hash40::new("kamui_sword_flare"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2)
+}
+frame(lua_state, 18.0);
+if is_excute(fighter){
+	AFTER_IMAGE_OFF(fighter, 3)
+}
+}
+
 #[acmd_script( agent = "kamui", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn kamui_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -73,6 +92,7 @@ unsafe fn kamui_attack_lw3_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        kamui_attack_hi3_effect,
         kamui_attack_s3_s_game,
         kamui_attack_hi3_game,
         kamui_attack_lw3_game,

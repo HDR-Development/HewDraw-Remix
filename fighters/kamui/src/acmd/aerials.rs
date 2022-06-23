@@ -182,6 +182,19 @@ unsafe fn kamui_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     
 }
+#[acmd_script( agent = "kamui", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn kamui_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+    let lua_state =fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state,6.0);
+    if is_excute(fighter) {
+	    AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_kamui_sword1"), Hash40::new("tex_kamui_sword2"), 7, Hash40::new("haver"), 0.0, 0.1, 0.0, Hash40::new("haver"), -0.0, 15.0, 0.0, true, Hash40::new("kamui_sword_flare"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2);
+}
+    frame(lua_state, 10.0);
+    if is_excute(fighter){
+	    AFTER_IMAGE_OFF(fighter, 3)
+}
+}
 
 #[acmd_script( agent = "kamui", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn kamui_attack_air_lw_game(fighter: &mut L2CAgentBase) {
@@ -268,6 +281,7 @@ pub fn install() {
         kamui_attack_air_b_game,
         kamui_attack_air_b_effect,
         kamui_attack_air_hi_game,
+        kamui_attack_air_hi_effect,
         kamui_attack_air_lw_game,
         kamui_attack_air_lw_effect,
         kamui_landing_air_lw_game,
