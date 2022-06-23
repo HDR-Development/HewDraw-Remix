@@ -98,13 +98,6 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
 pub fn falco_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-        println!(
-            "Stick: [{:.2}, {:.2}], SubStick: [{:.2}, {:.2}]",
-            ControlModule::get_stick_x(fighter.module_accessor),
-            ControlModule::get_stick_y(fighter.module_accessor),
-            ControlModule::get_sub_stick_x(fighter.module_accessor),
-            ControlModule::get_sub_stick_y(fighter.module_accessor),
-        );
 		falco_frame(fighter)
     }
 }
