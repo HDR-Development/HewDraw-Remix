@@ -100,38 +100,43 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 
     // begin testing for transitions out of jump squat
-    let situation_kind = fighter.global_table[SITUATION_KIND].get_i32();
-    if fighter.global_table[FIGHTER_KIND].get_i32() != *FIGHTER_KIND_PICKEL || ![*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT].contains(&StatusModule::prev_status_kind(fighter.module_accessor, 0)) {
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH) {
-            fighter.change_status(
-                L2CValue::I32(*FIGHTER_STATUS_KIND_CATCH),
-                L2CValue::Bool(true)
-            );
-        }
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
-            fighter.change_status(
-                L2CValue::I32(*FIGHTER_STATUS_KIND_ESCAPE_AIR), // We don't want to change to ESCAPE_AIR_SLIDE in case they do a nair dodge
-                L2CValue::Bool(true)
-            );
-            return L2CValue::I32(0);
-        }
+    
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
+        fighter.change_status(
+            L2CValue::I32(*FIGHTER_STATUS_KIND_ESCAPE_AIR), // We don't want to change to ESCAPE_AIR_SLIDE in case they do a nair dodge
+            L2CValue::Bool(true)
+        );
+        return 0.into();
     }
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START) {
+        fighter.clear_commands(CatHdr::ShorthopFootstool);
         fighter.change_status(
             L2CValue::I32(*FIGHTER_STATUS_KIND_JUMP),
             L2CValue::Bool(false)
         );
-    } else if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL)
-            && situation_kind == *SITUATION_KIND_AIR {
+        return 0.into();
+    }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL)
+    && fighter.is_situation(*SITUATION_KIND_AIR)  {
         fighter.change_status(
             L2CValue::I32(*FIGHTER_STATUS_KIND_FALL),
             L2CValue::Bool(false)
         );
-    } else if !fighter.sub_transition_group_check_ground_item().get_bool() {
+        return 0.into();
+    }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH)
+    && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0 {
+        fighter.change_status(
+            L2CValue::I32(*FIGHTER_STATUS_KIND_CATCH),
+            L2CValue::Bool(true)
+        );
+        return 0.into();
+    }
+    if !fighter.sub_transition_group_check_ground_item().get_bool() {
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI)
             && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI != 0
-            && situation_kind == *SITUATION_KIND_GROUND {
+            && fighter.is_situation(*SITUATION_KIND_GROUND) {
             fighter.change_status(
                 L2CValue::I32(*FIGHTER_STATUS_KIND_SPECIAL_HI),
                 L2CValue::Bool(true)
@@ -139,13 +144,20 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
         } else if !fighter.sub_transition_specialflag_hoist().get_bool() {
             let cat2 = fighter.global_table[CMD_CAT2].get_i32();
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START)
-                && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)
-                && cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_ATTACK_DASH_ATTACK_HI4 != 0
-                && situation_kind == *SITUATION_KIND_GROUND {
-                fighter.change_status(
-                    L2CValue::I32(*FIGHTER_STATUS_KIND_ATTACK_HI4_START),
-                    L2CValue::Bool(true)
-                );
+            && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+                if fighter.global_table[0x58].get_bool() != false && {
+                    let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x58].get_ptr());
+                    callable(fighter).get_bool()
+                } {
+                    return L2CValue::I32(0);
+                }
+                if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_ATTACK_DASH_ATTACK_HI4 != 0
+                    && fighter.is_situation(*SITUATION_KIND_GROUND) {
+                    fighter.change_status(
+                        L2CValue::I32(*FIGHTER_STATUS_KIND_ATTACK_HI4_START),
+                        L2CValue::Bool(true)
+                    );
+                }
             }
         }
     }
@@ -158,7 +170,7 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     symbol = "_ZN7lua2cpp16L2CFighterCommon20status_end_JumpSquatEv" )]
 unsafe fn status_end_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     //println!("end");
-    BufferModule::disable_persist(fighter.battle_object);
+    InputModule::disable_persist(fighter.battle_object);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
     0.into()
 }
@@ -181,13 +193,13 @@ unsafe fn uniq_process_JumpSquat_exec_status(fighter: &mut L2CFighterCommon) -> 
 unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2CValue) {
     let is_button_jump = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE) == 0
                                 || fighter.global_table[FLICK_Y_DIR].get_i32() <= 0;
-    BufferModule::set_persist_lifetime(fighter.battle_object, 10);
-    BufferModule::enable_persist(fighter.battle_object);
+    InputModule::set_persist_lifetime(fighter.battle_object, 10);
+    InputModule::enable_persist(fighter.battle_object);
     if is_button_jump {
         //println!("button jump");
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FLAG_BUTTON);
         // check if we are doing double button shorthop input
-        if ControlModule::is_jump_mini_button(fighter.module_accessor) {
+        if ControlModule::is_jump_mini_button(fighter.module_accessor) || fighter.is_cat_flag(CatHdr::ShorthopFootstool) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
         }
     }
@@ -208,7 +220,9 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE,
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_STAND
     ];
     for x in potential_enables.iter() {
         WorkModule::enable_transition_term(fighter.module_accessor, *x);
@@ -230,6 +244,12 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
         for x in potential_enables.iter() {
             WorkModule::unable_transition_term(fighter.module_accessor, *x);
         }
+    }
+    
+    // if you are jumping oos, we do not want to trigger jc grab. This avoids getting grabs when buffering an aerial oos.
+
+    if fighter.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, *FIGHTER_STATUS_KIND_GUARD_OFF]) {
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH);
     }
 
     let magnet_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "air_escape_snap_frame");
@@ -267,51 +287,48 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
     let update_rate = MotionModule::update_rate(fighter.module_accessor);
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE != 0 || ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD_HOLD) {
-        VarModule::on_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+        if !(fighter.kind() == *FIGHTER_KIND_PICKEL 
+        && fighter.is_prev_status_one_of(&[*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT])) {
+            VarModule::on_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+        }
     }
-    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
-        && !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH) {
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH);
-    }
-    else {
-        let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new_raw(motion_kind)) as u32 as f32;
-        if end_frame <= (frame + update_rate) {
-            StatusModule::set_situation_kind(fighter.module_accessor, app::SituationKind(*SITUATION_KIND_AIR), false);
-            let situation_kind = fighter.global_table[SITUATION_KIND].clone();
-            fighter.global_table[PREV_SITUATION_KIND].assign(&situation_kind);
-            if VarModule::is_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_JUMPSQUAT) {
-                // check if we are doing directional airdodge
-                let stick = app::sv_math::vec2_length(fighter.global_table[STICK_X].get_f32(), fighter.global_table[STICK_Y].get_f32());
-                if stick >= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_stick"))
-                    && fighter.global_table[STICK_Y].get_f32() <= 0.0
-                {
-                    VarModule::on_flag(fighter.battle_object, vars::common::PERFECT_WAVEDASH);
-                    // change kinetic/ground properties for wavedash
-                    GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_NONE));
-                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_ESCAPE);
-                    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
-                } else {
-                    VarModule::off_flag(fighter.battle_object, vars::common::PERFECT_WAVEDASH);
-                    // change kinetic properties for rising nairdodge
-                    GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP);
-                }
+    let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new_raw(motion_kind)) as u32 as f32;
+    if end_frame <= (frame + update_rate) {
+        StatusModule::set_situation_kind(fighter.module_accessor, app::SituationKind(*SITUATION_KIND_AIR), false);
+        let situation_kind = fighter.global_table[SITUATION_KIND].clone();
+        fighter.global_table[PREV_SITUATION_KIND].assign(&situation_kind);
+        if VarModule::is_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_JUMPSQUAT) {
+            // check if we are doing directional airdodge
+            let stick = app::sv_math::vec2_length(fighter.global_table[STICK_X].get_f32(), fighter.global_table[STICK_Y].get_f32());
+            if stick >= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_stick"))
+                && fighter.global_table[STICK_Y].get_f32() <= 0.0
+            {
+                VarModule::on_flag(fighter.battle_object, vars::common::PERFECT_WAVEDASH);
+                // change kinetic/ground properties for wavedash
+                GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_NONE));
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_ESCAPE);
                 WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
             } else {
-                // change kinetic/ground properties for jump
                 VarModule::off_flag(fighter.battle_object, vars::common::PERFECT_WAVEDASH);
+                // change kinetic properties for rising nairdodge
                 GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-                WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FROM_SQUAT, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_JUMP_FROM);
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP);
-                WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START);
             }
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
+        } else {
+            // change kinetic/ground properties for jump
+            VarModule::off_flag(fighter.battle_object, vars::common::PERFECT_WAVEDASH);
+            GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+            WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FROM_SQUAT, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_JUMP_FROM);
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START);
         }
-        else {
-            //println!("js_vel: {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN));
-            VarModule::set_float(fighter.battle_object, vars::common::JUMPSQUAT_VELOCITY, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
-            VarModule::set_float(fighter.battle_object, vars::common::CURRENT_MOMENTUM, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
-            VarModule::set_float(fighter.battle_object, vars::common::CURRENT_MOMENTUM_SPECIALS, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
-        }
+    }
+    else {
+        //println!("js_vel: {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN));
+        VarModule::set_float(fighter.battle_object, vars::common::JUMPSQUAT_VELOCITY, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
+        VarModule::set_float(fighter.battle_object, vars::common::CURRENT_MOMENTUM, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
+        VarModule::set_float(fighter.battle_object, vars::common::CURRENT_MOMENTUM_SPECIALS, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
     }
 }
 

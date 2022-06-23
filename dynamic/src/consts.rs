@@ -139,6 +139,7 @@ pub mod vars {
         pub const JUMP_NEXT: i32 = 82;
         pub const IS_JAB_LOCK_ROLL: i32 = 83;
         pub const SHOULD_TRUMP_TETHER: i32 = 84;
+        pub const CAN_PERFECT_PIVOT: i32 = 85;
         
 
         // int
@@ -155,6 +156,7 @@ pub mod vars {
         pub const TURN_DASH_FRAME: i32 = 0xA;
         pub const DOWN_STAND_FB_KIND: i32 = 0xB;
         pub const CSTICK_LIFE: i32 = 0xC;
+        pub const AGT_USED_COUNTER: i32 = 0xD;
 
         // float
         pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0;
@@ -185,7 +187,9 @@ pub mod vars {
         pub const ESCAPE_AIR_SLIDE_SPEED_X: i32 = 0x17;
         pub const ESCAPE_AIR_SLIDE_SPEED_Y: i32 = 0x18;
         pub const Y_POS: i32 = 0x19;
-       
+        /// this multiplier can be set to a value between 0.1 and 3.0 to increase
+        /// a character's jump speed max for momentum transfer (for meta quick, etc)
+        pub const JUMP_SPEED_MAX_MUL: i32 = 0x1A;
     }
 
     pub mod bayonetta {
@@ -391,6 +395,14 @@ pub mod vars {
         pub const AIR_CHAIN_COMBO_NUM: i32 = 0x1003;
     }
 
+    pub mod shizue {
+        // flags
+        pub const IS_NOT_QUICK_RELEASE: i32 = 0x1000;
+
+        // floats
+        pub const STORED_BALLOON_POWER: i32 = 0x1000;
+    }
+
     pub mod ryu {
         pub use super::shotos::*;
     }
@@ -470,6 +482,26 @@ pub mod vars {
         pub const IS_CHARGE_FINISHED: i32 = 0x1000;
     }
 
+    pub mod metaknight {
+        /// i32 timer for color flashing when meta quick is ready
+        pub const META_QUICK_READY_FLASH_TIMER: i32 = 0x1000;
+        pub const META_QUICK_STATUS: i32 = 0x1001;
+
+        /// u32 effect handle, 0xFFFF_FFFF for invalid
+        pub const META_QUICK_EFFECT_HANDLE: i32 = 0x1002;
+        
+        /// u32 effect handle for the charge, 0xFFFF_FFFF for invalid
+        pub const META_QUICK_CHARGE_EFFECT_HANDLE: i32 = 0x1003;
+        
+        /// u32 effect handle, 0xFFFF_FFFF for invalid
+        pub const META_QUICK_EFFECT_HANDLE2: i32 = 0x1004;
+
+        /// flag whether we need to set metaknight speed values next frame
+        pub const COMPLETED_SET_SPEEDS: i32 = 0x1000;
+        pub const META_QUICK_NEED_SET_SPEEDS: i32 = 0x1001;
+        pub const META_QUICK_PLAY_VC: i32 = 0x1002;
+    }
+    
     pub mod miifighter {
         // floats
         pub const CHARGE_ATTACK_LEVEL: i32 = 0x1000;
@@ -491,5 +523,9 @@ pub mod vars {
 pub mod statuses {
     pub mod elight {
         pub const SPECIAL_HI_FINISH2: i32 = 0;
+    }
+
+    pub mod metaknight {
+        pub const METAQUICK_SUMMON: i32 = 0;
     }
 }

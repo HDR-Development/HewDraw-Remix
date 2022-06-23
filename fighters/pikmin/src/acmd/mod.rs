@@ -29,7 +29,7 @@ impl From<i32> for PikminInfo {
                 //bkb: 1,
                 shield_damage: 0.1,
                 delta_angle: 0,
-                hitlag: 1.20,
+                hitlag: 1.1,
                 attr: "collision_attr_fire",
                 sound: *COLLISION_SOUND_ATTR_FIRE
             },
@@ -39,7 +39,7 @@ impl From<i32> for PikminInfo {
                 //bkb: 1,
                 shield_damage: 0.0,
                 delta_angle: 8,
-                hitlag: 1.5,
+                hitlag: 1.0,
                 attr: "collision_attr_elec",
                 sound: *COLLISION_SOUND_ATTR_ELEC
             },
@@ -69,7 +69,7 @@ impl From<i32> for PikminInfo {
                 //bkb: 1,
                 shield_damage: 0.5,
                 delta_angle: 0,
-                hitlag: 1.5,
+                hitlag: 1.2,
                 attr: "collision_attr_normal",
                 sound: *COLLISION_SOUND_ATTR_KICK
             },
