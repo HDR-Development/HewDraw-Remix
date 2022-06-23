@@ -271,6 +271,7 @@ bitflags! {
         const GuardHold   = 0x10000;
         const SpecialRaw2 = 0x20000;
         const ShFootstool = 0x40000;
+        const CStickOverride = 0x80000;
 
         const SpecialAll  = 0x20802;
         const AttackAll   = 0x201;
