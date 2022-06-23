@@ -33,7 +33,7 @@ unsafe fn pichu_attack_air_f_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        FT_ADD_DAMAGE(fighter, 2);
+        FT_ADD_DAMAGE(fighter, 2.0);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
@@ -145,7 +145,7 @@ unsafe fn pichu_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        FT_ADD_DAMAGE(fighter, 2);
+        FT_ADD_DAMAGE(fighter, 2.0);
         HIT_NODE(fighter, Hash40::new("mimir1"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("mimil1"), *HIT_STATUS_XLU);
         ATTACK(fighter, 0, 0, Hash40::new("hip"), 12.0, 361, 110, 0, 40, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_HEAD);
