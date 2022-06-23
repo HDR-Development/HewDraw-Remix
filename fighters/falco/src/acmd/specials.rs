@@ -140,7 +140,7 @@ unsafe fn falco_special_hi_game(fighter: &mut L2CAgentBase) {
         wait(lua_state, 1.0);
     }
     if is_excute(fighter) {
-        println!("RUSH DEGREE: {}", WorkModule::get_float(fighter.boma(), *FIGHTER_FALCO_FIRE_STATUS_WORK_ID_FLOAT_TO_RUSH_DEGREE));
+       ("RUSH DEGREE: {}", WorkModule::get_float(fighter.boma(), *FIGHTER_FALCO_FIRE_STATUS_WORK_ID_FLOAT_TO_RUSH_DEGREE));
         ATTACK(fighter, 0, 0, Hash40::new("hip"), 2.0, 75, 220, 0, 75, 8.0, -4.0, 3.5, -1.5, None, None, None, 1.5, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
     wait(lua_state, 1.0);
