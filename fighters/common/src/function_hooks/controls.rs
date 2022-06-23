@@ -64,7 +64,7 @@ unsafe fn map_controls_hook(
     let ret = original!()(mappings, player_idx, out, controller_struct, arg);
     let controller = &mut controller_struct.controller;
 
-    // println!("entry_count vs. current: {} vs. {}", entry_count, (*mappings.add(player_idx as usize))._34[0]);
+    //println!("entry_count vs. current: {} vs. {}", entry_count, (*mappings.add(player_idx as usize))._34[0]);
 
     if (*out).buttons.contains(Buttons::CStickOn) && (*mappings.add(player_idx as usize))._34[0] != entry_count {
         (*out).rstick_x = (controller.left_stick_x * (i8::MAX as f32)) as i8;
@@ -215,7 +215,7 @@ unsafe fn parse_inputs(this: &mut ControlModuleInternal) {
         return call_original!(this);
     }
 
-    // println!("this.controller_index: {}", this.controller_index);
+    //println!("this.controller_index: {}", this.controller_index);
     // assert!(this.controller_index <= 7);
 
     let inputs = get_mapped_controller_inputs(this.controller_index as usize);
