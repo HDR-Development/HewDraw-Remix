@@ -12,11 +12,11 @@ unsafe fn pichu_special_n_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1);
+        FT_MOTION_RATE(fighter, 1.0);
         ArticleModule::generate_article(boma, *FIGHTER_PICHU_GENERATE_ARTICLE_DENGEKIDAMA, false, -1);
     }
     if is_excute(fighter) {
-        FT_ADD_DAMAGE(fighter, 1);
+        FT_ADD_DAMAGE(fighter, 1.0);
     }
 }
 
@@ -30,7 +30,7 @@ unsafe fn pichu_special_air_n_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1);
+        FT_MOTION_RATE(fighter, 1.0);
         ArticleModule::generate_article(boma, *FIGHTER_PICHU_GENERATE_ARTICLE_DENGEKIDAMA, false, -1);
     }
     if is_excute(fighter) {
