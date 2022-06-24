@@ -33,7 +33,7 @@ unsafe fn egg_roll_jc_waveland(boma: &mut BattleObjectModuleAccessor, status_kin
 
 
 // Flutter Kick
-unsafe fn flutter_kick(boma: &mut BattleObjectModuleAccessor, id: usize, situation_kind: i32, motion_kind: u64, frame: f32) {
+/*unsafe fn flutter_kick(boma: &mut BattleObjectModuleAccessor, id: usize, situation_kind: i32, motion_kind: u64, frame: f32) {
     if motion_kind == hash40("attack_air_lw") {
         let motion_vec = Vector3f{x: 0.0, y: 1.275, z: 0.0};
         if  !VarModule::is_flag(boma.object(), vars::common::AERIAL_COMMAND_RISEN) {
@@ -68,11 +68,11 @@ unsafe fn flutter_kick(boma: &mut BattleObjectModuleAccessor, id: usize, situati
         VarModule::off_flag(boma.object(), vars::common::AERIAL_COMMAND_RISEN);
         VarModule::off_flag(boma.object(), vars::common::AERIAL_COMMAND_MOMENTUM_RESET);
     }
-}
+}*/
 
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     egg_roll_jc_waveland(boma, status_kind, situation_kind, cat[0], stick_x, facing);
-    flutter_kick(boma, id, situation_kind, motion_kind, frame);
+    //flutter_kick(boma, id, situation_kind, motion_kind, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_YOSHI )]
