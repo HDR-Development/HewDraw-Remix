@@ -117,7 +117,7 @@ unsafe fn status_DashCommon(fighter: &mut L2CFighterCommon) {
 	VarModule::set_float(fighter.battle_object, vars::common::instance::MOONWALK_SPEED, 0.0);
     VarModule::off_flag(fighter.battle_object, vars::common::instance::ENABLE_BOOST_RUN);
     VarModule::off_flag(fighter.battle_object, vars::common::status::IS_MOONWALK);
-    VarModule::off_flag(fighter.battle_object, vars::common::status::IS_SMASH_TURN);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
     VarModule::off_flag(fighter.battle_object, vars::common::status::DISABLE_BACKDASH);
 }
 
@@ -501,7 +501,13 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     && (!ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) || ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON))  // AND cstick is off, other than the first frame of its input
     && is_backdash_input {  // AND is a backdash input
         //println!("transition to backdash");
-        VarModule::on_flag(fighter.battle_object, vars::common::status::IS_SMASH_TURN);
+        if fighter.global_table[CURRENT_FRAME].get_i32() <= 2 {
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT);
+        }
+        else {
+            VarModule::off_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT);
+        }
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
         interrupt!(fighter, FIGHTER_STATUS_KIND_TURN, true);
     }
 
@@ -547,15 +553,17 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
 
     interrupt_if!(fighter.sub_ground_check_stop_wall().get_bool());
 
-    if fighter.global_table[CURRENT_FRAME].get_i32() == 0 && stick_x.abs() >= dash_stick_x {
-        // apply speed on f1 of dash (takes effect on f2 ingame)
-        let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
-        let applied_speed = (dash_speed * PostureModule::lr(fighter.module_accessor)) + (stick_x.signum() * ((run_accel_mul + (run_accel_add * stick_x.abs())))) + prev_speed;  // initial dash speed + 1f of run acceleration + previous status' last speed
-        //println!("Changing current dash speed: {}", applied_speed);
-        let applied_speed_clamped = applied_speed.clamp(-run_speed_max, run_speed_max);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed_clamped);
-        app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+    // f3 perfect pivots
+    if StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_TURN 
+    && StatusModule::prev_status_kind(fighter.module_accessor, 1) == *FIGHTER_STATUS_KIND_DASH  // if you are in a backdash
+    && fighter.global_table[CURRENT_FRAME].get_i32() == 1  // AND you are on f2 of current dash
+    && stick_x.abs() < dash_stick_x  // AND stick_x < dash stick threshold
+    && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {  // AND cstick is off
+        // trigger late perfect pivot
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_LATE_PIVOT);
+        PostureModule::reverse_lr(fighter.module_accessor);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+        interrupt!(fighter, FIGHTER_STATUS_KIND_TURN, true);
     }
 
     // moonwalk stuff
@@ -661,6 +669,9 @@ unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 	if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_RUN {
 		VarModule::off_flag(fighter.battle_object, vars::common::instance::ENABLE_BOOST_RUN);
 	}
+    if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_TURN {
+        VarModule::off_flag(fighter.battle_object, vars::common::CAN_PERFECT_PIVOT);
+    }
 	
 	VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
 
@@ -677,7 +688,7 @@ unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     symbol = "_ZN7lua2cpp16L2CFighterCommon19status_pre_TurnDashEv")]
 unsafe fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
     //println!("pre turndash");
-    VarModule::on_flag(fighter.battle_object, vars::common::status::IS_SMASH_TURN);
+    VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
     StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_TURN);
     return 1.into()
 }

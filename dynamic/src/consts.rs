@@ -140,6 +140,10 @@ pub mod vars {
             pub const SPIN_ATTACK_LAND_CANCEL: i32 = 0x003E; // Link and Mii Sword use this
             pub const SIDE_SPECIAL_CANCEL_NO_HIT: i32 = 0x004D; // Used by Kazuya and Sora
 
+            pub const IS_LATE_PIVOT: i32 = 0x004E;
+            pub const CAN_PERFECT_PIVOT: i32 = 0x004F;
+            pub const IS_SMASH_TURN: i32 = 0x0050;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -196,8 +200,7 @@ pub mod vars {
             pub const IS_HEAVY_ATTACK: i32 = 0x1000;
 
             pub const DISABLE_BACKDASH: i32 = 0x1000;
-            pub const IS_SMASH_TURN: i32 = 0x1001;
-            pub const IS_MOONWALK: i32 = 0x1002;
+            pub const IS_MOONWALK: i32 = 0x1001;
 
             pub const ATTACK_DASH_CANCEL_DISABLE: i32 = 0x1000;
 
