@@ -246,7 +246,7 @@ unsafe fn dash_energy(fighter: &mut L2CFighterCommon) {
         if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
             if stick_x.abs() >= dash_stick_x {
                 // apply initial dash energy on f2 of dash (CURRENT_FRAME counter hasn't updated yet)
-                let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::CURR_DASH_SPEED);
+                let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
                 let applied_speed = (dash_speed * PostureModule::lr(fighter.module_accessor)) + (stick_x.signum() * ((run_accel_mul + (run_accel_add * stick_x.abs())))) + prev_speed;  // initial dash speed + 1f of run acceleration + previous status' last speed
                 //println!("Changing current dash speed: {}", applied_speed);
                 let applied_speed_clamped = applied_speed.clamp(-run_speed_max, run_speed_max);
@@ -259,8 +259,8 @@ unsafe fn dash_energy(fighter: &mut L2CFighterCommon) {
             && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
                 // apply late (F3) pivot energy
                 KineticModule::clear_speed_all(fighter.module_accessor);
-                if VarModule::is_flag(fighter.battle_object, vars::common::CAN_PERFECT_PIVOT) {
-                    VarModule::off_flag(fighter.battle_object, vars::common::CAN_PERFECT_PIVOT);
+                if VarModule::is_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT) {
+                    VarModule::off_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT);
                     let dash_speed: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0);
                     let multiplier = -0.5;
                     let pivot_boost: smash::phx::Vector3f = smash::phx::Vector3f {x: dash_speed * multiplier, y: 0.0, z: 0.0};

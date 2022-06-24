@@ -60,7 +60,7 @@ unsafe extern "C" fn status_pre_turncommon(fighter: &mut L2CFighterCommon) {
     WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B);
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_TURN_ATTACK_S4_REV_PAD);
 
-    let frame = if VarModule::is_flag(fighter.battle_object, vars::common::IS_LATE_PIVOT) {
+    let frame = if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_LATE_PIVOT) {
             6.0
         }
         else {
