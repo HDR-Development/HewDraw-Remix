@@ -82,6 +82,14 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
             VarModule::off_flag(boma.object(), vars::common::ENABLE_WAVELAND_PLATDROP);
         }
 
+        // Occupy ledge on ledgegrab
+        if boma.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_CLIFF_CATCH,
+            *FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE,
+            *FIGHTER_STATUS_KIND_CLIFF_WAIT]) {
+            VarModule::set_vec3(boma.object(), vars::common::LEDGE_POS, GroundModule::hang_cliff_pos_3f(boma));
+        }
+
         // Repeated tilt scaling; UNUSED
         /*
         if [*FIGHTER_KIND_RYU, *FIGHTER_KIND_KEN, *FIGHTER_KIND_DOLLY].contains(&fighter_kind) {
