@@ -126,7 +126,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_LandingAttackAirSub,
             status_pre_landing_fall_special,
             sub_air_transition_group_check_air_attack_hook,
-            sub_transition_group_check_air_lasso,
+            // sub_transition_group_check_air_lasso,
             sub_transition_group_check_ground_jump_mini_attack,
             sub_transition_group_check_air_escape
         );
