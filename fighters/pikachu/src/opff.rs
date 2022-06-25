@@ -26,8 +26,7 @@ unsafe fn jc_qa_agility(boma: &mut BattleObjectModuleAccessor, id: usize, status
     if status_kind == *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL {
         if frame > 3.0 {
             if situation_kind == *SITUATION_KIND_GROUND {
-                if [*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP,
-                    *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END].contains(&prev_status_kind) {
+                if [*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP].contains(&prev_status_kind) {
                     if  !VarModule::is_flag(boma.object(), vars::common::DISABLE_SPECIAL_JC) {
                         if boma.is_input_jump() {
                             if facing * stick_x < 0.0 {
