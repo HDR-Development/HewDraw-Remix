@@ -67,7 +67,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: version_and_changelog
     container: 
-      image: jugeeya/cargo-skyline:2.1.0-dkp
+      image: jugeeya/cargo-skyline:3.0.0-dkp-beta
     outputs: 
       trimmed_tag: ${{ steps.trimmed_tag.outputs.tag }}
     steps:

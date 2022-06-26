@@ -74,16 +74,28 @@ unsafe fn buildwalk_crouch_disable(boma: &mut BattleObjectModuleAccessor, status
     }
 }
 
+unsafe fn build_ecb_shift(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_AERIAL,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK].contains(&status_kind) {
+        GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, 0.0));
+    }
+}
+
 // Logging for deciphering ACMD scripts
 unsafe fn logging_for_acmd(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
 
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI3 || status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-        println!("craft_weapon_kind: {}", WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_KIND));
-        println!("request_have_craft_weapon_kind: {}", WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_REQUEST_HAVE_CRAFT_WEAPON_KIND));
-        println!("craft_sword: {}", *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_SWORD);
-        println!("craft_axe: {}", *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_AXE);
-        println!("craft_pick: {}", *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_PICK);
-        println!("craft_shovel: {}", *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_SHOVEL);
+        // println!("craft_weapon_kind: {}", WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_KIND));
+        // println!("request_have_craft_weapon_kind: {}", WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_REQUEST_HAVE_CRAFT_WEAPON_KIND));
+        // println!("craft_sword: {}", *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_SWORD);
+        // println!("craft_axe: {}", *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_AXE);
+        // println!("craft_pick: {}", *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_PICK);
+        // println!("craft_shovel: {}", *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_SHOVEL);
     }
 
 }
@@ -92,6 +104,7 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     elytra_cancel(boma, id, status_kind, situation_kind, cat[0], frame);
     hitstun_tumble_glow(boma, id, status_kind);
     buildwalk_crouch_disable(boma, status_kind);
+    build_ecb_shift(boma, status_kind);
     //logging_for_acmd(boma, status_kind);
 }
 

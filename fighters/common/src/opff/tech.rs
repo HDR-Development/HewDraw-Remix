@@ -129,11 +129,11 @@ unsafe fn non_tumble_di(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agen
 
 // plat drop if you input down during a waveland (airdodge landing lag)
 unsafe fn waveland_plat_drop(boma: &mut BattleObjectModuleAccessor, cat2: i32, status_kind: i32) {
-    let flick_y_sens = ParamModule::get_float(boma.object(), ParamType::Common, "general_flick_y_sens");
+    let pass_thresh = ParamModule::get_float(boma.object(), ParamType::Common, "waveland_pass_neutral_sens");
     if boma.is_status(*FIGHTER_STATUS_KIND_LANDING)
     && VarModule::is_flag(boma.object(), vars::common::ENABLE_WAVELAND_PLATDROP)
     && GroundModule::is_passable_ground(boma)
-    && boma.is_flick_y(flick_y_sens)
+    && boma.prev_stick_y() > -0.3 && boma.stick_y() < pass_thresh
     && boma.is_prev_status_one_of(&[
         *FIGHTER_STATUS_KIND_ESCAPE_AIR,
         *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE
@@ -143,12 +143,8 @@ unsafe fn waveland_plat_drop(boma: &mut BattleObjectModuleAccessor, cat2: i32, s
         return;
     }
 
-    if boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_ESCAPE_AIR,
-        *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE,
-        *FIGHTER_STATUS_KIND_LANDING
-    ])
-    && boma.stick_y() > ParamModule::get_float(boma.object(), ParamType::Common, "waveland_pass_neutral_sens")
+    if boma.is_status(*FIGHTER_STATUS_KIND_LANDING)
+        && boma.stick_y() > pass_thresh
     {
         VarModule::on_flag(boma.object(), vars::common::ENABLE_WAVELAND_PLATDROP);
     }
@@ -270,7 +266,12 @@ unsafe fn drift_di(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
             speed_mul += ratio * speed_mul_add_max;
         }
 
-        let drift_value = boma.stick_x() * speed_mul;
+        let current_damage = DamageModule::damage(boma, 0);
+        println!("Current damage: {}", current_damage);
+        let percent_mul = (1.0 - (current_damage / 100.0) * ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.drift_reduction_mul_at_100")).max(0.0);
+        println!("percent based multiplier: {}", percent_mul);
+
+        let drift_value = boma.stick_x() * speed_mul * percent_mul;
         fighter.set_speed(Vector2f::new(speed_x + drift_value, speed_y), *FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
     }
 }
@@ -279,17 +280,6 @@ unsafe fn drift_di(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 extern "C" {
     #[link_name = "\u{1}_ZN3app14sv_information8stage_idEv"]
     pub fn stage_id() -> i32;
-}
-
-pub unsafe fn freeze_stages(boma: &mut BattleObjectModuleAccessor) {
-
-    // determine the current stage id
-    //println!("stage id: {}", stage_id());
-
-    // warioware
-    if (stage_id() == 104) {
-        smash::app::FighterUtil::set_stage_pause_for_final(true, boma);
-    }
 }
 
 pub unsafe fn hitfall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, fighter_kind: i32, cat: [i32 ; 4]) {
@@ -370,6 +360,7 @@ pub unsafe fn teeter_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
     && boma.is_status_one_of(
     &[*FIGHTER_STATUS_KIND_WAIT,
         *FIGHTER_STATUS_KIND_DASH,
+        *FIGHTER_STATUS_KIND_RUN_BRAKE,
         *FIGHTER_STATUS_KIND_APPEAL,
         *FIGHTER_STATUS_KIND_LANDING,
         *FIGHTER_STATUS_KIND_LANDING_LIGHT,
@@ -377,7 +368,6 @@ pub unsafe fn teeter_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
         *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL,
         *FIGHTER_STATUS_KIND_LANDING_DAMAGE_LIGHT]
     )
-    && GroundModule::get_correct(boma) == *GROUND_CORRECT_KIND_GROUND
     && (KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL)
     - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND)
     - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN)).abs() > 0.0) {
@@ -424,7 +414,5 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mu
     hitfall(boma, status_kind, situation_kind, fighter_kind, cat);
     respawn_taunt(boma, status_kind);
     teeter_cancel(fighter, boma);
-
-    freeze_stages(boma);
 }
     

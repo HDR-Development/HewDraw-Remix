@@ -17,10 +17,11 @@ unsafe fn dim_cape_early_attack_cancel(boma: &mut BattleObjectModuleAccessor, st
 // Meta Knight Special Fall Hit Reset
 // Set flags for each special move
 unsafe fn flag_resets(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, motion_kind: u64, frame: f32) {
-    if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
+    
+    if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
         if status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_N_SPIN {
             VarModule::on_flag(boma.object(), vars::common::NEUTRAL_SPECIAL_HIT);
-        } else if status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_RUSH {
+        } else if status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_RUSH || status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END {
             VarModule::on_flag(boma.object(), vars::common::SIDE_SPECIAL_HIT);
         } else if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_HI_LOOP].contains(&status_kind) {
             VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_HIT);
@@ -33,6 +34,7 @@ unsafe fn flag_resets(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
 // Transition to fall
 unsafe fn transition_fall(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_FALL_SPECIAL {
+        // println!("Side special hit: {}", VarModule::is_flag(boma.object(), vars::common::NEUTRAL_SPECIAL_HIT));
         let prev_status = StatusModule::prev_status_kind(boma, 0);
         if (prev_status == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_N_END && VarModule::is_flag(boma.object(), vars::common::NEUTRAL_SPECIAL_HIT))
             || (prev_status == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END && VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_HIT))
@@ -67,9 +69,17 @@ unsafe fn reset_flags(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
     }
 }
 
+/// this cancels side special early if you hit the opponent
+unsafe fn drill_rush_on_hit_cancel(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_RUSH)
+        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+        fighter.change_status_req(*FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END, false);
+    }
+}
+
 // Lengthen sword
 unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
-	let long_sword_scale = Vector3f{x: 1.0, y: 1.15, z: 1.1};
+	let long_sword_scale = Vector3f{x: 1.0, y: 1.0, z: 1.0};
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("havel"), &long_sword_scale);
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("haver"), &long_sword_scale);
 }				 
@@ -86,12 +96,15 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
 pub fn metaknight_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-		metaknight_frame(fighter)
+		metaknight_frame(fighter);
+        meta_quick::run(fighter);
+        // println!("motion: {:#x}", MotionModule::motion_kind(fighter.module_accessor));
     }
 }
 
 pub unsafe fn metaknight_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        drill_rush_on_hit_cancel(fighter);
     }
 }
