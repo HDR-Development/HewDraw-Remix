@@ -518,12 +518,6 @@ unsafe fn ryu_special_air_s_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        if  WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_FLAG_GROUND){
-            if WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND){
-                FOOT_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), -1, 0, 0, 0, 0, 0, 0.85, 0, 0, 0, 0, 0, 0, false);
-                LAST_EFFECT_SET_ALPHA(fighter, 0.5);
-            }
-        }
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("ryu_tatsumaki_smoke_r"), Hash40::new("ryu_tatsumaki_smoke_l"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 1.1, false, *EF_FLIP_NONE);
         if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
