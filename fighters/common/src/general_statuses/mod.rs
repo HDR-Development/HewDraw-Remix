@@ -295,7 +295,7 @@ unsafe fn sub_transition_group_check_air_escape(fighter: &mut L2CFighterCommon) 
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR)
                     // Disable Airdodging if you're pressing Attack.
-        && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK_RAW)
+        && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N == 0
         && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE != 0
         && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
             fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_AIR.into(), true.into());
