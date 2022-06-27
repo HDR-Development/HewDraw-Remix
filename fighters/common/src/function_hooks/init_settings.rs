@@ -44,12 +44,12 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
         }
 
         // ken and ryu airdash effect
-        if [*FIGHTER_KIND_KEN, *FIGHTER_KIND_RYU].contains(&fighter_kind) && status_kind == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-            if StatusModule::prev_status_kind(boma, 0) != *FIGHTER_STATUS_KIND_JUMP_SQUAT {
+        if boma.kind() == *FIGHTER_KIND_RYU && boma.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR) {
+            if !boma.is_prev_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
                 let mut stick_value_x = ControlModule::get_stick_x(boma);
                 let stick_value_y = ControlModule::get_stick_y(boma);
                 let lr =  PostureModule::lr(boma);
-                if (stick_value_x.abs() > 0.66 || stick_value_y.abs() > 0.66) {
+                if (stick_value_x.abs() > 0.66 && stick_value_y == 0.0) {
                     if (stick_value_x == 0.0) {
                         stick_value_x = 0.001; // to avoid a divide by zero on the next instruction below
                     }
