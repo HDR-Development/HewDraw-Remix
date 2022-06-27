@@ -3,6 +3,15 @@
 #![allow(non_snake_case)]#![allow(unused_imports)]#![allow(unused_variables)]
 #![feature(proc_macro_hygiene)]
 
+#[cfg(feature = "main_nro")]
+mod random;
+
+#[cfg(feature = "main_nro")]
+mod controls;
+
+#[cfg(feature = "main_nro")]
+mod lua;
+
 use skyline::libc::c_char;
 #[cfg(feature = "main_nro")]
 use skyline_web::*;
@@ -73,6 +82,9 @@ pub fn main() {
     #[cfg(feature = "main_nro")] {
         quick_validate_install();
         skyline::install_hooks!(change_version_string_hook);
+        random::install();
+        controls::install();
+        lua::install();
     }
 
     #[cfg(not(feature = "runtime"))]

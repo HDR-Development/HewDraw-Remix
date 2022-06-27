@@ -121,7 +121,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             damage_fly_common_init, 
             //damage_air_main,
             status_Landing_MainSub,
-            status_pre_Landing,
+            //status_pre_Landing,
             status_pre_LandingLight,
             status_LandingAttackAirSub,
             status_pre_landing_fall_special,
@@ -154,18 +154,6 @@ pub unsafe fn status_pre_Landing(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_LandingLight)]
 pub unsafe fn status_pre_LandingLight(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let id = VarModule::get_int(fighter.battle_object, vars::common::COSTUME_SLOT_NUMBER) as usize;
-    let mut fighter_pos = Vector3f {
-        x: PostureModule::pos_x(fighter.module_accessor),
-        y: PostureModule::pos_y(fighter.module_accessor),
-        z: PostureModule::pos_z(fighter.module_accessor)
-    };
-    fighter_pos.y += VarModule::get_float(fighter.object(), vars::common::ECB_Y_OFFSETS);
-    VarModule::set_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR, GroundModule::get_distance_to_floor(fighter.module_accessor, &fighter_pos, fighter_pos.y, true));
-    let dist = VarModule::get_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR);
-    if dist < 0.1 {
-        PostureModule::set_pos(fighter.module_accessor, &fighter_pos);
-    }
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
         ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_ESCAPE);
         ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_ESCAPE_F);
@@ -176,18 +164,6 @@ pub unsafe fn status_pre_LandingLight(fighter: &mut L2CFighterCommon) -> L2CValu
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_LandingAttackAirSub)]
 pub unsafe fn status_LandingAttackAirSub(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let id = VarModule::get_int(fighter.battle_object, vars::common::COSTUME_SLOT_NUMBER) as usize;
-    let mut fighter_pos = Vector3f {
-        x: PostureModule::pos_x(fighter.module_accessor),
-        y: PostureModule::pos_y(fighter.module_accessor),
-        z: PostureModule::pos_z(fighter.module_accessor)
-    };
-    fighter_pos.y += VarModule::get_float(fighter.object(), vars::common::ECB_Y_OFFSETS);
-    VarModule::set_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR, GroundModule::get_distance_to_floor(fighter.module_accessor, &fighter_pos, fighter_pos.y, true));
-    let dist = VarModule::get_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR);
-    if dist < 0.1 {
-        PostureModule::set_pos(fighter.module_accessor, &fighter_pos);
-    }
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
         ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_ESCAPE);
         ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_ESCAPE_F);
@@ -198,18 +174,6 @@ pub unsafe fn status_LandingAttackAirSub(fighter: &mut L2CFighterCommon) -> L2CV
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_landing_fall_special)]
 pub unsafe fn status_pre_landing_fall_special(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let id = VarModule::get_int(fighter.battle_object, vars::common::COSTUME_SLOT_NUMBER) as usize;
-    let mut fighter_pos = Vector3f {
-        x: PostureModule::pos_x(fighter.module_accessor),
-        y: PostureModule::pos_y(fighter.module_accessor),
-        z: PostureModule::pos_z(fighter.module_accessor)
-    };
-    fighter_pos.y += VarModule::get_float(fighter.object(), vars::common::ECB_Y_OFFSETS);
-    VarModule::set_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR, GroundModule::get_distance_to_floor(fighter.module_accessor, &fighter_pos, fighter_pos.y, true));
-    let dist = VarModule::get_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR);
-    if dist < 0.1 {
-        PostureModule::set_pos(fighter.module_accessor, &fighter_pos);
-    }
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
         ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_ESCAPE);
         ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_ESCAPE_F);
@@ -243,14 +207,15 @@ unsafe fn sub_air_transition_group_check_air_attack_hook(fighter: &mut L2CFighte
 unsafe fn sub_transition_group_check_air_lasso(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
         // Disable Airdodging if you're pressing Grab.
-        let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-        let cat2 = fighter.global_table[CMD_CAT2].get_i32();
+        let is_guard_buffered = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) < ControlModule::get_command_life_count_max(fighter.module_accessor) as i32;  // checks if Guard input was pressed within max tap buffer window
+        let is_attack_buffered = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK as u8) < ControlModule::get_command_life_count_max(fighter.module_accessor) as i32;  // checks if Attack input was pressed within max tap buffer window
         // original line
         // if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_AIR_LASSO != 0 {
         // Split the Air Lasso check into two inputs, so that if the buffer gets cleared and you're still holding Shield,
         // you will never get an air tether. That's the theory, anyway.
-        if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_COMMON_GUARD != 0
-        && cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_AIR_LASSO != 0
+        // check_button_on_trriger check is here strictly to preserve frame-perfect DJCZ tech, as get_trigger_count does not correctly update when X + Z + direction are input on same frame...
+        if (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) || is_guard_buffered)
+        && (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) || is_attack_buffered)
         && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO) {
             let air_lasso = WorkModule::get_param_int(fighter.module_accessor, hash40("air_lasso_type"), 0);
             if air_lasso != *FIGHTER_AIR_LASSO_TYPE_NONE

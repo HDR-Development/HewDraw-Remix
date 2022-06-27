@@ -60,7 +60,13 @@ unsafe extern "C" fn status_pre_turncommon(fighter: &mut L2CFighterCommon) {
     WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B);
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_TURN_ATTACK_S4_REV_PAD);
 
-    MotionModule::change_motion(fighter.module_accessor, Hash40::new("turn"), 0.0, 1.0, false, 0.0, false, false);
+    let frame = if VarModule::is_flag(fighter.battle_object, vars::common::IS_LATE_PIVOT) {
+            6.0
+        }
+        else {
+            0.0
+        };
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("turn"), frame, 1.0, false, 0.0, false, false);
 }
 
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon16status_Turn_MainEv")]
@@ -90,13 +96,14 @@ unsafe extern "C" fn status_turn_main(fighter: &mut L2CFighterCommon) -> L2CValu
         && stick_x * -1.0 * turn_work_lr < dash_stick_x  // if left stick is below dash threshold
         && VarModule::is_flag(fighter.battle_object, vars::common::IS_SMASH_TURN)  // AND you are currently in a smash turn
         && StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_DASH  // AND your previous status was a dash (not turn)
-        && MotionModule::frame(fighter.module_accessor) <= 1.0 {  // AND you are on frame 0 or frame 1 of your smash turn
+        && MotionModule::frame(fighter.module_accessor) <= 1.0  // AND you are on frame 0 or frame 1 of your smash turn
+        && VarModule::is_flag(fighter.battle_object, vars::common::CAN_PERFECT_PIVOT) {  // AND you input smash turn within dash's perfect pivot window
             // perfect pivot
             VarModule::off_flag(fighter.battle_object, vars::common::IS_SMASH_TURN);
+            VarModule::off_flag(fighter.battle_object, vars::common::CAN_PERFECT_PIVOT);
             let dash_speed: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0);
             let multiplier = -0.75;
             let pivot_boost: smash::phx::Vector3f = smash::phx::Vector3f {x: dash_speed * multiplier, y: 0.0, z: 0.0};
-            KineticModule::clear_speed_all(fighter.module_accessor);
             KineticModule::add_speed(fighter.module_accessor, &pivot_boost);
         }
         /***fighter.clear_lua_stack();
@@ -109,7 +116,8 @@ unsafe extern "C" fn status_turn_main(fighter: &mut L2CFighterCommon) -> L2CValu
             if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
                 if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0
                 || fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0
-                || VarModule::is_flag(fighter.battle_object, vars::common::IS_SMASH_TURN) {
+                || VarModule::is_flag(fighter.battle_object, vars::common::IS_SMASH_TURN)
+                || VarModule::is_flag(fighter.battle_object, vars::common::IS_LATE_PIVOT) {
                     if stick_x * turn_work_lr >= dash_stick_x {
                         if MotionModule::frame(fighter.module_accessor) >= 1.0 {
                             //println!("backdash in turn");
@@ -206,6 +214,10 @@ unsafe fn status_end_turn(fighter: &mut L2CFighterCommon) -> L2CValue {
         VarModule::off_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH);
     }
     VarModule::off_flag(fighter.battle_object, vars::common::IS_SMASH_TURN);
+    VarModule::off_flag(fighter.battle_object, vars::common::IS_LATE_PIVOT);
+    if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_DASH {
+        VarModule::off_flag(fighter.battle_object, vars::common::CAN_PERFECT_PIVOT);
+    }
     fighter.sub_exit_Turn();
     0.into()
 }

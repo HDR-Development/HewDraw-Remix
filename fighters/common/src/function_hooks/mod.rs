@@ -1,4 +1,5 @@
 use super::*;
+pub mod energy;
 pub mod effect;
 pub mod edge_slipoffs;
 pub mod ledges;
@@ -14,8 +15,10 @@ pub mod change_status;
 pub mod is_flag;
 pub mod controls;
 pub mod jumps;
+pub mod stage_hazards;
 
 pub fn install() {
+    energy::install();
     effect::install();
     edge_slipoffs::install();
     ledges::install();
@@ -30,6 +33,7 @@ pub fn install() {
     controls::install();
     momentum_transfer::install();
     jumps::install();
+    stage_hazards::install();
 
     unsafe {
         // Handles getting rid of the kill zoom

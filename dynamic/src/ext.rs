@@ -76,7 +76,8 @@ pub enum CommandCat {
     Cat1(Cat1),
     Cat2(Cat2),
     Cat3(Cat3),
-    Cat4(Cat4)
+    Cat4(Cat4),
+    CatHdr(CatHdr)
 }
 
 impl Into<CommandCat> for Cat1 {
@@ -100,6 +101,12 @@ impl Into<CommandCat> for Cat3 {
 impl Into<CommandCat> for Cat4 {
     fn into(self) -> CommandCat {
         CommandCat::Cat4(self)
+    }
+}
+
+impl Into<CommandCat> for CatHdr {
+    fn into(self) -> CommandCat {
+        CommandCat::CatHdr(self)
     }
 }
 
@@ -229,6 +236,10 @@ bitflags! {
         const Command323Catch       = 0x4000000;
     }
 
+    pub struct CatHdr: i32 {
+        const ShorthopFootstool = 0x1;
+    }
+
     pub struct PadFlag: i32 {
         const AttackTrigger  = 0x1;
         const AttrckRelease  = 0x2;
@@ -259,6 +270,8 @@ bitflags! {
         const FlickJump   = 0x8000;
         const GuardHold   = 0x10000;
         const SpecialRaw2 = 0x20000;
+        const ShFootstool = 0x40000;
+        const CStickOverride = 0x80000;
 
         const SpecialAll  = 0x20802;
         const AttackAll   = 0x201;
@@ -294,6 +307,14 @@ impl Cat4 {
     pub fn new(boma: *mut BattleObjectModuleAccessor) -> Self {
         unsafe {
             Cat4::from_bits_unchecked(ControlModule::get_command_flag_cat(boma, 3))
+        }
+    }
+}
+
+impl CatHdr {
+    pub fn new(boma: *mut BattleObjectModuleAccessor) -> Self {
+        unsafe {
+            CatHdr::from_bits_unchecked(ControlModule::get_command_flag_cat(boma, 4))
         }
     }
 }
@@ -348,6 +369,7 @@ impl FastShift for L2CFighterBase {
 
 pub trait BomaExt {
     // INPUTS
+    unsafe fn clear_commands<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T);
     unsafe fn is_cat_flag<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool;
     unsafe fn is_cat_flag_all<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool;
     unsafe fn is_pad_flag(&mut self, pad_flag: PadFlag) -> bool;
@@ -420,16 +442,31 @@ pub trait BomaExt {
     unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController;
     // tech/general subroutine
     unsafe fn handle_waveland(&mut self, require_airdodge: bool, change_status: bool) -> bool;
+    unsafe fn shift_ecb_on_landing(&mut self);
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
+    unsafe fn clear_commands<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) {
+        let cat = fighter_pad_cmd_flag.into();
+        let (cat, bits) = match cat {
+            CommandCat::Cat1(cat) => (0, cat.bits()),
+            CommandCat::Cat2(cat) => (1, cat.bits()),
+            CommandCat::Cat3(cat) => (2, cat.bits()),
+            CommandCat::Cat4(cat) => (3, cat.bits()),
+            CommandCat::CatHdr(cat) => (4, cat.bits())
+        };
+
+        crate::modules::InputModule::clear_commands(self.object(), cat, bits);
+    }
+
     unsafe fn is_cat_flag<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool {
         let cat = fighter_pad_cmd_flag.into();
         match cat {
             CommandCat::Cat1(cat) => Cat1::new(self).intersects(cat),
             CommandCat::Cat2(cat) => Cat2::new(self).intersects(cat),
             CommandCat::Cat3(cat) => Cat3::new(self).intersects(cat),
-            CommandCat::Cat4(cat) => Cat4::new(self).intersects(cat)
+            CommandCat::Cat4(cat) => Cat4::new(self).intersects(cat),
+            CommandCat::CatHdr(cat) => CatHdr::new(self).intersects(cat)
         }
     }
 
@@ -439,7 +476,8 @@ impl BomaExt for BattleObjectModuleAccessor {
             CommandCat::Cat1(cat) => Cat1::new(self).contains(cat),
             CommandCat::Cat2(cat) => Cat2::new(self).contains(cat),
             CommandCat::Cat3(cat) => Cat3::new(self).contains(cat),
-            CommandCat::Cat4(cat) => Cat4::new(self).contains(cat)
+            CommandCat::Cat4(cat) => Cat4::new(self).contains(cat),
+            CommandCat::CatHdr(cat) => CatHdr::new(self).intersects(cat)
         }
     }
 
@@ -698,19 +736,23 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     unsafe fn handle_waveland(&mut self, require_airdodge: bool, change_status: bool) -> bool {
-        dbg!(MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU));
+        // MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU);
         if require_airdodge && (!self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE])
         || (MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU))) {
             return false;
         }
-
+    
         // must check this because it is for allowing the player to screw up a perfect WD and be punished with a non-perfect WD (otherwise they'd have like, 8 frames for perfect WD lol)
         if !crate::VarModule::is_flag(self.object(), crate::consts::vars::common::ENABLE_AIR_ESCAPE_MAGNET) {
             return false;
         }
-
+    
+        if self.is_prev_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
+            return false;
+        }
+    
         // ecb is top, bottom, left, right
-        let shift = if self.is_situation(*SITUATION_KIND_AIR) && self.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) < crate::ParamModule::get_int(self.object(), crate::ParamType::Common, "ecb_shift_air_trans_frame") {
+        let shift = if self.is_situation(*SITUATION_KIND_AIR) && self.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= crate::ParamModule::get_int(self.object(), crate::ParamType::Common, "ecb_shift_air_trans_frame") {
             let group = crate::ParamModule::get_int(self.object(), crate::ParamType::Shared, "ecb_group_shift");
             let shift = match group {
                 0 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.small"),
@@ -724,7 +766,7 @@ impl BomaExt for BattleObjectModuleAccessor {
         } else {
             0.0
         };
-
+    
         let ecb_bottom = *GroundModule::get_rhombus(self, true).add(1);
         let line_bottom = Vector2f::new(ecb_bottom.x, shift + ecb_bottom.y - crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold"));
         let mut out_pos = Vector2f::zero();
@@ -734,6 +776,7 @@ impl BomaExt for BattleObjectModuleAccessor {
             PostureModule::set_pos(self, &Vector3f::new((*pos).x, out_pos.y + 0.01, (*pos).z));
             GroundModule::attach_ground(self, true);
             if change_status {
+                StatusModule::set_situation_kind(self, app::SituationKind(*SITUATION_KIND_GROUND), false);
                 StatusModule::change_status_request(self, *FIGHTER_STATUS_KIND_LANDING, false);
             }
             true
@@ -741,10 +784,25 @@ impl BomaExt for BattleObjectModuleAccessor {
             false
         }
     }
-
+    
     /// gets the current status kind for the fighter
     unsafe fn status(&mut self) -> i32 {
         return StatusModule::status_kind(self);
+    }
+    
+    unsafe fn shift_ecb_on_landing(&mut self) {
+        if self.is_situation(*SITUATION_KIND_GROUND) {
+            if !self.is_prev_situation(*SITUATION_KIND_GROUND) {
+                // shift ECB back to normal offset
+                let mut fighter_pos = Vector3f {
+                    x: PostureModule::pos_x(self),
+                    y: PostureModule::pos_y(self),
+                    z: PostureModule::pos_z(self)
+                };
+                fighter_pos.y += crate::VarModule::get_float(self.object(), crate::consts::vars::common::ECB_Y_OFFSETS);
+                PostureModule::set_pos(self, &fighter_pos);
+            }
+        }
     }
 
 }
@@ -821,7 +879,7 @@ impl GetObjects for BattleObjectModuleAccessor {
 
 /// Enum for the kinds of controls that are mapped
 /// Can map any of these over any button
-#[repr(C)]
+#[repr(u8)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum InputKind {
     Attack = 0x0,
@@ -832,7 +890,9 @@ pub enum InputKind {
     SmashAttack = 0x5,
     AppealHi = 0xA,
     AppealS = 0xB,
-    AppealLw = 0xC
+    AppealLw = 0xC,
+    Unset = 0xD,
+    JumpMini = 0x12, // this is ours :), also start at 0x12 to avoid masking errors
 }
 
 /// 0x50 Byte struct containing the information for controller mappings
@@ -865,8 +925,8 @@ pub struct ControllerMapping {
     pub pro_a: InputKind,
     pub pro_b: InputKind,
     pub pro_cstick: InputKind,
-    pub pro_y: InputKind,
     pub pro_x: InputKind,
+    pub pro_y: InputKind,
     pub pro_rumble: bool,
     pub pro_absmash: bool,
     pub pro_tapjump: bool,
@@ -878,8 +938,8 @@ pub struct ControllerMapping {
     pub joy_sr: InputKind,
     pub joy_up: InputKind,
     pub joy_right: InputKind,
-    pub joy_down: InputKind,
     pub joy_left: InputKind,
+    pub joy_down: InputKind,
     pub joy_rumble: bool,
     pub joy_absmash: bool,
     pub joy_tapjump: bool,
@@ -984,7 +1044,7 @@ pub struct AutorepeatInfo {
 }
 
 /// Controller style declaring what kind of controller is being used
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Debug, Copy, Clone)]
 #[repr(u32)]
 pub enum ControllerStyle {
     Handheld = 0x1,

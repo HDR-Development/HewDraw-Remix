@@ -90,12 +90,12 @@ unsafe fn build_ecb_shift(boma: &mut BattleObjectModuleAccessor, status_kind: i3
 unsafe fn logging_for_acmd(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
 
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI3 || status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-        println!("craft_weapon_kind: {}", WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_KIND));
-        println!("request_have_craft_weapon_kind: {}", WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_REQUEST_HAVE_CRAFT_WEAPON_KIND));
-        println!("craft_sword: {}", *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_SWORD);
-        println!("craft_axe: {}", *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_AXE);
-        println!("craft_pick: {}", *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_PICK);
-        println!("craft_shovel: {}", *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_SHOVEL);
+        // println!("craft_weapon_kind: {}", WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_HAVE_CRAFT_WEAPON_KIND));
+        // println!("request_have_craft_weapon_kind: {}", WorkModule::get_int(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_REQUEST_HAVE_CRAFT_WEAPON_KIND));
+        // println!("craft_sword: {}", *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_SWORD);
+        // println!("craft_axe: {}", *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_AXE);
+        // println!("craft_pick: {}", *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_PICK);
+        // println!("craft_shovel: {}", *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_SHOVEL);
     }
 
 }

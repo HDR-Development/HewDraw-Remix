@@ -47,7 +47,7 @@ unsafe fn falco_special_air_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 4.0/(14.0-1.0));
+    FT_MOTION_RATE(fighter, 4.0/(5.0-1.0));
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_FALCO_GENERATE_ARTICLE_BLASTER, false, 0);
@@ -80,6 +80,10 @@ unsafe fn falco_special_air_n_loop_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 17.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_FALCO_BLASTER_STATUS_WORK_ID_FLAG_LOOP_ACCEPT);
+        if WorkModule::is_flag(boma,*FIGHTER_FALCO_BLASTER_STATUS_WORK_ID_FLAG_LOOP){
+            //laser loop motion rate(changing this allows for faster or slower sequential lasers from the first)
+            FT_MOTION_RATE(fighter,0.10);
+        }
     }
 }
 
@@ -93,10 +97,12 @@ unsafe fn falco_special_air_s_end_game(fighter: &mut L2CAgentBase) {
  unsafe fn falco_special_hi_hold(fighter: &mut L2CAgentBase) {
         let lua_state = fighter.lua_state_agent;
         let boma = fighter.boma();
-    frame(lua_state, 20.0);
+    frame(lua_state, 15.0);
     for _ in 0..7 {
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 367, 60, 0, 60, 6.0, 0.0, 8.0, 0.0, None, None, None, 1.0, 0.8, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 368, 40, 0, 30, 7.0, 0.0, 6.0, 0.0, None, None, None, 0.75, 0.8, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+            let target = smash::phx::Vector2f { x: 0.0, y: 5.0 };
+            AttackModule::set_vec_target_pos(boma, 0, Hash40::new("top"), &target, 8, false);
         }
         wait(lua_state, 1.0);
         if is_excute(fighter) {
@@ -112,8 +118,8 @@ unsafe fn falco_special_hi_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("hip"), 3.0, 367, 60, 0, 60, 5.5, 3.2, -3.1, -1.5, None, None, None, 1.0, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BODY);
-        ATTACK(fighter, 1, 0, Hash40::new("hip"), 3.0, 80, 100, 80, 0, 5.5, 3.2, -3.1, -1.5, None, None, None, 1.0, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("hip"), 0.5, 367, 60, 0, 60, 8.0, 3.2, -3.1, -1.5, None, None, None, 0.75, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 1, 0, Hash40::new("hip"), 0.5, 80, 100, 80, 0, 8.0, 3.2, -3.1, -1.5, None, None, None, 0.75, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BODY);
     }
     wait(lua_state, 4.0);
     if is_excute(fighter) {
@@ -121,8 +127,8 @@ unsafe fn falco_special_hi_game(fighter: &mut L2CAgentBase) {
     }
     for _ in 0..7 {
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("hip"), 2.0, 367, 60, 0, 60, 4.0, 3.2, -3.1, -1.5, None, None, None, 1.0, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BODY);
-            ATTACK(fighter, 1, 0, Hash40::new("hip"), 2.0, 65, 100, 80, 0, 4.0, 3.2, -3.1, -1.5, None, None, None, 1.0, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BODY);
+            ATTACK(fighter, 0, 0, Hash40::new("hip"), 1.0, 367, 60, 0, 60, 8.0, 3.2, -3.1, -1.5, None, None, None, 0.75, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BODY);
+            ATTACK(fighter, 1, 0, Hash40::new("hip"), 1.0, 65, 100, 80, 0, 8.0, 3.2, -3.1, -1.5, None, None, None, 0.75, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BODY);
        }
         wait(lua_state, 1.0);
         if is_excute(fighter) {
@@ -131,7 +137,7 @@ unsafe fn falco_special_hi_game(fighter: &mut L2CAgentBase) {
         wait(lua_state, 1.0);
     }
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("hip"), 2.0, 75, 220, 0, 70, 6.0, 4.2, -3.1, -1.5, None, None, None, 1.7, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("hip"), 2.0, 75, 220, 0, 75, 8.0, -4.0, 3.5, -1.5, None, None, None, 1.5, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {

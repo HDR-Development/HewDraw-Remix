@@ -109,6 +109,7 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
         return 0.into();
     }
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START) {
+        fighter.clear_commands(CatHdr::ShorthopFootstool);
         fighter.change_status(
             L2CValue::I32(*FIGHTER_STATUS_KIND_JUMP),
             L2CValue::Bool(false)
@@ -169,8 +170,13 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     symbol = "_ZN7lua2cpp16L2CFighterCommon20status_end_JumpSquatEv" )]
 unsafe fn status_end_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     //println!("end");
-    BufferModule::disable_persist(fighter.battle_object);
+    InputModule::disable_persist(fighter.battle_object);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
+    VarModule::off_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+    VarModule::off_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE);
+    VarModule::off_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE_SECOND);
+    VarModule::set_int(fighter.battle_object, vars::common::JUMP_SQUAT_FRAME, 0);
+    VarModule::off_flag(fighter.battle_object, vars::common::IS_TAP_JUMP);
     0.into()
 }
 
@@ -192,13 +198,13 @@ unsafe fn uniq_process_JumpSquat_exec_status(fighter: &mut L2CFighterCommon) -> 
 unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2CValue) {
     let is_button_jump = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE) == 0
                                 || fighter.global_table[FLICK_Y_DIR].get_i32() <= 0;
-    BufferModule::set_persist_lifetime(fighter.battle_object, 10);
-    BufferModule::enable_persist(fighter.battle_object);
+    InputModule::set_persist_lifetime(fighter.battle_object, 10);
+    InputModule::enable_persist(fighter.battle_object);
     if is_button_jump {
         //println!("button jump");
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FLAG_BUTTON);
         // check if we are doing double button shorthop input
-        if ControlModule::is_jump_mini_button(fighter.module_accessor) {
+        if ControlModule::is_jump_mini_button(fighter.module_accessor) || fighter.is_cat_flag(CatHdr::ShorthopFootstool) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
         }
     }
@@ -250,17 +256,6 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
     if fighter.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, *FIGHTER_STATUS_KIND_GUARD_OFF]) {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH);
     }
-
-    let magnet_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "air_escape_snap_frame");
-    VarModule::set_int(fighter.battle_object, vars::common::AIR_ESCAPE_MAGNET_FRAME, magnet_frame);
-    // println!("magnet_frame {}", magnet_frame);
-    VarModule::off_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_MAGNET);
-    
-    VarModule::off_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_JUMPSQUAT);
-    VarModule::off_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE);
-    VarModule::off_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE_SECOND);
-    VarModule::set_int(fighter.battle_object, vars::common::JUMP_SQUAT_FRAME, 0);
-    VarModule::off_flag(fighter.battle_object, vars::common::IS_TAP_JUMP);
 }
 
 // The main exec block, for some reason it's not found in the exec status
