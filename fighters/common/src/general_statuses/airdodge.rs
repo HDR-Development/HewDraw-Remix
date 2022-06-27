@@ -26,7 +26,7 @@ unsafe fn status_pre_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
     // we make sure to include this before change_motion so we check for proximity to the ground using our jumpsquat animation's ECB, rather than airdodge anim's ECB
     // a character's ECB x position can shift on the first frame of their airdodge anim, which sometimes makes them unable to wavedash on an edge even if standing on solid ground the previous frame
     if VarModule::is_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH) || fighter.handle_waveland(false, false) {
-        VarModule::on_flag(fighter.battle_object, vars::common::instance::SHOULD_WAVELAND);
+        VarModule::on_flag(fighter.battle_object, vars::common::status::SHOULD_WAVELAND);
         GroundModule::attach_ground(fighter.module_accessor, true);
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
         return 0.into();
@@ -62,14 +62,14 @@ unsafe fn status_pre_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
     symbol = "_ZN7lua2cpp16L2CFighterCommon16status_EscapeAirEv")]
 unsafe fn status_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_trigger(fighter.module_accessor);
-    if !VarModule::is_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND) {
+    if !VarModule::is_flag(fighter.battle_object, vars::common::status::SHOULD_WAVELAND) {
         fighter.sub_escape_air_common();
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("escape_air_slide"), 0.0, 1.0, false, 0.0, false, false);
-            VarModule::on_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_MAGNET);
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET);
         } else {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("escape_air"), 0.0, 1.0, false, 0.0, false, false);
-            VarModule::off_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_MAGNET);
+            VarModule::off_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET);
         }
         let mut motion_rate = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_FLOAT_MOTION_RATE_PENALTY);
         let start_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_ADD_XLU_START_FRAME);
@@ -90,7 +90,7 @@ unsafe fn status_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn status_EscapeAir_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND) {
+    if VarModule::is_flag(fighter.battle_object, vars::common::status::SHOULD_WAVELAND) {
         fighter.set_situation(L2CValue::I32(*SITUATION_KIND_GROUND));
         return 1.into();
     }
@@ -135,7 +135,7 @@ unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_TURN);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_LANDING_CLIFF_STOP);
 
-            if !VarModule::is_flag(fighter.battle_object, vars::common::PERFECT_WAVEDASH)  // ECB never shifts during perfect waveland, no need to readjust on landing
+            if !VarModule::is_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH)  // ECB never shifts during perfect waveland, no need to readjust on landing
             && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND  // ECB must be touching ground to warrant readjustment
             && fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) > ParamModule::get_int(fighter.object(), ParamType::Common, "ecb_shift_air_trans_frame")  // ECB doesn't shift during first 10 airborne frames, no need to readjust on landing
             && StatusModule::prev_status_kind(fighter.module_accessor, 1) != *FIGHTER_STATUS_KIND_DAMAGE_FALL {  // ECB doesn't shift during tumble, no need to readjust on landing
@@ -145,12 +145,12 @@ unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
                     y: PostureModule::pos_y(fighter.module_accessor),
                     z: PostureModule::pos_z(fighter.module_accessor)
                 };
-                fighter_pos.y += VarModule::get_float(fighter.object(), vars::common::ECB_Y_OFFSETS);
+                fighter_pos.y += VarModule::get_float(fighter.object(), vars::common::instance::ECB_Y_OFFSETS);
                 PostureModule::set_pos(fighter.module_accessor, &fighter_pos);
             }
         }
-        VarModule::off_flag(fighter.battle_object, vars::common::SHOULD_WAVELAND);
-        VarModule::off_flag(fighter.battle_object, vars::common::PERFECT_WAVEDASH);
+        VarModule::off_flag(fighter.battle_object, vars::common::status::SHOULD_WAVELAND);
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);
     }
     0.into()
 }

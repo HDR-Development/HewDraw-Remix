@@ -799,7 +799,7 @@ impl BomaExt for BattleObjectModuleAccessor {
                     y: PostureModule::pos_y(self),
                     z: PostureModule::pos_z(self)
                 };
-                fighter_pos.y += crate::VarModule::get_float(self.object(), crate::consts::vars::common::ECB_Y_OFFSETS);
+                fighter_pos.y += crate::VarModule::get_float(self.object(), crate::consts::vars::common::instance::ECB_Y_OFFSETS);
                 PostureModule::set_pos(self, &fighter_pos);
             }
         }

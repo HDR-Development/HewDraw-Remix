@@ -172,11 +172,11 @@ unsafe fn status_end_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     //println!("end");
     InputModule::disable_persist(fighter.battle_object);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
-    VarModule::off_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_JUMPSQUAT);
-    VarModule::off_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE);
-    VarModule::off_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE_SECOND);
-    VarModule::set_int(fighter.battle_object, vars::common::JUMP_SQUAT_FRAME, 0);
-    VarModule::off_flag(fighter.battle_object, vars::common::IS_TAP_JUMP);
+    VarModule::off_flag(fighter.battle_object, vars::common::status::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::CSTICK_OVERRIDE);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::CSTICK_OVERRIDE_SECOND);
+    VarModule::set_int(fighter.battle_object, vars::common::instance::JUMP_SQUAT_FRAME, 0);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_TAP_JUMP);
     0.into()
 }
 
