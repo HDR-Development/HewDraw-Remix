@@ -7,20 +7,21 @@ use globals::*;
 unsafe fn elytra_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if (status_kind == *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_GLIDING) {
         // Increment glide timer during elytra
-        VarModule::add_float(boma.object(), vars::common::GLIDE_TIMER, 1.0);
+        VarModule::add_float(boma.object(), vars::pickel::status::GLIDE_TIMER, 1.0);
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-            if(VarModule::get_float(boma.object(), vars::common::GLIDE_TIMER) > (25.0) && VarModule::get_float(boma.object(), vars::common::GLIDE_TIMER) < (45.0) ){
-                //VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL);
+            if(VarModule::get_float(boma.object(), vars::pickel::status::GLIDE_TIMER) > (25.0) && VarModule::get_float(boma.object(), vars::pickel::status::GLIDE_TIMER) < (45.0) ){
+                //VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_FALL_SPECIAL,false);
             }
         }
     }
     // Reset glide timer if not gliding
-    else{
-        if(VarModule::get_float(boma.object(), vars::common::GLIDE_TIMER) > 0.0){
-            VarModule::set_float(boma.object(), vars::common::GLIDE_TIMER, 0.0);
-        }
-    }
+    // No longer needed due to it being a status variable
+    // else{
+    //     if(VarModule::get_float(boma.object(), vars::pickel::status::GLIDE_TIMER) > 0.0){
+    //         VarModule::set_float(boma.object(), vars::pickel::status::GLIDE_TIMER, 0.0);
+    //     }
+    // }
 }
 
 
@@ -31,38 +32,38 @@ unsafe fn hitstun_tumble_glow(boma: &mut BattleObjectModuleAccessor, id: usize, 
     let cbm_vec1 = Vector4f{ /* Red */ x: 0.85, /* Green */ y: 0.85, /* Blue */ z: 0.85, /* Alpha */ w: 0.2};
     let cbm_vec2 = Vector4f{ /* Red */ x: 0.9907, /* Green */ y: 0.02, /* Blue */ z: 0.0251, /* Alpha */ w: 0.8};
     if (WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) > 0.0) {
-        if  !VarModule::is_flag(boma.object(), vars::common::IS_IN_HITSTUN) {
-            VarModule::on_flag(boma.object(), vars::common::HITSTUN_START);
+        if  !VarModule::is_flag(boma.object(), vars::common::instance::IS_IN_HITSTUN) {
+            VarModule::on_flag(boma.object(), vars::common::instance::HITSTUN_START);
         }
     } else {
-        if  VarModule::is_flag(boma.object(), vars::common::IS_IN_HITSTUN) {
+        if  VarModule::is_flag(boma.object(), vars::common::instance::IS_IN_HITSTUN) {
             ColorBlendModule::cancel_main_color(boma, 0);
         }
-        VarModule::off_flag(boma.object(), vars::common::IS_IN_HITSTUN);
+        VarModule::off_flag(boma.object(), vars::common::instance::IS_IN_HITSTUN);
     }
-    if  VarModule::is_flag(boma.object(), vars::common::HITSTUN_START) {
-        VarModule::on_flag(boma.object(), vars::common::IS_IN_HITSTUN);
+    if  VarModule::is_flag(boma.object(), vars::common::instance::HITSTUN_START) {
+        VarModule::on_flag(boma.object(), vars::common::instance::IS_IN_HITSTUN);
         ColorBlendModule::set_main_color(boma, /* Brightness */ &cbm_vec1, /* Diffuse */ &cbm_vec2, 0.21, 2.2, 5, /* Display Color */ true);
-        VarModule::off_flag(boma.object(), vars::common::HITSTUN_START);
+        VarModule::off_flag(boma.object(), vars::common::instance::HITSTUN_START);
     }
 
     // Glow green during tumble
     let cbm_t_vec1 = Vector4f{ /* Red */ x: 0.85, /* Green */ y: 0.85, /* Blue */ z: 0.85, /* Alpha */ w: 0.2};
     let cbm_t_vec2 = Vector4f{ /* Red */ x: 0.1612, /* Green */ y: 0.2549, /* Blue */ z: 0.098, /* Alpha */ w: 0.8};
     if (status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FALL) {
-        if  !VarModule::is_flag(boma.object(), vars::common::IS_IN_TUMBLE) {
-            VarModule::on_flag(boma.object(), vars::common::TUMBLE_START);
+        if  !VarModule::is_flag(boma.object(), vars::pickel::instance::IS_IN_TUMBLE) {
+            VarModule::on_flag(boma.object(), vars::pickel::instance::TUMBLE_START);
         }
     } else {
-        if  VarModule::is_flag(boma.object(), vars::common::IS_IN_TUMBLE) {
+        if  VarModule::is_flag(boma.object(), vars::pickel::instance::IS_IN_TUMBLE) {
             ColorBlendModule::cancel_main_color(boma, 0);
         }
-        VarModule::off_flag(boma.object(), vars::common::IS_IN_TUMBLE);
+        VarModule::off_flag(boma.object(), vars::pickel::instance::IS_IN_TUMBLE);
     }
-    if  VarModule::is_flag(boma.object(), vars::common::TUMBLE_START) {
-        VarModule::on_flag(boma.object(), vars::common::IS_IN_TUMBLE);
+    if  VarModule::is_flag(boma.object(), vars::pickel::instance::TUMBLE_START) {
+        VarModule::on_flag(boma.object(), vars::pickel::instance::IS_IN_TUMBLE);
         ColorBlendModule::set_main_color(boma, /* Brightness */ &cbm_t_vec1, /* Diffuse */ &cbm_t_vec2, 0.21, 2.2, 3, /* Display Color */ true);
-        VarModule::off_flag(boma.object(), vars::common::TUMBLE_START);
+        VarModule::off_flag(boma.object(), vars::pickel::instance::TUMBLE_START);
     }
 
 }

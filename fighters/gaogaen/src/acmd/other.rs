@@ -23,7 +23,7 @@ unsafe fn gaogaen_catch_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        let grab_y = VarModule::get_float(fighter.battle_object, vars::gaogaen::ANGLE_GRAB_STICK_Y);
+        let grab_y = VarModule::get_float(fighter.battle_object, vars::gaogaen::status::ANGLE_GRAB_STICK_Y);
         let mut z_mod = -1.0 * grab_y;
         if grab_y > 0.0 {
             z_mod = 3.0 * grab_y;
@@ -59,7 +59,7 @@ unsafe fn gaogaen_catchturn_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        let grab_y = VarModule::get_float(fighter.battle_object, vars::gaogaen::ANGLE_GRAB_STICK_Y);
+        let grab_y = VarModule::get_float(fighter.battle_object, vars::gaogaen::status::ANGLE_GRAB_STICK_Y);
         let mut z_mod = 0.0;
         if grab_y > 0.0 {
             z_mod = 3.0 * grab_y;
@@ -95,7 +95,7 @@ unsafe fn gaogaen_catchdash_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        let grab_y = VarModule::get_float(fighter.battle_object, vars::gaogaen::ANGLE_GRAB_STICK_Y);
+        let grab_y = VarModule::get_float(fighter.battle_object, vars::gaogaen::status::ANGLE_GRAB_STICK_Y);
         let mut z_mod = 0.0;
         if grab_y > 0.0 {
             z_mod = 4.0 * grab_y;

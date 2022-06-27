@@ -27,7 +27,7 @@ pub mod groups {
 unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
     if !smash::app::sv_information::is_ready_go() {
         GroundModule::set_rhombus_offset(boma, &Vector2f::zero());
-        VarModule::set_float(boma.object(), vars::common::ECB_Y_OFFSETS, 0.0);
+        VarModule::set_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS, 0.0);
         return;
     }
 
@@ -87,13 +87,13 @@ unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
         } else if boma.is_situation(*SITUATION_KIND_GROUND) {
             offset = 0.0;
         } else {
-            offset = VarModule::get_float(boma.object(), vars::common::ECB_Y_OFFSETS);
+            offset = VarModule::get_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS);
         }
-        VarModule::set_float(boma.object(), vars::common::ECB_Y_OFFSETS, offset);
+        VarModule::set_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS, offset);
         GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, offset));
     }
-    else if VarModule::get_float(boma.object(), vars::common::ECB_Y_OFFSETS) != 0.0 {
-        VarModule::set_float(boma.object(), vars::common::ECB_Y_OFFSETS, 0.0);
+    else if VarModule::get_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS) != 0.0 {
+        VarModule::set_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS, 0.0);
         GroundModule::set_rhombus_offset(boma, &Vector2f::zero());
     }
     
@@ -146,15 +146,15 @@ unsafe fn extra_traction(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
 
         // reset flag at beginning of any status
         if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
-            VarModule::off_flag(boma.object(), vars::common::IS_MOTION_BASED_ATTACK);
+            VarModule::off_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK);
         }
         // if we detect that the current animation is trans-motion-based (shifts your character's position), disable traction for the entire attack 
-        if motion_accel.x != 0.0 && !VarModule::is_flag(boma.object(), vars::common::IS_MOTION_BASED_ATTACK) {
-            VarModule::on_flag(boma.object(), vars::common::IS_MOTION_BASED_ATTACK);
+        if motion_accel.x != 0.0 && !VarModule::is_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK) {
+            VarModule::on_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK);
         }
         if speed_x.abs() > max_walk
         && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
-        && !VarModule::is_flag(boma.object(), vars::common::IS_MOTION_BASED_ATTACK) {
+        && !VarModule::is_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK) {
             if boma.is_prev_status_one_of(&double_traction_statuses) {
                 KineticModule::add_speed(boma, &added_traction);
             }
@@ -210,19 +210,19 @@ unsafe fn dash_energy(fighter: &mut L2CFighterCommon) {
 
         if ControlModule::check_button_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
             // prevent game from thinking you are inputting a dashback on the frame the cstick stops overriding left stick (0.625 -> -1.0)
-            VarModule::on_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH);
+            VarModule::on_flag(fighter.battle_object, vars::common::status::DISABLE_BACKDASH);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
         }
         if stick_x == 0.0 {
             // if you return stick to neutral after a cstick dash, allow dashbacks again
-            VarModule::off_flag(fighter.battle_object, vars::common::DISABLE_BACKDASH);
+            VarModule::off_flag(fighter.battle_object, vars::common::status::DISABLE_BACKDASH);
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
         }
 
         if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
             if stick_x.abs() >= dash_stick_x {
                 // apply initial dash energy on f2 of dash (CURRENT_FRAME counter hasn't updated yet)
-                let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::CURR_DASH_SPEED);
+                let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
                 let applied_speed = (dash_speed * PostureModule::lr(fighter.module_accessor)) + (stick_x.signum() * ((run_accel_mul + (run_accel_add * stick_x.abs())))) + prev_speed;  // initial dash speed + 1f of run acceleration + previous status' last speed
                 //println!("Changing current dash speed: {}", applied_speed);
                 let applied_speed_clamped = applied_speed.clamp(-run_speed_max, run_speed_max);
@@ -235,8 +235,8 @@ unsafe fn dash_energy(fighter: &mut L2CFighterCommon) {
             && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
                 // apply late (F3) pivot energy
                 KineticModule::clear_speed_all(fighter.module_accessor);
-                if VarModule::is_flag(fighter.battle_object, vars::common::CAN_PERFECT_PIVOT) {
-                    VarModule::off_flag(fighter.battle_object, vars::common::CAN_PERFECT_PIVOT);
+                if VarModule::is_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT) {
+                    VarModule::off_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT);
                     let dash_speed: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0);
                     let multiplier = -0.5;
                     let pivot_boost: smash::phx::Vector3f = smash::phx::Vector3f {x: dash_speed * multiplier, y: 0.0, z: 0.0};
@@ -257,7 +257,7 @@ unsafe fn dash_energy(fighter: &mut L2CFighterCommon) {
             let mut initial_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
 
             let mut applied_speed = (initial_speed * 0.25) - (ground_brake * PostureModule::lr(fighter.module_accessor));  // Only retain a fraction of your momentum into a re-dash or backdash; makes for snappy dash dancing (Melee functionality)
-            if (is_dash_input && VarModule::is_flag(fighter.battle_object, vars::common::IS_MOONWALK) && FighterMotionModuleImpl::is_valid_cancel_frame(fighter.module_accessor, -1, true)) || fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0 {  // if the jump button is held, retain full momentum into next status
+            if (is_dash_input && VarModule::is_flag(fighter.battle_object, vars::common::status::IS_MOONWALK) && FighterMotionModuleImpl::is_valid_cancel_frame(fighter.module_accessor, -1, true)) || fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0 {  // if the jump button is held, retain full momentum into next status
                 //println!("full momentum");
                 applied_speed = initial_speed - (ground_brake * PostureModule::lr(fighter.module_accessor));
             }
@@ -274,7 +274,7 @@ unsafe fn dash_energy(fighter: &mut L2CFighterCommon) {
             app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
 
             let end_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
-            VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, end_speed);
+            VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, end_speed);
         }
     }
 }

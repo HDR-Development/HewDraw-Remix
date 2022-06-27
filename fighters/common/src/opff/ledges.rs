@@ -36,7 +36,7 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
         *FIGHTER_STATUS_KIND_CLIFF_CATCH,
         *FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE,
         *FIGHTER_STATUS_KIND_CLIFF_WAIT]) {
-        VarModule::set_vec3(boma.object(), vars::common::LEDGE_POS, GroundModule::hang_cliff_pos_3f(boma));
+        VarModule::set_vec3(boma.object(), vars::common::instance::LEDGE_POS, GroundModule::hang_cliff_pos_3f(boma));
     }
 
     // De-occupy ledge if not on ledge anymore
@@ -50,7 +50,7 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
         *FIGHTER_STATUS_KIND_CLIFF_JUMP1,
         *FIGHTER_STATUS_KIND_CLIFF_JUMP2,
         *FIGHTER_STATUS_KIND_CLIFF_JUMP3]) {
-        VarModule::set_vec3(boma.object(), vars::common::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
+        VarModule::set_vec3(boma.object(), vars::common::instance::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
     }
 
     if boma.is_status_one_of(&[
@@ -61,7 +61,7 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
         *FIGHTER_STATUS_KIND_CLIFF_JUMP2,
         *FIGHTER_STATUS_KIND_CLIFF_JUMP3])
     && MotionModule::frame(boma) > (FighterMotionModuleImpl::get_cancel_frame(boma, Hash40::new_raw(MotionModule::motion_kind(boma)), true) * 0.75) {
-        VarModule::set_vec3(boma.object(), vars::common::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
+        VarModule::set_vec3(boma.object(), vars::common::instance::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
     }
 
     let current_position_x = PostureModule::pos_x(boma);
@@ -76,15 +76,15 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
             if let Some(object_id) = ::utils::util::get_active_battle_object_id_from_entry_id(i) {
                 let object = ::utils::util::get_battle_object_from_id(object_id);
                 if !object.is_null() {
-                    if i == player_number || VarModule::get_float(object, vars::common::LEDGE_POS_X) == 0.0 {
+                    if i == player_number || VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) == 0.0 {
                         continue;
                     }
 
-                    if ledge_try_pos.x == VarModule::get_float(object, vars::common::LEDGE_POS_X) && ledge_try_pos.y == VarModule::get_float(object, vars::common::LEDGE_POS_Y) {
-                        VarModule::on_flag(boma.object(), vars::common::SHOULD_TRUMP_TETHER);
+                    if ledge_try_pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && ledge_try_pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
+                        VarModule::on_flag(boma.object(), vars::common::instance::SHOULD_TRUMP_TETHER);
                     }
                     else{
-                        VarModule::off_flag(boma.object(), vars::common::SHOULD_TRUMP_TETHER);
+                        VarModule::off_flag(boma.object(), vars::common::instance::SHOULD_TRUMP_TETHER);
                     }
 
                     let module_accessor = &mut *(*object).module_accessor;
@@ -93,11 +93,11 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
                         let nana_object_id = WorkModule::get_int(module_accessor, *FIGHTER_POPO_INSTANCE_WORK_ID_INT_PARTNER_OBJECT_ID) as u32;
                         let object = ::utils::util::get_battle_object_from_id(nana_object_id);
                         if !object.is_null() {
-                            if ledge_try_pos.x == VarModule::get_float(object, vars::common::LEDGE_POS_X) && ledge_try_pos.y == VarModule::get_float(object, vars::common::LEDGE_POS_Y) {
-                                VarModule::on_flag(boma.object(), vars::common::SHOULD_TRUMP_TETHER);
+                            if ledge_try_pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && ledge_try_pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
+                                VarModule::on_flag(boma.object(), vars::common::instance::SHOULD_TRUMP_TETHER);
                             }
                             else{
-                                VarModule::off_flag(boma.object(), vars::common::SHOULD_TRUMP_TETHER);
+                                VarModule::off_flag(boma.object(), vars::common::instance::SHOULD_TRUMP_TETHER);
                             }
                         }
                     }
@@ -107,7 +107,7 @@ unsafe fn occupy_ledge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
     }
 
     /*
-    println!("Ledge position X: {}", VarModule::get_float(boma.object(), vars::common::LEDGE_POS).x);
+    println!("Ledge position X: {}", VarModule::get_float(boma.object(), vars::common::instance::LEDGE_POS).x);
     println!("Player: {}", player_number);
     */
 }
@@ -120,25 +120,25 @@ unsafe fn tether_trump_landing(boma: &mut BattleObjectModuleAccessor, status_kin
     let prev_status_kind = StatusModule::prev_status_kind(boma, 0);
 
     if status_kind == *FIGHTER_STATUS_KIND_CLIFF_ROBBED {
-        VarModule::on_flag(boma.object(), vars::common::TETHER_HOGGED);
+        VarModule::on_flag(boma.object(), vars::common::instance::TETHER_HOGGED);
     }
 
     // Go into special fall after one action after trump
     /*
     if situation_kind == *SITUATION_KIND_AIR && prev_status_kind == *FIGHTER_STATUS_KIND_CLIFF_ROBBED {
-        VarModule::off_flag(boma.object(), vars::common::TETHER_HOGGED);
+        VarModule::off_flag(boma.object(), vars::common::instance::TETHER_HOGGED);
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, false);
     }
     */
 
     // Increased landing lag (special fall landing) if landing right after being tether hogged
-    if /*prev_status_kind == *FIGHTER_STATUS_KIND_CLIFF_ROBBED &&*/ VarModule::is_flag(boma.object(), vars::common::TETHER_HOGGED) && situation_kind == *SITUATION_KIND_GROUND {
-        VarModule::off_flag(boma.object(), vars::common::TETHER_HOGGED);
+    if /*prev_status_kind == *FIGHTER_STATUS_KIND_CLIFF_ROBBED &&*/ VarModule::is_flag(boma.object(), vars::common::instance::TETHER_HOGGED) && situation_kind == *SITUATION_KIND_GROUND {
+        VarModule::off_flag(boma.object(), vars::common::instance::TETHER_HOGGED);
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
     }
 
     if situation_kind == *SITUATION_KIND_CLIFF {
-        VarModule::off_flag(boma.object(), vars::common::TETHER_HOGGED);
+        VarModule::off_flag(boma.object(), vars::common::instance::TETHER_HOGGED);
     }
 
     if [*FIGHTER_STATUS_KIND_DAMAGE,
@@ -156,12 +156,12 @@ unsafe fn tether_trump_landing(boma: &mut BattleObjectModuleAccessor, status_kin
         *FIGHTER_STATUS_KIND_LOSE,
         *FIGHTER_STATUS_KIND_ENTRY,
         /* *FIGHTER_STATUS_KIND_STANDBY*/].contains(&status_kind) {
-        VarModule::off_flag(boma.object(), vars::common::TETHER_HOGGED);
+        VarModule::off_flag(boma.object(), vars::common::instance::TETHER_HOGGED);
     }
 
     /*
     if prev_status_kind != *FIGHTER_STATUS_KIND_CLIFF_ROBBED {
-        VarModule::off_flag(boma.object(), vars::common::TETHER_HOGGED);
+        VarModule::off_flag(boma.object(), vars::common::instance::TETHER_HOGGED);
     }
     */
 }
