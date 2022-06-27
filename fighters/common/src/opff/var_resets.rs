@@ -27,76 +27,67 @@ unsafe fn var_resets(boma: &mut BattleObjectModuleAccessor) {
                                         *FIGHTER_STATUS_KIND_DAMAGE_FALL];
 
     // Up Special Cancel
-    if VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL) {
+    if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL) {
         if !boma.is_situation(*SITUATION_KIND_AIR)
         || boma.is_status_one_of(damage_statuses)
         || boma.is_status_one_of(death_statuses) {
-            VarModule::off_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL);
+            VarModule::off_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
         }
     }
 
     // Side Special Cancel
-    if VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL) {
+    if VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL) {
         if !boma.is_situation(*SITUATION_KIND_AIR)
         || boma.is_status_one_of(damage_statuses)
         || boma.is_status_one_of(death_statuses) {
-            VarModule::off_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL);
+            VarModule::off_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL);
         }
     }
 
     // Side Special Cancel (doesn't reset on hit)
-    if VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL_NO_HIT)
+    if VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT)
     && (!boma.is_situation(*SITUATION_KIND_AIR)
     || boma.is_status_one_of(death_statuses)) {
-        VarModule::off_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL_NO_HIT);
-    }
-
-    // Aerial Special Used
-    if VarModule::is_flag(boma.object(), vars::common::AIR_SPECIAL_USED) {
-        if !boma.is_situation(*SITUATION_KIND_AIR)
-        || boma.is_status_one_of(damage_statuses)
-        || boma.is_status_one_of(death_statuses) {
-            VarModule::off_flag(boma.object(), vars::common::AIR_SPECIAL_USED);
-        }
+        VarModule::off_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
     }
 
     // Up Special Wall Jump
-    if VarModule::is_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP) {
+    if VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP) {
         if !boma.is_situation(*SITUATION_KIND_AIR)
         || boma.is_status_one_of(death_statuses) {
-            VarModule::off_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP);
+            VarModule::off_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
         }
     }
 
     // Up Special Interrupt
-    if VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT) {
+    if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT) {
         if !boma.is_situation(*SITUATION_KIND_AIR)
         || boma.is_status_one_of(damage_statuses)
         || boma.is_status_one_of(death_statuses) {
-            VarModule::off_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT);
+            VarModule::off_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT);
         }
     }
 
     // Up Special Intterupt Airtime
-    if VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME) {
+    if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME) {
         if !boma.is_situation(*SITUATION_KIND_AIR)
         || boma.is_status_one_of(damage_statuses)
         || boma.is_status_one_of(death_statuses) {
-            VarModule::off_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME);
+            VarModule::off_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME);
         }
     }
 
     // Special Motion Reset
     if !boma.is_situation(*SITUATION_KIND_AIR)
     || boma.is_status_one_of(death_statuses) {
-        VarModule::off_flag(boma.object(), vars::common::SPECIAL_STALL);
-        VarModule::off_flag(boma.object(), vars::common::SPECIAL_STALL_USED);
+        VarModule::off_flag(boma.object(), vars::common::instance::SPECIAL_STALL);
+        VarModule::off_flag(boma.object(), vars::common::instance::SPECIAL_STALL_USED);
     }
 
     // Aerial Glide Toss Reset
     if !boma.is_situation(*SITUATION_KIND_AIR)
     || boma.is_status_one_of(death_statuses) {
-        VarModule::set_int(boma.object(), vars::common::AGT_USED_COUNTER, 0);
+        VarModule::set_int(boma.object(), vars::common::instance::AGT_USED_COUNTER, 0);
     }
 }
 

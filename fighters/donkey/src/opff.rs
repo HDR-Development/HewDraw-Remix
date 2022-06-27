@@ -21,13 +21,13 @@ extern "Rust" {
 
 // Barrel Timer Count
 unsafe fn barrel_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
-    let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER);
+    let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
     if gimmick_timerr > 0 && gimmick_timerr < 901 {
         if gimmick_timerr > 899 {
-            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
+            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
             gimmick_flash(boma);
         } else {
-            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, gimmick_timerr + 1);
+            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, gimmick_timerr + 1);
         }
     }
 }
@@ -35,14 +35,14 @@ unsafe fn barrel_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 // Barrel Timer Death Reset
 unsafe fn barrel_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
     if [*FIGHTER_STATUS_KIND_ENTRY, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_REBIRTH].contains(&status_kind) {
-        VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
+        VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
     }
 }
 
 // Training Mode Barrel Timer taunt reset
 unsafe fn barrel_training(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
-        VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
+        VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
     }
 }
 
@@ -73,22 +73,22 @@ unsafe fn headbutt_aerial_stall(fighter: &mut L2CFighterCommon, boma: &mut Battl
         let motion_value = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
         let motion_vec = Vector3f{x: 1.0, y: 0.0, z: 1.0};
         if situation_kind == *SITUATION_KIND_AIR {
-            if  !VarModule::is_flag(boma.object(), vars::common::SPECIAL_STALL_USED) {
+            if  !VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_STALL_USED) {
                 if frame < 25.0 {
                     if motion_value < 0.0 {
-                        VarModule::on_flag(boma.object(), vars::common::SPECIAL_STALL);
+                        VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_STALL);
                         KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                     }
                 }
             }
         }
     }
-    if VarModule::is_flag(boma.object(), vars::common::SPECIAL_STALL) && (status_kind != *FIGHTER_STATUS_KIND_SPECIAL_S || (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame >= 25.0)) {
-            VarModule::on_flag(boma.object(), vars::common::SPECIAL_STALL_USED);
-            VarModule::off_flag(boma.object(), vars::common::SPECIAL_STALL);
+    if VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_STALL) && (status_kind != *FIGHTER_STATUS_KIND_SPECIAL_S || (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame >= 25.0)) {
+            VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_STALL_USED);
+            VarModule::off_flag(boma.object(), vars::common::instance::SPECIAL_STALL);
     }
-    if situation_kind == *SITUATION_KIND_GROUND && VarModule::is_flag(boma.object(), vars::common::SPECIAL_STALL_USED) {
-        VarModule::off_flag(boma.object(), vars::common::SPECIAL_STALL_USED);
+    if situation_kind == *SITUATION_KIND_GROUND && VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_STALL_USED) {
+        VarModule::off_flag(boma.object(), vars::common::instance::SPECIAL_STALL_USED);
     }
 }
 
@@ -98,9 +98,9 @@ unsafe fn down_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut Battle
         *FIGHTER_DONKEY_STATUS_KIND_SPECIAL_LW_LOOP,
         *FIGHTER_DONKEY_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind) {
         if AttackModule::is_infliction(boma, 2) {
-            VarModule::on_flag(boma.object(), vars::common::SPECIAL_CHECKS);
+            VarModule::on_flag(boma.object(), vars::donkey::status::SPECIAL_CHECKS);
         }
-        if VarModule::is_flag(boma.object(), vars::common::SPECIAL_CHECKS) && frame > 5.0 {
+        if VarModule::is_flag(boma.object(), vars::donkey::status::SPECIAL_CHECKS) && frame > 5.0 {
             if boma.is_input_jump() {
                 if situation_kind == *SITUATION_KIND_AIR {
                     if boma.get_num_used_jumps() < boma.get_jump_count_max() {
@@ -112,7 +112,7 @@ unsafe fn down_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut Battle
             }
         }
     } else {
-        VarModule::off_flag(boma.object(), vars::common::SPECIAL_CHECKS);
+        VarModule::off_flag(boma.object(), vars::donkey::status::SPECIAL_CHECKS);
     }
 }
 

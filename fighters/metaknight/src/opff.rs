@@ -20,13 +20,13 @@ unsafe fn flag_resets(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
     
     if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
         if status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_N_SPIN {
-            VarModule::on_flag(boma.object(), vars::common::NEUTRAL_SPECIAL_HIT);
+            VarModule::on_flag(boma.object(), vars::metaknight::instance::NEUTRAL_SPECIAL_HIT);
         } else if status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_RUSH || status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END {
-            VarModule::on_flag(boma.object(), vars::common::SIDE_SPECIAL_HIT);
+            VarModule::on_flag(boma.object(), vars::metaknight::instance::SIDE_SPECIAL_HIT);
         } else if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_HI_LOOP].contains(&status_kind) {
-            VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_HIT);
+            VarModule::on_flag(boma.object(), vars::metaknight::instance::UP_SPECIAL_HIT);
         } else if status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_ATTACK {
-            VarModule::on_flag(boma.object(), vars::common::DOWN_SPECIAL_HIT);
+            VarModule::on_flag(boma.object(), vars::metaknight::instance::DOWN_SPECIAL_HIT);
         }
     }
 }
@@ -34,12 +34,12 @@ unsafe fn flag_resets(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
 // Transition to fall
 unsafe fn transition_fall(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_FALL_SPECIAL {
-        // println!("Side special hit: {}", VarModule::is_flag(boma.object(), vars::common::NEUTRAL_SPECIAL_HIT));
+        // println!("Side special hit: {}", VarModule::is_flag(boma.object(), vars::metaknight::instance::NEUTRAL_SPECIAL_HIT));
         let prev_status = StatusModule::prev_status_kind(boma, 0);
-        if (prev_status == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_N_END && VarModule::is_flag(boma.object(), vars::common::NEUTRAL_SPECIAL_HIT))
-            || (prev_status == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END && VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_HIT))
-            || (prev_status == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_HI_LOOP && VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_HIT))
-            || ([*FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_END, *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_ATTACK].contains(&prev_status) && VarModule::is_flag(boma.object(), vars::common::DOWN_SPECIAL_HIT)) {
+        if (prev_status == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_N_END && VarModule::is_flag(boma.object(), vars::metaknight::instance::NEUTRAL_SPECIAL_HIT))
+            || (prev_status == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END && VarModule::is_flag(boma.object(), vars::metaknight::instance::SIDE_SPECIAL_HIT))
+            || (prev_status == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_HI_LOOP && VarModule::is_flag(boma.object(), vars::metaknight::instance::UP_SPECIAL_HIT))
+            || ([*FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_END, *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_ATTACK].contains(&prev_status) && VarModule::is_flag(boma.object(), vars::metaknight::instance::DOWN_SPECIAL_HIT)) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
         }
     }
@@ -62,10 +62,10 @@ unsafe fn reset_flags(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
             *FIGHTER_STATUS_KIND_WIN,
             *FIGHTER_STATUS_KIND_LOSE,
             *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-            VarModule::off_flag(boma.object(), vars::common::NEUTRAL_SPECIAL_HIT);
-            VarModule::off_flag(boma.object(), vars::common::SIDE_SPECIAL_HIT);
-            VarModule::off_flag(boma.object(), vars::common::UP_SPECIAL_HIT);
-            VarModule::off_flag(boma.object(), vars::common::DOWN_SPECIAL_HIT);
+            VarModule::off_flag(boma.object(), vars::metaknight::instance::NEUTRAL_SPECIAL_HIT);
+            VarModule::off_flag(boma.object(), vars::metaknight::instance::SIDE_SPECIAL_HIT);
+            VarModule::off_flag(boma.object(), vars::metaknight::instance::UP_SPECIAL_HIT);
+            VarModule::off_flag(boma.object(), vars::metaknight::instance::DOWN_SPECIAL_HIT);
     }
 }
 

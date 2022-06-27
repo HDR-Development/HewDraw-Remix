@@ -3,10 +3,10 @@ use super::*;
 #[status_script(agent = "luigi", status = FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe fn special_s_charge_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_INSTANCE_WORK_ID_FLAG_SPECIAL_S_CHARGE_MELEE_NO_RANDOM) {
-        let should_do_effect = if VarModule::is_flag(fighter.battle_object, vars::luigi::IS_MISFIRE_STORED) {
-            VarModule::off_flag(fighter.battle_object, vars::luigi::IS_MISFIRE_STORED);
+        let should_do_effect = if VarModule::is_flag(fighter.battle_object, vars::luigi::instance::IS_MISFIRE_STORED) {
+            VarModule::off_flag(fighter.battle_object, vars::luigi::instance::IS_MISFIRE_STORED);
             true
-        } else if VarModule::countdown_int(fighter.battle_object, vars::luigi::REMAINING_SPECIAL_S_UNTIL_MISFIRE, 0) {
+        } else if VarModule::countdown_int(fighter.battle_object, vars::luigi::instance::REMAINING_SPECIAL_S_UNTIL_MISFIRE, 0) {
             super::calculate_misfire_number(fighter);
             true
         } else {
@@ -76,21 +76,21 @@ unsafe extern "C" fn special_s_charge_main_loop(fighter: &mut L2CFighterCommon) 
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE)
         && fighter.global_table[globals::CURRENT_FRAME].get_i32() >= 3
         && fighter.is_button_on(Buttons::Guard | Buttons::GuardHold) {
-            VarModule::on_flag(fighter.battle_object, vars::luigi::IS_MISFIRE_STORED);
-            let mult = VarModule::get_float(fighter.battle_object, vars::luigi::MISFIRE_DAMAGE_MULTIPLIER);
+            VarModule::on_flag(fighter.battle_object, vars::luigi::instance::IS_MISFIRE_STORED);
+            let mult = VarModule::get_float(fighter.battle_object, vars::luigi::instance::MISFIRE_DAMAGE_MULTIPLIER);
             let diminish_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "misfire.storage_diminish_mul");
             let diminish_min = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "misfire.storage_diminish_min");
-            VarModule::set_float(fighter.battle_object, vars::luigi::MISFIRE_DAMAGE_MULTIPLIER, (mult * diminish_mul).max(diminish_min));
+            VarModule::set_float(fighter.battle_object, vars::luigi::instance::MISFIRE_DAMAGE_MULTIPLIER, (mult * diminish_mul).max(diminish_min));
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE);
-            let smoke_eff = VarModule::get_int(fighter.battle_object, vars::luigi::CHARGE_SMOKE_EFFECT_HANDLE);
-            let pulse_eff = VarModule::get_int(fighter.battle_object, vars::luigi::CHARGE_PULSE_EFFECT_HANDLE);
+            let smoke_eff = VarModule::get_int(fighter.battle_object, vars::luigi::instance::CHARGE_SMOKE_EFFECT_HANDLE);
+            let pulse_eff = VarModule::get_int(fighter.battle_object, vars::luigi::instance::CHARGE_PULSE_EFFECT_HANDLE);
             if smoke_eff != -1 {
                 EffectModule::kill(fighter.module_accessor, smoke_eff as u32, true, true);
-                VarModule::set_int(fighter.battle_object, vars::luigi::CHARGE_SMOKE_EFFECT_HANDLE, -1);
+                VarModule::set_int(fighter.battle_object, vars::luigi::instance::CHARGE_SMOKE_EFFECT_HANDLE, -1);
             }
             if pulse_eff != -1 {
                 EffectModule::kill(fighter.module_accessor, pulse_eff as u32, true, true);
-                VarModule::set_int(fighter.battle_object, vars::luigi::CHARGE_PULSE_EFFECT_HANDLE, -1);
+                VarModule::set_int(fighter.battle_object, vars::luigi::instance::CHARGE_PULSE_EFFECT_HANDLE, -1);
                 EFFECT_FOLLOW(fighter, Hash40::new("luigi_rocket_hold"), Hash40::new("top"), 0, 6, 0,  0, 1, 0, 1, true);
             }
         }
@@ -102,8 +102,8 @@ unsafe extern "C" fn special_s_charge_main_loop(fighter: &mut L2CFighterCommon) 
 
 #[status_script(agent = "luigi", status = FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_s_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::set_int(fighter.battle_object, vars::luigi::CHARGE_SMOKE_EFFECT_HANDLE, -1); 
-    VarModule::set_int(fighter.battle_object, vars::luigi::CHARGE_PULSE_EFFECT_HANDLE, -1);
+    VarModule::set_int(fighter.battle_object, vars::luigi::instance::CHARGE_SMOKE_EFFECT_HANDLE, -1); 
+    VarModule::set_int(fighter.battle_object, vars::luigi::instance::CHARGE_PULSE_EFFECT_HANDLE, -1);
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_BONUS) {
         WorkModule::set_float(fighter.module_accessor, WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("charge_bonus")), *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
     } else {

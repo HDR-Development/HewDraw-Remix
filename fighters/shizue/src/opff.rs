@@ -57,17 +57,17 @@ unsafe fn balloon_cancel(fighter: &mut L2CFighterCommon) {
             // Check if the user canceled before the initial swing, punishing them by setting their fuel to 0, else set their fuel to 80% of what they had
             if !fighter.is_motion_one_of(&[Hash40::new("special_hi"), Hash40::new("special_air_hi")]) {
                 if WorkModule::get_float(fighter.module_accessor, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME) > 100.0 {
-                    VarModule::set_float(fighter.object(), vars::shizue::STORED_BALLOON_POWER, WorkModule::get_float(fighter.module_accessor, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME) - 100.0);
+                    VarModule::set_float(fighter.object(), vars::shizue::instance::STORED_BALLOON_POWER, WorkModule::get_float(fighter.module_accessor, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME) - 100.0);
                 }
                 else {
-                    VarModule::set_float(fighter.object(), vars::shizue::STORED_BALLOON_POWER, 1.0);
+                    VarModule::set_float(fighter.object(), vars::shizue::instance::STORED_BALLOON_POWER, 1.0);
                 }
-                VarModule::on_flag(fighter.object(), vars::shizue::IS_NOT_QUICK_RELEASE);
+                VarModule::on_flag(fighter.object(), vars::shizue::status::IS_NOT_QUICK_RELEASE);
                 EffectModule::req_follow(fighter.module_accessor, Hash40::new("shizue_putaway_catch"), Hash40::new("bust"), &Vector3f::zero(), &Vector3f::zero(), 0.8, true, 0, 0, 0, 0, 0, false, false);
             } 
             else {
-                VarModule::off_flag(fighter.object(), vars::shizue::IS_NOT_QUICK_RELEASE);
-                VarModule::set_float(fighter.object(), vars::shizue::STORED_BALLOON_POWER, 1.0);
+                VarModule::off_flag(fighter.object(), vars::shizue::status::IS_NOT_QUICK_RELEASE);
+                VarModule::set_float(fighter.object(), vars::shizue::instance::STORED_BALLOON_POWER, 1.0);
                 EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_damage_aura"), Hash40::new("bust"), &Vector3f::zero(), &Vector3f::zero(), 0.8, true, 0, 0, 0, 0, 0, false, false);
             }
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH, true);

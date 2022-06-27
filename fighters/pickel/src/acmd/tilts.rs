@@ -422,15 +422,15 @@ unsafe fn pickel_attack_lw3_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
-        VarModule::off_flag(boma.object(), vars::common::IS_HEAVY_ATTACK);
+        VarModule::off_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK);
     }
     FT_MOTION_RATE(fighter, 8.0);
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK){
-            VarModule::on_flag(boma.object(), vars::common::IS_HEAVY_ATTACK);
+            VarModule::on_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK);
         }
-        if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 12.0/(3.0-2.0));
         }
         else{
@@ -446,7 +446,7 @@ unsafe fn pickel_attack_lw3_game(fighter: &mut L2CAgentBase) {
         if !ArticleModule::is_exist(boma,  *FIGHTER_PICKEL_GENERATE_ARTICLE_FIRE){
             ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FIRE, false, 0);
         }
-        if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 1.0);
             //FT_MOTION_RATE(fighter, 25.0/(30.0-5.0));
         }
@@ -456,7 +456,7 @@ unsafe fn pickel_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 30.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
             //FT_MOTION_RATE(fighter, 2.0);
             FT_MOTION_RATE(fighter, 0.5);
         }
@@ -472,7 +472,7 @@ unsafe fn pickel_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();    
     frame(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
             EFFECT(fighter, Hash40::new("pickel_flint"), Hash40::new("haver"), 1, 7.2, 1, 0, 0, 0, 1.75, 0, 0, 0, 0, 0, 0, true);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.075, false);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1.0, false);
@@ -484,7 +484,7 @@ unsafe fn pickel_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
             FOOT_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -2, 0, -2, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
         }
         else{

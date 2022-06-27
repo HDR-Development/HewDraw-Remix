@@ -29,7 +29,7 @@ unsafe fn land_cancel_flags(boma: &mut BattleObjectModuleAccessor, fighter_kind:
         //if motion_kind == hash40("special_hi") {
         if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END /*Spin attack release*/].contains(&status_kind) && situation_kind == *SITUATION_KIND_GROUND {
             //println!(" === SPIN ATTACK LAND CANCEL FLAG SET");
-            VarModule::on_flag(boma.object(), vars::common::SPIN_ATTACK_LAND_CANCEL);
+            VarModule::on_flag(boma.object(), vars::common::instance::SPIN_ATTACK_LAND_CANCEL);
         }
 
         //println!("status_kind: {}", status_kind);
@@ -38,13 +38,13 @@ unsafe fn land_cancel_flags(boma: &mut BattleObjectModuleAccessor, fighter_kind:
         //if !([hash40("special_hi"), hash40("special_air_hi")].contains(&motion_kind)) {
         if ![*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END /*Spin attack release*/, *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL].contains(&status_kind){
             //println!(" === SPIN ATTACK LAND CANCEL FLAG UN-SET");
-            VarModule::off_flag(boma.object(), vars::common::SPIN_ATTACK_LAND_CANCEL);
+            VarModule::off_flag(boma.object(), vars::common::instance::SPIN_ATTACK_LAND_CANCEL);
         }
         /*
         // Logging to check status kinds for up B
         if [*FIGHTER_STATUS_KIND_SPECIAL_HI, 465 /*Spin attack release*/].contains(&status_kind){
             println!(" ====== IN A SPECIAL_HI STATUS");
-            VarModule::off_flag(boma.object(), vars::common::SPIN_ATTACK_LAND_CANCEL);
+            VarModule::off_flag(boma.object(), vars::common::instance::SPIN_ATTACK_LAND_CANCEL);
         }
         */
     }
@@ -79,10 +79,10 @@ unsafe fn up_special_land_cancel(boma: &mut BattleObjectModuleAccessor, fighter_
     // not including Link bc this stuff is handled within his status scripts
     if fighter_kind != *FIGHTER_KIND_LINK {
         //println!("LINK BOIS");
-        if VarModule::is_flag(boma.object(), vars::common::SPIN_ATTACK_LAND_CANCEL){
+        if VarModule::is_flag(boma.object(), vars::common::instance::SPIN_ATTACK_LAND_CANCEL){
             //println!(" === CAN LAND CANCEL SPIN ATTACK");
         }
-        if status_kind == *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL && VarModule::is_flag(boma.object(), vars::common::SPIN_ATTACK_LAND_CANCEL) {
+        if status_kind == *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL && VarModule::is_flag(boma.object(), vars::common::instance::SPIN_ATTACK_LAND_CANCEL) {
             //println!(" ======= Spin Attack has been LAND CANCELED");
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, true);
         }

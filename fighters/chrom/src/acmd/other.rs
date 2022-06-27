@@ -71,7 +71,7 @@ unsafe fn chrom_appeallw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         if boma.is_button_on(Buttons::AppealHi) {
-            VarModule::on_flag(fighter.battle_object, vars::chrom::TRAIL_EFFECT);
+            VarModule::on_flag(fighter.battle_object, vars::chrom::instance::TRAIL_EFFECT);
         }
     }
     
