@@ -171,6 +171,11 @@ unsafe fn status_end_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     //println!("end");
     InputModule::disable_persist(fighter.battle_object);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
+    VarModule::off_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+    VarModule::off_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE);
+    VarModule::off_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE_SECOND);
+    VarModule::set_int(fighter.battle_object, vars::common::JUMP_SQUAT_FRAME, 0);
+    VarModule::off_flag(fighter.battle_object, vars::common::IS_TAP_JUMP);
     0.into()
 }
 
@@ -250,17 +255,6 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
     if fighter.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, *FIGHTER_STATUS_KIND_GUARD_OFF]) {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH);
     }
-
-    let magnet_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "air_escape_snap_frame");
-    VarModule::set_int(fighter.battle_object, vars::common::AIR_ESCAPE_MAGNET_FRAME, magnet_frame);
-    // println!("magnet_frame {}", magnet_frame);
-    VarModule::off_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_MAGNET);
-    
-    VarModule::off_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_JUMPSQUAT);
-    VarModule::off_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE);
-    VarModule::off_flag(fighter.battle_object, vars::common::CSTICK_OVERRIDE_SECOND);
-    VarModule::set_int(fighter.battle_object, vars::common::JUMP_SQUAT_FRAME, 0);
-    VarModule::off_flag(fighter.battle_object, vars::common::IS_TAP_JUMP);
 }
 
 // The main exec block, for some reason it's not found in the exec status

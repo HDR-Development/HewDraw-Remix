@@ -70,6 +70,7 @@ unsafe fn map_controls_hook(
     if (*out).buttons.contains(Buttons::CStickOn) && (*mappings.add(player_idx as usize))._34[0] != entry_count {
         (*out).rstick_x = (controller.left_stick_x * (i8::MAX as f32)) as i8;
         (*out).rstick_y = (controller.left_stick_y * (i8::MAX as f32)) as i8;
+        (*out).buttons |= Buttons::CStickOverride;
     } else {
         (*out).rstick_x = (controller.right_stick_x * (i8::MAX as f32)) as i8;
         (*out).rstick_y = (controller.right_stick_y * (i8::MAX as f32)) as i8;

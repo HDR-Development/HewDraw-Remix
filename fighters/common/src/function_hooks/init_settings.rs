@@ -36,6 +36,41 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
     let fix = super::edge_slipoffs::init_settings_edges(boma, situation, arg3, arg4, ground_cliff_check_kind, arg6, arg7, arg8, arg9, arg10);
 
     if boma.is_fighter() {
+        
+        // Handles "fake" ECB shift on landing
+        // Because our aerial ECB shift code currently runs in opff, it runs a frame "late"
+        // which causes characters to appear stuck halfway into the ground on the first frame they land
+        // so we need to re-shift your character back up to the proper height on that single frame
+        // this is a "fake" ECB shift for 1 frame
+        if !(&[
+            *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
+            *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
+            *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
+            *FIGHTER_STATUS_KIND_CAPTURE_CUT,
+            *FIGHTER_STATUS_KIND_THROWN
+        ]).contains(&StatusModule::prev_status_kind(boma, 1))
+        && !boma.is_prev_status_one_of(&[
+            *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
+            *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
+            *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
+            *FIGHTER_STATUS_KIND_CAPTURE_CUT,
+            *FIGHTER_STATUS_KIND_ENTRY,
+            *FIGHTER_STATUS_KIND_THROWN,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+            *FIGHTER_STATUS_KIND_DAMAGE_FALL,
+            *FIGHTER_STATUS_KIND_TREAD_DAMAGE_AIR,
+            *FIGHTER_STATUS_KIND_BURY,
+            *FIGHTER_STATUS_KIND_BURY_WAIT,
+            *FIGHTER_STATUS_KIND_ESCAPE_AIR
+        ]) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
+        && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND) {
+            boma.shift_ecb_on_landing();
+        }
 
         // Disable wiggle out of tumble flag during damage_fly states
         if [*FIGHTER_STATUS_KIND_DAMAGE_FLY,

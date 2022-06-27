@@ -266,7 +266,12 @@ unsafe fn drift_di(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
             speed_mul += ratio * speed_mul_add_max;
         }
 
-        let drift_value = boma.stick_x() * speed_mul;
+        let current_damage = DamageModule::damage(boma, 0);
+        println!("Current damage: {}", current_damage);
+        let percent_mul = (1.0 - (current_damage / 100.0) * ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.drift_reduction_mul_at_100")).max(0.0);
+        println!("percent based multiplier: {}", percent_mul);
+
+        let drift_value = boma.stick_x() * speed_mul * percent_mul;
         fighter.set_speed(Vector2f::new(speed_x + drift_value, speed_y), *FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
     }
 }
