@@ -62,8 +62,7 @@ pub unsafe fn change_kinetic_momentum_related(boma: &mut smash::app::BattleObjec
     let prev_status_kind = StatusModule::prev_status_kind(boma, 0);
     let situation_kind = StatusModule::situation_kind(boma);
     let fighter_kind = boma.kind();
-    if (([*FIGHTER_KIND_CAPTAIN, *FIGHTER_KIND_FALCO, *FIGHTER_KIND_FOX, *FIGHTER_KIND_GAMEWATCH, *FIGHTER_KIND_WOLF].contains(&fighter_kind) && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N)
-    || ( fighter_kind == *FIGHTER_KIND_GAMEWATCH && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S ))
+    if (([*FIGHTER_KIND_CAPTAIN, *FIGHTER_KIND_FALCO, *FIGHTER_KIND_FOX, *FIGHTER_KIND_GAMEWATCH, *FIGHTER_KIND_WOLF].contains(&fighter_kind) && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N))
         && situation_kind == *SITUATION_KIND_AIR && [*FIGHTER_STATUS_KIND_JUMP, *FIGHTER_STATUS_KIND_JUMP_SQUAT].contains(&prev_status_kind) {
         return Some(-1);
     }

@@ -112,6 +112,9 @@ unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
                 VarModule::set_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS, sh_amount);
                 offset = sh_amount;
             }
+            else {
+                offset = 0.0;
+            }
 
         } else if boma.is_situation(*SITUATION_KIND_GROUND) {
             offset = 0.0;
@@ -119,6 +122,9 @@ unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
             offset = VarModule::get_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS);
         }
         GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, offset));
+    }
+    else {
+        GroundModule::set_rhombus_offset(boma, &Vector2f::zero());
     }
     
 }

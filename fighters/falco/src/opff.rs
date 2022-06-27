@@ -35,10 +35,10 @@ unsafe fn shine_jc_turnaround(boma: &mut BattleObjectModuleAccessor, status_kind
         let fighter_gravity = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut FighterKineticEnergyGravity;
         if situation_kind == *SITUATION_KIND_AIR {
             if frame <= 1.0{
-                KineticModule::mul_speed(boma, &Vector3f::new(0.5, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                KineticModule::mul_speed(boma, &Vector3f::new(0.0, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             }
             if frame > 1.0 && frame <= 3.0 {
-                KineticModule::mul_speed(boma, &Vector3f::new(0.5, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                KineticModule::mul_speed(boma, &Vector3f::new(0.0, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             }
             if frame > 3.0 {
                 smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.02666667);
@@ -98,13 +98,6 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
 pub fn falco_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-        println!(
-            "Stick: [{:.2}, {:.2}], SubStick: [{:.2}, {:.2}]",
-            ControlModule::get_stick_x(fighter.module_accessor),
-            ControlModule::get_stick_y(fighter.module_accessor),
-            ControlModule::get_sub_stick_x(fighter.module_accessor),
-            ControlModule::get_sub_stick_y(fighter.module_accessor),
-        );
 		falco_frame(fighter)
     }
 }
