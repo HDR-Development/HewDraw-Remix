@@ -238,7 +238,7 @@ unsafe fn kazuya_lightning_uppercut_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
-        if VarModule::is_flag(boma.object(), vars::demon::LIGHTNING_SCREW_UPPERCUT){
+        if VarModule::is_flag(boma.object(), vars::demon::instance::LIGHTNING_SCREW_UPPERCUT){
             FT_MOTION_RATE(fighter, 10.0/(19.0-7.0));
         }
     }

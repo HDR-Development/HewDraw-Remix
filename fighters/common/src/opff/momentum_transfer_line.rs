@@ -29,28 +29,28 @@ pub unsafe fn momentum_transfer_helper(fighter: &mut L2CFighterCommon, lua_state
 		|| (fighter_kind == *FIGHTER_KIND_ELIGHT && status_kind == *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_LW_OUT) 
 		|| status_kind == *FIGHTER_STATUS_KIND_REBIRTH {
 		let ratio = (WorkModule::get_param_float(boma, hash40("jump_speed_x_max"), 0) / WorkModule::get_param_float(boma, hash40("run_speed_max"), 0));
-		VarModule::set_float(fighter.battle_object, vars::common::JUMP_SPEED_RATIO, ratio);
+		VarModule::set_float(fighter.battle_object, vars::common::instance::JUMP_SPEED_RATIO, ratio);
 	}
 
 	if [*FIGHTER_STATUS_KIND_TURN_RUN, *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE].contains(&status_kind) {
-        VarModule::set_float(boma.object(), vars::common::RAR_LENIENCY, (0.8*(MotionModule::end_frame(boma) - MotionModule::frame(boma)*2.0 + 6.0)/MotionModule::end_frame(boma)).clamp(0.1, 0.8)); // You have a limited amount of time to get full RAR momentum from turn brake or run brake, with a 3F leniency
+        VarModule::set_float(boma.object(), vars::common::instance::RAR_LENIENCY, (0.8*(MotionModule::end_frame(boma) - MotionModule::frame(boma)*2.0 + 6.0)/MotionModule::end_frame(boma)).clamp(0.1, 0.8)); // You have a limited amount of time to get full RAR momentum from turn brake or run brake, with a 3F leniency
     }
 
     if situation_kind == *SITUATION_KIND_GROUND {
-        VarModule::set_float(boma.object(), vars::common::GROUND_VEL, KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN));
+        VarModule::set_float(boma.object(), vars::common::instance::GROUND_VEL, KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN));
     }
 
-	if fighter_kind == *FIGHTER_KIND_PICKEL && [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT].contains(&status_kind) && VarModule::get_int(boma.object(), vars::common::JUMP_SQUAT_FRAME) < WorkModule::get_param_int(boma, hash40("jump_squat_frame"), 0) {
-		VarModule::set_float(boma.object(), vars::common::JUMPSQUAT_VELOCITY, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
+	if fighter_kind == *FIGHTER_KIND_PICKEL && [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT].contains(&status_kind) && VarModule::get_int(boma.object(), vars::common::instance::JUMP_SQUAT_FRAME) < WorkModule::get_param_int(boma, hash40("jump_squat_frame"), 0) {
+		VarModule::set_float(boma.object(), vars::common::instance::JUMPSQUAT_VELOCITY, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
 	}
 
-	if fighter_kind == *FIGHTER_KIND_TANTAN && [*FIGHTER_TANTAN_STATUS_KIND_ATTACK_JUMP_SQUAT].contains(&status_kind) && VarModule::get_int(boma.object(), vars::common::JUMP_SQUAT_FRAME) < WorkModule::get_param_int(boma, hash40("jump_squat_frame"), 0) {
-		VarModule::set_float(boma.object(), vars::common::JUMPSQUAT_VELOCITY, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
+	if fighter_kind == *FIGHTER_KIND_TANTAN && [*FIGHTER_TANTAN_STATUS_KIND_ATTACK_JUMP_SQUAT].contains(&status_kind) && VarModule::get_int(boma.object(), vars::common::instance::JUMP_SQUAT_FRAME) < WorkModule::get_param_int(boma, hash40("jump_squat_frame"), 0) {
+		VarModule::set_float(boma.object(), vars::common::instance::JUMPSQUAT_VELOCITY, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
 	}
 
 	if KineticModule::get_kinetic_type(boma) == *FIGHTER_KINETIC_TYPE_JUMP {
-		if !VarModule::is_flag(boma.object(), vars::common::JUMP_NEXT) {
-			VarModule::on_flag(boma.object(), vars::common::JUMP_NEXT);
+		if !VarModule::is_flag(boma.object(), vars::common::instance::JUMP_NEXT) {
+			VarModule::on_flag(boma.object(), vars::common::instance::JUMP_NEXT);
 			/* Moves that should bypass the momentum logic (in terms of the jump status script) */
 			const MOMENTUM_EXCEPTION_MOVES: [smash::lib::LuaConst ; 1] = [
 				FIGHTER_SONIC_STATUS_KIND_SPIN_JUMP
@@ -63,12 +63,12 @@ pub unsafe fn momentum_transfer_helper(fighter: &mut L2CFighterCommon, lua_state
 				app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
 				fighter.clear_lua_stack();
 				//println!("Post-jump horizontal velocity: {}", new_speed);
-				VarModule::set_float(fighter.battle_object, vars::common::CURRENT_MOMENTUM, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN)); // Set the current momentum to what was just calculated
+				VarModule::set_float(fighter.battle_object, vars::common::instance::CURRENT_MOMENTUM, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN)); // Set the current momentum to what was just calculated
 			}
 		}
 	}
 	else {
-		VarModule::off_flag(boma.object(), vars::common::JUMP_NEXT);
+		VarModule::off_flag(boma.object(), vars::common::instance::JUMP_NEXT);
 	}
 }
 
@@ -87,7 +87,7 @@ unsafe fn additional_momentum_transfer_moves(fighter: &mut L2CFighterCommon, lua
 
 		if should_conserve_special_momentum && (KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN)).abs() > 0.0 {
 			if *FIGHTER_STATUS_KIND_JUMP == StatusModule::prev_status_kind(boma, 0) {
-				let new_speed = VarModule::get_float(fighter.battle_object, vars::common::CURRENT_MOMENTUM_SPECIALS);
+				let new_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURRENT_MOMENTUM_SPECIALS);
 				fighter.clear_lua_stack();
 				lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, new_speed);
 				app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);

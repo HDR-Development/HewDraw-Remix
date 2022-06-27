@@ -743,7 +743,7 @@ impl BomaExt for BattleObjectModuleAccessor {
         }
     
         // must check this because it is for allowing the player to screw up a perfect WD and be punished with a non-perfect WD (otherwise they'd have like, 8 frames for perfect WD lol)
-        if !crate::VarModule::is_flag(self.object(), crate::consts::vars::common::ENABLE_AIR_ESCAPE_MAGNET) {
+        if !crate::VarModule::is_flag(self.object(), crate::consts::vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET) {
             return false;
         }
     
@@ -799,7 +799,7 @@ impl BomaExt for BattleObjectModuleAccessor {
                     y: PostureModule::pos_y(self),
                     z: PostureModule::pos_z(self)
                 };
-                fighter_pos.y += crate::VarModule::get_float(self.object(), crate::consts::vars::common::ECB_Y_OFFSETS);
+                fighter_pos.y += crate::VarModule::get_float(self.object(), crate::consts::vars::common::instance::ECB_Y_OFFSETS);
                 PostureModule::set_pos(self, &fighter_pos);
             }
         }

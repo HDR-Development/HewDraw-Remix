@@ -135,16 +135,16 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_Landing)]
 pub unsafe fn status_pre_Landing(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let id = VarModule::get_int(fighter.battle_object, vars::common::COSTUME_SLOT_NUMBER) as usize;
+    let id = VarModule::get_int(fighter.battle_object, vars::common::instance::COSTUME_SLOT_NUMBER) as usize;
     let mut fighter_pos = Vector3f {
         x: PostureModule::pos_x(fighter.module_accessor),
         y: PostureModule::pos_y(fighter.module_accessor),
         z: PostureModule::pos_z(fighter.module_accessor)
     };
-    fighter_pos.y += VarModule::get_float(fighter.object(), vars::common::ECB_Y_OFFSETS);
-    VarModule::set_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR, GroundModule::get_distance_to_floor(fighter.module_accessor, &fighter_pos, fighter_pos.y, true));
-    let dist = VarModule::get_float(fighter.battle_object, vars::common::GET_DIST_TO_FLOOR);
-    if (0.0 <= dist || VarModule::is_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_MAGNET)) && dist < 0.1 {
+    fighter_pos.y += VarModule::get_float(fighter.object(), vars::common::instance::ECB_Y_OFFSETS);
+    VarModule::set_float(fighter.battle_object, vars::common::instance::GET_DIST_TO_FLOOR, GroundModule::get_distance_to_floor(fighter.module_accessor, &fighter_pos, fighter_pos.y, true));
+    let dist = VarModule::get_float(fighter.battle_object, vars::common::instance::GET_DIST_TO_FLOOR);
+    if (0.0 <= dist || VarModule::is_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET)) && dist < 0.1 {
         if dist != -1.0 {
             PostureModule::set_pos(fighter.module_accessor, &fighter_pos);
         }

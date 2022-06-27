@@ -161,11 +161,11 @@ unsafe extern "C" fn sub_attack_air_n(fighter: &mut L2CFighterCommon) {
 pub unsafe fn init_attack_air_n(fighter: &mut L2CFighterCommon) -> L2CValue {
     sub_attack_air_n(fighter);
     // Momentum transfer stuff
-    let ratio = VarModule::get_float(fighter.object(), vars::common::JUMP_SPEED_RATIO);
+    let ratio = VarModule::get_float(fighter.object(), vars::common::instance::JUMP_SPEED_RATIO);
     let jump_speed_x_max = WorkModule::get_param_float(fighter.module_accessor, hash40("run_speed_max"), 0) * ratio;
 
     let mut l2c_agent = smash::lib::L2CAgent::new(fighter.lua_state_agent);
-    let new_speed = VarModule::get_float(fighter.object(), vars::common::CURRENT_MOMENTUM).clamp(-jump_speed_x_max, jump_speed_x_max);
+    let new_speed = VarModule::get_float(fighter.object(), vars::common::instance::CURRENT_MOMENTUM).clamp(-jump_speed_x_max, jump_speed_x_max);
 
     if StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_JUMP {
         fighter.clear_lua_stack();
@@ -247,11 +247,11 @@ unsafe extern "C" fn sub_attack_air_f(fighter: &mut L2CFighterCommon) {
 pub unsafe fn init_attack_air_f(fighter: &mut L2CFighterCommon) -> L2CValue {
     sub_attack_air_f(fighter);
     // Momentum transfer stuff
-    let ratio = VarModule::get_float(fighter.object(), vars::common::JUMP_SPEED_RATIO);
+    let ratio = VarModule::get_float(fighter.object(), vars::common::instance::JUMP_SPEED_RATIO);
     let jump_speed_x_max = WorkModule::get_param_float(fighter.module_accessor, hash40("run_speed_max"), 0) * ratio;
 
     let mut l2c_agent = smash::lib::L2CAgent::new(fighter.lua_state_agent);
-    let new_speed = VarModule::get_float(fighter.object(), vars::common::CURRENT_MOMENTUM).clamp(-jump_speed_x_max, jump_speed_x_max);
+    let new_speed = VarModule::get_float(fighter.object(), vars::common::instance::CURRENT_MOMENTUM).clamp(-jump_speed_x_max, jump_speed_x_max);
 
     if StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_JUMP {
         fighter.clear_lua_stack();
@@ -266,6 +266,6 @@ pub unsafe fn init_attack_air_f(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "trail", status = FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 pub unsafe fn end_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, vars::trail::STOP_SIDE_SPECIAL);
+    VarModule::off_flag(fighter.battle_object, vars::trail::status::STOP_SIDE_SPECIAL);
     0.into()
 }
