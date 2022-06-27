@@ -16,9 +16,10 @@
     <float hash="general_flick_y_sens">-0.66</float>
     <struct hash="drift_di">
         <float hash="speed_mul_base">0.005</float>
-        <float hash="speed_mul_add_max">0.005</float>
+        <float hash="speed_mul_add_max">0.0025</float>
         <float hash="speed_lerp_min">0.35</float>
         <float hash="speed_lerp_max">1.5</float>
+        <float hash="drift_reduction_mul_at_100">0.25</float>
     </struct>
     <float hash="glide_toss_cancel_frame">6</float>
     <float hash="waveland_pass_neutral_sens">-0.66</float>

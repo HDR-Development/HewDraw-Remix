@@ -21,3 +21,4 @@ plugin/hdr_version.txt
 scripts/artifacts/upgrade_deletions.txt
 **/upgrade/
 **/upgrade_artifacts/
+.DS_Store
