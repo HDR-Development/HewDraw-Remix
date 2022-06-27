@@ -35,10 +35,10 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.4);
     }
-	frame(lua_state, 11.0); // Effectively F15
+    frame(lua_state, 11.0); // Effectively F15
     if is_excute(fighter) {
-		FT_MOTION_RATE(fighter, 1.0);
-		WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
+	    FT_MOTION_RATE(fighter, 1.0);
+	    WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
     
 }
@@ -73,10 +73,19 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0); // Effectively F15
     if is_excute(fighter) {
-		FT_MOTION_RATE(fighter, 1.0);
+	    FT_MOTION_RATE(fighter, 1.0);
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
     }
     
+}
+
+#[acmd_script( agent = "pichu_dengekidama", script = "game_regular" , category = ACMD_GAME , low_priority)]
+unsafe fn pichu_dengekidama_game_regular(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 75, 50, 0, 35, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4.5, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+    }
 }
 
 pub fn install() {
@@ -85,6 +94,7 @@ pub fn install() {
         dash_game,
         //dash_effect,
         turn_dash_game,
+        pichu_dengekidama_game_regular,
     );
 }
 
