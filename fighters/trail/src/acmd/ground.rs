@@ -7,7 +7,7 @@ unsafe fn sora_attack_11_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::trail::ATTACK_12_INTO_S3);
+        VarModule::off_flag(fighter.battle_object, vars::trail::instance::ATTACK_12_INTO_S3);
         MotionModule::set_rate(boma, 2.0);
     }
     frame(lua_state, 6.0);

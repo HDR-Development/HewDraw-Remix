@@ -21,7 +21,7 @@ unsafe fn holy_water_ac_b_rev(fighter: &mut L2CFighterCommon, boma: &mut BattleO
 unsafe fn cross_ff_land_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_SIMON_STATUS_KIND_SPECIAL_S2].contains(&status_kind) {
         if situation_kind == *SITUATION_KIND_AIR {
-            VarModule::on_flag(boma.object(), vars::common::AIR_CROSS);
+            VarModule::on_flag(boma.object(), vars::simon::status::AIR_CROSS);
             if boma.is_cat_flag(Cat2::FallJump)
                 && stick_y < -0.66
                 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
@@ -35,8 +35,8 @@ unsafe fn cross_ff_land_cancel(boma: &mut BattleObjectModuleAccessor, id: usize,
 unsafe fn air_cross_air_off(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
     if situation_kind == *SITUATION_KIND_AIR {
         if ![*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_SIMON_STATUS_KIND_SPECIAL_S2].contains(&status_kind) {
-            if VarModule::is_flag(boma.object(), vars::common::AIR_CROSS) {
-                VarModule::off_flag(boma.object(), vars::common::AIR_CROSS);
+            if VarModule::is_flag(boma.object(), vars::simon::status::AIR_CROSS) {
+                VarModule::off_flag(boma.object(), vars::simon::status::AIR_CROSS);
             }
         }
     }
@@ -44,8 +44,8 @@ unsafe fn air_cross_air_off(boma: &mut BattleObjectModuleAccessor, id: usize, st
 
 // Land cancel Cross if used in the air and fallen to the ground
 unsafe fn land_cancel_cross(boma: &mut BattleObjectModuleAccessor, id: usize, situation_kind: i32) {
-    if situation_kind == *SITUATION_KIND_GROUND && VarModule::is_flag(boma.object(), vars::common::AIR_CROSS) {
-        VarModule::off_flag(boma.object(), vars::common::AIR_CROSS);
+    if situation_kind == *SITUATION_KIND_GROUND && VarModule::is_flag(boma.object(), vars::simon::status::AIR_CROSS) {
+        VarModule::off_flag(boma.object(), vars::simon::status::AIR_CROSS);
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
     }
 }

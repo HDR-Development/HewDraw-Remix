@@ -35,10 +35,10 @@ unsafe fn shine_jc_turnaround(boma: &mut BattleObjectModuleAccessor, status_kind
         let fighter_gravity = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut FighterKineticEnergyGravity;
         if situation_kind == *SITUATION_KIND_AIR {
             if frame <= 1.0{
-                KineticModule::mul_speed(boma, &Vector3f::new(0.5, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                KineticModule::mul_speed(boma, &Vector3f::new(0.0, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             }
             if frame > 1.0 && frame <= 3.0 {
-                KineticModule::mul_speed(boma, &Vector3f::new(0.5, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                KineticModule::mul_speed(boma, &Vector3f::new(0.0, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             }
             if frame > 3.0 {
                 smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.02666667);
@@ -72,16 +72,16 @@ unsafe fn phantasm_shorten(boma: &mut BattleObjectModuleAccessor, id: usize, mot
 
     if motion_kind == hash40("special_s") || motion_kind == hash40("special_air_s") {
         if frame <= 1.0 {
-            VarModule::off_flag(boma.object(), vars::common::ILLUSION_SHORTEN);
-            VarModule::off_flag(boma.object(), vars::common::ILLUSION_SHORTENED);
+            VarModule::off_flag(boma.object(), vars::falco::status::ILLUSION_SHORTEN);
+            VarModule::off_flag(boma.object(), vars::falco::status::ILLUSION_SHORTENED);
         }
-        if VarModule::is_flag(boma.object(), vars::common::ILLUSION_SHORTEN) &&  !VarModule::is_flag(boma.object(), vars::common::ILLUSION_SHORTENED) {
+        if VarModule::is_flag(boma.object(), vars::falco::status::ILLUSION_SHORTEN) &&  !VarModule::is_flag(boma.object(), vars::falco::status::ILLUSION_SHORTENED) {
             KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-            VarModule::on_flag(boma.object(), vars::common::ILLUSION_SHORTENED);
+            VarModule::on_flag(boma.object(), vars::falco::status::ILLUSION_SHORTENED);
         }
 
-        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) &&  !VarModule::is_flag(boma.object(), vars::common::ILLUSION_SHORTENED) {
-            VarModule::on_flag(boma.object(), vars::common::ILLUSION_SHORTEN);
+        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) &&  !VarModule::is_flag(boma.object(), vars::falco::status::ILLUSION_SHORTENED) {
+            VarModule::on_flag(boma.object(), vars::falco::status::ILLUSION_SHORTEN);
             WorkModule::on_flag(boma, *FIGHTER_FALCO_ILLUSION_STATUS_WORK_ID_FLAG_RUSH_FORCE_END);
         }
     }
@@ -98,13 +98,6 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
 pub fn falco_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-        println!(
-            "Stick: [{:.2}, {:.2}], SubStick: [{:.2}, {:.2}]",
-            ControlModule::get_stick_x(fighter.module_accessor),
-            ControlModule::get_stick_y(fighter.module_accessor),
-            ControlModule::get_sub_stick_x(fighter.module_accessor),
-            ControlModule::get_sub_stick_y(fighter.module_accessor),
-        );
 		falco_frame(fighter)
     }
 }

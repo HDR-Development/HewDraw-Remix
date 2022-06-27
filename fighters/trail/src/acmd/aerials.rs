@@ -22,12 +22,12 @@ unsafe fn sora_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        VarModule::off_flag(boma.object(), vars::trail::SHOULD_PRORATE_ATTACK);
-        if VarModule::is_flag(boma.object(), vars::trail::COMBO_PLUS_AIR){
-            VarModule::on_flag(boma.object(), vars::trail::SHOULD_PRORATE_ATTACK);
-            VarModule::off_flag(boma.object(), vars::trail::COMBO_PLUS_AIR);
+        VarModule::off_flag(boma.object(), vars::trail::status::SHOULD_PRORATE_ATTACK);
+        if VarModule::is_flag(boma.object(), vars::trail::instance::COMBO_PLUS_AIR){
+            VarModule::on_flag(boma.object(), vars::trail::status::SHOULD_PRORATE_ATTACK);
+            VarModule::off_flag(boma.object(), vars::trail::instance::COMBO_PLUS_AIR);
         }
-        if VarModule::is_flag(boma.object(), vars::trail::SHOULD_PRORATE_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::trail::status::SHOULD_PRORATE_ATTACK){
             ATTACK(fighter, 0, 0, Hash40::new("haver"), 4.5, 361, 154, 0, 25, 3.8, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
             ATTACK(fighter, 1, 0, Hash40::new("haver"), 4.5, 361, 154, 0, 25, 3.8, 0.0, 4.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
             ATTACK(fighter, 2, 0, Hash40::new("haver"), 4.5, 361, 154, 0, 25, 3.8, 0.0, 8.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
@@ -49,7 +49,7 @@ unsafe fn sora_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 28.0);
     if is_excute(fighter) {
-        VarModule::off_flag(boma.object(), vars::trail::SHOULD_PRORATE_ATTACK);
+        VarModule::off_flag(boma.object(), vars::trail::status::SHOULD_PRORATE_ATTACK);
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 52.0);
@@ -116,8 +116,8 @@ unsafe fn sora_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        //VarModule::off_flag(boma.object(), vars::trail::SHOULD_PRORATE_ATTACK);
-        //VarModule::off_flag(boma.object(), vars::trail::COMBO_PLUS_AIR);
+        //VarModule::off_flag(boma.object(), vars::trail::status::SHOULD_PRORATE_ATTACK);
+        //VarModule::off_flag(boma.object(), vars::trail::instance::COMBO_PLUS_AIR);
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
@@ -280,8 +280,8 @@ unsafe fn sora_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(boma.object(), vars::trail::SHOULD_PRORATE_ATTACK);
-        VarModule::off_flag(boma.object(), vars::trail::COMBO_PLUS_AIR);
+        VarModule::off_flag(boma.object(), vars::trail::status::SHOULD_PRORATE_ATTACK);
+        VarModule::off_flag(boma.object(), vars::trail::instance::COMBO_PLUS_AIR);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
@@ -322,10 +322,10 @@ unsafe fn sora_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(boma.object(), vars::trail::SHOULD_PRORATE_ATTACK);
-        if VarModule::is_flag(boma.object(), vars::trail::COMBO_PLUS_AIR){
-            VarModule::on_flag(boma.object(), vars::trail::SHOULD_PRORATE_ATTACK);
-            VarModule::off_flag(boma.object(), vars::trail::COMBO_PLUS_AIR);
+        VarModule::off_flag(boma.object(), vars::trail::status::SHOULD_PRORATE_ATTACK);
+        if VarModule::is_flag(boma.object(), vars::trail::instance::COMBO_PLUS_AIR){
+            VarModule::on_flag(boma.object(), vars::trail::status::SHOULD_PRORATE_ATTACK);
+            VarModule::off_flag(boma.object(), vars::trail::instance::COMBO_PLUS_AIR);
         }
     }
     frame(lua_state, 3.0);
@@ -340,7 +340,7 @@ unsafe fn sora_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.5);
     if is_excute(fighter) {
         MotionModule::set_rate(boma, (20.0-9.5)/8.0);
-        if VarModule::is_flag(boma.object(), vars::trail::SHOULD_PRORATE_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::trail::status::SHOULD_PRORATE_ATTACK){
             ATTACK(fighter, 0, 0, Hash40::new("haver"), 4.5, 75, 136, 0, 44, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_CLEAVE, *ATTACK_REGION_SWORD);
             ATTACK(fighter, 1, 0, Hash40::new("haver"), 4.5, 75, 136, 0, 44, 4.0, 0.0, 4.25, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_CLEAVE, *ATTACK_REGION_SWORD);
             ATTACK(fighter, 2, 0, Hash40::new("haver"), 4.5, 75, 136, 0, 44, 4.0, 0.0, 8.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_CLEAVE, *ATTACK_REGION_SWORD);
@@ -353,7 +353,7 @@ unsafe fn sora_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
-        VarModule::off_flag(boma.object(), vars::trail::SHOULD_PRORATE_ATTACK);
+        VarModule::off_flag(boma.object(), vars::trail::status::SHOULD_PRORATE_ATTACK);
         MotionModule::set_rate(boma, 1.0);
         AttackModule::clear_all(boma);
     }
@@ -396,10 +396,10 @@ unsafe fn sora_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         MotionModule::set_rate(boma, (10.0-1.0)/3.0);
-        VarModule::off_flag(boma.object(), vars::trail::SHOULD_PRORATE_ATTACK);
-        if VarModule::is_flag(boma.object(), vars::trail::COMBO_PLUS_AIR){
-            VarModule::on_flag(boma.object(), vars::trail::SHOULD_PRORATE_ATTACK);
-            VarModule::off_flag(boma.object(), vars::trail::COMBO_PLUS_AIR);
+        VarModule::off_flag(boma.object(), vars::trail::status::SHOULD_PRORATE_ATTACK);
+        if VarModule::is_flag(boma.object(), vars::trail::instance::COMBO_PLUS_AIR){
+            VarModule::on_flag(boma.object(), vars::trail::status::SHOULD_PRORATE_ATTACK);
+            VarModule::off_flag(boma.object(), vars::trail::instance::COMBO_PLUS_AIR);
         }
     }
     frame(lua_state, 5.0);
@@ -413,7 +413,7 @@ unsafe fn sora_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, attack_start_frame);
     if is_excute(fighter) {
         MotionModule::set_rate(boma, attack_duration_rate);
-        if VarModule::is_flag(boma.object(), vars::trail::SHOULD_PRORATE_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::trail::status::SHOULD_PRORATE_ATTACK){
             ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 4.5, 58, 117, 0, 60, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_CLEAVE_SINGLE, *ATTACK_REGION_SWORD);
             ATTACK(fighter, 1, 0, Hash40::new("haver"), 4.5, 58, 117, 0, 60, 4.0, 0.4, 0.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_CLEAVE_SINGLE, *ATTACK_REGION_SWORD);
             ATTACK(fighter, 2, 0, Hash40::new("haver"), 4.5, 58, 117, 0, 60, 4.0, 0.4, 4.25, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_CLEAVE_SINGLE, *ATTACK_REGION_SWORD);
@@ -429,7 +429,7 @@ unsafe fn sora_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, spike_start_frame);
     if is_excute(fighter) {
-        if !VarModule::is_flag(boma.object(), vars::trail::SHOULD_PRORATE_ATTACK){
+        if !VarModule::is_flag(boma.object(), vars::trail::status::SHOULD_PRORATE_ATTACK){
             // Air-only
             ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 8.0, 58, 80, 0, 60, 3.8, 0.0, 0.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_CLEAVE_SINGLE, *ATTACK_REGION_SWORD);
             ATTACK(fighter, 1, 0, Hash40::new("haver"), 8.0, 58, 80, 0, 60, 3.8, 0.4, 0.0, 1.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_CLEAVE_SINGLE, *ATTACK_REGION_SWORD);
@@ -444,7 +444,7 @@ unsafe fn sora_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, attack_end_frame);
     if is_excute(fighter) {
-        VarModule::off_flag(boma.object(), vars::trail::SHOULD_PRORATE_ATTACK);
+        VarModule::off_flag(boma.object(), vars::trail::status::SHOULD_PRORATE_ATTACK);
         AttackModule::clear_all(boma);
         MotionModule::set_rate(boma, 1.0);
     }

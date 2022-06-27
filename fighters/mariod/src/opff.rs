@@ -23,12 +23,12 @@ unsafe fn up_special_cancel_and_sweetspot_detection(boma: &mut BattleObjectModul
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI{
         if frame < 3.0 {
             if facing * stick_x < 0.0 {
-                VarModule::on_flag(boma.object(), vars::mariod::IS_SPECIAL_HI_UNABLE_CANCEL);
+                VarModule::on_flag(boma.object(), vars::mariod::status::IS_SPECIAL_HI_UNABLE_CANCEL);
             }
         }
         
         if situation_kind == *SITUATION_KIND_GROUND && frame == 4.0 {
-            if facing * stick_x < -0.0 && !VarModule::is_flag(boma.object(), vars::mariod::IS_SPECIAL_HI_UNABLE_CANCEL) {
+            if facing * stick_x < -0.0 && !VarModule::is_flag(boma.object(), vars::mariod::status::IS_SPECIAL_HI_UNABLE_CANCEL) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
             }
         }
@@ -36,7 +36,7 @@ unsafe fn up_special_cancel_and_sweetspot_detection(boma: &mut BattleObjectModul
         || (situation_kind == *SITUATION_KIND_AIR && (frame >= 2.0 && frame < 6.0)) {
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 // Detect if you've hit the sweetspot
-                VarModule::on_flag(boma.object(), vars::mariod::IS_SPECIAL_HI_SWEETSPOT_HIT);
+                VarModule::on_flag(boma.object(), vars::mariod::status::IS_SPECIAL_HI_SWEETSPOT_HIT);
             }
         }
     }

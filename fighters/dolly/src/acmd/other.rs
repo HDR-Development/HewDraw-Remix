@@ -170,8 +170,8 @@ unsafe fn dolly_landing_fall_special_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_TARGET_COMBO_1) {
-            VarModule::off_flag(fighter.battle_object, vars::dolly::IS_TARGET_COMBO_1);
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_TARGET_COMBO_1) {
+            VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_TARGET_COMBO_1);
             FT_MOTION_RATE(fighter, 0.35);
         }
     }

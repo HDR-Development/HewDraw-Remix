@@ -20,7 +20,7 @@ unsafe fn change_status_request_hook(boma: &mut BattleObjectModuleAccessor, stat
                             continue;
                         }
     
-                        if pos.x == VarModule::get_float(object, vars::common::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::LEDGE_POS_Y) {
+                        if pos.x == VarModule::get_float(object, vars::common::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
                             next_status = *FIGHTER_STATUS_KIND_CLIFF_ROBBED;
                         }
     
@@ -29,7 +29,7 @@ unsafe fn change_status_request_hook(boma: &mut BattleObjectModuleAccessor, stat
                             let nana_object_id = WorkModule::get_int(module_accessor, *FIGHTER_POPO_INSTANCE_WORK_ID_INT_PARTNER_OBJECT_ID) as u32;
                             let object = ::utils::util::get_battle_object_from_id(nana_object_id);
                             if !object.is_null() {
-                                if pos.x == VarModule::get_float(object, vars::common::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::LEDGE_POS_Y) {
+                                if pos.x == VarModule::get_float(object, vars::common::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
                                     next_status = *FIGHTER_STATUS_KIND_CLIFF_ROBBED;
                                 }
                             }
@@ -70,9 +70,9 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         if boma.kind() == *FIGHTER_KIND_TRAIL
         && StatusModule::status_kind(boma) == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_SEARCH
         && next_status == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_TURN
-        && ((!VarModule::is_flag(boma.object(), vars::trail::IS_SIDE_SPECIAL_INPUT)
+        && ((!VarModule::is_flag(boma.object(), vars::trail::status::IS_SIDE_SPECIAL_INPUT)
         && !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)))
-            || VarModule::is_flag(boma.object(), vars::trail::STOP_SIDE_SPECIAL)) { 
+            || VarModule::is_flag(boma.object(), vars::trail::status::STOP_SIDE_SPECIAL)) { 
             next_status = *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END;
         }
         if boma.kind() == *FIGHTER_KIND_KOOPAJR

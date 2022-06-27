@@ -12,7 +12,7 @@ unsafe fn wings_of_rebellion_cancel(boma: &mut BattleObjectModuleAccessor, statu
         if boma.get_num_used_jumps() < boma.get_jump_count_max() {
             if boma.get_aerial() != None {
                 WorkModule::inc_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-                VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL);
+                VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
                 boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
             }
         }

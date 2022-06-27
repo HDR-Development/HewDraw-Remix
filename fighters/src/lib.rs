@@ -190,4 +190,6 @@ pub fn delayed_install() {
     { elight::delayed_install(); }
     #[cfg(feature = "include-metaknight")]
     { metaknight::delayed_install(); }
+    #[cfg(feature = "include-ganon")]
+    { ganon::delayed_install(); }
 }
