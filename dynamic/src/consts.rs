@@ -49,8 +49,12 @@ pub mod globals {
     // 0x30
     // 0x31
     // 0x32 some substatus
+    pub const USE_SPECIAL_N_CALLBACK: i32 = 0x38;
     pub const USE_SPECIAL_S_CALLBACK: i32 = 0x39;
     pub const USE_SPECIAL_HI_CALLBACK: i32 = 0x3A;
+    pub const USE_SPECIAL_LW_CALLBACK: i32 = 0x3B;
+    pub const CHECK_SPECIAL_COMMAND: i32 = 0x3C;
+    pub const WAZA_CUSTOMIZE_CONTROL: i32 = 0x3D;
     pub const STATUS_CHANGE_CALLBACK: i32 = 0x3E;
     pub const DASH_POST_TRANSITION_CALLBACK: i32 = 0x57;
 }
@@ -334,6 +338,21 @@ pub mod vars {
         pub mod status {
             pub use super::super::fox::status::*;
         }
+    }
+    
+    pub mod ganon {
+        pub mod instance {
+            // flags
+            pub const DISABLE_SPECIAL_N: i32 = 0x0100;
+        }
+        pub mod status {
+            // flags
+            pub const FLOAT_ENABLE_ACTIONS: i32 = 0x1100;
+            pub const FLOAT_FALL_SPEED_Y_INCREASE: i32 = 0x1101;
+            pub const FLOAT_CANCEL: i32 = 0x1102;
+            pub const FLOAT_GROUND_CHANGE_KINETIC: i32 = 0x1103;
+        }
+
     }
 
     pub mod gaogaen {
@@ -721,4 +740,9 @@ pub mod statuses {
     pub mod metaknight {
         pub const METAQUICK_SUMMON: i32 = 0;
     }
+
+    pub mod ganon {
+        pub const SPECIAL_N_FLOAT: i32 = 0;
+    }
+
 }

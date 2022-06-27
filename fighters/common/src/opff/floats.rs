@@ -13,7 +13,7 @@ use smash::hash40;
 use smash_script::macros::*;
 
 
-// Ganondorf, Robin, Dark Samus, Mewtwo float
+// Robin, Dark Samus, Mewtwo float
 pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     
     let mut motion_value = 0.0;
@@ -37,10 +37,6 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
     }
     if fighter_kind == *FIGHTER_KIND_REFLET {
         VarModule::set_int(boma.object(), vars::common::instance::FLOAT_DURATION,60);
-        motion_value = 0.0;
-    }
-    if fighter_kind == *FIGHTER_KIND_GANON {
-        VarModule::set_int(boma.object(), vars::common::instance::FLOAT_DURATION, 60);
         motion_value = 0.0;
     }
     if fighter_kind == *FIGHTER_KIND_MEWTWO {
@@ -212,12 +208,6 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
             let mut timer = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_TIMER);
 
             if timer == 1 {
-                if fighter_kind == *FIGHTER_KIND_GANON {
-                    EffectModule::req_follow(boma, Hash40::new("ganon_entry_aura"), Hash40::new("kneer"), &Vector3f::zero(), &Vector3f::zero(), 0.75, true, 0, 0, 0, 0, 0, false, false);
-                    EffectModule::req_follow(boma, Hash40::new("ganon_entry_aura"), Hash40::new("footr"), &Vector3f::zero(), &Vector3f::zero(), 0.75, true, 0, 0, 0, 0, 0, false, false);
-                    EffectModule::req_follow(boma, Hash40::new("ganon_entry_aura"), Hash40::new("kneel"), &Vector3f::zero(), &Vector3f::zero(), 0.75, true, 0, 0, 0, 0, 0, false, false);
-                    EffectModule::req_follow(boma, Hash40::new("ganon_entry_aura"), Hash40::new("footl"), &Vector3f::zero(), &Vector3f::zero(), 0.75, true, 0, 0, 0, 0, 0, false, false);
-                }
                 if fighter_kind == *FIGHTER_KIND_REFLET {
                     EffectModule::req_follow(boma, Hash40::new("reflet_catch"), Hash40::new("top"), &Vector3f{x: 0.0, y: -6.0, z: -5.3}, &Vector3f::zero(), 0.7, true, 0, 0, 0, 0, 0, false, false);
                     LAST_EFFECT_SET_COLOR(fighter, 0.0, 1.0, 0.0);  // elwind green
@@ -245,9 +235,6 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
         if fighter_kind == *FIGHTER_KIND_MEWTWO {
             EffectModule::kill_kind(boma, Hash40::new("mewtwo_final_aura"), false, true);
         }
-        if fighter_kind == *FIGHTER_KIND_GANON {
-            EffectModule::kill_kind(boma, Hash40::new("ganon_entry_aura"), false, true);
-        }
         if fighter_kind == *FIGHTER_KIND_REFLET {
             EffectModule::kill_kind(boma, Hash40::new("reflet_catch"), false, true);
             EffectModule::kill_kind(boma, Hash40::new("sys_aura_light"), false, true);
@@ -258,7 +245,7 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
 }
 
 pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
-    if [*FIGHTER_KIND_SAMUSD, *FIGHTER_KIND_GANON, *FIGHTER_KIND_MEWTWO, *FIGHTER_KIND_REFLET].contains(&fighter_kind) {
+    if [*FIGHTER_KIND_SAMUSD, *FIGHTER_KIND_MEWTWO, *FIGHTER_KIND_REFLET].contains(&fighter_kind) {
         extra_floats(fighter, boma, cat[0], status_kind, situation_kind, fighter_kind, stick_x, stick_y, facing);
         float_effects(fighter, boma, cat[0], status_kind, situation_kind, fighter_kind);
     }
