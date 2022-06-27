@@ -57,7 +57,13 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
             *FIGHTER_STATUS_KIND_CLIFF_ESCAPE,
             *FIGHTER_STATUS_KIND_CLIFF_JUMP1,
             *FIGHTER_STATUS_KIND_CLIFF_JUMP2,
-            *FIGHTER_STATUS_KIND_CLIFF_JUMP3]) {
+            *FIGHTER_STATUS_KIND_CLIFF_JUMP3]) 
+        && ![*FIGHTER_STATUS_KIND_CLIFF_ATTACK,
+            *FIGHTER_STATUS_KIND_CLIFF_CLIMB,
+            *FIGHTER_STATUS_KIND_CLIFF_ESCAPE,
+            *FIGHTER_STATUS_KIND_CLIFF_JUMP1,
+            *FIGHTER_STATUS_KIND_CLIFF_JUMP2,
+            *FIGHTER_STATUS_KIND_CLIFF_JUMP3].contains(&next_status) {
             VarModule::set_vec3(boma.object(), vars::common::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
         }
 
