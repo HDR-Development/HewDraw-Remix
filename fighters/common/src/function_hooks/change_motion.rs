@@ -68,7 +68,7 @@ unsafe fn change_motion_ecb_shift_check(boma: &mut BattleObjectModuleAccessor) {
         *FIGHTER_STATUS_KIND_BURY_WAIT
     ]) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
     && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
-    && VarModule::get_float(boma.object(), vars::common::ECB_Y_OFFSETS) != 0.0 {
+    && VarModule::get_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS) != 0.0 {
         boma.shift_ecb_on_landing();
     }
 }
