@@ -9,14 +9,14 @@ unsafe fn areadbhar_autocancel(boma: &mut BattleObjectModuleAccessor, id: usize,
         *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind) {
         if situation_kind == *SITUATION_KIND_AIR {
             if frame < 26.0 {
-                VarModule::off_flag(boma.object(), vars::common::SPECIAL_AUTOCANCEL);
+                VarModule::off_flag(boma.object(), vars::master::status::AIR_SPECIAL_S_AUTOCANCEL);
             }
             if frame >= 26.0 {
-                VarModule::on_flag(boma.object(), vars::common::SPECIAL_AUTOCANCEL);
+                VarModule::on_flag(boma.object(), vars::master::status::AIR_SPECIAL_S_AUTOCANCEL);
             }
         }
     }
-    if status_kind == *FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_LANDING && VarModule::is_flag(boma.object(), vars::common::SPECIAL_AUTOCANCEL) {
+    if status_kind == *FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_LANDING && VarModule::is_flag(boma.object(), vars::master::status::AIR_SPECIAL_S_AUTOCANCEL) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
     }
 }

@@ -22,11 +22,11 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 unsafe fn status_DownDamage_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StopModule::is_stop(fighter.module_accessor) {
         if fighter.is_cat_flag(Cat2::DownToDownStandFB) {
-            VarModule::on_flag(fighter.battle_object, vars::common::IS_JAB_LOCK_ROLL);
-            VarModule::set_int(fighter.battle_object, vars::common::DOWN_STAND_FB_KIND, ControlModule::get_down_stand_fb_kind(fighter.module_accessor) as i32);
+            VarModule::on_flag(fighter.battle_object, vars::common::status::IS_JAB_LOCK_ROLL);
+            VarModule::set_int(fighter.battle_object, vars::common::status::DOWN_STAND_FB_KIND, ControlModule::get_down_stand_fb_kind(fighter.module_accessor) as i32);
         }
         else {
-            VarModule::off_flag(fighter.battle_object, vars::common::IS_JAB_LOCK_ROLL);
+            VarModule::off_flag(fighter.battle_object, vars::common::status::IS_JAB_LOCK_ROLL);
         }
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DOWN_DAMAGE_FLAG_START_AIR)
@@ -61,7 +61,7 @@ unsafe fn status_DownDamage_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
             );
             return 0.into();
             ***/
-            if VarModule::is_flag(fighter.battle_object, vars::common::IS_JAB_LOCK_ROLL) {
+            if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_JAB_LOCK_ROLL) {
                 fighter.change_status(
                     L2CValue::I32(*FIGHTER_STATUS_KIND_DOWN_STAND_FB),
                     L2CValue::Bool(true)
@@ -123,7 +123,7 @@ unsafe fn status_DownDamage_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = ControlModule::get_down_stand_fb_kind)]
 unsafe fn get_down_stand_fb_kind_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
     if boma.is_prev_status(*FIGHTER_STATUS_KIND_DOWN_DAMAGE) {
-        return VarModule::get_int(boma.object(), vars::common::DOWN_STAND_FB_KIND) as u64;
+        return VarModule::get_int(boma.object(), vars::common::status::DOWN_STAND_FB_KIND) as u64;
     }
     original!()(boma)
 }

@@ -182,8 +182,10 @@ local set_button_text = function (controller_id, button_id, layout)
         text_pane:set_text_message(MSG_LABEL_APPEAL_SIDE)
     elseif operation == OPERATE_APPEAL_DOWN then
         text_pane:set_text_message(MSG_LABEL_APPEAL_DOWN)
-    elseif operation == 0x12 then -- HDR exclusive, operate ID for SH/Footstool
-        text_pane:set_text_message("mnu_opt_btn_key_footstool")
+    elseif operation == 0x12 then -- HDR exclusive, operate ID for Shorthop
+        text_pane:set_text_message("mnu_opt_btn_key_short_hop")
+    elseif operation == 0x13 then -- HDR exclusive, operate ID for Tilt Attack
+        text_pane:set_text_message("mnu_opt_btn_key_tilt_attack")
     elseif operation == OPERATE_NONE then
         text_pane:set_text_message(MSG_LABEL_NONE)
     end

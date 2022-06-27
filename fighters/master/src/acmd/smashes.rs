@@ -6,7 +6,7 @@ unsafe fn master_attack_s4_charge_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             EFFECT_FOLLOW(fighter, Hash40::new("master_spear_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
             LAST_EFFECT_SET_RATE(fighter, 0.3);
             EffectModule::enable_sync_init_pos_last(boma);
@@ -37,12 +37,12 @@ unsafe fn master_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, false, 0);
-        VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+        VarModule::off_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)){
-            VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+            VarModule::on_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK);
         }
     }
     frame(lua_state, 14.0);
@@ -51,7 +51,7 @@ unsafe fn master_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 3.5);
         }
         else{
@@ -60,7 +60,7 @@ unsafe fn master_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 1.0);
         }
     }
@@ -71,7 +71,7 @@ unsafe fn master_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 25.0);
     if is_excute(fighter) {
         // Reel-in hit 1
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             // Ground-only
             ATTACK(fighter, 0, 0, Hash40::new("haver"), 4.0, 270, 100, 10, 0, 3.0, -0.5, 14.5, 0.0, Some(-0.5), Some(23.0), Some(0.0), 3.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
             ATTACK(fighter, 1, 0, Hash40::new("haver"), 4.0, 270, 100, 10, 0, 2.5, -0.5, 24.0, -0.3, Some(-0.5), Some(26.5), Some(-0.3), 3.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
@@ -91,7 +91,7 @@ unsafe fn master_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 26.0);
     for _ in 0..4{
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+            if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
                 if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                     // Ground-only
                     ATTACK(fighter, 4, 1, Hash40::new("top"), 0.0, 365, 100, 10, 0, 15.0, 0.0, 10.0, 30.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, true, true, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
@@ -105,7 +105,7 @@ unsafe fn master_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 FT_MOTION_RATE(fighter, 2.0/(46.0-30.0));
             }
@@ -115,7 +115,7 @@ unsafe fn master_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         // Reel-in hit 2
         AttackModule::clear_all(boma);
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 0.5);
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 ATTACK(fighter, 0, 1, Hash40::new("haver"), 15.0, 20, 100, 60, 0, 10.0, -0.5, 14.5, 0.0, Some(-0.5), Some(23.0), Some(0.0), 0.25, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MASTER_AXE, *ATTACK_REGION_OBJECT);
@@ -128,14 +128,14 @@ unsafe fn master_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 48.0);
     if is_excute(fighter) {
         // Reel-in hit 2
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             AttackModule::clear_all(boma);
         }
     }
     frame(lua_state, 50.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 FT_MOTION_RATE(fighter, 2.0);
             }
@@ -147,7 +147,7 @@ unsafe fn master_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 53.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 FT_MOTION_RATE(fighter, 1.0);
             }
@@ -174,7 +174,7 @@ unsafe fn master_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             EFFECT_FOLLOW(fighter, Hash40::new("master_spear_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
             EffectModule::enable_sync_init_pos_last(boma);
             EFFECT_FLW_POS(fighter, Hash40::new("master_spear_aura_particle"), Hash40::new("haver"), -8, 6, 0, 0, 0, 0, 1, true);
@@ -192,7 +192,7 @@ unsafe fn master_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 0.9);
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("master_smash_s_wind"), Hash40::new("top"), 0, 19, 34.5, -18, 0, 0, 1, true);
         EffectModule::enable_sync_init_pos_last(boma);
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             
         }
     }
@@ -217,7 +217,7 @@ unsafe fn master_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 40.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 EFFECT_OFF_KIND(fighter, Hash40::new("master_axe_hold"), false, true);
                 EFFECT_OFF_KIND(fighter, Hash40::new("master_axe_hold"), false, true);
@@ -226,7 +226,7 @@ unsafe fn master_attack_s4_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 45.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
                 EFFECT_OFF_KIND(fighter, Hash40::new("master_axe_hold"), false, true);
@@ -246,12 +246,12 @@ unsafe fn master_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, false, 0);
-        VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+        VarModule::off_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)){
-            VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+            VarModule::on_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK);
         }
     }
     frame(lua_state, 14.0);
@@ -260,7 +260,7 @@ unsafe fn master_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 3.5);
         }
         else{
@@ -269,7 +269,7 @@ unsafe fn master_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 1.0);
         }
     }
@@ -280,7 +280,7 @@ unsafe fn master_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 25.0);
     if is_excute(fighter) {
         // Reel-in hit 1
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             // Ground-only
             ATTACK(fighter, 0, 0, Hash40::new("haver"), 4.0, 270, 100, 10, 0, 3.0, -0.5, 14.5, 0.0, Some(-0.5), Some(23.0), Some(0.0), 3.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
             ATTACK(fighter, 1, 0, Hash40::new("haver"), 4.0, 270, 100, 10, 0, 2.5, -0.5, 24.0, -0.3, Some(-0.5), Some(26.5), Some(-0.3), 3.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
@@ -300,7 +300,7 @@ unsafe fn master_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 26.0);
     for _ in 0..4{
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+            if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
                 if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                     // Ground-only
                     ATTACK(fighter, 4, 1, Hash40::new("top"), 0.0, 365, 100, 10, 0, 15.0, 0.0, 10.0, 30.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, true, true, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
@@ -314,7 +314,7 @@ unsafe fn master_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 FT_MOTION_RATE(fighter, 2.0/(46.0-30.0));
             }
@@ -324,7 +324,7 @@ unsafe fn master_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         // Reel-in hit 2
         AttackModule::clear_all(boma);
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 0.5);
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 ATTACK(fighter, 0, 1, Hash40::new("haver"), 15.0, 20, 100, 60, 0, 10.0, -0.5, 14.5, 0.0, Some(-0.5), Some(23.0), Some(0.0), 0.25, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MASTER_AXE, *ATTACK_REGION_OBJECT);
@@ -337,14 +337,14 @@ unsafe fn master_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 48.0);
     if is_excute(fighter) {
         // Reel-in hit 2
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             AttackModule::clear_all(boma);
         }
     }
     frame(lua_state, 50.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 FT_MOTION_RATE(fighter, 2.0);
             }
@@ -356,7 +356,7 @@ unsafe fn master_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 53.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 FT_MOTION_RATE(fighter, 1.0);
             }
@@ -383,7 +383,7 @@ unsafe fn master_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             EFFECT_FOLLOW(fighter, Hash40::new("master_spear_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
             EffectModule::enable_sync_init_pos_last(boma);
             EFFECT_FLW_POS(fighter, Hash40::new("master_spear_aura_particle"), Hash40::new("haver"), -8, 6, 0, 0, 0, 0, 1, true);
@@ -401,7 +401,7 @@ unsafe fn master_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 0.9);
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("master_smash_s_wind"), Hash40::new("top"), 0, 10, 35, 0, 0, 0, 1, true);
         EffectModule::enable_sync_init_pos_last(boma);
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             
         }
     }
@@ -426,7 +426,7 @@ unsafe fn master_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 40.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 EFFECT_OFF_KIND(fighter, Hash40::new("master_axe_hold"), false, true);
                 EFFECT_OFF_KIND(fighter, Hash40::new("master_axe_hold"), false, true);
@@ -435,7 +435,7 @@ unsafe fn master_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 45.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
                 EFFECT_OFF_KIND(fighter, Hash40::new("master_axe_hold"), false, true);
@@ -455,12 +455,12 @@ unsafe fn master_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, false, 0);
-        VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+        VarModule::off_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)){
-            VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+            VarModule::on_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK);
         }
     }
     frame(lua_state, 14.0);
@@ -469,7 +469,7 @@ unsafe fn master_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 3.5);
         }
         else{
@@ -478,7 +478,7 @@ unsafe fn master_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 1.0);
         }
     }
@@ -489,7 +489,7 @@ unsafe fn master_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 25.0);
     if is_excute(fighter) {
         // Reel-in hit 1
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             // Ground-only
             ATTACK(fighter, 0, 0, Hash40::new("haver"), 4.0, 270, 100, 10, 0, 3.0, -0.5, 14.5, 0.0, Some(-0.5), Some(23.0), Some(0.0), 3.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
             ATTACK(fighter, 1, 0, Hash40::new("haver"), 4.0, 270, 100, 10, 0, 2.5, -0.5, 24.0, -0.3, Some(-0.5), Some(26.5), Some(-0.3), 3.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
@@ -509,7 +509,7 @@ unsafe fn master_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 26.0);
     for _ in 0..4{
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+            if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
                 if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                     // Ground-only
                     ATTACK(fighter, 4, 1, Hash40::new("top"), 0.0, 365, 100, 10, 0, 15.0, 0.0, 10.0, 30.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, true, true, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
@@ -523,7 +523,7 @@ unsafe fn master_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 FT_MOTION_RATE(fighter, 2.0/(46.0-30.0));
             }
@@ -533,7 +533,7 @@ unsafe fn master_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         // Reel-in hit 2
         AttackModule::clear_all(boma);
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 0.5);
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 ATTACK(fighter, 0, 1, Hash40::new("haver"), 15.0, 20, 100, 60, 0, 10.0, -0.5, 14.5, 0.0, Some(-0.5), Some(23.0), Some(0.0), 0.25, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MASTER_AXE, *ATTACK_REGION_OBJECT);
@@ -546,14 +546,14 @@ unsafe fn master_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 48.0);
     if is_excute(fighter) {
         // Reel-in hit 2
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             AttackModule::clear_all(boma);
         }
     }
     frame(lua_state, 50.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 FT_MOTION_RATE(fighter, 2.0);
             }
@@ -565,7 +565,7 @@ unsafe fn master_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 53.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 FT_MOTION_RATE(fighter, 1.0);
             }
@@ -592,7 +592,7 @@ unsafe fn master_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             EFFECT_FOLLOW(fighter, Hash40::new("master_spear_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
             EffectModule::enable_sync_init_pos_last(boma);
             EFFECT_FLW_POS(fighter, Hash40::new("master_spear_aura_particle"), Hash40::new("haver"), -8, 6, 0, 0, 0, 0, 1, true);
@@ -610,7 +610,7 @@ unsafe fn master_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 0.9);
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("master_smash_s_wind"), Hash40::new("top"), 0, 1, 34, 16, 0, 0, 1, true);
         EffectModule::enable_sync_init_pos_last(boma);
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             
         }
     }
@@ -635,7 +635,7 @@ unsafe fn master_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 40.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 EFFECT_OFF_KIND(fighter, Hash40::new("master_axe_hold"), false, true);
                 EFFECT_OFF_KIND(fighter, Hash40::new("master_axe_hold"), false, true);
@@ -644,7 +644,7 @@ unsafe fn master_attack_s4_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 45.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
                 EFFECT_OFF_KIND(fighter, Hash40::new("master_axe_hold"), false, true);

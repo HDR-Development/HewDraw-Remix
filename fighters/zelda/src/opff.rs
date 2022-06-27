@@ -7,11 +7,11 @@ unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &m
     if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2) {
         if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
             if boma.is_stick_backward()
-            && !VarModule::is_flag(boma.object(), vars::common::B_REVERSED) {
+            && !VarModule::is_flag(boma.object(), vars::common::instance::B_REVERSED) {
                 PostureModule::reverse_lr(boma);
                 PostureModule::update_rot_y_lr(boma);
                 KineticModule::mul_speed(boma, &Vector3f::new(-1.0, 1.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                VarModule::on_flag(boma.object(), vars::common::B_REVERSED);
+                VarModule::on_flag(boma.object(), vars::common::instance::B_REVERSED);
             }
             boma.change_status_req(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3, false);
             ControlModule::clear_command(boma, false);
@@ -27,8 +27,8 @@ unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &m
     if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2) {
         // Manipulate ECB for landing purposes
         GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, 0.0));
-        if touch_right || touch_left || VarModule::is_flag(boma.object(), vars::common::IS_TELEPORT_WALL_RIDE) {
-            VarModule::on_flag(boma.object(), vars::common::IS_TELEPORT_WALL_RIDE);
+        if touch_right || touch_left || VarModule::is_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE) {
+            VarModule::on_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE);
             if (touch_right && KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) < 0.0) || (touch_left && KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0) {
                 let rise_speed = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
                 if rise_speed > 0.0 {
@@ -52,7 +52,7 @@ unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &m
         }
     }
     else {
-        VarModule::off_flag(boma.object(), vars::common::IS_TELEPORT_WALL_RIDE);
+        VarModule::off_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE);
     }
 }
 

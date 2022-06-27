@@ -31,26 +31,26 @@ unsafe fn dancing_blade_stall(boma: &mut BattleObjectModuleAccessor, id: usize, 
 
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S {
         if situation_kind == *SITUATION_KIND_AIR {
-            if  !VarModule::is_flag(boma.object(), vars::common::SPECIAL_STALL_USED) {
+            if  !VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_STALL_USED) {
                 if frame < 16.0 {
-                    VarModule::on_flag(boma.object(), vars::common::SPECIAL_STALL);
+                    VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_STALL);
                     if jump_rising < 0.0 {
                         KineticModule::mul_speed(boma, &stop_rise, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                     }
                 }
-            } else if VarModule::is_flag(boma.object(), vars::common::SPECIAL_STALL_USED) {
+            } else if VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_STALL_USED) {
                 if frame < 6.0 {
                     KineticModule::mul_speed(boma, &stop_rise, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                 }
             }
         }
     }
-    if VarModule::is_flag(boma.object(), vars::common::SPECIAL_STALL) && (status_kind != *FIGHTER_STATUS_KIND_SPECIAL_S || (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame >= 16.0)) {
-        VarModule::on_flag(boma.object(), vars::common::SPECIAL_STALL_USED);
-        VarModule::off_flag(boma.object(), vars::common::SPECIAL_STALL);
+    if VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_STALL) && (status_kind != *FIGHTER_STATUS_KIND_SPECIAL_S || (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame >= 16.0)) {
+        VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_STALL_USED);
+        VarModule::off_flag(boma.object(), vars::common::instance::SPECIAL_STALL);
     }
-    if situation_kind == *SITUATION_KIND_GROUND && VarModule::is_flag(boma.object(), vars::common::SPECIAL_STALL_USED) {
-        VarModule::off_flag(boma.object(), vars::common::SPECIAL_STALL_USED);
+    if situation_kind == *SITUATION_KIND_GROUND && VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_STALL_USED) {
+        VarModule::off_flag(boma.object(), vars::common::instance::SPECIAL_STALL_USED);
     }
 }
 

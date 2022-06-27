@@ -8,8 +8,8 @@ unsafe fn change_status_request_hook(boma: &mut BattleObjectModuleAccessor, stat
     if boma.is_fighter() {
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_AIR_LASSO_REWIND
         && (next_status == *FIGHTER_STATUS_KIND_CLIFF_CATCH || next_status == *FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE || next_status == *FIGHTER_STATUS_KIND_CLIFF_WAIT)
-        &&  VarModule::is_flag(boma.object(), vars::common::SHOULD_TRUMP_TETHER) {
-            VarModule::off_flag(boma.object(), vars::common::SHOULD_TRUMP_TETHER);
+        &&  VarModule::is_flag(boma.object(), vars::common::instance::SHOULD_TRUMP_TETHER) {
+            VarModule::off_flag(boma.object(), vars::common::instance::SHOULD_TRUMP_TETHER);
             next_status = *FIGHTER_STATUS_KIND_CLIFF_ROBBED;
         }
     }
@@ -24,9 +24,9 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         if boma.kind() == *FIGHTER_KIND_TRAIL
         && StatusModule::status_kind(boma) == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_SEARCH
         && next_status == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_TURN
-        && ((!VarModule::is_flag(boma.object(), vars::trail::IS_SIDE_SPECIAL_INPUT)
+        && ((!VarModule::is_flag(boma.object(), vars::trail::status::IS_SIDE_SPECIAL_INPUT)
         && !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)))
-            || VarModule::is_flag(boma.object(), vars::trail::STOP_SIDE_SPECIAL)) { 
+            || VarModule::is_flag(boma.object(), vars::trail::status::STOP_SIDE_SPECIAL)) { 
             next_status = *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END;
         }
         if boma.kind() == *FIGHTER_KIND_KOOPAJR
