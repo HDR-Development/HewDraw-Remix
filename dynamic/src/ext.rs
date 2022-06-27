@@ -237,7 +237,7 @@ bitflags! {
     }
 
     pub struct CatHdr: i32 {
-        const ShorthopFootstool = 0x1;
+        const TiltAttack = 0x1;
     }
 
     pub struct PadFlag: i32 {
@@ -270,7 +270,8 @@ bitflags! {
         const FlickJump   = 0x8000;
         const GuardHold   = 0x10000;
         const SpecialRaw2 = 0x20000;
-        const ShFootstool = 0x40000;
+        const TiltAttack  = 0x40000;
+        const CStickOverride = 0x80000;
 
         const SpecialAll  = 0x20802;
         const AttackAll   = 0x201;
@@ -441,6 +442,7 @@ pub trait BomaExt {
     unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController;
     // tech/general subroutine
     unsafe fn handle_waveland(&mut self, require_airdodge: bool, change_status: bool) -> bool;
+    unsafe fn shift_ecb_on_landing(&mut self);
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -739,14 +741,18 @@ impl BomaExt for BattleObjectModuleAccessor {
         || (MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU))) {
             return false;
         }
-
+    
         // must check this because it is for allowing the player to screw up a perfect WD and be punished with a non-perfect WD (otherwise they'd have like, 8 frames for perfect WD lol)
-        if !crate::VarModule::is_flag(self.object(), crate::consts::vars::common::ENABLE_AIR_ESCAPE_MAGNET) {
+        if !crate::VarModule::is_flag(self.object(), crate::consts::vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET) {
             return false;
         }
-
+    
+        if self.is_prev_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
+            return false;
+        }
+    
         // ecb is top, bottom, left, right
-        let shift = if self.is_situation(*SITUATION_KIND_AIR) && self.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) < crate::ParamModule::get_int(self.object(), crate::ParamType::Common, "ecb_shift_air_trans_frame") {
+        let shift = if self.is_situation(*SITUATION_KIND_AIR) && self.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= crate::ParamModule::get_int(self.object(), crate::ParamType::Common, "ecb_shift_air_trans_frame") {
             let group = crate::ParamModule::get_int(self.object(), crate::ParamType::Shared, "ecb_group_shift");
             let shift = match group {
                 0 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.small"),
@@ -760,7 +766,7 @@ impl BomaExt for BattleObjectModuleAccessor {
         } else {
             0.0
         };
-
+    
         let ecb_bottom = *GroundModule::get_rhombus(self, true).add(1);
         let line_bottom = Vector2f::new(ecb_bottom.x, shift + ecb_bottom.y - crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold"));
         let mut out_pos = Vector2f::zero();
@@ -770,6 +776,7 @@ impl BomaExt for BattleObjectModuleAccessor {
             PostureModule::set_pos(self, &Vector3f::new((*pos).x, out_pos.y + 0.01, (*pos).z));
             GroundModule::attach_ground(self, true);
             if change_status {
+                StatusModule::set_situation_kind(self, app::SituationKind(*SITUATION_KIND_GROUND), false);
                 StatusModule::change_status_request(self, *FIGHTER_STATUS_KIND_LANDING, false);
             }
             true
@@ -777,10 +784,25 @@ impl BomaExt for BattleObjectModuleAccessor {
             false
         }
     }
-
+    
     /// gets the current status kind for the fighter
     unsafe fn status(&mut self) -> i32 {
         return StatusModule::status_kind(self);
+    }
+    
+    unsafe fn shift_ecb_on_landing(&mut self) {
+        if self.is_situation(*SITUATION_KIND_GROUND) {
+            if !self.is_prev_situation(*SITUATION_KIND_GROUND) {
+                // shift ECB back to normal offset
+                let mut fighter_pos = Vector3f {
+                    x: PostureModule::pos_x(self),
+                    y: PostureModule::pos_y(self),
+                    z: PostureModule::pos_z(self)
+                };
+                fighter_pos.y += crate::VarModule::get_float(self.object(), crate::consts::vars::common::instance::ECB_Y_OFFSETS);
+                PostureModule::set_pos(self, &fighter_pos);
+            }
+        }
     }
 
 }
@@ -871,6 +893,7 @@ pub enum InputKind {
     AppealLw = 0xC,
     Unset = 0xD,
     JumpMini = 0x12, // this is ours :), also start at 0x12 to avoid masking errors
+    TiltAttack = 0x13, // also custom, this one is for tilts!
 }
 
 /// 0x50 Byte struct containing the information for controller mappings

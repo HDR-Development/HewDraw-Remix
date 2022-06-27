@@ -8,7 +8,7 @@ use globals::*;
 unsafe fn disable_qa_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
     if status_kind == *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END {
         if situation_kind == *SITUATION_KIND_AIR && frame > 1.0 {
-            VarModule::on_flag(boma.object(), vars::common::DISABLE_SPECIAL_JC);
+            VarModule::on_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC);
         }
     }
 }
@@ -16,7 +16,7 @@ unsafe fn disable_qa_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status
 // Reset JC disable flag
 unsafe fn reset_jc_disable_flag(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
     if situation_kind == *SITUATION_KIND_GROUND && status_kind != *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL {
-        VarModule::off_flag(boma.object(), vars::common::DISABLE_SPECIAL_JC);
+        VarModule::off_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC);
     }
 }
 
@@ -28,7 +28,7 @@ unsafe fn jc_qa_agility(boma: &mut BattleObjectModuleAccessor, id: usize, status
             if situation_kind == *SITUATION_KIND_GROUND {
                 if [*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP,
                     *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END].contains(&prev_status_kind) {
-                    if  !VarModule::is_flag(boma.object(), vars::common::DISABLE_SPECIAL_JC) {
+                    if  !VarModule::is_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC) {
                         if boma.is_input_jump() {
                             if facing * stick_x < 0.0 {
                                 PostureModule::reverse_lr(boma);

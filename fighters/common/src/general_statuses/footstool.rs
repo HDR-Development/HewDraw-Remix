@@ -59,7 +59,7 @@ pub unsafe fn sub_transition_group_check_air_tread_jump(fighter: &mut L2CFighter
             // if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_JUMP_TRIGGER != 0
             // ||
             
-            if fighter.is_cat_flag(Cat2::AppealAll) || fighter.is_cat_flag(CatHdr::ShorthopFootstool) {
+            if fighter.is_cat_flag(Cat2::AppealAll) {
                 if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TREAD_JUMP_BUTTON) {
                     let do_footstool;
                     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_NO_TREAD_FRAME) != 0 {

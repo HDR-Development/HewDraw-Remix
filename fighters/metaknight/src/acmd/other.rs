@@ -72,7 +72,7 @@ unsafe fn metaquick_sound(fighter: &mut L2CAgentBase) {
         // plays the sword slash effect
         PLAY_SE(fighter, Hash40::new("se_metaknight_final01"));
 
-        if VarModule::is_flag(fighter.battle_object, vars::metaknight::META_QUICK_PLAY_VC) {
+        if VarModule::is_flag(fighter.battle_object, vars::metaknight::instance::META_QUICK_PLAY_VC) {
             PLAY_SE(fighter, Hash40::new("vc_metaknight_final02"));
         }
     }
@@ -82,7 +82,7 @@ unsafe fn metaquick_sound(fighter: &mut L2CAgentBase) {
 unsafe fn metaquick_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EffectModule::remove_common(fighter.module_accessor, Hash40::new("charge_max"));
-        VarModule::set_int(fighter.battle_object, vars::metaknight::META_QUICK_CHARGE_EFFECT_HANDLE, -1);
+        VarModule::set_int(fighter.battle_object, vars::metaknight::instance::META_QUICK_CHARGE_EFFECT_HANDLE, -1);
         lua_args! {
             fighter,
             Hash40::new("sys_bg_black"),
@@ -133,8 +133,8 @@ unsafe fn metaquick_effect(fighter: &mut L2CAgentBase) {
         EffectModule::set_rgb(fighter.module_accessor, handle, 101.0 / 255.0, 32.0 / 255.0, 153.0 / 255.0);
         EffectModule::set_alpha(fighter.module_accessor, handle2, 1.0);
         EffectModule::set_rgb(fighter.module_accessor, handle2, 101.0 / 255.0, 32.0 / 255.0, 153.0 / 255.0);
-        VarModule::set_int(fighter.battle_object, vars::metaknight::META_QUICK_EFFECT_HANDLE, handle as i32);
-        VarModule::set_int(fighter.battle_object, vars::metaknight::META_QUICK_EFFECT_HANDLE2, handle2 as i32);
+        VarModule::set_int(fighter.battle_object, vars::metaknight::instance::META_QUICK_EFFECT_HANDLE, handle as i32);
+        VarModule::set_int(fighter.battle_object, vars::metaknight::instance::META_QUICK_EFFECT_HANDLE2, handle2 as i32);
     }
 }
 

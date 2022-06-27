@@ -52,13 +52,13 @@ unsafe fn brave_attack_air_f_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 6.0/(10.0-1.0));
-        VarModule::off_flag(fighter.battle_object, vars::brave::IS_CRITICAL_HIT);
+        VarModule::off_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT);
         let rng = app::sv_math::rand(hash40("fighter"), 63);
         if rng > 1 {
-            VarModule::off_flag(fighter.battle_object, vars::brave::IS_CRITICAL_HIT);
+            VarModule::off_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT);
         }
         else{
-            VarModule::on_flag(fighter.battle_object, vars::brave::IS_CRITICAL_HIT);
+            VarModule::on_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT);
         }
     }
     frame(lua_state, 4.0);
@@ -71,7 +71,7 @@ unsafe fn brave_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::brave::IS_CRITICAL_HIT) {
+        if VarModule::is_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT) {
             WorkModule::on_flag(boma, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_CRITICAL_HIT);
             ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 15.0, 50, 95, 0, 35, 2.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BRAVE_CRITICALHIT, *ATTACK_REGION_SWORD);
             ATTACK(fighter, 1, 0, Hash40::new("armr"), 15.0, 50, 95, 0, 35, 3.0, -1.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BRAVE_CRITICALHIT, *ATTACK_REGION_SWORD);
@@ -106,13 +106,13 @@ unsafe fn brave_attack_air_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 10.0/(14.0-1.0));
-        VarModule::off_flag(fighter.battle_object, vars::brave::IS_CRITICAL_HIT);
+        VarModule::off_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT);
         let rng = app::sv_math::rand(hash40("fighter"), 63);
         if rng > 1 {
-            VarModule::off_flag(fighter.battle_object, vars::brave::IS_CRITICAL_HIT);
+            VarModule::off_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT);
         }
         else{
-            VarModule::on_flag(fighter.battle_object, vars::brave::IS_CRITICAL_HIT);
+            VarModule::on_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT);
         }
     }
     frame(lua_state, 4.0);
@@ -126,7 +126,7 @@ unsafe fn brave_attack_air_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 17.5);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 4.0/(21.0-17.5));
-        if VarModule::is_flag(fighter.battle_object, vars::brave::IS_CRITICAL_HIT) {
+        if VarModule::is_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT) {
             WorkModule::on_flag(boma, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_CRITICAL_HIT);
             ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 16.0, 45, 100, 0, 35, 2.5, 0.0, 0.0, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BRAVE_CRITICALHIT, *ATTACK_REGION_SWORD);
             ATTACK(fighter, 1, 0, Hash40::new("armr"), 16.0, 45, 100, 0, 35, 3.0, -1.0, 0.0, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BRAVE_CRITICALHIT, *ATTACK_REGION_SWORD);
@@ -216,13 +216,13 @@ unsafe fn brave_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(boma, 3.0, 3.0, 7.0, 3.0);
-        VarModule::off_flag(fighter.battle_object, vars::brave::IS_CRITICAL_HIT);
+        VarModule::off_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT);
         let rng = app::sv_math::rand(hash40("fighter"), 63);
         if rng > 1 {
-            VarModule::off_flag(fighter.battle_object, vars::brave::IS_CRITICAL_HIT);
+            VarModule::off_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT);
         }
         else{
-            VarModule::on_flag(fighter.battle_object, vars::brave::IS_CRITICAL_HIT);
+            VarModule::on_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT);
         }
     }
     frame(lua_state, 4.0);
@@ -231,7 +231,7 @@ unsafe fn brave_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::brave::IS_CRITICAL_HIT) {
+        if VarModule::is_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT) {
             WorkModule::on_flag(boma, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_CRITICAL_HIT);
             ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 18.0, 270, 80, 0, 15, 2.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BRAVE_CRITICALHIT, *ATTACK_REGION_SWORD);
             ATTACK(fighter, 1, 0, Hash40::new("armr"), 18.0, 270, 80, 0, 15, 3.0, -1.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BRAVE_CRITICALHIT, *ATTACK_REGION_SWORD);
@@ -253,7 +253,7 @@ unsafe fn brave_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 10.0/(33.0-18.0));
         WorkModule::off_flag(boma, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_CRITICAL_HIT);
-        VarModule::off_flag(fighter.battle_object, vars::brave::IS_CRITICAL_HIT);
+        VarModule::off_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT);
         ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 9.0, 55, 80, 0, 35, 2.5, 0.0, 0.0, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 1, 0, Hash40::new("armr"), 9.0, 55, 80, 0, 35, 3.0, -1.0, 0.0, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 2, 0, Hash40::new("armr"), 9.0, 55, 80, 0, 35, 3.0, 2.0, 0.0, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);

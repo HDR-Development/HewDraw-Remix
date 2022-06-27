@@ -35,9 +35,9 @@ unsafe fn ryu_attack_near_w_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        //VarModule::off_flag(boma.object(), vars::shotos::IS_TARGET_COMBO_2);
+        //VarModule::off_flag(boma.object(), vars::shotos::instance::IS_TARGET_COMBO_2);
         MeterModule::watch_damage(fighter.battle_object, true);
-        VarModule::off_flag(fighter.battle_object, vars::ryu::IS_MAGIC_SERIES_CANCEL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
     }
@@ -102,7 +102,7 @@ unsafe fn ryu_escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::ryu::IS_ENABLE_AIRDASH_CANCEL){
+        if VarModule::is_flag(boma.object(), vars::shotos::status::IS_ENABLE_AIRDASH_CANCEL){
             HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         }
     }
@@ -118,7 +118,7 @@ unsafe fn ryu_hadoken_move_s_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     if is_excute(fighter) {
-        if VarModule::is_flag(owner_module_accessor.object(), vars::ryu::IS_CURRENT_HADOKEN_EX){
+        if VarModule::is_flag(owner_module_accessor.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_EX){
             ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 69, 10, 0, 70, 3.5, 0.0, 0.5, -0.5, Some(0.0), Some(-5.2), Some(-0.5), 2.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
             ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 69, 10, 0, 70, 2.8, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-3.0), 2.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
             ATTACK(fighter, 2, 0, Hash40::new("top"), 9.0, 69, 10, 0, 70, 2.8, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-3.0), 2.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
@@ -137,7 +137,7 @@ unsafe fn ryu_hadoken_move_s_game(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 5.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(owner_module_accessor.object(), vars::ryu::IS_CURRENT_HADOKEN_EX){
+        if VarModule::is_flag(owner_module_accessor.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_EX){
         }
         else{
             ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 0, 10, 0, 58, 3.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-2.5), 1.4, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_ENERGY);
@@ -160,7 +160,7 @@ unsafe fn ryu_hadoken_move_s_effect(fighter: &mut L2CAgentBase) {
         else{
             EFFECT_FOLLOW(fighter, Hash40::new("ryu_hadoken_bullet"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, false);
         }
-        if VarModule::is_flag(owner_module_accessor.object(), vars::ryu::IS_CURRENT_HADOKEN_EX){
+        if VarModule::is_flag(owner_module_accessor.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_EX){
             LAST_EFFECT_SET_COLOR(fighter, 2.0, 2.0, 1.0);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, false);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder"), Hash40::new("top"), 0, 0, -0.5, 0, 0, 0, 1.5, false);

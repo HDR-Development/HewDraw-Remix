@@ -36,9 +36,9 @@ extern "Rust" {
 }
 
 unsafe fn gunman_timer(fighter: &mut L2CFighterCommon) {
-    let timer = VarModule::get_int(fighter.object(), vars::duckhunt::GUNMAN_TIMER);
+    let timer = VarModule::get_int(fighter.object(), vars::duckhunt::instance::GUNMAN_TIMER);
     if  timer != 0 {
-        VarModule::set_int(fighter.object(), vars::duckhunt::GUNMAN_TIMER, (timer-1));
+        VarModule::set_int(fighter.object(), vars::duckhunt::instance::GUNMAN_TIMER, (timer-1));
     }
     if timer == 1 {
         gimmick_flash(fighter);
@@ -101,7 +101,7 @@ pub fn gunman_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
                 }
                 WorkModule::set_int(weapon.module_accessor, 25, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
             }
-            VarModule::set_int(duckhunt, vars::duckhunt::GUNMAN_TIMER, 180);
+            VarModule::set_int(duckhunt, vars::duckhunt::instance::GUNMAN_TIMER, 180);
         }
     }
 }

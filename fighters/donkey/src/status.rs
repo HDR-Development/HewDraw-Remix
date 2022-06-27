@@ -14,8 +14,8 @@ unsafe extern "C" fn when_shield(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
         
         // otherwise, pull a barrel if the timer is up
-        else if VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER) == 0 {
-            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 1);
+        else if VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER) == 0 {
+            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1);
             ItemModule::have_item(fighter.module_accessor, ItemKind(*ITEM_KIND_BARREL),0,0,false,false);
             fighter.change_status(FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP.into(),true.into());
             return true.into();
