@@ -122,7 +122,7 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
             *FIGHTER_STATUS_KIND_CLIFF_CATCH,
             *FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE,
             *FIGHTER_STATUS_KIND_CLIFF_WAIT]) {
-            VarModule::set_vec3(boma.object(), vars::common::LEDGE_POS, GroundModule::hang_cliff_pos_3f(boma));
+            VarModule::set_vec3(boma.object(), vars::common::instance::LEDGE_POS, GroundModule::hang_cliff_pos_3f(boma));
         }
 
         // Repeated tilt scaling; UNUSED

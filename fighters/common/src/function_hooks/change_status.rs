@@ -16,11 +16,11 @@ unsafe fn change_status_request_hook(boma: &mut BattleObjectModuleAccessor, stat
                 if let Some(object_id) = ::utils::util::get_active_battle_object_id_from_entry_id(i) {
                     let object = ::utils::util::get_battle_object_from_id(object_id);
                     if !object.is_null() {
-                        if i == player_number || VarModule::get_float(object, vars::common::LEDGE_POS_X) == 0.0 {
+                        if i == player_number || VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) == 0.0 {
                             continue;
                         }
     
-                        if pos.x == VarModule::get_float(object, vars::common::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
+                        if pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
                             next_status = *FIGHTER_STATUS_KIND_CLIFF_ROBBED;
                         }
     
@@ -29,7 +29,7 @@ unsafe fn change_status_request_hook(boma: &mut BattleObjectModuleAccessor, stat
                             let nana_object_id = WorkModule::get_int(module_accessor, *FIGHTER_POPO_INSTANCE_WORK_ID_INT_PARTNER_OBJECT_ID) as u32;
                             let object = ::utils::util::get_battle_object_from_id(nana_object_id);
                             if !object.is_null() {
-                                if pos.x == VarModule::get_float(object, vars::common::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
+                                if pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
                                     next_status = *FIGHTER_STATUS_KIND_CLIFF_ROBBED;
                                 }
                             }
@@ -64,7 +64,7 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
             *FIGHTER_STATUS_KIND_CLIFF_JUMP1,
             *FIGHTER_STATUS_KIND_CLIFF_JUMP2,
             *FIGHTER_STATUS_KIND_CLIFF_JUMP3].contains(&next_status) {
-            VarModule::set_vec3(boma.object(), vars::common::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
+            VarModule::set_vec3(boma.object(), vars::common::instance::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
         }
 
         if boma.kind() == *FIGHTER_KIND_TRAIL
