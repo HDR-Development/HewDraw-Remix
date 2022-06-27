@@ -14,8 +14,7 @@ unsafe fn blue_eggs_land_cancels(fighter: &mut L2CFighterCommon) {
         if MotionModule::frame(fighter.module_accessor) < (special_n_fire_cancel_frame_ground - landing_lag) {
             MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, special_n_fire_cancel_frame_ground - landing_lag, true, true, false);
         }
-        let banjo_ecb_shift = ParamModule::get_float(fighter.object(), ParamType::Common, "ecb_group_shift_amount.medium");
-        LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, banjo_ecb_shift, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
         //fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
     }
 }
