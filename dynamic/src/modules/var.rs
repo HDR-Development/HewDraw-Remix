@@ -1,6 +1,9 @@
 use smash::phx::*;
 use smash::app::BattleObject;
 extern "Rust" {
+    #[link_name = "VarModule__has_var_module"]
+    fn VarModule__has_var_module(object: *mut BattleObject) -> bool;
+
     #[link_name = "VarModule__reset"]
     fn VarModule__reset(object: *mut BattleObject, mask: u8);
 
@@ -112,6 +115,16 @@ pub mod VarModule {
     pub const RESET_STATUS:   u8 = 0xF0;
     /// Resets all values
     pub const RESET_ALL:      u8 = 0xFF;
+
+    /// Resets various `VarModule` arrays depending on the mask
+    /// # Arguments
+    /// * `object` - The owning `BattleObject` instance
+    /// * `mask` - A mask of the reset values to determine what to reset
+    pub fn has_var_module(object: *mut BattleObject) -> bool {
+        unsafe {
+            VarModule__has_var_module(object)
+        }
+    }
 
     /// Resets various `VarModule` arrays depending on the mask
     /// # Arguments
