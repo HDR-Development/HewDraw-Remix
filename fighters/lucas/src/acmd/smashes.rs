@@ -5,7 +5,7 @@ use super::*;
 unsafe fn lucas_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+    if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
         if is_excute(fighter) {
             VisibilityModule::set_int64(boma, Hash40::new("bat").hash as i64, Hash40::new("bat_visible").hash as i64);
         }
@@ -16,23 +16,23 @@ unsafe fn lucas_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         frame(lua_state, 9.0);
         if is_excute(fighter) {
             if fighter.stick_y() > 0.3 {
-                VarModule::off_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_DOWN);
-                VarModule::on_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_UP);
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN);
+                VarModule::on_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP);
             }
             else if fighter.stick_y() < -0.3 {
-                VarModule::on_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_DOWN);
-                VarModule::off_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_UP);
+                VarModule::on_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN);
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP);
             }
             else {
-                VarModule::off_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_DOWN);
-                VarModule::off_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_UP);
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN);
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP);
             }
-            println!("Stick Y Pos: {} | Flags: Low={} High={}", fighter.stick_y(), VarModule::is_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_DOWN), VarModule::is_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_UP));
+            println!("Stick Y Pos: {} | Flags: Low={} High={}", fighter.stick_y(), VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN), VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP));
         }
         frame(lua_state, 10.0);
         if is_excute(fighter) {
             println!("Whiffchk starts");
-            VarModule::on_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+            VarModule::on_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
         }
         frame(lua_state, 11.0);
         if is_excute(fighter) {
@@ -40,11 +40,11 @@ unsafe fn lucas_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         }
         frame(lua_state, 14.0);
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_DOWN) {
+            if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN) {
                 ATTACK(fighter, 0, 0, Hash40::new("top"), 18.0, 361, 89, 0, 54, 3.7, 0.0, 4.6, 9.0, Some(0.0), Some(6.6), Some(4.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
                 ATTACK(fighter, 1, 0, Hash40::new("top"), 19.0, 361, 91, 0, 54, 3.7, 0.0, 2.6, 15.0, Some(0.0), Some(4.6), Some(9.0), 1.7, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
             }
-            else if VarModule::is_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_UP) {
+            else if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP) {
                 ATTACK(fighter, 0, 0, Hash40::new("top"), 20.0, 361, 89, 0, 54, 3.7, 0.0, 8.6, 6.0, Some(0.0), Some(5.6), Some(2.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
                 ATTACK(fighter, 1, 0, Hash40::new("top"), 21.0, 361, 91, 0, 54, 3.7, 0.0, 12.6, 12.0, Some(0.0), Some(8.6), Some(6.0), 1.7, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
             }
@@ -55,22 +55,22 @@ unsafe fn lucas_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         }
         frame(lua_state, 16.0);
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF) {
-                VarModule::off_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+            if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF) {
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
                 println!("Released!");
-                let handle = VarModule::get_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1) as u32;
+                let handle = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1) as u32;
                 EffectModule::kill(fighter.module_accessor, handle, false, false);
-                let handle2 = VarModule::get_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) as u32;
+                let handle2 = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) as u32;
                 EffectModule::kill(fighter.module_accessor, handle2, false, false);
-                VarModule::set_float(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
-                VarModule::off_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE);
+                VarModule::set_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
             }
             AttackModule::clear_all(boma);
         }
         frame(lua_state, 20.0);
         if is_excute(fighter) {
-            VarModule::off_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_DOWN);
-            VarModule::off_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_UP);
+            VarModule::off_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN);
+            VarModule::off_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP);
             WorkModule::on_flag(boma, *FIGHTER_LUCAS_STATUS_ATTACK_S4_FLAG_REFLECT_END);
         }
     } 
@@ -85,18 +85,18 @@ unsafe fn lucas_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         frame(lua_state, 9.0);
         if is_excute(fighter) {
             if fighter.stick_y() > 0.3 {
-                VarModule::off_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_DOWN);
-                VarModule::on_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_UP);
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN);
+                VarModule::on_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP);
             }
             else if fighter.stick_y() < -0.3 {
-                VarModule::on_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_DOWN);
-                VarModule::off_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_UP);
+                VarModule::on_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN);
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP);
             }
             else {
-                VarModule::off_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_DOWN);
-                VarModule::off_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_UP);
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN);
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP);
             }
-            println!("Stick Y Pos: {} | Flags: Low={} High={}", fighter.stick_y(), VarModule::is_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_DOWN), VarModule::is_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_UP));
+            println!("Stick Y Pos: {} | Flags: Low={} High={}", fighter.stick_y(), VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN), VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP));
         }
         frame(lua_state, 11.0);
         if is_excute(fighter) {
@@ -104,11 +104,11 @@ unsafe fn lucas_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         }
         frame(lua_state, 14.0);
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_DOWN) {
+            if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN) {
                 ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 361, 93, 0, 50, 3.7, 0.0, 4.6, 9.0, Some(0.0), Some(6.6), Some(4.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCAS_BAT, *ATTACK_REGION_OBJECT);
                 ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0, 361, 95, 0, 50, 3.7, 0.0, 2.6, 15.0, Some(0.0), Some(4.6), Some(9.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCAS_BAT, *ATTACK_REGION_OBJECT);
             }
-            else if VarModule::is_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_UP) {
+            else if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP) {
                 ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 361, 93, 0, 50, 3.7, 0.0, 8.6, 6.0, Some(0.0), Some(5.6), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCAS_BAT, *ATTACK_REGION_OBJECT);
                 ATTACK(fighter, 1, 0, Hash40::new("top"), 16.0, 361, 95, 0, 50, 3.7, 0.0, 12.6, 12.0, Some(0.0), Some(8.6), Some(6.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCAS_BAT, *ATTACK_REGION_OBJECT);
             }
@@ -123,8 +123,8 @@ unsafe fn lucas_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         }
         frame(lua_state, 20.0);
         if is_excute(fighter) {
-            VarModule::off_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_DOWN);
-            VarModule::off_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_UP);
+            VarModule::off_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN);
+            VarModule::off_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP);
             WorkModule::on_flag(boma, *FIGHTER_LUCAS_STATUS_ATTACK_S4_FLAG_REFLECT_END);
         }
     }
@@ -137,7 +137,7 @@ unsafe fn lucas_attack_s4_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter){
         STOP_SE(fighter, Hash40::new("se_common_smash_start_04"));
         STOP_SE(fighter, Hash40::new("vc_lucas_008"));
-        if VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+        if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
             PLAY_STATUS(fighter, Hash40::new("se_lucas_special_n04_ll"));
             PLAY_STATUS(fighter, Hash40::new("se_common_electric_hit_l"));
         }
@@ -158,16 +158,16 @@ unsafe fn lucas_attack_s4_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+        if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
             EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkt_hold"), Hash40::new("top"), 0, 9, 0, 0, 0, 0, 1.6, true);
         }
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_DOWN) {
+        if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN) {
             EFFECT_FOLLOW_FLIP(fighter, Hash40::new("lucas_smash_arc"), Hash40::new("lucas_smash_arc"), Hash40::new("top"), 1, 6, 3.5, 20, -20, 10, 1, true, *EF_FLIP_YZ);
         }
-        else if VarModule::is_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_UP) {
+        else if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP) {
             EFFECT_FOLLOW_FLIP(fighter, Hash40::new("lucas_smash_arc"), Hash40::new("lucas_smash_arc"), Hash40::new("top"), 1, 6, 3.5, -30, -20, 10, 1, true, *EF_FLIP_YZ);
         }
         else {
@@ -177,10 +177,10 @@ unsafe fn lucas_attack_s4_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        if VarModule::is_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_DOWN) {
+        if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN) {
             EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), -2, 3, 15, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 360, true, 0.6);
         }
-        else if VarModule::is_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_UP) {
+        else if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP) {
             EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), -2, 13, 13, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 360, true, 0.6);
         }
         else {
@@ -197,7 +197,7 @@ unsafe fn lucas_attack_s4_effect(fighter: &mut L2CAgentBase) {
 unsafe fn lucas_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+    if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
         frame(lua_state, 1.0);
         if is_excute(fighter) {
             WHOLE_HIT(fighter, *HIT_STATUS_INVINCIBLE);
@@ -211,7 +211,7 @@ unsafe fn lucas_attack_hi4_game(fighter: &mut L2CAgentBase) {
         frame(lua_state, 7.0);
         if is_excute(fighter) {
             println!("Whiffchk starts");
-            VarModule::on_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+            VarModule::on_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
             MotionModule::set_rate(boma, 1.751);
         }
         frame(lua_state, 8.751);
@@ -238,15 +238,15 @@ unsafe fn lucas_attack_hi4_game(fighter: &mut L2CAgentBase) {
         }
         frame(lua_state, 43.0);
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF) {
-                VarModule::off_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+            if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF) {
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
                 println!("Released!");
-                let handle = VarModule::get_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1) as u32;
+                let handle = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1) as u32;
                 EffectModule::kill(fighter.module_accessor, handle, false, false);
-                let handle2 = VarModule::get_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) as u32;
+                let handle2 = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) as u32;
                 EffectModule::kill(fighter.module_accessor, handle2, false, false);
-                VarModule::set_float(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
-                VarModule::off_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE);
+                VarModule::set_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
             }
             MotionModule::set_rate(boma, 1.0);
             AttackModule::clear_all(boma);
@@ -317,7 +317,7 @@ unsafe fn lucas_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+        if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
             EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkt_hold"), Hash40::new("top"), 0, 9, 0, 0, 0, 0, 1.6, true);
         }
     }
@@ -332,7 +332,7 @@ unsafe fn lucas_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 25.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+        if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
             let handle = EffectModule::req_follow(boma, Hash40::new("sys_crown"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 1.0, true, 0, 0, 0, 0, 0, true, true) as u32;
             EffectModule::set_rgb(fighter.module_accessor, handle, 0.0 / 255.0, 204.0 / 255.0, 255.0 / 255.0);
         }
@@ -342,7 +342,7 @@ unsafe fn lucas_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 26.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+        if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
             EFFECT(fighter, Hash40::new("lucas_psi_atk_hi"), Hash40::new("top"), 0, 15, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
         }
         else {
@@ -352,7 +352,7 @@ unsafe fn lucas_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("lucas_psi_catch"), false, false);
-        if VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+        if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
             EFFECT_FOLLOW(fighter, Hash40::new("lucas_psi_atk"), Hash40::new("top"), 0, 25, 0, -90, 0, 0, 1.6, true);
             EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkt_hold"), Hash40::new("top"), 0, 25, 0, 0, 0, 0, 2.0, true);
         }
@@ -362,7 +362,7 @@ unsafe fn lucas_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 38.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+        if !VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
             EFFECT_OFF_KIND(fighter, Hash40::new("lucas_psi_atk"), true, true);
             EFFECT_FOLLOW(fighter, Hash40::new("lucas_psi_atk"), Hash40::new("top"), 0, 25, 0, -90, 0, 0, 1.0, true);
         }
@@ -388,7 +388,7 @@ unsafe fn lucas_attack_hi4_sound(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 18.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+        if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
             PLAY_STATUS(fighter, Hash40::new("se_lucas_special_n04_ll"));
             PLAY_STATUS(fighter, Hash40::new("se_common_electric_hit_l"));
         }
@@ -408,7 +408,7 @@ unsafe fn lucas_attack_hi4_sound(fighter: &mut L2CAgentBase) {
 unsafe fn lucas_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+    if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
         frame(lua_state, 6.0);
         if is_excute(fighter) {
             WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -416,12 +416,12 @@ unsafe fn lucas_attack_lw4_game(fighter: &mut L2CAgentBase) {
         frame(lua_state, 8.0);
         if is_excute(fighter) {
             println!("Whiffchk starts");
-            VarModule::on_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+            VarModule::on_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
         }
         frame(lua_state, 20.0);
         if is_excute(fighter) {
             MotionModule::set_frame(boma, 37.0, false);
-            VarModule::on_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+            VarModule::on_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
             ATTACK(fighter, 0, 0, Hash40::new("top"), 21.0, 361, 85, 0, 46, 6.0, 0.0, 3.5, 8.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -10, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
         }
         wait(lua_state, 1.0);
@@ -434,15 +434,15 @@ unsafe fn lucas_attack_lw4_game(fighter: &mut L2CAgentBase) {
         }
         wait(lua_state, 3.0);
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF) {
-                VarModule::off_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+            if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF) {
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
                 println!("Released!");
-                let handle = VarModule::get_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1) as u32;
+                let handle = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1) as u32;
                 EffectModule::kill(fighter.module_accessor, handle, false, false);
-                let handle2 = VarModule::get_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) as u32;
+                let handle2 = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) as u32;
                 EffectModule::kill(fighter.module_accessor, handle2, false, false);
-                VarModule::set_float(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
-                VarModule::off_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE);
+                VarModule::set_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
             }
             AttackModule::clear_all(boma);
             AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
@@ -488,7 +488,7 @@ unsafe fn lucas_attack_lw4_sound(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 3.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+        if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
             PLAY_STATUS(fighter, Hash40::new("se_lucas_special_n04_ll"));
             PLAY_STATUS(fighter, Hash40::new("se_common_electric_hit_l"));
         }
@@ -506,7 +506,7 @@ unsafe fn lucas_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+        if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
             EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkt_hold"), Hash40::new("top"), 0, 9, 0, 0, 0, 0, 1.6, true);
         }
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("lucas_psi_hold"), Hash40::new("lucas_psi_hold"), Hash40::new("havel"), 0.5, 0.5, 1.3, 0, 0, 0, 1, true, *EF_FLIP_YZ);

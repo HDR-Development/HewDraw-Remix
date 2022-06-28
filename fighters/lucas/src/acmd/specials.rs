@@ -282,29 +282,29 @@ unsafe fn lucas_special_n_hold_sound(fighter: &mut L2CAgentBase) {
 unsafe fn lucas_special_n_fire(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if !VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_INIT) {
+    if !VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT) {
         frame(lua_state, 2.0);
         if is_excute(fighter) {
-            VarModule::on_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+            VarModule::on_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
             ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 60, 80, 0, 50, 3.0, 0.0, 10.0, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PSI);
             ATTACK(fighter, 1, 0, Hash40::new("top"), 10.0, 60, 100, 0, 50, 9.0, 0.0, 10.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF) {
-                VarModule::off_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+            if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF) {
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
                 println!("Released!");
-                let handle = VarModule::get_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1) as u32;
+                let handle = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1) as u32;
                 EffectModule::kill(fighter.module_accessor, handle, false, false);
-                let handle2 = VarModule::get_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) as u32;
+                let handle2 = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) as u32;
                 EffectModule::kill(fighter.module_accessor, handle2, false, false);
-                VarModule::set_float(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
-                VarModule::off_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE);
+                VarModule::set_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
             }
             AttackModule::clear_all(boma);
         }
     } else {
-        VarModule::off_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_INIT);
+        VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT);
     }
 }
 
@@ -338,11 +338,11 @@ unsafe fn lucas_special_n_fire_effect(fighter: &mut L2CAgentBase) {
         EFFECT_OFF_KIND(fighter, Hash40::new("lucas_pkt_hold"), false, false);
     }
     frame(lua_state, 11.0);
-    if is_excute(fighter) && VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+    if is_excute(fighter) && VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
         let handle = EffectModule::req_follow(fighter.module_accessor, Hash40::new("lucas_pkfr_hold"), Hash40::new("handl"), &Vector3f::zero(), &Vector3f::zero(), 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
-        VarModule::set_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1, handle as i32);
+        VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1, handle as i32);
         let handle2 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("lucas_pkfr_hold"), Hash40::new("handr"), &Vector3f::zero(), &Vector3f::zero(), 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
-        VarModule::set_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2, handle2 as i32);
+        VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2, handle2 as i32);
     }
 }
 

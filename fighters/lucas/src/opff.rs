@@ -215,64 +215,64 @@ unsafe fn pk_fire_ff(boma: &mut BattleObjectModuleAccessor, stick_y: f32) {
 // Offense Up charge Handler
 pub unsafe fn offense_charge(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, situation_kind: i32)  {
     println!("{}", fighter.lua_state_agent);
-    if(fighter.is_status(*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD) && !(VarModule::get_float(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL) >= 180.0) && !VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE)) {
-        VarModule::set_float(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, VarModule::get_float(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL) + 1.0);
-        println!("Charge Level is: {}", VarModule::get_float(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL));
+    if(fighter.is_status(*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD) && !(VarModule::get_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL) >= 180.0) && !VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE)) {
+        VarModule::set_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, VarModule::get_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL) + 1.0);
+        println!("Charge Level is: {}", VarModule::get_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL));
         if !fighter.is_button_on(Buttons::Special) {
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_END, true);
         }
     }
-    else if(fighter.is_status(*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD) && VarModule::get_float(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL) >= 180.0 && !VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE)) {
+    else if(fighter.is_status(*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD) && VarModule::get_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL) >= 180.0 && !VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE)) {
         println!("Charged!");
-        VarModule::on_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_INIT);
+        VarModule::on_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT);
         let handle = EffectModule::req_follow(fighter.module_accessor, Hash40::new("lucas_pkfr_hold"), Hash40::new("bust"), &Vector3f::zero(), &Vector3f::zero(), 0.9, true, 0, 0, 0, 0, 0, true, true) as u32;
-        VarModule::set_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1, handle as i32);
-        VarModule::on_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE);
+        VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1, handle as i32);
+        VarModule::on_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
         StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE, true);
     }
-    if(VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE)) {
+    if(VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE)) {
         if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE, true);
         }
         else if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_LW4, *FIGHTER_STATUS_KIND_ATTACK_S4, 
             *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE]
         ) {
-            println!("In swing! Status of release {}", VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF));
+            println!("In swing! Status of release {}", VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF));
             if(AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)) {
-                VarModule::off_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
             }
         }
         else if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_LW4, *FIGHTER_STATUS_KIND_ATTACK_S4, 
             *FIGHTER_STATUS_KIND_ATTACK_HI4_START, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, *FIGHTER_STATUS_KIND_ATTACK_S4_START, 
             *FIGHTER_STATUS_KIND_ATTACK_HI4_HOLD, *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD, *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD,
-            *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_END]) && VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF
+            *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_END]) && VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF
         ) {
-            VarModule::off_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+            VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
             println!("Released!");
-            let handle = VarModule::get_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1) as u32;
+            let handle = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1) as u32;
             EffectModule::kill(fighter.module_accessor, handle, false, false);
-            let handle2 = VarModule::get_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) as u32;
+            let handle2 = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) as u32;
             EffectModule::kill(fighter.module_accessor, handle2, false, false);
-            VarModule::set_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1, -1);
-            VarModule::set_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2, -1);
-            VarModule::set_float(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
-            VarModule::off_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE);
+            VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1, -1);
+            VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2, -1);
+            VarModule::set_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
+            VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
         }
     }
 }
 
 unsafe fn reset_flags(fighter: &mut smash::lua2cpp::L2CFighterCommon, status_kind: i32, situation_kind: i32) {
     if [*FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_WIN, *FIGHTER_STATUS_KIND_LOSE, *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) || !sv_information::is_ready_go() {
-        VarModule::set_float(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
-        let handle = VarModule::get_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1) as u32;
+        VarModule::set_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
+        let handle = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1) as u32;
         EffectModule::kill(fighter.module_accessor, handle, false, false);
-        let handle2 = VarModule::get_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) as u32;
+        let handle2 = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) as u32;
         EffectModule::kill(fighter.module_accessor, handle2, false, false);
-        VarModule::set_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1, -1);
-        VarModule::set_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2, -1);
-        VarModule::off_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE);
-        VarModule::off_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_INIT);
-        VarModule::off_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+        VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1, -1);
+        VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2, -1);
+        VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
+        VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT);
+        VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
     }
 }
 
@@ -352,12 +352,12 @@ unsafe fn joint_rotator(boma: &mut BattleObjectModuleAccessor, rotation_amount: 
 unsafe fn smash_s_angle_handler(fighter: &mut L2CFighterCommon) {
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_S4_START]) {
         // Up Tilted Side Smash
-        if VarModule::is_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_UP) {
+        if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP) {
             joint_rotator(fighter.boma(), Vector3f{x: 0.0, y:-30.0, z:0.0}, 10.0, 14.0, 16.0, 24.0, Hash40::new("waist"));
             joint_rotator(fighter.boma(), Vector3f{x: 0.0, y:-20.0, z:0.0}, 10.0, 14.0, 16.0, 24.0, Hash40::new("bust"));
         }
         // Down Tilted Side Smash
-        else if VarModule::is_flag(fighter.object(), vars::lucas::ATTACK_S4_ANGLE_DOWN) {
+        else if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN) {
             joint_rotator(fighter.boma(), Vector3f{x: 0.0, y:10.0, z:0.0}, 10.0, 14.0, 16.0, 24.0, Hash40::new("waist"));
             joint_rotator(fighter.boma(), Vector3f{x: 0.0, y:10.0, z:0.0}, 10.0, 14.0, 16.0, 24.0, Hash40::new("bust"));
             joint_rotator(fighter.boma(), Vector3f{x: 0.0, y:20.0, z:0.0}, 10.0, 14.0, 16.0, 24.0, Hash40::new("handl"));
