@@ -31,7 +31,7 @@ unsafe fn status_AttackHi4Start_Main(fighter: &mut L2CFighterCommon) -> L2CValue
         return L2CValue::I32(1);
     }
 
-    if !VarModule::is_flag(fighter.battle_object, vars::common::IS_DACUS) {
+    if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_DACUS) {
         if sha_frame > 0 && !StopModule::is_stop(fighter.module_accessor) {
             if fighter.sub_check_button_jump().get_bool() {
                 let script_name = fighter.status_attack()[0xf40d7b92u64]["attack_hi4"].get_hash();
@@ -73,7 +73,7 @@ unsafe fn status_AttackHi4Start_Main(fighter: &mut L2CFighterCommon) -> L2CValue
 #[common_status_script(status = FIGHTER_STATUS_KIND_ATTACK_HI4_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
     symbol = "_ZN7lua2cpp16L2CFighterCommon25status_end_AttackHi4StartEv")]
 unsafe fn status_end_AttackHi4Start(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, vars::common::IS_DACUS);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_DACUS);
     fighter.status_end_AttackXX4Start();
     0.into()
 }

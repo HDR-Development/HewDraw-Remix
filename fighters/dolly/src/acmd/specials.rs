@@ -34,7 +34,7 @@ unsafe fn dolly_special_f_start_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
         MeterModule::add(fighter.battle_object, 1.0);
      }
     frame(lua_state, 6.0);
@@ -49,13 +49,13 @@ unsafe fn dolly_special_f_start_game(fighter: &mut L2CAgentBase) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             if MeterModule::drain(fighter.battle_object, 2) {
                 FT_MOTION_RATE(fighter, 8.0/(7.0-6.0));
-                VarModule::on_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
+                VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FT_MOTION_RATE(fighter, 1.0);
         }
     }
@@ -79,7 +79,7 @@ unsafe fn dolly_special_f_start_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL){
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL){
             EFFECT_FOLLOW(fighter, Hash40::new("sys_sp_flash"), Hash40::new("top"), 3.0, 10.0, 0, 0, 0, 0, 1.0, true);
             LAST_EFFECT_SET_RATE(fighter, 0.5);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("top"), 3.0, 10.0, 0, 0, 0, 0, 3.0, true);
@@ -96,7 +96,7 @@ unsafe fn dolly_special_f_start_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL){
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL){
             COL_PRI(fighter, 200);
             FLASH(fighter, 1.0, 0.71, 0.115, 1.75);
         }
@@ -110,7 +110,7 @@ unsafe fn dolly_special_air_f_start_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
         MeterModule::add(fighter.battle_object, 1.0);
      }
     frame(lua_state, 6.0);
@@ -125,13 +125,13 @@ unsafe fn dolly_special_air_f_start_game(fighter: &mut L2CAgentBase) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             if MeterModule::drain(fighter.battle_object, 2) {
                 FT_MOTION_RATE(fighter, 8.0/(7.0-6.0));
-                VarModule::on_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
+                VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FT_MOTION_RATE(fighter, 1.0);
         }
     }
@@ -155,7 +155,7 @@ unsafe fn dolly_special_air_f_start_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL){
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL){
             EFFECT_FOLLOW(fighter, Hash40::new("sys_sp_flash"), Hash40::new("top"), 3.0, 10.0, 0, 0, 0, 0, 1.0, true);
             LAST_EFFECT_SET_RATE(fighter, 0.5);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("top"), 3.0, 10.0, 0, 0, 0, 0, 3.0, true);
@@ -172,7 +172,7 @@ unsafe fn dolly_special_air_f_start_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL){
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL){
             COL_PRI(fighter, 200);
             FLASH(fighter, 1.0, 0.71, 0.115, 1.75);
         }
@@ -213,7 +213,7 @@ unsafe fn dolly_special_f_attack_game(fighter: &mut L2CAgentBase) {
                 ATTACK(fighter, 0, 0, Hash40::new("top"), 11.0, 40, 88, 0, 69, 4.3, 0.0, 11.0, 13.0, Some(0.0), Some(11.0), Some(8.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 20, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
              }
         }
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FT_MOTION_RATE(fighter, 1.250);
             HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_INVINCIBLE);
             HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_INVINCIBLE);
@@ -247,7 +247,7 @@ unsafe fn dolly_special_f_attack_game(fighter: &mut L2CAgentBase) {
                 ATTACK(fighter, 0, 0, Hash40::new("top"), 11.0, 40, 88, 0, 69, 4.3, 0.0, 11.0, 13.0, Some(0.0), Some(11.0), Some(8.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 20, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
              }
         }
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FT_MOTION_RATE(fighter, 1.250);
             HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_INVINCIBLE);
             HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_INVINCIBLE);
@@ -269,7 +269,7 @@ unsafe fn dolly_special_f_attack_game(fighter: &mut L2CAgentBase) {
                 ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 40, 95, 0, 54, 4.3, 0.0, 11.0, 13.0, Some(0.0), Some(11.0), Some(8.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 20, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
             }
         }
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 18.0, 43, 72, 0, 63, 4.3, 0.0, 11.0, 13.0, Some(0.0), Some(11.0), Some(8.0), 2.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 20, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
         }
     }
@@ -286,7 +286,7 @@ unsafe fn dolly_special_f_attack_game(fighter: &mut L2CAgentBase) {
                 ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 40, 100, 0, 57, 4.8, 0.0, 11.0, 14.0, Some(0.0), Some(11.0), Some(8.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 20, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
             }
         }
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 18.0, 43, 72, 0, 63, 4.3, 0.0, 11.0, 13.0, Some(0.0), Some(11.0), Some(8.0), 2.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 20, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
         }
     }
@@ -302,7 +302,7 @@ unsafe fn dolly_special_f_attack_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         COL_NORMAL(fighter);
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             /*
             EFFECT_FLW_POS_NO_STOP(fighter, Hash40::new("dolly_drive_tail_s1"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, true);
             LAST_EFFECT_SET_COLOR(fighter, 0.8, 0.5, 0.5);
@@ -358,21 +358,21 @@ unsafe fn dolly_special_f_attack_effect(fighter: &mut L2CAgentBase) {
     for _ in 0..4 {
         if is_excute(fighter) {
             FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 1, 2, 0, 4, 0, 0, 0, false);
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 COL_PRI(fighter, 200);
                 FLASH(fighter, 1.0, 0.825, 0.115, 1.75);
             }
         }
         wait(lua_state, 1.0);
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 //FLASH(fighter, 1.0, 1.0, 1.0, 1.5);
                 FLASH(fighter, 1.0, 0.825, 0.115, 0.6);
             }
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 COL_NORMAL(fighter);
             }
         }
@@ -380,21 +380,21 @@ unsafe fn dolly_special_f_attack_effect(fighter: &mut L2CAgentBase) {
     }
     for _ in 0..3 {
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 COL_PRI(fighter, 200);
                 FLASH(fighter, 1.0, 0.825, 0.115, 2.0);
             }
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 //FLASH(fighter, 1.0, 1.0, 1.0, 1.5);
                 FLASH(fighter, 1.0, 0.825, 0.115, 0.6);
             }
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 COL_NORMAL(fighter);
             }
         }
@@ -408,7 +408,7 @@ unsafe fn dolly_special_f_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
     }
 }
 
@@ -417,7 +417,7 @@ unsafe fn dolly_special_air_f_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
@@ -428,8 +428,7 @@ unsafe fn dolly_special_b_start_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
-        VarModule::on_flag(fighter.battle_object, vars::dolly::IS_STARTED_SPECIAL_B_GROUNDED);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
         //FT_MOTION_RATE(fighter, 9.0/(7.0-1.0));
         MeterModule::add(fighter.battle_object, 1.0);
     }
@@ -438,13 +437,13 @@ unsafe fn dolly_special_b_start_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 1.0);
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             if MeterModule::drain(fighter.battle_object, 2) {
-                VarModule::on_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
+                VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL){
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL){
             WorkModule::set_int(boma, *FIGHTER_DOLLY_STRENGTH_S, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH);
         }
         if WorkModule::get_int64(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
@@ -453,7 +452,7 @@ unsafe fn dolly_special_b_start_game(fighter: &mut L2CAgentBase) {
         else{
             FT_MOTION_RATE(fighter, 4.0);
         }
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL){
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL){
             FT_MOTION_RATE(fighter, 1.0);
         }
     }
@@ -466,7 +465,7 @@ unsafe fn dolly_special_b_start_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL){
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL){
             COL_PRI(fighter, 200);
             FLASH(fighter, 1.0, 0.71, 0.115, 1.75);
             EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 13.5, -2.5, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
@@ -492,8 +491,7 @@ unsafe fn dolly_special_air_b_start_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
-        VarModule::off_flag(fighter.battle_object, vars::dolly::IS_STARTED_SPECIAL_B_GROUNDED);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
         //FT_MOTION_RATE(fighter, 9.0/(7.0-1.0));
         MeterModule::add(fighter.battle_object, 1.0);
     }
@@ -502,13 +500,13 @@ unsafe fn dolly_special_air_b_start_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 1.0);
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             if MeterModule::drain(fighter.battle_object, 2) {
-                VarModule::on_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
+                VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL){
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL){
             WorkModule::set_int(boma, *FIGHTER_DOLLY_STRENGTH_S, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH);
         }
         if WorkModule::get_int64(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
@@ -517,7 +515,7 @@ unsafe fn dolly_special_air_b_start_game(fighter: &mut L2CAgentBase) {
         else{
             FT_MOTION_RATE(fighter, 4.0);
         }
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL){
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL){
             FT_MOTION_RATE(fighter, 1.0);
         }
     }
@@ -529,7 +527,7 @@ unsafe fn dolly_special_air_b_start_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL){
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL){
             COL_PRI(fighter, 200);
             FLASH(fighter, 1.0, 0.71, 0.115, 1.75);
             EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 13.5, -2.5, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
@@ -555,7 +553,7 @@ unsafe fn dolly_special_b_attack_w_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let mut add_jump_h_speed = -1.4;
     let mut add_jump_v_speed = 0.5;
-    if !VarModule::is_flag(fighter.battle_object, vars::dolly::IS_STARTED_SPECIAL_B_GROUNDED){
+    if !WorkModule::is_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_S_WORK_FLAG_AIR_ATTACK) {
         add_jump_h_speed = -0.7;
         add_jump_v_speed = 0.25;
     }
@@ -734,7 +732,7 @@ unsafe fn dolly_special_b_attack_w_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 1.0, 0.825, 0.115, 2.0);
         }
@@ -742,7 +740,7 @@ unsafe fn dolly_special_b_attack_w_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         // EX
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
             EFFECT_FOLLOW_FLIP(fighter, Hash40::new("dolly_kick_arc_w_command"), Hash40::new("dolly_kick_arc_w_command"), Hash40::new("rot"), -1, -6, 0, -90, -90, 0, 1, true, *EF_FLIP_YZ);
             EffectModule::set_disable_render_offset_last(boma);
@@ -791,20 +789,20 @@ unsafe fn dolly_special_b_attack_w_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     for _ in 0..5 {
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 COL_PRI(fighter, 200);
                 FLASH(fighter, 1.0, 0.825, 0.115, 2.0);
             }
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 FLASH(fighter, 1.0, 0.825, 0.115, 0.6);
             }
         }
         wait(lua_state, 1.0);
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 COL_NORMAL(fighter);
             }
         }
@@ -818,11 +816,11 @@ unsafe fn dolly_special_b_attack_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let  mut add_jump_h_speed = -1.0;
     let mut add_jump_v_speed = 0.5;
-    if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+    if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
         add_jump_h_speed = -1.3;
         add_jump_v_speed = 2.0;
     }
-    else if !VarModule::is_flag(fighter.battle_object, vars::dolly::IS_STARTED_SPECIAL_B_GROUNDED){
+    else if !WorkModule::is_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_S_WORK_FLAG_AIR_ATTACK) {
         add_jump_h_speed = -0.3;
         add_jump_v_speed = 0.3;
     }
@@ -886,7 +884,7 @@ unsafe fn dolly_special_b_attack_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             KineticModule::add_speed(boma, &Vector3f::new(-0.4*add_jump_h_speed, 0.0, 0.0));
         }
         else{
@@ -909,7 +907,7 @@ unsafe fn dolly_special_b_attack_game(fighter: &mut L2CAgentBase) {
             ATTACK(fighter, 2, 1, Hash40::new("legr"), 6.0, 68, 40, 0, 95, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
             ATTACK(fighter, 3, 1, Hash40::new("hip"), 6.0, 68, 40, 0, 95, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
         }
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             ATTACK(fighter, 0, 1, Hash40::new("kneer"), 1.0, 330, 100, 50, 20, 5.0, 4.0, 0.0, 0.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
             ATTACK(fighter, 1, 1, Hash40::new("kneer"), 1.0, 330, 100, 50, 20, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
             ATTACK(fighter, 2, 1, Hash40::new("legr"), 1.0, 330, 100, 50, 20, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
@@ -925,14 +923,14 @@ unsafe fn dolly_special_b_attack_game(fighter: &mut L2CAgentBase) {
          else {
             ATTACK(fighter, 0, 1, Hash40::new("kneer"), 10.0, 78, 50, 0, 95, 5.0, 4.0, 0.0, 0.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
         }
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             ATTACK(fighter, 0, 1, Hash40::new("kneer"), 10.0, 275, 40, 0, 100, 5.0, 4.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
             ATTACK(fighter, 1, 1, Hash40::new("kneer"), 10.0, 275, 40, 0, 100, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
             ATTACK(fighter, 2, 1, Hash40::new("legr"), 10.0, 275, 40, 0, 100, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
             ATTACK(fighter, 3, 1, Hash40::new("hip"), 10.0, 275, 40, 0, 100, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
         }
         // Speed handling
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             KineticModule::add_speed(boma, &Vector3f::new(0.0, -0.5*add_jump_v_speed, 0.0));
             KineticModule::add_speed(boma, &Vector3f::new(-0.3*add_jump_h_speed, 0.0, 0.0));
         }
@@ -945,7 +943,7 @@ unsafe fn dolly_special_b_attack_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             KineticModule::add_speed(boma, &Vector3f::new(0.0, -0.4*add_jump_v_speed, 0.0));
         }
         else{
@@ -963,7 +961,7 @@ unsafe fn dolly_special_b_attack_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             AttackModule::clear_all(boma);
         }
     }
@@ -981,7 +979,7 @@ unsafe fn dolly_special_b_attack_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 1.0, 0.825, 0.115, 2.0);
         }
@@ -989,7 +987,7 @@ unsafe fn dolly_special_b_attack_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         // EX
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
             EFFECT_FOLLOW_FLIP(fighter, Hash40::new("dolly_kick_arc_s_command"), Hash40::new("dolly_kick_arc_s_command"), Hash40::new("rot"), -1, -6, 0, -90, -90, 0, 1, true, *EF_FLIP_YZ);
             EffectModule::set_disable_render_offset_last(boma);
@@ -1038,20 +1036,20 @@ unsafe fn dolly_special_b_attack_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     for _ in 0..5 {
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 COL_PRI(fighter, 200);
                 FLASH(fighter, 1.0, 0.825, 0.115, 2.0);
             }
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 FLASH(fighter, 1.0, 0.825, 0.115, 0.6);
             }
         }
         wait(lua_state, 1.0);
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 COL_NORMAL(fighter);
             }
         }
@@ -1065,7 +1063,7 @@ unsafe fn dolly_special_b_end_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FT_MOTION_RATE(fighter, 1.1);
         }
         else{
@@ -1080,7 +1078,7 @@ unsafe fn dolly_special_hi1_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
         MeterModule::add(fighter.battle_object, 1.0);
      }
     frame(lua_state, 6.0);
@@ -1230,7 +1228,7 @@ unsafe fn dolly_special_hi_command_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
         MeterModule::add(fighter.battle_object, 1.0);
      }
     frame(lua_state, 6.0);
@@ -1239,10 +1237,10 @@ unsafe fn dolly_special_hi_command_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             if MeterModule::drain(fighter.battle_object, 3) {
-                 VarModule::on_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
+                 VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
         }
     }
@@ -1253,7 +1251,7 @@ unsafe fn dolly_special_hi_command_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("hip"), *HIT_STATUS_XLU);
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
         }
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_HI_WORK_FLAG_JUMP);
@@ -1372,7 +1370,7 @@ unsafe fn dolly_special_hi_command_game(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
         }
          else {
@@ -1399,14 +1397,14 @@ unsafe fn dolly_special_hi_command_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 1.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         }
     }
     frame(lua_state, 34.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 90, 65, 0, 90, 7.0, 0.0, 8.0, 2.0, Some(0.0), Some(15.0), Some(2.0), 1.25, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_CRITICAL, *ATTACK_REGION_BODY);
         }
         else{
@@ -1445,7 +1443,7 @@ unsafe fn dolly_special_hi_command_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 16, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_RATE(fighter, 1.3);
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 1.0, 0.825, 0.115, 1.75);
             //FLASH_SET_DIRECTION(fighter, 1, 0, 0);
@@ -1464,7 +1462,7 @@ unsafe fn dolly_special_hi_command_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
@@ -1599,7 +1597,7 @@ unsafe fn dolly_special_hi_command_effect(fighter: &mut L2CAgentBase) {
     for _ in 0..4 {
         wait(lua_state, 2.0);
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 FLASH(fighter, 1.0, 0.825, 0.115, 1.75);
             }
             else{
@@ -1630,7 +1628,7 @@ unsafe fn dolly_special_hi_command_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 32.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 8.5, 1, 0, 0, 0, 2, true, 0.6);
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 1.0, 0.825, 0.115, 1.75);
         }
         else{
@@ -1660,7 +1658,7 @@ unsafe fn dolly_special_air_hi1_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
         MeterModule::add(fighter.battle_object, 1.0);
      }
     frame(lua_state, 6.0);
@@ -1781,7 +1779,7 @@ unsafe fn dolly_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
         MeterModule::add(fighter.battle_object, 1.0);
      }
     frame(lua_state, 6.0);
@@ -1790,10 +1788,10 @@ unsafe fn dolly_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             if MeterModule::drain(fighter.battle_object, 3) {
-                VarModule::on_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
+                VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
         }
     }
@@ -1804,7 +1802,7 @@ unsafe fn dolly_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("hip"), *HIT_STATUS_XLU);
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
         }
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_HI_WORK_FLAG_JUMP);
@@ -1923,7 +1921,7 @@ unsafe fn dolly_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
         }
          else {
@@ -1950,14 +1948,14 @@ unsafe fn dolly_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 1.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         }
     }
     frame(lua_state, 34.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 90, 65, 0, 90, 7.0, 0.0, 8.0, 2.0, Some(0.0), Some(15.0), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_CRITICAL, *ATTACK_REGION_BODY);
         }
         else{
@@ -1996,7 +1994,7 @@ unsafe fn dolly_special_air_hi_command_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 16, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_RATE(fighter, 1.3);
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 1.0, 0.825, 0.115, 1.75);
             //FLASH_SET_DIRECTION(fighter, 1, 0, 0);
@@ -2015,7 +2013,7 @@ unsafe fn dolly_special_air_hi_command_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
@@ -2150,7 +2148,7 @@ unsafe fn dolly_special_air_hi_command_effect(fighter: &mut L2CAgentBase) {
     for _ in 0..4 {
         wait(lua_state, 2.0);
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 FLASH(fighter, 1.0, 0.825, 0.115, 1.75);
             }
             else{
@@ -2181,7 +2179,7 @@ unsafe fn dolly_special_air_hi_command_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 32.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 8.5, 1, 0, 0, 0, 2, true, 0.6);
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 1.0, 0.825, 0.115, 1.75);
         }
         else{
@@ -2232,21 +2230,21 @@ unsafe fn dolly_special_lw_start_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
-        VarModule::off_flag(fighter.battle_object, vars::dolly::IS_TARGET_COMBO_1);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_TARGET_COMBO_1);
         MeterModule::add(fighter.battle_object, 1.0);
      }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             if MeterModule::drain(fighter.battle_object, 3) {
-                VarModule::on_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
+                VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
                 
             }
         }
         else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_CATCH) {
             if MeterModule::drain(fighter.battle_object, 2) {
-                VarModule::on_flag(fighter.battle_object, vars::dolly::IS_TARGET_COMBO_1);
+                VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_TARGET_COMBO_1);
             }
         }
     }
@@ -2259,15 +2257,15 @@ unsafe fn dolly_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
-        VarModule::off_flag(fighter.battle_object, vars::dolly::IS_TARGET_COMBO_1);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_TARGET_COMBO_1);
         MeterModule::add(fighter.battle_object, 1.0);
      }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             if MeterModule::drain(fighter.battle_object, 3) {
-                VarModule::on_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL);
+                VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
     }
@@ -2283,10 +2281,10 @@ unsafe fn dolly_special_lw_w_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
         KineticModule::clear_speed_all(boma);
         WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-        if WorkModule::is_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) || VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if WorkModule::is_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             WHOLE_HIT(fighter, *HIT_STATUS_XLU);
         }
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_TARGET_COMBO_1) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_TARGET_COMBO_1) {
             //KineticModule::add_speed(boma, &Vector3f::new(0.0, -5.0, 0.0));
             SET_SPEED_EX(fighter, 0.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 85, 25, 0, 100, 5.5, 0.0, 10.0, 1.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
@@ -2304,7 +2302,7 @@ unsafe fn dolly_special_lw_w_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.3);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_TARGET_COMBO_1) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_TARGET_COMBO_1) {
             //boma.change_status_req(*FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_END, false);
             boma.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, false);
         }
@@ -2328,7 +2326,7 @@ unsafe fn dolly_special_lw_w_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         MeterModule::watch_damage(fighter.battle_object, false);
         WorkModule::off_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-        if !VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
         }
     }
@@ -2351,7 +2349,7 @@ unsafe fn dolly_special_lw_w_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("dolly_down_rise"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_TARGET_COMBO_1) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_TARGET_COMBO_1) {
             EFFECT_FOLLOW(fighter, Hash40::new("sys_sp_flash"), Hash40::new("top"), 3.0, 10.0, 0, 0, 0, 0, 1.0, true);
             LAST_EFFECT_SET_RATE(fighter, 0.8);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("kneer"), 3.0, 10.0, 0, 0, 0, 0, 1.0, true);
@@ -2371,10 +2369,10 @@ unsafe fn dolly_special_lw_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
         KineticModule::clear_speed_all(boma);
         WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-        if WorkModule::is_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) || VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if WorkModule::is_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             WHOLE_HIT(fighter, *HIT_STATUS_XLU);
         }
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_TARGET_COMBO_1) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_TARGET_COMBO_1) {
             //KineticModule::add_speed(boma, &Vector3f::new(0.0, -5.0, 0.0));
             SET_SPEED_EX(fighter, 0.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 85, 25, 0, 100, 5.5, 0.0, 10.0, 1.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
@@ -2392,7 +2390,7 @@ unsafe fn dolly_special_lw_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.3);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_TARGET_COMBO_1) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_TARGET_COMBO_1) {
             //boma.change_status_req(*FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_END, false);
             boma.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, false);
         }
@@ -2422,7 +2420,7 @@ unsafe fn dolly_special_lw_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         MeterModule::watch_damage(fighter.battle_object, false);
         WorkModule::off_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-        if !VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
         }
     }
@@ -2446,7 +2444,7 @@ unsafe fn dolly_special_lw_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("dolly_down_rise"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
         EFFECT_FOLLOW(fighter, Hash40::new("dolly_wave_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 1.0, 0.71, 0.115, 1.75);
             EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 13.5, -2.5, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
@@ -2458,7 +2456,7 @@ unsafe fn dolly_special_lw_effect(fighter: &mut L2CAgentBase) {
             EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_normal_s"), Hash40::new("top"), 3.0, 10.0, 0, 0, 0, 0, 0.4, true);
             LAST_EFFECT_SET_RATE(fighter, 0.75);
         }
-        else if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_TARGET_COMBO_1) {
+        else if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_TARGET_COMBO_1) {
             EFFECT_FOLLOW(fighter, Hash40::new("sys_sp_flash"), Hash40::new("top"), 3.0, 10.0, 0, 0, 0, 0, 1.0, true);
             LAST_EFFECT_SET_RATE(fighter, 0.8);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("kneer"), 3.0, 10.0, 0, 0, 0, 0, 1.0, true);
@@ -2470,21 +2468,21 @@ unsafe fn dolly_special_lw_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     for _ in 0..6 {
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 COL_PRI(fighter, 200);
                 FLASH(fighter, 1.0, 0.825, 0.115, 1.75);
             }
         }
         wait(lua_state, 1.0);
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 //FLASH(fighter, 1.0, 1.0, 1.0, 1.5);
                 FLASH(fighter, 1.0, 0.825, 0.115, 0.6);
             }
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 COL_NORMAL(fighter);
             }
         }
@@ -2536,7 +2534,7 @@ unsafe fn dolly_special_lw_attack_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 350, 35, 0, 30, 6.0, 0.0, 6.0, 7.0, Some(0.0), Some(4.0), Some(2.0), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_CRITICAL, *ATTACK_REGION_PUNCH);
             AttackModule::set_add_reaction_frame(boma, 0, 5.0, false);
         }
@@ -2573,7 +2571,7 @@ unsafe fn dolly_special_lw_attack_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 350, 35, 0, 30, 6.0, 0.0, 6.0, 7.0, Some(0.0), Some(4.0), Some(2.0), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_CRITICAL, *ATTACK_REGION_PUNCH);
             AttackModule::set_add_reaction_frame(boma, 0, 5.0, false);
         }
@@ -2697,7 +2695,7 @@ unsafe fn dolly_special_lw_attack_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 350, 35, 0, 30, 6.0, 0.0, 6.0, 7.0, Some(0.0), Some(4.0), Some(2.0), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_CRITICAL, *ATTACK_REGION_PUNCH);
             AttackModule::set_add_reaction_frame(boma, 0, 5.0, false);
         }
@@ -2738,7 +2736,7 @@ unsafe fn dolly_special_lw_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             EFFECT_FOLLOW(fighter, Hash40::new("dolly_wave_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 2.0, true);
             EFFECT_FOLLOW(fighter, Hash40::new("dolly_wave_aura"), Hash40::new("shoulderr"), 0, 0, 0, 0, 0, 0, 2.0, true);
             EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("dolly_down_tail_s"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -2758,28 +2756,28 @@ unsafe fn dolly_special_lw_attack_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             EFFECT_OFF_KIND(fighter, Hash40::new("dolly_wave_aura"), true, true);
         }
     }
     frame(lua_state, 3.0);
     for _ in 0..7 {
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 COL_PRI(fighter, 200);
                 FLASH(fighter, 1.0, 0.825, 0.115, 1.75);
             }
         }
         wait(lua_state, 1.0);
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 //FLASH(fighter, 1.0, 1.0, 1.0, 1.5);
                 FLASH(fighter, 1.0, 0.825, 0.115, 0.6);
             }
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
                 COL_NORMAL(fighter);
             }
         }
@@ -2799,18 +2797,18 @@ unsafe fn dolly_special_lw_landing_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::dolly::IS_TARGET_COMBO_2);
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_TARGET_COMBO_2);
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             AttackModule::clear_all(boma);
             SET_SPEED_EX(fighter, 0.5, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             
             // Star Dunk Volcano
             if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
                 if MeterModule::drain(fighter.battle_object, 2) {
-                    VarModule::on_flag(boma.object(), vars::dolly::IS_TARGET_COMBO_2);
+                    VarModule::on_flag(boma.object(), vars::shotos::instance::IS_TARGET_COMBO_2);
                 }
             }
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_TARGET_COMBO_2) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_TARGET_COMBO_2) {
                 ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 0, 100, 70, 0, 6.5, 0.0, 6.5, 0.0, Some(0.0), Some(6.5), Some(5.5), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
                 ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0, 0, 100, 70, 0, 6.5, 0.0, 6.5, 0.0, Some(0.0), Some(6.5), Some(5.5), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
             }
@@ -2828,7 +2826,7 @@ unsafe fn dolly_special_lw_landing_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         // Star Dunk Volcano
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_TARGET_COMBO_2) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_TARGET_COMBO_2) {
             ArticleModule::generate_article(boma, *FIGHTER_DOLLY_GENERATE_ARTICLE_BURST, false, 0);
         }
         
@@ -2836,15 +2834,15 @@ unsafe fn dolly_special_lw_landing_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         // Star Dunk Volcano
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_TARGET_COMBO_2) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_TARGET_COMBO_2) {
             SlowModule::set_whole(boma, 2, 20);
         }
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             // Star Dunk Volcano
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_TARGET_COMBO_2) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_TARGET_COMBO_2) {
                 FT_MOTION_RATE(fighter, 4.000);
             }
             else{
@@ -2857,14 +2855,14 @@ unsafe fn dolly_special_lw_landing_game(fighter: &mut L2CAgentBase) {
             }
             
         }
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             AttackModule::clear_all(boma);
         }
         MeterModule::watch_damage(fighter.battle_object, false);
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FT_MOTION_RATE(fighter, 1.000);
         }
     }
@@ -2877,10 +2875,10 @@ unsafe fn dolly_special_lw_landing_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         // EX/Star Dunk Volcano
-        if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             EFFECT_DETACH_KIND(fighter, Hash40::new("dolly_down_s"), -1);
             EFFECT(fighter, Hash40::new("dolly_down_ground_s"), Hash40::new("top"), 0, 0, 11, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-            if VarModule::is_flag(fighter.battle_object, vars::dolly::IS_TARGET_COMBO_2) {
+            if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_TARGET_COMBO_2) {
                 LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, false);
                 LAST_EFFECT_SET_RATE(fighter, 0.5);
             }
@@ -2909,13 +2907,13 @@ unsafe fn dolly_super_special_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.0, 4.0);
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 10.0);
-        if VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL){
+        if VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL){
             SLOW_OPPONENT(fighter, 15.0, 40.0);
         }
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL){
+        if VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL){
             FT_MOTION_RATE(fighter, 15.0/(8.0-6.0));
         }
         else{
@@ -2936,7 +2934,7 @@ unsafe fn dolly_super_special_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 25.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL){
+        if VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL){
             FT_MOTION_RATE(fighter, 1.0);
         }
         else{
@@ -2960,7 +2958,7 @@ unsafe fn dolly_super_special_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("dolly_wave_aura"), Hash40::new("handr"), 1, 0, 0, 0, 0, 0, 1, true);
 
-        if VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL){
+        if VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL){
             EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 10, 13, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
             LAST_EFFECT_SET_RATE(fighter, 1.0);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_explosion_flash"), Hash40::new("handr"), 1, 0, 0, 0, 0, 0, 0.7, true);
@@ -3002,7 +3000,7 @@ unsafe fn dolly_super_special_2_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0.0);
-        if VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL){
+        if VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL){
             FT_MOTION_RATE(fighter, 1.0);
             SLOW_OPPONENT(fighter, 30.0, 30.0);
         }
@@ -3013,7 +3011,7 @@ unsafe fn dolly_super_special_2_start_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL){
+        if VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL){
             FT_MOTION_RATE(fighter, 1.0);
         }
         else{
@@ -3022,7 +3020,7 @@ unsafe fn dolly_super_special_2_start_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL){
+        if VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL){
             FT_MOTION_RATE(fighter, 15.0/(9.0-5.0));
         }
         else{
@@ -3032,7 +3030,7 @@ unsafe fn dolly_super_special_2_start_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL){
+        if VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL){
             FT_MOTION_RATE(fighter, 0.75);
         }
         else{
@@ -3086,7 +3084,7 @@ unsafe fn dolly_super_special_2_start_effect(fighter: &mut L2CAgentBase) {
 
         EFFECT_FOLLOW(fighter, Hash40::new("dolly_wave_hold"), Hash40::new("handr"), 1, 0, 0, 0, 0, 0, 1, true);
 
-        if VarModule::is_flag(boma.object(), vars::common::SUPER_CANCEL){
+        if VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL){
             EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), -15, 16, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
             LAST_EFFECT_SET_RATE(fighter, 1.0);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_explosion_flash"), Hash40::new("handr"), 1, 0, 0, 0, 0, 0, 0.65, true);

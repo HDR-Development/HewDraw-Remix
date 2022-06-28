@@ -6,12 +6,12 @@ unsafe fn game_specialn3(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
-        VarModule::off_flag(boma.object(), vars::trail::IS_LAND_CANCEL_THUNDER);
+        VarModule::off_flag(boma.object(), vars::trail::status::IS_LAND_CANCEL_THUNDER);
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
         WorkModule::set_int(boma, 0, *FIGHTER_TRAIL_STATUS_SPECIAL_N3_INT_THUNDER_NUM);
-        if !VarModule::is_flag(boma.object(), vars::trail::IS_LAND_CANCEL_THUNDER){
+        if !VarModule::is_flag(boma.object(), vars::trail::status::IS_LAND_CANCEL_THUNDER){
             ArticleModule::generate_article(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_CLOUD, false, 0);
         }
         WorkModule::on_flag(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_N3_FLAG_CHANGE_MAGIC);
@@ -19,14 +19,14 @@ unsafe fn game_specialn3(fighter: &mut L2CAgentBase) {
     wait(lua_state, 14.0);
     if is_excute(fighter) {
         WorkModule::set_int(boma, 1, *FIGHTER_TRAIL_STATUS_SPECIAL_N3_INT_THUNDER_NUM);
-        if !VarModule::is_flag(boma.object(), vars::trail::IS_LAND_CANCEL_THUNDER){
+        if !VarModule::is_flag(boma.object(), vars::trail::status::IS_LAND_CANCEL_THUNDER){
             ArticleModule::generate_article(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_CLOUD, false, 0);
         }
     }
     wait(lua_state, 14.0);
     if is_excute(fighter) {
         WorkModule::set_int(boma, 2, *FIGHTER_TRAIL_STATUS_SPECIAL_N3_INT_THUNDER_NUM);
-        if !VarModule::is_flag(boma.object(), vars::trail::IS_LAND_CANCEL_THUNDER){
+        if !VarModule::is_flag(boma.object(), vars::trail::status::IS_LAND_CANCEL_THUNDER){
             ArticleModule::generate_article(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_CLOUD, false, 0);
         }
     }
@@ -341,7 +341,7 @@ unsafe fn game_specialhi(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(boma.object(), vars::trail::UP_SPECIAL_HIT);
+        VarModule::off_flag(boma.object(), vars::trail::status::UP_SPECIAL_HIT);
     }
     frame(lua_state, 4.0);
         FT_MOTION_RATE(fighter, 2.0);
@@ -487,7 +487,7 @@ unsafe fn game_specialhi(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 48.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::trail::UP_SPECIAL_HIT){
+        if VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_HIT){
             WorkModule::on_flag(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_HI_FLAG_COMMAND_ACCEPT);
         }
         FT_MOTION_RATE(fighter, 0.5);
@@ -498,13 +498,13 @@ unsafe fn game_specialhi(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 75.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(boma.object(), vars::trail::UP_SPECIAL_HIT){
+        if !VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_HIT){
             FT_MOTION_RATE(fighter, 2.0);
         }
     }
     frame(lua_state, 79.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(boma.object(), vars::trail::UP_SPECIAL_HIT){
+        if !VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_HIT){
             FT_MOTION_RATE(fighter, 1.0);
         }
     }
@@ -516,7 +516,7 @@ unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(boma.object(), vars::trail::UP_SPECIAL_HIT);
+        VarModule::off_flag(boma.object(), vars::trail::status::UP_SPECIAL_HIT);
     }
     frame(lua_state, 4.0);
         FT_MOTION_RATE(fighter, 2.0);
@@ -662,7 +662,7 @@ unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 48.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::trail::UP_SPECIAL_HIT){
+        if VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_HIT){
             WorkModule::on_flag(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_HI_FLAG_COMMAND_ACCEPT);
         }
         FT_MOTION_RATE(fighter, 0.5);
@@ -673,13 +673,13 @@ unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 75.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(boma.object(), vars::trail::UP_SPECIAL_HIT){
+        if !VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_HIT){
             FT_MOTION_RATE(fighter, 2.0);
         }
     }
     frame(lua_state, 79.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(boma.object(), vars::trail::UP_SPECIAL_HIT){
+        if !VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_HIT){
             FT_MOTION_RATE(fighter, 1.0);
         }
     }

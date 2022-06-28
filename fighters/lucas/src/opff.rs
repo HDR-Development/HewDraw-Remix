@@ -24,11 +24,11 @@ unsafe fn psi_magnet_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32,
 unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
    if status_kind == *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_HOLD {
         if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-            if  !VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT) {
-                VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT);
+            if  !VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT) {
+                VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT);
             }
-            if VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME) {
-                VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL); // Disallow more up specials
+            if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME) {
+                VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL); // Disallow more up specials
             }
             StatusModule::change_status_request_from_script(boma, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END, true);
         }
@@ -37,8 +37,8 @@ unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, st
     if status_kind == *FIGHTER_STATUS_KIND_FALL_SPECIAL
         && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END
         && situation_kind == *SITUATION_KIND_AIR {
-        if VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT) &&  !VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME) {
-            VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_INTERRUPT_AIRTIME);
+        if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT) &&  !VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME) {
+            VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
         }
     }
@@ -47,10 +47,10 @@ unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, st
 // Lucas DJC and momentum tracker
 unsafe fn djc_momentum_helper(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL {
-        VarModule::set_float(boma.object(), vars::common::DOUBLE_JUMP_FRAME, frame);
+        VarModule::set_float(boma.object(), vars::common::instance::DOUBLE_JUMP_FRAME, frame);
     }
     /*
-    if VarModule::get_float(boma.object(), vars::common::DOUBLE_JUMP_FRAME) == 1.0 {
+    if VarModule::get_float(boma.object(), vars::common::instance::DOUBLE_JUMP_FRAME) == 1.0 {
         VarModule::set_float(boma.object(), vars::common::DOUBLE_JUMP_TIMER, 1.0);
     }
     if VarModule::get_float(boma.object(), vars::common::DOUBLE_JUMP_TIMER) > 0.0 && (status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL || status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR) {
@@ -70,9 +70,6 @@ unsafe fn djc_momentum_helper(boma: &mut BattleObjectModuleAccessor, id: usize, 
     }
     //println!("Lucas DJ timer: Frame {}", VarModule::get_float(boma.object(), vars::common::DOUBLE_JUMP_TIMER));
     */
-    if status_kind != *FIGHTER_STATUS_KIND_ATTACK_AIR {
-        VarModule::off_flag(boma.object(), vars::common::DOUBLE_JUMP_CANCELED);
-    }
 }
 
 // PK Thunder wall ride momentum "fix"
@@ -111,12 +108,12 @@ unsafe fn pk_thunder_wall_ride_shorten(fighter: &mut smash::lua2cpp::L2CFighterC
         let special_hi_attack_init_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("attack_speed"));
 
         // Get the initial x momentum if it hasn't been grabbed yet for the status
-        if VarModule::get_float(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_X_INIT_MOMENTUM) > 10000.0{
-            VarModule::set_float(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_X_INIT_MOMENTUM, x_momentum);
+        if VarModule::get_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_X_INIT_MOMENTUM) > 10000.0{
+            VarModule::set_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_X_INIT_MOMENTUM, x_momentum);
         }
         // Get the initial y momentum if it hasn't been grabbed yet for the status
-        if VarModule::get_float(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_Y_INIT_MOMENTUM) > 10000.0{
-            VarModule::set_float(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_Y_INIT_MOMENTUM, y_momentum);
+        if VarModule::get_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_Y_INIT_MOMENTUM) > 10000.0{
+            VarModule::set_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_Y_INIT_MOMENTUM, y_momentum);
         }
 
         // If touching a wall...
@@ -126,13 +123,13 @@ unsafe fn pk_thunder_wall_ride_shorten(fighter: &mut smash::lua2cpp::L2CFighterC
             //DamageModule::add_damage(boma, 1.0, 0);
             
             // If the vertical momentum you have while touching the wall is opposite your initial up b momentum, multiply the vertical momentum by -1.0 to get back in the right direction
-            if y_momentum * VarModule::get_float(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_Y_INIT_MOMENTUM) < 0.0{
+            if y_momentum * VarModule::get_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_Y_INIT_MOMENTUM) < 0.0{
                 KineticModule::mul_speed(boma, &wall_ride, *FIGHTER_KINETIC_ENERGY_ID_STOP);
             }
             // If you haven't touched a wall yet, set the wall touch flag to true and store the frame you touched the wall
-            if !VarModule::is_flag(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_IS_TOUCH_WALL){
-                VarModule::on_flag(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_IS_TOUCH_WALL);
-                VarModule::set_float(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_WALL_TOUCH_FRAME, MotionModule::frame(boma));
+            if !VarModule::is_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_TOUCH_WALL){
+                VarModule::on_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_TOUCH_WALL);
+                VarModule::set_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_WALL_TOUCH_FRAME, MotionModule::frame(boma));
             }
             
         }
@@ -140,39 +137,39 @@ unsafe fn pk_thunder_wall_ride_shorten(fighter: &mut smash::lua2cpp::L2CFighterC
         else {
             // If the horizontal momentum you have after touching the wall is opposite your initial up b momentum, multiply the horizontal momentum by -1.0 to get back in the right direction
             
-            if VarModule::is_flag(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_IS_TOUCH_WALL)
-               && !VarModule::is_flag(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_IS_FLIPPED_MOMENTUM_AFTER_WALLTOUCH)
-               && x_momentum * VarModule::get_float(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_X_INIT_MOMENTUM) < 0.0{
+            if VarModule::is_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_TOUCH_WALL)
+               && !VarModule::is_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_FLIPPED_MOMENTUM_AFTER_WALLTOUCH)
+               && x_momentum * VarModule::get_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_X_INIT_MOMENTUM) < 0.0{
                 KineticModule::mul_speed(boma, &wall_leave, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-                VarModule::on_flag(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_IS_FLIPPED_MOMENTUM_AFTER_WALLTOUCH);
+                VarModule::on_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_FLIPPED_MOMENTUM_AFTER_WALLTOUCH);
             }
             
             
             // Get the x momentum while not touching the wall so we can grab it later for if we touch then leave the wall
-            VarModule::set_float(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_X_MOMENTUM, x_momentum);
+            VarModule::set_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_X_MOMENTUM, x_momentum);
             // If you've touched a wall and are no longer touching a wall...
-            if VarModule::is_flag(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_IS_TOUCH_WALL) && !VarModule::is_flag(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_IS_LEAVE_WALL){
+            if VarModule::is_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_TOUCH_WALL) && !VarModule::is_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_LEAVE_WALL){
                 // No longer touching a wall, set the wall touch flag to off
-                VarModule::off_flag(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_IS_TOUCH_WALL);
+                VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_TOUCH_WALL);
                 // Notify us that we've left the wall, set the wall leave flag to on
-                VarModule::on_flag(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_IS_LEAVE_WALL);
+                VarModule::on_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_LEAVE_WALL);
                 // Grab the frame we left the wall so we can calculate our deceleration
-                VarModule::set_float(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_WALL_LEAVE_FRAME, MotionModule::frame(boma));  
+                VarModule::set_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_WALL_LEAVE_FRAME, MotionModule::frame(boma));  
             }
             
             /*
             if KineticModule::get_sum_speed_x(boma, *FIGHTER_KINETIC_ENERGY_ID_STOP).abs() < 0.01 {
-                VarModule::off_flag(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_IS_SET_WALL_LEAVE_MOMENTUM);
+                VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_SET_WALL_LEAVE_MOMENTUM);
             }
             */
             // If we've left the wall after touching it and haven't set our momentum yet...
             /*
-            if VarModule::is_flag(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_IS_LEAVE_WALL) && !VarModule::is_flag(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_IS_SET_WALL_LEAVE_MOMENTUM){
+            if VarModule::is_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_LEAVE_WALL) && !VarModule::is_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_SET_WALL_LEAVE_MOMENTUM){
                 //DamageModule::add_damage(boma, 1.0, 0);
                 let new_y_momentum = KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-                let wall_touch_frame = VarModule::get_float(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_WALL_TOUCH_FRAME);
-                let wall_leave_frame = VarModule::get_float(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_WALL_LEAVE_FRAME);
-                let x_speed_before_walltouch = VarModule::get_float(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_X_MOMENTUM);
+                let wall_touch_frame = VarModule::get_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_WALL_TOUCH_FRAME);
+                let wall_leave_frame = VarModule::get_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_WALL_LEAVE_FRAME);
+                let x_speed_before_walltouch = VarModule::get_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_X_MOMENTUM);
                 // Calculate the travel speed...
                 // (speed right before walltouch) - (up b deceleration) * ((wall touch frame) - (wall leave frame))
                 //let wall_leave_x_travel_speed = x_speed_before_walltouch + (-1.0)*(special_hi_attack_brake)*(wall_touch_frame - wall_leave_frame);
@@ -183,7 +180,7 @@ unsafe fn pk_thunder_wall_ride_shorten(fighter: &mut smash::lua2cpp::L2CFighterC
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, wall_leave_x_travel_speed, new_y_momentum);
                 app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
                 fighter.clear_lua_stack();
-                VarModule::on_flag(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_IS_SET_WALL_LEAVE_MOMENTUM);
+                VarModule::on_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_SET_WALL_LEAVE_MOMENTUM);
             }
             */
             
@@ -191,14 +188,14 @@ unsafe fn pk_thunder_wall_ride_shorten(fighter: &mut smash::lua2cpp::L2CFighterC
     }
     else{
         // Reset all the related flags and floats if not in the up b statuses
-        VarModule::set_float(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_X_INIT_MOMENTUM, 10001.0);
-        VarModule::set_float(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_Y_INIT_MOMENTUM, 10001.0);
-        VarModule::set_float(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_WALL_TOUCH_FRAME, 10001.0);
-        VarModule::set_float(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_WALL_LEAVE_FRAME, 10001.0);
-        VarModule::off_flag(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_IS_TOUCH_WALL);
-        VarModule::off_flag(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_IS_LEAVE_WALL);
-        VarModule::off_flag(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_IS_FLIPPED_MOMENTUM_AFTER_WALLTOUCH);
-        VarModule::off_flag(boma.object(), vars::lucas::SPECIAL_HI_ATTACK_IS_SET_WALL_LEAVE_MOMENTUM);
+        VarModule::set_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_X_INIT_MOMENTUM, 10001.0);
+        VarModule::set_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_Y_INIT_MOMENTUM, 10001.0);
+        VarModule::set_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_WALL_TOUCH_FRAME, 10001.0);
+        VarModule::set_float(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_WALL_LEAVE_FRAME, 10001.0);
+        VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_TOUCH_WALL);
+        VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_LEAVE_WALL);
+        VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_FLIPPED_MOMENTUM_AFTER_WALLTOUCH);
+        VarModule::off_flag(boma.object(), vars::lucas::status::SPECIAL_HI_ATTACK_IS_SET_WALL_LEAVE_MOMENTUM);
     }
 
 }

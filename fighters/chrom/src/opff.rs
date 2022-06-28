@@ -23,8 +23,8 @@ unsafe fn soaring_slash_cancel(fighter: &mut L2CFighterCommon) {
     && 27.0 < frame && frame < 30.0
     && fighter.is_button_on(Buttons::Guard)
     {
-        if VarModule::is_flag(fighter.battle_object, vars::common::SOARING_SLASH_HIT) {
-            VarModule::on_flag(fighter.battle_object, vars::common::UP_SPECIAL_CANCEL);
+        if VarModule::is_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_HIT) {
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
             fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
         } else {
             fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
@@ -127,7 +127,7 @@ unsafe fn soaring_slash(fighter: &mut L2CFighterCommon) {
         *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_3
     ])
     {
-        VarModule::off_flag(fighter.battle_object, vars::common::SOARING_SLASH_HIT);
+        VarModule::off_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_HIT);
     }
 
     if fighter.is_status(*FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_3) {
@@ -135,7 +135,7 @@ unsafe fn soaring_slash(fighter: &mut L2CFighterCommon) {
     }
 
     if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-        VarModule::on_flag(fighter.battle_object, vars::common::SOARING_SLASH_HIT);
+        VarModule::on_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_HIT);
     }
 }
 

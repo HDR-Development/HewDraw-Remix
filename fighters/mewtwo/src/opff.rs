@@ -7,7 +7,7 @@ use globals::*;
 unsafe fn actionable_teleport_air(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
     if status_kind == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3 && situation_kind == *SITUATION_KIND_AIR && frame > 8.0 {
         if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-            VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL);
+            VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
             CancelModule::enable_cancel(boma);
         }
     }
@@ -17,7 +17,7 @@ unsafe fn actionable_teleport_air(boma: &mut BattleObjectModuleAccessor, id: usi
 unsafe fn fall_after_teleport(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_FALL_SPECIAL && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3 {
         if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-            VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL);
+            VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
         }
     }
@@ -51,8 +51,8 @@ pub unsafe fn mewtwo_teleport_cancel(boma: &mut BattleObjectModuleAccessor, stat
     let warp_speed = WorkModule::get_param_float(boma, hash40("param_special_hi"), hash40("wrap_speed_add")) + WorkModule::get_param_float(boma, hash40("param_special_hi"), hash40("wrap_speed_multi"));
 
     if status_kind == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_2 {
-        if touch_right || touch_left || VarModule::is_flag(boma.object(), vars::common::IS_TELEPORT_WALL_RIDE) {
-            VarModule::on_flag(boma.object(), vars::common::IS_TELEPORT_WALL_RIDE);
+        if touch_right || touch_left || VarModule::is_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE) {
+            VarModule::on_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE);
             if (touch_right && KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) < 0.0) || (touch_left && KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0) {
                 let rise_speed = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
                 if rise_speed > 0.0 {
@@ -74,7 +74,7 @@ pub unsafe fn mewtwo_teleport_cancel(boma: &mut BattleObjectModuleAccessor, stat
         }
     }
     else {
-        VarModule::off_flag(boma.object(), vars::common::IS_TELEPORT_WALL_RIDE);
+        VarModule::off_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE);
     }
 }
 

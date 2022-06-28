@@ -6,7 +6,7 @@ use globals::*;
 pub unsafe fn pre_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
 
-	let mut initial_speed = VarModule::get_float(fighter.battle_object, vars::common::CURR_DASH_SPEED);
+	let mut initial_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
 
 	if ![*FIGHTER_STATUS_KIND_DASH, *FIGHTER_STATUS_KIND_TURN_DASH].contains(&StatusModule::prev_status_kind(fighter.module_accessor, 0)) {
 		println!("not after dash/turndash");
@@ -15,7 +15,7 @@ pub unsafe fn pre_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 	println!("walk initial speed: {}", initial_speed);
 
-	VarModule::set_float(fighter.battle_object, vars::common::CURR_DASH_SPEED, initial_speed);
+	VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
 
     original!(fighter)
 }

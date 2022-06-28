@@ -6,18 +6,18 @@ unsafe fn game_specialn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::common::FIREBRAND_ACTIVATED);
-        VarModule::off_flag(fighter.battle_object, vars::common::DOUBLE_FIREBALL);
+        VarModule::off_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND);
+        VarModule::off_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_DOUBLE_FIREBALL);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
         if !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if (!VarModule::is_flag(fighter.battle_object, vars::common::SPECIAL_PROJECTILE_SPAWNED)) {
+            if (!VarModule::is_flag(fighter.battle_object, vars::common::instance::SPECIAL_PROJECTILE_SPAWNED)) {
                 ArticleModule::generate_article(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_FIREBALL, false, 0);
             }
         }
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            VarModule::on_flag(fighter.battle_object, vars::common::FIREBRAND_ACTIVATED);
+            VarModule::on_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND);
             ATTACK(fighter, 0, 0, Hash40::new("arml"), 9.0, 69, 55, 0, 65, 7.5, 6.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
             ATTACK(fighter, 1, 0, Hash40::new("arml"), 9.0, 69, 55, 0, 65, 7.5, 2.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
             ATTACK(fighter, 2, 0, Hash40::new("shoulderl"), 9.0, 69, 55, 0, 65, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
@@ -31,14 +31,14 @@ unsafe fn game_specialn(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        if VarModule::is_flag(fighter.battle_object, vars::common::FIREBRAND_ACTIVATED) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+        if VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             FT_MOTION_RATE(fighter, 0.5);
         }
     }
     frame(lua_state, 25.0);
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) 
-           && !VarModule::is_flag(fighter.battle_object, vars::common::FIREBRAND_ACTIVATED) {
+           && !VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND) {
             ArticleModule::generate_article(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_FIREBALL, false, 0);
             FT_MOTION_RATE(fighter, 2.000);
         }
@@ -51,18 +51,18 @@ unsafe fn game_specialairn(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::common::FIREBRAND_ACTIVATED);
-        VarModule::off_flag(fighter.battle_object, vars::common::DOUBLE_FIREBALL);
+        VarModule::off_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND);
+        VarModule::off_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_DOUBLE_FIREBALL);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
         if !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if (!VarModule::is_flag(fighter.battle_object, vars::common::SPECIAL_PROJECTILE_SPAWNED)) {
+            if (!VarModule::is_flag(fighter.battle_object, vars::common::instance::SPECIAL_PROJECTILE_SPAWNED)) {
                 ArticleModule::generate_article(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_FIREBALL, false, 0);
             }
         }
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            VarModule::on_flag(fighter.battle_object, vars::common::FIREBRAND_ACTIVATED);
+            VarModule::on_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND);
             ATTACK(fighter, 0, 0, Hash40::new("arml"), 9.0, 69, 55, 0, 65, 7.5, 6.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
             ATTACK(fighter, 1, 0, Hash40::new("arml"), 9.0, 69, 55, 0, 65, 7.5, 2.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
             ATTACK(fighter, 2, 0, Hash40::new("shoulderl"), 9.0, 69, 55, 0, 65, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
@@ -76,14 +76,14 @@ unsafe fn game_specialairn(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        if VarModule::is_flag(fighter.battle_object, vars::common::FIREBRAND_ACTIVATED) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+        if VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             FT_MOTION_RATE(fighter, 0.5);
         }
     }
     frame(lua_state, 25.0);
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) 
-           && !VarModule::is_flag(fighter.battle_object, vars::common::FIREBRAND_ACTIVATED) {
+           && !VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND) {
             ArticleModule::generate_article(boma, *FIGHTER_LUIGI_GENERATE_ARTICLE_FIREBALL, false, 0);
             FT_MOTION_RATE(fighter, 2.000);
         }
@@ -135,6 +135,10 @@ unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
 unsafe fn game_specialairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
+    }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_LW_FLAG_RISE);
@@ -176,7 +180,7 @@ unsafe fn effect_specialshold(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("luigi_rocket_hold"), Hash40::new("top"), 0, 6, 0,  0, 1, 0, 1, true);
         let handle = EffectModule::get_last_handle(fighter.module_accessor) as u32;
-        VarModule::set_int(fighter.battle_object, vars::luigi::CHARGE_PULSE_EFFECT_HANDLE, handle as i32);
+        VarModule::set_int(fighter.battle_object, vars::luigi::instance::CHARGE_PULSE_EFFECT_HANDLE, handle as i32);
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE) {
             LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.8, 0.0);
         }
@@ -185,7 +189,7 @@ unsafe fn effect_specialshold(fighter: &mut L2CAgentBase) {
         if is_excute(fighter) {
             FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 10, 00, 4, 0, 0, 0, false);
             let handle = EffectModule::get_last_handle(fighter.module_accessor) as u32;
-            VarModule::set_int(fighter.battle_object, vars::luigi::CHARGE_SMOKE_EFFECT_HANDLE, handle as i32);
+            VarModule::set_int(fighter.battle_object, vars::luigi::instance::CHARGE_SMOKE_EFFECT_HANDLE, handle as i32);
             if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE) {
                 LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.7, 0.3);
             }
@@ -201,7 +205,7 @@ unsafe fn effect_specialairshold(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("luigi_rocket_hold"), Hash40::new("top"), 0, 6, 0,  0, 1, 0, 1, true);
         let handle = EffectModule::get_last_handle(fighter.module_accessor) as u32;
-        VarModule::set_int(fighter.battle_object, vars::luigi::CHARGE_PULSE_EFFECT_HANDLE, handle as i32);
+        VarModule::set_int(fighter.battle_object, vars::luigi::instance::CHARGE_PULSE_EFFECT_HANDLE, handle as i32);
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE) {
             LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.8, 0.0);
         }
@@ -211,8 +215,8 @@ unsafe fn effect_specialairshold(fighter: &mut L2CAgentBase) {
 #[acmd_script(agent = "luigi", script = "game_specialsdischarge", category = ACMD_GAME)]
 unsafe fn game_specialsdischarge(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let misfire_multiplier = VarModule::get_float(fighter.battle_object, vars::luigi::MISFIRE_DAMAGE_MULTIPLIER);
-    VarModule::set_float(fighter.battle_object, vars::luigi::MISFIRE_DAMAGE_MULTIPLIER, 1.0);
+    let misfire_multiplier = VarModule::get_float(fighter.battle_object, vars::luigi::instance::MISFIRE_DAMAGE_MULTIPLIER);
+    VarModule::set_float(fighter.battle_object, vars::luigi::instance::MISFIRE_DAMAGE_MULTIPLIER, 1.0);
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         SA_SET(fighter, *SITUATION_KIND_AIR);
