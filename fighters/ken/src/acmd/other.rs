@@ -52,9 +52,9 @@ unsafe fn ken_attack_near_w_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        //VarModule::off_flag(boma.object(), vars::shotos::IS_TARGET_COMBO_2);
+        //VarModule::off_flag(boma.object(), vars::shotos::instance::IS_TARGET_COMBO_2);
         MeterModule::watch_damage(fighter.battle_object, true);
-        VarModule::off_flag(fighter.battle_object, vars::ken::IS_MAGIC_SERIES_CANCEL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
     }

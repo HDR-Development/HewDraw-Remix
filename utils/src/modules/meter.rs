@@ -278,7 +278,7 @@ impl MeterModule {
         Self::keep_watch(module.owner);
 
         let new_levels = if module.watch && module.has_hit {
-            let difference = VarModule::get_float(module.owner, vars::common::LAST_ATTACK_DAMAGE_DEALT);
+            let difference = VarModule::get_float(module.owner, vars::common::instance::LAST_ATTACK_DAMAGE_DEALT);
             let current = Self::level(module.owner);
             module.current_meter += difference * module.damage_gain_mul;
             module.watch = false;
@@ -333,8 +333,8 @@ unsafe fn fighter_handle_damage_hook(fighter: *mut smash::app::BattleObject, arg
         if let Some(object_id) = crate::util::get_active_battle_object_id_from_entry_id(x) {
             let object = crate::util::get_battle_object_from_id(object_id);
             if !object.is_null() && super::is_hdr_object((*object).vtable as _) {
-                VarModule::set_float(object, vars::common::LAST_ATTACK_DAMAGE_DEALT, damage_received);
-                VarModule::set_int(object, vars::common::LAST_ATTACK_RECEIVER_ENTRY_ID, (*fighter).battle_object_id as i32);
+                VarModule::set_float(object, vars::common::instance::LAST_ATTACK_DAMAGE_DEALT, damage_received);
+                VarModule::set_int(object, vars::common::instance::LAST_ATTACK_RECEIVER_ENTRY_ID, (*fighter).battle_object_id as i32);
                 MeterModule::signal_hit(object);
             }
         }
