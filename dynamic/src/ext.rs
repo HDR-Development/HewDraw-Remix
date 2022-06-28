@@ -775,10 +775,6 @@ impl BomaExt for BattleObjectModuleAccessor {
             let pos = PostureModule::pos(self);
             PostureModule::set_pos(self, &Vector3f::new((*pos).x, out_pos.y + 0.01, (*pos).z));
             GroundModule::attach_ground(self, true);
-            if change_status {
-                StatusModule::set_situation_kind(self, app::SituationKind(*SITUATION_KIND_GROUND), false);
-                StatusModule::change_status_request(self, *FIGHTER_STATUS_KIND_LANDING, false);
-            }
             true
         } else {
             false

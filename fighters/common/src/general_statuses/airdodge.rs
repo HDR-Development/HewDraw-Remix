@@ -138,6 +138,7 @@ unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
         VarModule::off_flag(fighter.battle_object, vars::common::status::SHOULD_WAVELAND);
         VarModule::off_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);
     }
+    VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET);
     0.into()
 }
 
@@ -231,10 +232,6 @@ unsafe fn sub_escape_air_waveland_check(fighter: &mut L2CFighterCommon) {
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon19sub_escape_air_uniqEN3lib8L2CValueE")]
 unsafe extern "C" fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
     if arg.get_bool() {
-        if fighter.handle_waveland(true, true) {
-            fighter.set_situation(L2CValue::I32(*SITUATION_KIND_GROUND));
-            return 1.into();
-        }
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_FRAME);
         // if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO) {
