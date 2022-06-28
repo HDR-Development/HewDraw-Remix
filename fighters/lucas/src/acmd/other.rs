@@ -94,6 +94,18 @@ unsafe fn lucas_pkfire_pillar_effect(fighter: &mut L2CAgentBase) {
     */
 }
 
+#[acmd_script( agent = "lucas", scripts = ["game_appealhir", "game_appealhil"] , category = ACMD_GAME, low_priority)]
+unsafe fn lucas_appeal_hi_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        if fighter.is_button_on(Buttons::AppealHi) {
+            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SLIP_WAIT, true);
+        }
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         //dash_effect,
@@ -101,5 +113,6 @@ pub fn install() {
         lucas_pkfire_shoot_game,
         lucas_pkfire_pillar_game,
         lucas_pkfire_pillar_effect,
+        lucas_appeal_hi_game
     );
 }

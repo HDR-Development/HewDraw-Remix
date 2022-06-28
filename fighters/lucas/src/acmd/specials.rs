@@ -37,6 +37,17 @@ unsafe fn lucas_special_air_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "lucas", scripts = ["sound_specials", "sound_specialairs"] , category = ACMD_SOUND , low_priority)]
+unsafe fn lucas_special_s_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_lucas_smash_h01"));
+        PLAY_SE(fighter, Hash40::new("se_lucas_special_s03"));
+    }
+}
+
 #[acmd_script( agent = "lucas", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn lucas_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -100,7 +111,7 @@ unsafe fn lucas_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "game_speciallwstart" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "lucas", scripts = ["game_speciallwstart", "game_specialairlwstart"] , category = ACMD_GAME , low_priority)]
 unsafe fn lucas_special_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -110,7 +121,7 @@ unsafe fn lucas_special_lw_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "effect_speciallwstart" , category = ACMD_EFFECT , low_priority)]
+#[acmd_script( agent = "lucas", scripts = ["effect_speciallwstart", "effect_specialairlwstart"] , category = ACMD_EFFECT , low_priority)]
 unsafe fn lucas_special_lw_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -122,29 +133,7 @@ unsafe fn lucas_special_lw_start_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucas", script = "game_specialairlwstart" , category = ACMD_GAME , low_priority)]
-unsafe fn lucas_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 3.0/(6.0-1.0));
-    }
-}
-
-#[acmd_script( agent = "lucas", script = "effect_specialairlwstart" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucas_special_air_lw_start_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 2.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("lucas_psi_hold"), Hash40::new("havel"), -0.3, -2.0, 0.1, 0, 0, 0, 0.5, true);
-        EFFECT_FOLLOW(fighter, Hash40::new("lucas_psimagnet_start"), Hash40::new("trans"), 0, 6.5, 10, 0, 0, 0, 0.25, false);
-    }
-    
-}
-
-#[acmd_script( agent = "lucas", script = "game_speciallwhold" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "lucas", scripts = ["game_speciallwhold", "game_specialairlwhold"] , category = ACMD_GAME , low_priority)]
 unsafe fn lucas_special_lw_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -172,35 +161,7 @@ unsafe fn lucas_special_lw_hold_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucas", script = "game_specialairlwhold" , category = ACMD_GAME , low_priority)]
-unsafe fn lucas_special_air_lw_hold_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 80, 80, 30, 0, 4.0, 0.0, 6.3, 3.5, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 80, 80, 30, 0, 4.25, 0.0, 6.3, 9.25, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
-    }
-    wait(lua_state, 2.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-    wait(lua_state, 9.0);
-    for _ in 0..999 {
-        if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 80, 0, 0, 0, 4.0, 0.0, 6.3, 3.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 80, 0, 0, 0, 4.25, 0.0, 6.3, 9.25, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
-        }
-        wait(lua_state, 2.0);
-        if is_excute(fighter) {
-            AttackModule::clear_all(boma);
-        }
-        wait(lua_state, 9.0);
-    }
-    
-}
-
-#[acmd_script( agent = "lucas", script = "game_speciallwend" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "lucas", scripts = ["game_speciallwend", "game_specialairlwend"] , category = ACMD_GAME , low_priority)]
 unsafe fn lucas_special_lw_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -217,7 +178,7 @@ unsafe fn lucas_special_lw_end_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucas", script = "effect_speciallwend" , category = ACMD_EFFECT , low_priority)]
+#[acmd_script( agent = "lucas", scripts = ["effect_speciallwend", "effect_specialairlwend"] , category = ACMD_EFFECT , low_priority)]
 unsafe fn lucas_special_lw_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -238,59 +199,178 @@ unsafe fn lucas_special_lw_end_effect(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucas", script = "game_specialairlwend" , category = ACMD_GAME , low_priority)]
-unsafe fn lucas_special_air_lw_end_game(fighter: &mut L2CAgentBase) {
+// SPECIAL N START //
+
+#[acmd_script ( agent = "lucas", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority)]
+unsafe fn lucas_special_n_start(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 127, 80, 0, 77, 4.5, 0.0, 6.3, 3.75, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 4.0, 127, 80, 0, 77, 5.0, 0.0, 6.3, 9.25, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 10, 0, 0, 55, 14.0, 0.0, 10.0, 0.0, None, None, None, 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
     }
-    wait(lua_state, 1.0);
+    wait(lua_state, 3.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE(fighter, 0.800);
     }
-    
 }
 
-#[acmd_script( agent = "lucas", script = "effect_specialairlwend" , category = ACMD_EFFECT , low_priority)]
-unsafe fn lucas_special_air_lw_end_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script (agent = "lucas", scripts = ["sound_specialnstart", "sound_specialairnstart"], category = ACMD_SOUND, low_priority)]
+unsafe fn lucas_special_n_start_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        PLAY_SE_REMAIN(fighter, Hash40::new("se_lucas_smash_l03"));
+    }
+}
+
+// SPECIAL N HOLD //
+
+#[acmd_script ( agent = "lucas", scripts = ["game_specialnhold", "game_specialairnhold"], category = ACMD_GAME, low_priority)]
+unsafe fn lucas_special_n_hold(fighter: &mut L2CAgentBase) {
+    // INTENTIONALLY LEFT BLANK
+}
+
+#[acmd_script (agent = "lucas", scripts = ["effect_specialnhold", "effect_specialairnhold"], category = ACMD_EFFECT, low_priority)]
+unsafe fn lucas_special_n_hold_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("lucas_psimagnet_end"), Hash40::new("trans"), 0, 6.5, 12, 0, 0, 0, 0.4, true);
-        FLASH(fighter, 0.5, 1, 1, 0.4);
-        EFFECT_DETACH_KIND(fighter, Hash40::new("lucas_psimagnet_end"), -1);
+        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 9, 0, 9, 0, 0, 0, false);
+        FLASH(fighter, 0.01, 0.5, 1, 0.4);
     }
-    wait(lua_state, 5.0);
+    for i in 1..=50 {
+        if is_excute(fighter) {
+            if i%2==0 {
+                EFFECT_OFF_KIND(fighter, Hash40::new("lucas_pkfr_hold"), false, false);
+                EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkfr_hold"), Hash40::new("top"), 0, sv_math::rand(hash40("fighter"), 4) as i32 + 12, sv_math::rand(hash40("fighter"), 4) as i32 - 2, 0, 0, 0, 0.5, true);
+            }
+            if i%4==0 {
+                EFFECT_FLW_POS(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, false);
+            }
+            FLASH(fighter, 1, 1, 1, 0.6);
+        }
+        wait(lua_state, 1.0);
+        if is_excute(fighter){
+            COL_NORMAL(fighter);
+        }
+        wait(lua_state, 1.0);
+        if is_excute(fighter) {
+            FLASH(fighter, 1, 1, 1, 0.6);
+        }
+        wait(lua_state, 1.0);
+        if is_excute(fighter){
+            COL_NORMAL(fighter);
+        }
+        wait(lua_state, 1.0);
+    }
+}
+
+#[acmd_script (agent = "lucas", scripts = ["sound_specialairnhold", "sound_specialnhold"], category = ACMD_SOUND, low_priority)]
+unsafe fn lucas_special_n_hold_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
-        FLASH_FRM(fighter, 10, 0, 1, 1, 0.1);
+        PLAY_STATUS(fighter, Hash40::new("se_lucas_special_h02"));
+        PLAY_STATUS(fighter, Hash40::new("se_lucas_pk_charge"));
+    }    
+}
+
+// SPECIAL N FIRE //
+
+#[acmd_script ( agent = "lucas", scripts = ["game_specialnfire", "game_specialairnfire"], category = ACMD_GAME, low_priority)]
+unsafe fn lucas_special_n_fire(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if !VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_INIT) {
+        frame(lua_state, 2.0);
+        if is_excute(fighter) {
+            VarModule::on_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 60, 80, 0, 50, 3.0, 0.0, 10.0, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PSI);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 10.0, 60, 100, 0, 50, 9.0, 0.0, 10.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
+        }
+        wait(lua_state, 2.0);
+        if is_excute(fighter) {
+            if VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF) {
+                VarModule::off_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+                println!("Released!");
+                let handle = VarModule::get_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1) as u32;
+                EffectModule::kill(fighter.module_accessor, handle, false, false);
+                let handle2 = VarModule::get_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) as u32;
+                EffectModule::kill(fighter.module_accessor, handle2, false, false);
+                VarModule::set_float(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
+                VarModule::off_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE);
+            }
+            AttackModule::clear_all(boma);
+        }
+    } else {
+        VarModule::off_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_INIT);
     }
-    wait(lua_state, 1.0);
+}
+
+#[acmd_script ( agent = "lucas", scripts = ["effect_specialnfire", "effect_specialairnfire"], category = ACMD_EFFECT, low_priority)]
+unsafe fn lucas_special_n_fire_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
-        COL_NORMAL(fighter);
+        EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkfr_hold"), Hash40::new("top"), 0, 9, 0, 0, 0, 0, 0.9, true);
+        EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkt_hold"), Hash40::new("top"), 0, 9, 0, 0, 0, 0, 0.9, true);
+        EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkfr_bomb_max"), Hash40::new("top"), 0, 9, 0, 0, 0, 0, 0.5, true);
+	    EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 0, 11, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
     }
-    
+    for _ in 1..=5 {
+        if is_excute(fighter) {
+            FLASH(fighter, 0.01, 0.5, 1, 0.4);
+        }
+        wait(lua_state, 1.0);
+        if is_excute(fighter) {
+            FLASH(fighter, 1, 1, 1, 0.6);
+        }
+        wait(lua_state, 1.0);
+        if is_excute(fighter) {
+            COL_NORMAL(fighter);
+        }
+        wait(lua_state, 3.0)
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+	    EFFECT_OFF_KIND(fighter, Hash40::new("lucas_pkfr_hold"), false, false);
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucas_pkt_hold"), false, false);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) && VarModule::is_flag(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+        let handle = EffectModule::req_follow(fighter.module_accessor, Hash40::new("lucas_pkfr_hold"), Hash40::new("handl"), &Vector3f::zero(), &Vector3f::zero(), 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
+        VarModule::set_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1, handle as i32);
+        let handle2 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("lucas_pkfr_hold"), Hash40::new("handr"), &Vector3f::zero(), &Vector3f::zero(), 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
+        VarModule::set_int(fighter.object(), vars::lucas::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2, handle2 as i32);
+    }
+}
+
+#[acmd_script (agent = "lucas", scripts = ["sound_specialairnfire", "sound_specialnfire"], category = ACMD_SOUND, low_priority)]
+unsafe fn lucas_special_n_fire_sound(fighter: &mut L2CAgentBase) {
+    if is_excute(fighter) {
+        PLAY_STATUS(fighter, Hash40::new("se_lucas_special_n04_l"));
+        PLAY_STATUS(fighter, Hash40::new("se_common_electric_hit_m"));    
+    }
 }
 
 pub fn install() {
     install_acmd_scripts!(
+        lucas_special_n_start,
+        lucas_special_n_hold,
+        lucas_special_n_hold_sound,
+        lucas_special_n_fire_sound,
+        lucas_special_n_start_sound,
+        lucas_special_n_hold_effect,
+        lucas_special_n_fire,
+        lucas_special_n_fire_effect,
         lucas_special_s_game,
-        lucas_special_air_s_game,
-        lucas_special_air_hi_game,
+        lucas_special_s_sound,
         lucas_special_lw_start_game,
         lucas_special_lw_start_effect,
-        lucas_special_air_lw_start_game,
-        lucas_special_air_lw_start_effect,
         lucas_special_lw_hold_game,
-        lucas_special_air_lw_hold_game,
         lucas_special_lw_end_game,
         lucas_special_lw_end_effect,
-        lucas_special_air_lw_end_game,
-        lucas_special_air_lw_end_effect,
     );
 }
 

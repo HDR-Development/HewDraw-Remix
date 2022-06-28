@@ -309,6 +309,9 @@ pub mod vars {
         pub const SPECIAL_HI_ATTACK_IS_LEAVE_WALL: i32 = 0x1001;
         pub const SPECIAL_HI_ATTACK_IS_FLIPPED_MOMENTUM_AFTER_WALLTOUCH: i32 = 0x1002;
         pub const SPECIAL_HI_ATTACK_IS_SET_WALL_LEAVE_MOMENTUM: i32 = 0x1003;
+        pub const SPECIAL_N_OFFENSE_UP_ACTIVE: i32 = 0x1004;
+        pub const SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF: i32 = 0x1005;
+        pub const SPECIAL_N_OFFENSE_UP_INIT: i32 = 0x1006;
 
         // float
         /// Holds the initial y velocity you have during up b to compare once you've touched a wall to reflect your speed the other direction if it changes
@@ -320,6 +323,13 @@ pub mod vars {
         pub const SPECIAL_HI_ATTACK_X_DIRECTION: i32 = 0x1005;
         pub const SPECIAL_HI_ATTACK_WALL_TOUCH_FRAME: i32 = 0x1006;
         pub const SPECIAL_HI_ATTACK_WALL_LEAVE_FRAME: i32 = 0x1007;
+        pub const SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL: i32 = 0x1008;
+        pub const ATTACK_S4_ANGLE_DOWN: i32 = 0x1009;
+        pub const ATTACK_S4_ANGLE_UP: i32 = 0x1010;
+        
+        // int
+        pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1: i32 = 0x1000;
+        pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2: i32 = 0x1001;
     }
 
     pub mod luigi {
