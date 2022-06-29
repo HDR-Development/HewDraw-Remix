@@ -90,6 +90,14 @@ impl VarModule {
         }
     }
 
+    /// Checks if the object has `VarModule`
+    /// # Arguments
+    /// * `object` - The owning `BattleObject` instance
+    #[export_name = "VarModule__has_var_module"]
+    pub extern "Rust" fn has_var_module(object: *mut BattleObject) -> bool {
+        has_var_module!(object)
+    }
+
     /// Resets various `VarModule` arrays depending on the mask
     /// # Arguments
     /// * `object` - The owning `BattleObject` instance
