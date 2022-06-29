@@ -47,26 +47,6 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
     let mut next_status = status_kind;
 
     if boma.is_fighter() {
-        // Unoccupy ledge on ledge release/end of ledge option
-        if boma.is_status_one_of(&[
-            *FIGHTER_STATUS_KIND_CLIFF_CATCH,
-            *FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE,
-            *FIGHTER_STATUS_KIND_CLIFF_WAIT,
-            *FIGHTER_STATUS_KIND_CLIFF_ATTACK,
-            *FIGHTER_STATUS_KIND_CLIFF_CLIMB,
-            *FIGHTER_STATUS_KIND_CLIFF_ESCAPE,
-            *FIGHTER_STATUS_KIND_CLIFF_JUMP1,
-            *FIGHTER_STATUS_KIND_CLIFF_JUMP2,
-            *FIGHTER_STATUS_KIND_CLIFF_JUMP3]) 
-        && ![*FIGHTER_STATUS_KIND_CLIFF_ATTACK,
-            *FIGHTER_STATUS_KIND_CLIFF_CLIMB,
-            *FIGHTER_STATUS_KIND_CLIFF_ESCAPE,
-            *FIGHTER_STATUS_KIND_CLIFF_JUMP1,
-            *FIGHTER_STATUS_KIND_CLIFF_JUMP2,
-            *FIGHTER_STATUS_KIND_CLIFF_JUMP3].contains(&next_status) {
-            VarModule::set_vec3(boma.object(), vars::common::instance::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
-        }
-
         if boma.kind() == *FIGHTER_KIND_TRAIL
         && StatusModule::status_kind(boma) == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_SEARCH
         && next_status == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_TURN
