@@ -114,15 +114,7 @@ unsafe extern "C" fn special_n_float_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-unsafe extern "C" fn special_n_float_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // Here temporarily until the VarModule rework is merged.
-    let float_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::ganon::SPECIAL_N_FLOAT);
-    if fighter.global_table[globals::STATUS_KIND].get_i32() != float_status {
-        VarModule::off_flag(fighter.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS);
-        VarModule::off_flag(fighter.battle_object, vars::ganon::status::FLOAT_CANCEL);
-        VarModule::off_flag(fighter.battle_object, vars::ganon::status::FLOAT_FALL_SPEED_Y_INCREASE);
-        VarModule::off_flag(fighter.battle_object, vars::ganon::status::FLOAT_GROUND_CHANGE_KINETIC);
-    }
+unsafe extern "C" fn special_n_float_end(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
