@@ -51,8 +51,8 @@ pub unsafe fn init_specials(fighter: &mut L2CFighterCommon, arg: u64) -> L2CValu
             smash::app::lua_bind::KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         }
         else if current_situation_kind == *SITUATION_KIND_AIR {
-            if !VarModule::is_flag(fighter.battle_object, vars::common::SPECIAL_STALL_USED) {
-                VarModule::on_flag(fighter.battle_object, vars::common::SPECIAL_STALL_USED);
+            if !VarModule::is_flag(fighter.battle_object, vars::common::instance::SPECIAL_STALL_USED) {
+                VarModule::on_flag(fighter.battle_object, vars::common::instance::SPECIAL_STALL_USED);
                 aerial_y_speed = air_spd_y;
             }
             else{

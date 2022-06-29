@@ -62,14 +62,14 @@ unsafe fn jab_2_ftilt_cancel(boma: &mut BattleObjectModuleAccessor, cat1: i32, s
             if boma.is_cat_flag(Cat1::AttackS3)
                && (WorkModule::is_flag(boma, /*Flag*/ *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) || WorkModule::is_flag(boma, /*Flag*/ *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO)) {
                 if !boma.is_in_hitlag() {
-                    VarModule::on_flag(boma.object(), vars::trail::ATTACK_12_INTO_S3);
+                    VarModule::on_flag(boma.object(), vars::trail::instance::ATTACK_12_INTO_S3);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S3,false);
                 }
             }
         }
     }
     if ![*FIGHTER_STATUS_KIND_ATTACK, *FIGHTER_STATUS_KIND_ATTACK_S3].contains(&status_kind) {
-        VarModule::off_flag(boma.object(), vars::trail::ATTACK_12_INTO_S3);
+        VarModule::off_flag(boma.object(), vars::trail::instance::ATTACK_12_INTO_S3);
     }
 }
 
@@ -86,7 +86,7 @@ unsafe fn fair_cancels(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_
                 && ControlModule::get_attack_air_kind(boma) != *FIGHTER_COMMAND_ATTACK_AIR_KIND_F
                 && ControlModule::get_attack_air_kind(boma) != *FIGHTER_COMMAND_ATTACK_AIR_KIND_B {
                 if !boma.is_in_hitlag() {
-                    VarModule::on_flag(boma.object(), vars::trail::COMBO_PLUS_AIR);
+                    VarModule::on_flag(boma.object(), vars::trail::instance::COMBO_PLUS_AIR);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
                 }
             }
@@ -113,7 +113,7 @@ unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor) {
         // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
         let landing_lag = 12.0;
         if MotionModule::frame(boma) < (special_n_fire_cancel_frame_ground - landing_lag) {
-            VarModule::on_flag(boma.object(), vars::trail::IS_LAND_CANCEL_THUNDER);
+            VarModule::on_flag(boma.object(), vars::trail::status::IS_LAND_CANCEL_THUNDER);
             MotionModule::set_frame_sync_anim_cmd(boma, special_n_fire_cancel_frame_ground - landing_lag, true, true, false);
         }
     }
@@ -124,11 +124,11 @@ unsafe fn aerial_sweep_hit_actionability(boma: &mut BattleObjectModuleAccessor) 
     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI){
         if MotionModule::frame(boma) > 37.0 {
             if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
-                VarModule::on_flag(boma.object(), vars::trail::UP_SPECIAL_HIT);
-                VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL);
+                VarModule::on_flag(boma.object(), vars::trail::status::UP_SPECIAL_HIT);
+                VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
             }
         }
-        if VarModule::is_flag(boma.object(), vars::trail::UP_SPECIAL_HIT) && MotionModule::frame(boma) > MotionModule::end_frame(boma) - 10.0 {
+        if VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_HIT) && MotionModule::frame(boma) > MotionModule::end_frame(boma) - 10.0 {
             if boma.get_num_used_jumps() < boma.get_jump_count_max(){
                 WorkModule::inc_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
             }
@@ -140,25 +140,25 @@ unsafe fn aerial_sweep_hit_actionability(boma: &mut BattleObjectModuleAccessor) 
 unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, id: usize) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S {
         if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_SPECIAL_HI {
-            VarModule::on_flag(boma.object(), vars::trail::UP_SPECIAL_TO_SIDE_SPECIAL);
+            VarModule::on_flag(boma.object(), vars::trail::status::UP_SPECIAL_TO_SIDE_SPECIAL);
         }
         else {
-            VarModule::off_flag(boma.object(), vars::trail::UP_SPECIAL_TO_SIDE_SPECIAL);
+            VarModule::off_flag(boma.object(), vars::trail::status::UP_SPECIAL_TO_SIDE_SPECIAL);
         }
     }
     if status_kind == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_ATTACK {
-        if !VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL_NO_HIT) {
-            VarModule::on_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL_NO_HIT);
+        if !VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT) {
+            VarModule::on_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
         }
         if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
-            VarModule::off_flag(boma.object(), vars::trail::SIDE_SPECIAL_HIT);
-            VarModule::off_flag(boma.object(), vars::trail::STOP_SIDE_SPECIAL);
+            VarModule::off_flag(boma.object(), vars::trail::status::SIDE_SPECIAL_HIT);
+            VarModule::off_flag(boma.object(), vars::trail::status::STOP_SIDE_SPECIAL);
         }
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
         && !fighter.is_in_hitlag()
         && (WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num")) - 1) > WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT) {
-            VarModule::on_flag(boma.object(), vars::trail::SIDE_SPECIAL_HIT);
-            if !VarModule::is_flag(boma.object(), vars::trail::UP_SPECIAL_TO_SIDE_SPECIAL)
+            VarModule::on_flag(boma.object(), vars::trail::status::SIDE_SPECIAL_HIT);
+            if !VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_TO_SIDE_SPECIAL)
             && fighter.is_input_jump() {
                 if situation_kind == *SITUATION_KIND_GROUND {
                     fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
@@ -171,19 +171,19 @@ unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon,
             }
         }
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::on_flag(boma.object(), vars::trail::STOP_SIDE_SPECIAL);
+            VarModule::on_flag(boma.object(), vars::trail::status::STOP_SIDE_SPECIAL);
         }
     }
     if status_kind == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_SEARCH {
         if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
-            VarModule::off_flag(boma.object(), vars::trail::IS_SIDE_SPECIAL_INPUT);
+            VarModule::off_flag(boma.object(), vars::trail::status::IS_SIDE_SPECIAL_INPUT);
         }
         if compare_mask(ControlModule::get_command_flag_cat(boma, 0), *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY) {
-            VarModule::on_flag(boma.object(), vars::trail::IS_SIDE_SPECIAL_INPUT);
+            VarModule::on_flag(boma.object(), vars::trail::status::IS_SIDE_SPECIAL_INPUT);
         }
-        if VarModule::is_flag(boma.object(), vars::trail::SIDE_SPECIAL_HIT)
+        if VarModule::is_flag(boma.object(), vars::trail::status::SIDE_SPECIAL_HIT)
         && WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num")) > WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT) {
-            if !VarModule::is_flag(boma.object(), vars::trail::UP_SPECIAL_TO_SIDE_SPECIAL)
+            if !VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_TO_SIDE_SPECIAL)
             && fighter.is_input_jump() {
                 if situation_kind == *SITUATION_KIND_GROUND {
                     fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
@@ -197,10 +197,10 @@ unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon,
         }
     }
     if status_kind == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END {
-        if !VarModule::is_flag(boma.object(), vars::trail::STOP_SIDE_SPECIAL)
+        if !VarModule::is_flag(boma.object(), vars::trail::status::STOP_SIDE_SPECIAL)
         && WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num")) > WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT)
         && fighter.global_table[CURRENT_FRAME].get_i32() == 15 {
-            VarModule::off_flag(boma.object(), vars::trail::STOP_SIDE_SPECIAL);
+            VarModule::off_flag(boma.object(), vars::trail::status::STOP_SIDE_SPECIAL);
             if situation_kind == *SITUATION_KIND_GROUND {
                 fighter.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
             }

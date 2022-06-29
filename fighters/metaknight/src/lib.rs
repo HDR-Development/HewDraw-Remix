@@ -62,10 +62,10 @@ fn mk_init(fighter: &mut L2CFighterCommon) {
         return;
     }
 
-    VarModule::set_int(fighter.battle_object, vars::metaknight::META_QUICK_CHARGE_EFFECT_HANDLE, -1);
-    VarModule::set_int(fighter.battle_object, vars::metaknight::META_QUICK_EFFECT_HANDLE, -1);
-    VarModule::set_int(fighter.battle_object, vars::metaknight::META_QUICK_EFFECT_HANDLE2, -1);
-    VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
+    VarModule::set_int(fighter.battle_object, vars::metaknight::instance::META_QUICK_CHARGE_EFFECT_HANDLE, -1);
+    VarModule::set_int(fighter.battle_object, vars::metaknight::instance::META_QUICK_EFFECT_HANDLE, -1);
+    VarModule::set_int(fighter.battle_object, vars::metaknight::instance::META_QUICK_EFFECT_HANDLE2, -1);
+    VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
     MeterModule::reset(fighter.battle_object);
 }
 

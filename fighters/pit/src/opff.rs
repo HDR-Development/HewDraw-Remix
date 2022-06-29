@@ -24,8 +24,8 @@ unsafe fn upperdash_arm_jump_and_aerial_cancel(boma: &mut BattleObjectModuleAcce
         if frame > 27.0 {
             if boma.is_input_jump() {
                 if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_num_used_jumps() < boma.get_jump_count_max() - 1 &&  !VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL) {
-                        VarModule::on_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL);
+                    if boma.get_num_used_jumps() < boma.get_jump_count_max() - 1 &&  !VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL) {
+                        VarModule::on_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL);
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
                     }
                 } else if situation_kind == *SITUATION_KIND_GROUND {

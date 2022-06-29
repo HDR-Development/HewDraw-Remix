@@ -79,7 +79,7 @@ unsafe fn ike_appeal_lw_l_sound(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 4.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::ike::IS_QUICK_DRAW_INSTAKILL){
+        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
             let costume_type = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) % 2;
             // Path of Radiance voiceline
             if costume_type == 0 {
@@ -94,7 +94,7 @@ unsafe fn ike_appeal_lw_l_sound(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 27.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::ike::IS_QUICK_DRAW_INSTAKILL){
+        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
             //PLAY_SE(fighter, Hash40::new("vc_ike_win01"));
         }
         else{
@@ -118,7 +118,7 @@ unsafe fn ike_appeal_lw_r_sound(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 4.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::ike::IS_QUICK_DRAW_INSTAKILL){
+        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
             let costume_type = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) % 2;
             // Path of Radiance voiceline
             if costume_type == 0 {
@@ -133,7 +133,7 @@ unsafe fn ike_appeal_lw_r_sound(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 27.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::ike::IS_QUICK_DRAW_INSTAKILL){
+        if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
             //PLAY_SE(fighter, Hash40::new("vc_ike_win01"));
         }
         else{

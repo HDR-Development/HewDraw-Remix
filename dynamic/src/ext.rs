@@ -237,7 +237,7 @@ bitflags! {
     }
 
     pub struct CatHdr: i32 {
-        const ShorthopFootstool = 0x1;
+        const TiltAttack = 0x1;
     }
 
     pub struct PadFlag: i32 {
@@ -270,7 +270,7 @@ bitflags! {
         const FlickJump   = 0x8000;
         const GuardHold   = 0x10000;
         const SpecialRaw2 = 0x20000;
-        const ShFootstool = 0x40000;
+        const TiltAttack  = 0x40000;
         const CStickOverride = 0x80000;
 
         const SpecialAll  = 0x20802;
@@ -743,7 +743,7 @@ impl BomaExt for BattleObjectModuleAccessor {
         }
     
         // must check this because it is for allowing the player to screw up a perfect WD and be punished with a non-perfect WD (otherwise they'd have like, 8 frames for perfect WD lol)
-        if !crate::VarModule::is_flag(self.object(), crate::consts::vars::common::ENABLE_AIR_ESCAPE_MAGNET) {
+        if !crate::VarModule::is_flag(self.object(), crate::consts::vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET) {
             return false;
         }
     
@@ -799,7 +799,7 @@ impl BomaExt for BattleObjectModuleAccessor {
                     y: PostureModule::pos_y(self),
                     z: PostureModule::pos_z(self)
                 };
-                fighter_pos.y += crate::VarModule::get_float(self.object(), crate::consts::vars::common::ECB_Y_OFFSETS);
+                fighter_pos.y += crate::VarModule::get_float(self.object(), crate::consts::vars::common::instance::ECB_Y_OFFSETS);
                 PostureModule::set_pos(self, &fighter_pos);
             }
         }
@@ -893,6 +893,7 @@ pub enum InputKind {
     AppealLw = 0xC,
     Unset = 0xD,
     JumpMini = 0x12, // this is ours :), also start at 0x12 to avoid masking errors
+    TiltAttack = 0x13, // also custom, this one is for tilts!
 }
 
 /// 0x50 Byte struct containing the information for controller mappings

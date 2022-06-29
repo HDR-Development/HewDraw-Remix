@@ -126,10 +126,10 @@ unsafe fn tilt_cancels(fighter: &mut L2CFighterCommon) {
 
 unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
     if !fighter.is_situation(*SITUATION_KIND_AIR){
-        VarModule::off_flag(fighter.battle_object, vars::bayonetta::IS_SPECIAL_S_CANCELED_INTO);
-        VarModule::off_flag(fighter.battle_object, vars::bayonetta::IS_SPECIAL_HI_CANCELED_INTO);
-        VarModule::set_int(fighter.battle_object, vars::bayonetta::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME, 0);
-        VarModule::set_int(fighter.battle_object, vars::bayonetta::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME, 0);
+        VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_SPECIAL_S_CANCELED_INTO);
+        VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_SPECIAL_HI_CANCELED_INTO);
+        VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME, 0);
+        VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME, 0);
     }
 
     if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F])
@@ -154,12 +154,12 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
 
     if fighter.is_cat_flag(Cat1::SpecialS) {
         /*
-        if !VarModule::is_flag(fighter.battle_object, vars::bayonetta::IS_SPECIAL_S_CANCELED_INTO){
+        if !VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_SPECIAL_S_CANCELED_INTO){
             is_input_cancel = true;
             new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
         }
         */
-        if VarModule::get_int(fighter.battle_object, vars::bayonetta::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME) < 2{
+        if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME) < 2{
             is_input_cancel = true;
             new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
         }
@@ -167,13 +167,13 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
 
     if fighter.is_cat_flag(Cat1::SpecialHi) {
         /*
-        if !VarModule::is_flag(fighter.battle_object, vars::bayonetta::IS_SPECIAL_HI_CANCELED_INTO){
-            VarModule::on_flag(fighter.battle_object, vars::bayonetta::IS_SPECIAL_HI_CANCELED_INTO);
+        if !VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_SPECIAL_HI_CANCELED_INTO){
+            VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_SPECIAL_HI_CANCELED_INTO);
             is_input_cancel = true;
             new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI;
         }
         */
-        if VarModule::get_int(fighter.battle_object, vars::bayonetta::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME) < 2{
+        if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME) < 2{
             is_input_cancel = true;
             new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI;
         }
@@ -182,12 +182,12 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
     if is_input_cancel {
         if !fighter.is_in_hitlag(){
             if new_status == *FIGHTER_STATUS_KIND_SPECIAL_S {
-                //VarModule::on_flag(fighter.battle_object, vars::bayonetta::IS_SPECIAL_S_CANCELED_INTO);
-                VarModule::inc_int(fighter.battle_object, vars::bayonetta::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME);
+                //VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_SPECIAL_S_CANCELED_INTO);
+                VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME);
             }
             else if new_status == *FIGHTER_STATUS_KIND_SPECIAL_HI {
-                //VarModule::on_flag(fighter.battle_object, vars::bayonetta::IS_SPECIAL_HI_CANCELED_INTO);
-                VarModule::inc_int(fighter.battle_object, vars::bayonetta::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME);
+                //VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_SPECIAL_HI_CANCELED_INTO);
+                VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME);
             }
             fighter.change_status_req(new_status, false);
             return;
@@ -235,12 +235,12 @@ unsafe fn recovery_resource_management(fighter: &mut L2CFighterCommon) {
                                   *FIGHTER_STATUS_KIND_WIN,
                                   *FIGHTER_STATUS_KIND_LOSE,
                                   *FIGHTER_STATUS_KIND_ENTRY]){
-        VarModule::set_int(fighter.battle_object, vars::bayonetta::NUM_RECOVERY_RESOURCE_USED, 0);
+        VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED, 0);
     }
     else{
-        if VarModule::get_int(fighter.battle_object, vars::bayonetta::NUM_RECOVERY_RESOURCE_USED) >= 2 {
-            VarModule::on_flag(fighter.battle_object, vars::common::SIDE_SPECIAL_CANCEL);
-            VarModule::on_flag(fighter.battle_object, vars::common::UP_SPECIAL_CANCEL);
+        if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) >= 2 {
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
             if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE,
                 *FIGHTER_STATUS_KIND_DAMAGE_AIR,
                 *FIGHTER_STATUS_KIND_DAMAGE_FLY,
@@ -250,12 +250,12 @@ unsafe fn recovery_resource_management(fighter: &mut L2CFighterCommon) {
                 *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
                 *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
                 *FIGHTER_STATUS_KIND_DAMAGE_FALL]){
-                VarModule::set_int(fighter.battle_object, vars::bayonetta::NUM_RECOVERY_RESOURCE_USED, 1);
+                VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED, 1);
             }
         }
         else{
-            VarModule::off_flag(fighter.battle_object, vars::common::SIDE_SPECIAL_CANCEL);
-            VarModule::off_flag(fighter.battle_object, vars::common::UP_SPECIAL_CANCEL);
+            VarModule::off_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
+            VarModule::off_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
         }
     }
     
