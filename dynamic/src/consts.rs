@@ -501,9 +501,9 @@ pub mod vars {
     pub mod pickel {
         pub mod instance {
             // flags
-            pub const IS_CURRENT_ATTACK_LW3_SOUL_FIRE: i32 = 0x1000;
-            pub const TUMBLE_START: i32 = 0x1001;
-            pub const IS_IN_TUMBLE: i32 = 0x1002;
+            pub const IS_CURRENT_ATTACK_LW3_SOUL_FIRE: i32 = 0x0100;
+            pub const TUMBLE_START: i32 = 0x0101;
+            pub const IS_IN_TUMBLE: i32 = 0x0102;
         }
         pub mod status {
             // floats
@@ -645,7 +645,7 @@ pub mod vars {
         }
         pub mod status {
             // flags
-            pub const BOOST_ATTACK: i32 = 0x1000;
+            pub const BOOST_ATTACK: i32 = 0x1100;
         }
     }
 
@@ -725,7 +725,7 @@ pub mod vars {
     pub mod littlemac {
         pub mod status {
             // flags
-            pub const IS_DREAMLAND_EXPRESS: i32 = 0x1000;
+            pub const IS_DREAMLAND_EXPRESS: i32 = 0x1100;
         }
     }
 
