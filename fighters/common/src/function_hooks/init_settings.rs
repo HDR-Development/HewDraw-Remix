@@ -159,19 +159,21 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
     // This makes the assumption that if the KEEP_FLAG is not NONE, you want to clear the
     // status variable array for that data type. Because Smash shares its space between
     // INT and INT64, I have included both of them under a single check.
-    let mut mask = 0;
-    if keep_flag == *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG {
-        mask += VarModule::RESET_STATUS_FLAG;
-    }
-    if keep_int == *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT {
-        mask += VarModule::RESET_STATUS_INT;
-        mask += VarModule::RESET_STATUS_INT64;
-    }
-    if keep_float == *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT {
-        mask += VarModule::RESET_STATUS_FLOAT;
-    }
     let object = boma.object();
-    VarModule::reset(object, mask);
+    if VarModule::has_var_module(object) {
+        let mut mask = 0;
+        if keep_flag == *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG {
+            mask += VarModule::RESET_STATUS_FLAG;
+        }
+        if keep_int == *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT {
+            mask += VarModule::RESET_STATUS_INT;
+            mask += VarModule::RESET_STATUS_INT64;
+        }
+        if keep_float == *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT {
+            mask += VarModule::RESET_STATUS_FLOAT;
+        }
+        VarModule::reset(object, mask);
+    }
 
     original!()(boma, situation, arg3, fix, ground_cliff_check_kind, jostle, keep_flag, keep_int, keep_float, arg10)
 }
