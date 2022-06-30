@@ -225,8 +225,6 @@ pub unsafe fn offense_charge(fighter: &mut smash::lua2cpp::L2CFighterCommon, bom
     else if(fighter.is_status(*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD) && VarModule::get_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL) >= 120.0 && !VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE)) {
         //println!("Charged!");
         VarModule::on_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT);
-        let handle = EffectModule::req_follow(fighter.module_accessor, Hash40::new("lucas_pkfr_hold"), Hash40::new("bust"), &Vector3f::zero(), &Vector3f::zero(), 0.9, true, 0, 0, 0, 0, 0, true, true) as u32;
-        VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1, handle as i32);
         VarModule::on_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
         StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE, true);
     }

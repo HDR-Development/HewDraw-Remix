@@ -298,6 +298,8 @@ unsafe fn lucas_special_n_fire(fighter: &mut L2CAgentBase) {
                 EffectModule::kill(fighter.module_accessor, handle, false, false);
                 let handle2 = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) as u32;
                 EffectModule::kill(fighter.module_accessor, handle2, false, false);
+                VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1, -1);
+                VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2, -1);
                 VarModule::set_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
                 VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
             }
@@ -318,7 +320,6 @@ unsafe fn lucas_special_n_fire_effect(fighter: &mut L2CAgentBase) {
         VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1, handle as i32);
         let handle2 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("lucas_pkfr_hold"), Hash40::new("handr"), &Vector3f::zero(), &Vector3f::zero(), 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
         VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2, handle2 as i32);
-        EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkfr_hold"), Hash40::new("top"), 0, 9, 0, 0, 0, 0, 0.9, true);
         EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkt_hold"), Hash40::new("top"), 0, 9, 0, 0, 0, 0, 0.9, true);
         EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkfr_bomb_max"), Hash40::new("top"), 0, 9, 0, 0, 0, 0, 0.5, true);
 	    EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 0, 11, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
