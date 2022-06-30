@@ -104,16 +104,16 @@ unsafe fn lucas_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         if is_excute(fighter) {
             //println!("Stick Y Pos: {} | Flags: Low={} High={}", fighter.stick_y(), VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN), VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP));
             if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN) {
-                ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 361, 93, 0, 50, 3.7, 0.0, 4.6, 9.0, Some(0.0), Some(6.6), Some(4.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCAS_BAT, *ATTACK_REGION_OBJECT);
-                ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0, 361, 95, 0, 50, 3.7, 0.0, 2.6, 15.0, Some(0.0), Some(4.6), Some(9.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCAS_BAT, *ATTACK_REGION_OBJECT);
+                ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 361, 89, 0, 45, 3.7, 0.0, 4.6, 9.0, Some(0.0), Some(6.6), Some(4.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCAS_BAT, *ATTACK_REGION_OBJECT);
+                ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0, 361, 92, 0, 45, 3.7, 0.0, 2.6, 15.0, Some(0.0), Some(4.6), Some(9.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCAS_BAT, *ATTACK_REGION_OBJECT);
             }
             else if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP) {
-                ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 361, 93, 0, 50, 3.7, 0.0, 8.6, 6.0, Some(0.0), Some(5.6), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCAS_BAT, *ATTACK_REGION_OBJECT);
-                ATTACK(fighter, 1, 0, Hash40::new("top"), 16.0, 361, 95, 0, 50, 3.7, 0.0, 12.6, 12.0, Some(0.0), Some(8.6), Some(6.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCAS_BAT, *ATTACK_REGION_OBJECT);
+                ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 361, 89, 0, 45, 3.7, 0.0, 8.6, 6.0, Some(0.0), Some(5.6), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCAS_BAT, *ATTACK_REGION_OBJECT);
+                ATTACK(fighter, 1, 0, Hash40::new("top"), 16.0, 361, 92, 0, 45, 3.7, 0.0, 12.6, 12.0, Some(0.0), Some(8.6), Some(6.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCAS_BAT, *ATTACK_REGION_OBJECT);
             }
             else {
-                ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 361, 93, 0, 50, 3.7, 0.0, 5.6, 7.0, Some(0.0), Some(5.6), Some(3.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCAS_BAT, *ATTACK_REGION_OBJECT);
-                ATTACK(fighter, 1, 0, Hash40::new("top"), 15.0, 361, 95, 0, 50, 3.7, 0.0, 5.6, 13.0, Some(0.0), Some(5.6), Some(7.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCAS_BAT, *ATTACK_REGION_OBJECT);
+                ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 361, 89, 0, 45, 3.7, 0.0, 5.6, 7.0, Some(0.0), Some(5.6), Some(3.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCAS_BAT, *ATTACK_REGION_OBJECT);
+                ATTACK(fighter, 1, 0, Hash40::new("top"), 15.0, 361, 92, 0, 45, 3.7, 0.0, 5.6, 13.0, Some(0.0), Some(5.6), Some(7.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCAS_BAT, *ATTACK_REGION_OBJECT);
             }
         }
         frame(lua_state, 16.0);
@@ -404,7 +404,7 @@ unsafe fn lucas_attack_lw4_game(fighter: &mut L2CAgentBase) {
         if is_excute(fighter) {
             MotionModule::set_frame(boma, 37.0, false);
             VarModule::on_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 21.0, 361, 85, 0, 46, 6.0, 0.0, 3.5, 8.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -10, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 21.0, 361, 80, 0, 50, 6.0, 0.0, 3.5, 9.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -10, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
         }
         wait(lua_state, 1.0);
         if is_excute(fighter) {
@@ -438,7 +438,7 @@ unsafe fn lucas_attack_lw4_game(fighter: &mut L2CAgentBase) {
         frame(lua_state, 20.0);
         if is_excute(fighter) {
             MotionModule::set_frame(boma, 37.0, false);
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 17.0, 361, 85, 0, 46, 6.0, 0.0, 3.5, 8.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -10, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 17.0, 361, 85, 0, 46, 6.0, 0.0, 3.5, 9.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -10, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
         }
         wait(lua_state, 1.0);
         if is_excute(fighter) {
@@ -499,7 +499,7 @@ unsafe fn lucas_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 20.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("lucas_psi_hold"), false, false);
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("lucas_psi_atk_lw"), Hash40::new("lucas_psi_atk_lw"), Hash40::new("top"), 0, 3.5, 8, 0, 0, 0, 0.65, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("lucas_psi_atk_lw"), Hash40::new("lucas_psi_atk_lw"), Hash40::new("top"), 0, 3.5, 9, 0, 0, 0, 0.65, true, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(fighter, 0.5);
     }
     frame(lua_state, 21.0);
