@@ -86,12 +86,6 @@ unsafe extern "C" fn status_turn_main(fighter: &mut L2CFighterCommon) -> L2CValu
         let stick_x = fighter.global_table[STICK_X].get_f32();
         let turn_work_lr: f32 = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_TURN_WORK_FLOAT_LR);
 
-        if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
-            VarModule::on_flag(fighter.battle_object, vars::common::status::DISABLE_BACKDASH);
-        }
-        if fighter.global_table[STICK_X].get_f32() == 0.0 {
-            VarModule::off_flag(fighter.battle_object, vars::common::status::DISABLE_BACKDASH);
-        }
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
         && stick_x * -1.0 * turn_work_lr < dash_stick_x  // if left stick is below dash threshold
         && VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN)  // AND you are currently in a smash turn
@@ -126,7 +120,7 @@ unsafe extern "C" fn status_turn_main(fighter: &mut L2CFighterCommon) -> L2CValu
                         }
                     }
 
-                    if !VarModule::is_flag(fighter.battle_object, vars::common::status::DISABLE_BACKDASH) && stick_x * -1.0 * turn_work_lr >= dash_stick_x {
+                    if stick_x * -1.0 * turn_work_lr >= dash_stick_x {
                         if MotionModule::frame(fighter.module_accessor) >= 1.0 {
                             //println!("dash in turn");
                             VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
@@ -210,9 +204,6 @@ unsafe extern "C" fn status_turncommon(fighter: &mut L2CFighterCommon) -> L2CVal
 #[common_status_script(status = FIGHTER_STATUS_KIND_TURN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
     symbol = "_ZN7lua2cpp16L2CFighterCommon15status_end_TurnEv")]
 unsafe fn status_end_turn(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN) {
-        VarModule::off_flag(fighter.battle_object, vars::common::status::DISABLE_BACKDASH);
-    }
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_LATE_PIVOT);
     if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_DASH {

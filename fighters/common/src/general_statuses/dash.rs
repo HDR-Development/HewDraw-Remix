@@ -70,6 +70,7 @@ unsafe fn status_DashCommon(fighter: &mut L2CFighterCommon) {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_COMMAND_623NB);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_STAND);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_SQUAT);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B);
     
@@ -184,23 +185,6 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     let run_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("run_speed_max"), 0);
     let dash_stick_x: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dash_stick_x"));
     let stick_x = fighter.global_table[STICK_X].get_f32();
-
-    // Cstick is a macro for attack + direction, so we cannot tell the difference between the A button being input or the cstick being input (ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_ATTACK) returns true either way)
-    // So, we check for the previous frame's held button, which lets us know if a button was held before cstick was input, thus allowing Aidou/Bidou inputs
-    let bidou_buttons = &[
-        Buttons::Attack,
-        Buttons::AttackRaw,
-        Buttons::Special,
-        Buttons::SpecialRaw,
-        Buttons::Smash
-    ];
-
-    let mut enable_bidou = false;
-    for button in bidou_buttons.iter() {
-        if fighter.boma().was_prev_button_on(*button) {
-            enable_bidou = true;
-        }
-    }
 
     if fighter.global_table[DASH_CALLBACK].get_bool() {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[DASH_CALLBACK].get_ptr());
@@ -469,8 +453,8 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
         }
     }
 
-    let is_dash_input: bool = (fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0) || (enable_bidou && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) && stick_x * PostureModule::lr(fighter.module_accessor) > 0.6);  // we register a dash input by 1. Using game's command cat dash check, or 2. Checking if cstick has been input and is > 0.6 (max cstick x value is 0.625)
-    let is_backdash_input: bool = (fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0) || (enable_bidou && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) && stick_x * PostureModule::lr(fighter.module_accessor) < -0.6);
+    let is_dash_input: bool = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0;  // we register a dash input by 1. Using game's command cat dash check, or 2. Checking if cstick has been input and is > 0.6 (max cstick x value is 0.625)
+    let is_backdash_input: bool = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0;
 
     if fighter.global_table[CURRENT_FRAME].get_i32() > 15  // if after frame 15 of dash (meant to be after dash-to-run transition frame but haven't found a way to pull that for each character) 
     && WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("run_stick_x")) <= fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor)  // AND stick_x is >= run threshold
@@ -508,7 +492,6 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     }
 
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH)  // if backdash transition term is enabled (it is by default)
-    && (!ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) || ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON))  // AND cstick is off, other than the first frame of its input
     && is_backdash_input {  // AND is a backdash input
         //println!("transition to backdash");
         if fighter.global_table[CURRENT_FRAME].get_i32() <= 2 {
@@ -521,9 +504,10 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
         interrupt!(fighter, FIGHTER_STATUS_KIND_TURN, true);
     }
 
-    if WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("re_dash_frame")) as f32 <= MotionModule::frame(fighter.module_accessor)  // if current frame is after redash frame
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH)
+    && WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("re_dash_frame")) as f32 <= MotionModule::frame(fighter.module_accessor)  // if current frame is after redash frame
     && is_dash_input {  // AND is a dash input
-        //println!("transition to dash");
+        println!("transition to dash");
         interrupt!(fighter, FIGHTER_STATUS_KIND_DASH, true);
     }
 
@@ -567,8 +551,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     if StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_TURN 
     && StatusModule::prev_status_kind(fighter.module_accessor, 1) == *FIGHTER_STATUS_KIND_DASH  // if you are in a backdash
     && fighter.global_table[CURRENT_FRAME].get_i32() == 1  // AND you are on f2 of current dash
-    && stick_x.abs() < dash_stick_x  // AND stick_x < dash stick threshold
-    && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {  // AND cstick is off
+    && stick_x.abs() < dash_stick_x {  // AND stick_x < dash stick threshold
         // trigger late perfect pivot
         VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_LATE_PIVOT);
         PostureModule::reverse_lr(fighter.module_accessor);
