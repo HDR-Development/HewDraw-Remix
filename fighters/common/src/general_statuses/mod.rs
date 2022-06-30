@@ -24,6 +24,7 @@ mod passive;
 mod damagefall;
 mod downdamage;
 mod crawl;
+mod cliff;
 // [LUA-REPLACE-REBASE]
 // [SHOULD-CHANGE]
 // Reimplement the whole status script (already done) instead of doing this.
@@ -287,6 +288,7 @@ pub fn install() {
     damagefall::install();
     downdamage::install();
     crawl::install();
+    cliff::install();
 
     smashline::install_status_scripts!(
         damage_fly_end,
