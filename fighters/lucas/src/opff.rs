@@ -215,14 +215,14 @@ unsafe fn pk_fire_ff(boma: &mut BattleObjectModuleAccessor, stick_y: f32) {
 // Offense Up charge Handler
 pub unsafe fn offense_charge(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, situation_kind: i32)  {
     println!("{}", fighter.lua_state_agent);
-    if(fighter.is_status(*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD) && !(VarModule::get_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL) >= 180.0) && !VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE)) {
+    if(fighter.is_status(*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD) && !(VarModule::get_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL) >= 120.0) && !VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE)) {
         VarModule::set_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, VarModule::get_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL) + 1.0);
         println!("Charge Level is: {}", VarModule::get_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL));
         if !fighter.is_button_on(Buttons::Special) {
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_END, true);
         }
     }
-    else if(fighter.is_status(*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD) && VarModule::get_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL) >= 180.0 && !VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE)) {
+    else if(fighter.is_status(*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD) && VarModule::get_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL) >= 120.0 && !VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE)) {
         println!("Charged!");
         VarModule::on_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT);
         let handle = EffectModule::req_follow(fighter.module_accessor, Hash40::new("lucas_pkfr_hold"), Hash40::new("bust"), &Vector3f::zero(), &Vector3f::zero(), 0.9, true, 0, 0, 0, 0, 0, true, true) as u32;
@@ -281,16 +281,16 @@ unsafe fn reset_flags(fighter: &mut smash::lua2cpp::L2CFighterCommon, status_kin
 // bend_frame: frame to interpolate to the intended angle amount until
 // return_frame: frame to start interpolating back to regular angle
 // straight_frame: frame the waist should be at the regular angle again
-unsafe fn joint_rotator(boma: &mut BattleObjectModuleAccessor, rotation_amount: Vector3f, start_frame: f32, bend_frame: f32, return_frame: f32, straight_frame: f32, joint: Hash40) {
-    let frame = MotionModule::frame(boma);
-    let end_frame = MotionModule::end_frame(boma);
+unsafe fn joint_rotator(fighter: &mut L2CFighterCommon, frame: f32, joint: Hash40, rotation_amount: Vector3f, start_frame: f32, bend_frame: f32, return_frame: f32, straight_frame: f32) {
+    let lua_state = fighter.lua_state_agent;
+    let end_frame = MotionModule::end_frame(fighter.boma());
     let max_rotation = rotation_amount;
     let mut rotation = Vector3f{x: 0.0, y: 0.0, z: 0.0};
-        
+    println!("Frame is: {}", frame);
     if frame >= start_frame && frame < return_frame {
         // this has to be called every frame, or you snap back to the normal joint angle
         // interpolate to the respective waist bend angle
-        let calc_x_rotate = max_rotation.y * (frame / (bend_frame - start_frame));
+        let calc_x_rotate = max_rotation.x * (frame / (bend_frame - start_frame));
         let calc_y_rotate = max_rotation.y * (frame / (bend_frame - start_frame));
         let calc_z_rotate = max_rotation.z * (frame / (bend_frame - start_frame));
         let mut x_rotation = 0.0;
@@ -316,7 +316,7 @@ unsafe fn joint_rotator(boma: &mut BattleObjectModuleAccessor, rotation_amount: 
         }
         println!("Rotation: {}, {}, {}", x_rotation, y_rotation, z_rotation);
         rotation = Vector3f{x: x_rotation, y: y_rotation, z: z_rotation};
-        ModelModule::set_joint_rotate(boma, joint, &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
+        ModelModule::set_joint_rotate(fighter.boma(), joint, &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
     } else if frame >= return_frame && frame < straight_frame {
         // linear interpolate back to normal
         let calc_x_rotate = max_rotation.x *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
@@ -345,29 +345,29 @@ unsafe fn joint_rotator(boma: &mut BattleObjectModuleAccessor, rotation_amount: 
         }
         println!("Rotation: {}, {}, {}", x_rotation, y_rotation, z_rotation);
         rotation = Vector3f{x: x_rotation, y: y_rotation, z: z_rotation};
-        ModelModule::set_joint_rotate(boma, joint, &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
+        ModelModule::set_joint_rotate(fighter.boma(), joint, &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
     }
 }
 
-unsafe fn smash_s_angle_handler(fighter: &mut L2CFighterCommon) {
+unsafe fn smash_s_angle_handler(fighter: &mut L2CFighterCommon, frame: f32) {
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_S4_START]) {
         // Up Tilted Side Smash
         if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP) {
-            joint_rotator(fighter.boma(), Vector3f{x: 0.0, y:-30.0, z:0.0}, 10.0, 14.0, 16.0, 24.0, Hash40::new("waist"));
-            joint_rotator(fighter.boma(), Vector3f{x: 0.0, y:-20.0, z:0.0}, 10.0, 14.0, 16.0, 24.0, Hash40::new("bust"));
+            joint_rotator(fighter, frame, Hash40::new("waist"), Vector3f{x: 0.0, y:-30.0, z:0.0}, 10.0, 14.0, 16.0, 24.0);
+            joint_rotator(fighter, frame, Hash40::new("bust"), Vector3f{x: 0.0, y:-20.0, z:0.0}, 10.0, 14.0, 16.0, 24.0);
         }
         // Down Tilted Side Smash
         else if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN) {
-            joint_rotator(fighter.boma(), Vector3f{x: 0.0, y:10.0, z:0.0}, 10.0, 14.0, 16.0, 24.0, Hash40::new("waist"));
-            joint_rotator(fighter.boma(), Vector3f{x: 0.0, y:10.0, z:0.0}, 10.0, 14.0, 16.0, 24.0, Hash40::new("bust"));
-            joint_rotator(fighter.boma(), Vector3f{x: 0.0, y:20.0, z:0.0}, 10.0, 14.0, 16.0, 24.0, Hash40::new("handl"));
-            joint_rotator(fighter.boma(), Vector3f{x: 0.0, y:20.0, z:0.0}, 10.0, 14.0, 16.0, 24.0, Hash40::new("handr"));
+            joint_rotator(fighter, frame, Hash40::new("waist"), Vector3f{x: 0.0, y:10.0, z:0.0}, 10.0, 14.0, 16.0, 24.0);
+            joint_rotator(fighter, frame, Hash40::new("bust"), Vector3f{x: 0.0, y:10.0, z:0.0}, 10.0, 14.0, 16.0, 24.0);
+            joint_rotator(fighter, frame, Hash40::new("handl"), Vector3f{x: 0.0, y:20.0, z:0.0}, 10.0, 14.0, 16.0, 24.0);
+            joint_rotator(fighter, frame, Hash40::new("handr"), Vector3f{x: 0.0, y:20.0, z:0.0}, 10.0, 14.0, 16.0, 24.0);
         }
     }
 }
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    smash_s_angle_handler(fighter);
+    smash_s_angle_handler(fighter, frame);
     psi_magnet_jc(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     pk_thunder_cancel(boma, id, status_kind, situation_kind);
     //pk_thunder_wall_ride_shorten(fighter, boma, id, status_kind, situation_kind);
@@ -377,7 +377,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     reset_flags(fighter, status_kind, situation_kind);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_LUCAS )]
+#[utils::macros::opff(FIGHTER_KIND_LUCAS)]
 pub fn lucas_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);

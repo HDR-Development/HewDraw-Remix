@@ -293,7 +293,7 @@ unsafe fn lucas_special_n_fire(fighter: &mut L2CAgentBase) {
         if is_excute(fighter) {
             if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF) {
                 VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
-                println!("Released!");
+                //println!("Released!");
                 let handle = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1) as u32;
                 EffectModule::kill(fighter.module_accessor, handle, false, false);
                 let handle2 = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) as u32;
@@ -313,6 +313,11 @@ unsafe fn lucas_special_n_fire_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 1.0);
     if is_excute(fighter) {
+        // We call them early and clear them to do it all over again in the case the player gets hit. //
+        let handle = EffectModule::req_follow(fighter.module_accessor, Hash40::new("lucas_pkfr_hold"), Hash40::new("handl"), &Vector3f::zero(), &Vector3f::zero(), 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
+        VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1, handle as i32);
+        let handle2 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("lucas_pkfr_hold"), Hash40::new("handr"), &Vector3f::zero(), &Vector3f::zero(), 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
+        VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2, handle2 as i32);
         EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkfr_hold"), Hash40::new("top"), 0, 9, 0, 0, 0, 0, 0.9, true);
         EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkt_hold"), Hash40::new("top"), 0, 9, 0, 0, 0, 0, 0.9, true);
         EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkfr_bomb_max"), Hash40::new("top"), 0, 9, 0, 0, 0, 0, 0.5, true);
@@ -348,9 +353,11 @@ unsafe fn lucas_special_n_fire_effect(fighter: &mut L2CAgentBase) {
 
 #[acmd_script (agent = "lucas", scripts = ["sound_specialairnfire", "sound_specialnfire"], category = ACMD_SOUND, low_priority)]
 unsafe fn lucas_special_n_fire_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    frame(lua_state, 2.0);
     if is_excute(fighter) {
-        PLAY_STATUS(fighter, Hash40::new("se_lucas_special_n04_l"));
-        PLAY_STATUS(fighter, Hash40::new("se_common_electric_hit_m"));    
+        PLAY_SE_REMAIN(fighter, Hash40::new("se_lucas_special_n04_l"));
+        PLAY_SE_REMAIN(fighter, Hash40::new("se_common_electric_hit_m"));    
     }
 }
 

@@ -54,6 +54,16 @@ unsafe fn lucas_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         }
         frame(lua_state, 16.0);
         if is_excute(fighter) {
+            if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF) {
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+                println!("Released!");
+                let handle = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1) as u32;
+                EffectModule::kill(fighter.module_accessor, handle, false, false);
+                let handle2 = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) as u32;
+                EffectModule::kill(fighter.module_accessor, handle2, false, false);
+                VarModule::set_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
+            }
             AttackModule::clear_all(boma);
         }
         frame(lua_state, 20.0);
@@ -126,11 +136,14 @@ unsafe fn lucas_attack_s4_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter){
         STOP_SE(fighter, Hash40::new("se_common_smash_start_04"));
         STOP_SE(fighter, Hash40::new("vc_lucas_008"));
-        if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
-            PLAY_STATUS(fighter, Hash40::new("se_lucas_special_n04_ll"));
-            PLAY_STATUS(fighter, Hash40::new("se_common_electric_hit_l"));
-        }
         PLAY_SE(fighter, Hash40::new("se_lucas_smash_s02"));
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+            PLAY_SE_REMAIN(fighter, Hash40::new("se_lucas_special_n04_ll"));
+            PLAY_SE_REMAIN(fighter, Hash40::new("se_common_electric_hit_l"));
+        }
     }
     wait(lua_state, 4.0);
     if is_excute(fighter){
@@ -187,15 +200,10 @@ unsafe fn lucas_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
-        frame(lua_state, 1.0);
-        if is_excute(fighter) {
-            WHOLE_HIT(fighter, *HIT_STATUS_INVINCIBLE);
-        }
         frame(lua_state, 5.0);
         app::sv_animcmd::execute(lua_state, 5.0);
         if is_excute(fighter) {
             WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
-            WHOLE_HIT(fighter, *HIT_STATUS_INVINCIBLE);
         }
         frame(lua_state, 7.0);
         if is_excute(fighter) {
@@ -205,15 +213,10 @@ unsafe fn lucas_attack_hi4_game(fighter: &mut L2CAgentBase) {
         }
         frame(lua_state, 8.751);
         if is_excute(fighter) {
-            WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
         }
         frame(lua_state, 15.0);
         if is_excute(fighter) {
             HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
-            HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
-            HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
-            HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
-            HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
         }
         frame(lua_state, 26.0);
         if is_excute(fighter) {
@@ -242,31 +245,18 @@ unsafe fn lucas_attack_hi4_game(fighter: &mut L2CAgentBase) {
         }
     }
     else {
-        frame(lua_state, 1.0);
-        if is_excute(fighter) {
-            WHOLE_HIT(fighter, *HIT_STATUS_INVINCIBLE);
-        }
         frame(lua_state, 5.0);
         app::sv_animcmd::execute(lua_state, 5.0);
         if is_excute(fighter) {
             WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
-            WHOLE_HIT(fighter, *HIT_STATUS_INVINCIBLE);
         }
         frame(lua_state, 7.0);
         if is_excute(fighter) {
             MotionModule::set_rate(boma, 1.751);
         }
-        frame(lua_state, 8.751);
-        if is_excute(fighter) {
-            WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
-        }
         frame(lua_state, 15.0);
         if is_excute(fighter) {
             HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
-            HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
-            HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
-            HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
-            HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
         }
         frame(lua_state, 26.0);
         if is_excute(fighter) {
@@ -375,12 +365,15 @@ unsafe fn lucas_attack_hi4_sound(fighter: &mut L2CAgentBase) {
 	    STOP_SE(fighter, Hash40::new("se_common_smash_start_04"));
 	    PLAY_SE(fighter, Hash40::new("se_lucas_smash_h01"));
     }
-    wait(lua_state, 18.0);
+    frame(lua_state, 7.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
-            PLAY_STATUS(fighter, Hash40::new("se_lucas_special_n04_ll"));
-            PLAY_STATUS(fighter, Hash40::new("se_common_electric_hit_l"));
+            PLAY_SE_REMAIN(fighter, Hash40::new("se_lucas_special_n04_ll"));
+            PLAY_SE_REMAIN(fighter, Hash40::new("se_common_electric_hit_l"));
         }
+    }
+    wait(lua_state, 18.0);
+    if is_excute(fighter) {
 	    PLAY_STATUS(fighter, Hash40::new("se_lucas_smash_h02"));
     }
     wait(lua_state, 1.0);
@@ -471,16 +464,19 @@ unsafe fn lucas_attack_lw4_sound(fighter: &mut L2CAgentBase) {
         STOP_SE(fighter, Hash40::new("se_common_smash_start_04"));
         PLAY_SE(fighter, Hash40::new("se_lucas_smash_l04"));
     }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+            PLAY_SE_REMAIN(fighter, Hash40::new("se_lucas_special_n04_ll"));
+            PLAY_SE_REMAIN(fighter, Hash40::new("se_common_electric_hit_l"));
+        }
+    }
     wait(lua_state, 9.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("vc_lucas_attack07"));
     }
     wait(lua_state, 3.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
-            PLAY_STATUS(fighter, Hash40::new("se_lucas_special_n04_ll"));
-            PLAY_STATUS(fighter, Hash40::new("se_common_electric_hit_l"));
-        }
         PLAY_SE(fighter, Hash40::new("se_lucas_smash_l01"));
     }
 }
@@ -511,10 +507,10 @@ unsafe fn lucas_attack_lw4_effect(fighter: &mut L2CAgentBase) {
         LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -3, 0, 0, 0, 0, 0, 0.7, 2, 2, 2, 0, 0, 0, false);
         LAST_EFFECT_SET_RATE(fighter, 1.3);
     }
-    frame(lua_state, 27.0);
+    // We jump to frame 37 so we can skip the anim a lil //
+    frame(lua_state, 41.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("lucas_pkt_hold"), false, false);
-        LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -3, 0, 0, 0, 0, 0, 1, 2, 2, 2, 0, 0, 0, false);
     }
 }
 
