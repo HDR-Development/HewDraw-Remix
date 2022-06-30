@@ -214,16 +214,16 @@ unsafe fn pk_fire_ff(boma: &mut BattleObjectModuleAccessor, stick_y: f32) {
 
 // Offense Up charge Handler
 pub unsafe fn offense_charge(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, situation_kind: i32)  {
-    println!("{}", fighter.lua_state_agent);
+    //println!("{}", fighter.lua_state_agent);
     if(fighter.is_status(*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD) && !(VarModule::get_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL) >= 120.0) && !VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE)) {
         VarModule::set_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, VarModule::get_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL) + 1.0);
-        println!("Charge Level is: {}", VarModule::get_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL));
+        //println!("Charge Level is: {}", VarModule::get_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL));
         if !fighter.is_button_on(Buttons::Special) {
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_END, true);
         }
     }
     else if(fighter.is_status(*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD) && VarModule::get_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL) >= 120.0 && !VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE)) {
-        println!("Charged!");
+        //println!("Charged!");
         VarModule::on_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT);
         let handle = EffectModule::req_follow(fighter.module_accessor, Hash40::new("lucas_pkfr_hold"), Hash40::new("bust"), &Vector3f::zero(), &Vector3f::zero(), 0.9, true, 0, 0, 0, 0, 0, true, true) as u32;
         VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1, handle as i32);
@@ -237,7 +237,7 @@ pub unsafe fn offense_charge(fighter: &mut smash::lua2cpp::L2CFighterCommon, bom
         else if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_LW4, *FIGHTER_STATUS_KIND_ATTACK_S4, 
             *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE]
         ) {
-            println!("In swing! Status of release {}", VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF));
+            //println!("In swing! Status of release {}", VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF));
             if(AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)) {
                 VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
             }
@@ -248,7 +248,7 @@ pub unsafe fn offense_charge(fighter: &mut smash::lua2cpp::L2CFighterCommon, bom
             *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_END]) && VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF
         ) {
             VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
-            println!("Released!");
+            //println!("Released!");
             let handle = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1) as u32;
             EffectModule::kill(fighter.module_accessor, handle, false, false);
             let handle2 = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) as u32;
@@ -286,7 +286,7 @@ unsafe fn joint_rotator(fighter: &mut L2CFighterCommon, frame: f32, joint: Hash4
     let end_frame = MotionModule::end_frame(fighter.boma());
     let max_rotation = rotation_amount;
     let mut rotation = Vector3f{x: 0.0, y: 0.0, z: 0.0};
-    println!("Frame is: {}", frame);
+    //println!("Frame is: {}", frame);
     if frame >= start_frame && frame < return_frame {
         // this has to be called every frame, or you snap back to the normal joint angle
         // interpolate to the respective waist bend angle
@@ -314,7 +314,7 @@ unsafe fn joint_rotator(fighter: &mut L2CFighterCommon, frame: f32, joint: Hash4
         else{
             z_rotation = calc_z_rotate.clamp(0.0, max_rotation.z);
         }
-        println!("Rotation: {}, {}, {}", x_rotation, y_rotation, z_rotation);
+        //println!("Rotation: {}, {}, {}", x_rotation, y_rotation, z_rotation);
         rotation = Vector3f{x: x_rotation, y: y_rotation, z: z_rotation};
         ModelModule::set_joint_rotate(fighter.boma(), joint, &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
     } else if frame >= return_frame && frame < straight_frame {
@@ -343,7 +343,7 @@ unsafe fn joint_rotator(fighter: &mut L2CFighterCommon, frame: f32, joint: Hash4
         else{
             z_rotation = calc_z_rotate.clamp(0.0, max_rotation.z);
         }
-        println!("Rotation: {}, {}, {}", x_rotation, y_rotation, z_rotation);
+        //println!("Rotation: {}, {}, {}", x_rotation, y_rotation, z_rotation);
         rotation = Vector3f{x: x_rotation, y: y_rotation, z: z_rotation};
         ModelModule::set_joint_rotate(fighter.boma(), joint, &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
     }
