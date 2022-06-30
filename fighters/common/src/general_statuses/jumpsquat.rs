@@ -294,7 +294,7 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
             // check if we are doing directional airdodge
             let stick = app::sv_math::vec2_length(fighter.global_table[STICK_X].get_f32(), fighter.global_table[STICK_Y].get_f32());
             if stick >= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_stick"))
-                && fighter.global_table[STICK_Y].get_f32() <= 0.0
+                && fighter.global_table[STICK_Y].get_f32() <= 0.2
             {
                 VarModule::on_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);
                 // change kinetic/ground properties for wavedash
