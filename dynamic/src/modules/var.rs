@@ -116,10 +116,9 @@ pub mod VarModule {
     /// Resets all values
     pub const RESET_ALL:      u8 = 0xFF;
 
-    /// Resets various `VarModule` arrays depending on the mask
+    /// Checks if the object has `VarModule`
     /// # Arguments
     /// * `object` - The owning `BattleObject` instance
-    /// * `mask` - A mask of the reset values to determine what to reset
     pub fn has_var_module(object: *mut BattleObject) -> bool {
         unsafe {
             VarModule__has_var_module(object)
