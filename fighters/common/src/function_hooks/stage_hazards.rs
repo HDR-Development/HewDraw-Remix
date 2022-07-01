@@ -61,11 +61,21 @@ unsafe fn handle_movement_grav_update(ctx: &mut skyline::hooks::InlineCtx) {
     *(battle_object_world as *mut u8).add(0x59) = 0x1;
 }
 
+#[skyline::hook(offset = 0x16ad60, inline)]
+unsafe fn fix_hazards_for_online(ctx: &skyline::hooks::InlineCtx) {
+  let ptr = *ctx.registers[1].x.as_ref();
+  let stage_id = *(ptr as *const u16) as u32;
+  if HAZARDLESS_STAGE_IDS.contains(&stage_id) {
+    *(ptr as *mut bool).add(0x10) = false;
+  }
+}
+
 pub fn install() {
     skyline::install_hooks!(
         stub,
         area_manager_process,
         init_stage,
         handle_movement_grav_update,
+        fix_hazards_for_online,
     );
 }
