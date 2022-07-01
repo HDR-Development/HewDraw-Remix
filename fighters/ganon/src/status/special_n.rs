@@ -118,7 +118,8 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             return 1.into();
         }
         // If Special is pressed, enable a flag and transition into the next status.
-        if fighter.global_table[globals::PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER != 0 {
+        if fighter.global_table[globals::PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER != 0
+        || fighter.global_table[globals::STICK_Y].get_f32() <= -0.7 {
             VarModule::on_flag(fighter.battle_object, vars::ganon::status::FLOAT_CANCEL);
             let float_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::ganon::SPECIAL_N_FLOAT);
             // Clear the buffer here so you don't accidentally buffer a side special on cancel.
@@ -137,14 +138,6 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 
 #[status_script(agent = "ganon", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // Here temporarily until the VarModule rework is merged.
-    let float_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::ganon::SPECIAL_N_FLOAT);
-    if fighter.global_table[globals::STATUS_KIND].get_i32() != float_status {
-        VarModule::off_flag(fighter.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS);
-        VarModule::off_flag(fighter.battle_object, vars::ganon::status::FLOAT_CANCEL);
-        VarModule::off_flag(fighter.battle_object, vars::ganon::status::FLOAT_FALL_SPEED_Y_INCREASE);
-        VarModule::off_flag(fighter.battle_object, vars::ganon::status::FLOAT_GROUND_CHANGE_KINETIC);
-    }
     0.into()
 }
 
