@@ -41,7 +41,6 @@ unsafe fn thunder_dash_airdodge_cancel(boma: &mut BattleObjectModuleAccessor, st
 // Robin Elwind 1 Cancel
 unsafe fn elwind1_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, motion_kind: u64, frame: f32) {
     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
-        println!("special hi");
         if frame > 8.0 && frame <= 12.0 {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
                 VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
