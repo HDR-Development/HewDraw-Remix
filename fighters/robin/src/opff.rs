@@ -40,7 +40,8 @@ unsafe fn thunder_dash_airdodge_cancel(boma: &mut BattleObjectModuleAccessor, st
 
 // Robin Elwind 1 Cancel
 unsafe fn elwind1_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, motion_kind: u64, frame: f32) {
-    if [hash40("special_hi"), hash40("special_air_hi")].contains(&motion_kind) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        println!("special hi");
         if frame > 8.0 && frame <= 12.0 {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
                 VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
@@ -48,6 +49,9 @@ unsafe fn elwind1_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, statu
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
             }
         }
+        // forces ledgegrab during Elwind1
+        WorkModule::enable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_CLIFF);
+        GroundModule::can_entry_cliff_hang_data(boma, 0, app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES));
     }
     if status_kind == *FIGHTER_STATUS_KIND_FALL_SPECIAL && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_SPECIAL_HI{
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
