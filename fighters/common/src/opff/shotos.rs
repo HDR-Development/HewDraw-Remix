@@ -49,10 +49,6 @@ unsafe fn tatsumaki_ex_land_cancel_hover(boma: &mut BattleObjectModuleAccessor, 
     {
         KineticModule::mul_speed(boma, &Vector3f::new(1.0, 0.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
-
-    // allows ledgegrab during falling tatsu
-    WorkModule::enable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_CLIFF);
-    GroundModule::can_entry_cliff_hang_data(boma, 0, app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES));
 }
 
 // Shotos EX Shoryuken

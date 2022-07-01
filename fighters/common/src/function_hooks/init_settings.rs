@@ -31,6 +31,7 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
     let fighter_kind = boma.kind();
     let status_kind = StatusModule::status_kind(boma);
     let situation_kind = StatusModule::situation_kind(boma);
+    let mut cliff_check_kind = ground_cliff_check_kind;
                                 
     // Call edge_slippoffs init_settings
     let fix = super::edge_slipoffs::init_settings_edges(boma, situation, arg3, arg4, ground_cliff_check_kind, jostle, keep_flag, keep_int, keep_float, arg10);
@@ -153,6 +154,13 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
             }
         }
 
+        // Set GroundCliffCheckKind here to pass into init_settings
+
+        if (boma.kind() == *FIGHTER_KIND_RYU || boma.kind() == *FIGHTER_KIND_KEN)
+            && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END]) {
+            cliff_check_kind = app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
+        }
+
     }
 
     // VarModule Status Variable reset checks
@@ -175,7 +183,7 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
         VarModule::reset(object, mask);
     }
 
-    original!()(boma, situation, arg3, fix, ground_cliff_check_kind, jostle, keep_flag, keep_int, keep_float, arg10)
+    original!()(boma, situation, arg3, fix, cliff_check_kind, jostle, keep_flag, keep_int, keep_float, arg10)
 }
 
 pub fn install() {
