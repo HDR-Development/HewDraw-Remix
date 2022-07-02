@@ -1,15 +1,6 @@
-use utils::{
-    *,
-    ext::*,
-    consts::*
-};
+use super::*;
 use smash::app::BattleObjectModuleAccessor;
 use smash::lua2cpp::L2CFighterCommon;
-use smash::phx::{Vector2f, Vector3f, Vector4f};
-use smash::app::lua_bind::*;
-use smash::lib::lua_const::*;
-use smash::phx::Hash40;
-use smash::hash40;
 use smash_script::macros::*;
 
 
@@ -77,7 +68,11 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
             }
         }
         // prevent Robin from activating float when out of Elwind magic
-        if boma.kind() == *FIGHTER_KIND_REFLET && WorkModule::get_int(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) <= 0 {
+        if boma.kind() == *FIGHTER_KIND_REFLET
+        && WorkModule::get_int(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) <= 0 {
+            if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) < VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION) {
+                app::FighterSpecializer_Reflet::set_flag_to_table(fighter.module_accessor as *mut app::FighterModuleAccessor, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND, true, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THROWAWAY_TABLE);
+            }
             WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
             WorkModule::off_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY);
             return;
@@ -211,10 +206,10 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
             if boma.kind() == *FIGHTER_KIND_REFLET {
                 if timer == 1 {
                     // Elwind book/UI visibility
-                    //app::FighterSpecializer_Reflet::change_hud_kind(boma, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND);
-                    //app::FighterSpecializer_Reflet::change_grimoire(boma, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND);
+                    let mut reflet_fighter = app::Fighter{battle_object: *(fighter.battle_object)};
+                    app::FighterSpecializer_Reflet::change_hud_kind(&mut reflet_fighter, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND);
+                    app::FighterSpecializer_Reflet::change_grimoire(fighter.module_accessor as *mut app::FighterModuleAccessor, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND);
                     WorkModule::set_int(boma, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_LAST_USED_MAGIC_KIND);
-                    //app::FighterSpecializer_Reflet::set_flag_to_table(boma, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND, true, *FIGHTER_REFLECT_INSTANCE_WORK_ID_INT_THROWAWAY_TABLE);
 
                     // drain 2 bars of Elwind on float activation
                     WorkModule::dec_int(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
