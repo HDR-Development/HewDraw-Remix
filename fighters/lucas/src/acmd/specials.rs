@@ -111,12 +111,25 @@ unsafe fn lucas_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", scripts = ["game_speciallwstart", "game_specialairlwstart"] , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "lucas", script = "game_speciallwstart" , category = ACMD_GAME , low_priority)]
 unsafe fn lucas_special_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 3.0/(6.0-1.0));
+    }
+}
+
+#[acmd_script( agent = "lucas", script = "game_specialairlwstart" , category = ACMD_GAME , low_priority)]
+unsafe fn lucas_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        if StatusModule::prev_status_kind(boma, 0) == FIGHTER_STATUS_KIND_SPECIAL_S && fighter.get_num_used_jumps() == 1 {
+            KineticModule::mul_speed(boma, &Vector3f{x: 1.35, y: 1.0, z: 1.0}, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        }
         FT_MOTION_RATE(fighter, 3.0/(6.0-1.0));
     }
 }
@@ -374,6 +387,7 @@ pub fn install() {
         lucas_special_n_fire_effect,
         lucas_special_s_game,
         lucas_special_s_sound,
+        lucas_special_air_lw_start_game,
         lucas_special_lw_start_game,
         lucas_special_lw_start_effect,
         lucas_special_lw_hold_game,
