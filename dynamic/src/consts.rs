@@ -729,6 +729,20 @@ pub mod vars {
         }
     }
 
+    pub mod pichu {
+        pub mod instance {
+            // flags
+            pub const CHARGE_EFFECT_ON: i32 = 0x0100;
+            pub const CHARGE_EFFECT_OFF: i32 = 0x0104;
+
+            // floats
+            pub const CHARGE_DAMAGE_MUL: i32 = 0x0101;
+            pub const CHARGE_RECOIL_MUL: i32 = 0x0102;
+
+            //ints
+            pub const CHARGE_LEVEL: i32 = 0x0103;
+        }
+    }
 
 }
 
