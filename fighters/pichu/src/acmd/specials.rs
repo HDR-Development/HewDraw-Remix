@@ -7,19 +7,17 @@ unsafe fn pichu_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1 {
-        if VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1 {
-            if is_excute(fighter) {
-                FT_MOTION_RATE(fighter, 1.1);
-            }
-            frame(lua_state, 18.0);
-            if is_excute(fighter) {
-                FT_MOTION_RATE(fighter, 1.0);
-                ArticleModule::generate_article(boma, *FIGHTER_PICHU_GENERATE_ARTICLE_DENGEKIDAMA, false, -1);
-                VarModule::sub_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 60);
-            }
-            if is_excute(fighter) {
-                FT_ADD_DAMAGE(fighter, 3.0);
-            }
+        if is_excute(fighter) {
+            FT_MOTION_RATE(fighter, 1.1);
+        }
+        frame(lua_state, 18.0);
+        if is_excute(fighter) {
+            FT_MOTION_RATE(fighter, 1.0);
+            ArticleModule::generate_article(boma, *FIGHTER_PICHU_GENERATE_ARTICLE_DENGEKIDAMA, false, -1);
+            VarModule::sub_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 60);
+        }
+        if is_excute(fighter) {
+            FT_ADD_DAMAGE(fighter, 3.0);
         }
     }
     else if VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 0 {
@@ -107,6 +105,43 @@ unsafe fn pichu_special_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         MeterModule::watch_damage(fighter.battle_object, false);
         WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_PIKACHU_STATUS_WORK_ID_FLAG_SKULL_BASH_BRAKE_TRIGGER);
+    }
+}
+#[acmd_script( agent = "pichu", script = "game_specialsend" , category = ACMD_GAME , low_priority)]
+unsafe fn pichu_special_s_end_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        if VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1 {
+            FT_MOTION_RATE(fighter, 1.5);
+        }
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+#[acmd_script( agent = "pichu", script = "game_specialairsend" , category = ACMD_GAME , low_priority)]
+unsafe fn pichu_special_air_s_end_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        if VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1 {
+            FT_MOTION_RATE(fighter, 1.5);
+        }
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+#[acmd_script( agent = "pichu", script = "game_specialairsmissend" , category = ACMD_GAME , low_priority)]
+unsafe fn pichu_special_air_s_miss_end_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        if VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1 {
+            FT_MOTION_RATE(fighter, 1.5);
+        }
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+    frame(lua_state, 35.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_PIKACHU_STATUS_WORK_ID_FLAG_SKULL_BASH_MISS_END_RUMBLE_2);
     }
 }
 #[acmd_script( agent = "pichu", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
@@ -206,6 +241,9 @@ pub fn install() {
         pichu_special_n_game,
         pichu_special_air_n_game,
         pichu_special_s_game,
+        pichu_special_s_end_game,
+        pichu_special_air_s_end_game,
+        pichu_special_air_s_miss_end_game,
         pichu_special_lw_game,
         pichu_special_air_lw_game,
         pichu_special_lw_hit_game,

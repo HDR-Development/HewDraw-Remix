@@ -741,6 +741,7 @@ pub mod vars {
 
             //ints
             pub const CHARGE_LEVEL: i32 = 0x0103;
+            pub const CHARGE_EFFECT_REFRESH_TIMER: i32 = 0x0105;
         }
     }
 

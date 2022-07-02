@@ -28,6 +28,11 @@ unsafe fn charge_state_increase(boma: &mut BattleObjectModuleAccessor, id: usize
 unsafe fn charge_state_overcharge(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
     if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 1 {
         if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) > 0 {
+            VarModule::inc_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_REFRESH_TIMER);
+            if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_REFRESH_TIMER) > 20 {
+                VarModule::on_flag(boma.object(), vars::pichu::instance::CHARGE_EFFECT_ON);
+                VarModule::set_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_REFRESH_TIMER, 0);
+            }
             VarModule::dec_int(boma.object(), vars::common::instance::GIMMICK_TIMER);
         }
         if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) <= 0 {
@@ -60,6 +65,7 @@ unsafe fn charge_state_reset(boma: &mut BattleObjectModuleAccessor, id: usize, s
         *FIGHTER_STATUS_KIND_REBIRTH]) {
         VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 0);
         VarModule::set_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL, 0);
+        VarModule::set_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_REFRESH_TIMER, 0);
         VarModule::on_flag(boma.object(), vars::pichu::instance::CHARGE_EFFECT_OFF);
         MeterModule::reset(boma.object());
     }
@@ -96,6 +102,7 @@ unsafe fn charge_state_effects(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
     if VarModule::is_flag(fighter.battle_object, vars::pichu::instance::CHARGE_EFFECT_OFF) {
         EFFECT_OFF_KIND(fighter, Hash40::new("pichu_elec2"), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("pichu_cheek"), false, true);
         VarModule::off_flag(fighter.battle_object, vars::pichu::instance::CHARGE_EFFECT_OFF);
     }
 }
