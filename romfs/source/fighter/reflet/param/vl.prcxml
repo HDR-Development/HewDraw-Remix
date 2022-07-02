@@ -13,7 +13,7 @@
     <int hash="thunder_sword_revival_time">390</int>
     <int hash="grimoire_thunder_revival_time">480</int>
     <int hash="grimoire_giga_fire_revival_time">480</int>
-    <int hash="grimoire_el_window_revival_time">300</int>
+    <int hash="grimoire_el_window_revival_time">600</int>
     <int hash="grimoire_rizaia_revival_time">720</int>
     <int hash="thunder_sword_smash_attack_revival_time">20</int>
   </struct>
