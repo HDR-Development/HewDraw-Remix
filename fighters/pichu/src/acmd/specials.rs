@@ -21,6 +21,7 @@ unsafe fn pichu_special_n_game(fighter: &mut L2CAgentBase) {
                 FT_ADD_DAMAGE(fighter, 3.0);
             }
         }
+    }
     else if VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 0 {
         frame(lua_state, 1.0);
         if is_excute(fighter) {
