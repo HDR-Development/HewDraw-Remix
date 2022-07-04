@@ -311,6 +311,9 @@ pub mod vars {
             pub const ROSA_Y: i32 = 0x0102;
             pub const TICO_X: i32 = 0x0103;
             pub const TICO_Y: i32 = 0x0104;
+            pub const TICO_RAYCAST: i32 = 0x0106;
+            pub const TICO_X_DIST: i32 = 0x0107;
+            pub const TICO_Y_DIST: i32 = 0x0108;
 			
 			// flag
             pub const IS_TICO_DEAD: i32 = 0x0105;

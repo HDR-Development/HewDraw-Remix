@@ -43,5 +43,5 @@ pub fn install(is_runtime: bool) {
     status::install();
     opff::install(is_runtime);
     use opff::*;
-	smashline::install_agent_frame_callback!(tico_callback);
+	smashline::install_agent_frames!(tico_frame);
 }
