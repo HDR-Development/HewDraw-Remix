@@ -57,18 +57,30 @@ unsafe fn charge_state_damage_multipliers(boma: &mut BattleObjectModuleAccessor,
 
 // charge status resets on death and game end
 unsafe fn charge_state_reset(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
+    if lua_bind::FighterManager::is_result_mode(utils::singletons::FighterManager()) {
+        VarModule::set_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_REFRESH_TIMER, 0);
+        VarModule::on_flag(boma.object(), vars::pichu::instance::CHARGE_EFFECT_OFF);
+        VarModule::set_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL, 0);
+        VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 0);
+        MeterModule::reset(boma.object());
+    }
+    
     if boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_WIN,
         *FIGHTER_STATUS_KIND_LOSE,
-        *FIGHTER_STATUS_KIND_ENTRY,
-        *FIGHTER_STATUS_KIND_DEAD,
-        *FIGHTER_STATUS_KIND_REBIRTH]) {
+        *FIGHTER_STATUS_KIND_ENTRY,]) {
         VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 0);
-        VarModule::set_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL, 0);
         VarModule::set_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_REFRESH_TIMER, 0);
         VarModule::on_flag(boma.object(), vars::pichu::instance::CHARGE_EFFECT_OFF);
+        VarModule::set_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL, 0);
         MeterModule::reset(boma.object());
     }
+
+    if boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_REBIRTH]) {
+            VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 0);
+        }
 }
 
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
