@@ -59,6 +59,14 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 				} else {
 					VarModule::set_int(fighter.battle_object, vars::rosetta::instance::ROSA_X, PostureModule::pos_x(boma) as i32);
 					VarModule::set_int(fighter.battle_object, vars::rosetta::instance::ROSA_Y, PostureModule::pos_y(boma) as i32);
+					if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
+						HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+						JostleModule::set_status(boma, true);	
+						VisibilityModule::set_whole(boma, true);
+						if frame > 37.0{
+							CancelModule::enable_cancel(boma);
+						};
+					};
 				};
 				if VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) > 0 {
 					VarModule::set_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN,  VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN)-1);
