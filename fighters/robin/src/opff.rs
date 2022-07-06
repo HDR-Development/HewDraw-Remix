@@ -30,16 +30,16 @@ unsafe fn thunder_airdodge_cancel(boma: &mut BattleObjectModuleAccessor, status_
 }
 
 // Robin Elwind 1 Cancel
-unsafe fn elwind1_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, motion_kind: u64, frame: f32) {
+unsafe fn elwind1_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
         if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
             // burn an extra bar of Elwind on upB1 (totals 2 bars)
             WorkModule::dec_int(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
         }
-        if frame > 8.0 && frame <= 12.0 {
-            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-                VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
+        if MotionModule::frame(boma) >= 8.0 && VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL) {
+            CancelModule::enable_cancel(boma);
+            if boma.is_situation(*SITUATION_KIND_AIR) {
+                fighter.sub_air_check_fall_common();
             }
         }
     }
@@ -54,7 +54,7 @@ unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     nspecial_cancels(boma, status_kind, situation_kind);
     thunder_airdodge_cancel(boma, status_kind, situation_kind, cat[0], frame);
-    elwind1_cancel(fighter, boma, id, status_kind, motion_kind, frame);
+    elwind1_cancel(fighter, boma);
     sword_length(boma);
 }
 
