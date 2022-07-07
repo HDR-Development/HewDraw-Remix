@@ -394,7 +394,6 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     // dash startup -> ftilt leniency window for tilt attack button, just like fsmash
     if fighter.is_cat_flag(CatHdr::TiltAttack)
        && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4) {
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3);
         KineticModule::mul_speed(fighter.boma(), &Vector3f::new(0.0, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_STOP);
         interrupt!(fighter, *FIGHTER_STATUS_KIND_ATTACK_S3, true);
     }
