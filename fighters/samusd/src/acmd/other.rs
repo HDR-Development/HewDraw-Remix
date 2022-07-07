@@ -62,6 +62,35 @@ unsafe fn samusd_homing_missile_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 0, 25, 0, 26, 2.4, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
         AttackModule::enable_safe_pos(boma);
     }
+    frame(lua_state, 50.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 60, 55, 0, 26, 2.4, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
+        AttackModule::enable_safe_pos(boma);
+    }
+}
+
+#[acmd_script( agent = "samusd_missile", script = "effect_homing", category = ACMD_EFFECT, low_priority)]
+unsafe fn samusd_homing_missile_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("samusd_missile_homing"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 50.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("samusd_missile_homing"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, true);
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 0, 3, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, true);
+        //EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_elec_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.4, true);
+        //EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_elec"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.6, true);
+        //LAST_EFFECT_SET_COLOR(fighter, 0.5, 0.1, 0.675);
+        LAST_EFFECT_SET_COLOR(fighter, 2.0, 0.5, 0.5);
+        //LAST_EFFECT_SET_COLOR(fighter, 2.25, 1.0, 1.0);
+    }
+    frame(lua_state, 60.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("samusd_missile_homing"), false, true);
+        //EFFECT_OFF_KIND(fighter, Hash40::new("sys_hit_elec_s"), false, true);
+    }
 }
 
 #[acmd_script( agent = "samusd_supermissile", script = "game_ready", category = ACMD_GAME, low_priority)]
@@ -105,6 +134,7 @@ pub fn install() {
         turn_dash_game,
         samusd_cshot_shoot_game,
         samusd_homing_missile_game,
+        samusd_homing_missile_effect,
         samusd_super_missile_ready_game,
         samusd_super_missile_straight_game,
         //samusd_super_missile_burst_game,
