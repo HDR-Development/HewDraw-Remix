@@ -282,7 +282,8 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
     let frame = MotionModule::frame(fighter.module_accessor);
     let update_rate = MotionModule::update_rate(fighter.module_accessor);
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE != 0 || ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD_HOLD) {
+    if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE != 0 || ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD_HOLD))
+    && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N == 0 {
         if !(fighter.kind() == *FIGHTER_KIND_PICKEL 
         && fighter.is_prev_status_one_of(&[*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT])) {
             VarModule::on_flag(fighter.battle_object, vars::common::status::ENABLE_AIR_ESCAPE_JUMPSQUAT);
@@ -297,7 +298,7 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
             // check if we are doing directional airdodge
             let stick = app::sv_math::vec2_length(fighter.global_table[STICK_X].get_f32(), fighter.global_table[STICK_Y].get_f32());
             if stick >= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_stick"))
-                && fighter.global_table[STICK_Y].get_f32() <= 0.0
+                && fighter.global_table[STICK_Y].get_f32() <= 0.2
             {
                 VarModule::on_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);
                 // change kinetic/ground properties for wavedash
