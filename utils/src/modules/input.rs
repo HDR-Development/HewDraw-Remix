@@ -425,7 +425,8 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
             ControlModule::get_button((*input_module.owner).module_accessor)
         )
     };
-
+    
+    // TiltAttack cat flag
     let tilt_attack_offset = CatHdr::TiltAttack.bits().trailing_zeros() as usize;
     if triggered_buttons.intersects(Buttons::TiltAttack) {
         if input_module.hdr_cat.valid_frames[tilt_attack_offset] == 0 {
@@ -434,10 +435,24 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
             };
         }
     }
-
     if input_module.hdr_cat.valid_frames[tilt_attack_offset] != 0
     && !(input_module.hdr_cat.valid_frames[tilt_attack_offset] == 1 && buttons.intersects(Buttons::TiltAttack)) {
         input_module.hdr_cat.valid_frames[tilt_attack_offset] -= 1;
+    }
+
+    // Wavedash cat flag
+    let wavedash_offset = CatHdr::Wavedash.bits().trailing_zeros() as usize;
+    let wavedash_input = (triggered_buttons.intersects(Buttons::Jump) || triggered_buttons.intersects(Buttons::FlickJump)) && triggered_buttons.intersects(Buttons::Guard);
+    if wavedash_input {
+        if input_module.hdr_cat.valid_frames[wavedash_offset] == 0 {
+            input_module.hdr_cat.valid_frames[wavedash_offset] = unsafe {
+                ControlModule::get_command_life_count_max((*input_module.owner).module_accessor) as u8
+            };
+        }
+    }
+    if input_module.hdr_cat.valid_frames[wavedash_offset] != 0
+    && !(input_module.hdr_cat.valid_frames[wavedash_offset] == 1 && wavedash_input) {
+        input_module.hdr_cat.valid_frames[wavedash_offset] -= 1;
     }
 
     call_original();
