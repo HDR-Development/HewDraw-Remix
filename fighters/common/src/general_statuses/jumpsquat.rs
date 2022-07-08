@@ -80,7 +80,7 @@ unsafe fn status_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lr_update = fighter.sub_status_JumpSquat_check_stick_lr_update();
     fighter.status_JumpSquat_common(lr_update);
     if fighter.is_cat_flag(CatHdr::Wavedash) {
-        VarModule::on_flag(fighter.battle_object, vars::common::status::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
     }
     fighter.sub_shift_status_main(L2CValue::Ptr(status_JumpSquat_Main as *const () as _))
 }
@@ -174,7 +174,7 @@ unsafe fn status_end_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     //println!("end");
     InputModule::disable_persist(fighter.battle_object);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
-    VarModule::off_flag(fighter.battle_object, vars::common::status::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
     VarModule::off_flag(fighter.battle_object, vars::common::instance::CSTICK_OVERRIDE);
     VarModule::off_flag(fighter.battle_object, vars::common::instance::CSTICK_OVERRIDE_SECOND);
     VarModule::set_int(fighter.battle_object, vars::common::instance::JUMP_SQUAT_FRAME, 0);
@@ -286,7 +286,7 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
     && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N == 0 {
         if !(fighter.kind() == *FIGHTER_KIND_PICKEL 
         && fighter.is_prev_status_one_of(&[*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT])) {
-            VarModule::on_flag(fighter.battle_object, vars::common::status::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
         }
     }
     let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new_raw(motion_kind)) as u32 as f32;
@@ -294,7 +294,7 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
         StatusModule::set_situation_kind(fighter.module_accessor, app::SituationKind(*SITUATION_KIND_AIR), false);
         let situation_kind = fighter.global_table[SITUATION_KIND].clone();
         fighter.global_table[PREV_SITUATION_KIND].assign(&situation_kind);
-        if VarModule::is_flag(fighter.battle_object, vars::common::status::ENABLE_AIR_ESCAPE_JUMPSQUAT) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT) {
             // check if we are doing directional airdodge
             let stick = app::sv_math::vec2_length(fighter.global_table[STICK_X].get_f32(), fighter.global_table[STICK_Y].get_f32());
             if stick >= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_stick"))
