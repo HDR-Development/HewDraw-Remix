@@ -304,19 +304,24 @@ unsafe extern "C" fn air_dash_main_loop(fighter: &mut L2CFighterCommon) -> L2CVa
         fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_GROUND));
     }
 
-    // Remove intan on f6
     if frame == 6 {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("fall_aerial"), 0.0, 1.0, false, 0.0, false, false);
+    }
+    // Remove intan on f9
+    if frame == 8 {
         HitModule::set_whole(fighter.module_accessor, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
-    
     // Airdash actionable on f9
     if frame >= 8 {
         CancelModule::enable_cancel(fighter.module_accessor);
-        if frame == 29 {
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
-            smash_script::notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-        }
+    }
+    // Enable drift on f30
+    if frame == 29 {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
+    }
+    // Allow ledgegrab on f35
+    if frame == 34 {
+        smash_script::notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     
     if !StatusModule::is_changing(fighter.module_accessor) {
