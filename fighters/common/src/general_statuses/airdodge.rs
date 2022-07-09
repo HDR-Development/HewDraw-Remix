@@ -134,24 +134,11 @@ unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
         if status_kind == FIGHTER_STATUS_KIND_LANDING {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_TURN);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_LANDING_CLIFF_STOP);
-
-            if !VarModule::is_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH)  // ECB never shifts during perfect waveland, no need to readjust on landing
-            && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND  // ECB must be touching ground to warrant readjustment
-            && fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) > ParamModule::get_int(fighter.object(), ParamType::Common, "ecb_shift_air_trans_frame")  // ECB doesn't shift during first 10 airborne frames, no need to readjust on landing
-            && StatusModule::prev_status_kind(fighter.module_accessor, 1) != *FIGHTER_STATUS_KIND_DAMAGE_FALL {  // ECB doesn't shift during tumble, no need to readjust on landing
-                // shift character back up to proper landing height (does same thing as ecb_shift_on_landing() boma ext)
-                let mut fighter_pos = Vector3f {
-                    x: PostureModule::pos_x(fighter.module_accessor),
-                    y: PostureModule::pos_y(fighter.module_accessor),
-                    z: PostureModule::pos_z(fighter.module_accessor)
-                };
-                fighter_pos.y += VarModule::get_float(fighter.object(), vars::common::instance::ECB_Y_OFFSETS);
-                PostureModule::set_pos(fighter.module_accessor, &fighter_pos);
-            }
         }
         VarModule::off_flag(fighter.battle_object, vars::common::status::SHOULD_WAVELAND);
         VarModule::off_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);
     }
+    VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET);
     0.into()
 }
 
@@ -245,10 +232,6 @@ unsafe fn sub_escape_air_waveland_check(fighter: &mut L2CFighterCommon) {
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon19sub_escape_air_uniqEN3lib8L2CValueE")]
 unsafe extern "C" fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
     if arg.get_bool() {
-        if fighter.handle_waveland(true, true) {
-            fighter.set_situation(L2CValue::I32(*SITUATION_KIND_GROUND));
-            return 1.into();
-        }
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_FRAME);
         // if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO) {
