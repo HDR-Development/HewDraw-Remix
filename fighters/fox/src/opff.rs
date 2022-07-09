@@ -18,22 +18,31 @@ unsafe fn laser_fastfall_landcancel(boma: &mut BattleObjectModuleAccessor, statu
 }
 
 // Fox Shine Jump Cancels
-unsafe fn shine_jump_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
-    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= 1 {
-        GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+unsafe fn shine_jump_cancel(fighter: &mut L2CFighterCommon) {
+    let can_jump_cancel;
+    if fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW)
+    && fighter.motion_frame() > 6.0 //Allows for jump cancel on frame 5 in game
+    && !fighter.is_in_hitlag() {
+        can_jump_cancel = true;
     }
-    if [*FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT,
+    else if fighter.is_status_one_of (&[
+        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT,
         *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
-        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind) {
-        if boma.is_input_jump() && !boma.is_in_hitlag() {
-            if situation_kind == *SITUATION_KIND_AIR {
-                if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                }
-            } else if situation_kind == *SITUATION_KIND_GROUND {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-            }
-        }
+        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END
+    ]) && !fighter.is_in_hitlag() {
+        can_jump_cancel = true;
+    }
+    else {
+        can_jump_cancel = false;
+    }
+    if can_jump_cancel {
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+        fighter.sub_transition_group_check_ground_jump_mini_attack();
+        fighter.sub_transition_group_check_ground_jump();
+        fighter.sub_transition_group_check_air_jump_aerial();
     }
 }
 
@@ -82,10 +91,10 @@ unsafe fn utaunt_cancel_fire_fox(boma: &mut BattleObjectModuleAccessor, motion_k
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
 
     laser_fastfall_landcancel(boma, status_kind, situation_kind, cat[1], stick_y);
-    shine_jump_cancel(boma, status_kind, situation_kind, cat[0]);
+    shine_jump_cancel(fighter);
     illusion_shorten_(boma, id, motion_kind, frame);
     utaunt_cancel_fire_fox(boma, motion_kind, frame);
 
@@ -110,6 +119,6 @@ pub fn fox_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn fox_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

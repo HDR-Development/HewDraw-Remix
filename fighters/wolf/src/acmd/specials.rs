@@ -110,9 +110,11 @@ unsafe fn wolf_special_lw_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 69, 100, 0, 70, 9.0, 0.0, 7.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
-        ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.75);
+        //Reflection begins on same frame shine hitbox is active
+        ReflectorModule::set_status(boma, *FIGHTER_FOX_REFLECTOR_KIND_REFLECTOR, app::ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_EXTEND);
+        ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.72);
     }
-    wait(lua_state, 3.0);
+    frame(lua_state, 8.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
@@ -131,9 +133,11 @@ unsafe fn wolf_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 69, 100, 0, 70, 9.0, 0.0, 7.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
+        ReflectorModule::set_status(boma, *FIGHTER_FOX_REFLECTOR_KIND_REFLECTOR, app::ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_EXTEND);
+        // Reflection begins on same frame shine hitbox is active
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.75);
     }
-    wait(lua_state, 3.0);
+    frame(lua_state, 8.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
