@@ -324,6 +324,7 @@ unsafe fn lucas_attack_hi4_effect(fighter: &mut L2CAgentBase) {
         if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
             EFFECT_FOLLOW(fighter, Hash40::new("lucas_pkfr_bullet_ed"), Hash40::new("top"), 0, 25, 0, -90, 0, 0, 1.6, true);
             LAST_EFFECT_SET_RATE(fighter, 0.5);
+            EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkfr_bomb_max"), Hash40::new("top"), 0, 25, 0, 0, 0, 0, 1.0, true);
             EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkt_hold"), Hash40::new("top"), 0, 25, 0, 0, 0, 0, 2.0, true);
         }
         else {
@@ -488,6 +489,7 @@ unsafe fn lucas_attack_lw4_effect(fighter: &mut L2CAgentBase) {
         if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
             EFFECT_FOLLOW_FLIP(fighter, Hash40::new("lucas_pkfr_bullet_ed"), Hash40::new("lucas_pkfr_bullet_ed"), Hash40::new("top"), 0, 3.5, 9, 0, 0, 0, 0.85, true, *EF_FLIP_YZ);
             LAST_EFFECT_SET_RATE(fighter, 0.25);
+            EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkfr_bomb_max"), Hash40::new("top"), 0, 3.5, 9, 0, 0, 0, 0.5, true);
         } else {
             EFFECT_FOLLOW_FLIP(fighter, Hash40::new("lucas_psi_atk_lw"), Hash40::new("lucas_psi_atk_lw"), Hash40::new("top"), 0, 3.5, 9, 0, 0, 0, 0.65, true, *EF_FLIP_YZ);
             LAST_EFFECT_SET_RATE(fighter, 0.5);

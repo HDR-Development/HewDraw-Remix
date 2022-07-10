@@ -7,7 +7,7 @@ unsafe fn lucas_special_s_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 19.0/(21.0-1.0));
+        FT_MOTION_RATE(fighter, 25.0/(21.0-1.0));
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
@@ -22,7 +22,7 @@ unsafe fn lucas_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 16.0/(21.0-1.0));
+        FT_MOTION_RATE(fighter, 14.0/(21.0-1.0));
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {

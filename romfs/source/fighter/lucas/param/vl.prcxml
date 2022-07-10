@@ -34,6 +34,16 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_pkfire">
+    <struct index="0">
+      <int hash="life">22</int>
+      <float hash="speed_ground">4.0</float>
+      <float hash="speed_air">3.1</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="accel_y">0.00035</float>
