@@ -214,20 +214,6 @@ unsafe fn pk_fire_ff(boma: &mut BattleObjectModuleAccessor, stick_y: f32) {
 
 // Offense Up charge Handler
 pub unsafe fn offense_charge(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, situation_kind: i32)  {
-    //println!("{}", fighter.lua_state_agent);
-    if(fighter.is_status(*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD) && !(VarModule::get_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL) >= 120.0) && !VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE)) {
-        VarModule::set_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, VarModule::get_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL) + 1.0);
-        //println!("Charge Level is: {}", VarModule::get_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL));
-        if !fighter.is_button_on(Buttons::Special) {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_END, true);
-        }
-    }
-    else if(fighter.is_status(*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD) && VarModule::get_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL) >= 120.0 && !VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE)) {
-        //println!("Charged!");
-        VarModule::on_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT);
-        VarModule::on_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
-        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE, true);
-    }
     if(VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE)) {
         if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE, true);
@@ -254,8 +240,9 @@ pub unsafe fn offense_charge(fighter: &mut smash::lua2cpp::L2CFighterCommon, bom
 
 // We run this check on pre-handle to ensure the flag is not improperly edited. //
 unsafe fn reset_flags(fighter: &mut smash::lua2cpp::L2CFighterCommon, status_kind: i32, situation_kind: i32) {
-    if [*FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_WIN, *FIGHTER_STATUS_KIND_LOSE, *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) || !sv_information::is_ready_go() {
-        VarModule::set_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
+    if [*FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_LOSE, *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind)  || !sv_information::is_ready_go() {
+        let charge_time = ParamModule::get_int(fighter.object(), ParamType::Agent, "attack_up_charge_time");
+        VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, charge_time);
         VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
         VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT);
         VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
@@ -266,9 +253,9 @@ unsafe fn offense_effct_handler(fighter: &mut smash::lua2cpp::L2CFighterCommon) 
     if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) && !VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT) 
     && (VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1) == -1 || VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) == -1) {
         // The case is that Lucas is in Offense Up, has cleared past `pkfr_hold` effects, yet he does not have his hand effects. //
-        let handle = EffectModule::req_follow(fighter.module_accessor, Hash40::new("lucas_pkfr_hold"), Hash40::new("handl"), &Vector3f::zero(), &Vector3f::zero(), 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
+        let handle = EffectModule::req_follow(fighter.module_accessor, Hash40::new("lucas_pkfr_hold"), Hash40::new("handl"), &Vector3f{x: 0.7, y: 0.0, z: 0.0}, &Vector3f::zero(), 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
         VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1, handle as i32);
-        let handle2 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("lucas_pkfr_hold"), Hash40::new("handr"), &Vector3f::zero(), &Vector3f::zero(), 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
+        let handle2 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("lucas_pkfr_hold"), Hash40::new("handr"), &Vector3f{x: 0.7, y: 0.0, z: 0.0}, &Vector3f::zero(), 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
         VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2, handle2 as i32);
     }
     else if !VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) 
@@ -383,8 +370,8 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     //pk_thunder_wall_ride_shorten(fighter, boma, id, status_kind, situation_kind);
     //djc_momentum_helper(boma, id, status_kind, frame);
     pk_fire_ff(boma, stick_y);
-    //offense_charge(fighter, boma, situation_kind);
-    //offense_effct_handler(fighter);
+    offense_charge(fighter, boma, situation_kind);
+    offense_effct_handler(fighter);
     reset_flags(fighter, status_kind, situation_kind);
 }
 

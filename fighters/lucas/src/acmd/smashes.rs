@@ -322,7 +322,8 @@ unsafe fn lucas_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("lucas_psi_catch"), false, false);
         if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
-            EFFECT_FOLLOW(fighter, Hash40::new("lucas_psi_atk"), Hash40::new("top"), 0, 25, 0, -90, 0, 0, 1.6, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("lucas_pkfr_bullet_ed"), Hash40::new("top"), 0, 25, 0, -90, 0, 0, 1.6, true);
+            LAST_EFFECT_SET_RATE(fighter, 0.5);
             EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkt_hold"), Hash40::new("top"), 0, 25, 0, 0, 0, 0, 2.0, true);
         }
         else {
@@ -332,7 +333,7 @@ unsafe fn lucas_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 38.0);
     if is_excute(fighter) {
         if !VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
-            EFFECT_OFF_KIND(fighter, Hash40::new("lucas_psi_atk"), true, true);
+            EFFECT_OFF_KIND(fighter, Hash40::new("lucas_pkfr_bullet_ed"), true, true);
             EFFECT_FOLLOW(fighter, Hash40::new("lucas_psi_atk"), Hash40::new("top"), 0, 25, 0, -90, 0, 0, 1.0, true);
         }
     }
@@ -485,11 +486,12 @@ unsafe fn lucas_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("lucas_psi_hold"), false, false);
         if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
-            EFFECT_FOLLOW_FLIP(fighter, Hash40::new("lucas_psi_atk_lw"), Hash40::new("lucas_psi_atk_lw"), Hash40::new("top"), 0, 3.5, 9, 0, 0, 0, 0.85, true, *EF_FLIP_YZ);
+            EFFECT_FOLLOW_FLIP(fighter, Hash40::new("lucas_pkfr_bullet_ed"), Hash40::new("lucas_pkfr_bullet_ed"), Hash40::new("top"), 0, 3.5, 9, 0, 0, 0, 0.85, true, *EF_FLIP_YZ);
+            LAST_EFFECT_SET_RATE(fighter, 0.25);
         } else {
             EFFECT_FOLLOW_FLIP(fighter, Hash40::new("lucas_psi_atk_lw"), Hash40::new("lucas_psi_atk_lw"), Hash40::new("top"), 0, 3.5, 9, 0, 0, 0, 0.65, true, *EF_FLIP_YZ);
+            LAST_EFFECT_SET_RATE(fighter, 0.5);
         }
-        LAST_EFFECT_SET_RATE(fighter, 0.5);
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
