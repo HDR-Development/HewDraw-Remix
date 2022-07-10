@@ -27,12 +27,6 @@ unsafe fn lucas_special_air_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 21.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
-        if PostureModule::lr(boma) * KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) < 0.0 {
-            KineticModule::add_speed(boma, &Vector3f::new(-0.75, 0.1, 0.0));
-        }
-        else{
-            KineticModule::add_speed(boma, &Vector3f::new(-0.25, 0.1, 0.0));
-        }
         ArticleModule::generate_article(boma, *FIGHTER_LUCAS_GENERATE_ARTICLE_PK_FIRE, false, 0);
     }
 }
@@ -128,7 +122,7 @@ unsafe fn lucas_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if StatusModule::prev_status_kind(boma, 0) == FIGHTER_STATUS_KIND_SPECIAL_S && fighter.get_num_used_jumps() == 1 {
-            KineticModule::mul_speed(boma, &Vector3f{x: 1.35, y: 1.0, z: 1.0}, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            KineticModule::mul_speed(boma, &Vector3f{x: 2.0, y: 1.0, z: 1.0}, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         }
         FT_MOTION_RATE(fighter, 3.0/(6.0-1.0));
     }
@@ -312,7 +306,15 @@ unsafe fn lucas_special_n_fire(fighter: &mut L2CAgentBase) {
             AttackModule::clear_all(boma);
         }
     } else {
-        VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT);
+        frame(lua_state, 1.0);
+        if is_excute(fighter) {
+            EFFECT_OFF_KIND(fighter, Hash40::new("lucas_pkfr_hold"), false, false);
+        }
+        frame(lua_state, 2.0);
+        if is_excute(fighter) {
+            VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT);
+        }
+        
     }
 }
 
@@ -341,7 +343,6 @@ unsafe fn lucas_special_n_fire_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-	    // EFFECT_OFF_KIND(fighter, Hash40::new("lucas_pkfr_hold"), false, false);
         EFFECT_OFF_KIND(fighter, Hash40::new("lucas_pkt_hold"), false, false);
     }
 }
@@ -358,15 +359,16 @@ unsafe fn lucas_special_n_fire_sound(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        lucas_special_n_start,
-        lucas_special_n_hold,
-        lucas_special_n_hold_sound,
-        lucas_special_n_fire_sound,
-        lucas_special_n_start_sound,
-        lucas_special_n_hold_effect,
-        lucas_special_n_fire,
-        lucas_special_n_fire_effect,
+        //lucas_special_n_start,
+        //lucas_special_n_hold,
+        //lucas_special_n_hold_sound,
+        //lucas_special_n_fire_sound,
+        //lucas_special_n_start_sound,
+        //lucas_special_n_hold_effect,
+        //lucas_special_n_fire,
+        //lucas_special_n_fire_effect,
         lucas_special_s_game,
+        lucas_special_air_s_game,
         lucas_special_s_sound,
         lucas_special_air_lw_start_game,
         lucas_special_lw_start_game,

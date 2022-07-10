@@ -7,52 +7,137 @@ pub fn install() {
     install_status_scripts!(
         attack_air, 
         special_hi_attack, 
-        //lucas_special_n_pre,
-        //lucas_special_n_main, // notably, do not try to install the main loop
+        //lucas_special_s_pre,
+        lucas_special_n_hold_main, // notably, do not try to install the main loop
         //lucas_special_n_end
+        //lucas_special_s_main
     );
 }
 
-#[status_script(agent = "lucas", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn lucas_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.sub_status_pre_SpecialNCommon();
-    StatusModule::init_settings(
-        fighter.module_accessor,
-        app::SituationKind(*SITUATION_KIND_NONE),
-        *FIGHTER_KINETIC_TYPE_FALL, // change this to change what controls is kinetic energy
-        *GROUND_CORRECT_KIND_KEEP as u32,
-        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
-        true,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
-        0,
-    );
-    FighterStatusModuleImpl::set_fighter_status_data(
-        fighter.module_accessor,
-        false,
-        *FIGHTER_TREADED_KIND_NO_REAC, // this makes footstools be phantom during this status
-        false,
-        false,
-        false,
-        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_N
-            | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK
-            | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON
-            | *FIGHTER_LOG_MASK_FLAG_SHOOT) as u64,
-        *FIGHTER_STATUS_ATTR_START_TURN as u32, // pretty sure this is a u64 but i don't remember,
-        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_N as u32, // power up for spirits
-        0,
-    );
+#[status_script(agent = "lucas", status = FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn lucas_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let time = fighter.get_param_int("param_special_n", "time");
+    let nobang_time = fighter.get_param_int("param_special_n", "nobang_time");
+    fighter.set_int(time, *FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_TIME);
+    fighter.set_int(nobang_time, *FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_NOBANG_TIME);
+    fighter.off_flag(*FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_MOT_CHANGE);
+
+    if !StopModule::is_stop(fighter.module_accessor) {
+        lucas_special_n_hold_main_sub_status(fighter, false.into());
+    }
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr( lucas_special_n_hold_main_sub_status as *const () as _));
+    fighter.main_shift(lucas_special_n_hold_main_loop)
+}
+
+unsafe fn lucas_special_n_check_explosion(fighter: &mut L2CFighterCommon) {
+    if fighter.is_flag(*FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_GENERATE_ARTICLE) 
+        && !fighter.is_flag(*FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_ALREADY_GENERATED)
+    {
+        fighter.off_flag(*FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_GENERATE_ARTICLE);
+        fighter.on_flag(*FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_ALREADY_GENERATED);
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_PK_FREEZE, false, -1);
+    }
+
+    if !fighter.is_flag(*FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_ALREADY_GENERATED) {
+        return;
+    }
+    WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_TIME, 0);
+    WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_NOBANG_TIME, 0);
+    if !ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_PK_FREEZE) {
+        return;
+    }
+    if fighter.get_int(*FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_NOBANG_TIME) <= 0 {
+        if fighter.is_button_off(Buttons::Special) {
+            ArticleModule::shoot(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_PK_FREEZE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), fighter.is_button_off(Buttons::Special));
+            return;
+        }
+    }
+    if dbg!(fighter.get_int(*FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_TIME)) <= 0 {
+        ArticleModule::shoot(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_PK_FREEZE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), fighter.is_button_off(Buttons::Special));
+        return;
+    }
+}
+
+unsafe extern "C" fn lucas_special_n_hold_main_sub_status(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
+    if arg.get_bool() {
+        lucas_special_n_check_explosion(fighter);
+    }
+    if !fighter.is_situation(*SITUATION_KIND_GROUND) {
+        if !arg.get_bool() {
+            WorkModule::dec_int(fighter.module_accessor, *FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_STOP_Y_TIME);
+        }
+        if fighter.get_int(*FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_STOP_Y_TIME) > 0 {
+            KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        } else {
+            KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        }
+    }
     0.into()
 }
 
-#[status_script(agent = "lucas", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn lucas_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // change motion and other one-time init code here
-    fighter.main_shift(lucas_special_n_main_loop)
+unsafe extern "C" fn lucas_special_n_hold_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let nobang_time = fighter.get_int(*FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_NOBANG_TIME);
+    if !ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_PK_FREEZE) 
+        && nobang_time <= 0
+    {
+        fighter.change_status(FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE.into(), false.into());
+        return 1.into();
+    }
+    let wait_mtrans_kind = fighter.get_int(*FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_WAIT_MTRANS_KIND);
+    if StatusModule::is_changing(fighter.module_accessor) || fighter.is_situation(wait_mtrans_kind) {
+        // else block
+        lucas_special_n_hold_transition_g2a_kind(fighter, *FIGHTER_LUCAS_STATUS_SPECIAL_N_WORK_INT_WAIT_MTRANS_KIND, *FIGHTER_LUCAS_STATUS_SPECIAL_N_FLAG_MOT_CHANGE, 
+            *FIGHTER_KINETIC_TYPE_GROUND_STOP, *FIGHTER_KINETIC_TYPE_LUCAS_AIR_STOP_SPECIAL_N, Hash40::new("special_n_hold"), 
+            Hash40::new("special_air_n_hold"), *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK);
+    }
+    1.into()
 }
 
-unsafe extern "C" fn lucas_special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucas_special_n_hold_transition_g2a_kind(
+    fighter: &mut L2CFighterCommon,
+    mtrans_kind_work_id: i32,
+    flag_work_id: i32,
+    ground_kinetic_type: i32,
+    air_kinetic_type: i32,
+    ground_motion_kind: Hash40,
+    aerial_motion_kind: Hash40,
+    ground_correct_kind: i32
+) {
+    if !fighter.is_situation(*SITUATION_KIND_GROUND) {
+        GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        KineticModule::change_kinetic(fighter.module_accessor, air_kinetic_type);
+        if !fighter.is_flag(flag_work_id) {
+            MotionModule::change_motion(fighter.module_accessor, aerial_motion_kind, 0.0, 1.0, false, 0.0, false, false);
+        } else {
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, aerial_motion_kind, -1.0, 1.0, 0.0, false, false);
+        }
+        fighter.set_int(*SITUATION_KIND_GROUND, mtrans_kind_work_id);
+    } else {
+        GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(ground_correct_kind));
+        KineticModule::change_kinetic(fighter.module_accessor, ground_kinetic_type);
+        if !fighter.is_flag(flag_work_id) {
+            MotionModule::change_motion(fighter.module_accessor, ground_motion_kind, 0.0, 1.0, false, 0.0, false, false);
+        } else {
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, ground_motion_kind, -1.0, 1.0, 0.0, false, false);
+        }
+        fighter.set_int(*SITUATION_KIND_AIR, mtrans_kind_work_id);
+    }
+    fighter.on_flag(flag_work_id);
+}
+
+#[status_script(agent = "lucas", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn lucas_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_GROUND) {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s"), 0.0, 1.0, false, 0.0, false, false);
+        fighter.main_shift(lucas_special_s_main_loop)
+    }
+    else {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s"), 0.0, 1.0, false, 0.0, false, false);
+        fighter.main_shift(lucas_special_air_s_main_loop)
+    }
+}
+
+unsafe extern "C" fn lucas_special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     // this is your once-per-fighter-frame block here, but you have to do the status transition checks
     // for things like wait/fall and stuff, there are common functions for
     // this tho
@@ -62,16 +147,39 @@ unsafe extern "C" fn lucas_special_n_main_loop(fighter: &mut L2CFighterCommon) -
     // you can look at something like metaquick's custom status
     // or my reimplementations of mythra's up special status for better
     // examples of how to use this and the main status properly
+    if MotionModule::is_end(fighter.module_accessor)  {
+        fighter.change_status(
+            FIGHTER_STATUS_KIND_WAIT.into(),
+            false.into(),
+        );
+        return 1.into()
+    }
     1.into()
 }
 
-#[status_script(agent = "lucas", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe extern "C" fn lucas_special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // this is your cleanup code, unset any constants that you set here or w/e
-    // basically anything to make sure your logic here doesn't bleed elsewhere
-    // gets run 100% of the time when the status ends, regardless of whether you terminate naturally
-    // or like, get hit out of your move
-    0.into()
+unsafe extern "C" fn lucas_special_air_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // this is your once-per-fighter-frame block here, but you have to do the status transition checks
+    // for things like wait/fall and stuff, there are common functions for
+    // this tho
+
+    // return 0.into() if you want to stay in this status
+    // return 1.into() if you are exiting this status
+    // you can look at something like metaquick's custom status
+    // or my reimplementations of mythra's up special status for better
+    // examples of how to use this and the main status properly
+    KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
+
+    if MotionModule::is_end(fighter.module_accessor) {
+        fighter.change_status(
+            FIGHTER_STATUS_KIND_WAIT.into(),
+            false.into(),
+        );
+        return 1.into()
+    }
+    if fighter.is_situation(*SITUATION_KIND_GROUND) && MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_s") {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("landing_heavy"), 0.0, 1.5, false, 0.0, false, false);
+    }
+    1.into()
 }
 
 // FIGHTER_STATUS_KIND_ATTACK_AIR //

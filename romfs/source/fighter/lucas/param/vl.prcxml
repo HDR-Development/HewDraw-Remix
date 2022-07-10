@@ -36,7 +36,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="accel_y">0.0035</float>
+      <float hash="accel_y">0.00035</float>
       <float hash="landing_frame">20</float>
       <float hash="start_xmul">0.5</float>
       <float hash="attack_speed">3.5</float>
@@ -59,7 +59,7 @@
       <int hash="stop_y_time">0</int>
       <float hash="accel_y">0.035</float>
       <int hash="nobang_time">20</int>
-      <int hash="time">7</int>
+      <int hash="time">72</int>
       <float hash="landing_frame">0.0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
