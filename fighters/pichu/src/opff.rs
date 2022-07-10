@@ -15,7 +15,7 @@ unsafe fn charge_state_increase(boma: &mut BattleObjectModuleAccessor, id: usize
     MeterModule::update(boma.object(), false);
     if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 0 {
         if MeterModule::level(boma.object()) >= 2 {
-            VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 600);
+            VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 900);
             VarModule::on_flag(boma.object(), vars::pichu::instance::CHARGE_EFFECT_ON);
             MeterModule::reset(boma.object());
             gimmick_flash(boma);
@@ -29,7 +29,7 @@ unsafe fn charge_state_overcharge(boma: &mut BattleObjectModuleAccessor, id: usi
     if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 1 {
         if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) > 0 {
             VarModule::inc_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_REFRESH_TIMER);
-            if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_REFRESH_TIMER) > 20 {
+            if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_REFRESH_TIMER) > 15 {
                 VarModule::on_flag(boma.object(), vars::pichu::instance::CHARGE_EFFECT_ON);
                 VarModule::set_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_REFRESH_TIMER, 0);
             }
@@ -107,12 +107,12 @@ pub unsafe fn pichu_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 unsafe fn charge_state_effects(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if VarModule::is_flag(fighter.battle_object, vars::pichu::instance::CHARGE_EFFECT_ON) {
+    if VarModule::is_flag(fighter.battle_object, vars::pichu::instance::CHARGE_EFFECT_ON) && !fighter.is_status_one_of(&[*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END]) {
         EFFECT_FOLLOW(fighter, Hash40::new("pichu_elec2"), Hash40::new("top"), 0, 4, 0, 0, 0, 0, 1.1, true);
         EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pichu_cheek"), Hash40::new("head"), 0, 0, 0, 0, -90, -90, 1, true);
         VarModule::off_flag(fighter.battle_object, vars::pichu::instance::CHARGE_EFFECT_ON);
     }
-    if VarModule::is_flag(fighter.battle_object, vars::pichu::instance::CHARGE_EFFECT_OFF) {
+    if VarModule::is_flag(fighter.battle_object, vars::pichu::instance::CHARGE_EFFECT_OFF) || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_FALL_SPECIAL]) {
         EFFECT_OFF_KIND(fighter, Hash40::new("pichu_elec2"), false, true);
         EFFECT_OFF_KIND(fighter, Hash40::new("pichu_cheek"), false, true);
         VarModule::off_flag(fighter.battle_object, vars::pichu::instance::CHARGE_EFFECT_OFF);
