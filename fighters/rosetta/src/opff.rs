@@ -3,13 +3,17 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
+//Launch Star Cancel
 unsafe fn launch_star_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if status_kind == *FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_HI_JUMP {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_HI_END, false);
         }
     }
+}
+
+extern "Rust" {
+    fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
 }
 
 //Rosalina Teleport
@@ -72,9 +76,7 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 					VarModule::set_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN,  VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN)-1);
 				};
 				if VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) == 1 {
-					smash::app::FighterUtil::flash_eye_info(boma);
-					macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.325, true);
-					macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 0.325, true);
+					gimmick_flash(boma);
 				};
 				if status_kind == *FIGHTER_STATUS_KIND_DEAD {
 					VarModule::off_flag(fighter.battle_object, vars::rosetta::instance::IS_TICO_DEAD);
