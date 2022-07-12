@@ -233,7 +233,7 @@ unsafe fn lucas_special_lw_end_effect(fighter: &mut L2CAgentBase) {
 // SPECIAL N START //
 
 #[acmd_script ( agent = "lucas", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority)]
-unsafe fn lucas_special_n_start(fighter: &mut L2CAgentBase) {
+unsafe fn lucas_special_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 14.0);
@@ -260,7 +260,7 @@ unsafe fn lucas_special_n_start_sound(fighter: &mut L2CAgentBase) {
 // SPECIAL N HOLD //
 
 #[acmd_script ( agent = "lucas", scripts = ["game_specialnhold", "game_specialairnhold"], category = ACMD_GAME, low_priority)]
-unsafe fn lucas_special_n_hold(fighter: &mut L2CAgentBase) {
+unsafe fn lucas_special_n_hold_game(fighter: &mut L2CAgentBase) {
     // INTENTIONALLY LEFT BLANK
 }
 
@@ -314,7 +314,7 @@ unsafe fn lucas_special_n_hold_sound(fighter: &mut L2CAgentBase) {
 // SPECIAL N FIRE //
 
 #[acmd_script ( agent = "lucas", scripts = ["game_specialnfire", "game_specialairnfire"], category = ACMD_GAME, low_priority)]
-unsafe fn lucas_special_n_fire(fighter: &mut L2CAgentBase) {
+unsafe fn lucas_special_n_fire_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if !VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_INIT) {
@@ -388,13 +388,13 @@ unsafe fn lucas_special_n_fire_sound(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        lucas_special_n_start,
-        lucas_special_n_hold,
+        lucas_special_n_start_game,
+        lucas_special_n_hold_game,
         lucas_special_n_hold_sound,
         lucas_special_n_fire_sound,
         lucas_special_n_start_sound,
         lucas_special_n_hold_effect,
-        lucas_special_n_fire,
+        lucas_special_n_fire_game,
         lucas_special_n_fire_effect,
         lucas_special_s_game,
         lucas_special_s_effect,

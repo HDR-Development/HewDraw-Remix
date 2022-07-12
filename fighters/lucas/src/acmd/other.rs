@@ -31,20 +31,6 @@ unsafe fn lucas_turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucas_pkfreeze", script = "game_bang" , category = ACMD_GAME , low_priority)]
-unsafe fn lucas_pkfreeze_bang_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 75, 40, 0, 35, 10.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PSI);
-    }
-    frame(lua_state, 4.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x27936db96d));
-    }
-}
-
 #[acmd_script( agent = "lucas_pkfire", script = "game_shoot" , category = ACMD_GAME , low_priority)]
 unsafe fn lucas_pkfire_shoot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -100,6 +86,15 @@ unsafe fn lucas_pkfire_pillar_effect(fighter: &mut L2CAgentBase) {
     */
 }
 
+#[acmd_script( agent = "lucas_pkfire", script = "sound_pillar" , category = ACMD_SOUND , low_priority)]
+unsafe fn lucas_pkfire_pillar_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) { 
+        PLAY_SE_REMAIN(fighter, Hash40::new("se_lucas_special_n04_s"));
+    }
+}
+
 #[acmd_script( agent = "lucas", scripts = ["game_appealhir", "game_appealhil"] , category = ACMD_GAME, low_priority)]
 unsafe fn lucas_appeal_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -129,11 +124,11 @@ unsafe fn lucas_appeal_lw_game(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         //dash_effect,
-        lucas_pkfreeze_bang_game,
         lucas_pkfire_shoot_game,
         lucas_pkfire_shoot_effect,
         lucas_pkfire_pillar_game,
         lucas_pkfire_pillar_effect,
+        lucas_pkfire_pillar_sound,
         lucas_appeal_hi_game,
         lucas_appeal_lw_game
     );

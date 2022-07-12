@@ -8,6 +8,7 @@ pub fn install() {
         attack_air, 
         special_hi_attack, 
         //lucas_special_s_pre,
+        lucas_special_n_pre,
         lucas_special_n_hold_main, // notably, do not try to install the main loop
         //lucas_special_n_end
         //lucas_special_s_main
@@ -15,6 +16,8 @@ pub fn install() {
 
     install_agent_resets!(lucas_reset);
 }
+
+// FIGHTER RESET //
 
 #[fighter_reset]
 fn lucas_reset(fighter: &mut L2CFighterCommon) {
@@ -28,6 +31,21 @@ fn lucas_reset(fighter: &mut L2CFighterCommon) {
         }
     }
 }
+
+// SPECIAL N //
+
+#[status_script(agent = "lucas", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn lucas_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
+    if(VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE)) {
+        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE);
+        return 1.into();
+    }
+    else {
+        original!(fighter)
+    }
+}
+
+// SPECIAL N HOLD //
 
 #[status_script(agent = "lucas", status = FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn lucas_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -198,63 +216,6 @@ unsafe extern "C" fn lucas_special_n_hold_transition_g2a_kind(
         fighter.set_int(*SITUATION_KIND_AIR, mtrans_kind_work_id);
     }
     fighter.on_flag(flag_work_id);
-}
-
-#[status_script(agent = "lucas", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn lucas_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_GROUND) {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s"), 0.0, 1.0, false, 0.0, false, false);
-        fighter.main_shift(lucas_special_s_main_loop)
-    }
-    else {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s"), 0.0, 1.0, false, 0.0, false, false);
-        fighter.main_shift(lucas_special_air_s_main_loop)
-    }
-}
-
-unsafe extern "C" fn lucas_special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // this is your once-per-fighter-frame block here, but you have to do the status transition checks
-    // for things like wait/fall and stuff, there are common functions for
-    // this tho
-
-    // return 0.into() if you want to stay in this status
-    // return 1.into() if you are exiting this status
-    // you can look at something like metaquick's custom status
-    // or my reimplementations of mythra's up special status for better
-    // examples of how to use this and the main status properly
-    if MotionModule::is_end(fighter.module_accessor)  {
-        fighter.change_status(
-            FIGHTER_STATUS_KIND_WAIT.into(),
-            false.into(),
-        );
-        return 1.into()
-    }
-    1.into()
-}
-
-unsafe extern "C" fn lucas_special_air_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // this is your once-per-fighter-frame block here, but you have to do the status transition checks
-    // for things like wait/fall and stuff, there are common functions for
-    // this tho
-
-    // return 0.into() if you want to stay in this status
-    // return 1.into() if you are exiting this status
-    // you can look at something like metaquick's custom status
-    // or my reimplementations of mythra's up special status for better
-    // examples of how to use this and the main status properly
-    KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
-
-    if MotionModule::is_end(fighter.module_accessor) {
-        fighter.change_status(
-            FIGHTER_STATUS_KIND_WAIT.into(),
-            false.into(),
-        );
-        return 1.into()
-    }
-    if fighter.is_situation(*SITUATION_KIND_GROUND) && MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_s") {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("landing_heavy"), 0.0, 1.5, false, 0.0, false, false);
-    }
-    1.into()
 }
 
 // FIGHTER_STATUS_KIND_ATTACK_AIR //
