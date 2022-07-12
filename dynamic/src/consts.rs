@@ -148,6 +148,8 @@ pub mod vars {
             pub const CAN_PERFECT_PIVOT: i32 = 0x004F;
             pub const IS_SMASH_TURN: i32 = 0x0050;
 
+            pub const ENABLE_AIR_ESCAPE_JUMPSQUAT: i32 = 0x0051;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -207,8 +209,6 @@ pub mod vars {
             pub const IS_MOONWALK: i32 = 0x1001;
 
             pub const ATTACK_DASH_CANCEL_DISABLE: i32 = 0x1000;
-
-            pub const ENABLE_AIR_ESCAPE_JUMPSQUAT: i32 = 0x1000;
 
             pub const SHOULD_WAVELAND: i32 = 0x1000;
 
@@ -563,7 +563,6 @@ pub mod vars {
             pub const SHOULD_COMBOS_SCALE:           i32 = 0x1100;
             pub const REPEAT_INCREMENTED:            i32 = 0x1101;
             pub const IS_ENABLE_MAGIC_SERIES_CANCEL: i32 = 0x1102;
-            pub const IS_ENABLE_AIRDASH_CANCEL:      i32 = 0x1103;
         }
     }
 
@@ -743,6 +742,10 @@ pub mod statuses {
 
     pub mod ganon {
         pub const SPECIAL_N_FLOAT: i32 = 0;
+    }
+
+    pub mod ryu {
+        pub const AIR_DASH: i32 = 0;
     }
 
 }

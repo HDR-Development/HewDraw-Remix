@@ -1,25 +1,6 @@
 use super::*;
 use globals::*;
 
-pub trait Vector3fExt {
-    fn mag(&self) -> f32;
-    fn normalize(&self) -> Self;
-  }
-  
-  impl Vector3fExt for Vector3f {
-    fn mag(&self) -> f32 {
-      (self.x.powi(2) + self.y.powi(2) + self.z.powi(2)).sqrt()
-    }
-    fn normalize(&self) -> Self {
-      let mag = self.mag();
-      Self {
-        x: self.x / mag,
-        y: self.y / mag,
-        z: self.z / mag
-      }
-    }
-  }
-
 //=================================================================
 //== StatusModule::init_settings
 //=================================================================
@@ -79,35 +60,6 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
             VarModule::off_flag(boma.object(), vars::common::instance::CAN_ESCAPE_TUMBLE);
         }
 
-        // ken and ryu airdash effect
-        if [*FIGHTER_KIND_KEN, *FIGHTER_KIND_RYU].contains(&fighter_kind) && status_kind == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-            if StatusModule::prev_status_kind(boma, 0) != *FIGHTER_STATUS_KIND_JUMP_SQUAT {
-                let mut stick_value_x = ControlModule::get_stick_x(boma);
-                let stick_value_y = ControlModule::get_stick_y(boma);
-                let lr =  PostureModule::lr(boma);
-                if (stick_value_x.abs() > 0.66 || stick_value_y.abs() > 0.66) {
-                    if (stick_value_x == 0.0) {
-                        stick_value_x = 0.001; // to avoid a divide by zero on the next instruction below
-                    }
-                    let angle = (stick_value_y/stick_value_x).atan();
-                    let norm_stick_pos = Vector3f { x: stick_value_x * -1.0 * lr, y: stick_value_y * -1.0, z: 0.0}.normalize();
-                    let pos1 = Vector3f { x: norm_stick_pos.x * 4.0, y: 8.0 + norm_stick_pos.y * 8.0, z: 0.};
-                    let pos2 = Vector3f { x: norm_stick_pos.x * 9.0, y: 8.0 + norm_stick_pos.y * 12.0, z: 0.};
-                    let rot = Vector3f { x:5.0, y:0.0, z: ((stick_value_x.signum() * 90.0) + 180. * angle/3.14159)};
-                    let mut effect_hash = Hash40::new("sys_whirlwind_l");
-                    if stick_value_x >= 0. {
-                        effect_hash = Hash40::new("sys_whirlwind_r");
-                    }
-
-                    EffectModule::req_on_joint(boma, effect_hash, Hash40::new("top"),
-                    &pos1, &rot, 0.75, &Vector3f{x: 0.0, y: 0.0, z: 0.0}, &Vector3f{x: 0.0, y: 0.0, z: 0.0}, false, 0, 0, 0);
-                    EffectModule::req_on_joint(boma, effect_hash, Hash40::new("top"),
-                    &pos2, &rot, 0.40, &Vector3f{x: 0.0, y: 0.0, z: 0.0}, &Vector3f{x: 0.0, y: 0.0, z: 0.0}, false, 0, 0, 0);
-                }
-            }
-        }
-
-
         VarModule::off_flag(boma.object(), vars::common::instance::B_REVERSED);
 
         // Walk through other fighters
@@ -156,9 +108,14 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
 
         // Set GroundCliffCheckKind here to pass into init_settings
         if ((boma.kind() == *FIGHTER_KIND_RYU || boma.kind() == *FIGHTER_KIND_KEN)
-            && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END]))
+            && boma.is_status_one_of(&[
+                *FIGHTER_STATUS_KIND_SPECIAL_S,
+                *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
+                *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
+                *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END]))
         || (boma.kind() == *FIGHTER_KIND_REFLET
-            && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)) {
+            && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI))
+        {
             cliff_check_kind = app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
         }
 
