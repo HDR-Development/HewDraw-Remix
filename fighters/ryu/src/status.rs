@@ -290,6 +290,7 @@ unsafe extern "C" fn air_dash_main_loop(fighter: &mut L2CFighterCommon) -> L2CVa
         fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_GROUND));
     }
 
+    // TODO: Move to ACMD once airdash anim is made
     if frame == 6 {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("fall_aerial"), 0.0, 1.0, false, 0.0, false, false);
     }

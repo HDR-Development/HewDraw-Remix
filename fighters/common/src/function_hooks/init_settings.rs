@@ -113,7 +113,8 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
                 *FIGHTER_STATUS_KIND_SPECIAL_S,
                 *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
                 *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
-                *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END]) {
+                *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END])
+        {
             cliff_check_kind = app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
         }
 
