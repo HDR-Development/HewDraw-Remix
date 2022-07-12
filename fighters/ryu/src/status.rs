@@ -1,25 +1,6 @@
 use super::*;
 use globals::*;
 
-pub trait Vector3fExt {
-    fn mag(&self) -> f32;
-    fn normalize(&self) -> Self;
-  }
-  
-  impl Vector3fExt for Vector3f {
-    fn mag(&self) -> f32 {
-      (self.x.powi(2) + self.y.powi(2) + self.z.powi(2)).sqrt()
-    }
-    fn normalize(&self) -> Self {
-      let mag = self.mag();
-      Self {
-        x: self.x / mag,
-        y: self.y / mag,
-        z: self.z / mag
-      }
-    }
-  }
-
 utils::import_noreturn!(common::shoto_status::{
     fgc_pre_dashback,
     fgc_end_dashback,
@@ -254,6 +235,11 @@ unsafe fn escape_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
             &pos1, &rot, 0.5, &Vector3f{x: 0.0, y: 0.0, z: 0.0}, &Vector3f{x: 0.0, y: 0.0, z: 0.0}, false, 0, 0, 0);
 
             // transition to custom airdash status
+            // we use change_status rather than set_status_kind_interrupt here because we want ESCAPE_AIR's main loop to run exactly once before transitioning to the airdash status
+            // this allows:
+            // 1. Initial airdodge energy to be applied
+            // 2. change_motion to run so we change into airdodge animation
+            // 3. Certain flags/transition terms to be set, such as FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR
             let air_dash_status_kind = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::ryu::AIR_DASH);
             fighter.change_status(
                 air_dash_status_kind.into(),
