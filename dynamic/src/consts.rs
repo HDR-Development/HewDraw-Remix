@@ -563,7 +563,6 @@ pub mod vars {
             pub const SHOULD_COMBOS_SCALE:           i32 = 0x1100;
             pub const REPEAT_INCREMENTED:            i32 = 0x1101;
             pub const IS_ENABLE_MAGIC_SERIES_CANCEL: i32 = 0x1102;
-            pub const IS_ENABLE_AIRDASH_CANCEL:      i32 = 0x1103;
         }
     }
 
@@ -743,6 +742,10 @@ pub mod statuses {
 
     pub mod ganon {
         pub const SPECIAL_N_FLOAT: i32 = 0;
+    }
+
+    pub mod ryu {
+        pub const AIR_DASH: i32 = 0;
     }
 
 }

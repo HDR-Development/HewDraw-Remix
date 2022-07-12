@@ -21,7 +21,7 @@ pub fn install() {
 // pre status
 #[common_status_script(status = FIGHTER_STATUS_KIND_ESCAPE_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE,
     symbol = "_ZN7lua2cpp16L2CFighterCommon20status_pre_EscapeAirEv")]
-unsafe fn status_pre_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe fn status_pre_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
     // handles instant wavedashes/wavelands
     // we make sure to include this before change_motion so we check for proximity to the ground using our jumpsquat animation's ECB, rather than airdodge anim's ECB
     // a character's ECB x position can shift on the first frame of their airdodge anim, which sometimes makes them unable to wavedash on an edge even if standing on solid ground the previous frame
@@ -103,7 +103,7 @@ unsafe extern "C" fn status_EscapeAir_Main(fighter: &mut L2CFighterCommon) -> L2
 // end status
 #[common_status_script(status = FIGHTER_STATUS_KIND_ESCAPE_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
     symbol = "_ZN7lua2cpp16L2CFighterCommon20status_end_EscapeAirEv")]
-unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status_kind = fighter.global_table[STATUS_KIND].clone();
     if status_kind == FIGHTER_STATUS_KIND_FALL || status_kind == FIGHTER_STATUS_KIND_LANDING {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
@@ -456,7 +456,7 @@ unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterC
     let stick_x = fighter.global_table[STICK_X].get_f32();
     let passive_fb_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("passive_fb_cont_value"));
     // lazy eval gaurantees that we don't call handle_waveland if we are on the ground
-    if situation_kind == *SITUATION_KIND_GROUND || fighter.handle_waveland(true, false) {
+    if situation_kind == *SITUATION_KIND_GROUND || fighter.handle_waveland(false, false) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_GROUND) {
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB)
                 && app::FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32)
