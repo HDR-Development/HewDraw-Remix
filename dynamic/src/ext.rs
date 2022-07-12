@@ -442,7 +442,7 @@ pub trait BomaExt {
     unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion;
     unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController;
     // tech/general subroutine
-    unsafe fn handle_waveland(&mut self, require_airdodge: bool, change_status: bool) -> bool;
+    unsafe fn handle_waveland(&mut self, require_airdodge: bool) -> bool;
     unsafe fn shift_ecb_on_landing(&mut self);
 }
 
@@ -736,10 +736,10 @@ impl BomaExt for BattleObjectModuleAccessor {
         std::mem::transmute::<u64, &mut smash::app::FighterKineticEnergyController>(KineticModule::get_energy(self, *FIGHTER_KINETIC_ENERGY_ID_CONTROL))
     }
 
-    unsafe fn handle_waveland(&mut self, require_airdodge: bool, change_status: bool) -> bool {
+    unsafe fn handle_waveland(&mut self, require_airdodge: bool) -> bool {
         // MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU);
-        if require_airdodge && (!self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE])
-        || (MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU))) {
+        if (require_airdodge && !self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE]))
+        || KineticModule::get_kinetic_type(self) == *FIGHTER_KINETIC_TYPE_FALL {
             return false;
         }
     
