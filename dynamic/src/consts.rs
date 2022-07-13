@@ -413,6 +413,21 @@ pub mod vars {
     }
 
     pub mod lucas {
+
+        pub mod instance {
+            // flag
+            pub const SPECIAL_N_OFFENSE_UP_ACTIVE: i32 = 0x0100;
+            pub const SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF: i32 = 0x0101;
+            pub const SPECIAL_N_OFFENSE_UP_INIT: i32 = 0x0102;
+            pub const ATTACK_S4_ANGLE_DOWN: i32 = 0x0103;
+            pub const ATTACK_S4_ANGLE_UP: i32 = 0x0104;
+
+            // int
+            pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1: i32 = 0x0100;
+            pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2: i32 = 0x0101;
+            pub const SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL: i32 = 0x0102;
+        }
+
         pub mod status {
             // flag
             pub const SPECIAL_HI_ATTACK_IS_TOUCH_WALL: i32 = 0x1100;
@@ -563,7 +578,6 @@ pub mod vars {
             pub const SHOULD_COMBOS_SCALE:           i32 = 0x1100;
             pub const REPEAT_INCREMENTED:            i32 = 0x1101;
             pub const IS_ENABLE_MAGIC_SERIES_CANCEL: i32 = 0x1102;
-            pub const IS_ENABLE_AIRDASH_CANCEL:      i32 = 0x1103;
         }
     }
 
@@ -758,6 +772,10 @@ pub mod statuses {
 
     pub mod ganon {
         pub const SPECIAL_N_FLOAT: i32 = 0;
+    }
+
+    pub mod ryu {
+        pub const AIR_DASH: i32 = 0;
     }
 
 }
