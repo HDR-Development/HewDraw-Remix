@@ -1582,7 +1582,7 @@
     <struct index="53">
       <float hash="walk_accel_mul">0.089</float>
       <float hash="walk_accel_add">0.185</float>
-      <float hash="walk_speed_max">1.196</float>
+      <float hash="walk_speed_max">0.998</float>
       <float hash="ground_brake">0.081</float>
       <float hash="dash_speed">1.71</float>
       <float hash="run_accel_mul">0.04965</float>
