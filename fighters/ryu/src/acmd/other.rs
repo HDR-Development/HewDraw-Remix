@@ -96,19 +96,13 @@ unsafe fn ryu_catch_game(fighter: &mut L2CAgentBase) {
 unsafe fn ryu_escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 3.0);
+    frame(lua_state, 30.0);
     if is_excute(fighter) {
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
     }
-    frame(lua_state, 6.0);
+    frame(lua_state, 34.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::shotos::status::IS_ENABLE_AIRDASH_CANCEL){
-            HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        }
-    }
-    frame(lua_state, 22.0);
-    if is_excute(fighter) {
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
 
