@@ -82,12 +82,20 @@ unsafe fn utaunt_cancel_fire_fox(boma: &mut BattleObjectModuleAccessor, motion_k
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+unsafe fn firefox_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        // allows ledgegrab during Firefox startup
+        fighter.sub_transition_group_check_air_cliff();
+    }
+}
+
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
 
     laser_fastfall_landcancel(boma, status_kind, situation_kind, cat[1], stick_y);
     shine_jump_cancel(boma, status_kind, situation_kind, cat[0]);
     illusion_shorten_(boma, id, motion_kind, frame);
     utaunt_cancel_fire_fox(boma, motion_kind, frame);
+    firefox_startup_ledgegrab(fighter);
 
     // Frame Data
     frame_data(boma, status_kind, motion_kind, frame);
@@ -110,6 +118,6 @@ pub fn fox_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn fox_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
