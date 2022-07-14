@@ -44,6 +44,14 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="hit_data_pkfire">
+    <hash40 index="0">dummy</hash40>
+    <struct index="1">
+      <float hash="offset1_y">0</float>
+      <float hash="offset2_y">0</float>
+      <float hash="size">0</float>
+    </struct>
+  </list>
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="accel_y">0.00035</float>
