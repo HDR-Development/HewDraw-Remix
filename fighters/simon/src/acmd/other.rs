@@ -1,6 +1,51 @@
 
 use super::*;
 
+#[acmd_script( agent = "simon", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_FLY_VOICE(fighter, Hash40::new("seq_simon_rnd_futtobi01"), Hash40::new("seq_simon_rnd_futtobi02"));
+    }
+}
+
+#[acmd_script( agent = "simon", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_FLY_VOICE(fighter, Hash40::new("seq_simon_rnd_futtobi01"), Hash40::new("seq_simon_rnd_futtobi02"));
+    }
+}
+
+#[acmd_script( agent = "simon", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_FLY_VOICE(fighter, Hash40::new("seq_simon_rnd_futtobi01"), Hash40::new("seq_simon_rnd_futtobi02"));
+    }
+}
+
+#[acmd_script( agent = "simon", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_FLY_VOICE(fighter, Hash40::new("seq_simon_rnd_futtobi01"), Hash40::new("seq_simon_rnd_futtobi02"));
+    }
+}
+
+#[acmd_script( agent = "simon", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_FLY_VOICE(fighter, Hash40::new("seq_simon_rnd_futtobi01"), Hash40::new("seq_simon_rnd_futtobi02"));
+    }
+}
+
 #[acmd_script( agent = "simon", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
 unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -74,6 +119,11 @@ pub fn install() {
         //dash_effect,
         simon_catch_game,
         simon_axe_fly_game,
+        damageflyhi_sound,
+        damageflylw_sound,
+        damageflyn_sound,
+        damageflyroll_sound,
+        damageflytop_sound
     );
 }
 

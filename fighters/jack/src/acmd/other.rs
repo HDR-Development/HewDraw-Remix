@@ -1,6 +1,51 @@
 
 use super::*;
 
+#[acmd_script( agent = "jack", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_FLY_VOICE(fighter, Hash40::new("seq_jack_rnd_futtobi01"), Hash40::new("seq_jack_rnd_futtobi02"));
+    }
+}
+
+#[acmd_script( agent = "jack", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_FLY_VOICE(fighter, Hash40::new("seq_jack_rnd_futtobi01"), Hash40::new("seq_jack_rnd_futtobi02"));
+    }
+}
+
+#[acmd_script( agent = "jack", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_FLY_VOICE(fighter, Hash40::new("seq_jack_rnd_futtobi01"), Hash40::new("seq_jack_rnd_futtobi02"));
+    }
+}
+
+#[acmd_script( agent = "jack", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_FLY_VOICE(fighter, Hash40::new("seq_jack_rnd_futtobi01"), Hash40::new("seq_jack_rnd_futtobi02"));
+    }
+}
+
+#[acmd_script( agent = "jack", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_FLY_VOICE(fighter, Hash40::new("seq_jack_rnd_futtobi01"), Hash40::new("seq_jack_rnd_futtobi02"));
+    }
+}
+
 #[acmd_script( agent = "jack", script = "game_catch" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -143,6 +188,11 @@ pub fn install() {
         //dash_effect,
         turn_dash_game,
         jack_fire_hit_game,
+        damageflyhi_sound,
+        damageflylw_sound,
+        damageflyn_sound,
+        damageflyroll_sound,
+        damageflytop_sound
     );
 }
 

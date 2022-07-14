@@ -1,5 +1,49 @@
 use super::*;
 
+#[acmd_script( agent = "master", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_FLY_VOICE(fighter, Hash40::new("seq_master_rnd_futtobi01"), Hash40::new("seq_master_rnd_futtobi02"));
+    }
+}
+
+#[acmd_script( agent = "master", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_FLY_VOICE(fighter, Hash40::new("seq_master_rnd_futtobi01"), Hash40::new("seq_master_rnd_futtobi02"));
+    }
+}
+
+#[acmd_script( agent = "master", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_FLY_VOICE(fighter, Hash40::new("seq_master_rnd_futtobi01"), Hash40::new("seq_master_rnd_futtobi02"));
+    }
+}
+
+#[acmd_script( agent = "master", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_FLY_VOICE(fighter, Hash40::new("seq_master_rnd_futtobi01"), Hash40::new("seq_master_rnd_futtobi02"));
+    }
+}
+
+#[acmd_script( agent = "master", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_FLY_VOICE(fighter, Hash40::new("seq_master_rnd_futtobi01"), Hash40::new("seq_master_rnd_futtobi02"));
+    }
+}
 
 #[acmd_script( agent = "master", script = "game_catch" , category = ACMD_GAME , low_priority)]
 unsafe fn master_catch_game(fighter: &mut L2CAgentBase) {
@@ -228,6 +272,11 @@ pub fn install() {
         master_axe_special_lw_game,
         master_axe_special_air_lw_game,
         master_axe_special_lw_hit_effect,
+        damageflyhi_sound,
+        damageflylw_sound,
+        damageflyn_sound,
+        damageflyroll_sound,
+        damageflytop_sound
     );
 }
 
