@@ -664,7 +664,10 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
 
     if fighter_kind == *FIGHTER_KIND_REFLET {
         if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
-            if frame > 8.0 && frame < 17.0 {
+            if frame < 9.0 {
+                return 0;
+            }
+            else {
                 return 1;
             }
         }
