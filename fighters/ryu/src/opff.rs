@@ -8,7 +8,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
     special_fadc_super_cancels(boma);
     target_combos(boma);
-    airdash_logic(boma);
     rotate_forward_bair(boma);
     joudan_sokutogeri(boma, frame);
 }
@@ -42,36 +41,6 @@ unsafe fn joudan_sokutogeri(boma: &mut BattleObjectModuleAccessor, frame: f32) {
     }
 }
 
-unsafe fn airdash_logic(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_motion(Hash40::new("escape_air_slide")){
-        let v_speed_threshold = 0.05;
-        let y_speed = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        // Reset airdash cancel flag
-        if MotionModule::frame(boma) <= 1.0 {
-            VarModule::off_flag(boma.object(), vars::shotos::status::IS_ENABLE_AIRDASH_CANCEL);
-        }
-        // If v speed at the start of airdash is below the threshold, enable airdash early actionability
-        else if MotionModule::frame(boma) < 3.0 {
-            if y_speed.abs() < v_speed_threshold {
-                VarModule::on_flag(boma.object(), vars::shotos::status::IS_ENABLE_AIRDASH_CANCEL);
-            }
-            // Otherwise we're not in an airdash-enabled angle, disable airdash early actionability
-            else{
-                VarModule::off_flag(boma.object(), vars::shotos::status::IS_ENABLE_AIRDASH_CANCEL);
-            }
-        }
-        // Airdash actionable on F9
-        else if MotionModule::frame(boma) > 9.0{
-            if VarModule::is_flag(boma.object(), vars::shotos::status::IS_ENABLE_AIRDASH_CANCEL){
-                //HitModule::clean(boma);
-                HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-                //WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU);
-                CancelModule::enable_cancel(boma);
-            }
-        }
-    }
-}
-
 // boma: its a boma
 // start_frame: frame to start interpolating the body rotation
 // bend_frame: frame to interpolate to the intended angle amount until
@@ -89,7 +58,6 @@ unsafe fn forward_bair_rotation(boma: &mut BattleObjectModuleAccessor, start_fra
         let calc_body_rotate = max_rotation * ((frame - start_frame) / (bend_frame - start_frame));
         let body_rotation = calc_body_rotate.clamp(0.0, max_rotation);
         rotation = Vector3f{x: 0.0, y: body_rotation, z: 0.0};
-        println!("current body rotation: {}", body_rotation);
         ModelModule::set_joint_rotate(boma, Hash40::new("rot"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
     } else if frame >= return_frame && frame < straight_frame {
         // linear interpolate back to normal
