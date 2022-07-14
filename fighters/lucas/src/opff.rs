@@ -360,18 +360,7 @@ unsafe fn smash_s_angle_handler(fighter: &mut L2CFighterCommon, frame: f32) {
     }
 }
 
-unsafe fn smash_d_double_input_handler(fighter: &mut L2CFighterCommon, frame: f32) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_LW4) {
-        if frame >= 40.0 && frame < 50.0 {
-            if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) || fighter.is_button_on(Buttons::Smash) || (fighter.is_button_on(Buttons::AttackAll) && fighter.stick_y() < -0.8) {
-                println!("Preform Part 2");
-            }
-        }
-    }
-}
-
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    smash_d_double_input_handler(fighter, frame);
     smash_s_angle_handler(fighter, frame);
     psi_magnet_jc(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     pk_thunder_cancel(boma, id, status_kind, situation_kind);
