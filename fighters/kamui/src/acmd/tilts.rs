@@ -57,7 +57,7 @@ unsafe fn kamui_attack_hi3_effect(fighter: &mut L2CAgentBase){
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
-    FT_MOTION_RATE(fighter, 0.680);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter){
         FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
