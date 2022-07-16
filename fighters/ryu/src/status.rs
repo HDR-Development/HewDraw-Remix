@@ -209,7 +209,7 @@ unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 
 #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_ESCAPE_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn escape_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH) || fighter.handle_waveland(false, false) {
+    if VarModule::is_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH) || fighter.handle_waveland(false) {
         VarModule::on_flag(fighter.battle_object, vars::common::status::SHOULD_WAVELAND);
         GroundModule::attach_ground(fighter.module_accessor, true);
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
