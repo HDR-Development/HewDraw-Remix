@@ -396,7 +396,7 @@ unsafe fn lucas_attack_lw4_game(fighter: &mut L2CAgentBase) {
         if is_excute(fighter) {
             MotionModule::set_frame(boma, 37.0, false);
             VarModule::on_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 21.0, 361, 80, 0, 50, 8.0, 0.0, 3.5, 9.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -10, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 21.0, 361, 80, 0, 50, 8.0, 0.0, 2.0, 9.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -10, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
         }
         wait(lua_state, 1.0);
         if is_excute(fighter) {
@@ -491,7 +491,7 @@ unsafe fn lucas_attack_lw4_effect(fighter: &mut L2CAgentBase) {
             LAST_EFFECT_SET_RATE(fighter, 0.25);
             EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkfr_bomb_max"), Hash40::new("top"), 0, 3.5, 9, 0, 0, 0, 0.5, true);
         } else {
-            EFFECT_FOLLOW_FLIP(fighter, Hash40::new("lucas_psi_atk_lw"), Hash40::new("lucas_psi_atk_lw"), Hash40::new("top"), 0, 3.5, 9, 0, 0, 0, 0.65, true, *EF_FLIP_YZ);
+            EFFECT_FOLLOW_FLIP(fighter, Hash40::new("lucas_psi_atk_lw"), Hash40::new("lucas_psi_atk_lw"), Hash40::new("top"), 0, 2.0, 9, 0, 0, 0, 0.65, true, *EF_FLIP_YZ);
             LAST_EFFECT_SET_RATE(fighter, 0.5);
         }
     }

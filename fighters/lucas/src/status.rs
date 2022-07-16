@@ -49,9 +49,9 @@ unsafe extern "C" fn lucas_attack_lw_4_main_loop(fighter: &mut L2CFighterCommon)
 
 #[status_script(agent = "lucas", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn lucas_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
-    if(VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE)) {
-        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE);
-        return 1.into();
+    if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+        fighter.change_status(FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE.into(), false.into());
+        return 0.into();
     }
     else {
         original!(fighter)
