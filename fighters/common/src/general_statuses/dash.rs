@@ -507,7 +507,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH)
     && WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("re_dash_frame")) as f32 <= MotionModule::frame(fighter.module_accessor)  // if current frame is after redash frame
     && is_dash_input {  // AND is a dash input
-        println!("transition to dash");
+        // println!("transition to dash");
         interrupt!(fighter, FIGHTER_STATUS_KIND_DASH, true);
     }
 
