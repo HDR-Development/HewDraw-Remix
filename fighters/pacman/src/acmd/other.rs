@@ -67,6 +67,6 @@ pub fn install() {
         escape_air_slide_game,
       //dash_effect,
 		pacman_turn_dash_game
-	);
+    );
 }
 

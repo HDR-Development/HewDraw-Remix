@@ -1,6 +1,126 @@
 
 use super::*;
 
+#[acmd_script( agent = "link", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        if !StopModule::is_stop(fighter.module_accessor) {
+            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+                app::sv_math::rand(hash40("fighter"), 3)
+            } else {
+                0
+            };
+            if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_link_rnd_futtobi01"), Hash40::new("seq_link_rnd_futtobi02"));}
+        }
+    }
+    frame(lua_state, 1.1);
+    if is_excute(fighter) {
+        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            app::sv_math::rand(hash40("fighter"), 3)
+        } else {
+            0
+        };
+        if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_link_rnd_futtobi01"), Hash40::new("seq_link_rnd_futtobi02"));}
+    }
+}
+
+#[acmd_script( agent = "link", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        if !StopModule::is_stop(fighter.module_accessor) {
+            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+                app::sv_math::rand(hash40("fighter"), 3)
+            } else {
+                0
+            };
+            if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_link_rnd_futtobi01"), Hash40::new("seq_link_rnd_futtobi02"));}
+        }
+    }
+    frame(lua_state, 1.1);
+    if is_excute(fighter) {
+        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            app::sv_math::rand(hash40("fighter"), 3)
+        } else {
+            0
+        };
+        if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_link_rnd_futtobi01"), Hash40::new("seq_link_rnd_futtobi02"));}
+    }
+}
+
+#[acmd_script( agent = "link", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        if !StopModule::is_stop(fighter.module_accessor) {
+            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+                app::sv_math::rand(hash40("fighter"), 3)
+            } else {
+                0
+            };
+            if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_link_rnd_futtobi01"), Hash40::new("seq_link_rnd_futtobi02"));}
+        }
+    }
+    frame(lua_state, 1.1);
+    if is_excute(fighter) {
+        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            app::sv_math::rand(hash40("fighter"), 3)
+        } else {
+            0
+        };
+        if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_link_rnd_futtobi01"), Hash40::new("seq_link_rnd_futtobi02"));}
+    }
+}
+
+#[acmd_script( agent = "link", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        if !StopModule::is_stop(fighter.module_accessor) {
+            PLAY_FLY_VOICE(fighter, Hash40::new("seq_link_rnd_futtobi01"), Hash40::new("seq_link_rnd_futtobi02"));
+        }
+    }
+    frame(lua_state, 1.1);
+    if is_excute(fighter) {
+        PLAY_FLY_VOICE(fighter, Hash40::new("seq_link_rnd_futtobi01"), Hash40::new("seq_link_rnd_futtobi02"));
+    }
+}
+
+#[acmd_script( agent = "link", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
+unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        if !StopModule::is_stop(fighter.module_accessor) {
+            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+                app::sv_math::rand(hash40("fighter"), 3)
+            } else {
+                0
+            };
+            if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_link_rnd_futtobi01"), Hash40::new("seq_link_rnd_futtobi02"));}
+        }
+    }
+    frame(lua_state, 1.1);
+    if is_excute(fighter) {
+        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            app::sv_math::rand(hash40("fighter"), 3)
+        } else {
+            0
+        };
+        if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_link_rnd_futtobi01"), Hash40::new("seq_link_rnd_futtobi02"));}
+    }
+}
+
 #[acmd_script( agent = "link", script = "game_appealhil", category = ACMD_GAME , low_priority)]
 unsafe fn appeal_hi_l(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -126,6 +246,11 @@ pub fn install() {
 		link_turn_dash_game,
         link_boomerang_fly_game,
         link_boomerang_turn_game,
+        damageflyhi_sound,
+        damageflylw_sound,
+        damageflyn_sound,
+        damageflyroll_sound,
+        damageflytop_sound
     );
 }
 

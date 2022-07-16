@@ -96,13 +96,13 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        //dash_effect,
+        samus_turn_dash_game,
+        samus_supermissile_ready_game,
+        samus_supermissile_straight_game,
+        samus_cshot_shoot_game,
         escape_air_game,
         escape_air_slide_game,
-	dash_effect,
-	samus_turn_dash_game,
-	samus_supermissile_ready_game,
-	samus_supermissile_straight_game,
-	samus_cshot_shoot_game,
-);
+    );
 }
 

@@ -138,7 +138,6 @@ pub fn install() {
         murabito_bullet_shoot_f_game,
         murabito_floweropt_throwed_game,
         murabito_clayrocket_fly_game,
-
     );
 }
 
