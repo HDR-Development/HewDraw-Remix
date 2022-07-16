@@ -78,7 +78,7 @@ unsafe fn status_AttackDash(fighter: &mut L2CFighterCommon) -> L2CValue {
         fighter.sub_attack_dash_uniq(L2CValue::Bool(false));
     }
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_DACUS);
-    fighter.global_table[SUB_STATUS] = L2CValue::Ptr(sub_attack_dash_uniq as *const () as _);
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(sub_attack_dash_uniq as *const () as _));
     fighter.sub_shift_status_main(L2CValue::Ptr(status_AttackDash_Main as *const () as _))
 }
 

@@ -179,7 +179,15 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
     // Kirby: Unchanged
 
     if fighter_kind == *FIGHTER_KIND_FOX {
-        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI || status_kind == *FIGHTER_FOX_STATUS_KIND_SPECIAL_HI_RUSH {
+        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
+            if frame < 5.0 {
+                return 0;
+            }
+            else {
+                return 1;
+            }
+        }
+        if status_kind == *FIGHTER_FOX_STATUS_KIND_SPECIAL_HI_RUSH {
             return 1;
         }
 
@@ -334,7 +342,15 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
     }
 
     if fighter_kind == *FIGHTER_KIND_FALCO {
-        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI || status_kind == *FIGHTER_FALCO_STATUS_KIND_SPECIAL_HI_RUSH {
+        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
+            if frame < 5.0 {
+                return 0;
+            }
+            else {
+                return 1;
+            }
+        }
+        if status_kind == *FIGHTER_FALCO_STATUS_KIND_SPECIAL_HI_RUSH {
             return 1;
         }
 
