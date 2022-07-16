@@ -87,11 +87,19 @@ unsafe fn phantasm_shorten(boma: &mut BattleObjectModuleAccessor, id: usize, mot
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+unsafe fn firebird_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        // allows ledgegrab during Firebird startup
+        fighter.sub_transition_group_check_air_cliff();
+    }
+}
+
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
 
     laser_ff_land_cancel(boma, status_kind, situation_kind, cat[1], stick_y);
     shine_jc_turnaround(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     phantasm_shorten(boma, id, motion_kind, frame);
+    firebird_startup_ledgegrab(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_FALCO )]
@@ -104,6 +112,6 @@ pub fn falco_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn falco_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
