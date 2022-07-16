@@ -97,7 +97,10 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
             }
         }
 
-
+        // Unable to grab ledge during runfall/walkfall (the first few frames after you run off an edge)
+        if boma.is_motion_one_of(&[Hash40::new("run_fall_l"), Hash40::new("run_fall_r"), Hash40::new("walk_fall_l"), Hash40::new("walk_fall_r")]) {
+            return 0;
+        }
     }
 
     original!()(boma)
