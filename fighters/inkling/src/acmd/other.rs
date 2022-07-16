@@ -8,14 +8,22 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let rng = app::sv_math::rand(hash40("fighter"), 3);
-            if rng == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_inkling_rnd_futtobi01"), Hash40::new("seq_inkling_rnd_futtobi02"));}
+            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+                app::sv_math::rand(hash40("fighter"), 3)
+            } else {
+                0
+            };
+            if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_inkling_rnd_futtobi01"), Hash40::new("seq_inkling_rnd_futtobi02"));}
         }
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let rng = app::sv_math::rand(hash40("fighter"), 3);
-        if rng == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_inkling_rnd_futtobi01"), Hash40::new("seq_inkling_rnd_futtobi02"));}
+        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            app::sv_math::rand(hash40("fighter"), 3)
+        } else {
+            0
+        };
+        if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_inkling_rnd_futtobi01"), Hash40::new("seq_inkling_rnd_futtobi02"));}
     }
 }
 
@@ -26,14 +34,22 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let rng = app::sv_math::rand(hash40("fighter"), 3);
-            if rng == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_inkling_rnd_futtobi01"), Hash40::new("seq_inkling_rnd_futtobi02"));}
+            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+                app::sv_math::rand(hash40("fighter"), 3)
+            } else {
+                0
+            };
+            if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_inkling_rnd_futtobi01"), Hash40::new("seq_inkling_rnd_futtobi02"));}
         }
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let rng = app::sv_math::rand(hash40("fighter"), 3);
-        if rng == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_inkling_rnd_futtobi01"), Hash40::new("seq_inkling_rnd_futtobi02"));}
+        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            app::sv_math::rand(hash40("fighter"), 3)
+        } else {
+            0
+        };
+        if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_inkling_rnd_futtobi01"), Hash40::new("seq_inkling_rnd_futtobi02"));}
     }
 }
 
@@ -44,14 +60,22 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let rng = app::sv_math::rand(hash40("fighter"), 3);
-            if rng == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_inkling_rnd_futtobi01"), Hash40::new("seq_inkling_rnd_futtobi02"));}
+            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+                app::sv_math::rand(hash40("fighter"), 3)
+            } else {
+                0
+            };
+            if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_inkling_rnd_futtobi01"), Hash40::new("seq_inkling_rnd_futtobi02"));}
         }
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let rng = app::sv_math::rand(hash40("fighter"), 3);
-        if rng == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_inkling_rnd_futtobi01"), Hash40::new("seq_inkling_rnd_futtobi02"));}
+        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            app::sv_math::rand(hash40("fighter"), 3)
+        } else {
+            0
+        };
+        if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_inkling_rnd_futtobi01"), Hash40::new("seq_inkling_rnd_futtobi02"));}
     }
 }
 
@@ -78,14 +102,22 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let rng = app::sv_math::rand(hash40("fighter"), 3);
-            if rng == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_inkling_rnd_futtobi01"), Hash40::new("seq_inkling_rnd_futtobi02"));}
+            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+                app::sv_math::rand(hash40("fighter"), 3)
+            } else {
+                0
+            };
+            if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_inkling_rnd_futtobi01"), Hash40::new("seq_inkling_rnd_futtobi02"));}
         }
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let rng = app::sv_math::rand(hash40("fighter"), 3);
-        if rng == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_inkling_rnd_futtobi01"), Hash40::new("seq_inkling_rnd_futtobi02"));}
+        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            app::sv_math::rand(hash40("fighter"), 3)
+        } else {
+            0
+        };
+        if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_inkling_rnd_futtobi01"), Hash40::new("seq_inkling_rnd_futtobi02"));}
     }
 }
 
