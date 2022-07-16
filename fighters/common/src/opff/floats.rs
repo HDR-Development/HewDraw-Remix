@@ -1,15 +1,6 @@
-use utils::{
-    *,
-    ext::*,
-    consts::*
-};
+use super::*;
 use smash::app::BattleObjectModuleAccessor;
 use smash::lua2cpp::L2CFighterCommon;
-use smash::phx::{Vector2f, Vector3f, Vector4f};
-use smash::app::lua_bind::*;
-use smash::lib::lua_const::*;
-use smash::phx::Hash40;
-use smash::hash40;
 use smash_script::macros::*;
 
 
@@ -36,7 +27,7 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         motion_value = 1.0;
     }
     if fighter_kind == *FIGHTER_KIND_REFLET {
-        VarModule::set_int(boma.object(), vars::common::instance::FLOAT_DURATION,60);
+        VarModule::set_int(boma.object(), vars::common::instance::FLOAT_DURATION,999);
         motion_value = 0.0;
     }
     if fighter_kind == *FIGHTER_KIND_MEWTWO {
@@ -76,10 +67,15 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
                 }
             }
         }
-
-        // prevent float from activating during ledge jump
-        if [*FIGHTER_STATUS_KIND_CLIFF_JUMP1, *FIGHTER_STATUS_KIND_CLIFF_JUMP2, *FIGHTER_STATUS_KIND_CLIFF_JUMP3].contains(&status_kind) {
-            WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
+        // prevent Robin from activating float when out of Elwind magic
+        if boma.kind() == *FIGHTER_KIND_REFLET
+        && WorkModule::get_int(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) <= 0 {
+            if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) < VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION) {
+                app::FighterSpecializer_Reflet::set_flag_to_table(fighter.module_accessor as *mut app::FighterModuleAccessor, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND, true, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THROWAWAY_TABLE);
+            }
+            WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
+            WorkModule::off_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY);
+            return;
         }
 
         if [*FIGHTER_STATUS_KIND_FALL,
@@ -177,7 +173,8 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
 pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, fighter_kind: i32) {
     if fighter_kind == *FIGHTER_KIND_SAMUSD || fighter_kind == *FIGHTER_KIND_MEWTWO {
         if VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT) {
-            let mut timer = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_TIMER);
+            VarModule::inc_int(fighter.battle_object, vars::common::instance::FLOAT_TIMER);
+            let timer = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_TIMER);
             if timer == 1 {
                 if fighter_kind == *FIGHTER_KIND_SAMUSD {
                     let pos1 = Vector3f{x: -2.0, y: 0.0, z: 0.0};
@@ -200,22 +197,38 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                     EffectModule::req_follow(boma, Hash40::new("mewtwo_final_aura"), Hash40::new("hip"), &Vector3f::zero(), &Vector3f::zero(), 1.25, true, 0, 0, 0, 0, 0, false, false);
                 }
             }
-            VarModule::set_int(fighter.battle_object, vars::common::instance::FLOAT_TIMER, timer + 1);
         }
     }
     else {
         if WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) {
-            let mut timer = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_TIMER);
+            VarModule::inc_int(fighter.battle_object, vars::common::instance::FLOAT_TIMER);
+            let timer = VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_TIMER);
+            if boma.kind() == *FIGHTER_KIND_REFLET {
+                if timer == 1 {
+                    // Elwind book/UI visibility
+                    let mut reflet_fighter = app::Fighter{battle_object: *(fighter.battle_object)};
+                    app::FighterSpecializer_Reflet::change_hud_kind(&mut reflet_fighter, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND);
+                    app::FighterSpecializer_Reflet::change_grimoire(fighter.module_accessor as *mut app::FighterModuleAccessor, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND);
+                    WorkModule::set_int(boma, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_LAST_USED_MAGIC_KIND);
 
-            if timer == 1 {
-                if fighter_kind == *FIGHTER_KIND_REFLET {
+                    // drain 3 bars of Elwind on float activation
+                    let elwind_meter = WorkModule::get_int(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
+                    let float_activation_spend = 2;
+                    WorkModule::set_int(boma, elwind_meter - float_activation_spend, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
+
+                    // effects
                     EffectModule::req_follow(boma, Hash40::new("reflet_catch"), Hash40::new("top"), &Vector3f{x: 0.0, y: -6.0, z: -5.3}, &Vector3f::zero(), 0.7, true, 0, 0, 0, 0, 0, false, false);
                     LAST_EFFECT_SET_COLOR(fighter, 0.0, 1.0, 0.0);  // elwind green
                     EffectModule::req_follow(boma, Hash40::new("sys_aura_light"), Hash40::new("bookc"), &Vector3f::zero(), &Vector3f::zero(), 1.5, true, 0, 0, 0, 0, 0, false, false);
                     LAST_EFFECT_SET_COLOR(fighter, 0.0, 1.0, 0.078);  // elwind green
                 }
+                else if timer % 30 == 0 {  // every 30 frames
+                    // drain 2 bars of Elwind
+                    let elwind_meter = WorkModule::get_int(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
+                    let float_spend = 2;
+                    WorkModule::set_int(boma, elwind_meter - float_spend, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
+                }
             }
-            VarModule::set_int(fighter.battle_object, vars::common::instance::FLOAT_TIMER, timer + 1);
         }
     }
 

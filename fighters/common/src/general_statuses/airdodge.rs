@@ -21,11 +21,11 @@ pub fn install() {
 // pre status
 #[common_status_script(status = FIGHTER_STATUS_KIND_ESCAPE_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE,
     symbol = "_ZN7lua2cpp16L2CFighterCommon20status_pre_EscapeAirEv")]
-unsafe fn status_pre_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe fn status_pre_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
     // handles instant wavedashes/wavelands
     // we make sure to include this before change_motion so we check for proximity to the ground using our jumpsquat animation's ECB, rather than airdodge anim's ECB
     // a character's ECB x position can shift on the first frame of their airdodge anim, which sometimes makes them unable to wavedash on an edge even if standing on solid ground the previous frame
-    if VarModule::is_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH) || fighter.handle_waveland(false, false) {
+    if VarModule::is_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH) || fighter.handle_waveland(false) {
         VarModule::on_flag(fighter.battle_object, vars::common::status::SHOULD_WAVELAND);
         GroundModule::attach_ground(fighter.module_accessor, true);
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
@@ -103,7 +103,7 @@ unsafe extern "C" fn status_EscapeAir_Main(fighter: &mut L2CFighterCommon) -> L2
 // end status
 #[common_status_script(status = FIGHTER_STATUS_KIND_ESCAPE_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
     symbol = "_ZN7lua2cpp16L2CFighterCommon20status_end_EscapeAirEv")]
-unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status_kind = fighter.global_table[STATUS_KIND].clone();
     if status_kind == FIGHTER_STATUS_KIND_FALL || status_kind == FIGHTER_STATUS_KIND_LANDING {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
@@ -134,24 +134,11 @@ unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
         if status_kind == FIGHTER_STATUS_KIND_LANDING {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_TURN);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_LANDING_CLIFF_STOP);
-
-            if !VarModule::is_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH)  // ECB never shifts during perfect waveland, no need to readjust on landing
-            && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND  // ECB must be touching ground to warrant readjustment
-            && fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) > ParamModule::get_int(fighter.object(), ParamType::Common, "ecb_shift_air_trans_frame")  // ECB doesn't shift during first 10 airborne frames, no need to readjust on landing
-            && StatusModule::prev_status_kind(fighter.module_accessor, 1) != *FIGHTER_STATUS_KIND_DAMAGE_FALL {  // ECB doesn't shift during tumble, no need to readjust on landing
-                // shift character back up to proper landing height (does same thing as ecb_shift_on_landing() boma ext)
-                let mut fighter_pos = Vector3f {
-                    x: PostureModule::pos_x(fighter.module_accessor),
-                    y: PostureModule::pos_y(fighter.module_accessor),
-                    z: PostureModule::pos_z(fighter.module_accessor)
-                };
-                fighter_pos.y += VarModule::get_float(fighter.object(), vars::common::instance::ECB_Y_OFFSETS);
-                PostureModule::set_pos(fighter.module_accessor, &fighter_pos);
-            }
         }
         VarModule::off_flag(fighter.battle_object, vars::common::status::SHOULD_WAVELAND);
         VarModule::off_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);
     }
+    VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET);
     0.into()
 }
 
@@ -245,10 +232,6 @@ unsafe fn sub_escape_air_waveland_check(fighter: &mut L2CFighterCommon) {
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon19sub_escape_air_uniqEN3lib8L2CValueE")]
 unsafe extern "C" fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
     if arg.get_bool() {
-        if fighter.handle_waveland(true, true) {
-            fighter.set_situation(L2CValue::I32(*SITUATION_KIND_GROUND));
-            return 1.into();
-        }
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_FRAME);
         // if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO) {
@@ -336,7 +319,7 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
             VarModule::set_float(fighter.battle_object, vars::common::instance::ESCAPE_AIR_SLIDE_SPEED_Y, escape_air_slide_speed * WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y));
         }
         else {
-            if curr_frame < 29 {
+            if curr_frame < 30 {
                 KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_BRAKE);
                 
@@ -353,12 +336,11 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, (x_speed * 0.9), (y_speed * 0.9));
                 app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
 
-                if curr_frame == 28 {
-                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-                }
-
                 VarModule::set_float(fighter.battle_object, vars::common::instance::ESCAPE_AIR_SLIDE_SPEED_X, x_speed * 0.9);
                 VarModule::set_float(fighter.battle_object, vars::common::instance::ESCAPE_AIR_SLIDE_SPEED_Y, y_speed * 0.9);
+            }
+            if curr_frame == 30 {
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
             }
         }
     }
@@ -473,7 +455,7 @@ unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterC
     let stick_x = fighter.global_table[STICK_X].get_f32();
     let passive_fb_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("passive_fb_cont_value"));
     // lazy eval gaurantees that we don't call handle_waveland if we are on the ground
-    if situation_kind == *SITUATION_KIND_GROUND || fighter.handle_waveland(true, false) {
+    if situation_kind == *SITUATION_KIND_GROUND || fighter.handle_waveland(false) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_GROUND) {
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB)
                 && app::FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32)
