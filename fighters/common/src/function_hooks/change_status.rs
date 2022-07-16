@@ -45,6 +45,7 @@ unsafe fn change_status_request_hook(boma: &mut BattleObjectModuleAccessor, stat
 #[skyline::hook(replace=StatusModule::change_status_request_from_script)]
 unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAccessor, status_kind: i32, arg3: bool) -> u64 {
     let mut next_status = status_kind;
+    let mut clear_buffer = arg3;
 
     if boma.is_fighter() {
         // Allow buffered wavedashes when Shield is pressed at any time within Jump input's buffer window
@@ -52,6 +53,14 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
             if boma.is_cat_flag(Cat1::AirEscape) && !boma.is_cat_flag(Cat1::AttackN) {
                 VarModule::on_flag(boma.object(), vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
             }
+        }
+        // Clears buffer when sliding off an edge in a damaged state, to prevent accidental buffered aerials/airdodges (common on missed techs)
+        if [*FIGHTER_STATUS_KIND_DOWN,
+            *FIGHTER_STATUS_KIND_DOWN_WAIT,
+            *FIGHTER_STATUS_KIND_SLIP_WAIT,
+            *FIGHTER_STATUS_KIND_DAMAGE].contains(&StatusModule::status_kind(boma))
+        && next_status == *FIGHTER_STATUS_KIND_FALL {
+            clear_buffer = true;
         }
 
         if boma.kind() == *FIGHTER_KIND_TRAIL
@@ -69,7 +78,7 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
             next_status = *FIGHTER_STATUS_KIND_JUMP_SQUAT;
         }
     }
-    original!()(boma, next_status, arg3)
+    original!()(boma, next_status, clear_buffer)
 }
 
 pub fn install() {
