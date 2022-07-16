@@ -115,7 +115,7 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
         }
 
         // Set GroundCliffCheckKind here to pass into init_settings
-
+        
         if ((boma.kind() == *FIGHTER_KIND_RYU || boma.kind() == *FIGHTER_KIND_KEN)
             && boma.is_status_one_of(&[
                 *FIGHTER_STATUS_KIND_SPECIAL_S,
@@ -123,6 +123,8 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
                 *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
                 *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END]))
         || (boma.kind() == *FIGHTER_KIND_FALCO
+            && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI))
+        || (boma.kind() == *FIGHTER_KIND_REFLET
             && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI))
         {
             cliff_check_kind = app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
