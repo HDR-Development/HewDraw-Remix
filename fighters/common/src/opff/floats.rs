@@ -93,7 +93,7 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
                 WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
             }
             // Immediately transition to fall/double jump fall when activating float
-            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) && stick_y < -0.66 && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 {
+            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) && boma.left_stick_y() < -0.66 && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 {
                 if [*FIGHTER_STATUS_KIND_JUMP, *FIGHTER_STATUS_KIND_CLIFF_JUMP1, *FIGHTER_STATUS_KIND_CLIFF_JUMP2, *FIGHTER_STATUS_KIND_CLIFF_JUMP3, *FIGHTER_STATUS_KIND_DAMAGE_FALL, *FIGHTER_STATUS_KIND_PASS].contains(&status_kind) {
                     VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
@@ -132,10 +132,10 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
                 if ([*FIGHTER_STATUS_KIND_FALL, *FIGHTER_STATUS_KIND_FALL_AERIAL].contains(&status_kind) && MotionModule::frame(boma) > 3.0) // Omnidirection float only after F3 of initiating the float
                     || (status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR && (WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) < VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION) && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0)) /* If in aerial attack and float has been initiated and are current floating */ {
                     if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 {
-                        if stick_y != 0.0 {
+                        if boma.left_stick_y() != 0.0 {
                             if !VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT) { VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT); }
                             let mut motion_vec = Vector3f{x: 0.0, y: 0.0, z: 0.0};
-                            if stick_y > 0.0 {
+                            if boma.left_stick_y() > 0.0 {
                                 motion_vec.y = motion_value;
                             } else {
                                 motion_vec.y = -motion_value;
