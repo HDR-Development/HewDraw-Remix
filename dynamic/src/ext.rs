@@ -816,6 +816,19 @@ impl BomaExt for BattleObjectModuleAccessor {
             }
         }
     }
+    unsafe fn jump_cancel(&mut self) {
+        if self.is_situation(*SITUATION_KIND_GROUND) {
+            WorkModule::enable_transition_term(self, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
+            WorkModule::enable_transition_term(self, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
+            fighter.sub_transition_group_check_ground_jump_mini_attack();
+            fighter.sub_transition_group_check_ground_jump();
+        }
+        else {
+            WorkModule::enable_transition_term(self, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
+            WorkModule::enable_transition_term(self, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+            fighter.sub_transition_group_check_air_jump_aerial();
+        }
+    }
 
 }
 
