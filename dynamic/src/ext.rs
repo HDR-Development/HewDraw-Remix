@@ -22,6 +22,8 @@ pub trait Vec2Ext {
 pub trait Vec3Ext {
     fn new(x: f32, y: f32, z: f32) -> Self where Self: Sized;
     fn zero() -> Self where Self: Sized;
+    fn mag(&self) -> f32;
+    fn normalize(&self) -> Self;
 }
 
 pub trait Vec4Ext {
@@ -53,6 +55,19 @@ impl Vec3Ext for Vector3f {
 
     fn zero() -> Self {
         Self::new(0.0, 0.0, 0.0)
+    }
+
+    fn mag(&self) -> f32 {
+        (self.x.powi(2) + self.y.powi(2) + self.z.powi(2)).sqrt()
+    }
+
+    fn normalize(&self) -> Self {
+        let mag = self.mag();
+        Self {
+            x: self.x / mag,
+            y: self.y / mag,
+            z: self.z / mag
+        }
     }
 }
 
@@ -238,6 +253,7 @@ bitflags! {
 
     pub struct CatHdr: i32 {
         const TiltAttack = 0x1;
+        const Wavedash = 0x2;
     }
 
     pub struct PadFlag: i32 {
@@ -775,10 +791,6 @@ impl BomaExt for BattleObjectModuleAccessor {
             let pos = PostureModule::pos(self);
             PostureModule::set_pos(self, &Vector3f::new((*pos).x, out_pos.y + 0.01, (*pos).z));
             GroundModule::attach_ground(self, true);
-            if change_status {
-                StatusModule::set_situation_kind(self, app::SituationKind(*SITUATION_KIND_GROUND), false);
-                StatusModule::change_status_request(self, *FIGHTER_STATUS_KIND_LANDING, false);
-            }
             true
         } else {
             false
