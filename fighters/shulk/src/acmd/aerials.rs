@@ -8,7 +8,7 @@ unsafe fn shulk_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.583);
+        FT_MOTION_RATE(fighter, 0.683);
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
@@ -80,7 +80,7 @@ unsafe fn shulk_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.476);
+        FT_MOTION_RATE(fighter, 0.686);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
@@ -141,7 +141,7 @@ unsafe fn shulk_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 3.5, 3.5);
-        FT_MOTION_RATE(fighter, 0.581);
+        FT_MOTION_RATE(fighter, 0.8);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
