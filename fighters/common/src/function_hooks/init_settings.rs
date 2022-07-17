@@ -70,6 +70,14 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
             VarModule::off_flag(boma.object(), vars::common::instance::ENABLE_WAVELAND_PLATDROP);
         }
 
+        // Occupy ledge on ledgegrab
+        if boma.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_CLIFF_CATCH,
+            *FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE,
+            *FIGHTER_STATUS_KIND_CLIFF_WAIT]) {
+            VarModule::set_vec3(boma.object(), vars::common::instance::LEDGE_POS, GroundModule::hang_cliff_pos_3f(boma));
+        }
+
         // Repeated tilt scaling; UNUSED
         /*
         if [*FIGHTER_KIND_RYU, *FIGHTER_KIND_KEN, *FIGHTER_KIND_DOLLY].contains(&fighter_kind) {
@@ -107,13 +115,17 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
         }
 
         // Set GroundCliffCheckKind here to pass into init_settings
-
-        if (boma.kind() == *FIGHTER_KIND_RYU || boma.kind() == *FIGHTER_KIND_KEN)
+        
+        if ((boma.kind() == *FIGHTER_KIND_RYU || boma.kind() == *FIGHTER_KIND_KEN)
             && boma.is_status_one_of(&[
                 *FIGHTER_STATUS_KIND_SPECIAL_S,
                 *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
                 *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
-                *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END])
+                *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END]))
+        || (boma.kind() == *FIGHTER_KIND_FALCO
+            && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI))
+        || (boma.kind() == *FIGHTER_KIND_REFLET
+            && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI))
         {
             cliff_check_kind = app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
         }

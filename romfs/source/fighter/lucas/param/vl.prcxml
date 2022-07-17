@@ -38,11 +38,19 @@
     <struct index="0">
       <int hash="life">22</int>
       <float hash="speed_ground">4.0</float>
-      <float hash="speed_air">3.1</float>
+      <float hash="speed_air">2.8</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="hit_data_pkfire">
+    <hash40 index="0">dummy</hash40>
+    <struct index="1">
+      <float hash="offset1_y">0</float>
+      <float hash="offset2_y">0</float>
+      <float hash="size">0</float>
+    </struct>
   </list>
   <list hash="param_special_hi">
     <struct index="0">
@@ -59,6 +67,14 @@
       <int hash="critical_slow_rate">1</int>
       <float hash="critical_zoom_rate">1</float>
       <int hash="critical_zoom_in_frame">0</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_s">
+    <struct index="0">
+      <float hash="landing_frame">11</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

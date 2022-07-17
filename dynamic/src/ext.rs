@@ -286,8 +286,10 @@ bitflags! {
         const FlickJump   = 0x8000;
         const GuardHold   = 0x10000;
         const SpecialRaw2 = 0x20000;
-        const TiltAttack  = 0x40000;
-        const CStickOverride = 0x80000;
+        // We leave a blank at 0x4000 because the internal control mapping will map 1 << InputKind to the button bitfield, and so our shorthop button
+        // would get mapped to TiltAttack (issue #776)
+        const TiltAttack  = 0x80000;
+        const CStickOverride = 0x100000;
 
         const SpecialAll  = 0x20802;
         const AttackAll   = 0x201;
@@ -410,6 +412,8 @@ pub trait BomaExt {
     /// returns whether or not the stick x is pointed in the "backwards" direction for
     /// a character
     unsafe fn is_stick_backward(&mut self) -> bool;
+    unsafe fn left_stick_x(&mut self) -> f32;
+    unsafe fn left_stick_y(&mut self) -> f32;
 
     // STATE
     unsafe fn is_status(&mut self, kind: i32) -> bool;
@@ -457,7 +461,7 @@ pub trait BomaExt {
     unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion;
     unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController;
     // tech/general subroutine
-    unsafe fn handle_waveland(&mut self, require_airdodge: bool, change_status: bool) -> bool;
+    unsafe fn handle_waveland(&mut self, require_airdodge: bool) -> bool;
     unsafe fn shift_ecb_on_landing(&mut self);
 }
 
@@ -588,6 +592,22 @@ impl BomaExt for BattleObjectModuleAccessor {
             }
         }
         return false;
+    }
+
+    unsafe fn left_stick_x(&mut self) -> f32 {
+        if self.is_button_on(Buttons::CStickOverride) {
+            return ControlModule::get_sub_stick_x(self);
+        } else {
+            return ControlModule::get_stick_x(self);
+        }
+    }
+
+    unsafe fn left_stick_y(&mut self) -> f32 {
+        if self.is_button_on(Buttons::CStickOverride) {
+            return ControlModule::get_sub_stick_y(self);
+        } else {
+            return ControlModule::get_stick_y(self);
+        }
     }
 
     unsafe fn get_aerial(&mut self) -> Option<AerialKind> {
@@ -751,10 +771,10 @@ impl BomaExt for BattleObjectModuleAccessor {
         std::mem::transmute::<u64, &mut smash::app::FighterKineticEnergyController>(KineticModule::get_energy(self, *FIGHTER_KINETIC_ENERGY_ID_CONTROL))
     }
 
-    unsafe fn handle_waveland(&mut self, require_airdodge: bool, change_status: bool) -> bool {
+    unsafe fn handle_waveland(&mut self, require_airdodge: bool) -> bool {
         // MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU);
-        if require_airdodge && (!self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE])
-        || (MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU))) {
+        if (require_airdodge && !self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE]))
+        || KineticModule::get_kinetic_type(self) == *FIGHTER_KINETIC_TYPE_FALL {
             return false;
         }
     
