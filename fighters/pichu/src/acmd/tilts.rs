@@ -7,7 +7,7 @@ unsafe fn pichu_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter){
-        if VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 0 {
+        if VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) < 2 {
             MeterModule::watch_damage(fighter.battle_object, true);
         }
     }
