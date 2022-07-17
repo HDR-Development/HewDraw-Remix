@@ -3,38 +3,30 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
-unsafe fn psi_magnet_jump_cancel_turnaround(fighter: &mut L2CFighterCommon, stick_x: f32, facing: f32) {
-    let can_jump_cancel;
+ // Magnet Jump Cancel and Turnaround
+unsafe fn psi_magnet_jump_cancel_turnaround(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status (*FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD) {
+        let facing = PostureModule::lr(fighter.module_accessor);
+        let stick_x = fighter.stick_x();
+        if stick_x * facing < 0.0 && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+            PostureModule::reverse_lr(fighter.module_accessor);
+            PostureModule::update_rot_y_lr(fighter.module_accessor);
+        }
+    }
     if fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW)
-    && fighter.motion_frame() > 7.0
+    && fighter.motion_frame() > 7.0 //Allows for jump cancel on frame 9 in game
     && !fighter.is_in_hitlag() {
-        can_jump_cancel = true;
+        fighter.jump_cancel();
     }
     else if fighter.is_status_one_of (&[
         *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HIT,
         *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD,
         *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_END
     ]) && !fighter.is_in_hitlag() {
-        can_jump_cancel = true;
+        fighter.jump_cancel();
     }
     else {
-        can_jump_cancel = false;
-    }
-    if can_jump_cancel {
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
-        fighter.sub_transition_group_check_ground_jump_mini_attack();
-        fighter.sub_transition_group_check_ground_jump();
-        fighter.sub_transition_group_check_air_jump_aerial();
-    }
-    if STATUS_KIND == *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD {
-        if stick_x * facing < 0.0 && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-            PostureModule::reverse_lr(fighter.module_accessor);
-            PostureModule::update_rot_y_lr(fighter.module_accessor);
-        }
+        false;
     }
 }
 
@@ -114,7 +106,7 @@ unsafe fn pk_thunder_wall_ride(boma: &mut BattleObjectModuleAccessor, id: usize,
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    psi_magnet_jump_cancel_turnaround(fighter, stick_x, facing);
+    psi_magnet_jump_cancel_turnaround(fighter);
     pk_thunder_cancel(boma, id, status_kind, situation_kind);
     pk_thunder_wall_ride(boma, id, status_kind, situation_kind);
     pk_fire_ff(boma, stick_y);

@@ -19,30 +19,23 @@ unsafe fn airdodge_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i3
 
 // Wolf Shine Jump Cancels
 unsafe fn shine_jump_cancel(fighter: &mut L2CFighterCommon) {
-    let can_jump_cancel;
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= 1 {
+        GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+    }
     if fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW)
-    && fighter.motion_frame() > 6.0
+    && fighter.motion_frame() > 6.0 //Allows for jump cancel on frame 5 in game
     && !fighter.is_in_hitlag() {
-        can_jump_cancel = true;
+        fighter.jump_cancel();
     }
     else if fighter.is_status_one_of (&[
         *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_HIT,
         *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_LOOP,
         *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_END
     ]) && !fighter.is_in_hitlag() {
-        can_jump_cancel = true;
+        fighter.jump_cancel();
     }
     else {
-        can_jump_cancel = false;
-    }
-    if can_jump_cancel {
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
-        fighter.sub_transition_group_check_ground_jump_mini_attack();
-        fighter.sub_transition_group_check_ground_jump();
-        fighter.sub_transition_group_check_air_jump_aerial();
+        false;
     }
 }
 // Wolf Flash Shortens
