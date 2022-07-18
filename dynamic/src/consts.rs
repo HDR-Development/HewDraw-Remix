@@ -767,19 +767,17 @@ pub mod vars {
 
     pub mod pichu {
         pub mod instance {
-            // flags
-            pub const CHARGE_EFFECT_ON: i32 = 0x0100;
-            pub const CHARGE_EFFECT_HALF: i32 = 0x0101;
-
             //ints
             pub const CHARGE_LEVEL: i32 = 0x0100;
-            pub const CHARGE_EFFECT_HALF_HANDLER: i32 = 0x0101;
-            pub const CHARGE_EFFECT_HANDLER_1: i32 = 0x0102;
-            pub const CHARGE_EFFECT_HANDLER_2: i32 = 0x0103;
+            pub const CHARGE_EFFECT_HANDLER: i32 = 0x0101;
 
             // floats
             pub const CHARGE_DAMAGE_MUL: i32 = 0x0100;
             pub const CHARGE_RECOIL_MUL: i32 = 0x0101;
+        }
+        pub mod status {
+            // flags
+            pub const IS_CHARGE_ATTACK: i32 = 0x1100;
         }
     }
 
