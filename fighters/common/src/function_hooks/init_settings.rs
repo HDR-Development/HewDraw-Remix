@@ -113,6 +113,16 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
                 EffectModule::kill_joint_id(boma, Hash40::new("sword1"), false, false);
             }
         }
+        if boma.kind() == *FIGHTER_KIND_IKE
+        && !boma.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_LOOP,
+            *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END,
+            *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END_MDL,
+            *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END_MAX])
+        {
+            EffectModule::kill_kind(boma, Hash40::new("ike_volcano_hold"), false, true);
+        }
 
         // Set GroundCliffCheckKind here to pass into init_settings
         
