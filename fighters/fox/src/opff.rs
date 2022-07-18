@@ -22,22 +22,17 @@ unsafe fn shine_jump_cancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= 1 {
         GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     }
-    if fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW)
-    && fighter.motion_frame() > 6.0 //Allows for jump cancel on frame 5 in game
-    && !fighter.is_in_hitlag() {
-        fighter.jump_cancel();
-    }
-    else if fighter.is_status_one_of (&[
+    if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.motion_frame() > 6.0)  // Allows for jump cancel on frame 5 in game
+    || fighter.is_status_one_of(&[
         *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT,
         *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
-        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END
-    ]) && !fighter.is_in_hitlag() {
-        fighter.jump_cancel();
+        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END]))
+        && !fighter.is_in_hitlag()
+        {
+            fighter.check_jump_cancel();
     }
-    else {
-        false;
-    }
-}
+
+}   
 
 // Fox Illusion Shortens
 unsafe fn illusion_shorten_(boma: &mut BattleObjectModuleAccessor, id: usize, motion_kind: u64, frame: f32) {

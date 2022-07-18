@@ -13,22 +13,17 @@ unsafe fn psi_magnet_jump_cancel_turnaround(fighter: &mut L2CFighterCommon) {
             PostureModule::update_rot_y_lr(fighter.module_accessor);
         }
     }
-    if fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW)
-    && fighter.motion_frame() > 7.0 //Allows for jump cancel on frame 9 in game
-    && !fighter.is_in_hitlag() {
-        fighter.jump_cancel();
-    }
-    else if fighter.is_status_one_of (&[
+    if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.motion_frame() > 7.0)  // Allows for jump cancel on frame 5 in game
+    || fighter.is_status_one_of(&[
         *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HIT,
         *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD,
-        *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_END
-    ]) && !fighter.is_in_hitlag() {
-        fighter.jump_cancel();
-    }
-    else {
-        false;
-    }
-}
+        *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_END]))
+    && !fighter.is_in_hitlag()
+        {
+            fighter.check_jump_cancel();
+        }
+}   
+
 
 // Ness PK Fire Fast Fall
 unsafe fn pk_fire_ff(boma: &mut BattleObjectModuleAccessor, stick_y: f32) {

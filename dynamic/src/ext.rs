@@ -443,7 +443,7 @@ pub trait BomaExt {
     unsafe fn handle_waveland(&mut self, require_airdodge: bool, change_status: bool) -> bool;
 
     // Checks for status and enables transition to jump
-    unsafe fn jump_cancel(&mut self);
+    unsafe fn check_jump_cancel(&mut self);
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -786,7 +786,7 @@ impl BomaExt for BattleObjectModuleAccessor {
         return StatusModule::status_kind(self);
     }
 
-    unsafe fn jump_cancel(&mut self) {
+    unsafe fn check_jump_cancel(&mut self) {
         let fighter = crate::util::get_fighter_common_from_accessor(self);
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
