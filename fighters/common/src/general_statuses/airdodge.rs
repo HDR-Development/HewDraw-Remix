@@ -61,9 +61,8 @@ pub unsafe fn status_pre_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[common_status_script(status = FIGHTER_STATUS_KIND_ESCAPE_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
     symbol = "_ZN7lua2cpp16L2CFighterCommon16status_EscapeAirEv")]
 unsafe fn status_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ControlModule::reset_trigger(fighter.module_accessor);
+    fighter.sub_escape_air_common();
     if !VarModule::is_flag(fighter.battle_object, vars::common::status::SHOULD_WAVELAND) {
-        fighter.sub_escape_air_common();
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("escape_air_slide"), 0.0, 1.0, false, 0.0, false, false);
             VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET);
@@ -145,6 +144,7 @@ pub unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
 // common air dodge init code
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon21sub_escape_air_commonEv")]
 unsafe fn sub_escape_air_common(fighter: &mut L2CFighterCommon) {
+    ControlModule::reset_trigger(fighter.module_accessor);
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
     WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW);
