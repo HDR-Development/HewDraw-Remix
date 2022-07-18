@@ -6,12 +6,12 @@ unsafe fn gaogaen_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-         VarModule::off_flag(boma.object(), vars::common::IS_HEAVY_ATTACK);
+         VarModule::off_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK);
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_CATCH){
-            VarModule::on_flag(boma.object(), vars::common::IS_HEAVY_ATTACK);
+            VarModule::on_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK);
         }
         // Kill throw
-        if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
             ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 0.0, 40, 490, 0, 20, 0.0, 1.0, *ATTACK_LR_CHECK_B, 0.0, true, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         }
         // Techchase throw
@@ -22,20 +22,20 @@ unsafe fn gaogaen_throw_b_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 15.0/(16.0-11.0));
         }
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 1.0);
         }
     }
     frame(lua_state, 28.0);
     if is_excute(fighter) {
         // Kill throw
-        if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
             ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0, 32, 80, 0, 60, 7.0, 0.0, 2.7, 2.6, Some(0.0), Some(2.7), Some(-3.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
         }
         // Techchase throw
@@ -55,7 +55,7 @@ unsafe fn gaogaen_throw_b_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 31.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 1.0);
         }
         else{
@@ -74,14 +74,14 @@ unsafe fn gaogaen_throw_b_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
             EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0.0, 13.0, 20.0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
             LAST_EFFECT_SET_RATE(fighter, 0.8);
         }
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
             EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("bust"), 0.0, 0, 0, 0, 0, 0, 0.5, true);
             LAST_EFFECT_SET_RATE(fighter, 0.5);
             
@@ -112,7 +112,7 @@ unsafe fn gaogaen_throw_b_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
         LANDING_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
             EFFECT(fighter, Hash40::new("sys_bomb_b"), Hash40::new("top"), 10, 0, -5.0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
         }
     }

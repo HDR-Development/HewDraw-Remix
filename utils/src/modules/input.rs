@@ -1,5 +1,5 @@
 use smash::app::{BattleObject, lua_bind::ControlModule, BattleObjectModuleAccessor};
-use utils_dyn::ext::{Buttons, CatHdr};
+use utils_dyn::ext::*;
 
 use crate::offsets;
 use crate::util::get_battle_object_from_id;
@@ -38,6 +38,8 @@ macro_rules! require_input_module {
 }
 
 struct HdrCat {
+    /// Represents the number of remaining buffered frames that each input will be considered active.
+    /// A value of zero for any entry means that input is not considered to be in the buffer.
     pub valid_frames: [u8; 32]
 }
 
@@ -381,11 +383,13 @@ fn get_command_flag_cat_replace(control_module: u64, cat: i32) -> u32 {
             return 0;
         }
 
-        let bm = require_input_module!(battle_object);
+        let im = require_input_module!(battle_object);
 
         let mut output = 0;
+        // this iterates across all 32 bits of the output bitmask, where valid_frames represents how many frames
+        // left any given custom input may have left in its internal buffer state.
         for x in 0..32 {
-            if bm.hdr_cat.valid_frames[x] != 0 {
+            if im.hdr_cat.valid_frames[x] != 0 {
                 output |= 1 << x;
             }
         }
@@ -421,19 +425,34 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
             ControlModule::get_button((*input_module.owner).module_accessor)
         )
     };
-
-    let shfootstool_offset = CatHdr::ShorthopFootstool.bits().trailing_zeros() as usize;
-    if triggered_buttons.intersects(Buttons::ShFootstool) {
-        if input_module.hdr_cat.valid_frames[shfootstool_offset] == 0 {
-            input_module.hdr_cat.valid_frames[shfootstool_offset] = unsafe {
+    
+    // TiltAttack cat flag
+    let tilt_attack_offset = CatHdr::TiltAttack.bits().trailing_zeros() as usize;
+    if triggered_buttons.intersects(Buttons::TiltAttack) {
+        if input_module.hdr_cat.valid_frames[tilt_attack_offset] == 0 {
+            input_module.hdr_cat.valid_frames[tilt_attack_offset] = unsafe {
                 ControlModule::get_command_life_count_max((*input_module.owner).module_accessor) as u8
             };
         }
     }
+    if input_module.hdr_cat.valid_frames[tilt_attack_offset] != 0
+    && !(input_module.hdr_cat.valid_frames[tilt_attack_offset] == 1 && buttons.intersects(Buttons::TiltAttack)) {
+        input_module.hdr_cat.valid_frames[tilt_attack_offset] -= 1;
+    }
 
-    if input_module.hdr_cat.valid_frames[shfootstool_offset] != 0
-    && !(input_module.hdr_cat.valid_frames[shfootstool_offset] == 1 && buttons.intersects(Buttons::ShFootstool)) {
-        input_module.hdr_cat.valid_frames[shfootstool_offset] -= 1;
+    // Wavedash cat flag
+    let wavedash_offset = CatHdr::Wavedash.bits().trailing_zeros() as usize;
+    let wavedash_input = (triggered_buttons.intersects(Buttons::Jump) || triggered_buttons.intersects(Buttons::FlickJump)) && triggered_buttons.intersects(Buttons::Guard);
+    if wavedash_input {
+        if input_module.hdr_cat.valid_frames[wavedash_offset] == 0 {
+            input_module.hdr_cat.valid_frames[wavedash_offset] = unsafe {
+                ControlModule::get_command_life_count_max((*input_module.owner).module_accessor) as u8
+            };
+        }
+    }
+    if input_module.hdr_cat.valid_frames[wavedash_offset] != 0
+    && !(input_module.hdr_cat.valid_frames[wavedash_offset] == 1 && wavedash_input) {
+        input_module.hdr_cat.valid_frames[wavedash_offset] -= 1;
     }
 
     call_original();
@@ -453,6 +472,14 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
     let boma = unsafe {
         *(control_module as *mut *mut BattleObjectModuleAccessor).add(1)
     };
+
+    if triggered_buttons.intersects(Buttons::TiltAttack) {
+        unsafe {
+            (*input_module.owner).clear_commands(Cat1::AttackS4);
+            (*input_module.owner).clear_commands(Cat1::AttackHi4);
+            (*input_module.owner).clear_commands(Cat1::AttackLw4);
+        }
+    }
 
     InputModule::exec(input_module.owner, &mut lifetimes);
 }

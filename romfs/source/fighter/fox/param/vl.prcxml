@@ -30,7 +30,8 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="fire_start_x_mul">1.25</float>
+      <float hash="fire_accel_x">0.01</float>
+      <float hash="fire_start_x_mul">0.5</float>
       <int hash="fire_rush_frame">30</int>
       <float hash="fire_rush_speed">3.8</float>
       <int hash="fire_rush_brake_frame">5</int>

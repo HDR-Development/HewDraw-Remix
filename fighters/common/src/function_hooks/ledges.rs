@@ -52,11 +52,11 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
         if let Some(object_id) = ::utils::util::get_active_battle_object_id_from_entry_id(i) {
             let object = ::utils::util::get_battle_object_from_id(object_id);
             if !object.is_null() {
-                if i == entry_id || VarModule::get_float(object, vars::common::LEDGE_POS_X) == 0.0 {
+                if i == entry_id || VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) == 0.0 {
                     continue;
                 }
 
-                if pos.x == VarModule::get_float(object, vars::common::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::LEDGE_POS_Y) {
+                if pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
                     if !(tether_only || tether_zair || tether_special || tether_aerial) {
                         return 0;
                     }
@@ -69,7 +69,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
                     let object = ::utils::util::get_battle_object_from_id(nana_object_id);
                     if !object.is_null() {
         
-                        if pos.x == VarModule::get_float(object, vars::common::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::LEDGE_POS_Y) {
+                        if pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
                             if !(tether_only || tether_zair || tether_special || tether_aerial) {
                                 return 0;
                             }
@@ -97,7 +97,10 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
             }
         }
 
-
+        // Unable to grab ledge during runfall/walkfall (the first few frames after you run off an edge)
+        if boma.is_motion_one_of(&[Hash40::new("run_fall_l"), Hash40::new("run_fall_r"), Hash40::new("walk_fall_l"), Hash40::new("walk_fall_r")]) {
+            return 0;
+        }
     }
 
     original!()(boma)
@@ -110,7 +113,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
 #[skyline::hook(replace=GroundModule::leave_cliff)]
 unsafe fn leave_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    VarModule::set_vec3(boma.object(), vars::common::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
+    VarModule::set_vec3(boma.object(), vars::common::instance::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
     original!()(boma)
 }
 
@@ -179,7 +182,15 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
     // Kirby: Unchanged
 
     if fighter_kind == *FIGHTER_KIND_FOX {
-        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI || status_kind == *FIGHTER_FOX_STATUS_KIND_SPECIAL_HI_RUSH {
+        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
+            if frame < 5.0 {
+                return 0;
+            }
+            else {
+                return 1;
+            }
+        }
+        if status_kind == *FIGHTER_FOX_STATUS_KIND_SPECIAL_HI_RUSH {
             return 1;
         }
 
@@ -334,7 +345,15 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
     }
 
     if fighter_kind == *FIGHTER_KIND_FALCO {
-        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI || status_kind == *FIGHTER_FALCO_STATUS_KIND_SPECIAL_HI_RUSH {
+        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
+            if frame < 5.0 {
+                return 0;
+            }
+            else {
+                return 1;
+            }
+        }
+        if status_kind == *FIGHTER_FALCO_STATUS_KIND_SPECIAL_HI_RUSH {
             return 1;
         }
 
@@ -664,7 +683,10 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
 
     if fighter_kind == *FIGHTER_KIND_REFLET {
         if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
-            if frame < 17.0 {
+            if frame < 9.0 {
+                return 0;
+            }
+            else {
                 return 1;
             }
         }
@@ -940,7 +962,7 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
 
     if(fighter_kind == *FIGHTER_KIND_PICKEL){
         if(status_kind == *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_GLIDING){
-            if VarModule::get_float(boma.object(), vars::common::GLIDE_TIMER) < 40.0 /*40 frames of up b travel time*/ {
+            if VarModule::get_float(boma.object(), vars::pickel::status::GLIDE_TIMER) < 40.0 /*40 frames of up b travel time*/ {
                 return 1;
             }
         }

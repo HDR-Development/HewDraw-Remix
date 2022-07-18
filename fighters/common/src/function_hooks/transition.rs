@@ -14,6 +14,14 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
     let status_kind = StatusModule::status_kind(boma);
     let id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 
+    // handle tilt attack input stopping you from getting a smash attack
+    if [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,].contains(&flag)
+        && boma.is_cat_flag(CatHdr::TiltAttack) {
+            return false;
+    }
+
     // Disallow airdodge out of tumble until you reach your stable fall speed
     if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR
         && ([*FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR].contains(&status_kind)
@@ -44,11 +52,11 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
     }
 
 
-    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI && VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL) {
+    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI && VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL) {
         return false;
     }
 
-    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S && (VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL) || VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL_NO_HIT)) {
+    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S && (VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL) || VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT)) {
         return false;
     }
 
@@ -76,9 +84,9 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
     // Fighters
     if boma.is_fighter() {
         // Disable transition to double jump if you have float juice and are holding down
-        if [*FIGHTER_KIND_SAMUSD, *FIGHTER_KIND_GANON, *FIGHTER_KIND_MEWTWO, *FIGHTER_KIND_REFLET].contains(&fighter_kind) {
+        if [*FIGHTER_KIND_SAMUSD, *FIGHTER_KIND_MEWTWO, *FIGHTER_KIND_REFLET].contains(&fighter_kind) {
             if [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON].contains(&flag) {
-                if ControlModule::get_stick_y(boma) < -0.66 {
+                if boma.left_stick_y() < -0.66 {
                     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 {
                         return false;
                     }
@@ -109,10 +117,10 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
 
         // Meta Knight - Disable use of specials midair again after hitting them during the current airtime
         if fighter_kind == FIGHTER_KIND_METAKNIGHT {
-            if     (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N && VarModule::is_flag(boma.object(), vars::common::NEUTRAL_SPECIAL_HIT))
-                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S && VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_HIT))
-                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI && VarModule::is_flag(boma.object(), vars::common::UP_SPECIAL_HIT))
-                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW && VarModule::is_flag(boma.object(), vars::common::DOWN_SPECIAL_HIT)) {
+            if     (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N && VarModule::is_flag(boma.object(), vars::metaknight::instance::NEUTRAL_SPECIAL_HIT))
+                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S && VarModule::is_flag(boma.object(), vars::metaknight::instance::SIDE_SPECIAL_HIT))
+                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI && VarModule::is_flag(boma.object(), vars::metaknight::instance::UP_SPECIAL_HIT))
+                || (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW && VarModule::is_flag(boma.object(), vars::metaknight::instance::DOWN_SPECIAL_HIT)) {
                 return false;
             }
         }
@@ -133,7 +141,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
 
         // Disable Mii Swordfighter nspecial if the Tornado projectile is still active
         if fighter_kind == *FIGHTER_KIND_MIISWORDSMAN {
-            if VarModule::get_int(boma.object(), vars::common::GIMMICK_TIMER) > 0 && flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N {
+            if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) > 0 && flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N {
                 return false;
             }
         }
@@ -141,7 +149,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
         if fighter_kind == *FIGHTER_KIND_TRAIL {
             if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S {
                 if (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT))
-                || VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_HIT) {
+                || VarModule::is_flag(boma.object(), vars::metaknight::instance::SIDE_SPECIAL_HIT) {
                     return false;
                 }
             }
@@ -149,7 +157,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
 
         //Disable Duck Hunt Down Special on a timer
         if boma.kind() == *FIGHTER_KIND_DUCKHUNT  {
-            if VarModule::get_int(boma.object(), vars::duckhunt::GUNMAN_TIMER) != 0 
+            if VarModule::get_int(boma.object(), vars::duckhunt::instance::GUNMAN_TIMER) != 0 
             && flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
                     return false
             }

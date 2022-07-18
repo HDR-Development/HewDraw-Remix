@@ -58,7 +58,7 @@ unsafe fn forward_bair_rotation(boma: &mut BattleObjectModuleAccessor, start_fra
         let calc_body_rotate = max_rotation * ((frame - start_frame) / (bend_frame - start_frame));
         let body_rotation = calc_body_rotate.clamp(0.0, max_rotation);
         rotation = Vector3f{x: 0.0, y: body_rotation, z: 0.0};
-        println!("current body rotation: {}", body_rotation);
+        // println!("current body rotation: {}", body_rotation);
         ModelModule::set_joint_rotate(boma, Hash40::new("rot"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
     } else if frame >= return_frame && frame < straight_frame {
         // linear interpolate back to normal
@@ -75,12 +75,12 @@ unsafe fn forward_bair_rotation(boma: &mut BattleObjectModuleAccessor, start_fra
 
 unsafe fn rotate_forward_bair(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_motion(Hash40::new("attack_air_b")){
-        if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK) {
+        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK) {
             forward_bair_rotation(boma, 5.0, 7.5, 10.0, 30.0);
         }
     }
     else if boma.is_motion(Hash40::new("landing_air_b")){
-        if VarModule::is_flag(boma.object(), vars::common::IS_HEAVY_ATTACK) {
+        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK) {
             forward_bair_rotation(boma, 0.0, 0.1, 0.2, 10.0);
         }
     }
@@ -123,7 +123,7 @@ unsafe fn fsmash_leg_rotate(boma: &mut BattleObjectModuleAccessor, start_frame: 
 // Can be canceled into the axe kick like his other command kicks via holding the attack button
 unsafe fn kamabaraigeri(boma: &mut BattleObjectModuleAccessor, frame: f32) {
     if boma.is_motion(Hash40::new("attack_s4_s")){
-        if VarModule::is_flag(boma.object(), vars::ken::SHOULD_COMBOS_SCALE) {
+        if VarModule::is_flag(boma.object(), vars::shotos::status::SHOULD_COMBOS_SCALE) {
             fsmash_leg_rotate(boma, 9.0, 12.0, 14.0, 16.0);
         }
         if frame >= (MotionModule::end_frame(boma) - 1.0) {
@@ -143,9 +143,9 @@ unsafe fn special_fadc_super_cancels(boma: &mut BattleObjectModuleAccessor) {
                                *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
                                *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP]){
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD){
-            VarModule::on_flag(boma.object(), vars::ken::IS_ENABLE_FADC);
+            VarModule::on_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC);
         }
-        if VarModule::is_flag(boma.object(), vars::ken::IS_ENABLE_FADC){
+        if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC){
             if boma.is_cat_flag(Cat1::SpecialLw){
                 if !StopModule::is_stop(boma) {
                     if MeterModule::drain(boma.object(), 2){
@@ -165,7 +165,7 @@ unsafe fn special_fadc_super_cancels(boma: &mut BattleObjectModuleAccessor) {
         }
     }
     else{
-        VarModule::off_flag(boma.object(), vars::ken::IS_ENABLE_FADC);
+        VarModule::off_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC);
     }
 }
 
@@ -177,7 +177,7 @@ unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD){
             if boma.is_cat_flag(Cat1::AttackS3) {
                 if !StopModule::is_stop(boma){
-                    VarModule::on_flag(boma.object(), vars::ken::IS_TARGET_COMBO_1);
+                    VarModule::on_flag(boma.object(), vars::shotos::instance::IS_TARGET_COMBO_1);
                     MotionModule::change_motion(boma, Hash40::new("attack_11_s"), -1.0, 1.0, false, 0.0, false, false);
                 }
             }
@@ -185,18 +185,18 @@ unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
     }
     if boma.is_motion(Hash40::new("attack_near_w")){
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD){
-            if boma.is_cat_flag(Cat1::AttackS3) && !VarModule::is_flag(boma.object(), vars::ken::IS_TARGET_COMBO_2) {
-                VarModule::on_flag(boma.object(), vars::ken::IS_TARGET_COMBO_2);     
+            if boma.is_cat_flag(Cat1::AttackS3) && !VarModule::is_flag(boma.object(), vars::shotos::instance::IS_TARGET_COMBO_2) {
+                VarModule::on_flag(boma.object(), vars::shotos::instance::IS_TARGET_COMBO_2);     
                 return;
             }
-            if VarModule::is_flag(boma.object(), vars::ken::IS_TARGET_COMBO_2){
+            if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_TARGET_COMBO_2){
                 if !StopModule::is_stop(boma){
                     MotionModule::change_motion(boma, Hash40::new("attack_s3_s_w"), -1.0, 1.0, false, 0.0, false, false);
                 }
             }
         }
     }
-    if VarModule::is_flag(boma.object(), vars::ken::IS_TARGET_COMBO_2){
+    if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_TARGET_COMBO_2){
         /*
         WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_NEAR_OPPONENT);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_RELEASE_BUTTON);
@@ -208,20 +208,20 @@ unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
     }
     /*
     if boma.is_motion(Hash40::new("attack_s3_s_s")){
-        if VarModule::is_flag(boma.object(), vars::ken::IS_TARGET_COMBO_2){
+        if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_TARGET_COMBO_2){
             MotionModule::change_motion(boma, Hash40::new("attack_s3_s_w"), -1.0, 1.0, false, 0.0, false, false);
         }
     }
     */
     if !(boma.is_motion_one_of(&[Hash40::new("attack_11_near_s"),
                                  Hash40::new("attack_11_s")])){
-        VarModule::off_flag(boma.object(), vars::ken::IS_TARGET_COMBO_1);
+        VarModule::off_flag(boma.object(), vars::shotos::instance::IS_TARGET_COMBO_1);
     }
     
     if !(boma.is_motion_one_of(&[Hash40::new("attack_near_w"),
                                  Hash40::new("attack_s3_s_s"),
                                  Hash40::new("attack_s3_w")])){
-        VarModule::off_flag(boma.object(), vars::ken::IS_TARGET_COMBO_2);
+        VarModule::off_flag(boma.object(), vars::shotos::instance::IS_TARGET_COMBO_2);
     }
     
 }
@@ -271,7 +271,7 @@ unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
     }
 
     if !StopModule::is_stop(boma){
-        VarModule::on_flag(boma.object(), vars::ken::IS_MAGIC_SERIES_CANCEL);
+        VarModule::on_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
         boma.change_status_req(new_status, false);
     }
 }
@@ -298,7 +298,7 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
     }
 
     if !StopModule::is_stop(boma){
-        VarModule::on_flag(boma.object(), vars::ken::IS_MAGIC_SERIES_CANCEL);
+        VarModule::on_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
         boma.change_status_req(new_status, false);
     }
 }
@@ -362,7 +362,7 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
         return;
     }
     if is_input_cancel && !StopModule::is_stop(boma){
-        VarModule::on_flag(boma.object(), vars::ryu::IS_MAGIC_SERIES_CANCEL);
+        VarModule::on_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
         boma.change_status_req(new_status, is_jump_cancel);
     }
     
@@ -401,7 +401,7 @@ unsafe fn magic_flag_reset(boma: &mut BattleObjectModuleAccessor) {
                                    *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_ATTACK_TURN,
                                    *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1,
                                    *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2])){
-            VarModule::off_flag(boma.object(), vars::ken::IS_MAGIC_SERIES_CANCEL);
+            VarModule::off_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
         }
 }
 
@@ -409,7 +409,7 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     
     magic_flag_reset(boma);
 
-    if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) /*&& VarModule::is_flag(boma.object(), vars::ken::IS_ENABLE_MAGIC_SERIES_CANCEL)*/ {
+    if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) /*&& VarModule::is_flag(boma.object(), vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL)*/ {
         return;
     }
 

@@ -75,18 +75,25 @@ unsafe fn phantasm_shorten(boma: &mut BattleObjectModuleAccessor, id: usize, mot
 
     if motion_kind == hash40("special_s") || motion_kind == hash40("special_air_s") {
         if frame <= 1.0 {
-            VarModule::off_flag(boma.object(), vars::common::ILLUSION_SHORTEN);
-            VarModule::off_flag(boma.object(), vars::common::ILLUSION_SHORTENED);
+            VarModule::off_flag(boma.object(), vars::falco::status::ILLUSION_SHORTEN);
+            VarModule::off_flag(boma.object(), vars::falco::status::ILLUSION_SHORTENED);
         }
-        if VarModule::is_flag(boma.object(), vars::common::ILLUSION_SHORTEN) &&  !VarModule::is_flag(boma.object(), vars::common::ILLUSION_SHORTENED) {
+        if VarModule::is_flag(boma.object(), vars::falco::status::ILLUSION_SHORTEN) &&  !VarModule::is_flag(boma.object(), vars::falco::status::ILLUSION_SHORTENED) {
             KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-            VarModule::on_flag(boma.object(), vars::common::ILLUSION_SHORTENED);
+            VarModule::on_flag(boma.object(), vars::falco::status::ILLUSION_SHORTENED);
         }
 
-        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) &&  !VarModule::is_flag(boma.object(), vars::common::ILLUSION_SHORTENED) {
-            VarModule::on_flag(boma.object(), vars::common::ILLUSION_SHORTEN);
+        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) &&  !VarModule::is_flag(boma.object(), vars::falco::status::ILLUSION_SHORTENED) {
+            VarModule::on_flag(boma.object(), vars::falco::status::ILLUSION_SHORTEN);
             WorkModule::on_flag(boma, *FIGHTER_FALCO_ILLUSION_STATUS_WORK_ID_FLAG_RUSH_FORCE_END);
         }
+    }
+}
+
+unsafe fn firebird_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        // allows ledgegrab during Firebird startup
+        fighter.sub_transition_group_check_air_cliff();
     }
 }
 
@@ -95,19 +102,13 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     laser_ff_land_cancel(boma, status_kind, situation_kind, cat[1], stick_y);
     shine_jc_turnaround(fighter);
     phantasm_shorten(boma, id, motion_kind, frame);
+    firebird_startup_ledgegrab(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_FALCO )]
 pub fn falco_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-        println!(
-            "Stick: [{:.2}, {:.2}], SubStick: [{:.2}, {:.2}]",
-            ControlModule::get_stick_x(fighter.module_accessor),
-            ControlModule::get_stick_y(fighter.module_accessor),
-            ControlModule::get_sub_stick_x(fighter.module_accessor),
-            ControlModule::get_sub_stick_y(fighter.module_accessor),
-        );
 		falco_frame(fighter)
     }
 }

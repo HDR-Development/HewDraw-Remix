@@ -8,7 +8,7 @@ unsafe fn ryu_special_n_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
     }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
@@ -21,11 +21,11 @@ unsafe fn ryu_special_n_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         if !ArticleModule::is_exist(boma, *FIGHTER_RYU_GENERATE_ARTICLE_HADOKEN){
-            VarModule::off_flag(fighter.battle_object, vars::ryu::IS_CURRENT_HADOKEN_EX);
+            VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_EX);
             if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
                 if MeterModule::drain(fighter.battle_object, 2) {
-                    VarModule::on_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL);
-                    VarModule::on_flag(fighter.battle_object, vars::ryu::IS_CURRENT_HADOKEN_EX); 
+                    VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+                    VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_EX); 
                 }
             }
         }
@@ -60,7 +60,7 @@ unsafe fn ryu_special_air_n_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
     }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
@@ -73,11 +73,11 @@ unsafe fn ryu_special_air_n_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         if !ArticleModule::is_exist(boma, *FIGHTER_RYU_GENERATE_ARTICLE_HADOKEN){
-            VarModule::off_flag(fighter.battle_object, vars::ryu::IS_CURRENT_HADOKEN_EX);
+            VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_EX);
             if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
                 if MeterModule::drain(fighter.battle_object, 2) {
-                    VarModule::on_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL);
-                    VarModule::on_flag(fighter.battle_object, vars::ryu::IS_CURRENT_HADOKEN_EX); 
+                    VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+                    VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_EX); 
                 }
             }
         }
@@ -113,7 +113,7 @@ unsafe fn ryu_special_s_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         MotionModule::set_rate(boma, 2.000);
-        VarModule::off_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
@@ -123,10 +123,10 @@ unsafe fn ryu_special_s_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             if MeterModule::drain(fighter.battle_object, 2) {
-                 VarModule::on_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL);
+                 VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
 		}
 		else {
             //ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 361, 100, 25, 0, 4.5, 0.0, 9.0, 4.5, Some(0.0), Some(9.0), Some(4.5), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, true, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_NONE, *COLLISION_SOUND_ATTR_NONE);
@@ -155,7 +155,7 @@ unsafe fn ryu_special_s_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_XLU);
         FT_MOTION_RATE(fighter, 1.000);
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_INVINCIBLE);
             HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_INVINCIBLE);
             HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_INVINCIBLE);
@@ -170,7 +170,7 @@ unsafe fn ryu_special_s_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
 			MotionModule::set_rate(boma, 2.500);
 			ATTACK(fighter, 0, 0, Hash40::new("legl"), 1.0, 367, 100, 70, 0, 7.0, 0.0, 0.0, 0.0, Some(2.0), Some(0.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);
 			ATTACK(fighter, 1, 0, Hash40::new("kneel"), 1.0, 367, 100, 70, 0, 7.0, 0.0, 0.0, 0.0, Some(5.0), Some(0.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);
@@ -201,7 +201,7 @@ unsafe fn ryu_special_s_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             MotionModule::set_rate(boma, 2.500);
         }
          else {
@@ -234,7 +234,7 @@ unsafe fn ryu_special_s_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
             EFFECT_FOLLOW_FLIP(fighter, Hash40::new("ryu_savingattack_line_r"), Hash40::new("ryu_savingattack_line_l"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1.1, false, *EF_FLIP_NONE);
@@ -256,33 +256,33 @@ unsafe fn ryu_special_s_effect(fighter: &mut L2CAgentBase) {
             }
         }
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("ryu_tatsumaki_smoke_r"), Hash40::new("ryu_tatsumaki_smoke_l"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 1.1, false, *EF_FLIP_NONE);
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
@@ -298,7 +298,7 @@ unsafe fn ryu_special_s_end_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             ATTACK(fighter, 0, 0, Hash40::new("legl"), 10.0, 60, 80, 0, 55, 9.0, 0.0, 0.0, 0.0, Some(2.0), Some(0.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);
             ATTACK(fighter, 1, 0, Hash40::new("kneel"), 10.0, 60, 80, 0, 55, 9.0, 0.0, 0.0, 0.0, Some(5.0), Some(0.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);
         }
@@ -318,7 +318,7 @@ unsafe fn ryu_special_s_end_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             EFFECT_FOLLOW(fighter, Hash40::new("ryu_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
             EFFECT_FOLLOW(fighter, Hash40::new("ryu_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
             EFFECT_FOLLOW(fighter, Hash40::new("ryu_savingattack_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -329,7 +329,7 @@ unsafe fn ryu_special_s_end_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             EFFECT(fighter, Hash40::new("ryu_savingattack_impact"), Hash40::new("top"), 14, 10.5, 3, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
         }
     }
@@ -348,7 +348,7 @@ unsafe fn ryu_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         MotionModule::set_rate(boma, 2.000);
-        VarModule::off_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
@@ -358,10 +358,10 @@ unsafe fn ryu_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             if MeterModule::drain(fighter.battle_object, 2) {
-                 VarModule::on_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL);
+                 VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
 		}
 		else {
             //ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 361, 100, 25, 0, 4.5, 0.0, 9.0, 4.5, Some(0.0), Some(9.0), Some(4.5), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, true, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_NONE, *COLLISION_SOUND_ATTR_NONE);
@@ -393,7 +393,7 @@ unsafe fn ryu_special_air_s_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
 			MotionModule::set_rate(boma, 2.500);
 			ATTACK(fighter, 0, 0, Hash40::new("legl"), 1.0, 367, 100, 70, 0, 7.0, 0.0, 0.0, 0.0, Some(2.0), Some(0.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);
 			ATTACK(fighter, 1, 0, Hash40::new("kneel"), 1.0, 367, 100, 70, 0, 7.0, 0.0, 0.0, 0.0, Some(5.0), Some(0.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);
@@ -424,7 +424,7 @@ unsafe fn ryu_special_air_s_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             MotionModule::set_rate(boma, 2.500);
         }
          else {
@@ -461,7 +461,7 @@ unsafe fn ryu_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             ATTACK(fighter, 0, 0, Hash40::new("legl"), 10.0, 60, 80, 0, 55, 9.0, 0.0, 0.0, 0.0, Some(2.0), Some(0.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);
             ATTACK(fighter, 1, 0, Hash40::new("kneel"), 10.0, 60, 80, 0, 55, 9.0, 0.0, 0.0, 0.0, Some(5.0), Some(0.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);
         }
@@ -480,7 +480,7 @@ unsafe fn ryu_special_air_s_end_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             EFFECT_FOLLOW(fighter, Hash40::new("ryu_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
             EFFECT_FOLLOW(fighter, Hash40::new("ryu_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
             EFFECT_FOLLOW(fighter, Hash40::new("ryu_savingattack_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -491,7 +491,7 @@ unsafe fn ryu_special_air_s_end_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             EFFECT(fighter, Hash40::new("ryu_savingattack_impact"), Hash40::new("top"), 14, 10.5, 3, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
         }
     }
@@ -503,7 +503,7 @@ unsafe fn ryu_special_air_s_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
             EFFECT_FOLLOW_FLIP(fighter, Hash40::new("ryu_savingattack_line_r"), Hash40::new("ryu_savingattack_line_l"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1.1, false, *EF_FLIP_NONE);
@@ -518,40 +518,33 @@ unsafe fn ryu_special_air_s_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        if  WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_FLAG_GROUND){
-            if WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND){
-                FOOT_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), -1, 0, 0, 0, 0, 0, 0.85, 0, 0, 0, 0, 0, 0, false);
-                LAST_EFFECT_SET_ALPHA(fighter, 0.5);
-            }
-        }
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("ryu_tatsumaki_smoke_r"), Hash40::new("ryu_tatsumaki_smoke_l"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 1.1, false, *EF_FLIP_NONE);
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
@@ -564,7 +557,7 @@ unsafe fn ryu_special_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         MeterModule::watch_damage(fighter.battle_object, true);
-        VarModule::off_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
@@ -573,15 +566,15 @@ unsafe fn ryu_special_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_DECIDE_STRENGTH);
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             if MeterModule::drain(fighter.battle_object, 3) {
-                 VarModule::on_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL);
+                 VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             WHOLE_HIT(fighter, *HIT_STATUS_XLU);
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 10.0, 7.6, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 0, Hash40::new("shoulderr"), 3.0, 95, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 0, Hash40::new("armr"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 3, 0, Hash40::new("handr"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 10.0, 7.6, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 1, 0, Hash40::new("shoulderr"), 3.0, 95, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 2, 0, Hash40::new("armr"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 3, 0, Hash40::new("handr"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
 		}
         else{
             if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
@@ -597,11 +590,11 @@ unsafe fn ryu_special_hi_game(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
-            ATTACK(fighter, 0, 1, Hash40::new("top"), 3.0, 95, 10, 0, 95, 5.0, 0.0, 10.0, 7.6, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 1, Hash40::new("shoulderr"), 3.0, 95, 10, 0, 95, 5.0, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 1, Hash40::new("armr"), 3.0, 95, 10, 0, 95, 5.0, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 3, 1, Hash40::new("handr"), 3.0, 95, 10, 0, 95, 5.0, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            ATTACK(fighter, 0, 1, Hash40::new("top"), 3.0, 95, 10, 0, 95, 5.0, 0.0, 10.0, 7.6, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 1, 1, Hash40::new("shoulderr"), 3.0, 95, 10, 0, 95, 5.0, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 2, 1, Hash40::new("armr"), 3.0, 95, 10, 0, 95, 5.0, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 3, 1, Hash40::new("handr"), 3.0, 95, 10, 0, 95, 5.0, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
 		}
         else{
             if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
@@ -617,17 +610,17 @@ unsafe fn ryu_special_hi_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             AttackModule::clear(boma, 0, false);
 		}
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_JUMP);
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
-            ATTACK(fighter, 1, 2, Hash40::new("shoulderr"), 12.0, 80, 90, 0, 80, 6.0, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 2, Hash40::new("armr"), 12.0, 80, 90, 0, 80, 6.0, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 3, 2, Hash40::new("handr"), 12.0, 80, 90, 0, 80, 6.0, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            ATTACK(fighter, 1, 2, Hash40::new("shoulderr"), 12.0, 80, 90, 0, 80, 6.0, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 2, 2, Hash40::new("armr"), 12.0, 80, 90, 0, 80, 6.0, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 3, 2, Hash40::new("handr"), 12.0, 80, 90, 0, 80, 6.0, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
 		}
         else{
             if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
@@ -662,7 +655,7 @@ unsafe fn ryu_special_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
 
@@ -676,120 +669,120 @@ unsafe fn ryu_special_hi_effect(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             EFFECT_FOLLOW_FLIP(fighter, Hash40::new("ryu_savingattack_line_r"), Hash40::new("ryu_savingattack_line_l"), Hash40::new("top"), 10, 8, 3, -100, 160, 0, 1.4, false, *EF_FLIP_NONE);
         }
         LAST_EFFECT_SET_RATE(fighter, 1.1);
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
@@ -803,7 +796,7 @@ unsafe fn ryu_special_air_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         MeterModule::watch_damage(fighter.battle_object, true);
-        VarModule::off_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
@@ -812,15 +805,15 @@ unsafe fn ryu_special_air_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_DECIDE_STRENGTH);
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             if MeterModule::drain(fighter.battle_object, 3) {
-                 VarModule::on_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL);
+                 VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             WHOLE_HIT(fighter, *HIT_STATUS_XLU);
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 10.0, 7.6, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 0, Hash40::new("shoulderr"), 3.0, 95, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 0, Hash40::new("armr"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 3, 0, Hash40::new("handr"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 10.0, 7.6, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 1, 0, Hash40::new("shoulderr"), 3.0, 95, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 2, 0, Hash40::new("armr"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 3, 0, Hash40::new("handr"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
 		}
         else{
             if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
@@ -836,11 +829,11 @@ unsafe fn ryu_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
-            ATTACK(fighter, 0, 1, Hash40::new("top"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 10.0, 7.6, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 1, Hash40::new("shoulderr"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 1, Hash40::new("armr"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 3, 1, Hash40::new("handr"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            ATTACK(fighter, 0, 1, Hash40::new("top"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 10.0, 7.6, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 1, 1, Hash40::new("shoulderr"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 2, 1, Hash40::new("armr"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 3, 1, Hash40::new("handr"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
 		}
         else{
             if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
@@ -856,17 +849,17 @@ unsafe fn ryu_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             AttackModule::clear(boma, 0, false);
 		}
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_JUMP);
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
-            ATTACK(fighter, 1, 2, Hash40::new("shoulderr"), 12.0, 80, 90, 0, 80, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 2, Hash40::new("armr"), 12.0, 80, 90, 0, 80, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 3, 2, Hash40::new("handr"), 12.0, 80, 90, 0, 80, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            ATTACK(fighter, 1, 2, Hash40::new("shoulderr"), 12.0, 80, 90, 0, 80, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 2, 2, Hash40::new("armr"), 12.0, 80, 90, 0, 80, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 3, 2, Hash40::new("handr"), 12.0, 80, 90, 0, 80, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
 		}
         else{
             if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
@@ -896,7 +889,7 @@ unsafe fn ryu_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
 
@@ -911,120 +904,120 @@ unsafe fn ryu_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     wait(lua_state, 2.0);
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("ryu_syoryuken_aerial"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             EFFECT_FOLLOW_FLIP(fighter, Hash40::new("ryu_savingattack_line_r"), Hash40::new("ryu_savingattack_line_l"), Hash40::new("top"), 10, 8, 3, -100, 160, 0, 1.4, false, *EF_FLIP_NONE);
         }
         LAST_EFFECT_SET_RATE(fighter, 1.1);
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
@@ -1038,7 +1031,7 @@ unsafe fn ryu_special_hi_command_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         MeterModule::watch_damage(fighter.battle_object, true);
-        VarModule::off_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
         HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
     }
@@ -1049,15 +1042,15 @@ unsafe fn ryu_special_hi_command_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_DECIDE_STRENGTH);
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             if MeterModule::drain(fighter.battle_object, 3) {
-                 VarModule::on_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL);
+                 VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             WHOLE_HIT(fighter, *HIT_STATUS_XLU);
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 10.0, 7.6, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 0, Hash40::new("shoulderr"), 3.0, 95, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 0, Hash40::new("armr"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 3, 0, Hash40::new("handr"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 10.0, 7.6, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 1, 0, Hash40::new("shoulderr"), 3.0, 95, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 2, 0, Hash40::new("armr"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 3, 0, Hash40::new("handr"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
 		}
         else{
             if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
@@ -1073,11 +1066,11 @@ unsafe fn ryu_special_hi_command_game(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
-            ATTACK(fighter, 0, 1, Hash40::new("top"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 10.0, 7.6, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 1, Hash40::new("shoulderr"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 1, Hash40::new("armr"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 3, 1, Hash40::new("handr"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            ATTACK(fighter, 0, 1, Hash40::new("top"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 10.0, 7.6, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 1, 1, Hash40::new("shoulderr"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 2, 1, Hash40::new("armr"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 3, 1, Hash40::new("handr"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
 		}
         else{
             if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
@@ -1093,17 +1086,17 @@ unsafe fn ryu_special_hi_command_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             AttackModule::clear(boma, 0, false);
 		}
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_JUMP);
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
-            ATTACK(fighter, 1, 2, Hash40::new("shoulderr"), 12.0, 80, 90, 0, 80, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 2, Hash40::new("armr"), 12.0, 80, 90, 0, 80, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 3, 2, Hash40::new("handr"), 12.0, 80, 90, 0, 80, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            ATTACK(fighter, 1, 2, Hash40::new("shoulderr"), 12.0, 80, 90, 0, 80, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 2, 2, Hash40::new("armr"), 12.0, 80, 90, 0, 80, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 3, 2, Hash40::new("handr"), 12.0, 80, 90, 0, 80, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
 		}
         else{
             if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
@@ -1120,7 +1113,7 @@ unsafe fn ryu_special_hi_command_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         }
     }
@@ -1157,7 +1150,7 @@ unsafe fn ryu_special_hi_command_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
 
@@ -1171,21 +1164,21 @@ unsafe fn ryu_special_hi_command_effect(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
         EFFECT_DETACH_KIND(fighter, Hash40::new("ryu_syoryuken_arc"), -1);
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             EFFECT_FOLLOW_FLIP(fighter, Hash40::new("ryu_savingattack_line_r"), Hash40::new("ryu_savingattack_line_l"), Hash40::new("top"), 10, 8, 3, -100, 160, 0, 1.4, false, *EF_FLIP_NONE);
         }
         LAST_EFFECT_SET_RATE(fighter, 1.1);
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
@@ -1195,101 +1188,101 @@ unsafe fn ryu_special_hi_command_effect(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
@@ -1303,7 +1296,7 @@ unsafe fn ryu_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         MeterModule::watch_damage(fighter.battle_object, true);
-        VarModule::off_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL);
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
         HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
     }
@@ -1314,15 +1307,15 @@ unsafe fn ryu_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_DECIDE_STRENGTH);
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             if MeterModule::drain(fighter.battle_object, 3) {
-                 VarModule::on_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL);
+                 VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             WHOLE_HIT(fighter, *HIT_STATUS_XLU);
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 10.0, 7.6, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 0, Hash40::new("shoulderr"), 3.0, 95, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 0, Hash40::new("armr"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 3, 0, Hash40::new("handr"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 10.0, 7.6, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 1, 0, Hash40::new("shoulderr"), 3.0, 95, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 2, 0, Hash40::new("armr"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 3, 0, Hash40::new("handr"), 3.0, 100, 100, 100, 0, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
 		}
         else{
             if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
@@ -1338,11 +1331,11 @@ unsafe fn ryu_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
-            ATTACK(fighter, 0, 1, Hash40::new("top"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 10.0, 7.6, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 1, Hash40::new("shoulderr"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 1, Hash40::new("armr"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 3, 1, Hash40::new("handr"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            ATTACK(fighter, 0, 1, Hash40::new("top"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 10.0, 7.6, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 1, 1, Hash40::new("shoulderr"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 2, 1, Hash40::new("armr"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 3, 1, Hash40::new("handr"), 3.0, 95, 10, 0, 95, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
 		}
         else{
             if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
@@ -1358,17 +1351,17 @@ unsafe fn ryu_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             AttackModule::clear(boma, 0, false);
 		}
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_JUMP);
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
-            ATTACK(fighter, 1, 2, Hash40::new("shoulderr"), 12.0, 80, 90, 0, 80, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 2, 2, Hash40::new("armr"), 12.0, 80, 90, 0, 80, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 3, 2, Hash40::new("handr"), 12.0, 80, 90, 0, 80, 4.6, 0.0, 0.0, 0.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+            ATTACK(fighter, 1, 2, Hash40::new("shoulderr"), 12.0, 80, 90, 0, 80, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 2, 2, Hash40::new("armr"), 12.0, 80, 90, 0, 80, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 3, 2, Hash40::new("handr"), 12.0, 80, 90, 0, 80, 4.6, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_FINAL02, *ATTACK_REGION_PUNCH);
 		}
         else{
             if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
@@ -1385,7 +1378,7 @@ unsafe fn ryu_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         }
     }
@@ -1421,7 +1414,7 @@ unsafe fn ryu_special_air_hi_command_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
 
@@ -1435,21 +1428,21 @@ unsafe fn ryu_special_air_hi_command_effect(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
         EFFECT_DETACH_KIND(fighter, Hash40::new("ryu_syoryuken_arc"), -1);
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             EFFECT_FOLLOW_FLIP(fighter, Hash40::new("ryu_savingattack_line_r"), Hash40::new("ryu_savingattack_line_l"), Hash40::new("top"), 10, 8, 3, -100, 160, 0, 1.4, false, *EF_FLIP_NONE);
         }
         LAST_EFFECT_SET_RATE(fighter, 1.1);
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
@@ -1459,101 +1452,101 @@ unsafe fn ryu_special_air_hi_command_effect(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_PRI(fighter, 200);
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::ryu::IS_USE_EX_SPECIAL) {
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
             COL_NORMAL(fighter);
         }
     }
