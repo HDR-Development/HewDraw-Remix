@@ -303,6 +303,28 @@ pub mod vars {
         }
     }
 
+    pub mod rosetta {
+        pub mod instance {
+            // ints
+            pub const COOLDOWN: i32 = 0x0100;
+            pub const ROSA_X: i32 = 0x0101;
+            pub const ROSA_Y: i32 = 0x0102;
+            pub const TICO_X: i32 = 0x0103;
+            pub const TICO_Y: i32 = 0x0104;
+            pub const TICO_RAYCAST: i32 = 0x0106;
+            pub const TICO_X_DIST: i32 = 0x0107;
+            pub const TICO_Y_DIST: i32 = 0x0108;
+			
+			// flag
+            pub const IS_TICO_DEAD: i32 = 0x0105;
+        }
+        pub mod status {
+            // int
+            /// Used for determining what luma does
+            pub const INVIS_FRAMES: i32 = 0x1100;
+        }
+    }
+
     pub mod elight {
         pub mod instance {
             // flags
