@@ -25,11 +25,13 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 					VarModule::set_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN, 0);
 					VarModule::off_flag(boma.object(), vars::rosetta::instance::IS_TICO_DEAD);
 				};
-				VarModule::set_int(fighter.battle_object, vars::rosetta::instance::TICO_RAYCAST, 
-					(GroundModule::ray_check(boma, &smash::phx::Vector2f{ x: VarModule::get_int(fighter.battle_object, vars::rosetta::instance::ROSA_X) as f32, y: VarModule::get_int(fighter.battle_object, vars::rosetta::instance::ROSA_Y) as f32}, &Vector2f{ x: VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_X) as f32, y: VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_Y) as f32}, false)) as i32
-				);
-				VarModule::set_int(fighter.battle_object, vars::rosetta::instance::TICO_X_DIST, (VarModule::get_int(fighter.battle_object, vars::rosetta::instance::ROSA_X)-VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_X)));
-				VarModule::set_int(fighter.battle_object, vars::rosetta::instance::TICO_Y_DIST, (VarModule::get_int(fighter.battle_object, vars::rosetta::instance::ROSA_Y)-VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_Y)));
+				let rosa_x = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::ROSA_X) as f32;
+				let rosa_y = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::ROSA_Y) as f32;
+				let tico_x = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_X) as f32;
+				let tico_y = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_Y) as f32;
+				VarModule::set_int(fighter.battle_object, vars::rosetta::instance::TICO_RAYCAST, (GroundModule::ray_check(boma, &smash::phx::Vector2f{ x: rosa_x, y: rosa_y}, &Vector2f{ x: tico_x, y: tico_y}, false)) as i32);
+				VarModule::set_int(fighter.battle_object, vars::rosetta::instance::TICO_X_DIST, (rosa_x-tico_x) as i32);
+				VarModule::set_int(fighter.battle_object, vars::rosetta::instance::TICO_Y_DIST, (rosa_y-tico_y) as i32);
 				//Teleport!
 				if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW && !VarModule::is_flag(fighter.battle_object, vars::rosetta::instance::IS_TICO_DEAD) && VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) == 0 {
 					if frame == 12.0 {
@@ -40,8 +42,8 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 						HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_XLU), 0);
 						VisibilityModule::set_whole(boma, false);
 						JostleModule::set_status(boma, false);	
-						let new_x = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_X) as f32;
-						let new_y = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_Y) as f32;
+						let new_x = tico_x;
+						let new_y = tico_y;
 						let pos = smash::phx::Vector3f { x: new_x, y: new_y, z: 0.0 };
 						PostureModule::set_pos(boma, &pos);
 						PostureModule::init_pos(boma, &pos, true, true);
@@ -73,7 +75,7 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 					};
 				};
 				if VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) > 0 {
-					VarModule::set_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN,  VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN)-1);
+					VarModule::dec_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN);
 				};
 				if VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) == 1 {
 					gimmick_flash(boma);
