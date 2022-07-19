@@ -294,6 +294,7 @@ unsafe fn dash_energy(fighter: &mut L2CFighterCommon) {
             VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, end_speed);
         }
 
+        // Shield Stop energy
         if fighter.is_pad_flag(PadFlag::GuardTrigger) && fighter.is_button_off(Buttons::Catch) {
             fighter.clear_lua_stack();
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.0);
