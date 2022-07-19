@@ -463,6 +463,9 @@ pub trait BomaExt {
     // tech/general subroutine
     unsafe fn handle_waveland(&mut self, require_airdodge: bool) -> bool;
     unsafe fn shift_ecb_on_landing(&mut self);
+
+    // Checks for status and enables transition to jump
+    unsafe fn check_jump_cancel(&mut self);
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -837,6 +840,20 @@ impl BomaExt for BattleObjectModuleAccessor {
         }
     }
 
+    unsafe fn check_jump_cancel(&mut self) {
+        let fighter = crate::util::get_fighter_common_from_accessor(self);
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
+            fighter.sub_transition_group_check_ground_jump_mini_attack();
+            fighter.sub_transition_group_check_ground_jump();
+        }
+        else {
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+            fighter.sub_transition_group_check_air_jump_aerial();
+        }
+    }
 }
 
 pub trait LuaUtil {
