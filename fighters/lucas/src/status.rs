@@ -5,6 +5,7 @@ utils::import!(common::djc::attack_air_main_status);
 
 pub fn install() {
     install_status_scripts!(
+        //lucas_attack_lw4_main,
         attack_air, 
         special_hi_attack, 
         //lucas_special_s_pre,
@@ -32,13 +33,25 @@ fn lucas_reset(fighter: &mut L2CFighterCommon) {
     }
 }
 
+// AttackLw4 //
+
+#[status_script(agent = "lucas", status = FIGHTER_STATUS_KIND_ATTACK_LW4, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn lucas_attack_lw4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.main_shift(lucas_attack_lw_4_main_loop)
+}
+
+unsafe extern "C" fn lucas_attack_lw_4_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    
+    1.into()
+}
+
 // SPECIAL N //
 
 #[status_script(agent = "lucas", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn lucas_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
-    if(VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE)) {
-        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE);
-        return 1.into();
+    if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+        fighter.change_status(FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE.into(), false.into());
+        return 0.into();
     }
     else {
         original!(fighter)

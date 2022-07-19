@@ -31,6 +31,7 @@ pub fn install() {
         Hash40::new("fighter_kind_ryu"),
         statuses::ryu::AIR_DASH,
         StatusInfo::new()
+            .with_init(air_dash_init)
             .with_pre(status_pre_EscapeAir)
             .with_main(air_dash_main)
             .with_end(status_end_EscapeAir)
@@ -209,7 +210,7 @@ unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 
 #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_ESCAPE_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn escape_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH) || fighter.handle_waveland(false, false) {
+    if VarModule::is_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH) || fighter.handle_waveland(false) {
         VarModule::on_flag(fighter.battle_object, vars::common::status::SHOULD_WAVELAND);
         GroundModule::attach_ground(fighter.module_accessor, true);
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
@@ -275,9 +276,19 @@ unsafe fn escape_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
+pub unsafe extern "C" fn air_dash_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE);
+
+    // Clear knockback energy for airdash out of hitstun
+    fighter.clear_lua_stack();
+    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+    app::sv_kinetic_energy::clear_speed(fighter.lua_state_agent);
+
+    0.into()
+}
+
 // Air Dash main status
 pub unsafe extern "C" fn air_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE);
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_sub_escape_air_uniq as *const () as _));
     fighter.main_shift(air_dash_main_loop)
 }
