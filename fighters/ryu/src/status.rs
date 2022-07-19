@@ -286,6 +286,11 @@ pub unsafe extern "C" fn air_dash_main(fighter: &mut L2CFighterCommon) -> L2CVal
 unsafe extern "C" fn air_dash_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let frame = fighter.global_table[CURRENT_FRAME].get_i32();
 
+    // Clear knockback energy for airdash out of hitstun
+    fighter.clear_lua_stack();
+    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+    app::sv_kinetic_energy::clear_speed(fighter.lua_state_agent);
+
     if GroundModule::is_touch(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
         fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_GROUND));
     }
