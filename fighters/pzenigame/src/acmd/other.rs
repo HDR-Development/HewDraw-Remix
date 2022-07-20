@@ -121,19 +121,22 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pzenigame", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pzenigame", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 6.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("pzenigame_dash"), Hash40::new("top"), 2.5, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
+        PLAY_SE(fighter, Hash40::new("se_pzenigame_dash_start"));
     }
-    frame(lua_state, 12.0);
+    wait(lua_state, 9.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("pzenigame_brake"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-	    LAST_EFFECT_SET_RATE(fighter, 1.3);
-        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 3, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-    }    
+        PLAY_STEP(fighter, Hash40::new("se_pzenigame_step_left_m"));
+    }
+    wait(lua_state, 5.0);
+    if is_excute(fighter) {
+        PLAY_STEP(fighter, Hash40::new("se_pzenigame_step_right_m"));
+    }
 }
 
 #[acmd_script( agent = "pzenigame", script = "game_turndash" , category = ACMD_GAME , low_priority)]
@@ -212,7 +215,7 @@ pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
         escape_air_slide_game,
-        //dash_effect,
+        dash_sound,
         pzenigame_catch_game,
         damageflyhi_sound,
         damageflylw_sound,

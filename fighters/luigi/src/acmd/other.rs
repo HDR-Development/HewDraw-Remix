@@ -121,19 +121,22 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "luigi", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 3.0);
+    frame(lua_state, 6.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -2, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
+        PLAY_SE(fighter, Hash40::new("se_luigi_dash_start"));
     }
-    frame(lua_state, 15.0);
+    wait(lua_state, 9.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 3, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-    }    
+        PLAY_STEP(fighter, Hash40::new("se_luigi_step_left_m"));
+    }
+    wait(lua_state, 5.0);
+    if is_excute(fighter) {
+        PLAY_STEP(fighter, Hash40::new("se_luigi_step_right_m"));
+    }
 }
 
 #[acmd_script( agent = "luigi", script = "game_turndash" , category = ACMD_GAME , low_priority)]
@@ -185,7 +188,7 @@ pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
         escape_air_slide_game,
-      //dash_effect,
+      dash_sound,
 		luigi_turn_dash_game,
 	    damageflyhi_sound,
         damageflylw_sound,

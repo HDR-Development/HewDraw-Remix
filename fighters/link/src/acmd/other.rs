@@ -151,19 +151,22 @@ unsafe fn appeal_hi_r(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "link", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "link", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 5.0);
+    frame(lua_state, 6.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, true);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
+        PLAY_SE(fighter, Hash40::new("se_link_dash_start"));
     }
-    frame(lua_state, 15.0);
+    wait(lua_state, 9.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("footl"), 1, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-    }    
+        PLAY_STEP(fighter, Hash40::new("se_link_step_left_m"));
+    }
+    wait(lua_state, 5.0);
+    if is_excute(fighter) {
+        PLAY_STEP(fighter, Hash40::new("se_link_step_right_m"));
+    }
 }
 
 #[acmd_script( agent = "link", script = "game_turndash" , category = ACMD_GAME , low_priority)]
@@ -242,7 +245,7 @@ pub fn install() {
         escape_air_slide_game,
         appeal_hi_l,
         appeal_hi_r,
-        //dash_effect,
+        dash_sound,
 		link_turn_dash_game,
         link_boomerang_fly_game,
         link_boomerang_turn_game,

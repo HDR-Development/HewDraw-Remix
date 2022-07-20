@@ -151,17 +151,13 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "buddy", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
-    }
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 3, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        PLAY_SE(fighter, Hash40::new("se_buddy_dash_start"));
     }
 }
 
@@ -241,7 +237,7 @@ pub fn install() {
         escape_air_slide_game,
         buddy_catch_game,
         dash_game,
-        //dash_effect,
+        dash_sound,
         turn_dash_game,
         buddy_bullet_bakyun_game,
         damageflyhi_sound,
