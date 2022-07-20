@@ -5,7 +5,9 @@ use globals::*;
 utils::import_noreturn!(common::shoto_status::{
     fgc_pre_dashback,
     fgc_end_dashback,
-    ryu_idkwhatthisis2
+    ryu_idkwhatthisis2,
+    fgc_init_landing,
+    fgc_exec_landing
 });
 
 extern "Rust" {
@@ -25,7 +27,9 @@ pub fn install() {
         main_dashback,
         end_dashback,
         pre_superspecial,
-        pre_superspecial2
+        pre_superspecial2,
+        landing_init,
+        landing_exec
     );
 }
 
@@ -95,5 +99,21 @@ pub unsafe fn pre_superspecial2(fighter: &mut L2CFighterCommon) -> L2CValue {
     if  !VarModule::is_flag(boma.object(), vars::dolly::instance::SUPER_CANCEL) {
         MeterModule::drain(boma.object(), 4);
     }
+    original!(fighter)
+}
+
+// FIGHTER_STATUS_KIND_LANDING //
+
+#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+pub unsafe fn landing_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    app::FighterSpecializer_Dolly::update_opponent_lr_1on1(fighter.module_accessor, *FIGHTER_STATUS_KIND_TURN_DASH);
+    common::shoto_status::fgc_init_landing(fighter);
+    original!(fighter)
+}
+
+#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+pub unsafe fn landing_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    app::FighterSpecializer_Dolly::update_opponent_lr_1on1(fighter.module_accessor, *FIGHTER_STATUS_KIND_TURN_DASH);
+    common::shoto_status::fgc_exec_landing(fighter);
     original!(fighter)
 }

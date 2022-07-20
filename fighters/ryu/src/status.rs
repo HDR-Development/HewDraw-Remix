@@ -4,7 +4,9 @@ use globals::*;
 utils::import_noreturn!(common::shoto_status::{
     fgc_pre_dashback,
     fgc_end_dashback,
-    ryu_idkwhatthisis2
+    ryu_idkwhatthisis2,
+    fgc_init_landing,
+    fgc_exec_landing
 });
 
 extern "Rust" {
@@ -42,7 +44,9 @@ pub fn install() {
         main_dashback,
         end_dashback,
         main_attack,
-        escape_air_pre
+        escape_air_pre,
+        landing_init,
+        landing_exec
     );
 }
 
@@ -328,4 +332,20 @@ unsafe extern "C" fn air_dash_main_loop(fighter: &mut L2CFighterCommon) -> L2CVa
         }
     }
     0.into()
+}
+
+// FIGHTER_STATUS_KIND_LANDING //
+
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+pub unsafe fn landing_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    app::FighterSpecializer_Dolly::update_opponent_lr_1on1(fighter.module_accessor, *FIGHTER_STATUS_KIND_TURN_DASH);
+    common::shoto_status::fgc_init_landing(fighter);
+    original!(fighter)
+}
+
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+pub unsafe fn landing_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    common::shoto_status::fgc_exec_landing(fighter);
+    original!(fighter)
+    
 }

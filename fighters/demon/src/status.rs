@@ -4,7 +4,9 @@ use globals::*;
 utils::import_noreturn!(common::shoto_status::{
     fgc_pre_dashback,
     fgc_end_dashback,
-    ryu_idkwhatthisis2
+    ryu_idkwhatthisis2,
+    fgc_init_landing,
+    fgc_exec_landing
 });
 
 extern "Rust" {
@@ -302,6 +304,21 @@ unsafe extern "C" fn demon_attackcombo_main_loop_helper_second(fighter: &mut L2C
     status
 }
 
+// FIGHTER_STATUS_KIND_LANDING //
+
+#[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+pub unsafe fn landing_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    app::FighterSpecializer_Dolly::update_opponent_lr_1on1(fighter.module_accessor, *FIGHTER_STATUS_KIND_TURN_DASH);
+    common::shoto_status::fgc_init_landing(fighter);
+    original!(fighter)
+}
+
+#[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+pub unsafe fn landing_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    app::FighterSpecializer_Demon::update_opponent_lr_1on1(fighter.module_accessor, *FIGHTER_STATUS_KIND_TURN_DASH);
+    common::shoto_status::fgc_exec_landing(fighter);
+    original!(fighter)
+}
 
 pub fn install() {
     //skyline::install_hooks!(demon_ongrab);
@@ -313,6 +330,8 @@ pub fn install() {
         status_dash,
         demon_attack_main,
         demon_attackcombo_main,
+        landing_init,
+        landing_exec
         
     );
 }

@@ -720,3 +720,21 @@ pub unsafe extern "C" fn ryu_idkwhatthisis2(fighter: &mut L2CFighterCommon) {
         }
     }
 }
+
+#[utils::export(common::shoto_status)]
+pub unsafe fn fgc_init_landing(fighter: &mut L2CFighterCommon) {
+    let lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1);
+    if lr != 0.0 && PostureModule::lr(fighter.module_accessor) != lr {
+        PostureModule::set_lr(fighter.module_accessor, lr);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    }
+}
+
+#[utils::export(common::shoto_status)]
+pub unsafe fn fgc_exec_landing(fighter: &mut L2CFighterCommon) {
+    let lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1);
+    if lr != 0.0 && PostureModule::lr(fighter.module_accessor) != lr {
+        PostureModule::set_lr(fighter.module_accessor, lr);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    }
+}
