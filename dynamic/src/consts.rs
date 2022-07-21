@@ -277,7 +277,7 @@ pub mod vars {
     // Note: Terry starts his flags on 0xXX5X instead due to also using the shotos generic flags.
     pub mod dolly {
         pub mod instance {
-            pub const SUPER_CANCEL: i32 = 0x0100;
+            pub const SUPER_CANCEL: i32 = 0x0150;
         }
         pub mod status {
             // flags
