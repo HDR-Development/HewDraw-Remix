@@ -46,18 +46,16 @@ unsafe fn shine_jc_turnaround(fighter: &mut L2CFighterCommon) {
                 smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.02666667);
             }
         }
-        if fighter.motion_frame() > 3.0 {
-            if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.motion_frame() > 6.0)  // Allows for jump cancel on frame 5 in game
-            || fighter.is_status_one_of(&[
-                *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT,
-                *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
-                *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END]))
-            && !fighter.is_in_hitlag()
-            {
-                fighter.check_jump_cancel();
-            }
+		if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.motion_frame() > 6.0)  // Allows for jump cancel on frame 5 in game
+		|| fighter.is_status_one_of(&[
+			*FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT,
+			*FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
+			*FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END]))
+		&& !fighter.is_in_hitlag()
+		{
+			fighter.check_jump_cancel();
+		}
     
-        }   
     }
 }
 
