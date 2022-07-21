@@ -264,11 +264,6 @@ unsafe fn ike_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("ike_sword2"), false, false);
     }
-    frame(lua_state, 55.0);
-    if is_excute(fighter) {
-        //EFFECT_OFF_KIND(fighter, Hash40::new("sys_damage_aura"), false, false);
-        EFFECT_DETACH_KIND(fighter, Hash40::new("sys_damage_aura"), -1);
-    }
 }
 
 pub fn install() {
