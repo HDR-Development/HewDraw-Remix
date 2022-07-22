@@ -59,8 +59,10 @@ unsafe fn pichu_special_s_game(fighter: &mut L2CAgentBase) {
         }
         else if VarModule::is_flag(fighter.battle_object, vars::pichu::status::IS_CHARGE_ATTACK) {
             FT_ADD_DAMAGE(fighter, 4.5);
-            FT_MOTION_RATE(fighter, (11.0/18.0));
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 30.0, 40, 55, 0, 40, 3.2, 0.0, 3.3, 4.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_HEAD);
+            FT_MOTION_RATE(fighter, (12.0/18.0));
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 25.0, 40, 60, 0, 50, 3.2, 0.0, 3.3, 4.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_HEAD);
+            wait(lua_state, 9.0);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 40, 60, 0, 60, 3.2, 0.0, 3.3, 4.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_HEAD);
         }
         AttackModule::set_attack_keep_rumble(boma, 0, true);
     }
@@ -70,9 +72,48 @@ unsafe fn pichu_special_s_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
-        MeterModule::watch_damage(fighter.battle_object, false);
         WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_PIKACHU_STATUS_WORK_ID_FLAG_SKULL_BASH_BRAKE_TRIGGER);
     }
+}
+#[acmd_script( agent = "pichu", script = "effect_specials" , category = ACMD_EFFECT , low_priority)]
+unsafe fn pichu_special_s_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(fighter, Hash40::new("pichu_rocket_bomb"), Hash40::new("top"), 0, 4, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        }
+    frame(lua_state, 5.0);        
+    if !VarModule::is_flag(fighter.battle_object, vars::pichu::status::IS_CHARGE_ATTACK) {
+        if is_excute(fighter) {
+            EFFECT_FLW_POS(fighter, Hash40::new("pichu_rocket_aura"), Hash40::new("head"), 6.5, 0, 0, 90, 0, 0, 0.9, true);
+            EffectModule::enable_sync_init_pos_last(boma);
+            LAST_EFFECT_SET_COLOR(fighter, 0.85, 0.9, 1);
+            EFFECT_FLW_POS_NO_STOP(fighter, Hash40::new("pichu_rocket_jet"), Hash40::new("head"), 0, 0, 0, 0, 0, 0, 0.8 as u64, true);
+        }
+    }
+    else if VarModule::is_flag(fighter.battle_object, vars::pichu::status::IS_CHARGE_ATTACK){
+        if is_excute(fighter) {
+            EFFECT_FLW_POS(fighter, Hash40::new("pichu_rocket_aura_max"), Hash40::new("head"), 6.5, 0, 0, 90, 0, 0, 1.3, true);
+            EffectModule::enable_sync_init_pos_last(boma);
+            EFFECT_FLW_POS_NO_STOP(fighter, Hash40::new("pichu_rocket_jet"), Hash40::new("head"), 0, 0, 0, 0, 0, 0, 1.25 as u64, true);
+            EffectModule::enable_sync_init_pos_last(boma);
+            EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pichu_final_sphere_start"), Hash40::new("hip"), 0, 0, 0, 0, 0, 0, 0.3, true);
+        }
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        FLASH(fighter, 0.08, 0.661, 1, 0.471);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        FLASH(fighter, 1, 1, 1, 0.392);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        COL_NORMAL(fighter);
+    }
+    wait(lua_state, 1.0);
 }
 #[acmd_script( agent = "pichu", scripts = ["game_specialsend", "game_specialairsend"] , category = ACMD_GAME , low_priority)]
 unsafe fn pichu_special_s_end_game(fighter: &mut L2CAgentBase) {
@@ -139,7 +180,7 @@ unsafe fn pichu_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     else if VarModule::is_flag(fighter.battle_object, vars::pichu::status::IS_CHARGE_ATTACK) {
         if is_excute(fighter){
             FT_ADD_DAMAGE(fighter, 12.0);
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 24.0, 361, 71, 0, 50, 16.0, 0.0, 10.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 24.0, 361, 71, 0, 40, 18.0, 0.0, 10.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
         }
         frame(lua_state, 5.0);
         if is_excute(fighter) {
@@ -148,15 +189,146 @@ unsafe fn pichu_special_lw_hit_game(fighter: &mut L2CAgentBase) {
         }
     }
 }
+#[acmd_script( agent = "pichu", scripts = ["effect_speciallwhit", "effect_specialairlwhit"] , category = ACMD_EFFECT , low_priority)]
+unsafe fn pichu_special_lw_hit_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pichu_cheek"), Hash40::new("head"), 0, 0, 0, 0, -90, -90, 1, true);
+        LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 1.0);
+    WorkModule::is_flag(boma, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLAG_KAMINARI_ATTACK_HIT);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pichu_kaminari_hit2"), Hash40::new("top"), 0, -2, 0, 0, 90, 0, 1.15, true);
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pichu_kaminari_hit"), Hash40::new("top"), 0, -2, 0, 0, 90, 0, 0.85, true);
+        if VarModule::is_flag(fighter.battle_object, vars::pichu::status::IS_CHARGE_ATTACK) {
+            EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pichu_final_explosion"), Hash40::new("top"), 0, 5, 0, 0, 0, 0, 0.5, false);
+        }
+    }
+    if is_excute(fighter) {
+        FLASH(fighter, 0, 0, 0, 0);
+        BURN_COLOR(fighter, 2, 2, 0.5, 0.9);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        FLASH_FRM(fighter, 2, 0, 0, 0, 0);
+        BURN_COLOR_FRAME(fighter, 2, 2, 2, 0.5, 0.7);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        FLASH_FRM(fighter, 2, 0, 0, 0, 0);
+        BURN_COLOR_FRAME(fighter, 2, 2, 2, 0.5, 0);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        BURN_COLOR_NORMAL(fighter);
+        COL_NORMAL(fighter);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("pichu_kaminari_hit2"), false, true);
+    }
+    if is_excute(fighter) {
+        FLASH(fighter, 0, 0, 0, 0);
+        BURN_COLOR(fighter, 2, 2, 0.5, 0.9);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        FLASH_FRM(fighter, 2, 0, 0, 0, 0);
+        BURN_COLOR_FRAME(fighter, 2, 2, 2, 0.5, 0.7);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        FLASH_FRM(fighter, 2, 0, 0, 0, 0);
+        BURN_COLOR_FRAME(fighter, 2, 2, 2, 0.5, 0);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        BURN_COLOR_NORMAL(fighter);
+        COL_NORMAL(fighter);
+    }
+    wait(lua_state, 1.0);
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("pichu_kaminari_hit"), false, true);
+    }
+    else{
+        if is_excute(fighter) {
+            EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pichu_kaminari_hit2"), Hash40::new("top"), 0, 0, 0, 0, 90, 0, 0.8, true);
+            EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pichu_kaminari_hit"), Hash40::new("top"), 0, 0, 0, 0, 90, 0, 0.9, true);
+        }
+    }
+    for _ in 0..3{
+        if is_excute(fighter) {
+            FLASH(fighter, 0, 0, 0, 0);
+            BURN_COLOR(fighter, 2, 2, 0.5, 0.9);
+        }
+        wait(lua_state, 2.0);
+        if is_excute(fighter) {
+            FLASH_FRM(fighter, 2, 0, 0, 0, 0);
+            BURN_COLOR_FRAME(fighter, 2, 2, 2, 0.5, 0.7);
+        }
+        wait(lua_state, 2.0);
+        if is_excute(fighter) {
+            FLASH_FRM(fighter, 2, 0, 0, 0, 0);
+            BURN_COLOR_FRAME(fighter, 2, 2, 2, 0.5, 0);
+        }
+        wait(lua_state, 2.0);
+        if is_excute(fighter) {
+            BURN_COLOR_NORMAL(fighter);
+            COL_NORMAL(fighter);
+        }
+        wait(lua_state, 1.0);
+    }
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("pichu_kaminari_hit2"), false, true);
+    }
+    if is_excute(fighter) {
+        FLASH(fighter, 0, 0, 0, 0);
+        BURN_COLOR(fighter, 2, 2, 0.5, 0.9);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        FLASH_FRM(fighter, 2, 0, 0, 0, 0);
+        BURN_COLOR_FRAME(fighter, 2, 2, 2, 0.5, 0.7);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        FLASH_FRM(fighter, 2, 0, 0, 0, 0);
+        BURN_COLOR_FRAME(fighter, 2, 2, 2, 0.5, 0);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        BURN_COLOR_NORMAL(fighter);
+        COL_NORMAL(fighter);
+    }
+    wait(lua_state, 1.0);
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("pichu_kaminari_hit"), false, true);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("pichu_cheek"), false, true);
+    }
+    frame(lua_state, 34.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
+}
 
 pub fn install() {
     install_acmd_scripts!(
         pichu_special_n_game,
         pichu_special_s_game,
+        pichu_special_s_effect,
         pichu_special_s_end_game,
         pichu_special_air_s_miss_end_game,
         pichu_special_lw_game,
         pichu_special_lw_hit_game,
+        pichu_special_lw_hit_effect,
     );
 }
 
