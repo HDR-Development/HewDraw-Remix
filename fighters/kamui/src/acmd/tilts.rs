@@ -46,7 +46,7 @@ unsafe fn kamui_attack_hi3_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 8.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE (fighter, 1.0);
+        FT_MOTION_RATE(fighter, 8.0/(26.0 - 21.0));
     }
     
 }

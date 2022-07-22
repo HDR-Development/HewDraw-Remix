@@ -234,6 +234,10 @@ pub mod vars {
             pub const NUM_SPECIAL_S_CANCEL_THIS_AIRTIME:  i32 = 0x0101;
             pub const NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME: i32 = 0x0102;
         }
+        pub mod status {
+            // flags
+            pub const IS_BULLET_ARTS: i32 = 0x1100;
+        }
     }
 
     pub mod brave {
@@ -277,7 +281,7 @@ pub mod vars {
     // Note: Terry starts his flags on 0xXX5X instead due to also using the shotos generic flags.
     pub mod dolly {
         pub mod instance {
-            pub const SUPER_CANCEL: i32 = 0x0100;
+            pub const SUPER_CANCEL: i32 = 0x0150;
         }
         pub mod status {
             // flags
@@ -568,7 +572,6 @@ pub mod vars {
             pub const IS_SPECIAL_S_ELECTRIC_BLANKET: i32 = 0x1100;
 
             pub const IS_SPECIAL_HI_UNABLE_CANCEL:   i32 = 0x1100;
-            pub const IS_SPECIAL_HI_SWEETSPOT_HIT:   i32 = 0x1101;
         }
     }
 

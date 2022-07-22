@@ -4,7 +4,8 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 
 unsafe fn jab_cancels(fighter: &mut L2CFighterCommon) {
     if !fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK)
-    || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+    || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    || VarModule::is_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS) {
         return;
     }
     // Only jab 2 is cancelable, return out if not in that motion
@@ -54,7 +55,8 @@ unsafe fn jab_cancels(fighter: &mut L2CFighterCommon) {
 unsafe fn dash_attack_cancels(fighter: &mut L2CFighterCommon) {
     if !fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_DASH)
     || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-    || fighter.is_in_hitlag() {
+    || fighter.is_in_hitlag()
+    || VarModule::is_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS) {
         return;
     }
 
@@ -89,6 +91,7 @@ unsafe fn tilt_cancels(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_ATTACK_LW3
     ])
     || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    || VarModule::is_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS)
     {
         return;
     }
@@ -135,6 +138,7 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
     if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F])
     || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     || fighter.is_motion_one_of(&[Hash40::new("attack_air_n_hold"), Hash40::new("attack_air_f_hold"), Hash40::new("attack_air_f2_hold"), Hash40::new("attack_air_f3_hold"), Hash40::new("attack_air_hi_hold"), Hash40::new("attack_air_lw_hold")])
+    || VarModule::is_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS)
     {
         return;
     }
@@ -212,6 +216,7 @@ unsafe fn special_cancels(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U)
     && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     && fighter.motion_frame() > 31.0
+    && !VarModule::is_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS)
     {
         CancelModule::enable_cancel(fighter.module_accessor);
     }
