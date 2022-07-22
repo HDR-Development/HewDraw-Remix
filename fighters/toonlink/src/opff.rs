@@ -25,7 +25,7 @@ unsafe fn bomb_pull_b_reverse(fighter: &mut L2CFighterCommon) {
 
 // Lengthen sword
 unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
-	let long_sword_scale = Vector3f{x: 1.2, y: 1.0, z: 1.0};
+	let long_sword_scale = Vector3f{x: 1.04, y: 1.01, z: 1.01};
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("sword2"), &long_sword_scale);
 }
 
