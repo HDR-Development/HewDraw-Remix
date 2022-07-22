@@ -234,6 +234,10 @@ pub mod vars {
             pub const NUM_SPECIAL_S_CANCEL_THIS_AIRTIME:  i32 = 0x0101;
             pub const NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME: i32 = 0x0102;
         }
+        pub mod status {
+            // flags
+            pub const IS_BULLET_ARTS: i32 = 0x1100;
+        }
     }
 
     pub mod brave {
