@@ -47,7 +47,7 @@ unsafe fn shine_jc_turnaround(fighter: &mut L2CFighterCommon) {
             }
         }
         if fighter.motion_frame() > 3.0 {
-            if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.motion_frame() > 6.0)  // Allows for jump cancel on frame 5 in game
+            if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.motion_frame() > 3.0)  // Allows for jump cancel on frame 5 in game
             || fighter.is_status_one_of(&[
                 *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT,
                 *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
