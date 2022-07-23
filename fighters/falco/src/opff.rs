@@ -42,7 +42,7 @@ unsafe fn shine_jc_turnaround(fighter: &mut L2CFighterCommon, frame: f32) {
             if frame > 1.0 && fighter.motion_frame() <= 3.0 {
                 KineticModule::mul_speed(fighter.module_accessor, &Vector3f::new(0.0, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             }
-            if frmae > 3.0 {
+            if frame > 3.0 {
                 smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.02666667);
             }
         }
