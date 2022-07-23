@@ -18,7 +18,7 @@ unsafe fn nair_fair_momentum_handling(fighter: &mut smash::lua2cpp::L2CFighterCo
                 let initial_x_mul = 0.35;
                 let control_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) as *mut smash::app::KineticEnergy;
                 smash::app::lua_bind::KineticEnergy::mul_speed(control_energy, &Vector3f::new(0.1, 1.0, 1.0));
-                println!("is_infliction triggered!");
+                // println!("is_infliction triggered!");
             }
             
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD){
@@ -47,8 +47,8 @@ unsafe fn nair_fair_momentum_handling(fighter: &mut smash::lua2cpp::L2CFighterCo
                 fighter.clear_lua_stack();
                 
                 fighter.clear_lua_stack();
-                println!("is_infliction_status triggered! setting limit speed to... {}", air_speed_x_stable * max_x_mul);
-                println!("fall speed is... {}", air_speed_y_stable);
+                // println!("is_infliction_status triggered! setting limit speed to... {}", air_speed_x_stable * max_x_mul);
+                // println!("fall speed is... {}", air_speed_y_stable);
             }
         }
         

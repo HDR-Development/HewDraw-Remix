@@ -133,7 +133,7 @@ unsafe fn waveland_plat_drop(boma: &mut BattleObjectModuleAccessor, cat2: i32, s
     if boma.is_status(*FIGHTER_STATUS_KIND_LANDING)
     && VarModule::is_flag(boma.object(), vars::common::instance::ENABLE_WAVELAND_PLATDROP)
     && GroundModule::is_passable_ground(boma)
-    && boma.prev_stick_y() > -0.3 && boma.stick_y() < pass_thresh
+    && boma.prev_stick_y() > -0.3 && boma.left_stick_y() < pass_thresh
     && boma.is_prev_status_one_of(&[
         *FIGHTER_STATUS_KIND_ESCAPE_AIR,
         *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE
@@ -144,7 +144,7 @@ unsafe fn waveland_plat_drop(boma: &mut BattleObjectModuleAccessor, cat2: i32, s
     }
 
     if boma.is_status(*FIGHTER_STATUS_KIND_LANDING)
-        && boma.stick_y() > pass_thresh
+        && boma.left_stick_y() > pass_thresh
     {
         VarModule::on_flag(boma.object(), vars::common::instance::ENABLE_WAVELAND_PLATDROP);
     }
@@ -267,11 +267,11 @@ unsafe fn drift_di(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
         }
 
         let current_damage = DamageModule::damage(boma, 0);
-        println!("Current damage: {}", current_damage);
+        // println!("Current damage: {}", current_damage);
         let percent_mul = (1.0 - (current_damage / 100.0) * ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.drift_reduction_mul_at_100")).max(0.0);
-        println!("percent based multiplier: {}", percent_mul);
+        // println!("percent based multiplier: {}", percent_mul);
 
-        let drift_value = boma.stick_x() * speed_mul * percent_mul;
+        let drift_value = boma.left_stick_x() * speed_mul * percent_mul;
         fighter.set_speed(Vector2f::new(speed_x + drift_value, speed_y), *FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
     }
 }
@@ -368,13 +368,13 @@ pub unsafe fn teeter_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
         *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL,
         *FIGHTER_STATUS_KIND_LANDING_DAMAGE_LIGHT]
     )
-    && (KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL)
+    && ((KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL)
     - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND)
-    - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN)).abs() > 0.0) {
+    - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN)) * PostureModule::lr(boma)) > 0.0) {
 
         // Conditions for transitioning to teeter animation in sub_ground_check_ottotto
         if (GroundModule::is_ottotto(boma, 1.72) // Original value: 0.86
-        && fighter.global_table[STICK_X].get_f32().abs() < 0.75) {
+        && fighter.left_stick_x().abs() < 0.75) {
             fighter.change_status(
                 FIGHTER_STATUS_KIND_OTTOTTO.into(),
                 true.into()

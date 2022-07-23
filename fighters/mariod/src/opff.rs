@@ -19,7 +19,7 @@ unsafe fn super_sheet_stall(boma: &mut BattleObjectModuleAccessor, status_kind: 
     }
 }
 
-unsafe fn up_special_cancel_and_sweetspot_detection(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, stick_x: f32, facing: f32, frame: f32) {
+unsafe fn up_special_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, stick_x: f32, facing: f32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI{
         if frame < 3.0 {
             if facing * stick_x < 0.0 {
@@ -32,19 +32,12 @@ unsafe fn up_special_cancel_and_sweetspot_detection(boma: &mut BattleObjectModul
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
             }
         }
-        if (situation_kind == *SITUATION_KIND_GROUND && (frame >= 3.0 && frame < 5.0))
-        || (situation_kind == *SITUATION_KIND_AIR && (frame >= 2.0 && frame < 6.0)) {
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
-                // Detect if you've hit the sweetspot
-                VarModule::on_flag(boma.object(), vars::mariod::status::IS_SPECIAL_HI_SWEETSPOT_HIT);
-            }
-        }
     }
 }
 
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //super_sheet_stall(boma, status_kind, situation_kind, frame);
-    up_special_cancel_and_sweetspot_detection(boma, status_kind, situation_kind, stick_x, facing, frame);
+    up_special_cancel(boma, status_kind, situation_kind, stick_x, facing, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MARIOD )]

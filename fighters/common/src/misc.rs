@@ -30,7 +30,6 @@ pub unsafe fn calc_melee_momentum(fighter: &mut L2CFighterCommon, aerial_attack:
     let jump_speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("jump_speed_x"), 0);
     let jump_speed_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("jump_speed_x_mul"), 0);
     let run_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("run_speed_max"), 0);
-    let stick_x = ControlModule::get_stick_x(fighter.module_accessor);
     let ratio = VarModule::get_float(fighter.battle_object, vars::common::instance::JUMP_SPEED_RATIO);
     //println!("run_speed_max: {}", run_speed_max);
     //println!("jump_speed_ratio: {}", ratio); 
@@ -63,7 +62,7 @@ pub unsafe fn calc_melee_momentum(fighter: &mut L2CFighterCommon, aerial_attack:
 
     //println!("current velocity: {}", x_vel);
 
-    let mut calcJumpSpeed = (x_vel * jump_speed_x_mul) + (jump_speed_x * stick_x);  // Calculate jump momentum based on the momentum you had on the last frame of jumpsquat
+    let mut calcJumpSpeed = (x_vel * jump_speed_x_mul) + (jump_speed_x * fighter.left_stick_x());  // Calculate jump momentum based on the momentum you had on the last frame of jumpsquat
 
     //println!("calcJumpSpeed: {}", calcJumpSpeed);
 

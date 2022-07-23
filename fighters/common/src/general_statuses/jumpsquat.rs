@@ -79,6 +79,9 @@ unsafe extern "C" fn status_pre_JumpSquat_param(fighter: &mut L2CFighterCommon, 
 unsafe fn status_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lr_update = fighter.sub_status_JumpSquat_check_stick_lr_update();
     fighter.status_JumpSquat_common(lr_update);
+    if fighter.is_cat_flag(CatHdr::Wavedash) {
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+    }
     fighter.sub_shift_status_main(L2CValue::Ptr(status_JumpSquat_Main as *const () as _))
 }
 
@@ -171,7 +174,7 @@ unsafe fn status_end_JumpSquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     //println!("end");
     InputModule::disable_persist(fighter.battle_object);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
-    VarModule::off_flag(fighter.battle_object, vars::common::status::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
     VarModule::off_flag(fighter.battle_object, vars::common::instance::CSTICK_OVERRIDE);
     VarModule::off_flag(fighter.battle_object, vars::common::instance::CSTICK_OVERRIDE_SECOND);
     VarModule::set_int(fighter.battle_object, vars::common::instance::JUMP_SQUAT_FRAME, 0);
@@ -283,7 +286,7 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
     && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N == 0 {
         if !(fighter.kind() == *FIGHTER_KIND_PICKEL 
         && fighter.is_prev_status_one_of(&[*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT])) {
-            VarModule::on_flag(fighter.battle_object, vars::common::status::ENABLE_AIR_ESCAPE_JUMPSQUAT);
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
         }
     }
     let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new_raw(motion_kind)) as u32 as f32;
@@ -291,7 +294,7 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
         StatusModule::set_situation_kind(fighter.module_accessor, app::SituationKind(*SITUATION_KIND_AIR), false);
         let situation_kind = fighter.global_table[SITUATION_KIND].clone();
         fighter.global_table[PREV_SITUATION_KIND].assign(&situation_kind);
-        if VarModule::is_flag(fighter.battle_object, vars::common::status::ENABLE_AIR_ESCAPE_JUMPSQUAT) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT) {
             // check if we are doing directional airdodge
             let stick = app::sv_math::vec2_length(fighter.global_table[STICK_X].get_f32(), fighter.global_table[STICK_Y].get_f32());
             if stick >= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_stick"))
@@ -362,66 +365,21 @@ unsafe fn sub_jump_squat_uniq_check_sub(fighter: &mut L2CFighterCommon, flag: L2
     } else {
         // if we are here, it means that we are using tap jump
         VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_TAP_JUMP);
-        /*if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
-            println!("CSTICK TRIGGER");
-        }*/
-        let stick_y_first = ControlModule::get_stick_y(fighter.module_accessor); 
-        if stick_y_first == 0.0 {
-            ControlModule::set_main_stick_y(fighter.module_accessor, 0.0001);
-        }
-        let frame = VarModule::get_int(fighter.battle_object, vars::common::instance::JUMP_SQUAT_FRAME);
-        let end_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0);
 
-        // detect when left stick position is overridden by cstick (fuck you ult devs)
-        if (ControlModule::get_attack_air_stick_y(fighter.module_accessor) - stick_y_first).abs() < 0.03 && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
-            if VarModule::is_flag(fighter.battle_object, vars::common::instance::CSTICK_OVERRIDE) {
-                //println!("2nd frame override");
-                VarModule::on_flag(fighter.battle_object, vars::common::instance::CSTICK_OVERRIDE_SECOND);
-                ControlModule::reset_main_stick_x(fighter.module_accessor);
-                ControlModule::set_main_stick_y(fighter.module_accessor, 0.0);
-            }
-            if frame >= (end_frame - 1) && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
-                //println!("override");
-                VarModule::on_flag(fighter.battle_object, vars::common::instance::CSTICK_OVERRIDE);
-                ControlModule::reset_main_stick_x(fighter.module_accessor);
-                ControlModule::set_main_stick_y(fighter.module_accessor, 0.0);
-            }
+        // remove buffered aerial cstick drift
+        if fighter.is_button_on(Buttons::CStickOverride) {
+            ControlModule::reset_main_stick_x(fighter.module_accessor);
         }
-
-        //println!("get_stick_prev_y: {}", ControlModule::get_stick_prev_y(fighter.module_accessor));
-        //println!("get_attack_air_stick_y: {}", ControlModule::get_attack_air_stick_y(fighter.module_accessor));
-        //println!("get_stick_y: {}", ControlModule::get_stick_y(fighter.module_accessor));
-        //println!(".");
 
         // compare the value of the left stick with the threshold for stick jumping
-        let prev_stick_y = ControlModule::get_stick_prev_y(fighter.module_accessor);
-        let stick_y = ControlModule::get_stick_y(fighter.module_accessor);
-        if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
-            if stick_y != 0.0 && stick_y < WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_neutral_y")) {
-                if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-                    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
-                }
-            }
-            else {
-                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
+        if fighter.left_stick_y() < WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_neutral_y")) {
+            // used to buffer specials and make sure that we aren't detecting when c stick is off
+            if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
             }
         }
         else {
-            if prev_stick_y != 0.0 && prev_stick_y < WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_neutral_y")) {
-                // used to buffer specials and make sure that we aren't detecting when c stick is off
-                if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-                    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
-                    if frame == end_frame && !VarModule::is_flag(fighter.battle_object, vars::common::instance::CSTICK_OVERRIDE) {
-                        if stick_y > WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_neutral_y")) {
-                            //println!("edge case fullhop");
-                            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
-                        }
-                    }
-                }
-            }
-            else {
-                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
-            }
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
         }
         if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)
             && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
@@ -468,5 +426,5 @@ unsafe fn sub_status_JumpSquat_check_stick_lr_update(fighter: &mut L2CFighterCom
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
     // only allow jumpsquat to flip you around if your previous status was Dash and your directional input was caused by cstick (cstick input 2 frames within jumpsquat)
     // allows for cstick IRAR
-    L2CValue::Bool(prev_status == *FIGHTER_STATUS_KIND_DASH && VarModule::get_int(fighter.battle_object, vars::common::instance::CSTICK_LIFE) > 0)
+    L2CValue::Bool(prev_status == *FIGHTER_STATUS_KIND_DASH && fighter.is_button_on(Buttons::CStickOverride))
 }
