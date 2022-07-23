@@ -29,4 +29,7 @@
         <int hash="start_frame">3</int>
         <int hash="end_frame">10</int>
     </struct>
+    <int hash="dash_perfect_pivot_window">4</int>
+    <float hash="perfect_pivot_speed_mul">-0.75</float>
+    <float hash="late_perfect_pivot_speed_mul">-0.5</float>
 </struct>
