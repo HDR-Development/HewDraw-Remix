@@ -46,7 +46,7 @@ unsafe fn shine_jc_turnaround(fighter: &mut L2CFighterCommon, frame: f32) {
                 smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.02666667);
             }
         }
-        if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && frame > 4.0)  // Allows for jump cancel on frame 3 in game
+        if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && frame > 4.0)  // Allows for jump cancel on frame 5 in game
         || fighter.is_status_one_of(&[
             *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT,
             *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
