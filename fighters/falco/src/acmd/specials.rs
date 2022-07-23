@@ -152,13 +152,12 @@ unsafe fn falco_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        
+        // This allows falco jump stalling. DO NOT REMOVE UNLESS YOU FEEL YOU ARE GOING TO STATUS SCRIPT IT.
         KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         let shine_vec = Vector3f { x: 0.25, y: 0.0, z: 1.0 };
         KineticModule::mul_speed(boma, &shine_vec, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         let shineGravity = Vector3f { x: 1.0, y: 0.1588, z: 1.0 };
         KineticModule::mul_accel(boma, &shineGravity, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
