@@ -144,6 +144,9 @@ unsafe fn pichu_special_lw_game(fighter: &mut L2CAgentBase) {
     else if VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1 {
         if is_excute(fighter) {
             VarModule::on_flag(fighter.battle_object, vars::pichu::status::IS_CHARGE_ATTACK);
+        }
+        wait(lua_state, 1.0);
+        if is_excute(fighter) {
             VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 0);
         }
         frame(lua_state, 21.0);

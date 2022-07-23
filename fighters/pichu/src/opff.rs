@@ -26,7 +26,8 @@ unsafe fn charge_state_increase(boma: &mut BattleObjectModuleAccessor) {
 // handles pichu's charge decrease once at full charge
 unsafe fn charge_state_decrease(boma: &mut BattleObjectModuleAccessor) {
     if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 1 {
-        if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) > 0 {
+        if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) > 0 
+        && !boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW]) {
             VarModule::dec_int(boma.object(), vars::common::instance::GIMMICK_TIMER);
         }
         if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) <= 0 {
