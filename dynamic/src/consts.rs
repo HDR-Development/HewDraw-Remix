@@ -572,7 +572,6 @@ pub mod vars {
             pub const IS_SPECIAL_S_ELECTRIC_BLANKET: i32 = 0x1100;
 
             pub const IS_SPECIAL_HI_UNABLE_CANCEL:   i32 = 0x1100;
-            pub const IS_SPECIAL_HI_SWEETSPOT_HIT:   i32 = 0x1101;
         }
     }
 
@@ -769,6 +768,21 @@ pub mod vars {
         }
     }
 
+    pub mod pichu {
+        pub mod instance {
+            //ints
+            pub const CHARGE_LEVEL: i32 = 0x0100;
+            pub const CHARGE_EFFECT_HANDLER: i32 = 0x0101;
+
+            // floats
+            pub const CHARGE_DAMAGE_MUL: i32 = 0x0100;
+            pub const CHARGE_RECOIL_MUL: i32 = 0x0101;
+        }
+        pub mod status {
+            // flags
+            pub const IS_CHARGE_ATTACK: i32 = 0x1100;
+        }
+    }
 
 }
 

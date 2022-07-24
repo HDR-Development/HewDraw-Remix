@@ -193,22 +193,6 @@ unsafe fn super_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
     }
 }
 
-// Terry Shield Stop and Run Drop
-unsafe fn shield_stop_run_drop(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_y: f32, situation_kind: i32) {
-    if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_GUARD_TRIGGER)
-        && ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_CATCH)
-        && situation_kind == *SITUATION_KIND_GROUND
-        && [*FIGHTER_STATUS_KIND_DASH, *FIGHTER_DOLLY_STATUS_KIND_DASH_BACK].contains(&status_kind)
-    {
-        let flick_y_sens = ParamModule::get_float(boma.object(), ParamType::Common, "general_flick_y_sens");
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_GUARD_ON, true);
-        ControlModule::clear_command(boma, true);
-        if GroundModule::is_passable_ground(boma) && boma.is_flick_y(flick_y_sens) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_PASS, true);
-        }
-    }
-}
-
 // TRAINING MODE
 // Full Meter Gain via shield during taunt
 unsafe fn full_meter_training_taunt(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
@@ -231,7 +215,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // super_special_meter_activation(boma);
     cancel_supers_early(boma, status_kind, situation_kind, frame);
     super_cancels(fighter, boma, id, status_kind, cat[3], motion_kind);
-    shield_stop_run_drop(boma, status_kind, stick_y, situation_kind);
     full_meter_training_taunt(fighter, boma, status_kind);
     power_dunk_break(boma);
     special_cancels(boma);
