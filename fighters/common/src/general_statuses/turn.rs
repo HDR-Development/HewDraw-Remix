@@ -96,11 +96,9 @@ unsafe extern "C" fn status_turn_main(fighter: &mut L2CFighterCommon) -> L2CValu
             VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
             VarModule::off_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT);
             let dash_speed: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0);
-            let speed_mul = ParamModule::get_float(fighter.object(), ParamType::Common, "perfect_pivot_speed_mul");
-            let pivot_boost = dash_speed * speed_mul * PostureModule::lr(fighter.module_accessor);
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, pivot_boost);
-            app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+            let multiplier = -0.75;
+            let pivot_boost: smash::phx::Vector3f = smash::phx::Vector3f {x: dash_speed * multiplier, y: 0.0, z: 0.0};
+            KineticModule::add_speed(fighter.module_accessor, &pivot_boost);
         }
         /***fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);

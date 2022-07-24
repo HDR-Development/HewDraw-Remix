@@ -250,37 +250,52 @@ unsafe fn ike_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("ike_sword2"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("ike_sword2"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("ike_volcano_hold"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1.0, false);
+        LAST_EFFECT_SET_RATE(fighter, 2.0);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
     }
-    frame(lua_state, 12.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("ike_sword2"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
-    }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_ike_sword5"), Hash40::new("tex_ike_sword2"), 5, Hash40::new("sword"), 0.0, 1.0, 0.0, Hash40::new("sword"), 0.0, 16.2, 0.0, true, Hash40::new("null"), Hash40::new("sword"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.1);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("sword"), 0, 1, 0, 0, 0, 0, 0.55, false);
+        LAST_EFFECT_SET_RATE(fighter, 1.0);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("sword"), 0, 5, 0, 0, 0, 0, 0.5, false);
+        LAST_EFFECT_SET_RATE(fighter, 1.0);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("sword"), 0, 10, 0, 0, 0, 0, 0.45, false);
+        LAST_EFFECT_SET_RATE(fighter, 1.0);
+
+        EFFECT_FOLLOW(fighter, Hash40::new("ike_sword"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
+        AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_ike_sword1"), Hash40::new("tex_ike_sword2"), 6, Hash40::new("sword"), 0.0, 1.0, 0.0, Hash40::new("sword"), 0.0, 16.2, 0.0, true, Hash40::new("ike_sword"), Hash40::new("sword"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.5, 0.1);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("ike_attack_flash"), Hash40::new("sword"), 0, 12, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
-        EFFECT_FOLLOW(fighter, Hash40::new("ike_sword2"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
         AFTER_IMAGE_OFF(fighter, 10);
     }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("sword"), 0, 1, 0, 0, 0, 0, 0.55, false);
+        LAST_EFFECT_SET_RATE(fighter, 1.0);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("sword"), 0, 5, 0, 0, 0, 0, 0.5, false);
+        LAST_EFFECT_SET_RATE(fighter, 1.0);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("sword"), 0, 10, 0, 0, 0, 0, 0.45, false);
+        LAST_EFFECT_SET_RATE(fighter, 1.0);
+    }
     frame(lua_state, 31.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("ike_sword2"), true, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("ike_volcano_hold"), false, false);
+        EFFECT_OFF_KIND(fighter, Hash40::new("ike_sword"), true, true);
     }
+    frame(lua_state, 33.0);
+    if is_excute(fighter) {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("sys_damage_aura"), -1);
+    }
+    
 }
 #[acmd_script( agent = "ike", script = "effect_landingairlw" , category = ACMD_EFFECT , low_priority)]
 unsafe fn ike_landing_air_lw_effect(fighter: &mut L2CAgentBase) {

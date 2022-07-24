@@ -451,7 +451,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
         }
     }
 
-    let is_dash_input: bool = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0;
+    let is_dash_input: bool = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0;  // we register a dash input by 1. Using game's command cat dash check, or 2. Checking if cstick has been input and is > 0.6 (max cstick x value is 0.625)
     let is_backdash_input: bool = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0;
 
     if fighter.global_table[CURRENT_FRAME].get_i32() > 15  // if after frame 15 of dash (meant to be after dash-to-run transition frame but haven't found a way to pull that for each character) 
@@ -492,8 +492,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH)  // if backdash transition term is enabled (it is by default)
     && is_backdash_input {  // AND is a backdash input
         //println!("transition to backdash");
-        let perfect_pivot_window = ParamModule::get_int(fighter.object(), ParamType::Common, "dash_perfect_pivot_window");
-        if fighter.global_table[CURRENT_FRAME].get_i32() <= perfect_pivot_window {
+        if fighter.global_table[CURRENT_FRAME].get_i32() <= 2 {
             VarModule::on_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT);
         }
         else {
@@ -547,11 +546,11 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     interrupt_if!(fighter.sub_ground_check_stop_wall().get_bool());
 
     // f3 perfect pivots
-    if fighter.global_table[CURRENT_FRAME].get_i32() == 1  // if you are on f2 of current dash
-    && StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_TURN 
-    && StatusModule::prev_status_kind(fighter.module_accessor, 1) == *FIGHTER_STATUS_KIND_DASH  // AND you are in a backdash
+    if StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_TURN 
+    && StatusModule::prev_status_kind(fighter.module_accessor, 1) == *FIGHTER_STATUS_KIND_DASH  // if you are in a backdash
+    && fighter.global_table[CURRENT_FRAME].get_i32() == 1  // AND you are on f2 of current dash
     && stick_x.abs() < dash_stick_x {  // AND stick_x < dash stick threshold
-        // trigger late pivot
+        // trigger late perfect pivot
         VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_LATE_PIVOT);
         PostureModule::reverse_lr(fighter.module_accessor);
         PostureModule::update_rot_y_lr(fighter.module_accessor);

@@ -14,13 +14,6 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
             }
         }
     }
-    // Allow charge jump cancel even when left stick is down
-    if boma.is_status(*FIGHTER_REFLET_STATUS_KIND_SPECIAL_N_HOLD) {
-        if boma.is_input_jump() && boma.get_num_used_jumps() < boma.get_jump_count_max() {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_REFLET_STATUS_KIND_SPECIAL_N_JUMP_CANCEL, false);
-            WorkModule::set_int(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, *FIGHTER_REFLET_STATUS_SPECIAL_N_HOLD_INT_NEXT_STATUS);
-        }
-    }
 }
 
 // Robin Thunder airdodge cancel
