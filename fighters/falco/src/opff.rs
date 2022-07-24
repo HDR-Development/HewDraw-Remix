@@ -54,7 +54,7 @@ unsafe fn shine_jc_turnaround(fighter: &mut L2CFighterCommon, frame: f32) {
         && !fighter.is_in_hitlag()
         {
             fighter.check_jump_cancel();
-        }  
+        }
     }
 }
 
