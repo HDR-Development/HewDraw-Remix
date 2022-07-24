@@ -124,7 +124,7 @@ unsafe fn dolly_special_air_f_start_game(fighter: &mut L2CAgentBase) {
         }
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             if MeterModule::drain(fighter.battle_object, 2) {
-                FT_MOTION_RATE(fighter, (7.0-6.0)/8.0);
+                FT_MOTION_RATE(fighter, 8.0/(7.0-6.0));
                 VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
