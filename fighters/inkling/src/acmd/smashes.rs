@@ -23,7 +23,7 @@ unsafe fn inkling_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         if WorkModule::is_flag(boma,  *FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_INK_SUCCESS) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 12.5, 361, 75, 0, 35, 3.0, 0.0, 6.0, 11.7, Some(0.0), Some(6.0), Some(6.8), 0.95, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ink_hit"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
             ATTACK(fighter, 1, 0, Hash40::new("top"), 16.0, 361, 95, 0, 40, 4.5, 0.0, 6.0, 18.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ink_hit"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
-            AttackModule::set_ink_value(boma, 0, 100.0);
+            AttackModule::set_ink_value(boma, 0, 60.0);
             AttackModule::set_ink_value(boma, 1, 120.0);
         }
         if !WorkModule::is_flag(boma,  *FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_INK_SUCCESS) {
