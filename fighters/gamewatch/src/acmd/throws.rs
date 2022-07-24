@@ -157,7 +157,6 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        //REVERSE_LR(fighter);
         WorkModule::set_float(boma, 135.0, *FIGHTER_GAMEWATCH_STATUS_THROW_WORK_FLOAT_STOCK_ICON_ROTATE);
     }
     frame(lua_state, 21.0);
@@ -183,7 +182,6 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 41.0);
     if (is_excute(fighter)) {
-        //REVERSE_LR(fighter);
         FT_MOTION_RATE(fighter, 0.500);
     }
     
