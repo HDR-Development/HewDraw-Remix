@@ -79,7 +79,7 @@ unsafe fn inkling_attack_hi4_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if WorkModule::is_flag(boma,  *FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_INK_SUCCESS) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 90, 83, 0, 55, 8.3, 0.0, 20.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ink_hit"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_WATER);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 10.0, 100, 90, 0, 55, 14.0, 0.0, 20.0, 0.0, None, None, None, 0.7, 1.1, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ink_hit"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_WATER);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 10.0, 90, 100, 0, 55, 14.0, 0.0, 20.0, 0.0, None, None, None, 0.7, 1.1, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ink_hit"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_WATER);
             AttackModule::set_ink_value(boma, 0, 120.0);
             AttackModule::set_ink_value(boma, 1, 100.0);
         }
