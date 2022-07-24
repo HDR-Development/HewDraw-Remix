@@ -152,8 +152,8 @@ unsafe fn pacman_special_air_lw_failure_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        pacman_special_n_shoot_game,
-        pacman_special_air_n_shoot_game,
+        //pacman_special_n_shoot_game,
+        //pacman_special_air_n_shoot_game,
         pacman_special_lw_failure_game,
         pacman_special_air_lw_failure_game,
     );

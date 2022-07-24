@@ -57,21 +57,6 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
     let run_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("run_speed_max"), 0);
     let stick_x = fighter.global_table[STICK_X].get_f32();
 
-    let bidou_buttons = &[
-        Buttons::Attack,
-        Buttons::AttackRaw,
-        Buttons::Special,
-        Buttons::SpecialRaw,
-        Buttons::Smash
-    ];
-
-    let mut enable_bidou = false;
-    for button in bidou_buttons.iter() {
-        if fighter.boma().was_prev_button_on(*button) {
-            enable_bidou = true;
-        }
-    }
-
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), 1.into());
         return 1.into();
@@ -224,8 +209,8 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
         }
     }
 
-    let is_dash_input: bool = (fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0) || (enable_bidou && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) && stick_x * PostureModule::lr(fighter.module_accessor) > 0.6);
-    let is_backdash_input: bool = (fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0) || (enable_bidou && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) && stick_x * PostureModule::lr(fighter.module_accessor) < -0.6);
+    let is_dash_input: bool = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0;
+    let is_backdash_input: bool = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0;
 
     if MotionModule::frame(fighter.module_accessor) > 11.0
     && WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("run_stick_x")) <= fighter.global_table[STICK_X].get_f32() * -1.0 * PostureModule::lr(fighter.module_accessor)
@@ -273,7 +258,6 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
     }
 
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH)
-    && (!ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) || ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON))
     && is_dash_input {
         fighter.change_status(FIGHTER_STATUS_KIND_DASH.into(), true.into());
     }
@@ -326,16 +310,6 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
             return 1.into();
         }
         else {
-            if fighter.global_table[CURRENT_FRAME].get_i32() == 0 && stick_x != 0.0 {
-                let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
-                let applied_speed = (dash_speed * -1.0 * PostureModule::lr(fighter.module_accessor)) + (stick_x.signum() * ((run_accel_mul + (run_accel_add * stick_x.abs())))) + prev_speed;
-                //println!("Changing current dash speed: {}", applied_speed);
-                let applied_speed_clamped = applied_speed.clamp(-run_speed_max, run_speed_max);
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed_clamped);
-                app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-            }
-
             if !is_backdash_input
             && fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor) > 0.0
             && !VarModule::is_flag(fighter.battle_object, vars::common::status::IS_MOONWALK) {
