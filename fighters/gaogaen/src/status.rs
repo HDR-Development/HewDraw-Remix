@@ -5,7 +5,8 @@ use globals::*;
 pub fn install() {
     install_status_scripts!(
         attack_lw4_main,
-        attack_lw4_map_correction
+        attack_lw4_map_correction,
+        exec_special_n,
     );
 }
 
@@ -74,4 +75,21 @@ pub unsafe fn attack_lw4_map_correction(fighter: &mut L2CFighterCommon) -> L2CVa
         }
     }
     0.into()
+}
+
+#[status_script(agent = "gaogaen", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+pub unsafe fn exec_special_n(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR && StatusModule::prev_situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        GroundModule::set_cliff_check(fighter.module_accessor, app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES));
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_N_FLAG_GRAVITY_DEFAULT);
+    }
+    if GroundModule::can_entry_cliff(fighter.module_accessor) == 1 && KineticModule::get_kinetic_type(fighter.module_accessor) == *FIGHTER_KINETIC_TYPE_FALL && fighter.global_table[STICK_Y].get_f32() > -0.66 {
+        fighter.change_status(
+            L2CValue::I32(*FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE),
+            L2CValue::Bool(false)
+        );
+        return 1.into()
+    }
+    return 0.into()
 }

@@ -57,7 +57,8 @@ unsafe fn fthrow_movement(fighter: &mut L2CFighterCommon) {
      && fighter.is_situation(*SITUATION_KIND_GROUND) 
      && fighter.stick_x() != 0.0 {
 
-        let motion_vec = x_motion_vec(1.0, fighter.stick_x());
+        let motion_mul = if WorkModule::is_flag(fighter.boma(), *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_IS_REVENGE) {1.0} else {0.5};
+        let motion_vec = x_motion_vec(motion_mul, fighter.stick_x());
         KineticModule::add_speed_outside(fighter.module_accessor, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
         
     }
