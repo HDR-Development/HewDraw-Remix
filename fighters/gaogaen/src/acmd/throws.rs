@@ -174,7 +174,7 @@ unsafe fn gaogaen_throw_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         if !VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK) {
-            ModelModule::set_joint_translate(boma, Hash40::new("throw"), &Vector3f{x: 2.439, y: -6.660, z: -5.589}, false, false);
+            ModelModule::set_joint_translate(boma, Hash40::new("throw"), &Vector3f{x: 2.439, y: -6.660, z: -5.0}, false, false);
             let opponent_boma = fighter.get_grabbed_opponent_boma();
             VarModule::on_flag(opponent_boma.object(), vars::common::instance::DISABLE_GROUND_BOUNCE);
         }
