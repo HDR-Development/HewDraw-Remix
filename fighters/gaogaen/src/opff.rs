@@ -57,7 +57,8 @@ unsafe fn fthrow_movement(fighter: &mut L2CFighterCommon) {
      && fighter.is_situation(*SITUATION_KIND_GROUND) 
      && fighter.stick_x() != 0.0 {
 
-        let motion_vec = x_motion_vec(1.0, fighter.stick_x());
+        let motion_mul = if WorkModule::is_flag(fighter.boma(), *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_IS_REVENGE) {1.0} else {0.5};
+        let motion_vec = x_motion_vec(motion_mul, fighter.stick_x());
         KineticModule::add_speed_outside(fighter.module_accessor, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
         
     }
@@ -164,6 +165,13 @@ unsafe fn alolan_whip_special_grabs(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn lariat_ledge_slipoff(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
+        GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_KEEP));
+        fighter.sub_transition_group_check_air_cliff();
+    }
+}
+
 #[utils::macros::opff(FIGHTER_KIND_GAOGAEN )]
 pub fn gaogaen_opff(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
@@ -172,5 +180,6 @@ pub fn gaogaen_opff(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         fthrow_movement(fighter);
         angled_grab(fighter); 
         alolan_whip_special_grabs(fighter);
+        lariat_ledge_slipoff(fighter);
     }
 }
