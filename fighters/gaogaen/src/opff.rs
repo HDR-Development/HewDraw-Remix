@@ -172,8 +172,60 @@ unsafe fn lariat_ledge_slipoff(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn rotate_revenge_uthrow(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_motion(Hash40::new("throw_hi")){
+        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK) {
+            revenge_uthrow_rotation(boma, 10.0, 13.0, 16.0, 22.0);
+        }
+    }
+}
+
+unsafe fn revenge_uthrow_rotation(boma: &mut BattleObjectModuleAccessor, start_frame: f32, bend_frame: f32, return_frame: f32, straight_frame: f32) {
+    let frame = MotionModule::frame(boma);
+    let end_frame = MotionModule::end_frame(boma);
+    let max_rotation = 360.0;
+    let mut rotation = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+        
+    if frame >= start_frame && frame < return_frame {
+        // this has to be called every frame, or you snap back to the normal joint angle
+        // interpolate to the respective body rotation angle
+        let calc_body_rotate = max_rotation * ((frame - start_frame) / (bend_frame - start_frame));
+        let body_rotation = calc_body_rotate.clamp(0.0, max_rotation);
+        rotation = Vector3f{x: 0.0, y: body_rotation, z: 0.0};
+        ModelModule::set_joint_rotate(boma, Hash40::new("rot"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+    } else if frame >= return_frame && frame < straight_frame {
+        // linear interpolate back to normal
+        /*
+        let calc_body_rotate = max_rotation *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
+        let body_rotation = calc_body_rotate.clamp(0.0, max_rotation);
+        */
+        let calc_body_rotate = 360.0 *((frame - return_frame) / (straight_frame - return_frame)) + 360.0;
+        let body_rotation = calc_body_rotate.clamp(180.0, 360.0);
+        rotation = Vector3f{x: 0.0, y: body_rotation, z: 0.0};
+        ModelModule::set_joint_rotate(boma, Hash40::new("rot"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+    }
+
+    // adjust opponent offset
+    if frame >= return_frame - 2.0 && frame < straight_frame {
+        ModelModule::set_joint_translate(boma, Hash40::new("throw"), &Vector3f{x: 0.0, y: 27.0, z: 0.0}, false, false);
+    }
+}
+
 #[utils::macros::opff(FIGHTER_KIND_GAOGAEN )]
-pub fn gaogaen_opff(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+pub fn gaogaen_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    unsafe {
+        common::opff::fighter_common_opff(fighter);
+		gaogaen_frame(fighter)
+    }
+}
+
+pub unsafe fn gaogaen_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
+        gaogaen_opff(fighter, &mut *info.boma);
+    }
+}
+
+pub fn gaogaen_opff(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		cross_chop_techniques(fighter);
@@ -181,5 +233,6 @@ pub fn gaogaen_opff(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         angled_grab(fighter); 
         alolan_whip_special_grabs(fighter);
         lariat_ledge_slipoff(fighter);
+        rotate_revenge_uthrow(boma);
     }
 }
