@@ -267,7 +267,7 @@ unsafe fn miiswordsman_special_air_n2_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         let x_vel = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST, 0.0, x_vel * 0.6, 0.0, 0.0, 0.0);
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST, x_vel * 0.6, 0.0, 0.0, 0.0, 0.0);
         app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
         let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
         fighter.clear_lua_stack();
