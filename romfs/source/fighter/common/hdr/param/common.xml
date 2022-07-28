@@ -32,4 +32,12 @@
     <int hash="dash_perfect_pivot_window">4</int>
     <float hash="perfect_pivot_speed_mul">-0.75</float>
     <float hash="late_perfect_pivot_speed_mul">-0.5</float>
+    <struct hash="suicide_throw">
+        <float hash="throw_frame">100.0</float>
+        <float hash="damage_frame_mul">0.067</float>
+        <float hash="recovery_frame">1.0</float>
+        <float hash="clatter_frame_base">6.0</float>
+        <float hash="clatter_frame_max">13.0</float>
+        <float hash="clatter_frame_min">1.0</float>
+    </struct>
 </struct>

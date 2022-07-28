@@ -77,11 +77,43 @@ pub unsafe fn airdodge_refresh_on_hit_disable(boma: &mut BattleObjectModuleAcces
     VarModule::set_flag(boma.object(), vars::common::instance::PREV_FLAG_DISABLE_ESCAPE_AIR, WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR));
 }
 
+pub unsafe fn suicide_throw_mashout(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_THROWN) && LinkModule::get_parent_status_kind(boma, *LINK_NO_CAPTURE) == *FIGHTER_STATUS_KIND_THROW_KIRBY as u64 {
+        if fighter.global_table[CURRENT_FRAME].get_i32() <= 0 {
+            let throw_frame = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.throw_frame");
+            let damage_frame_mul = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.damage_frame_mul");
+            let recovery_frame = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.recovery_frame");
+            let clatter_frame_base = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.clatter_frame_base");
+            let clatter_frame_max = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.clatter_frame_max");
+            let clatter_frame_min = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.clatter_frame_min");
+            let thrown_damage = DamageModule::damage(boma, 0);
+            let thrower_damage = DamageModule::damage(boma.get_grabber_boma(), 0);
+            let damage_difference = thrower_damage - thrown_damage;
+            let clatter_frame_add = damage_difference * damage_frame_mul;
+            let mut clatter_frame = clatter_frame_base + clatter_frame_add;
+
+            if clatter_frame < clatter_frame_min {
+                clatter_frame = clatter_frame_min;
+            }
+            if clatter_frame > clatter_frame_max {
+                clatter_frame = clatter_frame_max;
+            }
+            
+            ControlModule::start_clatter(boma, throw_frame, recovery_frame, clatter_frame, 127, 0, false, false);
+        }
+        else {
+            if ControlModule::get_clatter_time(boma, 0) <= 0.0 {
+                fighter.change_status(FIGHTER_STATUS_KIND_CAPTURE_JUMP.into(), false.into());
+            }
+        }
+    }
+}
 pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     
     
     buffer_clearing(boma, status_kind);
     //sliding_smash_disable(fighter, boma, status_kind, fighter_kind);
     airdodge_refresh_on_hit_disable(boma, status_kind);
+    suicide_throw_mashout(fighter, boma);
 }
 

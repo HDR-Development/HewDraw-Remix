@@ -4,7 +4,8 @@ use globals::*;
  
 pub fn install() {
     install_status_scripts!(
-        pre_jump
+        pre_jump,
+        throw_kirby_map_correction
     );
 }
 
@@ -50,4 +51,44 @@ unsafe extern "C" fn kirby_pickel_jump_status_check(fighter: &mut L2CFighterComm
     else {
         return L2CValue::Bool(true);
     }
+}
+
+// FIGHTER_STATUS_KIND_THROW_KIRBY //
+
+#[status_script(agent = "kirby", status = FIGHTER_STATUS_KIND_THROW_KIRBY, condition = LUA_SCRIPT_STATUS_FUNC_MAP_CORRECTION)]
+pub unsafe fn throw_kirby_map_correction(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let motion_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_MOTION_KIND);
+    let frame = MotionModule::frame(fighter.module_accessor);
+    let prev_frame = MotionModule::prev_frame(fighter.module_accessor);
+    let fall_start_frame = if motion_kind == hash40("throw_b") { 28.0 } else { 32.0 };
+    let fall_stop_frame = if motion_kind == hash40("throw_b") { 30.0 } else { 35.0 };
+    let landing_frame = if motion_kind == hash40("throw_b") { 31.0 } else { 36.0 };
+    let return_air_frame = if motion_kind == hash40("throw_b") { 40.0 } else { 44.0 };
+    
+    if (motion_kind != hash40("throw_b") && motion_kind != hash40("throw_f"))
+    || frame <= fall_start_frame
+    {
+        return 0.into()
+    }
+    if prev_frame < return_air_frame && frame >= return_air_frame {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_THROW_FLAG_START_AIR);
+    }
+    if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
+        if prev_frame < fall_stop_frame && frame >= fall_stop_frame {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+            MotionModule::set_frame(fighter.module_accessor, fall_stop_frame, true);
+            MotionModule::set_rate(fighter.module_accessor, 0.0);
+            LinkModule::send_event_nodes_throw(fighter.module_accessor, Hash40::new("throw_sync_motion"), Hash40::new("invalid"), true, 0, 0, 0);
+        }
+    }
+    else {
+        if frame < landing_frame {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
+            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+            MotionModule::set_frame(fighter.module_accessor, landing_frame, true);
+            MotionModule::set_rate(fighter.module_accessor, 1.0);
+            LinkModule::send_event_nodes_throw(fighter.module_accessor, Hash40::new("throw_sync_motion"), Hash40::new("invalid"), true, 0, 0, 0);
+        }
+    }
+    0.into()
 }
