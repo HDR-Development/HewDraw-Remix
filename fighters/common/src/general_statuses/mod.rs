@@ -64,6 +64,10 @@ pub unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_DamageFlyCommon_init)]
 pub unsafe fn damage_fly_common_init(fighter: &mut L2CFighterCommon) {
     ControlModule::set_command_life_extend(fighter.module_accessor, 5);
+    if VarModule::is_flag(fighter.battle_object, vars::common::instance::DISABLE_GROUND_BOUNCE) {
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_D);
+    }
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::DISABLE_GROUND_BOUNCE);
     original!()(fighter)
 }
 
