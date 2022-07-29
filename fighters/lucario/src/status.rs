@@ -9,6 +9,18 @@ extern "C" {
     fn store_event_table(event: *const app::LinkEvent) -> L2CValue;
 }
 
+pub fn install() {
+    install_status_scripts!(
+        special_s_throw_pre,
+        special_s_throw_main,
+        pre_walk,
+        pre_dash,
+        pre_run
+    );
+}
+
+// FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW //
+
 #[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn special_s_throw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -171,9 +183,23 @@ unsafe fn special_s_throw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(special_s_throw_main_loop as *const () as _))
 }
 
-pub fn install() {
-    install_status_scripts!(
-        special_s_throw_pre,
-        special_s_throw_main
-    );
+// FIGHTER_STATUS_KIND_WALK //
+
+#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_WALK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn pre_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_pre_Walk()
+}
+
+// FIGHTER_STATUS_KIND_DASH //
+
+#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_pre_Dash()
+}
+
+// FIGHTER_STATUS_KIND_RUN //
+
+#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_RUN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn pre_run(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_pre_Run()
 }
