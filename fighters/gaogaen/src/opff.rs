@@ -184,7 +184,7 @@ unsafe fn revenge_uthrow_rotation(boma: &mut BattleObjectModuleAccessor, start_f
     let frame = MotionModule::frame(boma);
     let end_frame = MotionModule::end_frame(boma);
     let max_rotation = 360.0;
-    let max_translation = 25.0;
+    let max_translation = 17.0;
     let mut rotation = Vector3f{x: 0.0, y: 0.0, z: 0.0};
     let mut translation = Vector3f{x: 0.0, y: 0.0, z: 0.0};
         

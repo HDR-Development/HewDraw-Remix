@@ -182,7 +182,7 @@ unsafe fn gaogaen_throw_b_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 31.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK) {1.0} else {0.9});
+        FT_MOTION_RATE(fighter, if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK) {1.0} else {26.0/(52.0 - 15.0)});
         REVERSE_LR(fighter);
     }
 
@@ -275,7 +275,7 @@ unsafe fn gaogaen_throw_hi_game(fighter: &mut L2CAgentBase) {
         //FT_CATCH_STOP(fighter, 14, 1);
         CHECK_FINISH_CAMERA(fighter, 1, 20);
         let sound = if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK) {*COLLISION_SOUND_ATTR_HEAVY} else {*COLLISION_SOUND_ATTR_PUNCH};
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 1.0, 88, 70, 0, 65, 7.0, 0.0, 10.0, 0.0, Some(0.0), Some(10.0), Some(0.0), 4.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, sound, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 1.0, 88, 70, 0, 65, 7.0, 0.0, 10.0, 0.0, Some(0.0), Some(10.0), Some(0.0), 4.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, sound, *ATTACK_REGION_PUNCH);
         AttackModule::set_catch_only_all(boma, true, false);
     }
     frame(lua_state, 26.0);
