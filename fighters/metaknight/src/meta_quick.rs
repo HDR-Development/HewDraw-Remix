@@ -220,9 +220,9 @@ unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     // handle speed application once
     if VarModule::is_flag(fighter.object(), vars::metaknight::instance::META_QUICK_NEED_SET_SPEEDS) {
         if VarModule::get_int(fighter.object(), vars::common::instance::GIMMICK_TIMER) > 0 {
-            apply_status_speed_mul(fighter, 1.25);
+            apply_status_speed_mul(fighter, 1.30);
         } else {
-            apply_status_speed_mul(fighter, 0.95);
+            apply_status_speed_mul(fighter, 0.90);
         }
         VarModule::off_flag(fighter.object(), vars::metaknight::instance::META_QUICK_NEED_SET_SPEEDS);
     }

@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::fighter_common_opff);
+utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
 use super::*;
 use globals::*;
 
@@ -36,9 +36,7 @@ unsafe fn transition_fall(boma: &mut BattleObjectModuleAccessor, id: usize, stat
     if status_kind == *FIGHTER_STATUS_KIND_FALL_SPECIAL {
         // println!("Side special hit: {}", VarModule::is_flag(boma.object(), vars::metaknight::instance::NEUTRAL_SPECIAL_HIT));
         let prev_status = StatusModule::prev_status_kind(boma, 0);
-        if (prev_status == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_N_END && VarModule::is_flag(boma.object(), vars::metaknight::instance::NEUTRAL_SPECIAL_HIT))
-            || (prev_status == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END && VarModule::is_flag(boma.object(), vars::metaknight::instance::SIDE_SPECIAL_HIT))
-            || (prev_status == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_HI_LOOP && VarModule::is_flag(boma.object(), vars::metaknight::instance::UP_SPECIAL_HIT))
+        if (prev_status == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END && VarModule::is_flag(boma.object(), vars::metaknight::instance::SIDE_SPECIAL_HIT))
             || ([*FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_END, *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_ATTACK].contains(&prev_status) && VarModule::is_flag(boma.object(), vars::metaknight::instance::DOWN_SPECIAL_HIT)) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
         }
