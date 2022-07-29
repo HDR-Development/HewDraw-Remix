@@ -98,7 +98,8 @@ unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, kind: GroundCorrec
             || (fighter_kind == *FIGHTER_KIND_GANON && status_kind == *FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_END)
             || (fighter_kind == *FIGHTER_KIND_MIISWORDSMAN && [*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END].contains(&status_kind))
             || (fighter_kind == *FIGHTER_KIND_KOOPA && status_kind == *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_G)
-            || (fighter_kind == *FIGHTER_KIND_DONKEY && situation_kind == *SITUATION_KIND_GROUND && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI) {
+            || (fighter_kind == *FIGHTER_KIND_DONKEY && situation_kind == *SITUATION_KIND_GROUND && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI)
+            || (fighter_kind == *FIGHTER_KIND_GAOGAEN && situation_kind == *SITUATION_KIND_GROUND && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N) {
             return original!()(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         }
     }
