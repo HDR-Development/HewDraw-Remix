@@ -79,8 +79,6 @@ unsafe fn metaknight_special_air_n_end_effect(fighter: &mut L2CAgentBase) {
 unsafe fn metaknight_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let mut pos = 0.0;
-    let mut prev_pos = 0.0;
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         MotionModule::set_rate(boma, 3.0);
@@ -106,10 +104,6 @@ unsafe fn metaknight_special_hi_game(fighter: &mut L2CAgentBase) {
             PostureModule::update_rot_y_lr(fighter.module_accessor);
         }
     }
-    frame(lua_state, 11.0);
-    if is_excute(fighter) { 
-
-    }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
@@ -130,9 +124,6 @@ unsafe fn metaknight_special_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 49.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            FT_MOTION_RATE(fighter, 2.000);
-        }
     }
 
 }
@@ -141,8 +132,6 @@ unsafe fn metaknight_special_hi_game(fighter: &mut L2CAgentBase) {
 unsafe fn metaknight_special_hi_loop_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let mut pos = 0.0;
-    let mut prev_pos = 0.0;
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 40, 61, 0, 90, 5.0, 0.0, 3.0, 10.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -180,27 +169,6 @@ unsafe fn metaknight_special_hi_loop_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 41.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            FT_MOTION_RATE(fighter, 2.000);
-        }
-    }
-    frame(lua_state, 49.0);
-    if is_excute(fighter) {
-        prev_pos = PostureModule::pos_y(boma);
-        //println!("First prev_pos: {}", prev_pos);
-        wait(lua_state, 1.0);
-        for _ in 0..30 {
-            //println!("prev_pos: {}", prev_pos);
-            pos = PostureModule::pos_y(boma);
-            //println!("pos: {}", pos);
-            let pos_dif = prev_pos - pos;
-            if pos_dif.abs() <= 0.1 {
-                StatusModule::change_status_request(boma, *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
-                break;
-            }
-            prev_pos = PostureModule::pos_y(boma);
-            wait(lua_state, 1.0);
-        }
     }
 
 }
