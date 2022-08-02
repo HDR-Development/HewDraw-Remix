@@ -183,7 +183,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     up_b_wall_jump(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
     fludd_b_reverse(fighter);
     dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
-    double_fireball(fighter, boma);
+    //double_fireball(fighter, boma);
     noknok_timer(fighter, boma, id);
     noknok_reset(fighter, id, status_kind);
     noknok_training(fighter, id, status_kind);
