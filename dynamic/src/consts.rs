@@ -767,6 +767,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const IS_DREAMLAND_EXPRESS: i32 = 0x1100;
+            pub const IS_LATE_DLE_INPUT: i32 = 0x1101;
         }
     }
 
