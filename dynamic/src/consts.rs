@@ -440,6 +440,12 @@ pub mod vars {
         }
     }
 
+    pub mod lucario {
+        pub mod status {
+            // ints
+            pub const FORCE_PALM_ROT_ANGLE: i32 = 0x1100;
+        }
+    }
     pub mod lucas {
 
         pub mod instance {

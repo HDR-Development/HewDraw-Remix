@@ -60,6 +60,14 @@ unsafe extern "C" fn special_s_throw_main_side(fighter: &mut L2CFighterCommon, s
 }
 
 unsafe extern "C" fn special_s_throw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let frame = MotionModule::frame(fighter.module_accessor);
+    let rot = VarModule::get_int(fighter.battle_object, vars::lucario::status::FORCE_PALM_ROT_ANGLE) as f32;
+    let rot_start_interpolate_start_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "force_palm_air.rot_start_interpolate_start_frame");
+    let rot_start_interpolate_end_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "force_palm_air.rot_start_interpolate_end_frame");
+    let rot_end_interpolate_start_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "force_palm_air.rot_end_interpolate_start_frame");
+    let rot_end_interpolate_end_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "force_palm_air.rot_end_interpolate_end_frame");
+
+
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
         && fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool() {
@@ -71,14 +79,29 @@ unsafe extern "C" fn special_s_throw_main_loop(fighter: &mut L2CFighterCommon) -
         }
     }
 
+    // linear interpolation of model rotation to match throw angle
+    if frame >= rot_start_interpolate_start_frame && frame < rot_start_interpolate_end_frame {
+        let calc_interpolated_rot = rot * (1.0 - (rot_start_interpolate_end_frame - frame) / (rot_start_interpolate_end_frame - rot_start_interpolate_start_frame));
+        fighter.set_joint_rotate("rot", Vector3f{x: calc_interpolated_rot, y: 0.0, z: 0.0});
+    }
+    // keep model rotated at throw angle
+    if frame >= rot_start_interpolate_end_frame && frame < rot_end_interpolate_start_frame {
+        fighter.set_joint_rotate("rot", Vector3f{x: rot, y: 0.0, z: 0.0});
+    }
+    // linear interpolation of model rotation back to normal
+    if frame >= rot_end_interpolate_start_frame && frame < rot_end_interpolate_end_frame {
+        let calc_interpolated_rot = rot * (1.0 - (frame - rot_end_interpolate_start_frame) / (rot_end_interpolate_end_frame - rot_end_interpolate_start_frame));
+        fighter.set_joint_rotate("rot", Vector3f{x: calc_interpolated_rot, y: 0.0, z: 0.0});
+    }
+
     if !MotionModule::is_end(fighter.module_accessor) {
+        let frame = MotionModule::frame(fighter.module_accessor);
         // Uncommenting this block will cause lucario to go into special fall immediately upon grab
         // if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR
         // && WorkModule::get_int(fighter.module_accessor, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_INT_FRAME) <= 1 {
         //     fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
         //     return L2CValue::I32(0);
         // }
-
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_FLAG_CRITICAL_HIT) {
             if WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("critical_aura_power")) <= WorkModule::get_float(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_CURR_AURAPOWER) {
                 let mut pos = Vector3f { x: 0.0, y: 0.0, z: 0.0 };

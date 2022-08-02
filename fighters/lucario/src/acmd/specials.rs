@@ -67,8 +67,35 @@ unsafe fn lucario_special_air_s_game(fighter: &mut L2CAgentBase) {
 unsafe fn lucario_special_air_s_throw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 10.0);
     if is_excute(fighter) {
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 13.0, 270, 120, 0, 66, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_THROW);
+        // able to angle sideB dunk based on stick position on f10
+
+        // get stick angle for dunk
+        let angle = fighter.stick_y().atan2(fighter.stick_x() * PostureModule::lr(boma)).to_degrees();
+        let mut kb_angle = if angle >= 360.0 {
+            angle - 360.0
+        } else if angle < 0.0 {
+            angle + 360.0
+        } else {
+            angle
+        } as u64;
+
+        // only able to angle the dunk within a certain angle range
+        let throw_angle_min = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "force_palm_air.throw_angle_min") as u64;
+        let throw_angle_max = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "force_palm_air.throw_angle_max") as u64;
+        kb_angle = if fighter.stick_y() < 0.0 {
+            kb_angle.clamp(throw_angle_min, throw_angle_max)
+        }
+        else {
+            270
+        };
+
+        // calculate angle to rotate Lucario's model based on knockback angle
+        let rot = 270 - kb_angle;
+        VarModule::set_int(fighter.battle_object, vars::lucario::status::FORCE_PALM_ROT_ANGLE, rot as i32);
+        
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 13.0, kb_angle, 86, 0, 10, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_THROW);
     }
     frame(lua_state, 23.0);
     if is_excute(fighter) {
