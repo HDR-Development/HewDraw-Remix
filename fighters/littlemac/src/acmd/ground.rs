@@ -36,9 +36,9 @@ unsafe fn littlemac_attack_12_game(fighter: &mut L2CAgentBase) {
         VarModule::off_flag(fighter.battle_object, vars::littlemac::status::IS_DREAMLAND_EXPRESS);
         VarModule::off_flag(fighter.battle_object, vars::littlemac::status::IS_LATE_DLE_INPUT);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK);
-        ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 3.0, 80, 15, 0, 33, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.9, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("armr"), 3.0, 80, 15, 0, 33, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.9, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 2, 0, Hash40::new("handr"), 3.0, 80, 15, 0, 33, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.9, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 3.0, 80, 20, 0, 30, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.9, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("armr"), 3.0, 80, 20, 0, 30, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.9, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 2, 0, Hash40::new("handr"), 3.0, 80, 20, 0, 30, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.9, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 3, 0, Hash40::new("top"), 3.0, 361, 25, 0, 25, 2.5, 0.0, 4.5, 5.0, Some(0.0), Some(4.5), Some(12.0), 1.1, 0.9, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         AttackModule::set_add_reaction_frame(boma, 0, 3.0, false);
         AttackModule::set_add_reaction_frame(boma, 1, 3.0, false);
@@ -127,11 +127,13 @@ unsafe fn littlemac_attack_13_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !VarModule::is_flag(fighter.battle_object, vars::littlemac::status::IS_DREAMLAND_EXPRESS) {
-            if VarModule::is_flag(fighter.battle_object, vars::littlemac::status::IS_LATE_DLE_INPUT) {
-                FLASH(fighter, 1, 0, 0.05, 0.7);
-            }
-            else {
-                FLASH(fighter, 0, 0.24, 0.8, 0.7);
+            if is_training_mode() {
+                if VarModule::is_flag(fighter.battle_object, vars::littlemac::status::IS_LATE_DLE_INPUT) {
+                    FLASH(fighter, 1, 0, 0.05, 0.7);
+                }
+                else {
+                    FLASH(fighter, 0, 0.24, 0.8, 0.7);
+                }
             }
         }
         else {
@@ -159,7 +161,7 @@ unsafe fn littlemac_attack_13_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(fighter.battle_object, vars::littlemac::status::IS_DREAMLAND_EXPRESS) {
+        if is_training_mode() && !VarModule::is_flag(fighter.battle_object, vars::littlemac::status::IS_DREAMLAND_EXPRESS) {
             COL_NORMAL(fighter);
         }
         EFFECT_OFF_KIND(fighter, Hash40::new("littlemac_attack_arc_glove_b"), true, true);
