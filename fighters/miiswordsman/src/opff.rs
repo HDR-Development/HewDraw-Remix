@@ -153,7 +153,7 @@ unsafe fn skyward_slash_dash_act(fighter: &mut L2CFighterCommon, boma: &mut Batt
         }
     }
     if status_kind == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END {
-        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK) && situation_kind == *SITUATION_KIND_AIR {
+        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) && situation_kind == *SITUATION_KIND_AIR {
             //println!("SSD Success");
             if frame >= 30.0 {
                 //println!("SSD Fall Act");

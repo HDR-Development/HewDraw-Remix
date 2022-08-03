@@ -761,7 +761,7 @@ unsafe fn exec_special_hi2_rush(fighter: &mut L2CFighterCommon) -> L2CValue {
 // not running for some reason
 #[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe fn exec_special_hi2_rush_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK) && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+    if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         //println!("SSD Success");
         if MotionModule::frame(fighter.module_accessor) >= 30.0 {
             //println!("SSD Fall Act");

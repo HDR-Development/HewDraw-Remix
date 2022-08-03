@@ -8,37 +8,37 @@ unsafe fn gaogaen_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK);
+        VarModule::off_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK){
-            VarModule::on_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK);
+            VarModule::on_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
         }
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 12.99);
             FT_MOTION_RATE(fighter, 1.0/(10.5-10.0));
         }
     }
     frame(lua_state, 10.5);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 10.0/(11.0-10.5));
         }
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 1.0);
         }
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         // Throat Chop
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 5.0/(14.0-12.0));
             HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
             ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 15.0, 31, 88, 0, 54, 4.5, -1.0, -1.8, 1.4, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
@@ -67,7 +67,7 @@ unsafe fn gaogaen_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD){
                 AttackModule::clear(boma, 0, false);
                 AttackModule::clear(boma, 1, false);
@@ -84,7 +84,7 @@ unsafe fn gaogaen_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 1.0);
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD){
                 AttackModule::clear(boma, 0, false);
@@ -115,7 +115,7 @@ unsafe fn gaogaen_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_purple"), Hash40::new("shoulderl"), 0, 0, 0, 0, 0, 0, 0.45, true);
             LAST_EFFECT_SET_RATE(fighter, 0.5);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_purple"), Hash40::new("arml"), 1.0, 0, 0, 0, 0, 0, 0.6, true);
@@ -137,7 +137,7 @@ unsafe fn gaogaen_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_thrust"), Hash40::new("gaogaen_thrust"), Hash40::new("top"), 0, 10.0, 8.0, -38, 0, 0, 1.5, true, *EF_FLIP_YZ);
             
             FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 5, 0, -3.0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false);
@@ -150,13 +150,13 @@ unsafe fn gaogaen_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_purple"), Hash40::new("handl"), 6.5, 0, 0, 0, 0, 0, 0.25, true);
         }
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             COL_NORMAL(fighter);
         }
     }
@@ -168,37 +168,37 @@ unsafe fn gaogaen_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK);
+        VarModule::off_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK){
-            VarModule::on_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK);
+            VarModule::on_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
         }
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 12.99);
             FT_MOTION_RATE(fighter, 1.0/(10.5-10.0));
         }
     }
     frame(lua_state, 10.5);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 10.0/(11.0-10.5));
         }
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 1.0);
         }
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         // Throat Chop
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 5.0/(14.0-12.0));
             HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
             ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 15.0, 31, 88, 0, 54, 4.5, -1.0, -1.8, 1.4, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
@@ -227,7 +227,7 @@ unsafe fn gaogaen_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD){
                 AttackModule::clear(boma, 0, false);
                 AttackModule::clear(boma, 1, false);
@@ -244,7 +244,7 @@ unsafe fn gaogaen_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 1.0);
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD){
                 AttackModule::clear(boma, 0, false);
@@ -275,7 +275,7 @@ unsafe fn gaogaen_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_purple"), Hash40::new("shoulderl"), 0, 0, 0, 0, 0, 0, 0.45, true);
             LAST_EFFECT_SET_RATE(fighter, 0.5);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_purple"), Hash40::new("arml"), 1.0, 0, 0, 0, 0, 0, 0.6, true);
@@ -297,7 +297,7 @@ unsafe fn gaogaen_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_thrust"), Hash40::new("gaogaen_thrust"), Hash40::new("top"), 0, 7.5, 8.0, -3.0, 0, 0, 1.5, true, *EF_FLIP_YZ);
             
             FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 5, 0, -3.0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false);
@@ -310,13 +310,13 @@ unsafe fn gaogaen_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_purple"), Hash40::new("handl"), 6.5, 0, 0, 0, 0, 0, 0.25, true);
         }
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             COL_NORMAL(fighter);
         }
     }
@@ -328,37 +328,37 @@ unsafe fn gaogaen_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK);
+        VarModule::off_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK){
-            VarModule::on_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK);
+            VarModule::on_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
         }
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 12.99);
             FT_MOTION_RATE(fighter, 1.0/(10.5-10.0));
         }
     }
     frame(lua_state, 10.5);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 10.0/(11.0-10.5));
         }
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 1.0);
         }
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         // Throat Chop
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 5.0/(14.0-12.0));
             HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
             ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 15.0, 31, 88, 0, 54, 4.5, -1.0, -1.8, 1.4, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
@@ -387,7 +387,7 @@ unsafe fn gaogaen_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD){
                 AttackModule::clear(boma, 0, false);
                 AttackModule::clear(boma, 1, false);
@@ -404,7 +404,7 @@ unsafe fn gaogaen_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 1.0);
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD){
                 AttackModule::clear(boma, 0, false);
@@ -435,7 +435,7 @@ unsafe fn gaogaen_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_purple"), Hash40::new("shoulderl"), 0, 0, 0, 0, 0, 0, 0.45, true);
             LAST_EFFECT_SET_RATE(fighter, 0.5);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_purple"), Hash40::new("arml"), 1.0, 0, 0, 0, 0, 0, 0.6, true);
@@ -457,7 +457,7 @@ unsafe fn gaogaen_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_thrust"), Hash40::new("gaogaen_thrust"), Hash40::new("top"), 0, 4.5, 8.0, 7, 0, 0, 1.5, true, *EF_FLIP_YZ);
             
             FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 5, 0, -3.0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false);
@@ -470,13 +470,13 @@ unsafe fn gaogaen_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_purple"), Hash40::new("handl"), 6.5, 0, 0, 0, 0, 0, 0.25, true);
         }
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
             COL_NORMAL(fighter);
         }
     }

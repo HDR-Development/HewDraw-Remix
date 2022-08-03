@@ -152,6 +152,8 @@ pub mod vars {
 
             pub const DISABLE_GROUND_BOUNCE: i32 = 0x0052;
 
+            pub const IS_HEAVY_ATTACK: i32 = 0x0053;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -205,7 +207,6 @@ pub mod vars {
         }
         pub mod status {
             // flags
-            pub const IS_HEAVY_ATTACK: i32 = 0x1000;
 
             pub const DISABLE_BACKDASH: i32 = 0x1000;
             pub const IS_MOONWALK: i32 = 0x1001;
