@@ -158,6 +158,22 @@ unsafe fn gaogaen_catch_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "gaogaen", script = "effect_catch" , category = ACMD_EFFECT , low_priority)]
+unsafe fn gaogaen_catch_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        let grab_y = VarModule::get_float(fighter.battle_object, vars::gaogaen::status::ANGLE_GRAB_STICK_Y);
+        let rot_right = 0 - ((grab_y * 50.0) as i32);
+        let rot_left = 180 + ((grab_y * 50.0) as i32);
+
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_chop_arc"), Hash40::new("gaogaen_chop_arc"), Hash40::new("trans"), 0, 11.0, 5, rot_right, -45, 0, 1.2, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_chop_arc"), Hash40::new("gaogaen_chop_arc"), Hash40::new("trans"), 7, 10.5, 4, rot_left, -225, 0, 1.2, true, *EF_FLIP_YZ);
+    }
+}
+
 
 #[acmd_script( agent = "gaogaen", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
 unsafe fn gaogaen_catchturn_game(fighter: &mut L2CAgentBase) {
@@ -194,6 +210,22 @@ unsafe fn gaogaen_catchturn_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "gaogaen", script = "effect_catchturn" , category = ACMD_EFFECT , low_priority)]
+unsafe fn gaogaen_catchturn_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        let grab_y = VarModule::get_float(fighter.battle_object, vars::gaogaen::status::ANGLE_GRAB_STICK_Y);
+        let rot_right = 0 - ((grab_y * 50.0) as i32);
+        let rot_left = 180 + ((grab_y * 50.0) as i32);
+
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_chop_arc"), Hash40::new("gaogaen_chop_arc"), Hash40::new("trans"), 0, 11.0, -7, rot_right, 135, 0, 1.2, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_chop_arc"), Hash40::new("gaogaen_chop_arc"), Hash40::new("trans"), 7, 10.5, -8, rot_left, -45, 0, 1.2, true, *EF_FLIP_YZ);
+    }
+}
+
 
 #[acmd_script( agent = "gaogaen", script = "game_catchdash" , category = ACMD_GAME , low_priority)]
 unsafe fn gaogaen_catchdash_game(fighter: &mut L2CAgentBase) {
@@ -227,6 +259,22 @@ unsafe fn gaogaen_catchdash_game(fighter: &mut L2CAgentBase) {
         grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
+    }
+}
+
+#[acmd_script( agent = "gaogaen", script = "effect_catchdash" , category = ACMD_EFFECT , low_priority)]
+unsafe fn gaogaen_catchdash_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        let grab_y = VarModule::get_float(fighter.battle_object, vars::gaogaen::status::ANGLE_GRAB_STICK_Y);
+        let rot_right = 0 - ((grab_y * 50.0) as i32);
+        let rot_left = 180 + ((grab_y * 50.0) as i32);
+
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_chop_arc"), Hash40::new("gaogaen_chop_arc"), Hash40::new("trans"), 0, 9.0, 3.5, rot_right, -45, 0, 1.2, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_chop_arc"), Hash40::new("gaogaen_chop_arc"), Hash40::new("trans"), 7, 8.5, 2.5, rot_left, -225, 0, 1.2, true, *EF_FLIP_YZ);
     }
 }
 
@@ -310,11 +358,14 @@ pub fn install() {
         escape_air_game,
         escape_air_slide_game,
         gaogaen_catch_game,
+        gaogaen_catch_effect,
         dash_game,
         //dash_effect,
         turn_dash_game,
         gaogaen_catchturn_game,
+        gaogaen_catchturn_effect,
         gaogaen_catchdash_game,
+        gaogaen_catchdash_effect,
         damageflyhi_sound,
         damageflylw_sound,
         damageflyn_sound,
