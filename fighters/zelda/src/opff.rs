@@ -1,18 +1,11 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
  
 unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2) {
         if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
-            if boma.is_stick_backward()
-            && !VarModule::is_flag(boma.object(), vars::common::instance::B_REVERSED) {
-                PostureModule::reverse_lr(boma);
-                PostureModule::update_rot_y_lr(boma);
-                KineticModule::mul_speed(boma, &Vector3f::new(-1.0, 1.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                VarModule::on_flag(boma.object(), vars::common::instance::B_REVERSED);
-            }
             boma.change_status_req(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3, false);
             ControlModule::clear_command(boma, false);
         }
@@ -73,13 +66,6 @@ unsafe fn neutral_special_cancels(boma: &mut BattleObjectModuleAccessor, status_
     }
 }
 
- 
-unsafe fn phantom_b_rev(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-        common::opff::check_b_reverse(fighter);
-    }
-}
-
 unsafe fn dins_fire_land_cancel(boma: &mut BattleObjectModuleAccessor){
     if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_S_END) && boma.is_situation(*SITUATION_KIND_GROUND) && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
         boma.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
@@ -89,7 +75,6 @@ unsafe fn dins_fire_land_cancel(boma: &mut BattleObjectModuleAccessor){
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     teleport_tech(fighter, boma);
     dins_fire_land_cancel(boma);
-    //phantom_b_rev(fighter);
 
     neutral_special_cancels(boma, status_kind, situation_kind, cat[0]);
 }
