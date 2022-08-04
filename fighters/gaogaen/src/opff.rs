@@ -174,7 +174,7 @@ unsafe fn lariat_ledge_slipoff(fighter: &mut L2CFighterCommon) {
 
 unsafe fn rotate_revenge_uthrow(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_motion(Hash40::new("throw_hi")){
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK) {
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
             revenge_uthrow_rotation(boma, 10.0, 15.0, 16.0, 22.0);
         }
     }
