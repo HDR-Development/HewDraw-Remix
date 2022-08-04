@@ -181,7 +181,7 @@ unsafe fn pickel_fire_attack_lw3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::disable_tip(boma);
         VarModule::off_flag(owner_module_accessor.object(), vars::pickel::instance::IS_CURRENT_ATTACK_LW3_SOUL_FIRE);
-        if VarModule::is_flag(owner_module_accessor.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(owner_module_accessor.object(), vars::common::instance::IS_HEAVY_ATTACK){
             VarModule::on_flag(owner_module_accessor.object(), vars::pickel::instance::IS_CURRENT_ATTACK_LW3_SOUL_FIRE);
         }
         else{

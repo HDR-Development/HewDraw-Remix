@@ -7,7 +7,7 @@ use globals::*;
 unsafe fn jc_light_utilt_hit(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI3 {
         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) && frame > 20.0 {
-            if  !VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK) {
+            if  !VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
                 if boma.is_input_jump() {
                     if situation_kind == *SITUATION_KIND_AIR {
                         if boma.get_num_used_jumps() < boma.get_jump_count_max() {

@@ -146,7 +146,7 @@ unsafe fn dolly_attack_dash_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let mut ex_speed = -3.0;
     if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK);
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
         VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         //WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
@@ -154,17 +154,17 @@ unsafe fn dolly_attack_dash_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            VarModule::on_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK);
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
         }
-        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
             FT_MOTION_RATE(fighter, 8.0/(10.0-6.0));
         }
         // EX detection
-        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
             if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
                 if MeterModule::drain(fighter.battle_object, 2) {
                     VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
-                    VarModule::off_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK);
+                    VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
                     FT_MOTION_RATE(fighter, 10.0/(10.0-6.0));
                 }
             }
@@ -186,7 +186,7 @@ unsafe fn dolly_attack_dash_game(fighter: &mut L2CAgentBase) {
         else{
             FT_MOTION_RATE(fighter, 1.0);
             // Heavy dash attack
-            if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK) {
+            if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
                 ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 55, 88, 0, 65, 5.0, 0.0, 10.0, 3.0, Some(0.0), Some(6.0), Some(3.0), 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_BODY);
             }
             // Light dash attack
@@ -202,7 +202,7 @@ unsafe fn dolly_attack_dash_game(fighter: &mut L2CAgentBase) {
         }
         else{
             // Heavy dash attack
-            if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK) {
+            if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
                 ATTACK(fighter, 0, 0, Hash40::new("top"), 11.0, 75, 73, 0, 65, 4.0, 0.0, 10.0, 4.0, Some(0.0), Some(6.0), Some(4.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_BODY);
             }
             // Light dash attack
@@ -216,7 +216,7 @@ unsafe fn dolly_attack_dash_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         MeterModule::watch_damage(fighter.battle_object, false);
         if !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
-            if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK) {
+            if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
                 FT_MOTION_RATE(fighter, 1.250);
             }
         }
@@ -264,7 +264,7 @@ unsafe fn dolly_attack_dash_effect(fighter: &mut L2CAgentBase) {
             }
         }
         else{
-            if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
+            if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
                 if PostureModule::lr(boma) < 1.0 { 
                     EFFECT_FOLLOW(fighter, Hash40::new("dolly_attack_impact_l"), Hash40::new("top"), 0, 8, 3, 0, 0, 0, 1.25, true);
                 }
@@ -292,7 +292,7 @@ unsafe fn dolly_attack_dash_effect(fighter: &mut L2CAgentBase) {
             EFFECT_FOLLOW(fighter, Hash40::new("dolly_attack_impact_r"), Hash40::new("top"), 0, 8, 3, 0, 0, 0, 1.0, true);
         }
         else{
-            if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK){
+            if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
                 LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, false);
             }
             else{
