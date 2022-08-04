@@ -60,10 +60,10 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
 unsafe fn bair_boost_detection(boma: &mut BattleObjectModuleAccessor){
     if boma.get_aerial() == Some(AerialKind::Bair) {
         if boma.is_cat_flag(Cat1::AttackS4){
-            VarModule::on_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK);
+            VarModule::on_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
         }
         else{
-            VarModule::off_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK);
+            VarModule::off_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
         }
     }
 }

@@ -8,7 +8,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
@@ -18,7 +18,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+        let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
             app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
@@ -34,7 +34,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
@@ -44,7 +44,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+        let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
             app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
@@ -60,7 +60,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
@@ -70,7 +70,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+        let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
             app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
@@ -102,7 +102,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
@@ -112,7 +112,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+        let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
             app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
@@ -181,7 +181,7 @@ unsafe fn pickel_fire_attack_lw3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::disable_tip(boma);
         VarModule::off_flag(owner_module_accessor.object(), vars::pickel::instance::IS_CURRENT_ATTACK_LW3_SOUL_FIRE);
-        if VarModule::is_flag(owner_module_accessor.object(), vars::common::status::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(owner_module_accessor.object(), vars::common::instance::IS_HEAVY_ATTACK){
             VarModule::on_flag(owner_module_accessor.object(), vars::pickel::instance::IS_CURRENT_ATTACK_LW3_SOUL_FIRE);
         }
         else{

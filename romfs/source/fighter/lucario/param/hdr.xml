@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <struct hash="force_palm_air">
+        <int hash="throw_angle_min">240</int>
+        <int hash="throw_angle_max">300</int>
+        <float hash="rot_start_interpolate_start_frame">10.0</float>
+        <float hash="rot_start_interpolate_end_frame">12.0</float>
+        <float hash="rot_end_interpolate_start_frame">42.0</float>
+        <float hash="rot_end_interpolate_end_frame">55.0</float>
+    </struct>
+</struct>
