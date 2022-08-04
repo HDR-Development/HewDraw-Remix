@@ -25,50 +25,11 @@ unsafe fn gaogaen_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_purple"), Hash40::new("shoulderl"), 0, 0, 0, 0, 0, 0, 0.45, true);
-            LAST_EFFECT_SET_RATE(fighter, 0.5);
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_purple"), Hash40::new("arml"), 1.0, 0, 0, 0, 0, 0, 0.6, true);
-            LAST_EFFECT_SET_RATE(fighter, 0.5);
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_purple"), Hash40::new("arml"), 7.0, 0, 0, 0, 0, 0, 0.75, true);
-            LAST_EFFECT_SET_RATE(fighter, 0.5);
-            EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 15.0, -5.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-
-            EFFECT_FOLLOW(fighter, Hash40::new("gaogaen_belt_fire_appeal"), Hash40::new("feeler"), 0, 3, 0, 0, 0, 0, 0.65, true);
-            LAST_EFFECT_SET_COLOR(fighter, 0.5, 0.1, 0.675);
-            LAST_EFFECT_SET_RATE(fighter, 1.25);
-
-            COL_PRI(fighter, 200);
-            FLASH(fighter, 0.284, 0.1156, 0.284, 0.8);
-        }
-        else{
-            FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
-        }
+        FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
-            EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_thrust"), Hash40::new("gaogaen_thrust"), Hash40::new("top"), 0, 10.0, 8.0, -38, 0, 0, 1.5, true, *EF_FLIP_YZ);
-            
-            FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 5, 0, -3.0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false);
-            LAST_EFFECT_SET_COLOR(fighter, 0.175, 0.0, 0.375);
-            LAST_EFFECT_SET_RATE(fighter, 0.8);
-        }
-        else{
-            EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_thrust"), Hash40::new("gaogaen_thrust"), Hash40::new("top"), 0, 10.0, 8.0, -38, 0, 0, 1.0, true, *EF_FLIP_YZ);
-        }
-    }
-    frame(lua_state, 12.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_purple"), Hash40::new("handl"), 6.5, 0, 0, 0, 0, 0, 0.25, true);
-        }
-    }
-    frame(lua_state, 15.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
-            COL_NORMAL(fighter);
-        }
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_thrust"), Hash40::new("gaogaen_thrust"), Hash40::new("top"), 0, 10.0, 8.0, -38, 0, 0, 1.0, true, *EF_FLIP_YZ);
     }
 }
 
@@ -95,50 +56,11 @@ unsafe fn gaogaen_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_purple"), Hash40::new("shoulderl"), 0, 0, 0, 0, 0, 0, 0.45, true);
-            LAST_EFFECT_SET_RATE(fighter, 0.5);
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_purple"), Hash40::new("arml"), 1.0, 0, 0, 0, 0, 0, 0.6, true);
-            LAST_EFFECT_SET_RATE(fighter, 0.5);
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_purple"), Hash40::new("arml"), 7.0, 0, 0, 0, 0, 0, 0.75, true);
-            LAST_EFFECT_SET_RATE(fighter, 0.5);
-            EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 15.0, -5.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-
-            EFFECT_FOLLOW(fighter, Hash40::new("gaogaen_belt_fire_appeal"), Hash40::new("feeler"), 0, 3, 0, 0, 0, 0, 0.65, true);
-            LAST_EFFECT_SET_COLOR(fighter, 0.5, 0.1, 0.675);
-            LAST_EFFECT_SET_RATE(fighter, 1.25);
-
-            COL_PRI(fighter, 200);
-            FLASH(fighter, 0.284, 0.1156, 0.284, 0.8);
-        }
-        else{
-            FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
-        }
+        FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
-            EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_thrust"), Hash40::new("gaogaen_thrust"), Hash40::new("top"), 0, 7.5, 8.0, -3.0, 0, 0, 1.5, true, *EF_FLIP_YZ);
-            
-            FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 5, 0, -3.0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false);
-            LAST_EFFECT_SET_COLOR(fighter, 0.175, 0.0, 0.375);
-            LAST_EFFECT_SET_RATE(fighter, 0.8);
-        }
-        else{
-            EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_thrust"), Hash40::new("gaogaen_thrust"), Hash40::new("top"), 0, 7.5, 8.0, -4.0, 0, 0, 1.0, true, *EF_FLIP_YZ);
-        }
-    }
-    frame(lua_state, 12.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_purple"), Hash40::new("handl"), 6.5, 0, 0, 0, 0, 0, 0.25, true);
-        }
-    }
-    frame(lua_state, 15.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
-            COL_NORMAL(fighter);
-        }
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_thrust"), Hash40::new("gaogaen_thrust"), Hash40::new("top"), 0, 7.5, 8.0, -4.0, 0, 0, 1.0, true, *EF_FLIP_YZ);
     }
 }
 
@@ -165,50 +87,11 @@ unsafe fn gaogaen_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_purple"), Hash40::new("shoulderl"), 0, 0, 0, 0, 0, 0, 0.45, true);
-            LAST_EFFECT_SET_RATE(fighter, 0.5);
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_purple"), Hash40::new("arml"), 1.0, 0, 0, 0, 0, 0, 0.6, true);
-            LAST_EFFECT_SET_RATE(fighter, 0.5);
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_purple"), Hash40::new("arml"), 7.0, 0, 0, 0, 0, 0, 0.75, true);
-            LAST_EFFECT_SET_RATE(fighter, 0.5);
-            EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 15.0, -5.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-
-            EFFECT_FOLLOW(fighter, Hash40::new("gaogaen_belt_fire_appeal"), Hash40::new("feeler"), 0, 3, 0, 0, 0, 0, 0.65, true);
-            LAST_EFFECT_SET_COLOR(fighter, 0.5, 0.1, 0.675);
-            LAST_EFFECT_SET_RATE(fighter, 1.25);
-
-            COL_PRI(fighter, 200);
-            FLASH(fighter, 0.284, 0.1156, 0.284, 0.8);
-        }
-        else{
-            FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
-        }
+        FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
-            EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_thrust"), Hash40::new("gaogaen_thrust"), Hash40::new("top"), 0, 4.5, 8.0, 7, 0, 0, 1.5, true, *EF_FLIP_YZ);
-            
-            FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 5, 0, -3.0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false);
-            LAST_EFFECT_SET_COLOR(fighter, 0.175, 0.0, 0.375);
-            LAST_EFFECT_SET_RATE(fighter, 0.8);
-        }
-        else{
-            EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_thrust"), Hash40::new("gaogaen_thrust"), Hash40::new("top"), 0, 4.5, 8.0, 7, 0, 0, 1.0, true, *EF_FLIP_YZ);
-        }
-    }
-    frame(lua_state, 12.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_purple"), Hash40::new("handl"), 6.5, 0, 0, 0, 0, 0, 0.25, true);
-        }
-    }
-    frame(lua_state, 15.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
-            COL_NORMAL(fighter);
-        }
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("gaogaen_thrust"), Hash40::new("gaogaen_thrust"), Hash40::new("top"), 0, 4.5, 8.0, 7, 0, 0, 1.0, true, *EF_FLIP_YZ);
     }
 }
 
