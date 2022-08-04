@@ -152,6 +152,8 @@ pub mod vars {
 
             pub const DISABLE_GROUND_BOUNCE: i32 = 0x0052;
 
+            pub const IS_HEAVY_ATTACK: i32 = 0x0053;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -205,7 +207,6 @@ pub mod vars {
         }
         pub mod status {
             // flags
-            pub const IS_HEAVY_ATTACK: i32 = 0x1000;
 
             pub const DISABLE_BACKDASH: i32 = 0x1000;
             pub const IS_MOONWALK: i32 = 0x1001;
@@ -706,6 +707,7 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const CHAKRAM_STICK_ATTACK: i32 = 0x0100;
+            pub const SKYWARD_SLASH_DASH_HIT: i32 = 0x0101;
 
             // ints
             pub const SPECIAL_LW1_CHARGE_LEVEL: i32 = 0x0100;
@@ -717,8 +719,6 @@ pub mod vars {
             pub const GALE_STAB_EDGE_CANCEL: i32 = 0x1100;
 
             pub const SPECIAL_LW1_ATTACK_TRIGGER: i32 = 0x1100;
-
-            pub const SKYWARD_SLASH_DASH_HIT: i32 = 0x1100;
         }
     }
 
