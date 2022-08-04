@@ -53,9 +53,13 @@ unsafe fn set_fighter_status_data_hook(boma: &mut BattleObjectModuleAccessor, ar
         || (boma.kind() == *FIGHTER_KIND_PALUTENA
             && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW]))
         {
-            new_status_attr = *FIGHTER_STATUS_ATTR_START_TURN as u32;
+            // if b-reverse flag does not already exist in status_attr bitmask
+            if status_attr & *FIGHTER_STATUS_ATTR_START_TURN as u32 == 0 {
+                // add b-reverse flag to status_attr bitmask
+                new_status_attr = status_attr + *FIGHTER_STATUS_ATTR_START_TURN as u32;
+            }
         }
-        
+
     }
 
     original!()(boma, arg2, treaded_kind, arg4, arg5, arg6, log_mask_flag, new_status_attr, power_up_attack_bit, arg10)
