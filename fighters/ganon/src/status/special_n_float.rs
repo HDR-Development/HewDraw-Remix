@@ -104,6 +104,7 @@ unsafe extern "C" fn special_n_float_main_loop(fighter: &mut L2CFighterCommon) -
         || fighter.global_table[globals::STICK_Y].get_f32() <= -0.7 {
             VarModule::on_flag(fighter.battle_object, vars::ganon::status::FLOAT_CANCEL);
             MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 59.0, true, true, false);
+            CancelModule::enable_cancel(fighter.module_accessor);
             return 0.into();
         }
     }
