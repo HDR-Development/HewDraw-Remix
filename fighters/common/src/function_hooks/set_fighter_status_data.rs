@@ -10,6 +10,8 @@ unsafe fn set_fighter_status_data_hook(boma: &mut BattleObjectModuleAccessor, ar
     let mut new_status_attr = status_attr;
 
     if boma.is_fighter() {
+
+        // this handles turnaround special/b-reversible moves
         if (boma.kind() == *FIGHTER_KIND_BRAVE
             && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, *FIGHTER_STATUS_KIND_SPECIAL_HI]))
         || (boma.kind() == *FIGHTER_KIND_CAPTAIN
@@ -53,6 +55,7 @@ unsafe fn set_fighter_status_data_hook(boma: &mut BattleObjectModuleAccessor, ar
         {
             new_status_attr = *FIGHTER_STATUS_ATTR_START_TURN as u32;
         }
+        
     }
 
     original!()(boma, arg2, treaded_kind, arg4, arg5, arg6, log_mask_flag, new_status_attr, power_up_attack_bit, arg10)
