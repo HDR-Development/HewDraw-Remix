@@ -16,6 +16,7 @@ pub mod is_flag;
 pub mod controls;
 pub mod jumps;
 pub mod stage_hazards;
+pub mod attack;
 
 pub fn install() {
     energy::install();
@@ -34,6 +35,7 @@ pub fn install() {
     momentum_transfer::install();
     jumps::install();
     stage_hazards::install();
+    attack::install();
 
     unsafe {
         // Handles getting rid of the kill zoom
