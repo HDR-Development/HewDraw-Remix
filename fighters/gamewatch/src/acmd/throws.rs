@@ -184,7 +184,7 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     if (is_excute(fighter)) {
         FT_MOTION_RATE(fighter, 0.500);
     }
-    
+
 }
 
 pub fn install() {
