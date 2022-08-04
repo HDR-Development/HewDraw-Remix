@@ -79,7 +79,16 @@ pub unsafe fn airdodge_refresh_on_hit_disable(boma: &mut BattleObjectModuleAcces
 }
 
 pub unsafe fn suicide_throw_mashout(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_THROWN) && LinkModule::get_parent_status_kind(boma, *LINK_NO_CAPTURE) == *FIGHTER_STATUS_KIND_THROW_KIRBY as u64 {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_THROWN) {
+        // add suicide throws here
+        if !((boma.get_grabber_boma().kind() == *FIGHTER_KIND_KIRBY
+            && [hash40("throw_f"), hash40("throw_b")].contains(&LinkModule::get_parent_motion_kind(boma, *LINK_NO_CAPTURE)))
+        || (boma.get_grabber_boma().kind() == *FIGHTER_KIND_ROBOT
+            && LinkModule::get_parent_motion_kind(boma, *LINK_NO_CAPTURE) == hash40("throw_hi")))
+        {
+            return;
+        }
+        
         get_fighter_common_from_accessor(boma.get_grabber_boma()).clear_lua_stack();
         get_fighter_common_from_accessor(boma.get_grabber_boma()).push_lua_stack(&mut L2CValue::new_int(*FIGHTER_KINETIC_ENERGY_ID_MOTION as u64));
         // if in descent of suicide throw
