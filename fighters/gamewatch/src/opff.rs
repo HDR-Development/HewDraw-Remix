@@ -53,6 +53,7 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     fair_repositioning(boma, status_kind, motion_kind, frame);
     //jc_oil_panic_reflect(boma, status_kind, situation_kind); 
     jc_judge_four(boma, motion_kind, situation_kind);
+    dthrow_reverse(boma, motion_kind);
 
     // Frame Data
     frame_data(boma, status_kind, motion_kind, frame);
@@ -98,6 +99,13 @@ unsafe fn jc_judge_four(boma: &mut BattleObjectModuleAccessor, motion_kind: u64,
                 }
             }
         }
+    }
+}
+
+// down throw mirror
+unsafe fn dthrow_reverse(boma: & mut BattleObjectModuleAccessor, motion_kind: u64) {
+    if boma.is_motion(Hash40::new("throw_lw")) {
+        ModelModule::set_joint_rotate(boma, Hash40::new("rot"), &Vector3f{x: 0.0, y: 180.0, z: 0.0}, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
     }
 }
 

@@ -150,6 +150,8 @@ pub mod vars {
 
             pub const ENABLE_AIR_ESCAPE_JUMPSQUAT: i32 = 0x0051;
 
+            pub const DISABLE_GROUND_BOUNCE: i32 = 0x0052;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -207,6 +209,8 @@ pub mod vars {
 
             pub const DISABLE_BACKDASH: i32 = 0x1000;
             pub const IS_MOONWALK: i32 = 0x1001;
+            pub const IS_DASH_TO_RUN_FRAME: i32 = 0x1002;
+            pub const IS_AFTER_DASH_TO_RUN_FRAME: i32 = 0x1003;
 
             pub const ATTACK_DASH_CANCEL_DISABLE: i32 = 0x1000;
 
