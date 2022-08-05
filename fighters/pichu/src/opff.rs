@@ -98,7 +98,7 @@ unsafe fn charge_state_effects(boma: &mut BattleObjectModuleAccessor) {
     if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 1
     && VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_HANDLER) == -1 {
         app::FighterUtil::flash_eye_info(boma);
-        let handle = EffectModule::req_follow(boma, Hash40::new("pichu_final_hold"), Hash40::new("hip"), &Vector3f{x: 0.0, y: 0.0, z: 0.0}, &Vector3f::zero(), 0.9, true, 0, 0, 0, 0, 0, true, true) as u32;
+        let handle = EffectModule::req_follow(boma, Hash40::new("pichu_final_hold"), Hash40::new("waist"), &Vector3f{x: 0.0, y: 0.0, z: 0.0}, &Vector3f::zero(), 0.9, true, 0, 0, 0, 0, 0, true, true) as u32;
         VarModule::set_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_HANDLER, handle as i32);
         PLAY_SE(get_fighter_common_from_accessor(boma), Hash40::new("vc_pichu_final01"));
         PLAY_SE(get_fighter_common_from_accessor(boma), Hash40::new("se_pichu_final02"));
