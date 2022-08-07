@@ -18,33 +18,32 @@ unsafe fn laser_fastfall_landcancel(boma: &mut BattleObjectModuleAccessor, statu
 }
 
 // Fox Shine Jump Cancels
-unsafe fn shine_jump_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
-    if [*FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT,
-        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
-        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind) {
-        if boma.is_input_jump() && !boma.is_in_hitlag() {
-            if situation_kind == *SITUATION_KIND_AIR {
-                if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                }
-            } else if situation_kind == *SITUATION_KIND_GROUND {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-            }
-        }
+unsafe fn shine_jump_cancel(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= 1 {
+        GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     }
-}
+    if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.motion_frame() > 6.0)  // Allows for jump cancel on frame 5 in game
+    || fighter.is_status_one_of(&[
+        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT,
+        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
+        *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_END]))
+    && !fighter.is_in_hitlag()
+        {
+            fighter.check_jump_cancel();
+        }
+}   
 
 // Fox Illusion Shortens
 unsafe fn illusion_shorten_(boma: &mut BattleObjectModuleAccessor, id: usize, motion_kind: u64, frame: f32) {
     if motion_kind == hash40("special_s") || motion_kind == hash40("special_air_s") {
         if frame <= 1.0 {
-            VarModule::off_flag(boma.object(), vars::common::ILLUSION_SHORTEN);
-            VarModule::off_flag(boma.object(), vars::common::ILLUSION_SHORTENED);
+            VarModule::off_flag(boma.object(), vars::fox::status::ILLUSION_SHORTEN);
+            VarModule::off_flag(boma.object(), vars::fox::status::ILLUSION_SHORTENED);
         }
-        if VarModule::is_flag(boma.object(), vars::common::ILLUSION_SHORTEN) &&  !VarModule::is_flag(boma.object(), vars::common::ILLUSION_SHORTENED) {
+        if VarModule::is_flag(boma.object(), vars::fox::status::ILLUSION_SHORTEN) &&  !VarModule::is_flag(boma.object(), vars::fox::status::ILLUSION_SHORTENED) {
             let motion_vec = Vector3f{x: 0.25, y: 1.0, z: 1.0}; // Unused
             KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-            VarModule::on_flag(boma.object(), vars::common::ILLUSION_SHORTENED);
+            VarModule::on_flag(boma.object(), vars::fox::status::ILLUSION_SHORTENED);
         }
 
         /*
@@ -61,8 +60,8 @@ unsafe fn illusion_shorten_(boma: &mut BattleObjectModuleAccessor, id: usize, mo
         }
         */
 
-        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) &&  !VarModule::is_flag(boma.object(), vars::common::ILLUSION_SHORTENED) {
-            VarModule::on_flag(boma.object(), vars::common::ILLUSION_SHORTEN);
+        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) &&  !VarModule::is_flag(boma.object(), vars::fox::status::ILLUSION_SHORTENED) {
+            VarModule::on_flag(boma.object(), vars::fox::status::ILLUSION_SHORTEN);
             WorkModule::on_flag(boma, *FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_FLAG_RUSH_FORCE_END);
         }
     }
@@ -79,12 +78,20 @@ unsafe fn utaunt_cancel_fire_fox(boma: &mut BattleObjectModuleAccessor, motion_k
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+unsafe fn firefox_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        // allows ledgegrab during Firefox startup
+        fighter.sub_transition_group_check_air_cliff();
+    }
+}
+
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
 
     laser_fastfall_landcancel(boma, status_kind, situation_kind, cat[1], stick_y);
-    shine_jump_cancel(boma, status_kind, situation_kind, cat[0]);
+    shine_jump_cancel(fighter);
     illusion_shorten_(boma, id, motion_kind, frame);
     utaunt_cancel_fire_fox(boma, motion_kind, frame);
+    firefox_startup_ledgegrab(fighter);
 
     // Frame Data
     frame_data(boma, status_kind, motion_kind, frame);
@@ -107,6 +114,6 @@ pub fn fox_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn fox_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

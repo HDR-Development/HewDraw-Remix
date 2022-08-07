@@ -3,17 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
-unsafe fn special_n_article_fix(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
-    if [*FIGHTER_STATUS_KIND_SPECIAL_N].contains(&status_kind) {
-        if situation_kind == *SITUATION_KIND_GROUND {
-            if frame <= 1.0 {
-                VarModule::off_flag(boma.object(), vars::common::SPECIAL_PROJECTILE_SPAWNED);
-            }
-        }
-    }
-}
-
 // Super Sheet Stall
 unsafe fn super_sheet_stall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S {
@@ -31,16 +20,23 @@ unsafe fn super_sheet_stall(boma: &mut BattleObjectModuleAccessor, status_kind: 
 }
 
 unsafe fn up_special_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, stick_x: f32, facing: f32, frame: f32) {
-    if situation_kind == *SITUATION_KIND_GROUND && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI && (frame >= 4.0 || frame <= 5.0) {
-        if facing * stick_x < 0.0 {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI{
+        if frame < 3.0 {
+            if facing * stick_x < 0.0 {
+                VarModule::on_flag(boma.object(), vars::mariod::status::IS_SPECIAL_HI_UNABLE_CANCEL);
+            }
+        }
+        
+        if situation_kind == *SITUATION_KIND_GROUND && frame == 4.0 {
+            if facing * stick_x < -0.0 && !VarModule::is_flag(boma.object(), vars::mariod::status::IS_SPECIAL_HI_UNABLE_CANCEL) {
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+            }
         }
     }
 }
 
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    special_n_article_fix(boma, id, status_kind, situation_kind, frame);
-    super_sheet_stall(boma, status_kind, situation_kind, frame);
+    //super_sheet_stall(boma, status_kind, situation_kind, frame);
     up_special_cancel(boma, status_kind, situation_kind, stick_x, facing, frame);
 }
 

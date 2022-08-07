@@ -7,7 +7,8 @@
   </list>
   <list hash="param_special_s">
     <struct index="0">
-      <float hash="speed_x_mul">1</float>
+      <float hash="speed_x_mul">0.5</float>
+      <float hash="add_speed_x">1</float>
       <float hash="speed_y_mul">1</float>
       <float hash="air_add_speed_y">0</float>
       <float hash="air_accel_y">0.13</float>
@@ -15,13 +16,17 @@
       <int hash="air_loop_num_w">1</int>
       <int hash="loop_num_m">2</int>
       <int hash="air_loop_num_m">2</int>
+      <float hash="speed_x_w">1</float>
       <float hash="air_speed_x_w">0.6</float>
+      <float hash="speed_x_m">1.1</float>
       <float hash="air_speed_x_m">0.8</float>
+      <float hash="speed_x_s">1.2</float>
       <float hash="air_speed_x_s">1.04</float>
-      <int hash="end_weak_frame_w">24</int>
+      <int hash="end_weak_frame_w">36</int>
       <int hash="air_end_weak_frame_w">24</int>
-      <int hash="end_weak_frame_m">30</int>
+      <int hash="end_weak_frame_m">39</int>
       <int hash="air_end_weak_frame_m">30</int>
+      <int hash="end_weak_frame_s">41</int>
       <float hash="air_end_x_speed_mul">1</float>
       <float hash="end_air_accel_y">0.13</float>
       <float hash="end_air_max_speed_y">2.17</float>
@@ -33,8 +38,11 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="command_power_mul">1.25</float>
-      <float hash="speed_y_mul_w">0.35</float>
-      <int hash="fall_frame">15</int>
+      <float hash="speed_y_mul_w">0.3</float>
+      <float hash="speed_y_mul_m">0.525</float>
+      <float hash="speed_y_mul_s">0.77</float>
+      <float hash="fall_brake_y_mul">2</float>
+      <int hash="fall_frame">5</int>
       <int hash="landing_frame_w">9</int>
       <int hash="landing_frame_m">15</int>
       <float hash="command_landing_frame_mul">1</float>

@@ -19,11 +19,11 @@ unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         if frame <= 28.0 {
             if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
                 // Tell the game that you've started rising
-                VarModule::on_flag(boma.object(), vars::common::AERIAL_COMMAND_RISING);
+                VarModule::on_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISING);
                 // Add vertical speed for the dair rise if you've activated the rise and this isn't your second time attempting to initiate the rise during your current airtime
-                if VarModule::is_flag(boma.object(), vars::common::AERIAL_COMMAND_RISING) &&  !VarModule::is_flag(boma.object(), vars::common::AERIAL_COMMAND_RISEN) {
+                if VarModule::is_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISING) &&  !VarModule::is_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISEN) {
                     // Reset momentum on the first special button press press
-                    if  !VarModule::is_flag(boma.object(), vars::common::AERIAL_COMMAND_MOMENTUM_RESET){
+                    if  !VarModule::is_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_MOMENTUM_RESET){
                         // Slow down the move to better facilitate recovering
                         MotionModule::set_rate(boma, 0.5);
                         // Have mario glow a bit to indicate that he's recovering
@@ -32,7 +32,7 @@ unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
                         KineticModule::clear_speed_energy_id(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                         KineticModule::clear_speed_energy_id(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
                         KineticModule::clear_speed_energy_id(boma, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                        VarModule::on_flag(boma.object(), vars::common::AERIAL_COMMAND_MOMENTUM_RESET);
+                        VarModule::on_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_MOMENTUM_RESET);
                     }
                     //KineticModule::add_speed(boma, &motion_vec);
                     if y_speed + motion_vec.y > max_rise_speed {
@@ -54,20 +54,20 @@ unsafe fn dair_mash_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         }
     }
 
-    if VarModule::is_flag(boma.object(), vars::common::AERIAL_COMMAND_RISING) {
+    if VarModule::is_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISING) {
         if motion_kind != hash40("attack_air_lw")
             || (motion_kind == hash40("attack_air_lw") && frame > 28.0) {
             ColorBlendModule::cancel_main_color(boma, 0);
-            VarModule::on_flag(boma.object(), vars::common::AERIAL_COMMAND_RISEN);
-            VarModule::off_flag(boma.object(), vars::common::AERIAL_COMMAND_RISING);
-            VarModule::off_flag(boma.object(), vars::common::AERIAL_COMMAND_MOMENTUM_RESET);
+            VarModule::on_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISEN);
+            VarModule::off_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISING);
+            VarModule::off_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_MOMENTUM_RESET);
         }
     }
 
     // If grounded, reset aerial rise and momentum reset flags
-    if situation_kind == *SITUATION_KIND_GROUND && VarModule::is_flag(boma.object(), vars::common::AERIAL_COMMAND_RISEN) {
-        VarModule::off_flag(boma.object(), vars::common::AERIAL_COMMAND_RISEN);
-        VarModule::off_flag(boma.object(), vars::common::AERIAL_COMMAND_MOMENTUM_RESET);
+    if situation_kind == *SITUATION_KIND_GROUND && VarModule::is_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISEN) {
+        VarModule::off_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_RISEN);
+        VarModule::off_flag(boma.object(), vars::mario::status::AERIAL_COMMAND_MOMENTUM_RESET);
     }
 }
 
@@ -76,16 +76,16 @@ unsafe fn up_b_wall_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
         if situation_kind == *SITUATION_KIND_AIR {
             if frame >= 23.0 && frame <= 25.0 {
-                if  !VarModule::is_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP) {
+                if  !VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP) {
                     if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32) {
                         if boma.is_cat_flag(Cat1::TurnDash) {
-                            VarModule::on_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP);
+                            VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                         }
                     }
                     if GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32) {
                         if boma.is_cat_flag(Cat1::TurnDash) {
-                            VarModule::on_flag(boma.object(), vars::common::SPECIAL_WALL_JUMP);
+                            VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP);
                             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                         }
                     }
@@ -121,34 +121,18 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
-// Fireball double article fix
-unsafe fn special_n_article_fix(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
-    if [*FIGHTER_STATUS_KIND_SPECIAL_N].contains(&status_kind) {
-        //if situation_kind == *SITUATION_KIND_GROUND {
-            if frame <= 1.0 /*frame >= 13.0 && frame < 15.0*/ {
-                //println!("Reset fireball projectile flag");
-                VarModule::off_flag(boma.object(), vars::common::SPECIAL_PROJECTILE_SPAWNED);
-            }
-        //}
-        /*
-        else if situation_kind == *SITUATION_KIND_AIR {
-            if frame >= 14.0 && frame < 15.0{
-                VarModule::on_flag(boma.object(), vars::common::SPECIAL_PROJECTILE_SPAWNED);
-                println!("=== PROJECTILE SPAWNED FROM AERIAL VERSION");
-            }
-        }
-        */
-    }
-    /*
-    else{
-        if VarModule::is_flag(boma.object(), vars::common::SPECIAL_PROJECTILE_SPAWNED){
-            VarModule::off_flag(boma.object(), vars::common::SPECIAL_PROJECTILE_SPAWNED);
+// Double fireball handling
+unsafe fn double_fireball(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) && VarModule::is_flag(boma.object(), vars::mario::instance::CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL) {
+        let restart_frame = 10.0;
+        if boma.is_cat_flag(Cat1::SpecialN) || boma.is_cat_flag(Cat1::SpecialS) || boma.is_cat_flag(Cat1::SpecialHi) || boma.is_cat_flag(Cat1::SpecialLw){
+            VarModule::off_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND);
+            VarModule::off_flag(boma.object(), vars::mario::instance::CAN_INPUT_SPECIAL_N_DOUBLE_FIREBALL);
+            VarModule::on_flag(boma.object(), vars::mario::instance::SPECIAL_N_DOUBLE_FIREBALL_NOTIFY_FLAG);
+            //MotionModule::set_frame_sync_anim_cmd(boma, restart_frame, true, true, false);
+            boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_N, false);
         }
     }
-
-    if  !VarModule::is_flag(boma.object(), vars::common::SPECIAL_PROJECTILE_SPAWNED){
-    }
-    */
 }
 
 
@@ -159,27 +143,27 @@ extern "Rust" {
 
 // NokNok Shell Timer Count
 unsafe fn noknok_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
-    let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::GIMMICK_TIMER);
+    let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
     if gimmick_timerr > 0 && gimmick_timerr < 1801 {
         if gimmick_timerr > 1799 {
-            VarModule::off_flag(boma.object(), vars::common::NOKNOK_SHELL);
-            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0);
+            VarModule::off_flag(boma.object(), vars::mario::instance::NOKNOK_SHELL);
+            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
             gimmick_flash(boma);
         } else {
-            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, gimmick_timerr + 1);
+            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, gimmick_timerr + 1);
         }
     }
 }
 
 // NokNok shell flag reset
 unsafe fn noknok_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
-    if VarModule::is_flag(fighter.battle_object, vars::common::NOKNOK_SHELL) {
+    if VarModule::is_flag(fighter.battle_object, vars::mario::instance::NOKNOK_SHELL) {
         if [*FIGHTER_STATUS_KIND_DEAD,
             *FIGHTER_STATUS_KIND_REBIRTH,
             *FIGHTER_STATUS_KIND_WIN,
             *FIGHTER_STATUS_KIND_LOSE,
             *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
-                VarModule::off_flag(fighter.battle_object, vars::common::NOKNOK_SHELL);
+                VarModule::off_flag(fighter.battle_object, vars::mario::instance::NOKNOK_SHELL);
         }
     }
 }
@@ -189,7 +173,7 @@ unsafe fn noknok_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i
 unsafe fn noknok_training(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
     if is_training_mode() {
         if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
-            VarModule::off_flag(fighter.battle_object, vars::common::NOKNOK_SHELL);
+            VarModule::off_flag(fighter.battle_object, vars::mario::instance::NOKNOK_SHELL);
         }
     }
 }
@@ -199,7 +183,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     up_b_wall_jump(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
     fludd_b_reverse(fighter);
     dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
-    special_n_article_fix(fighter, boma, id, status_kind, situation_kind, frame);
+    //double_fireball(fighter, boma);
     noknok_timer(fighter, boma, id);
     noknok_reset(fighter, id, status_kind);
     noknok_training(fighter, id, status_kind);

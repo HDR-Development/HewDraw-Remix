@@ -28,11 +28,20 @@ fn nro_main(nro: &skyline::nro::NroInfo) {
 pub unsafe fn status_attack_air_hook(fighter: &mut L2CFighterCommon, param_1: L2CValue){
     let boma = app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
     let fighter_kind = boma.kind();
-    let ratio = VarModule::get_float(fighter.object(), vars::common::JUMP_SPEED_RATIO);
-    let jump_speed_x_max = WorkModule::get_param_float(boma, hash40("run_speed_max"), 0) * ratio;
+    let ratio = VarModule::get_float(fighter.object(), vars::common::instance::JUMP_SPEED_RATIO);
+
+    // get the multiplier for any special mechanics that require additional jump speed max (meta quick, etc)
+    let mut jump_speed_max_mul = VarModule::get_float(fighter.object(), vars::common::instance::JUMP_SPEED_MAX_MUL);
+    match jump_speed_max_mul {
+        // if its not between 0.1 and 3.0, it is likely not a real value and we should ignore it
+        0.1..=3.0 => {},
+        _ => { jump_speed_max_mul = 1.0 }
+    }
+
+    let mut jump_speed_x_max = WorkModule::get_param_float(boma, hash40("run_speed_max"), 0) * ratio * jump_speed_max_mul;
 
     let mut l2c_agent = L2CAgent::new(fighter.lua_state_agent);
-    let new_speed = VarModule::get_float(fighter.object(), vars::common::CURRENT_MOMENTUM).clamp(-jump_speed_x_max, jump_speed_x_max);
+    let new_speed = VarModule::get_float(fighter.object(), vars::common::instance::CURRENT_MOMENTUM).clamp(-jump_speed_x_max, jump_speed_x_max);
 
     if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_JUMP
     || (fighter_kind == *FIGHTER_KIND_SONIC && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_SONIC_STATUS_KIND_SPIN_JUMP) {
@@ -53,8 +62,7 @@ pub unsafe fn change_kinetic_momentum_related(boma: &mut smash::app::BattleObjec
     let prev_status_kind = StatusModule::prev_status_kind(boma, 0);
     let situation_kind = StatusModule::situation_kind(boma);
     let fighter_kind = boma.kind();
-    if (([*FIGHTER_KIND_CAPTAIN, *FIGHTER_KIND_FALCO, *FIGHTER_KIND_FOX, *FIGHTER_KIND_GAMEWATCH, *FIGHTER_KIND_WOLF].contains(&fighter_kind) && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N)
-    || ( fighter_kind == *FIGHTER_KIND_GAMEWATCH && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S ))
+    if (([*FIGHTER_KIND_CAPTAIN, *FIGHTER_KIND_FALCO, *FIGHTER_KIND_FOX, *FIGHTER_KIND_GAMEWATCH, *FIGHTER_KIND_WOLF].contains(&fighter_kind) && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N))
         && situation_kind == *SITUATION_KIND_AIR && [*FIGHTER_STATUS_KIND_JUMP, *FIGHTER_STATUS_KIND_JUMP_SQUAT].contains(&prev_status_kind) {
         return Some(-1);
     }

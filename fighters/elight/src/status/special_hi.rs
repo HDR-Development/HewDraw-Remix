@@ -18,9 +18,9 @@ pub unsafe fn special_hi_common_check_spreadbullet(fighter: &mut L2CFighterCommo
     // [h] instead of checking for either and setting a flag, we will reserve different actions
     //      depending on the button
     if fighter.is_button_trigger(Buttons::Special) {
-        VarModule::set_int(fighter.battle_object, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK1);
+        VarModule::set_int(fighter.battle_object, vars::elight::status::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK1);
     } else if fighter.is_button_trigger(Buttons::Attack) {
-        VarModule::set_int(fighter.battle_object, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK2);
+        VarModule::set_int(fighter.battle_object, vars::elight::status::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK2);
     }
 }
 
@@ -68,7 +68,7 @@ unsafe fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 
     // [h] Initialize our reserved action to the default (fall)
-    VarModule::set_int(fighter.battle_object, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_FALL);
+    VarModule::set_int(fighter.battle_object, vars::elight::status::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_FALL);
 
     fighter.main_shift(special_hi_main_loop)
 }

@@ -26,14 +26,14 @@ def install_with_ip(ip: str, is_dev: bool):
     if not is_dev:
       os.system('curl.exe -T ..\\plugin\\target\\aarch64-skyline-switch\\release\\libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
     else:
-      os.system('curl.exe -T ..\\plugin\\target\\standalone\\aarch64-skyline-switch\\release\\libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
       os.system('curl.exe -T ..\\plugin\\target\\development\\aarch64-skyline-switch\\release\\libhdr.nro ftp://' + ip + ':5000/' + switch_rom_path + '/' + development_subpath + 'development.nro')
+      os.system('curl.exe -T ..\\plugin\\target\\standalone\\aarch64-skyline-switch\\release\\libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
   else:
     if not is_dev:
       os.system('curl -T ../plugin/target/aarch64-skyline-switch/release/libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
     else:
-      os.system('curl -T ../plugin/target/standalone/aarch64-skyline-switch/release/libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
       os.system('curl -T ../plugin/target/development/aarch64-skyline-switch/release/libhdr.nro ftp://' + ip + ':5000/' + switch_rom_path + '/' + development_subpath + 'development.nro')
+      os.system('curl -T ../plugin/target/standalone/aarch64-skyline-switch/release/libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
 
 # handle fallback exe on windows
 def handle_fallback():

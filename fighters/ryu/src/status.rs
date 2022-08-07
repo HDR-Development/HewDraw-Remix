@@ -15,18 +15,38 @@ extern "Rust" {
     fn ryu_attack_main_uniq_chk4(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue;
     fn ryu_final_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue;
     fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue;
+    fn fgc_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue;
 }
 
+extern "C" {
+    fn status_pre_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue;
+}
+extern "C" {
+    fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue;
+}
 
 // status script import
  
 pub fn install() {
+    CustomStatusManager::add_new_agent_status_script(
+        Hash40::new("fighter_kind_ryu"),
+        statuses::ryu::AIR_DASH,
+        StatusInfo::new()
+            .with_init(air_dash_init)
+            .with_pre(status_pre_EscapeAir)
+            .with_main(air_dash_main)
+            .with_end(status_end_EscapeAir)
+    );
     install_status_scripts!(
         pre_turndash,
         pre_dashback,
         main_dashback,
         end_dashback,
-        main_attack
+        main_attack,
+        escape_air_pre,
+        wait_pre,
+        //wait_main,
+        landing_main
     );
 }
 
@@ -43,6 +63,7 @@ pub unsafe fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
             }
         }
     }
+    VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
     StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_TURN);
     return 1.into()
 }
@@ -188,4 +209,175 @@ unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         fighter.change_status(FIGHTER_STATUS_KIND_ATTACK.into(), false.into());
     }
     0.into()
+}
+
+// FIGHTER_STATUS_KIND_ESCAPE_AIR
+
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_ESCAPE_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn escape_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH) || fighter.handle_waveland(false) {
+        VarModule::on_flag(fighter.battle_object, vars::common::status::SHOULD_WAVELAND);
+        GroundModule::attach_ground(fighter.module_accessor, true);
+        fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
+        return 0.into();
+    }
+    if !fighter.is_prev_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
+        let mut stick_value_x = ControlModule::get_stick_x(fighter.module_accessor);
+        let stick_value_y = ControlModule::get_stick_y(fighter.module_accessor);
+        let lr =  PostureModule::lr(fighter.module_accessor);
+        if (stick_value_x.abs() > 0.66 && stick_value_y == 0.0) {
+            // airdash gfx
+            if (stick_value_x == 0.0) {
+                stick_value_x = 0.001; // to avoid a divide by zero on the next instruction below
+            }
+            let angle = (stick_value_y/stick_value_x).atan();
+            let norm_stick_pos = Vector3f { x: stick_value_x * -1.0 * lr, y: stick_value_y * -1.0, z: 0.0}.normalize();
+            let pos1 = Vector3f { x: norm_stick_pos.x * 4.0, y: 8.0 + norm_stick_pos.y * 8.0, z: 0.};
+            let pos2 = Vector3f { x: norm_stick_pos.x * 9.0, y: 8.0 + norm_stick_pos.y * 12.0, z: 0.};
+            let rot = Vector3f { x:5.0, y:0.0, z: ((stick_value_x.signum() * 90.0) + 180. * angle/3.14159)};
+            let effect_hash = Hash40::new("sys_down_smoke");
+
+            EffectModule::req_on_joint(fighter.module_accessor, effect_hash, Hash40::new("top"),
+            &pos1, &rot, 0.5, &Vector3f{x: 0.0, y: 0.0, z: 0.0}, &Vector3f{x: 0.0, y: 0.0, z: 0.0}, false, 0, 0, 0);
+
+            // transition to custom airdash status
+            // we use change_status rather than set_status_kind_interrupt here because we want ESCAPE_AIR's main loop to run exactly once before transitioning to the airdash status
+            // this allows:
+            // 1. Initial airdodge energy to be applied
+            // 2. change_motion to run so we change into airdodge animation
+            // 3. Certain flags/transition terms to be set, such as FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR
+            let air_dash_status_kind = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::ryu::AIR_DASH);
+            fighter.change_status(
+                air_dash_status_kind.into(),
+                false.into()
+            );
+            return 0.into();
+        }
+    }
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_AIR),
+        *FIGHTER_KINETIC_TYPE_MOTION_FALL,
+        *GROUND_CORRECT_KIND_AIR as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        false,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_DISABLE,
+        false,
+        false,
+        false,
+        0,
+        0,
+        0,
+        0
+    );
+    0.into()
+}
+
+pub unsafe extern "C" fn air_dash_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE);
+
+    // Clear knockback energy for airdash out of hitstun
+    fighter.clear_lua_stack();
+    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+    app::sv_kinetic_energy::clear_speed(fighter.lua_state_agent);
+
+    0.into()
+}
+
+// Air Dash main status
+pub unsafe extern "C" fn air_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_sub_escape_air_uniq as *const () as _));
+    fighter.main_shift(air_dash_main_loop)
+}
+
+// Air Dash main loop
+unsafe extern "C" fn air_dash_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let frame = fighter.global_table[CURRENT_FRAME].get_i32();
+
+    if GroundModule::is_touch(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
+        fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_GROUND));
+    }
+
+    // TODO: Move to ACMD once airdash anim is made
+    if frame == 6 {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("fall_aerial"), 0.0, 1.0, false, 0.0, false, false);
+    }
+    // Remove intan on f9
+    if frame == 8 {
+        HitModule::set_whole(fighter.module_accessor, app::HitStatus(*HIT_STATUS_NORMAL), 0);
+    }
+    // Airdash actionable on f9
+    if frame >= 8 {
+        CancelModule::enable_cancel(fighter.module_accessor);
+    }
+    // Enable drift on f30
+    if frame == 29 {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
+    }
+    // Allow ledgegrab on f35
+    if frame == 34 {
+        smash_script::notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+    
+    if !StatusModule::is_changing(fighter.module_accessor) {
+        if !fighter.sub_escape_air_common_main().get_bool() {
+            fighter.sub_escape_check_rumble();
+        }
+    }
+    0.into()
+}
+
+// FIGHTER_STATUS_KIND_WAIT //
+
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_pre_Wait()
+}
+
+// vanilla script
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.sub_wait_common();
+    fighter.sub_wait_motion_mtrans();
+    fighter.sub_shift_status_main(L2CValue::Ptr(fgc_wait_main_loop as *const () as _))
+}
+
+pub unsafe extern "C" fn fgc_wait_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.status_Wait_Main().get_bool() {
+        return 0.into();
+    }
+    let lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1);
+    if lr != 0.0 && PostureModule::lr(fighter.module_accessor) != lr {
+        let stick_x_corrected = fighter.global_table[STICK_X].get_f32() * (PostureModule::lr(fighter.module_accessor) * -1.0);
+        let stick_y = fighter.global_table[STICK_Y].get_f32();
+        let walk_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("walk_stick_x"));
+        let squat_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"));
+
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK) {
+            if walk_stick_x <= stick_x_corrected {
+                if squat_stick_y < stick_y {
+                    fighter.change_status(FIGHTER_RYU_STATUS_KIND_WALK_BACK.into(), true.into());
+                    return 0.into();
+                }
+            }
+        }
+        fighter.change_status(FIGHTER_RYU_STATUS_KIND_TURN_AUTO.into(), false.into());
+        return 0.into();
+    }
+    0.into()
+}
+
+// FIGHTER_STATUS_KIND_LANDING //
+
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fgc_landing_main(fighter)
 }
