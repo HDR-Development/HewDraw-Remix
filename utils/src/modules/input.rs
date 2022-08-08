@@ -473,7 +473,7 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
         *(control_module as *mut *mut BattleObjectModuleAccessor).add(1)
     };
 
-    if triggered_buttons.intersects(Buttons::TiltAttack) {
+    if triggered_buttons.intersects(Buttons::TiltAttack) && !triggered_buttons.intersects(Buttons::Smash) {
         unsafe {
             (*input_module.owner).clear_commands(Cat1::AttackS4);
             (*input_module.owner).clear_commands(Cat1::AttackHi4);
