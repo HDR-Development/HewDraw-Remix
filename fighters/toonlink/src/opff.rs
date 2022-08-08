@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
@@ -16,13 +16,6 @@ unsafe fn heros_bow_ff(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
     }
 }
 
-// Toon Link Bomb pull B-Reverse
-unsafe fn bomb_pull_b_reverse(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-        common::opff::check_b_reverse(fighter);
-    }
-}
-
 // Lengthen sword
 unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
 	let long_sword_scale = Vector3f{x: 1.2, y: 1.0, z: 1.0};
@@ -36,7 +29,6 @@ extern "Rust" {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     heros_bow_ff(boma, status_kind, situation_kind, cat[1], stick_y);
-    bomb_pull_b_reverse(fighter);
 	sword_length(boma);
     
 

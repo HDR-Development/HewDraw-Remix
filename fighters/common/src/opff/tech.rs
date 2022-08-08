@@ -383,25 +383,6 @@ pub unsafe fn teeter_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
     }
 }
 
-#[utils::export(common::opff)]
-pub unsafe fn check_b_reverse(fighter: &mut L2CFighterCommon) {
-    if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
-        if fighter.is_stick_backward() {
-            PostureModule::reverse_lr(fighter.module_accessor);
-            PostureModule::update_rot_y_lr(fighter.module_accessor);
-        }
-    }
-    if fighter.global_table[CURRENT_FRAME].get_i32() == 3 {
-        if fighter.is_stick_backward()
-        && !VarModule::is_flag(fighter.battle_object, vars::common::instance::B_REVERSED) {
-            PostureModule::reverse_lr(fighter.module_accessor);
-            PostureModule::update_rot_y_lr(fighter.module_accessor);
-            KineticModule::mul_speed(fighter.module_accessor, &Vector3f::new(-1.0, 1.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-            VarModule::on_flag(fighter.battle_object, vars::common::instance::B_REVERSED);
-        }
-    }
-}
-
 pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mut L2CAgent, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32, curr_frame: f32) {
     tumble_exit(boma, cat[0], status_kind, situation_kind);
     non_tumble_di(fighter, lua_state, l2c_agent, boma, status_kind);
