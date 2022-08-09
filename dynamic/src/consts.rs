@@ -219,6 +219,8 @@ pub mod vars {
 
             pub const IS_JAB_LOCK_ROLL: i32 = 0x1000;
 
+            pub const SUICIDE_THROW_CAN_CLATTER: i32 = 0x1000;
+
             // ints
 
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
