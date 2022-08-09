@@ -13,3 +13,4 @@ smashline = { git = "https://github.com/blu-dev/smashline.git", branch = "develo
 utils = { package = "dynamic", path = "../../dynamic" }
 ninput = { git = "https://github.com/blu-dev/ninput" }
 interpolation = "0.2.0" # for f32::lerp
+smash2 = { package = "smash", git = "https://github.com/blu-dev/smash-rs" }
