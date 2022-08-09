@@ -150,7 +150,7 @@ pub mod vars {
 
             pub const ENABLE_AIR_ESCAPE_JUMPSQUAT: i32 = 0x0051;
 
-            pub const DISABLE_GROUND_BOUNCE: i32 = 0x0052;
+            pub const IS_KNOCKDOWN_THROW: i32 = 0x0052;
 
             pub const IS_HEAVY_ATTACK: i32 = 0x0053;
 
@@ -775,6 +775,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const IS_DREAMLAND_EXPRESS: i32 = 0x1100;
+            pub const IS_LATE_DLE_INPUT: i32 = 0x1101;
         }
     }
 

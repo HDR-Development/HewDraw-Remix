@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
@@ -76,7 +76,7 @@ unsafe fn laser_blaze_ff_land_cancel(boma: &mut BattleObjectModuleAccessor, situ
     }
 }
 
-unsafe fn missile_land_cancel_b_rev(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
+unsafe fn missile_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
     if [*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_1_GROUND,
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_1_AIR,
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_2_GROUND,
@@ -84,7 +84,6 @@ unsafe fn missile_land_cancel_b_rev(fighter: &mut L2CFighterCommon, boma: &mut B
         if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
         }
-        common::opff::check_b_reverse(fighter);
     }
 }
 
@@ -121,7 +120,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     nspecial_cancels(boma, status_kind, situation_kind, cat[0], cat[1]);
     absorb_vortex_jc_turnaround_shinejump_cancel(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     laser_blaze_ff_land_cancel(boma, situation_kind, motion_kind, cat[1], stick_y);
-    missile_land_cancel_b_rev(fighter, boma, id, status_kind, situation_kind);
+    missile_land_cancel(fighter, boma, id, status_kind, situation_kind);
 	cannon_jump_kick_actionability(boma, id, status_kind, frame);
 	arm_rocket_airdash(boma, id, status_kind, frame);
 

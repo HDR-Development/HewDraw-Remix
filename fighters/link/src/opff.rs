@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
@@ -11,13 +11,6 @@ unsafe fn bow_fastfall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
                 WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
             }
         }
-    }
-}
-
-// Link Remote Bomb pull and detonation B-Reverse
-unsafe fn bomb_n_deton_b_reverse(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_LINK_STATUS_KIND_SPECIAL_LW_BLAST]) {
-        common::opff::check_b_reverse(fighter);
     }
 }
 
@@ -101,7 +94,6 @@ pub unsafe extern "Rust" fn links_common(fighter: &mut smash::lua2cpp::L2CFighte
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     bow_fastfall(boma, status_kind, situation_kind, cat[1], stick_y);
-    bomb_n_deton_b_reverse(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_LINK )]

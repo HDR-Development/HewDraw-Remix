@@ -1,17 +1,10 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-// Richter Holy Water B-Reverse
-unsafe fn holy_water_b_rev(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-        common::opff::check_b_reverse(fighter);
-    }
-}
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon) {
-    holy_water_b_rev(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_RICHTER )]
