@@ -135,7 +135,8 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
         );
         return 0.into();
     }
-    if fighter.global_table[STICK_Y].get_f32() >= 0.2 && fighter.sub_transition_group_check_ground_item().get_bool() {
+    // Checks if the stick is upwards and if it's been flicked for less than 5 frames before throwing the item.
+    if fighter.global_table[STICK_Y].get_f32() >= 0.2 && fighter.global_table[FLICK_Y].get_i32() < 5 && fighter.sub_transition_group_check_ground_item().get_bool() {
         return 0.into();
     }
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
