@@ -144,7 +144,7 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
                 L2CValue::Bool(true)
             );
         } else if !fighter.sub_transition_specialflag_hoist().get_bool() {
-            let cat2 = fighter.global_table[CMD_CAT2].get_i32();
+            // let cat2 = fighter.global_table[CMD_CAT2].get_i32();
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START)
             && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
                 if fighter.global_table[0x58].get_bool() != false && {
@@ -153,7 +153,8 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
                 } {
                     return L2CValue::I32(0);
                 }
-                if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_ATTACK_DASH_ATTACK_HI4 != 0
+                // if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_ATTACK_DASH_ATTACK_HI4 != 0 // original
+                if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 != 0 // check if there is a valid stick flick using the original flag
                     && fighter.is_situation(*SITUATION_KIND_GROUND) {
                     fighter.change_status(
                         L2CValue::I32(*FIGHTER_STATUS_KIND_ATTACK_HI4_START),
@@ -217,9 +218,10 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
         PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
         PostureModule::update_rot_y_lr(fighter.module_accessor);
     }
-    ControlModule::reset_flick_y(fighter.module_accessor);
-    ControlModule::reset_flick_sub_y(fighter.module_accessor);
-    fighter.global_table[FLICK_Y].assign(&0xFE.into());
+    // Commented out so we can keep our current stick flick.
+    // ControlModule::reset_flick_y(fighter.module_accessor);
+    // ControlModule::reset_flick_sub_y(fighter.module_accessor);
+    // fighter.global_table[FLICK_Y].assign(&0xFE.into());
 
     // not a conditional enable, so it's not in potential_enables
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL);
