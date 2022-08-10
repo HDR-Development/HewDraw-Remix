@@ -277,12 +277,13 @@ unsafe fn sub_transition_group_check_ground_jump_mini_attack(fighter: &mut L2CFi
     false.into()
 }
 
+// Vanilla lmao
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_jump)]
 unsafe fn sub_transition_group_check_ground_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         if fighter.sub_check_button_jump().get_bool()
         || fighter.sub_check_button_frick().get_bool() {
-            fighter.change_status(FIGHTER_STATUS_KIND_JUMP_SQUAT.into(), false.into());
+            fighter.change_status(FIGHTER_STATUS_KIND_JUMP_SQUAT.into(), true.into());
             return true.into();
         }
     }

@@ -135,40 +135,43 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
         );
         return 0.into();
     }
-    let cat3 = fighter.global_table[CMD_CAT3].get_i32();
-    if cat3 & (*FIGHTER_PAD_CMD_CAT3_FLAG_ITEM_LIGHT_THROW_HI | *FIGHTER_PAD_CMD_CAT3_FLAG_ITEM_LIGHT_THROW_HI4) != 0 {
-        if fighter.global_table[STICK_Y].get_f32().abs() < 0.2 {
-            ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY3, *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI);
-            ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY3, *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI4);
+    // Walks through and clears all item throw commands.
+    if fighter.global_table[CMD_CAT3].get_i32() & *FIGHTER_PAD_CMD_CAT3_FLAG_ITEM_LIGHT_THROW_ALL != 0 {
+        let up = fighter.global_table[STICK_Y].get_f32() >= 0.2;
+        for x in 0..7 {
+            if x != 0 && x != 3 || !up {
+                ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY3, x);
+            }
         }
     }
-    if !fighter.sub_transition_group_check_ground_item().get_bool() {
-        let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI)
-            && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI != 0
-            && fighter.is_situation(*SITUATION_KIND_GROUND) {
-            fighter.change_status(
-                L2CValue::I32(*FIGHTER_STATUS_KIND_SPECIAL_HI),
-                L2CValue::Bool(true)
-            );
-        } else if !fighter.sub_transition_specialflag_hoist().get_bool() {
-            // let cat2 = fighter.global_table[CMD_CAT2].get_i32();
-            if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START)
-            && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
-                if fighter.global_table[0x58].get_bool() != false && {
-                    let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x58].get_ptr());
-                    callable(fighter).get_bool()
-                } {
-                    return L2CValue::I32(0);
-                }
-                // if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_ATTACK_DASH_ATTACK_HI4 != 0 // original
-                if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 != 0 // check if there is a valid stick flick using the original flag
-                    && fighter.is_situation(*SITUATION_KIND_GROUND) {
-                    fighter.change_status(
-                        L2CValue::I32(*FIGHTER_STATUS_KIND_ATTACK_HI4_START),
-                        L2CValue::Bool(true)
-                    );
-                }
+    if fighter.sub_transition_group_check_ground_item().get_bool() {
+        return 0.into();
+    }
+    let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI)
+        && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI != 0
+        && fighter.is_situation(*SITUATION_KIND_GROUND) {
+        fighter.change_status(
+            L2CValue::I32(*FIGHTER_STATUS_KIND_SPECIAL_HI),
+            L2CValue::Bool(true)
+        );
+    } else if !fighter.sub_transition_specialflag_hoist().get_bool() {
+        // let cat2 = fighter.global_table[CMD_CAT2].get_i32();
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START)
+        && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+            if fighter.global_table[0x58].get_bool() != false && {
+                let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x58].get_ptr());
+                callable(fighter).get_bool()
+            } {
+                return L2CValue::I32(0);
+            }
+            // if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_ATTACK_DASH_ATTACK_HI4 != 0 // original
+            if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 != 0 // check if there is a valid stick flick using the original flag
+                && fighter.is_situation(*SITUATION_KIND_GROUND) {
+                fighter.change_status(
+                    L2CValue::I32(*FIGHTER_STATUS_KIND_ATTACK_HI4_START),
+                    L2CValue::Bool(true)
+                );
             }
         }
     }
@@ -226,10 +229,7 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
         PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
         PostureModule::update_rot_y_lr(fighter.module_accessor);
     }
-    // Since the game no longer clears the buffer using change_status, we have to do it instead.
-    ControlModule::reset_trigger(fighter.module_accessor);
-    ControlModule::clear_command(fighter.module_accessor, false);
-    // All so we can keep our current stick flick.
+    // Commented out so we can keep our current stick flick.
     // ControlModule::reset_flick_y(fighter.module_accessor);
     // ControlModule::reset_flick_sub_y(fighter.module_accessor);
     // fighter.global_table[FLICK_Y].assign(&0xFE.into());
