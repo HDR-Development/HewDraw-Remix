@@ -155,7 +155,6 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_air_transition_group_check_air_attack_hook,
             // sub_transition_group_check_air_lasso,
             sub_transition_group_check_ground_jump_mini_attack,
-            sub_transition_group_check_ground_jump,
             sub_transition_group_check_air_escape,
             sub_transition_group_check_ground_escape,
             sub_transition_group_check_ground_guard
@@ -271,19 +270,6 @@ unsafe fn sub_transition_group_check_ground_jump_mini_attack(fighter: &mut L2CFi
         && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
         && fighter.sub_check_button_jump().get_bool() {
             fighter.change_status_jump_mini_attack(false.into());
-            return true.into();
-        }
-    }
-    false.into()
-}
-
-// Vanilla lmao
-#[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_jump)]
-unsafe fn sub_transition_group_check_ground_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        if fighter.sub_check_button_jump().get_bool()
-        || fighter.sub_check_button_frick().get_bool() {
-            fighter.change_status(FIGHTER_STATUS_KIND_JUMP_SQUAT.into(), true.into());
             return true.into();
         }
     }

@@ -135,16 +135,7 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
         );
         return 0.into();
     }
-    // Walks through and clears all item throw commands.
-    if fighter.global_table[CMD_CAT3].get_i32() & *FIGHTER_PAD_CMD_CAT3_FLAG_ITEM_LIGHT_THROW_ALL != 0 {
-        let up = fighter.global_table[STICK_Y].get_f32() >= 0.2;
-        for x in 0..7 {
-            if x != 0 && x != 3 || !up {
-                ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY3, x);
-            }
-        }
-    }
-    if fighter.sub_transition_group_check_ground_item().get_bool() {
+    if fighter.global_table[STICK_Y].get_f32() >= 0.2 && fighter.sub_transition_group_check_ground_item().get_bool() {
         return 0.into();
     }
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
