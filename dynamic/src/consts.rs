@@ -225,6 +225,11 @@ pub mod vars {
 
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
 
+            // floats
+
+            pub const INITIAL_KNOCKBACK_VEL_X: i32 = 0x1000;
+            pub const INITIAL_KNOCKBACK_VEL_Y: i32 = 0x1001;
+
         }
     }
 
