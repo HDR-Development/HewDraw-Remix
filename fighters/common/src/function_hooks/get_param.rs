@@ -77,6 +77,10 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
     // For articles
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
 
+    if x1 == hash40("landing_frame") {
+        return original!()(x0, hash40("landing_frame"), 0) + 1.0;
+    }
+    
     if x1 == hash40("param_trenchmortarbullet") && x2 == hash40("speed_x") {
 		if fighter_kind == *WEAPON_KIND_SNAKE_TRENCHMORTAR_BULLET {
 			return ControlModule::get_stick_x(boma) / 1.5 * PostureModule::lr(boma);
