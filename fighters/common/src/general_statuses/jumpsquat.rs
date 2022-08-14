@@ -439,8 +439,9 @@ unsafe fn sub_status_JumpSquat_check_stick_lr_update(fighter: &mut L2CFighterCom
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_jump_squat_uniq_process_init_param)]
 unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon, motion_hash: L2CValue) {
-    println!("sub_jump_squat_uniq_process_init_param");
     let jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
+    // This cuts a single frame off of the end of the specified characters' jumpsquat animations
+    // This is a purely aesthetic change, makes for snappier jumps
     let end_frame = if [*FIGHTER_KIND_SAMUS,
         *FIGHTER_KIND_FOX,
         *FIGHTER_KIND_PIKACHU,
@@ -470,11 +471,11 @@ unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon,
     else {
         MotionModule::end_frame_from_hash(fighter.module_accessor, motion_hash.get_hash())
     };
-    let mut motion_rate = end_frame / jump_squat_frame;
 
+    // vanilla logic
+    let mut motion_rate = end_frame / jump_squat_frame;
     if motion_rate < 1.0 {
         motion_rate += 0.001;
     }
-    println!("motion rate init: {}", motion_rate);
     MotionModule::change_motion(fighter.module_accessor, motion_hash.get_hash(), 0.0, motion_rate, false, 0.0, false, false);
 }

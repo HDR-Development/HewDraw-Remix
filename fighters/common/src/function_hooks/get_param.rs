@@ -77,6 +77,8 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
     // For articles
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
 
+    // Coupled with "landing_heavy" change in change_motion hook
+    // Because we start heavy landing anims on f2 rather than f1, we need to tell the game to make your heavy landing FAF f5 rather than f4
     if x1 == hash40("landing_frame") {
         return original!()(x0, hash40("landing_frame"), 0) + 1.0;
     }
