@@ -9,7 +9,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
@@ -19,7 +19,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+        let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
             app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
@@ -35,7 +35,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
@@ -45,7 +45,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+        let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
             app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
@@ -61,7 +61,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
@@ -71,7 +71,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+        let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
             app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
@@ -103,7 +103,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
@@ -113,7 +113,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+        let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
             app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
@@ -241,7 +241,7 @@ unsafe fn miiswordsman_tornadoshot_fly_game(fighter: &mut L2CAgentBase) {
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
     // Heavy
     //if heavy_attack[hdr::get_player_number(owner_module_accessor)]{
-    if VarModule::is_flag(owner_module_accessor.object(), vars::common::status::IS_HEAVY_ATTACK){
+    if VarModule::is_flag(owner_module_accessor.object(), vars::common::instance::IS_HEAVY_ATTACK){
         if is_excute(fighter) {
             //disable_gale_strike[hdr::get_player_number(owner_module_accessor)] = true;
             AREA_WIND_2ND_RAD_arg9(fighter, 0, 2, 0.05, 200, 1, 3, 3, 25, 30);

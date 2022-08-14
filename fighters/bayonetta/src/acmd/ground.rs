@@ -136,6 +136,9 @@ unsafe fn bayonetta_attack_100_end_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION);
+        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+            VarModule::on_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS);
+        }
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_MOTION_STOP);
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_CHECK_END);
     }
@@ -150,13 +153,13 @@ unsafe fn bayonetta_attack_dash_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_R_ARM, true, true, false, 10, 3, 15, 5, true);
         FT_MOTION_RATE(fighter, 0.632);
-        VarModule::off_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK)
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK)
      }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         /*
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            VarModule::on_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK)
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK)
          }
          else {
             FT_MOTION_RATE(fighter, 0.250);
@@ -166,7 +169,7 @@ unsafe fn bayonetta_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
             FT_MOTION_RATE(fighter, 1.481);
             ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 361, 100, 0, 70, 5.0, 0.0, 10.0, 10.5, Some(0.0), Some(10.0), Some(7.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
             ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0, 361, 100, 0, 70, 1.0, 0.0, 4.0, 11.0, Some(0.0), Some(4.0), Some(5.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
@@ -179,7 +182,7 @@ unsafe fn bayonetta_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 4.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 75, 45, 0, 80, 4.5, 0.0, 10.0, 10.5, Some(0.0), Some(10.0), Some(7.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
             ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0, 75, 45, 0, 80, 1.0, 0.0, 4.0, 11.0, Some(0.0), Some(4.0), Some(5.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
         }
@@ -199,6 +202,9 @@ unsafe fn bayonetta_attack_dash_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 28.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION);
+        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+            VarModule::on_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS);
+        }
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_MOTION_STOP);
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_CHECK_END);
         FT_MOTION_RATE(fighter, 1.333);

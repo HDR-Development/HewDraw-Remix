@@ -368,9 +368,9 @@ pub unsafe fn teeter_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
         *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL,
         *FIGHTER_STATUS_KIND_LANDING_DAMAGE_LIGHT]
     )
-    && (KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL)
+    && ((KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL)
     - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND)
-    - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN)).abs() > 0.0) {
+    - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN)) * PostureModule::lr(boma)) > 0.0) {
 
         // Conditions for transitioning to teeter animation in sub_ground_check_ottotto
         if (GroundModule::is_ottotto(boma, 1.72) // Original value: 0.86
@@ -379,25 +379,6 @@ pub unsafe fn teeter_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                 FIGHTER_STATUS_KIND_OTTOTTO.into(),
                 true.into()
             );
-        }
-    }
-}
-
-#[utils::export(common::opff)]
-pub unsafe fn check_b_reverse(fighter: &mut L2CFighterCommon) {
-    if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
-        if fighter.is_stick_backward() {
-            PostureModule::reverse_lr(fighter.module_accessor);
-            PostureModule::update_rot_y_lr(fighter.module_accessor);
-        }
-    }
-    if fighter.global_table[CURRENT_FRAME].get_i32() == 3 {
-        if fighter.is_stick_backward()
-        && !VarModule::is_flag(fighter.battle_object, vars::common::instance::B_REVERSED) {
-            PostureModule::reverse_lr(fighter.module_accessor);
-            PostureModule::update_rot_y_lr(fighter.module_accessor);
-            KineticModule::mul_speed(fighter.module_accessor, &Vector3f::new(-1.0, 1.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-            VarModule::on_flag(fighter.battle_object, vars::common::instance::B_REVERSED);
         }
     }
 }

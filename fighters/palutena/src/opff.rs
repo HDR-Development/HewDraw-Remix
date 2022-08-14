@@ -6,7 +6,6 @@ use globals::*;
  
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     palutena_teleport_cancel(boma, id, status_kind, situation_kind, cat[0]);
-    palutena_counter_b_reverse(boma, id, status_kind, situation_kind, stick_x, facing, frame, cat[0]);
     aegis_reflector_timer(fighter, boma, id);
     aegis_reflector_reset(fighter, id, status_kind);
     aegis_reflector_training(fighter, id, status_kind);
@@ -66,22 +65,6 @@ pub unsafe fn palutena_teleport_cancel(boma: &mut BattleObjectModuleAccessor, id
     }
     else {
         VarModule::off_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE);
-    }
-}
-
-pub unsafe fn palutena_counter_b_reverse(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, stick_x: f32, facing: f32, frame: f32, cat1: i32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-        if frame < 5.0 {
-            if stick_x * facing < 0.0 {
-                PostureModule::reverse_lr(boma);
-                PostureModule::update_rot_y_lr(boma);
-                if frame > 1.0 && frame < 5.0 &&  !VarModule::is_flag(boma.object(), vars::common::instance::B_REVERSED) {
-                    let b_reverse = Vector3f{x: -1.0, y: 1.0, z: 1.0};
-                    KineticModule::mul_speed(boma, &b_reverse, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                    VarModule::on_flag(boma.object(), vars::common::instance::B_REVERSED);
-                }
-            }
-        }
     }
 }
 

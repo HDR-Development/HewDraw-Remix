@@ -175,7 +175,7 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         }
         if x1 == hash40("param_special_hi"){
             //if heavy_attack[hdr::get_player_number(owner_module_accessor)]{
-            if VarModule::is_flag(boma_reference.object(), vars::common::status::IS_HEAVY_ATTACK){
+            if VarModule::is_flag(boma_reference.object(), vars::common::instance::IS_HEAVY_ATTACK){
                 if x2 == hash40("hi2_rush_speed") {
                     return 3.0;
                 }
@@ -201,19 +201,19 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         if x1 == hash40("param_tornadoshot"){
             if x2 == hash40("life") {
                 //if heavy_attack[hdr::get_player_number(owner_module_accessor)]{
-                if VarModule::is_flag(owner_module_accessor.object(), vars::common::status::IS_HEAVY_ATTACK){
+                if VarModule::is_flag(owner_module_accessor.object(), vars::common::instance::IS_HEAVY_ATTACK){
                     return 70.0;
                 }
             }
             else if x2 == hash40("speed_x") {
                 //if heavy_attack[hdr::get_player_number(owner_module_accessor)]{
-                if VarModule::is_flag(owner_module_accessor.object(), vars::common::status::IS_HEAVY_ATTACK){
+                if VarModule::is_flag(owner_module_accessor.object(), vars::common::instance::IS_HEAVY_ATTACK){
                     return 1.5;
                 }
             }
             else if x2 == hash40("accel_x") {
                 //if heavy_attack[hdr::get_player_number(owner_module_accessor)]{
-                if VarModule::is_flag(owner_module_accessor.object(), vars::common::status::IS_HEAVY_ATTACK){
+                if VarModule::is_flag(owner_module_accessor.object(), vars::common::instance::IS_HEAVY_ATTACK){
                     return -0.025;
                 }
             }

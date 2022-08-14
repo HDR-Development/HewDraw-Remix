@@ -150,6 +150,10 @@ pub mod vars {
 
             pub const ENABLE_AIR_ESCAPE_JUMPSQUAT: i32 = 0x0051;
 
+            pub const IS_KNOCKDOWN_THROW: i32 = 0x0052;
+
+            pub const IS_HEAVY_ATTACK: i32 = 0x0053;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -203,16 +207,19 @@ pub mod vars {
         }
         pub mod status {
             // flags
-            pub const IS_HEAVY_ATTACK: i32 = 0x1000;
 
             pub const DISABLE_BACKDASH: i32 = 0x1000;
             pub const IS_MOONWALK: i32 = 0x1001;
+            pub const IS_DASH_TO_RUN_FRAME: i32 = 0x1002;
+            pub const IS_AFTER_DASH_TO_RUN_FRAME: i32 = 0x1003;
 
             pub const ATTACK_DASH_CANCEL_DISABLE: i32 = 0x1000;
 
             pub const SHOULD_WAVELAND: i32 = 0x1000;
 
             pub const IS_JAB_LOCK_ROLL: i32 = 0x1000;
+
+            pub const SUICIDE_THROW_CAN_CLATTER: i32 = 0x1000;
 
             // ints
 
@@ -233,6 +240,10 @@ pub mod vars {
             pub const NUM_RECOVERY_RESOURCE_USED:         i32 = 0x0100;
             pub const NUM_SPECIAL_S_CANCEL_THIS_AIRTIME:  i32 = 0x0101;
             pub const NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME: i32 = 0x0102;
+        }
+        pub mod status {
+            // flags
+            pub const IS_BULLET_ARTS: i32 = 0x1100;
         }
     }
 
@@ -277,7 +288,7 @@ pub mod vars {
     // Note: Terry starts his flags on 0xXX5X instead due to also using the shotos generic flags.
     pub mod dolly {
         pub mod instance {
-            pub const SUPER_CANCEL: i32 = 0x0100;
+            pub const SUPER_CANCEL: i32 = 0x0150;
         }
         pub mod status {
             // flags
@@ -434,6 +445,12 @@ pub mod vars {
         }
     }
 
+    pub mod lucario {
+        pub mod status {
+            // ints
+            pub const FORCE_PALM_ROT_ANGLE: i32 = 0x1100;
+        }
+    }
     pub mod lucas {
 
         pub mod instance {
@@ -568,7 +585,6 @@ pub mod vars {
             pub const IS_SPECIAL_S_ELECTRIC_BLANKET: i32 = 0x1100;
 
             pub const IS_SPECIAL_HI_UNABLE_CANCEL:   i32 = 0x1100;
-            pub const IS_SPECIAL_HI_SWEETSPOT_HIT:   i32 = 0x1101;
         }
     }
 
@@ -699,6 +715,7 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const CHAKRAM_STICK_ATTACK: i32 = 0x0100;
+            pub const SKYWARD_SLASH_DASH_HIT: i32 = 0x0101;
 
             // ints
             pub const SPECIAL_LW1_CHARGE_LEVEL: i32 = 0x0100;
@@ -710,8 +727,6 @@ pub mod vars {
             pub const GALE_STAB_EDGE_CANCEL: i32 = 0x1100;
 
             pub const SPECIAL_LW1_ATTACK_TRIGGER: i32 = 0x1100;
-
-            pub const SKYWARD_SLASH_DASH_HIT: i32 = 0x1100;
         }
     }
 
@@ -762,9 +777,24 @@ pub mod vars {
         pub mod status {
             // flags
             pub const IS_DREAMLAND_EXPRESS: i32 = 0x1100;
+            pub const IS_LATE_DLE_INPUT: i32 = 0x1101;
         }
     }
 
+    pub mod pichu {
+        pub mod instance {
+            //flags
+            pub const IS_CHARGE_ATTACK: i32 = 0x0102;
+
+            //ints
+            pub const CHARGE_LEVEL: i32 = 0x0100;
+            pub const CHARGE_EFFECT_HANDLER: i32 = 0x0101;
+
+            // floats
+            pub const CHARGE_DAMAGE_MUL: i32 = 0x0100;
+            pub const CHARGE_RECOIL_MUL: i32 = 0x0101;
+        }
+    }
 
 }
 

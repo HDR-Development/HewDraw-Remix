@@ -743,7 +743,7 @@ unsafe fn pre_chakram_hop(weapon: &mut L2CWeaponCommon) -> L2CValue {
 
 #[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn pre_special_hi2_rush(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, vars::miiswordsman::status::SKYWARD_SLASH_DASH_HIT);
+    VarModule::off_flag(fighter.battle_object, vars::miiswordsman::instance::SKYWARD_SLASH_DASH_HIT);
     original!(fighter)
 }
 
@@ -751,7 +751,7 @@ unsafe fn pre_special_hi2_rush(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe fn exec_special_hi2_rush(fighter: &mut L2CFighterCommon) -> L2CValue {
     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-        VarModule::on_flag(fighter.battle_object, vars::miiswordsman::status::SKYWARD_SLASH_DASH_HIT);
+        VarModule::on_flag(fighter.battle_object, vars::miiswordsman::instance::SKYWARD_SLASH_DASH_HIT);
         //println!("SSD Hit");
     }
     return 0.into()
@@ -761,11 +761,11 @@ unsafe fn exec_special_hi2_rush(fighter: &mut L2CFighterCommon) -> L2CValue {
 // not running for some reason
 #[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe fn exec_special_hi2_rush_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(fighter.battle_object, vars::common::status::IS_HEAVY_ATTACK) && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+    if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::instance::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         //println!("SSD Success");
         if MotionModule::frame(fighter.module_accessor) >= 30.0 {
             //println!("SSD Fall Act");
-            VarModule::off_flag(fighter.battle_object, vars::miiswordsman::status::SKYWARD_SLASH_DASH_HIT);
+            VarModule::off_flag(fighter.battle_object, vars::miiswordsman::instance::SKYWARD_SLASH_DASH_HIT);
             VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
             fighter.change_status(
                 L2CValue::I32(*FIGHTER_STATUS_KIND_FALL),

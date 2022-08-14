@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
@@ -41,15 +41,6 @@ unsafe fn hammer_fastfall_landcancel(boma: &mut BattleObjectModuleAccessor, stat
         }
     }
 }
-
-// Hammer Flip B-Reverse
-unsafe fn hammer_flip_b_reverse(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) {
-        common::opff::check_b_reverse(fighter);
-    }
-}
-
-
 
 // Magic Series
 unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
@@ -307,7 +298,6 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     final_cutter_cancel(boma, id, status_kind, cat[0], frame);
     hammer_fastfall_landcancel(boma, status_kind, situation_kind, cat[1], stick_y);
-    hammer_flip_b_reverse(fighter);
 
 
     // Frame Data

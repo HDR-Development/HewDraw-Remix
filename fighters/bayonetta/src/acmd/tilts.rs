@@ -52,6 +52,9 @@ unsafe fn bayonetta_attack_s3_s_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION);
+        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+            VarModule::on_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS);
+        }
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_MOTION_STOP);
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_CHECK_END);
     }
@@ -99,6 +102,9 @@ unsafe fn bayonetta_attack_s3_s2_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 20.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION);
+        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+            VarModule::on_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS);
+        }
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_MOTION_STOP);
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_CHECK_END);
     }
@@ -155,6 +161,9 @@ unsafe fn bayonetta_attack_s3_s3_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         FT_MOTION_RATE(fighter, 0.850);
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION);
+        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+            VarModule::on_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS);
+        }
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_MOTION_STOP);
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_CHECK_END);
     }
@@ -201,6 +210,9 @@ unsafe fn bayonetta_attack_hi3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION);
+        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+            VarModule::on_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS);
+        }
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_MOTION_STOP);
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_CHECK_END);
     }
@@ -253,6 +265,9 @@ unsafe fn bayonetta_attack_lw3_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 29.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION);
+        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+            VarModule::on_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS);
+        }
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_MOTION_STOP);
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_CHECK_END);
     }
