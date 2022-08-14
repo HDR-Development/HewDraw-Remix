@@ -129,13 +129,13 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_kirby_dash_start"));
     }
-    wait(lua_state, 9.0);
+    wait(lua_state, 13.0);
     if is_excute(fighter) {
-        PLAY_STEP(fighter, Hash40::new("se_kirby_step_left_m"));
+        PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_kirby_step_left_m"), Hash40::new("se_kirby_step_right_m"));
     }
-    wait(lua_state, 5.0);
+    wait(lua_state, 4.0);
     if is_excute(fighter) {
-        PLAY_STEP(fighter, Hash40::new("se_kirby_step_right_m"));
+        PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_kirby_step_right_m"), Hash40::new("se_kirby_step_left_m"));
     }
 }
 

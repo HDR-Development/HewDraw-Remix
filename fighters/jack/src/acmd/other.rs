@@ -213,17 +213,13 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
 unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 6.0);
+    frame(lua_state, 2.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_jack_dash_start"));
     }
-    wait(lua_state, 9.0);
+    frame(lua_state, 18.0);
     if is_excute(fighter) {
-        PLAY_STEP(fighter, Hash40::new("se_jack_step_left_m"));
-    }
-    wait(lua_state, 5.0);
-    if is_excute(fighter) {
-        PLAY_STEP(fighter, Hash40::new("se_jack_step_right_m"));
+        PLAY_STEP(fighter, Hash40::new("se_jack_step_left_s"));
     }
 }
 
