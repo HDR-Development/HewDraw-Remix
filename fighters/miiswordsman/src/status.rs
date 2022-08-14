@@ -17,7 +17,7 @@ pub fn install() {
         pre_special_hi2_rush,
         //exec_special_hi2_rush,
         //exec_special_hi2_rush_end,
-        exec_special_hi3_hold,
+        //exec_special_hi3_hold,
         pre_special_hi3_end,
         special_hi3_end,
         //special_lw,
@@ -511,24 +511,6 @@ unsafe extern "C" fn special_s2_attack_main(fighter: &mut L2CFighterCommon) -> L
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 0.into();
     }
-    // custom [
-    // Jump cancels
-    let pad_flag = ControlModule::get_pad_flag(fighter.module_accessor);
-    if fighter.is_input_jump() && MotionModule::frame(fighter.module_accessor) > 5.0 && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) && !fighter.is_in_hitlag() {
-        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
-            if fighter.get_num_used_jumps() < fighter.get_jump_count_max() {
-                fighter.change_status(FIGHTER_STATUS_KIND_JUMP_AERIAL.into(), false.into());
-                return 1.into()
-            }
-        } else if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-            if PostureModule::lr(fighter.module_accessor) * fighter.global_table[STICK_X].get_f32() < 0.0 {
-                PostureModule::reverse_lr(fighter.module_accessor);
-            }
-            fighter.change_status(FIGHTER_STATUS_KIND_JUMP_SQUAT.into(), true.into());
-            return 1.into()
-        }
-    }
-    // ]
     if !CancelModule::is_enable_cancel(fighter.module_accessor) || (CancelModule::is_enable_cancel(fighter.module_accessor) && !fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool() && !fighter.sub_air_check_fall_common().get_bool()) {
         special_s2_attack_main_helper(fighter);
     }
