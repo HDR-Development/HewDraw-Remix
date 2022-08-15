@@ -63,6 +63,20 @@ unsafe fn falco_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "falco", script = "expression_attackairn" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn falco_attack_air_n_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_attacks"), 0, false, 0 as u32);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 #[acmd_script( agent = "falco", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn falco_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -186,6 +200,33 @@ unsafe fn falco_attack_air_f_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 2.0);
     }  
     
+}
+
+#[acmd_script( agent = "falco", script = "expression_attackairf" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn falco_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 7, false, 0 as u32);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 7, false, 0 as u32);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, 0 as u32);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("arml"), app::AttackDirectionAxis(*ATTACK_DIRECTION_X), app::AttackDirectionAxis(*ATTACK_DIRECTION_Y), app::AttackDirectionAxis(*ATTACK_DIRECTION_Z));
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
 }
 
 #[acmd_script( agent = "falco", script = "sound_attackairb" , category = ACMD_SOUND , low_priority)]
@@ -352,10 +393,12 @@ pub fn install() {
         falco_attack_air_n_game,
         falco_attack_air_n_sound,
         falco_attack_air_n_effect,
+        falco_attack_air_n_expression,
         falco_attack_air_f_game,
         falco_attack_air_f_sound,
         falco_landing_air_f_game,
         falco_attack_air_f_effect,
+        falco_attack_air_f_expression,
         falco_attack_air_b_sound,
         falco_attack_air_b_game,
         falco_attack_air_b_effect,
