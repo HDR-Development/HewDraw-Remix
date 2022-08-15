@@ -17,7 +17,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">56</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -30,7 +30,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">56</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -50,7 +50,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">56</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -63,7 +63,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">56</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -83,7 +83,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">54</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -96,7 +96,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">54</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -116,7 +116,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">27</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">51</float>
+      <float hash="escape_air_cancel_frame">58</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">27</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -129,7 +129,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">51</float>
+      <float hash="escape_air_slide_cancel_frame">58</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -149,7 +149,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">28</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">52</float>
+      <float hash="escape_air_cancel_frame">56</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">28</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -162,7 +162,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">52</float>
+      <float hash="escape_air_slide_cancel_frame">56</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -182,7 +182,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">58</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -195,7 +195,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">58</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -215,7 +215,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">21</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">45</float>
+      <float hash="escape_air_cancel_frame">47</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">21</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -228,7 +228,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">45</float>
+      <float hash="escape_air_slide_cancel_frame">47</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -248,7 +248,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">25</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">49</float>
+      <float hash="escape_air_cancel_frame">54</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">25</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -261,7 +261,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">49</float>
+      <float hash="escape_air_slide_cancel_frame">54</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -281,7 +281,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">58</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -294,7 +294,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">58</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -314,7 +314,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">27</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">51</float>
+      <float hash="escape_air_cancel_frame">57</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">27</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -327,7 +327,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">51</float>
+      <float hash="escape_air_slide_cancel_frame">57</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -347,7 +347,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">23</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">47</float>
+      <float hash="escape_air_cancel_frame">52</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">23</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -360,7 +360,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">47</float>
+      <float hash="escape_air_slide_cancel_frame">52</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -380,7 +380,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">35</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">59</float>
+      <float hash="escape_air_cancel_frame">63</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">35</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -393,7 +393,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">59</float>
+      <float hash="escape_air_slide_cancel_frame">63</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -413,7 +413,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">30</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">54</float>
+      <float hash="escape_air_cancel_frame">59</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">30</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -426,7 +426,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">54</float>
+      <float hash="escape_air_slide_cancel_frame">59</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -446,7 +446,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">23</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">47</float>
+      <float hash="escape_air_cancel_frame">52</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">23</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -459,7 +459,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">47</float>
+      <float hash="escape_air_slide_cancel_frame">52</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -479,7 +479,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">28</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">52</float>
+      <float hash="escape_air_cancel_frame">56</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">28</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -492,7 +492,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">52</float>
+      <float hash="escape_air_slide_cancel_frame">56</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -512,7 +512,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">28</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">52</float>
+      <float hash="escape_air_cancel_frame">56</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">28</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -525,7 +525,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">52</float>
+      <float hash="escape_air_slide_cancel_frame">56</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -545,7 +545,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">24</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">48</float>
+      <float hash="escape_air_cancel_frame">50</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">24</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -558,7 +558,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">48</float>
+      <float hash="escape_air_slide_cancel_frame">50</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -578,7 +578,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">31</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">55</float>
+      <float hash="escape_air_cancel_frame">59</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">31</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -591,7 +591,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">55</float>
+      <float hash="escape_air_slide_cancel_frame">59</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -611,7 +611,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">58</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -624,7 +624,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">58</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -644,7 +644,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">23</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">47</float>
+      <float hash="escape_air_cancel_frame">50</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">23</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -657,7 +657,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">47</float>
+      <float hash="escape_air_slide_cancel_frame">50</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -677,7 +677,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">19</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">43</float>
+      <float hash="escape_air_cancel_frame">48</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">19</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -690,7 +690,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">43</float>
+      <float hash="escape_air_slide_cancel_frame">48</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -710,7 +710,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">58</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -723,7 +723,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">58</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -743,7 +743,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">54</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -756,7 +756,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">54</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -776,7 +776,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">23</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">47</float>
+      <float hash="escape_air_cancel_frame">52</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">23</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -789,7 +789,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">47</float>
+      <float hash="escape_air_slide_cancel_frame">52</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -809,7 +809,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">29</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">53</float>
+      <float hash="escape_air_cancel_frame">58</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">29</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -822,7 +822,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">53</float>
+      <float hash="escape_air_slide_cancel_frame">58</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -842,7 +842,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">54</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -855,7 +855,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">54</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -875,7 +875,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">27</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">51</float>
+      <float hash="escape_air_cancel_frame">56</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">27</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -888,7 +888,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">51</float>
+      <float hash="escape_air_slide_cancel_frame">56</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -908,7 +908,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">24</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">48</float>
+      <float hash="escape_air_cancel_frame">53</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">24</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -921,7 +921,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">48</float>
+      <float hash="escape_air_slide_cancel_frame">53</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -941,7 +941,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">27</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">51</float>
+      <float hash="escape_air_cancel_frame">56</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">27</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -954,7 +954,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">51</float>
+      <float hash="escape_air_slide_cancel_frame">56</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -974,7 +974,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">51</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -987,7 +987,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">51</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1007,7 +1007,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">34</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">58</float>
+      <float hash="escape_air_cancel_frame">53</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">34</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1020,7 +1020,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">58</float>
+      <float hash="escape_air_slide_cancel_frame">53</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1040,7 +1040,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">56</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1053,7 +1053,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">56</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1073,7 +1073,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">55</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1086,7 +1086,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">55</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1106,7 +1106,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">52</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1119,7 +1119,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">52</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1139,7 +1139,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">31</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">55</float>
+      <float hash="escape_air_cancel_frame">59</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">31</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1152,7 +1152,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">55</float>
+      <float hash="escape_air_slide_cancel_frame">59</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1172,7 +1172,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">56</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1185,7 +1185,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">56</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1205,7 +1205,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">24</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">48</float>
+      <float hash="escape_air_cancel_frame">52</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">24</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1218,7 +1218,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">48</float>
+      <float hash="escape_air_slide_cancel_frame">52</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1238,7 +1238,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">24</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">48</float>
+      <float hash="escape_air_cancel_frame">52</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">24</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1251,7 +1251,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">48</float>
+      <float hash="escape_air_slide_cancel_frame">52</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1271,7 +1271,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">54</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1284,7 +1284,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">54</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1304,7 +1304,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">34</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">58</float>
+      <float hash="escape_air_cancel_frame">56</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">34</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1317,7 +1317,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">58</float>
+      <float hash="escape_air_slide_cancel_frame">56</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1337,7 +1337,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">28</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">52</float>
+      <float hash="escape_air_cancel_frame">57</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">28</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1350,7 +1350,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">52</float>
+      <float hash="escape_air_slide_cancel_frame">57</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1370,7 +1370,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">24</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">48</float>
+      <float hash="escape_air_cancel_frame">52</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">24</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1383,7 +1383,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">48</float>
+      <float hash="escape_air_slide_cancel_frame">52</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1403,7 +1403,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">57</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1416,7 +1416,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">57</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1436,7 +1436,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">54</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1449,7 +1449,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">54</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1469,7 +1469,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">21</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">45</float>
+      <float hash="escape_air_cancel_frame">49</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">21</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1482,7 +1482,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">45</float>
+      <float hash="escape_air_slide_cancel_frame">49</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1502,7 +1502,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">28</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">52</float>
+      <float hash="escape_air_cancel_frame">58</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">28</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1515,7 +1515,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">52</float>
+      <float hash="escape_air_slide_cancel_frame">58</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1535,7 +1535,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">25</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">49</float>
+      <float hash="escape_air_cancel_frame">54</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">25</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1548,7 +1548,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">49</float>
+      <float hash="escape_air_slide_cancel_frame">54</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1568,7 +1568,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">28</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">52</float>
+      <float hash="escape_air_cancel_frame">54</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">28</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1581,7 +1581,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">52</float>
+      <float hash="escape_air_slide_cancel_frame">54</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1601,7 +1601,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">29</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">53</float>
+      <float hash="escape_air_cancel_frame">59</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">29</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1614,7 +1614,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">53</float>
+      <float hash="escape_air_slide_cancel_frame">59</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1634,7 +1634,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">25</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">49</float>
+      <float hash="escape_air_cancel_frame">53</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">25</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1647,7 +1647,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">49</float>
+      <float hash="escape_air_slide_cancel_frame">53</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1667,7 +1667,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">21</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">45</float>
+      <float hash="escape_air_cancel_frame">48</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">21</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1680,7 +1680,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">45</float>
+      <float hash="escape_air_slide_cancel_frame">48</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1700,7 +1700,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">24</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">48</float>
+      <float hash="escape_air_cancel_frame">53</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">24</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1713,7 +1713,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">48</float>
+      <float hash="escape_air_slide_cancel_frame">53</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1733,7 +1733,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">30</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">54</float>
+      <float hash="escape_air_cancel_frame">59</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">30</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1746,7 +1746,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">54</float>
+      <float hash="escape_air_slide_cancel_frame">59</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1766,7 +1766,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">27</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">51</float>
+      <float hash="escape_air_cancel_frame">56</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">27</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1779,7 +1779,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">51</float>
+      <float hash="escape_air_slide_cancel_frame">56</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1799,7 +1799,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">55</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1812,7 +1812,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">55</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1832,7 +1832,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">25</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">49</float>
+      <float hash="escape_air_cancel_frame">54</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">25</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1845,7 +1845,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">49</float>
+      <float hash="escape_air_slide_cancel_frame">54</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1865,7 +1865,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">29</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">53</float>
+      <float hash="escape_air_cancel_frame">57</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">29</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1878,7 +1878,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">53</float>
+      <float hash="escape_air_slide_cancel_frame">57</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1898,7 +1898,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">53</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1911,7 +1911,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">53</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1931,7 +1931,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">24</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">48</float>
+      <float hash="escape_air_cancel_frame">54</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">24</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1944,7 +1944,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">48</float>
+      <float hash="escape_air_slide_cancel_frame">54</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1964,7 +1964,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">56</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -1977,7 +1977,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">56</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -1989,7 +1989,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">8</float>
       <float hash="escape_air_penalty_hit_normal_frame">32</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">56</float>
+      <float hash="escape_air_cancel_frame">53</float>
       <float hash="escape_air_slide_hit_xlu_frame">8</float>
       <float hash="escape_air_slide_hit_normal_frame">32</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">8</float>
@@ -2002,7 +2002,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">56</float>
+      <float hash="escape_air_slide_cancel_frame">53</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2022,7 +2022,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">27</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">51</float>
+      <float hash="escape_air_cancel_frame">56</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">27</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2035,7 +2035,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">51</float>
+      <float hash="escape_air_slide_cancel_frame">56</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2055,7 +2055,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">29</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">53</float>
+      <float hash="escape_air_cancel_frame">54</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">29</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2068,7 +2068,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">53</float>
+      <float hash="escape_air_slide_cancel_frame">54</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2088,7 +2088,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">28</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">52</float>
+      <float hash="escape_air_cancel_frame">58</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">28</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2101,7 +2101,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">52</float>
+      <float hash="escape_air_slide_cancel_frame">58</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2121,7 +2121,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">24</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">48</float>
+      <float hash="escape_air_cancel_frame">53</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">24</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2134,7 +2134,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">48</float>
+      <float hash="escape_air_slide_cancel_frame">53</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2154,7 +2154,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">28</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">52</float>
+      <float hash="escape_air_cancel_frame">58</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">28</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2167,7 +2167,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">52</float>
+      <float hash="escape_air_slide_cancel_frame">58</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2187,7 +2187,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">24</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">48</float>
+      <float hash="escape_air_cancel_frame">52</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">24</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2200,7 +2200,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">48</float>
+      <float hash="escape_air_slide_cancel_frame">52</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2220,7 +2220,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">21</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">45</float>
+      <float hash="escape_air_cancel_frame">51</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">21</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2233,7 +2233,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">45</float>
+      <float hash="escape_air_slide_cancel_frame">51</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2253,7 +2253,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">24</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">48</float>
+      <float hash="escape_air_cancel_frame">50</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">24</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2266,7 +2266,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">48</float>
+      <float hash="escape_air_slide_cancel_frame">50</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2286,7 +2286,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">27</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">51</float>
+      <float hash="escape_air_cancel_frame">54</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">27</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2299,7 +2299,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">51</float>
+      <float hash="escape_air_slide_cancel_frame">54</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2319,7 +2319,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">23</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">47</float>
+      <float hash="escape_air_cancel_frame">52</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">23</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2332,7 +2332,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">47</float>
+      <float hash="escape_air_slide_cancel_frame">52</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2352,7 +2352,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">54</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2365,7 +2365,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">54</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2385,7 +2385,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">54</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2398,7 +2398,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">54</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2418,7 +2418,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">54</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2431,7 +2431,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">54</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2451,7 +2451,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">28</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">52</float>
+      <float hash="escape_air_cancel_frame">58</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">28</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2464,7 +2464,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">52</float>
+      <float hash="escape_air_slide_cancel_frame">58</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2484,7 +2484,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">54</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2497,7 +2497,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">54</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2517,7 +2517,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">28</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">52</float>
+      <float hash="escape_air_cancel_frame">58</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">28</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2530,7 +2530,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">52</float>
+      <float hash="escape_air_slide_cancel_frame">58</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2550,7 +2550,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">28</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">52</float>
+      <float hash="escape_air_cancel_frame">57</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">28</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2563,7 +2563,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">52</float>
+      <float hash="escape_air_slide_cancel_frame">57</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2574,7 +2574,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">8</float>
       <float hash="escape_air_penalty_hit_normal_frame">23</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">47</float>
+      <float hash="escape_air_cancel_frame">51</float>
       <float hash="escape_air_slide_hit_xlu_frame">8</float>
       <float hash="escape_air_slide_hit_normal_frame">23</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">8</float>
@@ -2587,7 +2587,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">47</float>
+      <float hash="escape_air_slide_cancel_frame">51</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2607,7 +2607,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">25</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">49</float>
+      <float hash="escape_air_cancel_frame">54</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">25</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2620,7 +2620,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">49</float>
+      <float hash="escape_air_slide_cancel_frame">54</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2640,7 +2640,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">24</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">48</float>
+      <float hash="escape_air_cancel_frame">50</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">24</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2653,7 +2653,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">48</float>
+      <float hash="escape_air_slide_cancel_frame">50</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2673,7 +2673,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">54</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2686,7 +2686,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">54</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2706,7 +2706,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">28</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">52</float>
+      <float hash="escape_air_cancel_frame">55</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">28</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2719,7 +2719,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">52</float>
+      <float hash="escape_air_slide_cancel_frame">55</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2739,7 +2739,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">30</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">54</float>
+      <float hash="escape_air_cancel_frame">59</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">30</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2752,7 +2752,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">54</float>
+      <float hash="escape_air_slide_cancel_frame">59</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2772,7 +2772,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">25</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">49</float>
+      <float hash="escape_air_cancel_frame">53</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">25</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2785,7 +2785,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">49</float>
+      <float hash="escape_air_slide_cancel_frame">53</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2805,7 +2805,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">57</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2818,7 +2818,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">57</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2838,7 +2838,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">59</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2851,7 +2851,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">59</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2871,7 +2871,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">27</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">51</float>
+      <float hash="escape_air_cancel_frame">54</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">27</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2884,7 +2884,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">51</float>
+      <float hash="escape_air_slide_cancel_frame">54</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2904,7 +2904,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">26</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">50</float>
+      <float hash="escape_air_cancel_frame">52</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">26</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2917,7 +2917,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">50</float>
+      <float hash="escape_air_slide_cancel_frame">52</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
@@ -2937,7 +2937,7 @@
       <float hash="escape_air_penalty_hit_xlu_frame">4</float>
       <float hash="escape_air_penalty_hit_normal_frame">28</float>
       <float hash="escape_air_stiff_start_frame">500</float>
-      <float hash="escape_air_cancel_frame">52</float>
+      <float hash="escape_air_cancel_frame">57</float>
       <float hash="escape_air_slide_hit_xlu_frame">4</float>
       <float hash="escape_air_slide_hit_normal_frame">28</float>
       <float hash="escape_air_slide_penalty_hit_xlu_frame">4</float>
@@ -2950,7 +2950,7 @@
       <float hash="escape_air_slide_penalty_distance">25</float>
       <float hash="escape_air_slide_end_speed">0.4</float>
       <float hash="escape_air_slide_stiff_start_frame">500</float>
-      <float hash="escape_air_slide_cancel_frame">52</float>
+      <float hash="escape_air_slide_cancel_frame">57</float>
       <float hash="landing_frame_escape_air_slide_max">10</float>
       <float hash="landing_speed_mul_escape_air_slide">0.832</float>
     </struct>
