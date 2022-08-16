@@ -363,6 +363,22 @@ unsafe fn special_lw_loop(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "donkey", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
+unsafe fn special_air_lw(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("top"), 5.8, 0.0, 7.0, 4.0, Some(0.0), Some(7.0), Some(13.7), *FIGHTER_STATUS_KIND_SHOULDERED_DONKEY_START, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 1, Hash40::new("top"), 2.9, 0.0, 7.0, 1.1, Some(0.0), Some(7.0), Some(16.6), *FIGHTER_STATUS_KIND_SHOULDERED_DONKEY_START, *COLLISION_SITUATION_MASK_GA);
+    }
+    wait(lua_state, 3.0);
+    if is_excute(fighter) {
+        grab!(fighter, MA_MSC_CMD_GRAB_CLEAR_ALL);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         special_n,
@@ -373,6 +389,7 @@ pub fn install() {
 		special_hi,
 		special_lw_start,
         special_lw_loop,
+        special_air_lw
     );
 }
 
