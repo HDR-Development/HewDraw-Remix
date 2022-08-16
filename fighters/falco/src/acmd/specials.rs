@@ -159,16 +159,32 @@ unsafe fn falco_special_air_lw_game(fighter: &mut L2CAgentBase) {
         let shineGravity = Vector3f { x: 1.0, y: 0.1588, z: 1.0 };
         KineticModule::mul_accel(boma, &shineGravity, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
-    frame(lua_state, 3.0);
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 84, 48, 0, 103, 8.0, 0.0, 8.0, 0.5, None, None, None, 0.6, 1.15, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
+        HIT_NODE(fighter, Hash40::new("top"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("hip"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("tail2"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("neck"), *HIT_STATUS_XLU);
+    }
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 84, 48, 0, 92, 8.0, 0.0, 8.0, 0.5, None, None, None, 0.6, 1.15, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.68);
     }
-    frame(lua_state, 4.0);
+    frame(lua_state, 2.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
-    frame(lua_state, 17.0);
+    frame(lua_state, 19.0);
     if is_excute(fighter) {  }frame(lua_state, 51.0);
     if is_excute(fighter) {
         KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
@@ -181,14 +197,30 @@ unsafe fn falco_special_air_lw_game(fighter: &mut L2CAgentBase) {
 unsafe fn falco_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 3.0);
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 84, 48, 0, 103, 8.0, 0.0, 8.0, -0.4, None, None, None, 0.6, 1.15, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
+        HIT_NODE(fighter, Hash40::new("top"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("hip"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("tail2"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("head2"), *HIT_STATUS_XLU);
+    }
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 84, 48, 0, 92, 8.0, 0.0, 8.0, -0.4, None, None, None, 0.6, 1.15, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.68);
     }
-    frame(lua_state, 4.0);
+    frame(lua_state, 2.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {  }frame(lua_state, 51.0);
