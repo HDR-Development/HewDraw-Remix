@@ -148,7 +148,6 @@ pub unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> 
                 GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
                 special_s_change_mot(fighter, Hash40::new("special_s_end"));
                 special_s_air_control(fighter);
-                fighter.sub_fighter_cliff_check(GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES.into());
             }
             else if step == *FIGHTER_FALCO_ILLUSION_STEP_RUSH {
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
