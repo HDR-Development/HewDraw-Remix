@@ -34,38 +34,38 @@ unsafe fn shine_jump_cancel(fighter: &mut L2CFighterCommon) {
 }   
 
 // Fox Illusion Shortens
-unsafe fn illusion_shorten_(boma: &mut BattleObjectModuleAccessor, id: usize, motion_kind: u64, frame: f32) {
-    if motion_kind == hash40("special_s") || motion_kind == hash40("special_air_s") {
-        if frame <= 1.0 {
-            VarModule::off_flag(boma.object(), vars::fox::status::ILLUSION_SHORTEN);
-            VarModule::off_flag(boma.object(), vars::fox::status::ILLUSION_SHORTENED);
-        }
-        if VarModule::is_flag(boma.object(), vars::fox::status::ILLUSION_SHORTEN) &&  !VarModule::is_flag(boma.object(), vars::fox::status::ILLUSION_SHORTENED) {
-            let motion_vec = Vector3f{x: 0.25, y: 1.0, z: 1.0}; // Unused
-            KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-            VarModule::on_flag(boma.object(), vars::fox::status::ILLUSION_SHORTENED);
-        }
+// unsafe fn illusion_shorten_(boma: &mut BattleObjectModuleAccessor, id: usize, motion_kind: u64, frame: f32) {
+//     if motion_kind == hash40("special_s") || motion_kind == hash40("special_air_s") {
+//         if frame <= 1.0 {
+//             VarModule::off_flag(boma.object(), vars::fox::status::ILLUSION_SHORTEN);
+//             VarModule::off_flag(boma.object(), vars::fox::status::ILLUSION_SHORTENED);
+//         }
+//         if VarModule::is_flag(boma.object(), vars::fox::status::ILLUSION_SHORTEN) &&  !VarModule::is_flag(boma.object(), vars::fox::status::ILLUSION_SHORTENED) {
+//             let motion_vec = Vector3f{x: 0.25, y: 1.0, z: 1.0}; // Unused
+//             KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+//             VarModule::on_flag(boma.object(), vars::fox::status::ILLUSION_SHORTENED);
+//         }
 
-        /*
-        if WorkModule::is_flag(boma, *FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_FLAG_RUSH_FORCE_END) {
-            let motion_vec = Vector3f{x: 0.25, y: 1.0, z: 1.0};
-            KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_MOTION); // Nope
-            KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY); // Nope
-            KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_JOSTLE);
-            KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-            KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-            KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
-            KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_ENV_WIND);
-            KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_GROUND_MOVEMENT);
-        }
-        */
+//         /*
+//         if WorkModule::is_flag(boma, *FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_FLAG_RUSH_FORCE_END) {
+//             let motion_vec = Vector3f{x: 0.25, y: 1.0, z: 1.0};
+//             KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_MOTION); // Nope
+//             KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY); // Nope
+//             KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_JOSTLE);
+//             KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+//             KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+//             KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
+//             KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_ENV_WIND);
+//             KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_GROUND_MOVEMENT);
+//         }
+//         */
 
-        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) &&  !VarModule::is_flag(boma.object(), vars::fox::status::ILLUSION_SHORTENED) {
-            VarModule::on_flag(boma.object(), vars::fox::status::ILLUSION_SHORTEN);
-            WorkModule::on_flag(boma, *FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_FLAG_RUSH_FORCE_END);
-        }
-    }
-}
+//         if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) &&  !VarModule::is_flag(boma.object(), vars::fox::status::ILLUSION_SHORTENED) {
+//             VarModule::on_flag(boma.object(), vars::fox::status::ILLUSION_SHORTEN);
+//             WorkModule::on_flag(boma, *FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_FLAG_RUSH_FORCE_END);
+//         }
+//     }
+// }
 
 // Utaunt cancel into Fire Fox
 unsafe fn utaunt_cancel_fire_fox(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
@@ -89,7 +89,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
     laser_fastfall_landcancel(boma, status_kind, situation_kind, cat[1], stick_y);
     shine_jump_cancel(fighter);
-    illusion_shorten_(boma, id, motion_kind, frame);
+    // illusion_shorten_(boma, id, motion_kind, frame);
     utaunt_cancel_fire_fox(boma, motion_kind, frame);
     firefox_startup_ledgegrab(fighter);
 
