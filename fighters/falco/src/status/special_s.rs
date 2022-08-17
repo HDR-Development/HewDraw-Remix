@@ -319,12 +319,10 @@ pub unsafe fn special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     else if step == *FIGHTER_FALCO_ILLUSION_STEP_RUSH {
         // Illusion Shorten implementation
         if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER != 0 {
-            VarModule::on_flag(fighter.battle_object, vars::falco::status::ILLUSION_SHORTEN);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_FALCO_ILLUSION_STATUS_WORK_ID_FLAG_RUSH_FORCE_END);
         }
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_FALCO_ILLUSION_STATUS_WORK_ID_FLAG_RUSH_FORCE_END)
-        && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_FALCO_ILLUSION_STATUS_WORK_ID_FLAG_HIT_SHIELD)
-        && !VarModule::is_flag(fighter.battle_object, vars::falco::status::ILLUSION_SHORTEN) {
+        && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_FALCO_ILLUSION_STATUS_WORK_ID_FLAG_HIT_SHIELD) {
             return 0.into();
         }
 
@@ -462,7 +460,7 @@ pub unsafe extern "C" fn special_s_handle_step(fighter: &mut L2CFighterCommon) {
             KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
         }
         else {
-            let illusion_end_air_brake_x = if !VarModule::is_flag(fighter.battle_object, vars::falco::status::ILLUSION_SHORTEN) {
+            let illusion_end_air_brake_x = if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_FALCO_ILLUSION_STATUS_WORK_ID_FLAG_RUSH_FORCE_END) {
                 WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("illusion_end_air_brake_x"))
             }
             else {
@@ -481,7 +479,7 @@ pub unsafe extern "C" fn special_s_handle_step(fighter: &mut L2CFighterCommon) {
             else {
                 hash40("illusion_end_air_speed_x")
             };
-            let end_speed = if !VarModule::is_flag(fighter.battle_object, vars::falco::status::ILLUSION_SHORTEN) {
+            let end_speed = if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_FALCO_ILLUSION_STATUS_WORK_ID_FLAG_RUSH_FORCE_END) {
                 WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), end_speed_param)
             }
             else {
