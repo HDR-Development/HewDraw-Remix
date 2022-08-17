@@ -19,7 +19,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_end_CliffEscape,
             status_end_CliffJump1,
             status_end_CliffJump2,
-            status_end_CliffJump3
+            status_end_CliffJump3,
+            sub_cliff_uniq_process_exit_Common
         );
     }
 }
@@ -98,4 +99,22 @@ unsafe fn status_end_CliffJump2(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe fn status_end_CliffJump3(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::set_vec3(fighter.object(), vars::common::instance::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
     call_original!(fighter)
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_cliff_uniq_process_exit_Common)]
+unsafe fn sub_cliff_uniq_process_exit_Common(fighter: &mut L2CFighterCommon, isleavecliff: L2CValue) {
+    let is_leave_cliff = isleavecliff.get_i32();
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CATCH_CLIFF) {
+        let cliff_no_catch_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("cliff_no_catch_frame"));
+        WorkModule::set_int(fighter.module_accessor, cliff_no_catch_frame, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_NO_CATCH_FRAME);
+        // Uncomment to remove lingering ledge intan
+        //HitModule::set_xlu_frame_global(fighter.module_accessor, is_leave_cliff, 0);
+    }
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CATCH_CLIFF);
+    if is_leave_cliff != 0 {
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CATCH_CLIFF);
+        GroundModule::leave_cliff(fighter.module_accessor);
+        // Uncomment to remove lingering ledge intan
+        //HitModule::set_xlu_frame_global(fighter.module_accessor, is_leave_cliff, 0);
+    }
 }
