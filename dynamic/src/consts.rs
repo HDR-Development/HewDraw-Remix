@@ -354,25 +354,6 @@ pub mod vars {
         pub const SPECIAL_HI_JUMP_RESERVE_ACTION_FALL:    i32 = 0x2;
     }
 
-    pub mod fox {
-        pub mod status {
-            pub const ILLUSION_SHORTENED: i32 = 0x1100;
-            pub const ILLUSION_SHORTEN: i32 = 0x1101;
-        }
-    }
-
-    pub mod falco {
-        pub mod status {
-            pub use super::super::fox::status::*;
-        }
-    }
-
-    pub mod wolf {
-        pub mod status {
-            pub use super::super::fox::status::*;
-        }
-    }
-    
     pub mod ganon {
         pub mod instance {
             // flags
