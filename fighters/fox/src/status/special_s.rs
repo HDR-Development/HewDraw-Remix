@@ -336,6 +336,25 @@ pub unsafe fn special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     else if step == *FIGHTER_FOX_ILLUSION_STEP_END {
         if situation == *SITUATION_KIND_AIR {
+            // Fix friction if the value is, for some reason, incorrect.
+            let illusion_end_air_brake_x = if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_FLAG_RUSH_FORCE_END) {
+                WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("illusion_end_air_brake_x"))
+            }
+            else {
+                0.1
+            };
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
+            let brake = sv_kinetic_energy::get_brake_x(fighter.lua_state_agent);
+            if brake != illusion_end_air_brake_x {
+                sv_kinetic_energy!(
+                    set_brake,
+                    fighter,
+                    FIGHTER_KINETIC_ENERGY_ID_STOP,
+                    illusion_end_air_brake_x,
+                    0.0
+                );
+            }
             let stop_y_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_INT_STOP_Y_FRAME);
             if stop_y_frame == 0 {
                 sv_kinetic_energy!(
