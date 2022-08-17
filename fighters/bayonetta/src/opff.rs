@@ -2,40 +2,40 @@ use super::*;
  
 utils::import_noreturn!(common::opff::fighter_common_opff);
 
-unsafe fn jab_cancels(fighter: &mut L2CFighterCommon) {
-    if !fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK)
-    || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-    || VarModule::is_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS) {
-        return;
-    }
-    // Only jab 2 is cancelable, return out if not in that motion
-    if !fighter.is_motion(Hash40::new("attack_12")){
-        return;
-    }
-    let mut new_status = 0;
-    let mut is_input_cancel = false;
+// unsafe fn jab_cancels(fighter: &mut L2CFighterCommon) {
+//     if !fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK)
+//     || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+//     || VarModule::is_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS) {
+//         return;
+//     }
+//     // Only jab 2 is cancelable, return out if not in that motion
+//     if !fighter.is_motion(Hash40::new("attack_12")){
+//         return;
+//     }
+//     let mut new_status = 0;
+//     let mut is_input_cancel = false;
 
-    if fighter.is_cat_flag(Cat1::SpecialN) {
-        is_input_cancel = true;
-        new_status = *FIGHTER_STATUS_KIND_SPECIAL_N;
-    }
+//     if fighter.is_cat_flag(Cat1::SpecialN) {
+//         is_input_cancel = true;
+//         new_status = *FIGHTER_STATUS_KIND_SPECIAL_N;
+//     }
 
-    if fighter.is_cat_flag(Cat1::SpecialS) {
-        is_input_cancel = true;
-        new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
-    }
+//     if fighter.is_cat_flag(Cat1::SpecialS) {
+//         is_input_cancel = true;
+//         new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
+//     }
 
-    if fighter.is_cat_flag(Cat1::SpecialHi) {
-        is_input_cancel = true;
-        new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI;
-    }
-    if is_input_cancel {
-        if !fighter.is_in_hitlag(){
-            fighter.change_status_req(new_status, false);
-        }
-    }
+//     if fighter.is_cat_flag(Cat1::SpecialHi) {
+//         is_input_cancel = true;
+//         new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI;
+//     }
+//     if is_input_cancel {
+//         if !fighter.is_in_hitlag(){
+//             fighter.change_status_req(new_status, false);
+//         }
+//     }
 
-}
+// }
 
 unsafe fn dash_attack_cancels(fighter: &mut L2CFighterCommon) {
     if !fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_DASH)
@@ -70,17 +70,12 @@ unsafe fn dash_attack_cancels(fighter: &mut L2CFighterCommon) {
 
 unsafe fn tilt_cancels(fighter: &mut L2CFighterCommon) {
     // Level 2: Tilt Cancels
-    if !fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_ATTACK_S3,
-        *FIGHTER_STATUS_KIND_ATTACK_HI3,
-        *FIGHTER_STATUS_KIND_ATTACK_LW3
-    ])
+    if !fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_S3)
     || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     || VarModule::is_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS)
     {
         return;
     }
-    //if !fighter.is_motion_one_of(&[Hash40::new("attack_s3_s2"), Hash40::new("attack_s3_s3"), Hash40::new("attack_hi3"), Hash40::new("attack_lw3")]){
     if !fighter.is_motion(Hash40::new("attack_s3_s3")) {
         return;
     }
@@ -142,27 +137,14 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
     }
 
     if fighter.is_cat_flag(Cat1::SpecialS) {
-        /*
-        if !VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_SPECIAL_S_CANCELED_INTO){
-            is_input_cancel = true;
-            new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
-        }
-        */
-        if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME) < 2{
+        if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME) < 1 {
             is_input_cancel = true;
             new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
         }
     }
 
     if fighter.is_cat_flag(Cat1::SpecialHi) {
-        /*
-        if !VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_SPECIAL_HI_CANCELED_INTO){
-            VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_SPECIAL_HI_CANCELED_INTO);
-            is_input_cancel = true;
-            new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI;
-        }
-        */
-        if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME) < 2{
+        if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME) < 1 {
             is_input_cancel = true;
             new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI;
         }
@@ -176,7 +158,7 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
                     return;
                 }
             }
-            // diable dair jump cancel
+            // disable dair jump cancel
             else if fighter.is_motion(Hash40::new("attack_air_lw")) {
                 if new_status == *FIGHTER_STATUS_KIND_JUMP_AERIAL {
                     return;
@@ -184,11 +166,9 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
             }
 
             if new_status == *FIGHTER_STATUS_KIND_SPECIAL_S {
-                //VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_SPECIAL_S_CANCELED_INTO);
                 VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME);
             }
             else if new_status == *FIGHTER_STATUS_KIND_SPECIAL_HI {
-                //VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_SPECIAL_HI_CANCELED_INTO);
                 VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME);
             }
             VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_ENABLE_SPECIAL_CANCEL);
@@ -299,7 +279,7 @@ unsafe fn abk_flight_drift(fighter: &mut L2CFighterCommon) {
 pub unsafe fn bayonetta_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
 
-    jab_cancels(fighter);
+    //jab_cancels(fighter);
     dash_attack_cancels(fighter);
     tilt_cancels(fighter);
     aerial_cancels(fighter);
