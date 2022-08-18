@@ -138,15 +138,15 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_nana_dash_start"));
+        PLAY_SE(fighter, Hash40::new("se_popo_dash_start"));
     }
-    wait(lua_state, 9.0);
+    wait(lua_state, 11.0);
     if is_excute(fighter) {
-        PLAY_STEP(fighter, Hash40::new("se_nana_step_left_m"));
+        PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_popo_step_right_l"), Hash40::new("se_popo_step_left_l"));
     }
-    wait(lua_state, 5.0);
+    wait(lua_state, 4.0);
     if is_excute(fighter) {
-        PLAY_STEP(fighter, Hash40::new("se_nana_step_right_m"));
+        PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_popo_step_left_l"), Hash40::new("se_popo_step_right_l"));
     }
 }
 

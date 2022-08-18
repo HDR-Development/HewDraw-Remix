@@ -163,17 +163,22 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
 unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 6.0);
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_pfushigisou_dash_start"));
     }
-    wait(lua_state, 9.0);
+    frame(lua_state, 11.0);
     if is_excute(fighter) {
-        PLAY_STEP(fighter, Hash40::new("se_pfushigisou_step_left_m"));
+        PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_pfushigisou_step_f_left_l"), Hash40::new("se_pfushigisou_step_f_right_l"));
     }
-    wait(lua_state, 5.0);
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
-        PLAY_STEP(fighter, Hash40::new("se_pfushigisou_step_right_m"));
+        PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_pfushigisou_step_b_left_l"), Hash40::new("se_pfushigisou_step_b_right_l"));
+	    PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_pfushigisou_step_f_right_l"), Hash40::new("se_pfushigisou_step_f_left_l"));
+    }
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_pfushigisou_step_b_right_m"), Hash40::new("se_pfushigisou_step_b_left_m"));
     }
 }
 

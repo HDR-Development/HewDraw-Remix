@@ -129,13 +129,9 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_zelda_dash_start"));
     }
-    wait(lua_state, 9.0);
+    wait(lua_state, 13.0);
     if is_excute(fighter) {
-        PLAY_STEP(fighter, Hash40::new("se_zelda_step_left_m"));
-    }
-    wait(lua_state, 5.0);
-    if is_excute(fighter) {
-        PLAY_STEP(fighter, Hash40::new("se_zelda_step_right_m"));
+        PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_zelda_step_left_l"), Hash40::new("se_zelda_step_right_l"));
     }
 }
 

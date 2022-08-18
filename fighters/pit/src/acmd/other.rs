@@ -152,17 +152,17 @@ unsafe fn pit_catch_game(fighter: &mut L2CAgentBase) {
 unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 6.0);
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_pit_dash_start"));
     }
-    wait(lua_state, 9.0);
+    wait(lua_state, 11.0);
     if is_excute(fighter) {
-        PLAY_STEP(fighter, Hash40::new("se_pit_step_left_m"));
+        PLAY_STEP(fighter, Hash40::new("se_pit_step_right_m"));
     }
     wait(lua_state, 5.0);
     if is_excute(fighter) {
-        PLAY_STEP(fighter, Hash40::new("se_pit_step_right_m"));
+        PLAY_STEP(fighter, Hash40::new("se_pit_step_left_m"));
     }
 }
 
