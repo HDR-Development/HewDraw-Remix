@@ -6,6 +6,38 @@ unsafe fn miiswordsman_special_n1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
+     frame(lua_state, 17.0);
+     if is_excute(fighter) {
+         ArticleModule::generate_article(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_TORNADOSHOT, false, 0);
+    }
+     frame(lua_state, 18.0);
+     if is_excute(fighter) {
+             FT_MOTION_RATE(fighter, 0.85);
+        }  
+}
+
+#[acmd_script( agent = "miiswordsman", script = "game_specialairn1" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_air_n1_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let end_frame = MotionModule::end_frame(boma);
+     frame(lua_state, 17.0);
+     if is_excute(fighter) {
+         ArticleModule::generate_article(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_TORNADOSHOT, false, 0);
+     }
+     frame(lua_state, 18.0);
+     if is_excute(fighter) {
+             FT_MOTION_RATE(fighter, 0.8);
+         }  
+     }
+
+//Will need to be looked at in the future when rebalancing tornado
+/*
+#[acmd_script( agent = "miiswordsman", script = "game_specialn1" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_n1_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let end_frame = MotionModule::end_frame(boma);
     if is_excute(fighter) {
         VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0); // Timer used to track time until Gale Strike is available again
         //VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
@@ -154,6 +186,7 @@ unsafe fn miiswordsman_special_air_n1_effect(fighter: &mut L2CAgentBase) {
         }
     }
 }
+*/
 
 #[acmd_script( agent = "miiswordsman", script = "game_specialn2" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_n2_game(fighter: &mut L2CAgentBase) {
@@ -1750,23 +1783,24 @@ unsafe fn miiswordsman_special_air_s1_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
+/*
 #[acmd_script( agent = "miiswordsman", script = "game_specials1hit" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_s1_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 12.5, 44, 91, 0, 70, 7.0, 0.0, 10.0, 11.0, Some(0.0), Some(1.5), Some(11.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 12.5, 44, 91, 0, 70, 7.0, 0.0, 2.0, 6.0, Some(0.0), Some(2.0), Some(11.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("haver"), 12.5, 44, 75, 0, 56, 4.5, 0.0, 2.0, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 12.5, 44, 75, 0, 56, 4.5, 0.0, 6.5, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 2, 0, Hash40::new("haver"), 12.5, 44, 75, 0, 56, 4.5, 0.0, 11.5, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
     
 }
-
+*/
 
 // =============================================================================================
 // ======================================== GALE STAB ==========================================
@@ -3158,9 +3192,9 @@ unsafe fn miiswordsman_special_air_lw3_end_air_game(fighter: &mut L2CAgentBase) 
 pub fn install() {
     install_acmd_scripts!(
         miiswordsman_special_n1_game,
-        miiswordsman_special_n1_effect,
+        //miiswordsman_special_n1_effect,
         miiswordsman_special_air_n1_game,
-        miiswordsman_special_air_n1_effect,
+        //miiswordsman_special_air_n1_effect,
         miiswordsman_special_n2_game,
         miiswordsman_special_n2_effect,
         miiswordsman_special_n2_sound,
@@ -3196,7 +3230,7 @@ pub fn install() {
         miiswordsman_special_air_s1_start_game,
         miiswordsman_special_s1_game,
         miiswordsman_special_air_s1_game,
-        miiswordsman_special_s1_hit_game,
+        //miiswordsman_special_s1_hit_game,
         miiswordsman_special_s2_dash_game,
         miiswordsman_special_s2_attack_game,
         miiswordsman_special_s2_attack_effect,
