@@ -443,12 +443,12 @@ pub mod vars {
         }
     }
 
-    pub mod koopa {
-        pub mod instance {
-            // flags
-            pub use super::super::mario::instance::NOKNOK_SHELL;
-        }
-    }
+    // pub mod koopa {
+    //     pub mod instance {
+    //         // flags
+    //         pub use super::super::mario::instance::NOKNOK_SHELL;
+    //     }
+    // }
 
     pub mod lucario {
         pub mod status {
