@@ -11,8 +11,14 @@ use globals::*;
 //=================================================================
 #[skyline::hook(replace=MotionModule::change_motion)]
 unsafe fn change_motion_hook(boma: &mut BattleObjectModuleAccessor, motion_hash: smash::phx::Hash40, arg3: f32, arg4: f32, arg5: bool, arg6: f32, arg7: bool, arg8: bool) -> u64 {
+    let mut start_frame = arg3;
     change_motion_ecb_shift_check(boma);
-    original!()(boma, motion_hash, arg3, arg4, arg5, arg6, arg7, arg8)
+    // Starts heavy landing animation on frame 2
+    // This is a purely aesthetic change, makes for snappier landings
+    if motion_hash == Hash40::new("landing_heavy") {
+        start_frame = 1.0;
+    }
+    original!()(boma, motion_hash, start_frame, arg4, arg5, arg6, arg7, arg8)
 }
 
 #[skyline::hook(replace=MotionModule::change_motion_inherit_frame)]
