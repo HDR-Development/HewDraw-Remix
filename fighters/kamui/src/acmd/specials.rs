@@ -79,11 +79,132 @@ unsafe fn kamui_special_s_wall_attack_b_game(fighter: &mut L2CAgentBase) {
         
 }
 
+// #[acmd_script( agent = "kamui", scripts = ["game_speciallwhit", "game_specialairlwhit"] , category = ACMD_GAME , low_priority)]
+// unsafe fn kamui_special_lw_hit_game(fighter: &mut L2CAgentBase) {
+//     let lua_state = fighter.lua_state_agent;
+//     let boma = fighter.boma();
+//     if is_excute(fighter) {
+//         FT_MOTION_RATE(fighter, 30.0/26.0);
+//         ArticleModule::generate_article(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, false, 0);
+//         ArticleModule::set_visibility_whole(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, false, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+//     }
+//     frame(lua_state, 7.0);
+//     if is_excute(fighter) {
+//         VisibilityModule::set_whole(boma, false);
+//         ArticleModule::set_visibility_whole(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, true, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+//     }
+//     frame(lua_state, 26.0);
+//     if is_excute(fighter) {
+//         FT_MOTION_RATE(fighter, 1.0);
+//     }
+//     frame(lua_state, 31.0);
+//     if is_excute(fighter) {
+//         FT_MOTION_RATE(fighter, 37.0/(66.0 - 31.0));
+//     }
+//     frame(lua_state, 40.0);
+//     if is_excute(fighter) {
+//         ArticleModule::remove_exist(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+//         VisibilityModule::set_whole(boma, true);
+//     }
+// }
+
+// #[acmd_script( agent = "kamui", scripts = ["effect_speciallwhit", "effect_specialairlwhit"] , category = ACMD_EFFECT , low_priority)]
+// unsafe fn kamui_special_lw_hit_effect(fighter: &mut L2CAgentBase) {
+//     let lua_state = fighter.lua_state_agent;
+//     let boma = fighter.boma();
+//     if is_excute(fighter) {
+//         FT_MOTION_RATE(fighter, 30.0/26.0);
+//         EFFECT_OFF_KIND(fighter, Hash40::new("sys_guard_mark"), true, true);
+//         EFFECT(fighter, Hash40::new("kamui_counter_success"), Hash40::new("top"), 0, 14, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+//         EFFECT(fighter, Hash40::new("kamui_water_hamon"), Hash40::new("top"), 0, 0.5, -2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+//         LAST_EFFECT_SET_RATE(fighter, 1.2);
+//     }
+//     if WorkModule::is_flag(boma, *FIGHTER_KAMUI_STATUS_SPECIAL_LW_FLAG_SPECIAL_EFFECT) {
+//         if is_excute(fighter) {
+//             EFFECT(fighter, Hash40::new("sys_counter_flash"), Hash40::new("top"), 0, 14.8, -1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+//         }
+//     }
+//     if is_excute(fighter) {
+//         WorkModule::on_flag(boma, *FIGHTER_KAMUI_INSTANCE_WORK_ID_FLAG_REQ_EFEECT_TRANSFORM_WIND);
+//     }
+//     frame(lua_state, 3.0);
+//     if is_excute(fighter) {
+//     EFFECT(fighter, Hash40::new("kamui_water_splash"), Hash40::new("top"), 0, 0, -2, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
+//     }
+//     frame(lua_state, 10.0);
+//     if is_excute(fighter) {
+//     WorkModule::on_flag(boma, *FIGHTER_KAMUI_INSTANCE_WORK_ID_FLAG_OFF_EFEECT_TRANSFORM_WIND);
+//     }
+//     frame(lua_state, 26.0);
+//     if is_excute(fighter) {
+//         FT_MOTION_RATE(fighter, 1.0);
+//         EFFECT(fighter, Hash40::new("kamui_counter_splash"), Hash40::new("top"), -7, 0, 9, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
+//     }
+//     if is_excute(fighter) {
+//         EFFECT(fighter, Hash40::new("kamui_counter_ripple"), Hash40::new("top"), 0, 0.5, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
+//     }
+//     frame(lua_state, 38.0);
+//     if is_excute(fighter) {
+//         WorkModule::on_flag(boma, *FIGHTER_KAMUI_INSTANCE_WORK_ID_FLAG_REQ_EFEECT_TRANSFORM_WIND);
+//     }
+//     frame(lua_state, 31.0);
+//     if is_excute(fighter) {
+//         FT_MOTION_RATE(fighter, 37.0/(66.0 - 31.0));
+//     }
+//     frame(lua_state, 47.0);
+//     if is_excute(fighter) {
+//         EFFECT_FOLLOW(fighter, Hash40::new("kamui_transform_splash_end"), Hash40::new("neck"), 2, 0, 0, 0, 0, 0, 1, true);
+//         WorkModule::on_flag(boma, *FIGHTER_KAMUI_INSTANCE_WORK_ID_FLAG_OFF_EFEECT_TRANSFORM_WIND);
+//     }
+// }
+
+// #[acmd_script( agent = "kamui_waterdragon", scripts = ["game_speciallwhit", "game_specialairlwhit"] , category = ACMD_GAME , low_priority)]
+// unsafe fn kamui_waterdragon_special_lw_hit_game(fighter: &mut L2CAgentBase) {
+//     let lua_state = fighter.lua_state_agent;
+//     let boma = fighter.boma();
+//     FT_MOTION_RATE(fighter, 30.0/26.0);
+//     frame(lua_state, 26.0);
+//     if is_excute(fighter) {
+//         FT_MOTION_RATE(fighter, 1.0);
+//         ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 80, 75, 0, 90, 8.0, 0.0, 8.0, 9.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_OBJECT);
+//         AttackModule::set_force_reaction(boma, 0, true, false);
+//     }
+//     if WorkModule::is_flag(boma, *WEAPON_KAMUI_WATERDRAGON_INSTANCE_WORK_ID_FLAG_SET_CRITICAL_HIT_SE) {
+//         if is_excute(fighter) {
+//             AttackModule::set_optional_hit_sound(boma, 0, Hash40::new("se_kamui_criticalhit"));
+//         }
+//     }
+//     frame(lua_state, 27.0);
+//     if is_excute(fighter) {
+//         ATTACK(fighter, 1, 0, Hash40::new("top"), 10.0, 80, 75, 0, 90, 5.0, 0.0, 21.0, 9.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_OBJECT);
+//         AttackModule::set_force_reaction(boma, 1, true, false);
+//     }
+//     if WorkModule::is_flag(boma, *WEAPON_KAMUI_WATERDRAGON_INSTANCE_WORK_ID_FLAG_SET_CRITICAL_HIT_SE) {
+//         if is_excute(fighter) {
+//             AttackModule::set_optional_hit_sound(boma, 2, Hash40::new("se_kamui_criticalhit"));
+//         }
+//     }
+//     frame(lua_state, 29.0);
+//     if is_excute(fighter) {
+//         ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 80, 75, 0, 90, 7.0, 0.0, 10.0, 9.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_OBJECT);
+//         ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0, 80, 75, 0, 90, 5.0, 0.0, 22.0, 9.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_OBJECT);
+//         AttackModule::set_force_reaction(boma, 0, true, false);
+//         AttackModule::set_force_reaction(boma, 1, true, false);
+//     }
+//     frame(lua_state, 31.0);
+//     if is_excute(fighter) {
+//         FT_MOTION_RATE(fighter, 37.0/(66.0 - 31.0));
+//         AttackModule::clear_all(boma);
+//     }
+// }
 
 pub fn install() {
     install_acmd_scripts!(
         kamui_special_s_wall_attack_f_game,
         kamui_special_s_wall_attack_b_game,
+        //kamui_special_lw_hit_game,
+        //kamui_special_lw_hit_effect,
+        //kamui_waterdragon_special_lw_hit_game,
     );
 }
 
