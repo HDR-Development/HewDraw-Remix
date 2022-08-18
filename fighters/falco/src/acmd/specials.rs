@@ -87,6 +87,20 @@ unsafe fn falco_special_air_n_loop_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "falco", script = "game_specialsstart" , category = ACMD_GAME , low_priority)]
+unsafe fn falco_special_s_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {  }
+}
+
+#[acmd_script( agent = "falco", script = "game_specialairsstart" , category = ACMD_GAME , low_priority)]
+unsafe fn falco_special_air_s_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {  }
+}
+
 #[acmd_script( agent = "falco", script = "game_specialairsend" , category = ACMD_GAME , low_priority)]
 unsafe fn falco_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -279,6 +293,8 @@ pub fn install() {
         falco_special_n_loop_game,
         falco_special_air_n_start_game,
         falco_special_air_n_loop_game,
+        falco_special_s_start_game,
+        falco_special_air_s_start_game,
         falco_special_air_s_end_game,
         falco_special_hi_hold,
         falco_special_hi_game,
