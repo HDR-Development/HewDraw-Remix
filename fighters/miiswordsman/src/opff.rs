@@ -3,7 +3,16 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
+ // Mii Swordfighter Airborne Assault Aerial FAF Frame 75
+
+unsafe fn airborne_assault_lag(fighter: &mut L2CFighterCommon) {
+if fighter.is_status(*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END) {
+    if  fighter.is_situation(*SITUATION_KIND_AIR) && fighter.motion_frame() > 75.0 {
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        } 
+    }
+}
+
 unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32, frame: f32) {
     // Rush
     if [*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_DASH].contains(&status_kind) {
@@ -215,7 +224,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     skyward_slash_dash_act(fighter, boma, id, status_kind, situation_kind, frame);
     //kinesis_blade(fighter, boma, status_kind, motion_kind);
     //hitgrab_transition(fighter, boma, status_kind, motion_kind);
-
+    airborne_assault_lag(fighter)
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MIISWORDSMAN )]

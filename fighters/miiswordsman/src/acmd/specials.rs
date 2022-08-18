@@ -1783,7 +1783,7 @@ unsafe fn miiswordsman_special_air_s1_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
+/*
 #[acmd_script( agent = "miiswordsman", script = "game_specials1hit" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_s1_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1800,7 +1800,7 @@ unsafe fn miiswordsman_special_s1_hit_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
+*/
 
 // =============================================================================================
 // ======================================== GALE STAB ==========================================
@@ -3230,7 +3230,7 @@ pub fn install() {
         miiswordsman_special_air_s1_start_game,
         miiswordsman_special_s1_game,
         miiswordsman_special_air_s1_game,
-        miiswordsman_special_s1_hit_game,
+        //miiswordsman_special_s1_hit_game,
         miiswordsman_special_s2_dash_game,
         miiswordsman_special_s2_attack_game,
         miiswordsman_special_s2_attack_effect,

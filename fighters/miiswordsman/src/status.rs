@@ -92,8 +92,7 @@ unsafe extern "C" fn miiswordsman_specials1_main(fighter: &mut L2CFighterCommon)
 #[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_s1_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     let id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-
-    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_HENSOKU_SLASH_WORK_FLAG_HIT);
+    VarModule::on_flag(fighter.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT); // Removes on side special attack
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         VarModule::on_flag(fighter.object(), vars::common::instance::SIDE_SPECIAL_CANCEL);
     }
@@ -203,35 +202,16 @@ unsafe extern "C" fn miiswordsman_specials1attack_mainloop(fighter: &mut L2CFigh
     // ]
     
     // This is just (as straight of) an impl that I can get of the main loop, what the hell were the smash devs
+    // Can only use side special once per aerial time
     if !fighter.sub_transition_group_check_air_cliff().get_bool() {
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_HENSOKU_SLASH_WORK_FLAG_HIT) == false {
-            if MotionModule::is_end(fighter.module_accessor) == false {
-                if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-                    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_HENSOKU_SLASH_WORK_FLAG_HIT) {
-                        fighter.change_status(FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END.into(), false.into());
-                    }
-                    else {
-                        fighter.change_status(FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_HIT.into(), false.into());
-                    }
-                    return L2CValue::I32(1);
-                }
-                // Transition into the attack upon special button press
-                if compare_mask(ControlModule::get_pad_flag(fighter.module_accessor), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER){
-                    fighter.change_status(FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_HIT.into(), false.into());
-                }
-                return L2CValue::I32(0);
-            }
-            if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_HENSOKU_SLASH_WORK_FLAG_HIT) {
+        if MotionModule::is_end(fighter.module_accessor) == false {
+            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
                 fighter.change_status(FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END.into(), false.into());
+                return L2CValue::I32(1);
             }
-            else {
-                fighter.change_status(FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_HIT.into(), false.into());
-            }
+            return L2CValue::I32(0);
         }
-        else {
-            fighter.change_status(FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_HIT.into(), false.into());
-        }
-        
+        fighter.change_status(FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END.into(), false.into());
     }
     L2CValue::I32(0)
 }
