@@ -1755,6 +1755,7 @@
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
     </struct>
+    <!-- CORRIN -->
     <struct index="59">
       <float hash="walk_speed_max">1.228</float>
       <float hash="ground_brake">0.0625</float>
@@ -1773,7 +1774,9 @@
       <float hash="damage_fly_top_air_accel_y">0.1</float>
       <float hash="damage_fly_top_speed_y_stable">2.08</float>
       <float hash="dive_speed_y">2.848</float>
-      <float hash="landing_attack_air_frame_n">8</float>
+      <float hash="landing_attack_air_frame_n">9</float>
+      <float hash="landing_attack_air_frame_f">10</float>
+      <float hash="landing_attack_air_frame_hi">12</float>
       <float hash="landing_attack_air_frame_lw">12</float>
       <float hash="scale">1.02</float>
       <float hash="shield_radius">11.8</float>
