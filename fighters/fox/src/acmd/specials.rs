@@ -1,13 +1,28 @@
 
 use super::*;
 
+#[acmd_script( agent = "fox", script = "game_specialairsstart" , category = ACMD_GAME , low_priority)]
+unsafe fn game_specialairsstart(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {  }
+}
+
+#[acmd_script( agent = "fox", script = "game_specialsstart" , category = ACMD_GAME , low_priority)]
+unsafe fn game_specialsstart(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.83)
+      }
+}
 
 #[acmd_script( agent = "fox", script = "game_specialairsend" , category = ACMD_GAME , low_priority)]
 unsafe fn game_specialairsend(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.2);
+        FT_MOTION_RATE(fighter, 2.0);
         KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
     
@@ -170,6 +185,8 @@ unsafe fn game_specialairlwstart(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        game_specialairsstart,
+        game_specialsstart,
         game_specialairsend,
         game_specialhihold,
         game_specialhiholdair,
