@@ -190,39 +190,39 @@ unsafe fn koopa_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "koopa", script = "game_appealhir" , category = ACMD_GAME , low_priority)]
-unsafe fn koopa_appeal_hi_r_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        if  !VarModule::is_flag(fighter.battle_object, vars::koopa::instance::NOKNOK_SHELL) {
-            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
-                ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_GREENSHELL), 0, 0, false, false);
-                VarModule::on_flag(fighter.battle_object, vars::koopa::instance::NOKNOK_SHELL);
-                VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1);
-            }
-        }
-    }
+// #[acmd_script( agent = "koopa", script = "game_appealhir" , category = ACMD_GAME , low_priority)]
+// unsafe fn koopa_appeal_hi_r_game(fighter: &mut L2CAgentBase) {
+//     let lua_state = fighter.lua_state_agent;
+//     let boma = fighter.boma();
+//     frame(lua_state, 10.0);
+//     if is_excute(fighter) {
+//         if  !VarModule::is_flag(fighter.battle_object, vars::koopa::instance::NOKNOK_SHELL) {
+//             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
+//                 ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_GREENSHELL), 0, 0, false, false);
+//                 VarModule::on_flag(fighter.battle_object, vars::koopa::instance::NOKNOK_SHELL);
+//                 VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1);
+//             }
+//         }
+//     }
     
-}
+// }
 
-#[acmd_script( agent = "koopa", script = "game_appealhil" , category = ACMD_GAME , low_priority)]
-unsafe fn koopa_appeal_hi_l_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        if  !VarModule::is_flag(fighter.battle_object, vars::koopa::instance::NOKNOK_SHELL) {
-            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
-                ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_GREENSHELL), 0, 0, false, false);
-                VarModule::on_flag(fighter.battle_object, vars::koopa::instance::NOKNOK_SHELL);
-                VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1);
-            }
-        }
-    }
+// #[acmd_script( agent = "koopa", script = "game_appealhil" , category = ACMD_GAME , low_priority)]
+// unsafe fn koopa_appeal_hi_l_game(fighter: &mut L2CAgentBase) {
+//     let lua_state = fighter.lua_state_agent;
+//     let boma = fighter.boma();
+//     frame(lua_state, 10.0);
+//     if is_excute(fighter) {
+//         if  !VarModule::is_flag(fighter.battle_object, vars::koopa::instance::NOKNOK_SHELL) {
+//             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
+//                 ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_GREENSHELL), 0, 0, false, false);
+//                 VarModule::on_flag(fighter.battle_object, vars::koopa::instance::NOKNOK_SHELL);
+//                 VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1);
+//             }
+//         }
+//     }
     
-}
+// }
 
 #[acmd_script( agent = "koopa", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
 unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
@@ -261,8 +261,8 @@ pub fn install() {
         dash_sound,
         koopa_turn_dash_game,
 		koopa_catch_game,
-        koopa_appeal_hi_r_game,
-        koopa_appeal_hi_l_game,
+        // koopa_appeal_hi_r_game,
+        // koopa_appeal_hi_l_game,
         expression_landingheavy,
         damageflyhi_sound,
         damageflylw_sound,
