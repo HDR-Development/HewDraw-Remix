@@ -162,7 +162,7 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
 unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 5.0);
+    frame(lua_state, 4.0);
     if is_excute(fighter) {
         if WorkModule::is_flag(boma, *FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_ONE_WINGED_ACTIVATED) {
             PLAY_SE(fighter, Hash40::new("se_edge_winged_landing02"));

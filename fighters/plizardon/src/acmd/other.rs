@@ -197,7 +197,7 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
 unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 5.0);
+    frame(lua_state, 4.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_plizardon_dash_start"));
     }
