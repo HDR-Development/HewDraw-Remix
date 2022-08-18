@@ -367,7 +367,6 @@ pub fn install() {
         falco_attack_air_f_sound,
         falco_landing_air_f_game,
         falco_attack_air_f_effect,
-        falco_attack_air_f_expression,
         falco_attack_air_b_sound,
         falco_attack_air_b_game,
         falco_attack_air_b_effect,
