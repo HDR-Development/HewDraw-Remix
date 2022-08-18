@@ -1,6 +1,29 @@
 
 use super::*;
 
+#[acmd_script( agent = "kamui", scripts = ["game_specialnend1", "game_specialairnend1"] , category = ACMD_GAME , low_priority)]
+unsafe fn kamui_special_n_end_1_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        MotionModule::set_rate(boma, 1.4);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        MotionModule::set_rate(boma, 1.0);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_KAMUI_STATUS_SPECIAL_N_FLAG_AIR_CONTROL);
+        FT_MOTION_RATE(fighter, 25.0/(62.0 - 17.0));
+    }
+    frame(lua_state, 50.0);
+    if is_excute(fighter) {
+        ArticleModule::remove_exist(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_DRAGONHAND, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+
 #[acmd_script( agent = "kamui", script = "game_specialswallattackf" , category = ACMD_GAME , low_priority)]
 unsafe fn kamui_special_s_wall_attack_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -200,6 +223,7 @@ unsafe fn kamui_special_s_wall_attack_b_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        kamui_special_n_end_1_game,
         kamui_special_s_wall_attack_f_game,
         kamui_special_s_wall_attack_b_game,
         //kamui_special_lw_hit_game,
