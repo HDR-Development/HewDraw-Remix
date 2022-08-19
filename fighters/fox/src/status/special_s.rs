@@ -65,7 +65,7 @@ pub unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> 
                 }
                 if situation == *SITUATION_KIND_GROUND {
                     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-                    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+                    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
                     MotionModule::change_motion(
                         fighter.module_accessor,
                         Hash40::new("special_s_landing"),
@@ -145,7 +145,7 @@ pub unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> 
             fighter.sub_fighter_cliff_check(GROUND_CLIFF_CHECK_KIND_NONE.into());
             if step == *FIGHTER_FOX_ILLUSION_STEP_END {
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
                 special_s_change_mot(fighter, Hash40::new("special_s_end"));
                 special_s_air_control(fighter);
             }
@@ -156,7 +156,7 @@ pub unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> 
                     fighter,
                     FIGHTER_KINETIC_ENERGY_ID_MOTION
                 );
-                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
                 let motion_mul = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_KINETIC_MOTION_SPEED_MUL);
                 sv_kinetic_energy!(
                     set_speed_mul,
@@ -208,7 +208,7 @@ pub unsafe extern "C" fn special_s_substatus(fighter: &mut L2CFighterCommon) -> 
 
 pub unsafe extern "C" fn special_s_ground_mot(fighter: &mut L2CFighterCommon) {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_FOX_ILLUSION_STATUS_WORK_ID_FLAG_CONTINUE) {
         MotionModule::change_motion(
             fighter.module_accessor,
