@@ -154,7 +154,8 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_mariod_dash_start"));
+        let dash_sfx_handle = SoundModule::play_se(fighter.module_accessor, Hash40::new("se_mariod_dash_start"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
     wait(lua_state, 12.0);
     if is_excute(fighter) {
