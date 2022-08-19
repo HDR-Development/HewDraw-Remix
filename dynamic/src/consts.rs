@@ -574,6 +574,13 @@ pub mod vars {
         }
     }
 
+    pub mod robin {
+        pub mod status {
+            // flags
+            pub const ELWIND1_CANCEL: i32 = 0x1100;
+        }
+    }
+
     pub mod roy {
         pub mod instance {
             // flags
