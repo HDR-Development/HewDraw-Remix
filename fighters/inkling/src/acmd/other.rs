@@ -148,26 +148,15 @@ unsafe fn inkling_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "inkling", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "inkling", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 4.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
-        EFFECT_FLW_UNSYNC_VIS(fighter, Hash40::new("inkling_squid_change"), Hash40::new("top"), 0, 3, 0, 0, 0, 0, 1, true);
-
-        let ink_r = WorkModule::get_float(boma, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLOAT_INK_R);
-        let ink_g = WorkModule::get_float(boma, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLOAT_INK_G);
-        let ink_b = WorkModule::get_float(boma, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLOAT_INK_B);
-        LAST_PARTICLE_SET_COLOR(fighter, ink_r, ink_g, ink_b);
-
-        EffectModule::enable_sync_init_pos_last(boma);
+        let dash_sfx_handle = SoundModule::play_se(fighter.module_accessor, Hash40::new("se_inkling_dash_start"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
-    frame(lua_state, 24.0);
-    if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-    }    
 }
 
 #[acmd_script( agent = "inkling_roller", script = "game_specialswalk" , category = ACMD_GAME , low_priority)]
@@ -440,7 +429,7 @@ pub fn install() {
         escape_air_game,
         escape_air_slide_game,
         inkling_catch_game,
-        //dash_effect,
+        dash_sound,
         inkling_roller_special_s_walk_game,
         inkling_roller_special_s_walk_no_ink_game,
         inkling_roller_special_air_s_walk_game,

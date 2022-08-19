@@ -158,19 +158,18 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "edge", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "edge", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 5.0);
+    frame(lua_state, 4.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
+        if WorkModule::is_flag(boma, *FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_ONE_WINGED_ACTIVATED) {
+            PLAY_SE(fighter, Hash40::new("se_edge_winged_landing02"));
+        }
+        let dash_sfx_handle = SoundModule::play_se(fighter.module_accessor, Hash40::new("se_edge_dash_start"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
-    frame(lua_state, 21.0);
-    if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-    }    
 }
 
 #[acmd_script( agent = "edge", script = "game_turndash" , category = ACMD_GAME , low_priority)]
@@ -241,7 +240,7 @@ pub fn install() {
         escape_air_slide_game,
         sephiroth_catch_game,
         dash_game,
-        //dash_effect,
+        dash_sound,
         turn_dash_game,
         edge_flare1_fly_game,
         damageflyhi_sound,

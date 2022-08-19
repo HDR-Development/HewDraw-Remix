@@ -131,20 +131,23 @@ unsafe fn expression_landingheavy(fighter: &mut L2CAgentBase) {
   } 
 }
 
-#[acmd_script( agent = "donkey", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "donkey", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 5.0);
+    frame(lua_state, 4.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -8, 0, 0, 0, 0, 0, 0.93, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
+        let dash_sfx_handle = SoundModule::play_se(fighter.module_accessor, Hash40::new("se_donkey_dash_start"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
-    frame(lua_state, 17.0);
+    wait(lua_state, 11.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
-        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 12, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
-    }    
+        PLAY_STEP(fighter, Hash40::new("se_donkey_step_left_m"));
+    }
+    wait(lua_state, 3.0);
+    if is_excute(fighter) {
+        PLAY_STEP(fighter, Hash40::new("se_donkey_step_right_m"));
+    }
 }
 
 #[acmd_script( agent = "donkey", script = "game_turndash" , category = ACMD_GAME , low_priority)]
@@ -219,7 +222,7 @@ pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
         escape_air_slide_game,
-    //dash_effect,
+    dash_sound,
 		dk_turn_dash_game,
     heavy_item_throw_f,
     heavy_item_throw_b,

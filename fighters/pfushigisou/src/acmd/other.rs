@@ -159,19 +159,28 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "pfushigisou", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pfushigisou", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 5.0);
+    frame(lua_state, 4.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
+        let dash_sfx_handle = SoundModule::play_se(fighter.module_accessor, Hash40::new("se_pfushigisou_dash_start"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
-    frame(lua_state, 13.0);
+    frame(lua_state, 11.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 3, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-    }    
+        PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_pfushigisou_step_f_left_l"), Hash40::new("se_pfushigisou_step_f_right_l"));
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_pfushigisou_step_b_left_l"), Hash40::new("se_pfushigisou_step_b_right_l"));
+	    PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_pfushigisou_step_f_right_l"), Hash40::new("se_pfushigisou_step_f_left_l"));
+    }
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_pfushigisou_step_b_right_m"), Hash40::new("se_pfushigisou_step_b_left_m"));
+    }
 }
 
 #[acmd_script( agent = "pfushigisou", script = "game_turndash" , category = ACMD_GAME , low_priority)]
@@ -222,7 +231,7 @@ pub fn install() {
         escape_air_slide_game,
         pfushigisou_catch_game,
         dash_game,
-        //dash_effect,
+        dash_sound,
         turn_dash_game,
         damageflyhi_sound,
         damageflylw_sound,

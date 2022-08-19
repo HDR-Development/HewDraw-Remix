@@ -121,18 +121,27 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "captain", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "captain", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    frame(lua_state, 5.0);
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
+        PLAY_SE(fighter, Hash40::new("se_captain_metal"));
     }
-    frame(lua_state, 20.0);
+    wait(lua_state, 1.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-    }    
+        let dash_sfx_handle = SoundModule::play_se(fighter.module_accessor, Hash40::new("se_captain_dash_start"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
+    }
+    wait(lua_state, 15.0);
+    if is_excute(fighter) {
+        PLAY_STEP(fighter, Hash40::new("se_captain_step_right_l"));
+    }
+    wait(lua_state, 3.0);
+    if is_excute(fighter) {
+        PLAY_STEP(fighter, Hash40::new("se_captain_step_left_l"));
+    }
 }
 
 #[acmd_script( agent = "captain", script = "game_turndash" , category = ACMD_GAME , low_priority)]
@@ -225,7 +234,7 @@ pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
         escape_air_slide_game,
-        //dash_effect,
+        dash_sound,
         captain_turn_dash_game,
 		captain_catch_game,
         captain_catch_dash_game,

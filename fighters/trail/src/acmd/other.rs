@@ -145,20 +145,6 @@ unsafe fn trail_catch_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn effect_dash(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    frame(lua_state, 5.0);
-    if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
-    }
-    frame(lua_state, 21.0);
-    if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-    }    
-}
 #[acmd_script( agent = "trail", script = "game_dash" , category = ACMD_GAME , low_priority)]
 unsafe fn game_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -169,7 +155,20 @@ unsafe fn game_dash(fighter: &mut L2CAgentBase) {
     }
 }
 
-
+#[acmd_script( agent = "trail", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        let dash_sfx_handle = SoundModule::play_se(fighter.module_accessor, Hash40::new("se_trail_dash_start"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
+    }
+    wait(lua_state, 20.0);
+    if is_excute(fighter) {
+        PLAY_STEP(fighter, Hash40::new("se_trail_step_left_l"));
+    }
+}
 
 #[acmd_script( agent = "trail", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
 unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
@@ -203,7 +202,7 @@ pub fn install() {
         escape_air_game,
         escape_air_slide_game,
         game_dash,
-        effect_dash,
+        dash_sound,
         trail_catch_game,
         damageflyhi_sound,
         damageflylw_sound,

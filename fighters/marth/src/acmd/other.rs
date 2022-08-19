@@ -159,19 +159,19 @@ unsafe fn marth_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "marth", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "marth", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 5.0);
+    frame(lua_state, 4.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
+        let dash_sfx_handle = SoundModule::play_se(fighter.module_accessor, Hash40::new("se_marth_dash_start"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
-    frame(lua_state, 19.0);
+    wait(lua_state, 8.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-    }    
+        PLAY_STEP(fighter, Hash40::new("se_marth_step_right_l"));
+    }
 }
 
 #[acmd_script( agent = "marth", script = "game_turndash" , category = ACMD_GAME , low_priority)]
@@ -222,7 +222,7 @@ pub fn install() {
         escape_air_slide_game,
         marth_catch_game,
         marth_dash_game,
-        //dash_effect,
+        dash_sound,
         marth_turn_dash_game,
         damageflyhi_sound,
         damageflylw_sound,
