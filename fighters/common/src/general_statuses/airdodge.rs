@@ -147,6 +147,7 @@ unsafe fn sub_escape_air_common(fighter: &mut L2CFighterCommon) {
         fighter.sub_escape_air_uniq(L2CValue::Bool(false));
     }
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(sub_escape_air_uniq as *const () as _));
+    HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
 }
 
 unsafe fn force_ground_attach(fighter: &mut L2CFighterCommon) {
@@ -291,6 +292,7 @@ unsafe extern "C" fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, arg: L2
 unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let id = VarModule::get_int(fighter.battle_object, vars::common::instance::COSTUME_SLOT_NUMBER) as usize;
     let curr_frame = fighter.global_table[CURRENT_FRAME].get_i32();
+    let cancel_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_cancel_frame")) - 1.0;  // subtract 1 because curr_frame is 0 indexed
 
     // RoA airdodge stalling
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
@@ -384,13 +386,35 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
             );
             return L2CValue::Bool(true);
         }
-        if !MotionModule::is_end(fighter.module_accessor) {
-            return L2CValue::Bool(false);
-        } else {
-            fighter.change_status(
-                L2CValue::I32(*FIGHTER_STATUS_KIND_FALL),
-                L2CValue::Bool(false)
-            );
+        if MotionModule::end_frame(fighter.module_accessor) < cancel_frame {
+            // If our airdodge animation is shorter than its FAF
+            if curr_frame < (cancel_frame as i32) {
+                // Stop the animation on its second-to-last frame
+                // Continue looping the status until our FAF is reached
+                if MotionModule::prev_frame(fighter.module_accessor) < (MotionModule::end_frame(fighter.module_accessor) - 1.0)
+                && MotionModule::frame(fighter.module_accessor) >= (MotionModule::end_frame(fighter.module_accessor) - 1.0)
+                {
+                    MotionModule::set_rate(fighter.module_accessor, 0.0);
+                }
+                return L2CValue::Bool(false);
+            } else {
+                // Transition to fall on FAF
+                fighter.change_status(
+                    L2CValue::I32(*FIGHTER_STATUS_KIND_FALL),
+                    L2CValue::Bool(false)
+                );
+            }
+        }
+        else {
+            // Vanilla logic
+            if !MotionModule::is_end(fighter.module_accessor) {
+                return L2CValue::Bool(false);
+            } else {
+                fighter.change_status(
+                    L2CValue::I32(*FIGHTER_STATUS_KIND_FALL),
+                    L2CValue::Bool(false)
+                );
+            }
         }
     }
     L2CValue::Bool(true)

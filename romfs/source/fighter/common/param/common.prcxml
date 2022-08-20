@@ -60,12 +60,12 @@
   <float hash="catch_dash_brake_mul">1</float>
   <int hash="shield_setoff_catch_frame">0</int>
   <int hash="invalid_capture_frame">35</int>
-  <int hash="cliff_catch_move_frame">3</int>
+  <int hash="cliff_catch_move_frame">0</int>
   <int hash="cliff_no_catch_frame">25</int>
   <int hash="damage_cliff_no_catch_frame">25</int>
-  <int hash="cliff_wait_air_xlu_max_frame">10</int>
-  <int hash="cliff_wait_damage_xlu_max_frame">1</int>
-  <int hash="cliff_wait_xlu_min_frame">37</int>
+  <int hash="cliff_wait_air_xlu_max_frame">0</int>
+  <int hash="cliff_wait_damage_xlu_max_frame">0</int>
+  <int hash="cliff_wait_xlu_min_frame">29</int>
   <float hash="cliff_robbed_speed_x">-0.5</float>
   <float hash="cliff_robbed_speed_y">17.5</float>
   <int hash="cliff_robbed_no_control_frame">40</int>
