@@ -250,29 +250,26 @@ unsafe fn drift_di(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U
     ])
     {
-        let speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
-        let speed_y = fighter.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+        let damage_speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+        let damage_speed_y = fighter.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+
+        if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
+            VarModule::set_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_X, damage_speed_x);
+            VarModule::set_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_Y, damage_speed_y);
+        }
+        let speed_x = VarModule::get_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_X);
+        let speed_y = VarModule::get_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_Y);
 
         let mut speed_mul = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_mul_base");
         let speed_mul_add_max = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_mul_add_max");
 
-        let lerp_min_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_lerp_min");
         let lerp_max_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_lerp_max");
 
-        if speed_x.abs() < lerp_min_speed {
-            speed_mul += speed_mul_add_max;
-        } else if speed_x.abs() < lerp_max_speed {
-            let ratio = 1.0 - ((speed_x.abs() - lerp_min_speed) / (lerp_max_speed - lerp_min_speed));
-            speed_mul += ratio * speed_mul_add_max;
-        }
+        let ratio = 1.0 - (speed_x.abs() / lerp_max_speed).clamp(0.0, 1.0);
+        speed_mul = (speed_mul + speed_mul_add_max) * ratio;
 
-        let current_damage = DamageModule::damage(boma, 0);
-        // println!("Current damage: {}", current_damage);
-        let percent_mul = (1.0 - (current_damage / 100.0) * ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.drift_reduction_mul_at_100")).max(0.0);
-        // println!("percent based multiplier: {}", percent_mul);
-
-        let drift_value = boma.left_stick_x() * speed_mul * percent_mul;
-        fighter.set_speed(Vector2f::new(speed_x + drift_value, speed_y), *FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+        let drift_value = boma.left_stick_x() * speed_mul;
+        fighter.set_speed(Vector2f::new(damage_speed_x + drift_value, damage_speed_y), *FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
     }
 }
 
