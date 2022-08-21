@@ -14,8 +14,19 @@ unsafe fn bayonetta_special_n_start_game(fighter: &mut L2CAgentBase) {
 unsafe fn bayonetta_special_n_charge_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    VarModule::off_flag(boma.object(), vars::bayonetta::instance::SHOULD_PRORATE_DAMAGE);
+    if VarModule::is_flag(boma.object(), vars::bayonetta::instance::IS_NONSPECIAL_CANCEL) {
+        VarModule::on_flag(boma.object(), vars::bayonetta::instance::SHOULD_PRORATE_DAMAGE);
+        VarModule::off_flag(boma.object(), vars::bayonetta::instance::IS_NONSPECIAL_CANCEL);
+    }
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 1.0);
+    if VarModule::is_flag(boma.object(), vars::bayonetta::instance::SHOULD_PRORATE_DAMAGE) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
+    else {
+        FT_MOTION_RATE(fighter, 1.65);
+    }
 }
 
 #[acmd_script( agent = "bayonetta", scripts = ["game_specialnendh", "game_specialnendf", "game_specialairnendh", "game_specialairnendf"] , category = ACMD_GAME , low_priority)]
