@@ -147,6 +147,7 @@ unsafe fn sub_escape_air_common(fighter: &mut L2CFighterCommon) {
         fighter.sub_escape_air_uniq(L2CValue::Bool(false));
     }
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(sub_escape_air_uniq as *const () as _));
+    HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
 }
 
 unsafe fn force_ground_attach(fighter: &mut L2CFighterCommon) {
