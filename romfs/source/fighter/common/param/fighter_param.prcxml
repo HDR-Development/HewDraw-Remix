@@ -1589,7 +1589,7 @@
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
     </struct>
-    <!-- PACMAN -->
+    <!-- PAC-MAN -->
     <struct index="52">
       <float hash="ground_brake">0.0815</float>
       <float hash="dash_speed">1.625</float>
@@ -2158,7 +2158,7 @@
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
     </struct>
-    <!-- TERRENCE BOGARDIAN -->
+    <!-- TERRY -->
     <struct index="71">
       <float hash="walk_accel_mul">0.12</float>
       <float hash="walk_accel_add">1.2</float>
@@ -2444,7 +2444,7 @@
       <float hash="tread_jump_speed_y_mul">0.815</float>
       <float hash="tread_mini_jump_speed_y_mul">0.815</float>
     </struct>
-    <!-- MII SWORDSMAN -->
+    <!-- MII SWORDFIGHTER -->
     <struct index="81">
       <float hash="walk_speed_max">1.17</float>
       <float hash="ground_brake">0.077</float>
@@ -2741,7 +2741,7 @@
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
     </struct>
-    <!-- GAY BOWSER -->
+    <!-- GIGA BOWSER -->
     <struct index="90">
       <float hash="walk_speed_max">1.75</float>
       <float hash="dash_speed">1.9</float>
@@ -2769,7 +2769,7 @@
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.5</float>
     </struct>
-    <!-- MII SWORDSMAN (FIGHTING TEAM) -->
+    <!-- MII SWORDFIGHTER (FIGHTING TEAM) -->
     <struct index="92">
       <int hash="jump_squat_frame">4</int>
       <float hash="tread_jump_speed_y_mul">0.8</float>
