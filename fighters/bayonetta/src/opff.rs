@@ -34,7 +34,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 //             fighter.change_status_req(new_status, false);
 //         }
 //     }
-
 // }
 
 unsafe fn dash_attack_cancels(fighter: &mut L2CFighterCommon) {
@@ -171,7 +170,7 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
             else if new_status == *FIGHTER_STATUS_KIND_SPECIAL_HI {
                 VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME);
             }
-            VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_ENABLE_SPECIAL_CANCEL);
+            VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_NONSPECIAL_CANCEL);
             fighter.change_status_req(new_status, false);
             return;
         }
@@ -182,7 +181,7 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
             Some(AerialKind::Fair) | None => return,
             _ => {
                 if !fighter.is_in_hitlag() {
-                    VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_ENABLE_SPECIAL_CANCEL);
+                    VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_NONSPECIAL_CANCEL);
                     fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
                     return;
                 }
@@ -260,8 +259,8 @@ unsafe fn clear_proration(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-        *FIGHTER_STATUS_KIND_DAMAGE_FALL]) && VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_ENABLE_SPECIAL_CANCEL) {
-            VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_ENABLE_SPECIAL_CANCEL);
+        *FIGHTER_STATUS_KIND_DAMAGE_FALL]) && VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_NONSPECIAL_CANCEL) {
+            VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_NONSPECIAL_CANCEL);
         }
 }
 

@@ -14,9 +14,9 @@ unsafe fn bayonetta_attack_air_n_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 0.227);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         VarModule::off_flag(boma.object(), vars::bayonetta::instance::SHOULD_PRORATE_DAMAGE);
-        if VarModule::is_flag(boma.object(), vars::bayonetta::instance::IS_ENABLE_SPECIAL_CANCEL) {
+        if VarModule::is_flag(boma.object(), vars::bayonetta::instance::IS_NONSPECIAL_CANCEL) {
             VarModule::on_flag(boma.object(), vars::bayonetta::instance::SHOULD_PRORATE_DAMAGE);
-            VarModule::off_flag(boma.object(), vars::bayonetta::instance::IS_ENABLE_SPECIAL_CANCEL);
+            VarModule::off_flag(boma.object(), vars::bayonetta::instance::IS_NONSPECIAL_CANCEL);
         }
     }
     frame(lua_state, 22.0);
@@ -216,9 +216,9 @@ unsafe fn bayonetta_attack_air_f3_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b7cb92b79), *FIGHTER_BAYONETTA_SHOOTING_SLOT_R_LEG, false, false, true, 10);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         VarModule::off_flag(boma.object(), vars::bayonetta::instance::SHOULD_PRORATE_DAMAGE);
-        if VarModule::is_flag(boma.object(), vars::bayonetta::instance::IS_ENABLE_SPECIAL_CANCEL) {
+        if VarModule::is_flag(boma.object(), vars::bayonetta::instance::IS_NONSPECIAL_CANCEL) {
             VarModule::on_flag(boma.object(), vars::bayonetta::instance::SHOULD_PRORATE_DAMAGE);
-            VarModule::off_flag(boma.object(), vars::bayonetta::instance::IS_ENABLE_SPECIAL_CANCEL);
+            VarModule::off_flag(boma.object(), vars::bayonetta::instance::IS_NONSPECIAL_CANCEL);
         }
     }
     frame(lua_state, 3.0);
@@ -268,9 +268,9 @@ unsafe fn bayonetta_attack_air_b_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 7.0/(20.0-1.0));
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         VarModule::off_flag(boma.object(), vars::bayonetta::instance::SHOULD_PRORATE_DAMAGE);
-        if VarModule::is_flag(boma.object(), vars::bayonetta::instance::IS_ENABLE_SPECIAL_CANCEL) {
+        if VarModule::is_flag(boma.object(), vars::bayonetta::instance::IS_NONSPECIAL_CANCEL) {
             VarModule::on_flag(boma.object(), vars::bayonetta::instance::SHOULD_PRORATE_DAMAGE);
-            VarModule::off_flag(boma.object(), vars::bayonetta::instance::IS_ENABLE_SPECIAL_CANCEL);
+            VarModule::off_flag(boma.object(), vars::bayonetta::instance::IS_NONSPECIAL_CANCEL);
         }
     }
     frame(lua_state, 6.0);
@@ -324,9 +324,9 @@ unsafe fn bayonetta_attack_air_hi_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 0.833);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         VarModule::off_flag(boma.object(), vars::bayonetta::instance::SHOULD_PRORATE_DAMAGE);
-        if VarModule::is_flag(boma.object(), vars::bayonetta::instance::IS_ENABLE_SPECIAL_CANCEL) {
+        if VarModule::is_flag(boma.object(), vars::bayonetta::instance::IS_NONSPECIAL_CANCEL) {
             VarModule::on_flag(boma.object(), vars::bayonetta::instance::SHOULD_PRORATE_DAMAGE);
-            VarModule::off_flag(boma.object(), vars::bayonetta::instance::IS_ENABLE_SPECIAL_CANCEL);
+            VarModule::off_flag(boma.object(), vars::bayonetta::instance::IS_NONSPECIAL_CANCEL);
         }
     }
     frame(lua_state, 3.0);
