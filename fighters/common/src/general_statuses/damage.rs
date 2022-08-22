@@ -1,7 +1,6 @@
 // status imports
 use super::*;
 use globals::*;
-// This file contains code for tumble
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
@@ -15,14 +14,26 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     }
 }
 
+// this runs as you leave hitlag
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_FighterStatusUniqProcessDamage_leave_stop)]
 pub unsafe fn FighterStatusUniqProcessDamage_leave_stop_hook(fighter: &mut L2CFighterCommon, arg2: L2CValue, arg3: L2CValue) -> L2CValue {
     original!()(fighter, arg2, arg3);
     let hashmap = fighter.local_func__fighter_status_damage_2();
     let sdi_mul = hashmap["stop_delay_"].get_f32();
     // get stick x/y length
-    let stick_x = ControlModule::get_stick_x(fighter.module_accessor);
-    let stick_y = ControlModule::get_stick_y(fighter.module_accessor);
+    // uses cstick's value if cstick is on (for Double Stick DI)
+    let stick_x = if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+        ControlModule::get_sub_stick_x(fighter.module_accessor)
+    }
+    else {
+        ControlModule::get_stick_x(fighter.module_accessor)
+    };
+    let stick_y = if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+        ControlModule::get_sub_stick_y(fighter.module_accessor)
+    }
+    else {
+        ControlModule::get_stick_y(fighter.module_accessor)
+    };
     // get base asdi distance
     let base_asdi = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("hit_stop_delay_auto_mul"));
     // mul sdi_mul by hit_stop_delay_auto_mul = total sdi
