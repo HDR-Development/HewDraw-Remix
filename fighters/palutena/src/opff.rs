@@ -17,6 +17,8 @@ pub unsafe fn palutena_teleport_cancel(boma: &mut BattleObjectModuleAccessor, id
             StatusModule::change_status_request_from_script(boma, *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_3, false);
         }
     }
+
+/* Wall jump Removal
     if [*FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_2,
         *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_3].contains(&status_kind) {
         if situation_kind == *SITUATION_KIND_AIR {
@@ -33,6 +35,7 @@ pub unsafe fn palutena_teleport_cancel(boma: &mut BattleObjectModuleAccessor, id
             }
         }
     }
+*/
 
     // Wall Ride momentum fixes
     let mut wall_ride = Vector3f{x: 1.0, y: 1.0, z: 1.0};
