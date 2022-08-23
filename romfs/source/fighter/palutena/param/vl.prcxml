@@ -16,7 +16,6 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="special_hi_wrap_speed_multi">3.25</float>
-      <int hash="landing_frame">30</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
