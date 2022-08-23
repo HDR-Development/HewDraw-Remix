@@ -31,9 +31,21 @@ unsafe fn dragon_surge(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     }
 }
 
+unsafe fn bair_boost_detection(boma: &mut BattleObjectModuleAccessor){
+    if boma.get_aerial() == Some(AerialKind::Bair) {
+        if boma.is_cat_flag(Cat1::AttackS4){
+            VarModule::on_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
+        }
+        else{
+            VarModule::off_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //dragon_fang_shot_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
     //dragon_surge(fighter, boma, motion_kind, frame);
+    bair_boost_detection(boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_KAMUI )]
