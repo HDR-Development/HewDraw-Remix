@@ -167,9 +167,10 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 pub unsafe fn status_LandingStiffness(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DAMAGE_AIR
     || fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_SAVING_DAMAGE_AIR {
-        // halve hitstun on landing
+        // halve hitstun on landing, with a minimum of your heavy landing lag value
         let hitstun = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
-        WorkModule::set_float(fighter.module_accessor, hitstun * 0.5, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
+        let landing_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_frame"), 0);
+        WorkModule::set_float(fighter.module_accessor, (hitstun * 0.5).max(landing_frame), *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
     }
     original!()(fighter)
 }
