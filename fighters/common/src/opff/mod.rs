@@ -63,10 +63,14 @@ pub unsafe fn fighter_common_opff(fighter: &mut L2CFighterCommon) {
 unsafe fn salty_check(fighter: &mut L2CFighterCommon) -> bool {
     if fighter.is_button_on(Buttons::StockShare) {
         if fighter.is_button_on(Buttons::AttackRaw) && !fighter.is_button_on(!(Buttons::AttackRaw | Buttons::StockShare)) {
+            app::FighterUtil::flash_eye_info(fighter.module_accessor);
+            EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_damage_elec"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 1.0, true, 0, 0, 0, 0, 0, false, false);
             utils::util::trigger_match_reset();
             utils::game_modes::signal_new_game();
             true
         } else if fighter.is_button_on(Buttons::SpecialRaw) && !fighter.is_button_on(!(Buttons::SpecialRaw | Buttons::StockShare)) {
+            app::FighterUtil::flash_eye_info(fighter.module_accessor);
+            EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_score_aura"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 1.0, true, 0, 0, 0, 0, 0, false, false);
             utils::util::trigger_match_exit();
             true
         } else {
