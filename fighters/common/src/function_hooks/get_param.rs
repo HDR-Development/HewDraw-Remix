@@ -73,12 +73,6 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
     if x1 == hash40("landing_frame") {
         return original!()(x0, hash40("landing_frame"), 0) + 1.0;
     }
-
-    if x2 == hash40("damage_level3") {
-        if VarModule::is_flag(boma_reference.object(), vars::common::instance::IS_KNOCKDOWN_THROW) {
-            return 0.0;
-        }
-    }
     
     if x1 == hash40("param_trenchmortarbullet") && x2 == hash40("speed_x") {
 		if fighter_kind == *WEAPON_KIND_SNAKE_TRENCHMORTAR_BULLET {
