@@ -2,40 +2,6 @@ use super::*;
  
 utils::import_noreturn!(common::opff::fighter_common_opff);
 
-// unsafe fn jab_cancels(fighter: &mut L2CFighterCommon) {
-//     if !fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK)
-//     || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-//     || VarModule::is_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS) {
-//         return;
-//     }
-//     // Only jab 2 is cancelable, return out if not in that motion
-//     if !fighter.is_motion(Hash40::new("attack_12")){
-//         return;
-//     }
-//     let mut new_status = 0;
-//     let mut is_input_cancel = false;
-
-//     if fighter.is_cat_flag(Cat1::SpecialN) {
-//         is_input_cancel = true;
-//         new_status = *FIGHTER_STATUS_KIND_SPECIAL_N;
-//     }
-
-//     if fighter.is_cat_flag(Cat1::SpecialS) {
-//         is_input_cancel = true;
-//         new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
-//     }
-
-//     if fighter.is_cat_flag(Cat1::SpecialHi) {
-//         is_input_cancel = true;
-//         new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI;
-//     }
-//     if is_input_cancel {
-//         if !fighter.is_in_hitlag(){
-//             fighter.change_status_req(new_status, false);
-//         }
-//     }
-// }
-
 unsafe fn dash_attack_cancels(fighter: &mut L2CFighterCommon) {
     if !fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_DASH)
     || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
@@ -245,12 +211,10 @@ unsafe fn recovery_resource_management(fighter: &mut L2CFighterCommon) {
     
 }
 
-unsafe fn clear_proration(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_LANDING,
-        *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
-        *FIGHTER_STATUS_KIND_LANDING_DAMAGE_LIGHT,
-        *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL,
-        *FIGHTER_STATUS_KIND_LANDING_LIGHT,
+unsafe fn clear_proration(fighter: &mut L2CFighterCommon, boma: *mut BattleObjectModuleAccessor) {
+    if (fighter.is_prev_situation(*SITUATION_KIND_AIR) && fighter.is_situation(*SITUATION_KIND_GROUND)) || 
+        (fighter.is_prev_situation(*SITUATION_KIND_AIR) && fighter.is_situation(*SITUATION_KIND_CLIFF)) ||
+        fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_DAMAGE,
         *FIGHTER_STATUS_KIND_DAMAGE_AIR,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY,
@@ -278,13 +242,16 @@ unsafe fn abk_flight_drift(fighter: &mut L2CFighterCommon) {
 pub unsafe fn bayonetta_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
 
-    //jab_cancels(fighter);
-    dash_attack_cancels(fighter);
-    tilt_cancels(fighter);
-    aerial_cancels(fighter);
-    special_cancels(fighter);
-    nspecial_cancels(fighter);
-    recovery_resource_management(fighter);
-    abk_flight_drift(fighter);
-    clear_proration(fighter);
+    if let Some(info) = FrameInfo::update_and_get(fighter) {
+        dash_attack_cancels(fighter);
+        tilt_cancels(fighter);
+        aerial_cancels(fighter);
+        special_cancels(fighter);
+        nspecial_cancels(fighter);
+        recovery_resource_management(fighter);
+        abk_flight_drift(fighter);
+        clear_proration(fighter, info.boma);
+    }
+
+    
 }
