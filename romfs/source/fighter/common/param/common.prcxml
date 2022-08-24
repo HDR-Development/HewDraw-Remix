@@ -35,6 +35,7 @@
   <float hash="0x20d241cd64">0.85</float>
   <int hash="guard_damage_just_shield_disable_frame">1</int>
   <int hash="escape_flick_y">3</int>
+  <float hash="escape_stick_y">-0.75</float>
   <float hash="escape_air_slide_landing_speed_max">4</float>
   <int hash="hit_stop_delay_flick">2</int>
   <float hash="hit_stop_delay_flick_mul">6</float>
@@ -72,6 +73,7 @@
   <int hash="air_lasso_catch_num">6</int>
   <int hash="air_lasso_cliff_wait_frame">7</int>
   <int hash="air_lasso_landing_frame">25</int>
+  <float hash="pass_stick_y">-0.71</float>
   <int hash="passive_trigger_frame">20</int>
   <int hash="no_rapid_frame_value">40</int>
   <float hash="invalid_passive_speed">999</float>
