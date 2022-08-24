@@ -6,7 +6,7 @@ use globals::*;
  
 unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI
-    && fighter.global_table[CURRENT_FRAME] == 0 {
+    && boma.motion_frame() <= 1.0 {
         VarModule::off_flag(boma.object(), vars::mewtwo::instance::GROUNDED_TELEPORT);
         if situation_kind == *SITUATION_KIND_GROUND {
             VarModule::on_flag(boma.object(), vars::mewtwo::instance::GROUNDED_TELEPORT);
@@ -106,6 +106,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     actionable_teleport_air(fighter, boma, id, status_kind, situation_kind, frame);
     nspecial_cancels(boma, status_kind, situation_kind);
     mewtwo_teleport_cancel(boma, status_kind, id);
+    dj_upB_jump_refresh(fighter);
 }
 #[utils::macros::opff(FIGHTER_KIND_MEWTWO )]
 pub fn mewtwo_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
