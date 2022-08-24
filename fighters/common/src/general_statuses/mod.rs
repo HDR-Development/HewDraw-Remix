@@ -58,9 +58,7 @@ pub unsafe fn sub_wait_common_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_DamageAir)]
 pub unsafe fn status_pre_DamageAir(fighter: &mut L2CFighterCommon) -> L2CValue {
-    println!("pre damageair");
-    if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_KNOCKDOWN_THROW) {
-        println!("interrupt meteor");
+    if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_KNOCKDOWN_THROW) {
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR);
         return 1.into();
     }
@@ -70,9 +68,10 @@ pub unsafe fn status_pre_DamageAir(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_DamageFlyCommon_init)]
 pub unsafe fn damage_fly_common_init(fighter: &mut L2CFighterCommon) {
     ControlModule::set_command_life_extend(fighter.module_accessor, 5);
-    if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_KNOCKDOWN_THROW) {
+    if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_KNOCKDOWN_THROW) {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_D);
     }
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_KNOCKDOWN_THROW);
     original!()(fighter)
 }
 

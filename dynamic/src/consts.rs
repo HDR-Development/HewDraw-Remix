@@ -150,7 +150,9 @@ pub mod vars {
 
             pub const ENABLE_AIR_ESCAPE_JUMPSQUAT: i32 = 0x0051;
 
-            pub const IS_HEAVY_ATTACK: i32 = 0x0052;
+            pub const IS_KNOCKDOWN_THROW: i32 = 0x0052;
+
+            pub const IS_HEAVY_ATTACK: i32 = 0x0053;
 
             // ints
 
@@ -218,7 +220,6 @@ pub mod vars {
             pub const IS_JAB_LOCK_ROLL: i32 = 0x1000;
 
             pub const SUICIDE_THROW_CAN_CLATTER: i32 = 0x1000;
-            pub const IS_KNOCKDOWN_THROW: i32 = 0x1001;
 
             // ints
 

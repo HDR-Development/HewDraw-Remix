@@ -169,7 +169,7 @@ unsafe fn throwlw_game(fighter: &mut L2CAgentBase) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
         AttackModule::clear_all(boma);
         let opponent_boma = fighter.get_grabbed_opponent_boma();
-        VarModule::on_flag(opponent_boma.object(), vars::common::status::IS_KNOCKDOWN_THROW);
+        VarModule::on_flag(opponent_boma.object(), vars::common::instance::IS_KNOCKDOWN_THROW);
         FT_MOTION_RATE(fighter, 0.75);
     }
     frame(lua_state, 68.0); {
