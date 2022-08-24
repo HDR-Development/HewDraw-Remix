@@ -82,6 +82,12 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         && next_status == *FIGHTER_STATUS_KIND_FALL_SPECIAL {
             next_status = *FIGHTER_STATUS_KIND_FALL;
         }
+        if boma.kind() == *FIGHTER_KIND_MEWTWO 
+        && StatusModule::status_kind(boma) == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3
+        && next_status == *FIGHTER_STATUS_KIND_FALL_SPECIAL
+        && VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL) {
+            next_status == *FIGHTER_STATUS_KIND_FALL;
+        }
     }
     original!()(boma, next_status, clear_buffer)
 }
