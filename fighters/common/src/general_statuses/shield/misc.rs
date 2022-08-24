@@ -245,6 +245,7 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
             );
             return true.into();
         }
+        // Allows you to button jump out of shield when in shield lock
         if fighter.sub_check_button_jump().get_bool()
         || (!guard_hold && fighter.sub_check_button_frick().get_bool()) {
             fighter.change_status(
