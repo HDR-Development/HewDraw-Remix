@@ -9,7 +9,6 @@ use smash::hash40;
 use smash::lib::{lua_const::*, L2CValue, L2CAgent};
 use smash::lua2cpp::L2CFighterCommon;
 use smash::lua2cpp::L2CFighterBase;
-use smash_script::macros::*;
 
 pub mod ledges;
 pub mod shields;
@@ -71,8 +70,7 @@ unsafe fn salty_check(fighter: &mut L2CFighterCommon) -> bool {
             true
         } else if fighter.is_button_on(Buttons::SpecialRaw) && !fighter.is_button_on(!(Buttons::SpecialRaw | Buttons::StockShare)) {
             app::FighterUtil::flash_eye_info(fighter.module_accessor);
-            EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_dead2"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 0.5, true, 0, 0, 0, 0, 0, false, false);
-            LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.0, 0.0);
+            EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_dead2"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 0.75, true, 0, 0, 0, 0, 0, false, false);
             utils::util::trigger_match_exit();
             true
         } else {
