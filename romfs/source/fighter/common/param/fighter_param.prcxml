@@ -750,6 +750,7 @@
       <float hash="landing_attack_air_frame_b">12</float>
       <float hash="landing_attack_air_frame_hi">9</float>
       <int hash="landing_heavy_frame">5</int>
+      <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.825</float>
       <float hash="tread_mini_jump_speed_y_mul">0.825</float>
     </struct>
