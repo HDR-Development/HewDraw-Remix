@@ -13,6 +13,12 @@ unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut Bat
         }
     }
 
+    if status_kind == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_2 && MotionModule::is_end(boma) {
+        if boma.get_num_used_jumps() < boma.get_jump_count_max() {
+            PostureModule::set_stick_lr(boma, 0.0);
+            PostureModule::update_rot_y_lr(boma);
+        }
+    }
     if status_kind == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3 && situation_kind == *SITUATION_KIND_AIR && frame > 8.0 {
         if boma.get_num_used_jumps() < boma.get_jump_count_max() {
             VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
