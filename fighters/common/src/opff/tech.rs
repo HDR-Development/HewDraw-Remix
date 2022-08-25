@@ -181,33 +181,6 @@ unsafe fn run_squat(boma: &mut BattleObjectModuleAccessor, status_kind: i32, sti
     }
 }
 
-//=================================================================
-//== GLIDE TOSS
-//=================================================================
-unsafe fn glide_toss(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, facing: f32) {
-    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B])
-    {
-        let max_ditcit_frame = ParamModule::get_int(boma.object(), ParamType::Common, "glide_toss_cancel_frame");
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-        let speed_motion = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-        VarModule::set_flag(boma.object(), vars::common::instance::CAN_GLIDE_TOSS, fighter.global_table[CURRENT_FRAME].get_i32() < max_ditcit_frame);
-        VarModule::set_float(boma.object(), vars::common::instance::ROLL_SPEED, speed_motion);
-        return;
-    }
-
-    if boma.is_status(*FIGHTER_STATUS_KIND_ITEM_THROW)
-    && boma.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B])
-    && VarModule::is_flag(boma.object(), vars::common::instance::CAN_GLIDE_TOSS)
-    && fighter.global_table[CURRENT_FRAME].get_i32() == 0
-    {
-        let roll_speed = VarModule::get_float(boma.object(), vars::common::instance::ROLL_SPEED);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, roll_speed);
-        app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-    }
-}
-
 unsafe fn shield_lock_tech(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     // airdodge with second shield button while holding another shield button
     if boma.is_situation(*SITUATION_KIND_AIR)
@@ -384,7 +357,6 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mu
     non_tumble_di(fighter, lua_state, l2c_agent, boma, status_kind);
     dash_drop(boma, status_kind);
     run_squat(boma, status_kind, stick_y); // Must be done after dash_drop()
-    glide_toss(fighter, boma, status_kind, facing);
     shield_lock_tech(boma, status_kind, situation_kind, cat[0]);
     drift_di(fighter, boma, status_kind, situation_kind);
     waveland_plat_drop(boma, cat[1], status_kind);
