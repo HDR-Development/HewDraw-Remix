@@ -187,25 +187,24 @@ unsafe fn run_squat(boma: &mut BattleObjectModuleAccessor, status_kind: i32, sti
 unsafe fn glide_toss(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, facing: f32) {
     if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B])
     {
-        let max_ditcit_frame = ParamModule::get_float(boma.object(), ParamType::Common, "glide_toss_cancel_frame");
-        VarModule::set_flag(boma.object(), vars::common::instance::CAN_GLIDE_TOSS, MotionModule::frame(boma) <= max_ditcit_frame);
-        VarModule::set_float(boma.object(), vars::common::instance::ROLL_DIR, facing);
+        let max_ditcit_frame = ParamModule::get_int(boma.object(), ParamType::Common, "glide_toss_cancel_frame");
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+        let speed_motion = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+        VarModule::set_flag(boma.object(), vars::common::instance::CAN_GLIDE_TOSS, fighter.global_table[CURRENT_FRAME].get_i32() < max_ditcit_frame);
+        VarModule::set_float(boma.object(), vars::common::instance::ROLL_SPEED, speed_motion);
         return;
     }
 
     if boma.is_status(*FIGHTER_STATUS_KIND_ITEM_THROW)
     && VarModule::is_flag(boma.object(), vars::common::instance::CAN_GLIDE_TOSS)
+    && fighter.global_table[CURRENT_FRAME].get_i32() == 0
     {
-        let multiplier = 2.8 * (MotionModule::end_frame(boma) - MotionModule::frame(boma)) / MotionModule::end_frame(boma);
-        let speed_x = if boma.is_prev_status(*FIGHTER_STATUS_KIND_ESCAPE_F) {
-            multiplier * VarModule::get_float(boma.object(), vars::common::instance::ROLL_DIR)
-        } else if boma.is_prev_status(*FIGHTER_STATUS_KIND_ESCAPE_B) {
-            multiplier * VarModule::get_float(boma.object(), vars::common::instance::ROLL_DIR) * -1.0
-        } else {
-            return;
-        };
-
-        KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &Vector3f::new(speed_x, 0.0, 0.0));
+        println!("item throw f1");
+        let roll_speed = VarModule::get_float(boma.object(), vars::common::instance::ROLL_SPEED);
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, roll_speed);
+        app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
     }
 }
 
