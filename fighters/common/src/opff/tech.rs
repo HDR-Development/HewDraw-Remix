@@ -197,10 +197,10 @@ unsafe fn glide_toss(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModu
     }
 
     if boma.is_status(*FIGHTER_STATUS_KIND_ITEM_THROW)
+    && boma.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B])
     && VarModule::is_flag(boma.object(), vars::common::instance::CAN_GLIDE_TOSS)
     && fighter.global_table[CURRENT_FRAME].get_i32() == 0
     {
-        println!("item throw f1");
         let roll_speed = VarModule::get_float(boma.object(), vars::common::instance::ROLL_SPEED);
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, roll_speed);
