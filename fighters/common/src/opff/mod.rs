@@ -70,7 +70,9 @@ unsafe fn salty_check(fighter: &mut L2CFighterCommon) -> bool {
             true
         } else if fighter.is_button_on(Buttons::SpecialRaw) && !fighter.is_button_on(!(Buttons::SpecialRaw | Buttons::StockShare)) {
             app::FighterUtil::flash_eye_info(fighter.module_accessor);
-            EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_dead2"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 0.75, true, 0, 0, 0, 0, 0, false, false);
+            if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_STANDBY]) {
+                StatusModule::change_status_request(fighter.module_accessor, *FIGHTER_STATUS_KIND_DEAD, false);
+            }
             utils::util::trigger_match_exit();
             true
         } else {
