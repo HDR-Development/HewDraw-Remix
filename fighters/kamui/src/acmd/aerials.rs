@@ -145,49 +145,69 @@ unsafe fn kamui_attack_air_f_effect(fighter: &mut L2CAgentBase) {
 unsafe fn kamui_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    VarModule::off_flag(fighter.battle_object, vars::kamui::status::BAIR_BOOST);
-    if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+    if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-        VarModule::on_flag(fighter.battle_object, vars::kamui::status::BAIR_BOOST);
+		VarModule::off_flag(fighter.battle_object, vars::kamui::status::IS_CHARGE_FINISHED);
+		VarModule::set_float(fighter.battle_object, vars::kamui::status::CHARGE_ATTACK_LEVEL, 0.0);
+        FT_MOTION_RATE(fighter, 2.0);
     }
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        //VarModule::off_flag(fighter.battle_object, vars::kamui::status::BAIR_BOOST);
-        FT_MOTION_RATE(fighter, 0.750);
-    }
-    frame(lua_state, 6.0);
-    if is_excute(fighter) {
+    frame(lua_state, 5.0);
+	if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        // if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-        //     VarModule::on_flag(fighter.battle_object, vars::kamui::status::BAIR_BOOST);
-        // }
-        if VarModule::is_flag(fighter.battle_object, vars::kamui::status::BAIR_BOOST) {
-            FT_MOTION_RATE(fighter, 3.0);
+		if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
         }
-    }
+		else {
+			FT_MOTION_RATE(fighter, 0.5);
+		}
+	}
+	for _ in 0..4 {
+		wait(lua_state, 1.0);
+		if is_excute(fighter) {
+			if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) && !VarModule::is_flag(fighter.battle_object, vars::kamui::status::IS_CHARGE_FINISHED){
+				// If holding down the button, increment the charge and continue the slowed animation
+				if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
+					VarModule::add_float(fighter.battle_object, vars::kamui::status::CHARGE_ATTACK_LEVEL, 1.0);
+					FT_MOTION_RATE(fighter, 2.0);
+				}
+				// If no longer holding the button, play out the rest of the animation as normal
+				else{
+					VarModule::on_flag(fighter.battle_object, vars::kamui::status::IS_CHARGE_FINISHED);
+					FT_MOTION_RATE(fighter, 1.0);
+				}
+			}
+		}
+	}
     frame(lua_state, 12.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
-    }
+	if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+		if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+			if VarModule::get_float(fighter.battle_object, vars::kamui::status::CHARGE_ATTACK_LEVEL) >= 5.0 {
+				SET_SPEED_EX(fighter, 1.3, 0.25, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+			}
+			// Add non-fully-charged boosted speed
+			else {
+				let boost_speed_x = 0.3 + (0.2 * VarModule::get_float(fighter.battle_object, vars::kamui::status::CHARGE_ATTACK_LEVEL));
+                let boost_speed_y = 0.1 + (0.03 * VarModule::get_float(fighter.battle_object, vars::kamui::status::CHARGE_ATTACK_LEVEL));
+				SET_SPEED_EX(fighter, boost_speed_x, boost_speed_y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+			}
+		}
+	}
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::kamui::status::BAIR_BOOST) {
-            SET_SPEED_EX(fighter, 1.3, 0.25, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 13.5, 361, 100, 0, 40, 7.5, 0.0, 10.0, -12.5, Some(0.0), Some(11.0), Some(-17.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_BODY);
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+            let charge_attack_damage_mul = 1.0 + (VarModule::get_float(fighter.battle_object, vars::kamui::status::CHARGE_ATTACK_LEVEL) * 0.05);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0 * charge_attack_damage_mul, 361, 105, 0, 40, 7.5, 0.0, 10.0, -12.5, Some(0.0), Some(11.0), Some(-17.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_BODY);
         }
         else{
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 361, 106, 0, 40, 7.5, 0.0, 10.0, -12.5, Some(0.0), Some(11.0), Some(-17.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 361, 106, 0, 40, 6.5, 0.0, 10.0, -12.5, Some(0.0), Some(11.0), Some(-17.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
         }
-        
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 361, 106, 0, 40, 5.7, 0.0, 10.7, -12.5, Some(0.0), Some(12.2), Some(-21.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 361, 106, 0, 40, 5.7, 0.0, 10.7, -12.5, Some(0.0), Some(11.9), Some(-19.3), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
     }
-    wait(lua_state, 4.0);
+    wait(lua_state, 3.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
@@ -205,17 +225,19 @@ unsafe fn kamui_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FLW_POS(fighter, Hash40::new("kamui_transform_splash_start"), Hash40::new("neck"), 2, 0, 0, 0, 0, 0, 1, true);
     }
-    frame(lua_state, 12.0);
+    frame(lua_state, 6.0);
     if is_excute(fighter) {
-        //EFFECT_FOLLOW_COLOR(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 8.5, 0, -10, 180, 0, 1.5, true, 0.658, 0.631, 0.578);
-        LAST_EFFECT_SET_RATE(fighter, 1.3);
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+            EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 1.6, 17.0, -8.0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, true);
+            LAST_EFFECT_SET_RATE(fighter, 0.75);
+            LAST_EFFECT_SET_COLOR(fighter, 0.5, 0.5, 1.0);
+        }
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         EFFECT_FLW_POS(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 12.3, -21, 0, 0, 0, 1.1, true);
-        if VarModule::is_flag(fighter.battle_object, vars::kamui::status::BAIR_BOOST) {
-            //EFFECT_FLW_POS(fighter, Hash40::new("kamui_ryusensya_shot"), Hash40::new("top"), 0, 12.3, -20, 0, 0, 0, 5.0, true);
-            EFFECT(fighter, Hash40::new("kamui_counter_splash"), Hash40::new("top"), 0.0, 12.3, -15.0, 270, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+            EFFECT(fighter, Hash40::new("kamui_counter_splash"), Hash40::new("top"), 0.0, 12.3, -15.0, 270, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
         }
     }
     frame(lua_state, 39.0);
