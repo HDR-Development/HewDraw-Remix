@@ -537,6 +537,14 @@ pub mod vars {
             pub const AYMR_CHARGE_LEVEL: i32 = 0x1100;
         }
     }
+
+    pub mod mewtwo {
+        pub mod instance {
+            // flags
+            pub const GROUNDED_TELEPORT: i32 = 0x0100;
+            pub const UP_SPECIAL_JUMP_REFRESH: i32 = 0x0101;
+        }
+    }
     
     pub mod pickel {
         pub mod instance {
@@ -571,6 +579,13 @@ pub mod vars {
             pub const IS_SPECIAL_S_ELECTRIC_BLANKET: i32 = 0x1100;
 
             pub const IS_SPECIAL_HI_UNABLE_CANCEL:   i32 = 0x1100;
+        }
+    }
+
+    pub mod robin {
+        pub mod status {
+            // flags
+            pub const ELWIND1_CANCEL: i32 = 0x1100;
         }
     }
 
