@@ -237,7 +237,7 @@ unsafe fn kamui_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FLW_POS(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 12.3, -21, 0, 0, 0, 1.1, true);
         if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
-            EFFECT(fighter, Hash40::new("kamui_counter_splash"), Hash40::new("top"), 0.0, 12.3, -15.0, 270, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
+            EFFECT(fighter, Hash40::new("kamui_counter_splash"), Hash40::new("top"), 0.0, 11.0, -10.0, 270, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
         }
     }
     frame(lua_state, 39.0);
