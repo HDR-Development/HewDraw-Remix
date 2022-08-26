@@ -22,5 +22,5 @@ unsafe fn shield_drop(boma: &mut BattleObjectModuleAccessor) {
 }
 
 pub unsafe fn run(boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
-    shield_drop(boma);
+    //shield_drop(boma);
 }
