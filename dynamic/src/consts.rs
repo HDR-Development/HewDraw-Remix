@@ -56,6 +56,7 @@ pub mod globals {
     pub const CHECK_SPECIAL_COMMAND: i32 = 0x3C;
     pub const WAZA_CUSTOMIZE_CONTROL: i32 = 0x3D;
     pub const STATUS_CHANGE_CALLBACK: i32 = 0x3E;
+    pub const LEAVE_STOP_CALLBACK: i32 = 0x42;
     pub const DASH_POST_TRANSITION_CALLBACK: i32 = 0x57;
 }
 
@@ -218,6 +219,7 @@ pub mod vars {
             pub const SHOULD_WAVELAND: i32 = 0x1000;
 
             pub const IS_JAB_LOCK_ROLL: i32 = 0x1000;
+            pub const IS_SPIKE: i32 = 0x1001;
 
             pub const SUICIDE_THROW_CAN_CLATTER: i32 = 0x1000;
 
