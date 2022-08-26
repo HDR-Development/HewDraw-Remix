@@ -105,7 +105,7 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
         }
 
         if fighter.is_cat_flag(Cat1::SpecialHi) {
-            if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME) <= 1 {
+            if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME) <= 0 {
                 is_input_cancel = true;
                 new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI;
             }
