@@ -98,12 +98,6 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
                     VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
                 } else if status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL {
-                    // Return double jump within leniency window
-                    if VarModule::get_float(boma.object(), vars::common::instance::DOUBLE_JUMP_FRAME) <= 2.0 {
-                        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
-                            WorkModule::set_int(boma, WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-                        }
-                    }
                     VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_AERIAL, true);
                 } else if [hash40("walk_fall_l"), hash40("walk_fall_r"), hash40("run_fall_l"), hash40("run_fall_r")].contains(&MotionModule::motion_kind(boma)) {
@@ -195,6 +189,10 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                 }
                 if fighter_kind == *FIGHTER_KIND_MEWTWO {
                     EffectModule::req_follow(boma, Hash40::new("mewtwo_final_aura"), Hash40::new("hip"), &Vector3f::zero(), &Vector3f::zero(), 1.25, true, 0, 0, 0, 0, 0, false, false);
+                    // consume double jump on float activation
+                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
+                        WorkModule::inc_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+                    }
                 }
             }
         }
@@ -222,11 +220,9 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                     EffectModule::req_follow(boma, Hash40::new("sys_aura_light"), Hash40::new("bookc"), &Vector3f::zero(), &Vector3f::zero(), 1.5, true, 0, 0, 0, 0, 0, false, false);
                     LAST_EFFECT_SET_COLOR(fighter, 0.0, 1.0, 0.078);  // elwind green
                 }
-                else if timer % 30 == 0 {  // every 30 frames
-                    // drain 2 bars of Elwind
-                    let elwind_meter = WorkModule::get_int(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
-                    let float_spend = 2;
-                    WorkModule::set_int(boma, elwind_meter - float_spend, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
+                else if timer % 15 == 0 {  // every 15 frames
+                    // drain 1 bar of Elwind
+                    WorkModule::dec_int(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
                 }
             }
         }

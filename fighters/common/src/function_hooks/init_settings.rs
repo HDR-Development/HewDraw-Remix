@@ -60,8 +60,6 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
             VarModule::off_flag(boma.object(), vars::common::instance::CAN_ESCAPE_TUMBLE);
         }
 
-        VarModule::off_flag(boma.object(), vars::common::instance::B_REVERSED);
-
         // Walk through other fighters
         JostleModule::set_team(boma, 0);
 

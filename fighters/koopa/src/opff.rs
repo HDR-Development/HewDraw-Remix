@@ -44,29 +44,29 @@ unsafe fn flame_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
 }
 
 // NokNok shell flag reset
-unsafe fn noknok_reset(boma: &mut BattleObjectModuleAccessor) {
-    if VarModule::is_flag(boma.object(), vars::koopa::instance::NOKNOK_SHELL) {
-        if boma.is_status_one_of(
-    &[*FIGHTER_STATUS_KIND_DEAD,
-            *FIGHTER_STATUS_KIND_REBIRTH,
-            *FIGHTER_STATUS_KIND_WIN,
-            *FIGHTER_STATUS_KIND_LOSE,
-            *FIGHTER_STATUS_KIND_ENTRY]) 
-        {
-            VarModule::off_flag(boma.object(), vars::koopa::instance::NOKNOK_SHELL);
-        }
-    }
-}
+// unsafe fn noknok_reset(boma: &mut BattleObjectModuleAccessor) {
+//     if VarModule::is_flag(boma.object(), vars::koopa::instance::NOKNOK_SHELL) {
+//         if boma.is_status_one_of(
+//     &[*FIGHTER_STATUS_KIND_DEAD,
+//             *FIGHTER_STATUS_KIND_REBIRTH,
+//             *FIGHTER_STATUS_KIND_WIN,
+//             *FIGHTER_STATUS_KIND_LOSE,
+//             *FIGHTER_STATUS_KIND_ENTRY]) 
+//         {
+//             VarModule::off_flag(boma.object(), vars::koopa::instance::NOKNOK_SHELL);
+//         }
+//     }
+// }
 
 // TRAINING MODE
 // NokNok shell flag reset via taunt
-unsafe fn noknok_training(boma: &mut BattleObjectModuleAccessor) {
-    if is_training_mode() {
-        if boma.is_status(*FIGHTER_STATUS_KIND_APPEAL) {
-            VarModule::off_flag(boma.object(), vars::koopa::instance::NOKNOK_SHELL);
-        }
-    }
-}
+// unsafe fn noknok_training(boma: &mut BattleObjectModuleAccessor) {
+//     if is_training_mode() {
+//         if boma.is_status(*FIGHTER_STATUS_KIND_APPEAL) {
+//             VarModule::off_flag(boma.object(), vars::koopa::instance::NOKNOK_SHELL);
+//         }
+//     }
+// }
 
 unsafe fn up_special_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL && StatusModule::prev_status_kind(boma, 1) == *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_G {
@@ -79,9 +79,9 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     bowser_bomb_jc(boma, status_kind, situation_kind, cat[0], frame);
     ground_bowser_bomb_jump_drift(boma, status_kind, stick_x, frame);
     flame_cancel(boma, status_kind, situation_kind, frame);
-    noknok_reset(boma);
+    // noknok_reset(boma);
     //up_special_land_cancel(boma, status_kind);
-    noknok_training(boma);
+    // noknok_training(boma);
 }
 
 
