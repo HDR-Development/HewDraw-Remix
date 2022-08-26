@@ -74,84 +74,82 @@ unsafe fn tilt_cancels(fighter: &mut L2CFighterCommon) {
 
 unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
     if !fighter.is_situation(*SITUATION_KIND_AIR){
-        VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_SPECIAL_S_CANCELED_INTO);
-        VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_SPECIAL_HI_CANCELED_INTO);
         VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME, 0);
         VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME, 0);
     }
 
-    if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F])
-    || !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-    || fighter.is_motion_one_of(&[Hash40::new("attack_air_n_hold"), Hash40::new("attack_air_f_hold"), Hash40::new("attack_air_f2_hold"), Hash40::new("attack_air_f3_hold"), Hash40::new("attack_air_hi_hold"), Hash40::new("attack_air_lw_hold")])
-    || VarModule::is_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS)
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F])
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    && !fighter.is_motion_one_of(&[Hash40::new("attack_air_n_hold"), Hash40::new("attack_air_f_hold"), Hash40::new("attack_air_f2_hold"), Hash40::new("attack_air_f3_hold"), Hash40::new("attack_air_hi_hold"), Hash40::new("attack_air_lw_hold")])
+    && !VarModule::is_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS)
     {
-        return;
-    }
-    let mut new_status = 0;
-    let mut is_input_cancel = false;
-    if fighter.is_input_jump()
-    && fighter.get_num_used_jumps() < fighter.get_jump_count_max()
-    {
-        is_input_cancel = true;
-        new_status = *FIGHTER_STATUS_KIND_JUMP_AERIAL;
-    }
-
-    if fighter.is_cat_flag(Cat1::SpecialN) {
-        is_input_cancel = true;
-        new_status = *FIGHTER_STATUS_KIND_SPECIAL_N;
-    }
-
-    if fighter.is_cat_flag(Cat1::SpecialS) {
-        if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME) < 1 {
+        let mut new_status = 0;
+        let mut is_input_cancel = false;
+        if fighter.is_input_jump()
+        && fighter.get_num_used_jumps() < fighter.get_jump_count_max()
+        {
             is_input_cancel = true;
-            new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
+            new_status = *FIGHTER_STATUS_KIND_JUMP_AERIAL;
         }
-    }
 
-    if fighter.is_cat_flag(Cat1::SpecialHi) {
-        if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME) < 1 {
+        if fighter.is_cat_flag(Cat1::SpecialN) {
             is_input_cancel = true;
-            new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI;
+            new_status = *FIGHTER_STATUS_KIND_SPECIAL_N;
         }
-    }
 
-    if is_input_cancel {
-        if !fighter.is_in_hitlag(){
-            // disable fair1 special/attack cancel
-            if fighter.is_motion(Hash40::new("attack_air_f")) {
-                if new_status != *FIGHTER_STATUS_KIND_JUMP_AERIAL {
-                    return;
+        if fighter.is_cat_flag(Cat1::SpecialS) {
+            if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME) <= 2 {
+                is_input_cancel = true;
+                new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
+            }
+        }
+
+        if fighter.is_cat_flag(Cat1::SpecialHi) {
+            if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME) <= 1 {
+                is_input_cancel = true;
+                new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI;
+            }
+        }
+
+        if is_input_cancel {
+            if !fighter.is_in_hitlag(){
+                //disable fair1 special/attack cancel
+                if fighter.is_motion(Hash40::new("attack_air_f")) {
+                    if new_status != *FIGHTER_STATUS_KIND_JUMP_AERIAL {
+                        return;
+                    }
+                }
+                // disable dair jump cancel
+                if fighter.is_motion(Hash40::new("attack_air_lw")) {
+                    if new_status == *FIGHTER_STATUS_KIND_JUMP_AERIAL {
+                        return;
+                    }
+                }
+
+                if new_status == *FIGHTER_STATUS_KIND_SPECIAL_S {
+                    VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME);
+                }
+                else if new_status == *FIGHTER_STATUS_KIND_SPECIAL_HI  {
+                    VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME);
+                }
+                VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_NONSPECIAL_CANCEL);
+                fighter.change_status_req(new_status, false);
+                return;
+            }
+        }
+        
+        if fighter.is_motion(Hash40::new("attack_air_f2")) {
+            match fighter.get_aerial() {
+                Some(AerialKind::Fair) | None => return,
+                _ => {
+                    if !fighter.is_in_hitlag() {
+                        VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_NONSPECIAL_CANCEL);
+                        fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
+                        return;
+                    }
                 }
             }
-            // disable dair jump cancel
-            else if fighter.is_motion(Hash40::new("attack_air_lw")) {
-                if new_status == *FIGHTER_STATUS_KIND_JUMP_AERIAL {
-                    return;
-                }
-            }
-
-            if new_status == *FIGHTER_STATUS_KIND_SPECIAL_S {
-                VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME);
-            }
-            else if new_status == *FIGHTER_STATUS_KIND_SPECIAL_HI {
-                VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME);
-            }
-            VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_NONSPECIAL_CANCEL);
-            fighter.change_status_req(new_status, false);
             return;
-        }
-    }
-
-    if fighter.is_motion(Hash40::new("attack_air_f2")) {
-        match fighter.get_aerial() {
-            Some(AerialKind::Fair) | None => return,
-            _ => {
-                if !fighter.is_in_hitlag() {
-                    VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_NONSPECIAL_CANCEL);
-                    fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
-                    return;
-                }
-            }
         }
     }
 }
