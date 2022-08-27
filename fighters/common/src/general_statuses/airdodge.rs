@@ -425,10 +425,11 @@ unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterC
     let trigger_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("air_escape_passive_trigger_frame")) as f32;
     let curr_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
     let pad = fighter.global_table[PAD_FLAG].get_i32();
+    let agt_window = ParamModule::get_int(fighter.battle_object, ParamType::Common, "glide_toss_cancel_frame");
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW)
         && pad & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
         && ItemModule::is_have_item(fighter.module_accessor, 0)
-        && curr_frame <= 5 {
+        && curr_frame <= agt_window {
             fighter.clear_lua_stack();
             lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_NO_THROW);
             smash::app::sv_module_access::item(fighter.lua_state_agent);

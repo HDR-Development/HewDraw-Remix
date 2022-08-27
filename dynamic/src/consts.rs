@@ -189,7 +189,7 @@ pub mod vars {
             pub const RAR_LENIENCY: i32 = 0x0006; // Only ever gets set, goes effectively unused.
             pub const CURRENT_MOMENTUM_SPECIALS: i32 = 0x0007;
             pub const DOUBLE_JUMP_TIMER: i32 = 0x0008; // Only used by Lucas, and it's commented out, goes unused.
-            pub const ROLL_DIR: i32 = 0x0009;
+            pub const ROLL_SPEED: i32 = 0x0009;
             pub const LEDGE_POS: i32 = 0x000A;
             pub const LEDGE_POS_X: i32 = 0x000A;
             pub const LEDGE_POS_Y: i32 = 0x000B;
