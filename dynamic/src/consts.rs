@@ -545,7 +545,7 @@ pub mod vars {
             pub const UP_SPECIAL_JUMP_REFRESH: i32 = 0x0101;
         }
     }
-    
+
     pub mod pickel {
         pub mod instance {
             // flags
@@ -709,6 +709,11 @@ pub mod vars {
 
             // floats
             pub const SPECIAL_LW_LR: i32 = 0x1100;
+        }
+        pub mod instance {
+            // flags
+            pub const GROUNDED_TELEPORT: i32 = 0x0100;
+            pub const UP_SPECIAL_JUMP_REFRESH: i32 = 0x0101;
         }
     }
 
