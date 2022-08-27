@@ -94,6 +94,9 @@ unsafe fn inkling_attack_air_b_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 0, 0, Hash40::new("armr"), 8.0, 50, 105, 0, 25, 3.0, -1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         ATTACK(fighter, 1, 0, Hash40::new("haver"), 10.0, 361, 100, 0, 25, 3.65, 0.0, 1.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         ATTACK(fighter, 2, 0, Hash40::new("haver"), 10.0, 361, 100, 0, 25, 3.6, 0.0, 1.7, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+        //AttackModule::set_ink_value(boma, 0, 0.0);
+        //AttackModule::set_ink_value(boma, 1, 20.0);
+        AttackModule::set_ink_value(boma, 2, 20.0);
     }
     wait(lua_state, 5.0);
     if is_excute(fighter) {
@@ -167,12 +170,12 @@ unsafe fn inkling_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 3, 0, Hash40::new("shoulderr"), 10.0, 270, 55, 0, 15, 3.5, 1.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ink_hit"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         ATTACK(fighter, 4, 0, Hash40::new("haver"), 12.0, 270, 55, 0, 15, 4.0, 0.0, 1.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ink_hit"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         ATTACK(fighter, 5, 0, Hash40::new("haver"), 12.0, 270, 55, 0, 15, 4.5, 0.0, 1.0, 5.5, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ink_hit"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-        AttackModule::set_ink_value(boma, 0, 20.0);
-        AttackModule::set_ink_value(boma, 1, 20.0);
-        AttackModule::set_ink_value(boma, 2, 20.0);
-        AttackModule::set_ink_value(boma, 3, 10.0);
-        AttackModule::set_ink_value(boma, 4, 10.0);
-        AttackModule::set_ink_value(boma, 5, 10.0);
+        //AttackModule::set_ink_value(boma, 0, 0.0);
+        //AttackModule::set_ink_value(boma, 1, 20.0);
+        AttackModule::set_ink_value(boma, 2, 35.0);
+        //AttackModule::set_ink_value(boma, 3, 10.0);
+        //AttackModule::set_ink_value(boma, 4, 10.0);
+        AttackModule::set_ink_value(boma, 5, 35.0);
     }
     wait(lua_state, 3.0);
     if is_excute(fighter) {
