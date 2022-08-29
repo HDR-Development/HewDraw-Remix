@@ -236,7 +236,7 @@ pub mod vars {
     pub mod bayonetta {
         pub mod instance {
             // flags
-            pub const IS_ENABLE_SPECIAL_CANCEL:    i32 = 0x0100;
+            pub const IS_NONSPECIAL_CANCEL:        i32 = 0x0100;
             pub const SHOULD_PRORATE_DAMAGE:       i32 = 0x0101;
             pub const IS_SPECIAL_S_CANCELED_INTO:  i32 = 0x0102;
             pub const IS_SPECIAL_HI_CANCELED_INTO: i32 = 0x0103;
