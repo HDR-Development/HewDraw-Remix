@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
@@ -14,13 +14,6 @@ unsafe fn aether_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
             let motion_vec = x_motion_vec(0.3, stick_x);
             KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
         }
-    }
-}
-
-// Ike Quick Draw B-Reverse
-unsafe fn quickdraw_b_reverse(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) {
-        common::opff::check_b_reverse(fighter);
     }
 }
 
@@ -393,7 +386,6 @@ unsafe fn fair_wrist_bend(boma: &mut BattleObjectModuleAccessor) {
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     aether_drift(boma, status_kind, situation_kind, stick_x, facing);
-    quickdraw_b_reverse(fighter);
     quickdraw_jump_attack_cancels(boma, id, status_kind, situation_kind, cat[0], stick_x, facing);
     quickdraw_instakill(fighter, boma);
     quickdraw_attack_arm_bend(boma);

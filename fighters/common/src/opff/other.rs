@@ -14,6 +14,7 @@ use smash::app::sv_animcmd::*;
 use smash_script::*;
 use crate::misc::*;
 use globals::*;
+use crate::util::get_fighter_common_from_accessor;
 
 unsafe fn hitstun_overlay_orange(boma: &mut BattleObjectModuleAccessor, id: usize) {
     let cmb_vec1 = Vector4f{x: 0.949, y: 0.5137, z: 0.08643, w: 0.69};
@@ -78,32 +79,50 @@ pub unsafe fn airdodge_refresh_on_hit_disable(boma: &mut BattleObjectModuleAcces
 }
 
 pub unsafe fn suicide_throw_mashout(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_THROWN) && LinkModule::get_parent_status_kind(boma, *LINK_NO_CAPTURE) == *FIGHTER_STATUS_KIND_THROW_KIRBY as u64 {
-        if fighter.global_table[CURRENT_FRAME].get_i32() <= 0 {
-            let throw_frame = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.throw_frame");
-            let damage_frame_mul = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.damage_frame_mul");
-            let recovery_frame = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.recovery_frame");
-            let clatter_frame_base = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.clatter_frame_base");
-            let clatter_frame_max = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.clatter_frame_max");
-            let clatter_frame_min = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.clatter_frame_min");
-            let thrown_damage = DamageModule::damage(boma, 0);
-            let thrower_damage = DamageModule::damage(boma.get_grabber_boma(), 0);
-            let damage_difference = thrower_damage - thrown_damage;
-            let clatter_frame_add = damage_difference * damage_frame_mul;
-            let mut clatter_frame = clatter_frame_base + clatter_frame_add;
-
-            if clatter_frame < clatter_frame_min {
-                clatter_frame = clatter_frame_min;
-            }
-            if clatter_frame > clatter_frame_max {
-                clatter_frame = clatter_frame_max;
-            }
-            
-            ControlModule::start_clatter(boma, throw_frame, recovery_frame, clatter_frame, 127, 0, false, false);
+    if fighter.is_status(*FIGHTER_STATUS_KIND_THROWN) {
+        // add suicide throws here
+        if !((boma.get_grabber_boma().kind() == *FIGHTER_KIND_KIRBY
+            && [hash40("throw_f"), hash40("throw_b")].contains(&LinkModule::get_parent_motion_kind(boma, *LINK_NO_CAPTURE)))
+        || (boma.get_grabber_boma().kind() == *FIGHTER_KIND_ROBOT
+            && LinkModule::get_parent_motion_kind(boma, *LINK_NO_CAPTURE) == hash40("throw_hi")))
+        {
+            return;
         }
-        else {
-            if ControlModule::get_clatter_time(boma, 0) <= 0.0 {
-                fighter.change_status(FIGHTER_STATUS_KIND_CAPTURE_JUMP.into(), false.into());
+        
+        get_fighter_common_from_accessor(boma.get_grabber_boma()).clear_lua_stack();
+        get_fighter_common_from_accessor(boma.get_grabber_boma()).push_lua_stack(&mut L2CValue::new_int(*FIGHTER_KINETIC_ENERGY_ID_MOTION as u64));
+        // if in descent of suicide throw
+        if GroundModule::get_correct(boma.get_grabber_boma()) == *GROUND_CORRECT_KIND_AIR
+        && (app::sv_kinetic_energy::get_speed_y(get_fighter_common_from_accessor(boma.get_grabber_boma()).lua_state_agent) < -0.5 || KineticModule::get_kinetic_type(boma.get_grabber_boma()) == *FIGHTER_KINETIC_TYPE_FALL) {
+            if !VarModule::is_flag(boma.object(), vars::common::status::SUICIDE_THROW_CAN_CLATTER) {
+                // allow mashing to begin
+                let throw_frame = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.throw_frame");
+                let damage_frame_mul = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.damage_frame_mul");
+                let recovery_frame = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.recovery_frame");
+                let clatter_frame_base = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.clatter_frame_base");
+                let clatter_frame_max = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.clatter_frame_max");
+                let clatter_frame_min = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.clatter_frame_min");
+                let thrown_damage = DamageModule::damage(boma, 0);
+                let thrower_damage = DamageModule::damage(boma.get_grabber_boma(), 0);
+                let damage_difference = thrower_damage - thrown_damage;
+                let clatter_frame_add = damage_difference * damage_frame_mul;
+                let mut clatter_frame = clatter_frame_base + clatter_frame_add;
+
+                if clatter_frame < clatter_frame_min {
+                    clatter_frame = clatter_frame_min;
+                }
+                if clatter_frame > clatter_frame_max {
+                    clatter_frame = clatter_frame_max;
+                }
+                
+                ControlModule::start_clatter(boma, throw_frame, recovery_frame, clatter_frame, 127, 0, false, false);
+                VarModule::on_flag(boma.object(), vars::common::status::SUICIDE_THROW_CAN_CLATTER);
+            }
+            else {
+                // can only mash out during descent, before thrower reaches ground
+                if ControlModule::get_clatter_time(boma, 0) <= 0.0 {
+                    fighter.change_status(FIGHTER_STATUS_KIND_CAPTURE_JUMP.into(), false.into());
+                }
             }
         }
     }

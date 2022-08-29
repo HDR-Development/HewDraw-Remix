@@ -4,7 +4,9 @@ use globals::*;
  
 pub fn install() {
     install_status_scripts!(
-        main_attack
+        main_attack,
+        escape_f_end,
+        escape_b_end
     );
 }
 
@@ -157,6 +159,26 @@ unsafe extern "C" fn bayonetta_attack_main_loop(fighter: &mut L2CFighterCommon) 
     }
     else {
         fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+    }
+    0.into()
+}
+
+// FIGHTER_STATUS_KIND_ESCAPE_F //
+
+#[status_script(agent = "bayonetta", status = FIGHTER_STATUS_KIND_ESCAPE_F, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn escape_f_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[STATUS_KIND] != FIGHTER_BAYONETTA_STATUS_KIND_BATWITHIN {
+        fighter.sub_status_end_EscaleFB();
+    }
+    0.into()
+}
+
+// FIGHTER_STATUS_KIND_ESCAPE_B //
+
+#[status_script(agent = "bayonetta", status = FIGHTER_STATUS_KIND_ESCAPE_B, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn escape_b_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[STATUS_KIND] != FIGHTER_BAYONETTA_STATUS_KIND_BATWITHIN {
+        fighter.sub_status_end_EscaleFB();
     }
     0.into()
 }

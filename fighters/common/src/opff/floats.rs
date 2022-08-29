@@ -98,12 +98,6 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
                     VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
                 } else if status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL {
-                    // Return double jump within leniency window
-                    if VarModule::get_float(boma.object(), vars::common::instance::DOUBLE_JUMP_FRAME) <= 2.0 {
-                        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
-                            WorkModule::set_int(boma, WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-                        }
-                    }
                     VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_AERIAL, true);
                 } else if [hash40("walk_fall_l"), hash40("walk_fall_r"), hash40("run_fall_l"), hash40("run_fall_r")].contains(&MotionModule::motion_kind(boma)) {
@@ -195,6 +189,10 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                 }
                 if fighter_kind == *FIGHTER_KIND_MEWTWO {
                     EffectModule::req_follow(boma, Hash40::new("mewtwo_final_aura"), Hash40::new("hip"), &Vector3f::zero(), &Vector3f::zero(), 1.25, true, 0, 0, 0, 0, 0, false, false);
+                    // consume double jump on float activation
+                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
+                        WorkModule::inc_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+                    }
                 }
             }
         }

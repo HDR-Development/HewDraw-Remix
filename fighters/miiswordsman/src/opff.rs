@@ -3,7 +3,16 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
+ // Mii Swordfighter Airborne Assault Aerial FAF Frame 75
+
+unsafe fn airborne_assault_lag(fighter: &mut L2CFighterCommon) {
+if fighter.is_status(*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END) {
+    if  fighter.is_situation(*SITUATION_KIND_AIR) && fighter.motion_frame() > 75.0 {
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        } 
+    }
+}
+
 unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32, frame: f32) {
     // Rush
     if [*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_DASH].contains(&status_kind) {
@@ -148,16 +157,16 @@ unsafe fn gale_strike_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
 unsafe fn skyward_slash_dash_act(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
 	if status_kind == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            VarModule::on_flag(fighter.battle_object, vars::miiswordsman::status::SKYWARD_SLASH_DASH_HIT);
+            VarModule::on_flag(fighter.battle_object, vars::miiswordsman::instance::SKYWARD_SLASH_DASH_HIT);
             //println!("SSD Hit");
         }
     }
     if status_kind == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END {
-        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK) && situation_kind == *SITUATION_KIND_AIR {
+        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::instance::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) && situation_kind == *SITUATION_KIND_AIR {
             //println!("SSD Success");
             if frame >= 30.0 {
                 //println!("SSD Fall Act");
-                VarModule::off_flag(fighter.battle_object, vars::miiswordsman::status::SKYWARD_SLASH_DASH_HIT);
+                VarModule::off_flag(fighter.battle_object, vars::miiswordsman::instance::SKYWARD_SLASH_DASH_HIT);
                 VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
             }
@@ -215,7 +224,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     skyward_slash_dash_act(fighter, boma, id, status_kind, situation_kind, frame);
     //kinesis_blade(fighter, boma, status_kind, motion_kind);
     //hitgrab_transition(fighter, boma, status_kind, motion_kind);
-
+    airborne_assault_lag(fighter)
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MIISWORDSMAN )]

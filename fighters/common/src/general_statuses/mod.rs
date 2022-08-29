@@ -26,6 +26,7 @@ mod downdamage;
 mod crawl;
 mod cliff;
 mod catchcut;
+mod escape;
 // [LUA-REPLACE-REBASE]
 // [SHOULD-CHANGE]
 // Reimplement the whole status script (already done) instead of doing this.
@@ -56,19 +57,22 @@ pub unsafe fn sub_wait_common_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 	1.into()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_DamageAir_Main)]
-pub unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_DamageAir)]
+pub unsafe fn status_pre_DamageAir(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_KNOCKDOWN_THROW) {
+        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR);
+        return 1.into();
+    }
     call_original!(fighter)
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_DamageFlyCommon_init)]
 pub unsafe fn damage_fly_common_init(fighter: &mut L2CFighterCommon) {
     ControlModule::set_command_life_extend(fighter.module_accessor, 5);
-    if VarModule::is_flag(fighter.battle_object, vars::common::instance::DISABLE_GROUND_BOUNCE) {
+    if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_KNOCKDOWN_THROW) {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_D);
     }
-    VarModule::off_flag(fighter.battle_object, vars::common::instance::DISABLE_GROUND_BOUNCE);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_KNOCKDOWN_THROW);
     original!()(fighter)
 }
 
@@ -125,7 +129,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
         skyline::install_hooks!(
             sub_wait_common_Main, 
             damage_fly_common_init, 
-            //damage_air_main,
+            status_pre_DamageAir,
             status_Landing_MainSub,
             //status_pre_Landing,
             status_pre_LandingLight,
@@ -313,6 +317,7 @@ pub fn install() {
     crawl::install();
     cliff::install();
     catchcut::install();
+    escape::install();
 
     smashline::install_status_scripts!(
         damage_fly_end,
