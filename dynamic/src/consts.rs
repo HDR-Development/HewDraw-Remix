@@ -176,6 +176,8 @@ pub mod vars {
 
             pub const AGT_USED_COUNTER: i32 = 0x000A;
 
+            pub const CLIFF_XLU_FRAME: i32 = 0x000B;
+
             // floats
 
             pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0000;

@@ -127,6 +127,22 @@ pub unsafe fn suicide_throw_mashout(fighter: &mut L2CFighterCommon, boma: &mut B
         }
     }
 }
+
+pub unsafe fn cliff_xlu_frame_counter(fighter: &mut L2CFighterCommon) {
+    let cliff_xlu = VarModule::get_int(fighter.battle_object, vars::common::instance::CLIFF_XLU_FRAME);
+    // If you have ledge intan frames left
+    if cliff_xlu > 0 {
+        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+            // Remove ledge intan on landing
+            HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
+            VarModule::set_int(fighter.battle_object, vars::common::instance::CLIFF_XLU_FRAME, 0);
+        }
+        else{
+            VarModule::dec_int(fighter.battle_object, vars::common::instance::CLIFF_XLU_FRAME);
+        }
+    }
+}
+
 pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     
     
@@ -134,5 +150,6 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleA
     //sliding_smash_disable(fighter, boma, status_kind, fighter_kind);
     airdodge_refresh_on_hit_disable(boma, status_kind);
     suicide_throw_mashout(fighter, boma);
+    cliff_xlu_frame_counter(fighter);
 }
 
