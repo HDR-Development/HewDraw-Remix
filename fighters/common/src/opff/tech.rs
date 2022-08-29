@@ -181,7 +181,7 @@ unsafe fn run_squat(boma: &mut BattleObjectModuleAccessor, status_kind: i32, sti
     }
 }
 
-unsafe fn shield_lock_tech(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
+unsafe fn double_shield_button_airdodge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     // airdodge with second shield button while holding another shield button
     if boma.is_situation(*SITUATION_KIND_AIR)
     && boma.is_button_trigger(Buttons::GuardHold)
@@ -199,14 +199,6 @@ unsafe fn shield_lock_tech(boma: &mut BattleObjectModuleAccessor, status_kind: i
     {
         boma.change_status_req(*FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
         return;
-    }
-
-    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD])
-    && boma.is_cat_flag(Cat1::JumpButton)
-    && ((boma.is_button_on(Buttons::SpecialAll) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_GUARD_HOLD_SPECIAL_BUTTON))
-        || boma.is_button_on(Buttons::GuardHold))
-    {
-        boma.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
     }
 }
  
@@ -357,7 +349,7 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mu
     non_tumble_di(fighter, lua_state, l2c_agent, boma, status_kind);
     dash_drop(boma, status_kind);
     run_squat(boma, status_kind, stick_y); // Must be done after dash_drop()
-    shield_lock_tech(boma, status_kind, situation_kind, cat[0]);
+    double_shield_button_airdodge(boma, status_kind, situation_kind, cat[0]);
     drift_di(fighter, boma, status_kind, situation_kind);
     waveland_plat_drop(boma, cat[1], status_kind);
     hitfall(boma, status_kind, situation_kind, fighter_kind, cat);

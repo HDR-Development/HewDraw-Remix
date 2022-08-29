@@ -221,6 +221,8 @@ pub mod vars {
 
             pub const SUICIDE_THROW_CAN_CLATTER: i32 = 0x1000;
 
+            pub const ENABLE_UCF: i32 = 0x1000;
+
             // ints
 
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
