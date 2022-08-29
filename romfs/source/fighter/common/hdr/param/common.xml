@@ -19,7 +19,7 @@
         <float hash="speed_mul_add_max">0.0025</float>
         <float hash="speed_lerp_max">3.0</float>
     </struct>
-    <float hash="glide_toss_cancel_frame">6</float>
+    <int hash="glide_toss_cancel_frame">5</int>
     <float hash="waveland_pass_neutral_sens">-0.66</float>
     <int hash="air_escape_snap_frame">5</int>
     <float hash="waveland_distance_threshold">5</float>
