@@ -8,7 +8,7 @@ use smash::phx::*;
 use smash::hash40;
 use smash::lib::{lua_const::*, L2CValue, L2CAgent};
 use smash::lua2cpp::L2CFighterCommon;
-use smash::lua2cpp::L2CFighterBase;							 
+use smash::lua2cpp::L2CFighterBase;
 
 pub mod ledges;
 pub mod physics;
@@ -62,10 +62,16 @@ pub unsafe fn fighter_common_opff(fighter: &mut L2CFighterCommon) {
 unsafe fn salty_check(fighter: &mut L2CFighterCommon) -> bool {
     if fighter.is_button_on(Buttons::StockShare) {
         if fighter.is_button_on(Buttons::AttackRaw) && !fighter.is_button_on(!(Buttons::AttackRaw | Buttons::StockShare)) {
+            app::FighterUtil::flash_eye_info(fighter.module_accessor);
+            EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_assist_out"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), 1.0, true, 0, 0, 0, 0, 0, false, false);
             utils::util::trigger_match_reset();
             utils::game_modes::signal_new_game();
             true
         } else if fighter.is_button_on(Buttons::SpecialRaw) && !fighter.is_button_on(!(Buttons::SpecialRaw | Buttons::StockShare)) {
+            app::FighterUtil::flash_eye_info(fighter.module_accessor);
+            if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_STANDBY]) {
+                StatusModule::change_status_request(fighter.module_accessor, *FIGHTER_STATUS_KIND_DEAD, false);
+            }
             utils::util::trigger_match_exit();
             true
         } else {
