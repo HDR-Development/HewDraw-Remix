@@ -96,8 +96,21 @@ unsafe fn tether_trump_landing(boma: &mut BattleObjectModuleAccessor, status_kin
     */
 }
 
+
+//=================================================================
+//== TETHER TRUMP DI REMOVAL
+//=================================================================
+pub unsafe  fn tether_trump_di(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    //Stops characters drifting during ledge trump
+    if status_kind == *FIGHTER_STATUS_KIND_CLIFF_ROBBED {
+        KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    };
+}
+
+
 pub unsafe fn run(boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     ledge_act(boma, status_kind, fighter_kind);
     occupy_ledge(boma, status_kind, situation_kind, fighter_kind);
     tether_trump_landing(boma, status_kind, situation_kind);
+    tether_trump_di(boma, status_kind);
 }
