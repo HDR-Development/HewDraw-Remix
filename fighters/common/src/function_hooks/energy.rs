@@ -746,17 +746,17 @@ unsafe fn setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyCont
             };
         },
         ShootDash => {
-            energy.speed.x = if 0.0 >= energy.speed.x * energy.lr {
-                -energy.lr * WorkModule::get_param_float(boma, smash::hash40("shoot_dash_speed_f"), 0)
+            energy.speed.x = if 0.0 <= energy.speed.x * energy.lr {
+                energy.lr * WorkModule::get_param_float(boma, smash::hash40("shoot_dash_speed_f"), 0)
             } else {
-                energy.speed.x - energy.lr * WorkModule::get_param_float(boma, smash::hash40("shoot_dash_speed_f"), 0)
+                energy.speed.x + energy.lr * WorkModule::get_param_float(boma, smash::hash40("shoot_dash_speed_f"), 0)
             };
         },
         ShootBackDash => {
             energy.speed.x = if 0.0 <= energy.speed.x * energy.lr {
-                energy.lr * WorkModule::get_param_float(boma, smash::hash40("shoot_dash_speed_b"), 0)
+                -energy.lr * WorkModule::get_param_float(boma, smash::hash40("shoot_dash_speed_b"), 0)
             } else {
-                energy.speed.x + energy.lr * WorkModule::get_param_float(boma, smash::hash40("shoot_dash_speed_b"), 0)
+                energy.speed.x - energy.lr * WorkModule::get_param_float(boma, smash::hash40("shoot_dash_speed_b"), 0)
             };
         },
         RevolveSlashAir => {
