@@ -177,6 +177,8 @@ pub mod vars {
 
             pub const AGT_USED_COUNTER: i32 = 0x000A;
 
+            pub const CLIFF_XLU_FRAME: i32 = 0x000B;
+
             // floats
 
             pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0000;
@@ -190,7 +192,7 @@ pub mod vars {
             pub const RAR_LENIENCY: i32 = 0x0006; // Only ever gets set, goes effectively unused.
             pub const CURRENT_MOMENTUM_SPECIALS: i32 = 0x0007;
             pub const DOUBLE_JUMP_TIMER: i32 = 0x0008; // Only used by Lucas, and it's commented out, goes unused.
-            pub const ROLL_DIR: i32 = 0x0009;
+            pub const ROLL_SPEED: i32 = 0x0009;
             pub const LEDGE_POS: i32 = 0x000A;
             pub const LEDGE_POS_X: i32 = 0x000A;
             pub const LEDGE_POS_Y: i32 = 0x000B;
@@ -223,6 +225,8 @@ pub mod vars {
 
             pub const SUICIDE_THROW_CAN_CLATTER: i32 = 0x1000;
 
+            pub const ENABLE_UCF: i32 = 0x1000;
+
             // ints
 
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
@@ -238,7 +242,7 @@ pub mod vars {
     pub mod bayonetta {
         pub mod instance {
             // flags
-            pub const IS_ENABLE_SPECIAL_CANCEL:    i32 = 0x0100;
+            pub const IS_NONSPECIAL_CANCEL:        i32 = 0x0100;
             pub const SHOULD_PRORATE_DAMAGE:       i32 = 0x0101;
             pub const IS_SPECIAL_S_CANCELED_INTO:  i32 = 0x0102;
             pub const IS_SPECIAL_HI_CANCELED_INTO: i32 = 0x0103;
@@ -415,7 +419,8 @@ pub mod vars {
     pub mod kamui {
         pub mod status {
             // flags
-            pub const BAIR_BOOST: i32 = 0x1100;
+            pub const IS_CHARGE_FINISHED: i32 = 0x1100;
+            pub const CHARGE_ATTACK_LEVEL: i32 = 0x1101;
         }
     }
 
@@ -547,7 +552,7 @@ pub mod vars {
             pub const UP_SPECIAL_JUMP_REFRESH: i32 = 0x0101;
         }
     }
-    
+
     pub mod pickel {
         pub mod instance {
             // flags
@@ -711,6 +716,11 @@ pub mod vars {
 
             // floats
             pub const SPECIAL_LW_LR: i32 = 0x1100;
+        }
+        pub mod instance {
+            // flags
+            pub const GROUNDED_TELEPORT: i32 = 0x0100;
+            pub const UP_SPECIAL_JUMP_REFRESH: i32 = 0x0101;
         }
     }
 

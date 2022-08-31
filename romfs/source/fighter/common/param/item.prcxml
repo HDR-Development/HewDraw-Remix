@@ -2,6 +2,6 @@
 <struct>
   <int hash="damage_drop_item">100</int>
   <int hash="damage_drop_item_empty">100</int>
-  <int hash="escape_throw_item_frame">6</int>
+  <int hash="escape_throw_item_frame">5</int>
   <float hash="superleaf_fall_limit_speed">0</float>
 </struct>
