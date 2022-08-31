@@ -86,7 +86,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
         // Disable transition to double jump if you have float juice and are holding down
         if [*FIGHTER_KIND_SAMUSD, *FIGHTER_KIND_MEWTWO, *FIGHTER_KIND_REFLET].contains(&fighter_kind) {
             if [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON].contains(&flag) {
-                if ControlModule::get_stick_y(boma) < -0.66 {
+                if boma.left_stick_y() < -0.66 {
                     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 {
                         return false;
                     }
@@ -166,8 +166,17 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
     original!()(boma, flag)
 }
 
+#[skyline::hook(replace=WorkModule::enable_transition_term)]
+unsafe fn enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, flag: i32) -> bool {
+    if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN {
+        VarModule::on_flag(boma.object(), vars::common::status::IS_DASH_TO_RUN_FRAME);
+    }
+    original!()(boma, flag)
+}
+
 pub fn install() {
     skyline::install_hooks!(
         is_enable_transition_term_hook,
+        enable_transition_term_hook
     );
 }

@@ -58,7 +58,7 @@ unsafe fn forward_bair_rotation(boma: &mut BattleObjectModuleAccessor, start_fra
         let calc_body_rotate = max_rotation * ((frame - start_frame) / (bend_frame - start_frame));
         let body_rotation = calc_body_rotate.clamp(0.0, max_rotation);
         rotation = Vector3f{x: 0.0, y: body_rotation, z: 0.0};
-        println!("current body rotation: {}", body_rotation);
+        // println!("current body rotation: {}", body_rotation);
         ModelModule::set_joint_rotate(boma, Hash40::new("rot"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
     } else if frame >= return_frame && frame < straight_frame {
         // linear interpolate back to normal
@@ -75,12 +75,12 @@ unsafe fn forward_bair_rotation(boma: &mut BattleObjectModuleAccessor, start_fra
 
 unsafe fn rotate_forward_bair(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_motion(Hash40::new("attack_air_b")){
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK) {
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
             forward_bair_rotation(boma, 5.0, 7.5, 10.0, 30.0);
         }
     }
     else if boma.is_motion(Hash40::new("landing_air_b")){
-        if VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK) {
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
             forward_bair_rotation(boma, 0.0, 0.1, 0.2, 10.0);
         }
     }

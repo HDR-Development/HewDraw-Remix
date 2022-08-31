@@ -91,7 +91,7 @@ unsafe fn spinning_demon(boma: &mut BattleObjectModuleAccessor, cat1: i32, statu
 
 unsafe fn korean_back_dash(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, stick_y: f32) {
     if boma.is_status(*FIGHTER_DEMON_STATUS_KIND_DASH_BACK)
-    && boma.stick_y() < WorkModule::get_param_float(boma, hash40("common"), hash40("squat_stick_y"))
+    && boma.left_stick_y() < WorkModule::get_param_float(boma, hash40("common"), hash40("squat_stick_y"))
     {
         boma.change_status_req(*FIGHTER_STATUS_KIND_SQUAT, false);
     }

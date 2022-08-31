@@ -22,6 +22,8 @@ pub trait Vec2Ext {
 pub trait Vec3Ext {
     fn new(x: f32, y: f32, z: f32) -> Self where Self: Sized;
     fn zero() -> Self where Self: Sized;
+    fn mag(&self) -> f32;
+    fn normalize(&self) -> Self;
 }
 
 pub trait Vec4Ext {
@@ -53,6 +55,19 @@ impl Vec3Ext for Vector3f {
 
     fn zero() -> Self {
         Self::new(0.0, 0.0, 0.0)
+    }
+
+    fn mag(&self) -> f32 {
+        (self.x.powi(2) + self.y.powi(2) + self.z.powi(2)).sqrt()
+    }
+
+    fn normalize(&self) -> Self {
+        let mag = self.mag();
+        Self {
+            x: self.x / mag,
+            y: self.y / mag,
+            z: self.z / mag
+        }
     }
 }
 
@@ -238,6 +253,8 @@ bitflags! {
 
     pub struct CatHdr: i32 {
         const TiltAttack = 0x1;
+        const Wavedash = 0x2;
+        const ShieldDrop = 0x3;
     }
 
     pub struct PadFlag: i32 {
@@ -270,8 +287,10 @@ bitflags! {
         const FlickJump   = 0x8000;
         const GuardHold   = 0x10000;
         const SpecialRaw2 = 0x20000;
-        const TiltAttack  = 0x40000;
-        const CStickOverride = 0x80000;
+        // We leave a blank at 0x4000 because the internal control mapping will map 1 << InputKind to the button bitfield, and so our shorthop button
+        // would get mapped to TiltAttack (issue #776)
+        const TiltAttack  = 0x80000;
+        const CStickOverride = 0x100000;
 
         const SpecialAll  = 0x20802;
         const AttackAll   = 0x201;
@@ -394,6 +413,8 @@ pub trait BomaExt {
     /// returns whether or not the stick x is pointed in the "backwards" direction for
     /// a character
     unsafe fn is_stick_backward(&mut self) -> bool;
+    unsafe fn left_stick_x(&mut self) -> f32;
+    unsafe fn left_stick_y(&mut self) -> f32;
 
     // STATE
     unsafe fn is_status(&mut self, kind: i32) -> bool;
@@ -422,6 +443,10 @@ pub trait BomaExt {
     unsafe fn is_fighter(&mut self) -> bool;
     unsafe fn is_weapon(&mut self) -> bool;
     unsafe fn kind(&mut self) -> i32;
+    // gets the boma of the player who you are grabbing
+    unsafe fn get_grabbed_opponent_boma(&mut self) -> &mut BattleObjectModuleAccessor;
+    // gets the boma of the player who is grabbing you
+    unsafe fn get_grabber_boma(&mut self) -> &mut BattleObjectModuleAccessor;
 
     // WORK
     unsafe fn get_int(&mut self, what: i32) -> i32;
@@ -441,8 +466,11 @@ pub trait BomaExt {
     unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion;
     unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController;
     // tech/general subroutine
-    unsafe fn handle_waveland(&mut self, require_airdodge: bool, change_status: bool) -> bool;
+    unsafe fn handle_waveland(&mut self, require_airdodge: bool) -> bool;
     unsafe fn shift_ecb_on_landing(&mut self);
+
+    // Checks for status and enables transition to jump
+    unsafe fn check_jump_cancel(&mut self);
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -574,6 +602,22 @@ impl BomaExt for BattleObjectModuleAccessor {
         return false;
     }
 
+    unsafe fn left_stick_x(&mut self) -> f32 {
+        if self.is_button_on(Buttons::CStickOverride) {
+            return ControlModule::get_sub_stick_x(self);
+        } else {
+            return ControlModule::get_stick_x(self);
+        }
+    }
+
+    unsafe fn left_stick_y(&mut self) -> f32 {
+        if self.is_button_on(Buttons::CStickOverride) {
+            return ControlModule::get_sub_stick_y(self);
+        } else {
+            return ControlModule::get_stick_y(self);
+        }
+    }
+
     unsafe fn get_aerial(&mut self) -> Option<AerialKind> {
         if self.is_cat_flag(Cat1::AttackHi3 | Cat1::AttackHi4) {
             Some(AerialKind::Uair)
@@ -659,6 +703,18 @@ impl BomaExt for BattleObjectModuleAccessor {
         return smash::app::utility::get_kind(self);
     }
 
+    unsafe fn get_grabbed_opponent_boma(&mut self) -> &mut BattleObjectModuleAccessor {
+        let opponent_id = LinkModule::get_node_object_id(self, *LINK_NO_CAPTURE) as u32;
+        let opponent_object = super::util::get_battle_object_from_id(opponent_id);
+        &mut *(*opponent_object).module_accessor
+    }
+
+    unsafe fn get_grabber_boma(&mut self) -> &mut BattleObjectModuleAccessor {
+        let opponent_id = LinkModule::get_parent_object_id(self, *LINK_NO_CAPTURE) as u32;
+        let opponent_object = super::util::get_battle_object_from_id(opponent_id);
+        &mut *(*opponent_object).module_accessor
+    }
+
     unsafe fn get_num_used_jumps(&mut self) -> i32 {
         return WorkModule::get_int(self, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
     }
@@ -735,10 +791,10 @@ impl BomaExt for BattleObjectModuleAccessor {
         std::mem::transmute::<u64, &mut smash::app::FighterKineticEnergyController>(KineticModule::get_energy(self, *FIGHTER_KINETIC_ENERGY_ID_CONTROL))
     }
 
-    unsafe fn handle_waveland(&mut self, require_airdodge: bool, change_status: bool) -> bool {
+    unsafe fn handle_waveland(&mut self, require_airdodge: bool) -> bool {
         // MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU);
-        if require_airdodge && (!self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE])
-        || (MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU))) {
+        if (require_airdodge && !self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE]))
+        || KineticModule::get_kinetic_type(self) == *FIGHTER_KINETIC_TYPE_FALL {
             return false;
         }
     
@@ -801,6 +857,20 @@ impl BomaExt for BattleObjectModuleAccessor {
         }
     }
 
+    unsafe fn check_jump_cancel(&mut self) {
+        let fighter = crate::util::get_fighter_common_from_accessor(self);
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
+            fighter.sub_transition_group_check_ground_jump_mini_attack();
+            fighter.sub_transition_group_check_ground_jump();
+        }
+        else {
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+            fighter.sub_transition_group_check_air_jump_aerial();
+        }
+    }
 }
 
 pub trait LuaUtil {

@@ -103,7 +103,16 @@ unsafe extern "C" fn special_n_float_main_loop(fighter: &mut L2CFighterCommon) -
         if fighter.global_table[globals::PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER != 0
         || fighter.global_table[globals::STICK_Y].get_f32() <= -0.7 {
             VarModule::on_flag(fighter.battle_object, vars::ganon::status::FLOAT_CANCEL);
-            MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 60.0, true, true, false);
+            MotionModule::change_motion(
+                fighter.module_accessor,
+                Hash40::new("float"),
+                59.0,
+                1.0,
+                false,
+                0.0,
+                false,
+                false
+            );
             return 0.into();
         }
     }
