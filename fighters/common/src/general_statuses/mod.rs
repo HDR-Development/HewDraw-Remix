@@ -141,7 +141,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_transition_group_check_ground_jump_mini_attack,
             sub_transition_group_check_air_escape,
             sub_transition_group_check_ground_escape,
-            sub_transition_group_check_ground_guard
+            sub_transition_group_check_ground
         );
     }
 }
@@ -289,6 +289,82 @@ unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon
         return false.into()
     }
     call_original!(fighter)
+}
+
+#[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground)]
+unsafe fn sub_transition_group_check_ground(fighter: &mut L2CFighterCommon, to_squat_wait: L2CValue) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        let cat2 = fighter.global_table[CMD_CAT2].get_i32();
+        if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U)
+        && {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, Hash40::new_raw(0x1daca540be));
+            sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+            fighter.pop_lua_stack(1).get_bool()
+        } {
+            fighter.change_status(FIGHTER_STATUS_KIND_APPEAL.into(), false.into());
+            return true.into();
+        }
+        if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW != 0
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW)
+        && {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, Hash40::new_raw(0x1daca540be));
+            sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+            fighter.pop_lua_stack(1).get_bool()
+        } {
+            fighter.change_status(FIGHTER_STATUS_KIND_APPEAL.into(), false.into());
+            return true.into();
+        }
+        if cat2 & (*FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L | *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R) != 0
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S)
+        && {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, Hash40::new_raw(0x1daca540be));
+            sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+            fighter.pop_lua_stack(1).get_bool()
+        } {
+            fighter.change_status(FIGHTER_STATUS_KIND_APPEAL.into(), false.into());
+            return true.into();
+        }
+        let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH) {
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
+            fighter.change_status(FIGHTER_STATUS_KIND_TURN.into(), true.into());
+            return true.into();
+        }
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH) {
+            fighter.change_status(FIGHTER_STATUS_KIND_DASH.into(), true.into());
+            return true.into();
+        }
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT)
+        && fighter.sub_check_command_squat().get_bool() {
+            let status = if to_squat_wait.get_bool() {
+                FIGHTER_STATUS_KIND_SQUAT_WAIT
+            }
+            else {
+                FIGHTER_STATUS_KIND_SQUAT
+            };
+            fighter.change_status(status.into(), true.into());
+            return true.into();
+        }
+        // Vanilla uses TURN cat flag, which makes turnarounds bufferable
+        // which was more of a hinderance within our engine, so this makes turnarounds unbufferable
+        if fighter.left_stick_x() * PostureModule::lr(fighter.module_accessor) <= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("turn_stick_x"))
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN) {
+            fighter.change_status(FIGHTER_STATUS_KIND_TURN.into(), true.into());
+            return true.into();
+        }
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK)
+        && fighter.sub_check_command_walk().get_bool() {
+            fighter.change_status(FIGHTER_STATUS_KIND_WALK.into(), true.into());
+            return true.into();
+        }
+    }
+    false.into()
 }
 
 pub fn install() {
