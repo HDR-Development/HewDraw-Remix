@@ -136,7 +136,8 @@ unsafe fn extra_traction(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         *FIGHTER_STATUS_KIND_CATCH,
         *FIGHTER_STATUS_KIND_CATCH_WAIT,
         *FIGHTER_STATUS_KIND_CATCH_ATTACK,
-        *FIGHTER_STATUS_KIND_CATCH_PULL
+        *FIGHTER_STATUS_KIND_CATCH_PULL,
+        *FIGHTER_STATUS_KIND_ITEM_THROW
     ];
 
     if boma.is_status_one_of(&double_traction_statuses) {
