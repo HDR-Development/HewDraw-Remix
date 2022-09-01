@@ -42,9 +42,9 @@ pub fn install() {
     unsafe {
         // Handles getting rid of the kill zoom
         const NOP: u32 = 0xD503201Fu32;
-        skyline::patching::patch_data(utils::offsets::kill_zoom_regular(), &NOP);
-        skyline::patching::patch_data(utils::offsets::kill_zoom_throw(), &NOP);
+        skyline::patching::Patch::in_text(utils::offsets::kill_zoom_regular()).nop();
+        skyline::patching::Patch::in_text(utils::offsets::kill_zoom_throw()).data(NOP);
         // Changes full hops to calculate vertical velocity identically to short hops
-        skyline::patching::patch_data(0x6d2188, &0x52800015u32);
+        skyline::patching::Patch::in_text(0x6d2188).data(0x52800015u32);        
     }
 }
