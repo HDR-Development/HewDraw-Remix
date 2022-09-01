@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
@@ -47,20 +47,6 @@ unsafe fn straight_lunge_cancels(boma: &mut BattleObjectModuleAccessor, status_k
     }
 }
 
-// B-Reverse Straight Lunge charge
-unsafe fn straight_lunge_charge_b_rev(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START]) {
-        common::opff::check_b_reverse(fighter);
-    }
-}
-
-// B-Reverse Rising Uppercut
-unsafe fn rising_uppercut_b_rev(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_HI_START]) {
-        common::opff::check_b_reverse(fighter);
-    }
-}
-
 // Tech Roll distance help
 unsafe fn tech_roll_help(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, facing: f32, frame: f32) {
     if frame < 5.0 {
@@ -92,8 +78,6 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     normal_side_special(boma, status_kind);
     straight_lunge_cancels(boma, status_kind, situation_kind, cat[0], cat[1], frame);
-    straight_lunge_charge_b_rev(fighter);
-    rising_uppercut_b_rev(fighter);
     tech_roll_help(boma, motion_kind, facing, frame);
     nspecial_cancels(boma, status_kind, situation_kind, cat[0]);
 }

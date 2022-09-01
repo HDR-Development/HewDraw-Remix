@@ -185,7 +185,7 @@ unsafe fn grab_jump_refresh(boma: &mut BattleObjectModuleAccessor) {
 
 unsafe fn dash_energy(fighter: &mut L2CFighterCommon) {
 
-    if fighter.is_button_on(Buttons::CStickOverride) {
+    if fighter.is_button_trigger(Buttons::CStickOverride) {
         let bidou_buttons = &[
         Buttons::AttackRaw,
         Buttons::SpecialRaw,

@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
@@ -29,17 +29,9 @@ unsafe fn bonus_fruit_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind
     }
 }
 
-// Pac-Man Bonus Fruit charge B-Reverse
-unsafe fn bonus_fruit_charge_b_rev(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
-        common::opff::check_b_reverse(fighter);
-    }
-}
-
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     nspecial_cancels(boma, status_kind, situation_kind);
     bonus_fruit_toss_ac(boma, status_kind, situation_kind, cat[0], frame);
-    bonus_fruit_charge_b_rev(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_PACMAN )]

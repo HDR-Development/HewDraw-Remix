@@ -454,13 +454,17 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     let is_dash_input: bool = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0;
     let is_backdash_input: bool = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0;
 
-    if fighter.global_table[CURRENT_FRAME].get_i32() > 15  // if after frame 15 of dash (meant to be after dash-to-run transition frame but haven't found a way to pull that for each character) 
+    if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_AFTER_DASH_TO_RUN_FRAME)  // if after dash-to-run transition frame
     && WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("run_stick_x")) <= fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor)  // AND stick_x is >= run threshold
     && !is_dash_input {  // AND you haven't input another dash
         //println!("sticky walk");
         VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_STICKY_WALK);
 		VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_BOOST_RUN);
         interrupt!(fighter, FIGHTER_STATUS_KIND_RUN, true);
+    }
+    if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_DASH_TO_RUN_FRAME) {
+        VarModule::off_flag(fighter.battle_object, vars::common::status::IS_DASH_TO_RUN_FRAME);
+        VarModule::on_flag(fighter.battle_object, vars::common::status::IS_AFTER_DASH_TO_RUN_FRAME);
     }
 
     if fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor) >= 0.0 {  // if stick is no longer backwards

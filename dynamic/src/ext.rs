@@ -254,6 +254,7 @@ bitflags! {
     pub struct CatHdr: i32 {
         const TiltAttack = 0x1;
         const Wavedash = 0x2;
+        const ShieldDrop = 0x3;
     }
 
     pub struct PadFlag: i32 {
@@ -442,6 +443,10 @@ pub trait BomaExt {
     unsafe fn is_fighter(&mut self) -> bool;
     unsafe fn is_weapon(&mut self) -> bool;
     unsafe fn kind(&mut self) -> i32;
+    // gets the boma of the player who you are grabbing
+    unsafe fn get_grabbed_opponent_boma(&mut self) -> &mut BattleObjectModuleAccessor;
+    // gets the boma of the player who is grabbing you
+    unsafe fn get_grabber_boma(&mut self) -> &mut BattleObjectModuleAccessor;
 
     // WORK
     unsafe fn get_int(&mut self, what: i32) -> i32;
@@ -696,6 +701,18 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn kind(&mut self) -> i32 {
         return smash::app::utility::get_kind(self);
+    }
+
+    unsafe fn get_grabbed_opponent_boma(&mut self) -> &mut BattleObjectModuleAccessor {
+        let opponent_id = LinkModule::get_node_object_id(self, *LINK_NO_CAPTURE) as u32;
+        let opponent_object = super::util::get_battle_object_from_id(opponent_id);
+        &mut *(*opponent_object).module_accessor
+    }
+
+    unsafe fn get_grabber_boma(&mut self) -> &mut BattleObjectModuleAccessor {
+        let opponent_id = LinkModule::get_parent_object_id(self, *LINK_NO_CAPTURE) as u32;
+        let opponent_object = super::util::get_battle_object_from_id(opponent_id);
+        &mut *(*opponent_object).module_accessor
     }
 
     unsafe fn get_num_used_jumps(&mut self) -> i32 {

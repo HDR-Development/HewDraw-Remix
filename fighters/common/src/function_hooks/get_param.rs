@@ -49,15 +49,6 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
 
     }
 
-    if fighter_kind == *FIGHTER_KIND_WOLF {
-        if x1 == hash40("param_special_s") && x2 == hash40("illusion_end_air_stop_y_frame") {
-            if VarModule::is_flag(boma_reference.object(), vars::wolf::status::ILLUSION_SHORTEN) {
-                //println!("Wolf Flash Int");
-				return 20;
-            }
-        }
-    }
-	
 	if fighter_kind == *FIGHTER_KIND_RYU {
 		if VarModule::is_flag(boma_reference.object(), vars::shotos::instance::IS_USE_EX_SPECIAL) && x1 == hash40("param_special_s") && (x2 == hash40("loop_num_w") || x2 == hash40("loop_num_m") || x2 == hash40("loop_num_s") || x2 == hash40("loop_num_w") || x2 == hash40("air_loop_num_m") || x2 == hash40("air_air_loop_num_s")) {
 			return 3;
@@ -77,64 +68,18 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
     // For articles
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
 
+    // Coupled with "landing_heavy" change in change_motion hook
+    // Because we start heavy landing anims on f2 rather than f1, we need to push back the heavy landing FAF by 1 frame so it is accurate to the defined per-character param
+    if x1 == hash40("landing_frame") {
+        return original!()(x0, hash40("landing_frame"), 0) + 1.0;
+    }
+    
     if x1 == hash40("param_trenchmortarbullet") && x2 == hash40("speed_x") {
 		if fighter_kind == *WEAPON_KIND_SNAKE_TRENCHMORTAR_BULLET {
 			return ControlModule::get_stick_x(boma) / 1.5 * PostureModule::lr(boma);
         }
     }
 
-    if fighter_kind == *FIGHTER_KIND_FOX {
-        if x1 == hash40("param_special_s") && x2 == hash40("illusion_end_air_speed_x") {
-            //println!("Non-shortened Fox illusion end speed");
-			if VarModule::is_flag(boma_reference.object(), vars::fox::status::ILLUSION_SHORTEN) {
-                //println!("Shortened Fox illusion end speed");
-                return 1.65;
-            }
-        }
-
-        else if x1 == hash40("param_special_s") && x2 == hash40("illusion_end_air_brake_x") {
-            if VarModule::is_flag(boma_reference.object(), vars::fox::status::ILLUSION_SHORTEN) {
-                //println!("Non-shortened Fox illusion end decel");
-                return 0.1;
-            }
-        }
-    }
-
-    else if fighter_kind == *FIGHTER_KIND_FALCO {
-        if x1 == hash40("param_special_s") && x2 == hash40("illusion_end_air_speed_x") {
-            if VarModule::is_flag(boma_reference.object(), vars::falco::status::ILLUSION_SHORTEN) {
-                return 1.65;
-            }
-        }
-
-        else if x1 == hash40("param_special_s") && x2 == hash40("illusion_end_air_brake_x") {
-            if VarModule::is_flag(boma_reference.object(), vars::falco::status::ILLUSION_SHORTEN) {
-                return 0.1;
-            }
-        }
-    }
-
-    else if fighter_kind == *FIGHTER_KIND_WOLF {
-        if x1 == hash40("param_special_s") && x2 == hash40("illusion_end_air_speed_x") {
-            if VarModule::is_flag(boma_reference.object(), vars::wolf::status::ILLUSION_SHORTEN) {
-                return 1.5;
-            }
-        }
-
-        else if x1 == hash40("param_special_s") && x2 == hash40("illusion_end_air_brake_x") {
-            if VarModule::is_flag(boma_reference.object(), vars::wolf::status::ILLUSION_SHORTEN) {
-                return 0.125;
-            }
-        }
-
-        else if x1 == hash40("param_special_s") && x2 == hash40("illusion_end_air_accel_y") {
-            if VarModule::is_flag(boma_reference.object(), vars::wolf::status::ILLUSION_SHORTEN) {
-                //println!("Shorten gravity");
-                return 0.005;
-            }
-        }
-    }
-	
 	// Frieza death ball on M2 aerial Shadow Ball
     /*
     if fighter_kind == *WEAPON_KIND_MEWTWO_SHADOWBALL {
@@ -175,7 +120,7 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         }
         if x1 == hash40("param_special_hi"){
             //if heavy_attack[hdr::get_player_number(owner_module_accessor)]{
-            if VarModule::is_flag(boma_reference.object(), vars::common::status::IS_HEAVY_ATTACK){
+            if VarModule::is_flag(boma_reference.object(), vars::common::instance::IS_HEAVY_ATTACK){
                 if x2 == hash40("hi2_rush_speed") {
                     return 3.0;
                 }
@@ -201,19 +146,19 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         if x1 == hash40("param_tornadoshot"){
             if x2 == hash40("life") {
                 //if heavy_attack[hdr::get_player_number(owner_module_accessor)]{
-                if VarModule::is_flag(owner_module_accessor.object(), vars::common::status::IS_HEAVY_ATTACK){
+                if VarModule::is_flag(owner_module_accessor.object(), vars::common::instance::IS_HEAVY_ATTACK){
                     return 70.0;
                 }
             }
             else if x2 == hash40("speed_x") {
                 //if heavy_attack[hdr::get_player_number(owner_module_accessor)]{
-                if VarModule::is_flag(owner_module_accessor.object(), vars::common::status::IS_HEAVY_ATTACK){
+                if VarModule::is_flag(owner_module_accessor.object(), vars::common::instance::IS_HEAVY_ATTACK){
                     return 1.5;
                 }
             }
             else if x2 == hash40("accel_x") {
                 //if heavy_attack[hdr::get_player_number(owner_module_accessor)]{
-                if VarModule::is_flag(owner_module_accessor.object(), vars::common::status::IS_HEAVY_ATTACK){
+                if VarModule::is_flag(owner_module_accessor.object(), vars::common::instance::IS_HEAVY_ATTACK){
                     return -0.025;
                 }
             }
