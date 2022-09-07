@@ -58,7 +58,7 @@ def hash_folder_json(folder_path: str, file_name: str):
             data = file_to_check.read()    
             # pipe contents of the file through
             md5_returned = hashlib.md5(data).hexdigest()
-            all_hashes[os.path.join("/", file)] = md5_returned
+            all_hashes[os.path.join("/", file).replace("\\", "/")] = md5_returned
             #print(os.path.join("/", file) + ":" + md5_returned)
     # build full output
     file_str = "["
