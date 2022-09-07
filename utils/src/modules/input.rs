@@ -1,10 +1,17 @@
-use smash::app::{BattleObject, lua_bind::ControlModule, BattleObjectModuleAccessor};
+use smash::app::{BattleObject, lua_bind::ControlModule, lua_bind::WorkModule, BattleObjectModuleAccessor};
 use utils_dyn::ext::*;
 
 use crate::offsets;
 use crate::util::get_battle_object_from_id;
+use crate::util::get_fighter_common_from_accessor;
+use crate::consts::*;
+use crate::consts::globals::*;
+use smash::hash40;
+use crate::modules::*;
 
 use super::INPUT_MODULE_OFFSET;
+
+use globals::*;
 
 macro_rules! get_input_module {
     ($object:ident) => {{
@@ -455,6 +462,42 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
         input_module.hdr_cat.valid_frames[wavedash_offset] -= 1;
     }
 
+    // ShieldDrop cat flag
+    let shielddrop_offset = CatHdr::ShieldDrop.bits().trailing_zeros() as usize;
+    let pass_flick_y = unsafe {WorkModule::get_param_int((*input_module.owner).module_accessor, hash40("common"), hash40("pass_flick_y"))};
+    let pass_stick_y = unsafe {
+        if VarModule::is_flag(&mut (*input_module.owner), vars::common::status::ENABLE_UCF) {
+            ParamModule::get_float(&mut (*input_module.owner), ParamType::Common, "ucf_pass_stick_y")
+        }
+        else {
+            WorkModule::get_param_float((*input_module.owner).module_accessor, hash40("common"), hash40("pass_stick_y"))
+        }
+    };
+    let escape_stick_y = unsafe {
+        if VarModule::is_flag(&mut (*input_module.owner), vars::common::status::ENABLE_UCF) {
+            ParamModule::get_float(&mut (*input_module.owner), ParamType::Common, "ucf_escape_stick_y")
+        }
+        else {
+            WorkModule::get_param_float((*input_module.owner).module_accessor, hash40("common"), hash40("escape_stick_y"))
+        }
+    };
+    let shielddrop_input = unsafe {
+        buttons.intersects(Buttons::Guard)
+        && ControlModule::get_flick_y((*input_module.owner).module_accessor) < pass_flick_y
+        && ControlModule::get_stick_y((*input_module.owner).module_accessor) <= pass_stick_y
+        && ControlModule::get_stick_y((*input_module.owner).module_accessor) > escape_stick_y
+    };
+    if shielddrop_input {
+        if input_module.hdr_cat.valid_frames[shielddrop_offset] == 0 {
+            input_module.hdr_cat.valid_frames[shielddrop_offset] = unsafe {
+                ControlModule::get_command_life_count_max((*input_module.owner).module_accessor) as u8
+            };
+        }
+    }
+    if input_module.hdr_cat.valid_frames[shielddrop_offset] != 0
+    && !(input_module.hdr_cat.valid_frames[shielddrop_offset] == 1 && shielddrop_input) {
+        input_module.hdr_cat.valid_frames[shielddrop_offset] -= 1;
+    }
     call_original();
 
     let cats = unsafe {

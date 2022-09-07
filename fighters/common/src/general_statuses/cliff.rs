@@ -20,7 +20,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_end_CliffJump1,
             status_end_CliffJump2,
             status_end_CliffJump3,
-            sub_cliff_uniq_process_exit_Common
+            sub_cliff_uniq_process_exit_Common,
+            get_cliff_wait_hit_xlu_frame
         );
     }
 }
@@ -109,6 +110,7 @@ unsafe fn sub_cliff_uniq_process_exit_Common(fighter: &mut L2CFighterCommon, is_
         // Allows lingering ledge intan on ledgedrop
         if fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_FALL {
             HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
+            VarModule::set_int(fighter.battle_object, vars::common::instance::CLIFF_XLU_FRAME, 0);
         }
     }
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CATCH_CLIFF);
@@ -118,6 +120,14 @@ unsafe fn sub_cliff_uniq_process_exit_Common(fighter: &mut L2CFighterCommon, is_
         // Allows lingering ledge intan on ledgedrop
         if fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_FALL {
             HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
+            VarModule::set_int(fighter.battle_object, vars::common::instance::CLIFF_XLU_FRAME, 0);
         }
     }
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_get_cliff_wait_hit_xlu_frame)]
+unsafe fn get_cliff_wait_hit_xlu_frame(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let cliff_xlu_frame = call_original!(fighter).get_i32();
+    VarModule::set_int(fighter.battle_object, vars::common::instance::CLIFF_XLU_FRAME, cliff_xlu_frame);
+    call_original!(fighter)
 }

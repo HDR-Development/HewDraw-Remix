@@ -35,12 +35,13 @@
   <float hash="0x20d241cd64">0.85</float>
   <int hash="guard_damage_just_shield_disable_frame">1</int>
   <int hash="escape_flick_y">3</int>
+  <float hash="escape_stick_y">-0.75</float>
   <float hash="escape_air_slide_landing_speed_max">4</float>
   <int hash="hit_stop_delay_flick">2</int>
-  <float hash="hit_stop_delay_flick_mul">6</float>
+  <float hash="hit_stop_delay_flick_mul">5</float>
   <int hash="hit_stop_delay_flick_frame">2</int>
   <int hash="hit_stop_delay_flick_max_count">50</int>
-  <float hash="hit_stop_delay_auto_mul">0.5</float>
+  <float hash="hit_stop_delay_auto_mul">2.5</float>
   <float hash="damage_reaction_mul_max">1</float>
   <list hash="pattern_power_mul">
     <hash40 index="0">dummy</hash40>
@@ -72,6 +73,7 @@
   <int hash="air_lasso_catch_num">6</int>
   <int hash="air_lasso_cliff_wait_frame">7</int>
   <int hash="air_lasso_landing_frame">25</int>
+  <float hash="pass_stick_y">-0.71</float>
   <int hash="passive_trigger_frame">20</int>
   <int hash="no_rapid_frame_value">40</int>
   <float hash="invalid_passive_speed">999</float>
@@ -88,7 +90,7 @@
   <float hash="damage_fly_length_mul_min">1</float>
   <int hash="damage_fly_attack_frame">999</int>
   <int hash="damage_fly_escape_frame">999</int>
-  <float hash="damage_fly_reflect_reaction_frame_mul">1</float>
+  <float hash="damage_fly_reflect_reaction_frame_mul">0.8</float>
   <float hash="dead_down_damage_speed">999</float>
   <float hash="bury_jump_y_speed_mul">1.15</float>
   <float hash="mewtwo_thrown_reaction_frame_mul">1</float>
