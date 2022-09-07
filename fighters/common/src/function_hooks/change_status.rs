@@ -7,7 +7,7 @@ unsafe fn change_status_request_hook(boma: &mut BattleObjectModuleAccessor, stat
 
     if boma.is_fighter() {
         // Tether trump logic
-        if boma.is_status(*FIGHTER_STATUS_KIND_AIR_LASSO_REWIND)
+        if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_AIR_LASSO, *FIGHTER_STATUS_KIND_AIR_LASSO_REACH, *FIGHTER_STATUS_KIND_AIR_LASSO_HANG, *FIGHTER_STATUS_KIND_AIR_LASSO_REWIND])
         && [*FIGHTER_STATUS_KIND_CLIFF_CATCH, *FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE, *FIGHTER_STATUS_KIND_CLIFF_WAIT].contains(&next_status) {
             let player_number = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32;
             let pos = GroundModule::hang_cliff_pos_3f(boma);
@@ -61,6 +61,38 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
             *FIGHTER_STATUS_KIND_DAMAGE].contains(&StatusModule::status_kind(boma))
         && next_status == *FIGHTER_STATUS_KIND_FALL {
             clear_buffer = true;
+        }
+        // Tether trump logic
+        if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_AIR_LASSO, *FIGHTER_STATUS_KIND_AIR_LASSO_REACH, *FIGHTER_STATUS_KIND_AIR_LASSO_HANG, *FIGHTER_STATUS_KIND_AIR_LASSO_REWIND])
+        && [*FIGHTER_STATUS_KIND_CLIFF_CATCH, *FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE, *FIGHTER_STATUS_KIND_CLIFF_WAIT].contains(&next_status) {
+            let player_number = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32;
+            let pos = GroundModule::hang_cliff_pos_3f(boma);
+
+            for i in 0..8 {
+                if let Some(object_id) = ::utils::util::get_active_battle_object_id_from_entry_id(i) {
+                    let object = ::utils::util::get_battle_object_from_id(object_id);
+                    if !object.is_null() {
+                        if i == player_number || VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) == 0.0 {
+                            continue;
+                        }
+    
+                        if pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
+                            next_status = *FIGHTER_STATUS_KIND_CLIFF_ROBBED;
+                        }
+    
+                        let module_accessor = &mut *(*object).module_accessor;
+                        if module_accessor.kind() == *FIGHTER_KIND_POPO {
+                            let nana_object_id = WorkModule::get_int(module_accessor, *FIGHTER_POPO_INSTANCE_WORK_ID_INT_PARTNER_OBJECT_ID) as u32;
+                            let object = ::utils::util::get_battle_object_from_id(nana_object_id);
+                            if !object.is_null() {
+                                if pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
+                                    next_status = *FIGHTER_STATUS_KIND_CLIFF_ROBBED;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         if boma.kind() == *FIGHTER_KIND_TRAIL
