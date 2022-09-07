@@ -19,8 +19,8 @@
   </struct>
   <list hash="param_special_s">
     <struct index="0">
-      <int hash="ab_u_landing_frame">14</int>
-      <int hash="ab_u_landing_frame_2nd">18</int>
+      <int hash="ab_u_landing_frame">18</int>
+      <int hash="ab_u_landing_frame_2nd">22</int>
       <float hash="ab_d_hit_after_speed_y">2.6</float>
       <float hash="ab_d_hit_after_max_accel_x">0.035</float>
       <float hash="ab_d_hit_after_front_max_speed_x">1</float>
