@@ -72,6 +72,7 @@ print("making switch-package.zip")
 shutil.make_archive("switch-package", 'zip', 'switch-package')
 
 hash_package.hash_folder("switch-package", "content_hashes.txt")
+hash_package.hash_folder_json("switch-package", "content_hashes.json")
 
 
 # make a ryujinx package too
@@ -90,3 +91,4 @@ os.mkdir("artifacts")
 shutil.move("switch-package.zip", "artifacts")
 shutil.move("ryujinx-package.zip", "artifacts")
 shutil.move("content_hashes.txt", "artifacts")
+shutil.move("content_hashes.json", "artifacts")
