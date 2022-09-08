@@ -60,7 +60,7 @@ pub unsafe fn sub_wait_common_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_DamageAir)]
 pub unsafe fn status_pre_DamageAir(fighter: &mut L2CFighterCommon) -> L2CValue {
-    println!("knockback units: {}", DamageModule::reaction(fighter.module_accessor, 0));
+    //println!("knockback units: {}", DamageModule::reaction(fighter.module_accessor, 0));
     
     fighter.clear_lua_stack();
     lua_args!(fighter, hash40("angle"));
