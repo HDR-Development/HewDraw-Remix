@@ -15,6 +15,5 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 
 // this runs as you leave hitlag
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_status_end_EscaleFB)]
-pub unsafe fn sub_status_end_EscaleFB_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
-    0.into()
+pub unsafe fn sub_status_end_EscaleFB_hook(fighter: &mut L2CFighterCommon) {
 }
