@@ -71,6 +71,7 @@ shutil.move("hdr-launcher.nro", "switch-package/atmosphere/contents/01006A800016
 print("making switch-package.zip")
 shutil.make_archive("switch-package", 'zip', 'switch-package')
 
+print("creating hash files")
 hash_package.hash_folder("switch-package", "content_hashes.txt")
 hash_package.hash_folder_json("switch-package", "content_hashes.json")
 
