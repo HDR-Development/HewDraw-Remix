@@ -58,8 +58,8 @@ unsafe fn lua_load(arg: u64, arg2: u64, arg3: u64, arg4: u64, mode: *const u8) -
 
 pub fn install() {
     unsafe {
-        skyline::patching::patch_data(0x5291c70, &(lua_print_impl as *const ()));
-        skyline::patching::patch_data(0x372b4b0, &0xD503201Fu32);
+        skyline::patching::Patch::in_text(0x5291c70).data((lua_print_impl as *const ()));
+        skyline::patching::Patch::in_text(0x372b4b0).data(0xD503201Fu32);
     }
     skyline::install_hook!(lua_load);
 }

@@ -111,7 +111,7 @@ unsafe fn add_more_buttons(ctx: &mut skyline::hooks::InlineCtx) {
 
 pub fn install() {
     unsafe {
-        skyline::patching::nop_data(0x1d34e4c);
+        skyline::patching::Patch::in_text(0x1d34e4c).nop();
     }
     skyline::install_hooks!(
         get_button_label_by_operation_kind,
