@@ -41,7 +41,7 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
     let fighter_kind = boma_reference.kind();
     let id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 
-    if boma.is_fighter() {
+    if boma_reference.is_fighter() {
 
         if x2 == hash40("just_shield_precede_extension") {
             return 1000;
@@ -69,7 +69,7 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
     let fighter_kind = boma_reference.kind();
     let id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 
-    if boma.is_fighter() {
+    if boma_reference.is_fighter() {
 
         /*if x1 == hash40("air_speed_x_stable") {
             if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_JUMP_SQUAT {
@@ -190,7 +190,7 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         }
     
     }
-    else if boma.is_weapon() {
+    else if boma_reference.is_weapon() {
 
         // For articles
         let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
