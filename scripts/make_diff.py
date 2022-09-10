@@ -8,7 +8,7 @@ import diff_lib
 
 #  this file diffs the existing switch-package.zip against whatever the latest nightly or
 #  beta is, depending on arguments, and produces a upgrade.zip for that version to this
-#  version, as well as an upgrade_deletions.txt file with the files that should be deleted
+#  version, as well as an deletions.json file with the files that should be deleted
 
 if "help" in sys.argv or "--help" in sys.argv or "-h" in sys.argv or len(sys.argv) != 2:
     if len(sys.argv) != 2:
@@ -40,5 +40,5 @@ if os.path.exists("upgrade_artifacts"):
     shutil.rmtree("upgrade_artifacts")
 os.mkdir("upgrade_artifacts")
 shutil.move("upgrade.zip", "upgrade_artifacts")
-shutil.move("upgrade_deletions.txt", "upgrade_artifacts")
+shutil.move("deletions.json", "upgrade_artifacts")
 
