@@ -141,6 +141,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_transition_group_check_ground_jump_mini_attack,
             sub_transition_group_check_air_escape,
             sub_transition_group_check_ground_escape,
+            sub_transition_group_check_ground_guard,
             sub_transition_group_check_ground
         );
     }
