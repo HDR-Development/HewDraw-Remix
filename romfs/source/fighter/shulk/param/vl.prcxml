@@ -26,7 +26,7 @@
       <float hash="spd_ground_brake_mul">0.7</float>
       <float hash="spd_air_speed_x_mul">1.35</float>
       <float hash="spd_air_speed_y_mul">1.25</float>
-      <float hash="spd_height_mul">0.688</float>
+      <float hash="spd_height_mul">0.69</float>
       <float hash="shield_ground_brake_mul">9.0</float>
       <float hash="shield_damage_mul">0.6</float>
       <float hash="shield_blown_mul">0.756</float>
