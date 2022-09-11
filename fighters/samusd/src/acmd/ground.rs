@@ -55,7 +55,7 @@ unsafe fn game_attack12(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "samusd", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "samusd", script = "game_attackdash" , category = ACMD_GAME, low_priority)]
 unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -80,9 +80,21 @@ unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
     wait(lua_state, 7.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE(fighter, 1.8);
+        FT_MOTION_RATE(fighter, 1.5);
     }
     
+}
+
+#[acmd_script( agent = "samusd", script = "effect_attackdash" , category = ACMD_EFFECT, low_priority)]
+unsafe fn effect_attackdash(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("samusd_dash_attack"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
+    }
 }
 
 pub fn install() {
@@ -90,6 +102,7 @@ pub fn install() {
         game_attack11,
         game_attack12,
         game_attackdash,
+        effect_attackdash,
     );
 }
 
