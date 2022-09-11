@@ -60,7 +60,19 @@ pub unsafe fn sub_wait_common_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_DamageAir)]
 pub unsafe fn status_pre_DamageAir(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_KNOCKDOWN_THROW) {
+    //println!("knockback units: {}", DamageModule::reaction(fighter.module_accessor, 0));
+    
+    fighter.clear_lua_stack();
+    lua_args!(fighter, hash40("angle"));
+    sv_information::damage_log_value(fighter.lua_state_agent);
+    let angle = fighter.pop_lua_stack(1).get_f32();
+    let degrees = angle.to_degrees();
+    let meteor_vector_min = WorkModule::get_param_int(fighter.module_accessor, hash40("battle_object"), hash40("meteor_vector_min")) as f32;
+    let meteor_vector_max = WorkModule::get_param_int(fighter.module_accessor, hash40("battle_object"), hash40("meteor_vector_max")) as f32; 
+    
+    if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_KNOCKDOWN_THROW)
+    || (degrees >= meteor_vector_min && degrees <= meteor_vector_max && DamageModule::reaction(fighter.module_accessor, 0) >= 65.0) {
+        //println!("forced tumble");
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR);
         return 1.into();
     }
