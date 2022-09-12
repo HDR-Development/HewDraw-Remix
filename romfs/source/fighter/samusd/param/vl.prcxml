@@ -10,6 +10,9 @@
   <list hash="param_gbeam">
     <struct index="0">
       <int hash="rewind_frame">18</int>
+      <float hash="shoot_length_max">24</float>
+      <float hash="air_lasso_length_max">24</float>
+      <float hash="reach_length_max">30</float>
     </struct>
   </list>
   <list hash="air_lasso_data">
@@ -49,10 +52,11 @@
   </list>
   <list hash="param_missile">
     <struct index="0">
-      <int hash="h_life">70</int>
-      <float hash="h_angle">1.0</float>
+      <int hash="h_life">60</int>
+      <float hash="h_anglemax">70</float>
+      <float hash="h_angle">2.0</float>
       <float hash="h_spd">0.5</float>
-      <int hash="h_homingf">40</int>
+      <int hash="h_homingf">30</int>
       <float hash="h_spdmul">1.1</float>
       <float hash="h_spdmin">0.4</float>
     </struct>
