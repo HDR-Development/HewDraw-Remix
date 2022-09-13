@@ -209,6 +209,7 @@ unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
     wait(lua_state, 3.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        FT_MOTION_RATE(fighter, 26.0/(36.0 - 8.0));
     }
     
 }
