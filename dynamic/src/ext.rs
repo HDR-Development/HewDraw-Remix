@@ -254,7 +254,7 @@ bitflags! {
     pub struct CatHdr: i32 {
         const TiltAttack = 0x1;
         const Wavedash = 0x2;
-        const ShieldDrop = 0x3;
+        const ShieldDrop = 0x4;
     }
 
     pub struct PadFlag: i32 {
