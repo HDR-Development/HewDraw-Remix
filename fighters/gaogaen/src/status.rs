@@ -11,7 +11,7 @@ pub fn install() {
     );
 }
 
-// FIGHTER_STATUS_KIND_ATTACK_DASH //
+// FIGHTER_STATUS_KIND_ATTACK_LW4 //
 
 #[status_script(agent = "gaogaen", status = FIGHTER_STATUS_KIND_ATTACK_LW4, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 pub unsafe fn attack_lw4_main(fighter: &mut L2CFighterCommon) -> L2CValue {

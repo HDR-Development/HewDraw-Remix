@@ -35,11 +35,10 @@ pub unsafe extern "Rust" fn gimmick_flash(boma: &mut BattleObjectModuleAccessor)
     app::FighterUtil::flash_eye_info(fighter.module_accessor);
 
     if WorkModule::get_param_int(fighter.module_accessor, hash40("param_motion"), hash40("flip")) != 0 {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_flash"), Hash40::new("sys_flash"), Hash40::new("top"), -5, flash_y_offset, 2, 0, 0, 0, 0.7, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_flash"), Hash40::new("sys_flash"), Hash40::new("top"), -5, flash_y_offset, 2, 0, 0, 0, 1.0, true, *EF_FLIP_YZ);
     }
     else {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_flash"), Hash40::new("top"), -5.0 * lr, flash_y_offset, 2, 0, 0, 0, 0.7, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_flash"), Hash40::new("top"), -5.0 * lr, flash_y_offset, 2, 0, 0, 0, 1.0, true);
     }
-    LAST_EFFECT_SET_RATE(fighter, 0.5);
     LAST_EFFECT_SET_COLOR(fighter, 0.831, 0.686, 0.216);	
 }

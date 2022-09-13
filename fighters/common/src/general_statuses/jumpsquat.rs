@@ -4,6 +4,7 @@ use globals::*;
 // This file contains code for wavedashing out of jumpsquat, fullhop buffered aerials/attack canceling
 
 pub fn install() {
+    skyline::nro::add_hook(nro_hook);
     install_status_scripts!(
         //status_pre_JumpSquat,
         status_JumpSquat,
@@ -22,6 +23,15 @@ pub fn install() {
         sub_status_JumpSquat_check_stick_lr_update
     );
 }
+
+fn nro_hook(info: &skyline::nro::NroInfo) {
+    if info.name == "common" {
+        skyline::install_hooks!(
+            sub_jump_squat_uniq_process_init_param
+        );
+    }
+}
+
 /***
 // pre status stuff
 #[common_status_script(status = FIGHTER_STATUS_KIND_JUMP_SQUAT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE,
@@ -144,7 +154,7 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
                 L2CValue::Bool(true)
             );
         } else if !fighter.sub_transition_specialflag_hoist().get_bool() {
-            let cat2 = fighter.global_table[CMD_CAT2].get_i32();
+            // let cat2 = fighter.global_table[CMD_CAT2].get_i32();
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START)
             && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
                 if fighter.global_table[0x58].get_bool() != false && {
@@ -153,7 +163,8 @@ unsafe fn status_JumpSquat_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
                 } {
                     return L2CValue::I32(0);
                 }
-                if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_ATTACK_DASH_ATTACK_HI4 != 0
+                // if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_ATTACK_DASH_ATTACK_HI4 != 0 // original
+                if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 != 0 // check if there is a valid stick flick using the original flag
                     && fighter.is_situation(*SITUATION_KIND_GROUND) {
                     fighter.change_status(
                         L2CValue::I32(*FIGHTER_STATUS_KIND_ATTACK_HI4_START),
@@ -217,9 +228,10 @@ unsafe fn status_JumpSquat_common(fighter: &mut L2CFighterCommon, lr_update: L2C
         PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
         PostureModule::update_rot_y_lr(fighter.module_accessor);
     }
-    ControlModule::reset_flick_y(fighter.module_accessor);
-    ControlModule::reset_flick_sub_y(fighter.module_accessor);
-    fighter.global_table[FLICK_Y].assign(&0xFE.into());
+    // Commented out so we can keep our current stick flick.
+    // ControlModule::reset_flick_y(fighter.module_accessor);
+    // ControlModule::reset_flick_sub_y(fighter.module_accessor);
+    // fighter.global_table[FLICK_Y].assign(&0xFE.into());
 
     // not a conditional enable, so it's not in potential_enables
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL);
@@ -278,9 +290,7 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
         fighter.sub_jump_squat_uniq_check_sub_mini_attack();
     }
 
-    let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
-    let frame = MotionModule::frame(fighter.module_accessor);
-    let update_rate = MotionModule::update_rate(fighter.module_accessor);
+    let frame = VarModule::get_int(fighter.battle_object, vars::common::instance::JUMP_SQUAT_FRAME);
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE != 0 || ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD_HOLD))
     && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N == 0 {
@@ -289,8 +299,8 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
             VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT);
         }
     }
-    let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new_raw(motion_kind)) as u32 as f32;
-    if end_frame <= (frame + update_rate) {
+    let end_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0);
+    if frame >= end_frame {
         StatusModule::set_situation_kind(fighter.module_accessor, app::SituationKind(*SITUATION_KIND_AIR), false);
         let situation_kind = fighter.global_table[SITUATION_KIND].clone();
         fighter.global_table[PREV_SITUATION_KIND].assign(&situation_kind);
@@ -332,9 +342,7 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
 // subroutine for checking for aerial macro
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon29sub_jump_squat_uniq_check_subEN3lib8L2CValueE")]
 unsafe fn sub_jump_squat_uniq_check_sub(fighter: &mut L2CFighterCommon, flag: L2CValue) {
-    let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
-    let js_frame = VarModule::get_int(fighter.battle_object, vars::common::instance::JUMP_SQUAT_FRAME);
-    VarModule::set_int(fighter.battle_object, vars::common::instance::JUMP_SQUAT_FRAME, js_frame + 1);
+    VarModule::inc_int(fighter.battle_object, vars::common::instance::JUMP_SQUAT_FRAME);
 
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_MINI_JUMP) { return; }
     // flag is basically always going to be the jump button flag
@@ -427,4 +435,47 @@ unsafe fn sub_status_JumpSquat_check_stick_lr_update(fighter: &mut L2CFighterCom
     // only allow jumpsquat to flip you around if your previous status was Dash and your directional input was caused by cstick (cstick input 2 frames within jumpsquat)
     // allows for cstick IRAR
     L2CValue::Bool(prev_status == *FIGHTER_STATUS_KIND_DASH && fighter.is_button_on(Buttons::CStickOverride))
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_jump_squat_uniq_process_init_param)]
+unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon, motion_hash: L2CValue) {
+    let jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
+    // This cuts a single frame off of the end of the specified characters' jumpsquat animations
+    // This is a purely aesthetic change, makes for snappier jumps
+    let end_frame = if [*FIGHTER_KIND_SAMUS,
+        *FIGHTER_KIND_FOX,
+        *FIGHTER_KIND_PIKACHU,
+        *FIGHTER_KIND_LUIGI,
+        *FIGHTER_KIND_NESS,
+        *FIGHTER_KIND_FALCO,
+        *FIGHTER_KIND_POPO,
+        *FIGHTER_KIND_NANA,
+        *FIGHTER_KIND_PICHU,
+        *FIGHTER_KIND_YOUNGLINK,
+        *FIGHTER_KIND_PZENIGAME,
+        *FIGHTER_KIND_DIDDY,
+        *FIGHTER_KIND_LUCAS,
+        *FIGHTER_KIND_WOLF,
+        *FIGHTER_KIND_LITTLEMAC,
+        *FIGHTER_KIND_DUCKHUNT,
+        *FIGHTER_KIND_RYU,
+        *FIGHTER_KIND_KEN,
+        *FIGHTER_KIND_CLOUD,
+        *FIGHTER_KIND_SIMON,
+        *FIGHTER_KIND_RICHTER,
+        *FIGHTER_KIND_DOLLY,
+        *FIGHTER_KIND_EDGE,].contains(&fighter.kind())
+    {
+        MotionModule::end_frame_from_hash(fighter.module_accessor, motion_hash.get_hash()) - 1.0
+    }
+    else {
+        MotionModule::end_frame_from_hash(fighter.module_accessor, motion_hash.get_hash())
+    };
+
+    // vanilla logic
+    let mut motion_rate = end_frame / jump_squat_frame;
+    if motion_rate < 1.0 {
+        motion_rate += 0.001;
+    }
+    MotionModule::change_motion(fighter.module_accessor, motion_hash.get_hash(), 0.0, motion_rate, false, 0.0, false, false);
 }

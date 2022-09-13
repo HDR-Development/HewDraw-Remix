@@ -7,7 +7,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
@@ -17,7 +17,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
             app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
@@ -33,7 +33,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
@@ -43,7 +43,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
             app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
@@ -59,7 +59,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
@@ -69,7 +69,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
             app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
@@ -101,7 +101,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
@@ -111,7 +111,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
             app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
@@ -120,18 +120,15 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "peach", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "peach", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    frame(lua_state, 5.0);
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
+        let dash_sfx_handle = SoundModule::play_se(fighter.module_accessor, Hash40::new("se_peach_dash_start"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
-    frame(lua_state, 17.0);
-    if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-    }    
 }
 
 #[acmd_script(agent = "peach", script = "game_turndash" , category = ACMD_GAME , low_priority)]
@@ -192,15 +189,12 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
 unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let escape_air_slide_hit_xlu_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_slide_hit_xlu_frame"));
-    let escape_air_slide_hit_normal_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_slide_hit_normal_frame"));
-    let ledgegrab_frame = (escape_air_slide_hit_xlu_frame + escape_air_slide_hit_normal_frame) + 4.0;
-
+    
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
     }
-    frame(lua_state, ledgegrab_frame);
+    frame(lua_state, 34.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
@@ -210,7 +204,7 @@ pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
         escape_air_slide_game,
-        //dash_effect,
+        dash_sound,
         peach_turn_dash_game,
 		peach_catch_game,
         damageflyhi_sound,
