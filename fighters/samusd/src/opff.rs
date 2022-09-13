@@ -15,6 +15,12 @@ pub unsafe fn morphball_crawl(boma: &mut BattleObjectModuleAccessor, status_kind
     }
 }
 
+// pub unsafe fn manual_detonate(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
+//     if fighter.is_cat_flag(Cat1::SpecialLw) && VarModule::is_flag(boma, vars::samusd::MANUAL_DETONATE_READY) {
+        
+//     }
+// }
+
 pub unsafe fn remove_super_missiles(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if status_kind == *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S2G {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S1G, false);
@@ -56,7 +62,7 @@ pub unsafe extern "Rust" fn common_samusd(fighter: &mut L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         morphball_crawl(&mut *info.boma, info.status_kind, info.frame);
         nspecial_cancels(&mut *info.boma, info.status_kind, info.situation_kind);
-        remove_super_missiles(&mut *info.boma, info.status_kind);
+        //remove_super_missiles(&mut *info.boma, info.status_kind);
     }
 }
 

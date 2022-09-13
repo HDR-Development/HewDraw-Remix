@@ -43,7 +43,7 @@
   <list hash="param_special_s">
     <struct index="0">
       <int hash="missile_max_req">1</int>
-      <int hash="supermissile_max_req">2</int>
+      <int hash="supermissile_max_req">1</int>
       <float hash="sp_s_spd_x_div">1.25</float>
     </struct>
     <hash40 index="1">dummy</hash40>
@@ -86,6 +86,15 @@
     <struct index="0">
       <float hash="sp_lw_ar_vy0">1</float>
       <float hash="sp_lw_bj_spd0">2</float>
+      <int hash="bomb_max_req">1</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_bomb">
+    <struct index="0">
+      <int hash="life">240</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
