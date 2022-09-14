@@ -15,9 +15,9 @@ pub unsafe fn morphball_crawl(boma: &mut BattleObjectModuleAccessor, status_kind
     }
 }
 
-// pub unsafe fn manual_detonate(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
-//     if fighter.is_cat_flag(Cat1::SpecialLw) && VarModule::is_flag(boma, vars::samusd::MANUAL_DETONATE_READY) {
-        
+// pub unsafe fn disable_bomb(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+//     if VarModule::is_flag(fighter.battle_object, vars::samusd::instance::DISABLE_SPECIAL_LW) { //ArticleModule::is_exist(boma, *FIGHTER_SAMUS_GENERATE_ARTICLE_BOMB) && boma.is_cat_flag(Cat1::SpecialLw) {
+//         WorkModule::unable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
 //     }
 // }
 
@@ -62,7 +62,7 @@ pub unsafe extern "Rust" fn common_samusd(fighter: &mut L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         morphball_crawl(&mut *info.boma, info.status_kind, info.frame);
         nspecial_cancels(&mut *info.boma, info.status_kind, info.situation_kind);
-        //remove_super_missiles(&mut *info.boma, info.status_kind);
+        //disable_bomb(fighter, &mut *info.boma);
     }
 }
 
@@ -78,5 +78,19 @@ pub fn samusd_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub unsafe fn samusd_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+    }
+}
+
+#[smashline::weapon_frame(agent = WEAPON_KIND_SAMUSD_BOMB)]
+pub fn samusd_bomb_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    unsafe {
+        let boma = weapon.boma();
+        let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+        let dsamus = utils::util::get_battle_object_from_id(owner_id);
+        let dsamus_boma = &mut *(*dsamus).module_accessor;
+        if StatusModule::status_kind(boma) == *WEAPON_SAMUS_BOMB_STATUS_KIND_FALL && dsamus_boma.is_cat_flag(Cat1::SpecialLw) && VarModule::is_flag(dsamus, vars::samusd::instance::MANUAL_DETONATE_READY) {
+            StatusModule::change_status_request_from_script(boma, *WEAPON_SAMUS_BOMB_STATUS_KIND_BURST_ATTACK, false);
+            VarModule::off_flag(dsamus, vars::samusd::instance::MANUAL_DETONATE_READY);
+        }
     }
 }

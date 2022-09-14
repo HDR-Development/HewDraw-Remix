@@ -126,8 +126,11 @@ unsafe fn samusd_super_missile_straight_game(fighter: &mut L2CAgentBase) {
 unsafe fn samusd_bomb_burst_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+    let dsamus = utils::util::get_battle_object_from_id(owner_id);
+    VarModule::off_flag(dsamus, vars::samusd::instance::DISABLE_SPECIAL_LW);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 90, 120, 0, 70, 10.0, 0.0, 0.0, 0.0, None, None, None, 0.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 6, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 90, 90, 0, 70, 10.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 6, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_OBJECT);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, 0);
     }
     wait(lua_state, 3.0);
@@ -160,7 +163,7 @@ unsafe fn samusd_bomb_burst_attack_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         //crate::sv_animcmd::EFFECT_BRANCH_SITUATION(fighter, Hash40::new("sys_bomb_a"), Hash40::new("sys_bomb_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
         EFFECT(fighter, Hash40::new("samusd_entry"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_RATE(fighter, 3.0);
+        LAST_EFFECT_SET_RATE(fighter, 3.2);
     }
 }
 
