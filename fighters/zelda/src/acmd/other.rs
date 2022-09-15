@@ -178,6 +178,16 @@ unsafe fn zelda_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "zelda_dein", script = "effect_tame" , category = ACMD_EFFECT , low_priority)]
+unsafe fn zelda_dein_tame_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_bullet"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.5, true);
+		LAST_EFFECT_SET_RATE(fighter, 0.75);
+	}
+}
+
 #[acmd_script( agent = "zelda_phantom", script = "game_build" , category = ACMD_GAME , low_priority)]
 unsafe fn zelda_phantom_build_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -661,6 +671,7 @@ pub fn install() {
 		dash_sound,
         zelda_turn_dash_game,
 		zelda_catch_game,
+		zelda_dein_tame_effect,
 		zelda_phantom_build_game,
 		zelda_phantom_attack_kick_game,
 		zelda_phantom_attack_punch_game,

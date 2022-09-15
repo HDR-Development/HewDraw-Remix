@@ -15,13 +15,13 @@
   </list>
   <list hash="param_dein">
     <struct index="0">
-      <float hash="speed">1.1</float>
-      <float hash="angle_add">2.145</float>
+      <float hash="speed">1.5</float>
+      <float hash="angle_add">3.0</float>
       <float hash="angle_max">85</float>
       <float hash="life">50</float>
       <float hash="count">50</float>
       <float hash="size_max">3</float>
-      <float hash="bang_time">6</float>
+      <float hash="bang_time">35</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
