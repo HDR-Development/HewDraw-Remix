@@ -449,6 +449,41 @@ unsafe fn metaknight_special_s_drill(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "metaknight", script = "effect_specialsdrill" , category = ACMD_EFFECT , low_priority)]
+unsafe fn metaknight_special_s_drill_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("metaknight_drilllush"), Hash40::new("haver"), 0, 16, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 2.0);
+    for i in 1..8 {
+        wait(lua_state, 1.0);
+        if is_excute(fighter) {
+            EFFECT(fighter, Hash40::new("sys_spin_wind_s"), Hash40::new("rot"), 0, 0, 20, 90, 0, 0, 0.5, 0, 0, 10, 20, 15, 360, true);
+        }
+        wait(lua_state, 1.0);
+        if is_excute(fighter) {
+            EFFECT(fighter, Hash40::new("sys_spin_wind_s"), Hash40::new("rot"), 0, 0, 15, 90, 0, 0, 0.8, 0, 0, 10, 20, 15, 360, true);
+        }
+        wait(lua_state, 1.0);
+        if is_excute(fighter) {
+            EFFECT(fighter, Hash40::new("sys_spin_wind_s"), Hash40::new("rot"), 0, 0, 10, 90, 0, 0, 1.1, 0, 0, 10, 20, 15, 360, true);
+        }
+        wait(lua_state, 1.0);
+        if is_excute(fighter) {
+            EFFECT(fighter, Hash40::new("sys_spin_wind_s"), Hash40::new("rot"), 0, 0, 5, 90, 0, 0, 1.4, 0, 0, 10, 20, 15, 360, true);
+        }
+    }
+    frame(lua_state, 43.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("metaknight_drilllush_end"), Hash40::new("haver"), 0, 16, 0, 0, 0, 0, 1, false);
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("metaknight_drilllush_end_wind"), Hash40::new("haver"), 0, 16, 0, 0, 0, 0, 1, false);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         metaknight_special_n_spin_game,
@@ -467,6 +502,7 @@ pub fn install() {
         metaknight_special_hi_effect,
         metaknight_special_s_finish,
         metaknight_special_s_drill,
+        metaknight_special_s_drill_effect,
         metaknight_special_n_end_effect,
         metaknight_special_n_spin_ground_effect,
         metaknight_special_n_start_effect,

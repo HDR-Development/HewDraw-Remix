@@ -26,18 +26,17 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
 
     let rising: f32 = KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY); // Rising while jumping/airdodging
 
-    let tether_only = boma.is_fighter()
-                        && [*FIGHTER_KIND_JACK, *FIGHTER_KIND_PFUSHIGISOU].contains(&fighter_kind)
-                        && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI;
-
     let tether_zair = boma.is_fighter()
                         && [*FIGHTER_KIND_LUCAS, *FIGHTER_KIND_YOUNGLINK, *FIGHTER_KIND_TOONLINK, *FIGHTER_KIND_SAMUS, *FIGHTER_KIND_SAMUSD, *FIGHTER_KIND_SZEROSUIT].contains(&fighter_kind)
                         && [*FIGHTER_STATUS_KIND_AIR_LASSO, *FIGHTER_STATUS_KIND_AIR_LASSO_REACH, *FIGHTER_STATUS_KIND_AIR_LASSO_HANG, *FIGHTER_STATUS_KIND_AIR_LASSO_REWIND].contains(&status_kind);
 
     let tether_special = boma.is_fighter()
-                        && ( (fighter_kind == *FIGHTER_KIND_SZEROSUIT && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S)
-                          || (fighter_kind == *FIGHTER_KIND_SHIZUE    && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S)
-                          || (fighter_kind == *FIGHTER_KIND_TANTAN    && (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI || status_kind == *FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_AIR)) );
+                        && ( (fighter_kind == *FIGHTER_KIND_SZEROSUIT   && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S)
+                          || (fighter_kind == *FIGHTER_KIND_SHIZUE      && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S)
+                          || (fighter_kind == *FIGHTER_KIND_TANTAN      && (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI || status_kind == *FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_AIR))
+                          || (fighter_kind == *FIGHTER_KIND_MASTER      && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI)
+                          || (fighter_kind == *FIGHTER_KIND_JACK        && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI)
+                          || (fighter_kind == *FIGHTER_KIND_PFUSHIGISOU && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI) );
 
     let tether_aerial = boma.is_fighter()
                         && ( (fighter_kind == *FIGHTER_KIND_SIMON   && status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR)
@@ -57,7 +56,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
                 }
 
                 if pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
-                    if !(tether_only || tether_zair || tether_special || tether_aerial) {
+                    if !((tether_zair || tether_special || tether_aerial) && WorkModule::is_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK)) {
                         return 0;
                     }
                 }
@@ -70,7 +69,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
                     if !object.is_null() {
         
                         if pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
-                            if !(tether_only || tether_zair || tether_special || tether_aerial) {
+                            if !((tether_zair || tether_special || tether_aerial) && WorkModule::is_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK)) {
                                 return 0;
                             }
                         }
@@ -91,7 +90,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
         else if check_cliff_entry_specializer(boma) == 1 {
             // Disable grabbing ledge while rising during an airborne state (not specials)
             if situation_kind == *SITUATION_KIND_AIR {
-                if rising >= 0.0 && !(tether_only || tether_zair || tether_special || tether_aerial) {
+                if rising >= 0.0 && !((tether_zair || tether_special || tether_aerial) && WorkModule::is_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK)) {
                     return 0;
                 }
             }

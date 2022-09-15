@@ -95,45 +95,20 @@ pub unsafe extern "C" fn metaquick_summon_end(fighter: &mut L2CFighterCommon) ->
 
 /// handles starting metaquick
 unsafe fn handle_start_metaquick(fighter: &mut L2CFighterCommon) {
-    let change_status = if fighter.is_situation(*SITUATION_KIND_GROUND) && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW) {
+    if fighter.is_situation(*SITUATION_KIND_GROUND) && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW) {
         return;
-    } else if fighter.is_situation(*SITUATION_KIND_AIR) {
+    }
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
         if fighter.is_status_one_of(&[
             *FIGHTER_STATUS_KIND_FALL,
             *FIGHTER_STATUS_KIND_JUMP,
             *FIGHTER_STATUS_KIND_JUMP_AERIAL,
-            *FIGHTER_STATUS_KIND_FLY
-        ]) {
-            true
-        } else {
-            false
+            *FIGHTER_STATUS_KIND_FLY])
+        {
+            fighter.change_to_custom_status(statuses::metaknight::METAQUICK_SUMMON, false, false);
+            MeterModule::drain(fighter.battle_object, 10);
         }
-    } else {
-        false
-    };
-
-    if change_status {
-        fighter.change_to_custom_status(statuses::metaknight::METAQUICK_SUMMON, false, false);
-    } else {
-        MotionAnimcmdModule::call_script_single(
-            fighter.module_accessor,
-            *FIGHTER_ANIMCMD_EFFECT,
-            Hash40::new("effect_metaquicksummon"),
-            -1
-        );
-
-        VarModule::off_flag(fighter.battle_object, vars::metaknight::instance::META_QUICK_PLAY_VC);
-        MotionAnimcmdModule::call_script_single(
-            fighter.module_accessor,
-            *FIGHTER_ANIMCMD_SOUND,
-            Hash40::new("sound_metaquicksummon"),
-            -1
-        );
-
-        start_meta_quick(fighter, 8 * 60);
     }
-
-    MeterModule::drain(fighter.battle_object, 10);
 }
 
 /// handles all of the meta quick logic
@@ -220,9 +195,9 @@ unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     // handle speed application once
     if VarModule::is_flag(fighter.object(), vars::metaknight::instance::META_QUICK_NEED_SET_SPEEDS) {
         if VarModule::get_int(fighter.object(), vars::common::instance::GIMMICK_TIMER) > 0 {
-            apply_status_speed_mul(fighter, 1.30);
+            apply_status_speed_mul(fighter, 1.25);
         } else {
-            apply_status_speed_mul(fighter, 0.90);
+            apply_status_speed_mul(fighter, 0.95);
         }
         VarModule::off_flag(fighter.object(), vars::metaknight::instance::META_QUICK_NEED_SET_SPEEDS);
     }
@@ -300,7 +275,7 @@ unsafe fn kill_quick_effect(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
             Hash40::new("head"),
             &Vector3f::zero(),
             &Vector3f::zero(),
-            2.0,
+            1.5,
             &Vector3f::zero(),
             &Vector3f::zero(),
             false,

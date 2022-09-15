@@ -147,7 +147,6 @@ unsafe fn sub_escape_air_common(fighter: &mut L2CFighterCommon) {
         fighter.sub_escape_air_uniq(L2CValue::Bool(false));
     }
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(sub_escape_air_uniq as *const () as _));
-    HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
 }
 
 unsafe fn force_ground_attach(fighter: &mut L2CFighterCommon) {
@@ -425,10 +424,11 @@ unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterC
     let trigger_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("air_escape_passive_trigger_frame")) as f32;
     let curr_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
     let pad = fighter.global_table[PAD_FLAG].get_i32();
+    let agt_window = ParamModule::get_int(fighter.battle_object, ParamType::Common, "glide_toss_cancel_frame");
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW)
         && pad & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
         && ItemModule::is_have_item(fighter.module_accessor, 0)
-        && curr_frame <= 5 {
+        && curr_frame <= agt_window {
             fighter.clear_lua_stack();
             lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_NO_THROW);
             smash::app::sv_module_access::item(fighter.lua_state_agent);
@@ -462,7 +462,8 @@ unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterC
     let passive_fb_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("passive_fb_cont_value"));
     // lazy eval gaurantees that we don't call handle_waveland if we are on the ground
     if situation_kind == *SITUATION_KIND_GROUND || fighter.handle_waveland(false) {
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_GROUND) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_GROUND) 
+        && WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0 {
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB)
                 && app::FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32)
                 && passive_fb_value <= stick_x.abs()
