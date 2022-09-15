@@ -122,13 +122,36 @@ unsafe fn samusd_super_missile_straight_game(fighter: &mut L2CAgentBase) {
 //     }
 // }
 
+#[acmd_script( agent = "samusd_bomb", script = "game_fall", category = ACMD_GAME, low_priority)]
+unsafe fn samusd_bomb_fall_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+    if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_SAMUSD { // Ensure the owner is Dark Samus.
+        let dsamus = utils::util::get_battle_object_from_id(owner_id);
+        VarModule::set_int(dsamus, vars::samusd::instance::BOMB_OBJECT_ID, fighter.battle_object_id as i32);
+        // Store the bomb's object id in Dark Samus's VarModule, if the owner is Dark Samus.
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 361, 45, 0, 22, 2.0, 0.0, 0.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 6, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_OBJECT);
+    }
+    frame(lua_state, 40.0);
+    if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_SAMUSD {
+        let dsamus = utils::util::get_battle_object_from_id(owner_id);
+        VarModule::on_flag(dsamus, vars::samusd::instance::MANUAL_DETONATE_READY);
+    }
+}
+
 #[acmd_script( agent = "samusd_bomb", script = "game_burstattack", category = ACMD_GAME, low_priority)]
 unsafe fn samusd_bomb_burst_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-    let dsamus = utils::util::get_battle_object_from_id(owner_id);
-    VarModule::off_flag(dsamus, vars::samusd::instance::DISABLE_SPECIAL_LW);
+    if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_SAMUSD {
+        let dsamus = utils::util::get_battle_object_from_id(owner_id);
+        VarModule::off_flag(dsamus, vars::samusd::instance::MANUAL_DETONATE_READY);
+    }
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 90, 90, 0, 70, 10.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 6, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_OBJECT);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, 0);
@@ -207,6 +230,7 @@ pub fn install() {
         samusd_super_missile_ready_game,
         samusd_super_missile_straight_game,
         //samusd_super_missile_burst_game,
+        samusd_bomb_fall_game,
         samusd_bomb_burst_attack_game,
         samusd_bomb_burst_attack_effect,
     );

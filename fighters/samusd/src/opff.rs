@@ -15,12 +15,6 @@ pub unsafe fn morphball_crawl(boma: &mut BattleObjectModuleAccessor, status_kind
     }
 }
 
-// pub unsafe fn disable_bomb(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-//     if VarModule::is_flag(fighter.battle_object, vars::samusd::instance::DISABLE_SPECIAL_LW) { //ArticleModule::is_exist(boma, *FIGHTER_SAMUS_GENERATE_ARTICLE_BOMB) && boma.is_cat_flag(Cat1::SpecialLw) {
-//         WorkModule::unable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
-//     }
-// }
-
 pub unsafe fn remove_super_missiles(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if status_kind == *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S2G {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S1G, false);
@@ -62,7 +56,6 @@ pub unsafe extern "Rust" fn common_samusd(fighter: &mut L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         morphball_crawl(&mut *info.boma, info.status_kind, info.frame);
         nspecial_cancels(&mut *info.boma, info.status_kind, info.situation_kind);
-        //disable_bomb(fighter, &mut *info.boma);
     }
 }
 
@@ -86,11 +79,17 @@ pub fn samusd_bomb_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe {
         let boma = weapon.boma();
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-        let dsamus = utils::util::get_battle_object_from_id(owner_id);
-        let dsamus_boma = &mut *(*dsamus).module_accessor;
-        if StatusModule::status_kind(boma) == *WEAPON_SAMUS_BOMB_STATUS_KIND_FALL && dsamus_boma.is_cat_flag(Cat1::SpecialLw) && VarModule::is_flag(dsamus, vars::samusd::instance::MANUAL_DETONATE_READY) {
-            StatusModule::change_status_request_from_script(boma, *WEAPON_SAMUS_BOMB_STATUS_KIND_BURST_ATTACK, false);
-            VarModule::off_flag(dsamus, vars::samusd::instance::MANUAL_DETONATE_READY);
+        // Ensure the bom's owner is Dark Samus.
+        if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_SAMUSD {
+            let dsamus = utils::util::get_battle_object_from_id(owner_id);
+            let dsamus_boma = &mut *(*dsamus).module_accessor;
+            if StatusModule::status_kind(boma) == *WEAPON_SAMUS_BOMB_STATUS_KIND_FALL
+            && dsamus_boma.is_cat_flag(Cat1::SpecialLw)
+            && VarModule::is_flag(dsamus, vars::samusd::instance::MANUAL_DETONATE_READY) {
+                StatusModule::change_status_request_from_script(boma, *WEAPON_SAMUS_BOMB_STATUS_KIND_BURST_ATTACK, false);
+                VarModule::off_flag(dsamus, vars::samusd::instance::MANUAL_DETONATE_READY);
+                dsamus_boma.clear_commands(Cat1::SpecialLw); // Clear down b command so Dark Samus doesn't immediately drop another bomb
+            }
         }
     }
 }

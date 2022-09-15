@@ -139,7 +139,6 @@ unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
 unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    VarModule::off_flag(fighter.battle_object, vars::samusd::instance::MANUAL_DETONATE_READY);
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_SAMUS_STATUS_SPECIAL_LW_FLAG_JUMP);
@@ -153,11 +152,6 @@ unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_SAMUS_STATUS_SPECIAL_LW_FLAG_WEAPON);
         VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_sphere") as i64);
         WorkModule::on_flag(boma, *FIGHTER_SAMUS_STATUS_SPECIAL_LW_FLAG_MV);
-    }
-    frame(lua_state, 40.0);
-    if is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, vars::samusd::instance::MANUAL_DETONATE_READY);
-        VarModule::on_flag(fighter.battle_object, vars::samusd::instance::DISABLE_SPECIAL_LW);
     }
     frame(lua_state, 44.0);
     if is_excute(fighter) {
@@ -178,17 +172,11 @@ unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
 unsafe fn game_specialairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    VarModule::off_flag(fighter.battle_object, vars::samusd::instance::MANUAL_DETONATE_READY);
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_SAMUS_STATUS_SPECIAL_LW_FLAG_WEAPON);
         VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_sphere") as i64);
         WorkModule::on_flag(boma, *FIGHTER_SAMUS_STATUS_SPECIAL_LW_FLAG_MV);
-    }
-    frame(lua_state, 40.0);
-    if is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, vars::samusd::instance::MANUAL_DETONATE_READY);
-        VarModule::on_flag(fighter.battle_object, vars::samusd::instance::DISABLE_SPECIAL_LW);
     }
     frame(lua_state, 44.0);
     if is_excute(fighter) {
