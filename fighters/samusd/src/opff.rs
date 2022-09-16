@@ -79,16 +79,21 @@ pub fn samusd_bomb_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe {
         let boma = weapon.boma();
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-        // Ensure the bom's owner is Dark Samus.
+        // Ensure the boma's owner is Dark Samus.
         if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_SAMUSD {
             let dsamus = utils::util::get_battle_object_from_id(owner_id);
             let dsamus_boma = &mut *(*dsamus).module_accessor;
             if StatusModule::status_kind(boma) == *WEAPON_SAMUS_BOMB_STATUS_KIND_FALL
             && dsamus_boma.is_cat_flag(Cat1::SpecialLw)
             && VarModule::is_flag(dsamus, vars::samusd::instance::MANUAL_DETONATE_READY) {
-                StatusModule::change_status_request_from_script(boma, *WEAPON_SAMUS_BOMB_STATUS_KIND_BURST_ATTACK, false);
-                VarModule::off_flag(dsamus, vars::samusd::instance::MANUAL_DETONATE_READY);
-                dsamus_boma.clear_commands(Cat1::SpecialLw); // Clear down b command so Dark Samus doesn't immediately drop another bomb
+                if WorkModule::is_enable_transition_term_group(dsamus_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ATTACK)
+                    || WorkModule::is_enable_transition_term_group(dsamus_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK)
+                    || WorkModule::is_enable_transition_term_group(dsamus_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL)
+                    || WorkModule::is_enable_transition_term_group(dsamus_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL) {
+                    StatusModule::change_status_request_from_script(boma, *WEAPON_SAMUS_BOMB_STATUS_KIND_BURST_ATTACK, false);
+                    VarModule::off_flag(dsamus, vars::samusd::instance::MANUAL_DETONATE_READY);
+                    dsamus_boma.clear_commands(Cat1::SpecialLw); // Clear down b command so Dark Samus doesn't immediately drop another bomb
+                }
             }
         }
     }
