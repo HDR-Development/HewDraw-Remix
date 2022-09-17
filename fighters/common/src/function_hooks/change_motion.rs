@@ -89,6 +89,6 @@ pub fn install() {
         change_motion_inherit_frame_hook,
         change_motion_inherit_frame_keep_rate_hook,
         change_motion_force_inherit_frame_hook,
-        change_motion_kind_hook
+        change_motion_kind_hook,
     );
 }
