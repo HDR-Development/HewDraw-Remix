@@ -181,6 +181,8 @@ unsafe fn zelda_special_air_hi_effect(fighter: &mut L2CAgentBase) {
         if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
             EFFECT_FOLLOW(fighter, Hash40::new("zelda_flor_teleport"), Hash40::new("top"), 0, 8, 0, 0, 0, 0, 1.25, true);
             LAST_EFFECT_SET_RATE(fighter, 2.0);
+            EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk"), Hash40::new("top"), 0.0, 10.0, -5.0, 0, 0, 0, 1.75, true);
+            LAST_EFFECT_SET_COLOR(fighter, 0.5, 3.0, 1.0);
         }
         else {
             if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
