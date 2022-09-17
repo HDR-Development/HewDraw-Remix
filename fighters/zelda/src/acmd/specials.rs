@@ -232,6 +232,18 @@ unsafe fn zelda_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "zelda", script = "game_landingfallspecial" , category = ACMD_GAME , low_priority)]
+unsafe fn zelda_special_hi_land_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+            VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+            FT_MOTION_RATE(fighter, 0.5);
+        }
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         zelda_special_n_game,
@@ -241,6 +253,7 @@ pub fn install() {
         zelda_special_hi_game,
         zelda_special_air_hi_game,
         zelda_special_air_hi_effect,
+        zelda_special_hi_land_game,
     );
 }
 
