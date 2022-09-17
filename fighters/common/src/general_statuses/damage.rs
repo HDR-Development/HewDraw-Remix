@@ -26,6 +26,9 @@ pub unsafe fn FighterStatusUniqProcessDamage_leave_stop_hook(fighter: &mut L2CFi
     if !arg3.get_bool() {
         return 0.into();
     }
+    // Disable hitlag shake (not SDI) once hitlag is over
+    // Prevents "smoke farts" from kb smoke
+    ShakeModule::stop(fighter.module_accessor);
     let hashmap = fighter.local_func__fighter_status_damage_2();
     // vanilla ASDI routine (only runs for paralyze/crumple attacks)
     // if hashmap["absolute_"].get_bool() {
