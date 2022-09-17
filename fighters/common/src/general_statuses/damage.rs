@@ -10,7 +10,11 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             FighterStatusUniqProcessDamage_leave_stop_hook,
-            ftstatusuniqprocessdamage_init_common
+            ftstatusuniqprocessdamage_init_common,
+            sub_ftStatusUniqProcessDamageFly_getMotionKind_hook,
+            status_DamageFly_Main_hook,
+            calc_damage_motion_rate_hook,
+            sub_DamageFlyCommon_hook
         );
     }
 }
@@ -56,18 +60,13 @@ pub unsafe fn FighterStatusUniqProcessDamage_leave_stop_hook(fighter: &mut L2CFi
             PostureModule::update_rot_y_lr(fighter.module_accessor);   
         }
         else {
-            if status_kind != *FIGHTER_STATUS_KIND_DAMAGE_FLY
-            || (status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FLY
-                && damage_motion_kind != hash40("wall_damage")
-                && MotionModule::motion_kind(fighter.module_accessor) != hash40("wall_damage"))
-            {
-                if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_KNOCKOUT) {
-                    let lr = PostureModule::lr(fighter.module_accessor);
-                    TurnModule::set_turn(fighter.module_accessor, Hash40::new("back_damage"), lr, false, false, true);
-                    PostureModule::reverse_lr(fighter.module_accessor);
-                    let back_damage_effective_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("back_damage_effective_frame"));
-                    WorkModule::set_int(fighter.module_accessor, back_damage_effective_frame, *FIGHTER_INSTANCE_WORK_ID_INT_BACK_DAMAGE_EFFECTIVE_FRAME);
-                }
+            // If hit from behind, turns you around to face attacker
+            if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_KNOCKOUT) {
+                let lr = PostureModule::lr(fighter.module_accessor);
+                TurnModule::set_turn(fighter.module_accessor, Hash40::new("back_damage"), lr, false, false, true);
+                PostureModule::reverse_lr(fighter.module_accessor);
+                let back_damage_effective_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("back_damage_effective_frame"));
+                WorkModule::set_int(fighter.module_accessor, back_damage_effective_frame, *FIGHTER_INSTANCE_WORK_ID_INT_BACK_DAMAGE_EFFECTIVE_FRAME);
             }
         }
         WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_DAMAGE_LR);
@@ -80,8 +79,8 @@ pub unsafe fn FighterStatusUniqProcessDamage_leave_stop_hook(fighter: &mut L2CFi
             }
         }
         if status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FLY {
-            if fighter.global_table[LEAVE_STOP_CALLBACK].get_bool() {
-                let callable: extern "C" fn(&mut L2CFighterCommon, L2CValue) -> L2CValue = std::mem::transmute(fighter.global_table[LEAVE_STOP_CALLBACK].get_ptr());
+            if fighter.global_table[DAMAGE_MOTION_KIND_CALLBACK].get_bool() {
+                let callable: extern "C" fn(&mut L2CFighterCommon, L2CValue) -> L2CValue = std::mem::transmute(fighter.global_table[DAMAGE_MOTION_KIND_CALLBACK].get_ptr());
                 damage_motion_kind = callable(fighter, L2CValue::U64(damage_motion_kind)).get_u64();
             }
         }
@@ -133,6 +132,10 @@ pub unsafe fn FighterStatusUniqProcessDamage_leave_stop_hook(fighter: &mut L2CFi
     }
     // <HDR>
     check_asdi(fighter);
+    if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE, *FIGHTER_STATUS_KIND_DAMAGE_AIR]) && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_TO_PIERCE) {
+        MotionModule::set_rate(fighter.module_accessor, 1.0);
+        WorkModule::set_float(fighter.module_accessor, 1.0, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_DAMAGE_MOTION_RATE);
+    }
     // </HDR>
     0.into()
 }
@@ -264,4 +267,151 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
         let invalid_paralyze_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("invalid_paralyze_frame"));
         WorkModule::set_float(fighter.module_accessor, invalid_paralyze_frame, *FIGHTER_INSTANCE_WORK_ID_INT_INVALID_PARALYZE_FRAME);
     }
+}
+
+#[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessDamageFly_getMotionKind)]
+unsafe fn sub_ftStatusUniqProcessDamageFly_getMotionKind_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.clear_lua_stack();
+    lua_args!(fighter, hash40("angle"));
+    sv_information::damage_log_value(fighter.lua_state_agent);
+    let angle = fighter.pop_lua_stack(1).get_f32();
+    let fly_top_angle_lw = WorkModule::get_param_float(fighter.module_accessor, hash40("battle_object"), hash40("fly_top_angle_lw"));
+    let fly_top_angle_hi = WorkModule::get_param_float(fighter.module_accessor, hash40("battle_object"), hash40("fly_top_angle_hi"));
+    if angle > fly_top_angle_lw && angle < fly_top_angle_hi {
+        return L2CValue::U64(hash40("damage_fly_top"));
+    }
+    // Uncomment to use wall bounce animation when hit from behind
+    /***
+    let damage_lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_DAMAGE_LR);
+    let lr = PostureModule::lr(fighter.module_accessor);
+    fighter.clear_lua_stack();
+    lua_args!(fighter, 0xa96619c55 as u64);
+    sv_information::damage_log_value(fighter.lua_state_agent);
+    let back_damage = fighter.pop_lua_stack(1).get_bool();
+    if back_damage || lr * damage_lr < 0.0 {
+        return L2CValue::U64(hash40("wall_damage"));
+    }
+    ***/
+    
+    fighter.clear_lua_stack();
+    lua_args!(fighter, hash40("height"));
+    sv_information::damage_log_value(fighter.lua_state_agent);
+    let height = fighter.pop_lua_stack(1).get_i32();
+    let mut damage_fly_motion_kind = fighter.sub_ftStatusUniqProcessDamageFly_getMotionKindSub(L2CValue::I32(height)).get_u64();
+    let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
+    if damage_fly_motion_kind == motion_kind {
+        let mut rand_val = app::sv_math::rand(hash40("fighter"), *HIT_HEIGHT_TERM - 1);
+        rand_val += (1 + height);
+        if rand_val >= *HIT_HEIGHT_TERM {
+            rand_val -= *HIT_HEIGHT_TERM;
+        }
+        damage_fly_motion_kind = fighter.sub_ftStatusUniqProcessDamageFly_getMotionKindSub(L2CValue::I32(rand_val)).get_u64();
+    }
+    if fighter.global_table[DAMAGE_MOTION_KIND_CALLBACK].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon, L2CValue) -> L2CValue = std::mem::transmute(fighter.global_table[DAMAGE_MOTION_KIND_CALLBACK].get_ptr());
+        damage_fly_motion_kind = callable(fighter, L2CValue::U64(damage_fly_motion_kind)).get_u64();
+    }
+    L2CValue::U64(damage_fly_motion_kind)
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_DamageFly_Main)]
+unsafe fn status_DamageFly_Main_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINISH_CAMERA_TARGET) {
+        // Uncomment to allow hitstun canceling when kb animation is over, even if hitstun frames aren't
+        /***
+        if CancelModule::is_enable_cancel(fighter.module_accessor)
+        && fighter.sub_air_check_fall_common().get_bool() {
+            return 0.into();
+        }
+        ***/
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FALL) 
+        && MotionModule::is_end(fighter.module_accessor)
+        && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_END_REACTION)
+        {
+            fighter.change_status(FIGHTER_STATUS_KIND_DAMAGE_FALL.into(), false.into());
+            return 0.into();
+        }
+        if fighter.sub_DamageFlyCommon().get_bool() {
+            return 0.into();
+        }
+        if !FighterStopModuleImpl::is_damage_stop(fighter.module_accessor) {
+            if fighter.sub_AirChkDamageReflectWall().get_bool()
+            || fighter.sub_AirChkDamageReflectCeil().get_bool()
+            || fighter.sub_AirChkDamageReflectFloor().get_bool()
+            {
+                return 0.into();
+            }
+        }
+        fighter.FighterStatusDamage__correctDamageVectorEffect(L2CValue::Bool(false));
+    }
+    else {
+        if !fighter.status_DamageFinishCamera_exec().get_bool() {
+            return 0.into();
+        }
+        fighter.status_DamageFly_Common();
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_ADJUST_VECTOR);
+    }
+    0.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_calc_damage_motion_rate)]
+unsafe fn calc_damage_motion_rate_hook(fighter: &mut L2CFighterCommon, motion_kind: L2CValue, start_frame: L2CValue, is_pierce: L2CValue) -> L2CValue {
+    // Reverts vanilla's motion rating of DamageFly, DamageFlyTop, and DamageFlyMeteor animations
+    // to emulate Melee/PM's knockback feel
+    if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE, *FIGHTER_STATUS_KIND_DAMAGE_AIR]) && !is_pierce.get_bool() {
+        WorkModule::set_float(fighter.module_accessor, 1.0, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_DAMAGE_MOTION_RATE);
+        return L2CValue::F32(1.0);
+    }
+    original!()(fighter, motion_kind, start_frame, is_pierce)
+}
+
+#[skyline::hook(replace = L2CFighterCommon_sub_DamageFlyCommon)]
+unsafe fn sub_DamageFlyCommon_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.sub_AirChkPassiveWallJump().get_bool()
+    || fighter.sub_AirChkPassiveWall().get_bool()
+    || fighter.sub_AirChkPassiveCeil().get_bool()
+    {
+        return true.into();
+    }
+    // Uncomment to allow hitstun canceling before hitstun frames are over
+    /***
+    if fighter.sub_transition_group_check_air_special().get_bool()
+    || fighter.sub_transition_group_check_air_item_throw().get_bool()
+    || fighter.sub_transition_group_check_air_lasso().get_bool()
+    || fighter.sub_transition_group_check_air_escape().get_bool()
+    || fighter.sub_transition_group_check_air_attack().get_bool()
+    {
+        return true.into();
+    }
+    ***/
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_END_REACTION) {
+        if fighter.sub_transition_group_check_air_special().get_bool()
+        || fighter.sub_transition_group_check_air_item_throw().get_bool()
+        || fighter.sub_transition_group_check_air_lasso().get_bool()
+        || fighter.sub_transition_group_check_air_escape().get_bool()
+        || fighter.sub_transition_group_check_air_attack().get_bool()
+        || fighter.sub_transition_group_check_air_tread_jump().get_bool()
+        || fighter.sub_transition_group_check_air_wall_jump().get_bool()
+        || fighter.sub_transition_group_check_air_jump_aerial().get_bool()
+        {
+            return true.into();
+        }
+        else {
+            if !fighter.global_table[IS_STOPPING].get_bool()
+            && fighter.sub_DamageFlyChkUniq().get_bool()
+            {
+                return true.into();
+            }
+            return false.into();
+        }
+    }
+    else {
+        if !fighter.global_table[IS_STOPPING].get_bool()
+        && fighter.sub_DamageFlyChkUniq().get_bool()
+        {
+            return true.into();
+        }
+        return false.into();
+    }
+    false.into()
 }
