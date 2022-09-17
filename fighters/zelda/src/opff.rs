@@ -53,7 +53,7 @@ unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &m
 }
 
 unsafe fn teleport_shorten_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR && status_kind == *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL {
+    if /*StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR &&*/ status_kind == *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL {
         if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
             VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
