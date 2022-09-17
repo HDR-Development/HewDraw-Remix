@@ -135,7 +135,8 @@ pub unsafe fn FighterStatusUniqProcessDamage_leave_stop_hook(fighter: &mut L2CFi
     }
     // <HDR>
     check_asdi(fighter);
-    if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE, *FIGHTER_STATUS_KIND_DAMAGE_AIR]) && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_TO_PIERCE) {
+    if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE, *FIGHTER_STATUS_KIND_DAMAGE_AIR, *FIGHTER_STATUS_KIND_BURY])
+    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_TO_PIERCE) {
         MotionModule::set_rate(fighter.module_accessor, 1.0);
         WorkModule::set_float(fighter.module_accessor, 1.0, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_DAMAGE_MOTION_RATE);
     }
@@ -361,7 +362,7 @@ unsafe fn status_DamageFly_Main_hook(fighter: &mut L2CFighterCommon) -> L2CValue
 unsafe fn calc_damage_motion_rate_hook(fighter: &mut L2CFighterCommon, motion_kind: L2CValue, start_frame: L2CValue, is_pierce: L2CValue) -> L2CValue {
     // Reverts vanilla's motion rating of DamageFly, DamageFlyTop, and DamageFlyMeteor animations
     // to emulate Melee/PM's knockback feel
-    if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE, *FIGHTER_STATUS_KIND_DAMAGE_AIR]) && !is_pierce.get_bool() {
+    if !fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE, *FIGHTER_STATUS_KIND_DAMAGE_AIR, *FIGHTER_STATUS_KIND_BURY]) && !is_pierce.get_bool() {
         WorkModule::set_float(fighter.module_accessor, 1.0, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_DAMAGE_MOTION_RATE);
         return L2CValue::F32(1.0);
     }
