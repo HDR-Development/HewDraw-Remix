@@ -1,8 +1,8 @@
 use super::*;
 use globals::*;
 
-const shockwave_fx: [u64 ; 2] = [hash40("sys_crown"), hash40("sys_crown_collision")];
-const smoke_fx: [u64 ; 15] = [hash40("sys_atk_smoke"),
+const SHOCKWAVE_FX: [u64 ; 3] = [hash40("sys_crown"), hash40("sys_crown_collision"), 0xde89fce0a];
+const SMOKE_FX: [u64 ; 15] = [hash40("sys_atk_smoke"),
                             hash40("sys_atk_smoke2"),
                             hash40("sys_bound_smoke"),
                             hash40("sys_dash_smoke"),
@@ -41,10 +41,10 @@ unsafe fn EFFECT_hook(lua_state: u64) {
         // Index of effect name
         if i == 0 {
             let effect_name = hitbox_params[i as usize].get_hash();
-            if shockwave_fx.contains(&effect_name.hash) {
+            if SHOCKWAVE_FX.contains(&effect_name.hash) {
                 reduce_size = true;
             }
-            if smoke_fx.contains(&effect_name.hash) {
+            if SMOKE_FX.contains(&effect_name.hash) {
                 reduce_alpha = true;
             }
             l2c_agent.push_lua_stack(&mut hitbox_params[i as usize]);
@@ -88,10 +88,10 @@ unsafe fn EFFECT_FOLLOW_hook(lua_state: u64) {
         // Index of effect name
         if i == 0 {
             let effect_name = hitbox_params[i as usize].get_hash();
-            if shockwave_fx.contains(&effect_name.hash) {
+            if SHOCKWAVE_FX.contains(&effect_name.hash) {
                 reduce_size = true;
             }
-            if smoke_fx.contains(&effect_name.hash) {
+            if SMOKE_FX.contains(&effect_name.hash) {
                 reduce_alpha = true;
             }
             //let mut aux: L2CValue = L2CValue::new_int(*ATTACK_LR_CHECK_POS as u64);
@@ -136,10 +136,10 @@ unsafe fn EFFECT_FOLLOW_FLIP_hook(lua_state: u64) {
         // Index of effect name
         if i == 0 {
             let effect_name = hitbox_params[i as usize].get_hash();
-            if shockwave_fx.contains(&effect_name.hash) {
+            if SHOCKWAVE_FX.contains(&effect_name.hash) {
                 reduce_size = true;
             }
-            if smoke_fx.contains(&effect_name.hash) {
+            if SMOKE_FX.contains(&effect_name.hash) {
                 reduce_alpha = true;
             }
             //let mut aux: L2CValue = L2CValue::new_int(*ATTACK_LR_CHECK_POS as u64);
