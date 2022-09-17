@@ -83,32 +83,12 @@ unsafe fn change_motion_ecb_shift_check(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-#[skyline::hook(replace=EffectModule::preset_lifetime_rate_partial)]
-unsafe fn preset_lifetime_rate_partial_hook(boma: &mut BattleObjectModuleAccessor, rate: f32) -> u64 {
-    let mut rate = rate.clone();
-    // Halve the lifetime of knockback smoke
-    if boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_DAMAGE_AIR,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR])
-    {
-        rate *= 0.5;
-    }
-    original!()(boma, rate)
-}
-
-
 pub fn install() {
     skyline::install_hooks!(
         change_motion_hook,
         change_motion_inherit_frame_hook,
         change_motion_inherit_frame_keep_rate_hook,
         change_motion_force_inherit_frame_hook,
-        change_motion_kind_hook,
-        preset_lifetime_rate_partial_hook
+        change_motion_kind_hook
     );
 }

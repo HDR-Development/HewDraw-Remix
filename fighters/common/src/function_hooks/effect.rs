@@ -341,6 +341,30 @@ unsafe fn req_follow(boma: &mut BattleObjectModuleAccessor, effHash: smash::phx:
     original!()(boma, effHash, boneHash, pos, rot, eff_size, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
 }
 
+#[skyline::hook(replace=EffectModule::preset_lifetime_rate_partial)]
+unsafe fn preset_lifetime_rate_partial_hook(boma: &mut BattleObjectModuleAccessor, rate: f32) -> u64 {
+    let mut rate = rate.clone();
+    // Halve the lifetime of knockback smoke
+    if boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR])
+    {
+        rate *= 0.5;
+    }
+    original!()(boma, rate)
+}
+
+#[skyline::hook(replace=EffectModule::get_dead_effect_scale)]
+unsafe fn get_dead_effect_scale_hook(boma: &mut BattleObjectModuleAccessor, arg1: &smash::phx::Vector3f, arg2: f32, arg3: bool) -> f32 {
+    // Shrink KO gfx by 25%
+    original!()(boma, arg1, arg2, arg3) * 0.75
+}
+
 pub fn install() {
     skyline::install_hooks!(
         EFFECT_hook,
@@ -352,6 +376,8 @@ pub fn install() {
         LANDING_EFFECT_FLIP_hook,
         DOWN_EFFECT_hook,
         req_on_joint_hook,
-        req_follow
+        req_follow,
+        preset_lifetime_rate_partial_hook,
+        get_dead_effect_scale_hook
     );
 }
