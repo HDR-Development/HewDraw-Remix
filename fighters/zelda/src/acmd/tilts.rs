@@ -37,10 +37,10 @@ unsafe fn zelda_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
 unsafe fn zelda_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 10.0);
+    frame(lua_state, 11.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk_flash_s"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 2.0, true);
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("zelda_atk_arc"), Hash40::new("zelda_atk_arc"), Hash40::new("top"), 0, 12, 0.5, -20, 0, 8, 1.05, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("zelda_atk_arc"), Hash40::new("zelda_atk_arc"), Hash40::new("top"), 0, 12, 0, -20, 0, 8, 1.05, true, *EF_FLIP_YZ);
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
@@ -84,10 +84,10 @@ unsafe fn zelda_attack_s3_s_game(fighter: &mut L2CAgentBase) {
 unsafe fn zelda_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 10.0);
+    frame(lua_state, 11.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk_flash_s"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 2.0, true);
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("zelda_atk_arc"), Hash40::new("zelda_atk_arc"), Hash40::new("top"), 0, 11.3, 2.0, 3, 0, 5, 1.05, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("zelda_atk_arc"), Hash40::new("zelda_atk_arc"), Hash40::new("top"), 0, 11.3, 0, 3, 0, 5, 1.05, true, *EF_FLIP_YZ);
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
@@ -131,10 +131,10 @@ unsafe fn zelda_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 unsafe fn zelda_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 10.0);
+    frame(lua_state, 11.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk_flash_s"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 2.0, true);
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("zelda_atk_arc"), Hash40::new("zelda_atk_arc"), Hash40::new("top"), 0, 9, 2, 22, 0, 3, 1.05, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("zelda_atk_arc"), Hash40::new("zelda_atk_arc"), Hash40::new("top"), 0, 9, 0, 22, 0, 3, 1.05, true, *EF_FLIP_YZ);
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
@@ -161,6 +161,17 @@ unsafe fn zelda_attack_hi3_game(fighter: &mut L2CAgentBase) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
     
+}
+
+#[acmd_script( agent = "zelda", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
+unsafe fn zelda_attack_hi3_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk_hi_flash"), Hash40::new("armr"), 4.5, 0, 0, 0, 0, 0, 1, true);
+    }
 }
 
 #[acmd_script( agent = "zelda", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
@@ -213,6 +224,7 @@ pub fn install() {
         zelda_attack_s3_lw_game,
         zelda_attack_s3_lw_effect,
         zelda_attack_hi3_game,
+        zelda_attack_hi3_effect,
         zelda_attack_lw3_game,
         zelda_attack_lw3_effect,
     );
