@@ -102,6 +102,7 @@
   <float hash="damage_fly_length_mul_min">1</float>
   <int hash="damage_fly_attack_frame">999</int>
   <int hash="damage_fly_escape_frame">999</int>
+  <float hash="damage_fly_reflect_speed_mul">0.8</float>
   <float hash="damage_fly_reflect_reaction_frame_mul">0.8</float>
   <float hash="dead_down_damage_speed">999</float>
   <float hash="bury_jump_y_speed_mul">1.15</float>
