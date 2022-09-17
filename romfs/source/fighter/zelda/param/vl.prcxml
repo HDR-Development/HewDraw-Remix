@@ -67,7 +67,7 @@
   <list hash="param_phantom">
     <struct index="0">
       <float hash="speed">3</float>
-      <float hash="hp_add_charge">2</float>
+      <float hash="hp_add_charge">1</float>
       <float hash="speed_charge">0</float>
       <float hash="attack_add_charge">0</float>
     </struct>
