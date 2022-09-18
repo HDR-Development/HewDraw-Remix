@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
+  <list hash="param_special_s">
+    <struct index="0">
+      <float hash="throw_angle_max">80</float>
+    </struct>
+  </list>
   <list hash="param_gordo">
     <struct index="0">
       <int hash="life">180</int>
-      <float hash="0x1f6c5eefa5">7</float>
+      <float hash="0x1f6c5eefa5">5</float>
       <float hash="turn_speed_min">4</float>
       <int hash="remove_turn_num">4</int>
       <int hash="wall_stop">100</int>
