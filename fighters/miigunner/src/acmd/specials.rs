@@ -454,6 +454,26 @@ unsafe fn special_air_hi1_game(fighter: &mut L2CAgentBase) {
 	} 
 }
 
+#[acmd_script( agent = "miigunner", scripts = ["game_specialhi2squat", "game_specialairhi2squat"] , category = ACMD_GAME , low_priority)]
+unsafe fn special_hi2_squat_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+	frame(lua_state, 3.0);
+	FT_MOTION_RATE(fighter, 0.5);
+	frame(lua_state, 7.0);
+	FT_MOTION_RATE(fighter, 0.25);
+	frame(lua_state, 11.0);
+	FT_MOTION_RATE(fighter, 1);
+	if is_excute(fighter) {
+		ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 270, 100, 0, 5, 9.0, 0.0, 0.0, 3.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+		ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 110, 85, 40, 90, 9.0, 0.0, 0.0, 3.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+	}
+	frame(lua_state, 13.0);
+	if is_excute(fighter) {
+		AttackModule::clear_all(boma);
+	}
+}
+
 #[acmd_script( agent = "miigunner", script = "game_specialhi2" , category = ACMD_GAME , low_priority)]
 unsafe fn special_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -526,6 +546,7 @@ pub fn install() {
 		special_air_n3_start_game,
 		special_hi1_game,
 		special_air_hi1_game,
+		special_hi2_squat_game,
 		special_hi2_game,
 		special_hi3_start_game,
 		special_air_hi3_start_game,

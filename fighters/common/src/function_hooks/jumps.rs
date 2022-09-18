@@ -34,7 +34,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 pub fn install() {
     unsafe {
         // stubs vanilla fullhop initial y velocity calculations
-        skyline::patching::nop_data(0x6d2174);
+        skyline::patching::Patch::in_text(0x6d2174).nop();
     }
     skyline::install_hooks!(fullhop_initial_y_speed_hook);
     skyline::nro::add_hook(nro_hook);
