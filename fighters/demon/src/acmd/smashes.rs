@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script( agent = "demon", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attack11(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "demon", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
+unsafe fn demon_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -129,7 +129,7 @@ unsafe fn game_attack11(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-
+        demon_attack_lw4_game,
 );
 }
 
