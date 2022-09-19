@@ -56,7 +56,7 @@ pub mod globals {
     pub const CHECK_SPECIAL_COMMAND: i32 = 0x3C;
     pub const WAZA_CUSTOMIZE_CONTROL: i32 = 0x3D;
     pub const STATUS_CHANGE_CALLBACK: i32 = 0x3E;
-    pub const LEAVE_STOP_CALLBACK: i32 = 0x42;
+    pub const DAMAGE_MOTION_KIND_CALLBACK: i32 = 0x42;
     pub const DASH_POST_TRANSITION_CALLBACK: i32 = 0x57;
 }
 
