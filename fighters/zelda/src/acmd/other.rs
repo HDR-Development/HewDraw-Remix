@@ -265,7 +265,7 @@ unsafe fn zelda_phantom_build_game(fighter: &mut L2CAgentBase) {
 	if is_excute(fighter) {
 		WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
 	}
-	frame(lua_state, 600.0);
+	frame(lua_state, 180.0);
 	if is_excute(fighter) {
 		WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
 	}   
@@ -346,7 +346,7 @@ unsafe fn zelda_phantom_attack_s_game(fighter: &mut L2CAgentBase) {
 	let rush_speed = 4.5;
 	frame(lua_state, 0.0);
 	if is_excute(fighter) {
-		FT_MOTION_RATE(fighter, 5.0/(3.0-0.0));
+		//FT_MOTION_RATE(fighter, 5.0/(3.0-0.0));
 		KineticModule::unable_energy(boma, *WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL);
 	}
 	frame(lua_state, 3.0);
@@ -435,7 +435,7 @@ unsafe fn zelda_phantom_attack_l_game(fighter: &mut L2CAgentBase) {
 	let rush_speed = 5.0;
 	frame(lua_state, 0.0);
 	if is_excute(fighter) {
-		FT_MOTION_RATE(fighter, 20.0/3.0);
+		//FT_MOTION_RATE(fighter, 20.0/3.0);
 		KineticModule::unable_energy(boma, *WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL);
 	}
 	frame(lua_state, 3.0);
@@ -572,7 +572,7 @@ unsafe fn zelda_phantom_attack_max_game(fighter: &mut L2CAgentBase) {
 	let rush_speed = 6.5;
 	frame(lua_state, 0.0);
 	if is_excute(fighter) {
-		FT_MOTION_RATE(fighter, 20.0/(3.0-0.0));
+		FT_MOTION_RATE(fighter, 11.0/(3.0-0.0));
 		KineticModule::unable_energy(boma, *WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL);
 	}
 	frame(lua_state, 3.0);

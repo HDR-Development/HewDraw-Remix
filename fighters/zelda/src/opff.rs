@@ -52,31 +52,56 @@ unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &m
     }
 }
 
-unsafe fn teleport_shorten_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if /*StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR &&*/ status_kind == *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL {
-        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
-            VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+// unsafe fn teleport_shorten_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+//     if /*StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR &&*/ status_kind == *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL {
+//         if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+//             VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+//             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+//         }
+//     }
+// }
+
+// Neutral Special Cancels
+// unsafe fn neutral_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
+//     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
+//         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag() {
+//             if boma.is_input_jump() {
+//                 if situation_kind == *SITUATION_KIND_AIR {
+//                     if boma.get_num_used_jumps() < boma.get_jump_count_max() {
+//                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, true);
+//                     }
+//                 } else if situation_kind == *SITUATION_KIND_GROUND {
+//                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
+//                 }
+//             }
+//         }
+//     }
+// }
+
+unsafe fn phantom_special_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK,
+                                        *FIGHTER_STATUS_KIND_ATTACK_S3,
+                                        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+                                        *FIGHTER_STATUS_KIND_ATTACK_LW3,
+                                        *FIGHTER_STATUS_KIND_ATTACK_S4,
+                                        *FIGHTER_STATUS_KIND_ATTACK_HI4,
+                                        *FIGHTER_STATUS_KIND_ATTACK_LW4,
+                                        *FIGHTER_STATUS_KIND_ATTACK_DASH,
+                                        *FIGHTER_STATUS_KIND_ATTACK_AIR])
+    && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
+    && !fighter.is_in_hitlag() {
+        if fighter.is_cat_flag(Cat1::SpecialLw) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, false);
         }
     }
 }
 
-// Neutral Special Cancels
-unsafe fn neutral_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag() {
-            if boma.is_input_jump() {
-                if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, true);
-                    }
-                } else if situation_kind == *SITUATION_KIND_GROUND {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                }
-            }
-        }
-    }
-}
+// unsafe fn teleport_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
+//     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+//         // allows ledgegrab during teleport startup
+//         fighter.sub_transition_group_check_air_cliff();
+//     }
+// }
 
 unsafe fn nayru_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
@@ -98,6 +123,8 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     dins_fire_land_cancel(boma);
     nayru_land_cancel(boma, status_kind, situation_kind, cat[2], stick_y);
     //neutral_special_cancels(boma, status_kind, situation_kind, cat[0]);
+    //teleport_startup_ledgegrab(fighter);
+    phantom_special_cancel(fighter, boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_ZELDA )]
@@ -157,14 +184,17 @@ pub fn phantom_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
                                             *FIGHTER_STATUS_KIND_DAMAGE_FALL,
                                             *FIGHTER_STATUS_KIND_SPECIAL_LW,
                                             *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_LW_CHARGE,
-                                            *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_LW_END])
+                                            *FIGHTER_ZELDA_STATUS_KIND_SPECIAL_LW_END,
+                                            *FIGHTER_STATUS_KIND_THROW])
             || WorkModule::is_flag(zelda_boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
             || WorkModule::is_flag(zelda_boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
             || (remaining_hitstun > 0.0){
                 return
             }
 
-            if zelda_boma.is_cat_flag(Cat1::SpecialLw){
+            if AttackModule::is_infliction_status(zelda_boma, *COLLISION_KIND_MASK_HIT)
+            && !AttackModule::is_infliction_status(zelda_boma, *COLLISION_KIND_MASK_SHIELD)
+            && zelda_boma.is_cat_flag(Cat1::SpecialLw) {
                 StatusModule::change_status_force(weapon.module_accessor, *WEAPON_ZELDA_PHANTOM_STATUS_KIND_ATTACK, false);
             }
         }

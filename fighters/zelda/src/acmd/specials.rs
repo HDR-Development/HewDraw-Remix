@@ -106,6 +106,12 @@ unsafe fn zelda_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
+    // frame(lua_state, 9.0);
+    // for _ in 0..7 {
+    //     let target = smash::phx::Vector2f { x: 0.0, y: 5.0 };
+    //     AttackModule::set_vec_target_pos(boma, 0, Hash40::new("top"), &target, 8, false);
+    //     wait(lua_state, 1.0);
+    // }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
