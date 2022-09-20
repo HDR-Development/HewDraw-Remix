@@ -141,7 +141,14 @@ unsafe fn zelda_special_hi_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 11.0);
-    FT_MOTION_RATE(fighter, 1.25);
+    if is_excute(fighter) {
+        if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+            FT_MOTION_RATE(fighter, 29.0/(34.0 - 11.0));
+        }
+        else {
+            FT_MOTION_RATE(fighter, 9.0/(34.0 - 11.0));
+        }
+    }
     
 }
 
@@ -178,7 +185,7 @@ unsafe fn zelda_special_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "zelda", script = "effect_specialairhi" , category = ACMD_EFFECT , low_priority)]
+#[acmd_script( agent = "zelda", scripts = ["effect_specialhi", "effect_specialairhi"] , category = ACMD_EFFECT , low_priority)]
 unsafe fn zelda_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();

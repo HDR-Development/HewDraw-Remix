@@ -6,9 +6,9 @@ use globals::*;
 unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2) {
         if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
-            if boma.is_situation(*SITUATION_KIND_AIR) {
-                VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-            }
+            //if boma.is_situation(*SITUATION_KIND_AIR) {
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+            //}
             boma.change_status_req(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3, false);
             ControlModule::clear_command(boma, false);
         }
@@ -103,10 +103,16 @@ unsafe fn phantom_special_cancel(fighter: &mut L2CFighterCommon, boma: &mut Batt
 //     }
 // }
 
-unsafe fn nayru_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+unsafe fn nayru_fastfall_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+        }
+        else if situation_kind == *SITUATION_KIND_AIR && frame >= 30.0 {
+            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
+                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            }
         }
     }
 }
@@ -121,7 +127,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     teleport_tech(fighter, boma);
     //teleport_shorten_land_cancel(fighter, boma, status_kind);
     dins_fire_land_cancel(boma);
-    nayru_land_cancel(boma, status_kind, situation_kind, cat[2], stick_y);
+    nayru_fastfall_land_cancel(boma, status_kind, situation_kind, cat[2], stick_y, frame);
     //neutral_special_cancels(boma, status_kind, situation_kind, cat[0]);
     //teleport_startup_ledgegrab(fighter);
     phantom_special_cancel(fighter, boma);
