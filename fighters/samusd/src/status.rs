@@ -2,7 +2,7 @@ use smash::app::sv_battle_object::module_accessor;
 
 use super::*;
 
-/// Prevents down special from being used if a bomb is present
+// Prevents down special from being used if a bomb is present
 unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Grab the stored bomb ID
     let bomb_object_id = VarModule::get_int(fighter.battle_object, vars::samusd::instance::BOMB_OBJECT_ID) as u32;
