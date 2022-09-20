@@ -80,7 +80,7 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
 
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F])
     && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-    && !fighter.is_motion_one_of(&[Hash40::new("attack_air_n_hold"), Hash40::new("attack_air_f_hold"), Hash40::new("attack_air_f2_hold"), Hash40::new("attack_air_f3_hold"), Hash40::new("attack_air_hi_hold"), Hash40::new("attack_air_lw_hold")])
+    && !fighter.is_motion_one_of(&[Hash40::new("attack_air_n_hold"), Hash40::new("attack_air_f"), Hash40::new("attack_air_f_hold"), Hash40::new("attack_air_f2_hold"), Hash40::new("attack_air_f3_hold"), Hash40::new("attack_air_hi_hold"), Hash40::new("attack_air_lw_hold")])
     && !VarModule::is_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS)
     {
         let mut new_status = 0;
@@ -114,11 +114,11 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
         if is_input_cancel {
             if !fighter.is_in_hitlag(){
                 //disable fair1 special/attack cancel
-                if fighter.is_motion(Hash40::new("attack_air_f")) {
-                    if new_status != *FIGHTER_STATUS_KIND_JUMP_AERIAL {
-                        return;
-                    }
-                }
+                // if fighter.is_motion(Hash40::new("attack_air_f")) {
+                //     if new_status != *FIGHTER_STATUS_KIND_JUMP_AERIAL {
+                //         return;
+                //     }
+                // }
                 // disable dair jump cancel
                 if fighter.is_motion(Hash40::new("attack_air_lw")) {
                     if new_status == *FIGHTER_STATUS_KIND_JUMP_AERIAL {
@@ -241,7 +241,7 @@ pub unsafe fn bayonetta_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
 
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        dash_attack_cancels(fighter);
+        //dash_attack_cancels(fighter);
         tilt_cancels(fighter);
         aerial_cancels(fighter);
         special_cancels(fighter);
