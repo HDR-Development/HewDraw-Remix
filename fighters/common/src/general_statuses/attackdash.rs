@@ -131,7 +131,14 @@ unsafe extern "C" fn sub_attack_dash_uniq(fighter: &mut L2CFighterCommon, arg: L
 
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon22status_AttackDash_MainEv")]
 unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if CancelModule::is_enable_cancel(fighter.module_accessor) && fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool() { return L2CValue::I32(0); }
+    if CancelModule::is_enable_cancel(fighter.module_accessor) && fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool() {
+        // Clear motion energy once dash attack is interrupted
+        // to prevent slipping off edge during buffered action
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+        app::sv_kinetic_energy::clear_speed(fighter.lua_state_agent);
+        return L2CValue::I32(0);
+    }
     /*if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR && !VarModule::is_flag(fighter.battle_object, vars::common::ATTACK_DASH_SLIDEOFF) {
         if ParamModule::get_flag(fighter.module_accessor, ParamType::Shared, "attack_dash_cliff_stop") {
             fighter.change_status(
