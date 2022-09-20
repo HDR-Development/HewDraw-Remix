@@ -28,6 +28,7 @@ mod cliff;
 mod catchcut;
 mod damage;
 mod escape;
+mod dead;
 // [LUA-REPLACE-REBASE]
 // [SHOULD-CHANGE]
 // Reimplement the whole status script (already done) instead of doing this.
@@ -151,6 +152,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_air_transition_group_check_air_attack_hook,
             // sub_transition_group_check_air_lasso,
             sub_transition_group_check_ground_jump_mini_attack,
+            sub_transition_group_check_ground_attack,
             sub_transition_group_check_air_escape,
             sub_transition_group_check_ground_escape,
             sub_transition_group_check_ground_guard,
@@ -288,9 +290,19 @@ unsafe fn sub_transition_group_check_air_escape(fighter: &mut L2CFighterCommon) 
     false.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_attack)]
+unsafe fn sub_transition_group_check_ground_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_button_on(Buttons::Catch) {
+        return false.into()
+    }
+    call_original!(fighter)
+}
+
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_escape)]
 unsafe fn sub_transition_group_check_ground_escape(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_cat_flag(Cat1::JumpButton) || fighter.is_cat_flag(Cat1::Jump) {
+    if fighter.is_cat_flag(Cat1::JumpButton)
+    || fighter.is_cat_flag(Cat1::Jump)
+    || fighter.is_button_on(Buttons::Catch) {
         return false.into()
     }
     call_original!(fighter)
@@ -298,7 +310,9 @@ unsafe fn sub_transition_group_check_ground_escape(fighter: &mut L2CFighterCommo
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_guard)]
 unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_cat_flag(Cat1::JumpButton) || fighter.is_cat_flag(Cat1::Jump) {
+    if fighter.is_cat_flag(Cat1::JumpButton)
+    || fighter.is_cat_flag(Cat1::Jump)
+    || fighter.is_button_on(Buttons::Catch) {
         return false.into()
     }
     call_original!(fighter)
@@ -401,6 +415,7 @@ pub fn install() {
     catchcut::install();
     damage::install();
     escape::install();
+    dead::install();
 
     smashline::install_status_scripts!(
         damage_fly_end,
