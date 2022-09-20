@@ -21,12 +21,28 @@ unsafe fn frame_data(fighter: &mut L2CFighterCommon) {
             fighter.set_rate(1.0);
         }
     }
+    if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_DASH) {
+        if fighter.motion_frame() <= 8.0 {
+            fighter.set_rate(1.4);
+        }
+        if fighter.motion_frame() > 8.0 {
+            fighter.set_rate(1.0);
+        }
+    } 
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
         if fighter.motion_frame() <= 6.0 {
             fighter.set_rate(0.7);
         }
         if fighter.motion_frame() > 6.0 {
             fighter.set_rate(0.9);
+        }
+    }
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        if fighter.motion_frame() <= 9.0 && fighter.motion_frame() > 3.0 {
+            fighter.set_rate(4.0);
+        }
+        if fighter.motion_frame() > 9.0 {
+            fighter.set_rate(1.0);
         }
     }
 }
