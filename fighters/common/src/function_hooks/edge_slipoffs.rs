@@ -92,8 +92,6 @@ unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, kind: GroundCorrec
                 [*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_S_WEAK,
                  *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_S_ATTACK,
                  *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_S_END].contains(&status_kind))
-            || (fighter_kind == *FIGHTER_KIND_FOX && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S)
-            || (fighter_kind == *FIGHTER_KIND_FALCO && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S)
             || (fighter_kind == *FIGHTER_KIND_CAPTAIN && status_kind == *FIGHTER_CAPTAIN_STATUS_KIND_SPECIAL_LW_END)
             || (fighter_kind == *FIGHTER_KIND_GANON && status_kind == *FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_END)
             || (fighter_kind == *FIGHTER_KIND_MIISWORDSMAN && [*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END].contains(&status_kind))

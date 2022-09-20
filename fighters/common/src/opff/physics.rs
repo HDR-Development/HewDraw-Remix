@@ -136,7 +136,8 @@ unsafe fn extra_traction(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         *FIGHTER_STATUS_KIND_CATCH,
         *FIGHTER_STATUS_KIND_CATCH_WAIT,
         *FIGHTER_STATUS_KIND_CATCH_ATTACK,
-        *FIGHTER_STATUS_KIND_CATCH_PULL
+        *FIGHTER_STATUS_KIND_CATCH_PULL,
+        *FIGHTER_STATUS_KIND_ITEM_THROW
     ];
 
     if boma.is_status_one_of(&double_traction_statuses) {
@@ -185,7 +186,7 @@ unsafe fn grab_jump_refresh(boma: &mut BattleObjectModuleAccessor) {
 
 unsafe fn dash_energy(fighter: &mut L2CFighterCommon) {
 
-    if fighter.is_button_on(Buttons::CStickOverride) {
+    if fighter.is_button_trigger(Buttons::CStickOverride) {
         let bidou_buttons = &[
         Buttons::AttackRaw,
         Buttons::SpecialRaw,
