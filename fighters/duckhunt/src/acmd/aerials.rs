@@ -51,6 +51,8 @@ unsafe fn duckhunt_attack_air_f_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        HIT_NODE(fighter, Hash40::new("duckhead"), *HIT_STATUS_NORMAL);
+        HIT_NODE(fighter, Hash40::new("duckhip"), *HIT_STATUS_NORMAL);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
@@ -84,6 +86,9 @@ unsafe fn duckhunt_attack_air_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        HIT_NODE(fighter, Hash40::new("duckhead"), *HIT_STATUS_NORMAL);
+        HIT_NODE(fighter, Hash40::new("duckhip"), *HIT_STATUS_NORMAL);
+
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
@@ -112,6 +117,8 @@ unsafe fn duckhunt_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        HIT_NODE(fighter, Hash40::new("duckhead"), *HIT_STATUS_NORMAL);
+        HIT_NODE(fighter, Hash40::new("duckhip"), *HIT_STATUS_NORMAL);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
@@ -158,6 +165,8 @@ unsafe fn duckhunt_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        HIT_NODE(fighter, Hash40::new("duckhead"), *HIT_STATUS_NORMAL);
+        HIT_NODE(fighter, Hash40::new("duckhip"), *HIT_STATUS_NORMAL);
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
