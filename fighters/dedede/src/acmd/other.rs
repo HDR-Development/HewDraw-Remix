@@ -299,6 +299,9 @@ unsafe fn dedede_gordo_special_s_shot_effect(fighter: &mut L2CAgentBase) {
 unsafe fn dedede_gordo_special_s_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("hip"), 14.0, 60, 66, 0, 70, 0.9, 3.8, 3.8, 0.0, Some(-3.8), Some(-3.8), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -7, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
@@ -366,7 +369,6 @@ pub fn install() {
         dedede_gordo_special_s_shot_game,
         dedede_gordo_special_s_shot_effect,
         dedede_gordo_special_s_attack_game,
-        dedede_gordo_special_s_attack_effect,
         damageflyhi_sound,
         damageflylw_sound,
         damageflyn_sound,
