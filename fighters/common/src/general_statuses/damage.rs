@@ -14,7 +14,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_ftStatusUniqProcessDamageFly_getMotionKind_hook,
             status_DamageFly_Main_hook,
             calc_damage_motion_rate_hook,
-            sub_DamageFlyCommon_hook
+            sub_DamageFlyCommon_hook,
+            exec_damage_elec_hit_stop_hook
         );
     }
 }
@@ -418,4 +419,93 @@ unsafe fn sub_DamageFlyCommon_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
         return false.into();
     }
     false.into()
+}
+
+// this runs during electric hitlag
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_exec_damage_elec_hit_stop)]
+pub unsafe fn exec_damage_elec_hit_stop_hook(fighter: &mut L2CFighterCommon) {
+    let status_kind = StatusModule::status_kind(fighter.module_accessor);
+    let hit_stop_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_HIT_STOP_FRAME);
+    if hit_stop_frame > 0 {
+        WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_HIT_STOP_FRAME);
+    }
+    let damage_stop_frame = FighterStopModuleImpl::get_damage_stop_frame(fighter.module_accessor);
+    if damage_stop_frame == 1.0 {
+        fighter.FighterStatusDamage__req_fly_roll_smoke_first();
+    }
+    fighter.sub_FighterStatusDamage_correctDamageVectorExecStop();
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_KOZUKATA_DAMAGE) {
+        let clatter_time = ControlModule::get_clatter_time(fighter.module_accessor, 0);
+        if clatter_time <= 0.0 {
+            WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_DAMAGE_WORK_INT_HIT_STOP_FRAME);
+            ShakeModule::stop(fighter.module_accessor);
+        }
+    }
+    fighter.clear_lua_stack();
+    lua_args!(fighter, 0x8a6df7656 as u64);
+    sv_information::damage_log_value(fighter.lua_state_agent);
+    let is_paralyze = fighter.pop_lua_stack(1).get_bool();
+    let hashmap = fighter.local_func__fighter_status_damage_2();
+    if hit_stop_frame > 0 {
+        if is_paralyze {
+            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_PARALYZE_STOP) {
+                return;
+            }
+            // fighter.FighterStatusUniqProcessDamage_check_hit_stop_delay_flick(hashmap);
+        }
+    }
+    else {
+        // This is run as you leave elec hitlag
+        ShakeModule::stop(fighter.module_accessor);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_ELEC);
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_ENABLE_KINE_GRAVITY) {
+            KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        }
+        // if !is_paralyze {
+        //     fighter.FighterStatusUniqProcessDamage_check_hit_stop_delay_flick(hashmap);
+        // }
+        // StatusModule::set_keep_situation_air(fighter.module_accessor, false);
+        let release_action = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_STOP_RELEASE_ACTION);
+        if release_action == *FIGHTER_STATUS_DAMAGE_STOP_RELEASE_ACTION_GROUND_TO_AIR {
+            StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), false);
+            fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_AIR));
+            fighter.global_table[PREV_SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_GROUND));
+            GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_FLY_AIR);
+        }
+        WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_STOP_RELEASE_ACTION_NONE, *FIGHTER_STATUS_DAMAGE_WORK_INT_STOP_RELEASE_ACTION);
+        fighter.virtual_ftStatusUniqProcessDamage_init(L2CValue::Bool(true));
+        fighter.clear_lua_stack();
+        lua_args!(fighter, Hash40::new_raw(0x244371e88f));
+        smash::app::sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+        fighter.pop_lua_stack(1);
+        let damage_lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_DAMAGE_LR);
+        if damage_lr != 0.0 {
+            if damage_lr * PostureModule::lr(fighter.module_accessor) >= 0.0 {
+                PostureModule::set_lr(fighter.module_accessor, damage_lr);
+                PostureModule::update_rot_y_lr(fighter.module_accessor);
+            }
+            else if [*FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR].contains(&status_kind) {
+                PostureModule::set_lr(fighter.module_accessor, damage_lr);
+                PostureModule::update_rot_y_lr(fighter.module_accessor);   
+            }
+            else {
+                // If hit from behind, turns you around to face attacker
+                if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_KNOCKOUT) {
+                    let lr = PostureModule::lr(fighter.module_accessor);
+                    TurnModule::set_turn(fighter.module_accessor, Hash40::new("back_damage"), lr, false, false, true);
+                    PostureModule::reverse_lr(fighter.module_accessor);
+                    let back_damage_effective_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("back_damage_effective_frame"));
+                    WorkModule::set_int(fighter.module_accessor, back_damage_effective_frame, *FIGHTER_INSTANCE_WORK_ID_INT_BACK_DAMAGE_EFFECTIVE_FRAME);
+                }
+            }
+            WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_DAMAGE_LR);
+        }
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_PARALYZE_EFFECT) {
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_PARALYZE_EFFECT);
+        }
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_PARALYZE_STOP);
+        check_asdi(fighter);
+    }
 }
