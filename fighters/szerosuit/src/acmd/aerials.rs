@@ -283,6 +283,16 @@ unsafe fn szerosuit_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "szerosuit", script = "game_aircatchlanding" , category = ACMD_GAME , low_priority)]
+unsafe fn szerosuit_landing_air_catch_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 16.0/20.0);
+    }
+    
+}
+
 pub fn install() {
     install_acmd_scripts!(
         szerosuit_attack_air_n_game,
@@ -293,6 +303,7 @@ pub fn install() {
         szerosuit_attack_air_hi_effect,
         szerosuit_attack_air_lw_game,
         szerosuit_landing_air_lw_game,
+        szerosuit_landing_air_catch_game,
     );
 }
 
