@@ -452,6 +452,16 @@ unsafe fn game_aircatch(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "samusd", script = "game_aircatchlanding" , category = ACMD_GAME , low_priority)]
+unsafe fn samusd_landing_air_catch_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 16.0/27.0);
+    }
+    
+}
+
 pub fn install() {
     install_acmd_scripts!(
         game_attackairn,
@@ -468,6 +478,7 @@ pub fn install() {
         game_attackairlw,
         effect_attackairlw,
         game_aircatch,
+        samusd_landing_air_catch_game,
     );
 }
 
