@@ -328,7 +328,7 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
         }
     }
     else {
-        if curr_frame == 1 {
+        if curr_frame >= 1 && curr_frame < 30 {
             fighter.clear_lua_stack();
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
             app::sv_kinetic_energy::unable(fighter.lua_state_agent);
