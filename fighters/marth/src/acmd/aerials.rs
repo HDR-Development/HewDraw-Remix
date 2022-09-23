@@ -139,6 +139,20 @@ unsafe fn marth_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "marth", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn marth_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_marth_sword1"), Hash40::new("tex_marth_sword2"), 10, Hash40::new("sword1"), 0.0, 0.0, 0.5, Hash40::new("sword1"), -0.0, -0.0, 12.6, true, Hash40::new("marth_sword_blue"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        AFTER_IMAGE_OFF(fighter, 4);
+    }
+}
+
 #[acmd_script( agent = "marth", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -194,6 +208,7 @@ pub fn install() {
         marth_attack_air_f_game,
         marth_attack_air_b_game,
         marth_attack_air_hi_game,
+        marth_attack_air_hi_effect,
         marth_attack_air_lw_game,
         marth_attack_air_lw_effect,
     );
