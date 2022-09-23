@@ -1,7 +1,9 @@
 use smash::app::{
     self,
     *,
-    lua_bind::*
+    lua_bind::*,
+    FighterKineticEnergyMotion,
+    FighterKineticEnergyController,
 };
 use smash::lua2cpp::*;
 use smash::lib::{
@@ -20,6 +22,8 @@ pub trait Vec2Ext {
 pub trait Vec3Ext {
     fn new(x: f32, y: f32, z: f32) -> Self where Self: Sized;
     fn zero() -> Self where Self: Sized;
+    fn mag(&self) -> f32;
+    fn normalize(&self) -> Self;
 }
 
 pub trait Vec4Ext {
@@ -52,6 +56,19 @@ impl Vec3Ext for Vector3f {
     fn zero() -> Self {
         Self::new(0.0, 0.0, 0.0)
     }
+
+    fn mag(&self) -> f32 {
+        (self.x.powi(2) + self.y.powi(2) + self.z.powi(2)).sqrt()
+    }
+
+    fn normalize(&self) -> Self {
+        let mag = self.mag();
+        Self {
+            x: self.x / mag,
+            y: self.y / mag,
+            z: self.z / mag
+        }
+    }
 }
 
 impl Vec4Ext for Vector4f {
@@ -74,7 +91,8 @@ pub enum CommandCat {
     Cat1(Cat1),
     Cat2(Cat2),
     Cat3(Cat3),
-    Cat4(Cat4)
+    Cat4(Cat4),
+    CatHdr(CatHdr)
 }
 
 impl Into<CommandCat> for Cat1 {
@@ -98,6 +116,12 @@ impl Into<CommandCat> for Cat3 {
 impl Into<CommandCat> for Cat4 {
     fn into(self) -> CommandCat {
         CommandCat::Cat4(self)
+    }
+}
+
+impl Into<CommandCat> for CatHdr {
+    fn into(self) -> CommandCat {
+        CommandCat::CatHdr(self)
     }
 }
 
@@ -227,6 +251,12 @@ bitflags! {
         const Command323Catch       = 0x4000000;
     }
 
+    pub struct CatHdr: i32 {
+        const TiltAttack = 0x1;
+        const Wavedash = 0x2;
+        const ShieldDrop = 0x4;
+    }
+
     pub struct PadFlag: i32 {
         const AttackTrigger  = 0x1;
         const AttrckRelease  = 0x2;
@@ -257,6 +287,10 @@ bitflags! {
         const FlickJump   = 0x8000;
         const GuardHold   = 0x10000;
         const SpecialRaw2 = 0x20000;
+        // We leave a blank at 0x4000 because the internal control mapping will map 1 << InputKind to the button bitfield, and so our shorthop button
+        // would get mapped to TiltAttack (issue #776)
+        const TiltAttack  = 0x80000;
+        const CStickOverride = 0x100000;
 
         const SpecialAll  = 0x20802;
         const AttackAll   = 0x201;
@@ -296,6 +330,14 @@ impl Cat4 {
     }
 }
 
+impl CatHdr {
+    pub fn new(boma: *mut BattleObjectModuleAccessor) -> Self {
+        unsafe {
+            CatHdr::from_bits_unchecked(ControlModule::get_command_flag_cat(boma, 4))
+        }
+    }
+}
+
 #[derive(Copy, Clone, PartialEq, Eq)]
 pub enum AerialKind {
     Nair,
@@ -311,6 +353,7 @@ pub trait MainShift {
 
 pub trait FastShift {
     fn fast_shift(&mut self, new_main: unsafe extern "C" fn(&mut L2CFighterBase) -> L2CValue) -> L2CValue;
+    fn change_to_custom_status(&mut self, id: i32, clear_cat: bool, common: bool);
 }
 
 impl MainShift for L2CFighterCommon {
@@ -327,10 +370,25 @@ impl FastShift for L2CFighterBase {
             self.fastshift(L2CValue::Ptr(new_main as *const () as _))
         }
     }
+
+    fn change_to_custom_status(&mut self, id: i32, clear_cat: bool, common: bool) {
+        use crate::CustomStatusModule;
+
+        let kind = if common {
+            CustomStatusModule::get_common_status_kind(self.battle_object, id)
+        } else {
+            CustomStatusModule::get_agent_status_kind(self.battle_object, id)
+        };
+
+        unsafe {
+            self.change_status(kind.into(), clear_cat.into())
+        }
+    }
 }
 
 pub trait BomaExt {
     // INPUTS
+    unsafe fn clear_commands<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T);
     unsafe fn is_cat_flag<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool;
     unsafe fn is_cat_flag_all<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool;
     unsafe fn is_pad_flag(&mut self, pad_flag: PadFlag) -> bool;
@@ -355,6 +413,8 @@ pub trait BomaExt {
     /// returns whether or not the stick x is pointed in the "backwards" direction for
     /// a character
     unsafe fn is_stick_backward(&mut self) -> bool;
+    unsafe fn left_stick_x(&mut self) -> f32;
+    unsafe fn left_stick_y(&mut self) -> f32;
 
     // STATE
     unsafe fn is_status(&mut self, kind: i32) -> bool;
@@ -365,6 +425,7 @@ pub trait BomaExt {
     unsafe fn is_prev_situation(&mut self, kind: i32) -> bool;
     unsafe fn is_motion(&mut self, motion: Hash40) -> bool;
     unsafe fn is_motion_one_of(&mut self, motions: &[Hash40]) -> bool;
+    unsafe fn status(&mut self) -> i32;
 
     /// gets the number of jumps that have been used
     unsafe fn get_num_used_jumps(&mut self) -> i32;
@@ -382,16 +443,61 @@ pub trait BomaExt {
     unsafe fn is_fighter(&mut self) -> bool;
     unsafe fn is_weapon(&mut self) -> bool;
     unsafe fn kind(&mut self) -> i32;
+    // gets the boma of the player who you are grabbing
+    unsafe fn get_grabbed_opponent_boma(&mut self) -> &mut BattleObjectModuleAccessor;
+    // gets the boma of the player who is grabbing you
+    unsafe fn get_grabber_boma(&mut self) -> &mut BattleObjectModuleAccessor;
+
+    // WORK
+    unsafe fn get_int(&mut self, what: i32) -> i32;
+    unsafe fn get_float(&mut self, what: i32) -> f32;
+    unsafe fn get_int64(&mut self, what: i32) -> u64;
+    unsafe fn is_flag(&mut self, what: i32) -> bool;
+    unsafe fn set_int(&mut self, value: i32, what: i32);
+    unsafe fn set_float(&mut self, value: f32, what: i32);
+    unsafe fn set_int64(&mut self, value: i64, what: i32);
+    unsafe fn on_flag(&mut self, what: i32);
+    unsafe fn off_flag(&mut self, what: i32);
+    unsafe fn get_param_int(&mut self, obj: &str, field: &str) -> i32;
+    unsafe fn get_param_float(&mut self, obj: &str, field: &str) -> f32;
+    unsafe fn get_param_int64(&mut self, obj: &str, field: &str) -> u64;
+
+    // ENERGY
+    unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion;
+    unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController;
+    // tech/general subroutine
+    unsafe fn handle_waveland(&mut self, require_airdodge: bool) -> bool;
+    unsafe fn shift_ecb_on_landing(&mut self);
+    unsafe fn set_front_cliff_hangdata(&mut self, x: f32, y: f32);
+    unsafe fn set_back_cliff_hangdata(&mut self, x: f32, y: f32);
+    unsafe fn set_center_cliff_hangdata(&mut self, x: f32, y: f32);
+
+    // Checks for status and enables transition to jump
+    unsafe fn check_jump_cancel(&mut self);
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
+    unsafe fn clear_commands<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) {
+        let cat = fighter_pad_cmd_flag.into();
+        let (cat, bits) = match cat {
+            CommandCat::Cat1(cat) => (0, cat.bits()),
+            CommandCat::Cat2(cat) => (1, cat.bits()),
+            CommandCat::Cat3(cat) => (2, cat.bits()),
+            CommandCat::Cat4(cat) => (3, cat.bits()),
+            CommandCat::CatHdr(cat) => (4, cat.bits())
+        };
+
+        crate::modules::InputModule::clear_commands(self.object(), cat, bits);
+    }
+
     unsafe fn is_cat_flag<T: Into<CommandCat>>(&mut self, fighter_pad_cmd_flag: T) -> bool {
         let cat = fighter_pad_cmd_flag.into();
         match cat {
             CommandCat::Cat1(cat) => Cat1::new(self).intersects(cat),
             CommandCat::Cat2(cat) => Cat2::new(self).intersects(cat),
             CommandCat::Cat3(cat) => Cat3::new(self).intersects(cat),
-            CommandCat::Cat4(cat) => Cat4::new(self).intersects(cat)
+            CommandCat::Cat4(cat) => Cat4::new(self).intersects(cat),
+            CommandCat::CatHdr(cat) => CatHdr::new(self).intersects(cat)
         }
     }
 
@@ -401,7 +507,8 @@ impl BomaExt for BattleObjectModuleAccessor {
             CommandCat::Cat1(cat) => Cat1::new(self).contains(cat),
             CommandCat::Cat2(cat) => Cat2::new(self).contains(cat),
             CommandCat::Cat3(cat) => Cat3::new(self).contains(cat),
-            CommandCat::Cat4(cat) => Cat4::new(self).contains(cat)
+            CommandCat::Cat4(cat) => Cat4::new(self).contains(cat),
+            CommandCat::CatHdr(cat) => CatHdr::new(self).intersects(cat)
         }
     }
 
@@ -498,6 +605,22 @@ impl BomaExt for BattleObjectModuleAccessor {
         return false;
     }
 
+    unsafe fn left_stick_x(&mut self) -> f32 {
+        if self.is_button_on(Buttons::CStickOverride) {
+            return ControlModule::get_sub_stick_x(self);
+        } else {
+            return ControlModule::get_stick_x(self);
+        }
+    }
+
+    unsafe fn left_stick_y(&mut self) -> f32 {
+        if self.is_button_on(Buttons::CStickOverride) {
+            return ControlModule::get_sub_stick_y(self);
+        } else {
+            return ControlModule::get_stick_y(self);
+        }
+    }
+
     unsafe fn get_aerial(&mut self) -> Option<AerialKind> {
         if self.is_cat_flag(Cat1::AttackHi3 | Cat1::AttackHi4) {
             Some(AerialKind::Uair)
@@ -583,6 +706,18 @@ impl BomaExt for BattleObjectModuleAccessor {
         return smash::app::utility::get_kind(self);
     }
 
+    unsafe fn get_grabbed_opponent_boma(&mut self) -> &mut BattleObjectModuleAccessor {
+        let opponent_id = LinkModule::get_node_object_id(self, *LINK_NO_CAPTURE) as u32;
+        let opponent_object = super::util::get_battle_object_from_id(opponent_id);
+        &mut *(*opponent_object).module_accessor
+    }
+
+    unsafe fn get_grabber_boma(&mut self) -> &mut BattleObjectModuleAccessor {
+        let opponent_id = LinkModule::get_parent_object_id(self, *LINK_NO_CAPTURE) as u32;
+        let opponent_object = super::util::get_battle_object_from_id(opponent_id);
+        &mut *(*opponent_object).module_accessor
+    }
+
     unsafe fn get_num_used_jumps(&mut self) -> i32 {
         return WorkModule::get_int(self, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
     }
@@ -591,10 +726,207 @@ impl BomaExt for BattleObjectModuleAccessor {
         return WorkModule::get_int(self, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX);
     }
 
+    unsafe fn get_int(&mut self, what: i32) -> i32 {
+        WorkModule::get_int(self, what)
+    }
+
+    unsafe fn get_float(&mut self, what: i32) -> f32 {
+        WorkModule::get_float(self, what)
+    }
+
+    unsafe fn get_int64(&mut self, what: i32) -> u64 {
+        WorkModule::get_int64(self, what)
+    }
+
+    unsafe fn is_flag(&mut self, what: i32) -> bool {
+        WorkModule::is_flag(self, what)
+    }
+
+    unsafe fn set_int(&mut self, value: i32, what: i32) {
+        WorkModule::set_int(self, value, what)
+    }
+
+    unsafe fn set_float(&mut self, value: f32, what: i32) {
+        WorkModule::set_float(self, value, what)
+    }
+
+    unsafe fn set_int64(&mut self, value: i64, what: i32) {
+        WorkModule::set_int64(self, value, what)
+    }
+
+    unsafe fn on_flag(&mut self, what: i32) {
+        WorkModule::on_flag(self, what)
+    }
+
+    unsafe fn off_flag(&mut self, what: i32) {
+        WorkModule::off_flag(self, what)
+    }
+
+    unsafe fn get_param_int(&mut self, obj: &str, field: &str) -> i32 {
+        WorkModule::get_param_int(self, Hash40::new(obj).hash, Hash40::new(field).hash)
+    }
+
+    unsafe fn get_param_float(&mut self, obj: &str, field: &str) -> f32 {
+        let obj = obj.into();
+        let field = field.into();
+        WorkModule::get_param_float(self, Hash40::new(obj).hash, Hash40::new(field).hash)
+    }
+
+    unsafe fn get_param_int64(&mut self, obj: &str, field: &str) -> u64 {
+        let obj = obj.into();
+        let field = field.into();
+        WorkModule::get_param_int64(self, Hash40::new(obj).hash, Hash40::new(field).hash)
+    }
+
+
     unsafe fn set_joint_rotate(&mut self, bone_name: &str, rotation: Vector3f) {
         ModelModule::set_joint_rotate(self, Hash40::new(&bone_name), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
     }
 
+
+    /// gets the FighterKineticEnergyMotion object
+    unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion {
+        std::mem::transmute::<u64, &mut app::FighterKineticEnergyMotion>(KineticModule::get_energy(self, *FIGHTER_KINETIC_ENERGY_ID_MOTION))
+    }
+
+    /// gets the FighterKineticEnergyController object
+    unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController {
+        std::mem::transmute::<u64, &mut smash::app::FighterKineticEnergyController>(KineticModule::get_energy(self, *FIGHTER_KINETIC_ENERGY_ID_CONTROL))
+    }
+
+    unsafe fn handle_waveland(&mut self, require_airdodge: bool) -> bool {
+        // MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU);
+        if (require_airdodge && !self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE]))
+        || KineticModule::get_kinetic_type(self) == *FIGHTER_KINETIC_TYPE_FALL {
+            return false;
+        }
+    
+        // must check this because it is for allowing the player to screw up a perfect WD and be punished with a non-perfect WD (otherwise they'd have like, 8 frames for perfect WD lol)
+        if !crate::VarModule::is_flag(self.object(), crate::consts::vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET) {
+            return false;
+        }
+    
+        if self.is_prev_status(*FIGHTER_STATUS_KIND_JUMP_SQUAT) {
+            return false;
+        }
+    
+        // ecb is top, bottom, left, right
+        let shift = if self.is_situation(*SITUATION_KIND_AIR) && self.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= crate::ParamModule::get_int(self.object(), crate::ParamType::Common, "ecb_shift_air_trans_frame") {
+            let group = crate::ParamModule::get_int(self.object(), crate::ParamType::Shared, "ecb_group_shift");
+            let shift = match group {
+                0 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.small"),
+                1 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.medium"),
+                2 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.large"),
+                3 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.x_large"),
+                4 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.xx_large"),
+                _ => panic!("malformed parammodule file! unknown group number for ecb shift: {}", group)
+            };
+            shift + crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_shift_for_waveland")
+        } else {
+            0.0
+        };
+    
+        let ecb_bottom = *GroundModule::get_rhombus(self, true).add(1);
+        let snap_leniency = crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold");
+        let line_bottom = Vector2f::new(ecb_bottom.x, shift + ecb_bottom.y - snap_leniency);
+        let mut out_pos = Vector2f::zero();
+        let within_snap_distance_any = GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, shift + ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut out_pos, true);
+        let within_snap_distance_stage = GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, shift + ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut out_pos, false);
+        let can_snap = within_snap_distance_any != 0 && (within_snap_distance_stage == 0
+            || WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0);
+        if can_snap { // pretty sure it returns a pointer, at least it defo returns a non-0 value if success
+            let pos = PostureModule::pos(self);
+            PostureModule::set_pos(self, &Vector3f::new((*pos).x, out_pos.y + 0.01, (*pos).z));
+            GroundModule::attach_ground(self, true);
+            true
+        } else {
+            false
+        }
+    }
+    
+    /// gets the current status kind for the fighter
+    unsafe fn status(&mut self) -> i32 {
+        return StatusModule::status_kind(self);
+    }
+    
+    unsafe fn shift_ecb_on_landing(&mut self) {
+        if self.is_situation(*SITUATION_KIND_GROUND) {
+            if !self.is_prev_situation(*SITUATION_KIND_GROUND) {
+                // shift ECB back to normal offset
+                let mut fighter_pos = Vector3f {
+                    x: PostureModule::pos_x(self),
+                    y: PostureModule::pos_y(self),
+                    z: PostureModule::pos_z(self)
+                };
+                fighter_pos.y += crate::VarModule::get_float(self.object(), crate::consts::vars::common::instance::ECB_Y_OFFSETS);
+                PostureModule::set_pos(self, &fighter_pos);
+            }
+        }
+    }
+
+    unsafe fn check_jump_cancel(&mut self) {
+        let fighter = crate::util::get_fighter_common_from_accessor(self);
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
+            fighter.sub_transition_group_check_ground_jump_mini_attack();
+            fighter.sub_transition_group_check_ground_jump();
+        }
+        else {
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+            fighter.sub_transition_group_check_air_jump_aerial();
+        }
+    }
+
+    /// Sets the position of the front/red ledge-grab box (see [`set_center_cliff_hangdata`](BomaExt::set_center_cliff_hangdata) for more information)
+    /// 
+    /// # Arguments
+    /// * `x` - The x coordinate, relative to the [position](smash::app::lua_bind::PostureModule::pos) of the fighter
+    /// * `y` - The y coordinate, relative to the [position](smash::app::lua_bind::PostureModule::pos) of the fighter
+    unsafe fn set_front_cliff_hangdata(&mut self, x: f32, y: f32) {
+        let ground_module = *(self as *mut BattleObjectModuleAccessor as *const u64).add(0x58 / 8);
+        let ground_data = *((ground_module + 0x28) as *mut *mut f32);
+        *ground_data.add(0x530 / 4) = x;
+        *ground_data.add(0x534 / 4) = y;
+    }
+
+    /// Sets the position of the back/blue ledge-grab box (see [`set_center_cliff_hangdata`](BomaExt::set_center_cliff_hangdata) for more information)
+    /// 
+    /// # Arguments
+    /// * `x` - The x coordinate, relative to the [position](smash::app::lua_bind::PostureModule::pos) of the fighter
+    /// * `y` - The y coordinate, relative to the [position](smash::app::lua_bind::PostureModule::pos) of the fighter
+    unsafe fn set_back_cliff_hangdata(&mut self, x: f32, y: f32) {
+        let ground_module = *(self as *mut BattleObjectModuleAccessor as *const u64).add(0x58 / 8);
+        let ground_data = *((ground_module + 0x28) as *mut *mut f32);
+        *ground_data.add(0x540 / 4) = x;
+        *ground_data.add(0x544 / 4) = y;
+    }
+
+    /// Sets the center position of the two ledge-grab boxes
+    /// 
+    /// # Information about hang data
+    /// There are two rectangles which represent the ledge-grab data for a fighter. One of them is usually
+    /// placed behind the fighter and the other in front. For the purposes of explanation, I will refer to
+    /// the one in front as "red" and the one in the back as "blue", as those are the colors chosen
+    /// for the visualizer. 
+    /// 
+    /// The center position for ledge-grab boxes is a point which both the red and blue boxes have as a corner.
+    /// Both boxes meet at this location. This is usually located near the center of the fighter on the x-axis. The
+    /// location on the y-axis of the fighter depends on the fighter.
+    /// 
+    /// The front and back positions (set by [`BomaExt::set_front_cliff_hangdata`] and [`BomaExt::set_back_cliff_hangdata`] respectively)
+    /// are the corners that oppose this center.
+    /// 
+    /// # Arguments
+    /// * `x` - The x coordinate, relative to the [position](smash::app::lua_bind::PostureModule::pos) of the fighter
+    /// * `y` - The y coordinate, relative to the [position](smash::app::lua_bind::PostureModule::pos) of the fighter
+    unsafe fn set_center_cliff_hangdata(&mut self, x: f32, y: f32) {
+        let ground_module = *(self as *mut BattleObjectModuleAccessor as *const u64).add(0x58 / 8);
+        let ground_data = *((ground_module + 0x28) as *mut *mut f32);
+        *ground_data.add(0x520 / 4) = x;
+        *ground_data.add(0x524 / 4) = y;
+    }
 }
 
 pub trait LuaUtil {
@@ -669,7 +1001,7 @@ impl GetObjects for BattleObjectModuleAccessor {
 
 /// Enum for the kinds of controls that are mapped
 /// Can map any of these over any button
-#[repr(C)]
+#[repr(u8)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum InputKind {
     Attack = 0x0,
@@ -680,7 +1012,10 @@ pub enum InputKind {
     SmashAttack = 0x5,
     AppealHi = 0xA,
     AppealS = 0xB,
-    AppealLw = 0xC
+    AppealLw = 0xC,
+    Unset = 0xD,
+    JumpMini = 0x12, // this is ours :), also start at 0x12 to avoid masking errors
+    TiltAttack = 0x13, // also custom, this one is for tilts!
 }
 
 /// 0x50 Byte struct containing the information for controller mappings
@@ -713,8 +1048,8 @@ pub struct ControllerMapping {
     pub pro_a: InputKind,
     pub pro_b: InputKind,
     pub pro_cstick: InputKind,
-    pub pro_y: InputKind,
     pub pro_x: InputKind,
+    pub pro_y: InputKind,
     pub pro_rumble: bool,
     pub pro_absmash: bool,
     pub pro_tapjump: bool,
@@ -726,8 +1061,8 @@ pub struct ControllerMapping {
     pub joy_sr: InputKind,
     pub joy_up: InputKind,
     pub joy_right: InputKind,
-    pub joy_down: InputKind,
     pub joy_left: InputKind,
+    pub joy_down: InputKind,
     pub joy_rumble: bool,
     pub joy_absmash: bool,
     pub joy_tapjump: bool,
@@ -832,7 +1167,7 @@ pub struct AutorepeatInfo {
 }
 
 /// Controller style declaring what kind of controller is being used
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Debug, Copy, Clone)]
 #[repr(u32)]
 pub enum ControllerStyle {
     Handheld = 0x1,
@@ -853,4 +1188,144 @@ pub struct MappedInputs {
     pub lstick_y: i8,
     pub rstick_x: i8,
     pub rstick_y: i8
+}
+
+pub type StatusFunc = unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue;
+
+pub struct StatusInfo {
+    pub pre: Option<StatusFunc>,
+    pub main: Option<StatusFunc>,
+    pub end: Option<StatusFunc>,
+    pub init: Option<StatusFunc>,
+    pub exec: Option<StatusFunc>,
+    pub exec_stop: Option<StatusFunc>,
+    pub exec_post: Option<StatusFunc>,
+    pub exit: Option<StatusFunc>,
+    pub map_correction: Option<StatusFunc>,
+    pub fix_camera: Option<StatusFunc>,
+    pub fix_pos_slow: Option<StatusFunc>,
+    pub check_damage: Option<StatusFunc>,
+    pub check_attack: Option<StatusFunc>,
+    pub on_change_lr: Option<StatusFunc>,
+    pub leave_stop: Option<StatusFunc>,
+    pub notify_event_gimmick: Option<StatusFunc>,
+    pub calc_param: Option<StatusFunc>
+}
+
+impl StatusInfo {
+    pub fn new() -> StatusInfo {
+        StatusInfo {
+            pre: None,
+            main: None,
+            end: None,
+            init: None,
+            exec: None,
+            exec_stop: None,
+            exec_post: None,
+            exit: None,
+            map_correction: None,
+            fix_camera: None,
+            fix_pos_slow: None,
+            check_damage: None,
+            check_attack: None,
+            on_change_lr: None,
+            leave_stop: None,
+            notify_event_gimmick: None,
+            calc_param: None,
+        }
+    }
+
+    pub fn with_pre(mut self, pre: StatusFunc) -> Self {
+        self.pre = Some(pre);
+        self
+    }
+
+    pub fn with_main(mut self, main: StatusFunc) -> Self {
+        self.main = Some(main);
+        self
+    }
+
+    pub fn with_end(mut self, end: StatusFunc) -> Self {
+        self.end = Some(end);
+        self
+    }
+
+    pub fn with_init(mut self, init: StatusFunc) -> Self {
+        self.init = Some(init);
+        self
+    }
+
+    pub fn with_exec(mut self, exec: StatusFunc) -> Self {
+        self.exec = Some(exec);
+        self
+    }
+
+    pub fn with_exec_stop(mut self, exec_stop: StatusFunc) -> Self {
+        self.exec_stop = Some(exec_stop);
+        self
+    }
+
+    pub fn with_exec_post(mut self, exec_post: StatusFunc) -> Self {
+        self.exec_post = Some(exec_post);
+        self
+    }
+
+    pub fn with_exit(mut self, exit: StatusFunc) -> Self {
+        self.exit = Some(exit);
+        self
+    }
+
+    pub fn with_map_correction(mut self, map_correction: StatusFunc) -> Self {
+        self.map_correction = Some(map_correction);
+        self
+    }
+
+    pub fn with_fix_camera(mut self, fix_camera: StatusFunc) -> Self {
+        self.fix_camera = Some(fix_camera);
+        self
+    }
+
+    pub fn with_fix_pos_slow(mut self, fix_pos_slow: StatusFunc) -> Self {
+        self.fix_pos_slow = Some(fix_pos_slow);
+        self
+    }
+
+    pub fn with_check_damage(mut self, check_damage: StatusFunc) -> Self {
+        self.check_damage = Some(check_damage);
+        self
+    }
+
+    pub fn with_check_attack(mut self, check_attack: StatusFunc) -> Self {
+        self.check_attack = Some(check_attack);
+        self
+    }
+
+    pub fn with_on_change_lr(mut self, on_change_lr: StatusFunc) -> Self {
+        self.on_change_lr = Some(on_change_lr);
+        self
+    }
+
+    pub fn with_leave_stop(mut self, leave_stop: StatusFunc) -> Self {
+        self.leave_stop = Some(leave_stop);
+        self
+    }
+
+    pub fn with_notify_event_gimmick(mut self, notify_event_gimmick: StatusFunc) -> Self {
+        self.notify_event_gimmick = Some(notify_event_gimmick);
+        self
+    }
+
+    pub fn with_calc_param(mut self, calc_param: StatusFunc) -> Self {
+        self.calc_param = Some(calc_param);
+        self
+    }
+
+}
+
+pub fn is_hdr_available() -> bool {
+    let mut symbol = 0usize;
+    unsafe {
+        skyline::nn::ro::LookupSymbol(&mut symbol, "hdr_is_available\0".as_ptr());
+    }
+    symbol != 0
 }

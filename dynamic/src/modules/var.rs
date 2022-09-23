@@ -1,6 +1,9 @@
 use smash::phx::*;
 use smash::app::BattleObject;
 extern "Rust" {
+    #[link_name = "VarModule__has_var_module"]
+    fn VarModule__has_var_module(object: *mut BattleObject) -> bool;
+
     #[link_name = "VarModule__reset"]
     fn VarModule__reset(object: *mut BattleObject, mask: u8);
 
@@ -79,39 +82,48 @@ extern "Rust" {
 /// that you want to associate with a specific object (such as associating a gimmick timer with mario or dk)
 pub mod VarModule {
     use super::*;
-    /// Resets all integers that are within the common array.
-    pub const RESET_COMMON_INT:   u8 = 0b00000001;
-    /// Resets all 64-bit values that are within the common array
-    pub const RESET_COMMON_INT64: u8 = 0b00000010;
-    /// Resets all floats that are within the common array
-    pub const RESET_COMMON_FLOAT: u8 = 0b00000100;
-    /// Resets all flags that are within the common array (default is `false`)
-    pub const RESET_COMMON_FLAG:  u8 = 0b00001000;
-
-    /// Resets all integers that are within the instance array
-    pub const RESET_INSTANCE_INT:   u8 = 0b00010000;
+    /// Resets all integers that are within the instance array.
+    pub const RESET_INSTANCE_INT:   u8 = 0b00000001;
     /// Resets all 64-bit values that are within the instance array
-    pub const RESET_INSTANCE_INT64: u8 = 0b00100000;
+    pub const RESET_INSTANCE_INT64: u8 = 0b00000010;
     /// Resets all floats that are within the instance array
-    pub const RESET_INSTANCE_FLOAT: u8 = 0b01000000;
-    /// Resets all flags that are within the instance array
-    pub const RESET_INSTANCE_FLAG:  u8 = 0b10000000;
+    pub const RESET_INSTANCE_FLOAT: u8 = 0b00000100;
+    /// Resets all flags that are within the instance array (default is `false`)
+    pub const RESET_INSTANCE_FLAG:  u8 = 0b00001000;
+
+    /// Resets all integers that are within the status array
+    pub const RESET_STATUS_INT:   u8 = 0b00010000;
+    /// Resets all 64-bit values that are within the status array
+    pub const RESET_STATUS_INT64: u8 = 0b00100000;
+    /// Resets all floats that are within the status array
+    pub const RESET_STATUS_FLOAT: u8 = 0b01000000;
+    /// Resets all flags that are within the status array
+    pub const RESET_STATUS_FLAG:  u8 = 0b10000000;
 
     /// Resets all integers
-    pub const RESET_INT:   u8 = RESET_COMMON_INT | RESET_INSTANCE_INT;
+    pub const RESET_INT:   u8 = RESET_INSTANCE_INT | RESET_STATUS_INT;
     /// Resets all 64-bit values
-    pub const RESET_INT64: u8 = RESET_COMMON_INT64 | RESET_INSTANCE_INT64;
+    pub const RESET_INT64: u8 = RESET_INSTANCE_INT64 | RESET_STATUS_INT64;
     /// Resets all floats
-    pub const RESET_FLOAT: u8 = RESET_COMMON_FLOAT | RESET_INSTANCE_FLOAT;
+    pub const RESET_FLOAT: u8 = RESET_INSTANCE_FLOAT | RESET_STATUS_FLOAT;
     /// Resets all flags
-    pub const RESET_FLAG:  u8 = RESET_COMMON_FLAG | RESET_INSTANCE_FLAG;
+    pub const RESET_FLAG:  u8 = RESET_INSTANCE_FLAG | RESET_STATUS_FLAG;
 
-    /// Resets all values in the common array
-    pub const RESET_COMMON:   u8 = 0xF;
     /// Resets all values in the instance array
-    pub const RESET_INSTANCE: u8 = 0xF0;
+    pub const RESET_INSTANCE: u8 = 0xF;
+    /// Resets all values in the status array
+    pub const RESET_STATUS:   u8 = 0xF0;
     /// Resets all values
     pub const RESET_ALL:      u8 = 0xFF;
+
+    /// Checks if the object has `VarModule`
+    /// # Arguments
+    /// * `object` - The owning `BattleObject` instance
+    pub fn has_var_module(object: *mut BattleObject) -> bool {
+        unsafe {
+            VarModule__has_var_module(object)
+        }
+    }
 
     /// Resets various `VarModule` arrays depending on the mask
     /// # Arguments

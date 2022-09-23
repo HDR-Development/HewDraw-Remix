@@ -1,13 +1,15 @@
-mod buffer;
+mod input;
 mod meter;
 mod param;
+mod status;
 mod var;
 
 use std::sync::Once;
 
-pub use buffer::*;
+pub use input::*;
 pub use meter::*;
 pub use param::*;
+pub use status::*;
 pub use var::*;
 
 use skyline::hooks::*;
@@ -16,13 +18,13 @@ use crate::offsets;
 const ADDITIONAL_VTABLE_ENTRIES: usize = 7;
 const HDR_BATTLE_OBJECT_MAGIC: u64 = 0x5443454A424F5F48; // H_OBJECT
 
-const VAR_MODULE_OFFSET:    isize = -1;
-const PARAM_MODULE_OFFSET:  isize = -2;
-const BUFFER_MODULE_OFFSET: isize = -3;
-const METER_MODULE_OFFSET:  isize = -4;
-const MAGIC_MODULE_OFFSET:  isize = -5;
-const HDR_MAGIC_OFFSET:     isize = -6;
-const TOTAL_SIZE_OFFSET:    isize = -7;
+const VAR_MODULE_OFFSET:            isize = -1;
+const PARAM_MODULE_OFFSET:          isize = -2;
+const INPUT_MODULE_OFFSET:         isize = -3;
+const METER_MODULE_OFFSET:          isize = -4;
+const CUSTOM_STATUS_MODULE_OFFSET:  isize = -5;
+const HDR_MAGIC_OFFSET:             isize = -6;
+const TOTAL_SIZE_OFFSET:            isize = -7;
 
 pub fn within_address_space(address: u64) -> bool {
     let text = unsafe {
@@ -123,7 +125,7 @@ pub fn clean_hdr_object(address: *mut *mut u64) {
         }
     }
 
-    if let Some(buffer_module) = get_entry::<BufferModule>(address, BUFFER_MODULE_OFFSET) {
+    if let Some(buffer_module) = get_entry::<InputModule>(address, INPUT_MODULE_OFFSET) {
         if !buffer_module.is_null() {
             unsafe {
                 drop(Box::from_raw(buffer_module))
@@ -135,6 +137,14 @@ pub fn clean_hdr_object(address: *mut *mut u64) {
         if !meter_module.is_null() {
             unsafe {
                 drop(Box::from_raw(meter_module))
+            }
+        }
+    }
+
+    if let Some(status_module) = get_entry::<MeterModule>(address, CUSTOM_STATUS_MODULE_OFFSET) {
+        if !status_module.is_null() {
+            unsafe {
+                drop(Box::from_raw(status_module))
             }
         }
     }
@@ -177,14 +187,16 @@ fn set_fighter_vtable_hook(ctx: &mut InlineCtx) {
 
     unsafe {
         let new_vtable = recreate_vtable_with_space(*ctx.registers[8].x.as_ref() as _);
-        let buffer_module = Box::new(BufferModule::new(*ctx.registers[25].x.as_ref() as _));
+        let buffer_module = Box::new(InputModule::new(*ctx.registers[25].x.as_ref() as _));
         let param_module = Box::new(ParamModule::new(*ctx.registers[25].x.as_ref() as _));
         let meter_module = Box::new(MeterModule::new(*ctx.registers[25].x.as_ref() as _));
         let var_module = Box::new(VarModule::new());
-        set_entry(new_vtable, Box::leak(buffer_module), BUFFER_MODULE_OFFSET);
+        let status_module = Box::new(CustomStatusModule::new());
+        set_entry(new_vtable, Box::leak(buffer_module), INPUT_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(param_module), PARAM_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(var_module), VAR_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(meter_module), METER_MODULE_OFFSET);
+        set_entry(new_vtable, Box::leak(status_module), CUSTOM_STATUS_MODULE_OFFSET);
         *ctx.registers[8].x.as_mut() = new_vtable as _;
     };
 }
@@ -217,14 +229,16 @@ fn set_weapon_vtable_hook(ctx: &mut InlineCtx) {
 
     unsafe {
         let new_vtable = recreate_vtable_with_space(*ctx.registers[25].x.as_ref() as _);
-        let buffer_module = Box::new(BufferModule::new(*ctx.registers[25].x.as_ref() as _));
+        let buffer_module = Box::new(InputModule::new(*ctx.registers[25].x.as_ref() as _));
         let param_module = Box::new(ParamModule::new(*ctx.registers[25].x.as_ref() as _));
         let meter_module = Box::new(MeterModule::new(*ctx.registers[25].x.as_ref() as _));
         let var_module = Box::new(VarModule::new());
-        set_entry(new_vtable, Box::leak(buffer_module), BUFFER_MODULE_OFFSET);
+        let status_module = Box::new(CustomStatusModule::new());
+        set_entry(new_vtable, Box::leak(buffer_module), INPUT_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(param_module), PARAM_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(var_module), VAR_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(meter_module), METER_MODULE_OFFSET);
+        set_entry(new_vtable, Box::leak(status_module), CUSTOM_STATUS_MODULE_OFFSET);
         *(*ctx.registers[22].x.as_ref() as *mut *mut *mut u64) = new_vtable;
     };
 }
@@ -257,14 +271,16 @@ fn set_item_vtable_hook(ctx: &mut InlineCtx) {
 
     unsafe {
         let new_vtable = recreate_vtable_with_space(*ctx.registers[23].x.as_ref() as _);
-        let buffer_module = Box::new(BufferModule::new(*ctx.registers[28].x.as_ref() as _));
+        let buffer_module = Box::new(InputModule::new(*ctx.registers[28].x.as_ref() as _));
         let param_module = Box::new(ParamModule::new(*ctx.registers[28].x.as_ref() as _));
         let meter_module = Box::new(MeterModule::new(*ctx.registers[28].x.as_ref() as _));
         let var_module = Box::new(VarModule::new());
-        set_entry(new_vtable, Box::leak(buffer_module), BUFFER_MODULE_OFFSET);
+        let status_module = Box::new(CustomStatusModule::new());
+        set_entry(new_vtable, Box::leak(buffer_module), INPUT_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(param_module), PARAM_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(var_module), VAR_MODULE_OFFSET);
         set_entry(new_vtable, Box::leak(meter_module), METER_MODULE_OFFSET);
+        set_entry(new_vtable, Box::leak(status_module), CUSTOM_STATUS_MODULE_OFFSET);
         *(*ctx.registers[28].x.as_ref() as *mut *mut *mut u64) = new_vtable as _;
     };
 }
@@ -274,9 +290,10 @@ pub(crate) fn init() {
         set_fighter_vtable_hook,
         set_weapon_vtable_hook
     );
-    buffer::init();
+    input::init();
     param::init();
     meter::init();
+    status::init();
 }
 
 #[allow(dead_code)]

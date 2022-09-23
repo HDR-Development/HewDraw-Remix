@@ -90,22 +90,6 @@ unsafe fn side_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kin
     }
 }
 
-// Soaring Slash Hit
-unsafe fn soaring_slash(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32) {
-    if [*FIGHTER_STATUS_KIND_SPECIAL_HI,
-        *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2].contains(&status_kind) {
-        if AttackModule::is_infliction(boma, 2) {
-            VarModule::on_flag(boma.object(), vars::common::SOARING_SLASH_HIT);
-        }
-    }
-    if ![*FIGHTER_STATUS_KIND_SPECIAL_HI,
-        *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2,
-        *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_3].contains(&status_kind) {
-        VarModule::off_flag(boma.object(), vars::common::SOARING_SLASH_HIT);
-    }
-}
-
-
 // symbol-based call for the fe characters' common opff
 extern "Rust" {
     fn fe_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
@@ -114,7 +98,6 @@ extern "Rust" {
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     // Magic Series
     side_special_cancels(boma, status_kind, situation_kind, cat[0], motion_kind);
-    soaring_slash(boma, id, status_kind);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_LUCINA )]
