@@ -41,7 +41,7 @@
     <struct index="0">
       <float hash="wrap_speed_add">3</float>
       <float hash="wrap_speed_multi">2</float>
-      <float hash="landing_frame">25</float>
+      <float hash="landing_frame">15</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

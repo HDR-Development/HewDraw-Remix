@@ -21,8 +21,6 @@ fn rebuild_romfs(root_src_path: &Path, root_dst_path: &Path) {
                     if let Some(extension) = local_path.extension() {
                         if extension == "xml" {
                             rebuild_xml_to_prc(path, &root_dst_path.join(local_path).with_extension("prc"));
-                        } else if extension == "lua" {
-                            std::fs::copy(path, &root_dst_path.join(local_path).with_extension("lc"));
                         } else {
                             std::fs::copy(path, &root_dst_path.join(local_path));
                         }

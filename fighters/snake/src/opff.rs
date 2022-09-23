@@ -9,9 +9,9 @@ unsafe fn grab_walk(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat
         let motion_value = 0.65;
         let mut motion_vec = Vector3f{x: 0.0, y: 0.0, z: 0.0};
 
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_S_R) {
+        if boma.is_cat_flag(Cat2::AppealSR) {
             motion_vec.x = motion_value;
-        } else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_S_L) {
+        } else if boma.is_cat_flag(Cat2::AppealSL) {
             motion_vec.x = -motion_value;
         }
         KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
@@ -23,7 +23,7 @@ unsafe fn grenade_counter_reset(boma: &mut BattleObjectModuleAccessor, id: usize
     if [*FIGHTER_STATUS_KIND_ENTRY,
         *FIGHTER_STATUS_KIND_DEAD,
         *FIGHTER_STATUS_KIND_REBIRTH].contains(&status_kind) {
-        VarModule::set_int(boma.object(), vars::snake::instance::SNAKE_GRENADE_COUNTER, 0);
+        VarModule::set_int(boma.object(), vars::snake::SNAKE_GRENADE_COUNTER, 0);
     }
 }
 
@@ -44,24 +44,5 @@ pub fn snake_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub unsafe fn snake_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
-    }
-}
-
-#[smashline::weapon_frame_callback]
-pub fn c4_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
-    unsafe { 
-        if weapon.kind() != WEAPON_KIND_SNAKE_C4 {
-            return
-        }
-        if weapon.is_status(*WEAPON_SNAKE_C4_STATUS_KIND_STICK_TARGET) {
-            let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-            let snake = utils::util::get_battle_object_from_id(owner_id);
-            let snake_boma = &mut *(*snake).module_accessor;
-            let snake_status_kind = StatusModule::status_kind(snake_boma);
-            // Despawn sticky when snake dies
-            if snake_status_kind == *FIGHTER_STATUS_KIND_DEAD {
-                ArticleModule::remove_exist(snake_boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-            }
-        }
     }
 }

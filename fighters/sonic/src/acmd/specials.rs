@@ -20,7 +20,7 @@ unsafe fn sonic_special_hi_game(fighter: &mut L2CAgentBase) {
 unsafe fn sonic_special_lw_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if VarModule::is_flag(fighter.battle_object, vars::sonic::status::PULSE_HITBOX) {
+    if VarModule::is_flag(fighter.battle_object, vars::sonic::PULSE_HITBOX) {
         frame(lua_state, 3.0);
         if is_excute(fighter) {
             ATTACK(fighter, 0, 0, Hash40::new("hip"), 1.0, 365, 0, 0, 58, 8.3, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
@@ -28,7 +28,7 @@ unsafe fn sonic_special_lw_hold_game(fighter: &mut L2CAgentBase) {
         wait(lua_state, 3.0);
         if is_excute(fighter) {
             AttackModule::clear_all(boma);
-            VarModule::off_flag(fighter.battle_object, vars::sonic::status::PULSE_HITBOX)
+            VarModule::off_flag(fighter.battle_object, vars::sonic::PULSE_HITBOX)
          }
     }
     

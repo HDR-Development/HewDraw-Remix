@@ -1,11 +1,9 @@
 mod var;
 mod param;
-mod input;
-mod status;
+mod buffer;
 mod meter;
 
 pub use var::*;
 pub use param::*;
-pub use input::*;
-pub use status::*;
+pub use buffer::*;
 pub use meter::*;

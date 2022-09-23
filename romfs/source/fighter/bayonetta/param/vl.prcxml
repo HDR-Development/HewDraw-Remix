@@ -6,21 +6,21 @@
     </struct>
   </list>
   <struct hash="param_private">
-    <float hash="attack_air_f_hit_speed_y">1.4</float>
-    <float hash="attack_air_f2_hit_speed_y">1.4</float>
+    <float hash="attack_air_f_hit_speed_y">1.45</float>
+    <float hash="attack_air_f2_hit_speed_y">1.45</float>
     <float hash="combo_attack_ari_f2_end">30</float>
     <float hash="combo_attack_ari_f3_end">30</float>
-    <int hash="attack_air_n_shoot_landing_frame">3</int>
-    <int hash="attack_air_f_shoot_landing_frame">3</int>
-    <int hash="attack_air_b_shoot_landing_frame">3</int>
-    <int hash="attack_air_hi_shoot_landing_frame">3</int>
+    <int hash="attack_air_n_shoot_landing_frame">2</int>
+    <int hash="attack_air_f_shoot_landing_frame">2</int>
+    <int hash="attack_air_b_shoot_landing_frame">2</int>
+    <int hash="attack_air_hi_shoot_landing_frame">2</int>
     <float hash="final_vector_min">40</float>
     <float hash="final_vector_max">45</float>
   </struct>
   <list hash="param_special_s">
     <struct index="0">
-      <int hash="ab_u_landing_frame">18</int>
-      <int hash="ab_u_landing_frame_2nd">22</int>
+      <int hash="ab_u_landing_frame">14</int>
+      <int hash="ab_u_landing_frame_2nd">18</int>
       <float hash="ab_d_hit_after_speed_y">2.6</float>
       <float hash="ab_d_hit_after_max_accel_x">0.035</float>
       <float hash="ab_d_hit_after_front_max_speed_x">1</float>
@@ -29,8 +29,7 @@
       <int hash="ab_d_landing_frame">30</int>
       <int hash="ab_d_landing_frame_2nd">35</int>
       <int hash="ab_d_fall_landing_frame">14</int>
-      <int hash="ab_d_fall_landing_frame_2nd">22</int>
-      <int hash="0x17a1daf6ee">300</int>
+      <int hash="ab_d_fall_landing_frame_2nd">18</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -52,8 +51,8 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
-      <int hash="success_cancel_frame">18</int>
-      <float hash="base_slow_frame_max">100</float>
+      <int hash="success_cancel_frame">15</int>
+      <float hash="base_slow_frame_max">120</float>
       <int hash="0x1f3421e7d7">40</int>
       <float hash="recover_slow_frame">0.05</float>
     </struct>

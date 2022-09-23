@@ -1,4 +1,4 @@
-use smash::app::{BattleObject, BattleObjectModuleAccessor};
+use smash::app::BattleObject;
 use smash::app::lua_bind::*;
 use smash::lib::lua_const::*;
 use smash::phx::*;
@@ -278,7 +278,7 @@ impl MeterModule {
         Self::keep_watch(module.owner);
 
         let new_levels = if module.watch && module.has_hit {
-            let difference = VarModule::get_float(module.owner, vars::common::instance::LAST_ATTACK_DAMAGE_DEALT);
+            let difference = VarModule::get_float(module.owner, vars::common::LAST_ATTACK_DAMAGE_DEALT);
             let current = Self::level(module.owner);
             module.current_meter += difference * module.damage_gain_mul;
             module.watch = false;
@@ -296,14 +296,6 @@ impl MeterModule {
         let new_levels = new_levels - module.last_levels_consumed + module.last_levels_added;
         module.last_levels_consumed = 0;
         module.last_levels_added = 0;
-
-        unsafe {
-            if (*object).agent_kind_hash.hash == Hash40::new("fighter_kind_dolly").hash {
-                let boma = (*object).module_accessor;
-                let is_superspecial = !WorkModule::is_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
-                dolly_super_special_check(boma, is_superspecial as u8);
-            }
-        }
 
         if new_levels != 0 && show_flash_on_change {
             Self::display(module.owner, new_levels);
@@ -324,7 +316,7 @@ unsafe fn fighter_handle_damage_hook(fighter: *mut smash::app::BattleObject, arg
     let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
     let damage_received = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE);
     call_original!(fighter, arg);
-    let damage_received = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE) - damage_received;
+    let damage_received = dbg!(WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE) - damage_received);
     let attacker_ids = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_SUCCEED_ATTACKER_ENTRY_ID);
     for x in 0..8 {
         if attacker_ids & (1 << x) == 0 {
@@ -333,42 +325,14 @@ unsafe fn fighter_handle_damage_hook(fighter: *mut smash::app::BattleObject, arg
         if let Some(object_id) = crate::util::get_active_battle_object_id_from_entry_id(x) {
             let object = crate::util::get_battle_object_from_id(object_id);
             if !object.is_null() && super::is_hdr_object((*object).vtable as _) {
-                VarModule::set_float(object, vars::common::instance::LAST_ATTACK_DAMAGE_DEALT, damage_received);
-                VarModule::set_int(object, vars::common::instance::LAST_ATTACK_RECEIVER_ENTRY_ID, (*fighter).battle_object_id as i32);
+                VarModule::set_float(object, vars::common::LAST_ATTACK_DAMAGE_DEALT, damage_received);
+                VarModule::set_int(object, vars::common::LAST_ATTACK_RECEIVER_ENTRY_ID, (*fighter).battle_object_id as i32);
                 MeterModule::signal_hit(object);
             }
         }
     }
 }
 
-#[skyline::hook(offset = 0x970fd0)]
-pub unsafe extern "C" fn dolly_super_special_check(module_accessor: *mut smash::app::BattleObjectModuleAccessor, param_2: u8) {
-    original!()(module_accessor, param_2)
-}
-
-#[repr(C)]
-pub struct TempModule {
-  vtable: *const u64,
-  owner: *mut BattleObjectModuleAccessor,
-  // ...
-}
-
-#[skyline::hook(offset = 0x971230)]
-pub unsafe extern "C" fn dolly_super_special_check_param(work: &mut TempModule, _damage: &mut TempModule) -> u64 {
-    let module_accessor = work.owner;
-    if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) > 7 {
-        std::process::abort();
-    }
-    if MeterModule::level(module_accessor.as_mut().unwrap().object()) >= 4 {
-        return 1
-    }
-    0
-}
-
 pub fn init() {
-    skyline::install_hooks!(
-        fighter_handle_damage_hook,
-        dolly_super_special_check,
-        dolly_super_special_check_param
-    );
+    skyline::install_hook!(fighter_handle_damage_hook);
 }

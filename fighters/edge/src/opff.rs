@@ -48,7 +48,7 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     //sword_length(boma);
     limit_blade_rush_jc(boma, cat[0], status_kind, situation_kind);
     nspecial_cancels(boma, status_kind, situation_kind, cat[1]);
-    //jab3_as_jab1(boma, motion_kind);
+    jab3_as_jab1(boma, motion_kind);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_EDGE )]

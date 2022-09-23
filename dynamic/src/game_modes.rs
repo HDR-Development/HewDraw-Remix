@@ -1,7 +1,6 @@
 #[derive(Copy, Clone, PartialEq, Eq)]
 pub enum CustomMode {
-    SmashballTag,
-    TurboMode
+    SmashballTag
 }
 
 extern "Rust" {

@@ -3,7 +3,9 @@ use super::*;
 use globals::*;
 
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon52sub_ftStatusUniqProcessGuardDamage_exitStatus_commonEv")]
-unsafe fn sub_ftStatusUniqProcessGuardDamage_exitStatus_common(fighter: &mut L2CFighterCommon) {    
+unsafe fn sub_ftStatusUniqProcessGuardDamage_exitStatus_common(fighter: &mut L2CFighterCommon) {
+    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
+    
     ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, app::ShieldStatus(*SHIELD_STATUS_NONE), 0);
     let shield_type = app::FighterUtil::get_shield_type_of_guard(fighter.global_table[FIGHTER_KIND].get_i32()) as i32;
     ShieldModule::set_shield_type(fighter.module_accessor, app::ShieldType(shield_type), *FIGHTER_SHIELD_KIND_GUARD, 0);
@@ -21,7 +23,7 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_exitStatus_common(fighter: &mut L2C
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE);
 
         ControlModule::set_command_life_extend(fighter.module_accessor, 0);
-        InputModule::disable_persist(fighter.battle_object);
+        BufferModule::disable_persist(fighter.battle_object);
     }
 }
 

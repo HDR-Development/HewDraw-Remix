@@ -28,7 +28,7 @@ unsafe fn wolf_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 4.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE(fighter, 0.800);
+        FT_MOTION_RATE(fighter, 0.600);
     }
     
 }

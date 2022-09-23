@@ -37,12 +37,10 @@ jobs:
         with:
           sinceTag: ${{ steps.push_tag.outputs.old-version }}
           stripHeaders: true
-          verbose: false
-          issuesWoLabels: false
           token: ${{ secrets.RELEASE_TOKEN }}
 
       - name: Upload changelog
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: changelog
           path: CHANGELOG.md
@@ -53,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: version_and_changelog
     container: 
-      image: jugeeya/cargo-skyline:3.0.0-dkp-beta
+      image: jugeeya/cargo-skyline:2.1.0-dkp
     steps:
     - name: setup python
       uses: actions/setup-python@v2
@@ -76,32 +74,18 @@ jobs:
     #    echo lol > distributions/hdr-switch.zip
     #    echo lol > distributions/hdr-ryujinx.zip
 
-    - name: Upload version artifact
-      uses: actions/upload-artifact@v3
+    - name: Upload version
+      uses: actions/upload-artifact@v2
       with:
         name: version
         path: plugin/hdr_version.txt
-
-    - name: Upload distributions artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: distributions
-        path: distributions
-
-  ##############  handle uploading the files to the release  ##############
-  upload_to_release:
-    runs-on: ubuntu-latest
-    needs: [plugin_build, version_and_changelog]
-    steps:
-    - uses: actions/download-artifact@v3
-      with:
-        name: distributions
 
     # upload asset
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
-        file: '*.zip'
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: distributions/*
         prerelease: true
         file_glob: true
         asset_name: the_asset
@@ -110,10 +94,9 @@ jobs:
         overwrite: true
         body: ${{ needs.version_and_changelog.outputs.changelog }}
     
-  ##############  handle the creasion of the full package installation  ##############
   full_package:
     runs-on: ubuntu-latest
-    needs: [version_and_changelog, upload_to_release]
+    needs: [version_and_changelog, plugin_build]
     steps:
     - name: checkout version
       uses: actions/checkout@v2
@@ -133,7 +116,7 @@ jobs:
       with:
         repository: HDR-Development/HDR-Nightlies
 
-    # build the upgrade.zip and deletions.json
+    # build the upgrade.zip and upgrade_deletions.txt
     - name: make upgrade artifacts
       run: |
         python3 scripts/make_diff.py nightly
@@ -155,18 +138,6 @@ jobs:
         tag: ${{ steps.package_latest.outputs.release }}
         overwrite: true
 
-    # upload the upgrade data to the previous release for auto updater
-    - name: Upload upgrade deletions to previous release
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.RELEASE_TOKEN }}
-        file: upgrade_artifacts/deletions.json
-        prerelease: false
-        file_glob: true
-        asset_name: deletions
-        repo_name: HDR-Development/HDR-Nightlies
-        tag: ${{ steps.package_latest.outputs.release }}
-        overwrite: true
 
     - uses: actions/download-artifact@v3
       with:
@@ -195,96 +166,3 @@ jobs:
         tag: ${{ needs.version_and_changelog.outputs.version }}
         overwrite: true
         body: ${{ needs.version_and_changelog.outputs.changelog }}
-
-  ################  handle the creation of to-nightly.zip  ################
-  to_nightly:
-    runs-on: ubuntu-latest
-    needs: [full_package, version_and_changelog]
-    steps:
-    - name: checkout version
-      uses: actions/checkout@v2
-
-    # get the nightly
-    - id: latest_nightly
-      uses: robinraju/release-downloader@v1.3
-      with:
-        repository: "HDR-Development/HDR-Nightlies"
-        tag: ${{ needs.version_and_changelog.outputs.version }}
-        fileName: "switch-package.zip"
-
-    # move the nightly to the artifacts dir
-    - run: mkdir artifacts && mv switch-package.zip artifacts
-
-    # build the to-nightly.zip
-    - name: make to-nightly.zip artifact
-      run: |
-        python3 scripts/make_diff.py beta
-
-    - name: show upgrade artifacts
-      run: |
-        ls && stat * && echo && ls upgrade_artifacts && stat upgrade_artifacts/*
-
-    - run: mv upgrade_artifacts/upgrade.zip to-nightly.zip
-
-    # get the most recent latest beta
-    - id: latest_beta
-      uses: pozetroninc/github-action-get-latest-release@master
-      with:
-        repository: HDR-Development/HDR-Releases
-
-    # upload the to-nightly.zip to the beta for the launcher
-    - name: Upload to-nightly.zip to beta
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.RELEASE_TOKEN }}
-        file: to-nightly.zip
-        prerelease: false
-        file_glob: false
-        asset_name: to-nightly.zip
-        repo_name: HDR-Development/HDR-Releases
-        tag: ${{ steps.latest_beta.outputs.release }}
-        overwrite: true
-
-
-  ################  handle the creation of to-beta.zip  ################
-  to_beta:
-    runs-on: ubuntu-latest
-    needs: [full_package, version_and_changelog]
-    steps:
-    - name: checkout version
-      uses: actions/checkout@v2
-
-    # get the beta
-    - id: latest_beta
-      uses: robinraju/release-downloader@v1.3
-      with:
-        repository: "HDR-Development/HDR-Releases"
-        latest: true
-        fileName: "switch-package.zip"
-
-    # move the beta to the artifacts dir
-    - run: mkdir artifacts && mv switch-package.zip artifacts
-
-    # build the to-beta.zip
-    - name: make to-beta.zip artifact
-      run: |
-        python3 scripts/make_diff.py https://github.com/HDR-Development/HDR-Nightlies/releases/download/${{ needs.version_and_changelog.outputs.version }}/switch-package.zip
-
-    - name: show upgrade artifacts
-      run: |
-        ls && stat * && echo && ls upgrade_artifacts && stat upgrade_artifacts/*
-
-    - run: mv upgrade_artifacts/upgrade.zip to-beta.zip
-
-    # upload the to-beta.zip to the beta for the launcher
-    - name: Upload to-beta.zip to nightly
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.RELEASE_TOKEN }}
-        file: to-beta.zip
-        prerelease: false
-        file_glob: false
-        asset_name: to-beta.zip
-        repo_name: HDR-Development/HDR-Nightlies
-        tag: ${{ needs.version_and_changelog.outputs.version }}
-        overwrite: true

@@ -7,7 +7,7 @@ use globals::*;
 unsafe fn special_n_article_fix(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_N].contains(&status_kind) {
         if frame <= 1.0 {
-            VarModule::off_flag(boma.object(), vars::common::instance::SPECIAL_PROJECTILE_SPAWNED);
+            VarModule::off_flag(boma.object(), vars::common::SPECIAL_PROJECTILE_SPAWNED);
         }
     }
 }

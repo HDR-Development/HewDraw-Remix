@@ -1,125 +1,5 @@
 use super::*;
 
-#[acmd_script( agent = "koopa", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 3)
-            } else {
-                0
-            };
-            if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_koopa_rnd_futtobi01"), Hash40::new("seq_koopa_rnd_futtobi02"));}
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(fighter) {
-        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 3)
-        } else {
-            0
-        };
-        if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_koopa_rnd_futtobi01"), Hash40::new("seq_koopa_rnd_futtobi02"));}
-    }
-}
-
-#[acmd_script( agent = "koopa", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 3)
-            } else {
-                0
-            };
-            if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_koopa_rnd_futtobi01"), Hash40::new("seq_koopa_rnd_futtobi02"));}
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(fighter) {
-        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 3)
-        } else {
-            0
-        };
-        if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_koopa_rnd_futtobi01"), Hash40::new("seq_koopa_rnd_futtobi02"));}
-    }
-}
-
-#[acmd_script( agent = "koopa", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 3)
-            } else {
-                0
-            };
-            if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_koopa_rnd_futtobi01"), Hash40::new("seq_koopa_rnd_futtobi02"));}
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(fighter) {
-        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 3)
-        } else {
-            0
-        };
-        if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_koopa_rnd_futtobi01"), Hash40::new("seq_koopa_rnd_futtobi02"));}
-    }
-}
-
-#[acmd_script( agent = "koopa", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
-            PLAY_FLY_VOICE(fighter, Hash40::new("seq_koopa_rnd_futtobi01"), Hash40::new("seq_koopa_rnd_futtobi02"));
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(fighter) {
-        PLAY_FLY_VOICE(fighter, Hash40::new("seq_koopa_rnd_futtobi01"), Hash40::new("seq_koopa_rnd_futtobi02"));
-    }
-}
-
-#[acmd_script( agent = "koopa", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
-unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-                app::sv_math::rand(hash40("fighter"), 3)
-            } else {
-                0
-            };
-            if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_koopa_rnd_futtobi01"), Hash40::new("seq_koopa_rnd_futtobi02"));}
-        }
-    }
-    frame(lua_state, 1.1);
-    if is_excute(fighter) {
-        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
-            app::sv_math::rand(hash40("fighter"), 3)
-        } else {
-            0
-        };
-        if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_koopa_rnd_futtobi01"), Hash40::new("seq_koopa_rnd_futtobi02"));}
-    }
-}
-
 #[acmd_script( agent = "koopa", script = "expression_landingheavy" , category = ACMD_EXPRESSION , low_priority)]
 unsafe fn expression_landingheavy(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -145,23 +25,19 @@ unsafe fn koopa_turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "koopa", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
-unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
+unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 4.0);
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
-        let dash_sfx_handle = SoundModule::play_se(fighter.module_accessor, Hash40::new("se_koopa_dash_start"), true, false, false, false, app::enSEType(0));
-        SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
+        FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.83, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
     }
-    wait(lua_state, 13.0);
+    frame(lua_state, 15.0);
     if is_excute(fighter) {
-        PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_koopa_step_left_m"), Hash40::new("se_koopa_step_right_m"));
-    }
-    wait(lua_state, 4.0);
-    if is_excute(fighter) {
-        PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_koopa_step_right_m"), Hash40::new("se_koopa_step_left_m"));
-    }
+        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 5, 0, 0, 0, 0, 0, 1.4, 0, 0, 0, 0, 0, 0, false);
+    }    
 }
 
 #[acmd_script( agent = "koopa", script = "game_catch" , category = ACMD_GAME , low_priority)]
@@ -191,82 +67,48 @@ unsafe fn koopa_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-// #[acmd_script( agent = "koopa", script = "game_appealhir" , category = ACMD_GAME , low_priority)]
-// unsafe fn koopa_appeal_hi_r_game(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
-//     let boma = fighter.boma();
-//     frame(lua_state, 10.0);
-//     if is_excute(fighter) {
-//         if  !VarModule::is_flag(fighter.battle_object, vars::koopa::instance::NOKNOK_SHELL) {
-//             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
-//                 ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_GREENSHELL), 0, 0, false, false);
-//                 VarModule::on_flag(fighter.battle_object, vars::koopa::instance::NOKNOK_SHELL);
-//                 VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1);
-//             }
-//         }
-//     }
-    
-// }
-
-// #[acmd_script( agent = "koopa", script = "game_appealhil" , category = ACMD_GAME , low_priority)]
-// unsafe fn koopa_appeal_hi_l_game(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
-//     let boma = fighter.boma();
-//     frame(lua_state, 10.0);
-//     if is_excute(fighter) {
-//         if  !VarModule::is_flag(fighter.battle_object, vars::koopa::instance::NOKNOK_SHELL) {
-//             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
-//                 ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_GREENSHELL), 0, 0, false, false);
-//                 VarModule::on_flag(fighter.battle_object, vars::koopa::instance::NOKNOK_SHELL);
-//                 VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1);
-//             }
-//         }
-//     }
-    
-// }
-
-#[acmd_script( agent = "koopa", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "game_appealhir" , category = ACMD_GAME , low_priority)]
+unsafe fn koopa_appeal_hi_r_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
-
-    frame(lua_state, escape_air_cancel_frame);
+    frame(lua_state, 10.0);
     if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        if  !VarModule::is_flag(fighter.battle_object, vars::common::NOKNOK_SHELL) {
+            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
+                ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_GREENSHELL), 0, 0, false, false);
+                VarModule::on_flag(fighter.battle_object, vars::common::NOKNOK_SHELL);
+                VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 1);
+            }
+        }
     }
+    
 }
 
-#[acmd_script( agent = "koopa", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "koopa", script = "game_appealhil" , category = ACMD_GAME , low_priority)]
+unsafe fn koopa_appeal_hi_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        if  !VarModule::is_flag(fighter.battle_object, vars::common::NOKNOK_SHELL) {
+            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
+                ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_GREENSHELL), 0, 0, false, false);
+                VarModule::on_flag(fighter.battle_object, vars::common::NOKNOK_SHELL);
+                VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 1);
+            }
+        }
+    }
     
-    frame(lua_state, 30.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
-    }
-    frame(lua_state, 34.0);
-    if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
 }
 
 pub fn install() {
     install_acmd_scripts!(
-        escape_air_game,
-        escape_air_slide_game,
-        dash_sound,
+        dash_effect,
         koopa_turn_dash_game,
 		koopa_catch_game,
-        // koopa_appeal_hi_r_game,
-        // koopa_appeal_hi_l_game,
+        koopa_appeal_hi_r_game,
+        koopa_appeal_hi_l_game,
         expression_landingheavy,
-        damageflyhi_sound,
-        damageflylw_sound,
-        damageflyn_sound,
-        damageflyroll_sound,
-        damageflytop_sound
     );
 }
 

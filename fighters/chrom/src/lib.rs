@@ -1,10 +1,8 @@
-#![deny(deprecated)]
-#![allow(unused)]
-#![allow(non_snake_case)]
+#![feature(asm)]#![allow(unused)]#![allow(non_snake_case)]
 
 pub mod acmd;
 
-pub mod status;
+//pub mod status;
 pub mod opff;
 
 use smash::{
@@ -39,6 +37,6 @@ use smashline::*;
 
 pub fn install(is_runtime: bool) {
     acmd::install();
-    status::install();
+    //status::install();
     opff::install(is_runtime);
 }

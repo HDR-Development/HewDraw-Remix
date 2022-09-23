@@ -415,99 +415,11 @@ unsafe fn pickel_attack_hi3_game(fighter: &mut L2CAgentBase) {
         
 }
 
-#[acmd_script( agent = "pickel", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn pickel_attack_lw3_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
-        VarModule::off_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
-    }
-    FT_MOTION_RATE(fighter, 8.0);
-    frame(lua_state, 2.0);
-    if is_excute(fighter) {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK){
-            VarModule::on_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK);
-        }
-        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
-            FT_MOTION_RATE(fighter, 12.0/(3.0-2.0));
-        }
-        else{
-            FT_MOTION_RATE(fighter, 1.0);
-        }
-    }
-    frame(lua_state, 3.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-    }
-    frame(lua_state, 5.0);
-    if is_excute(fighter) {
-        if !ArticleModule::is_exist(boma,  *FIGHTER_PICKEL_GENERATE_ARTICLE_FIRE){
-            ArticleModule::generate_article(boma, *FIGHTER_PICKEL_GENERATE_ARTICLE_FIRE, false, 0);
-        }
-        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
-            FT_MOTION_RATE(fighter, 1.0);
-            //FT_MOTION_RATE(fighter, 25.0/(30.0-5.0));
-        }
-        else{
-            FT_MOTION_RATE(fighter, 15.0/(30.0-5.0));
-        }
-    }
-    frame(lua_state, 30.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
-            //FT_MOTION_RATE(fighter, 2.0);
-            FT_MOTION_RATE(fighter, 0.5);
-        }
-        else{
-            FT_MOTION_RATE(fighter, 1.0);
-        }
-    }
-}
-
-#[acmd_script( agent = "pickel", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
-unsafe fn pickel_attack_lw3_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();    
-    frame(lua_state, 2.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
-            EFFECT(fighter, Hash40::new("pickel_flint"), Hash40::new("haver"), 1, 7.2, 1, 0, 0, 0, 1.75, 0, 0, 0, 0, 0, 0, true);
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.075, false);
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1.0, false);
-            LAST_EFFECT_SET_RATE(fighter, 0.5);
-        }
-        else{
-            EFFECT(fighter, Hash40::new("pickel_flint"), Hash40::new("haver"), 1, 6.2, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        }
-    }
-    frame(lua_state, 3.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
-            FOOT_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -2, 0, -2, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-        }
-        else{
-            FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), -2, 0, -2, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-        }
-    }
-    frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        EFFECT_DETACH_KIND(fighter, Hash40::new("sys_damage_aura"), -1);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("sys_damage_aura"), false, false);
-    }
-}
-
 pub fn install() {
     install_acmd_scripts!(
         //pickel_attack_s3_game,
         //pickel_attack_s3_effect,
         pickel_attack_hi3_game,
-        pickel_attack_lw3_game,
-        pickel_attack_lw3_effect,
     );
 }
 

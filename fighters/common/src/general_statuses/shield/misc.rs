@@ -113,7 +113,7 @@ pub unsafe fn check_guard_attack_special_hi(fighter: &mut L2CFighterCommon, arg:
     }
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_guard_cont)]
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon14sub_guard_contEv")]
 pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[0x34].get_bool() {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x34].get_ptr());
@@ -122,7 +122,7 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
     } 
 
-    let guard_hold = fighter.check_guard_hold().get_bool();
+    let guard_hold = check_guard_hold(fighter).get_bool();
     if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() {
         return true.into();
     }
@@ -137,12 +137,7 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
         if !guard_hold
             && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD)
             && ItemModule::is_have_item(fighter.module_accessor, 0)
-            && {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_NO_THROW);
-                app::sv_module_access::item(fighter.lua_state_agent);
-                !fighter.pop_lua_stack(1).get_bool()
-            }
+            && !ItemModule::get_have_item_trait(fighter.module_accessor, *ITEM_TRAIT_FLAG_NO_THROW)
             && (pad_flag & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 || cat3 & (*FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI | *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI4) != 0) {
             fighter.change_status(
                 FIGHTER_STATUS_KIND_ITEM_THROW.into(),
@@ -166,22 +161,9 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
 
         if !guard_hold {
-            // <HDR>\
-            // If your left stick is near the rim and you haven't triggered a roll
-            let escape_fb_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_fb_stick_x"));
-            if fighter.global_table[STICK_X].get_f32().abs() > escape_fb_stick_x
-            && cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE_F == 0
-            && cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE_B == 0
-            && !VarModule::is_flag(fighter.battle_object, vars::common::status::ENABLE_UCF) {
-                // Enable UCF shielddrop thresholds
-                // change spotdodge y req from -0.75 to -0.8
-                // change platdrop y req from -0.71 to -0.675
-                VarModule::on_flag(fighter.battle_object, vars::common::status::ENABLE_UCF);
-            }
-            // Shielddrop with either traditional shielddrop input, or with taunt buttons
+            // <HDR>
             if GroundModule::is_passable_ground(fighter.module_accessor)
-            && (fighter.is_cat_flag(CatHdr::ShieldDrop) || fighter.is_button_trigger(Buttons::AppealAll))
-            {
+                && cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_GUARD_TO_PASS != 0 {
                 fighter.change_status(
                     FIGHTER_STATUS_KIND_PASS.into(),
                     true.into()
@@ -206,20 +188,6 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
                 }
             }
         }
-        else {
-            // <HDR>\
-            // If we are in shield lock, shielddrop input only requires a downwards flick (or taunt input)
-            if GroundModule::is_passable_ground(fighter.module_accessor)
-            && (cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_GUARD_TO_PASS != 0 || fighter.is_button_trigger(Buttons::AppealAll))
-            {
-                fighter.change_status(
-                    FIGHTER_STATUS_KIND_PASS.into(),
-                    true.into()
-                );
-                return true.into();
-            }
-            // </HDR>
-        }
 
         if is_shield_stop
             && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH)
@@ -233,7 +201,7 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
     }
 
-    if !fighter.check_guard_attack_special_hi(guard_hold.into()).get_bool() {
+    if !check_guard_attack_special_hi(fighter, guard_hold.into()).get_bool() {
         if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_INVALID_CATCH_FRAME) == 0
             && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH)
             && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
@@ -245,14 +213,10 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
             );
             return true.into();
         }
-        // Allows you to button jump out of shield when in shield lock
-        if fighter.sub_check_button_jump().get_bool()
-        || (!guard_hold && fighter.sub_check_button_frick().get_bool()) {
-            fighter.change_status(
-                FIGHTER_STATUS_KIND_JUMP_SQUAT.into(),
-                true.into()
-            );
-            return true.into();
+        if !guard_hold {
+            if fighter.sub_transition_group_check_ground_jump().get_bool() {
+                return true.into();
+            }
         }
     }
     false.into()
@@ -329,21 +293,13 @@ pub unsafe fn sub_ftStatusUniqProcessGuardFunc_updateShield(fighter: &mut L2CFig
 
 pub fn install() {
     install_hooks!(
-        //sub_guard_cont_pre,
-        //sub_guard_on_uniq,
-        //check_guard_hold,
-        //check_guard_attack_special_hi,
-        //status_guard_main_common,
-        //sub_ftStatusUniqProcessGuardOn_initStatus_common,
-        //sub_ftStatusUniqProcessGuardFunc_updateShield,
+        sub_guard_cont_pre,
+        sub_guard_on_uniq,
+        check_guard_hold,
+        check_guard_attack_special_hi,
+        sub_guard_cont,
+        status_guard_main_common,
+        sub_ftStatusUniqProcessGuardOn_initStatus_common,
+        sub_ftStatusUniqProcessGuardFunc_updateShield,
     );
-    skyline::nro::add_hook(nro_hook);
-}
-
-fn nro_hook(info: &skyline::nro::NroInfo) {
-    if info.name == "common" {
-        skyline::install_hooks!(
-            sub_guard_cont
-        );
-    }
 }

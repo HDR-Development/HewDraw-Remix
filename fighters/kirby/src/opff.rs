@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::fighter_common_opff);
+utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
 use super::*;
 use globals::*;
 
@@ -7,18 +7,18 @@ use globals::*;
 unsafe fn final_cutter_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, cat1: i32, frame: f32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_HI2].contains(&status_kind){
         if(AttackModule::is_infliction(boma, 2)){
-            VarModule::on_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_HIT);
+            VarModule::on_flag(boma.object(), vars::common::FINAL_CUTTER_HIT);
         }
     }
     else{
-        VarModule::off_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_HIT);
+        VarModule::off_flag(boma.object(), vars::common::FINAL_CUTTER_HIT);
     }
 
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_HI2 {
         if frame > 10.0 && frame < 19.0 {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-                if VarModule::is_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_HIT) {
-                    VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
+                if VarModule::is_flag(boma.object(), vars::common::FINAL_CUTTER_HIT) {
+                    VarModule::on_flag(boma.object(), vars::common::UP_SPECIAL_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
                 } else {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
@@ -41,6 +41,15 @@ unsafe fn hammer_fastfall_landcancel(boma: &mut BattleObjectModuleAccessor, stat
         }
     }
 }
+
+// Hammer Flip B-Reverse
+unsafe fn hammer_flip_b_reverse(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) {
+        common::opff::check_b_reverse(fighter);
+    }
+}
+
+
 
 // Magic Series
 unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
@@ -298,6 +307,7 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     final_cutter_cancel(boma, id, status_kind, cat[0], frame);
     hammer_fastfall_landcancel(boma, status_kind, situation_kind, cat[1], stick_y);
+    hammer_flip_b_reverse(fighter);
 
 
     // Frame Data

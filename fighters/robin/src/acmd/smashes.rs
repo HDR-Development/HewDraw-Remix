@@ -13,8 +13,9 @@ unsafe fn reflet_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
     }
-    frame(lua_state, 8.0);
+    frame(lua_state, 7.0);
     if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.000);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
     frame(lua_state, 16.0);
@@ -48,7 +49,7 @@ unsafe fn reflet_attack_s4_s_game(fighter: &mut L2CAgentBase) {
             }
         }
     }
-
+    
 }
 
 #[acmd_script( agent = "reflet", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]

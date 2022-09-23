@@ -4,12 +4,13 @@ on:
     types: [labeled, unlabeled, opened, edited, reopened, synchronize, ready_for_review]
 jobs:
   check-pr:
-    name: Validate Release Labels
+    name: Validate Release Label and Notes
     runs-on: ubuntu-latest
     steps:
-      - uses: jesusvasquez333/verify-pr-label-action@v1.4.0
+      - uses: jefflinse/pr-semver-bump@v1
+        name: Validate Pull Request Metadata
         with:
-          github-token: '${{ secrets.GITHUB_TOKEN }}'
-          valid-labels: 'semver:feature, semver:patch'
-          pull-request-number: '${{ github.event.pull_request.number }}'
-          disable-reviews: true
+          mode: validate
+          repo-token: ${{ secrets.RELEASE_TOKEN }}
+          minor-label: semver:feature
+          patch-label: semver:patch

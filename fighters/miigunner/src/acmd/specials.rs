@@ -6,8 +6,8 @@ unsafe fn special_n1_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
-		VarModule::set_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL, 0.0);
-		VarModule::off_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED);
+		VarModule::set_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 0.0);
+		VarModule::off_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
 	}
 	frame(lua_state, 10.0);
 	if is_excute(fighter) {
@@ -22,8 +22,8 @@ unsafe fn special_air_n1_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
-		VarModule::set_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL, 0.0);
-		VarModule::off_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED);
+		VarModule::set_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 0.0);
+		VarModule::off_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
 	}
 	frame(lua_state, 10.0);
 	if is_excute(fighter) {
@@ -38,23 +38,23 @@ unsafe fn special_n1_fire_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
-		VarModule::set_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL, 0.0);
-		VarModule::off_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED);
+		VarModule::set_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 0.0);
+		VarModule::off_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
 	}
 	frame(lua_state, 1.0);
 	// Charge build loop
 	for _ in 0..99 { // F1-2 - 100 charge levels in total
 		if is_excute(fighter) {
 			// If charge initiated and not finished
-			if !VarModule::is_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED){
+			if !VarModule::is_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED){
 				// If holding down the button, increment the charge and continue the slowed animation
 				if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-					VarModule::add_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL, 1.0); // Increment the charge by 1
+					VarModule::add_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 1.0); // Increment the charge by 1
 					FT_MOTION_RATE(fighter, 100.0);
 				}
 				// If no longer holding the button, play out the rest of the animation as normal
 				else{
-					VarModule::on_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED);
+					VarModule::on_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
 					FT_MOTION_RATE(fighter, 1.0);
 				}
 			}
@@ -68,13 +68,13 @@ unsafe fn special_n1_fire_max_game(fighter: &mut L2CAgentBase) {
 	frame(lua_state, 3.0);
 	if is_excute(fighter) {
 		FT_MOTION_RATE(fighter, 1.0);
-		if VarModule::get_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL) < 10.0 {
+		if VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) < 10.0 {
 			ArticleModule::shoot_exist(boma, *FIGHTER_MIIGUNNER_GENERATE_ARTICLE_GUNNERCHARGE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
 			WorkModule::on_flag(boma, *FIGHTER_MIIGUNNER_STATUS_GUNNER_CHARGE_FLAG_SHOOT);
 		}
-		else if VarModule::get_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL) >= 10.0 {
+		else if VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) >= 10.0 {
 			WorkModule::off_flag(boma, *FIGHTER_MIIGUNNER_STATUS_GUNNER_CHARGE_FLAG_BULLET_DISP);
-			let blast_damage = 16.0 + ((VarModule::get_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL) - 10.0) * 10.0 / (100.0 - 20.0));
+			let blast_damage = 16.0 + ((VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) - 10.0) * 10.0 / (100.0 - 20.0));
 			ATTACK(fighter, 0, 0, Hash40::new("top"), blast_damage, 361, 100, 0, 56, 9.0, 0.0, 8.0, 8.0, Some(0.0), Some(8.0), Some(10.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
 			ATTACK(fighter, 1, 0, Hash40::new("top"), blast_damage - 3.0, 361, 100, 0, 56, 6.0, 0.0, 8.0, 8.0, Some(0.0), Some(8.0), Some(50.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
 		}
@@ -92,7 +92,7 @@ unsafe fn special_n1_fire_max_effect(fighter: &mut L2CAgentBase) {
 	frame(lua_state, 1.20);
 	if is_excute(fighter) {
 		// Flash to signify first charge level reached
-		if !VarModule::is_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED) {
+		if !VarModule::is_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED) {
 			EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("armr"), 5.0, 3.0, 0, 0, 0, 0, 0.85, 0, 0, 0, 0, 0, 0, true);
 			LAST_EFFECT_SET_RATE(fighter, 0.45);
 			LAST_EFFECT_SET_COLOR(fighter, 0.15, 10.0, 0.55);
@@ -100,11 +100,11 @@ unsafe fn special_n1_fire_max_effect(fighter: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 3.0);
 	if is_excute(fighter) {
-		if VarModule::get_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL) < 10.0 {
+		if VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) < 10.0 {
 			EFFECT(fighter, Hash40::new_raw(0x143f92a0db), Hash40::new("top"), 6, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
 			LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
 		}
-		else if VarModule::get_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL) >= 10.0 {
+		else if VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) >= 10.0 {
 			EFFECT(fighter, Hash40::new_raw(0x143f92a0db), Hash40::new("top"), 6, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
 			LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
 			
@@ -127,7 +127,7 @@ unsafe fn special_n1_fire_max_sound(fighter: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 3.0);
 	if is_excute(fighter) {
-		if VarModule::get_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL) >= 20.0 && VarModule::get_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL) < 95.0 {
+		if VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) >= 20.0 && VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) < 95.0 {
 			PLAY_SE(fighter, Hash40::new("se_miigunner_special_n05"));
 		}
 	}
@@ -139,23 +139,23 @@ unsafe fn special_air_n1_fire_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
-		VarModule::set_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL, 0.0);
-		VarModule::off_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED);
+		VarModule::set_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 0.0);
+		VarModule::off_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
 	}
 	frame(lua_state, 1.0);
 	// Charge build loop
 	for _ in 0..99 { // F1-2 - 100 charge levels in total
 		if is_excute(fighter) {
 			// If charge initiated and not finished
-			if !VarModule::is_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED){
+			if !VarModule::is_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED){
 				// If holding down the button, increment the charge and continue the slowed animation
 				if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-					VarModule::add_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL, 1.0); // Increment the charge by 1
+					VarModule::add_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 1.0); // Increment the charge by 1
 					FT_MOTION_RATE(fighter, 100.0);
 				}
 				// If no longer holding the button, play out the rest of the animation as normal
 				else{
-					VarModule::on_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED);
+					VarModule::on_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
 					FT_MOTION_RATE(fighter, 1.0);
 				}
 			}
@@ -169,13 +169,13 @@ unsafe fn special_air_n1_fire_max_game(fighter: &mut L2CAgentBase) {
 	frame(lua_state, 3.0);
 	if is_excute(fighter) {
 		FT_MOTION_RATE(fighter, 1.0);
-		if VarModule::get_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL) < 20.0 {
+		if VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) < 20.0 {
 			ArticleModule::shoot_exist(boma, *FIGHTER_MIIGUNNER_GENERATE_ARTICLE_GUNNERCHARGE, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
 			WorkModule::on_flag(boma, *FIGHTER_MIIGUNNER_STATUS_GUNNER_CHARGE_FLAG_SHOOT);
 		}
-		else if VarModule::get_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL) >= 20.0 && VarModule::get_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL) < 20.0 {
+		else if VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) >= 20.0 && VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) < 20.0 {
 			WorkModule::off_flag(boma, *FIGHTER_MIIGUNNER_STATUS_GUNNER_CHARGE_FLAG_BULLET_DISP);
-			let blast_damage = 16.0 + ((VarModule::get_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL) - 25.0) * 10.0 / (95.0 - 25.0));
+			let blast_damage = 16.0 + ((VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) - 25.0) * 10.0 / (95.0 - 25.0));
 			ATTACK(fighter, 0, 0, Hash40::new("top"), blast_damage, 361, 100, 0, 56, 9.0, 0.0, 8.0, 8.0, Some(0.0), Some(8.0), Some(10.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
 			ATTACK(fighter, 1, 0, Hash40::new("top"), blast_damage - 3.0, 361, 100, 0, 56, 6.0, 0.0, 8.0, 8.0, Some(0.0), Some(8.0), Some(50.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
 		}
@@ -193,7 +193,7 @@ unsafe fn special_air_n1_fire_max_effect(fighter: &mut L2CAgentBase) {
 	frame(lua_state, 1.20);
 	if is_excute(fighter) {
 		// Flash to signify first charge level reached
-		if !VarModule::is_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED) {
+		if !VarModule::is_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED) {
 			EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("armr"), 5.0, 3.0, 0, 0, 0, 0, 0.85, 0, 0, 0, 0, 0, 0, true);
 			LAST_EFFECT_SET_RATE(fighter, 0.45);
 			LAST_EFFECT_SET_COLOR(fighter, 0.15, 10.0, 0.55);
@@ -201,11 +201,11 @@ unsafe fn special_air_n1_fire_max_effect(fighter: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 3.0);
 	if is_excute(fighter) {
-		if VarModule::get_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL) < 20.0 {
+		if VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) < 20.0 {
 			EFFECT(fighter, Hash40::new_raw(0x143f92a0db), Hash40::new("top"), 6, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
 			LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
 		}
-		else if VarModule::get_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL) >= 20.0 && VarModule::get_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL) < 95.0 {
+		else if VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) >= 20.0 && VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) < 95.0 {
 			EFFECT(fighter, Hash40::new_raw(0x143f92a0db), Hash40::new("top"), 6, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
 			LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
 			
@@ -228,7 +228,7 @@ unsafe fn special_air_n1_fire_max_sound(fighter: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 3.0);
 	if is_excute(fighter) {
-		if VarModule::get_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL) >= 20.0 && VarModule::get_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL) < 95.0 {
+		if VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) >= 20.0 && VarModule::get_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL) < 95.0 {
 			PLAY_SE(fighter, Hash40::new("se_miigunner_special_n05"));
 		}
 	}
@@ -265,23 +265,23 @@ unsafe fn special_n3_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
-		VarModule::set_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL, 0.0);
-		VarModule::off_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED);
+		VarModule::set_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 0.0);
+		VarModule::off_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
 	}
 	frame(lua_state, 10.0);
 	// Charge build loop
 	for _ in 0..10 { // F10-20 - 10 charge levels in total
 		if is_excute(fighter) {
 			// If charge initiated and not finished
-			if !VarModule::is_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED){
+			if !VarModule::is_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED){
 				// If holding down the button, increment the charge and continue the slowed animation
 				if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-					VarModule::add_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL, 1.0); // Increment the charge by 1
+					VarModule::add_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 1.0); // Increment the charge by 1
 					FT_MOTION_RATE(fighter, 2.0);
 				}
 				// If no longer holding the button, play out the rest of the animation as normal
 				else{
-					VarModule::on_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED);
+					VarModule::on_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
 					FT_MOTION_RATE(fighter, 1.0);
 				}
 			}
@@ -300,23 +300,23 @@ unsafe fn special_air_n3_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
-		VarModule::set_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL, 0.0);
-		VarModule::off_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED);
+		VarModule::set_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 0.0);
+		VarModule::off_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
 	}
 	frame(lua_state, 10.0);
 	// Charge build loop
 	for _ in 0..10 { // F10-20 - 10 charge levels in total
 		if is_excute(fighter) {
 			// If charge initiated and not finished
-			if !VarModule::is_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED){
+			if !VarModule::is_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED){
 				// If holding down the button, increment the charge and continue the slowed animation
 				if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-					VarModule::add_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL, 1.0); // Increment the charge by 1
+					VarModule::add_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 1.0); // Increment the charge by 1
 					FT_MOTION_RATE(fighter, 2.0);
 				}
 				// If no longer holding the button, play out the rest of the animation as normal
 				else{
-					VarModule::on_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED);
+					VarModule::on_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
 					FT_MOTION_RATE(fighter, 1.0);
 				}
 			}
@@ -335,8 +335,8 @@ unsafe fn special_hi1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
-		VarModule::set_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL, 0.0);
-		VarModule::off_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED);
+		VarModule::set_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 0.0);
+		VarModule::off_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
 	}
 	frame(lua_state, 2.0);
 	if is_excute(fighter) {
@@ -351,16 +351,16 @@ unsafe fn special_hi1_game(fighter: &mut L2CAgentBase) {
 	for _ in 0..29 { // F4-6 - 30 charge levels in total
 		if is_excute(fighter) {
 			// If charge initiated and not finished
-			if !VarModule::is_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED){
+			if !VarModule::is_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED){
 				// If holding down the button, increment the charge and continue the slowed animation
 				if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-					VarModule::add_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL, 1.0); // Increment the charge by 1
+					VarModule::add_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 1.0); // Increment the charge by 1
 					FT_MOTION_RATE(fighter, 10.0);
 					HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
 				}
 				// If no longer holding the button, play out the rest of the animation as normal
 				else{
-					VarModule::on_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED);
+					VarModule::on_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
 					FT_MOTION_RATE(fighter, 1.0);
 					HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
 				}
@@ -396,8 +396,8 @@ unsafe fn special_air_hi1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
-		VarModule::set_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL, 0.0);
-		VarModule::off_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED);
+		VarModule::set_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 0.0);
+		VarModule::off_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
 	}
 	frame(lua_state, 2.0);
 	if is_excute(fighter) {
@@ -412,18 +412,18 @@ unsafe fn special_air_hi1_game(fighter: &mut L2CAgentBase) {
 	for _ in 0..29 { // F4-6 - 30 charge levels in total
 		if is_excute(fighter) {
 			// If charge initiated and not finished
-			if !VarModule::is_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED){
+			if !VarModule::is_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED){
 				// If holding down the button, increment the charge and continue the slowed animation
 				if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
 					let motion_vec = Vector3f{x: 1.0, y: 0.85, z: 1.0};
 					KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY); //
-					VarModule::add_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL, 1.0); // Increment the charge by 1
+					VarModule::add_float(fighter.battle_object, vars::miigunner::CHARGE_ATTACK_LEVEL, 1.0); // Increment the charge by 1
 					FT_MOTION_RATE(fighter, 10.0);
 					HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
 				}
 				// If no longer holding the button, play out the rest of the animation as normal
 				else{
-					VarModule::on_flag(fighter.battle_object, vars::miigunner::status::IS_CHARGE_FINISHED);
+					VarModule::on_flag(fighter.battle_object, vars::miigunner::IS_CHARGE_FINISHED);
 					FT_MOTION_RATE(fighter, 1.0);
 					HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
 				}
@@ -452,26 +452,6 @@ unsafe fn special_air_hi1_game(fighter: &mut L2CAgentBase) {
 	if is_excute(fighter) {
 		HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
 	} 
-}
-
-#[acmd_script( agent = "miigunner", scripts = ["game_specialhi2squat", "game_specialairhi2squat"] , category = ACMD_GAME , low_priority)]
-unsafe fn special_hi2_squat_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-	frame(lua_state, 3.0);
-	FT_MOTION_RATE(fighter, 0.5);
-	frame(lua_state, 7.0);
-	FT_MOTION_RATE(fighter, 0.25);
-	frame(lua_state, 11.0);
-	FT_MOTION_RATE(fighter, 1);
-	if is_excute(fighter) {
-		ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 270, 100, 0, 5, 9.0, 0.0, 0.0, 3.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-		ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 110, 85, 40, 90, 9.0, 0.0, 0.0, 3.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-	}
-	frame(lua_state, 13.0);
-	if is_excute(fighter) {
-		AttackModule::clear_all(boma);
-	}
 }
 
 #[acmd_script( agent = "miigunner", script = "game_specialhi2" , category = ACMD_GAME , low_priority)]
@@ -546,7 +526,6 @@ pub fn install() {
 		special_air_n3_start_game,
 		special_hi1_game,
 		special_air_hi1_game,
-		special_hi2_squat_game,
 		special_hi2_game,
 		special_hi3_start_game,
 		special_air_hi3_start_game,

@@ -5,6 +5,7 @@ use globals::*;
 #[common_status_script(status = FIGHTER_STATUS_KIND_GUARD_OFF, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS,
     symbol = "_ZN7lua2cpp16L2CFighterCommon42sub_ftStatusUniqProcessGuardOff_exitStatusEv")]
 unsafe fn ftStatusUniqProcessGuardOff_exitStatus(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
     if app::FighterUtil::is_valid_just_shield(fighter.module_accessor) {
         ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, app::ShieldStatus(*SHIELD_STATUS_NONE), 0);
         let shield_type = app::FighterUtil::get_shield_type_of_guard(fighter.global_table[FIGHTER_KIND].get_i32()) as i32;

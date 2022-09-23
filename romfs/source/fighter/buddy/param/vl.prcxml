@@ -9,27 +9,13 @@
     </struct>
   </list>
   <list hash="fly_speed_y">
-    <float index="0">2.7</float>
-    <float index="1">2.3</float>
-  </list>
-  <list size="1" hash="fly_data">
-    <struct index="0">
-      <float hash="turn_stick_x">0.3</float>
-      <float hash="init_speed_x_mul">0.5</float>
-      <float hash="speed_x_mul">0.8</float>
-      <float hash="speed_x_max_mul">0.8</float>
-      <list size="2" hash="speed_y_table">
-        <float index="0">2.7</float>
-        <float index="1">2.3</float>
-      </list>
-      <int hash="shoot_fly_next_frame">30</int>
-    </struct>
+    <float index="0">2.5</float>
+    <float index="1">2.25</float>
   </list>
   <list hash="param_special_n">
     <struct index="0">
-      <float hash="start_speed_x_mul_air">1</float>
-      <float hash="start_control_max_speed_x_mul_air">1</float>
-      <float hash="start_brake_x_air">0.005</float>
+      <float hash="start_speed_x_mul_air">0.9</float>
+      <float hash="start_control_max_speed_x_mul_air">0.9</float>
       <float hash="start_speed_y_add_air">0.2</float>
       <float hash="add_speed_y_shoot">0.5</float>
     </struct>
@@ -54,7 +40,7 @@
     <hash40 index="3">dummy</hash40>
   </list>
   <struct hash="param_buddybomb">
-    <int hash="life">240</int>
-    <int hash="init_bound_frame">240</int>
+    <int hash="life">295</int>
+    <int hash="init_bound_frame">295</int>
   </struct>
 </struct>

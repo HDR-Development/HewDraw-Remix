@@ -16,7 +16,6 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="special_hi_wrap_speed_multi">3.25</float>
-      <float hash="special_hi_landing_frame">28</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -24,7 +23,7 @@
   </list>
   <list hash="param_reflectionboard">
     <struct index="0">
-      <float hash="life">225</float>
+      <float hash="life">240</float>
       <int hash="durability">8</int>
       <int hash="move_frame">240</int>
       <float hash="move_speed">0.15</float>
@@ -34,10 +33,6 @@
   <list hash="param_reflector">
     <struct index="0">
       <float hash="life_mul">0</float>
-      <float hash="offset_y_start">11.5</float>
-      <float hash="offset_y_end">-7.5</float>
-      <float hash="offset_z_start">4.0</float>
-      <float hash="offset_z_end">4.0</float>
     </struct>
   </list>
 </struct>

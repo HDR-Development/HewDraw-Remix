@@ -2,8 +2,7 @@ use std::collections::HashMap;
 use std::sync::Arc;
 
 use arcropolis_api::{arc_callback, load_original_file};
-use prc::{hash40::{Hash40}, ParamKind};
-use prc::hash40::hash40 as to_hash40;
+use prc::{hash40::{Hash40, to_hash40}, ParamKind};
 use smash::{hash40, app::BattleObject};
 use smash::phx::Hash40 as Hash40_2;
 use parking_lot::RwLock;

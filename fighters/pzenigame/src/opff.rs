@@ -32,13 +32,13 @@ unsafe fn withdraw_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
         || status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame > 10.0 {
     */
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S {
-        VarModule::set_float(boma.object(), vars::pzenigame::instance::WITHDRAW_FRAME, 0.0);
+        VarModule::set_float(boma.object(), vars::common::WITHDRAW_FRAME, 0.0);
     }
     if [*FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_LOOP].contains(&status_kind) {
         // Increment the Withdraw frame every frame you're in the SPECIAL_S_LOOP status kind
-        VarModule::add_float(boma.object(), vars::pzenigame::instance::WITHDRAW_FRAME, 1.0);
+        VarModule::add_float(boma.object(), vars::common::WITHDRAW_FRAME, 1.0);
         // JC Lockout: frame 30
-        if VarModule::get_float(boma.object(), vars::pzenigame::instance::WITHDRAW_FRAME) > 15.0 {
+        if VarModule::get_float(boma.object(), vars::common::WITHDRAW_FRAME) > 15.0 {
             if boma.is_input_jump() && !boma.is_in_hitlag() {
                 if situation_kind == *SITUATION_KIND_AIR {
                     if boma.get_num_used_jumps() < boma.get_jump_count_max() {
