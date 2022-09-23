@@ -184,9 +184,9 @@ unsafe fn samusd_bomb_burst_attack_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        //crate::sv_animcmd::EFFECT_BRANCH_SITUATION(fighter, Hash40::new("sys_bomb_a"), Hash40::new("sys_bomb_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(fighter, Hash40::new("sys_hit_purple"), Hash40::new("top"), 0, 0.5, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
         EFFECT(fighter, Hash40::new("samusd_entry"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_RATE(fighter, 3.2);
+        LAST_EFFECT_SET_RATE(fighter, 77.0/24.0);
     }
 }
 
