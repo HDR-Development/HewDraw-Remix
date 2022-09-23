@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
@@ -18,59 +18,34 @@ unsafe fn aerial_wiz_foot_jump_reset_bounce(boma: &mut BattleObjectModuleAccesso
 }
 
 // Dtaunt Counter
-unsafe fn dtaunt_counter(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
-    if [hash40("appeal_lw_l"), hash40("appeal_lw_r")].contains(&motion_kind)
-        && frame >= 29.0 && frame <= 59.0 {
-        if FighterStopModuleImpl::is_damage_stop(boma) {
-            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-                DamageModule::add_damage(boma, 100.0, 0);
-                WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START);
-                StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START, false);
-            }
-        }
-    }
-}
-
-// Warlock Punch B-Reverse
-unsafe fn warlock_punch_b_reverse(fighter: &mut L2CFighterCommon) {
-    if fighter.is_motion(Hash40::new("special_air_n")) {
-        common::opff::check_b_reverse(fighter);
-    }
-}
-
-// Wizard's Foot B-Reverse
-unsafe fn wizards_foot_b_reverse(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-        if frame > 1.0 && frame < 5.0 {
-            if stick_x * facing < 0.0 {
-                PostureModule::reverse_lr(boma);
-                PostureModule::update_rot_y_lr(boma);
-                if  !VarModule::is_flag(boma.object(), vars::common::B_REVERSED) {
-                    KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
-                    VarModule::on_flag(boma.object(), vars::common::B_REVERSED);
-                }
-            }
-        }
-    }
-}
+// unsafe fn dtaunt_counter(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
+//     if [hash40("appeal_lw_l"), hash40("appeal_lw_r")].contains(&motion_kind)
+//         && frame >= 29.0 && frame <= 59.0 {
+//         if FighterStopModuleImpl::is_damage_stop(boma) {
+//             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
+//                 DamageModule::add_damage(boma, 100.0, 0);
+//                 WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START);
+//                 StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START, false);
+//             }
+//         }
+//     }
+// }
 
 // Repeated Warlock Punch turnaround
-unsafe fn repeated_warlock_punch_turnaround(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
-    if status_kind == *FIGHTER_GANON_STATUS_KIND_SPECIAL_N_TURN {
-        if frame > 30.0 && frame < 45.0 {
-            if stick_x * facing < 0.0 {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_GANON_STATUS_KIND_SPECIAL_N_TURN, true);
-            }
-        }
-    }
-}
+// unsafe fn repeated_warlock_punch_turnaround(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
+//     if status_kind == *FIGHTER_GANON_STATUS_KIND_SPECIAL_N_TURN {
+//         if frame > 30.0 && frame < 45.0 {
+//             if stick_x * facing < 0.0 {
+//                 StatusModule::change_status_request_from_script(boma, *FIGHTER_GANON_STATUS_KIND_SPECIAL_N_TURN, true);
+//             }
+//         }
+//     }
+// }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     aerial_wiz_foot_jump_reset_bounce(boma, status_kind, situation_kind);
-    wizards_foot_b_reverse(boma, id, status_kind, stick_x, facing, frame);
-    //dtaunt_counter(boma, motion_kind, frame);
-    warlock_punch_b_reverse(fighter);
-    repeated_warlock_punch_turnaround(boma, status_kind, stick_x, facing, frame);
+    // dtaunt_counter(boma, motion_kind, frame);
+    // repeated_warlock_punch_turnaround(boma, status_kind, stick_x, facing, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_GANON )]

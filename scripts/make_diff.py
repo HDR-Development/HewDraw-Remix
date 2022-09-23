@@ -8,7 +8,7 @@ import diff_lib
 
 #  this file diffs the existing switch-package.zip against whatever the latest nightly or
 #  beta is, depending on arguments, and produces a upgrade.zip for that version to this
-#  version, as well as an upgrade_deletions.txt file with the files that should be deleted
+#  version, as well as an deletions.json file with the files that should be deleted
 
 if "help" in sys.argv or "--help" in sys.argv or "-h" in sys.argv or len(sys.argv) != 2:
     if len(sys.argv) != 2:
@@ -21,11 +21,15 @@ if not os.path.exists("artifacts/switch-package.zip"):
 
 if sys.argv[1] == "nightly":
     release_type = "Nightlies"
-else:
+    url = "https://github.com/HDR-Development/HDR-" + release_type + "/releases/latest/download/switch-package.zip"
+elif sys.argv[1] == "beta":
     release_type = "Releases"
+    url = "https://github.com/HDR-Development/HDR-" + release_type + "/releases/latest/download/switch-package.zip"
+else:
+    release_type = "direct_url"
+    url = sys.argv[1]
 
-url = "https://github.com/HDR-Development/HDR-" + release_type + "/releases/latest/download/switch-package.zip"
-print("getting latest from url: " + url)
+print("type: " + release_type + ", getting latest from url: " + url)
 
 urllib.request.urlretrieve(url, "switch-package-previous.zip")
 
@@ -36,5 +40,5 @@ if os.path.exists("upgrade_artifacts"):
     shutil.rmtree("upgrade_artifacts")
 os.mkdir("upgrade_artifacts")
 shutil.move("upgrade.zip", "upgrade_artifacts")
-shutil.move("upgrade_deletions.txt", "upgrade_artifacts")
+shutil.move("deletions.json", "upgrade_artifacts")
 

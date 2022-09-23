@@ -1,4 +1,6 @@
-#![feature(asm)]#![allow(unused)]#![allow(non_snake_case)]
+#![deny(deprecated)]
+#![allow(unused)]
+#![allow(non_snake_case)]
 
 pub mod acmd;
 
@@ -45,10 +47,10 @@ fn luigi_reset(fighter: &mut L2CFighterCommon) {
             return;
         }
     
-        VarModule::off_flag(fighter.battle_object, vars::luigi::IS_MISFIRE_STORED);
-        VarModule::set_float(fighter.battle_object, vars::luigi::MISFIRE_DAMAGE_MULTIPLIER, 1.0);
-        VarModule::set_int(fighter.battle_object, vars::luigi::CHARGE_SMOKE_EFFECT_HANDLE, -1);
-        VarModule::set_int(fighter.battle_object, vars::luigi::CHARGE_PULSE_EFFECT_HANDLE, -1);
+        VarModule::off_flag(fighter.battle_object, vars::luigi::instance::IS_MISFIRE_STORED);
+        VarModule::set_float(fighter.battle_object, vars::luigi::instance::MISFIRE_DAMAGE_MULTIPLIER, 1.0);
+        VarModule::set_int(fighter.battle_object, vars::luigi::instance::CHARGE_SMOKE_EFFECT_HANDLE, -1);
+        VarModule::set_int(fighter.battle_object, vars::luigi::instance::CHARGE_PULSE_EFFECT_HANDLE, -1);
         calculate_misfire_number(fighter);
     }
 }
@@ -61,7 +63,7 @@ pub fn calculate_misfire_number(fighter: &mut L2CFighterCommon) {
         let remaining = app::sv_math::rand(hash40("fighter"), range + 1);
         VarModule::set_int(
             fighter.battle_object,
-            vars::luigi::REMAINING_SPECIAL_S_UNTIL_MISFIRE,
+            vars::luigi::instance::REMAINING_SPECIAL_S_UNTIL_MISFIRE,
             remaining + min
         );
     }

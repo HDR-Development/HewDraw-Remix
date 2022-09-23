@@ -4,16 +4,22 @@ use super::*;
 use globals::*;
 
  
-unsafe fn hit_cancel_blade_switch(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64) {
-    if [*FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_LW3, *FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind)
-       || ([*FIGHTER_STATUS_KIND_ATTACK].contains(&status_kind) && motion_kind == hash40("attack_13")){
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            if boma.is_cat_flag(Cat1::SpecialLw) {
-                if !boma.is_in_hitlag() {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW,true);
-                }
-            }
-        }
+unsafe fn hit_cancel_blade_switch(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if (fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_ATTACK_S3,
+        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+        *FIGHTER_STATUS_KIND_ATTACK_LW3,
+        *FIGHTER_STATUS_KIND_ATTACK_AIR,
+        *FIGHTER_STATUS_KIND_ATTACK_DASH,
+        *FIGHTER_STATUS_KIND_ATTACK_S4,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4,
+        *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP
+    ]) || fighter.is_motion(Hash40::new("attack_13")))
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    && fighter.is_cat_flag(Cat1::SpecialLw)
+    && !fighter.is_in_hitlag() {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_LW, true);
     }
 }
 

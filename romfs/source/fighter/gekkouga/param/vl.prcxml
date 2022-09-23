@@ -37,6 +37,7 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="warp_spd_add">3.5</float>
+      <int hash="warp_angle">100</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

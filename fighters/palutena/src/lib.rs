@@ -1,4 +1,6 @@
-#![feature(asm)]#![allow(unused)]#![allow(non_snake_case)]
+#![deny(deprecated)]
+#![allow(unused)]
+#![allow(non_snake_case)]
 
 pub mod acmd;
 
