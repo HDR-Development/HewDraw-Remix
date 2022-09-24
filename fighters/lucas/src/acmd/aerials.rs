@@ -395,6 +395,16 @@ unsafe fn lucas_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "lucas", script = "game_aircatchlanding" , category = ACMD_GAME , low_priority)]
+unsafe fn lucas_landing_air_catch_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 12.0/20.0);
+    }
+    
+}
+
 pub fn install() {
     install_acmd_scripts!(
         lucas_attack_air_n_game,
@@ -409,6 +419,7 @@ pub fn install() {
         lucas_attack_air_lw_game,
         lucas_attack_air_lw_effect,
         lucas_attack_air_lw_sound,
+        lucas_landing_air_catch_game,
     );
 }
 
