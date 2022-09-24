@@ -21,7 +21,7 @@ unsafe fn dolly_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 1.000);
         MeterModule::watch_damage(fighter.battle_object, true);
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
-            if MeterModule::drain(fighter.battle_object, 4) {
+            if MeterModule::drain(fighter.battle_object, 2) {
                 VarModule::on_flag(fighter.battle_object, vars::dolly::status::IS_SHATTER_STRIKE);
             }
         }
