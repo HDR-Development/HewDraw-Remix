@@ -32,6 +32,7 @@ pub fn duckhunt_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         common::opff::fighter_common_opff(fighter);
         duck_jump_cancel(fighter);
         gunman_timer(fighter);
+        gunman_cancel(fighter);
     }
 }
 
@@ -85,3 +86,24 @@ pub fn gunman_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
         }
     }
 }
+
+unsafe fn gunman_cancel(fighter: &mut L2CFighterCommon) {
+    let boma = fighter.boma();
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK,
+                                        *FIGHTER_STATUS_KIND_ATTACK_S3,
+                                        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+                                        *FIGHTER_STATUS_KIND_ATTACK_LW3,
+                                        *FIGHTER_STATUS_KIND_ATTACK_S4,
+                                        *FIGHTER_STATUS_KIND_ATTACK_HI4,
+                                        *FIGHTER_STATUS_KIND_ATTACK_LW4,
+                                        *FIGHTER_STATUS_KIND_ATTACK_DASH,
+                                        *FIGHTER_STATUS_KIND_ATTACK_AIR])
+    && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
+    && !fighter.is_in_hitlag() 
+    && fighter.is_cat_flag(Cat1::SpecialLw) 
+    && VarModule::get_int(boma.object(), vars::duckhunt::instance::GUNMAN_TIMER) == 0 {
+        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, false);
+    }
+}
+
+ 
