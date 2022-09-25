@@ -102,6 +102,7 @@ unsafe fn korean_back_dash(boma: &mut BattleObjectModuleAccessor, cat1: i32, sta
         *FIGHTER_STATUS_KIND_SQUAT_RV,
     ])
     && compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH)
+    && boma.left_stick_y() > WorkModule::get_param_float(boma, hash40("common"), hash40("squat_stick_y"))
     {
         boma.change_status_req(*FIGHTER_DEMON_STATUS_KIND_DASH_BACK, false);
     }
