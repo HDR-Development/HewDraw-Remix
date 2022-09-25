@@ -15,15 +15,6 @@ pub unsafe fn morphball_crawl(boma: &mut BattleObjectModuleAccessor, status_kind
     }
 }
 
-pub unsafe fn remove_super_missiles(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if status_kind == *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S2G {
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S1G, false);
-    }
-    else if status_kind == *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S2A {
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S1A, false);
-    }
-}
-
 pub unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     if status_kind == *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_C {
         if situation_kind == *SITUATION_KIND_AIR {
