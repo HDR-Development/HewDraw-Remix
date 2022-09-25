@@ -21,9 +21,7 @@ unsafe fn duckhunt_special_lw_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        if fighter.is_button_off(Buttons::Guard) {
-            WorkModule::on_flag(boma, *FIGHTER_DUCKHUNT_STATUS_SPECIAL_LW_FLAG_CALL_TRIGGER);
-        }
+        WorkModule::on_flag(boma, *FIGHTER_DUCKHUNT_STATUS_SPECIAL_LW_FLAG_CALL_TRIGGER);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
