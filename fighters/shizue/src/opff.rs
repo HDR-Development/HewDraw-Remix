@@ -75,6 +75,24 @@ unsafe fn balloon_cancel(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn lloid_special_cancel(fighter: &mut L2CFighterCommon) {
+    let boma = fighter.boma();
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK,
+                                        *FIGHTER_STATUS_KIND_ATTACK_S3,
+                                        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+                                        *FIGHTER_STATUS_KIND_ATTACK_LW3,
+                                        *FIGHTER_STATUS_KIND_ATTACK_S4,
+                                        *FIGHTER_STATUS_KIND_ATTACK_HI4,
+                                        *FIGHTER_STATUS_KIND_ATTACK_LW4,
+                                        *FIGHTER_STATUS_KIND_ATTACK_DASH,
+                                        *FIGHTER_STATUS_KIND_ATTACK_AIR])
+    && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
+    && !fighter.is_in_hitlag()
+    && fighter.is_cat_flag(Cat1::SpecialLw) {
+        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, false);
+    }
+}
+
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     fishing_rod_shield_cancel(boma, status_kind, situation_kind, frame);
     reel_in(boma, status_kind, situation_kind, frame);
@@ -87,6 +105,7 @@ pub fn shizue_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         common::opff::fighter_common_opff(fighter);
 		shizue_frame(fighter);
         balloon_cancel(fighter);
+        lloid_special_cancel(fighter);
     }
 }
 
