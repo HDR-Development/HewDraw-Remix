@@ -328,6 +328,11 @@ unsafe fn status_DamageFly_Main_hook(fighter: &mut L2CFighterCommon) -> L2CValue
             return 0.into();
         }
         ***/
+        // <HDR>
+        if MotionModule::is_end(fighter.module_accessor) && MotionModule::rate(fighter.module_accessor) != 0.0 {
+            MotionModule::set_rate(fighter.module_accessor, 0.0);
+        }
+        // </HDR>
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FALL) 
         && MotionModule::is_end(fighter.module_accessor)
         && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_END_REACTION)
