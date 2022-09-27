@@ -31,7 +31,7 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if !smash2::app::FighterCutInManager::is_vr_mode() {
-        if smash2::app::FighterCutInManager::is_one_on_one_including_thrown(&*(boma as *const smash2::app::BattleObjectModuleAccessor)) {
+        if smash2::app::FighterCutInManager::is_one_on_one_including_thrown(&*(fighter.module_accessor as *const smash2::app::BattleObjectModuleAccessor)) {
             if is_excute(fighter) {
                 FighterSpecializer_Demon::check_disabled_motion_camera_of_scale(boma);
                 FighterSpecializer_Demon::check_disabled_motion_camera_of_stage(boma);
