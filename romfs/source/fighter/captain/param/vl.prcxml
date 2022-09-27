@@ -10,7 +10,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="speed_coef">0.925</float>
+      <float hash="speed_coef">0.95</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
