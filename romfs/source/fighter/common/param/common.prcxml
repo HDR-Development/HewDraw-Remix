@@ -65,7 +65,6 @@
     <float index="9">0.01</float>
   </list>
   <float hash="mini_jump_attack_mul">1</float>
-  <float hash="status_start_turn_stick_x">0</float>
   <int hash="special_air_n_turn_frame">15</int>
   <byte hash="special_command_life_max">10</byte>
   <byte hash="super_special_command_life_max">20</byte>
