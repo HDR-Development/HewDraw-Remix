@@ -1,5 +1,16 @@
-#![feature(asm)]#![allow(unused)]#![allow(non_snake_case)]#![allow(unused_imports)]#![allow(unused_variables)]
+#![deny(deprecated)]
+#![allow(unused)]
+#![allow(non_snake_case)]#![allow(unused_imports)]#![allow(unused_variables)]
 #![feature(proc_macro_hygiene)]
+
+#[cfg(feature = "main_nro")]
+mod random;
+
+#[cfg(feature = "main_nro")]
+mod controls;
+
+#[cfg(feature = "main_nro")]
+mod lua;
 
 use skyline::libc::c_char;
 #[cfg(feature = "main_nro")]
@@ -66,11 +77,47 @@ fn change_version_string_hook(arg: u64, string: *const c_char) {
     }
 }
 
-#[skyline::main(name = "hdr")]
-pub fn main() {
+std::arch::global_asm!(
+    r#"
+    .section .nro_header
+    .global __nro_header_start
+    .word 0
+    .word _mod_header
+    .word 0
+    .word 0
+    
+    .section .rodata.module_name
+        .word 0
+        .word 3
+        .ascii "hdr"
+    .section .rodata.mod0
+    .global _mod_header
+    _mod_header:
+        .ascii "MOD0"
+        .word __dynamic_start - _mod_header
+        .word __bss_start - _mod_header
+        .word __bss_end - _mod_header
+        .word __eh_frame_hdr_start - _mod_header
+        .word __eh_frame_hdr_end - _mod_header
+        .word __nx_module_runtime - _mod_header // runtime-generated module object offset
+    .global IS_NRO
+    IS_NRO:
+        .word 1
+    
+    .section .bss.module_runtime
+    __nx_module_runtime:
+    .space 0xD0
+    "#
+);
+
+#[no_mangle]
+pub extern "C" fn main() {
     #[cfg(feature = "main_nro")] {
         quick_validate_install();
         skyline::install_hooks!(change_version_string_hook);
+        random::install();
+        controls::install();
+        lua::install();
     }
 
     #[cfg(not(feature = "runtime"))]

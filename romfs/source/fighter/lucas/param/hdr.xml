@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <int hash="attack_up_charge_time">120</int>
+    <float hash="mag_pull_x_mult">2.0</float>
+</struct>

@@ -51,8 +51,9 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     ff_chef_land_cancel(boma, status_kind, situation_kind, cat[1], stick_y);
     parachute_dj(boma, status_kind, situation_kind, cat[0]);
     fair_repositioning(boma, status_kind, motion_kind, frame);
-    //jc_oil_panic_reflect(boma, status_kind, situation_kind);
+    //jc_oil_panic_reflect(boma, status_kind, situation_kind); 
     jc_judge_four(boma, motion_kind, situation_kind);
+    dthrow_reverse(boma, motion_kind);
 
     // Frame Data
     frame_data(boma, status_kind, motion_kind, frame);
@@ -86,16 +87,25 @@ pub unsafe fn gamewatch_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 // Jump cancel Judge 4
 unsafe fn jc_judge_four(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, situation_kind: i32) {
     if motion_kind == hash40("special_s_4") || motion_kind == hash40("special_air_s_4") {
-        if boma.is_input_jump() && !boma.is_in_hitlag() {
-            if situation_kind == *SITUATION_KIND_GROUND {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, false);
-            }
-            else if situation_kind == *SITUATION_KIND_AIR {
-                if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
+            if boma.is_input_jump() {
+                if situation_kind == *SITUATION_KIND_GROUND {
+                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, false);
+                }
+                else if situation_kind == *SITUATION_KIND_AIR {
+                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
+                    }
                 }
             }
         }
+    }
+}
+
+// down throw mirror
+unsafe fn dthrow_reverse(boma: & mut BattleObjectModuleAccessor, motion_kind: u64) {
+    if boma.is_motion(Hash40::new("throw_lw")) {
+        ModelModule::set_joint_rotate(boma, Hash40::new("rot"), &Vector3f{x: 0.0, y: 180.0, z: 0.0}, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
     }
 }
 

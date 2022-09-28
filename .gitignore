@@ -17,7 +17,9 @@ plugin/hdr_version.txt
 **/zips/
 *.zip
 **/content_hashes.txt
+**/content_hashes.json
 **/diff/
-scripts/artifacts/upgrade_deletions.txt
+scripts/artifacts/deletions.json
 **/upgrade/
 **/upgrade_artifacts/
+.DS_Store
