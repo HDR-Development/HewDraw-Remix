@@ -22,6 +22,17 @@ unsafe fn is_touch_hook(boma: &mut BattleObjectModuleAccessor, ground_touch_flag
         *WEAPON_KIND_REFLET_THUNDER,
         *WEAPON_KIND_SZEROSUIT_PARALYZER_BULLET,
         *WEAPON_KIND_MIIGUNNER_ATTACKAIRF_BULLET,
+        *WEAPON_KIND_WIIFIT_SUNBULLET,
+        *WEAPON_KIND_SAMUS_SUPERMISSILE,
+        *WEAPON_KIND_SAMUSD_SUPERMISSILE,
+        *WEAPON_KIND_MEWTWO_SHADOWBALL,
+        *WEAPON_KIND_LUCARIO_AURABALL,
+        *WEAPON_KIND_MIIGUNNER_SUPERMISSILE,
+        *WEAPON_KIND_KEN_HADOKEN,
+        *WEAPON_KIND_MIIGUNNER_GUNNERCHARGE
+        *WEAPON_KIND_FOX_BLASTER_BULLET,
+        *WEAPON_KIND_GEKKOUGA_SHURIKEN,
+        *WEAPON_KIND_PICHU_DENGEKIDAMA        
     ].contains(&boma.kind())
     {
         let normal_y = GroundModule::get_touch_normal_y(boma, *GROUND_TOUCH_FLAG_DOWN as u32);
