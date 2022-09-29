@@ -150,6 +150,14 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
     && situation == *SITUATION_KIND_GROUND {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     }
+    // This block checks if you want to enable air drift. This code will only run once, and only while in the air,
+    // but it enables another flag that will be checked when your situation changes and renable the right kinetic type there.
+    if VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_DRIFT)
+    && situation != *SITUATION_KIND_GROUND {
+        VarModule::off_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_DRIFT);
+        VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_AIR_DRIFT_ENABLED);
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+    }
     // This is to check if you want a Dash Attack to either slide off or continue off of ledges.
     // This is all behind an `is_situation_changed` check because we don't want this code running all of the time.
     if StatusModule::is_situation_changed(fighter.module_accessor) {
@@ -167,6 +175,21 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
                     0.0
                 );
                 KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                if MotionModule::is_anim_resource(fighter.module_accessor, Hash40::new("attack_air_dash")) {
+                    MotionModule::change_motion_inherit_frame(
+                        fighter.module_accessor,
+                        Hash40::new("attack_air_dash"),
+                        -1.0,
+                        1.0,
+                        0.0,
+                        false,
+                        false
+                    );
+                }
+                // The previously mentioned flag that's only checked when your situation changes.
+                if VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_AIR_DRIFT_ENABLED) {
+                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+                }
             }
             else {
                 fighter.change_status(
@@ -177,6 +200,16 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
             }
         }
         else {
+            // Changes motion back to attack_dash, just in case you've changed to attack_air_dash at some point
+            MotionModule::change_motion_inherit_frame(
+                fighter.module_accessor,
+                Hash40::new("attack_dash"),
+                -1.0,
+                1.0,
+                0.0,
+                false,
+                false
+            );
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
         }
     }
