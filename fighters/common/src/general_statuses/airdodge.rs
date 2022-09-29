@@ -70,11 +70,6 @@ unsafe fn status_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
         VarModule::off_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET);
     }
 
-    // prevents knockback speed from applying into wavelands (boosted wavelands out of hitstun)
-    fighter.clear_lua_stack();
-    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE, 0.0, 0.0);
-    app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-
     fighter.sub_shift_status_main(L2CValue::Ptr(status_EscapeAir_Main as *const () as _))
 }
 
@@ -113,6 +108,11 @@ pub unsafe fn status_end_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
             WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
         }
         if status_kind == FIGHTER_STATUS_KIND_LANDING {
+            // prevents knockback speed from applying into wavelands (boosted wavelands out of hitstun)
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+            app::sv_kinetic_energy::clear_speed(fighter.lua_state_agent);
+
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_TURN);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_LANDING_CLIFF_STOP);
         }
@@ -310,11 +310,11 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
                 let y_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::ESCAPE_AIR_SLIDE_SPEED_Y);
 
                 fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.0);
-                app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+                app::sv_kinetic_energy::unable(fighter.lua_state_agent);
                 fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 0.0);
-                app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                app::sv_kinetic_energy::unable(fighter.lua_state_agent);
                 fighter.clear_lua_stack();
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, (x_speed * 0.9), (y_speed * 0.9));
                 app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
@@ -329,7 +329,15 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
     }
     else {
         if curr_frame >= 1 && curr_frame < 30 {
-            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+            app::sv_kinetic_energy::unable(fighter.lua_state_agent);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            app::sv_kinetic_energy::unable(fighter.lua_state_agent);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
+            app::sv_kinetic_energy::unable(fighter.lua_state_agent);
         }
         if curr_frame == 30 {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
