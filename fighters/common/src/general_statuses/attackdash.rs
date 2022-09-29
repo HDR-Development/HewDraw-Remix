@@ -162,7 +162,9 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
     // This is all behind an `is_situation_changed` check because we don't want this code running all of the time.
     if StatusModule::is_situation_changed(fighter.module_accessor) {
         if fighter.global_table[SITUATION_KIND].get_i32() != SITUATION_KIND_GROUND {
+            // Checks if your dash attack should roll off or not.
             if VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_CONTINUE) {
+                // Enables gravity.
                 sv_kinetic_energy!(
                     reset_energy,
                     fighter,
@@ -175,6 +177,7 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
                     0.0
                 );
                 KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                // Checks if you have an attack_air_dash motion_kind in your motion_list. If so, change to it.
                 if MotionModule::is_anim_resource(fighter.module_accessor, Hash40::new("attack_air_dash")) {
                     MotionModule::change_motion_inherit_frame(
                         fighter.module_accessor,
@@ -200,17 +203,27 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
             }
         }
         else {
-            // Changes motion back to attack_dash, just in case you've changed to attack_air_dash at some point
-            MotionModule::change_motion_inherit_frame(
-                fighter.module_accessor,
-                Hash40::new("attack_dash"),
-                -1.0,
-                1.0,
-                0.0,
-                false,
-                false
-            );
-            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
+            // Checks if ENABLE_AIR_LANDING is enabled, and if it is, cancel into LANDING instead of continuing the dash attack.
+            if VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_LANDING) {
+                fighter.change_status(
+                    FIGHTER_STATUS_KIND_LANDING.into(),
+                    false.into()
+                );
+                return 0.into();
+            }
+            else {
+                // Changes motion back to attack_dash, just in case you've changed to attack_air_dash at some point
+                MotionModule::change_motion_inherit_frame(
+                    fighter.module_accessor,
+                    Hash40::new("attack_dash"),
+                    -1.0,
+                    1.0,
+                    0.0,
+                    false,
+                    false
+                );
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
+            }
         }
     }
     // </HDR>
