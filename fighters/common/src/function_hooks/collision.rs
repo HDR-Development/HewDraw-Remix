@@ -10,7 +10,6 @@ unsafe fn is_touch_hook(boma: &mut BattleObjectModuleAccessor, ground_touch_flag
         *WEAPON_KIND_RYU_HADOKEN,
         *WEAPON_KIND_LUCAS_PK_FIRE,
         *WEAPON_KIND_EDGE_FLARE1,
-        *WEAPON_KIND_EDGE_FLARE2,
         *WEAPON_KIND_WOLF_BLASTER_BULLET,
         *WEAPON_KIND_MASTER_ARROW1,
         *WEAPON_KIND_MASTER_ARROW2,
@@ -35,7 +34,8 @@ unsafe fn is_touch_hook(boma: &mut BattleObjectModuleAccessor, ground_touch_flag
         *WEAPON_KIND_GEKKOUGA_SHURIKEN,
         *WEAPON_KIND_PICHU_DENGEKIDAMA,
         *WEAPON_KIND_BRAVE_DEATHBALL,
-        *WEAPON_KIND_KAMUI_RYUSENSA
+        *WEAPON_KIND_KAMUI_RYUSENSYA,
+        *WEAPON_KIND_EDGE_FIRE
     ].contains(&boma.kind())
     {
         let normal_y = GroundModule::get_touch_normal_y(boma, *GROUND_TOUCH_FLAG_DOWN as u32);
