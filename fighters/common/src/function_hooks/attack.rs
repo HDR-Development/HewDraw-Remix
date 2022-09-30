@@ -22,9 +22,15 @@ unsafe fn ground_module_update_hook(ground_module: u64) {
     let line = *((ground_module + 0x28) as *mut *mut f32);
     let shift = VarModule::get_float((*boma).object(), vars::common::instance::ECB_Y_OFFSETS);
     if (*boma).is_fighter()
-    && !(*boma).is_status(*FIGHTER_STATUS_KIND_ENTRY)
+    && !(*boma).is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_ENTRY,
+        *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
+        *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
+        *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
+        *FIGHTER_STATUS_KIND_THROWN])
     && (*boma).is_situation(*SITUATION_KIND_AIR)
-    && shift != 0.0 {
+    && shift != 0.0
+    {
         *line.add(0x3D4 / 4) += shift;
     }
 }

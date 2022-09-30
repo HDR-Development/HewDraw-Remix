@@ -24,7 +24,14 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
         // which causes characters to appear stuck halfway into the ground on the first frame they land
         // so we need to re-shift your character back up to the proper height on that single frame
         // this is a "fake" ECB shift for 1 frame
-        if !boma.is_status(*FIGHTER_STATUS_KIND_ENTRY) && VarModule::get_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS) != 0.0 {
+        if !(*boma).is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_ENTRY,
+            *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
+            *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
+            *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
+            *FIGHTER_STATUS_KIND_THROWN])
+        && VarModule::get_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS) != 0.0
+        {
             boma.shift_ecb_on_landing();
         }
 

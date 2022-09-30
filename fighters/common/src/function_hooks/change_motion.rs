@@ -51,7 +51,14 @@ unsafe fn change_motion_ecb_shift_check(boma: &mut BattleObjectModuleAccessor) {
     // Same routine/justification as fake ECB shift in init_settings hook
     // Only difference is that our status hasn't changed during a change_motion call
     if boma.is_fighter() {
-        if !boma.is_status(*FIGHTER_STATUS_KIND_ENTRY) && VarModule::get_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS) != 0.0 {
+        if !(*boma).is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_ENTRY,
+            *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
+            *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
+            *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
+            *FIGHTER_STATUS_KIND_THROWN])
+        && VarModule::get_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS) != 0.0
+        {
             boma.shift_ecb_on_landing();
         }
     }

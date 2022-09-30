@@ -31,7 +31,14 @@ unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
     }
 
     let mut offset = 0.0;
-    if !boma.is_status(*FIGHTER_STATUS_KIND_ENTRY) && boma.is_situation(*SITUATION_KIND_AIR) {
+    if !(*boma).is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_ENTRY,
+        *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
+        *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
+        *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
+        *FIGHTER_STATUS_KIND_THROWN])
+    && boma.is_situation(*SITUATION_KIND_AIR)
+    {
         if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) >= ParamModule::get_int(boma.object(), ParamType::Common, "ecb_shift_air_trans_frame") {
             let group = ParamModule::get_int(boma.object(), ParamType::Shared, "ecb_group_shift");
             
