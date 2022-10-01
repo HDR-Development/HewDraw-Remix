@@ -56,7 +56,7 @@ pub mod globals {
     pub const CHECK_SPECIAL_COMMAND: i32 = 0x3C;
     pub const WAZA_CUSTOMIZE_CONTROL: i32 = 0x3D;
     pub const STATUS_CHANGE_CALLBACK: i32 = 0x3E;
-    pub const LEAVE_STOP_CALLBACK: i32 = 0x42;
+    pub const DAMAGE_MOTION_KIND_CALLBACK: i32 = 0x42;
     pub const DASH_POST_TRANSITION_CALLBACK: i32 = 0x57;
 }
 
@@ -694,6 +694,16 @@ pub mod vars {
             // flags
             pub const SHINESPARK_USED: i32 = 0x0100;
             pub const SHINESPARK_READY: i32 = 0x0101;
+        }
+    }
+
+    pub mod samusd {
+        pub mod instance {
+            // flags
+            pub const MANUAL_DETONATE_READY: i32 = 0x0100;
+
+            // ints
+            pub const BOMB_OBJECT_ID: i32 = 0x0100;
         }
     }
 

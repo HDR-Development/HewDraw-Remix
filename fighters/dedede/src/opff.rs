@@ -86,7 +86,7 @@ unsafe fn bair_foot_rotation_scaling(boma: &mut BattleObjectModuleAccessor) {
 }
  
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    bair_foot_rotation_scaling(boma);
+    //bair_foot_rotation_scaling(boma);
     super_dedede_jump_quickfall(boma, frame);
 }
 #[utils::macros::opff(FIGHTER_KIND_DEDEDE )]
