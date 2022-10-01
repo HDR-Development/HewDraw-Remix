@@ -583,8 +583,6 @@ pub mod vars {
             // flags
             pub const IS_SPECIAL_N_CHILL_PILL:       i32 = 0x1100;
 
-            pub const IS_SPECIAL_S_ELECTRIC_BLANKET: i32 = 0x1100;
-
             pub const IS_SPECIAL_HI_UNABLE_CANCEL:   i32 = 0x1100;
         }
     }
