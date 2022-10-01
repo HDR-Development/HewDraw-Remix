@@ -74,6 +74,22 @@ unsafe fn shizue_special_air_hi_detach_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "shizue", script = "game_speciallwset", category = ACMD_GAME, low_priority)]
+unsafe fn shizue_special_lw_set_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+    JostleModule::set_status(boma, false);
+    }
+    FT_MOTION_RATE(fighter, 0.9);
+    frame(lua_state, 25.0);
+    if is_excute(fighter) {
+    WorkModule::on_flag(boma, *FIGHTER_SHIZUE_STATUS_WORK_ID_SPECIAL_LW_FLAG_SET);
+    }
+    FT_MOTION_RATE(fighter, 1);
+}
+
 pub fn install() {
     install_acmd_scripts!(
         shizue_special_n_failure_game,
@@ -81,6 +97,7 @@ pub fn install() {
         shizue_special_air_n_failure_game,
         shizue_special_air_n_failure_effect,
         shizue_special_air_hi_detach_game,
+        shizue_special_lw_set_game,
     );
 }
 
