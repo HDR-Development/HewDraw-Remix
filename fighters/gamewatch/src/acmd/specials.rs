@@ -1,6 +1,42 @@
 
 use super::*;
 
+#[acmd_script( agent = "gamewatch", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME, low_priority)]
+unsafe fn gamewatch_special_n_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_N_FLAG_SHOOT);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 10, 30, 0, 60, 4.2, 0.0, 8.5, 9.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0, 10, 30, 0, 60, 3.2, 0.0, 6.5, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_N_FLAG_RAPID_CHECK);
+    }
+    frame(lua_state, 25.0);
+    if is_excute (fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_N_FLAG_COUNT_ENABLE);
+    }
+    frame(lua_state, 38.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_N_FLAG_RAPID_CHECK);
+        WorkModule::on_flag(boma, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_N_FLAG_LOOP_CHECK);
+    }
+    frame(lua_state, 43.0);
+    FT_MOTION_RATE(fighter, 2.0);
+    frame(lua_state, 48.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_N_FLAG_COUNT_CHECK);
+    }
+}
+
 #[acmd_script( agent = "gamewatch", script = "game_specials1", category = ACMD_GAME, low_priority)]
 unsafe fn gamewatch_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -277,6 +313,7 @@ unsafe fn gamewatch_special_air_hi_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        gamewatch_special_n_game,
         gamewatch_special_s1_game,
         gamewatch_special_air_s1_game,
         gamewatch_special_s2_game,
