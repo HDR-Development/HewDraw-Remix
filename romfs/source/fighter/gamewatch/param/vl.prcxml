@@ -62,4 +62,13 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_reflector">
+    <struct index="0">
+      <float hash="speed_mul">1.0</float>
+      <float hash="life_mul">1.0</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
 </struct>
