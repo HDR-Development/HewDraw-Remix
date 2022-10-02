@@ -29,7 +29,6 @@
     </struct>
     <int hash="dash_perfect_pivot_window">3</int>
     <float hash="perfect_pivot_speed_mul">-0.75</float>
-    <float hash="late_perfect_pivot_speed_mul">-0.5</float>
     <struct hash="suicide_throw">
         <float hash="throw_frame">300.0</float>
         <float hash="damage_frame_mul">0.25</float>

@@ -247,14 +247,14 @@ unsafe fn dash_energy(fighter: &mut L2CFighterCommon) {
             if stick_x.abs() < dash_stick_x
             && StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_TURN 
             && StatusModule::prev_status_kind(fighter.module_accessor, 1) == *FIGHTER_STATUS_KIND_DASH { // if you are in a backdash
-                // apply late (F3) pivot energy
+                // apply pivot energy
                 fighter.clear_lua_stack();
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
                 app::sv_kinetic_energy::clear_speed(fighter.lua_state_agent);
                 if VarModule::is_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT) {
                     VarModule::off_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT);
                     let dash_speed: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0);
-                    let speed_mul = ParamModule::get_float(fighter.object(), ParamType::Common, "late_perfect_pivot_speed_mul");
+                    let speed_mul = ParamModule::get_float(fighter.object(), ParamType::Common, "perfect_pivot_speed_mul");
                     let pivot_boost = dash_speed * speed_mul * PostureModule::lr(fighter.module_accessor);
                     fighter.clear_lua_stack();
                     lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, pivot_boost);
