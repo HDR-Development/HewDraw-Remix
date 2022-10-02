@@ -204,9 +204,13 @@ unsafe fn kamui_special_lw_hit_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 26.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
-        EFFECT(fighter, Hash40::new("kamui_counter_splash"), Hash40::new("top"), -7, 0, 9, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
-    }
-    if is_excute(fighter) {
+        if sv_animcmd::get_value_float(fighter.lua_state_agent, *SO_VAR_FLOAT_LR) < 0.0 {
+            EFFECT(fighter, Hash40::new("kamui_counter_splash"), Hash40::new("top"), -7, 0, 9, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
+        }
+        else {
+            EFFECT(fighter, Hash40::new("kamui_counter_splash"), Hash40::new("top"), 7, 0, 9, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
+        }
+        
         EFFECT(fighter, Hash40::new("kamui_counter_ripple"), Hash40::new("top"), 0, 0.5, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
     }
     frame(lua_state, 38.0);
@@ -233,7 +237,9 @@ unsafe fn kamui_waterdragon_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 80, 75, 0, 90, 8.0, 0.0, 8.0, 9.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 12.0, 80, 75, 0, 90, 5.0, 0.0, 5.0, 0.0, Some(0.0), Some(5.0), Some(11.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_OBJECT);
         AttackModule::set_force_reaction(boma, 0, true, false);
+        AttackModule::set_force_reaction(boma, 2, true, false);
     }
     if WorkModule::is_flag(boma, *WEAPON_KAMUI_WATERDRAGON_INSTANCE_WORK_ID_FLAG_SET_CRITICAL_HIT_SE) {
         if is_excute(fighter) {
@@ -243,12 +249,9 @@ unsafe fn kamui_waterdragon_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 27.0);
     if is_excute(fighter) {
         ATTACK(fighter, 1, 0, Hash40::new("top"), 10.0, 80, 75, 0, 90, 5.0, 0.0, 21.0, 9.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 10.0, 80, 75, 0, 90, 5.0, 0.0, 5.0, 0.0, Some(0.0), Some(5.0), Some(11.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_OBJECT);
         AttackModule::set_force_reaction(boma, 1, true, false);
-    }
-    if WorkModule::is_flag(boma, *WEAPON_KAMUI_WATERDRAGON_INSTANCE_WORK_ID_FLAG_SET_CRITICAL_HIT_SE) {
-        if is_excute(fighter) {
-            AttackModule::set_optional_hit_sound(boma, 2, Hash40::new("se_kamui_criticalhit"));
-        }
+        AttackModule::set_force_reaction(boma, 2, true, false);
     }
     frame(lua_state, 29.0);
     if is_excute(fighter) {
