@@ -225,7 +225,6 @@ unsafe fn kamui_special_s_wall_attack_b_game(fighter: &mut L2CAgentBase) {
 unsafe fn kamui_special_s_wall_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    FT_MOTION_RATE(fighter, 0.5);
     if is_excute(fighter) {
         ArticleModule::change_motion(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_SPEARHAND, Hash40::new("special_s_wall_end"), true, 0.0);
         ArticleModule::change_motion(boma, 0, Hash40::new("fall"), false, 0.0);
