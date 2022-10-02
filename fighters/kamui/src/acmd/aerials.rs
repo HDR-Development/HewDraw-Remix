@@ -380,7 +380,7 @@ unsafe fn kamui_landing_air_lw_game(fighter: &mut L2CAgentBase) {
 unsafe fn kamui_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    EFFECT_OFF_KIND(fighter, Hash40::new("sys_club_tornado"), false, true);
+    EFFECT_OFF_KIND(fighter, Hash40::new("sys_club_tornado"), true, true);
     EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_line_b"), false, true);
     EFFECT_OFF_KIND(fighter, Hash40::new("kamui_ryusensya_shot"), false, true);
     EFFECT_OFF_KIND(fighter, Hash40::new("kamui_counter_splash"), false, true);
