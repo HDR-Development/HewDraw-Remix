@@ -17,13 +17,13 @@ unsafe fn dragon_fang_shot_dash_cancel(boma: &mut BattleObjectModuleAccessor, st
     }
 }
 
-unsafe fn wallattack_cancel(fighter: &mut L2CFighterCommon, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+unsafe fn pin_drop_waveland(fighter: &mut L2CFighterCommon, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     let boma = fighter.boma();
-    if status_kind == *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_F_LANDING || status_kind == *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_B_LANDING {
+    if status_kind == *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_END {
         if boma.is_cat_flag(Cat1::AirEscape) 
         && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) 
         && !fighter.is_in_hitlag() 
-        && frame >= 5.0 {
+        && frame >= 12.0 {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
         } 
     }
@@ -43,7 +43,7 @@ unsafe fn bair_boost_detection(boma: &mut BattleObjectModuleAccessor){
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //dragon_fang_shot_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
     bair_boost_detection(boma);
-    wallattack_cancel(fighter, status_kind, situation_kind, cat[0], frame);
+    pin_drop_waveland(fighter, status_kind, situation_kind, cat[0], frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_KAMUI )]
