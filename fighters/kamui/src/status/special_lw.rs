@@ -14,6 +14,7 @@ unsafe extern "C" fn special_lw_mot_helper(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[globals::SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         mot = Hash40::new("special_air_lw_hit");
         correct = *GROUND_CORRECT_KIND_AIR;
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_IGNORE_NORMAL);
     }
     else {
         mot = Hash40::new("special_lw_hit");
