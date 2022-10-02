@@ -18,8 +18,8 @@ unsafe extern "C" fn special_lw_mot_helper(fighter: &mut L2CFighterCommon) {
     else {
         mot = Hash40::new("special_lw_hit");
         correct = *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP;
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_IGNORE_NORMAL);
     }
+    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(correct));
     if !cont {
         MotionModule::change_motion(
             fighter.module_accessor,
@@ -89,8 +89,14 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-#[status_script(agent = "kamui", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status_script(agent = "kamui", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[globals::STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_FINAL_VISUAL_ATTACK_OTHER {
+        if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON) {
+            ArticleModule::remove(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+            VisibilityModule::set_whole(fighter.module_accessor, true);
+        }
+    }
     0.into()
 }
 
