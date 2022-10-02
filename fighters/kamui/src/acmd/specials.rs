@@ -68,12 +68,6 @@ unsafe fn kamui_special_s_wall_attack_b_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("kneer"), 5.0, 125, 40, 0, 100, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATTACK(fighter, 2, 0, Hash40::new("kneer"), 5.0, 125, 40, 0, 100, 5.0, 5.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
-    wait(lua_state, 1.0);
-    if is_excute(fighter) {
-        //AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as i32);
-        //AttackModule::set_size(boma, 0, 0.1);
-        //attack!(fighter, *MA_MSC_CMD_ATTACK_NODE, 0, Hash40::new("top"), 0, 2, 0);
-    }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_KAMUI_STATUS_SPECIAL_S_FLAG_MOVE_KINETIC_PARAM);
@@ -100,6 +94,47 @@ unsafe fn kamui_special_s_wall_attack_b_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_KAMUI_STATUS_SPECIAL_S_FLAG_AIR_CONTROL);
     }
         
+}
+
+#[acmd_script( agent = "kamui", script = "game_specialswalljump" , category = ACMD_GAME , low_priority)]
+unsafe fn kamui_special_s_wall_jump_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ArticleModule::change_motion(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_SPEARHAND, Hash40::new("special_s_wall_jump"), true, 0.0);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("legr"), 10.0, 85, 40, 0, 100, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 1, 0, Hash40::new("kneer"), 10.0, 85, 40, 0, 100, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 2, 0, Hash40::new("kneer"), 10.0, 85, 40, 0, 100, 5.5, 5.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_KAMUI_STATUS_SPECIAL_S_FLAG_MOVE_KINETIC_PARAM);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_KAMUI_STATUS_SPECIAL_S_FLAG_CHANGE_JUMP_ACCEL_Y);
+    }
+    frame(lua_state, 38.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_KAMUI_STATUS_SPECIAL_S_FLAG_JUMP_CONTROL);
+    }
+}
+
+#[acmd_script( agent = "kamui", script = "game_specialswallend" , category = ACMD_GAME , low_priority)]
+unsafe fn kamui_special_s_wall_end_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ArticleModule::change_motion(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_SPEARHAND, Hash40::new("special_s_wall_end"), true, 0.0);
+        ArticleModule::change_motion(boma, 0, Hash40::new("fall"), false, 0.0);
+    }
 }
 
 // #[acmd_script( agent = "kamui", scripts = ["game_speciallwhit", "game_specialairlwhit"] , category = ACMD_GAME , low_priority)]
@@ -219,28 +254,18 @@ unsafe fn kamui_special_s_wall_attack_b_game(fighter: &mut L2CAgentBase) {
 //         FT_MOTION_RATE(fighter, 37.0/(66.0 - 31.0));
 //         AttackModule::clear_all(boma);
 //     }
-// }
-
-#[acmd_script( agent = "kamui", script = "game_specialswallend" , category = ACMD_GAME , low_priority)]
-unsafe fn kamui_special_s_wall_end_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        ArticleModule::change_motion(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_SPEARHAND, Hash40::new("special_s_wall_end"), true, 0.0);
-        ArticleModule::change_motion(boma, 0, Hash40::new("fall"), false, 0.0);
-    }
-}
-    
+// }  
 
 pub fn install() {
     install_acmd_scripts!(
         kamui_special_n_end_1_game,
         kamui_special_s_wall_attack_f_game,
         kamui_special_s_wall_attack_b_game,
+        kamui_special_s_wall_jump_game,
         kamui_special_s_wall_end_game,
-        //kamui_special_lw_hit_game,
-        //kamui_special_lw_hit_effect,
-        //kamui_waterdragon_special_lw_hit_game,
+        // kamui_special_lw_hit_game,
+        // kamui_special_lw_hit_effect,
+        // kamui_waterdragon_special_lw_hit_game,
     );
 }
 
