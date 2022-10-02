@@ -62,10 +62,38 @@ unsafe fn shizue_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "shizue", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn shizue_attack_hi3_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_SHIZUE_GENERATE_ARTICLE_BROOM, true, 0);
+        ArticleModule::change_motion(boma, *FIGHTER_SHIZUE_GENERATE_ARTICLE_BROOM, Hash40::new("attack_hi3"), true, 0.0);
+    }
+    FT_MOTION_RATE(fighter, 0.833);
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("havel"), 8.0, 82, 86, 0, 62, 3.5, 0.0, 1.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 1, 0, Hash40::new("havel"), 8.0, 82, 86, 0, 62, 5.0, 0.0, 7.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+    }
+    FT_MOTION_RATE(fighter, 1);
+    wait(lua_state, 8.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    FT_MOTION_RATE(fighter, 0.842);
+    frame(lua_state, 54.0);
+    if is_excute(fighter) {
+        ArticleModule::remove(boma, *FIGHTER_SHIZUE_GENERATE_ARTICLE_BROOM, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         shizue_attack_s3_s_game,
         shizue_attack_lw3_game,
+        shizue_attack_hi3_game,
     );
 }
 

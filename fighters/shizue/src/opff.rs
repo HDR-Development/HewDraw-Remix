@@ -105,7 +105,7 @@ pub fn shizue_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         common::opff::fighter_common_opff(fighter);
 		shizue_frame(fighter);
         balloon_cancel(fighter);
-        lloid_special_cancel(fighter);
+        //lloid_special_cancel(fighter);
     }
 }
 
