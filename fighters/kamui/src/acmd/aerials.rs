@@ -8,6 +8,7 @@ use super::*;
 unsafe fn kamui_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    FT_MOTION_RATE(fighter, 23.0/(47.0 - 21.0));
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_SPEARHAND, false, 0);
         ArticleModule::change_motion(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_SPEARHAND, smash::phx::Hash40::new("attack_air_n"), false, 0.0);
@@ -371,7 +372,10 @@ unsafe fn kamui_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
 unsafe fn kamui_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    
+    EFFECT_OFF_KIND(fighter, Hash40::new("sys_club_tornado"), false, true);
+    EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_line_b"), false, true);
+    //EFFECT_OFF_KIND(fighter, Hash40::new("sys_club_tornado"), false, true);
+    //EFFECT_OFF_KIND(fighter, Hash40::new("sys_club_tornado"), false, true);
 }
 
 pub fn install() {
