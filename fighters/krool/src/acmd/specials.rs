@@ -190,321 +190,21 @@ unsafe fn krool_special_air_n_loop_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "krool", script = "game_specialnspitf" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_special_n_spit_f_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 361, 100, 0, 0, 1.0, 1.0, *ATTACK_LR_CHECK_POS, 0.0, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-    }
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1.4);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1.25);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 69, 50, 0, 75, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        }
-        else{
-            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 45, 69, 0, 75, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        }
-        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SPIT_TYPE_DECIDE);
-    }
-    frame(lua_state, 13.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, 2.0);
-    }
-    frame(lua_state, 15.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            MotionModule::set_rate(boma, 2.0);
-        }
-        else{
-            MotionModule::set_rate(boma, 1.0);
-        }
-    }
-    frame(lua_state, 16.0);
-    if is_excute(fighter) {
-        CHECK_FINISH_CAMERA(fighter, 0, 0);
-    }
-    frame(lua_state, 17.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SPIT);
-        ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
-        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_IRONBALL);
-    }
-}
-
-#[acmd_script( agent = "krool", script = "game_specialairnspitf" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_special_air_n_spit_f_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 361, 100, 0, 0, 1.0, 1.0, *ATTACK_LR_CHECK_POS, 0.0, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-    }
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1.4);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1.25);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 69, 50, 0, 75, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        }
-        else{
-            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 45, 69, 0, 75, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        }
-        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SPIT_TYPE_DECIDE);
-    }
-    frame(lua_state, 13.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, 2.0);
-    }
-    frame(lua_state, 15.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            MotionModule::set_rate(boma, 2.0);
-        }
-        else{
-            MotionModule::set_rate(boma, 1.0);
-        }
-    }
-    frame(lua_state, 16.0);
-    if is_excute(fighter) {
-        CHECK_FINISH_CAMERA(fighter, 0, 0);
-    }
-    frame(lua_state, 17.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SPIT);
-        ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
-        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_IRONBALL);
-    }
-}
-
-#[acmd_script( agent = "krool", script = "game_specialnspitb" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_special_n_spit_b_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 361, 100, 0, 0, 1.0, 1.0, *ATTACK_LR_CHECK_POS, 0.0, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-    }
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1.4);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1.25);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 69, 50, 0, 75, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        }
-        else{
-            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 42, 48, 0, 75, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        }
-    }
-    frame(lua_state, 13.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            MotionModule::set_rate(boma, 1.25);
-        }
-        else{
-            MotionModule::set_rate(boma, 1.0);
-        }
-    }
-    frame(lua_state, 15.0);
-    if is_excute(fighter) {
-        REVERSE_LR(fighter);
-    }
-    frame(lua_state, 21.0);
-    if is_excute(fighter) {
-        CHECK_FINISH_CAMERA(fighter, 0, 0);
-    }
-    frame(lua_state, 22.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SPIT);
-        ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
-        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_IRONBALL);
-    }
-}
-
-#[acmd_script( agent = "krool", script = "game_specialairnspitb" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_special_air_n_spit_b_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 361, 100, 0, 0, 1.0, 1.0, *ATTACK_LR_CHECK_POS, 0.0, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-    }
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1.4);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1.25);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 69, 50, 0, 75, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        }
-        else{
-            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 42, 48, 0, 75, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        }
-    }
-    frame(lua_state, 13.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            MotionModule::set_rate(boma, 1.25);
-        }
-        else{
-            MotionModule::set_rate(boma, 1.0);
-        }
-    }
-    frame(lua_state, 15.0);
-    if is_excute(fighter) {
-        REVERSE_LR(fighter);
-    }
-    frame(lua_state, 21.0);
-    if is_excute(fighter) {
-        CHECK_FINISH_CAMERA(fighter, 0, 0);
-    }
-    frame(lua_state, 22.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SPIT);
-        ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
-        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_IRONBALL);
-    }
-}
-
-#[acmd_script( agent = "krool", script = "game_specialnspitbatackabs" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_special_n_spit_b_attack_abs_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 85, 40, 0, 90, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        }
-        else{
-            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 89, 38, 0, 90, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        }
-    }
-}
-
-#[acmd_script( agent = "krool", script = "game_specialnspithi" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_special_n_spit_hi_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 361, 100, 0, 0, 1.0, 1.0, *ATTACK_LR_CHECK_POS, 0.0, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-    }
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1.4);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1.25);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 85, 40, 0, 90, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        }
-        else{
-            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 89, 38, 0, 90, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        }
-        
-    }
-    frame(lua_state, 13.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            MotionModule::set_rate(boma, 1.25);
-        }
-        else{
-            MotionModule::set_rate(boma, 1.0);
-        }
-    }
-    frame(lua_state, 15.0);
-    if is_excute(fighter) {
-        CHECK_FINISH_CAMERA(fighter, 0, 0);
-    }
-    frame(lua_state, 16.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SPIT);
-        ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
-        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_IRONBALL);
-    }
-}
-
-#[acmd_script( agent = "krool", script = "game_specialairnspithi" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_special_air_n_spit_hi_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 361, 100, 0, 0, 1.0, 1.0, *ATTACK_LR_CHECK_POS, 0.0, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-    }
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1.4);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1.25);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 85, 40, 0, 90, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        }
-        else{
-            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 89, 38, 0, 90, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        }
-        
-    }
-    frame(lua_state, 13.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            MotionModule::set_rate(boma, 1.25);
-        }
-        else{
-            MotionModule::set_rate(boma, 1.0);
-        }
-    }
-    frame(lua_state, 15.0);
-    if is_excute(fighter) {
-        CHECK_FINISH_CAMERA(fighter, 0, 0);
-    }
-    frame(lua_state, 16.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SPIT);
-        ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
-        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_IRONBALL);
-    }
-}
-
 #[acmd_script( agent = "krool", script = "game_specialsthrow" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_special_s_throw_game(fighter: &mut L2CAgentBase) {
+unsafe fn krool_special_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        //WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_S_FLAG_ENABLE_SUPER_ARMOR);
+        WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_OFF);
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("arml"), 0.0, 361, 100, 30, 0, 4.0, 5.0, 0.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 2, false, false, true, true, false, *COLLISION_SITUATION_MASK_G_d, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        ATTACK(fighter, 0, 0, Hash40::new("arml"), 0.0, 361, 100, 30, 0, 4.0, 5.0, 0.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 2, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
@@ -512,60 +212,14 @@ unsafe fn krool_special_s_throw_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 26.0);
     if is_excute(fighter) {
-        if !ItemModule::is_have_item(boma, 0) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-            WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_DROP_CROWN);
-            ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_KROOLCROWN),0,0,false,false);
-            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 1);
-        }
-        else{
-            ArticleModule::generate_article(boma, *FIGHTER_KROOL_GENERATE_ARTICLE_CROWN, false, 0);
-            VisibilityModule::set_int64(boma, hash40("crown") as i64, hash40("crown_hide") as i64);
-        }
-        
+    ArticleModule::generate_article(boma, *FIGHTER_KROOL_GENERATE_ARTICLE_CROWN, false, 0);
+    VisibilityModule::set_int64(boma, Hash40::new("crown").hash as i64, Hash40::new("crown_hide").hash as i64);
+    FT_MOTION_RATE(fighter, 18.0/(64.0-26.0));
     }
     frame(lua_state, 35.0);
     if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-    frame(lua_state, 64.0);
-    if is_excute(fighter) {
-        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
-    }
-}
-
-#[acmd_script( agent = "krool", script = "game_specialairsthrow" , category = ACMD_GAME , low_priority)]
-unsafe fn krool_special_air_s_throw_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        //WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_S_FLAG_ENABLE_SUPER_ARMOR);
-    }
-    frame(lua_state, 18.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("arml"), 0.0, 361, 100, 30, 0, 4.0, 5.0, 0.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 2, false, false, true, true, false, *COLLISION_SITUATION_MASK_G_d, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-    }
-    frame(lua_state, 24.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-    frame(lua_state, 26.0);
-    if is_excute(fighter) {
-        if !ItemModule::is_have_item(boma, 0) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-            WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_DROP_CROWN);
-            ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_KROOLCROWN),0,0,false,false);
-            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 1);
-        }
-        else{
-            ArticleModule::generate_article(boma, *FIGHTER_KROOL_GENERATE_ARTICLE_CROWN, false, 0);
-            VisibilityModule::set_int64(boma, hash40("crown") as i64, hash40("crown_hide") as i64);
-        }
-        
-    }
-    frame(lua_state, 35.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
+    AttackModule::clear_all(boma);
+    }   
     frame(lua_state, 64.0);
     if is_excute(fighter) {
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
@@ -578,15 +232,6 @@ pub fn install() {
         krool_special_air_n_fire_game,
         krool_special_n_loop_game,
         krool_special_air_n_loop_game,
-        krool_special_n_spit_f_game,
-        krool_special_n_spit_b_game,
-        krool_special_n_spit_b_attack_abs_game,
-        krool_special_n_spit_hi_game,
-        krool_special_air_n_spit_f_game,
-        krool_special_air_n_spit_b_game,
-        krool_special_air_n_spit_hi_game,
-        krool_special_s_throw_game,
-        krool_special_air_s_throw_game,
+        krool_special_special_s_game,
     );
 }
-
