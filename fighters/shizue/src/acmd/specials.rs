@@ -89,7 +89,42 @@ unsafe fn shizue_special_lw_set_game(fighter: &mut L2CAgentBase) {
     }
     FT_MOTION_RATE(fighter, 1);
 }
-    
+ 
+
+#[acmd_script( agent = "shizue", script = "game_specialsthrowb", category = ACMD_GAME, low_priority)]
+unsafe fn shizue_special_s_throw_b_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 11.0, 50, 50, 0, 72, 0.0, 1.0, *ATTACK_LR_CHECK_B, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        REVERSE_LR(fighter);
+    }
+}
+
+#[acmd_script( agent = "shizue", script = "game_specialairsthrowb", category = ACMD_GAME, low_priority)]
+unsafe fn shizue_special_air_s_throw_b_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 11.0, 50, 50, 0, 72, 0.0, 1.0, *ATTACK_LR_CHECK_B, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        REVERSE_LR(fighter);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         shizue_special_n_failure_game,
@@ -98,6 +133,8 @@ pub fn install() {
         shizue_special_air_n_failure_effect,
         shizue_special_air_hi_detach_game,
         shizue_special_lw_set_game,
+        shizue_special_s_throw_b_game,
+        shizue_special_air_s_throw_b_game,
     );
 }
 

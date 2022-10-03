@@ -71,6 +71,7 @@ unsafe fn shizue_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 32.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        FT_MOTION_RATE(fighter, 0.8);
     }
     frame(lua_state, 39.0);
     if is_excute(fighter) {
@@ -109,6 +110,7 @@ unsafe fn shizue_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 32.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        FT_MOTION_RATE(fighter, 0.8);
     }
     frame(lua_state, 39.0);
     if is_excute(fighter) {
