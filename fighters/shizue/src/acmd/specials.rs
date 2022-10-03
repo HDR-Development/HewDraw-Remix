@@ -89,7 +89,7 @@ unsafe fn shizue_special_lw_set_game(fighter: &mut L2CAgentBase) {
     }
     FT_MOTION_RATE(fighter, 1);
 }
-
+    
 pub fn install() {
     install_acmd_scripts!(
         shizue_special_n_failure_game,
