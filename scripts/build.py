@@ -17,17 +17,23 @@ development_subpath = "smashline/"
 ryujinx_rom_path = "mods/contents/01006a800016e000/skyline/romfs"
 switch_rom_path = "atmosphere/contents/01006a800016e000/romfs"
 
-def install_with_ip(ip: str):
+def install_with_ip(ip: str, is_dev: bool):
   plugin_subpath = "skyline/plugins/"
   development_subpath = "smashline/"
   switch_rom_path = "atmosphere/contents/01006a800016e000/romfs"
 
   if os.name == 'nt':
-    os.system('curl.exe -T ..\\plugin\\target\\standalone\\aarch64-skyline-switch\\release\\libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
-    os.system('curl.exe -T ..\\plugin\\target\\development\\aarch64-skyline-switch\\release\\libhdr.nro ftp://' + ip + ':5000/' + switch_rom_path + '/' + development_subpath + 'development.nro')
+    if not is_dev:
+      os.system('curl.exe -T ..\\plugin\\target\\aarch64-skyline-switch\\release\\libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
+    else:
+      os.system('curl.exe -T ..\\plugin\\target\\development\\aarch64-skyline-switch\\release\\libhdr.nro ftp://' + ip + ':5000/' + switch_rom_path + '/' + development_subpath + 'development.nro')
+      os.system('curl.exe -T ..\\plugin\\target\\standalone\\aarch64-skyline-switch\\release\\libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
   else:
-    os.system('curl -T ../plugin/target/standalone/aarch64-skyline-switch/release/libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
-    os.system('curl -T ../plugin/target/development/aarch64-skyline-switch/release/libhdr.nro ftp://' + ip + ':5000/' + switch_rom_path + '/' + development_subpath + 'development.nro')
+    if not is_dev:
+      os.system('curl -T ../plugin/target/aarch64-skyline-switch/release/libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
+    else:
+      os.system('curl -T ../plugin/target/development/aarch64-skyline-switch/release/libhdr.nro ftp://' + ip + ':5000/' + switch_rom_path + '/' + development_subpath + 'development.nro')
+      os.system('curl -T ../plugin/target/standalone/aarch64-skyline-switch/release/libhdr.nro ftp://' + ip + ':5000/ultimate/mods/hdr-dev/plugin.nro')
 
 # handle fallback exe on windows
 def handle_fallback():
@@ -214,11 +220,38 @@ if (is_dev_build and not is_publish):
 
 
 else:
-  # simple build
   if is_publish:
-    pkgutil.build(release_arg, "--features=\"updater\",\"main_nro\",\"add_status\"")
+    feature_list = "--features=\"update\",\"main_nro\",\"add_status\""
   else:
-    pkgutil.build(release_arg, "--features=\"main_nro\",\"add_status\"")
+    feature_list = "--features=\"main_nro\",\"add_status\""
+
+  is_only = False
+
+  for arg in sys.argv:
+    if not "only" in arg:
+      continue
+
+    if not "=" in arg:
+      print("only specified, but no character arguments given!\n please use 'dev=mario,luigi,samus' format")
+      break
+
+    is_only = True
+
+    char_list = (arg.split('=')[1]).split(",")
+
+    for char in char_list:
+      if char not in characters:
+        print("fighter " + char + " does not exist! (are you using the ingame name for the character?) Valid names are:\n")
+        for char_ok in characters:
+          print(char_ok)
+        exit()
+      feature_list += ",\"" + char + "\""
+
+  # simple build
+  if is_only:
+    pkgutil.build(release_arg, "--no-default-features " + feature_list)
+  else:
+    pkgutil.build(release_arg, feature_list)
 
   # collect switch package
   pkgutil.collect_plugin("hdr-switch", 
@@ -244,5 +277,5 @@ for arg in sys.argv:
     if not "=" in arg:
       print("ip specified but not ip argument given!")
       break
-    install_with_ip(arg.split('=')[1])
+    install_with_ip(arg.split('=')[1], is_dev_build)
     break

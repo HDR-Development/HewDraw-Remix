@@ -19,9 +19,9 @@ unsafe fn cheer_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 unsafe fn spotdodge_desync(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if boma.kind() == *FIGHTER_KIND_NANA {
         if ![*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B].contains(&status_kind){
-            BufferModule::disable_persist(boma.object());
+            InputModule::disable_persist(boma.object());
         } else if [*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B].contains(&StatusModule::status_kind_next(boma)) {
-            BufferModule::enable_persist(boma.object());
+            InputModule::enable_persist(boma.object());
         }
     }
 }

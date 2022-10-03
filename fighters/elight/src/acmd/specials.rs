@@ -220,7 +220,7 @@ unsafe fn game_specialairhijump(fighter: &mut L2CAgentBase) {
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, 0x2127e37c07u64, GROUND_CLIFF_CHECK_KIND_NONE);
-        let mut angle = dbg!(app::lua_bind::FighterKineticEnergyMotion::get_angle(KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION) as _));
+        let mut angle = app::lua_bind::FighterKineticEnergyMotion::get_angle(KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION) as _);
         if PostureModule::lr(fighter.module_accessor) > 0.0 {
             angle *= -1.0;
         }

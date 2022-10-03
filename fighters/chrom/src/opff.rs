@@ -23,8 +23,8 @@ unsafe fn soaring_slash_cancel(fighter: &mut L2CFighterCommon) {
     && 27.0 < frame && frame < 30.0
     && fighter.is_button_on(Buttons::Guard)
     {
-        if VarModule::is_flag(fighter.battle_object, vars::common::SOARING_SLASH_HIT) {
-            VarModule::on_flag(fighter.battle_object, vars::common::UP_SPECIAL_CANCEL);
+        if VarModule::is_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_HIT) {
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
             fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
         } else {
             fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
@@ -127,7 +127,7 @@ unsafe fn soaring_slash(fighter: &mut L2CFighterCommon) {
         *FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_3
     ])
     {
-        VarModule::off_flag(fighter.battle_object, vars::common::SOARING_SLASH_HIT);
+        VarModule::off_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_HIT);
     }
 
     if fighter.is_status(*FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_3) {
@@ -135,21 +135,28 @@ unsafe fn soaring_slash(fighter: &mut L2CFighterCommon) {
     }
 
     if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-        VarModule::on_flag(fighter.battle_object, vars::common::SOARING_SLASH_HIT);
+        VarModule::on_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_HIT);
     }
 }
 
 // symbol-based call for the fe characters' common opff
 extern "Rust" {
-    fn fe_common(fighter: &mut L2CFighterCommon);
+    fn fe_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_CHROM )]
-pub unsafe fn chrom_frame_wrapper(fighter: &mut L2CFighterCommon) {
+pub unsafe fn chrom_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
-    
+    fe_common(fighter);
     soaring_slash_drift(fighter);
     soaring_slash_cancel(fighter);
     side_special_cancels(fighter);
     soaring_slash(fighter);
+    
+    // Sword remains the same size throughout jab and utilt
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_HI3,
+        *FIGHTER_STATUS_KIND_ATTACK_AIR,
+        *FIGHTER_STATUS_KIND_ATTACK]) {
+        ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("sword1"), &Vector3f::new(1.015, 1.115, 1.045));
+    }
 }

@@ -154,7 +154,7 @@ pub fn hash40(item: TokenStream) -> TokenStream {
     };
 
     let str = literal.value();
-    let hash = hash40::to_hash40(str.as_str());
+    let hash = hash40::hash40(str.as_str());
     syn::LitInt::new(format!("{}", hash.0).as_str(), literal.span()).to_token_stream().into()
 }
 

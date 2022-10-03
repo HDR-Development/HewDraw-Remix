@@ -108,16 +108,16 @@ unsafe extern "C" fn special_hi_jump_main_loop(fighter: &mut L2CFighterCommon) -
     }
 
     if fighter.is_button_on(Buttons::Special) {
-        VarModule::set_int(fighter.battle_object, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK1);
+        VarModule::set_int(fighter.battle_object, vars::elight::status::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK1);
     } else if fighter.is_button_on(Buttons::Attack) {
-        VarModule::set_int(fighter.battle_object, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK2);
+        VarModule::set_int(fighter.battle_object, vars::elight::status::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK2);
     }
 
     // [v] if we are using spreadbullet then switch to Attack2 and not Attack1
     // [h] instead of using the spreadbullet flag, we use a custom VarModule int to
     //      determine what kind of action we are going into here. it is initialized
     //      in the SpecialHi script and then changed depending on the inputs
-    match dbg!(VarModule::get_int(fighter.battle_object, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION)) {
+    match VarModule::get_int(fighter.battle_object, vars::elight::status::SPECIAL_HI_JUMP_RESERVE_ACTION) {
         vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK1 => fighter.change_status(FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK1.into(), false.into()),
         vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK2 => fighter.change_status(FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK2.into(), false.into()),
         vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_FALL    => fighter.change_to_custom_status(statuses::elight::SPECIAL_HI_FINISH2, false, false),

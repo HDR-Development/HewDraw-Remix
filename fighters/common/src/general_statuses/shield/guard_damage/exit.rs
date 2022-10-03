@@ -21,7 +21,7 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_exitStatus_common(fighter: &mut L2C
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE);
 
         ControlModule::set_command_life_extend(fighter.module_accessor, 0);
-        BufferModule::disable_persist(fighter.battle_object);
+        InputModule::disable_persist(fighter.battle_object);
     }
 }
 

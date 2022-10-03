@@ -4,7 +4,12 @@ use super::*;
 use globals::*;
 
  
-unsafe fn bite_throw_turnaround(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
+unsafe fn bite_early_throw_turnaround(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
+    if status_kind == *FIGHTER_WARIO_STATUS_KIND_SPECIAL_N_BITE {
+        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
+            boma.change_status_req(*FIGHTER_WARIO_STATUS_KIND_SPECIAL_N_BITE_END, false);
+        }
+    }
     if status_kind == *FIGHTER_WARIO_STATUS_KIND_SPECIAL_N_BITE_END {
         if frame < 6.0 {
             if facing * stick_x < 0.0 {
@@ -31,7 +36,7 @@ unsafe fn bthrow_movement(boma: &mut BattleObjectModuleAccessor, status_kind: i3
 
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
 
-    bite_throw_turnaround(boma, status_kind, stick_x, facing, frame);
+    bite_early_throw_turnaround(boma, status_kind, stick_x, facing, frame);
     bthrow_movement(boma, status_kind, situation_kind, motion_kind, stick_x);
 }
 

@@ -12,19 +12,23 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "rockman", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "rockman", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 5.0);
+    frame(lua_state, 4.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
+        let dash_sfx_handle = SoundModule::play_se(fighter.module_accessor, Hash40::new("se_rockman_dash_start"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
-    frame(lua_state, 16.0);
+    wait(lua_state, 6.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("footr"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-    }    
+        PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_rockman_step_right_m"), Hash40::new("se_rockman_step_left_m"));
+    }
+    wait(lua_state, 5.0);
+    if is_excute(fighter) {
+        PLAY_STEP_FLIPPABLE(fighter, Hash40::new("se_rockman_step_left_m"), Hash40::new("se_rockman_step_right_m"));
+    }
 }
 
 #[acmd_script( agent = "rockman", script = "game_turndash" , category = ACMD_GAME , low_priority)]
@@ -47,7 +51,7 @@ unsafe fn rockman_hardknuckle_regular_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 270, 90, 0, 5, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 270, 77, 0, 5, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0, 270, 90, 0, 35, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 3.0);
@@ -77,10 +81,39 @@ unsafe fn rockman_crashbomb_stick_game(fighter: &mut L2CAgentBase) {
 }
 */
 
+#[acmd_script( agent = "rockman", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
+
+    frame(lua_state, escape_air_cancel_frame);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+
+#[acmd_script( agent = "rockman", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
+    }
+    frame(lua_state, 34.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
+        escape_air_game,
+        escape_air_slide_game,
         dash_game,
-        //dash_effect,
+        dash_sound,
         turn_dash_game,
         rockman_hardknuckle_regular_game,
     );

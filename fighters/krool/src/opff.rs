@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
@@ -12,16 +12,6 @@ unsafe fn jetpack_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32
     }
 }
 
-// Propellerpack B-Reverse
-unsafe fn propellerpack_b_rev(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START]) {
-        common::opff::check_b_reverse(fighter);
-    }
-}
-
-extern "Rust" {
-    fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
-}
 // K. Rool Side B Crown Item Grab
 unsafe fn crownerang_item_grab_countdown(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
     /*
@@ -65,8 +55,7 @@ unsafe fn crownerang_item_grab_countdown(boma: &mut BattleObjectModuleAccessor, 
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     jetpack_cancel(boma, status_kind, cat[0]);
-    crownerang_item_grab_countdown(boma, status_kind, cat[0]);
-    propellerpack_b_rev(fighter);
+    //crownerang_item_grab(boma, status_kind, cat[0]);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_KROOL )]
