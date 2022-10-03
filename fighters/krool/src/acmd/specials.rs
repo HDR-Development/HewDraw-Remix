@@ -8,51 +8,20 @@ unsafe fn krool_special_n_fire_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.8);
-        VarModule::off_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT);
-    }
-    frame(lua_state, 20.0);
-    if is_excute(fighter) {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-            VarModule::on_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT);
-        }
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            FT_MOTION_RATE(fighter, 1.5);
-        }
+        FT_MOTION_RATE(fighter, 0.800);
     }
     frame(lua_state, 26.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            //FT_MOTION_RATE(fighter, 1.000);
-        }
-        else{
-            FT_MOTION_RATE(fighter, 1.0);
-        }
-        
+        FT_MOTION_RATE(fighter, 1.000);
     }
     frame(lua_state, 30.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            FT_MOTION_RATE(fighter, 1.0);
-        }
-        else{
-            WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_IRONBALL);
-            WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_NO_SHOOT_CANCEL);
-        }
-        
+        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_IRONBALL);
+        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_NO_SHOOT_CANCEL);
     }
     frame(lua_state, 37.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_CANCEL);
-        }
-    }
-    frame(lua_state, 41.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_NO_SHOOT_CANCEL);
-            WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_CANCEL);
-        }
+        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_CANCEL);
     }
     frame(lua_state, 70.0);
     if is_excute(fighter) {
@@ -68,51 +37,20 @@ unsafe fn krool_special_air_n_fire_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.8);
-        VarModule::off_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT);
-    }
-    frame(lua_state, 20.0);
-    if is_excute(fighter) {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-            VarModule::on_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT);
-        }
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            FT_MOTION_RATE(fighter, 1.5);
-        }
+        FT_MOTION_RATE(fighter, 0.800);
     }
     frame(lua_state, 26.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            //FT_MOTION_RATE(fighter, 1.000);
-        }
-        else{
-            FT_MOTION_RATE(fighter, 1.0);
-        }
-        
+        FT_MOTION_RATE(fighter, 1.000);
     }
     frame(lua_state, 30.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            FT_MOTION_RATE(fighter, 1.0);
-        }
-        else{
-            WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_IRONBALL);
-            WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_NO_SHOOT_CANCEL);
-        }
-        
+        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_IRONBALL);
+        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_NO_SHOOT_CANCEL);
     }
     frame(lua_state, 37.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_CANCEL);
-        }
-    }
-    frame(lua_state, 41.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_NO_SHOOT_CANCEL);
-            WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_CANCEL);
-        }
+        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_CANCEL);
     }
     frame(lua_state, 70.0);
     if is_excute(fighter) {
@@ -127,31 +65,19 @@ unsafe fn krool_special_n_loop_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            CATCH(fighter, 0, Hash40::new("top"), 5.0, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(15.0), *FIGHTER_STATUS_KIND_SWALLOWED, *COLLISION_SITUATION_MASK_G);
-            CATCH(fighter, 1, Hash40::new("top"), 5.0, 0.0, 8.0, 9.0, Some(0.0), Some(9.0), Some(15.0), *FIGHTER_STATUS_KIND_SWALLOWED, *COLLISION_SITUATION_MASK_A);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 0.0, 160, 100, 50, 0, 5.0, 0.0, 9.0, 18.0, Some(0.0), Some(9.0), Some(23.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_NO_STAGE_GIMMICK, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-        }
-        else{
-            CATCH(fighter, 0, Hash40::new("top"), 7.0, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(18.0), *FIGHTER_STATUS_KIND_SWALLOWED, *COLLISION_SITUATION_MASK_G);
-            CATCH(fighter, 1, Hash40::new("top"), 4.5, 0.0, 9.5, 10.7, Some(0.0), Some(10.7), Some(20.5), *FIGHTER_STATUS_KIND_SWALLOWED, *COLLISION_SITUATION_MASK_A);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 0.0, 160, 100, 50, 0, 9.0, 0.0, 9.0, 22.0, Some(0.0), Some(9.0), Some(27.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_NO_STAGE_GIMMICK, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-            SEARCH(fighter, 0, 0, Hash40::new("top"), 7.0, 0.0, 8.0, 11.0, Some(0.0), Some(8.0), Some(28.0), *COLLISION_KIND_MASK_AH, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true);
-        }
+        CATCH(fighter, 0, Hash40::new("top"), 7.0, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(18.0), *FIGHTER_STATUS_KIND_SWALLOWED, *COLLISION_SITUATION_MASK_G);
+        CATCH(fighter, 1, Hash40::new("top"), 4.5, 0.0, 9.5, 10.7, Some(0.0), Some(9.5), Some(20.5), *FIGHTER_STATUS_KIND_SWALLOWED, *COLLISION_SITUATION_MASK_A);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 0.0, 160, 100, 50, 0, 9.0, 0.0, 9.0, 22.0, Some(0.0), Some(9.0), Some(27.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_NO_STAGE_GIMMICK, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 361, 100, 0, 0, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-        
+        SEARCH(fighter, 0, 0, Hash40::new("top"), 7.0, 0.0, 8.0, 11.0, Some(0.0), Some(8.0), Some(28.0), *COLLISION_KIND_MASK_AH, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true);
     }
     wait(lua_state, 3.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            SEARCH(fighter, 0, 0, Hash40::new("top"), 7.0, 0.0, 8.0, 11.0, Some(0.0), Some(8.0), Some(34.0), *COLLISION_KIND_MASK_AH, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true);
-        }
+        SEARCH(fighter, 0, 0, Hash40::new("top"), 7.0, 0.0, 8.0, 11.0, Some(0.0), Some(8.0), Some(34.0), *COLLISION_KIND_MASK_AH, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true);
     }
     wait(lua_state, 3.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            SEARCH(fighter, 0, 0, Hash40::new("top"), 7.0, 0.0, 8.0, 11.0, Some(0.0), Some(8.0), Some(38.0), *COLLISION_KIND_MASK_AH, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true);
-        }
+        SEARCH(fighter, 0, 0, Hash40::new("top"), 7.0, 0.0, 8.0, 11.0, Some(0.0), Some(8.0), Some(38.0), *COLLISION_KIND_MASK_AH, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true);
     }
     
 }
@@ -161,31 +87,19 @@ unsafe fn krool_special_air_n_loop_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            CATCH(fighter, 0, Hash40::new("top"), 5.0, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(15.0), *FIGHTER_STATUS_KIND_SWALLOWED, *COLLISION_SITUATION_MASK_G);
-            CATCH(fighter, 1, Hash40::new("top"), 5.0, 0.0, 8.0, 9.0, Some(0.0), Some(9.0), Some(15.0), *FIGHTER_STATUS_KIND_SWALLOWED, *COLLISION_SITUATION_MASK_A);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 0.0, 160, 100, 50, 0, 5.0, 0.0, 9.0, 18.0, Some(0.0), Some(9.0), Some(23.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_NO_STAGE_GIMMICK, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-        }
-        else{
-            CATCH(fighter, 0, Hash40::new("top"), 7.0, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(18.0), *FIGHTER_STATUS_KIND_SWALLOWED, *COLLISION_SITUATION_MASK_G);
-            CATCH(fighter, 1, Hash40::new("top"), 4.5, 0.0, 9.5, 10.7, Some(0.0), Some(10.7), Some(20.5), *FIGHTER_STATUS_KIND_SWALLOWED, *COLLISION_SITUATION_MASK_A);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 0.0, 160, 100, 50, 0, 9.0, 0.0, 9.0, 22.0, Some(0.0), Some(9.0), Some(27.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_NO_STAGE_GIMMICK, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-            SEARCH(fighter, 0, 0, Hash40::new("top"), 7.0, 0.0, 8.0, 11.0, Some(0.0), Some(8.0), Some(28.0), *COLLISION_KIND_MASK_AH, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true);
-        }
+        CATCH(fighter, 0, Hash40::new("top"), 7.0, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(18.0), *FIGHTER_STATUS_KIND_SWALLOWED, *COLLISION_SITUATION_MASK_G);
+        CATCH(fighter, 1, Hash40::new("top"), 4.5, 0.0, 9.5, 10.7, Some(0.0), Some(9.5), Some(20.5), *FIGHTER_STATUS_KIND_SWALLOWED, *COLLISION_SITUATION_MASK_A);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 0.0, 160, 100, 50, 0, 9.0, 0.0, 9.0, 22.0, Some(0.0), Some(9.0), Some(27.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_NO_STAGE_GIMMICK, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 361, 100, 0, 0, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-        
+        SEARCH(fighter, 0, 0, Hash40::new("top"), 7.0, 0.0, 8.0, 11.0, Some(0.0), Some(8.0), Some(28.0), *COLLISION_KIND_MASK_AH, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true);
     }
     wait(lua_state, 3.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            SEARCH(fighter, 0, 0, Hash40::new("top"), 7.0, 0.0, 8.0, 11.0, Some(0.0), Some(8.0), Some(34.0), *COLLISION_KIND_MASK_AH, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true);
-        }
+        SEARCH(fighter, 0, 0, Hash40::new("top"), 7.0, 0.0, 8.0, 11.0, Some(0.0), Some(8.0), Some(34.0), *COLLISION_KIND_MASK_AH, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true);
     }
     wait(lua_state, 3.0);
     if is_excute(fighter) {
-        if !VarModule::is_flag(boma.object(), vars::krool::IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT){
-            SEARCH(fighter, 0, 0, Hash40::new("top"), 7.0, 0.0, 8.0, 11.0, Some(0.0), Some(8.0), Some(38.0), *COLLISION_KIND_MASK_AH, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true);
-        }
+        SEARCH(fighter, 0, 0, Hash40::new("top"), 7.0, 0.0, 8.0, 11.0, Some(0.0), Some(8.0), Some(38.0), *COLLISION_KIND_MASK_AH, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, true);
     }
     
 }

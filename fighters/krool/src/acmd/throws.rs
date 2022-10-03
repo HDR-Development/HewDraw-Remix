@@ -61,4 +61,3 @@ pub fn install() {
         game_throwlw,
     );
 }
-

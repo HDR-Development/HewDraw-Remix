@@ -13,42 +13,14 @@ unsafe fn jetpack_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32
 }
 
 // K. Rool Side B Crown Item Grab
-unsafe fn crownerang_item_grab_countdown(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
-    /*
+unsafe fn crownerang_item_grab(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_S_THROW].contains(&status_kind) {
         //println!("K. Rool side B");
         if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
             //println!("K. Rool crown grab");
             if !ItemModule::is_have_item(boma, 0){
-                WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_DROP_CROWN);
                 ItemModule::have_item(boma, app::ItemKind(*ITEM_KIND_KROOLCROWN),0,0,false,false);
             }
-        }
-    }
-    */
-    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_S_FAILURE]) {
-        if ItemModule::get_have_item_kind(boma, 0) == *ITEM_KIND_KROOLCROWN {
-            ItemModule::remove_item(boma, 0);
-            WorkModule::off_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_DROP_CROWN);
-            boma.change_status_req(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_S_CATCH, false);
-        }
-    }
-    let gimmick_timerr = VarModule::get_int(boma.object(), vars::common::GIMMICK_TIMER);
-    if gimmick_timerr > 0 && gimmick_timerr < 601 {
-        if gimmick_timerr > 599 {
-            WorkModule::off_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_DROP_CROWN);
-            VarModule::set_int(boma.object(), vars::common::GIMMICK_TIMER, 0);
-            //DamageModule::add_damage(boma, 100.0, 0);
-            gimmick_flash(boma);
-        } else {
-            //DamageModule::add_damage(boma, 1.0, 0);
-            VarModule::set_int(boma.object(), vars::common::GIMMICK_TIMER, gimmick_timerr + 1);
-            VisibilityModule::set_int64(boma, hash40("crown") as i64, hash40("crown_show") as i64);
-        }
-        if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_REBIRTH]){
-            WorkModule::off_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_DROP_CROWN);
-            VarModule::set_int(boma.object(), vars::common::GIMMICK_TIMER, 0);
-            VisibilityModule::set_int64(boma, hash40("crown") as i64, hash40("crown_show") as i64);
         }
     }
 }
