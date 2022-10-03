@@ -94,16 +94,6 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
                 }
             }
         }
-        // Checks whether you have landed on the first frame of non-tumble knockback
-        // This is only possible by CCing
-        if boma.is_status(*FIGHTER_STATUS_KIND_DAMAGE_AIR) && next_status == *FIGHTER_STATUS_KIND_LANDING {
-            if get_fighter_common_from_accessor(boma).global_table[CURRENT_FRAME].get_i32() <= 1 {
-                VarModule::on_flag(boma.object(), vars::common::instance::IS_CC_LANDING);
-            }
-            else {
-                VarModule::off_flag(boma.object(), vars::common::instance::IS_CC_LANDING);
-            }
-        }
 
         if boma.kind() == *FIGHTER_KIND_TRAIL
         && StatusModule::status_kind(boma) == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_SEARCH

@@ -77,6 +77,15 @@ pub unsafe fn status_pre_DamageAir(fighter: &mut L2CFighterCommon) -> L2CValue {
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR);
         return 1.into();
     }
+
+    // Checks whether you have successfully CC'd into non-tumble knockback
+    // This is so we can apply half hitstun upon landing from a CC'd attack
+    if fighter.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_SQUAT, *FIGHTER_STATUS_KIND_SQUAT_WAIT]) {
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE);
+    }
+    else {
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE);
+    }
     call_original!(fighter)
 }
 
@@ -164,14 +173,14 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_LandingStiffness)]
 pub unsafe fn status_LandingStiffness(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DAMAGE_AIR
-    && VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_CC_LANDING) {
+    && VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE) {
         // halve hitstun on non-tumble landing if CC'd
         // if halved hitstun is less than your heavy landing lag value, use your heavy landing lag value
         let hitstun = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
         let landing_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_frame"), 0);
         WorkModule::set_float(fighter.module_accessor, (hitstun * 0.5).max(landing_frame), *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
     }
-    VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_CC_LANDING);
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE);
     original!()(fighter)
 }
 
