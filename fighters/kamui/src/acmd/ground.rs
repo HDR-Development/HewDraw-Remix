@@ -17,7 +17,7 @@ unsafe fn kamui_attack_11_game(fighter: &mut L2CAgentBase) {
         AttackModule::set_add_reaction_frame(boma, 1, 2.0, false);
         AttackModule::set_add_reaction_frame(boma, 2, 2.0, false);
         //Locking hitbox
-        ATTACK(fighter, 3, 0, Hash40::new("top"), 2.0, 361, 10, 0, 25, 2.5, 0.0, 3.5, 6.0, Some(0.0), Some(3.5), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+        ATTACK(fighter, 3, 0, Hash40::new("top"), 2.0, 361, 10, 0, 25, 2.5, 0.0, 3.5, 6.0, Some(0.0), Some(3.5), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
