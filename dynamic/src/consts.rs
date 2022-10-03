@@ -697,6 +697,16 @@ pub mod vars {
         }
     }
 
+    pub mod samusd {
+        pub mod instance {
+            // flags
+            pub const MANUAL_DETONATE_READY: i32 = 0x0100;
+
+            // ints
+            pub const BOMB_OBJECT_ID: i32 = 0x0100;
+        }
+    }
+
     pub mod robot {
         pub mod instance {
             // ints
