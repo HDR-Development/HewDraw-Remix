@@ -100,7 +100,7 @@ unsafe fn sound_specialhi(fighter: &mut L2CAgentBase) {
 unsafe fn game_speciallwstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 3.0);
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 360, 32, 0, 62, 8.0, 0.0, 6.5, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0, 24, 45, 0, 66, 8.0, 0.0, 6.5, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
@@ -109,6 +109,10 @@ unsafe fn game_speciallwstart(fighter: &mut L2CAgentBase) {
         // Reflection begins on same frame shine hitbox is active
         ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 0, 1, 0.54);
     }
+    frame(lua_state, 2.0);
+    if is_excute(fighter){
+        AttackModule::clear_all(boma);
+    }
     
 }
 
@@ -116,7 +120,7 @@ unsafe fn game_speciallwstart(fighter: &mut L2CAgentBase) {
 unsafe fn game_specialairlwstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 3.0);
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 10, 32, 0, 62, 8.0, 0.0, 6.5, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0, 24, 45, 0, 66, 8.0, 0.0, 6.5, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
@@ -125,7 +129,11 @@ unsafe fn game_specialairlwstart(fighter: &mut L2CAgentBase) {
         // Reflection begins on same frame shine hitbox is active
         ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 0, 1, 0.54);
     }
-    
+    frame(lua_state, 2.0);
+    if is_excute(fighter){
+        AttackModule::clear_all(boma);
+    }
+
 }
 
 pub fn install() {
