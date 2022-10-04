@@ -16,6 +16,25 @@ unsafe fn fishing_rod_shield_cancel(boma: &mut BattleObjectModuleAccessor, statu
     }
 }
 
+extern "Rust" {
+    fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
+}
+
+
+//Determine if fuel is past threshold
+unsafe fn boost_ready(boma: &mut BattleObjectModuleAccessor) {
+    if WorkModule::get_float(boma, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME) >= 180.0 {
+        VarModule::on_flag(boma.object(), vars::shizue::status::IS_DETACH_BOOST);
+    }
+}
+
+unsafe fn ready_flash(boma: &mut BattleObjectModuleAccessor) {
+    if WorkModule::get_float(boma, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME) > 180.0 
+    && WorkModule::get_float(boma, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME) < 181.0 {
+        gimmick_flash(boma);
+    }
+}
+
 // Reel in
 unsafe fn reel_in(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
     if status_kind == *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_S_END {
@@ -26,6 +45,16 @@ unsafe fn reel_in(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situa
                 }
             }
         }
+    }
+}
+
+//Disable grabbox on reel in
+unsafe fn no_grab_on_reel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if status_kind == *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_S_END {
+        WorkModule::off_flag(boma, *FIGHTER_SHIZUE_STATUS_WORK_ID_SPECIAL_S_FLAG_SHOOT);
+        WorkModule::off_flag(boma, *FIGHTER_SHIZUE_STATUS_WORK_ID_SPECIAL_S_FLAG_PICKUP);
+        WorkModule::off_flag(boma, *FIGHTER_SHIZUE_STATUS_WORK_ID_SPECIAL_S_FLAG_CAPTURE_CUT);
+        WorkModule::off_flag(boma, *FIGHTER_SHIZUE_STATUS_WORK_ID_SPECIAL_S_FLAG_HIT);
     }
 }
 
@@ -75,6 +104,17 @@ unsafe fn balloon_cancel(fighter: &mut L2CFighterCommon) {
     }
 }
 
+//Add directional boost if they hit fuel threshold when cancelled
+unsafe fn detach_boost(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, stick_y: f32) {
+    let lr = PostureModule::lr(boma);
+    let motion_vec = Vector3f::new(stick_x * lr * 2.0 + 1.0, stick_y - 0.50, 0.0);
+    if VarModule::is_flag(boma.object(), vars::shizue::status::IS_DETACH_BOOST)
+    && status_kind == *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH {
+        KineticModule::add_speed(boma, &motion_vec);   
+        VarModule::off_flag(boma.object(), vars::shizue::status::IS_DETACH_BOOST);
+    }
+}
+
 unsafe fn lloid_special_cancel(fighter: &mut L2CFighterCommon) {
     let boma = fighter.boma();
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK,
@@ -96,7 +136,11 @@ unsafe fn lloid_special_cancel(fighter: &mut L2CFighterCommon) {
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     fishing_rod_shield_cancel(boma, status_kind, situation_kind, frame);
     reel_in(boma, status_kind, situation_kind, frame);
+    no_grab_on_reel(boma, status_kind);
     lloid_trap_fire_jc(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
+    detach_boost(boma, status_kind, stick_x, stick_y);
+    boost_ready(boma);
+    ready_flash(boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_SHIZUE )]
@@ -106,6 +150,7 @@ pub fn shizue_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 		shizue_frame(fighter);
         balloon_cancel(fighter);
         //lloid_special_cancel(fighter);
+        println!("{}, {}", WorkModule::get_float(fighter.module_accessor, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME), VarModule::get_float(fighter.object(), vars::shizue::status::IS_DETACH_BOOST));
     }
 }
 
