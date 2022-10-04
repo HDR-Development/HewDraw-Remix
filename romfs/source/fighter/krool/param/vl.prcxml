@@ -21,7 +21,7 @@
   </struct>
   <list hash="param_special_s">
     <struct index="0">
-      <float hash="special_s_armor_life">6</float>
+      <float hash="special_s_armor_life">10</float>
       <int hash="special_s_get_motion_skip_frame">5</int>
     </struct>
     <hash40 index="1">dummy</hash40>
@@ -31,12 +31,7 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="special_hi_start_air_mul_spd_x">1</float>
-      <float hash="special_hi_fly_mul_max_acl_x">0.075</float>
-      <float hash="special_hi_fly_mul_max_spd_x">0.9</float>
-      <float hash="special_hi_fly_stick_mul_max_spd_x">0.9</float>
-      <int hash="special_hi_fly_brake_after_frame">1</int>
-      <float hash="special_hi_fall_acl_y">0.08</float>
-      <int hash="special_hi_landing_frame">25</int>
+      <float hash="special_hi_fly_mul_max_acl_x">0.045</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

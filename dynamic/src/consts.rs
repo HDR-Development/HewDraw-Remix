@@ -480,13 +480,6 @@ pub mod vars {
         }
     }
 
-    pub mod krool {
-        // flags
-        pub const IS_SPECIAL_N_SKIP_CANNONBALL_SHOOT: i32 = 0x1000;
-        // ints
-        pub const ATTACK_CHARGE_LEVEL: i32 = 0x1000;
-    }
-
     pub mod luigi {
         pub mod instance {
             // flag
