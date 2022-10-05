@@ -51,6 +51,20 @@ unsafe fn charge_state_decrease(boma: &mut BattleObjectModuleAccessor) {
         }
         if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) <= 0 {
             VarModule::set_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL, 0);
+            EffectModule::req_on_joint(
+                boma,
+                Hash40::new("sys_smash_flash"),
+                Hash40::new("head"),
+                &Vector3f::zero(),
+                &Vector3f::zero(),
+                1.5,
+                &Vector3f::zero(),
+                &Vector3f::zero(),
+                false,
+                0,
+                0,
+                0
+            );
         }
     }
 }

@@ -25,7 +25,9 @@ pub unsafe fn status_pre_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
     // handles instant wavedashes/wavelands
     // we make sure to include this before change_motion so we check for proximity to the ground using our jumpsquat animation's ECB, rather than airdodge anim's ECB
     // a character's ECB x position can shift on the first frame of their airdodge anim, which sometimes makes them unable to wavedash on an edge even if standing on solid ground the previous frame
-    if VarModule::is_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH) || fighter.handle_waveland(false) {
+    if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_STATUS_KIND_DAMAGE_FALL
+    && (VarModule::is_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH) || fighter.handle_waveland(false))
+    {
         VarModule::on_flag(fighter.battle_object, vars::common::status::SHOULD_WAVELAND);
         GroundModule::attach_ground(fighter.module_accessor, true);
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
