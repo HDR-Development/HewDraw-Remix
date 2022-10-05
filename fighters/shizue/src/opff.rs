@@ -48,13 +48,17 @@ unsafe fn reel_in(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situa
     }
 }
 
-//Disable grabbox on reel in
-unsafe fn no_grab_on_reel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if status_kind == *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_S_END {
-        WorkModule::off_flag(boma, *FIGHTER_SHIZUE_STATUS_WORK_ID_SPECIAL_S_FLAG_SHOOT);
-        WorkModule::off_flag(boma, *FIGHTER_SHIZUE_STATUS_WORK_ID_SPECIAL_S_FLAG_PICKUP);
-        WorkModule::off_flag(boma, *FIGHTER_SHIZUE_STATUS_WORK_ID_SPECIAL_S_FLAG_CAPTURE_CUT);
-        WorkModule::off_flag(boma, *FIGHTER_SHIZUE_STATUS_WORK_ID_SPECIAL_S_FLAG_HIT);
+
+#[smashline::weapon_frame_callback]
+pub fn fishingrod_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    unsafe {
+        if weapon.kind() != WEAPON_KIND_SHIZUE_FISHINGROD {
+            return
+        }
+        let boma = weapon.boma();
+        if boma.is_status(*WEAPON_SHIZUE_FISHINGROD_STATUS_KIND_REEL) {
+            SearchModule::clear_all(boma);
+        }
     }
 }
 
@@ -136,7 +140,6 @@ unsafe fn lloid_special_cancel(fighter: &mut L2CFighterCommon) {
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     fishing_rod_shield_cancel(boma, status_kind, situation_kind, frame);
     reel_in(boma, status_kind, situation_kind, frame);
-    no_grab_on_reel(boma, status_kind);
     lloid_trap_fire_jc(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     detach_boost(boma, status_kind, stick_x, stick_y);
     boost_ready(boma);
