@@ -39,10 +39,18 @@ unsafe fn parachute_dj(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
 
 // Game & Watch Fair cake box position readjustment
 unsafe fn fair_repositioning(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR && motion_kind == hash40("attack_air_f") && frame >= 10.0 {
-        // -2.0/9.0/0.0; in relation to the havel bone, x is down right, y is down left
-        let box_position = Vector3f{x:-2.0, y: 9.0, z: 0.0};
-        ModelModule::set_joint_translate(boma, Hash40::new("havel"), &box_position, false, false);
+    if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR && motion_kind == hash40("attack_air_f") {
+        if frame < 9.0 {
+            ModelModule::set_joint_translate(boma, Hash40::new("havel"), &Vector3f{ x: -3.5, y: 6.5, z: 0.0 }, false, false);
+            ModelModule::set_joint_rotate(boma, Hash40::new("havel"), &Vector3f{ x: -15.0, y: 0.0, z: 0.0 }, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+            ModelModule::set_joint_rotate(boma, Hash40::new("shoulderl"), &Vector3f{ x: 0.0, y: 0.0, z: -40.0 }, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+            ModelModule::set_joint_rotate(boma, Hash40::new("shoulderr"), &Vector3f{ x: 0.0, y: 0.0, z: 40.0 }, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+        }
+        else {
+            // -2.0/9.0/0.0; in relation to the havel bone, x is down right, y is down left
+            ModelModule::set_joint_translate(boma, Hash40::new("havel"), &Vector3f{x:-2.5, y: 9.0, z: 0.0 }, false, false);
+            ModelModule::set_joint_rotate(boma, Hash40::new("havel"), &Vector3f{ x: 5.0, y: 0.0, z: 0.0 }, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+        }
     }
 }
 
@@ -124,3 +132,26 @@ unsafe fn dthrow_reverse(boma: & mut BattleObjectModuleAccessor, motion_kind: u6
 //         }
 //     }
 // }
+
+#[smashline::weapon_frame_callback]
+pub fn box_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    unsafe { 
+        if weapon.kind() != WEAPON_KIND_GAMEWATCH_BOMB {
+            return
+        }
+        let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+        let gnw = utils::util::get_battle_object_from_id(owner_id);
+        let gnw_boma = &mut *(*gnw).module_accessor;
+        if gnw_boma.is_motion(Hash40::new("attack_air_f")) {
+            let gnw_fighter = utils::util::get_fighter_common_from_accessor(gnw_boma);
+            if let Some(info) = FrameInfo::update_and_get(gnw_fighter) {
+                if info.frame <= 9.0 {
+                    ModelModule::set_scale(weapon.module_accessor, 0.75);
+                }
+                else {
+                    ModelModule::set_scale(weapon.module_accessor, 1.1);
+                }
+            }
+        }
+    }
+}
