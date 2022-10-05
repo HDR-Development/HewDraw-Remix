@@ -258,6 +258,12 @@ unsafe fn captain_special_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
+    for _ in 0.. 20 {
+        if is_excute(fighter) {
+            KineticModule::add_speed(boma, &Vector3f::new(-1.0 * (1.25/20.0), 0.0, 0.0));
+        }
+        wait(lua_state, 1.0);
+    }
 }
 
 #[acmd_script( agent = "captain", script = "game_specialairlwend" , category = ACMD_GAME , low_priority)]
