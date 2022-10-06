@@ -7,10 +7,10 @@
   </list>
   <struct hash="param_breath">
     <int hash="life">5</int>
-    <float hash="pos_offset_x">-0.5</float>
+    <float hash="pos_offset_x">0.0</float>
     <float hash="pos_offset_y">18.5</float>
     <float hash="speed_y">5</float>
-    <float hash="scale_mul">1.5</float>
+    <float hash="scale_mul">1.1</float>
     <int hash="move_interval">6</int>
   </struct>
   <list hash="param_special_n">

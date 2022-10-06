@@ -15,24 +15,20 @@ unsafe fn gamewatch_special_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 24.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_N_FLAG_RAPID_CHECK);
-    }
     frame(lua_state, 25.0);
     if is_excute (fighter) {
         WorkModule::on_flag(boma, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_N_FLAG_COUNT_ENABLE);
     }
-    frame(lua_state, 38.0);
+    frame(lua_state, 37.0);
     if is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_N_FLAG_RAPID_CHECK);
+        WorkModule::on_flag(boma, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_N_FLAG_RAPID_CHECK);
         WorkModule::on_flag(boma, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_N_FLAG_LOOP_CHECK);
     }
     frame(lua_state, 43.0);
-    FT_MOTION_RATE(fighter, 2.0);
+    FT_MOTION_RATE(fighter, 0.5);
     frame(lua_state, 48.0);
-    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
         WorkModule::on_flag(boma, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_N_FLAG_COUNT_CHECK);
     }
 }

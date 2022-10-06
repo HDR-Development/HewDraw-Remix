@@ -145,7 +145,7 @@ pub fn box_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
         if gnw_boma.is_motion(Hash40::new("attack_air_f")) {
             let gnw_fighter = utils::util::get_fighter_common_from_accessor(gnw_boma);
             if let Some(info) = FrameInfo::update_and_get(gnw_fighter) {
-                if info.frame <= 9.0 {
+                if info.frame < 10.0 {
                     ModelModule::set_scale(weapon.module_accessor, 0.75);
                 }
                 else {
