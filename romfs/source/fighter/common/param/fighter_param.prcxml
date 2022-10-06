@@ -2379,6 +2379,7 @@
       <float hash="weight">78</float>
       <float hash="landing_attack_air_frame_n">9</float>
       <float hash="landing_attack_air_frame_f">9</float>
+      <float hash="landing_attack_air_frame_lw">11</float>
       <bool hash="wall_jump_type">true</bool>
       <float hash="tread_jump_speed_y_mul">0.75</float>
       <float hash="tread_mini_jump_speed_y_mul">0.75</float>

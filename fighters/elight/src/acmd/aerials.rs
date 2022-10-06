@@ -63,6 +63,7 @@ unsafe fn elight_attack_air_n_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 36.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        FT_MOTION_RATE(fighter, 0.7);
     }
     frame(lua_state, 72.0);
     if is_excute(fighter) {
