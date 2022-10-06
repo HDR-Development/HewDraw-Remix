@@ -12,25 +12,6 @@ unsafe fn duck_jump_cancel(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn frame_data(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
-        if fighter.motion_frame() <= 16.0 {
-            fighter.set_rate(2.0);
-        }
-        if fighter.motion_frame() > 16.0 {
-            fighter.set_rate(1.0);
-        }
-    }
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-        if fighter.motion_frame() <= 6.0 {
-            fighter.set_rate(0.7);
-        }
-        if fighter.motion_frame() > 6.0 {
-            fighter.set_rate(0.9);
-        }
-    }
-}
-
 extern "Rust" {
     fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
 }
@@ -50,7 +31,6 @@ pub fn duckhunt_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
         duck_jump_cancel(fighter);
-        frame_data(fighter);
         gunman_timer(fighter);
     }
 }
@@ -105,6 +85,3 @@ pub fn gunman_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
         }
     }
 }
-
-//FIGHTER_DUCKHUNT_STATUS_SPECIAL_LW_INT_GUNMAN_INIT_STATUS
-//FIGHTER_DUCKHUNT_INSTANCE_WORK_ID_FLAG_GUNMAN_OK

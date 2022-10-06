@@ -5,4 +5,11 @@
       <float hash="p1_y">19</float>
     </struct>
   </list>
+  <struct hash="param_private">
+    <int hash="foresight_escape_pre_frame">4</int>
+    <int hash="foresight_escape_f_pre_frame">4</int>
+    <int hash="foresight_escape_b_pre_frame">4</int>
+    <int hash="foresight_escape_air_pre_frame">4</int>
+    <int hash="foresight_escape_air_slide_pre_frame">4</int>
+  </struct>
 </struct>

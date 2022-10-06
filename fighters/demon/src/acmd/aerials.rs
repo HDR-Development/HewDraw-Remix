@@ -77,12 +77,25 @@ unsafe fn demon_attackairb(fighter: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
     }
-    frame(lua_state, 9.0);
+    frame(lua_state, 6.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            PostureModule::reverse_lr(boma);
-            PostureModule::update_rot_y_lr(boma);
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+            MotionModule::set_rate(boma, (7.5-6.0)/2.0);
+        }
+    }
+    frame(lua_state, 7.5);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
+            MotionModule::set_rate(boma, (8.0-7.5)/1.0);
+         }
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
+            MotionModule::set_rate(boma, 1.0);
         }
     }
     frame(lua_state, 11.0);

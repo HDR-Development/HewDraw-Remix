@@ -3,7 +3,7 @@
   <int hash="precede">5</int>
   <int hash="precede_extension">0</int>
   <float hash="turn_stick_x">-0.25</float>
-  <float hash="dash_stick_x">0.73</float>
+  <float hash="dash_stick_x">0.8</float>
   <float hash="dash_s4_frame">4</float>
   <float hash="dash_s4_frame_easy">6</float>
   <float hash="dash_s4_frame_hard">2</float>  
@@ -50,7 +50,7 @@
   <float hash="hit_stop_delay_flick_mul">5</float>
   <int hash="hit_stop_delay_flick_frame">2</int>
   <int hash="hit_stop_delay_flick_max_count">50</int>
-  <float hash="hit_stop_delay_auto_mul">2.5</float>
+  <float hash="hit_stop_delay_auto_mul">1.7</float>
   <float hash="damage_reaction_mul_max">1</float>
   <list hash="pattern_power_mul">
     <hash40 index="0">dummy</hash40>
@@ -65,7 +65,6 @@
     <float index="9">0.01</float>
   </list>
   <float hash="mini_jump_attack_mul">1</float>
-  <float hash="status_start_turn_stick_x">0</float>
   <int hash="special_air_n_turn_frame">15</int>
   <byte hash="special_command_life_max">10</byte>
   <byte hash="super_special_command_life_max">20</byte>
