@@ -120,7 +120,7 @@ unsafe fn shizue_special_air_s_throw_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
-        KineticModule::add_speed(boma, &Vector3f::new(0.0, 2.75, 0.0));   
+        KineticModule::add_speed(boma, &Vector3f::new(-0.5, 2.75, 0.0));   
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
@@ -153,7 +153,7 @@ unsafe fn shizue_special_air_s_throw_f_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
-        KineticModule::add_speed(boma, &Vector3f::new(0.0, 2.75, 0.0));   
+        KineticModule::add_speed(boma, &Vector3f::new(0.5, 2.75, 0.0));   
     }
 }
 
