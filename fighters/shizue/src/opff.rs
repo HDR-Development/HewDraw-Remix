@@ -56,10 +56,12 @@ pub fn fishingrod_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
             return
         }
         let boma = weapon.boma();
-        if boma.is_status(*WEAPON_SHIZUE_FISHINGROD_STATUS_KIND_REEL) {
-            SearchModule::clear_all(boma);
+
+        if boma.is_status(*WEAPON_SHIZUE_FISHINGROD_STATUS_KIND_END) {
+            WeaponSpecializer_ShizueFishingrod::enable_search(boma, false);
         }
-        
+        let status = StatusModule::status_kind(boma);
+        println!("Fishing Rod Status: {}", status);
     }
 }
 
@@ -154,7 +156,6 @@ pub fn shizue_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 		shizue_frame(fighter);
         balloon_cancel(fighter);
         //lloid_special_cancel(fighter);
-        println!("{}, {}", WorkModule::get_float(fighter.module_accessor, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME), VarModule::get_float(fighter.object(), vars::shizue::status::IS_DETACH_BOOST));
     }
 }
 
