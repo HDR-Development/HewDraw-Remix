@@ -59,6 +59,7 @@ pub fn fishingrod_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
         if boma.is_status(*WEAPON_SHIZUE_FISHINGROD_STATUS_KIND_REEL) {
             SearchModule::clear_all(boma);
         }
+        
     }
 }
 
@@ -111,7 +112,7 @@ unsafe fn balloon_cancel(fighter: &mut L2CFighterCommon) {
 //Add directional boost if they hit fuel threshold when cancelled
 unsafe fn detach_boost(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, stick_y: f32) {
     let lr = PostureModule::lr(boma);
-    let motion_vec = Vector3f::new(stick_x * lr * 2.0 + 1.0, stick_y - 0.50, 0.0);
+    let motion_vec = Vector3f::new(stick_x * lr * 2.0 + 1.0, stick_y, 0.0);
     if VarModule::is_flag(boma.object(), vars::shizue::status::IS_DETACH_BOOST)
     && status_kind == *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH {
         KineticModule::add_speed(boma, &motion_vec);   
