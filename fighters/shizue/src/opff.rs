@@ -28,10 +28,28 @@ unsafe fn boost_ready(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-unsafe fn ready_flash(boma: &mut BattleObjectModuleAccessor) {
-    if WorkModule::get_float(boma, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME) > 180.0 
-    && WorkModule::get_float(boma, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME) < 181.0 {
-        gimmick_flash(boma);
+//Isabelle flashes if below 50% fuel
+unsafe fn empty_flash(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if !VarModule::is_flag(fighter.object(), vars::shizue::status::IS_DETACH_BOOST) {  
+        if  WorkModule::get_float(fighter.boma(), *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME) % 2.0 == 0.0 {
+            FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 9, 0, 9, 0, 0, 0, false);
+            FLASH(fighter, 0.8, 0.8, 0.8, 0.4);
+        } else {
+            EFFECT_OFF_KIND(fighter, Hash40::new("null"), true, false);
+        }
+    }
+}
+
+//Cancel normals on hit into Balloon Trip
+unsafe fn balloon_special_cancel(fighter: &mut L2CFighterCommon) {
+    let boma = fighter.boma();
+    if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR)
+    && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
+    && !fighter.is_in_hitlag() 
+    && VarModule::is_flag(fighter.object(), vars::shizue::status::IS_DETACH_BOOST) {
+        if fighter.is_cat_flag(Cat1::SpecialHi) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI, false);
+        }
     }
 }
 
@@ -48,22 +66,22 @@ unsafe fn reel_in(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situa
     }
 }
 
-
-#[smashline::weapon_frame_callback]
-pub fn fishingrod_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
-    unsafe {
-        if weapon.kind() != WEAPON_KIND_SHIZUE_FISHINGROD {
-            return
-        }
-        let boma = weapon.boma();
-
-        if boma.is_status(*WEAPON_SHIZUE_FISHINGROD_STATUS_KIND_END) {
-            WeaponSpecializer_ShizueFishingrod::enable_search(boma, false);
-        }
-        let status = StatusModule::status_kind(boma);
-        println!("Fishing Rod Status: {}", status);
-    }
-}
+//May be useful later to remove grab on rod pull back
+//#[smashline::weapon_frame_callback]
+//pub fn fishingrod_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+//    unsafe {
+//       if weapon.kind() != WEAPON_KIND_SHIZUE_FISHINGROD {
+//            return
+//        }
+//        let boma = weapon.boma();
+//
+//        if boma.is_status(*WEAPON_SHIZUE_FISHINGROD_STATUS_KIND_END) {
+//            WeaponSpecializer_ShizueFishingrod::enable_search(boma, false);
+//        }
+//
+//        let status = StatusModule::status_kind(boma);
+//    }
+//}
 
 // Lloid Trap Fire Jump Cancel
 unsafe fn lloid_trap_fire_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32, frame: f32) {
@@ -100,11 +118,13 @@ unsafe fn balloon_cancel(fighter: &mut L2CFighterCommon) {
                 }
                 VarModule::on_flag(fighter.object(), vars::shizue::status::IS_NOT_QUICK_RELEASE);
                 EffectModule::req_follow(fighter.module_accessor, Hash40::new("shizue_putaway_catch"), Hash40::new("bust"), &Vector3f::zero(), &Vector3f::zero(), 0.8, true, 0, 0, 0, 0, 0, false, false);
+                VarModule::off_flag(fighter.object(), vars::shizue::status::IS_DETACH_BOOST);
             } 
             else {
                 VarModule::off_flag(fighter.object(), vars::shizue::status::IS_NOT_QUICK_RELEASE);
                 VarModule::set_float(fighter.object(), vars::shizue::instance::STORED_BALLOON_POWER, 1.0);
-                EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_damage_aura"), Hash40::new("bust"), &Vector3f::zero(), &Vector3f::zero(), 0.8, true, 0, 0, 0, 0, 0, false, false);
+                EffectModule::req_follow(fighter.module_accessor, Hash40::new("shizue_erase_smoke"), Hash40::new("bust"), &Vector3f::zero(), &Vector3f::zero(), 0.8, true, 0, 0, 0, 0, 0, false, false);
+                LAST_EFFECT_SET_ALPHA(fighter, 0.75);
             }
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH, true);
         }
@@ -112,31 +132,25 @@ unsafe fn balloon_cancel(fighter: &mut L2CFighterCommon) {
 }
 
 //Add directional boost if they hit fuel threshold when cancelled
-unsafe fn detach_boost(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, stick_y: f32) {
-    let lr = PostureModule::lr(boma);
-    let motion_vec = Vector3f::new(stick_x * lr * 2.0 + 1.0, stick_y, 0.0);
-    if VarModule::is_flag(boma.object(), vars::shizue::status::IS_DETACH_BOOST)
-    && status_kind == *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH {
-        KineticModule::add_speed(boma, &motion_vec);   
-        VarModule::off_flag(boma.object(), vars::shizue::status::IS_DETACH_BOOST);
-    }
-}
-
-unsafe fn lloid_special_cancel(fighter: &mut L2CFighterCommon) {
-    let boma = fighter.boma();
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK,
-                                        *FIGHTER_STATUS_KIND_ATTACK_S3,
-                                        *FIGHTER_STATUS_KIND_ATTACK_HI3,
-                                        *FIGHTER_STATUS_KIND_ATTACK_LW3,
-                                        *FIGHTER_STATUS_KIND_ATTACK_S4,
-                                        *FIGHTER_STATUS_KIND_ATTACK_HI4,
-                                        *FIGHTER_STATUS_KIND_ATTACK_LW4,
-                                        *FIGHTER_STATUS_KIND_ATTACK_DASH,
-                                        *FIGHTER_STATUS_KIND_ATTACK_AIR])
-    && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
-    && !fighter.is_in_hitlag()
-    && fighter.is_cat_flag(Cat1::SpecialLw) {
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, false);
+unsafe fn balloon_dash(fighter: &mut L2CFighterBase) {
+    if VarModule::is_flag(fighter.object(), vars::shizue::status::IS_DETACH_BOOST)
+    && fighter.is_status(*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH) {
+        let lr = PostureModule::lr(fighter.boma());
+        let mut x_component = fighter.stick_x() * lr * 3.5;
+        let mut y_component = fighter.stick_y() * 2.0 - 1.0;
+        let mut flip = *EF_FLIP_NONE;
+        if fighter.stick_y() >= 0.90 {
+            y_component = 1.0;
+        }
+        let rot = (fighter.stick_y() / fighter.stick_x() * lr).atan().to_degrees();
+        let motion_vec = Vector3f::new(x_component, y_component, 0.0);
+        KineticModule::add_speed(fighter.boma(), &motion_vec);
+        PLAY_STATUS(fighter, Hash40::new("se_shizue_special_l02"));
+        if lr == 1.0 {
+            flip = *EFFECT_AXIS_Y;
+        } 
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("shizue_clayrocket_jet"), Hash40::new("shizue_clayrocket_jet"), Hash40::new("top"), 0, 6.0, 0, rot + 90.0, 0, 180, 1.5, true, flip);
+        VarModule::off_flag(fighter.object(), vars::shizue::status::IS_DETACH_BOOST);
     }
 }
 
@@ -144,9 +158,7 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     fishing_rod_shield_cancel(boma, status_kind, situation_kind, frame);
     reel_in(boma, status_kind, situation_kind, frame);
     lloid_trap_fire_jc(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
-    detach_boost(boma, status_kind, stick_x, stick_y);
     boost_ready(boma);
-    ready_flash(boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_SHIZUE )]
@@ -155,7 +167,10 @@ pub fn shizue_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         common::opff::fighter_common_opff(fighter);
 		shizue_frame(fighter);
         balloon_cancel(fighter);
-        //lloid_special_cancel(fighter);
+        empty_flash(fighter);
+        balloon_dash(fighter);
+        balloon_special_cancel(fighter);
+        //line_drop(fighter);
     }
 }
 
