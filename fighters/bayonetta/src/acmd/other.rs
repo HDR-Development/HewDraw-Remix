@@ -383,6 +383,55 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "bayonetta", script = "game_escapen" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_n_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2ea0f68425), true);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2ea0f68425), false);
+    }
+}
+
+#[acmd_script( agent = "bayonetta", script = "game_escapef" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_f_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2ea0f68425), true);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2ea0f68425), false);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        REVERSE_LR(fighter);
+    }
+}
+
+#[acmd_script( agent = "bayonetta", script = "game_escapeb" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_b_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2ea0f68425), true);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2ea0f68425), false);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -399,7 +448,10 @@ pub fn install() {
         damageflylw_sound,
         damageflyn_sound,
         damageflyroll_sound,
-        damageflytop_sound
+        damageflytop_sound,
+        escape_n_game,
+        escape_f_game,
+        escape_b_game
     );
 }
 
