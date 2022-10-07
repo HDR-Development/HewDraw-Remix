@@ -233,7 +233,8 @@ unsafe fn falco_blaster_bullet_fly_game(fighter: &mut L2CAgentBase) {
 unsafe fn escape_air_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
-    frame(lua_state, 3.0); {
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_falco_escapeair"));
         PLAY_SE(fighter, Hash40::new("vc_falco_ottotto"));
     }
