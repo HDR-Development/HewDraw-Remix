@@ -16,9 +16,7 @@ unsafe fn fishing_rod_shield_cancel(boma: &mut BattleObjectModuleAccessor, statu
     }
 }
 
-extern "Rust" {
-    fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
-}
+
 
 
 //Determine if fuel is past threshold
@@ -28,15 +26,24 @@ unsafe fn boost_ready(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-//Isabelle flashes if below 50% fuel
-unsafe fn empty_flash(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if !VarModule::is_flag(fighter.object(), vars::shizue::status::IS_DETACH_BOOST) {  
-        if  WorkModule::get_float(fighter.boma(), *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME) % 2.0 == 0.0 {
-            FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 9, 0, 9, 0, 0, 0, false);
-            FLASH(fighter, 0.8, 0.8, 0.8, 0.4);
-        } else {
-            EFFECT_OFF_KIND(fighter, Hash40::new("null"), true, false);
-        }
+extern "Rust" {
+    fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
+}
+
+//Use handy effects to show when Isabelle reaches below or above 50% fuel
+unsafe fn fuel_indicators(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    let fuel = WorkModule::get_float(fighter.boma(), *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME);
+    if fuel >= 179.4 && fuel <= 180.0 && !fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_HI, 
+        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_WAIT,
+        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_TURN,
+        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_FLAP,
+        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH,
+        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_LANDING,
+        ]) {
+        gimmick_flash(fighter);
+    } else if fuel >= 179.4 && fuel <= 180.0 {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0.0, 6.0, 0.0, 0.0, 0.0, 0.0, 0.7, true);
     }
 }
 
@@ -67,8 +74,8 @@ unsafe fn reel_in(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situa
 }
  
 //Disable grab on fishingrod when pullingback
-#[weapon_frame_callback]
-fn fishingrod_callback(weapon : &mut L2CFighterBase) {
+#[smashline::weapon_frame_callback]
+pub fn fishingrod_callback(weapon : &mut L2CFighterBase) {
     unsafe {
         let object_id = (*weapon.battle_object).battle_object_id;
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER);
@@ -168,9 +175,9 @@ pub fn shizue_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         common::opff::fighter_common_opff(fighter);
 		shizue_frame(fighter);
         balloon_cancel(fighter);
-        empty_flash(fighter);
         balloon_dash(fighter);
         balloon_special_cancel(fighter);
+        fuel_indicators(fighter);
     }
 }
 
