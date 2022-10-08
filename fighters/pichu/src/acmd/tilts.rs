@@ -8,14 +8,18 @@ unsafe fn pichu_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let recoil_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL);
     let damage_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_DAMAGE_MUL);
+    let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
     if is_excute(fighter){
-        if VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 0 {
+        if !charged {
             MeterModule::watch_damage(fighter.battle_object, true);
         }
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         FT_ADD_DAMAGE(fighter, 1.5 * recoil_mul);
+        if !charged {
+            MeterModule::add(fighter.battle_object, 4.5);
+        }
         ATTACK(fighter, 0, 0, Hash40::new("footl"), 9.0 * damage_mul, 40, 105, 0, 50, 3.5, 0.0, 0.0, 0.0, Some(0.0), Some(-4.5), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_KICK);
     }
     frame(lua_state, 9.0);
@@ -55,6 +59,7 @@ unsafe fn pichu_attack_hi3_game(fighter: &mut L2CAgentBase) {
 unsafe fn pichu_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("tail1"), 6.0, 101, 70, 0, 65, 3.5, 0.0, -0.4, -0.4, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
