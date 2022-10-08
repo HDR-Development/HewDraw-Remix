@@ -47,7 +47,7 @@ unsafe fn pichu_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, (4.0/6.0));
         if !charged {
-            MeterModule::add(fighter.battle_object, 5.0);
+            MeterModule::add(fighter.battle_object, 3.0);
         }
         ATTACK(fighter, 0, 0, Hash40::new("neck"), 12.5 * damage_mul, 45, 100, 0, 35, 5.6, 2.2, 0.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_HEAD);
         ATTACK(fighter, 1, 0, Hash40::new("hip"), 12.5 * damage_mul, 45, 100, 0, 35, 4.4, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_HEAD);
@@ -94,7 +94,7 @@ unsafe fn pichu_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_ADD_DAMAGE(fighter, 2.0 * recoil_mul);
         if !charged {
-            MeterModule::add(fighter.battle_object, 4.0);
+            MeterModule::add(fighter.battle_object, 3.0);
         }
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0 * damage_mul, 367, 100, 50, 0, 4.0, 0.0, 1.8, -11.5, Some(0.0), Some(1.8), Some(0.5), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
@@ -192,7 +192,7 @@ unsafe fn pichu_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_ADD_DAMAGE(fighter, 2.0 * recoil_mul);
         if !charged {
-            MeterModule::add(fighter.battle_object, 6.0);
+            MeterModule::add(fighter.battle_object, 3.0);
         }
         HIT_NODE(fighter, Hash40::new("mimir1"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("mimil1"), *HIT_STATUS_XLU);

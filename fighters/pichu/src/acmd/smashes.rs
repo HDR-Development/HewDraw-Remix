@@ -21,7 +21,7 @@ unsafe fn pichu_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         if !charged {
-            MeterModule::add(fighter.battle_object, 8.0);
+            MeterModule::add(fighter.battle_object, 4.0);
         }
         FT_ADD_DAMAGE(fighter, 2.5 * recoil_mul);
     }
@@ -183,7 +183,7 @@ unsafe fn pichu_attack_lw4_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.0, 2.0);
         if !charged {
-            MeterModule::add(fighter.battle_object, 6.0);
+            MeterModule::add(fighter.battle_object, 3.0);
             ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 55, 120, 0, 45, 6.0, 0.0, 4.5, -5.5, Some(0.0), Some(4.5), Some(4.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
         }
         else {
