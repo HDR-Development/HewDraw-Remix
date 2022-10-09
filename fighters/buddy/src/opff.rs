@@ -51,12 +51,29 @@ unsafe fn wonderwing_fail(fighter: &mut L2CFighterCommon){
         fighter.change_status_req(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL, true);
     }
 }
+//Wall tech on Wonderwing bonk
+unsafe fn wonderwing_passive(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
+    let sideSpecialWall = fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_WALL);
+    if (!sideSpecialWall) {return;}
+    
+    let isTeching = ControlModule::check_button_trigger(boma,*CONTROL_PAD_BUTTON_GUARD);
+    let techWindow = 3.0;
+    let canTech = fighter.motion_frame() <= techWindow;
+    if (isTeching && canTech)
+    {
+        //Tech state based on y stick, hold up for a wall jump
+        let passiveStatus = if (ControlModule::get_stick_y(boma)>0.7) {*FIGHTER_STATUS_KIND_WALL_JUMP} else {*FIGHTER_STATUS_KIND_PASSIVE_WALL};
+        fighter.change_status_req(passiveStatus, true);
+        REVERSE_LR(fighter);
+    }
+}
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     dair_bounce(fighter);
     //wonderwing_fail(fighter);
     blue_eggs_land_cancels(fighter);
     grenade_ac(fighter);
+    wonderwing_passive(fighter,boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_BUDDY)]
