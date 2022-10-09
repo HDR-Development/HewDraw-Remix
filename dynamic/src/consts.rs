@@ -56,7 +56,7 @@ pub mod globals {
     pub const CHECK_SPECIAL_COMMAND: i32 = 0x3C;
     pub const WAZA_CUSTOMIZE_CONTROL: i32 = 0x3D;
     pub const STATUS_CHANGE_CALLBACK: i32 = 0x3E;
-    pub const LEAVE_STOP_CALLBACK: i32 = 0x42;
+    pub const DAMAGE_MOTION_KIND_CALLBACK: i32 = 0x42;
     pub const DASH_POST_TRANSITION_CALLBACK: i32 = 0x57;
 }
 
@@ -583,8 +583,6 @@ pub mod vars {
             // flags
             pub const IS_SPECIAL_N_CHILL_PILL:       i32 = 0x1100;
 
-            pub const IS_SPECIAL_S_ELECTRIC_BLANKET: i32 = 0x1100;
-
             pub const IS_SPECIAL_HI_UNABLE_CANCEL:   i32 = 0x1100;
         }
     }
@@ -697,6 +695,16 @@ pub mod vars {
         }
     }
 
+    pub mod samusd {
+        pub mod instance {
+            // flags
+            pub const MANUAL_DETONATE_READY: i32 = 0x0100;
+
+            // ints
+            pub const BOMB_OBJECT_ID: i32 = 0x0100;
+        }
+    }
+
     pub mod robot {
         pub mod instance {
             // ints
@@ -806,6 +814,7 @@ pub mod vars {
             // floats
             pub const CHARGE_DAMAGE_MUL: i32 = 0x0100;
             pub const CHARGE_RECOIL_MUL: i32 = 0x0101;
+            pub const DISCHARGE_POWER_MUL: i32 = 0x0102;
         }
     }
 
