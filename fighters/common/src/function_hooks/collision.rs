@@ -60,8 +60,11 @@ unsafe fn is_floor_touch_line_hook(boma: &mut BattleObjectModuleAccessor, ground
 
     if boma.is_weapon()
     && (normal_y >= 0.99 && normal_y <= 1.01)  // if touching a near-flat platform/ground
-    && ( ([*WEAPON_KIND_KROOL_IRONBALL, *WEAPON_KIND_KROOL_SPITBALL].contains(&boma.kind()) && boma.is_status(*WEAPON_KROOL_IRONBALL_STATUS_KIND_SHOOT))
-        || (boma.kind() == *WEAPON_KIND_KOOPAJR_CANNONBALL && boma.is_status(*WEAPON_KOOPAJR_CANNONBALL_STATUS_KIND_SHOOT) && !KineticModule::is_enable_energy(boma, *WEAPON_KOOPAJR_CANNONBALL_KINETIC_ENERGY_ID_GRAVITY)) )
+    && ( ([*WEAPON_KIND_KROOL_IRONBALL, *WEAPON_KIND_KROOL_SPITBALL].contains(&boma.kind())
+            && boma.is_status(*WEAPON_KROOL_IRONBALL_STATUS_KIND_SHOOT))
+        || (boma.kind() == *WEAPON_KIND_KOOPAJR_CANNONBALL
+            && boma.is_status(*WEAPON_KOOPAJR_CANNONBALL_STATUS_KIND_SHOOT)
+            && !KineticModule::is_enable_energy(boma, *WEAPON_KOOPAJR_CANNONBALL_KINETIC_ENERGY_ID_GRAVITY)) )  // if Jr.'s cannonball is flying straight horizontally
     {
         if ground_touch_flags == *GROUND_TOUCH_FLAG_ALL as u32
         && !original!()(boma, *GROUND_TOUCH_FLAG_LEFT as u32 | *GROUND_TOUCH_FLAG_RIGHT as u32)  // if not touching a wall
@@ -84,10 +87,11 @@ unsafe fn get_touch_flag_hook(boma: &mut BattleObjectModuleAccessor) -> i32 {
     if boma.is_weapon()
     && (normal_y >= 0.99 && normal_y <= 1.01)  // if touching a near-flat platform/ground
     && boma.kind() == *WEAPON_KIND_DEDEDE_GORDO
-    && boma.is_status(*WEAPON_DEDEDE_GORDO_STATUS_KIND_THROW)
-    && boma.status_frame() == 0
+    && boma.is_status(*WEAPON_DEDEDE_GORDO_STATUS_KIND_THROW)  // when Dedede first tosses Gordo
+    && boma.status_frame() == 0  // on frame 1 of the toss
     {
         if original!()(boma) == *GROUND_TOUCH_FLAG_DOWN {
+            // Ignore ground collision
             return *GROUND_TOUCH_FLAG_NONE;
         }
     }
