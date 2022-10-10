@@ -155,6 +155,8 @@ pub mod vars {
 
             pub const IS_HEAVY_ATTACK: i32 = 0x0053;
 
+            pub const IS_CC_NON_TUMBLE: i32 = 0x0054;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
