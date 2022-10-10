@@ -222,6 +222,18 @@ unsafe fn pichu_dengekidama_game_regular(fighter: &mut L2CAgentBase) {
         }
     }
 }
+#[acmd_script( agent = "pichu_dengekidama", script = "effect_regular" , category = ACMD_EFFECT , low_priority)]
+unsafe fn pichu_dengekidama_effect_regular(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("pichu_dengeki"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.1, true);
+        if VarModule::is_flag(owner_module_accessor.object(), vars::pichu::instance::IS_CHARGE_ATTACK) {
+            LAST_EFFECT_SET_COLOR(fighter, 1.0,1.0,0.2)
+        }
+    }
+}
 
 #[acmd_script( agent = "pichu", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
 unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
@@ -259,6 +271,7 @@ pub fn install() {
         dash_sound,
         turn_dash_game,
         pichu_dengekidama_game_regular,
+        pichu_dengekidama_effect_regular,
         damageflyhi_sound,
         damageflylw_sound,
         damageflyn_sound,
