@@ -32,7 +32,6 @@
   <float hash="damage_angle_air">0.785398</float>
   <float hash="fly_top_angle_lw">0.802851</float>
   <float hash="fly_top_angle_hi">2.338741</float>
-  <float hash="smash_hold_reaction_mul">1.2</float>
   <list hash="0x192e58d48b">
     <hash40 index="0">dummy</hash40>
     <float index="1">1</float>
