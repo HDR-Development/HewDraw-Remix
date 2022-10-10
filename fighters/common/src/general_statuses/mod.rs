@@ -165,7 +165,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_transition_group_check_air_escape,
             sub_transition_group_check_ground_escape,
             sub_transition_group_check_ground_guard,
-            sub_transition_group_check_ground
+            sub_transition_group_check_ground,
+            sub_is_dive
         );
     }
 }
@@ -402,6 +403,28 @@ unsafe fn sub_transition_group_check_ground(fighter: &mut L2CFighterCommon, to_s
         }
     }
     false.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_sub_is_dive)]
+unsafe fn sub_is_dive(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // TODO: replace STICK_Y/FLICK_Y in original script with left_stick_y and left_flick_y when implemented
+    let dive_cont_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dive_cont_value"));
+    println!("flick y: {}", fighter.global_table[FLICK_Y].get_i32());
+    if fighter.is_button_trigger(Buttons::CStickOverride) {
+        if fighter.global_table[FLICK_Y].get_i32() == 0 && fighter.left_stick_y() > dive_cont_value {
+            println!("cock");
+            ControlModule::reset_flick_y(fighter.module_accessor);
+            fighter.global_table[FLICK_Y].assign(&0xFE.into());
+            return false.into();
+        }
+    }
+    if fighter.is_button_release(Buttons::CStickOverride) && fighter.global_table[FLICK_Y].get_i32() == 0 && fighter.left_stick_y() <= dive_cont_value {
+        println!("balls");
+        ControlModule::reset_flick_y(fighter.module_accessor);
+        fighter.global_table[FLICK_Y].assign(&0xFE.into());
+        return false.into();
+    }
+    original!()(fighter)
 }
 
 pub fn install() {
