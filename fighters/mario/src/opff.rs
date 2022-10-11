@@ -175,10 +175,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     //dair_mash_rise(fighter, boma, id, motion_kind, situation_kind, frame);
     up_b_wall_jump(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
     dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
-    //double_fireball(fighter, boma);
-    noknok_timer(fighter, boma, id);
-    noknok_reset(fighter, id, status_kind);
-    noknok_training(fighter, id, status_kind);
+    double_fireball(fighter, boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MARIO )]
