@@ -4,4 +4,3 @@ fighter/luigi/param/hdr.xml
 fighter/pikmin/param/hdr.xml
 fighter/lucas/param/hdr.xml
 fighter/lucario/param/hdr.xml
-fighter/ike/param/hdr.xml
