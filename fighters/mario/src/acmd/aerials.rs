@@ -199,11 +199,19 @@ unsafe fn mario_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter,Hash40::new("mario_fb_shoot"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter,Hash40::new("mario_fb_shoot"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0, 7, -1, -3, -11, -113, 1.1, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(fighter, 0.8);
     }
-    
+    frame(lua_state, 25.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter,Hash40::new("mario_fb_shoot"), true, true);
+    }
 }
     pub fn install() {
     install_acmd_scripts!(
