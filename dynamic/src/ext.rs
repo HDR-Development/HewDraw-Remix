@@ -13,6 +13,7 @@ use smash::lib::{
 use smash::phx::*;
 use bitflags::bitflags;
 use modular_bitfield::specifiers::*;
+use crate::consts::globals::*;
 
 pub trait Vec2Ext {
     fn new(x: f32, y: f32) -> Self where Self: Sized;
@@ -435,6 +436,7 @@ pub trait BomaExt {
     unsafe fn motion_frame(&mut self) -> f32;
     unsafe fn set_rate(&mut self, motion_rate: f32);
     unsafe fn is_in_hitlag(&mut self) -> bool;
+    unsafe fn status_frame(&mut self) -> i32;
 
 
     unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32;
@@ -689,6 +691,10 @@ impl BomaExt for BattleObjectModuleAccessor {
             return true;
         }
         return false;
+    }
+
+    unsafe fn status_frame(&mut self) -> i32 {
+        return crate::util::get_fighter_common_from_accessor(self).global_table[CURRENT_FRAME].get_i32();
     }
 
     unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32 {
