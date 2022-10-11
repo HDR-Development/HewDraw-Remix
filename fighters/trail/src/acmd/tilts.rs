@@ -194,7 +194,7 @@ unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
         //AttackModule::set_add_reaction_frame_revised(boma, 1, 4, false);
         //AttackModule::set_add_reaction_frame_revised(boma, 2, 4, false);
     }
-    wait(lua_state, 6.0);
+    wait(lua_state, 4.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
