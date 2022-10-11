@@ -25,7 +25,7 @@ mod damagefall;
 mod downdamage;
 mod crawl;
 mod cliff;
-mod catchcut;
+mod catch;
 mod damage;
 mod escape;
 mod dead;
@@ -423,7 +423,7 @@ pub fn install() {
     downdamage::install();
     crawl::install();
     cliff::install();
-    catchcut::install();
+    catch::install();
     damage::install();
     escape::install();
     dead::install();
