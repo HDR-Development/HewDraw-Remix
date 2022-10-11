@@ -2,11 +2,11 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">16.8</float>
+      <float hash="p1_y">21.8</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <struct index="2">
-      <float hash="p1_y">16.8</float>
+      <float hash="p1_y">21.8</float>
     </struct>
   </list>
   <struct hash="param_private">
