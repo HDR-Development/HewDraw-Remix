@@ -18,7 +18,7 @@ unsafe fn throw_hi_game (fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 43.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 28.0/(79.0-43.0));
+        FT_MOTION_RATE(fighter, 28.0/(78.0-43.0));
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
     	AttackModule::clear_all(boma);
     }
