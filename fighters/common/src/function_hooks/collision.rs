@@ -98,10 +98,36 @@ unsafe fn get_touch_flag_hook(boma: &mut BattleObjectModuleAccessor) -> i32 {
     original!()(boma)
 }
 
+// Handles ECB shifts
+#[skyline::hook(offset = 0x6ca950)]
+unsafe fn ground_module_update_hook(ground_module: u64) {
+    call_original!(ground_module);
+    let boma = *((ground_module + 0x20) as *mut *mut BattleObjectModuleAccessor);
+    let line = *((ground_module + 0x28) as *mut *mut f32);
+
+    if (*boma).is_fighter() {
+        let shift = VarModule::get_float((*boma).object(), vars::common::instance::ECB_Y_OFFSETS);
+
+        if !(*boma).is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_ENTRY,
+            *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
+            *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
+            *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
+            *FIGHTER_STATUS_KIND_THROWN])
+        && (*boma).is_situation(*SITUATION_KIND_AIR)
+        && shift != 0.0
+        {
+            // Shift bottom ECB point upwards by character's defined ECB shift amount
+            *line.add(0x3D4 / 4) += shift;
+        }
+    }
+}
+
 pub fn install() {
     skyline::install_hooks!(
         is_touch_hook,
         is_floor_touch_line_hook,
-        get_touch_flag_hook
+        get_touch_flag_hook,
+        ground_module_update_hook
     );
 }
