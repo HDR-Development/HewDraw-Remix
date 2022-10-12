@@ -12,7 +12,7 @@
   <int hash="turn_dash_frame">-1</int>
   <int hash="re_dash_frame">17</int>
   <float hash="run_stick_x">0.59</float>
-  <float hash="turn_run_stick_x">-0.59</float>
+  <float hash="turn_run_stick_x">-0.3178</float>
   <float hash="run_motion_rate_max">4</float>
   <float hash="turn_run_stop_brake_mul">1</float>
   <float hash="squat_stick_y">-0.5959</float>
