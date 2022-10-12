@@ -105,6 +105,7 @@ pub unsafe fn sub_transition_group_check_air_tread_jump(fighter: &mut L2CFighter
 
 #[skyline::hook(replace = L2CFighterCommon_status_TreadJump)]
 unsafe fn status_treadjump(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // Added taunt buttons to the "Is Button Footstool" check
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
     || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
     || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L)
@@ -140,6 +141,7 @@ unsafe fn status_treadjump(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe fn sub_tread_jump_uniq_check(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_TREAD_FLAG_NO_REACTION) {
         let jump_mini = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_TREAD_FLAG_BUTTON) {
+            // If any valid footstool button is held, do not turn on the short hop flag
             ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
             && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
             && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_R)
