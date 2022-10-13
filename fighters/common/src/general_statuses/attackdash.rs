@@ -161,7 +161,7 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
     // This is to check if you want a Dash Attack to either slide off or continue off of ledges.
     // This is all behind an `is_situation_changed` check because we don't want this code running all of the time.
     if StatusModule::is_situation_changed(fighter.module_accessor) {
-        if fighter.global_table[SITUATION_KIND].get_i32() != SITUATION_KIND_GROUND {
+        if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
             // Checks if your dash attack should roll off or not.
             if VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_CONTINUE) {
                 // Enables gravity.
@@ -176,6 +176,16 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
                     0.0,
                     0.0
                 );
+                let fall_mul = ParamModule::get_float(fighter.object(), ParamType::Shared, "attack_dash_fall_speed_mul");
+                if fall_mul.signum() != -1.0 {
+                    let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
+                    sv_kinetic_energy!(
+                        set_accel,
+                        fighter,
+                        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                        -air_accel_y * fall_mul
+                    );
+                }
                 KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                 // Checks if you have an attack_air_dash motion_kind in your motion_list. If so, change to it.
                 if MotionModule::is_anim_resource(fighter.module_accessor, Hash40::new("attack_air_dash")) {
@@ -279,7 +289,13 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
         return L2CValue::I32(0);
     }
     if MotionModule::is_end(fighter.module_accessor) {
-        if WorkModule::get_param_int(fighter.module_accessor, 0x17e10662a4, 0) == *FIGHTER_ATTACK_DASH_TYPE_SQUAT_WAIT {
+        if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+            fighter.change_status(
+                L2CValue::I32(*FIGHTER_STATUS_KIND_FALL),
+                L2CValue::Bool(false)
+            );
+        }
+        else if WorkModule::get_param_int(fighter.module_accessor, 0x17e10662a4, 0) == *FIGHTER_ATTACK_DASH_TYPE_SQUAT_WAIT {
             fighter.change_status(
                 L2CValue::I32(*FIGHTER_STATUS_KIND_SQUAT_WAIT),
                 L2CValue::Bool(false)
