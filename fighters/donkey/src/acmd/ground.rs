@@ -26,10 +26,14 @@ unsafe fn attack_11(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "donkey", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "donkey", scripts = [ "game_attackdash", "game_attackairdash" ] , category = ACMD_GAME , low_priority)]
 unsafe fn attack_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_FALL);
+        VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_CONTINUE);
+    }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 65, 46, 0, 85, 7.0, 0.0, 8.0, 8.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
@@ -43,14 +47,72 @@ unsafe fn attack_dash(fighter: &mut L2CAgentBase) {
     frame(lua_state, 21.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_DRIFT);
     }
-    
+}
+
+#[acmd_script( agent = "donkey", scripts = [ "effect_attackdash", "effect_attackairdash" ] , category = ACMD_EFFECT , low_priority)]
+unsafe fn attack_dash_eff(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+#[acmd_script( agent = "donkey", scripts = [ "sound_attackdash", "sound_attackairdash" ] , category = ACMD_SOUND , low_priority)]
+unsafe fn attack_dash_snd(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_donkey_rnd_attack"));
+        PLAY_SE(fighter, Hash40::new("se_donkey_attackdash"));
+    }
+}
+
+#[acmd_script( agent = "donkey", scripts = [ "expression_attackdash", "expression_attackairdash" ] , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn attack_dash_exp(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_TOP, 4, true);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(
+            boma,
+            Hash40::new("rbkind_erase"),
+            0,
+            false,
+            *BATTLE_OBJECT_ID_INVALID as u32
+        );
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(
+            boma,
+            Hash40::new("rbkind_nohitl"),
+            0,
+            false,
+            *BATTLE_OBJECT_ID_INVALID as u32
+        );
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 41.0);
+    if is_excute(fighter) {
+        slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_LR, 8);
+    }
 }
 
 pub fn install() {
     install_acmd_scripts!(
         attack_11,
-        attack_dash,
+        attack_dash, attack_dash_eff, attack_dash_snd, attack_dash_exp
     );
 }
 
