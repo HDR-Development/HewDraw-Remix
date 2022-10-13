@@ -15,6 +15,7 @@
   <float hash="turn_run_stick_x">-0.3178</float>
   <float hash="run_motion_rate_max">4</float>
   <float hash="turn_run_stop_brake_mul">1</float>
+  <float hash="run_brake_stop_shake_speed">999</float>
   <float hash="squat_stick_y">-0.5959</float>
   <float hash="squat_damage_reaction_mul">0.7</float>
   <float hash="squat_f_stick_x_min">0.2248</float>
