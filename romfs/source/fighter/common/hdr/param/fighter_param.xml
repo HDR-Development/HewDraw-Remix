@@ -9,7 +9,7 @@
     <struct index="1">
       <hash40 hash="fighter_kind">DONKEY</hash40>
       <int hash="ecb_group_shift">3</int>
-      <float hash="attack_dash_fall_speed_mul">0.5</float>
+      <float hash="attack_dash_fall_speed_mul">0.25</float>
     </struct>
     <struct index="2">
       <hash40 hash="fighter_kind">LINK</hash40>
