@@ -15,7 +15,7 @@ pub unsafe extern "C" fn donkey_link_event(vtable: u64, fighter: &mut Fighter, e
             // capture_event.constraint = false;
             // param_3 + 0x30
             capture_event.node = smash2::phx::Hash40::new("throw");
-            StatusModule::change_status_request(module_accessor, *FIGHTER_DONKEY_STATUS_KIND_SHOULDER_START, false);
+            StatusModule::change_status_request(module_accessor, *FIGHTER_STATUS_KIND_CATCH_PULL, false);
             return 0;
         }
         return 1;

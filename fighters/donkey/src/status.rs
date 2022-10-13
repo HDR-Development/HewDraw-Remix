@@ -5,6 +5,7 @@ use globals::*;
 mod item_throw_heavy;
 mod special_hi;
 mod link_event;
+mod catch_pull;
 
 unsafe extern "C" fn when_shield(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
@@ -42,5 +43,6 @@ pub fn install() {
     item_throw_heavy::install();
     special_hi::install();
     link_event::install();
+    catch_pull::install();
     smashline::install_agent_init_callbacks!(donkey_init);
 }
