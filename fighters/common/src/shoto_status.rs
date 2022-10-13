@@ -18,27 +18,6 @@ use globals::*;
     0.into()
 }*/
 
-// FIGHTER_RYU_STATUS_KIND_DASH_BACK (it's the same for theo ther fgc char statuses) //
-
-#[utils::export(common::shoto_status)]
-pub unsafe fn fgc_pre_dashback(fighter: &mut L2CFighterCommon) {
-    let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
-	let mut initial_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
-
-	if ![*FIGHTER_STATUS_KIND_DASH, *FIGHTER_RYU_STATUS_KIND_DASH_BACK, *FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, *FIGHTER_DEMON_STATUS_KIND_DASH_BACK].contains(&StatusModule::prev_status_kind(fighter.module_accessor, 0)) {
-		//println!("not after dash/dashback");
-		initial_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
-	}
-
-	//println!("dashback total speed: {}", initial_speed);
-	
-	fighter.clear_lua_stack();
-	lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, initial_speed);
-	app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-
-    VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
-}
-
 #[no_mangle]
 pub unsafe extern "Rust" fn fgc_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("dash_b"), 0.0, 1.0, false, 0.0, false, false);
@@ -215,9 +194,6 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
     if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_AFTER_DASH_TO_RUN_FRAME)
     && WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("run_stick_x")) <= fighter.global_table[STICK_X].get_f32() * -1.0 * PostureModule::lr(fighter.module_accessor)
     && !is_backdash_input {
-        //println!("sticky walk");
-        VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_STICKY_WALK);
-		VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_BOOST_RUN);
         let kind;
         if fighter.global_table[FIGHTER_KIND].get_i32() == *FIGHTER_KIND_DOLLY {
             kind = FIGHTER_DOLLY_STATUS_KIND_TURN_RUN_BACK;
@@ -236,31 +212,10 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
         VarModule::on_flag(fighter.battle_object, vars::common::status::IS_AFTER_DASH_TO_RUN_FRAME);
     }
 
-    if fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor) <= 0.0 {
-        if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_MOONWALK) && KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP) {
-            //println!("moonwalk off dash");
-            if !is_dash_input {
-                //println!("no dash input");
-                VarModule::off_flag(fighter.battle_object, vars::common::status::IS_MOONWALK);
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
-                let speed_stop = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-                let added_speed = speed_stop - (PostureModule::lr(fighter.module_accessor) * 2.0 * ground_brake);
-                let added_speed_clamped = added_speed.clamp(-run_speed_max, run_speed_max);
-
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, added_speed_clamped);
-                app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
-                app::sv_kinetic_energy::unable(fighter.lua_state_agent);
-            }
-        }
+    if fighter.global_table[STICK_Y].get_f32() <= -0.5 {
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
     }
-
+    
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH)
     && is_dash_input {
         fighter.change_status(FIGHTER_STATUS_KIND_DASH.into(), true.into());
@@ -314,54 +269,6 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
             return 1.into();
         }
         else {
-            if !is_backdash_input
-            && fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor) > 0.0
-            && !VarModule::is_flag(fighter.battle_object, vars::common::status::IS_MOONWALK) {
-                //println!("moonwalk on");
-                VarModule::on_flag(fighter.battle_object, vars::common::status::IS_MOONWALK);
-            }
-
-            // moonwalk stuff
-            if !is_backdash_input
-            && fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor) > 0.0
-            && VarModule::is_flag(fighter.battle_object, vars::common::status::IS_MOONWALK) {
-                // apply moonwalk speed
-                let mut prev_speed = 0.0;
-                if KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
-                    fighter.clear_lua_stack();
-                    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-                    prev_speed = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-                }
-                else {
-                    fighter.clear_lua_stack();
-                    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
-                    prev_speed = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-                }
-                let added_speed = fighter.global_table[STICK_X].get_f32().signum() * ((run_accel_mul + (run_accel_add * fighter.global_table[STICK_X].get_f32().abs())));
-                let moonwalk_speed = prev_speed + added_speed;
-                let moonwalk_speed_clamped = moonwalk_speed.clamp(-run_speed_max, run_speed_max);
-
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-                app::sv_kinetic_energy::unable(fighter.lua_state_agent);
-
-                //println!("moonwalkin: {}", moonwalk_speed);
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
-                app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP, moonwalk_speed_clamped);
-                app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-            }
-            //fighter.clear_lua_stack();
-            //lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-            //let speed_control = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-            //println!("speed_control: {}", speed_control);
-            //fighter.clear_lua_stack();
-            //lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
-            //let speed_stop = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-            //println!("speed_stop: {}", speed_stop);
-            //println!("total speed: {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL));
             return 0.into();
         }
     }
@@ -373,58 +280,16 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
 
 #[utils::export(common::shoto_status)]
 pub unsafe fn fgc_end_dashback(fighter: &mut L2CFighterCommon) {
-    let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
 	let mut initial_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
 	let run_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("run_speed_max"), 0);
 
-    if [*FIGHTER_STATUS_KIND_DASH, *FIGHTER_STATUS_KIND_TURN_DASH].contains(&StatusModule::status_kind_next(fighter.module_accessor)) {
-        fighter.clear_lua_stack();
-		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
-		app::sv_kinetic_energy::unable(fighter.lua_state_agent);
-    }
-	else if [*FIGHTER_RYU_STATUS_KIND_TURN_RUN_BACK, *FIGHTER_DOLLY_STATUS_KIND_TURN_RUN_BACK, *FIGHTER_DEMON_STATUS_KIND_TURN_RUN_BACK, *FIGHTER_STATUS_KIND_WALK].contains(&StatusModule::status_kind_next(fighter.module_accessor)) {
+	if [*FIGHTER_RYU_STATUS_KIND_TURN_RUN_BACK, *FIGHTER_DOLLY_STATUS_KIND_TURN_RUN_BACK, *FIGHTER_DEMON_STATUS_KIND_TURN_RUN_BACK, *FIGHTER_STATUS_KIND_WALK].contains(&StatusModule::status_kind_next(fighter.module_accessor)) {
 		//println!("run/walk next");
 		let applied_speed_clamped = initial_speed.clamp(-run_speed_max, run_speed_max);
 
-		fighter.clear_lua_stack();
-		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
-		app::sv_kinetic_energy::unable(fighter.lua_state_agent);
-		fighter.clear_lua_stack();
-		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-		app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-		fighter.clear_lua_stack();
-		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed_clamped);
-		app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-
-		initial_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
+		initial_speed = applied_speed_clamped;
 	}
-	else if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_MOONWALK) {
-		//println!("moonwalk off");
-		VarModule::off_flag(fighter.battle_object, vars::common::status::IS_MOONWALK);
-
-		fighter.clear_lua_stack();
-		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
-		let speed_stop = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-		let added_speed = speed_stop - (ground_brake * PostureModule::lr(fighter.module_accessor));
-		let added_speed_clamped = added_speed.clamp(-run_speed_max, run_speed_max);
-
-		fighter.clear_lua_stack();
-		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-		app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-		fighter.clear_lua_stack();
-		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, added_speed_clamped);
-		app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-		fighter.clear_lua_stack();
-		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
-		app::sv_kinetic_energy::unable(fighter.lua_state_agent);
-	}
-	if ![*FIGHTER_RYU_STATUS_KIND_TURN_RUN_BACK, *FIGHTER_DOLLY_STATUS_KIND_TURN_RUN_BACK, *FIGHTER_DEMON_STATUS_KIND_TURN_RUN_BACK].contains(&StatusModule::status_kind_next(fighter.module_accessor)) {
-		VarModule::off_flag(fighter.battle_object, vars::common::instance::ENABLE_BOOST_RUN);
-	}
-	
-	VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
-
-	// println!("end dash total speed: {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL));
+    VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
 }
 
 #[no_mangle]

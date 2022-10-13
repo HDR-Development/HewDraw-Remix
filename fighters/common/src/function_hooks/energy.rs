@@ -344,20 +344,6 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
                 }
             }
 
-            let direction = -PostureModule::lr(boma);
-            let direction = if reset_type != DashBack {
-                -direction
-            } else {
-                direction
-            };
-
-            // Prevents any negative acceleration from happening during dash
-            // (this kills any potential of moonwalks)
-            if stick.x * direction <= 0.0 {
-                energy.speed_max.x = 0.0;
-                break 0.0;
-            }
-
             // accel add
             break stick.x * energy.accel_mul_x + stick.x.signum() * energy.accel_add_x;
         },
@@ -375,13 +361,23 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
             }
             energy.speed_brake.x = brake;
             if 0.0 <= mul * energy.lr {
+                // If stick is at neutral
                 do_standard_accel = false;
                 energy.accel.x = 0.0;
                 energy.accel.y = change_y;
                 energy.speed_max.x = 0.0;
                 0.0
             } else {
-                mul
+                if energy.speed.x.abs() >= energy.speed_max.x
+                && mul.abs() > brake {
+                    // Boost run
+                    do_standard_accel = false;
+                    energy.accel.x = mul - (brake * mul.signum());
+                    energy.speed_max.x = 999.0;
+                    0.0
+                } else {
+                    mul
+                }
             }
         },
         Free => {
@@ -733,7 +729,7 @@ unsafe fn setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyCont
                 energy.speed.x = cap.abs() * speed.x.signum();
             }
         }, // not reached in game afaik
-        Dash | TurnRun | DashBack => {
+        Dash | DashBack => {
             let dash_speed = if reset_type == DashBack {
                 -energy.lr * WorkModule::get_param_float(boma, smash::hash40("dash_speed"), 0)
             } else {
@@ -761,6 +757,13 @@ unsafe fn setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyCont
         },
         RevolveSlashAir => {
             energy.speed.x *= WorkModule::get_param_float(boma, smash::hash40("rslash_air_spd_x_mul"), 0);
+        },
+        Turn => {
+            energy.speed.x = if VarModule::is_flag(boma.object(), vars::common::instance::IS_SMASH_TURN) {
+                energy.speed.x * 0.25
+            } else {
+                energy.speed.x
+            };
         },
         Free => {
             energy.speed = PaddedVec2::zeros();

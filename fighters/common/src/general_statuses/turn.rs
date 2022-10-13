@@ -7,18 +7,6 @@ macro_rules! interrupt {
     ($fighter:ident, $status:expr, $repeat:expr) => {{ $fighter.change_status($status.into(), $repeat.into()); interrupt!(); }}
 }
 
-#[common_status_script(status = FIGHTER_STATUS_KIND_TURN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon15status_pre_TurnEv")]
-unsafe fn status_pre_turn(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0 {
-        // for IRAR
-        VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
-        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_JUMP_SQUAT);
-        return 1.into();
-    }
-    call_original!(fighter)
-}
-
 #[common_status_script(status = FIGHTER_STATUS_KIND_TURN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
     symbol = "_ZN7lua2cpp16L2CFighterCommon11status_TurnEv")]
 unsafe fn status_turn(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -28,22 +16,6 @@ unsafe fn status_turn(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon21status_pre_TurnCommonEv")]
 unsafe extern "C" fn status_pre_turncommon(fighter: &mut L2CFighterCommon) {
-    let mut initial_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
-
-	if ![*FIGHTER_STATUS_KIND_DASH].contains(&StatusModule::prev_status_kind(fighter.module_accessor, 0)) {
-		//println!("not after dash/turn");
-		initial_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
-	}
-
-	//println!("turn initial speed: {}", initial_speed);
-
-	fighter.clear_lua_stack();
-	lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, initial_speed);
-	app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-	
-	VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
-	VarModule::set_float(fighter.battle_object, vars::common::instance::MOONWALK_SPEED, 0.0);
-
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ITEM);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_CATCH);
@@ -95,19 +67,7 @@ unsafe extern "C" fn status_turn_main(fighter: &mut L2CFighterCommon) -> L2CValu
             // perfect pivot
             VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
             VarModule::off_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT);
-            let dash_speed: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0);
-            let speed_mul = ParamModule::get_float(fighter.object(), ParamType::Common, "perfect_pivot_speed_mul");
-            let pivot_boost = dash_speed * speed_mul * PostureModule::lr(fighter.module_accessor);
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, pivot_boost);
-            app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
         }
-        /***fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-        let speed_control = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-        println!("turn speed_control: {}", speed_control);
-        println!("turn total speed: {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
-        ***/
         if !status_turncommon(fighter).get_bool() {
             if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
                 if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0
@@ -233,7 +193,6 @@ pub fn install() {
     );
 
     install_status_scripts!(
-        status_pre_turn,
         status_turn,
         status_end_turn
     );
