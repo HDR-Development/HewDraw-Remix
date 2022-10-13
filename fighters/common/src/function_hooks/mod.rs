@@ -18,6 +18,7 @@ pub mod jumps;
 pub mod stage_hazards;
 pub mod set_fighter_status_data;
 pub mod attack;
+pub mod collision;
 
 pub fn install() {
     energy::install();
@@ -38,6 +39,7 @@ pub fn install() {
     stage_hazards::install();
     set_fighter_status_data::install();
     attack::install();
+    collision::install();
 
     unsafe {
         // Handles getting rid of the kill zoom
