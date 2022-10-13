@@ -54,7 +54,7 @@ unsafe fn samusd_cshot_shoot_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "samusd_cshot", script = "sound_Shoot", category = ACMD_SOUND, low_priority)]
+#[acmd_script( agent = "samusd_cshot", script = "sound_shoot", category = ACMD_SOUND, low_priority)]
 unsafe fn samusd_cshot_shoot_sound (fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
