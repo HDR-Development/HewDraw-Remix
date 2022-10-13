@@ -155,6 +155,8 @@ pub mod vars {
 
             pub const IS_HEAVY_ATTACK: i32 = 0x0053;
 
+            pub const IS_CC_NON_TUMBLE: i32 = 0x0054;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -217,6 +219,11 @@ pub mod vars {
             pub const IS_AFTER_DASH_TO_RUN_FRAME: i32 = 0x1003;
 
             pub const ATTACK_DASH_CANCEL_DISABLE: i32 = 0x1000;
+            pub const ATTACK_DASH_ENABLE_AIR_FALL: i32 = 0x1001;
+            pub const ATTACK_DASH_ENABLE_AIR_CONTINUE: i32 = 0x1002;
+            pub const ATTACK_DASH_ENABLE_AIR_DRIFT: i32 = 0x1003;
+            pub const ATTACK_DASH_AIR_DRIFT_ENABLED: i32 = 0x1004;
+            pub const ATTACK_DASH_ENABLE_AIR_LANDING: i32 = 0x1005;
 
             pub const SHOULD_WAVELAND: i32 = 0x1000;
 
@@ -583,8 +590,6 @@ pub mod vars {
             // flags
             pub const IS_SPECIAL_N_CHILL_PILL:       i32 = 0x1100;
 
-            pub const IS_SPECIAL_S_ELECTRIC_BLANKET: i32 = 0x1100;
-
             pub const IS_SPECIAL_HI_UNABLE_CANCEL:   i32 = 0x1100;
         }
     }
@@ -816,6 +821,7 @@ pub mod vars {
             // floats
             pub const CHARGE_DAMAGE_MUL: i32 = 0x0100;
             pub const CHARGE_RECOIL_MUL: i32 = 0x0101;
+            pub const DISCHARGE_POWER_MUL: i32 = 0x0102;
         }
     }
 

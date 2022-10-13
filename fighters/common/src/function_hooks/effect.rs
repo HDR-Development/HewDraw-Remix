@@ -354,7 +354,7 @@ unsafe fn preset_lifetime_rate_partial_hook(boma: &mut BattleObjectModuleAccesso
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR])
     {
-        rate = (rate * 0.5).max(0.25);
+        rate = 0.35;
     }
     original!()(boma, rate)
 }
