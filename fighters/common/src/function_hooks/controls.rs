@@ -127,6 +127,17 @@ unsafe fn map_controls_hook(
                 (x, gc_x,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
                 (y, gc_y,   TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
         );
+        if (*mappings.add(player_idx as usize)).gc_absmash {
+            if (*out).buttons.contains(Buttons::Attack | Buttons::Special) {
+                (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
+                (*out).buttons |= Buttons::Smash;
+                (*mappings.add(player_idx as usize)).is_absmash = true;
+            } else if !(*out).buttons.intersects(Buttons::Attack | Buttons::Special) {
+                (*mappings.add(player_idx as usize)).is_absmash = false;
+            } else if (*mappings.add(player_idx as usize)).is_absmash {
+                (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
+            }
+        }
     } else if controller.style == ControllerStyle::LeftJoycon || controller.style == ControllerStyle::RightJoycon {
         (*out).buttons |= apply_button_mappings!(
             controller,
@@ -244,6 +255,17 @@ unsafe fn map_controls_hook(
                     (x, joy_right,  TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
             );
         }
+        if (*mappings.add(player_idx as usize)).joy_absmash {
+            if (*out).buttons.contains(Buttons::Attack | Buttons::Special) {
+                (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
+                (*out).buttons |= Buttons::Smash;
+                (*mappings.add(player_idx as usize)).is_absmash = true;
+            } else if !(*out).buttons.intersects(Buttons::Attack | Buttons::Special) {
+                (*mappings.add(player_idx as usize)).is_absmash = false;
+            } else if (*mappings.add(player_idx as usize)).is_absmash {
+                (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
+            }
+        }
     } else {
         (*out).buttons |= apply_button_mappings!(
             controller,
@@ -293,6 +315,18 @@ unsafe fn map_controls_hook(
                 (x, pro_x,      TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
                 (y, pro_y,      TiltAttack, Buttons::TiltAttack | Buttons::AttackAll)
         );
+
+        if (*mappings.add(player_idx as usize)).pro_absmash {
+            if (*out).buttons.contains(Buttons::Attack | Buttons::Special) {
+                (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
+                (*out).buttons |= Buttons::Smash;
+                (*mappings.add(player_idx as usize)).is_absmash = true;
+            } else if !(*out).buttons.intersects(Buttons::Attack | Buttons::Special) {
+                (*mappings.add(player_idx as usize)).is_absmash = false;
+            } else if (*mappings.add(player_idx as usize)).is_absmash {
+                (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
+            }
+        }
     }
 
     // Check if the button combos are being pressed and then force Stock Share + AttackRaw/SpecialRaw depending on input
