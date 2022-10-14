@@ -341,14 +341,16 @@ unsafe fn kamui_landing_air_lw_game(fighter: &mut L2CAgentBase) {
 unsafe fn kamui_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    EFFECT_OFF_KIND(fighter, Hash40::new("sys_club_tornado"), true, true);
-    EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_line_b"), false, true);
-    EFFECT_OFF_KIND(fighter, Hash40::new("kamui_ryusensya_shot"), false, true);
-    EFFECT_OFF_KIND(fighter, Hash40::new("kamui_counter_splash"), false, true);
-    EFFECT_OFF_KIND(fighter, Hash40::new("kamui_transform_splash_end"), false, true);
-    EFFECT_FLW_POS(fighter, Hash40::new("kamui_transform_splash_end"), Hash40::new("neck"), 2, 0, 0, 0, 0, 0, 1, true);
-    LANDING_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-    EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_club_tornado"), true, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_line_b"), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("kamui_ryusensya_shot"), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("kamui_counter_splash"), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("kamui_transform_splash_end"), false, true);
+        EFFECT_FLW_POS(fighter, Hash40::new("kamui_transform_splash_end"), Hash40::new("neck"), 2, 0, 0, 0, 0, 0, 1, true);
+        LANDING_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
+    }
 }
 
 
