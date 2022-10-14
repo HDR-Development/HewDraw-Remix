@@ -29,6 +29,7 @@ def create_diff(zip1: str, zip2: str, output_name: str):
             for file in deleted_files:
                 print("deleted file: " + file)
                 deletions_text += "\"" + file + "\","
+            deletions_text = deletions_text.strip(",")
             deletions_text += "]"
 
             # removing old diffs
