@@ -18,7 +18,7 @@ unsafe fn heros_bow_ff(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
 
 // Lengthen sword
 unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
-	let long_sword_scale = Vector3f{x: 1.04, y: 1.01, z: 1.01};
+	let long_sword_scale = Vector3f{x: 1.2, y: 1.0, z: 1.0};
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("sword2"), &long_sword_scale);
 }
 
