@@ -4,13 +4,19 @@ use globals::*;
 // This file contains code related to teching
 
 pub fn install() {
-    install_hooks!(
-        sub_check_passive_button_for_damage
-    );
+    skyline::nro::add_hook(nro_hook);
 }
 
-#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon35sub_check_passive_button_for_damageEN3lib8L2CValueE")]
-unsafe extern "C" fn sub_check_passive_button_for_damage(fighter: &mut L2CFighterCommon, trigger_frame: L2CValue) -> L2CValue {
+fn nro_hook(info: &skyline::nro::NroInfo) {
+    if info.name == "common" {
+        skyline::install_hooks!(
+            sub_check_passive_button_for_damage
+        );
+    }
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_check_passive_button_for_damage)]
+pub unsafe fn sub_check_passive_button_for_damage(fighter: &mut L2CFighterCommon, trigger_frame: L2CValue) -> L2CValue {
     let is_valid_tech_input = fighter.sub_check_passive_button(trigger_frame).get_bool();
-    return is_valid_tech_input.into()
+    return L2CValue::Bool(is_valid_tech_input)
 }

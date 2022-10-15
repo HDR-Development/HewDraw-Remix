@@ -13,6 +13,7 @@ use smash::lib::{
 use smash::phx::*;
 use bitflags::bitflags;
 use modular_bitfield::specifiers::*;
+use crate::consts::globals::*;
 
 pub trait Vec2Ext {
     fn new(x: f32, y: f32) -> Self where Self: Sized;
@@ -402,7 +403,6 @@ pub trait BomaExt {
     unsafe fn stick_y(&mut self) -> f32;
     unsafe fn prev_stick_x(&mut self) -> f32;
     unsafe fn prev_stick_y(&mut self) -> f32;
-    unsafe fn is_flick_y(&mut self, sensitivity: f32) -> bool;
     unsafe fn is_input_jump(&mut self) -> bool;
     unsafe fn get_aerial(&mut self) -> Option<AerialKind>;
     unsafe fn set_joint_rotate(&mut self, bone_name: &str, rotation: Vector3f);
@@ -435,6 +435,7 @@ pub trait BomaExt {
     unsafe fn motion_frame(&mut self) -> f32;
     unsafe fn set_rate(&mut self, motion_rate: f32);
     unsafe fn is_in_hitlag(&mut self) -> bool;
+    unsafe fn status_frame(&mut self) -> i32;
 
 
     unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32;
@@ -564,22 +565,6 @@ impl BomaExt for BattleObjectModuleAccessor {
 
         return self.is_cat_flag(Cat1::JumpButton);
     }
-        
-    // TODO: Reimplement this check
-    unsafe fn is_flick_y(&mut self, sensitivity: f32) -> bool {
-        let stick = self.stick_y();
-        let p_stick = self.prev_stick_y();
-
-        if sensitivity < 0.0 && stick < sensitivity && (stick < p_stick || self.is_cat_flag(Cat2::FallJump)) {
-            return true;
-        }
-
-        if sensitivity > 0.0 && stick > sensitivity && (stick > p_stick || self.is_cat_flag(Cat2::FallJump)) {
-            return true;
-        }
-
-        return false;
-    }
 
     /// returns whether or not the stick x is pointed in the "forwards" direction for
     /// a character
@@ -688,6 +673,10 @@ impl BomaExt for BattleObjectModuleAccessor {
             return true;
         }
         return false;
+    }
+
+    unsafe fn status_frame(&mut self) -> i32 {
+        return crate::util::get_fighter_common_from_accessor(self).global_table[CURRENT_FRAME].get_i32();
     }
 
     unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32 {
