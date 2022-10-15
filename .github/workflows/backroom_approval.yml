@@ -16,7 +16,7 @@ jobs:
           hasSome: character change
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
-      - if: always()
+      - if: failure()
         run: echo "checked labels..."
 
       - name: pass if not a character change
