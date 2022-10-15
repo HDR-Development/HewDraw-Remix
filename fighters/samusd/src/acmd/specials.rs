@@ -186,6 +186,7 @@ unsafe fn game_specialairlw(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_normal") as i64);
     }
+    
 }
 
 pub fn install() {
@@ -194,6 +195,7 @@ pub fn install() {
         game_specialairhi,
         game_speciallw,
         game_specialairlw,
+        
     );
 }
 
