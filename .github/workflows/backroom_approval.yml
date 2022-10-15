@@ -17,7 +17,7 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: pass if not a character change
-        if: steps.haslabel.outputs.passed
+        if: failure() && steps.haslabel.outputs.passed
         id: is_character
         run: echo "is_character=no" >> $GITHUB_OUTPUT
 
