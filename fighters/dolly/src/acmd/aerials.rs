@@ -138,8 +138,6 @@ unsafe fn dolly_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-             PostureModule::reverse_lr(boma);
-            PostureModule::update_rot_y_lr(boma);
         }
     }
     frame(lua_state, 11.0);
@@ -182,6 +180,26 @@ unsafe fn dolly_attack_air_b_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     
+}
+
+#[acmd_script( agent = "dolly", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
+unsafe fn dolly_attack_air_b_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
+            EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("dolly_attack_arc4"), Hash40::new("dolly_attack_arc4"), Hash40::new("top"), -0.5, 10.5, 0.5, -170, 240, 200, 1, true, *EF_FLIP_YZ, 0.5);
+        }
+        else{
+            EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("dolly_attack_arc4"), Hash40::new("dolly_attack_arc4"), Hash40::new("top"), -0.5, 10.5, 0.5, -170, 60, 20, 1, true, *EF_FLIP_YZ, 0.5);
+        }
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("dolly_attack_arc4"), false, true);
+    }
 }
 
 #[acmd_script( agent = "dolly", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
@@ -279,6 +297,7 @@ pub fn install() {
         dolly_attack_air_n_game,
         dolly_attack_air_f_game,
         dolly_attack_air_b_game,
+        dolly_attack_air_b_effect,
         dolly_attack_air_hi_game,
         dolly_attack_air_lw_game,
     );

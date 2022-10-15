@@ -138,7 +138,7 @@ unsafe fn dolly_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         if VarModule::is_flag(fighter.battle_object, vars::dolly::status::IS_SHATTER_STRIKE){
             // Counteract the last portion of the originally added speed
             KineticModule::add_speed(boma, &Vector3f::new(-0.4*shatter_strike_speed, 0.0, 0.0));
-            FT_MOTION_RATE(fighter, 1.0);
+            FT_MOTION_RATE(fighter, 0.9);
         }
     }
     

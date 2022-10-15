@@ -24,6 +24,7 @@ unsafe fn dolly_attack_11_game(fighter: &mut L2CAgentBase) {
         AttackModule::set_add_reaction_frame(boma, 0, 4.0, false);
         AttackModule::set_add_reaction_frame(boma, 1, 4.0, false);
         AttackModule::set_add_reaction_frame(boma, 2, 4.0, false);
+        AttackModule::set_down_only(boma, 3, false);
         FT_MOTION_RATE(fighter, 1.000);
      }
     frame(lua_state, 7.0);

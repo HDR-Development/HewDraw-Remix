@@ -207,6 +207,50 @@ unsafe fn full_meter_training_taunt(fighter: &mut L2CFighterCommon, boma: &mut B
     }
 }
 
+// boma: its a boma
+// start_frame: frame to start interpolating the body rotation
+// bend_frame: frame to interpolate to the intended angle amount until
+// return_frame: frame to start interpolating back to regular angle
+// straight_frame: frame the body should be at the regular angle again
+unsafe fn forward_bair_rotation(boma: &mut BattleObjectModuleAccessor, start_frame: f32, bend_frame: f32, return_frame: f32, straight_frame: f32) {
+    let frame = MotionModule::frame(boma);
+    let end_frame = MotionModule::end_frame(boma);
+    let max_rotation = -180.0;
+    let mut rotation = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+        
+    if frame >= start_frame && frame < return_frame {
+        // this has to be called every frame, or you snap back to the normal joint angle
+        // interpolate to the respective body rotation angle
+        let calc_body_rotate = max_rotation * ((frame - start_frame) / (bend_frame - start_frame));
+        let body_rotation = calc_body_rotate.clamp(-180.0, 0.0);
+        rotation = Vector3f{x: 0.0, y: body_rotation, z: 0.0};
+        ModelModule::set_joint_rotate(boma, Hash40::new("rot"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+    } else if frame >= return_frame && frame < straight_frame {
+        // linear interpolate back to normal
+        /*
+        let calc_body_rotate = max_rotation *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
+        let body_rotation = calc_body_rotate.clamp(0.0, max_rotation);
+        */
+        let calc_body_rotate = -180.0 *((frame - return_frame) / (straight_frame - return_frame)) + 180.0;
+        let body_rotation = calc_body_rotate.clamp(0.0, 180.0);
+        rotation = Vector3f{x: 0.0, y: body_rotation, z: 0.0};
+        ModelModule::set_joint_rotate(boma, Hash40::new("rot"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+    }
+}
+
+unsafe fn rotate_forward_bair(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_motion(Hash40::new("attack_air_b")){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
+            forward_bair_rotation(boma, 5.0, 10.0, 20.0, 40.0);
+        }
+    }
+    else if boma.is_motion(Hash40::new("landing_air_b")){
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
+            forward_bair_rotation(boma, 0.0, 0.1, 0.2, 10.0);
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //dtilt_repeat_increment(boma, id, motion_kind); // UNUSED
     power_wave_dash_cancel_super_cancels(fighter, boma, id, status_kind, situation_kind, cat, motion_kind, frame);
@@ -219,6 +263,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     power_dunk_break(boma);
     special_cancels(boma);
     ex_special_scripting(boma);
+    rotate_forward_bair(boma);
 
     // Magic Series
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
@@ -367,12 +412,14 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
     if is_input_cancel{
         if !StopModule::is_stop(boma){
             boma.change_status_req(new_status, false);
+            return;
         }
     }
-    if is_input_special_special_cancel{
+    else if is_input_special_special_cancel{
         if !StopModule::is_stop(boma){
             if MeterModule::drain(boma.object(), 2) {
                 boma.change_status_req(new_status, false);
+                return;
             }
         }
     }
@@ -521,7 +568,7 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
     }
     if is_input_metered_cancel{
         if !StopModule::is_stop(boma) && !VarModule::is_flag(boma.object(), vars::dolly::status::UNABLE_CANCEL_S3_DASH){
-            if MeterModule::drain(boma.object(), 2) {
+            if MeterModule::drain(boma.object(), 1) {
                 if new_status == *FIGHTER_STATUS_KIND_JUMP_SQUAT {
                     boma.change_status_req(new_status, true);
                 }
