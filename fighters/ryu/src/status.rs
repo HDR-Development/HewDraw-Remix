@@ -15,6 +15,7 @@ extern "Rust" {
     fn ryu_attack_main_uniq_chk4(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue;
     fn ryu_final_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue;
     fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue;
+    fn fgc_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue;
 }
 
 extern "C" {
@@ -31,6 +32,7 @@ pub fn install() {
         Hash40::new("fighter_kind_ryu"),
         statuses::ryu::AIR_DASH,
         StatusInfo::new()
+            .with_init(air_dash_init)
             .with_pre(status_pre_EscapeAir)
             .with_main(air_dash_main)
             .with_end(status_end_EscapeAir)
@@ -41,7 +43,10 @@ pub fn install() {
         main_dashback,
         end_dashback,
         main_attack,
-        escape_air_pre
+        escape_air_pre,
+        wait_pre,
+        //wait_main,
+        landing_main
     );
 }
 
@@ -58,6 +63,7 @@ pub unsafe fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
             }
         }
     }
+    VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
     StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_TURN);
     return 1.into()
 }
@@ -275,9 +281,19 @@ unsafe fn escape_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
+pub unsafe extern "C" fn air_dash_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE);
+
+    // Clear knockback energy for airdash out of hitstun
+    fighter.clear_lua_stack();
+    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+    app::sv_kinetic_energy::clear_speed(fighter.lua_state_agent);
+
+    0.into()
+}
+
 // Air Dash main status
 pub unsafe extern "C" fn air_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE);
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_sub_escape_air_uniq as *const () as _));
     fighter.main_shift(air_dash_main_loop)
 }
@@ -317,4 +333,51 @@ unsafe extern "C" fn air_dash_main_loop(fighter: &mut L2CFighterCommon) -> L2CVa
         }
     }
     0.into()
+}
+
+// FIGHTER_STATUS_KIND_WAIT //
+
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_pre_Wait()
+}
+
+// vanilla script
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.sub_wait_common();
+    fighter.sub_wait_motion_mtrans();
+    fighter.sub_shift_status_main(L2CValue::Ptr(fgc_wait_main_loop as *const () as _))
+}
+
+pub unsafe extern "C" fn fgc_wait_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.status_Wait_Main().get_bool() {
+        return 0.into();
+    }
+    let lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1);
+    if lr != 0.0 && PostureModule::lr(fighter.module_accessor) != lr {
+        let stick_x_corrected = fighter.global_table[STICK_X].get_f32() * (PostureModule::lr(fighter.module_accessor) * -1.0);
+        let stick_y = fighter.global_table[STICK_Y].get_f32();
+        let walk_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("walk_stick_x"));
+        let squat_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"));
+
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK) {
+            if walk_stick_x <= stick_x_corrected {
+                if squat_stick_y < stick_y {
+                    fighter.change_status(FIGHTER_RYU_STATUS_KIND_WALK_BACK.into(), true.into());
+                    return 0.into();
+                }
+            }
+        }
+        fighter.change_status(FIGHTER_RYU_STATUS_KIND_TURN_AUTO.into(), false.into());
+        return 0.into();
+    }
+    0.into()
+}
+
+// FIGHTER_STATUS_KIND_LANDING //
+
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fgc_landing_main(fighter)
 }

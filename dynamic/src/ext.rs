@@ -13,6 +13,7 @@ use smash::lib::{
 use smash::phx::*;
 use bitflags::bitflags;
 use modular_bitfield::specifiers::*;
+use crate::consts::globals::*;
 
 pub trait Vec2Ext {
     fn new(x: f32, y: f32) -> Self where Self: Sized;
@@ -254,6 +255,7 @@ bitflags! {
     pub struct CatHdr: i32 {
         const TiltAttack = 0x1;
         const Wavedash = 0x2;
+        const ShieldDrop = 0x4;
     }
 
     pub struct PadFlag: i32 {
@@ -401,7 +403,6 @@ pub trait BomaExt {
     unsafe fn stick_y(&mut self) -> f32;
     unsafe fn prev_stick_x(&mut self) -> f32;
     unsafe fn prev_stick_y(&mut self) -> f32;
-    unsafe fn is_flick_y(&mut self, sensitivity: f32) -> bool;
     unsafe fn is_input_jump(&mut self) -> bool;
     unsafe fn get_aerial(&mut self) -> Option<AerialKind>;
     unsafe fn set_joint_rotate(&mut self, bone_name: &str, rotation: Vector3f);
@@ -434,6 +435,7 @@ pub trait BomaExt {
     unsafe fn motion_frame(&mut self) -> f32;
     unsafe fn set_rate(&mut self, motion_rate: f32);
     unsafe fn is_in_hitlag(&mut self) -> bool;
+    unsafe fn status_frame(&mut self) -> i32;
 
 
     unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32;
@@ -442,6 +444,10 @@ pub trait BomaExt {
     unsafe fn is_fighter(&mut self) -> bool;
     unsafe fn is_weapon(&mut self) -> bool;
     unsafe fn kind(&mut self) -> i32;
+    // gets the boma of the player who you are grabbing
+    unsafe fn get_grabbed_opponent_boma(&mut self) -> &mut BattleObjectModuleAccessor;
+    // gets the boma of the player who is grabbing you
+    unsafe fn get_grabber_boma(&mut self) -> &mut BattleObjectModuleAccessor;
 
     // WORK
     unsafe fn get_int(&mut self, what: i32) -> i32;
@@ -463,6 +469,12 @@ pub trait BomaExt {
     // tech/general subroutine
     unsafe fn handle_waveland(&mut self, require_airdodge: bool) -> bool;
     unsafe fn shift_ecb_on_landing(&mut self);
+    unsafe fn set_front_cliff_hangdata(&mut self, x: f32, y: f32);
+    unsafe fn set_back_cliff_hangdata(&mut self, x: f32, y: f32);
+    unsafe fn set_center_cliff_hangdata(&mut self, x: f32, y: f32);
+
+    // Checks for status and enables transition to jump
+    unsafe fn check_jump_cancel(&mut self);
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -552,22 +564,6 @@ impl BomaExt for BattleObjectModuleAccessor {
         }
 
         return self.is_cat_flag(Cat1::JumpButton);
-    }
-        
-    // TODO: Reimplement this check
-    unsafe fn is_flick_y(&mut self, sensitivity: f32) -> bool {
-        let stick = self.stick_y();
-        let p_stick = self.prev_stick_y();
-
-        if sensitivity < 0.0 && stick < sensitivity && (stick < p_stick || self.is_cat_flag(Cat2::FallJump)) {
-            return true;
-        }
-
-        if sensitivity > 0.0 && stick > sensitivity && (stick > p_stick || self.is_cat_flag(Cat2::FallJump)) {
-            return true;
-        }
-
-        return false;
     }
 
     /// returns whether or not the stick x is pointed in the "forwards" direction for
@@ -679,6 +675,10 @@ impl BomaExt for BattleObjectModuleAccessor {
         return false;
     }
 
+    unsafe fn status_frame(&mut self) -> i32 {
+        return crate::util::get_fighter_common_from_accessor(self).global_table[CURRENT_FRAME].get_i32();
+    }
+
     unsafe fn change_status_req(&mut self, kind: i32, repeat: bool) -> i32 {
         return StatusModule::change_status_request_from_script(self, kind, repeat) as i32;
     }
@@ -693,6 +693,18 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn kind(&mut self) -> i32 {
         return smash::app::utility::get_kind(self);
+    }
+
+    unsafe fn get_grabbed_opponent_boma(&mut self) -> &mut BattleObjectModuleAccessor {
+        let opponent_id = LinkModule::get_node_object_id(self, *LINK_NO_CAPTURE) as u32;
+        let opponent_object = super::util::get_battle_object_from_id(opponent_id);
+        &mut *(*opponent_object).module_accessor
+    }
+
+    unsafe fn get_grabber_boma(&mut self) -> &mut BattleObjectModuleAccessor {
+        let opponent_id = LinkModule::get_parent_object_id(self, *LINK_NO_CAPTURE) as u32;
+        let opponent_object = super::util::get_battle_object_from_id(opponent_id);
+        &mut *(*opponent_object).module_accessor
     }
 
     unsafe fn get_num_used_jumps(&mut self) -> i32 {
@@ -804,10 +816,14 @@ impl BomaExt for BattleObjectModuleAccessor {
         };
     
         let ecb_bottom = *GroundModule::get_rhombus(self, true).add(1);
-        let line_bottom = Vector2f::new(ecb_bottom.x, shift + ecb_bottom.y - crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold"));
+        let snap_leniency = crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold");
+        let line_bottom = Vector2f::new(ecb_bottom.x, shift + ecb_bottom.y - snap_leniency);
         let mut out_pos = Vector2f::zero();
-        let result = GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, shift + ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut out_pos, true);
-        if result != 0 { // pretty sure it returns a pointer, at least it defo returns a non-0 value if success
+        let within_snap_distance_any = GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, shift + ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut out_pos, true);
+        let within_snap_distance_stage = GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, shift + ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut out_pos, false);
+        let can_snap = within_snap_distance_any != 0 && (within_snap_distance_stage == 0
+            || WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0);
+        if can_snap { // pretty sure it returns a pointer, at least it defo returns a non-0 value if success
             let pos = PostureModule::pos(self);
             PostureModule::set_pos(self, &Vector3f::new((*pos).x, out_pos.y + 0.01, (*pos).z));
             GroundModule::attach_ground(self, true);
@@ -837,6 +853,69 @@ impl BomaExt for BattleObjectModuleAccessor {
         }
     }
 
+    unsafe fn check_jump_cancel(&mut self) {
+        let fighter = crate::util::get_fighter_common_from_accessor(self);
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
+            fighter.sub_transition_group_check_ground_jump_mini_attack();
+            fighter.sub_transition_group_check_ground_jump();
+        }
+        else {
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+            fighter.sub_transition_group_check_air_jump_aerial();
+        }
+    }
+
+    /// Sets the position of the front/red ledge-grab box (see [`set_center_cliff_hangdata`](BomaExt::set_center_cliff_hangdata) for more information)
+    /// 
+    /// # Arguments
+    /// * `x` - The x coordinate, relative to the [position](smash::app::lua_bind::PostureModule::pos) of the fighter
+    /// * `y` - The y coordinate, relative to the [position](smash::app::lua_bind::PostureModule::pos) of the fighter
+    unsafe fn set_front_cliff_hangdata(&mut self, x: f32, y: f32) {
+        let ground_module = *(self as *mut BattleObjectModuleAccessor as *const u64).add(0x58 / 8);
+        let ground_data = *((ground_module + 0x28) as *mut *mut f32);
+        *ground_data.add(0x530 / 4) = x;
+        *ground_data.add(0x534 / 4) = y;
+    }
+
+    /// Sets the position of the back/blue ledge-grab box (see [`set_center_cliff_hangdata`](BomaExt::set_center_cliff_hangdata) for more information)
+    /// 
+    /// # Arguments
+    /// * `x` - The x coordinate, relative to the [position](smash::app::lua_bind::PostureModule::pos) of the fighter
+    /// * `y` - The y coordinate, relative to the [position](smash::app::lua_bind::PostureModule::pos) of the fighter
+    unsafe fn set_back_cliff_hangdata(&mut self, x: f32, y: f32) {
+        let ground_module = *(self as *mut BattleObjectModuleAccessor as *const u64).add(0x58 / 8);
+        let ground_data = *((ground_module + 0x28) as *mut *mut f32);
+        *ground_data.add(0x540 / 4) = x;
+        *ground_data.add(0x544 / 4) = y;
+    }
+
+    /// Sets the center position of the two ledge-grab boxes
+    /// 
+    /// # Information about hang data
+    /// There are two rectangles which represent the ledge-grab data for a fighter. One of them is usually
+    /// placed behind the fighter and the other in front. For the purposes of explanation, I will refer to
+    /// the one in front as "red" and the one in the back as "blue", as those are the colors chosen
+    /// for the visualizer. 
+    /// 
+    /// The center position for ledge-grab boxes is a point which both the red and blue boxes have as a corner.
+    /// Both boxes meet at this location. This is usually located near the center of the fighter on the x-axis. The
+    /// location on the y-axis of the fighter depends on the fighter.
+    /// 
+    /// The front and back positions (set by [`BomaExt::set_front_cliff_hangdata`] and [`BomaExt::set_back_cliff_hangdata`] respectively)
+    /// are the corners that oppose this center.
+    /// 
+    /// # Arguments
+    /// * `x` - The x coordinate, relative to the [position](smash::app::lua_bind::PostureModule::pos) of the fighter
+    /// * `y` - The y coordinate, relative to the [position](smash::app::lua_bind::PostureModule::pos) of the fighter
+    unsafe fn set_center_cliff_hangdata(&mut self, x: f32, y: f32) {
+        let ground_module = *(self as *mut BattleObjectModuleAccessor as *const u64).add(0x58 / 8);
+        let ground_data = *((ground_module + 0x28) as *mut *mut f32);
+        *ground_data.add(0x520 / 4) = x;
+        *ground_data.add(0x524 / 4) = y;
+    }
 }
 
 pub trait LuaUtil {

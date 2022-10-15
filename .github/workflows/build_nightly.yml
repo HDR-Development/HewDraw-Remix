@@ -133,7 +133,7 @@ jobs:
       with:
         repository: HDR-Development/HDR-Nightlies
 
-    # build the upgrade.zip and upgrade_deletions.txt
+    # build the upgrade.zip and deletions.json
     - name: make upgrade artifacts
       run: |
         python3 scripts/make_diff.py nightly
@@ -155,6 +155,18 @@ jobs:
         tag: ${{ steps.package_latest.outputs.release }}
         overwrite: true
 
+    # upload the upgrade data to the previous release for auto updater
+    - name: Upload upgrade deletions to previous release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.RELEASE_TOKEN }}
+        file: upgrade_artifacts/deletions.json
+        prerelease: false
+        file_glob: true
+        asset_name: deletions
+        repo_name: HDR-Development/HDR-Nightlies
+        tag: ${{ steps.package_latest.outputs.release }}
+        overwrite: true
 
     - uses: actions/download-artifact@v3
       with:
@@ -214,6 +226,8 @@ jobs:
 
     - run: mv upgrade_artifacts/upgrade.zip to-nightly.zip
 
+    - run: mv upgrade_artifacts/deletions.json to_nightly_deletions.json
+
     # get the most recent latest beta
     - id: latest_beta
       uses: pozetroninc/github-action-get-latest-release@master
@@ -229,6 +243,19 @@ jobs:
         prerelease: false
         file_glob: false
         asset_name: to-nightly.zip
+        repo_name: HDR-Development/HDR-Releases
+        tag: ${{ steps.latest_beta.outputs.release }}
+        overwrite: true
+
+    # upload the to_nightly_deletions.json to the beta for the launcher
+    - name: Upload to_nightly_deletions.json to beta
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.RELEASE_TOKEN }}
+        file: to_nightly_deletions.json
+        prerelease: false
+        file_glob: false
+        asset_name: to_nightly_deletions.json
         repo_name: HDR-Development/HDR-Releases
         tag: ${{ steps.latest_beta.outputs.release }}
         overwrite: true
@@ -264,6 +291,8 @@ jobs:
 
     - run: mv upgrade_artifacts/upgrade.zip to-beta.zip
 
+    - run: mv upgrade_artifacts/deletions.json to_beta_deletions.json
+
     # upload the to-beta.zip to the beta for the launcher
     - name: Upload to-beta.zip to nightly
       uses: svenstaro/upload-release-action@v2
@@ -273,6 +302,19 @@ jobs:
         prerelease: false
         file_glob: false
         asset_name: to-beta.zip
+        repo_name: HDR-Development/HDR-Nightlies
+        tag: ${{ needs.version_and_changelog.outputs.version }}
+        overwrite: true
+    
+    # upload the to_beta_deletions.json to the beta for the launcher
+    - name: Upload to_beta_deletions.json to nightly
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.RELEASE_TOKEN }}
+        file: to_beta_deletions.json
+        prerelease: false
+        file_glob: false
+        asset_name: to_beta_deletions.json
         repo_name: HDR-Development/HDR-Nightlies
         tag: ${{ needs.version_and_changelog.outputs.version }}
         overwrite: true

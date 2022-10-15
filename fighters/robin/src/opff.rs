@@ -14,6 +14,13 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
             }
         }
     }
+    // Allow charge jump cancel even when left stick is down
+    if boma.is_status(*FIGHTER_REFLET_STATUS_KIND_SPECIAL_N_HOLD) {
+        if boma.is_input_jump() && boma.get_num_used_jumps() < boma.get_jump_count_max() {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_REFLET_STATUS_KIND_SPECIAL_N_JUMP_CANCEL, false);
+            WorkModule::set_int(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, *FIGHTER_REFLET_STATUS_SPECIAL_N_HOLD_INT_NEXT_STATUS);
+        }
+    }
 }
 
 // Robin Thunder airdodge cancel
@@ -36,10 +43,16 @@ unsafe fn elwind1_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
             // burn an extra bar of Elwind on upB1 (totals 2 bars)
             WorkModule::dec_int(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
         }
-        if MotionModule::frame(boma) >= 8.0 && VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL) {
-            CancelModule::enable_cancel(boma);
-            if boma.is_situation(*SITUATION_KIND_AIR) {
-                fighter.sub_air_check_fall_common();
+        if boma.motion_frame() > 7.0 {
+            if VarModule::is_flag(boma.object(), vars::robin::status::ELWIND1_CANCEL) {
+                if boma.is_situation(*SITUATION_KIND_AIR) {
+                    fighter.sub_air_check_fall_common();
+                }
+            }
+            if boma.motion_frame() <= 11.0 && boma.is_button_trigger(Buttons::Guard) {
+                VarModule::on_flag(boma.object(), vars::robin::status::ELWIND1_CANCEL);
+                ControlModule::clear_command(boma, true);
+                CancelModule::enable_cancel(boma);
             }
         }
     }

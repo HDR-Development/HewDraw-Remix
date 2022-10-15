@@ -7,7 +7,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
@@ -17,7 +17,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
             app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
@@ -33,7 +33,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
@@ -43,7 +43,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
             app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
@@ -59,7 +59,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
@@ -69,7 +69,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
             app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
@@ -101,7 +101,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
@@ -111,7 +111,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let play_vc = if DamageModule::damage(boma, 0) < 100.0 {
+        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
             app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
@@ -151,17 +151,14 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "buddy", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    frame(lua_state, 2.0);
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.63, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
-    }
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 3, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        let dash_sfx_handle = SoundModule::play_se(fighter.module_accessor, Hash40::new("se_buddy_dash_start"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
 }
 
@@ -204,6 +201,40 @@ unsafe fn buddy_bullet_bakyun_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "buddy_pad", script = "game_fall" , category = ACMD_GAME , low_priority)]
+unsafe fn buddy_pad_fall_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;    
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let pad_length = 6.0;
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 46, 70, 0, 40, 2.0, 0.0, 2.2, pad_length, Some(0.0), Some(2.2), Some(-pad_length), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+        }
+    //Vanilla code from here on out
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, /*Flag*/ *WEAPON_BUDDY_PAD_STATUS_WORK_FLAG_FALL_LEANING_TO_THE_LEFT);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, /*Flag*/ *WEAPON_BUDDY_PAD_STATUS_WORK_FLAG_FALL_LEANING_TO_THE_LEFT);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, /*Flag*/ *WEAPON_BUDDY_PAD_STATUS_WORK_FLAG_FALL_LEANING_TO_THE_RIGHT);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, /*Flag*/ *WEAPON_BUDDY_PAD_STATUS_WORK_FLAG_FALL_LEANING_TO_THE_RIGHT);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, /*Flag*/ *WEAPON_BUDDY_PAD_STATUS_WORK_FLAG_FALL_LEANING_TO_THE_LEFT);
+    }
+    frame(lua_state, 42.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, /*Flag*/ *WEAPON_BUDDY_PAD_STATUS_WORK_FLAG_FALL_LEANING_TO_THE_LEFT);
+    }
+}
 
 #[acmd_script( agent = "buddy", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
 unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
@@ -221,15 +252,12 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
 unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let escape_air_slide_hit_xlu_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_slide_hit_xlu_frame"));
-    let escape_air_slide_hit_normal_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_slide_hit_normal_frame"));
-    let ledgegrab_frame = (escape_air_slide_hit_xlu_frame + escape_air_slide_hit_normal_frame) + 4.0;
-
+    
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
     }
-    frame(lua_state, ledgegrab_frame);
+    frame(lua_state, 34.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
@@ -241,9 +269,10 @@ pub fn install() {
         escape_air_slide_game,
         buddy_catch_game,
         dash_game,
-        //dash_effect,
+        dash_sound,
         turn_dash_game,
         buddy_bullet_bakyun_game,
+        buddy_pad_fall_game,
         damageflyhi_sound,
         damageflylw_sound,
         damageflyn_sound,
