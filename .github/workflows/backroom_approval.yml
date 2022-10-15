@@ -23,7 +23,7 @@ jobs:
       - name: pass if not a character change
         if: steps.haslabel.outputs.passed
         id: is_character
-        run: echo "is_character=no" >> $GITHUB_OUTPUT
+        run: echo "is_character=yes" >> $GITHUB_OUTPUT
 
       - name: Check for comment approval
         uses: peter-evans/find-comment@v2
@@ -35,7 +35,7 @@ jobs:
           body-includes: Approved
 
       - name: determine if approved
-        if: steps.approval.outputs.comment-id == 0 || steps.is_character.outputs.non_character
+        if: steps.approval.outputs.comment-id == 0 && steps.is_character.outputs.is_character == 'yes'
         run: exit 1
 
           
