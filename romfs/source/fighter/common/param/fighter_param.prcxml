@@ -34,6 +34,7 @@
     </struct>
     <!-- DONKEY KONG -->
     <struct index="1">
+      <float hash="scale">0.98</float>
       <float hash="walk_speed_max">1.265</float>
       <float hash="ground_brake">0.08</float>
       <float hash="dash_speed">1.8</float>
@@ -47,12 +48,12 @@
       <float hash="air_accel_x_mul">0.04</float>
       <float hash="air_speed_x_stable">1.105</float>
       <float hash="air_brake_x">0.02</float>
-      <float hash="air_accel_y">0.1</float>
+      <float hash="air_accel_y">0.12</float>
       <float hash="air_speed_y_stable">2.4</float>
       <float hash="damage_fly_top_air_accel_y">0.1</float>
       <float hash="damage_fly_top_speed_y_stable">2.4</float>
       <float hash="dive_speed_y">2.96</float>
-      <float hash="weight">121</float>
+      <float hash="weight">110</float>
       <float hash="landing_attack_air_frame_n">8</float>
       <float hash="landing_attack_air_frame_f">14</float>
       <float hash="landing_attack_air_frame_b">9</float>

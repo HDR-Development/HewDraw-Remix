@@ -370,14 +370,24 @@ unsafe fn special_air_lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
-    frame(lua_state, 19.0);
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
-        CATCH(fighter, 0, Hash40::new("top"), 5.8, 0.0, 7.0, 4.0, Some(0.0), Some(7.0), Some(13.7), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
-        CATCH(fighter, 1, Hash40::new("top"), 2.9, 0.0, 7.0, 1.1, Some(0.0), Some(7.0), Some(16.6), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 0, Hash40::new("handr"), 5.8, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 0, Hash40::new("armr"), 5.8, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     wait(lua_state, 3.0);
     if is_excute(fighter) {
         grab!(fighter, MA_MSC_CMD_GRAB_CLEAR_ALL);
+    }
+}
+
+#[acmd_script( agent = "donkey", script = "effect_specialairlw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_special_air_lw(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state,14.0);
+    if is_excute(fighter) {
+        EFFECT(fighter,Hash40::new("sys_attack_impact"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 4.0, 0, 0, 0, 0, 0, 360, true)
     }
 }
 
@@ -391,7 +401,8 @@ pub fn install() {
 		special_hi,
 		special_lw_start,
         special_lw_loop,
-        special_air_lw
+        special_air_lw,
+        effect_special_air_lw
     );
 }
 
