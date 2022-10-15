@@ -44,4 +44,4 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.issue.pull_request }} && ${{ github.event.comment.user.login }} == 'hdr-balance-backroom' && contains(${{ github.event.comment.body }}, 'Approved')
     steps:
-      run: echo "balance backroom has spoken!"
+      - run: echo "balance backroom has spoken!"
