@@ -9,15 +9,17 @@ jobs:
     if: github.event.pull_request.number
     steps:
       - uses: actions/checkout@v2
-      - name: has character changes label
-        id: haslabel
-        uses: DanielTamkin/HasLabel@v1.0.4
+
+      - uses: danielchabr/pr-labels-checker@v3
+        id: hasLabel
         with:
-          contains: 'character'
-      
+          hasSome: character change
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+
       - name: pass if not a character change
-        if: steps.haslabel.outputs.character
-        run: echo "all is well"
+        if: steps.haslabel.outputs.passed
+        id: is_character
+        run: echo "is_character=no" >> $GITHUB_OUTPUT
 
       - name: Check for comment approval
         uses: peter-evans/find-comment@v2
@@ -29,7 +31,7 @@ jobs:
           body-includes: Approved
 
       - name: determine if approved
-        if: steps.approval.outputs.comment-id == 0
+        if: steps.approval.outputs.comment-id == 0 || steps.is_character.outputs.non_character
         run: exit 1
 
           
