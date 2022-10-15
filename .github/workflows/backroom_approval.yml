@@ -17,6 +17,7 @@ jobs:
       
       - name: pass if not a character change
         if: steps.haslabel.outputs.character
+        run: echo "all is well"
 
       - name: Check for comment approval
         uses: peter-evans/find-comment@v2
