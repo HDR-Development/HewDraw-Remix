@@ -5,7 +5,7 @@ on:
   issue_comment:
 jobs:
   check-pr:
-    name: Ensure balance backroom approval
+    name: Backroom approval (PR update)
     runs-on: ubuntu-latest
     if: github.event.pull_request.number
     steps:
@@ -40,7 +40,7 @@ jobs:
         run: exit 1
 
   on-comment:
-    name: Ensure balance backroom approval
+    name: Backroom approval (issue update)
     runs-on: ubuntu-latest
     if: ${{ github.event.issue.pull_request }} && ${{ github.event.comment.user.login }} == 'hdr-balance-backroom' && contains(${{ github.event.comment.body }}, 'Approved')
     steps:
