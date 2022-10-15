@@ -7,7 +7,6 @@ jobs:
   check-pr:
     name: Backroom approval (PR update)
     runs-on: ubuntu-latest
-    if: github.event.pull_request.number
     steps:
       - uses: actions/checkout@v2
 
@@ -38,10 +37,3 @@ jobs:
       - name: determine if approved
         if: steps.approval.outputs.comment-id == 0 && steps.is_character.outputs.is_character == 'yes'
         run: exit 1
-
-  on-comment:
-    name: Backroom approval (issue update)
-    runs-on: ubuntu-latest
-    if: ${{ github.event.issue.pull_request }} && ${{ github.event.comment.user.login }} == 'hdr-balance-backroom' && contains(${{ github.event.comment.body }}, 'Approved')
-    steps:
-      - run: echo "balance backroom has spoken!"
