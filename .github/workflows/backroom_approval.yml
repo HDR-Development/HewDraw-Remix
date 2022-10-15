@@ -21,17 +21,19 @@ jobs:
       - if: failure()
         run: echo "checked labels..."
 
-      - name: pass if not a character change
+      - name: this is a character change
         if: steps.haslabel.outputs.passed
         id: is_character
         run: echo "is_character=yes" >> $GITHUB_OUTPUT
+
+      - run: echo '${{ github.event.pull_request.number }}${{ github.event.issue.number }}'
 
       - name: Check for comment approval
         uses: peter-evans/find-comment@v2
         id: approval
         if: always()
         with:
-          issue-number: ${{ github.event.pull_request.number }}
+          issue-number: '${{ github.event.pull_request.number }}${{ github.event.issue.number }}'
           comment-author: hdr-balance-backroom
           body-includes: Approved
 
