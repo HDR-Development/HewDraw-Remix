@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.MY_PAT }}
+          github-token: ${{ secrets.RELEASE_TOKEN }}
           script: |
             github.rest.issues.updateIssue({
               issue_number: context.issue.number,
