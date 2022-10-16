@@ -11,6 +11,7 @@ jobs:
 
       - name: check labels
         uses: jesusvasquez333/verify-pr-label-action@v1.4.0
+        id: labelcheck
         continue-on-error: true
         with:
             github-token: '${{ secrets.GITHUB_TOKEN }}'
@@ -19,7 +20,7 @@ jobs:
             disable-reviews: true
 
       - name: this is a character change
-        if: failure()
+        if: steps.labelcheck.outcome != 'success'
         id: is_character
         run: echo "is_character=yes" >> $GITHUB_OUTPUT
 
