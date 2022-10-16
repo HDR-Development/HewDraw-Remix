@@ -39,6 +39,8 @@ jobs:
         if: steps.is_character.outputs.is_character == 'yes' && steps.approval.outputs.comment-id == 0
         with:
           header: explain
+          hide_and_recreate: true
+          hide_classify: "OUTDATED"
           message: |
             This Pull Request is labeled as a character change, but has not yet been approved by balance backroom.
 
@@ -46,9 +48,18 @@ jobs:
         if: steps.is_character.outputs.is_character == 'yes' && steps.approval.outputs.comment-id != 0
         with:
           header: explain
+          hide_and_recreate: true
+          hide_classify: "OUTDATED"
           message: |
             This Pull Request has been approved by balance backroom.
 
+      - uses: marocchino/sticky-pull-request-comment@v2
+        if: steps.is_character.outputs.is_character != 'yes'
+        with:
+          header: explain
+          hide: true
+          hide_classify: true
+          
       - name: determine if approved
         if: steps.approval.outputs.comment-id == 0 && steps.is_character.outputs.is_character == 'yes'
         run: exit 1
