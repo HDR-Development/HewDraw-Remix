@@ -4,6 +4,7 @@ use globals::*;
  
 mod item_throw_heavy;
 mod special_hi;
+mod special_lw;
 mod link_event;
 mod catch_pull;
 
@@ -42,6 +43,7 @@ fn donkey_init(fighter: &mut L2CFighterCommon) {
 pub fn install() {
     item_throw_heavy::install();
     special_hi::install();
+    special_lw::install();
     link_event::install();
     catch_pull::install();
     smashline::install_agent_init_callbacks!(donkey_init);
