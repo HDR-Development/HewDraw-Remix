@@ -4,7 +4,7 @@ on:
     types: [created, deleted]
 jobs:
   check-pr:
-    if: github.event.issue.pull_request && github.event.issue.user.login == 'hdr-balance-backroom'
+    if: ${{ github.event.issue.pull_request }}
     name: Trigger recheck of backroom approval
     runs-on: ubuntu-latest
     steps:
