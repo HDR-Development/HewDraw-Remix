@@ -2,8 +2,6 @@ name: balance backroom approval check
 on:
   pull_request_target:
     types: [labeled, unlabeled, opened, edited, reopened, synchronize, ready_for_review]
-  issue_comment:
-    types: [created, deleted]
 jobs:
   check-pr:
     name: Backroom approval (PR update)
