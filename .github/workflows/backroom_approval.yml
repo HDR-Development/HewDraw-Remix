@@ -15,12 +15,12 @@ jobs:
         continue-on-error: true
         with:
             github-token: '${{ secrets.GITHUB_TOKEN }}'
-            invalid-labels: 'character change'
+            valid-labels: 'character change'
             pull-request-number: '${{ github.event.pull_request.number }}${{ github.event.issue.number }}'
             disable-reviews: true
 
       - name: this is a character change
-        if: steps.labelcheck.outcome != 'success'
+        if: steps.labelcheck.outcome == 'success'
         id: is_character
         run: echo "is_character=yes" >> $GITHUB_OUTPUT
 
