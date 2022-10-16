@@ -10,6 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - run: echo ${{ github.event.pull_request.type}}, ${{ github.event.actor.login }}
+
       - name: check labels
         uses: jesusvasquez333/verify-pr-label-action@v1.4.0
         id: labelcheck
