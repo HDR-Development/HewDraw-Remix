@@ -13,35 +13,16 @@ jobs:
         with:
           github-token: ${{ secrets.RELEASE_TOKEN }}
           script: |
-
-            var labels = await github.rest.issues.listLabelsOnIssue({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
-            console.info(JSON.stringify(labels));
-            var labels_removed = [];
-            if (!labels.includes('character change')) {
-              return;
-            } else {
-              labels_removed = labels.filter(function(value, index, arr) {
-                if (value == 'character change') {
-                  return false;
-                } else {
-                  return true;
-                }
-              });
-            }
-            github.rest.issues.update({
+            github.rest.issues.removeLabel({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              labels: labels_removed
+              name: 'character change'
             }).then(() => {
-              github.rest.issues.update({
+              github.rest.issues.addLabels({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                labels: labels
+                labels: ['character change']
               })
             }).catch(e => console.error(e))
