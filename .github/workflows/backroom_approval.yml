@@ -45,7 +45,7 @@ jobs:
           hide_and_recreate: true
           hide_classify: "OUTDATED"
           message: |
-            This Pull Request is labeled as a character change, but has not yet been approved by balance backroom.
+            This Pull Request is labeled as a character change, but has not yet been approved by balance backroom. Please have patience, and balance backroom will discuss and provide feedback when available.
 
       - uses: marocchino/sticky-pull-request-comment@v2
         if: steps.is_character.outputs.is_character == 'yes' && steps.approval.outputs.comment-id != 0
