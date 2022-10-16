@@ -13,16 +13,29 @@ jobs:
         with:
           github-token: ${{ secrets.RELEASE_TOKEN }}
           script: |
+            let labels = context.issue.labels;
+            let labels_removed = []
+            if (!labels.includes('character change')) {
+              return;
+            } else {
+              labels_removed = labels.filter(function(value, index, arr) {
+                if (value == 'character change') {
+                  return false;
+                } else {
+                  return true;
+                }
+              });
+            }
             github.rest.issues.update({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              state: 'closed'
+              labels: labels_removed
             }).then(() => {
               github.rest.issues.update({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                state: 'open'
+                labels: labels
               })
             })
