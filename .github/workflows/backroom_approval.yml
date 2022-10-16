@@ -58,7 +58,7 @@ jobs:
         with:
           header: explain
           hide: true
-          hide_classify: true
+          hide_classify: 'OUTDATED'
           
       - name: determine if approved
         if: steps.approval.outputs.comment-id == 0 && steps.is_character.outputs.is_character == 'yes'
