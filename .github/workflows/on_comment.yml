@@ -14,12 +14,12 @@ jobs:
           github-token: ${{ secrets.RELEASE_TOKEN }}
           script: |
 
-            let labels = await github.rest.issues.listLabelsOnIssue({
+            var labels = await github.rest.issues.listLabelsOnIssue({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
             });
-            let labels_removed = [];
+            var labels_removed = [];
             if (!labels.includes('character change')) {
               return;
             } else {
