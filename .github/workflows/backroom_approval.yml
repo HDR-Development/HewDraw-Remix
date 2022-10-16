@@ -6,8 +6,11 @@ jobs:
   check-pr:
     name: Backroom approval (PR update)
     runs-on: ubuntu-latest
+    if: github.event.action != 'unlabeled' || github.event.sender.login != 'HDR-CI'
     steps:
       - uses: actions/checkout@v2
+
+      - run: echo ${{ github.event.action }}, ${{ github.event.sender.login }}
 
       - name: check labels
         uses: jesusvasquez333/verify-pr-label-action@v1.4.0
