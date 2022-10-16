@@ -16,7 +16,25 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
         let fighter_kind = boma.kind();
         let status_kind = StatusModule::status_kind(boma);
         let id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    
+        
+        // disable jumping while using floats
+        if [*FIGHTER_STATUS_KIND_FALL,
+        *FIGHTER_STATUS_KIND_FALL_AERIAL,
+        *FIGHTER_STATUS_KIND_JUMP,
+        *FIGHTER_STATUS_KIND_JUMP_AERIAL,
+        *FIGHTER_STATUS_KIND_CLIFF_JUMP1,
+        *FIGHTER_STATUS_KIND_CLIFF_JUMP2,
+        *FIGHTER_STATUS_KIND_CLIFF_JUMP3,
+        *FIGHTER_STATUS_KIND_ATTACK_AIR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FALL].contains(&status_kind)
+        && WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY)
+        || VarModule::is_flag(boma.object(), vars::common::instance::OMNI_FLOAT) {
+            if [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL].contains(&flag) {
+                    return false;
+            }
+        }
+        
         // handle tilt attack input stopping you from getting a smash attack
         if [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
