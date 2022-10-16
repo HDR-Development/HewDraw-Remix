@@ -1,20 +1,28 @@
 name: comment trigger
 on:
   issue_comment:
-    types: [created, deleted]
+    types: [created, deleted, edited]
 jobs:
   check-pr:
-    if: ${{ github.event.issue.pull_request }}
+    if: github.event.issue.pull_request && github.event.comment.user.login == 'hdr-balance-backroom'
     name: Trigger recheck of backroom approval
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v6
+      - name: reopen PR to trigger recheck
+        uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.RELEASE_TOKEN }}
           script: |
-            github.rest.issues.update({
+            github.rest.issues.removeLabel({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: context.issue.body + '*'
-            })
+              name: 'character change'
+            }).then(() => {
+              github.rest.issues.addLabels({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: ['character change']
+              })
+            }).catch(e => console.error(e))
