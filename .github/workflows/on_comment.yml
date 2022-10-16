@@ -4,11 +4,12 @@ on:
     types: [created, deleted]
 jobs:
   check-pr:
-    if: ${{ github.event.issue.pull_request }}
+    if: github.event.issue.pull_request && github.event.comment.user.login == 'hdr-balance-backroom'
     name: Trigger recheck of backroom approval
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v6
+      - name: reopen PR to trigger recheck
+        uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.RELEASE_TOKEN }}
           script: |
@@ -16,5 +17,12 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: context.issue.body + '*'
+              state: closed
+            }).then(() => {
+              github.rest.issues.update({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: open
+              })
             })
