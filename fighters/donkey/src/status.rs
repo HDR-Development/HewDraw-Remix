@@ -29,13 +29,25 @@ unsafe extern "C" fn when_shield(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     return false.into();
 }
-  
+
+unsafe extern "C" fn status_change(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR
+    || fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_DEAD
+    ]) {
+        VarModule::off_flag(fighter.battle_object, vars::donkey::instance::SPECIAL_AIR_LW_USED_STALL);
+    }
+    0.into()
+}
+
 // setting the callback for shield to be used for b in shield
 #[smashline::fighter_init]
 fn donkey_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         if smash::app::utility::get_kind(&mut *fighter.module_accessor) == *FIGHTER_KIND_DONKEY {
-        fighter.global_table[0x34].assign(&L2CValue::Ptr(when_shield as *const () as _));
+            fighter.global_table[0x34].assign(&L2CValue::Ptr(when_shield as *const () as _));
+            fighter.global_table[STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(status_change as *const () as _));
         }
     }
 }

@@ -319,6 +319,10 @@ pub mod vars {
     }
 
     pub mod donkey {
+        pub mod instance {
+            // flags
+            pub const SPECIAL_AIR_LW_USED_STALL: i32 = 0x0100;
+        }
         pub mod status {
             // flags
             pub const SPECIAL_CHECKS: i32 = 0x1100;
