@@ -6,6 +6,7 @@ jobs:
   check-pr:
     name: Backroom approval (PR update)
     runs-on: ubuntu-latest
+    if: (!(${{ github.event.pull_request.type}} == 'unlabeled' && ${{ github.event.actor.login }} == 'HDR-CI'))
     steps:
       - uses: actions/checkout@v2
 
