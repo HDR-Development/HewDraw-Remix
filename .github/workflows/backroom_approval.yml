@@ -11,6 +11,7 @@ jobs:
 
       - name: check labels
         uses: jesusvasquez333/verify-pr-label-action@v1.4.0
+        continue-on-error: true
         with:
             github-token: '${{ secrets.GITHUB_TOKEN }}'
             invalid-labels: 'character change'
