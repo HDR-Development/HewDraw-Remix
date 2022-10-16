@@ -13,7 +13,12 @@ jobs:
         with:
           github-token: ${{ secrets.RELEASE_TOKEN }}
           script: |
-            let labels = context.issue.labels;
+
+            let labels = await github.rest.issues.listLabelsOnIssue({
+              context.repo.owner,
+              context.repo.repo,
+              context.issue.number,
+            });
             let labels_removed = []
             if (!labels.includes('character change')) {
               return;
@@ -38,4 +43,4 @@ jobs:
                 repo: context.repo.repo,
                 labels: labels
               })
-            })
+            }).catch(e => console.error(e))
