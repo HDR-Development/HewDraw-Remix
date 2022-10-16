@@ -13,16 +13,11 @@ jobs:
         uses: jesusvasquez333/verify-pr-label-action@v1.4.0
         with:
             github-token: '${{ secrets.GITHUB_TOKEN }}'
-            valid-labels: 'character change'
+            invalid-labels: 'character change'
             pull-request-number: '${{ github.event.pull_request.number }}${{ github.event.issue.number }}'
 
-      - name: this is not a character change
-        if: failure()
-        id: is_character
-        run: echo "is_character=no" >> $GITHUB_OUTPUT
-
       - name: this is a character change
-        if: success()
+        if: failure()
         id: is_character
         run: echo "is_character=yes" >> $GITHUB_OUTPUT
 
