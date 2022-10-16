@@ -1,0 +1,16 @@
+name: comment trigger
+on:
+  issue_comment:
+    types: [created, deleted]
+jobs:
+  check-pr:
+    if: ${{ github.event.issue.pull_request }} && ${{ github.event.issue.user.login }} == 'hdr-balance-backroom'
+    name: Trigger recheck of backroom approval
+    runs-on: ubuntu-latest
+    steps:
+      - name: update-pull-request
+        uses: kt3k/update-pr-description@v1.0.1
+        with:
+          pr_body: '${{ github.event.issue.body }} '
+          destination_branch: dev
+          github_token: ${{ secrets.RELEASE_TOKEN }}
