@@ -34,6 +34,9 @@ jobs:
           comment-author: hdr-balance-backroom
           body-includes: APPROVED
 
+      - run: |
+        echo "is character: ${{ steps.is_character.outputs.is_character }}, comment id: ${{ steps.approval.outputs.comment-id }}"
+
       - uses: marocchino/sticky-pull-request-comment@v2
         if: steps.is_character.outputs.is_character == 'yes' && steps.approval.outputs.comment-id == 0
         with:
