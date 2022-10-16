@@ -203,14 +203,6 @@ unsafe fn effect_specialsdischarge(fighter: &mut L2CAgentBase) {
 unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 4.0);
-    if is_excute(fighter) {
-        WHOLE_HIT(fighter, *HIT_STATUS_INVINCIBLE);
-    }
-    frame(lua_state, 9.0);
-    if is_excute(fighter) {
-        WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
-    }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_LW_FLAG_RISE);
@@ -248,10 +240,6 @@ unsafe fn game_specialairlw(fighter: &mut L2CAgentBase) {
         if KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) < 0.0 {
             KineticModule::mul_speed(boma, &Vector3f{x: 1.0, y: 0.0, z: 1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         }
-    }
-    frame(lua_state, 9.0);
-    if is_excute(fighter) {
-        WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
