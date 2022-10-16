@@ -6,11 +6,11 @@ jobs:
   check-pr:
     name: Backroom approval (PR update)
     runs-on: ubuntu-latest
-    if: (!(${{ github.event.issue.action}} == 'unlabeled' && ${{ github.event.actor.login }} == 'HDR-CI'))
+    if: (!(${{ github.event.action }} == 'unlabeled' && ${{ github.event.actor }} == 'HDR-CI'))
     steps:
       - uses: actions/checkout@v2
 
-      - run: echo ${{ github.event.issue.action }}, ${{ github.event.actor }}
+      - run: echo ${{ github.event.action }}, ${{ github.event.actor }}
 
       - name: check labels
         uses: jesusvasquez333/verify-pr-label-action@v1.4.0
