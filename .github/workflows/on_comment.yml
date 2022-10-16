@@ -12,8 +12,7 @@ jobs:
         with:
           github-token: ${{ secrets.RELEASE_TOKEN }}
           script: |
-            console.info(JSON.stringify(github.rest));
-            github.rest.issues.updateIssue({
+            github.rest.issues.update({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
