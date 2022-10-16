@@ -9,12 +9,12 @@
     <struct index="0">
       <float hash="active_time_jump">6</float>
       <float hash="active_time_speed">8</float>
-      <float hash="active_time_shield">3.5</float>
+      <float hash="active_time_shield">6</float>
       <float hash="active_time_buster">10</float>
       <float hash="active_time_smash">6</float>
-      <float hash="unavailable_time_jump">17</float>
+      <float hash="unavailable_time_jump">18</float>
       <float hash="unavailable_time_speed">16</float>
-      <float hash="unavailable_time_shield">11</float>
+      <float hash="unavailable_time_shield">18</float>
       <float hash="unavailable_time_buster">14</float>
       <float hash="unavailable_time_smash">16</float>
       <float hash="jump_ground_brake_mul">2.0</float>
