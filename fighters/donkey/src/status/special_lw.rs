@@ -37,12 +37,18 @@ unsafe extern "C" fn special_lw_substatus(fighter: &mut L2CFighterCommon, param_
         if VarModule::is_flag(fighter.battle_object, vars::donkey::status::SPECIAL_AIR_LW_STOP) {
             VarModule::off_flag(fighter.battle_object, vars::donkey::status::SPECIAL_AIR_LW_STOP);
             if !VarModule::is_flag(fighter.battle_object, vars::donkey::instance::SPECIAL_AIR_LW_USED_STALL) {
-                sv_kinetic_energy!(
+                /*sv_kinetic_energy!(
                     set_speed,
                     fighter,
                     FIGHTER_KINETIC_ENERGY_ID_STOP,
                     0.0,
-                    0.5
+                    0.0
+                );*/
+                sv_kinetic_energy!(
+                    set_speed,
+                    fighter,
+                    FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                    0.5,
                 );
                 VarModule::on_flag(fighter.battle_object, vars::donkey::instance::SPECIAL_AIR_LW_USED_STALL);
             }
