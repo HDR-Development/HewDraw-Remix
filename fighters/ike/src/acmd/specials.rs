@@ -58,7 +58,7 @@ unsafe fn ike_special_s_start_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.500);
+        FT_MOTION_RATE(fighter, 0.400);
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
@@ -72,7 +72,7 @@ unsafe fn ike_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.500);
+        FT_MOTION_RATE(fighter, 0.400);
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {

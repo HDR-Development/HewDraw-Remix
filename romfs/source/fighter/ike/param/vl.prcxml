@@ -8,7 +8,7 @@
   </list>
   <list hash="param_special_s">
     <struct index="0">
-      <float hash="special_s_ground_dash_spd_min">3.8</float>
+      <float hash="special_s_ground_dash_spd_min">4</float>
       <float hash="special_s_air_dash_spd_min">3.8</float>
       <float hash="special_s_ground_dash_spd_mul">0.05</float>
       <float hash="special_s_air_dash_spd_mul">0.03</float>
