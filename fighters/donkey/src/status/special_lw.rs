@@ -14,6 +14,17 @@ unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         kinetic = *FIGHTER_KINETIC_TYPE_GROUND_STOP;
         WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING);
     }
+    KineticModule::change_kinetic(fighter.module_accessor, kinetic);
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        motion,
+        0.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
     // <HDR>
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(special_lw_substatus as *const () as _));
     // </HDR>
