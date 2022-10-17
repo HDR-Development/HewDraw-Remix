@@ -54,11 +54,13 @@ unsafe extern "C" fn special_lw_substatus(fighter: &mut L2CFighterCommon, param_
 unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_air = MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_lw");
     let situation = fighter.global_table[SITUATION_KIND].get_i32();
-    if situation == *SITUATION_KIND_AIR {
-        if CancelModule::is_enable_cancel(fighter.module_accessor)
-        && fighter.sub_wait_ground_check_common(false.into()).get_bool()
-        || fighter.sub_air_check_fall_common().get_bool() {
-            return 1.into();
+    if is_air {
+        if CancelModule::is_enable_cancel(fighter.module_accessor) {
+            if fighter.sub_transition_group_check_air_landing().get_bool()
+            || fighter.sub_wait_ground_check_common(false.into()).get_bool()
+            || fighter.sub_air_check_fall_common().get_bool() {
+                return 1.into();
+            }
         }
     }
     if StatusModule::is_situation_changed(fighter.module_accessor) {
