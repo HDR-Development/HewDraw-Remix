@@ -1,7 +1,7 @@
 use super::*;
 use globals::*;
 
-// This file contains code for ledgehogging
+// This file contains code for grab release
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);

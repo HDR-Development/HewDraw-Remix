@@ -156,8 +156,10 @@ unsafe fn waveland_plat_drop(boma: &mut BattleObjectModuleAccessor, cat2: i32, s
 //=================================================================
 unsafe fn dash_drop(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     let flick_y_sens = ParamModule::get_float(boma.object(), ParamType::Common, "general_flick_y_sens");
+    let flick_y = ControlModule::get_flick_y(boma);
     if GroundModule::is_passable_ground(boma)
-    && boma.is_flick_y(flick_y_sens)
+    && flick_y != 0xFE
+    && boma.stick_y() < flick_y_sens
     && boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_RUN,
         *FIGHTER_STATUS_KIND_RUN_BRAKE,
