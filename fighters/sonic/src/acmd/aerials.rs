@@ -178,7 +178,7 @@ unsafe fn sonic_attack_air_b_effect(fighter: &mut L2CAgentBase) {
 
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 5.0, -3.5, 165, 65, 150, 1.1, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 6.0, -4.0, 165, 65, 150, 1.1, true, *EF_FLIP_YZ);
 	    LAST_EFFECT_SET_RATE(fighter, 1.75);
     }
     frame(lua_state, 23.0);
