@@ -16,8 +16,9 @@ unsafe fn special_s_article_fix(fighter: &mut L2CFighterCommon, boma: &mut Battl
 unsafe fn da_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH {
         if situation_kind == *SITUATION_KIND_AIR && !boma.is_in_hitlag() {
+            EffectModule::kill_kind(fighter.module_accessor, Hash40::new("sys_spin_wind_s"), true, true);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP,true);
-            KineticModule::add_speed(boma, &Vector3f::new(0.0, -2.0, 0.0));
+            KineticModule::add_speed(boma, &Vector3f::new(0.0, -2.0, 0.0)); //Reduces the jump height from fullhop height
         }
     }
 }

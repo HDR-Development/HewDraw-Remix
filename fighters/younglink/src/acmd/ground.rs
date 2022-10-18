@@ -86,12 +86,12 @@ unsafe fn younglink_attack_dash_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_spin_wind_s"), Hash40::new("top"), 0, 6, 0, 0, 0, -90, 0.7, false, 0.2);
+        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_spin_wind_s"), Hash40::new("top"), 0, 4.5, 0, 0, 0, -90, 0.63, false, 0.2);
         LAST_EFFECT_SET_RATE(fighter, 1.6);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_spin_wind_s"), Hash40::new("top"), 0, 6, 0, 0, 0, -90, 0.7, false, 0.2);
+        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_spin_wind_s"), Hash40::new("top"), 0, 4.5, 0, 0, 0, -90, 0.63, false, 0.2);
         LAST_EFFECT_SET_RATE(fighter, 1.6);
     }
     frame(lua_state, 15.0);
