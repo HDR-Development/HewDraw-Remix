@@ -146,9 +146,17 @@ unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L
     // <HDR>
     let situation = fighter.global_table[SITUATION_KIND].get_i32();
     // This block is to force a ground correct type depending on if you enable sliding off or not.
-    if VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_FALL)
-    && situation == *SITUATION_KIND_GROUND {
-        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+    if situation == *SITUATION_KIND_GROUND {
+        if VarModule::is_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_FALL) {
+            if GroundModule::get_correct(fighter.module_accessor) != *GROUND_CORRECT_KIND_GROUND {
+                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+            }
+        }
+        else {
+            if GroundModule::get_correct(fighter.module_accessor) != *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP {
+                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+            }
+        }
     }
     // This block checks if you want to enable air drift. This code will only run once, and only while in the air,
     // but it enables another flag that will be checked when your situation changes and renable the right kinetic type there.
