@@ -116,6 +116,17 @@ unsafe fn attack_air_b(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "donkey", script = "effect_attackairhi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn donkey_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("donkey_attack_arc_c"), Hash40::new("donkey_attack_arc_c"), Hash40::new("top"), 0, 10, 2.5, -155.5, -115, 57, 1.35, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(fighter, 0.4);
+    }
+}
+
 #[acmd_script( agent = "donkey", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
 unsafe fn donkey_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -148,7 +159,7 @@ unsafe fn attack_air_hi(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.5);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        ATTACK(fighter, 0, 0, Hash40::new("head"), 12.0, 90, 103, 0, 50, 6, 1.5, 1.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
+        ATTACK(fighter, 0, 0, Hash40::new("head"), 14.0, 90, 90, 0, 32, 6, 1.5, 1.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
     }
     wait(lua_state, 7.0);
     if is_excute(fighter) {
@@ -201,6 +212,7 @@ pub fn install() {
         attack_air_hi,
         attack_air_lw,
         donkey_attack_air_b_effect,
+        donkey_attack_air_hi_effect,
     );
 }
 
