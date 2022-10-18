@@ -17,6 +17,7 @@ unsafe fn da_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleA
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH {
         if situation_kind == *SITUATION_KIND_AIR && !boma.is_in_hitlag() {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP,true);
+            KineticModule::add_speed(boma, &Vector3f::new(0.0, -2.0, 0.0));
         }
     }
 }
