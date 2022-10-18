@@ -104,7 +104,7 @@ unsafe fn krool_special_air_n_loop_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "krool", script = "game_specialsthrow" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "krool", scripts = ["game_specialsthrow", "game_specialairsthrow"] , category = ACMD_GAME , low_priority)]
 unsafe fn krool_special_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
