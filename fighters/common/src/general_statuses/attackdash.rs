@@ -131,26 +131,102 @@ unsafe extern "C" fn sub_attack_dash_uniq(fighter: &mut L2CFighterCommon, arg: L
 
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon22status_AttackDash_MainEv")]
 unsafe extern "C" fn status_AttackDash_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if CancelModule::is_enable_cancel(fighter.module_accessor) && fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool() {
+    if CancelModule::is_enable_cancel(fighter.module_accessor)
+    && fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool()
+    || fighter.sub_air_check_fall_common().get_bool() {
         // Clear motion energy once dash attack is interrupted
         // to prevent slipping off edge during buffered action
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-        app::sv_kinetic_energy::clear_speed(fighter.lua_state_agent);
+        sv_kinetic_energy!(
+            clear_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_MOTION
+        );
         return L2CValue::I32(0);
     }
-    /*if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR && !VarModule::is_flag(fighter.battle_object, vars::common::ATTACK_DASH_SLIDEOFF) {
-        if ParamModule::get_flag(fighter.module_accessor, ParamType::Shared, "attack_dash_cliff_stop") {
-            fighter.change_status(
-                L2CValue::I32(*FIGHTER_STATUS_KIND_FALL),
-                L2CValue::Bool(false)
-            );
-            return L2CValue::I32(0);
-        } else {
-            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-            VarModule::on_flag(fighter.battle_object, vars::common::ATTACK_DASH_SLIDEOFF);
+    // <HDR>
+    let situation = fighter.global_table[SITUATION_KIND].get_i32();
+    // This block is to force a ground correct type depending on if you enable sliding off or not.
+    if VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_FALL)
+    && situation == *SITUATION_KIND_GROUND {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+    }
+    // This block checks if you want to enable air drift. This code will only run once, and only while in the air,
+    // but it enables another flag that will be checked when your situation changes and renable the right kinetic type there.
+    if VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_DRIFT)
+    && situation != *SITUATION_KIND_GROUND {
+        VarModule::off_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_DRIFT);
+        VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_AIR_DRIFT_ENABLED);
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+    }
+    // This is to check if you want a Dash Attack to either slide off or continue off of ledges.
+    // This is all behind an `is_situation_changed` check because we don't want this code running all of the time.
+    if StatusModule::is_situation_changed(fighter.module_accessor) {
+        if fighter.global_table[SITUATION_KIND].get_i32() != SITUATION_KIND_GROUND {
+            // Checks if your dash attack should roll off or not.
+            if VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_CONTINUE) {
+                // Enables gravity.
+                sv_kinetic_energy!(
+                    reset_energy,
+                    fighter,
+                    FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                    ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                );
+                KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                // Checks if you have an attack_air_dash motion_kind in your motion_list. If so, change to it.
+                if MotionModule::is_anim_resource(fighter.module_accessor, Hash40::new("attack_air_dash")) {
+                    MotionModule::change_motion_inherit_frame(
+                        fighter.module_accessor,
+                        Hash40::new("attack_air_dash"),
+                        -1.0,
+                        1.0,
+                        0.0,
+                        false,
+                        false
+                    );
+                }
+                // The previously mentioned flag that's only checked when your situation changes.
+                if VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_AIR_DRIFT_ENABLED) {
+                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+                }
+            }
+            else {
+                fighter.change_status(
+                    L2CValue::I32(*FIGHTER_STATUS_KIND_FALL),
+                    L2CValue::Bool(false)
+                );
+                return L2CValue::I32(0);
+            }
         }
-    }*/
+        else {
+            // Checks if ENABLE_AIR_LANDING is enabled, and if it is, cancel into LANDING instead of continuing the dash attack.
+            if VarModule::is_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_LANDING) {
+                fighter.change_status(
+                    FIGHTER_STATUS_KIND_LANDING.into(),
+                    false.into()
+                );
+                return 0.into();
+            }
+            else {
+                // Changes motion back to attack_dash, just in case you've changed to attack_air_dash at some point
+                MotionModule::change_motion_inherit_frame(
+                    fighter.module_accessor,
+                    Hash40::new("attack_dash"),
+                    -1.0,
+                    1.0,
+                    0.0,
+                    false,
+                    false
+                );
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
+            }
+        }
+    }
+    // </HDR>
     let sha_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME);
     if sha_frame > 0 && !StopModule::is_stop(fighter.module_accessor) {
         if fighter.sub_check_button_jump().get_bool() {
