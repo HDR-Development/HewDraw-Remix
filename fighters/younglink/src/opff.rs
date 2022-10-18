@@ -12,6 +12,16 @@ unsafe fn special_s_article_fix(fighter: &mut L2CFighterCommon, boma: &mut Battl
     }
 }
 
+// Young Link Dash Attack Jump
+unsafe fn da_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
+    if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH {
+        if situation_kind == *SITUATION_KIND_AIR && !boma.is_in_hitlag() {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP,true);
+			KineticModule::mul_speed(boma, &reduce_rise, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        }
+    }
+}
+
 // Young Link Fire Arrow fast fall
 unsafe fn fire_arrow_ff(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
@@ -90,6 +100,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     bombchu_training(fighter, id, status_kind);
 	sword_length(fighter, boma);
     holdable_dair(boma, motion_kind,frame);
+    da_jump(fighter, boma, status_kind, situation_kind);
 }
 
 // symbol-based call for the links' common opff
