@@ -750,12 +750,12 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 pub fn dolly_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-        MeterModule::update(fighter.object(), true);
-        if fighter.is_button_on(Buttons::AppealAll) {
-            MeterModule::show(fighter.object());
-        } else {
-            MeterModule::stop_show(fighter.object());
-        }
+        MeterModule::update(fighter.object(), false);
+        // if fighter.is_button_on(Buttons::AppealAll) {
+        //     MeterModule::show(fighter.object());
+        // } else {
+        //     MeterModule::stop_show(fighter.object());
+        // }
         utils::ui::UiManager::set_ff_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
         utils::ui::UiManager::set_ff_meter_info(
             fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
