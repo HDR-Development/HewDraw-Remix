@@ -756,6 +756,13 @@ pub fn dolly_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         } else {
             MeterModule::stop_show(fighter.object());
         }
+        utils::ui::UiManager::set_ff_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+        utils::ui::UiManager::set_ff_meter_info(
+            fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+            MeterModule::meter(fighter.object()),
+            ParamModule::get_float(fighter.object(), ParamType::Common, "meter_max_damage"),
+            MeterModule::meter_per_level(fighter.object())
+        );
 		dolly_frame(fighter)
     }
 }
