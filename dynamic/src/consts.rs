@@ -825,6 +825,13 @@ pub mod vars {
         }
     }
 
+    pub mod wiifit {
+        pub mod instance {
+            //flags
+            pub const IS_ZEN_MODE: i32 = 0x0100;
+        }
+    }
+
 }
 
 pub mod statuses {
