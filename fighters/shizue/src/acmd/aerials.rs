@@ -174,7 +174,7 @@ unsafe fn shizue_attack_air_f_sound(fighter: &mut L2CAgentBase) {
 unsafe fn shizue_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    FT_MOTION_RATE(fighter, 1.3);
+    FT_MOTION_RATE(fighter, 1.1);
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_SHIZUE_GENERATE_ARTICLE_SLINGSHOT, true, 0);
     }
