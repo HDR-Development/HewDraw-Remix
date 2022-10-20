@@ -18,6 +18,13 @@ unsafe fn fishing_rod_shield_cancel(boma: &mut BattleObjectModuleAccessor, statu
 
 
 
+unsafe fn fair_scale(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if fighter.is_motion(Hash40::new("attack_air_f"))  {
+        if fighter.motion_frame() > 12.0 || fighter.motion_frame() < 16.0 {
+            ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("havel"), &Vector3f::new(1.075, 1.075, 1.075));
+        }
+    }
+}
 
 //Determine if fuel is past threshold
 unsafe fn boost_ready(boma: &mut BattleObjectModuleAccessor) {
@@ -178,6 +185,7 @@ pub fn shizue_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         balloon_dash(fighter);
         balloon_special_cancel(fighter);
         fuel_indicators(fighter);
+        fair_scale(fighter);
     }
 }
 
