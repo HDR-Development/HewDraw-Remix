@@ -29,17 +29,18 @@ unsafe fn game_attacks4(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 0, 0, Hash40::new("haver"), 13.5, 40, 106, 0, 32, 3.4, 0.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 1, 0, Hash40::new("haver"), 13.5, 40, 106, 0, 32, 3.4, 0.0, 3.2, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 2, 0, Hash40::new("haver"), 13.5, 40, 109, 0, 35, 3.4, 0.0, 7.8, 0.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
-        ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 1.5);
-        ATK_SET_SHIELD_SETOFF_MUL(fighter, 1, 1.5);
-        ATK_SET_SHIELD_SETOFF_MUL(fighter, 2, 1.5);
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    wait(lua_state, 2.0);
+    frame(lua_state, 22.0);
     if is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        FT_MOTION_RATE(fighter, 0.6);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
     }
 }
 
