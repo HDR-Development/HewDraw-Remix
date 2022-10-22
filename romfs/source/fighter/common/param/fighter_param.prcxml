@@ -34,7 +34,7 @@
     </struct>
     <!-- DONKEY KONG -->
     <struct index="1">
-      <float hash="scale">0.98</float>
+      <float hash="scale">0.95</float>
       <float hash="walk_speed_max">1.265</float>
       <float hash="ground_brake">0.08</float>
       <float hash="dash_speed">1.8</float>
