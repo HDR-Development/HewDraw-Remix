@@ -160,6 +160,7 @@ unsafe fn model_module_joint_global_position_with_offset_hook(model_module: u64,
     && (*boma).is_situation(*SITUATION_KIND_AIR) 
     && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) >= ParamModule::get_int((*boma).object(), ParamType::Common, "ecb_shift_air_trans_frame")
     {
+        GroundModule::clear_pass_floor(boma);
         // This check passes after 9 frames of airtime, if not in a grabbed/thrown state
         return;
     }
