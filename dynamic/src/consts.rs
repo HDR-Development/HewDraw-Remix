@@ -226,6 +226,7 @@ pub mod vars {
             pub const ATTACK_DASH_ENABLE_AIR_LANDING: i32 = 0x1005;
 
             pub const SHOULD_WAVELAND: i32 = 0x1000;
+            pub const DISABLE_ECB_SHIFT: i32 = 0x1111;
 
             pub const IS_JAB_LOCK_ROLL: i32 = 0x1000;
             pub const IS_SPIKE: i32 = 0x1001;

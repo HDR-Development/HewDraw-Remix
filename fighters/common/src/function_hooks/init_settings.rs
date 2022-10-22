@@ -19,21 +19,29 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
 
     if boma.is_fighter() {
         
-        // Handles "fake" ECB shift on landing
-        // Because our aerial ECB shift code currently runs in opff, it runs a frame "late"
+        // Corrects your vertical positioning on landing:
+        // Our aerial ECB shift code currently runs a frame "late"
         // which causes characters to appear stuck halfway into the ground on the first frame they land
-        // so we need to re-shift your character back up to the proper height on that single frame
-        // this is a "fake" ECB shift for 1 frame
-        if !(*boma).is_status_one_of(&[
+        // so we need to shift your character's position up to the proper height for that single frame
+        if VarModule::get_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS) != 0.0
+        && !(*boma).is_status_one_of(&[
             *FIGHTER_STATUS_KIND_ENTRY,
             *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
             *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
             *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
             *FIGHTER_STATUS_KIND_THROWN])
-        && VarModule::get_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS) != 0.0
+        && boma.is_situation(*SITUATION_KIND_GROUND)
+        && situation.0 == *SITUATION_KIND_GROUND
         {
-            boma.shift_ecb_on_landing();
+            let mut fighter_pos = Vector3f {
+                x: PostureModule::pos_x(boma),
+                y: PostureModule::pos_y(boma),
+                z: PostureModule::pos_z(boma)
+            };
+            fighter_pos.y += VarModule::get_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS);
+            PostureModule::set_pos(boma, &fighter_pos);
         }
+        VarModule::set_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS, 0.0);
 
         // Disable wiggle out of tumble flag during damage_fly states
         if [*FIGHTER_STATUS_KIND_DAMAGE_FLY,

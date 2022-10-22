@@ -83,8 +83,9 @@ unsafe fn build_ecb_shift(boma: &mut BattleObjectModuleAccessor, status_kind: i3
         *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT,
         *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK,
         *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK].contains(&status_kind)
+    && !VarModule::is_flag(fighter.battle_object, vars::common::status::DISABLE_ECB_SHIFT)
     {
-        VarModule::set_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS, 0.0);
+        VarModule::on_flag(fighter.battle_object, vars::common::status::DISABLE_ECB_SHIFT);
     }
 }
 
