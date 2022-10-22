@@ -26,6 +26,22 @@ unsafe fn attack_11(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "donkey", script = "game_dash" , category = ACMD_GAME , low_priority)]
+unsafe fn dash(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 0.0);
+    if is_excute(fighter) {
+        HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
+        HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_NORMAL);
+    }
+}
+
 #[acmd_script( agent = "donkey", scripts = [ "game_attackdash", "game_attackairdash" ] , category = ACMD_GAME , low_priority)]
 unsafe fn attack_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -132,7 +148,8 @@ unsafe fn attack_dash_exp(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         attack_11,
-        attack_dash, attack_dash_eff, attack_dash_snd, attack_dash_exp
+        attack_dash, attack_dash_eff, attack_dash_snd, attack_dash_exp,
+        dash
     );
 }
 
