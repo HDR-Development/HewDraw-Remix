@@ -61,6 +61,28 @@ unsafe fn game_attackhi4(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "fox", script = "effect_attackhi4" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_attackhi4(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 17, 4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("fox_smash_arc"), Hash40::new("top"), 0, 12.2, 1.2, 0, 60, 90, 0.9, true);
+    }
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), -1.5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
 #[acmd_script( agent = "fox", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attacklw4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -92,6 +114,7 @@ pub fn install() {
     install_acmd_scripts!(
         game_attacks4,
         game_attackhi4,
+        effect_attackhi4,
         game_attacklw4,
     );
 }
