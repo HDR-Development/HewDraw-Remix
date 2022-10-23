@@ -303,7 +303,7 @@ unsafe fn special_hi(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        MotionModule::set_rate(2.0)
+        MotionModule::set_rate(boma, 2.0);
     }
     
 }
