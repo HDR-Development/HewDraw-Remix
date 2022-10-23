@@ -72,8 +72,13 @@ unsafe fn younglink_special_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 66.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LINK_STATUS_RSLASH_FLAG_RESET_SPEED_MAX_X);
+        FT_MOTION_RATE(fighter, 9.0/(70.0-66.0))
     }
-    
+    frame(lua_state, 70.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
+
 }
 
 #[acmd_script( agent = "younglink", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
