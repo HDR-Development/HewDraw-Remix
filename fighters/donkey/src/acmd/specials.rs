@@ -301,6 +301,10 @@ unsafe fn special_hi(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        MotionModule::set_rate(2.0)
+    }
     
 }
 
@@ -467,8 +471,8 @@ unsafe fn game_special_air_hi(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
     }
-    wait(lua_state, 16.0);
-    for _ in 0..8 {
+    wait(lua_state, 4.0);
+    for _ in 0..11 {
         if is_excute(fighter) {
             ATTACK(fighter, 0, 0, Hash40::new("arml"), 1.0, 367, 20, 0, 55, 5.0, 6.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
             ATTACK(fighter, 1, 0, Hash40::new("armr"), 1.0, 367, 20, 0, 55, 5.0, 6.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
