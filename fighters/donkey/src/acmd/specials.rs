@@ -393,18 +393,17 @@ unsafe fn special_air_lw(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.5);
     if is_excute(fighter) {
-        MotionModule::set_rate(boma, 0.3);
+        MotionModule::set_rate(boma, 0.1);
         JostleModule::set_status(boma, false);
         VarModule::on_flag(fighter.battle_object, vars::donkey::status::SPECIAL_AIR_LW_STOP);
-        CATCH(fighter, 0, Hash40::new("handr"), 8.0, 5.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
-        CATCH(fighter, 1, Hash40::new("armr"), 10.0, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 0, Hash40::new("top"), 10.0, 0.0, 10.0, 10.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
         //ATTACK(fighter, 2, 0, Hash40::new("top"), 10.0, 46, 95, 0, 21, 5.7, 0.0, 6.4, 24.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         //AttackModule::set_down_only(boma, 3, true);
     }
-    wait(lua_state, 2.0);
+    wait(lua_state, 0.7);
     if is_excute(fighter) {
         grab!(fighter, MA_MSC_CMD_GRAB_CLEAR_ALL);
-        MotionModule::set_rate(boma, 1.0);
+        MotionModule::set_rate(boma, 6.0);
         /*
         ItemModule::pickup_item(boma, ItemSize{_address: *ITEM_SIZE_HEAVY as u8}, *FIGHTER_HAVE_ITEM_WORK_MAIN, *ITEM_TRAIT_ALL, QuickItemTreatType{_address: *QUICK_ITEM_TREAT_TYPE_FORCE_HAVE as u8}, ItemPickupSearchMode{_address: *ITEM_PICKUP_SEARCH_MODE_NORMAL as u8});
         ItemModule::pickup_item(boma, ItemSize{_address: *ITEM_SIZE_LIGHT as u8}, *FIGHTER_HAVE_ITEM_WORK_MAIN, *ITEM_TRAIT_ALL, QuickItemTreatType{_address: *QUICK_ITEM_TREAT_TYPE_FORCE_HAVE as u8}, ItemPickupSearchMode{_address: *ITEM_PICKUP_SEARCH_MODE_NORMAL as u8});
@@ -424,6 +423,11 @@ unsafe fn special_air_lw(fighter: &mut L2CAgentBase) {
         }
         */
     }
+    wait(lua_state, 6.0);
+    if is_excute(fighter) {
+        grab!(fighter, MA_MSC_CMD_GRAB_CLEAR_ALL);
+        MotionModule::set_rate(boma, 0.9);
+    }
 }
 
 #[acmd_script( agent = "donkey", script = "sound_specialairlw", category = ACMD_SOUND , low_priority)]
@@ -441,9 +445,12 @@ unsafe fn sound_special_air_lw(fighter: &mut L2CAgentBase) {
 unsafe fn effect_special_air_lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state,15.0);
+    frame(lua_state,14.5);
     if is_excute(fighter) {
-        EFFECT(fighter,Hash40::new("sys_attack_impact"), Hash40::new("handr"), 5.0, 0, 0, 0, 0, 0, 2.0, 0, 0, 0, 0, 0, 360, true)
+        EFFECT_FOLLOW(fighter, Hash40::new("donkey_attack_arc"), Hash40::new("top"), -3, 15, 5, 30, -2, 0, 1.3, true);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.25);
+        EFFECT_FOLLOW(fighter, Hash40::new("donkey_attack_arc"), Hash40::new("top"), -3, 16, 5, -30, -2, 180, 1.3, true);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.25);
     }
 }
 

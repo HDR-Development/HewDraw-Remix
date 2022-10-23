@@ -54,6 +54,13 @@ unsafe extern "C" fn special_lw_substatus(fighter: &mut L2CFighterCommon, param_
                 VarModule::on_flag(fighter.battle_object, vars::donkey::instance::SPECIAL_AIR_LW_USED_STALL);
             }
         }
+
+        // enable fastfall
+        if fighter.is_cat_flag(Cat2::FallJump)
+            && fighter.stick_y() < -0.66
+            && KineticModule::get_sum_speed_y(fighter.boma(), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
+            WorkModule::set_flag(fighter.boma(), true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+        }
     }
     0.into()
 }

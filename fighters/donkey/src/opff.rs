@@ -132,6 +132,12 @@ pub unsafe fn special_hi_slipoff_grab(fighter: &mut L2CFighterCommon) {
     }
 }
 
+pub unsafe fn fair_hand_scale(fighter: &mut L2CFighterCommon) {
+    if fighter.is_motion(Hash40::new("specialairlw")) {
+        ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("sword1"), &Vector3f::new(1.0, 1.0, 1.0));
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     dash_attack_jump_cancels(fighter, boma, status_kind, situation_kind);
     barrel_timer(fighter, boma, id);
@@ -151,6 +157,7 @@ pub fn donkey_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 		donkey_frame(fighter);
         dk_bair_rotation(fighter);
         special_hi_slipoff_grab(fighter);
+        fair_hand_scale(fighter);
     }
 }
 
