@@ -18,6 +18,12 @@ pub mod jumps;
 pub mod stage_hazards;
 pub mod set_fighter_status_data;
 pub mod attack;
+pub mod collision;
+
+#[skyline::hook(offset = 0x3e6ce0, inline)]
+unsafe fn remove_phantoms(_: &skyline::hooks::InlineCtx) {
+  std::arch::asm!("fmov s9, 0.0");
+}
 
 pub fn install() {
     energy::install();
@@ -38,6 +44,9 @@ pub fn install() {
     stage_hazards::install();
     set_fighter_status_data::install();
     attack::install();
+    collision::install();
+
+    skyline::install_hook!(remove_phantoms);
 
     unsafe {
         // Handles getting rid of the kill zoom
