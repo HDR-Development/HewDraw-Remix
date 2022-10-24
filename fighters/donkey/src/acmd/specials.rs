@@ -445,6 +445,10 @@ unsafe fn sound_special_air_lw(fighter: &mut L2CAgentBase) {
 unsafe fn effect_special_air_lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 0, 10, 8, 0, 0, 0, 0.6, true);
+    }
     frame(lua_state,14.5);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("donkey_attack_arc"), Hash40::new("top"), -3, 15, 5, 30, -2, 0, 1.3, true);

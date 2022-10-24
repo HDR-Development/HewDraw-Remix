@@ -40,6 +40,10 @@ unsafe fn dash(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
         HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_NORMAL);
     }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
+    }
 }
 
 #[acmd_script( agent = "donkey", scripts = [ "game_attackdash", "game_attackairdash" ] , category = ACMD_GAME , low_priority)]
