@@ -169,7 +169,7 @@ unsafe fn sonic_catch_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        CATCH(fighter, 0, Hash40::new("top"), 4.3, 0.0, 6.0, 0.0, Some(0.0), Some(6.0), Some(9.2), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 0, Hash40::new("top"), 4.3, 0.0, 6.0, 0.0, Some(0.0), Some(6.0), Some(7.5), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(fighter);
     frame(lua_state, 9.0);
