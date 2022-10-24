@@ -73,7 +73,7 @@ unsafe fn sword_length(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 unsafe fn holdable_dair(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
     // young link dair hold
     if motion_kind == hash40("attack_air_lw")
-        && frame > 20.0 && frame < 65.0 
+        && frame > 20.0 && frame < 57.0 
         && ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_ATTACK)
     {
         MotionModule::set_frame_sync_anim_cmd(boma, 60.0, true, true, false);
