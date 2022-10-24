@@ -43,7 +43,7 @@
       <float hash="control_speed_x_mul">1</float>
       <float hash="special_lw_jump_xspd">0.1</float>
       <float hash="special_lw_jump_xspd_max">0.8</float>
-      <float hash="special_lw_jump_yspd">1.8</float>
+      <float hash="special_lw_jump_yspd">2.0</float>
       <float hash="0x20d1e96164">0.2</float>
       <float hash="0x206812ba8c">1.5</float>
       <float hash="speed_mul">0.55</float>

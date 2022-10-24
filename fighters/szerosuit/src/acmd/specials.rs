@@ -237,6 +237,78 @@ unsafe fn szerosuit_special_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "szerosuit", script = "game_speciallwstart" , category = ACMD_GAME , low_priority)]
+unsafe fn szerosuit_special_lw_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        VarModule::off_flag(boma.object(), vars::szerosuit::status::SPECIAL_LW_MANUAL_FLIPSTOOL_ENABLE);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_LW_FLAG_START_WAIT_INPUT);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_LW_FLAG_KICK_ENABLE);
+        WorkModule::on_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_LW_FLAG_REVERSE);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        //WorkModule::on_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_LW_FLAG_TREAD_ENABLE);
+        VarModule::on_flag(boma.object(), vars::szerosuit::status::SPECIAL_LW_MANUAL_FLIPSTOOL_ENABLE);
+    }
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_LW_FLAG_WALL_JUMP_ENABLE);
+    }
+    frame(lua_state, 39.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_LW_FLAG_TREAD_ENABLE);
+        VarModule::off_flag(boma.object(), vars::szerosuit::status::SPECIAL_LW_MANUAL_FLIPSTOOL_ENABLE);
+    }
+}
+
+#[acmd_script( agent = "szerosuit", script = "game_specialairlwstart" , category = ACMD_GAME , low_priority)]
+unsafe fn szerosuit_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        VarModule::off_flag(boma.object(), vars::szerosuit::status::SPECIAL_LW_MANUAL_FLIPSTOOL_ENABLE);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_LW_FLAG_START_WAIT_INPUT);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_LW_FLAG_KICK_ENABLE);
+        WorkModule::on_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_LW_FLAG_REVERSE);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        //WorkModule::on_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_LW_FLAG_TREAD_ENABLE);
+    }
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_LW_FLAG_WALL_JUMP_ENABLE);
+    }
+    frame(lua_state, 39.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_LW_FLAG_TREAD_ENABLE);
+    }
+}
+
 #[acmd_script( agent = "szerosuit", script = "game_specialairlwkick" , category = ACMD_GAME , low_priority)]
 unsafe fn szerosuit_special_air_lw_kick_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -264,6 +336,23 @@ unsafe fn szerosuit_special_air_lw_kick_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "szerosuit", script = "game_specialairlwflip" , category = ACMD_GAME , low_priority)]
+unsafe fn szerosuit_special_air_lw_flip_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        if !VarModule::is_flag(boma.object(), vars::szerosuit::status::ATTACK_AIR_LW_REBOUND){
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 270, 80, 0, 10, 3.0, 0.0, -3.0, 0.0, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0, 361, 90, 0, 10, 4.0, 0.0, -3.0, 0.0, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_bury"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+            ATTACK(fighter, 2, 0, Hash40::new("top"), 8.0, 270, 80, 0, 10, 3.0, 0.0, -3.0, 0.0, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        }
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         szerosuit_special_s_game,
@@ -272,7 +361,10 @@ pub fn install() {
         szerosuit_special_air_s_2_game,
         szerosuit_special_hi_game,
         szerosuit_special_air_hi_game,
+        szerosuit_special_lw_start_game,
+        szerosuit_special_air_lw_start_game,
         szerosuit_special_air_lw_kick_game,
+        szerosuit_special_air_lw_flip_game,
     );
 }
 
