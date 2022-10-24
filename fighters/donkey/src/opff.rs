@@ -125,6 +125,13 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     nspecial_cancels(fighter, boma, status_kind, situation_kind);
     barrel_pull(fighter, boma, status_kind, situation_kind);
     headbutt_aerial_stall(fighter, boma, id, status_kind, situation_kind, frame);
+    if VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER) == 0 {
+        utils::ui::UiManager::set_shoto_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+        utils::ui::UiManager::set_shoto_bar_percentage(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, 100.0);
+    } else {
+        utils::ui::UiManager::set_dk_barrel_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, false);
+        utils::ui::UiManager::set_shoto_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+    }
 
     // Magic Series
     //down_special_cancels(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
