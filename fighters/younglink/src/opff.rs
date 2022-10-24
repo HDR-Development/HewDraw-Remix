@@ -76,9 +76,7 @@ unsafe fn holdable_dair(boma: &mut BattleObjectModuleAccessor, motion_kind: u64,
         && frame > 20.0 && frame < 65.0 
         && ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_ATTACK)
     {
-        
-        MotionModule::set_frame_sync_anim_cmd(boma, 68.0, true, true, false);
-        
+        MotionModule::set_frame_sync_anim_cmd(boma, 60.0, true, true, false);
     }
 }
 
