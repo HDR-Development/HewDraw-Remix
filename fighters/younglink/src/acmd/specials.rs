@@ -19,6 +19,11 @@ unsafe fn younglink_special_s1_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 27.0);
     if is_excute(fighter) {
         ArticleModule::shoot(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_BOOMERANG, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
+        FT_MOTION_RATE(fighter, 2.0);
+    }
+    frame(lua_state, 31.0);
+    if is_excute (fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
     }
     
 }
