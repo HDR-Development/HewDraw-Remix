@@ -40,6 +40,24 @@ unsafe fn catch_pull_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "donkey", status = FIGHTER_STATUS_KIND_CATCH_PULL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn catch_pull_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_SPECIAL_LW {
+        sv_kinetic_energy!(
+            clear_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_MOTION
+        );
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_MOTION,
+            ENERGY_MOTION_RESET_TYPE_AIR_TRANS,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        );
+    }
     fighter.status_CatchPull_common(hash40("catch_wait").into());
     fighter.main_shift(catch_pull_main_loop)
 }
