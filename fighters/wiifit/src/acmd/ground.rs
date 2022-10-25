@@ -89,11 +89,22 @@ unsafe fn wiifit_attack_13_game(fighter: &mut L2CAgentBase) {
 unsafe fn wiifit_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    let is_zen_mode = WorkModule::is_flag(boma, vars::wiifit::instance::IS_ZEN_MODE);
+    if is_excute(fighter) {
+        if is_zen_mode {
+            FT_MOTION_RATE(fighter, 8.0/6.0);
+            HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
+            HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
+            HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
+        }
+    }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 50, 71, 0, 75, 5.0, 0.0, 7.0, 8.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 10.0, 50, 71, 0, 75, 3.0, 0.0, 10.0, 3.0, Some(0.0), Some(11.5), Some(7.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 2, 0, Hash40::new("top"), 10.0, 50, 71, 0, 75, 2.5, 0.0, 3.0, 4.0, Some(0.0), Some(2.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        let zen_mul = if is_zen_mode { 1.0 } else { 0.0 };
+        FT_MOTION_RATE(fighter, 1.0);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0 + 1.0 * zen_mul, 50, 71, 0, 75, 5.0, 0.0, 7.0, 8.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 10.0 + 1.0 * zen_mul, 50, 71, 0, 75, 3.0, 0.0, 10.0, 3.0, Some(0.0), Some(11.5), Some(7.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 10.0 + 1.0 * zen_mul, 50, 71, 0, 75, 2.5, 0.0, 3.0, 4.0, Some(0.0), Some(2.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATK_SET_SHIELD_SETOFF_MUL_arg4(fighter, 0, 1, 2, 1.1);
     }
     frame(lua_state, 9.0);
@@ -105,8 +116,32 @@ unsafe fn wiifit_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
+        if is_zen_mode {
+            FT_MOTION_RATE(fighter, 26.0/(38.0 - 14.0));
+        }
         AttackModule::clear_all(boma);
+        HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_NORMAL);
+        HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_NORMAL);
+        HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_NORMAL);
     }
+    frame(lua_state, 39.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
+}
+
+#[acmd_script( agent = "wiifit", script = "effect_attackdash" , category = ACMD_EFFECT , low_priority)]
+unsafe fn wiifit_attack_dash_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_sliding_smoke"), Hash40::new("top"), 10, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+        if WorkModule::is_flag(boma, vars::wiifit::instance::IS_ZEN_MODE) {
+            crate::opff::start_ring(utils::util::get_fighter_common_from_accessor(boma), 14.0, 1.0, 1.75, Hash40::new("head"), Vector3f::new(0.0, 0.0, 0.0), Vector3f::new(3000.0, 0.7, 0.7), Vector3f::new(0.7, 1000.0, 0.7), true);
+        }
+    }
+
 }
 
 pub fn install() {
@@ -115,6 +150,7 @@ pub fn install() {
         wiifit_attack_12_game,
         wiifit_attack_13_game,
         wiifit_attack_dash_game,
+        wiifit_attack_dash_effect,
     );
 }
 

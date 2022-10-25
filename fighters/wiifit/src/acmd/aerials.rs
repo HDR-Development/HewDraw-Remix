@@ -25,7 +25,6 @@ unsafe fn wiifit_attack_air_n_game(fighter: &mut L2CAgentBase) {
         let rate = if is_zen_mode { 12.0/(12.0 - 8.0) } else { 1.0 };
         let size = if is_zen_mode { 1.125 } else { 1.0 };
         FT_MOTION_RATE(fighter, rate);
-
         ATTACK(fighter, 0, 0, Hash40::new("handr"), 5.0, 110, 72, 0, 50, 4.0 * size, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 1, 0, Hash40::new("head"), 5.0, 110, 72, 0, 50, 4.0 * size + 0.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 2, 0, Hash40::new("hip"), 5.0, 90, 72, 0, 50, 4.0 * size + 0.5, 0.0, 0.0, -0.5, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -63,7 +62,7 @@ unsafe fn wiifit_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 12.0);
     if is_excute(fighter) && WorkModule::is_flag(boma, vars::wiifit::instance::IS_ZEN_MODE) {
-        crate::opff::start_ring(utils::util::get_fighter_common_from_accessor(boma), 14.0, 1.0, 2.25, Vector3f::new(0.0, 0.0, 0.0), Hash40::new("elbowr"), Vector3f::new(3000.0, 0.7, 0.7), Vector3f::new(0.7, 1000.0, 0.7));
+        crate::opff::start_ring(utils::util::get_fighter_common_from_accessor(boma), 17.0, 1.0, 2.0, Hash40::new("top"), Vector3f::new(0.0, 9.0, 1.5), Vector3f::new(3000.0, 0.7, 0.7), Vector3f::new(0.7, 1000.0, 0.7), true);
     }
 }
 
@@ -71,10 +70,9 @@ unsafe fn wiifit_attack_air_n_effect(fighter: &mut L2CAgentBase) {
 unsafe fn wiifit_landing_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let landing_lag_normal = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_attack_air_frame_lw"), 0);
-    let landing_lag_zen = landing_lag_normal + 2.0;
+    let landing_lag = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_attack_air_frame_lw"), 0);
     if is_excute(fighter) && WorkModule::is_flag(boma, vars::wiifit::instance::IS_ZEN_MODE) {
-        FT_MOTION_RATE(fighter, landing_lag_zen/landing_lag_normal);
+        FT_MOTION_RATE(fighter, (landing_lag + 2.0)/landing_lag);
     }
 }
 
