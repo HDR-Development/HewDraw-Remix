@@ -135,8 +135,12 @@ unsafe fn ground_module_update_rhombus_sub(ground_module: u64, param_2: u64, par
 #[skyline::hook(offset = 0x45f420)]
 unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *mut Hash40, param_2: *mut f32, param_3: *mut f32, param_4: *mut f32, param_5: *mut f32, param_6: u32) {
     let boma = *((ground_module + 0x20) as *mut *mut BattleObjectModuleAccessor);
+    let mut param_6 = param_6.clone();
+    if (*boma).is_fighter() {
+        param_6 = 1;
+    }
     // The original function calls model_module_joint_global_position_with_offset_hook
-    call_original!(ground_module, param_1, param_2, param_3, param_4, param_5, 1);
+    call_original!(ground_module, param_1, param_2, param_3, param_4, param_5, param_6);
 }
 
 
@@ -152,7 +156,8 @@ unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *m
 #[skyline::hook(offset = 0x48fc40)]
 unsafe fn model_module_joint_global_position_with_offset_hook(model_module: u64, bone: Hash40, param_3: *mut Vector3f, param_4: *mut Vector3f, param_5: bool) {
     let boma = *(model_module as *mut *mut BattleObjectModuleAccessor).add(1);
-    if bone == Hash40::new("trans")
+    if (*boma).is_fighter()
+    && bone == Hash40::new("trans")
     && !VarModule::is_flag((*boma).object(), vars::common::status::DISABLE_ECB_SHIFT)
     && !(*boma).is_status_one_of(&[
         *FIGHTER_STATUS_KIND_DEMO,
@@ -162,7 +167,7 @@ unsafe fn model_module_joint_global_position_with_offset_hook(model_module: u64,
         *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
         *FIGHTER_STATUS_KIND_THROWN])
     && (*boma).is_situation(*SITUATION_KIND_AIR) 
-    && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) >= 9  // ParamModule panics sometimes when used here for some reason (possibly when called multiple times per frame?), so had to go with const
+    && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) >= ParamModule::get_int((*boma).object(), ParamType::Common, "ecb_shift_air_trans_frame")
     {
         // This check passes after 9 frames of airtime, if not in a grabbed/thrown state
         return;
