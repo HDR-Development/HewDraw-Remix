@@ -38,7 +38,7 @@ unsafe fn set_zen_mode(boma: &mut BattleObjectModuleAccessor, status_kind: i32) 
 }
 
 /// Starts ring effect for hitboxes
-pub unsafe fn start_ring(fighter: &mut L2CFighterCommon, duration: f32, start_size: f32, end_size: f32, mut offset: Vector3f, bone: Hash40, mut color: Vector3f, mut color2: Vector3f) {
+pub unsafe fn start_ring(fighter: &mut L2CFighterCommon, duration: f32, start_size: f32, end_size: f32, bone: Hash40, mut offset: Vector3f, mut color: Vector3f, mut color2: Vector3f, follow: bool) {
     VarModule::on_flag(fighter.object(), vars::wiifit::instance::IS_RING_VISIBLE);
     VarModule::set_float(fighter.object(), vars::wiifit::instance::RING_END_FRAME, duration);
     VarModule::set_float(fighter.object(), vars::wiifit::instance::RING_CURRENT_FRAME, 0.0);
@@ -56,51 +56,102 @@ pub unsafe fn start_ring(fighter: &mut L2CFighterCommon, duration: f32, start_si
     color2.z = if color2.z == 0.0 { 0.1 } else { color2.z };
     VarModule::set_vec3(fighter.object(), vars::wiifit::instance::RING_SECOND_COLOR, color2);
    
-    // Attach effect to bone
-    ModelModule::joint_global_offset_from_top(fighter.module_accessor, bone, &mut offset);
-    offset.x *= PostureModule::lr(fighter.module_accessor);
-    let light_handle = EffectModule::req_on_joint(
+    // Attach effect to bone if 'follow' arg is true, otherwise place effect at bone's current position with offset 
+    //let mut calc_offset = ModelModule::joint_global_offset_from_top(fighter.module_accessor, bone, &mut offset);
+    //offset.x *= PostureModule::lr(fighter.module_accessor);
+    let handle = if follow { EffectModule::req_follow(
         fighter.module_accessor,
         Hash40::new("wiifit_fukushiki_ring"),
-        Hash40::new("top"),
+        bone,
         &offset,
         &Vector3f::zero(),
         start_size,
-        &Vector3f::zero(),
-        &Vector3f::zero(),
         false,
         0,
         0,
-        0
-    );
-    let dark_handle = EffectModule::req_on_joint(
+        0,
+        0,
+        0,
+        false,
+        false
+    ) } else {
+        EffectModule::req_on_joint(
+            fighter.module_accessor,
+            Hash40::new("wiifit_fukushiki_ring"),
+            bone,
+            &offset,
+            &Vector3f::zero(),
+            start_size,
+            &Vector3f::zero(),
+            &Vector3f::zero(),
+            false,
+            0,
+            0,
+            0
+        )
+    };
+    let dark_handle = if follow { EffectModule::req_follow(
         fighter.module_accessor,
         Hash40::new("wiifit_fukushiki_ring"),
-        Hash40::new("top"),
+        bone,
         &offset,
         &Vector3f::zero(),
         start_size,
-        &Vector3f::zero(),
-        &Vector3f::zero(),
         false,
         0,
         0,
-        0
-    );
-    let handle = EffectModule::req_on_joint(
+        0,
+        0,
+        0,
+        false,
+        false
+    ) } else {
+        EffectModule::req_on_joint(
+            fighter.module_accessor,
+            Hash40::new("wiifit_fukushiki_ring"),
+            bone,
+            &offset,
+            &Vector3f::zero(),
+            start_size,
+            &Vector3f::zero(),
+            &Vector3f::zero(),
+            false,
+            0,
+            0,
+            0
+        )
+    };
+    let light_handle = if follow { EffectModule::req_follow(
         fighter.module_accessor,
         Hash40::new("wiifit_fukushiki_ring"),
-        Hash40::new("top"),
+        bone,
         &offset,
         &Vector3f::zero(),
         start_size,
-        &Vector3f::zero(),
-        &Vector3f::zero(),
         false,
         0,
         0,
-        0
-    );
+        0,
+        0,
+        0,
+        false,
+        false
+    ) } else {
+        EffectModule::req_on_joint(
+            fighter.module_accessor,
+            Hash40::new("wiifit_fukushiki_ring"),
+            bone,
+            &offset,
+            &Vector3f::zero(),
+            start_size,
+            &Vector3f::zero(),
+            &Vector3f::zero(),
+            false,
+            0,
+            0,
+            0
+        )
+    };
 
     // Set effect color and store handle
     EffectModule::set_rgb(fighter.module_accessor, handle as u32, color.x, color.y, color.z);
