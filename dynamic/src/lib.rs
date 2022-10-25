@@ -7,6 +7,7 @@ pub mod ext;
 mod modules;
 pub mod frame_info;
 pub mod game_modes;
+pub mod ui;
 
 #[macro_use]
 extern crate modular_bitfield;
