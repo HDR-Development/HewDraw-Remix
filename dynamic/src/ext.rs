@@ -800,7 +800,14 @@ impl BomaExt for BattleObjectModuleAccessor {
     
         // The distance from your ECB's bottom point to your Top bone is your waveland snap threshold
         let ecb_bottom = *GroundModule::get_rhombus(self, true).add(1);
-        let snap_leniency = crate::VarModule::get_float(self.object(), crate::consts::vars::common::instance::ECB_Y_OFFSETS);
+        let pos = *PostureModule::pos(self);
+        let snap_leniency = if WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0 {
+                // For a downwards/horizontal airdodge, waveland snap threshold = the distance from your ECB bottom to your Top bone
+                ecb_bottom.y - pos.y
+            } else {
+                // For an upwards airdodge, waveland snap threshold = 5 units below ECB bottom, if the distance from your ECB bottom to your Top bone is < 5
+                (ecb_bottom.y - pos.y).max(crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold"))
+            };
         let line_bottom = Vector2f::new(ecb_bottom.x, ecb_bottom.y - snap_leniency);
         let mut out_pos = Vector2f::zero();
         let within_snap_distance_any = GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut out_pos, true);
@@ -809,9 +816,8 @@ impl BomaExt for BattleObjectModuleAccessor {
             || WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0);
         if can_snap { // pretty sure it returns a pointer, at least it defo returns a non-0 value if success
             crate::VarModule::on_flag(self.object(), crate::consts::vars::common::status::DISABLE_ECB_SHIFT);
-            let pos = PostureModule::pos(self);
-            PostureModule::set_pos(self, &Vector3f::new((*pos).x, out_pos.y + 0.01, (*pos).z));
-            GroundModule::attach_ground(self, true);
+            PostureModule::set_pos(self, &Vector3f::new(pos.x, out_pos.y + 0.01, pos.z));
+            GroundModule::attach_ground(self, false);
             true
         } else {
             false

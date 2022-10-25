@@ -98,6 +98,7 @@ unsafe fn get_touch_flag_hook(boma: &mut BattleObjectModuleAccessor) -> i32 {
     original!()(boma)
 }
 
+
 // Unused for now
 #[skyline::hook(offset = 0x6ca950)]
 unsafe fn ground_module_update_hook(ground_module: u64) {
@@ -105,6 +106,7 @@ unsafe fn ground_module_update_hook(ground_module: u64) {
     // The original function calls ground_module_update_rhombus_sub
     call_original!(ground_module);
 }
+
 
 // Unused for now
 
@@ -117,6 +119,7 @@ unsafe fn ground_module_update_rhombus_sub(ground_module: u64, param_2: u64, par
     // The original function calls ground_module_ecb_point_calc_hook
     call_original!(ground_module, param_2, param_3);
 }
+
 
 // This function is used to calculate the following:
 //      param_2: Top ECB point's vertical offset from Top bone (positive number)
@@ -134,8 +137,8 @@ unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *m
     let boma = *((ground_module + 0x20) as *mut *mut BattleObjectModuleAccessor);
     // The original function calls model_module_joint_global_position_with_offset_hook
     call_original!(ground_module, param_1, param_2, param_3, param_4, param_5, 1);
-    VarModule::set_float((*boma).object(), vars::common::instance::ECB_Y_OFFSETS, (*param_3));
 }
+
 
 // This function calculates the coordinates of the passed bone relative to the Top bone (PostureModule::pos)
 // It stores these x/y/z coordinates in param_3's Vector3f
@@ -152,15 +155,15 @@ unsafe fn model_module_joint_global_position_with_offset_hook(model_module: u64,
     if bone == Hash40::new("trans")
     && !VarModule::is_flag((*boma).object(), vars::common::status::DISABLE_ECB_SHIFT)
     && !(*boma).is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_DEMO,
         *FIGHTER_STATUS_KIND_ENTRY,
         *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
         *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
         *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
         *FIGHTER_STATUS_KIND_THROWN])
     && (*boma).is_situation(*SITUATION_KIND_AIR) 
-    && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) >= ParamModule::get_int((*boma).object(), ParamType::Common, "ecb_shift_air_trans_frame")
+    && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) >= 9  // ParamModule panics sometimes when used here for some reason (possibly when called multiple times per frame?), so had to go with const
     {
-        GroundModule::clear_pass_floor(boma);
         // This check passes after 9 frames of airtime, if not in a grabbed/thrown state
         return;
     }

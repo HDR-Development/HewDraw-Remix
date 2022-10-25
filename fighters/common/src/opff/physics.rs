@@ -218,10 +218,19 @@ unsafe fn dash_energy(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn plat_cancels(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) {
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL) {
+            GroundModule::clear_pass_floor(fighter.module_accessor);
+        }
+    }
+}
+
 pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mut L2CAgent, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     extra_traction(fighter, boma);
     grab_jump_refresh(boma);
     dash_energy(fighter);
+    plat_cancels(fighter);
 
     //WorkModule::unable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_D); //Melee style spike knockdown (courtesey of zabimaru), leaving it commented here just to have it saved somewhere
 }
