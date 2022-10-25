@@ -226,9 +226,10 @@ unsafe fn luigi_catch_game(fighter: &mut L2CAgentBase) {
 unsafe fn luigi_obakyumu_catch_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 16.0);
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_erace_smoke"), Hash40::new("vacuum"), 3.0, 0.0, 0.0, 0, 90, 90, 0.6, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.75);
     }
 }
 
