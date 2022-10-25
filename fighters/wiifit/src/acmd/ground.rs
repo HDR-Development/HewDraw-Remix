@@ -138,7 +138,7 @@ unsafe fn wiifit_attack_dash_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_sliding_smoke"), Hash40::new("top"), 10, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
         if WorkModule::is_flag(boma, vars::wiifit::instance::IS_ZEN_MODE) {
-            crate::opff::start_ring(utils::util::get_fighter_common_from_accessor(boma), 14.0, 1.0, 1.75, Hash40::new("head"), Vector3f::new(0.0, 0.0, 0.0), Vector3f::new(3000.0, 0.7, 0.7), Vector3f::new(0.7, 1000.0, 0.7), true);
+            crate::opff::start_ring(utils::util::get_fighter_common_from_accessor(boma), 14.0, 1.0, 1.6, Hash40::new("top"), Vector3f::new(0.0, 7.0, 6.5), Vector3f::new(3000.0, 0.7, 0.7), Vector3f::new(0.7, 1000.0, 0.7), true);
         }
     }
 
