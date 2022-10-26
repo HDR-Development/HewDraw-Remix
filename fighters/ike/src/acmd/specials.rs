@@ -154,8 +154,20 @@ unsafe fn ike_special_s_dash_sound(fighter: &mut L2CAgentBase) {
             PLAY_SE(fighter, Hash40::new("vc_ike_appeal02"));
         }
         else{
-            PLAY_SE(fighter, Hash40::new("vc_ike_special_s01"));
+            //PLAY_SE(fighter, Hash40::new("vc_ike_special_s01"));
         }
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_ike_special_s02"));
+    }
+}
+
+#[acmd_script( agent = "ike", script = "sound_specialairsdash" , category = ACMD_SOUND , low_priority)]
+unsafe fn ike_special_air_s_dash_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
@@ -502,6 +514,7 @@ pub fn install() {
         ike_special_s_dash_game,
         ike_special_s_dash_effect,
         ike_special_s_dash_sound,
+        ike_special_air_s_dash_sound,
         ike_special_s_attack_game,
         ike_special_s_attack_effect,
         ike_special_air_s_attack_game,
