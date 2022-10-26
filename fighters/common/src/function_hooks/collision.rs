@@ -122,10 +122,10 @@ unsafe fn ground_module_update_rhombus_sub(ground_module: u64, param_2: u64, par
 
 
 // This function is used to calculate the following:
-//      param_2: Top ECB point's vertical offset from Top bone (positive number)
-//      param_3: Left ECB point's horizontal offset from Top bone (negative number)
+//      param_2: Left ECB point's horizontal offset from Top bone (negative number)
+//      param_3: Bottom ECB point's vertical offset from Top bone (positive number, 0.0 in vanilla)
 //      param_4: Right ECB point's horizontal offset from Top bone (positive number)
-//      param_5: Bottom ECB point's vertical offset from Top bone (positive number, 0.0 in vanilla)
+//      param_5: Top ECB point's vertical offset from Top bone (positive number)
 
 // All of your character's map_coll_data bones, found in vl.prc, are stored in param_1's Hash40 pointer
 
@@ -136,7 +136,18 @@ unsafe fn ground_module_update_rhombus_sub(ground_module: u64, param_2: u64, par
 unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *mut Hash40, param_2: *mut f32, param_3: *mut f32, param_4: *mut f32, param_5: *mut f32, param_6: u32) {
     let boma = *((ground_module + 0x20) as *mut *mut BattleObjectModuleAccessor);
     let mut param_6 = param_6.clone();
-    if (*boma).is_fighter() {
+    if (*boma).is_fighter()
+    && !VarModule::is_flag((*boma).object(), vars::common::status::DISABLE_ECB_SHIFT)
+    && !(*boma).is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_DEMO,
+        *FIGHTER_STATUS_KIND_ENTRY,
+        *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
+        *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
+        *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
+        *FIGHTER_STATUS_KIND_THROWN])
+    && (*boma).is_situation(*SITUATION_KIND_AIR) 
+    && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) >= ParamModule::get_int((*boma).object(), ParamType::Common, "ecb_shift_air_trans_frame") {
+        // This check passes after 9 frames of airtime, if not in a grabbed/thrown state
         param_6 = 1;
     }
     // The original function calls model_module_joint_global_position_with_offset_hook
@@ -148,7 +159,7 @@ unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *m
 // It stores these x/y/z coordinates in param_3's Vector3f
 
 // ground_module_ecb_point_calc_hook will pass each bone from your character's map_coll_data list in vl.prc, one by one, into this func
-// It will then pass the Trans bone once all of the map_coll_data bones have been processed
+// If param_6 in ground_module_ecb_point_calc_hook is 1, it will then pass the Trans bone once all of the map_coll_data bones have been processed
 // The game will use your Trans bone's distance from your Top bone to determine where to place your bottom ECB point, which will pretty much always be {0, 0, 0}
 // This is why your ECB bottom point is always "locked" to your Top bone
 
@@ -158,18 +169,7 @@ unsafe fn model_module_joint_global_position_with_offset_hook(model_module: u64,
     let boma = *(model_module as *mut *mut BattleObjectModuleAccessor).add(1);
     if (*boma).is_fighter()
     && bone == Hash40::new("trans")
-    && !VarModule::is_flag((*boma).object(), vars::common::status::DISABLE_ECB_SHIFT)
-    && !(*boma).is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_DEMO,
-        *FIGHTER_STATUS_KIND_ENTRY,
-        *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
-        *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
-        *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
-        *FIGHTER_STATUS_KIND_THROWN])
-    && (*boma).is_situation(*SITUATION_KIND_AIR) 
-    && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) >= ParamModule::get_int((*boma).object(), ParamType::Common, "ecb_shift_air_trans_frame")
     {
-        // This check passes after 9 frames of airtime, if not in a grabbed/thrown state
         return;
     }
     call_original!(model_module, bone, param_3, param_4, param_5);

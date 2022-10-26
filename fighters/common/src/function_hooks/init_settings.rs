@@ -32,7 +32,7 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
             *FIGHTER_STATUS_KIND_THROWN])
         && boma.is_prev_situation(*SITUATION_KIND_AIR)
         && boma.is_situation(*SITUATION_KIND_GROUND)
-        && situation.0 == *SITUATION_KIND_GROUND
+        && [*SITUATION_KIND_GROUND, *SITUATION_KIND_NONE].contains(&situation.0)
         {
             let ecb_center = *GroundModule::get_rhombus(boma, true).add(2);
             let mut pos = *PostureModule::pos(boma);
