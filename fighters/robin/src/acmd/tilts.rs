@@ -35,7 +35,7 @@ unsafe fn reflet_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
+        FT_MOTION_RATE(fighter, 17.0/(33.0-13.0));
         AttackModule::clear_all(boma);
     }
 }
@@ -84,7 +84,7 @@ unsafe fn reflet_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.6);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
+        FT_MOTION_RATE(fighter, 14.0/(23.0-8.0));
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 5.0, 5.0);
         AttackModule::clear_all(boma);
     }

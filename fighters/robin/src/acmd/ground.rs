@@ -23,7 +23,7 @@ unsafe fn reflet_attack_11_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
+        FT_MOTION_RATE(fighter, 12.0/(22.0-7.0));
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 5.0);

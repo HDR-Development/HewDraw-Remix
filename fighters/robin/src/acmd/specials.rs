@@ -1,6 +1,17 @@
 
 use super::*;
 
+
+#[acmd_script( agent = "reflet", script = "game_specialairntronend" , category = ACMD_GAME , low_priority)]
+unsafe fn reflet_special_air_n_tron_end_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.5);
+    }
+}
+
+
 #[acmd_script( agent = "reflet", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn reflet_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -71,6 +82,7 @@ unsafe fn reflet_special_air_hi_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        reflet_special_air_n_tron_end_game,
         reflet_special_hi_game,
         reflet_special_air_hi_game,
     );
