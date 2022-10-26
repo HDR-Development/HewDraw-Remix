@@ -1,6 +1,24 @@
 
 use super::*;
 
+#[acmd_script( agent = "shizue", scripts = ["game_specialn", "game_specialairn"] , category = ACMD_GAME , low_priority)]
+unsafe fn shizue_special_n_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_MURABITO_STATUS_SPECIAL_N_FLAG_SEARCH);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        WorkModule::inc_int(boma, *FIGHTER_MURABITO_STATUS_SPECIAL_N_INT_TAKEOUT_REQUEST);
+    }
+}
+
 #[acmd_script( agent = "shizue", script = "game_specialnfailure" , category = ACMD_GAME , low_priority)]
 unsafe fn shizue_special_n_failure_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -20,13 +38,13 @@ unsafe fn shizue_special_n_failure_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "shizue", script = "effect_specialnfailure" , category = ACMD_EFFECT , low_priority)]
+#[acmd_script( agent = "shizue", scripts = ["effect_specialnfailure", "effect_specialairnfailure"] , category = ACMD_EFFECT , low_priority)]
 unsafe fn shizue_special_n_failure_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("shizue_cracker"), Hash40::new("top"), 0.0, 6.0, 4.5, 50, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("shizue_cracker"), Hash40::new("handl"), 0.0, 0.0, 0.0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
     }
 }
 
@@ -45,17 +63,6 @@ unsafe fn shizue_special_air_n_failure_game(fighter: &mut L2CAgentBase) {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
             FT_MOTION_RATE(fighter, 0.8);
         }
-    }
-    
-}
-
-#[acmd_script( agent = "shizue", script = "effect_specialairnfailure" , category = ACMD_EFFECT , low_priority)]
-unsafe fn shizue_special_air_n_failure_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("shizue_cracker"), Hash40::new("top"), 0.0, 6.0, 4.5, 50, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
     }
     
 }
@@ -80,16 +87,110 @@ unsafe fn shizue_special_lw_set_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-    JostleModule::set_status(boma, false);
+        JostleModule::set_status(boma, false);
+        FT_MOTION_RATE(fighter, 0.9);
     }
-    FT_MOTION_RATE(fighter, 0.9);
     frame(lua_state, 25.0);
     if is_excute(fighter) {
-    WorkModule::on_flag(boma, *FIGHTER_SHIZUE_STATUS_WORK_ID_SPECIAL_LW_FLAG_SET);
+        WorkModule::on_flag(boma, *FIGHTER_SHIZUE_STATUS_WORK_ID_SPECIAL_LW_FLAG_SET);
+        FT_MOTION_RATE(fighter, 1.0);
     }
-    FT_MOTION_RATE(fighter, 1);
+    
 }
- 
+
+#[acmd_script( agent = "shizue", script = "game_specialsstart", category = ACMD_GAME, low_priority)]
+unsafe fn shizue_special_s_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 13.0/(21.0 - 1.0));
+    }
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_SHIZUE_GENERATE_ARTICLE_FISHINGROD, false, 0);
+        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 5.0, 4.0);
+        JostleModule::set_push_speed_x(boma, 0.8, true);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        JostleModule::set_push_speed_x_overlap_rate(boma, 10.0);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 8.0, 4.0);
+        JostleModule::set_push_speed_x(boma, 1.6, true);
+        JostleModule::set_push_speed_x_overlap_rate(boma, 20.0);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 13.0, 4.0);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_SHIZUE_STATUS_WORK_ID_SPECIAL_S_FLAG_SHOOT);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 16.0, 3.0);
+        JostleModule::set_push_speed_x(boma, 0.01, true);
+    }
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 3.8, 3.0);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(fighter) {
+        JostleModule::set_push_speed_x(boma, 0.0, true);
+        JostleModule::set_push_speed_x_overlap_rate(boma, 0.0);
+    }
+
+}
+
+#[acmd_script( agent = "shizue", script = "game_specialairsstart", category = ACMD_GAME, low_priority)]
+unsafe fn shizue_special_air_s_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 13.0/(21.0 - 1.0));
+    }
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_SHIZUE_GENERATE_ARTICLE_FISHINGROD, false, 0);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 9.0, 4.0);
+        JostleModule::set_push_speed_x(boma, 12.0, true);
+        JostleModule::set_push_speed_x_overlap_rate(boma, 12.0);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK);
+        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 16.0, 4.0);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_SHIZUE_STATUS_WORK_ID_SPECIAL_S_FLAG_SHOOT);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 3.8, 3.0);
+        JostleModule::set_push_speed_x(boma, 0.0, true);
+        JostleModule::set_push_speed_x_overlap_rate(boma, 0.0);
+    }
+}
 
 #[acmd_script( agent = "shizue", script = "game_specialsthrowb", category = ACMD_GAME, low_priority)]
 unsafe fn shizue_special_s_throw_b_game(fighter: &mut L2CAgentBase) {
@@ -294,14 +395,16 @@ unsafe fn shizue_clayrocket_fly_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        shizue_special_n_game,
         shizue_special_n_failure_game,
         shizue_special_n_failure_effect,
         shizue_special_air_n_failure_game,
-        shizue_special_air_n_failure_effect,
         shizue_special_air_hi_detach_game,
         shizue_special_lw_set_game,
         
         //Fishing Rod
+        shizue_special_s_start_game,
+        shizue_special_air_s_start_game,
         shizue_special_s_throw_f_game,
         shizue_special_air_s_throw_f_game,
         shizue_special_s_throw_hi_game,

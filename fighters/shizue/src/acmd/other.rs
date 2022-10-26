@@ -74,12 +74,13 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 unsafe fn shizue_fishingrod_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1.4375);
+        FT_MOTION_RATE(fighter, 13.0/(21.0 - 1.0));
     }
-    frame(lua_state, 20.0);
+    frame(lua_state, 21.0);
     if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1.0);
+        FT_MOTION_RATE(fighter, 1.0);
     }
 }
 
@@ -87,8 +88,9 @@ unsafe fn shizue_fishingrod_start_game(fighter: &mut L2CAgentBase) {
 unsafe fn catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.7);
+        FT_MOTION_RATE(fighter, 9.0/(14.0 - 1.0));
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
@@ -96,10 +98,10 @@ unsafe fn catch_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
         CATCH(fighter, 0, Hash40::new("top"), 5.0, 0.0, 5.5, 4.0, Some(0.0), Some(5.5), Some(14.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
         CATCH(fighter, 1, Hash40::new("top"), 2.5, 0.0, 5.5, 1.5, Some(0.0), Some(5.5), Some(16.5), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_A);
         ENABLE_AREA(fighter, *FIGHTER_MURABITO_AREA_KIND_SEARCH_ITEM_CATCH);
-        FT_MOTION_RATE(fighter, 1.0);
     }
     wait(lua_state, 3.0);
     if is_excute(fighter) {
@@ -117,12 +119,13 @@ unsafe fn catch_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_catch_turn" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "shizue", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
 unsafe fn catchturn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.75);
+        FT_MOTION_RATE(fighter, 12.0/(17.0 - 1.0));
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
@@ -130,10 +133,10 @@ unsafe fn catchturn_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        CATCH(fighter, 0, Hash40::new("top"), 4.0, 0.0, 5.5, -5.0, Some(0.0), Some(5.5), Some(-14.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
-        CATCH(fighter, 1, Hash40::new("top"), 2.0, 0.0, -2.5, -2.5, Some(0.0), Some(5.5), Some(-16.5), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_A);
-        ENABLE_AREA(fighter, *FIGHTER_MURABITO_AREA_KIND_SEARCH_ITEM_CATCH);
         FT_MOTION_RATE(fighter, 1.0);
+        CATCH(fighter, 0, Hash40::new("top"), 4.0, 0.0, 5.5, -5.0, Some(0.0), Some(5.5), Some(-14.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
+        CATCH(fighter, 1, Hash40::new("top"), 2.0, 0.0, 5.5, -2.5, Some(0.0), Some(5.5), Some(-16.5), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_A);
+        ENABLE_AREA(fighter, *FIGHTER_MURABITO_AREA_KIND_SEARCH_ITEM_CATCH);
     }
     wait(lua_state, 3.0);
     if is_excute(fighter) {
@@ -147,12 +150,13 @@ unsafe fn catchturn_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_catch_dash" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "shizue", script = "game_catchdash" , category = ACMD_GAME , low_priority)]
 unsafe fn catchdash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.7);
+        FT_MOTION_RATE(fighter, 10.0/(16.0 - 1.0));
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -160,10 +164,10 @@ unsafe fn catchdash_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
         CATCH(fighter, 0, Hash40::new("top"), 4.0, 0.0, 5.5, 4.0, Some(0.0), Some(5.5), Some(13.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
         CATCH(fighter, 1, Hash40::new("top"), 2.0, 0.0, 5.5, 2.0, Some(0.0), Some(5.5), Some(15.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_A);
         ENABLE_AREA(fighter, *FIGHTER_MURABITO_AREA_KIND_SEARCH_ITEM_CATCH);
-        FT_MOTION_RATE(fighter, 1.0);
     }
     wait(lua_state, 3.0);
     if is_excute(fighter) {

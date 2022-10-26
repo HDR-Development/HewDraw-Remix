@@ -107,13 +107,28 @@ unsafe fn shizue_attack_hi4_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1);
+        FT_MOTION_RATE(fighter, 1.0);
+        shield!(fighter, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 4.5, 0.0, 4.0, 6.5, 0.0, 5.0, 6.5, 0.0, 0.0, 1, false, 0.0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 100, 100, 70, 0, 4.5, 0.0, 4.0, 6.5, None, None, None, 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 100, 100, 60, 0, 4.5, 0.0, 4.0, 6.5, None, None, None, 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        shield!(fighter, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
+        shield!(fighter, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 4.5, 0.0, 4.0, 6.5, 0.0, 10.0, 6.5, 0.0, 0.0, 1, false, 0.0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        shield!(fighter, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
+        shield!(fighter, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 4.5, 0.0, 4.0, 6.5, 0.0, 18.0, 6.5, 0.0, 0.0, 1, false, 0.0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        shield!(fighter, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
@@ -135,7 +150,6 @@ unsafe fn shizue_trafficsign_attack_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1);
-        shield!(fighter, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 9.0, 0.0, 10.0, 7.0, 0.0, 10.0, -7.0, 0.0, 0.0, 1, false, 0.0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 88, 145, 0, 52, 3.0, 0.0, 3.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         ATTACK(fighter, 1, 0, Hash40::new("trafficsign"), 12.0, 88, 145, 0, 52, 4.5, 0.0, 3.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
     }
@@ -147,7 +161,6 @@ unsafe fn shizue_trafficsign_attack_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 2.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.9);
-        shield!(fighter, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
         AttackModule::clear_all(boma);
     }
 }
