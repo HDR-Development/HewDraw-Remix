@@ -179,7 +179,7 @@ unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 31.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
+        FT_MOTION_RATE(fighter, 0.8);
     }
 }
 
