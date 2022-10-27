@@ -284,7 +284,7 @@ unsafe fn reflet_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 25.0);
-    if WorkModule::is_flag(boma,  *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) {
+    if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 27.0);
