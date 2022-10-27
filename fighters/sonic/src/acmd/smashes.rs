@@ -77,8 +77,8 @@ unsafe fn sonic_attack_hi4_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("kneer"), 16.0, 80, 100, 0, 30, 4.5, 0.0, 0.3, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        ATTACK(fighter, 1, 0, Hash40::new("footr"), 16.0, 80, 100, 0, 30, 5.25, 3.0, 0.0, -2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 0, 0, Hash40::new("kneer"), 15.0, 80, 100, 0, 30, 4.5, 0.0, 0.3, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 1, 0, Hash40::new("footr"), 15.0, 80, 100, 0, 30, 5.25, 3.0, 0.0, -2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     wait(lua_state, 4.0);
     if is_excute(fighter) {
@@ -88,6 +88,7 @@ unsafe fn sonic_attack_hi4_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 4.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        FT_MOTION_RATE(fighter, 30.0/(42.0 - 17.0));
     }
 }
 
@@ -127,13 +128,24 @@ unsafe fn sonic_attackhi4_exp(fighter: &mut L2CAgentBase) {
 unsafe fn sonic_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 17, 4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10e97de698), Hash40::new("top"), 0, 13, 0, 0, 50, 90, 1.2, true);
         LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.15, 0.15);
         LAST_EFFECT_SET_RATE(fighter, 2.0);
     }
- 
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), -1.5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
 }
 
 #[acmd_script( agent = "sonic", script = "sound_attackhi4", category = ACMD_SOUND, low_priority )]
@@ -163,25 +175,16 @@ unsafe fn sonic_attack_hi4_sound(fighter: &mut L2CAgentBase) {
 unsafe fn sonic_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
     if is_excute(fighter) {
-        MotionModule::set_rate(boma, 2.0);
+        FT_MOTION_RATE(fighter, 4.0/10.0);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
-        MotionModule::set_rate(boma, 1.0);
-    }
-    frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, 2.0);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1.0);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 16.0/(32.0 - 10.0));
         ATTACK(fighter, 0, 0, Hash40::new("hip"), 15.0, 361, 96, 0, 40, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATTACK(fighter, 1, 0, Hash40::new("kneer"), 15.0, 361, 96, 0, 40, 6.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATTACK(fighter, 2, 0, Hash40::new("footr"), 15.0, 361, 96, 0, 40, 6.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -195,10 +198,11 @@ unsafe fn sonic_attack_lw4_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 32.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        FT_MOTION_RATE(fighter, 28.0/(54.0 - 32.0));
     }
-    frame(lua_state, 66.0);
+    frame(lua_state, 54.0);
     if is_excute(fighter) {
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
+        FT_MOTION_RATE(fighter, 1.0);
     }
     
 }
@@ -207,6 +211,10 @@ unsafe fn sonic_attack_lw4_game(fighter: &mut L2CAgentBase) {
 unsafe fn sonic_attack_lw4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 15, 4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new_raw(0x0d6dd4defe), Hash40::new_raw(0x0d6dd4defe), Hash40::new("top"), 0.0, 6.0, 0, 0, 0, -7, 1.6, true, *EF_FLIP_YZ);
