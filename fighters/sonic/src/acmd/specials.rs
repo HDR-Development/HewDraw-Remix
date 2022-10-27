@@ -136,8 +136,6 @@ unsafe fn sonic_special_n_hit_effect(fighter: &mut L2CAgentBase) {
 unsafe fn sonic_special_n_landing(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-frame(lua_state, 1.0);
-FT_MOTION_RATE(fighter, 0.4);
 }
 
 pub fn install() {
