@@ -126,6 +126,47 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "murabito", script = "game_catch" , category = ACMD_GAME , low_priority)]
+unsafe fn murabito_catch_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter){
+        CATCH(fighter, 0, Hash40::new("top"), 5.0, 0.0, 5.5, 4.0, Some(0.0), Some(5.5), Some(14.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
+        CATCH(fighter, 1, Hash40::new("top"), 2.5, 0.0, 5.5, 1.5, Some(0.0), Some(5.5), Some(16.5), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_A);    
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 0.0, 20, 0, 0, 20, 4.6, 0.0, 5.5, 4.2, Some(0.0), Some(5.5), Some(13.8), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        ENABLE_AREA(fighter, *FIGHTER_MURABITO_AREA_KIND_SEARCH_ITEM_CATCH);
+    }
+    game_CaptureCutCommon(fighter);
+    for _ in 0..3 {
+        if is_excute(fighter) {
+            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+                AttackModule::clear_all(boma);
+            }
+        }
+        wait(lua_state, 1.0);
+    }
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        UNABLE_AREA(fighter, *FIGHTER_MURABITO_AREA_KIND_SEARCH_ITEM_CATCH);
+    }
+    frame(lua_state, 43.0);
+    if is_excute(fighter) {
+        ArticleModule::remove_exist(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_BUTTERFLYNET, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -137,6 +178,7 @@ pub fn install() {
         murabito_bullet_shoot_f_game,
         murabito_floweropt_throwed_game,
         murabito_clayrocket_fly_game,
+        murabito_catch_game,
     );
 }
 
