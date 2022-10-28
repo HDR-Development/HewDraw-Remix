@@ -115,4 +115,5 @@
   <float hash="escape_penalty_motion_rate">0</float>
   <float hash="escape_f_penalty_motion_rate">0</float>
   <float hash="escape_b_penalty_motion_rate">0</float>
+  <float hash="smash_hold_reaction_mul">1.2</float>
 </struct>
