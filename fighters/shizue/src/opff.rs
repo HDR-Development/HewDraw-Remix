@@ -170,7 +170,7 @@ unsafe fn balloon_dash(fighter: &mut L2CFighterBase) {
 }
 
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    fishing_rod_shield_cancel(boma, status_kind, situation_kind, frame);
+    //fishing_rod_shield_cancel(boma, status_kind, situation_kind, frame);
     reel_in(boma, status_kind, situation_kind, frame);
     lloid_trap_fire_jc(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     boost_ready(boma);
