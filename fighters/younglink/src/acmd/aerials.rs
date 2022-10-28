@@ -200,7 +200,7 @@ unsafe fn younglink_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         // slow rate to 0.5x so that the move lasts MUCH longer
         FT_MOTION_RATE(fighter, 5.000);
     }
-    frame(lua_state, 68.0);
+    frame(lua_state, 60.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
         AttackModule::clear_all(boma);
