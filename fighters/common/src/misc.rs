@@ -11,7 +11,18 @@ use globals::*;
 
 pub fn install() {
     smashline::install_agent_resets!(fighter_reset);
+    //skyline::install_hooks!(
+    //    set_hit_team_hook,
+    //);
 }
+
+/*#[skyline::hook(replace=TeamModule::set_hit_team)]
+unsafe fn set_hit_team_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
+    original!()(boma, arg2);
+    if (boma.kind() == *ITEM_KIND_BARREL) {
+        return;
+    }
+}*/
 
 #[smashline::fighter_reset]
 pub fn fighter_reset(fighter: &mut L2CFighterCommon) {
