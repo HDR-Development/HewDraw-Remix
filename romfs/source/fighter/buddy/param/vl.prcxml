@@ -32,6 +32,8 @@
       <float hash="start_brake_x_air">0.005</float>
       <float hash="start_speed_y_add_air">0.2</float>
       <float hash="add_speed_y_shoot">0.5</float>
+      <int hash="bakyun_power_down_1_num">10</int>
+      <int hash="bakyun_power_down_2_num">20</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
