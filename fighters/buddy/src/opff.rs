@@ -63,7 +63,6 @@ unsafe fn indicator_breegull_fatigue(fighter: &mut L2CFighterCommon){
 		let sweatRate = if (eggs_shot<eggs_Weakest) {25.0} else {15.0};
 		let sweatSize = if (eggs_shot<eggs_Weakest) {0.625} else {0.9};
 		let modulo = fighter.motion_frame() % sweatRate;
-		println!("{}",modulo);
 		if (modulo<1.0)
 		{
 			EFFECT_FOLLOW(fighter, Hash40::new("buddy_special_s_sweat"), Hash40::new("top"), 0, 8.5, 7.5, 0, 0, 0, sweatSize, true);
