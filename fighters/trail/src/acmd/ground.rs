@@ -101,12 +101,12 @@ unsafe fn sora_attack_12_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 5, 0, Hash40::new("haver"), 3.0, 85, 20, 0, 40, 3.5, 0.0, 9.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_STAB, *ATTACK_REGION_SWORD);
         // Jab lock hitbox
         ATTACK(fighter, 6, 0, Hash40::new("haver"), 3.0, 361, 22, 0, 24, 3.5, 0.0, 0.0, 0.0, Some(0.0), Some(9.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_STAB, *ATTACK_REGION_SWORD);
-        AttackModule::set_add_reaction_frame_revised(boma, 0, 4.0, false);
-        AttackModule::set_add_reaction_frame_revised(boma, 1, 4.0, false);
-        AttackModule::set_add_reaction_frame_revised(boma, 2, 4.0, false);
-        AttackModule::set_add_reaction_frame_revised(boma, 3, 4.0, false);
-        AttackModule::set_add_reaction_frame_revised(boma, 4, 4.0, false);
-        AttackModule::set_add_reaction_frame_revised(boma, 5, 4.0, false);
+        AttackModule::set_add_reaction_frame_revised(boma, 0, -4.0, false);
+        AttackModule::set_add_reaction_frame_revised(boma, 1, -4.0, false);
+        AttackModule::set_add_reaction_frame_revised(boma, 2, -4.0, false);
+        AttackModule::set_add_reaction_frame_revised(boma, 3, -4.0, false);
+        AttackModule::set_add_reaction_frame_revised(boma, 4, -4.0, false);
+        AttackModule::set_add_reaction_frame_revised(boma, 5, -4.0, false);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
