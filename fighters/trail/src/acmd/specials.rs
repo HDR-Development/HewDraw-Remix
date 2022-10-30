@@ -8,7 +8,7 @@ unsafe fn game_specialn3(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
         VarModule::off_flag(boma.object(), vars::trail::status::IS_LAND_CANCEL_THUNDER);
     }
-    frame(lua_state, 18.0);
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
         WorkModule::set_int(boma, 0, *FIGHTER_TRAIL_STATUS_SPECIAL_N3_INT_THUNDER_NUM);
         if !VarModule::is_flag(boma.object(), vars::trail::status::IS_LAND_CANCEL_THUNDER){
@@ -43,7 +43,7 @@ unsafe fn game_specialairn3(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
         }
-    frame(lua_state, 18.0);
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
         WorkModule::set_int(boma, 0, *FIGHTER_TRAIL_STATUS_SPECIAL_N3_INT_THUNDER_NUM);
         ArticleModule::generate_article(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_CLOUD, false, 0);

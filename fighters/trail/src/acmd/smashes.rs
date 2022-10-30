@@ -52,13 +52,21 @@ unsafe fn game_attacklw4(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.5);
+    }
+
+   
     frame(lua_state, 7.0);
     if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
         HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_XLU);
     }
+
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_NORMAL);
@@ -66,8 +74,15 @@ unsafe fn game_attacklw4(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_NORMAL);
         HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
     }
+   
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.5);
+    }
+
     frame(lua_state, 18.0);
     if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 6.0, 2.0);
     }
     frame(lua_state, 20.0);
