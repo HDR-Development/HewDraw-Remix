@@ -31,9 +31,36 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
 unsafe fn set_zen_mode(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if status_kind == *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_LW_SUCCESS {
         WorkModule::on_flag(boma, vars::wiifit::instance::IS_ZEN_MODE);
+        VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 1800);
     }
     else if status_kind == *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_LW_FAILURE {
         WorkModule::off_flag(boma, vars::wiifit::instance::IS_ZEN_MODE);
+        VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 0);
+    }
+}
+
+unsafe fn zen_timer_decrease(boma: &mut BattleObjectModuleAccessor) {
+    if WorkModule::is_flag(boma, vars::wiifit::instance::IS_ZEN_MODE) {
+        if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) > 0 {
+            VarModule::dec_int(boma.object(), vars::common::instance::GIMMICK_TIMER);
+        }
+        else if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) <= 0 {
+            WorkModule::off_flag(boma, vars::wiifit::instance::IS_ZEN_MODE);
+            EffectModule::req_on_joint(
+                boma,
+                Hash40::new("sys_smash_flash"),
+                Hash40::new("head"),
+                &Vector3f::zero(),
+                &Vector3f::zero(),
+                1.5,
+                &Vector3f::zero(),
+                &Vector3f::zero(),
+                false,
+                0,
+                0,
+                0
+            );
+        }
     }
 }
 
@@ -232,6 +259,7 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     nspecial_cancels(boma, status_kind, situation_kind);
     header_cancel(boma, id, status_kind, situation_kind);
     set_zen_mode(boma, status_kind);
+    zen_timer_decrease(boma);
     update_ring(utils::util::get_fighter_common_from_accessor(boma));
 }
 
@@ -246,5 +274,64 @@ pub fn wiifit_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub unsafe fn wiifit_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+    }
+}
+
+#[smashline::weapon_frame_callback]
+pub fn sunbullet_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    unsafe { 
+        if weapon.kind() != WEAPON_KIND_WIIFIT_SUNBULLET {
+            return;
+        }
+        if weapon.is_status(*WEAPON_WIIFIT_SUNBULLET_STATUS_KIND_SHOOT) {
+            let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+            let wiifit = utils::util::get_battle_object_from_id(owner_id);
+            let wiifit_boma = &mut *(*wiifit).module_accessor;
+            let remaining_hitstun = WorkModule::get_float(wiifit_boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
+            if !WorkModule::is_flag(wiifit_boma, vars::wiifit::instance::IS_ZEN_MODE)
+            || wiifit_boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD,
+                                            *FIGHTER_STATUS_KIND_ESCAPE,
+                                            *FIGHTER_STATUS_KIND_ESCAPE,
+                                            *FIGHTER_STATUS_KIND_ESCAPE_F,
+                                            *FIGHTER_STATUS_KIND_ESCAPE_B,
+                                            *FIGHTER_STATUS_KIND_ESCAPE_AIR,
+                                            *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE,
+                                            *FIGHTER_STATUS_KIND_CATCH,
+                                            *FIGHTER_STATUS_KIND_CATCH_DASH,
+                                            *FIGHTER_STATUS_KIND_CATCH_TURN,
+                                            *FIGHTER_STATUS_KIND_CATCH_PULL,
+                                            *FIGHTER_STATUS_KIND_CATCH_WAIT,
+                                            *FIGHTER_STATUS_KIND_CATCH_ATTACK,
+                                            *FIGHTER_STATUS_KIND_CATCH_CUT,
+                                            *FIGHTER_STATUS_KIND_SHOULDERED_DONKEY,
+                                            *FIGHTER_STATUS_KIND_CATCHED_RIDLEY,
+                                            *FIGHTER_STATUS_KIND_CATCHED_REFLET,
+                                            *FIGHTER_STATUS_KIND_CATCHED_GANON,
+                                            *FIGHTER_STATUS_KIND_CATCHED_AIR_GANON,
+                                            *FIGHTER_STATUS_KIND_CATCHED_CUT_GANON,
+                                            *FIGHTER_STATUS_KIND_DAMAGE,
+                                            *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+                                            *FIGHTER_STATUS_KIND_DAMAGE_FALL,
+                                            *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+                                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+                                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+                                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+                                            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+                                            *FIGHTER_STATUS_KIND_DAMAGE_FALL,
+                                            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+                                            *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_N_HOLD,
+                                            *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_N_CANCEL,
+                                            *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_N_JUMP_CANCEL,
+                                            *FIGHTER_STATUS_KIND_THROW])
+            || WorkModule::is_flag(wiifit_boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
+            || WorkModule::is_flag(wiifit_boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
+            || (remaining_hitstun > 0.0){
+                return;
+            }
+
+            if wiifit_boma.is_cat_flag(Cat1::SpecialN) {
+                StatusModule::change_status_force(weapon.module_accessor, *WEAPON_WIIFIT_SUNBULLET_STATUS_KIND_VANISH, false);
+            }
+        }
     }
 }
