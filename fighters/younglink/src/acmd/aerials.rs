@@ -223,7 +223,7 @@ unsafe fn younglink_landing_air_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 12.0/20.0);
+        FT_MOTION_RATE(fighter, 14.0/20.0);
     }
     
 }
