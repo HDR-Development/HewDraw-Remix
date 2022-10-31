@@ -104,6 +104,9 @@ unsafe fn buddy_attack_hi4_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "buddy", script = "effect_attackhi4", category = ACMD_EFFECT )]
 unsafe fn buddy_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 8, 4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -116,6 +119,7 @@ unsafe fn buddy_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -1, 5, 1, -90, 0, 0, 1.2, true);
+        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new_raw(0x1156ac182a), Hash40::new("footr"), 0, -2, 0, 0, 0, 0, 1.4, true, 1.0);
     }
     frame(lua_state, 28.0);
     if is_excute(fighter) {
