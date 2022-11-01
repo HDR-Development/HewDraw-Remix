@@ -23,6 +23,14 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
+unsafe fn elwind1_burn(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
+            // burn an extra bar of Elwind on upB1 (totals 2 bars)
+            WorkModule::dec_int(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
+        }
+    }
+}
 
 // Lengthen sword
 unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
@@ -32,6 +40,7 @@ unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     nspecial_cancels(boma, status_kind, situation_kind);
+    elwind1_burn(fighter);
     sword_length(boma);
 }
 
