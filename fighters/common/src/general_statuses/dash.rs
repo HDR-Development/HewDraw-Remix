@@ -94,7 +94,6 @@ unsafe fn status_DashCommon(fighter: &mut L2CFighterCommon) {
         }
     }
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
-    VarModule::off_flag(fighter.battle_object, vars::common::status::DISABLE_BACKDASH);
 }
 
 
@@ -151,12 +150,6 @@ unsafe extern "C" fn status_dash_main(fighter: &mut L2CFighterCommon) -> L2CValu
 
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon23status_Dash_Main_commonEN3lib8L2CValueE")]
 unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
-    let run_accel_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("run_accel_add"), 0);
-    let run_accel_add = WorkModule::get_param_float(fighter.module_accessor, hash40("run_accel_mul"), 0);
-    let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
-
-    let dash_speed: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0);
-    let run_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("run_speed_max"), 0);
     let dash_stick_x: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dash_stick_x"));
     let stick_x = fighter.global_table[STICK_X].get_f32();
 
@@ -436,12 +429,6 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_DASH_TO_RUN_FRAME) {
         VarModule::off_flag(fighter.battle_object, vars::common::status::IS_DASH_TO_RUN_FRAME);
         VarModule::on_flag(fighter.battle_object, vars::common::status::IS_AFTER_DASH_TO_RUN_FRAME);
-    }
-    
-    // Disables dashbacks when stick falls below threshold
-    // For ease of moonwalking
-    if fighter.global_table[STICK_Y].get_f32() <= -0.5 {
-        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
     }
 
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH)  // if backdash transition term is enabled (it is by default)

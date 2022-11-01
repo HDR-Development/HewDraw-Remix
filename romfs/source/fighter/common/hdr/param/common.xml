@@ -40,4 +40,5 @@
     </struct>
     <float hash="ucf_escape_stick_y">-0.8</float>
     <float hash="ucf_pass_stick_y">-0.675</float>
+    <float hash="moonwalk_disable_dashback_stick_y">-0.5</float>
 </struct>

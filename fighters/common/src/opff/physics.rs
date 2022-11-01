@@ -156,79 +156,10 @@ unsafe fn grab_jump_refresh(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-unsafe fn dash_energy(fighter: &mut L2CFighterCommon) {
-
-    if fighter.is_button_trigger(Buttons::CStickOverride) {
-        let bidou_buttons = &[
-        Buttons::AttackRaw,
-        Buttons::SpecialRaw,
-        Buttons::Smash
-        ];
-
-        for button in bidou_buttons.iter() {
-            if fighter.boma().was_prev_button_on(*button)
-            && ControlModule::get_stick_x(fighter.module_accessor).abs() > 0.0 {
-                if ControlModule::get_stick_x(fighter.module_accessor) * PostureModule::lr(fighter.module_accessor) < 0.0 {
-                    fighter.global_table[CMD_CAT1].assign(&L2CValue::I32(*FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH));
-                }
-                else {
-                    fighter.global_table[CMD_CAT1].assign(&L2CValue::I32(*FIGHTER_PAD_CMD_CAT1_FLAG_DASH));
-                }
-                break;
-            }
-        }
-    }
-    
-    if fighter.is_status(*FIGHTER_STATUS_KIND_DASH) {
-        let dash_stick_x: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dash_stick_x"));
-        let stick_x = fighter.global_table[STICK_X].get_f32();
-
-        if fighter.is_button_release(Buttons::CStickOverride) {
-            // prevent game from thinking you are inputting a dashback on the frame the cstick stops overriding left stick (0.625 -> -1.0)
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH);
-        }
-        if stick_x == 0.0 {
-            // if you return stick to neutral after a cstick dash, allow dashbacks again
-            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
-            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH);
-        }
-
-        if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
-            // late pivots
-            if stick_x.abs() < dash_stick_x
-            && StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_TURN 
-            && StatusModule::prev_status_kind(fighter.module_accessor, 1) == *FIGHTER_STATUS_KIND_DASH { // if you are in a backdash
-                // apply late (F3) pivot energy
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-                app::sv_kinetic_energy::clear_speed(fighter.lua_state_agent);
-                if VarModule::is_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT) {
-                    VarModule::off_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT);
-                    let dash_speed: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0);
-                    let speed_mul = ParamModule::get_float(fighter.object(), ParamType::Common, "late_perfect_pivot_speed_mul");
-                    let pivot_boost = dash_speed * speed_mul * PostureModule::lr(fighter.module_accessor);
-                    fighter.clear_lua_stack();
-                    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, pivot_boost);
-                    app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-                }
-            }
-        }
-
-        // Shield Stop energy
-        if fighter.is_pad_flag(PadFlag::GuardTrigger) && fighter.is_button_off(Buttons::Catch) {
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.0);
-            app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-        }
-    }
-}
-
 pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mut L2CAgent, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     ecb_shifts(boma);
     extra_traction(fighter, boma);
     grab_jump_refresh(boma);
-    dash_energy(fighter);
 
     //WorkModule::unable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_D); //Melee style spike knockdown (courtesey of zabimaru), leaving it commented here just to have it saved somewhere
 }

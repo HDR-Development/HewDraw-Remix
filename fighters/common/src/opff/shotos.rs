@@ -174,7 +174,6 @@ pub unsafe fn shotos_moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
     // } else {
     //     MeterModule::stop_show(fighter.battle_object);
     // }
-    backdash_energy(fighter);
 }
 
 unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
@@ -364,30 +363,5 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     ]) {
         special_cancels(boma);
         return;
-    }
-}
-
-#[utils::export(common::opff)]
-pub unsafe fn backdash_energy(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status_one_of(&[*FIGHTER_RYU_STATUS_KIND_DASH_BACK, *FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, *FIGHTER_DEMON_STATUS_KIND_DASH_BACK]) {
-        let stick_x = fighter.global_table[STICK_X].get_f32();
-
-        if fighter.is_button_release(Buttons::CStickOverride) {
-            // prevent game from thinking you are inputting a dashback on the frame the cstick stops overriding left stick (0.625 -> -1.0)
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH);
-        }
-        if stick_x == 0.0 {
-            // if you return stick to neutral after a cstick dash, allow dashbacks again
-            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
-            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH);
-        }
-        
-        // Shield Stop energy
-        if fighter.is_pad_flag(PadFlag::GuardTrigger) && fighter.is_button_off(Buttons::Catch) {
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.0);
-            app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-        }
     }
 }

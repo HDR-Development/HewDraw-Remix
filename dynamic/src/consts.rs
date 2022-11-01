@@ -213,10 +213,8 @@ pub mod vars {
         pub mod status {
             // flags
 
-            pub const DISABLE_BACKDASH: i32 = 0x1000;
-            pub const IS_MOONWALK: i32 = 0x1001;
-            pub const IS_DASH_TO_RUN_FRAME: i32 = 0x1002;
-            pub const IS_AFTER_DASH_TO_RUN_FRAME: i32 = 0x1003;
+            pub const IS_DASH_TO_RUN_FRAME: i32 = 0x1000;
+            pub const IS_AFTER_DASH_TO_RUN_FRAME: i32 = 0x1001;
 
             pub const ATTACK_DASH_CANCEL_DISABLE: i32 = 0x1000;
             pub const ATTACK_DASH_ENABLE_AIR_FALL: i32 = 0x1001;
