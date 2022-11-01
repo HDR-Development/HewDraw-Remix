@@ -151,9 +151,9 @@ unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *m
         param_6 = 1;
     }
     // The original function calls model_module_joint_global_position_with_offset_hook
-    VarModule::on_flag((*boma).object(), vars::common::instance::IS_GETTING_POSITION_FOR_ECB);
+    if (*boma).is_fighter() { VarModule::on_flag((*boma).object(), vars::common::instance::IS_GETTING_POSITION_FOR_ECB); }
     call_original!(ground_module, param_1, param_2, param_3, param_4, param_5, param_6);
-    VarModule::off_flag((*boma).object(), vars::common::instance::IS_GETTING_POSITION_FOR_ECB);
+    if (*boma).is_fighter() { VarModule::off_flag((*boma).object(), vars::common::instance::IS_GETTING_POSITION_FOR_ECB); }
 }
 
 
