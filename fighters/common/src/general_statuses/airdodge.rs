@@ -77,7 +77,6 @@ unsafe fn status_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn status_EscapeAir_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, vars::common::status::SHOULD_WAVELAND) {
-        fighter.set_situation(L2CValue::I32(*SITUATION_KIND_GROUND));
         return 1.into();
     }
     if !fighter.sub_escape_air_common_main().get_bool() {
@@ -151,67 +150,6 @@ unsafe fn sub_escape_air_common(fighter: &mut L2CFighterCommon) {
         fighter.sub_escape_air_uniq(L2CValue::Bool(false));
     }
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(sub_escape_air_uniq as *const () as _));
-}
-
-unsafe fn force_ground_attach(fighter: &mut L2CFighterCommon) {
-    let id = VarModule::get_int(fighter.battle_object, vars::common::instance::COSTUME_SLOT_NUMBER) as usize;
-    let mut fighter_pos = Vector3f {
-        x: PostureModule::pos_x(fighter.module_accessor),
-        y: PostureModule::pos_y(fighter.module_accessor),
-        z: PostureModule::pos_z(fighter.module_accessor)
-    };
-
-    let mut threshold = ParamModule::get_float(fighter.object(), ParamType::Common, "waveland_distance_threshold");
-    let correction = VarModule::get_float(fighter.object(), vars::common::instance::ECB_Y_OFFSETS);
-    fighter_pos.y += correction;
-    loop {
-        let prev_y_pos = VarModule::get_float(fighter.battle_object, vars::common::instance::Y_POS);
-        let dist = VarModule::get_float(fighter.battle_object, vars::common::instance::GET_DIST_TO_FLOOR);
-        let new_dist = GroundModule::get_distance_to_floor(fighter.module_accessor, &fighter_pos, fighter_pos.y, true);
-        if GroundModule::attach_ground(fighter.module_accessor, false) != 0 { break; }
-        if new_dist == 0.0 {
-            break;
-        }
-        else if new_dist > 0.0 && new_dist <= threshold {
-            fighter_pos.y -= new_dist;
-            PostureModule::set_pos(fighter.module_accessor, &fighter_pos);
-            VarModule::set_float(fighter.battle_object, vars::common::instance::GET_DIST_TO_FLOOR, new_dist);
-        }
-        else {
-            //println!("break");
-            if prev_y_pos < fighter_pos.y {
-                fighter_pos.y -= ((fighter_pos.y - prev_y_pos) + dist);
-            }
-            else {
-                fighter_pos.y -= (dist - (prev_y_pos - fighter_pos.y));
-            }
-            PostureModule::set_pos(fighter.module_accessor, &fighter_pos);
-            GroundModule::attach_ground(fighter.module_accessor, false);
-            break;
-        }
-    }
-}
-
-#[deprecated(since="0.6.30", note="please use `handle_waveland` instead")]
-unsafe fn sub_escape_air_waveland_check(fighter: &mut L2CFighterCommon) {
-    if VarModule::is_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET) {
-        let mut fighter_pos = Vector3f {
-            x: PostureModule::pos_x(fighter.module_accessor),
-            y: PostureModule::pos_y(fighter.module_accessor),
-            z: PostureModule::pos_z(fighter.module_accessor),
-        };
-        let mut threshold = ParamModule::get_float(fighter.object(), ParamType::Common, "waveland_distance_threshold");
-        fighter_pos.y += VarModule::get_float(fighter.object(), vars::common::instance::ECB_Y_OFFSETS);
-        VarModule::set_float(fighter.battle_object, vars::common::instance::Y_POS, fighter_pos.y);
-        VarModule::set_float(fighter.battle_object, vars::common::instance::GET_DIST_TO_FLOOR, GroundModule::get_distance_to_floor(fighter.module_accessor, &fighter_pos, fighter_pos.y, true));
-        let dist = VarModule::get_float(fighter.battle_object, vars::common::instance::GET_DIST_TO_FLOOR);
-        //println!("dist: {}", dist);
-        if 0.0 <= dist && dist <= threshold {
-            //println!("should_waveland");
-            fighter_pos.y -= dist;
-            PostureModule::set_pos(fighter.module_accessor, &fighter_pos);
-        }
-    }
 }
 
 // custom substatus for airdodges
@@ -495,9 +433,6 @@ unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterC
                 );
                 return 1.into();
             }
-        }
-        if situation_kind != *SITUATION_KIND_GROUND {
-            fighter.set_situation(L2CValue::I32(*SITUATION_KIND_GROUND));
         }
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
         return 1.into();
