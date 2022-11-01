@@ -13,64 +13,6 @@ use smash::hash40;
 use smash::phx::Hash40;
 use smash_script::{self, *, macros::*};
 
-pub mod groups {
-    pub const SMALL: i32 = 0;
-    pub const MEDIUM: i32 = 1;
-    pub const LARGE: i32 = 2;
-    pub const XLARGE: i32 = 3;
-    pub const XXLARGE: i32 = 4;
-}
-
-
-/// Shifts fighter's ECB (Environment Collision Box) rhombus up to around their knees when they are in the air for over
-/// a certain amount of frames *and* they are in the proper status
-unsafe fn ecb_shifts(boma: &mut BattleObjectModuleAccessor) {
-    if !smash::app::sv_information::is_ready_go() {
-        VarModule::set_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS, 0.0);
-        return;
-    }
-
-    let mut offset = 0.0;
-    if !(*boma).is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_ENTRY,
-        *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
-        *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
-        *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
-        *FIGHTER_STATUS_KIND_THROWN])
-    && boma.is_situation(*SITUATION_KIND_AIR)
-    {
-        if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) >= ParamModule::get_int(boma.object(), ParamType::Common, "ecb_shift_air_trans_frame") {
-            let group = ParamModule::get_int(boma.object(), ParamType::Shared, "ecb_group_shift");
-            
-            let mut sh_amount = 0.0;
-            match group {
-                groups::SMALL   => sh_amount = ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.small"),
-                groups::MEDIUM  => sh_amount = ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.medium"),
-                groups::LARGE   => sh_amount = ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.large"),
-                groups::XLARGE  => sh_amount = ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.x_large"),
-                groups::XXLARGE => sh_amount = ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.xx_large"),
-                _ => panic!("malformed parammodule file! unknown group number for ecb shift: {}", group.to_string())
-            };
-            
-            //let mut sh_amount = ParamModule::get_float(boma.object(), ParamType::Common, "ecb_group_shift_amount.xx_large");
-            if boma.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR) {
-                sh_amount += ParamModule::get_float(boma.object(), ParamType::Common, "ecb_shift_for_waveland");
-            }
-
-            // this is required for other ecb shift operations to perform correctly.
-            offset = sh_amount;
-        }
-        else {
-            offset = 0.0;
-        }
-
-    } else {
-        offset = 0.0;
-    }
-    VarModule::set_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS, offset);
-    
-}
-
 //=================================================================
 //== EXTRA TRACTION
 //=================================================================
@@ -156,10 +98,18 @@ unsafe fn grab_jump_refresh(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
+unsafe fn plat_cancels(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) {
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL) {
+            GroundModule::clear_pass_floor(fighter.module_accessor);
+        }
+    }
+}
+
 pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mut L2CAgent, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
-    ecb_shifts(boma);
     extra_traction(fighter, boma);
     grab_jump_refresh(boma);
+    plat_cancels(fighter);
 
     //WorkModule::unable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_D); //Melee style spike knockdown (courtesey of zabimaru), leaving it commented here just to have it saved somewhere
 }

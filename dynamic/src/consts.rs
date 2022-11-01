@@ -157,6 +157,8 @@ pub mod vars {
 
             pub const IS_CC_NON_TUMBLE: i32 = 0x0054;
 
+            pub const IS_GETTING_POSITION_FOR_ECB: i32 = 0x0055;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -212,6 +214,7 @@ pub mod vars {
         }
         pub mod status {
             // flags
+            pub const DISABLE_ECB_SHIFT: i32 = 0x10FF;
 
             pub const IS_DASH_TO_RUN_FRAME: i32 = 0x1000;
             pub const IS_AFTER_DASH_TO_RUN_FRAME: i32 = 0x1001;
