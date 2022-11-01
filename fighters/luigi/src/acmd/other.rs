@@ -222,6 +222,16 @@ unsafe fn luigi_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "luigi", script = "sound_catch" , category = ACMD_SOUND , low_priority)]
+unsafe fn luigi_catch_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_luigi_plunger_shoot"));
+    }
+}
+
 #[acmd_script( agent = "luigi_obakyumu", script = "effect_catch" , category = ACMD_EFFECT , low_priority)]
 unsafe fn luigi_obakyumu_catch_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -239,6 +249,7 @@ pub fn install() {
         escape_air_slide_game,
         dash_sound,
         luigi_catch_game,
+        luigi_catch_sound,
         luigi_obakyumu_catch_effect,
 		luigi_turn_dash_game,
 	    damageflyhi_sound,
