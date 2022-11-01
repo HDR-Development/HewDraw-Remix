@@ -646,6 +646,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const IS_NOT_QUICK_RELEASE: i32 = 0x1100;
+            pub const IS_DETACH_BOOST: i32 = 0x1101;
         }
     }
 
