@@ -9,7 +9,7 @@ unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.5);
     }
-    frame(lua_state, 8.0);
+    frame(lua_state, 6.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
     }
