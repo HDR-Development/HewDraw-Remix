@@ -18,7 +18,7 @@ jobs:
         uses: lewagon/wait-on-check-action@v1.2.0
         with:
           ref: HEAD^
-          check-name: build_nightly
+          running-workflow-name: 'build_nightly'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
 
