@@ -375,7 +375,8 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
             }
             // Dashback
             let dashback_input = if reset_type == Dash {
-                ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0
+                ControlModule::get_stick_x(boma) * PostureModule::lr(boma) <= ParamModule::get_float(boma.object(), ParamType::Common, "dashback_stick_x")
+                && ControlModule::get_flick_x(boma) <= WorkModule::get_param_int(boma, hash40("common"), hash40("dash_flick_x"))
             } else {
                 ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0
             };

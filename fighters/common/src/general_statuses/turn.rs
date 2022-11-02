@@ -62,15 +62,7 @@ unsafe extern "C" fn status_turn_main(fighter: &mut L2CFighterCommon) -> L2CValu
             if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
                 if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0
                 || fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0
-                || VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN)
-                || VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_LATE_PIVOT) {
-                    if stick_x * turn_work_lr >= dash_stick_x {
-                        if MotionModule::frame(fighter.module_accessor) >= 1.0 {
-                            //println!("backdash in turn");
-                            VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
-                            interrupt!(fighter, FIGHTER_STATUS_KIND_TURN, true);
-                        }
-                    }
+                || VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN) {
 
                     if stick_x * -1.0 * turn_work_lr >= dash_stick_x {
                         if MotionModule::frame(fighter.module_accessor) >= 1.0 {

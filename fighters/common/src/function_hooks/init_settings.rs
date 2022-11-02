@@ -41,7 +41,6 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
             if is_underneath_floor != 0 {
                 pos.y = out_pos.y + 0.01;
                 PostureModule::set_pos(boma, &pos);
-                GroundModule::attach_ground(boma, false);
             }
         }
         // Resets your airtime counter when leaving the below statuses

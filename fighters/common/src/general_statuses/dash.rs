@@ -419,7 +419,8 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     }
 
     let is_dash_input: bool = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0;
-    let is_backdash_input: bool = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0;
+    let is_backdash_input: bool = fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor) <= ParamModule::get_float(fighter.object(), ParamType::Common, "dashback_stick_x")
+                                && fighter.global_table[FLICK_X].get_i32() <= WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("dash_flick_x"));
 
     if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_AFTER_DASH_TO_RUN_FRAME)  // if after dash-to-run transition frame
     && WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("run_stick_x")) <= fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor)  // AND stick_x is >= run threshold

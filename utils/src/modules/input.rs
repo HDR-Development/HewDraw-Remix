@@ -432,8 +432,10 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
             ControlModule::get_button((*input_module.owner).module_accessor)
         )
     };
+
     unsafe {
         // Allow Aidou with only A button held
+        // Also extends directional inputs for Tilt Stick Aidou
         if (*input_module.owner).was_prev_button_on(Buttons::AttackAll)
         && triggered_buttons.intersects(Buttons::CStickOn) {  // smash stick input
             let stick_x = ControlModule::get_stick_x((*input_module.owner).module_accessor);
@@ -454,6 +456,7 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
             ControlModule::reset_flick_y((*input_module.owner).module_accessor);
         }
     }
+
     // TiltAttack cat flag
     let tilt_attack_offset = CatHdr::TiltAttack.bits().trailing_zeros() as usize;
     if triggered_buttons.intersects(Buttons::TiltAttack) {
