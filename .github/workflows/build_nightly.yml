@@ -13,7 +13,15 @@ jobs:
       version: ${{ steps.push_tag.outputs.version }}
       changelog: ${{ steps.github_changelog.outputs.changelog }}
     steps:
-  
+      
+      - name: Wait for previous builds to succeed
+        uses: lewagon/wait-on-check-action@v1.2.0
+        with:
+          ref: HEAD^
+          check-name: build_nightly
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
+
       # tag push
       - uses: jefflinse/pr-semver-bump@v1
         name: Bump and Tag Version
