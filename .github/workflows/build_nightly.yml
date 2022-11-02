@@ -5,23 +5,29 @@ on:
       - dev
 
 jobs:
+  # wait for any previous nightlies to complete
+  wait_for_previous_builds:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+    steps:
+      - name: checkout version
+        uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
+      - uses: ahmadnassri/action-workflow-queue@v1
+
+  # bump the version and build the changelog
   version_and_changelog:
     runs-on: ubuntu-latest
+    needs: version_and_changelog
     env:
       GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
     outputs: 
       version: ${{ steps.push_tag.outputs.version }}
       changelog: ${{ steps.github_changelog.outputs.changelog }}
     steps:
-      
-      - name: Wait for previous builds to succeed
-        uses: lewagon/wait-on-check-action@v1.2.0
-        with:
-          ref: HEAD^
-          running-workflow-name: 'build_nightly'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 10
-
+  
       # tag push
       - uses: jefflinse/pr-semver-bump@v1
         name: Bump and Tag Version
