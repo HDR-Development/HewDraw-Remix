@@ -387,6 +387,10 @@ unsafe fn special_air_lw(fighter: &mut L2CAgentBase) {
         //}
         MotionModule::set_rate(boma, 0.67);
     }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        MotionModule::set_rate(boma, 1.0);
+    }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         MotionModule::set_rate(boma, 0.5);
@@ -400,7 +404,7 @@ unsafe fn special_air_lw(fighter: &mut L2CAgentBase) {
         CATCH(fighter, 1, Hash40::new("top"), 7.0, 0.0, 10.0, 13.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
         CATCH(fighter, 2, Hash40::new("top"), 8.0, 0.0, 10.0, 13.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_A);
     }
-    wait(lua_state, 0.7);
+    wait(lua_state, 0.5);
     if is_excute(fighter) {
         grab!(fighter, MA_MSC_CMD_GRAB_CLEAR_ALL);
         MotionModule::set_rate(boma, 6.0);

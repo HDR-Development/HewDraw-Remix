@@ -116,4 +116,15 @@
   <float hash="escape_f_penalty_motion_rate">0</float>
   <float hash="escape_b_penalty_motion_rate">0</float>
   <float hash="smash_hold_reaction_mul">1.2</float>
+  <float hash="shouldered_frame_add">50</float>
+
+  <!-- dk cargo carry: -->
+  <!-- flat amount of clatter added when you enter cargo carry -->
+  <float hash="shouldered_frame_add">50</float>
+  <!-- additional clatter added when entering cargo = shouldered_frame_mul * percent -->
+  <float hash="shouldered_frame_mul">1.5</float>
+  <!-- clatter removal due to mashing -->
+  <float hash="shouldered_cratter_frame">10</float>
+  <!-- clatter removal due to mashing in the air -->
+  <float hash="shouldered_cratter_frame_air">13</float>
 </struct>
