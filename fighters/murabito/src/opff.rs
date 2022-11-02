@@ -5,7 +5,7 @@ use globals::*;
 
 unsafe fn sapling_special_cancel(fighter: &mut L2CFighterCommon) {
     let boma = fighter.boma();
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_LW3, *FIGHTER_STATUS_KIND_ATTACK_LW4])
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_LW4])
     && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
     && !fighter.is_in_hitlag()
     && fighter.is_cat_flag(Cat1::SpecialLw)
