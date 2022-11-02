@@ -45,7 +45,7 @@ jobs:
         if: steps.is_character.outputs.is_character == 'yes' && steps.approval.outputs.comment-id == 0
         with:
           header: explain
-          hide_and_recreate: true
+          recreate: true: true
           hide_classify: "OUTDATED"
           message: |
             This Pull Request is labeled as a character change, but has not yet been approved by balance backroom. Please have patience, and balance backroom will discuss and provide feedback when available.
@@ -54,7 +54,7 @@ jobs:
         if: steps.is_character.outputs.is_character == 'yes' && steps.approval.outputs.comment-id != 0
         with:
           header: explain
-          hide_and_recreate: true
+          recreate: true: true
           hide_classify: "OUTDATED"
           message: |
             This Pull Request has been approved by balance backroom.
@@ -63,8 +63,7 @@ jobs:
         if: steps.is_character.outputs.is_character != 'yes'
         with:
           header: explain
-          hide: true
-          hide_classify: 'OUTDATED'
+          delete: true
           
       - name: determine if approved
         if: steps.approval.outputs.comment-id == 0 && steps.is_character.outputs.is_character == 'yes'
