@@ -20,7 +20,7 @@ jobs:
   # bump the version and build the changelog
   version_and_changelog:
     runs-on: ubuntu-latest
-    needs: version_and_changelog
+    needs: wait_for_previous_builds
     env:
       GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
     outputs: 
