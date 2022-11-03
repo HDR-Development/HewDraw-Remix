@@ -387,7 +387,7 @@ unsafe fn special_air_lw(fighter: &mut L2CAgentBase) {
         //}
         MotionModule::set_rate(boma, 0.67);
     }
-    frame(lua_state, 8.0);
+    frame(lua_state, 7.0);
     if is_excute(fighter) {
         MotionModule::set_rate(boma, 1.0);
     }
