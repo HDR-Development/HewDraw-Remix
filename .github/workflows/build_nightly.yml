@@ -53,6 +53,7 @@ jobs:
           stripHeaders: true
           verbose: false
           issuesWoLabels: false
+          maxIssues: 300
           token: ${{ secrets.RELEASE_TOKEN }}
 
       - name: Upload changelog
