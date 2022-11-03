@@ -90,8 +90,28 @@ unsafe fn murabito_attack_lw3_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         ArticleModule::remove(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_WEEDS, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 78, 70, 0, 60, 6.0, 0.0, 3.0, 2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 89, 70, 0, 60, 6.0, 0.0, 3.0, 12.0, Some(0.0), Some(3.0), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+        let mut crit_flag = false;
+        if (ArticleModule::is_exist(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_SPROUT)) {
+            // Find the sapling, and get it's position
+            let sprout_article = ArticleModule::get_article(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_SPROUT);
+            let object_id = smash::app::lua_bind::Article::get_battle_object_id(sprout_article) as u32;
+            let article_boma = sv_battle_object::module_accessor(object_id);
+            let sprout_pos = *PostureModule::pos(article_boma); // stage pos of the sapling
+            let char_pos = *PostureModule::pos(boma);           // stage pos of villager
+            let offset = Vector3f::new(4.5 * PostureModule::lr(boma), 0.0, 0.0);    // offest, in case we want to move the zone
+            if ((sprout_pos.x - (char_pos.x + offset.x)).abs() < 9.0 && (sprout_pos.y - (char_pos.y + offset.y)).abs() < 4.5) {
+                // remove the sapling, and use crit hitboxes
+                ArticleModule::remove(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_SPROUT, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+                crit_flag = true;
+            }
+        }
+        if (crit_flag) {
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 18.0, 78, 70, 0, 100, 6.0, 0.0, 3.0, 2.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 18.0, 89, 70, 0, 100, 6.0, 0.0, 3.0, 12.0, Some(0.0), Some(3.0), Some(2.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
+        } else {
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 78, 70, 0, 60, 6.0, 0.0, 3.0, 2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 89, 70, 0, 60, 6.0, 0.0, 3.0, 12.0, Some(0.0), Some(3.0), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+        }
         AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
     }
     wait(lua_state, 5.0);
