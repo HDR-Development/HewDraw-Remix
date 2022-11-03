@@ -137,7 +137,8 @@ jobs:
           fetch-depth: 0
       - uses: ahmadnassri/action-workflow-queue@v1
         with:
-          delay: 30000
+          delay: 30000 # 30 seconds between retries
+          timeout: 5400000 # 1.5 hour total timeout
 
   ##############  handle the creasion of the full package installation  ##############
   full_package:
