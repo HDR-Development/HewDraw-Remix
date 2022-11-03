@@ -11,5 +11,6 @@ jobs:
         with:
           github-token: '${{ secrets.GITHUB_TOKEN }}'
           valid-labels: 'semver:feature, semver:patch'
+          invalid-labels: 'next beta'
           pull-request-number: '${{ github.event.pull_request.number }}'
           disable-reviews: true
