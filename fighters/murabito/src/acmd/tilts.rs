@@ -75,9 +75,36 @@ unsafe fn murabito_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
+        // START DTilt Sapling Removal Logic...
+        VarModule::off_flag(boma.object(), vars::murabito::instance::IS_TILT_LW_SAPLING_PULL);
+        VarModule::set_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_X, 0.0);
+        VarModule::set_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Y, 0.0);
+        VarModule::set_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Z, 0.0);
+        // If a sapling exists
+        if (ArticleModule::is_exist(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_SPROUT)) {
+            // Find the sapling's BOMA
+            let sprout_article = ArticleModule::get_article(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_SPROUT);
+            let object_id = smash::app::lua_bind::Article::get_battle_object_id(sprout_article) as u32;
+            let article_boma = sv_battle_object::module_accessor(object_id);
+            let sprout_pos = *PostureModule::pos(article_boma); // stage pos of the sapling
+            let char_pos = *PostureModule::pos(boma);           // stage pos of villager
+            let offset = Vector3f::new(4.5 * PostureModule::lr(boma), 0.0, 0.0);    // offest, in case we want to move the zone
+            // Check if the sapling is in range
+            if ((sprout_pos.x - (char_pos.x + offset.x)).abs() < 9.0 && (sprout_pos.y - (char_pos.y + offset.y)).abs() < 4.5) {
+                VarModule::on_flag(boma.object(), vars::murabito::instance::IS_TILT_LW_SAPLING_PULL);
+                VarModule::set_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_X, sprout_pos.x);
+                VarModule::set_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Y, sprout_pos.y);
+                VarModule::set_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Z, sprout_pos.z);
+            }
+        }
+        // ... END Dtilt Sapling Removal Logic
+
         FT_MOTION_RATE(fighter, 0.746);
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 2.0, 4.0);
-        ArticleModule::generate_article(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_WEEDS, true, 0);
+        // If the flag is not set, generate weeds
+        if !VarModule::is_flag(boma.object(), vars::murabito::instance::IS_TILT_LW_SAPLING_PULL) {
+            ArticleModule::generate_article(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_WEEDS, true, 0);
+        }
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
@@ -89,26 +116,13 @@ unsafe fn murabito_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        ArticleModule::remove(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_WEEDS, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-        let mut crit_flag = false;
-        if (ArticleModule::is_exist(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_SPROUT)) {
-            // Find the sapling, and get it's position
-            let sprout_article = ArticleModule::get_article(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_SPROUT);
-            let object_id = smash::app::lua_bind::Article::get_battle_object_id(sprout_article) as u32;
-            let article_boma = sv_battle_object::module_accessor(object_id);
-            let sprout_pos = *PostureModule::pos(article_boma); // stage pos of the sapling
-            let char_pos = *PostureModule::pos(boma);           // stage pos of villager
-            let offset = Vector3f::new(4.5 * PostureModule::lr(boma), 0.0, 0.0);    // offest, in case we want to move the zone
-            if ((sprout_pos.x - (char_pos.x + offset.x)).abs() < 9.0 && (sprout_pos.y - (char_pos.y + offset.y)).abs() < 4.5) {
-                // remove the sapling, and use crit hitboxes
-                ArticleModule::remove(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_SPROUT, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-                crit_flag = true;
-            }
-        }
-        if (crit_flag) {
+        // If the flag is set, use special hitboxes
+        if VarModule::is_flag(boma.object(), vars::murabito::instance::IS_TILT_LW_SAPLING_PULL) {
+            ArticleModule::remove(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_SPROUT, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
             ATTACK(fighter, 0, 0, Hash40::new("top"), 18.0, 78, 70, 0, 100, 6.0, 0.0, 3.0, 2.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
             ATTACK(fighter, 1, 0, Hash40::new("top"), 18.0, 89, 70, 0, 100, 6.0, 0.0, 3.0, 12.0, Some(0.0), Some(3.0), Some(2.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
         } else {
+            ArticleModule::remove(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_WEEDS, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
             ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 78, 70, 0, 60, 6.0, 0.0, 3.0, 2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
             ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 89, 70, 0, 60, 6.0, 0.0, 3.0, 12.0, Some(0.0), Some(3.0), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         }
@@ -129,11 +143,63 @@ unsafe fn murabito_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "murabito", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
+unsafe fn murabito_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        // If the flag is set, use different effects
+        if VarModule::is_flag(boma.object(), vars::murabito::instance::IS_TILT_LW_SAPLING_PULL) {
+            //
+        } else {
+            EFFECT(fighter, Hash40::new("murabito_soil"), Hash40::new("top"), 7.0, 0.0, 0.5, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
+        }
+    }
+
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        // If the flag is set, use different effects
+        if VarModule::is_flag(boma.object(), vars::murabito::instance::IS_TILT_LW_SAPLING_PULL) {
+            // generate pluck effects as pos of sapling
+            let char_pos = *PostureModule::pos(boma);   // stage pos of villager
+            let pos_x = PostureModule::lr(boma) * (VarModule::get_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_X) - char_pos.x);
+            let pos_y = VarModule::get_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Y) - char_pos.y;
+            let pos_z = VarModule::get_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Z) - char_pos.z;
+            LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+            EFFECT(fighter, Hash40::new("murabito_grass"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
+            EFFECT(fighter, Hash40::new("sys_bomb_a"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);            
+        } else {
+            LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 1.0, 0.5, 0.5, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+            EFFECT(fighter, Hash40::new("murabito_grass"), Hash40::new("top"), 1.0, 0, 0.5, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
+        }
+    }
+}
+
+#[acmd_script( agent = "murabito", script = "sound_attacklw3" , category = ACMD_SOUND , low_priority)]
+unsafe fn murabito_attack_lw3_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(boma.object(), vars::murabito::instance::IS_TILT_LW_SAPLING_PULL) {
+            PLAY_SE(fighter, Hash40::new("se_murabito_special_s04"));
+        } else {
+            PLAY_SE(fighter, Hash40::new("se_murabito_attackhard_l01"));
+        }
+    }
+}
+
+
 pub fn install() {
     install_acmd_scripts!(
         murabito_attack_s3_s_game,
         murabito_attack_hi3_game,
         murabito_attack_lw3_game,
+        murabito_attack_lw3_effect,
+        murabito_attack_lw3_sound,
     );
 }
 
