@@ -158,11 +158,12 @@ unsafe fn sonic_attack_hi4_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         STOP_SE(fighter, Hash40::new("se_common_smash_start"));
+        PLAY_SE(fighter, Hash40::new_raw(0x1651c5e760));
     }
     wait(lua_state, 4.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("vc_sonic_attack06"));
-        PLAY_SE(fighter, Hash40::new_raw(0x1031b0368f));
+        PLAY_STATUS(fighter, Hash40::new("se_sonic_smash_l01"));
         //PLAY_SE(fighter, Hash40::new("se_sonic_smash_h01"));
     }
     wait(lua_state, 27.0);

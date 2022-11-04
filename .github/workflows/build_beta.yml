@@ -49,6 +49,7 @@ jobs:
         sinceTag: ${{ steps.get_last_beta.outputs.tag_name }}
         stripHeaders: true
         token: ${{ secrets.GITHUB_TOKEN  }}
+        maxIssues: 500
         verbose: false
         issuesWoLabels: false
         compareLink: false
