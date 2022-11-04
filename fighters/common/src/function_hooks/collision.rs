@@ -116,8 +116,40 @@ unsafe fn ground_module_update_hook(ground_module: u64) {
 #[skyline::hook(offset = 0x45f6c0)]
 unsafe fn ground_module_update_rhombus_sub(ground_module: u64, param_2: u64, param_3: *mut Vector4f) {
     let boma = *((ground_module + 0x20) as *mut *mut BattleObjectModuleAccessor);
-    // The original function calls ground_module_ecb_point_calc_hook
-    call_original!(ground_module, param_2, param_3);
+    // This routine corrects your position upon landing
+    // Otherwise, characters will appear stuck halfway into the ground on the first frame of landing
+    if (*boma).is_fighter() {
+        let prev_pos = *PostureModule::prev_pos(boma);
+        let prev_ecb_bottom_y_offset = VarModule::get_float((*boma).object(), vars::common::instance::ECB_BOTTOM_Y_OFFSET);
+        let prev_ecb_bottom_pos_y = prev_pos.y + prev_ecb_bottom_y_offset;
+        let mut prev_ground_pos = Vector2f::zero();
+        GroundModule::line_segment_check(boma, &Vector2f::new(prev_pos.x, prev_ecb_bottom_pos_y), &Vector2f::new(prev_pos.x, prev_ecb_bottom_pos_y - 100.0), &Vector2f::zero(), &mut prev_ground_pos, true);
+
+        // The original function calls ground_module_ecb_point_calc_hook
+        call_original!(ground_module, param_2, param_3);
+
+        let pos = *PostureModule::pos(boma);
+        let ecb_bottom_pos_y = pos.y + (*param_3.add(1)).y;
+        // (*param_3.add(1)).y is your ECB bottom's vertical offset from your base position (AKA your vertical ECB shift)
+        if (*param_3.add(1)).y != 0.0 {
+            let mut ground_pos = Vector2f::zero();
+            let is_underneath_floor_stage = GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, ecb_bottom_pos_y), &Vector2f::new(pos.x, ecb_bottom_pos_y + 100.0), &Vector2f::zero(), &mut ground_pos, false);
+            let is_underneath_floor_any = GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, ecb_bottom_pos_y), &Vector2f::new(pos.x, ecb_bottom_pos_y + 100.0), &Vector2f::zero(), &mut ground_pos, true);
+
+            if ecb_bottom_pos_y < prev_ecb_bottom_pos_y  // if your ECB was moving downwards
+            && ((is_underneath_floor_any != 0 && is_underneath_floor_stage == 0 && !GroundModule::is_passable_check(boma))  // if you were holding down to pass through a platform
+                || is_underneath_floor_stage != 0)  // or you touched stage
+            && (prev_ground_pos.y - ground_pos.y).abs() < 1.0  // if the same surface that was under your ECB bottom on the previous frame is now above your ECB bottom on the current frame
+            {
+                // Reset your ECB shift to 0.0
+                (*param_3.add(1)).y = 0.0;
+            }
+        }
+        VarModule::set_float((*boma).object(), vars::common::instance::ECB_BOTTOM_Y_OFFSET, (*param_3.add(1)).y);
+    }
+    else {
+        call_original!(ground_module, param_2, param_3);
+    }
 }
 
 
@@ -183,6 +215,7 @@ pub fn install() {
         is_touch_hook,
         is_floor_touch_line_hook,
         get_touch_flag_hook,
+        ground_module_update_rhombus_sub,
         ground_module_ecb_point_calc_hook,
         model_module_joint_global_position_with_offset_hook
     );

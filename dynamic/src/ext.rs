@@ -816,7 +816,7 @@ impl BomaExt for BattleObjectModuleAccessor {
             || WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0);
         if can_snap { // pretty sure it returns a pointer, at least it defo returns a non-0 value if success
             crate::VarModule::on_flag(self.object(), crate::consts::vars::common::status::DISABLE_ECB_SHIFT);
-            PostureModule::set_pos(self, &Vector3f::new(pos.x, out_pos.y + 0.01, pos.z));
+            PostureModule::set_pos(self, &Vector3f::new(pos.x, out_pos.y + 0.1, pos.z));
             GroundModule::attach_ground(self, false);
             true
         } else {

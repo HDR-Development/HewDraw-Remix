@@ -18,32 +18,7 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
     let fix = super::edge_slipoffs::init_settings_edges(boma, situation, arg3, arg4, ground_cliff_check_kind, jostle, keep_flag, keep_int, keep_float, arg10);
 
     if boma.is_fighter() {
-        
-        // Corrects your vertical positioning on landing:
-        // Our aerial ECB shift code currently runs a frame "late"
-        // which causes characters to appear stuck halfway into the ground on the first frame they land
-        // so we need to shift your character's position up to the proper height for that single frame
-        if !boma.is_prev_status_one_of(&[
-            *FIGHTER_STATUS_KIND_DEMO,
-            *FIGHTER_STATUS_KIND_ENTRY,
-            *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
-            *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
-            *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
-            *FIGHTER_STATUS_KIND_THROWN])
-        && boma.is_prev_situation(*SITUATION_KIND_AIR)
-        && boma.is_situation(*SITUATION_KIND_GROUND)
-        && [*SITUATION_KIND_GROUND, *SITUATION_KIND_NONE].contains(&situation.0)
-        {
-            let ecb_center = *GroundModule::get_rhombus(boma, true).add(2);
-            let mut pos = *PostureModule::pos(boma);
-            let mut out_pos = Vector2f::zero();
-            let is_underneath_floor = GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, ecb_center.y), &Vector2f::new(pos.x, pos.y), &Vector2f::zero(), &mut out_pos, true);
-            if is_underneath_floor != 0 {
-                pos.y = out_pos.y + 0.01;
-                PostureModule::set_pos(boma, &pos);
-                GroundModule::attach_ground(boma, false);
-            }
-        }
+
         // Resets your airtime counter when leaving the below statuses
         // Prevents ECB from shifting on f1 after an "ignored" status (those defined below)
         if boma.is_prev_status_one_of(&[
