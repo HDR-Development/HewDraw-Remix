@@ -128,7 +128,6 @@ unsafe fn krool_special_special_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
     ArticleModule::generate_article(boma, *FIGHTER_KROOL_GENERATE_ARTICLE_CROWN, false, 0);
     VisibilityModule::set_int64(boma, Hash40::new("crown").hash as i64, Hash40::new("crown_hide").hash as i64);
-    FT_MOTION_RATE(fighter, 18.0/(64.0-26.0));
     }
     frame(lua_state, 35.0);
     if is_excute(fighter) {
