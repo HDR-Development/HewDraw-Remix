@@ -2,7 +2,7 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">20</float>
+      <float hash="p1_y">25</float>
     </struct>
   </list>
   <struct hash="param_private">
@@ -14,7 +14,7 @@
     <int hash="grimoire_thunder_revival_time">540</int>
     <int hash="grimoire_giga_fire_revival_time">540</int>
     <int hash="grimoire_rizaia_revival_time">780</int>
-    <int hash="thunder_sword_smash_attack_revival_time">20</int>
+    <int hash="thunder_sword_smash_attack_revival_time">0</int>
   </struct>
   <list hash="param_special_hi">
     <struct index="0">

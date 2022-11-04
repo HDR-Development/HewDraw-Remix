@@ -49,6 +49,7 @@ jobs:
         sinceTag: ${{ steps.get_last_beta.outputs.tag_name }}
         stripHeaders: true
         token: ${{ secrets.GITHUB_TOKEN  }}
+        maxIssues: 500
         verbose: false
         issuesWoLabels: false
         compareLink: false
@@ -263,6 +264,8 @@ jobs:
 
     - run: mv upgrade_artifacts/upgrade.zip to-nightly.zip
 
+    - run: mv upgrade_artifacts/deletions.json to_nightly_deletions.json
+
     # get the most recent latest beta
     - id: latest_beta
       uses: pozetroninc/github-action-get-latest-release@master
@@ -278,6 +281,19 @@ jobs:
         prerelease: false
         file_glob: false
         asset_name: to-nightly.zip
+        repo_name: HDR-Development/HDR-Releases
+        tag: ${{ steps.latest_beta.outputs.release }}
+        overwrite: true
+
+    # upload the to_nightly_deletions.json to the beta for the launcher
+    - name: Upload to_nightly_deletions.json to beta
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.RELEASE_TOKEN }}
+        file: to_nightly_deletions.json
+        prerelease: false
+        file_glob: false
+        asset_name: to_nightly_deletions.json
         repo_name: HDR-Development/HDR-Releases
         tag: ${{ steps.latest_beta.outputs.release }}
         overwrite: true

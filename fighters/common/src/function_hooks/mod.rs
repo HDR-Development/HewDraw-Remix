@@ -18,6 +18,8 @@ pub mod jumps;
 pub mod stage_hazards;
 pub mod set_fighter_status_data;
 pub mod attack;
+pub mod collision;
+
 
 pub fn install() {
     energy::install();
@@ -38,6 +40,7 @@ pub fn install() {
     stage_hazards::install();
     set_fighter_status_data::install();
     attack::install();
+    collision::install();
 
     unsafe {
         // Handles getting rid of the kill zoom
@@ -46,5 +49,8 @@ pub fn install() {
         skyline::patching::Patch::in_text(utils::offsets::kill_zoom_throw()).data(KILL_ZOOM_DATA);
         // Changes full hops to calculate vertical velocity identically to short hops
         skyline::patching::Patch::in_text(0x6d2188).data(0x52800015u32);        
+
+        // removes phantoms
+        skyline::patching::Patch::in_text(0x3e6ce8).data(0x14000012u32);
     }
 }

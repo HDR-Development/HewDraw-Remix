@@ -51,6 +51,20 @@ unsafe fn charge_state_decrease(boma: &mut BattleObjectModuleAccessor) {
         }
         if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) <= 0 {
             VarModule::set_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL, 0);
+            EffectModule::req_on_joint(
+                boma,
+                Hash40::new("sys_smash_flash"),
+                Hash40::new("head"),
+                &Vector3f::zero(),
+                &Vector3f::zero(),
+                1.5,
+                &Vector3f::zero(),
+                &Vector3f::zero(),
+                false,
+                0,
+                0,
+                0
+            );
         }
     }
 }
@@ -79,7 +93,7 @@ unsafe fn charge_state_reset(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_WIN,
         *FIGHTER_STATUS_KIND_LOSE,
-        *FIGHTER_STATUS_KIND_ENTRY,]) {
+        *FIGHTER_STATUS_KIND_ENTRY,]) || !sv_information::is_ready_go() {
         VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 0);
         VarModule::set_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL, 0);
         VarModule::set_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_HANDLER, -1);
@@ -119,6 +133,41 @@ unsafe fn discharge_momentum(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn zippy_zap_jump_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
+    if [*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END].contains(&status_kind) && VarModule::is_flag(boma.object(), vars::pichu::instance::IS_CHARGE_ATTACK) {
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag() {
+            if boma.is_input_jump() {
+                if situation_kind == *SITUATION_KIND_AIR {
+                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, true);
+                    }
+                } 
+                else if situation_kind == *SITUATION_KIND_GROUND {
+                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
+                }
+            }
+        }
+    }
+}
+
+// TRAINING MODE
+// Full Meter Gain/Drain via shield during up/down taunt
+unsafe fn charge_training_taunt(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    let mut agent_base = fighter.fighter_base.agent_base;
+    if is_training_mode() {
+        if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
+            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
+                if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 0 { 
+                    let meter_max = ParamModule::get_float(boma.object(), ParamType::Common, "meter_max_damage");
+                    MeterModule::add(boma.object(), meter_max);
+                }
+            }
+        }         
+    }
+}
+    
+
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     charge_state_increase(boma);
     charge_state_decrease(boma);
@@ -126,6 +175,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     charge_state_reset(boma);
     charge_state_effects(boma);
     discharge_momentum(fighter);
+    zippy_zap_jump_cancel(boma, status_kind, situation_kind, cat[0]);
+    charge_training_taunt(fighter, boma, status_kind);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_PICHU )]

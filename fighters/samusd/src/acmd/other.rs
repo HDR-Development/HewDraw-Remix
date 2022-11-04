@@ -54,6 +54,29 @@ unsafe fn samusd_cshot_shoot_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "samusd_cshot", script = "sound_shoot", category = ACMD_SOUND, low_priority)]
+unsafe fn samusd_cshot_shoot_sound (fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        STOP_SE(fighter, Hash40::new("se_samusd_special_n01"));
+        if WorkModule::get_float(boma, *WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_FLOAT_CHARGE) <= 0.25 {
+            PLAY_SE_REMAIN(fighter, Hash40::new("se_samusd_special_n02"));
+        }
+        else if WorkModule::get_float(boma, *WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_FLOAT_CHARGE) <= 0.625 {
+            PLAY_SE_REMAIN(fighter, Hash40::new("se_samusd_special_n03"));
+        }
+        else if WorkModule::get_float(boma, *WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_FLOAT_CHARGE) <= 0.875 {
+            PLAY_SE_REMAIN(fighter, Hash40::new("se_samusd_special_n04"));
+        }
+        else {
+            PLAY_SE_REMAIN(fighter, Hash40::new("se_samusd_special_n05"));
+        }
+    }
+    
+}
+
 #[acmd_script( agent = "samusd_missile", script = "game_homing", category = ACMD_GAME, low_priority)]
 unsafe fn samusd_homing_missile_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -225,6 +248,7 @@ pub fn install() {
         dash_sound,
         turn_dash_game,
         samusd_cshot_shoot_game,
+        samusd_cshot_shoot_sound,
         samusd_homing_missile_game,
         samusd_homing_missile_effect,
         samusd_super_missile_ready_game,

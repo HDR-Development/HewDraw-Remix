@@ -19,39 +19,43 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
 
     if boma.is_fighter() {
         
-        // Handles "fake" ECB shift on landing
-        // Because our aerial ECB shift code currently runs in opff, it runs a frame "late"
+        // Corrects your vertical positioning on landing:
+        // Our aerial ECB shift code currently runs a frame "late"
         // which causes characters to appear stuck halfway into the ground on the first frame they land
-        // so we need to re-shift your character back up to the proper height on that single frame
-        // this is a "fake" ECB shift for 1 frame
-        if !(&[
-            *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
-            *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
-            *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
-            *FIGHTER_STATUS_KIND_CAPTURE_CUT,
-            *FIGHTER_STATUS_KIND_THROWN
-        ]).contains(&StatusModule::prev_status_kind(boma, 1))
-        && !boma.is_prev_status_one_of(&[
-            *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
-            *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
-            *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
-            *FIGHTER_STATUS_KIND_CAPTURE_CUT,
+        // so we need to shift your character's position up to the proper height for that single frame
+        if !boma.is_prev_status_one_of(&[
+            *FIGHTER_STATUS_KIND_DEMO,
             *FIGHTER_STATUS_KIND_ENTRY,
-            *FIGHTER_STATUS_KIND_THROWN,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-            *FIGHTER_STATUS_KIND_DAMAGE_FALL,
-            *FIGHTER_STATUS_KIND_TREAD_DAMAGE_AIR,
-            *FIGHTER_STATUS_KIND_BURY,
-            *FIGHTER_STATUS_KIND_BURY_WAIT
-        ]) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
-        && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND) 
-        && VarModule::get_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS) != 0.0 {
-            boma.shift_ecb_on_landing();
+            *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
+            *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
+            *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
+            *FIGHTER_STATUS_KIND_THROWN])
+        && boma.is_prev_situation(*SITUATION_KIND_AIR)
+        && boma.is_situation(*SITUATION_KIND_GROUND)
+        && [*SITUATION_KIND_GROUND, *SITUATION_KIND_NONE].contains(&situation.0)
+        {
+            let ecb_center = *GroundModule::get_rhombus(boma, true).add(2);
+            let mut pos = *PostureModule::pos(boma);
+            let mut out_pos = Vector2f::zero();
+            let is_underneath_floor = GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, ecb_center.y), &Vector2f::new(pos.x, pos.y), &Vector2f::zero(), &mut out_pos, true);
+            if is_underneath_floor != 0 {
+                pos.y = out_pos.y + 0.01;
+                PostureModule::set_pos(boma, &pos);
+                GroundModule::attach_ground(boma, false);
+            }
+        }
+        // Resets your airtime counter when leaving the below statuses
+        // Prevents ECB from shifting on f1 after an "ignored" status (those defined below)
+        if boma.is_prev_status_one_of(&[
+            *FIGHTER_STATUS_KIND_DEMO,
+            *FIGHTER_STATUS_KIND_ENTRY,
+            *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
+            *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
+            *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
+            *FIGHTER_STATUS_KIND_THROWN])
+        && situation.0 == *SITUATION_KIND_AIR
+        {
+            WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
         }
 
         // Disable wiggle out of tumble flag during damage_fly states

@@ -25,6 +25,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
         };
         if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_younglink_rnd_futtobi01"), Hash40::new("seq_younglink_rnd_futtobi02"));}
     }
+
 }
 
 #[acmd_script( agent = "younglink", script = "sound_damageflylw" , category = ACMD_SOUND , low_priority)]
@@ -51,6 +52,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
         };
         if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_younglink_rnd_futtobi01"), Hash40::new("seq_younglink_rnd_futtobi02"));}
     }
+
 }
 
 #[acmd_script( agent = "younglink", script = "sound_damageflyn" , category = ACMD_SOUND , low_priority)]
@@ -77,6 +79,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
         };
         if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_younglink_rnd_futtobi01"), Hash40::new("seq_younglink_rnd_futtobi02"));}
     }
+
 }
 
 #[acmd_script( agent = "younglink", script = "sound_damageflyroll" , category = ACMD_SOUND , low_priority)]
@@ -93,6 +96,7 @@ unsafe fn damageflyroll_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_FLY_VOICE(fighter, Hash40::new("seq_younglink_rnd_futtobi01"), Hash40::new("seq_younglink_rnd_futtobi02"));
     }
+
 }
 
 #[acmd_script( agent = "younglink", script = "sound_damageflytop" , category = ACMD_SOUND , low_priority)]
@@ -119,6 +123,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
         };
         if play_vc == 0 {PLAY_FLY_VOICE(fighter, Hash40::new("seq_younglink_rnd_futtobi01"), Hash40::new("seq_younglink_rnd_futtobi02"));}
     }
+
 }
 
 #[acmd_script( agent = "younglink", script = "game_appeallwr" , category = ACMD_GAME , low_priority)]
@@ -191,6 +196,7 @@ unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_STEP(fighter, Hash40::new("se_younglink_step_right_m"));
     }
+
 }
 
 #[acmd_script( agent = "younglink", script = "game_turndash" , category = ACMD_GAME , low_priority)]
@@ -218,6 +224,7 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
+
 }
 
 #[acmd_script( agent = "younglink", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
@@ -233,6 +240,22 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
+
+}
+
+#[acmd_script( agent = "younglink_boomerang", script = "game_fly" , category = ACMD_GAME , low_priority)]
+unsafe fn younglink_boomerang_game_fly(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 11.0, 70, 30, 0, 55, 4.3, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -5.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+        AttackModule::enable_safe_pos(boma);
+    }
+    wait(lua_state, 3.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 75, 30, 0, 55, 3.3, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -3.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+    }
+
 }
 
 pub fn install() {
@@ -248,7 +271,9 @@ pub fn install() {
         damageflylw_sound,
         damageflyn_sound,
         damageflyroll_sound,
-        damageflytop_sound
+        damageflytop_sound,
+        younglink_boomerang_game_fly,
     );
+
 }
 
