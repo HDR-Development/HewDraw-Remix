@@ -70,6 +70,7 @@ unsafe fn change_motion_pos_shift_check(boma: &mut BattleObjectModuleAccessor) {
             if is_underneath_floor != 0 {
                 pos.y = out_pos.y + 0.01;
                 PostureModule::set_pos(boma, &pos);
+                GroundModule::attach_ground(boma, false);
             }
         }
     }
