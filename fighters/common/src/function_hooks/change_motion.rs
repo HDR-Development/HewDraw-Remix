@@ -73,6 +73,14 @@ unsafe fn change_motion_pos_shift_check(boma: &mut BattleObjectModuleAccessor) {
                 GroundModule::attach_ground(boma, false);
             }
         }
+
+        if boma.is_prev_situation(*SITUATION_KIND_AIR)
+        && boma.is_situation(*SITUATION_KIND_GROUND)
+        {
+            if KineticModule::get_kinetic_type(boma) == *FIGHTER_KINETIC_TYPE_MOTION {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_MOTION_IGNORE_NORMAL);
+            }
+        }
     }
 }
 

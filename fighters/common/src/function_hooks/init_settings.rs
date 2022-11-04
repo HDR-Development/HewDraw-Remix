@@ -5,7 +5,7 @@ use globals::*;
 //== StatusModule::init_settings
 //=================================================================
 #[skyline::hook(replace=StatusModule::init_settings)]
-unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: smash::app::SituationKind, arg3: i32, arg4: u32,
+unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: smash::app::SituationKind, kinetic_type: i32, arg4: u32,
                              ground_cliff_check_kind: smash::app::GroundCliffCheckKind, jostle: bool,
                              keep_flag: i32, keep_int: i32, keep_float: i32, arg10: i32) -> u64 {
     let id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
@@ -13,9 +13,10 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
     let status_kind = StatusModule::status_kind(boma);
     let situation_kind = StatusModule::situation_kind(boma);
     let mut cliff_check_kind = ground_cliff_check_kind;
+    let mut kinetic_type = kinetic_type.clone();
                                 
     // Call edge_slippoffs init_settings
-    let fix = super::edge_slipoffs::init_settings_edges(boma, situation, arg3, arg4, ground_cliff_check_kind, jostle, keep_flag, keep_int, keep_float, arg10);
+    let fix = super::edge_slipoffs::init_settings_edges(boma, situation, kinetic_type, arg4, ground_cliff_check_kind, jostle, keep_flag, keep_int, keep_float, arg10);
 
     if boma.is_fighter() {
         
@@ -42,6 +43,15 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
                 pos.y = out_pos.y + 0.01;
                 PostureModule::set_pos(boma, &pos);
                 GroundModule::attach_ground(boma, false);
+            }
+        }
+        
+        if boma.is_prev_situation(*SITUATION_KIND_AIR)
+        && boma.is_situation(*SITUATION_KIND_GROUND)
+        && [*SITUATION_KIND_GROUND, *SITUATION_KIND_NONE].contains(&situation.0)
+        {
+            if kinetic_type == *FIGHTER_KINETIC_TYPE_MOTION {
+                kinetic_type = *FIGHTER_KINETIC_TYPE_MOTION_IGNORE_NORMAL;
             }
         }
         // Resets your airtime counter when leaving the below statuses
@@ -154,7 +164,7 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
         VarModule::reset(object, mask);
     }
 
-    original!()(boma, situation, arg3, fix, cliff_check_kind, jostle, keep_flag, keep_int, keep_float, arg10)
+    original!()(boma, situation, kinetic_type, fix, cliff_check_kind, jostle, keep_flag, keep_int, keep_float, arg10)
 }
 
 pub fn install() {
