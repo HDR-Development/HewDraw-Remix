@@ -143,6 +143,7 @@ unsafe fn ground_module_update_rhombus_sub(ground_module: u64, param_2: u64, par
             {
                 // Reset your ECB shift to 0.0
                 (*param_3.add(1)).y = 0.0;
+                WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
             }
         }
         VarModule::set_float((*boma).object(), vars::common::instance::ECB_BOTTOM_Y_OFFSET, (*param_3.add(1)).y);
