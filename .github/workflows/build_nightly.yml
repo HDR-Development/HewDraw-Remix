@@ -54,6 +54,7 @@ jobs:
           verbose: false
           issuesWoLabels: false
           maxIssues: 300
+          stripGeneratorNotice: true
           token: ${{ secrets.RELEASE_TOKEN }}
 
       - name: Upload changelog
