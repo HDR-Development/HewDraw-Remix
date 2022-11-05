@@ -157,6 +157,8 @@ pub mod vars {
 
             pub const IS_CC_NON_TUMBLE: i32 = 0x0054;
 
+            pub const IS_GETTING_POSITION_FOR_ECB: i32 = 0x0055;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -212,6 +214,7 @@ pub mod vars {
         }
         pub mod status {
             // flags
+            pub const DISABLE_ECB_SHIFT: i32 = 0x10FF;
 
             pub const DISABLE_BACKDASH: i32 = 0x1000;
             pub const IS_MOONWALK: i32 = 0x1001;
@@ -646,6 +649,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const IS_NOT_QUICK_RELEASE: i32 = 0x1100;
+            pub const IS_DETACH_BOOST: i32 = 0x1101;
         }
     }
 
