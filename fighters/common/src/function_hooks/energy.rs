@@ -389,7 +389,7 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
             }
             if WorkModule::is_enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH)
             && dashback_input {
-                energy.speed.x *= WorkModule::get_param_float(boma, hash40("common"), hash40("dash_end_speed_mul"));
+                energy.speed.x *= 0.225;
                 break 0.0;
             }
             // Shield Stop
@@ -646,7 +646,7 @@ unsafe fn initialize(energy: &mut FighterKineticEnergyControl, boma: &mut Battle
         },
         Turn | TurnNoStop => {
             energy.speed_max = PaddedVec2::new(
-                WorkModule::get_param_float(boma, smash::hash40("walk_speed_max"), 0),
+                WorkModule::get_param_float(boma, smash::hash40("run_speed_max"), 0),
                 -1.0
             );
             energy.speed_limit = PaddedVec2::new(
