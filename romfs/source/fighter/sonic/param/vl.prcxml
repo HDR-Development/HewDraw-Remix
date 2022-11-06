@@ -7,7 +7,7 @@
   </list>
   <list hash="param_special_n">
     <struct index="0">
-      <int hash="special_n_start_enable_attack_frame">5</int>
+      <int hash="special_n_start_enable_attack_frame">23</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -15,10 +15,19 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="special_hi_jump_air_speed_y_mul">0.93</float>
-      <float hash="special_hi_jump_accel_x_mul">0.7</float>
+      <float hash="special_hi_jump_air_speed_y_mul">0.95</float>
+      <float hash="special_hi_jump_accel_x_mul">1.05</float>
       <float hash="special_hi_jump_stable_speed_x_mul">0.7</float>
-      <int hash="special_hi_landing_frame">20</int>
+      <int hash="special_hi_landing_frame">14</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+ <list hash="param_special_lw">
+    <struct index="0">
+  <float hash="special_lw_dash_attack_power_min">7.0</float>
+  <float hash="special_lw_dash_attack_power_max">8.0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

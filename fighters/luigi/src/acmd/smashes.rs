@@ -19,6 +19,34 @@ unsafe fn game_attacks4hi(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "luigi", script = "effect_attacks4hi" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_attacks4hi(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 7, 8, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FLIP(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0.5, 6.5, 1, -25, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_NONE);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("luigi_smash_thrust"), Hash40::new("luigi_smash_thrust"), Hash40::new("top"), 0.5, 6.5, 1, -25, 0, 0, 1.1, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_elec_s"), Hash40::new("handl"), 3.0, 0.0, 0.0, 0, 90, 90, 0.175, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder"), Hash40::new("handl"), 0.0, 0.0, 0.0, 0, 90, 90, 1.0, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.25);
+        EffectModule::set_scale_last(boma, &Vector3f::new(0.5, 1.0, 0.5));
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_hit_elec_s"), true, true);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_thunder"), false, false);
+    }
+}
+
 #[acmd_script( agent = "luigi", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attacks4(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -40,6 +68,34 @@ unsafe fn game_attacks4(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "luigi", script = "effect_attacks4" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_attacks4(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 7, 8, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FLIP(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0.5, 8, 0, 0, -5, 0, 0.7, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_NONE);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("luigi_smash_thrust"), Hash40::new("luigi_smash_thrust"), Hash40::new("top"), 0.5, 8, 0, 0, -5, 0, 1.1, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_elec_s"), Hash40::new("handl"), 3.0, 0.0, 0.0, 0, 90, 90, 0.175, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder"), Hash40::new("handl"), 0.0, 0.0, 0.0, 0, 90, 90, 1.0, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.25);
+        EffectModule::set_scale_last(boma, &Vector3f::new(0.5, 1.0, 0.5));
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_hit_elec_s"), true, true);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_thunder"), false, false);
+    }
+}
+
 #[acmd_script( agent = "luigi", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attacks4lw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -56,6 +112,34 @@ unsafe fn game_attacks4lw(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     
+}
+
+#[acmd_script( agent = "luigi", script = "effect_attacks4lw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_attacks4lw(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 7, 8, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FLIP(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 8.7, 1, 24, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_NONE);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("luigi_smash_thrust"), Hash40::new("luigi_smash_thrust"), Hash40::new("top"), 0, 8.7, 1, 24, 0, 0, 1.1, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_elec_s"), Hash40::new("handl"), 3.0, 0.0, 0.0, 0, 90, 90, 0.175, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder"), Hash40::new("handl"), 0.0, 0.0, 0.0, 0, 90, 90, 1.0, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.25);
+        EffectModule::set_scale_last(boma, &Vector3f::new(0.5, 1.0, 0.5));
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_hit_elec_s"), true, true);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_thunder"), false, false);
+    }
 }
 
 #[acmd_script( agent = "luigi", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
@@ -115,8 +199,11 @@ unsafe fn game_attacklw4(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         game_attacks4hi,
+        effect_attacks4hi,
         game_attacks4,
+        effect_attacks4,
         game_attacks4lw,
+        effect_attacks4lw,
         game_attackhi4,
         game_attacklw4,
     );
