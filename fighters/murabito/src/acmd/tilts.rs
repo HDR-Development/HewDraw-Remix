@@ -88,9 +88,9 @@ unsafe fn murabito_attack_lw3_game(fighter: &mut L2CAgentBase) {
             let article_boma = sv_battle_object::module_accessor(object_id);
             let sprout_pos = *PostureModule::pos(article_boma); // stage pos of the sapling
             let char_pos = *PostureModule::pos(boma);           // stage pos of villager
-            let offset = Vector3f::new(4.5 * PostureModule::lr(boma), 0.0, 0.0);    // offest, in case we want to move the zone
+            let offset = Vector3f::new(7.0 * PostureModule::lr(boma), 0.0, 0.0);    // offest, in case we want to move the zone
             // Check if the sapling is in range
-            if ((sprout_pos.x - (char_pos.x + offset.x)).abs() < 9.0 && (sprout_pos.y - (char_pos.y + offset.y)).abs() < 4.5) {
+            if ((sprout_pos.x - (char_pos.x + offset.x)).abs() < 8.0 && (sprout_pos.y - (char_pos.y + offset.y)).abs() < 4.5) {
                 VarModule::on_flag(boma.object(), vars::murabito::instance::IS_TILT_LW_SAPLING_PULL);
                 VarModule::set_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_X, sprout_pos.x);
                 VarModule::set_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Y, sprout_pos.y);
@@ -119,12 +119,15 @@ unsafe fn murabito_attack_lw3_game(fighter: &mut L2CAgentBase) {
         // If the flag is set, use special hitboxes
         if VarModule::is_flag(boma.object(), vars::murabito::instance::IS_TILT_LW_SAPLING_PULL) {
             ArticleModule::remove(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_SPROUT, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 18.0, 78, 70, 0, 100, 6.0, 0.0, 3.0, 2.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 18.0, 89, 70, 0, 100, 6.0, 0.0, 3.0, 12.0, Some(0.0), Some(3.0), Some(2.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
+            let char_pos = *PostureModule::pos(boma);   // stage pos of villager
+            let pos_x = PostureModule::lr(boma) * (VarModule::get_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_X) - char_pos.x);
+            let pos_y = VarModule::get_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Y) - char_pos.y;
+            let pos_z = VarModule::get_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Z) - char_pos.z;
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 20.0, 90, 70, 0, 90, 5.5, pos_z, pos_y + 3.5, pos_x - 5.0, Some(pos_z), Some(pos_y + 3.5), Some(pos_x + 5.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
         } else {
             ArticleModule::remove(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_WEEDS, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 78, 70, 0, 60, 6.0, 0.0, 3.0, 2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 89, 70, 0, 60, 6.0, 0.0, 3.0, 12.0, Some(0.0), Some(3.0), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 78, 70, 0, 60, 5.0, 0.0, 3.0, 2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 89, 70, 0, 60, 5.0, 0.0, 3.0, 10.0, Some(0.0), Some(3.0), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         }
         AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
     }
@@ -152,7 +155,11 @@ unsafe fn murabito_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         // If the flag is set, use different effects
         if VarModule::is_flag(boma.object(), vars::murabito::instance::IS_TILT_LW_SAPLING_PULL) {
-            //
+            let char_pos = *PostureModule::pos(boma);   // stage pos of villager
+            let pos_x = PostureModule::lr(boma) * (VarModule::get_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_X) - char_pos.x);
+            let pos_y = VarModule::get_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Y) - char_pos.y;
+            let pos_z = VarModule::get_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Z) - char_pos.z;
+            EFFECT(fighter, Hash40::new("murabito_soil"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
         } else {
             EFFECT(fighter, Hash40::new("murabito_soil"), Hash40::new("top"), 7.0, 0.0, 0.5, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
         }
@@ -169,7 +176,7 @@ unsafe fn murabito_attack_lw3_effect(fighter: &mut L2CAgentBase) {
             let pos_z = VarModule::get_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Z) - char_pos.z;
             LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
             EFFECT(fighter, Hash40::new("murabito_grass"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-            EFFECT(fighter, Hash40::new("sys_bomb_a"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);            
+            EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);            
         } else {
             LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 1.0, 0.5, 0.5, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
             EFFECT(fighter, Hash40::new("murabito_grass"), Hash40::new("top"), 1.0, 0, 0.5, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
