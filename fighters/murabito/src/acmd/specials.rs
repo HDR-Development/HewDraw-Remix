@@ -34,13 +34,17 @@ unsafe fn murabito_special_lw2_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLAG_WATER);
     }
     frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("handr"), 5.0, 69, 80, 0, 70, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_OBJECT);
+    for _ in 0..24 {
+        if is_excute(fighter){
+            if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_GUARD) {
+                WorkModule::off_flag(boma, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLAG_WATER);
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
+                return
+            }
+        }
+        wait(lua_state, 1.0);
     }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
+
     frame(lua_state, 31.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLAG_WATER);
@@ -57,18 +61,21 @@ unsafe fn murabito_special_air_lw2_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLAG_WATER);
     }
     frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("handr"), 5.0, 69, 80, 0, 70, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_OBJECT);
+    for _ in 0..24 {
+        if is_excute(fighter){
+            if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_GUARD) {
+                WorkModule::off_flag(boma, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLAG_WATER);
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
+                return
+            }
+        }
+        wait(lua_state, 1.0);
     }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
+
     frame(lua_state, 31.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLAG_WATER);
     }
-    
 }
 
 #[acmd_script( agent = "murabito", script = "game_speciallw3hit" , category = ACMD_GAME , low_priority)]
