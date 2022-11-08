@@ -11,17 +11,8 @@ unsafe fn gyro_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i
     let boost_fuel_depletion = max_fuel * 0.50;
     if status_kind == *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_LW_END {
         if frame > 10.0 {
-            if situation_kind == *SITUATION_KIND_GROUND {
-                if current_fuel > boost_fuel_depletion {
-                    if boma.is_cat_flag(Cat1::Dash) {
-                        WorkModule::set_float(boma, current_fuel - boost_fuel_depletion, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
-                    }
-                    if boma.is_cat_flag(Cat1::TurnDash) {
-                        WorkModule::set_float(boma, current_fuel - boost_fuel_depletion, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_TURN_DASH, false);
-                    }
-                }
+            if current_fuel > boost_fuel_depletion {
+                boma.check_dash_cancel();
             }
         }
     }
@@ -31,15 +22,7 @@ unsafe fn gyro_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i
 unsafe fn neutral_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
-            if boma.is_input_jump() {
-                if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                    }
-                } else if situation_kind == *SITUATION_KIND_GROUND {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                }
-            }
+            boma.check_jump_cancel();
         }
     }
 }

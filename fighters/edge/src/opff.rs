@@ -18,9 +18,7 @@ unsafe fn limit_blade_rush_jc(boma: &mut BattleObjectModuleAccessor, cat1: i32, 
         //println!("Limit Blade Rush");
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
             //println!("========== Limit Blade Rush hit!");
-            if boma.is_input_jump() {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT,true);
-            }
+            boma.check_jump_cancel();
         }
     }
 }

@@ -8,15 +8,7 @@ unsafe fn jc_light_utilt_hit(boma: &mut BattleObjectModuleAccessor, id: usize, s
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI3 {
         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) && frame > 20.0 {
             if  !VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
-                if boma.is_input_jump() {
-                    if situation_kind == *SITUATION_KIND_AIR {
-                        if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                        }
-                    } else if situation_kind == *SITUATION_KIND_GROUND {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                    }
-                }
+                boma.check_jump_cancel();
             }
         }
     }
@@ -26,15 +18,7 @@ unsafe fn jc_light_utilt_hit(boma: &mut BattleObjectModuleAccessor, id: usize, s
 unsafe fn jc_dtilt_hit(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_LW3 {
         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) && frame > 12.0 {
-            if boma.is_input_jump() {
-                if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                    }
-                } else if situation_kind == *SITUATION_KIND_GROUND {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                }
-            }
+            boma.check_jump_cancel();
         }
     }
 }
@@ -43,11 +27,7 @@ unsafe fn jc_dtilt_hit(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
 unsafe fn blade_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
         if frame > 16.0 {
-            if boma.is_cat_flag(Cat1::AirEscape) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
-                if situation_kind == *SITUATION_KIND_AIR {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
-                }
-            }
+            boma.check_airdodge_cancel();
         }
     }
 }

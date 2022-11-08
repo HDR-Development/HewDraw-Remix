@@ -330,12 +330,10 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_input_jump()
+    if !boma.is_in_hitlag()
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-    && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX)
     {
-        if !StopModule::is_stop(boma){
-            boma.change_status_req(*FIGHTER_STATUS_KIND_JUMP_AERIAL, true);
+        if boma.check_jump_cancel() {
             return;
         }
     }

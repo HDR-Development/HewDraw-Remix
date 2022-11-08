@@ -99,9 +99,7 @@ unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor) {
     // Fire airdodge cancel
     if boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1_SHOOT) && boma.is_motion(Hash40::new("special_air_n1")) && MotionModule::frame(boma) > 1.0 {
         //DamageModule::add_damage(boma, 1.0, 0);
-        if boma.is_cat_flag(Cat1::AirEscape) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
-        }
+        boma.check_airdodge_cancel();
     }
     // Thunder land cancel
     if boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N3)
@@ -159,15 +157,8 @@ unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon,
         && (WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num")) - 1) > WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT) {
             VarModule::on_flag(boma.object(), vars::trail::status::SIDE_SPECIAL_HIT);
             if !VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_TO_SIDE_SPECIAL)
-            && fighter.is_input_jump() {
-                if situation_kind == *SITUATION_KIND_GROUND {
-                    fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                    return;
-                }
-                else if fighter.get_num_used_jumps() < fighter.get_jump_count_max() {
-                    fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                    return;
-                }
+            && fighter.check_jump_cancel() {
+                return;
             }
         }
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
@@ -184,15 +175,8 @@ unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon,
         if VarModule::is_flag(boma.object(), vars::trail::status::SIDE_SPECIAL_HIT)
         && WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num")) > WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT) {
             if !VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_TO_SIDE_SPECIAL)
-            && fighter.is_input_jump() {
-                if situation_kind == *SITUATION_KIND_GROUND {
-                    fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                    return;
-                }
-                else if fighter.get_num_used_jumps() < fighter.get_jump_count_max() {
-                    fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                    return;
-                }
+            && fighter.check_jump_cancel() {
+                return;
             }
         }
     }

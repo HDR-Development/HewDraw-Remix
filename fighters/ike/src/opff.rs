@@ -41,12 +41,13 @@ unsafe fn quickdraw_jump_attack_cancels(boma: &mut BattleObjectModuleAccessor, i
     // Jump and Attack cancels
     let pad_flag = ControlModule::get_pad_flag(boma);
 
-    if boma.is_input_jump() && !VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL) {
+    if !VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL) {
         if situation_kind == *SITUATION_KIND_GROUND {
-            if facing * stick_x < 0.0 {
-                PostureModule::reverse_lr(boma);
+            if boma.check_jump_cancel() {
+                if facing * stick_x < 0.0 {
+                    PostureModule::reverse_lr(boma);
+                }
             }
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
         }
     } else if compare_mask(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || compare_mask(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK, true);

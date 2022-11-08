@@ -26,14 +26,7 @@ unsafe fn areadbhar_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_ki
     if [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_FRONT,
         *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind) {
         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
-            if situation_kind == *SITUATION_KIND_GROUND {
-                if boma.is_cat_flag(Cat1::Dash) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
-                }
-                if boma.is_cat_flag(Cat1::TurnDash) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_TURN_DASH, false);
-                }
-            }
+            boma.check_dash_cancel();
         }
     }
 }

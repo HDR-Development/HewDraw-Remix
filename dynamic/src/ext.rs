@@ -473,7 +473,11 @@ pub trait BomaExt {
     unsafe fn set_center_cliff_hangdata(&mut self, x: f32, y: f32);
 
     // Checks for status and enables transition to jump
-    unsafe fn check_jump_cancel(&mut self);
+    unsafe fn check_jump_cancel(&mut self) -> bool;
+    // Checks for status and enables transition to airdodge
+    unsafe fn check_airdodge_cancel(&mut self) -> bool;
+    // Checks for status and enables transition to dash
+    unsafe fn check_dash_cancel(&mut self) -> bool;
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -829,19 +833,46 @@ impl BomaExt for BattleObjectModuleAccessor {
         return StatusModule::status_kind(self);
     }
 
-    unsafe fn check_jump_cancel(&mut self) {
+    unsafe fn check_jump_cancel(&mut self) -> bool {
         let fighter = crate::util::get_fighter_common_from_accessor(self);
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
-            fighter.sub_transition_group_check_ground_jump_mini_attack();
-            fighter.sub_transition_group_check_ground_jump();
+            if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool()
+            || fighter.sub_transition_group_check_ground_jump().get_bool() {
+                return true;
+            }
         }
         else {
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
-            fighter.sub_transition_group_check_air_jump_aerial();
+            if fighter.sub_transition_group_check_air_jump_aerial().get_bool() {
+                return true;
+            }
         }
+        false
+    }
+
+    unsafe fn check_airdodge_cancel(&mut self) -> bool {
+        let fighter = crate::util::get_fighter_common_from_accessor(self);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
+        if fighter.sub_transition_group_check_air_escape().get_bool() {
+            return true;
+        }
+        false
+    }
+
+    unsafe fn check_dash_cancel(&mut self) -> bool {
+        if self.is_situation(*SITUATION_KIND_GROUND) {
+            if self.is_cat_flag(Cat1::Dash) {
+                self.change_status_req(*FIGHTER_STATUS_KIND_DASH, false);
+                return true;
+            } else if self.is_cat_flag(Cat1::TurnDash) {
+                self.change_status_req(*FIGHTER_STATUS_KIND_TURN_DASH, false);
+                return true;
+            }
+        }
+        false
     }
 
     /// Sets the position of the front/red ledge-grab box (see [`set_center_cliff_hangdata`](BomaExt::set_center_cliff_hangdata) for more information)

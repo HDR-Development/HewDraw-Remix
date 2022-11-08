@@ -102,15 +102,7 @@ unsafe fn down_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut Battle
             VarModule::on_flag(boma.object(), vars::donkey::status::SPECIAL_CHECKS);
         }
         if VarModule::is_flag(boma.object(), vars::donkey::status::SPECIAL_CHECKS) && frame > 5.0 {
-            if boma.is_input_jump() {
-                if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                    }
-                } else if situation_kind == *SITUATION_KIND_GROUND {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                }
-            }
+            boma.check_jump_cancel();
         }
     } else {
         VarModule::off_flag(boma.object(), vars::donkey::status::SPECIAL_CHECKS);

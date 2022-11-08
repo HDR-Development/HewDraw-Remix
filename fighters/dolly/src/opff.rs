@@ -52,11 +52,7 @@ unsafe fn power_wave_dash_cancel_super_cancels(fighter: &mut L2CFighterCommon, b
 
         // Dash Cancel
         if frame > 33.0 {
-            if situation_kind == *SITUATION_KIND_GROUND {
-                if boma.is_cat_flag(Cat4::Command6N6) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
-                }
-            }
+            boma.check_dash_cancel();
         }
     }
 }

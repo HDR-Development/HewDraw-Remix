@@ -10,13 +10,11 @@ unsafe fn bouncing_fish_return_cancel(fighter: &mut L2CFighterCommon, boma: &mut
     }
 
     if situation_kind == *SITUATION_KIND_AIR {
-        if boma.is_input_jump() {
-            if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-            }
-        } else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
-        } else if boma.is_cat_flag(Cat1::SpecialHi) {
+        if boma.check_jump_cancel()
+        || boma.check_airdodge_cancel() {
+            return;
+        }
+        if boma.is_cat_flag(Cat1::SpecialHi) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI, true);
         }
     }
@@ -40,13 +38,8 @@ unsafe fn grenade_pull(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     }
 
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame < 15.0 {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-            if situation_kind == *SITUATION_KIND_AIR {
-                if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
-                    VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1); // Start counting
-                }
-            }
+        if boma.check_airdodge_cancel() {
+            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1); // Start counting
         }
     }
 }
@@ -94,15 +87,7 @@ unsafe fn grenade_cancel_training(fighter: &mut L2CFighterCommon, id: usize, sta
 unsafe fn up_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     if status_kind == *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_END {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            if boma.is_input_jump() {
-                if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                    }
-                } else if situation_kind == *SITUATION_KIND_GROUND {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                }
-            }
+            boma.check_jump_cancel();
         }
     }
 }
