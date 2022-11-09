@@ -58,12 +58,6 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
             WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
         }
 
-        // Disable wiggle out of tumble flag during damage_fly states
-        if [*FIGHTER_STATUS_KIND_DAMAGE_FLY,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL].contains(&status_kind) {
-            VarModule::off_flag(boma.object(), vars::common::instance::CAN_ESCAPE_TUMBLE);
-        }
-
         // Walk through other fighters
         JostleModule::set_team(boma, 0);
 
