@@ -473,7 +473,7 @@ pub trait BomaExt {
     unsafe fn set_center_cliff_hangdata(&mut self, x: f32, y: f32);
 
     // Checks for status and enables transition to jump
-    unsafe fn check_jump_cancel(&mut self) -> bool;
+    unsafe fn check_jump_cancel(&mut self, update_lr: bool) -> bool;
     // Checks for status and enables transition to airdodge
     unsafe fn check_airdodge_cancel(&mut self) -> bool;
     // Checks for status and enables transition to dash
@@ -833,13 +833,18 @@ impl BomaExt for BattleObjectModuleAccessor {
         return StatusModule::status_kind(self);
     }
 
-    unsafe fn check_jump_cancel(&mut self) -> bool {
+    /// If update_lr is true, we set your facing direction based on your stick position
+    unsafe fn check_jump_cancel(&mut self, update_lr: bool) -> bool {
         let fighter = crate::util::get_fighter_common_from_accessor(self);
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
             if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool()
             || fighter.sub_transition_group_check_ground_jump().get_bool() {
+                if update_lr {
+                    PostureModule::set_stick_lr(self, 0.0);
+                    PostureModule::update_rot_y_lr(self);
+                }
                 return true;
             }
         }

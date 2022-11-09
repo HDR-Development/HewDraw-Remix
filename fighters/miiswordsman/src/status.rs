@@ -403,10 +403,7 @@ unsafe extern "C" fn special_s2_dash_main(fighter: &mut L2CFighterCommon) -> L2C
     // Jump and Attack cancels
     let pad_flag = ControlModule::get_pad_flag(fighter.module_accessor);
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND && MotionModule::frame(fighter.module_accessor) > 7.0 {
-        if fighter.check_jump_cancel() {
-            if PostureModule::lr(fighter.module_accessor) * fighter.global_table[STICK_X].get_f32() < 0.0 {
-                PostureModule::reverse_lr(fighter.module_accessor);
-            }
+        if fighter.check_jump_cancel(true) {
             return 1.into()
         }
     }

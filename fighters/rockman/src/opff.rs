@@ -8,7 +8,7 @@ unsafe fn jc_light_utilt_hit(boma: &mut BattleObjectModuleAccessor, id: usize, s
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI3 {
         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) && frame > 20.0 {
             if  !VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
-                boma.check_jump_cancel();
+                boma.check_jump_cancel(false);
             }
         }
     }
@@ -18,7 +18,7 @@ unsafe fn jc_light_utilt_hit(boma: &mut BattleObjectModuleAccessor, id: usize, s
 unsafe fn jc_dtilt_hit(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_LW3 {
         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) && frame > 12.0 {
-            boma.check_jump_cancel();
+            boma.check_jump_cancel(false);
         }
     }
 }

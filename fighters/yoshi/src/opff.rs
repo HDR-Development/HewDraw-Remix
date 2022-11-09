@@ -13,13 +13,7 @@ unsafe fn egg_roll_jc_waveland(boma: &mut BattleObjectModuleAccessor, status_kin
     }
 
     if status_kind == *FIGHTER_YOSHI_STATUS_KIND_SPECIAL_S_END {
-        if boma.check_jump_cancel() {
-            if situation_kind == *SITUATION_KIND_GROUND {
-                if stick_x * facing < 0.0 {
-                    PostureModule::reverse_lr(boma);
-                }
-            }
-        }
+        boma.check_jump_cancel(true);
     }
 }
 

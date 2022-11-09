@@ -18,14 +18,10 @@ unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleO
     if [*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_DASH].contains(&status_kind) {
         // Jump and Attack cancels
         let pad_flag = ControlModule::get_pad_flag(boma);
-        if boma.check_jump_cancel() {
-            if situation_kind == *SITUATION_KIND_GROUND {
-                if facing * stick_x < 0.0 {
-                    PostureModule::reverse_lr(boma);
-                }
-            }
+        if boma.check_jump_cancel(true) {
+            return;
         }
-        else if compare_mask(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || compare_mask(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
+        if compare_mask(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || compare_mask(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK, true);
         }
         // Wall Jump
@@ -47,13 +43,7 @@ unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleO
         // Jump cancels
         let pad_flag = ControlModule::get_pad_flag(boma);
         if frame > 6.0 && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
-            if boma.check_jump_cancel() {
-                if situation_kind == *SITUATION_KIND_GROUND {
-                    if facing * stick_x < 0.0 {
-                        PostureModule::reverse_lr(boma);
-                    }
-                }
-            }
+            boma.check_jump_cancel(true);
         }
     }
 }

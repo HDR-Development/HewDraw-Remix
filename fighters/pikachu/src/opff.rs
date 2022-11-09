@@ -37,11 +37,7 @@ unsafe fn jc_qa_agility(boma: &mut BattleObjectModuleAccessor, id: usize, status
     && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END
     && !VarModule::is_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC)
     {
-        if boma.check_jump_cancel() {
-            if facing * stick_x < 0.0 {
-                PostureModule::reverse_lr(boma);
-            }
-        }
+        boma.check_jump_cancel(true);
     }
 }
 

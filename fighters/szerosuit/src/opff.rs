@@ -19,7 +19,7 @@ unsafe fn flip_jump_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
         || motion_kind == hash40("special_air_lw_start") {
         if frame > 20.0 {
             if !boma.is_in_hitlag() {
-                boma.check_jump_cancel();
+                boma.check_jump_cancel(false);
             }
         }
     }

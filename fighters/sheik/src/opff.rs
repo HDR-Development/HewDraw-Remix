@@ -10,7 +10,7 @@ unsafe fn bouncing_fish_return_cancel(fighter: &mut L2CFighterCommon, boma: &mut
     }
 
     if situation_kind == *SITUATION_KIND_AIR {
-        if boma.check_jump_cancel()
+        if boma.check_jump_cancel(false)
         || boma.check_airdodge_cancel() {
             return;
         }
@@ -87,7 +87,7 @@ unsafe fn grenade_cancel_training(fighter: &mut L2CFighterCommon, id: usize, sta
 unsafe fn up_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     if status_kind == *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_END {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            boma.check_jump_cancel();
+            boma.check_jump_cancel(false);
         }
     }
 }

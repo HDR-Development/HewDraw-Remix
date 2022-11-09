@@ -208,7 +208,7 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_HI3)
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
     {
-        if boma.check_jump_cancel() {
+        if boma.check_jump_cancel(false) {
             VarModule::on_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
             return;
         }
@@ -256,7 +256,7 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_HI4)
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
     {
-        boma.check_jump_cancel();
+        boma.check_jump_cancel(false);
     }
 
     let new_status = if boma.is_cat_flag(Cat1::SpecialN) {
@@ -281,7 +281,7 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
-    if boma.check_jump_cancel()
+    if boma.check_jump_cancel(false)
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
     {
         return;

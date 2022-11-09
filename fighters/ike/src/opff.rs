@@ -43,11 +43,7 @@ unsafe fn quickdraw_jump_attack_cancels(boma: &mut BattleObjectModuleAccessor, i
 
     if !VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL) {
         if situation_kind == *SITUATION_KIND_GROUND {
-            if boma.check_jump_cancel() {
-                if facing * stick_x < 0.0 {
-                    PostureModule::reverse_lr(boma);
-                }
-            }
+            boma.check_jump_cancel(true);
         }
     } else if compare_mask(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || compare_mask(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK, true);

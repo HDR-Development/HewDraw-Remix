@@ -39,24 +39,12 @@ unsafe fn withdraw_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
         VarModule::add_float(boma.object(), vars::pzenigame::instance::WITHDRAW_FRAME, 1.0);
         // JC Lockout: frame 30
         if VarModule::get_float(boma.object(), vars::pzenigame::instance::WITHDRAW_FRAME) > 15.0 && !boma.is_in_hitlag() {
-            if boma.check_jump_cancel() {
-                if situation_kind == *SITUATION_KIND_GROUND {
-                    if facing * stick_x < 0.0 {
-                        PostureModule::reverse_lr(boma);
-                    }
-                }
-            }
+            boma.check_jump_cancel(true);
         }
     }
 
     if [*FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_END].contains(&status_kind) && frame < 10.0 && !boma.is_in_hitlag() {
-        if boma.check_jump_cancel() {
-            if situation_kind == *SITUATION_KIND_GROUND {
-                if facing * stick_x < 0.0 {
-                    PostureModule::reverse_lr(boma);
-                }
-            }
-        }
+        boma.check_jump_cancel(true);
     }
 
 }

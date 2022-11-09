@@ -25,7 +25,7 @@ unsafe fn straight_lunge_cancels(boma: &mut BattleObjectModuleAccessor, status_k
     if [*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START].contains(&status_kind) {
         if frame > 25.0 {
             if !boma.is_in_hitlag() {
-                boma.check_jump_cancel();
+                boma.check_jump_cancel(false);
             }
             /*
             if boma.is_cat_flag(Cat2::CommonGuard) {
