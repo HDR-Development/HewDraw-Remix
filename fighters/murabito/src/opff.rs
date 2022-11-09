@@ -3,18 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn sapling_special_cancel(fighter: &mut L2CFighterCommon) {
-    let boma = fighter.boma();
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_LW4])
-    && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
-    && !fighter.is_in_hitlag()
-    && fighter.is_cat_flag(Cat1::SpecialLw)
-    && !ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_TREE)
-    && !ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_SPROUT) {
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
-    }
-}
-
 unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     //PM-like down-b canceling
     if (status_kind == *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_AIR
@@ -50,7 +38,6 @@ pub fn murabito_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		murabito_frame(fighter);
-        sapling_special_cancel(fighter);
     }
 }
 
