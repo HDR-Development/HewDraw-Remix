@@ -427,7 +427,7 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
                     // Boost run
                     do_standard_accel = false;
                     energy.accel.x = mul - (brake * mul.signum());
-                    energy.speed_max.x = 999.0;
+                    energy.speed_max.x = -1.0;
                     0.0
                 } else {
                     mul
@@ -789,10 +789,18 @@ unsafe fn setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyCont
             } else {
                 energy.lr * WorkModule::get_param_float(boma, smash::hash40("dash_speed"), 0)
             };
-            energy.speed.x = if 0.0 <= energy.speed.x * energy.lr {
-                dash_speed
+            energy.speed.x = if energy.speed.x * energy.lr >= 0.0 {
+                if reset_type == DashBack {
+                    dash_speed + energy.speed.x
+                } else {
+                    dash_speed
+                }
             } else {
-                dash_speed + energy.speed.x
+                if reset_type == DashBack {
+                    dash_speed
+                } else {
+                    dash_speed + energy.speed.x
+                }
             };
         },
         ShootDash => {
