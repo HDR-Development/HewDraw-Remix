@@ -132,14 +132,15 @@ unsafe fn ground_module_update_rhombus_sub(ground_module: u64, param_2: u64, par
         let ecb_bottom_pos_y = pos.y + (*param_3.add(1)).y;
         // (*param_3.add(1)).y is your ECB bottom's vertical offset from your base position (AKA your vertical ECB shift)
         if (*param_3.add(1)).y != 0.0 {
-            let mut ground_pos = Vector2f::zero();
-            let is_underneath_floor_stage = GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, ecb_bottom_pos_y), &Vector2f::new(pos.x, ecb_bottom_pos_y + 100.0), &Vector2f::zero(), &mut ground_pos, false);
-            let is_underneath_floor_any = GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, ecb_bottom_pos_y), &Vector2f::new(pos.x, ecb_bottom_pos_y + 100.0), &Vector2f::zero(), &mut ground_pos, true);
+            let mut ground_pos_any = Vector2f::zero();
+            let mut ground_pos_stage = Vector2f::zero();
+            GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, ecb_bottom_pos_y), &Vector2f::new(pos.x, ecb_bottom_pos_y + 100.0), &Vector2f::zero(), &mut ground_pos_stage, false);
+            GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, ecb_bottom_pos_y), &Vector2f::new(pos.x, ecb_bottom_pos_y + 100.0), &Vector2f::zero(), &mut ground_pos_any, true);
 
             if ecb_bottom_pos_y < prev_ecb_bottom_pos_y  // if your ECB was moving downwards
-            && ((is_underneath_floor_any != 0 && is_underneath_floor_stage == 0 && !GroundModule::is_passable_check(boma))  // if you were holding down to pass through a platform
-                || is_underneath_floor_stage != 0)  // or you touched stage
-            && (prev_ground_pos.y - ground_pos.y).abs() < 1.0  // if the same surface that was under your ECB bottom on the previous frame is now above your ECB bottom on the current frame
+            && ((ground_pos_any != Vector2f::zero() && ground_pos_stage == Vector2f::zero() && !GroundModule::is_passable_check(boma))  // if you were holding down to pass through a platform
+                || ground_pos_stage != Vector2f::zero())  // or you touched stage
+            && (prev_ground_pos.y - ground_pos_any.y).abs() < 1.0  // if the same surface that was under your ECB bottom on the previous frame is now above your ECB bottom on the current frame
             {
                 // Reset your ECB shift to 0.0
                 (*param_3.add(1)).y = 0.0;
