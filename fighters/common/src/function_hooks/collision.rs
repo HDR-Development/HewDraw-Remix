@@ -120,15 +120,15 @@ unsafe fn ground_module_update_rhombus_sub(ground_module: u64, param_2: u64, par
     // Otherwise, characters will appear stuck halfway into the ground on the first frame of landing
     if (*boma).is_fighter() {
         let prev_pos = *PostureModule::prev_pos(boma);
+        let pos = *PostureModule::pos(boma);
         let prev_ecb_bottom_y_offset = VarModule::get_float((*boma).object(), vars::common::instance::ECB_BOTTOM_Y_OFFSET);
         let prev_ecb_bottom_pos_y = prev_pos.y + prev_ecb_bottom_y_offset;
         let mut prev_ground_pos = Vector2f::zero();
-        GroundModule::line_segment_check(boma, &Vector2f::new(prev_pos.x, prev_ecb_bottom_pos_y), &Vector2f::new(prev_pos.x, prev_ecb_bottom_pos_y - 100.0), &Vector2f::zero(), &mut prev_ground_pos, true);
+        GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, prev_ecb_bottom_pos_y), &Vector2f::new(pos.x, prev_ecb_bottom_pos_y - 100.0), &Vector2f::zero(), &mut prev_ground_pos, true);
 
         // The original function calls ground_module_ecb_point_calc_hook
         call_original!(ground_module, param_2, param_3);
 
-        let pos = *PostureModule::pos(boma);
         let ecb_bottom_pos_y = pos.y + (*param_3.add(1)).y;
         // (*param_3.add(1)).y is your ECB bottom's vertical offset from your base position (AKA your vertical ECB shift)
         if (*param_3.add(1)).y != 0.0 {
