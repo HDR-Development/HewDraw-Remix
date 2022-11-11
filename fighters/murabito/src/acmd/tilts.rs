@@ -123,7 +123,7 @@ unsafe fn murabito_attack_lw3_game(fighter: &mut L2CAgentBase) {
             let pos_x = PostureModule::lr(boma) * (VarModule::get_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_X) - char_pos.x);
             let pos_y = VarModule::get_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Y) - char_pos.y;
             let pos_z = VarModule::get_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Z) - char_pos.z;
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 20.0, 90, 70, 0, 90, 5.5, pos_z, pos_y + 3.5, pos_x - 5.0, Some(pos_z), Some(pos_y + 3.5), Some(pos_x + 5.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 20.0, 90, 82, 0, 55, 5.5, pos_z, pos_y + 3.5, pos_x - 5.0, Some(pos_z), Some(pos_y + 3.5), Some(pos_x + 5.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
         } else {
             ArticleModule::remove(boma, *FIGHTER_MURABITO_GENERATE_ARTICLE_WEEDS, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
             ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 78, 70, 0, 60, 5.0, 0.0, 3.0, 2.0, Some(0.0), Some(3.0), Some(4.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
@@ -160,6 +160,7 @@ unsafe fn murabito_attack_lw3_effect(fighter: &mut L2CAgentBase) {
             let pos_y = VarModule::get_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Y) - char_pos.y;
             let pos_z = VarModule::get_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Z) - char_pos.z;
             EFFECT(fighter, Hash40::new("murabito_soil"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
+            EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 1.0, 4, 4, 4, 0, 0, 0, false);
         } else {
             EFFECT(fighter, Hash40::new("murabito_soil"), Hash40::new("top"), 7.0, 0.0, 0.5, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
         }
@@ -176,7 +177,7 @@ unsafe fn murabito_attack_lw3_effect(fighter: &mut L2CAgentBase) {
             let pos_z = VarModule::get_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Z) - char_pos.z;
             LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
             EFFECT(fighter, Hash40::new("murabito_grass"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-            EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);            
+            EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);            
         } else {
             LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 1.0, 0.5, 0.5, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
             EFFECT(fighter, Hash40::new("murabito_grass"), Hash40::new("top"), 1.0, 0, 0.5, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
