@@ -38,8 +38,21 @@ use utils::{
 };
 use smashline::*;
 
+#[smashline::fighter_reset]
+fn substitute_reset(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        if fighter.kind() != *FIGHTER_KIND_GEKKOUGA {
+            return;
+        }
+        VarModule::set_int(fighter.battle_object, vars::gekkouga::instance::SUBSTITUTE_TIMER, 0);
+    }
+}
+
 pub fn install(is_runtime: bool) {
     acmd::install();
     //status::install();
     opff::install(is_runtime);
+    use opff::*;
+    smashline::install_agent_resets!(substitute_reset);
+    smashline::install_raw_hook!(notify_log_event_collision_hit_replace);
 }

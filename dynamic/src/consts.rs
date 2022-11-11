@@ -418,6 +418,33 @@ pub mod vars {
         }
     }
 
+    pub mod gekkouga {
+        pub mod instance {
+            // flags
+            pub const IS_MANUAL_USAGE: i32 = 0x0100;
+            pub const IS_SUBSTITUTE_LOG: i32 = 0x0101;
+            pub const IS_SUBSTITUTE_HIT: i32 = 0x0102;
+            pub const IS_SUBSTITUTE_SPECIAL: i32 = 0x0103;
+            pub const IS_SHADOW_SNEAK_HIT: i32 = 0x0104;
+            pub const IS_SHADOW_SNEAK_GRAB: i32 = 0x0105;
+            pub const IS_UNDER_COVER: i32 = 0x0106;
+            
+            // ints
+            pub const SUBSTITUTE_TIMER: i32 = 0x0107;
+            pub const SUBSTITUTE_HIT_COUNT: i32 = 0x0108;
+            pub const SUBSTITUTE_LIFE: i32 = 0x0109;
+            pub const SMOKESCREEN_LIFE: i32 = 0x0110;
+
+            // floats
+            pub const SMOKESCREEN_X: i32 = 0x0111;
+            pub const SMOKESCREEN_Y: i32 = 0x0112;
+
+            // ids
+            pub const FIGHTER_GEKKOUGA_INSTANCE_WORK_ID_INT_SPECIAL_LW_LOG_ID: i32 = 0x100000c1;
+            pub const FIGHTER_GEKKOUGA_INSTANCE_WORK_ID_INT_SPECIAL_LW_DOLL_ID: i32 = 0x100000c2;
+        }
+    }
+
     pub mod ike {
         pub mod status {
             // flags
