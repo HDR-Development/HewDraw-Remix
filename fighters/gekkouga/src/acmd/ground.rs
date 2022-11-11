@@ -63,6 +63,7 @@ unsafe fn gekkouga_attack_dash_effect(fighter: &mut L2CAgentBase) {
 unsafe fn gekkouga_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         if !VarModule::is_flag(fighter.object(), vars::gekkouga::instance::IS_UNDER_COVER) {

@@ -137,15 +137,6 @@ unsafe fn substitute(fighter: &mut L2CFighterCommon) {
     } else {
         VarModule::off_flag(fighter.object(), vars::gekkouga::instance::IS_UNDER_COVER);
     }
-    if VarModule::is_flag(fighter.object(), vars::gekkouga::instance::IS_UNDER_COVER)
-    && fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK]) {
-        SoundModule::stop_status_se(doll_boma);
-        SoundModule::stop_status_se(log_boma);
-        SoundModule::stop_all_sound(doll_boma);
-        SoundModule::stop_all_sound(log_boma);
-        SoundModule::pause_se_all(doll_boma, true);
-        SoundModule::pause_se_all(log_boma, true);
-    }
 }
 
 //Logic for substitute doll/log
