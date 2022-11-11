@@ -33,11 +33,13 @@ unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue
         if !CancelModule::is_enable_cancel(fighter.module_accessor) || (CancelModule::is_enable_cancel(fighter.module_accessor) && !fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool() && !fighter.sub_air_check_fall_common().get_bool()) {
             if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_FLAG_HIT) && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
                 if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_FLAG_HIT_CANCEL_OK) {
-                    let frame = MotionModule::frame(fighter.module_accessor);
-                    let cancel_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_ENABLE_HIT_CANCEL_FRAME) as f32;
+                    let frame = fighter.global_table[CURRENT_FRAME].get_i32();
+                    let cancel_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_ENABLE_HIT_CANCEL_FRAME);
 
-                    if frame >= cancel_frame {
-                        CancelModule::enable_cancel(fighter.module_accessor);
+                    if frame == cancel_frame - 30 {
+                        // Skip to wake-up animation, 30 frames before on-hit FAF
+                        // Wake-up anim lasts 30 frames
+                        MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 179.0, true, true, false);
                         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_FLAG_HIT_CANCEL_OK);
                     }
                 }
