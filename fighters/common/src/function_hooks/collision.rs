@@ -122,9 +122,9 @@ unsafe fn ground_module_update_rhombus_sub(ground_module: u64, param_2: u64, par
         let prev_pos = *PostureModule::prev_pos(boma);
         let pos = *PostureModule::pos(boma);
         let prev_ecb_bottom_y_offset = VarModule::get_float((*boma).object(), vars::common::instance::ECB_BOTTOM_Y_OFFSET);
-        let prev_ecb_bottom_pos_y = prev_pos.y + prev_ecb_bottom_y_offset;
+        let prev_ecb_bottom_pos_y = prev_pos.y + prev_ecb_bottom_y_offset + 0.2;
         let mut prev_ground_pos = Vector2f::zero();
-        GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, prev_ecb_bottom_pos_y), &Vector2f::new(pos.x, prev_ecb_bottom_pos_y - 100.0), &Vector2f::zero(), &mut prev_ground_pos, true);
+        GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, prev_ecb_bottom_pos_y), &Vector2f::new(pos.x, prev_ecb_bottom_pos_y - 999.0), &Vector2f::zero(), &mut prev_ground_pos, true);
 
         // The original function calls ground_module_ecb_point_calc_hook
         call_original!(ground_module, param_2, param_3);
@@ -134,17 +134,16 @@ unsafe fn ground_module_update_rhombus_sub(ground_module: u64, param_2: u64, par
         if (*param_3.add(1)).y != 0.0 {
             let mut ground_pos_any = Vector2f::zero();
             let mut ground_pos_stage = Vector2f::zero();
-            GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, ecb_bottom_pos_y), &Vector2f::new(pos.x, ecb_bottom_pos_y + 100.0), &Vector2f::zero(), &mut ground_pos_stage, false);
-            GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, ecb_bottom_pos_y), &Vector2f::new(pos.x, ecb_bottom_pos_y + 100.0), &Vector2f::zero(), &mut ground_pos_any, true);
+            GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, ecb_bottom_pos_y), &Vector2f::new(pos.x, ecb_bottom_pos_y + 999.0), &Vector2f::zero(), &mut ground_pos_any, true);
+            GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, ecb_bottom_pos_y), &Vector2f::new(pos.x, ecb_bottom_pos_y + 999.0), &Vector2f::zero(), &mut ground_pos_stage, false);
 
             if ecb_bottom_pos_y < prev_ecb_bottom_pos_y  // if your ECB was moving downwards
-            && ((ground_pos_any != Vector2f::zero() && ground_pos_stage == Vector2f::zero() && !GroundModule::is_passable_check(boma))  // if you were holding down to pass through a platform
+            && ((ground_pos_any != Vector2f::zero() && ground_pos_stage == Vector2f::zero() && !GroundModule::is_passable_check(boma))  // if you touched a platform without passing through
                 || ground_pos_stage != Vector2f::zero())  // or you touched stage
             && (prev_ground_pos.y - ground_pos_any.y).abs() < 1.0  // if the same surface that was under your ECB bottom on the previous frame is now above your ECB bottom on the current frame
             {
                 // Reset your ECB shift to 0.0
                 (*param_3.add(1)).y = 0.0;
-                WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
             }
         }
         VarModule::set_float((*boma).object(), vars::common::instance::ECB_BOTTOM_Y_OFFSET, (*param_3.add(1)).y);
@@ -179,7 +178,8 @@ unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *m
         *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
         *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
         *FIGHTER_STATUS_KIND_THROWN])
-    && (*boma).is_situation(*SITUATION_KIND_AIR) 
+    && (*boma).is_situation(*SITUATION_KIND_AIR)
+    && !GroundModule::is_touch(boma, *GROUND_TOUCH_FLAG_DOWN as u32)
     && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) >= ParamModule::get_int((*boma).object(), ParamType::Common, "ecb_shift_air_trans_frame") {
         // This check passes after 9 frames of airtime, if not in a grabbed/thrown state
         param_6 = 1;
