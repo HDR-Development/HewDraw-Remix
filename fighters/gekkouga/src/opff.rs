@@ -8,6 +8,11 @@ extern "Rust" {
     fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
 }
 
+extern "C" {
+    #[link_name = "\u{1}_ZN3app4item8owner_idEP9lua_State"]
+    pub fn owner_id(lua_state: u64) -> u32;
+}
+
 //Can cancel into a slowed down grab before attack comes out, speed up endlag/add drift on hit (not on block)
 unsafe fn shadow_sneak_cancels(fighter: &mut L2CFighterCommon) {
     let boma = fighter.boma();
@@ -78,57 +83,69 @@ unsafe fn substitute(fighter: &mut L2CFighterCommon) {
     let kind = boma.kind();
     let x = PostureModule::pos_x(boma);
     let y = PostureModule::pos_y(boma);
-    
+
     let doll_id = WorkModule::get_int64(fighter.module_accessor,vars::gekkouga::instance::FIGHTER_GEKKOUGA_INSTANCE_WORK_ID_INT_SPECIAL_LW_DOLL_ID) as u32;
     let doll_boma = sv_battle_object::module_accessor(doll_id);
     let doll_kind = sv_battle_object::kind(doll_id);
-    
+
     let log_id = WorkModule::get_int64(fighter.module_accessor,vars::gekkouga::instance::FIGHTER_GEKKOUGA_INSTANCE_WORK_ID_INT_SPECIAL_LW_LOG_ID) as u32;
     let log_boma = sv_battle_object::module_accessor(log_id);
     let log_kind = sv_battle_object::kind(log_id);
 
+    //Timing checks on various things
     if timer < 0 {
         VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_TIMER, 1);
     }
     if timer > 0 {
         VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_TIMER, timer - 1);
     }
+    if timer == 1 {
+        gimmick_flash(fighter);
+    }
     if life > 0 {
         VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_LIFE, life - 1);
     } 
     if life == 0 {
-        if doll_kind != kind {
+        if doll_kind == *ITEM_KIND_DOLL {
             StatusModule::change_status_request_from_script(doll_boma, *ITEM_STATUS_KIND_LOST, true);
-        } else if log_kind != kind {
+        } else if log_kind == *ITEM_KIND_LOG {
             StatusModule::change_status_request_from_script(log_boma, *ITEM_STATUS_KIND_LOST, true);
         }
     }
     if smoke > 0 {
         VarModule::set_int(fighter.object(), vars::gekkouga::instance::SMOKESCREEN_LIFE, smoke - 1);
     }
+    
+
+    //Startup on press
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
         StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_LW_HIT, true);
         lr = PostureModule::lr(fighter.boma());
-        VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_TIMER, 540);
+        VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_TIMER, 480);
         VarModule::set_int(fighter.object(), vars::gekkouga::instance::SMOKESCREEN_LIFE, 270);
         VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_LIFE, 360);
         VarModule::on_flag(fighter.object(), vars::gekkouga::instance::IS_MANUAL_USAGE);
-        FT_ADD_DAMAGE(fighter, 7.0);
+        FT_ADD_DAMAGE(fighter, 6.0);
     }
+    
+    //Transition to spawn
     if fighter.is_status(*FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_LW_HIT)
     && fighter.motion_frame() > 5.0
     && VarModule::is_flag(fighter.object(), vars::gekkouga::instance::IS_MANUAL_USAGE) {
+        //Greninja state
         StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL, true);
         KineticModule::add_speed(fighter.module_accessor, &Vector3f::new(-5.5 * lr, 1.0, 0.0));
+        //Falling hitbox
+        MotionModule::change_motion(doll_boma, Hash40::new("throw"), 0.0, 1.0, false, 0.0, false, false);
+        //Refresh vars
         VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT, 0);
         VarModule::off_flag(fighter.object(), vars::gekkouga::instance::IS_MANUAL_USAGE);
         VarModule::on_flag(fighter.object(), vars::gekkouga::instance::IS_SUBSTITUTE_SPECIAL);
         VarModule::set_float(fighter.object(), vars::gekkouga::instance::SMOKESCREEN_X, x);
         VarModule::set_float(fighter.object(), vars::gekkouga::instance::SMOKESCREEN_Y, y);
     }
-    if timer == 1 {
-        gimmick_flash(fighter);
-    }
+
+    //Calculate when Greninja is behind smokescreen
     if (x - VarModule::get_float(fighter.object(), vars::gekkouga::instance::SMOKESCREEN_X)).abs() <= 20.0
     && (y - VarModule::get_float(fighter.object(), vars::gekkouga::instance::SMOKESCREEN_Y)).abs() <= 20.0
     && VarModule::get_int(fighter.object(), vars::gekkouga::instance::SMOKESCREEN_LIFE) != 0 {
@@ -139,6 +156,19 @@ unsafe fn substitute(fighter: &mut L2CFighterCommon) {
     }
 }
 
+pub static mut NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET : usize = 0x675A20;
+
+#[skyline::hook(offset = NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET)]
+pub unsafe fn notify_log_event_collision_hit_replace(fighter_manager: *mut smash::app::FighterManager, attacker_id: u32, defender_id: u32, move_type: f32, arg5: i32, move_type_again: bool) -> u64 {
+    let attacker_boma = sv_battle_object::module_accessor(attacker_id);
+    let defender_boma = sv_battle_object::module_accessor(defender_id);
+    let defender_kind = sv_battle_object::kind(defender_id);
+    if defender_kind ==  *ITEM_KIND_LOG || defender_kind == *ITEM_KIND_DOLL { 
+        //use defender_boma for ur operations
+    }
+    original!()(fighter_manager, attacker_id, defender_id, move_type, arg5, move_type_again)
+}
+
 //Logic for substitute doll/log
 pub unsafe fn substitute_doll(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     let boma = fighter.boma();
@@ -147,154 +177,94 @@ pub unsafe fn substitute_doll(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     let y = PostureModule::pos_y(boma);
     let lr = PostureModule::lr(boma);
     let timer = VarModule::get_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_TIMER);
+    let count = VarModule::get_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT);
 
     //Get substitute doll
     let doll_id = WorkModule::get_int64(fighter.module_accessor,vars::gekkouga::instance::FIGHTER_GEKKOUGA_INSTANCE_WORK_ID_INT_SPECIAL_LW_DOLL_ID) as u32;
-    let doll_boma = sv_battle_object::module_accessor(doll_id);
-    let mut doll_kind = sv_battle_object::kind(doll_id);
-    let doll_x = PostureModule::pos_x(doll_boma);
-    let doll_y = PostureModule::pos_y(doll_boma);
+    let doll_kind = sv_battle_object::kind(doll_id);
 
     //Get substitute log
     let log_id = WorkModule::get_int64(fighter.module_accessor,vars::gekkouga::instance::FIGHTER_GEKKOUGA_INSTANCE_WORK_ID_INT_SPECIAL_LW_LOG_ID) as u32;
-    let log_boma = sv_battle_object::module_accessor(log_id);
-    let mut log_kind = sv_battle_object::kind(log_id);
-    let log_x = PostureModule::pos_x(log_boma);
-    let log_y = PostureModule::pos_y(log_boma);
+    let log_kind = sv_battle_object::kind(log_id);
 
-    let count = VarModule::get_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT);
-    
-    //It's Greninja, neither a doll nor a log
-    if VarModule::get_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_LIFE) == 0 
-    || (*doll_boma).is_status(*ITEM_STATUS_KIND_LOST)
-    || (*log_boma).is_status(*ITEM_STATUS_KIND_LOST) {
-        doll_kind = kind;
-        log_kind = kind;
+    //Check which one it is
+    let mut doll_boma = sv_battle_object::module_accessor(doll_id);
+    if log_kind == *ITEM_KIND_LOG {
+        doll_boma = sv_battle_object::module_accessor(log_id);
+    } else if doll_kind != *ITEM_KIND_DOLL {
+        return;
     }
-    if doll_kind == kind && log_kind == kind {
+    
+    let doll_x = PostureModule::pos_x(doll_boma);
+    let doll_y = PostureModule::pos_y(doll_boma);
+
+    if VarModule::get_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_LIFE) == 0 {
         VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT, 0);
         VarModule::off_flag(fighter.object(), vars::gekkouga::instance::IS_SUBSTITUTE_SPECIAL);
     }
 
-    //It's a doll, not a log
-    if doll_kind != kind && doll_kind != 0 {
-        let delta_x = lr * (doll_x - x);
-        let delta_y = doll_y - y;
-        //Count until it's been hit twice
-        if StopModule::is_damage(doll_boma) {
-            VarModule::on_flag(fighter.object(), vars::gekkouga::instance::IS_SUBSTITUTE_HIT);
-            MotionModule::change_motion(doll_boma, Hash40::new("throw"), 0.0, 1.0, false, 0.0, false, false);
-        } else if VarModule::is_flag(fighter.object(), vars::gekkouga::instance::IS_SUBSTITUTE_HIT) {
-            VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT, count + 1);
-            VarModule::off_flag(fighter.object(), vars::gekkouga::instance::IS_SUBSTITUTE_HIT);
-        }
-        //When hit twice, substitute doll vanishes
-        if VarModule::get_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT) > 1 
-        && VarModule::get_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT) < 69 {
-            HitModule::set_whole(doll_boma, smash::app::HitStatus(*HIT_STATUS_XLU), 0);
-            StatusModule::set_situation_kind(doll_boma, app::SituationKind(*SITUATION_KIND_AIR), true);
-            MotionModule::change_motion(doll_boma, Hash40::new("poof"), 0.0, 1.0, false, 0.0, false, false);
-            EFFECT(fighter, Hash40::new("gekkouga_kageuchi_warp_start"), Hash40::new("top"), delta_x, delta_y - 6.5, 3.0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-            PLAY_SE_REMAIN(fighter, Hash40::new("se_gekkouga_special_s02"));
-            VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT, 69);
-            VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_LIFE, VarModule::get_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_LIFE) + 2);
-        }
-        if VarModule::get_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT) >= 420 {
-            StatusModule::change_status_request_from_script(doll_boma, *ITEM_STATUS_KIND_LOST, true);
-            VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_LIFE, 0);
-            VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT, 0);
-        }
-        if VarModule::get_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT) >= 69 {
-            VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT, 420);
-        }
-        //Taunt while doll is out to consume doll and gain 4 seconds back on down special charge
-        if fighter.is_status(*FIGHTER_STATUS_KIND_APPEAL) 
-        && fighter.motion_frame() > 25.0
-        && VarModule::is_flag(fighter.object(), vars::gekkouga::instance::IS_SUBSTITUTE_SPECIAL) {
-            //Doll FX
-            PLAY_SE_REMAIN(fighter, Hash40::new("se_gekkouga_attack_water"));
-            EFFECT(fighter, Hash40::new("gekkouga_water_impact"), Hash40::new("top"), delta_x, delta_y, 17.0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
-            LAST_EFFECT_SET_RATE(fighter, 0.75);
-            //Greninja FX
-            EFFECT_FOLLOW(fighter, Hash40::new_raw(0x91AAE256A), Hash40::new("top"), -7, 2.0, 0, 0, 0, 0, 1.2, true);
-            LAST_EFFECT_SET_COLOR(fighter, 0.1, 1.0, 2.0);
-            LAST_EFFECT_SET_RATE(fighter, 0.75);
-            EFFECT_FOLLOW(fighter, Hash40::new("gekkouga_pump_splash"), Hash40::new("rot"), 0, -4, 0, 270, 0, 0, 0.7, true);
-            EFFECT(fighter, Hash40::new("gekkouga_pump_hit"), Hash40::new("top"), 0, 4, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-            LAST_EFFECT_SET_RATE(fighter, 0.35);
-            FOOT_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 5, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-            LAST_EFFECT_SET_RATE(fighter, 0.6);
-            FT_ADD_DAMAGE(fighter, -3.5);
-            StatusModule::change_status_request_from_script(doll_boma, *ITEM_STATUS_KIND_LOST, true);
-            VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_LIFE, 0);
-            if timer <= 270 {
-                VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_TIMER, 1);
-            } else {
-                VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_TIMER, timer - 270);
-            }
-            VarModule::off_flag(fighter.object(), vars::gekkouga::instance::IS_SUBSTITUTE_SPECIAL);
-        }
+    let delta_x = lr * (doll_x - x);
+    let delta_y = doll_y - y;
+
+    //Count until it's been hit twice
+    if StopModule::is_damage(doll_boma) {
+        VarModule::on_flag(fighter.object(), vars::gekkouga::instance::IS_SUBSTITUTE_HIT);
+        MotionModule::change_motion(doll_boma, Hash40::new("throw"), 0.0, 1.0, false, 0.0, false, false);
+    } else if VarModule::is_flag(fighter.object(), vars::gekkouga::instance::IS_SUBSTITUTE_HIT) {
+        VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT, count + 1);
+        VarModule::off_flag(fighter.object(), vars::gekkouga::instance::IS_SUBSTITUTE_HIT);
     }
 
-    //It's a log, not a doll
-    if log_kind != kind && log_kind != 0 {
-        let delta_x = lr * (log_x - x);
-        let delta_y = log_y - y;
-        //Count until it's been hit twice
-        if StopModule::is_damage(log_boma) {    
-            VarModule::on_flag(fighter.object(), vars::gekkouga::instance::IS_SUBSTITUTE_HIT);
-            MotionModule::change_motion(log_boma, Hash40::new("throw"), 0.0, 1.0, false, 0.0, false, false);
-        } else if VarModule::is_flag(fighter.object(), vars::gekkouga::instance::IS_SUBSTITUTE_HIT) {
-            VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT, count + 1);
-            VarModule::off_flag(fighter.object(), vars::gekkouga::instance::IS_SUBSTITUTE_HIT);
+    //When hit twice, substitute doll vanishes
+    if VarModule::get_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT) > 1 
+    && VarModule::get_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT) < 69 {
+        //Step 1: Start poof script and prevent doll from dying during script
+        HitModule::set_whole(doll_boma, smash::app::HitStatus(*HIT_STATUS_XLU), 0);
+        StatusModule::set_situation_kind(doll_boma, app::SituationKind(*SITUATION_KIND_AIR), true);
+        MotionModule::change_motion(doll_boma, Hash40::new("poof"), 0.0, 1.0, false, 0.0, false, false);
+        EFFECT(fighter, Hash40::new("gekkouga_kageuchi_warp_start"), Hash40::new("top"), delta_x, delta_y - 6.5, 3.0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
+        PLAY_SE_REMAIN(fighter, Hash40::new("se_gekkouga_special_s02"));
+        VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT, 69);
+        VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_LIFE, VarModule::get_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_LIFE) + 2);
+    }
+    if VarModule::get_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT) >= 420 {
+        //Step 3: Delete the doll and reset counter
+        StatusModule::change_status_request_from_script(doll_boma, *ITEM_STATUS_KIND_LOST, true);
+        VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_LIFE, 0);
+        VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT, 0);
+    }
+    if VarModule::get_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT) >= 69 {
+        //Step 2: Give the doll a frame for the script to work properly
+        VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT, 420);
+    }
+
+    //Taunt while doll is out to consume doll and gain half of health and time cost back
+    if fighter.is_status(*FIGHTER_STATUS_KIND_APPEAL) 
+    && fighter.motion_frame() > 25.0
+    && VarModule::is_flag(fighter.object(), vars::gekkouga::instance::IS_SUBSTITUTE_SPECIAL) {
+        //Doll FX
+        PLAY_SE_REMAIN(fighter, Hash40::new("se_gekkouga_attack_water"));
+        EFFECT(fighter, Hash40::new("gekkouga_water_impact"), Hash40::new("top"), delta_x, delta_y, 17.0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_RATE(fighter, 0.75);
+        //Greninja FX
+        EFFECT_FOLLOW(fighter, Hash40::new_raw(0x91AAE256A), Hash40::new("top"), -7, 2.0, 0, 0, 0, 0, 1.2, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.1, 1.0, 2.0);
+        LAST_EFFECT_SET_RATE(fighter, 0.75);
+        EFFECT_FOLLOW(fighter, Hash40::new("gekkouga_pump_splash"), Hash40::new("rot"), 0, -4, 0, 270, 0, 0, 0.7, true);
+        EFFECT(fighter, Hash40::new("gekkouga_pump_hit"), Hash40::new("top"), 0, 4, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_RATE(fighter, 0.35);
+        FOOT_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 5, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+        LAST_EFFECT_SET_RATE(fighter, 0.6);
+        FT_ADD_DAMAGE(fighter, -3.0);
+        StatusModule::change_status_request_from_script(doll_boma, *ITEM_STATUS_KIND_LOST, true);
+        VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_LIFE, 0);
+        if timer <= 240 {
+            VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_TIMER, 1);
+        } else {
+            VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_TIMER, timer - 240);
         }
-        //When hit twice, substitute log vanishes
-        if VarModule::get_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT) > 1 
-        && VarModule::get_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT) < 69 {
-            HitModule::set_whole(log_boma, smash::app::HitStatus(*HIT_STATUS_XLU), 0);
-            StatusModule::set_situation_kind(log_boma, app::SituationKind(*SITUATION_KIND_AIR), true);
-            MotionModule::change_motion(log_boma, Hash40::new("poof"), 0.0, 1.0, false, 0.0, false, false);
-            EFFECT(fighter, Hash40::new("gekkouga_kageuchi_warp_start"), Hash40::new("top"), delta_x, delta_y - 6.5, 3.0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-            PLAY_SE_REMAIN(fighter, Hash40::new("se_gekkouga_special_s02"));
-            VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT, 69);
-            VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_LIFE, VarModule::get_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_LIFE) + 2);
-        }
-        if VarModule::get_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT) >= 420 {
-            StatusModule::change_status_request_from_script(log_boma, *ITEM_STATUS_KIND_LOST, true);
-            VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_LIFE, 0);
-            VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT, 0);
-        }
-        if VarModule::get_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT) >= 69 {
-            VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT, 420);
-        }
-        //Taunt while log is out to consume log and gain 4 seconds back on down special charge
-        if fighter.is_status(*FIGHTER_STATUS_KIND_APPEAL) 
-        && fighter.motion_frame() > 25.0
-        && VarModule::is_flag(fighter.object(), vars::gekkouga::instance::IS_SUBSTITUTE_SPECIAL) {
-            //Log FX
-            PLAY_SE_REMAIN(fighter, Hash40::new("se_gekkouga_attack_water"));
-            EFFECT(fighter, Hash40::new("gekkouga_water_impact"), Hash40::new("top"), delta_x, delta_y, 17.0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
-            LAST_EFFECT_SET_RATE(fighter, 0.75);
-            //Greninja FX
-            EFFECT_FOLLOW(fighter, Hash40::new_raw(0x91AAE256A), Hash40::new("top"), -7, 2.0, 0, 0, 0, 0, 1.2, true);
-            LAST_EFFECT_SET_COLOR(fighter, 0.1, 1.0, 2.0);
-            LAST_EFFECT_SET_RATE(fighter, 0.75);
-            EFFECT_FOLLOW(fighter, Hash40::new("gekkouga_pump_splash"), Hash40::new("rot"), 0, -4, 0, 270, 0, 0, 0.7, true);
-            EFFECT(fighter, Hash40::new("gekkouga_pump_hit"), Hash40::new("top"), 0, 4, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-            LAST_EFFECT_SET_RATE(fighter, 0.35);
-            FOOT_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 5, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-            LAST_EFFECT_SET_RATE(fighter, 0.6);   
-            FT_ADD_DAMAGE(fighter, -3.5);
-            StatusModule::change_status_request_from_script(log_boma, *ITEM_STATUS_KIND_LOST, true);
-            VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_LIFE, 0);
-            if timer <= 270 {
-                VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_TIMER, 1);
-            } else {
-                VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_TIMER, timer - 270);
-            }
-            VarModule::off_flag(fighter.object(), vars::gekkouga::instance::IS_SUBSTITUTE_SPECIAL)
-        }
-    } 
+        VarModule::off_flag(fighter.object(), vars::gekkouga::instance::IS_SUBSTITUTE_SPECIAL);
+    }   
 }
 
 // Dair Jump Cancel
