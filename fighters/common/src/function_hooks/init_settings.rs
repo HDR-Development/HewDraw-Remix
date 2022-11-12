@@ -18,27 +18,19 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
     let fix = super::edge_slipoffs::init_settings_edges(boma, situation, arg3, arg4, ground_cliff_check_kind, jostle, keep_flag, keep_int, keep_float, arg10);
 
     if boma.is_fighter() {
-        
-        // Handles "fake" ECB shift on landing
-        // Because our aerial ECB shift code currently runs in opff, it runs a frame "late"
-        // which causes characters to appear stuck halfway into the ground on the first frame they land
-        // so we need to re-shift your character back up to the proper height on that single frame
-        // this is a "fake" ECB shift for 1 frame
-        if !(*boma).is_status_one_of(&[
+
+        // Resets your airtime counter when leaving the below statuses
+        // Prevents ECB from shifting on f1 after an "ignored" status (those defined below)
+        if boma.is_prev_status_one_of(&[
+            *FIGHTER_STATUS_KIND_DEMO,
             *FIGHTER_STATUS_KIND_ENTRY,
             *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
             *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
             *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
             *FIGHTER_STATUS_KIND_THROWN])
-        && VarModule::get_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS) != 0.0
+        && situation.0 == *SITUATION_KIND_AIR
         {
-            boma.shift_ecb_on_landing();
-        }
-
-        // Disable wiggle out of tumble flag during damage_fly states
-        if [*FIGHTER_STATUS_KIND_DAMAGE_FLY,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL].contains(&status_kind) {
-            VarModule::off_flag(boma.object(), vars::common::instance::CAN_ESCAPE_TUMBLE);
+            WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
         }
 
         // Walk through other fighters

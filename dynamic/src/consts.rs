@@ -157,6 +157,8 @@ pub mod vars {
 
             pub const IS_CC_NON_TUMBLE: i32 = 0x0054;
 
+            pub const IS_GETTING_POSITION_FOR_ECB: i32 = 0x0055;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -200,7 +202,7 @@ pub mod vars {
             pub const LEDGE_POS_Y: i32 = 0x000B;
             pub const LEDGE_POS_Z: i32 = 0x000C;
             pub const GET_DIST_TO_FLOOR: i32 = 0x000D;
-            pub const ECB_Y_OFFSETS: i32 = 0x000E;
+            pub const ECB_BOTTOM_Y_OFFSET: i32 = 0x000E;
             pub const CURR_DASH_SPEED: i32 = 0x000F;
             pub const MOONWALK_SPEED: i32 = 0x0010;
             pub const ESCAPE_AIR_SLIDE_SPEED_X: i32 = 0x0011;
@@ -209,9 +211,11 @@ pub mod vars {
             /// this multiplier can be set to a value between 0.1 and 3.0 to increase
             /// a character's jump speed max for momentum transfer (for meta quick, etc)
             pub const JUMP_SPEED_MAX_MUL: i32 = 0x0014;
+            pub const ECB_TOP_Y_OFFSET: i32 = 0x0015;
         }
         pub mod status {
             // flags
+            pub const DISABLE_ECB_SHIFT: i32 = 0x10FF;
 
             pub const DISABLE_BACKDASH: i32 = 0x1000;
             pub const IS_MOONWALK: i32 = 0x1001;
@@ -646,6 +650,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const IS_NOT_QUICK_RELEASE: i32 = 0x1100;
+            pub const IS_DETACH_BOOST: i32 = 0x1101;
         }
     }
 
