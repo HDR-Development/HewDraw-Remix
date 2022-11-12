@@ -6,7 +6,7 @@ unsafe fn gekkouga_special_lw_hit_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("gekkouga_migawari_smoke"), Hash40::new("top"), 0, -2.0, 15.0, 0, 0, 0, 1.25, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(fighter, Hash40::new("gekkouga_migawari_smoke"), Hash40::new("top"), 0, -2.0, 15.0, 0, 0, 0, 1.35, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_RATE(fighter, 0.05);
     }
     frame(lua_state, 2.0);

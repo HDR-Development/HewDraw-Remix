@@ -62,14 +62,14 @@
       <float hash="start_x_speed_mul">0.0</float>
       <float hash="fall_speed_accel">0.0</float>
       <int hash="attack_time">0</int>
-      <float hash="doll_probability">50.0</float>
+      <float hash="doll_probability">0.0</float>
       <float hash="distance">0.0</float>
       <float hash="warp_offset_x">0.0</float>
       <int hash="slow_speed_mul">0</int>
       <int hash="slow_frame">0</int>
       <float hash="slow_distance">0.0</float>
-      <int hash="no_collision_frame">35</int>
-      <float hash="rush_end_frame">35.0</float>
+      <int hash="no_collision_frame">7</int>
+      <float hash="rush_end_frame">7.0</float>
       <float hash="lerp_angle">0.0</float>
       <float hash="end_speed">0.0</float>
       <float hash="end_brake">0.0</float>
@@ -106,6 +106,7 @@
       <float hash="rot_speed_z">0.9</float>
       <float hash="reaction_mul">1.8</float>
       <float hash="life_dec_mul">0.0</float>
+      <float hash="accel_y">0.125</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

@@ -110,12 +110,12 @@ unsafe fn substitute(fighter: &mut L2CFighterCommon) {
             StatusModule::change_status_request_from_script(doll_boma, *ITEM_STATUS_KIND_LOST, true);
         } else if log_kind == *ITEM_KIND_LOG {
             StatusModule::change_status_request_from_script(log_boma, *ITEM_STATUS_KIND_LOST, true);
+            println!("LOL");
         }
     }
     if smoke > 0 {
         VarModule::set_int(fighter.object(), vars::gekkouga::instance::SMOKESCREEN_LIFE, smoke - 1);
     }
-    
 
     //Startup on press
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
@@ -125,19 +125,25 @@ unsafe fn substitute(fighter: &mut L2CFighterCommon) {
         VarModule::set_int(fighter.object(), vars::gekkouga::instance::SMOKESCREEN_LIFE, 270);
         VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_LIFE, 360);
         VarModule::on_flag(fighter.object(), vars::gekkouga::instance::IS_MANUAL_USAGE);
-        FT_ADD_DAMAGE(fighter, 6.0);
+        FT_ADD_DAMAGE(fighter, 5.0);
     }
     
     //Transition to spawn
     if fighter.is_status(*FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_LW_HIT)
     && fighter.motion_frame() > 5.0
     && VarModule::is_flag(fighter.object(), vars::gekkouga::instance::IS_MANUAL_USAGE) {
+        //Falling hitbox
+        if fighter.is_situation(*SITUATION_KIND_AIR) {
+            if doll_kind == *ITEM_KIND_DOLL {
+                MotionModule::change_motion(doll_boma, Hash40::new("throw"), 0.0, 1.0, false, 0.0, false, false);
+            } else if log_kind == *ITEM_KIND_LOG {
+                MotionModule::change_motion(log_boma, Hash40::new("throw"), 0.0, 1.0, false, 0.0, false, false);
+            }
+        }
         //Greninja state
         StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL, true);
-        KineticModule::add_speed(fighter.module_accessor, &Vector3f::new(-5.5 * lr, 1.0, 0.0));
-        //Falling hitbox
-        MotionModule::change_motion(doll_boma, Hash40::new("throw"), 0.0, 1.0, false, 0.0, false, false);
-        //Refresh vars
+        KineticModule::add_speed(fighter.module_accessor, &Vector3f::new(-5.5 * lr, 1.0, 0.0)); 
+        //Refresh variables
         VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_HIT_COUNT, 0);
         VarModule::off_flag(fighter.object(), vars::gekkouga::instance::IS_MANUAL_USAGE);
         VarModule::on_flag(fighter.object(), vars::gekkouga::instance::IS_SUBSTITUTE_SPECIAL);
@@ -255,7 +261,7 @@ pub unsafe fn substitute_doll(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         LAST_EFFECT_SET_RATE(fighter, 0.35);
         FOOT_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 5, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_RATE(fighter, 0.6);
-        FT_ADD_DAMAGE(fighter, -3.0);
+        FT_ADD_DAMAGE(fighter, -2.5);
         StatusModule::change_status_request_from_script(doll_boma, *ITEM_STATUS_KIND_LOST, true);
         VarModule::set_int(fighter.object(), vars::gekkouga::instance::SUBSTITUTE_LIFE, 0);
         if timer <= 240 {
