@@ -24,10 +24,16 @@ jobs:
         with: 
           fetch-depth: 0
 
+      - name: get last merge
+        id: last_merge
+        shell: bash
+        run: |
+          echo "short_hash=$(git show ':/^Merge' --oneline | awk '{print $1;}')" >> $GITHUB_OUTPUT
+
       # wait for any previous versions to be tagged and committed
       - uses: lewagon/wait-on-check-action@v1.2.0
         with:
-          ref: ${{ github.ref }}^
+          ref: ${{ steps.last_merge.outputs.short_hash }}
           check-name: 'version_and_changelog'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 30
