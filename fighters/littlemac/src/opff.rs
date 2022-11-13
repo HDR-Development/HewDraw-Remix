@@ -62,14 +62,19 @@ unsafe fn tech_roll_help(boma: &mut BattleObjectModuleAccessor, motion_kind: u64
     }
 }
 
-unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
+unsafe fn nspecial_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     //PM-like neutral-b canceling
     if status_kind == *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START {
         if situation_kind == *SITUATION_KIND_AIR {
-            if boma.is_cat_flag(Cat1::AirEscape) {
-                WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
-                ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+            if !VarModule::is_flag(fighter.battle_object, vars::littlemac::status::IS_STRAIGHT_LUNGE_CANCEL) && boma.is_cat_flag(Cat1::AirEscape) {
+                VarModule::on_flag(fighter.battle_object, vars::littlemac::status::IS_STRAIGHT_LUNGE_CANCEL);
+                VarModule::is_flag(fighter.battle_object, vars::littlemac::status::IS_STRAIGHT_LUNGE_CANCEL);
+                VarModule::set_float(fighter.battle_object, vars::littlemac::status::CANCEL_FRAME, frame + 8.0);
+            }
+            else if VarModule::is_flag(fighter.battle_object, vars::littlemac::status::IS_STRAIGHT_LUNGE_CANCEL) && frame >= VarModule::get_float(fighter.battle_object, vars::littlemac::status::CANCEL_FRAME) {
+                    WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
+                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
+                    ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
             }
         }
     }
@@ -79,7 +84,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     normal_side_special(boma, status_kind);
     straight_lunge_cancels(boma, status_kind, situation_kind, cat[0], cat[1], frame);
     tech_roll_help(boma, motion_kind, facing, frame);
-    nspecial_cancels(boma, status_kind, situation_kind, cat[0]);
+    nspecial_cancels(fighter, boma, status_kind, situation_kind, cat[0], frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_LITTLEMAC )]
