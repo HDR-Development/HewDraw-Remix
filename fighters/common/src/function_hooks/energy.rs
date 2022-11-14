@@ -388,8 +388,9 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
                 WorkModule::unable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
             }
             if WorkModule::is_enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH)
+            && (ControlModule::get_trigger(boma) == 0 || Buttons::from_bits_unchecked(ControlModule::get_trigger(boma)) == Buttons::CStickOverride)
             && dashback_input {
-                energy.speed.x *= 0.225;
+                energy.speed.x *= WorkModule::get_param_float(boma, hash40("common"), hash40("dash_end_speed_mul"));
                 break 0.0;
             }
             // Shield Stop
