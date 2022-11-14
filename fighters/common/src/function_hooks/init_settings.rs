@@ -47,8 +47,8 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
         }
         
         if boma.is_prev_situation(*SITUATION_KIND_AIR)
-        && boma.is_situation(*SITUATION_KIND_GROUND)
-        && [*SITUATION_KIND_GROUND, *SITUATION_KIND_NONE].contains(&situation.0)
+        && (boma.is_situation(*SITUATION_KIND_GROUND)
+            || [*SITUATION_KIND_GROUND, *SITUATION_KIND_NONE].contains(&situation.0))
         {
             if kinetic_type == *FIGHTER_KINETIC_TYPE_MOTION {
                 kinetic_type = *FIGHTER_KINETIC_TYPE_MOTION_IGNORE_NORMAL;
