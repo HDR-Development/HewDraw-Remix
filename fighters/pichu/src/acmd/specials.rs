@@ -187,11 +187,13 @@ unsafe fn pichu_special_lw_game(fighter: &mut L2CAgentBase) {
             WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_PIKACHU_STATUS_WORK_ID_FLAG_KAMINARI_GENERATE);
         }
         else {
+            let charge_state_time = ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time") as f32;
             let charge_state_remaining = VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) as f32;
-            // Full Charge State time = 900
-            // 1 second to use full power Discharge before decreasing in power = 840 max cap
-            // 25% full power at minimum = 210 min cap
-            let discharge_power_mul = charge_state_remaining.clamp(210.0, 840.0)/840.0;
+            // 1 second to use full power Discharge before it starts decreasing in power
+            let discharge_decrease_power_frame = charge_state_time - 60.0;
+            // 50% power at minimum
+            let discharge_min_power_mul = ParamModule::get_float(boma.object(), ParamType::Agent, "discharge_min_power_mul");
+            let discharge_power_mul = 1.0 - ((1.0 - (charge_state_remaining.min(discharge_decrease_power_frame)/discharge_decrease_power_frame)) * discharge_min_power_mul);
             VarModule::set_float(boma.object(), vars::pichu::instance::DISCHARGE_POWER_MUL, discharge_power_mul);
             VarModule::on_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK);
             VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 0);
@@ -249,7 +251,7 @@ unsafe fn pichu_special_lw_hit_effect(fighter: &mut L2CAgentBase) {
     WorkModule::is_flag(boma, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLAG_KAMINARI_ATTACK_HIT);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK) {
-            let discharge_effect_mul = 1.0 - ((1.0 - VarModule::get_float(boma.object(), vars::pichu::instance::DISCHARGE_POWER_MUL)) * 0.5);
+            let discharge_effect_mul = VarModule::get_float(boma.object(), vars::pichu::instance::DISCHARGE_POWER_MUL);
             EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pichu_kaminari_hit2"), Hash40::new("hip"), 0, 0, 0, 0, 90, 0, 1.15 * discharge_effect_mul, true);
             EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pichu_final_explosion"), Hash40::new("hip"), 0, 0, 0, 0, 0, 0, 0.3 * discharge_effect_mul, false);
         }
@@ -368,7 +370,7 @@ unsafe fn pichu_special_air_lw_hit_effect(fighter: &mut L2CAgentBase) {
     WorkModule::is_flag(boma, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLAG_KAMINARI_ATTACK_HIT);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK) {
-            let discharge_effect_mul = 1.0 - ((1.0 - VarModule::get_float(boma.object(), vars::pichu::instance::DISCHARGE_POWER_MUL)) * 0.5);
+            let discharge_effect_mul = VarModule::get_float(boma.object(), vars::pichu::instance::DISCHARGE_POWER_MUL);
             EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pichu_kaminari_hit2"), Hash40::new("hip"), 0, 0, 0, 0, 90, 0, 1.15 * discharge_effect_mul, true);
             EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pichu_final_explosion"), Hash40::new("hip"), 0, 0, 0, 0, 0, 0, 0.3 * discharge_effect_mul, false);
         }

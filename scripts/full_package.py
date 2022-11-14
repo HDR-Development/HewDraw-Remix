@@ -50,6 +50,7 @@ download_and_extract("HDR-Development", "HewDraw-Remix", hdr_version, "hdr-switc
 download_and_extract("HDR-Development", "romfs-release", romfs_version, "romfs.zip")
 download_and_extract("Raytwo", "ARCropolis", "latest", "release.zip")
 download_and_extract("skyline-dev", "skyline", "beta", "skyline.zip", "/atmosphere/contents/01006A800016E000/")
+download_and_extract("HDR-Development", "exlaunch", "latest", "HID-HDR.zip")
 
 print("getting libnro_hook.nro")
 urllib.request.urlretrieve("https://github.com/ultimate-research/nro-hook-plugin/releases/download/beta/libnro_hook.nro", "libnro_hook.nro")
