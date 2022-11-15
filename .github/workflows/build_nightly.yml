@@ -30,6 +30,9 @@ jobs:
         run: |
           echo "short_hash=$(git show ':/^Merge' --oneline | awk '{print $1;}')" >> $GITHUB_OUTPUT
 
+      - run: |
+          echo "Last Merge: ${{ steps.last_merge.outputs.short_hash }}"
+
       # wait for any previous versions to be tagged and committed
       - uses: lewagon/wait-on-check-action@v1.2.0
         with:
