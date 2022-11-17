@@ -18,58 +18,17 @@ use vars::*;
 //=================================================================
 //== TUMBLE EXIT
 //=================================================================
-unsafe fn tumble_exit(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32) {
-    // TODO: Move some of this into ParamModule
-    let remaining_hitstun = WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
-    let total_hitstun = WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME_LAST);
-    let hitstun_passed = total_hitstun - remaining_hitstun;
-    /*
-     * Pick: damage fall OR (damage_fly variant + hitstun + 5 frame)
-     */
-
-    if remaining_hitstun > 0.0
-    && VarModule::is_flag(boma.object(), common::instance::CAN_ESCAPE_TUMBLE)
-    && boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL
-    ])
-    {
-        VarModule::off_flag(boma.object(), common::instance::CAN_ESCAPE_TUMBLE);
-    }
-
-    if FighterStopModuleImpl::is_damage_stop(boma) {
-        return;
-    }
-
-    if !VarModule::is_flag(boma.object(), common::instance::TUMBLE_KB)
-    && (boma.is_status(*FIGHTER_STATUS_KIND_DAMAGE_FALL)
-        || (boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL])
-                && remaining_hitstun > 0.0 && hitstun_passed > 5.0))
-    && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
-    && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
-    {
-        VarModule::on_flag(boma.object(), common::instance::TUMBLE_KB);
-    }
-
-    if !boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_DAMAGE_FALL,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL
-    ])
-    {
-        VarModule::off_flag(boma.object(), common::instance::TUMBLE_KB);
-        VarModule::off_flag(boma.object(), common::instance::CAN_ESCAPE_TUMBLE);
-    }
-
-    if VarModule::is_flag(boma.object(), common::instance::TUMBLE_KB) && remaining_hitstun == 0.0 {
-        VarModule::on_flag(boma.object(), common::instance::CAN_ESCAPE_TUMBLE);
-    }
-
-    if boma.is_situation(*SITUATION_KIND_AIR)
-    && VarModule::is_flag(boma.object(), common::instance::CAN_ESCAPE_TUMBLE)
-    && boma.is_cat_flag(Cat1::Dash | Cat1::TurnDash)
-    {
-        boma.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
+unsafe fn tumble_exit(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_DAMAGE_FALL) {
+        if boma.status_frame() == 0 {
+            ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_DASH);
+            ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_TURN_DASH);
+        }
+        if !(WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR) || WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND))
+        && boma.is_cat_flag(Cat1::Dash | Cat1::TurnDash)
+        {
+            boma.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
+        }
     }
 }
 
@@ -347,7 +306,7 @@ pub unsafe fn teeter_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
 }
 
 pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mut L2CAgent, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32, curr_frame: f32) {
-    tumble_exit(boma, cat[0], status_kind, situation_kind);
+    tumble_exit(boma);
     non_tumble_di(fighter, lua_state, l2c_agent, boma, status_kind);
     dash_drop(boma, status_kind);
     run_squat(boma, status_kind, stick_y); // Must be done after dash_drop()

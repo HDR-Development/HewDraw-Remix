@@ -24,10 +24,19 @@ jobs:
         with: 
           fetch-depth: 0
 
+      - name: get last merge
+        id: last_merge
+        shell: bash
+        run: |
+          echo "short_hash=$(echo $(git log --pretty=format:"%h" --merges -n 2) | cut -d' ' -f2)" >> $GITHUB_OUTPUT
+
+      - run: |
+          echo "Last Merge: ${{ steps.last_merge.outputs.short_hash }}"
+
       # wait for any previous versions to be tagged and committed
       - uses: lewagon/wait-on-check-action@v1.2.0
         with:
-          ref: ${{ github.ref }}^
+          ref: ${{ steps.last_merge.outputs.short_hash }}
           check-name: 'version_and_changelog'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 30
@@ -54,6 +63,7 @@ jobs:
           verbose: false
           issuesWoLabels: false
           maxIssues: 300
+          stripGeneratorNotice: true
           token: ${{ secrets.RELEASE_TOKEN }}
 
       - name: Upload changelog
