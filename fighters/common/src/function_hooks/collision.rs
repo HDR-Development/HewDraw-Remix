@@ -98,29 +98,118 @@ unsafe fn get_touch_flag_hook(boma: &mut BattleObjectModuleAccessor) -> i32 {
     original!()(boma)
 }
 
-// Handles ECB shifts
+
+// Unused for now
 #[skyline::hook(offset = 0x6ca950)]
 unsafe fn ground_module_update_hook(ground_module: u64) {
-    call_original!(ground_module);
     let boma = *((ground_module + 0x20) as *mut *mut BattleObjectModuleAccessor);
-    let line = *((ground_module + 0x28) as *mut *mut f32);
+    // The original function calls ground_module_update_rhombus_sub
+    call_original!(ground_module);
+}
 
+
+// Unused for now
+
+// This function is used to calculate your ECB's 4 points
+// Once calculated, it stores each point's coordinates as a Vector4f
+// These 4 Vector4fs are stored in param_3's Vector4f pointer
+#[skyline::hook(offset = 0x45f6c0)]
+unsafe fn ground_module_update_rhombus_sub(ground_module: u64, param_2: u64, param_3: *mut Vector4f) {
+    let boma = *((ground_module + 0x20) as *mut *mut BattleObjectModuleAccessor);
+    // This routine corrects your position upon landing
+    // Otherwise, characters will appear stuck halfway into the ground on the first frame of landing
     if (*boma).is_fighter() {
-        let shift = VarModule::get_float((*boma).object(), vars::common::instance::ECB_Y_OFFSETS);
+        let prev_pos = *PostureModule::prev_pos(boma);
+        let pos = *PostureModule::pos(boma);
+        let prev_ecb_bottom_y_offset = VarModule::get_float((*boma).object(), vars::common::instance::ECB_BOTTOM_Y_OFFSET);
+        let prev_ecb_bottom_pos_y = prev_pos.y + prev_ecb_bottom_y_offset + 0.2;
+        let mut prev_ground_pos = Vector2f::zero();
+        GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, prev_ecb_bottom_pos_y), &Vector2f::new(pos.x, prev_ecb_bottom_pos_y - 999.0), &Vector2f::zero(), &mut prev_ground_pos, true);
 
-        if !(*boma).is_status_one_of(&[
-            *FIGHTER_STATUS_KIND_ENTRY,
-            *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
-            *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
-            *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
-            *FIGHTER_STATUS_KIND_THROWN])
-        && (*boma).is_situation(*SITUATION_KIND_AIR)
-        && shift != 0.0
-        {
-            // Shift bottom ECB point upwards by character's defined ECB shift amount
-            *line.add(0x3D4 / 4) += shift;
+        // The original function calls ground_module_ecb_point_calc_hook
+        call_original!(ground_module, param_2, param_3);
+
+        let ecb_bottom_pos_y = pos.y + (*param_3.add(1)).y;
+        // (*param_3.add(1)).y is your ECB bottom's vertical offset from your base position (AKA your vertical ECB shift)
+        if (*param_3.add(1)).y != 0.0 {
+            let mut ground_pos_any = Vector2f::zero();
+            let mut ground_pos_stage = Vector2f::zero();
+            GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, ecb_bottom_pos_y), &Vector2f::new(pos.x, ecb_bottom_pos_y + 999.0), &Vector2f::zero(), &mut ground_pos_any, true);
+            GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, ecb_bottom_pos_y), &Vector2f::new(pos.x, ecb_bottom_pos_y + 999.0), &Vector2f::zero(), &mut ground_pos_stage, false);
+
+            if ecb_bottom_pos_y < prev_ecb_bottom_pos_y  // if your ECB was moving downwards
+            && ((ground_pos_any != Vector2f::zero() && ground_pos_stage == Vector2f::zero() && !GroundModule::is_passable_check(boma))  // if you touched a platform without passing through
+                || ground_pos_stage != Vector2f::zero())  // or you touched stage
+            && (prev_ground_pos.y - ground_pos_any.y).abs() < 1.0  // if the same surface that was under your ECB bottom on the previous frame is now above your ECB bottom on the current frame
+            {
+                // Reset your ECB shift to 0.0
+                (*param_3.add(1)).y = 0.0;
+            }
         }
+        VarModule::set_float((*boma).object(), vars::common::instance::ECB_BOTTOM_Y_OFFSET, (*param_3.add(1)).y);
     }
+    else {
+        call_original!(ground_module, param_2, param_3);
+    }
+}
+
+
+// This function is used to calculate the following:
+//      param_2: Left ECB point's horizontal offset from Top bone (negative number)
+//      param_3: Bottom ECB point's vertical offset from Top bone (positive number, 0.0 in vanilla)
+//      param_4: Right ECB point's horizontal offset from Top bone (positive number)
+//      param_5: Top ECB point's vertical offset from Top bone (positive number)
+
+// All of your character's map_coll_data bones, found in vl.prc, are stored in param_1's Hash40 pointer
+
+// Not sure what param_6 is, but when 0, it skips calculations for your ECB's bottom point and just sets it to 0.0, which "locks" your ECB's bottom point to your Top bone
+// when 1, it calculates your bottom ECB point normally, like the other 3 points
+// Vanilla passes 0 by default, so we have to forcibly pass in 1
+#[skyline::hook(offset = 0x45f420)]
+unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *mut Hash40, param_2: *mut f32, param_3: *mut f32, param_4: *mut f32, param_5: *mut f32, param_6: u32) {
+    let boma = *((ground_module + 0x20) as *mut *mut BattleObjectModuleAccessor);
+    let mut param_6 = param_6.clone();
+    if (*boma).is_fighter()
+    && !VarModule::is_flag((*boma).object(), vars::common::status::DISABLE_ECB_SHIFT)
+    && !(*boma).is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_DEMO,
+        *FIGHTER_STATUS_KIND_ENTRY,
+        *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
+        *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
+        *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
+        *FIGHTER_STATUS_KIND_THROWN])
+    && (*boma).is_situation(*SITUATION_KIND_AIR)
+    && !GroundModule::is_touch(boma, *GROUND_TOUCH_FLAG_DOWN as u32)
+    && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) >= ParamModule::get_int((*boma).object(), ParamType::Common, "ecb_shift_air_trans_frame") {
+        // This check passes after 9 frames of airtime, if not in a grabbed/thrown state
+        param_6 = 1;
+    }
+    // The original function calls model_module_joint_global_position_with_offset_hook
+    if (*boma).is_fighter() { VarModule::on_flag((*boma).object(), vars::common::instance::IS_GETTING_POSITION_FOR_ECB); }
+    call_original!(ground_module, param_1, param_2, param_3, param_4, param_5, param_6);
+    if (*boma).is_fighter() { VarModule::off_flag((*boma).object(), vars::common::instance::IS_GETTING_POSITION_FOR_ECB); }
+}
+
+
+// This function calculates the coordinates of the passed bone relative to the Top bone (PostureModule::pos)
+// It stores these x/y/z coordinates in param_3's Vector3f
+
+// ground_module_ecb_point_calc_hook will pass each bone from your character's map_coll_data list in vl.prc, one by one, into this func
+// If param_6 in ground_module_ecb_point_calc_hook is 1, it will then pass the Trans bone once all of the map_coll_data bones have been processed
+// The game will use your Trans bone's distance from your Top bone to determine where to place your bottom ECB point, which will pretty much always be {0, 0, 0}
+// This is why your ECB bottom point is always "locked" to your Top bone
+
+// By returning once the Trans bone is passed into this func, we can ignore it and thus use your map_coll_data bones to calculate your bottom ECB point, like the other 3 points
+#[skyline::hook(offset = 0x48fc40)]
+unsafe fn model_module_joint_global_position_with_offset_hook(model_module: u64, bone: Hash40, param_3: *mut Vector3f, param_4: *mut Vector3f, param_5: bool) {
+    let boma = *(model_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    if (*boma).is_fighter()
+    && VarModule::is_flag((*boma).object(), vars::common::instance::IS_GETTING_POSITION_FOR_ECB)
+    && bone == Hash40::new("trans")
+    {
+        return;
+    }
+    call_original!(model_module, bone, param_3, param_4, param_5);
 }
 
 pub fn install() {
@@ -128,6 +217,8 @@ pub fn install() {
         is_touch_hook,
         is_floor_touch_line_hook,
         get_touch_flag_hook,
-        ground_module_update_hook
+        ground_module_update_rhombus_sub,
+        ground_module_ecb_point_calc_hook,
+        model_module_joint_global_position_with_offset_hook
     );
 }
