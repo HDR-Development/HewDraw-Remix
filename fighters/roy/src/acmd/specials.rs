@@ -24,6 +24,11 @@ unsafe fn roy_special_n_end_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        FT_MOTION_RATE(fighter, 20.0/(40.0-13.0));
+    }
+    frame(lua_state, 40.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
     }
     
 }
@@ -191,6 +196,11 @@ unsafe fn roy_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        FT_MOTION_RATE(fighter, 20.0/(40.0-13.0));
+    }
+    frame(lua_state, 40.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
     }
     
 }
@@ -529,6 +539,11 @@ unsafe fn roy_special_s2_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 28.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
+        FT_MOTION_RATE(fighter, 8.0/(41.0-28.0));
+    }
+    frame(lua_state, 41.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
     }
     
 }
@@ -632,6 +647,11 @@ unsafe fn roy_special_s2_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 28.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
+        FT_MOTION_RATE(fighter, 7.0/(40.0-28.0));
+    }
+    frame(lua_state, 40.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
     }
     
 }
@@ -799,6 +819,11 @@ unsafe fn roy_special_s3_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 32.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
+        FT_MOTION_RATE(fighter, 9.0/(47.0-32.0));
+    }
+    frame(lua_state, 47.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
     }
     
 }
@@ -903,6 +928,11 @@ unsafe fn roy_special_s3_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 32.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
+        FT_MOTION_RATE(fighter, 11.0/(47.0-32.0));
+    }
+    frame(lua_state, 47.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
     }
     
 }
@@ -1080,10 +1110,15 @@ unsafe fn roy_special_s3_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_MOTION_CHANGE_ENABLE);
+        FT_MOTION_RATE(fighter, 24.0/(47.0-12.0));
     }
-    frame(lua_state, 32.0);
+    frame(lua_state, 45.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
+    }
+    frame(lua_state, 47.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
     }
     
 }
@@ -1204,6 +1239,7 @@ unsafe fn roy_special_s4_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 16.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        FT_MOTION_RATE(fighter, 32.0/(51.0-16.0));
     }
 }
 
@@ -1306,14 +1342,15 @@ unsafe fn roy_special_s4_s_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("sword1"), 12.0, 361, 105, 0, 35, 5.0, 0.0, 0.0, 2.2, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("armr"), 12.0, 361, 105, 0, 35, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 2, 0, Hash40::new("shoulderl"), 12.0, 361, 105, 0, 35, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 3, 0, Hash40::new("sword1"), 10.0, 361, 107, 0, 35, 5.0, 0.0, 0.0, 9.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("sword1"), 12.0, 361, 105, 0, 35, 5.0, 0.0, 0.0, 2.2, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("armr"), 12.0, 361, 105, 0, 35, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 2, 0, Hash40::new("shoulderl"), 12.0, 361, 105, 0, 35, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 3, 0, Hash40::new("sword1"), 11.0, 361, 106, 0, 35, 5.0, 0.0, 0.0, 9.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        FT_MOTION_RATE(fighter, 35.0/(56.0-16.0));
     }
 }
 
@@ -1434,6 +1471,7 @@ unsafe fn roy_special_s4_lw_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 2.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        FT_MOTION_RATE(fighter, 23.0/(66.0-39.0));
     }
 }
 
