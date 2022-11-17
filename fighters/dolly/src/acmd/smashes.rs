@@ -19,7 +19,6 @@ unsafe fn dolly_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
-        MeterModule::watch_damage(fighter.battle_object, true);
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
             if MeterModule::drain(fighter.battle_object, 2) {
                 VarModule::on_flag(fighter.battle_object, vars::dolly::status::IS_SHATTER_STRIKE);
@@ -29,13 +28,12 @@ unsafe fn dolly_attack_s4_s_game(fighter: &mut L2CAgentBase) {
             VarModule::off_flag(fighter.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE);
             FT_MOTION_RATE(fighter, 1.000);
         }
-        else{
-            WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
-        }
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
         
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, true);
         if VarModule::is_flag(fighter.battle_object, vars::dolly::status::IS_SHATTER_STRIKE){
             damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 20.0);
             KineticModule::add_speed(boma, &Vector3f::new(shatter_strike_speed, 0.0, 0.0));
@@ -141,6 +139,13 @@ unsafe fn dolly_attack_s4_s_game(fighter: &mut L2CAgentBase) {
             FT_MOTION_RATE(fighter, 0.9);
         }
     }
+    frame(lua_state, 45.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::dolly::status::IS_SHATTER_STRIKE){
+            // Shatter Strike FAF
+            CancelModule::enable_cancel(boma);
+        }
+    }
     
 }
 
@@ -194,6 +199,18 @@ unsafe fn dolly_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "dolly", script = "game_attacks4charge" , category = ACMD_GAME , low_priority)]
+unsafe fn dolly_attack_s4_charge_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::dolly::status::IS_SHATTER_STRIKE){
+            // Stop charging smash during shatter strike
+            ControlModule::reset_button(boma);
+        }        
+    }
+}
+
 #[acmd_script( agent = "dolly", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -225,6 +242,7 @@ unsafe fn dolly_attack_hi4_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.5);
     if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, true);
         FT_MOTION_RATE(fighter, 1.0/(8.0-7.5));
     }
     frame(lua_state, 8.0);
@@ -295,7 +313,7 @@ unsafe fn dolly_attack_lw4_game(fighter: &mut L2CAgentBase) {
             VarModule::on_flag(fighter.battle_object, vars::dolly::status::IS_USE_FIRE_KICK);
             KineticModule::add_speed(boma, &Vector3f::new(fire_kick_speed, 0.0, 0.0));
          }
-         
+        MeterModule::watch_damage(fighter.battle_object, true);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
@@ -383,6 +401,7 @@ pub fn install() {
     install_acmd_scripts!(
         dolly_attack_s4_s_game,
         dolly_attack_s4_s_effect,
+        dolly_attack_s4_charge_game,
         dolly_attack_hi4_game,
         dolly_attack_lw4_game,
         dolly_attack_lw4_effect,

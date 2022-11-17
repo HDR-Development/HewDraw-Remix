@@ -459,7 +459,10 @@ unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
         if boma.is_cat_flag(Cat1::AttackHi3) {
             is_input_cancel = true;
             new_status = *FIGHTER_STATUS_KIND_ATTACK_HI3;
-        } else if boma.is_cat_flag(Cat1::AttackS4) {
+        } 
+        
+        // Tilt cat flags override smash cat flags, need to check smashes separately after tilts so the smash input can be properly detecetd
+        if boma.is_cat_flag(Cat1::AttackS4) {
             is_input_cancel = true;
             new_status = *FIGHTER_STATUS_KIND_ATTACK_S4_START;
         } else if boma.is_cat_flag(Cat1::AttackHi4) {
@@ -510,6 +513,12 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
             WorkModule::off_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
             new_status = *FIGHTER_STATUS_KIND_ATTACK_DASH;
         }
+
+        // Blowback Attack/Shatter Strike (Fsmash)
+        if boma.is_cat_flag(Cat1::AttackS4) {
+            is_input_cancel = true;
+            new_status = *FIGHTER_STATUS_KIND_ATTACK_S4_START;
+        }
     }
     else if boma.is_motion(Hash40::new("attack_hi3")){
         if boma.is_cat_flag(Cat1::AttackS4) {
@@ -534,6 +543,11 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
             ControlModule::clear_command(boma, false);
             WorkModule::off_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
             new_status = *FIGHTER_STATUS_KIND_ATTACK_DASH;
+        }
+        // Blowback Attack/Shatter Strike (Fsmash)
+        if boma.is_cat_flag(Cat1::AttackS4) {
+            is_input_cancel = true;
+            new_status = *FIGHTER_STATUS_KIND_ATTACK_S4_START;
         }
     }
     else if boma.is_motion(Hash40::new("attack_lw3")) {

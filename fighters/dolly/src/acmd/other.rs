@@ -304,6 +304,59 @@ unsafe fn dolly_landing_fall_special_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "dolly_wave", script = "game_normal" , category = ACMD_GAME , low_priority)]
+unsafe fn dolly_wave_normal_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+    if is_excute(fighter) {
+        // EX Power Wave
+        if VarModule::is_flag(owner_module_accessor.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_EX){
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 70, 5, 0, 90, 2.4, 0.0, 12.0, -5.0, Some(0.0), Some(2.0), Some(0.0), 3.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_CRITICAL, *ATTACK_REGION_ENERGY);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 10.0, 70, 5, 0, 90, 1.8, 0.0, 2.0, -10.0, Some(0.0), Some(2.0), Some(0.0), 3.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_CRITICAL, *ATTACK_REGION_ENERGY);
+            ATTACK(fighter, 2, 0, Hash40::new("top"), 10.0, 70, 5, 0, 90, 1.8, 0.0, 7.0, -7.0, Some(0.0), Some(2.0), Some(0.0), 3.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_CRITICAL, *ATTACK_REGION_ENERGY);
+            //AttackModule::set_add_reaction_frame(boma, 0, -3.0, false);
+            //AttackModule::set_add_reaction_frame(boma, 1, -3.0, false);
+            //AttackModule::set_add_reaction_frame(boma, 2, -3.0, false);
+        }
+        else{
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 55, 20, 0, 50, 2.4, 0.0, 12.0, -5.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 55, 20, 0, 50, 1.8, 0.0, 2.0, -10.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        }
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        if !VarModule::is_flag(owner_module_accessor.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_EX){
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 55, 20, 0, 50, 2.4, 0.0, 9.0, -4.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 55, 20, 0, 50, 1.8, 0.0, 2.0, -8.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        }
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        if !VarModule::is_flag(owner_module_accessor.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_EX){
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 55, 20, 0, 50, 2.4, 0.0, 6.5, -2.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 55, 20, 0, 50, 1.8, 0.0, 2.0, -6.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        }
+    }
+    
+}
+
+#[acmd_script( agent = "dolly_wave", script = "effect_normal" , category = ACMD_EFFECT , low_priority)]
+unsafe fn dolly_wave_normal_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+    if is_excute(fighter) {
+        if VarModule::is_flag(owner_module_accessor.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_EX){
+            EFFECT_FOLLOW(fighter, Hash40::new("dolly_wave"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.25, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_magicball_attack_aura"), Hash40::new("top"), 0, 1.0, -1.0, 0, 0, 0, 0.8, true);
+        }
+        else{
+            EFFECT_FOLLOW(fighter, Hash40::new("dolly_wave"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
+    }
+}
+
 #[acmd_script( agent = "dolly_burst", script = "game_superspecial" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_burst_super_special_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -323,6 +376,36 @@ unsafe fn dolly_burst_super_special_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "dolly_burst", script = "game_final" , category = ACMD_GAME , low_priority)]
+unsafe fn dolly_burst_final_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 20, 100, 25, 30, 11.0, 0.0, 10.0, -1.0, Some(0.0), Some(39.0), Some(9.0), 0.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, -5, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BOMB);
+        AttackModule::set_no_dead_all(boma, true, false);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "dolly_burst", script = "game_final2" , category = ACMD_GAME , low_priority)]
+unsafe fn dolly_burst_final2_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 20, 100, 25, 30, 11.0, 0.0, 10.0, -1.0, Some(0.0), Some(39.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, -5, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BOMB);
+        AttackModule::set_no_dead_all(boma, true, false);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
 #[acmd_script( agent = "dolly_burst", script = "game_final3" , category = ACMD_GAME , low_priority)]
 unsafe fn dolly_burst_final3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -336,7 +419,7 @@ unsafe fn dolly_burst_final3_game(fighter: &mut L2CAgentBase) {
             ATTACK(fighter, 2, 0, Hash40::new("top"), 12.0, 71, 44, 0, 100, 10.0, 0.0, 40.0, 6.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_SUPERSPECIAL01, *ATTACK_REGION_ENERGY);
         }
         else{
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 18.0, 45, 75, 0, 33, 11.0, 0.0, 10.0, -1.0, Some(0.0), Some(39.0), Some(9.0), 0.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, f32::NAN, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BOMB);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 18.0, 45, 75, 0, 33, 11.0, 0.0, 10.0, -1.0, Some(0.0), Some(39.0), Some(9.0), 0.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BOMB);
         }
     }
     frame(lua_state, 5.0);
@@ -403,8 +486,12 @@ pub fn install() {
         dolly_catch_dash_game,
         dolly_catch_turn_game,
         dolly_landing_fall_special_game,
+        dolly_wave_normal_game,
+        dolly_wave_normal_effect,
         dolly_wave_hit_game,
         dolly_burst_super_special_game,
+        //dolly_burst_final_game,
+        //dolly_burst_final2_game,
         dolly_burst_final3_game,
         damageflyhi_sound,
         damageflylw_sound,
