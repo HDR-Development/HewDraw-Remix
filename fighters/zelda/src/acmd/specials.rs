@@ -127,7 +127,7 @@ unsafe fn zelda_special_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         JostleModule::set_status(boma, true);
         if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
-            FT_MOTION_RATE(fighter, 8.0/(34.0 - 1.0));
+            FT_MOTION_RATE(fighter, 10.0/(34.0 - 1.0));
         }
     }
     frame(lua_state, 2.0);
