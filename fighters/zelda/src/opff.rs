@@ -3,12 +3,10 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
  
-unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
     if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2) {
         if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
-            //if boma.is_situation(*SITUATION_KIND_AIR) {
             VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-            //}
             boma.change_status_req(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3, false);
             ControlModule::clear_command(boma, false);
         }
@@ -117,16 +115,26 @@ unsafe fn nayru_fastfall_land_cancel(boma: &mut BattleObjectModuleAccessor, stat
     }
 }
 
-unsafe fn dins_fire_land_cancel(boma: &mut BattleObjectModuleAccessor){
-    if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_S_END) && boma.is_situation(*SITUATION_KIND_GROUND) && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
-        boma.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
+/// Handles land canceling when airborne and canceling into up special when grounded
+unsafe fn dins_fire_cancels(boma: &mut BattleObjectModuleAccessor){
+    if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_S_END) {
+        if boma.is_situation(*SITUATION_KIND_GROUND) {
+            if StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
+                boma.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
+            }
+            else if StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_GROUND {
+                if boma.is_cat_flag(Cat1::SpecialHi) {
+                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI, false);
+                }
+            }
+        }
     }
 }
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    teleport_tech(fighter, boma);
+    teleport_tech(fighter, boma, frame);
     //teleport_shorten_land_cancel(fighter, boma, status_kind);
-    dins_fire_land_cancel(boma);
+    dins_fire_cancels(boma);
     nayru_fastfall_land_cancel(boma, status_kind, situation_kind, cat[2], stick_y, frame);
     //neutral_special_cancels(boma, status_kind, situation_kind, cat[0]);
     //teleport_startup_ledgegrab(fighter);

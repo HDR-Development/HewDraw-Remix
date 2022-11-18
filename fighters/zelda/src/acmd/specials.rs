@@ -126,6 +126,9 @@ unsafe fn zelda_special_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         JostleModule::set_status(boma, true);
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+            FT_MOTION_RATE(fighter, 8.0/(34.0 - 1.0));
+        }
     }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
@@ -144,9 +147,6 @@ unsafe fn zelda_special_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
             FT_MOTION_RATE(fighter, 29.0/(34.0 - 11.0));
-        }
-        else {
-            FT_MOTION_RATE(fighter, 9.0/(34.0 - 11.0));
         }
     }
     
@@ -199,10 +199,10 @@ unsafe fn zelda_special_air_hi_effect(fighter: &mut L2CAgentBase) {
         }
         else {
             if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
-                EFFECT_FOLLOW(fighter, Hash40::new("zelda_flor_end_l"), Hash40::new("top"), 0, 11, -1, 0, 0, 0, 1, false);
+                EFFECT_FOLLOW(fighter, Hash40::new("zelda_flor_end_l"), Hash40::new("top"), 0, 11, -1, 0, 0, 0, 0.5, false);
             }
             else {
-                EFFECT_FOLLOW(fighter, Hash40::new("zelda_flor_end_r"), Hash40::new("top"), 0, 11, -1, 0, 0, 0, 1, false);
+                EFFECT_FOLLOW(fighter, Hash40::new("zelda_flor_end_r"), Hash40::new("top"), 0, 11, -1, 0, 0, 0, 0.5, false);
             }
         }
     }
