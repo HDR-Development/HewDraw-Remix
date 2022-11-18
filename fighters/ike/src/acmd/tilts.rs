@@ -153,40 +153,59 @@ unsafe fn ike_attack_hi3_game(fighter: &mut L2CAgentBase) {
 unsafe fn ike_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    let start_rate = 13.0/(16.0-1.0);
+    let attack_rate = 2.0/(17.0-16.0);
+    let end_rate = 22.0/(55.0-18.0);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 9.0/(3.5-1.0));
+        FT_MOTION_RATE(fighter, start_rate);
     }
-    frame(lua_state, 3.5);
+    // Frame 14
+    frame(lua_state, 16.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 3.0/(6.0-3.5));
-    }
-    frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 2.0/(10.0-6.0));
+        FT_MOTION_RATE(fighter, attack_rate);
         ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 12.0, 70, 95, 0, 20, 2.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_IKE, *ATTACK_REGION_SWORD);
         /* Ground-only */ ATTACK(fighter, 1, 0, Hash40::new("sword"), 14.0, 270, 95, 0, 35, 4.4, 0.0, 1.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_IKE, *ATTACK_REGION_SWORD);
-         /* Air-only */   ATTACK(fighter, 2, 0, Hash40::new("sword"), 14.0, 90, 95, 0, 35, 4.4, 0.0, 1.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_IKE, *ATTACK_REGION_SWORD);
+         /* Air-only */   ATTACK(fighter, 2, 0, Hash40::new("sword"), 14.0, 270, 90, 0, 25, 4.4, 0.0, 1.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_IKE, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 3, 0, Hash40::new("shoulderr"), 12.0, 70, 95, 0, 20, 2.75, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_IKE, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 4, 0, Hash40::new("sword"), 12.0, 70, 95, 0, 20, 4.0, 0.0, 6.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_IKE, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 5, 0, Hash40::new("sword"), 10.0, 60, 95, 0, 20, 4.0, 0.0, 11.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_IKE, *ATTACK_REGION_SWORD);
         AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
     }
-    frame(lua_state, 10.0);
+    frame(lua_state, 17.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
     }
-    frame(lua_state, 11.0);
+    // Frame 17
+    frame(lua_state, 18.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE(fighter, 11.0/(27.0-11.0));
+        FT_MOTION_RATE(fighter, end_rate);
     }
-    frame(lua_state, 27.0);
+    // Frame 39
+    frame(lua_state, 55.0);
     if is_excute(fighter) {
-        AttackModule::clear_all(boma);
         FT_MOTION_RATE(fighter, 1.0);
     }
     
+}
+
+#[acmd_script( agent = "ike", script = "effect_attacklw3" , category = ACMD_EFFECT , low_priority)]
+unsafe fn ike_attack_lw3_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_ike_sword6"), Hash40::new("tex_ike_sword2"), 7, Hash40::new("sword"), 0.0, 1.0, 0.0, Hash40::new("sword"), 0.0, 16.2, 0.0, true, Hash40::new("ike_sword"), Hash40::new("sword"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        AFTER_IMAGE_OFF(fighter, 5);
+    }
 }
 
 pub fn install() {
@@ -196,6 +215,7 @@ pub fn install() {
         ike_attack_s3_lw_game,
         ike_attack_hi3_game,
         ike_attack_lw3_game,
+        ike_attack_lw3_effect,
     );
 }
 

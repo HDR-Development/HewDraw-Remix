@@ -26,7 +26,7 @@ unsafe fn quickdraw_jump_attack_cancels(boma: &mut BattleObjectModuleAccessor, i
     // Wall Jump & ECB correction
     if situation_kind == *SITUATION_KIND_AIR {
         //GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, 0.05));
-        VarModule::set_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS, 0.05);
+        //VarModule::set_float(boma.object(), vars::common::instance::ECB_Y_OFFSETS, 0.05);
         if  !VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP) {
             let touch_right = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
             let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
@@ -389,10 +389,10 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     aether_drift(boma, status_kind, situation_kind, stick_x, facing);
     quickdraw_jump_attack_cancels(boma, id, status_kind, situation_kind, cat[0], stick_x, facing);
     quickdraw_instakill(fighter, boma);
-    quickdraw_attack_arm_bend(boma);
-    jab_lean(boma);
-    grab_lean(boma);
-    fair_wrist_bend(boma);
+    //quickdraw_attack_arm_bend(boma);
+    //jab_lean(boma);
+    //grab_lean(boma);
+    //fair_wrist_bend(boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_IKE )]
