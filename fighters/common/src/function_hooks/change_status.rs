@@ -94,6 +94,11 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
                 }
             }
         }
+        if boma.is_status(*FIGHTER_STATUS_KIND_DAMAGE_AIR)
+        && next_status == *FIGHTER_STATUS_KIND_LANDING
+        && boma.motion_frame() < 1.0 {
+            VarModule::on_flag(boma.object(), vars::common::instance::IS_CC_NON_TUMBLE);
+        }
 
         if boma.kind() == *FIGHTER_KIND_TRAIL
         && StatusModule::status_kind(boma) == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_SEARCH

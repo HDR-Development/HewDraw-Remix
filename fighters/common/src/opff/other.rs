@@ -108,10 +108,11 @@ pub unsafe fn suicide_throw_mashout(fighter: &mut L2CFighterCommon, boma: &mut B
         else {
             let ecb_bottom = *GroundModule::get_rhombus(boma.get_grabber_boma(), true).add(1);
             let line_bottom = Vector2f::new(ecb_bottom.x, ecb_bottom.y - 999.0);
-            let mut out_pos = Vector2f::zero();
+            let mut stage_pos = Vector2f::zero();
+            GroundModule::line_segment_check(boma.get_grabber_boma(), &Vector2f::new(ecb_bottom.x, ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut stage_pos, false);
 
             if GroundModule::get_correct(boma.get_grabber_boma()) == *GROUND_CORRECT_KIND_AIR
-            && GroundModule::line_segment_check(boma.get_grabber_boma(), &Vector2f::new(ecb_bottom.x, ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut out_pos, false) == 0 {
+            && stage_pos == Vector2f::zero() {
                 // can only mash out if offstage
                 if ControlModule::get_clatter_time(boma, 0) <= 0.0 {
                     fighter.change_status(FIGHTER_STATUS_KIND_CAPTURE_JUMP.into(), false.into());

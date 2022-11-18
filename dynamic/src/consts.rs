@@ -202,7 +202,7 @@ pub mod vars {
             pub const LEDGE_POS_Y: i32 = 0x000B;
             pub const LEDGE_POS_Z: i32 = 0x000C;
             pub const GET_DIST_TO_FLOOR: i32 = 0x000D;
-            pub const ECB_Y_OFFSETS: i32 = 0x000E;
+            pub const ECB_BOTTOM_Y_OFFSET: i32 = 0x000E;
             pub const CURR_DASH_SPEED: i32 = 0x000F;
             pub const MOONWALK_SPEED: i32 = 0x0010;
             pub const ESCAPE_AIR_SLIDE_SPEED_X: i32 = 0x0011;
@@ -211,6 +211,7 @@ pub mod vars {
             /// this multiplier can be set to a value between 0.1 and 3.0 to increase
             /// a character's jump speed max for momentum transfer (for meta quick, etc)
             pub const JUMP_SPEED_MAX_MUL: i32 = 0x0014;
+            pub const ECB_TOP_Y_OFFSET: i32 = 0x0015;
         }
         pub mod status {
             // flags
