@@ -110,14 +110,14 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
     let object = boma.object();
     if VarModule::has_var_module(object) {
         let mut mask = 0;
-        if keep_flag == *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG {
+        if keep_flag != *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG {
             mask += VarModule::RESET_STATUS_FLAG;
         }
-        if keep_int == *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT {
+        if keep_int != *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT {
             mask += VarModule::RESET_STATUS_INT;
             mask += VarModule::RESET_STATUS_INT64;
         }
-        if keep_float == *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT {
+        if keep_float != *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT {
             mask += VarModule::RESET_STATUS_FLOAT;
         }
         VarModule::reset(object, mask);
