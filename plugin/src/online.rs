@@ -30,12 +30,12 @@ unsafe fn update_room_hook(_: &skyline::hooks::InlineCtx) {
         if CURRENT_COUNTER == 0 {
             CURRENT_INPUT_BUFFER += 1;
         }
-        CURRENT_COUNTER = (CURRENT_COUNTER + 1) % 10;
+        CURRENT_COUNTER = (CURRENT_COUNTER + 1) % 15;
     } else if ninput::any::is_press(ninput::Buttons::LEFT) {
         if CURRENT_COUNTER == 0 {
             CURRENT_INPUT_BUFFER -= 1;
         }
-        CURRENT_COUNTER = (CURRENT_COUNTER + 1) % 10;
+        CURRENT_COUNTER = (CURRENT_COUNTER + 1) % 15;
     } else {
         CURRENT_COUNTER = 0;
     }
@@ -45,16 +45,16 @@ unsafe fn update_room_hook(_: &skyline::hooks::InlineCtx) {
         if MOST_RECENT_AUTO == -1 {
             set_text_string(
                 CURRENT_PANE_HANDLE as u64,
-                format!("ROOM ID: {}\nInput Latency: Auto", CURRENT_ARENA_ID).as_ptr(),
+                format!("ROOM ID: {}\nInput Latency: Auto\0", CURRENT_ARENA_ID).as_ptr(),
             );
         } else {
             set_text_string(
                 CURRENT_PANE_HANDLE as u64,
-                format!("ROOM ID: {}\nInput Latency: Auto ({})", CURRENT_ARENA_ID, MOST_RECENT_AUTO).as_ptr()
+                format!("ROOM ID: {}\nInput Latency: Auto ({})\0", CURRENT_ARENA_ID, MOST_RECENT_AUTO).as_ptr()
             )
         }
     } else {
-        set_text_string(CURRENT_PANE_HANDLE as u64, format!("{}\nInput Latency: {}\0", CURRENT_ARENA_ID, CURRENT_INPUT_BUFFER).as_ptr());
+        set_text_string(CURRENT_PANE_HANDLE as u64, format!("ROOM ID: {}\nInput Latency: {}\0", CURRENT_ARENA_ID, CURRENT_INPUT_BUFFER).as_ptr());
     }
 }
 
@@ -94,7 +94,7 @@ unsafe fn update_css2(arg: u64) {
 unsafe fn set_online_latency(ctx: &InlineCtx) {
     let auto = *(*ctx.registers[19].x.as_ref() as *mut u8);
     MOST_RECENT_AUTO = auto as isize;
-    if CURRENT_INPUT_BUFFER == -1 {
+    if CURRENT_INPUT_BUFFER != -1 {
         *(*ctx.registers[19].x.as_ref() as *mut u8) = CURRENT_INPUT_BUFFER as u8;
     }
 }
