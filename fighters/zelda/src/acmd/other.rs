@@ -187,6 +187,11 @@ unsafe fn zelda_dein_move_game(fighter: &mut L2CAgentBase) {
 		AREA_WIND_2ND_RAD_arg9(fighter, 0, 2, 0.05, 200, 1, 0, 0, 12, 60);
 	}
 	frame(lua_state, 6.0);
+	let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+	if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_ZELDA {
+		let zelda = utils::util::get_battle_object_from_id(owner_id);
+		VarModule::off_flag(zelda, vars::zelda::instance::DEIN_ACTIVE);
+	}
 	if is_excute(fighter) {
 		AttackModule::clear_all(boma);
 	}
@@ -203,20 +208,24 @@ unsafe fn zelda_dein_tame_effect(fighter: &mut L2CAgentBase) {
 	if is_excute(fighter) {
 		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_bullet_end"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.5, true);
 	}
-	frame(lua_state, 16.0);
+	frame(lua_state, 20.0);
 	if is_excute(fighter) {
 		EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, true);
 	}
-	frame(lua_state, 32.0);
+	frame(lua_state, 40.0);
 	if is_excute(fighter) {
 		EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
 		LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.25, 0.25);
 	}
-	frame(lua_state, 48.0);
+	frame(lua_state, 60.0);
+	if is_excute(fighter) {
+		EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+		LAST_EFFECT_SET_COLOR(fighter, 0.885, 0.051, 0.051);
+	}
+	frame(lua_state, 76.0);
 	if is_excute(fighter) {
 		EFFECT(fighter, Hash40::new("zelda_atk"), Hash40::new("top"), 0, 0, 0, 90, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, true);
 		LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.5, 0.5);
-		//LAST_EFFECT_SET_COLOR(fighter, 0.885, 0.051, 0.051);
 	}
 }
 

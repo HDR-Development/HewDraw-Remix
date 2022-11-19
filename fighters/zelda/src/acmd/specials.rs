@@ -69,6 +69,17 @@ unsafe fn zelda_special_n_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "zelda", scripts = ["game_specialsstart", "game_specialairsstart"] , category = ACMD_GAME , low_priority)]
+unsafe fn zelda_special_s_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_ZELDA_STATUS_SPECIAL_S_FLAG_1);
+        //VarModule::on_flag(fighter.battle_object, vars::zelda::instance::DEIN_ACTIVE);
+    }
+}
+
 #[acmd_script( agent = "zelda", script = "game_specialhistart" , category = ACMD_GAME , low_priority)]
 unsafe fn zelda_special_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -261,6 +272,7 @@ pub fn install() {
     install_acmd_scripts!(
         zelda_special_n_game,
         zelda_special_n_air_game,
+        zelda_special_s_start_game,
         zelda_special_hi_start_game,
         zelda_special_air_hi_start_game,
         zelda_special_hi_game,

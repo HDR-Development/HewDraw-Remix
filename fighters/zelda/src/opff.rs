@@ -94,6 +94,17 @@ unsafe fn phantom_special_cancel(fighter: &mut L2CFighterCommon, boma: &mut Batt
     }
 }
 
+unsafe fn dins_flag_reset(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_WIN,
+        *FIGHTER_STATUS_KIND_LOSE,
+        *FIGHTER_STATUS_KIND_ENTRY,
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_REBIRTH]) || !sv_information::is_ready_go() {
+        VarModule::off_flag(boma.object(), vars::zelda::instance::DEIN_ACTIVE);
+    }
+}
+
 // unsafe fn teleport_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
 //     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
 //         // allows ledgegrab during teleport startup
@@ -135,6 +146,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     teleport_tech(fighter, boma, frame);
     //teleport_shorten_land_cancel(fighter, boma, status_kind);
     dins_fire_cancels(boma);
+    dins_flag_reset(boma);
     nayru_fastfall_land_cancel(boma, status_kind, situation_kind, cat[2], stick_y, frame);
     //neutral_special_cancels(boma, status_kind, situation_kind, cat[0]);
     //teleport_startup_ledgegrab(fighter);

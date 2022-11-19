@@ -127,7 +127,7 @@ unsafe fn zelda_attack_air_b_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 9.0/(17.0 - 6.0));
         ATTACK(fighter, 0, 0, Hash40::new("hip"), 10.0, 361, 103, 0, 10, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATTACK(fighter, 1, 0, Hash40::new("kneer"), 10.0, 361, 103, 0, 10, 4.0, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        ATTACK(fighter, 2, 0, Hash40::new("toer"), 16.0, 361, 109, 0, 24, 4.25, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 2, 0, Hash40::new("toer"), 15.0, 361, 103, 0, 24, 4.25, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_KICK);
         AttackModule::set_optional_hit_effect(boma, 2, Hash40::new_raw(0x1484fa7486));
     }
     wait(lua_state, 3.0);
@@ -156,10 +156,7 @@ unsafe fn zelda_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk_air_line"), Hash40::new("top"), 0, 5.7, -1, 0, 180, 180, 1, true);
         EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk_air_flash"), Hash40::new("toer"), 0, 0, 0, 0, 0, 0, 1, true);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk"), Hash40::new("toer"), 0.0, 0.0, -2.0, 0, 0, 0, 1.0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk"), Hash40::new("toer"), 0.0, 0.0, -2.0, 0, 0, 0, 1.15, true);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
 }
