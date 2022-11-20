@@ -840,6 +840,9 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const DEIN_ACTIVE: i32 = 0x0100;
+
+            // ints
+            pub const DEIN_OBJECT_ID: i32 = 0x0100;
         }
     }
 

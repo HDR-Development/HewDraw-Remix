@@ -50,32 +50,6 @@ unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &m
     }
 }
 
-// unsafe fn teleport_shorten_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-//     if /*StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR &&*/ status_kind == *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL {
-//         if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
-//             VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-//             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
-//         }
-//     }
-// }
-
-// Neutral Special Cancels
-// unsafe fn neutral_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
-//     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-//         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag() {
-//             if boma.is_input_jump() {
-//                 if situation_kind == *SITUATION_KIND_AIR {
-//                     if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-//                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, true);
-//                     }
-//                 } else if situation_kind == *SITUATION_KIND_GROUND {
-//                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-//                 }
-//             }
-//         }
-//     }
-// }
-
 unsafe fn phantom_special_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK,
                                         *FIGHTER_STATUS_KIND_ATTACK_S3,
@@ -91,17 +65,6 @@ unsafe fn phantom_special_cancel(fighter: &mut L2CFighterCommon, boma: &mut Batt
         if fighter.is_cat_flag(Cat1::SpecialLw) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, false);
         }
-    }
-}
-
-unsafe fn dins_flag_reset(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_WIN,
-        *FIGHTER_STATUS_KIND_LOSE,
-        *FIGHTER_STATUS_KIND_ENTRY,
-        *FIGHTER_STATUS_KIND_DEAD,
-        *FIGHTER_STATUS_KIND_REBIRTH]) || !sv_information::is_ready_go() {
-        VarModule::off_flag(boma.object(), vars::zelda::instance::DEIN_ACTIVE);
     }
 }
 
@@ -142,13 +105,23 @@ unsafe fn dins_fire_cancels(boma: &mut BattleObjectModuleAccessor){
     }
 }
 
+/// Reset use of Din's Fire on stock loss or match end
+unsafe fn dins_flag_reset(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_WIN,
+        *FIGHTER_STATUS_KIND_LOSE,
+        *FIGHTER_STATUS_KIND_ENTRY,
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_REBIRTH]) || !sv_information::is_ready_go() {
+        VarModule::off_flag(boma.object(), vars::zelda::instance::DEIN_ACTIVE);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     teleport_tech(fighter, boma, frame);
-    //teleport_shorten_land_cancel(fighter, boma, status_kind);
     dins_fire_cancels(boma);
     dins_flag_reset(boma);
     nayru_fastfall_land_cancel(boma, status_kind, situation_kind, cat[2], stick_y, frame);
-    //neutral_special_cancels(boma, status_kind, situation_kind, cat[0]);
     //teleport_startup_ledgegrab(fighter);
     phantom_special_cancel(fighter, boma);
 }
