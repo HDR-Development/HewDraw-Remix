@@ -237,7 +237,10 @@ unsafe fn murabito_attack_lw4_effect(fighter: &mut L2CAgentBase) {
             let pos_z = VarModule::get_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Z) - char_pos.z;
             LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
             EFFECT(fighter, Hash40::new("murabito_grass"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-            EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);            
+            EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);      
+            LAST_EFFECT_SET_RATE(fighter, 2.0);   
+            EFFECT(fighter, Hash40::new("murabito_putaway_catch"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
+            LAST_EFFECT_SET_RATE(fighter, 0.65);    
         } else {
             LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 15.0, 0.0, 0.0, 0, 0, 0, 0.55, 2, 2, 2, 0, 0, 0, false);
             EFFECT(fighter, Hash40::new("murabito_clay"), Hash40::new("top"), 15.0, 0.0, 0.0, 0, 0, 0, 1.0, 2, 2, 2, 0, 0, 0, false);
@@ -270,7 +273,10 @@ unsafe fn murabito_attack_lw4_effect(fighter: &mut L2CAgentBase) {
             let pos_z = VarModule::get_float(boma.object(), vars::murabito::instance::SAPLING_PULL_SAPLING_POS_Z) - char_pos.z;
             LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
             EFFECT(fighter, Hash40::new("murabito_grass"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-            EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);            
+            EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
+            LAST_EFFECT_SET_RATE(fighter, 2.0);   
+            EFFECT(fighter, Hash40::new("murabito_putaway_catch"), Hash40::new("top"), pos_x, pos_y, pos_z, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
+            LAST_EFFECT_SET_RATE(fighter, 0.65);    
         } else {
             LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), -15.0, 0.0, 0.0, 0, 0, 0, 0.55, 2, 2, 2, 0, 0, 0, false);
             EFFECT(fighter, Hash40::new("murabito_clay"), Hash40::new("top"), -15.0, 0.0, 0.0, 0, 0, 0, 1.0, 2, 2, 2, 0, 0, 0, false);
