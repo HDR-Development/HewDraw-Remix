@@ -27,9 +27,27 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
             }
     }
 }
+
+unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
+    if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_FLAP, 
+        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_TURN, 
+        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_WAIT]) {
+            if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_GUARD) {
+                VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH, true);
+            }
+    } else if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH, 
+        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_END]) && frame > 6.0 {
+            VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
+            WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
+            ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
+    }
+}
  
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
+    uspecial_cancels(boma, situation_kind, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MURABITO )]
