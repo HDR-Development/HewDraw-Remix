@@ -552,6 +552,10 @@ pub mod vars {
     }
 
     pub mod master {
+        pub mod instance {
+            // flags
+            pub const SPECIAL_AIR_HI_CATCH:            i32 = 0x0100;
+        }
         pub mod status {
             // flags
             pub const IS_ENABLE_SPECIAL_S_DASH_CANCEL: i32 = 0x1100;
