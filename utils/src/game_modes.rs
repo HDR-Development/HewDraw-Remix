@@ -94,9 +94,9 @@ unsafe fn on_rule_select_hook(_: &skyline::hooks::InlineCtx) {
 
     match response.get_last_url() {
         Ok(url) => {
-            let modes_str = url.trim_start_matches("http://localhost/modes/");
+            let modes_str = url.trim_start_matches("http://localhost/");
             // if no modes were selected, then set None
-            if modes_str.is_empty() {
+            if modes_str.is_empty() || modes_str.contains("none") {
                 CURRENT_CUSTOM_MODES = None;
                 return;
             }
