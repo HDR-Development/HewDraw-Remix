@@ -402,7 +402,7 @@ unsafe fn master_special_hi_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 368, 100, 30, 0, 6.5, 0.0, 8.5, 8.0, None, None, None, 1.4, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 7, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 368, 100, 30, 0, 6.5, 0.0, 8.5, 8.0, None, None, None, 1.4, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         AttackModule::set_vec_target_pos(boma, 0, Hash40::new("top"), &Vector2f{x: 18.0, y: 44.0}, 7, false);
         AttackModule::set_no_finish_camera_ex(boma, 0, true, false);
         AttackModule::set_no_dead_all(boma, true, false);
@@ -416,15 +416,7 @@ unsafe fn master_special_hi_game(fighter: &mut L2CAgentBase) {
         AttackModule::set_no_finish_camera_ex(boma, 0, true, false);
         AttackModule::set_no_dead_all(boma, true, false);
     }
-    frame(lua_state, 19.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("throw"), 0.01, 368, 100, 30, 0, 3.5, 0.0, 3.0, 0.75, Some(0.0), Some(-4.0), Some(-1.5), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 2, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_NO_STAGE_GIMMICK, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("throw"), 3.0, 75, 100, 0, 40, 2.0, 0.0, 2.0, 0.75, Some(0.0), Some(-4.0), Some(-1.5), 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        AttackModule::set_vec_target_pos(boma, 0, Hash40::new("top"), &Vector2f{x: 16.0, y: 41.0}, 2, false);
-        AttackModule::set_no_dead_all(boma, true, false);
-        AttackModule::set_no_finish_camera_ex(boma, 0, true, false);
-    }
-    frame(lua_state, 20.0);
+    frame(lua_state, 18.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_HI_FLAG_ENABLE_CATCH);
         ATTACK(fighter, 0, 0, Hash40::new("throw"), 3.0, 75, 100, 0, 40, 3.5, 0.0, 3.0, 0.75, Some(0.0), Some(-4.0), Some(-1.5), 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_STAGE_GIMMICK, *COLLISION_PART_MASK_BODY, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -432,7 +424,7 @@ unsafe fn master_special_hi_game(fighter: &mut L2CAgentBase) {
         AttackModule::set_no_dead_all(boma, true, false);
         AttackModule::set_no_finish_camera_ex(boma, 0, true, false);
     }
-    frame(lua_state, 21.0);
+    frame(lua_state, 19.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("throw"), 3.0, 75, 100, 0, 40, 3.5, 0.0, 9.5, 2.5, Some(0.0), Some(-4.0), Some(-1.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_STAGE_GIMMICK, *COLLISION_PART_MASK_BODY, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 1, 0, Hash40::new("throw"), 3.0, 75, 100, 0, 40, 2.0, 0.0, 10.0, 3.0, Some(0.0), Some(-4.0), Some(-1.5), 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
