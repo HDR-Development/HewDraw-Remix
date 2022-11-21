@@ -4,12 +4,15 @@ use crate::offsets;
 
 pub mod tag;
 pub mod turbo;
+pub mod hitfall;
 
 lazy_static! {
     static ref GAME_MODE_HTML: Vec<u8> = std::fs::read("mods:/ui/docs/gamemodes.html").unwrap();
     static ref GAME_MODE_JS: Vec<u8> = std::fs::read("mods:/ui/docs/gamemodes.js").unwrap();
     static ref TAG_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/tag.webp").unwrap();
     static ref TURBO_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/turbo.webp").unwrap();
+    /// todo, make this a real video of hitfall
+    static ref HITFALL_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/turbo.webp").unwrap();
 }
 
 static mut CURRENT_CUSTOM_MODE: Option<CustomMode> = None;
@@ -76,6 +79,7 @@ unsafe fn on_rule_select_hook(_: &skyline::hooks::InlineCtx) {
         .file("hdr/gamemodes.js", GAME_MODE_JS.as_slice())
         .file("hdr/tag.webp", TAG_WEBP.as_slice())
         .file("hdr/turbo.webp", TURBO_WEBP.as_slice())
+        .file("hdr/hitfall.webp", HITFALL_WEBP.as_slice())
         .start_page("help/html/USen/gamemodes.html")
         .open()
         .unwrap();
@@ -83,6 +87,7 @@ unsafe fn on_rule_select_hook(_: &skyline::hooks::InlineCtx) {
     match response.get_last_url() {
         Ok("http://localhost/btn-tag") => CURRENT_CUSTOM_MODE = Some(CustomMode::SmashballTag),
         Ok("http://localhost/btn-turbo") => CURRENT_CUSTOM_MODE = Some(CustomMode::TurboMode),
+        Ok("http://localhost/btn-hitfall") => CURRENT_CUSTOM_MODE = Some(CustomMode::HitfallMode),
         _ => {}
     }
 }
@@ -105,6 +110,7 @@ unsafe fn once_per_game_frame(game_state_ptr: u64) {
     match get_custom_mode() {
         Some(CustomMode::SmashballTag) => tag::update(),
         Some(CustomMode::TurboMode) => turbo::update(),
+        Some(CustomMode::HitfallMode) => hitfall::update(),
         _ => {}
     }
 
