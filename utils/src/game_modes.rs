@@ -1,10 +1,13 @@
 use skyline_web::Webpage;
 use utils_dyn::game_modes::CustomMode;
 use crate::offsets;
+use std::collections::HashSet;
+use std::str::FromStr;
 
 pub mod tag;
 pub mod turbo;
 pub mod hitfall;
+pub mod airdash;
 
 lazy_static! {
     static ref GAME_MODE_HTML: Vec<u8> = std::fs::read("mods:/ui/docs/gamemodes.html").unwrap();
@@ -13,22 +16,24 @@ lazy_static! {
     static ref TURBO_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/turbo.webp").unwrap();
     /// todo, make this a real video of hitfall
     static ref HITFALL_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/turbo.webp").unwrap();
+    /// todo, make this a real video of airdash
+    static ref AIRDASH_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/turbo.webp").unwrap();
 }
 
-static mut CURRENT_CUSTOM_MODE: Option<CustomMode> = None;
+static mut CURRENT_CUSTOM_MODES: Option<HashSet<CustomMode>> = None;
 static mut IS_PENDING_NEW_GAME: bool = false;
 
 #[export_name = "hdr__game_modes__is_custom_mode"]
 pub extern "Rust" fn is_custom_mode() -> bool {
     unsafe {
-        CURRENT_CUSTOM_MODE.is_some()
+        CURRENT_CUSTOM_MODES.is_some()
     }
 }
 
 #[export_name = "hdr__game_modes__get_custom_mode"]
-pub extern "Rust" fn get_custom_mode() -> Option<CustomMode> {
+pub extern "Rust" fn get_custom_mode() -> Option<HashSet<CustomMode>> {
     unsafe {
-        CURRENT_CUSTOM_MODE
+        CURRENT_CUSTOM_MODES.clone()
     }
 }
 
@@ -60,16 +65,18 @@ unsafe fn on_rule_select_hook(_: &skyline::hooks::InlineCtx) {
         let text_addr = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64;
         if text_addr == 0x8004000 {
             if ninput::any::is_down(ninput::Buttons::R) && ninput::any::is_down(ninput::Buttons::L) {
-                CURRENT_CUSTOM_MODE = Some(CustomMode::SmashballTag);
+                let mut modes = HashSet::new();
+                modes.insert(CustomMode::SmashballTag);
+                CURRENT_CUSTOM_MODES = Some(modes);
             } else {
-                CURRENT_CUSTOM_MODE = None;
+                CURRENT_CUSTOM_MODES = None;
             }
             return;
         }
     }
 
     if !ninput::any::is_down(ninput::Buttons::R) {
-        CURRENT_CUSTOM_MODE = None;
+        CURRENT_CUSTOM_MODES = None;
         return;
     }
 
@@ -80,15 +87,31 @@ unsafe fn on_rule_select_hook(_: &skyline::hooks::InlineCtx) {
         .file("hdr/tag.webp", TAG_WEBP.as_slice())
         .file("hdr/turbo.webp", TURBO_WEBP.as_slice())
         .file("hdr/hitfall.webp", HITFALL_WEBP.as_slice())
+        .file("hdr/airdash.webp", AIRDASH_WEBP.as_slice())
         .start_page("help/html/USen/gamemodes.html")
         .open()
         .unwrap();
 
     match response.get_last_url() {
-        Ok("http://localhost/btn-tag") => CURRENT_CUSTOM_MODE = Some(CustomMode::SmashballTag),
-        Ok("http://localhost/btn-turbo") => CURRENT_CUSTOM_MODE = Some(CustomMode::TurboMode),
-        Ok("http://localhost/btn-hitfall") => CURRENT_CUSTOM_MODE = Some(CustomMode::HitfallMode),
-        _ => {}
+        Ok(url) => {
+            let modes_str = url.trim_start_matches("http://localhost/modes/");
+            // if no modes were selected, then set None
+            if modes_str.is_empty() {
+                CURRENT_CUSTOM_MODES = None;
+                return;
+            }
+
+            let mut modes_enabled = HashSet::new();
+            let modes_list = modes_str.split("-");
+            modes_list.for_each(|mode| {
+                modes_enabled.insert(CustomMode::from_str(mode).unwrap());
+            });
+            CURRENT_CUSTOM_MODES = Some(modes_enabled);
+        },
+        Err(e) => {
+            println!("Error getting modes: {:?}", e);
+            CURRENT_CUSTOM_MODES = None;
+        }
     }
 }
 
@@ -97,20 +120,35 @@ unsafe fn once_per_game_frame(game_state_ptr: u64) {
 
     // check if current match mode is not regular smash, if so sub out the custom mode
     if utils_dyn::util::get_match_mode().0 != 1 {
-        CURRENT_CUSTOM_MODE = None;
+        CURRENT_CUSTOM_MODES = None;
     }
 
     if detect_new_game(game_state_ptr) {
         match get_custom_mode() {
-            Some(CustomMode::SmashballTag) => tag::clear(),
+            Some(modes) => {
+                if modes.contains(&CustomMode::SmashballTag) {
+                    tag::clear();
+                }
+            },
             _ => {}
         }
     }
 
     match get_custom_mode() {
-        Some(CustomMode::SmashballTag) => tag::update(),
-        Some(CustomMode::TurboMode) => turbo::update(),
-        Some(CustomMode::HitfallMode) => hitfall::update(),
+        Some(modes) => {
+            if modes.contains(&CustomMode::SmashballTag) {
+                tag::update();
+            }
+            if modes.contains(&CustomMode::TurboMode) {
+                turbo::update();
+            }
+            if modes.contains(&CustomMode::HitfallMode) {
+                hitfall::update();
+            }
+            if modes.contains(&CustomMode::AirdashMode) {
+                airdash::update();
+            }
+        },
         _ => {}
     }
 

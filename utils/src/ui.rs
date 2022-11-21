@@ -276,7 +276,7 @@ fn hud_update(_: &skyline::hooks::InlineCtx) {
         // check the global static menu-based mode field
         let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0) as *const u64;
         // if we are in the controls menu mode, there is no ui overlay, so dont update the hud
-        if (*mode == 0x6020000) {
+        if *mode == 0x6020000 {
             return;
         }
     }

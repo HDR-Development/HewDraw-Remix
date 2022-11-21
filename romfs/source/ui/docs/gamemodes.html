@@ -36,36 +36,58 @@
   </div>
   <div class="l-sidebar">
     <div class="l-sidebar-content">
-      <a id="btn-tag" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="exit_with_id(this)" nx-se-disabled="">
+      <a id="btn-tag" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="set_mode('tag', true)" nx-se-disabled="">
         <div class="abstract-icon-back-decoration"></div>
         <div class="abstract-button-border">
           <div class="abstract-button-inner">
             <div class="abstract-icon-wrapper">
               <img class="abstract-icon" ref="../../img/icon/juji.svg" />
             </div>
-            <div class="abstract-button-text f-u-bold"><span data-msgid="textbox_id-4-1">Smashball Tag</span></div>
+            <div id="tag-text" class="abstract-button-text f-u-bold"><span data-msgid="textbox_id-4-1">Tag Mode: OFF</span></div>
           </div>
         </div>
       </a>
-      <a id="btn-turbo" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="exit_with_id(this)" nx-se-disabled="">
+      <a id="btn-turbo" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="set_mode('turbo', true)" nx-se-disabled="">
         <div class="abstract-icon-back-decoration"></div>
         <div class="abstract-button-border">
           <div class="abstract-button-inner">
             <div class="abstract-icon-wrapper">
               <img class="abstract-icon" ref="../../img/icon/juji.svg" />
             </div>
-            <div class="abstract-button-text f-u-bold"><span data-msgid="textbox_id-4-1">Turbo Mode</span></div>
+            <div id="turbo-text" class="abstract-button-text f-u-bold"><span data-msgid="textbox_id-4-1">Turbo Mode: OFF</span></div>
           </div>
         </div>
       </a>
-      <a id="btn-hitfall" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="exit_with_id(this)" nx-se-disabled="">
+      <a id="btn-hitfall" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="set_mode('hitfall', true)" nx-se-disabled="">
         <div class="abstract-icon-back-decoration"></div>
         <div class="abstract-button-border">
           <div class="abstract-button-inner">
             <div class="abstract-icon-wrapper">
               <img class="abstract-icon" ref="../../img/icon/juji.svg" />
             </div>
-            <div class="abstract-button-text f-u-bold"><span data-msgid="textbox_id-4-1">Hitfall Mode</span></div>
+            <div id="hitfall-text" class="abstract-button-text f-u-bold"><span data-msgid="textbox_id-4-1">Hitfall Mode: OFF</span></div>
+          </div>
+        </div>
+      </a>
+      <a id="btn-airdash" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="set_mode('airdash', true)" nx-se-disabled="">
+        <div class="abstract-icon-back-decoration"></div>
+        <div class="abstract-button-border">
+          <div class="abstract-button-inner">
+            <div class="abstract-icon-wrapper">
+              <img class="abstract-icon" ref="../../img/icon/juji.svg" />
+            </div>
+            <div id="airdash-text" class="abstract-button-text f-u-bold"><span data-msgid="textbox_id-4-1">Airdash Mode: OFF</span></div>
+          </div>
+        </div>
+      </a>
+      <a id="btn-play" tabindex="0" class="flex-button abstract-button" onkeydown="exit_with_modes()" nx-se-disabled="">
+        <div class="abstract-icon-back-decoration"></div>
+        <div class="abstract-button-border">
+          <div class="abstract-button-inner">
+            <div class="abstract-icon-wrapper">
+              <img class="abstract-icon" ref="../../img/icon/juji.svg" />
+            </div>
+            <div class="abstract-button-text f-u-bold"><span data-msgid="textbox_id-4-1">PLAY!</span></div>
           </div>
         </div>
       </a>
