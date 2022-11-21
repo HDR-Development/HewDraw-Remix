@@ -96,11 +96,11 @@ unsafe fn dins_fire_cancels(boma: &mut BattleObjectModuleAccessor){
             if StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
                 boma.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
             }
-            else if StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_GROUND {
-                if boma.is_cat_flag(Cat1::SpecialHi) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI, false);
-                }
-            }
+            // else if StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_GROUND {
+            //     if boma.is_cat_flag(Cat1::SpecialHi) {
+            //         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI, false);
+            //     }
+            // }
         }
     }
 }
