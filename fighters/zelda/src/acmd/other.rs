@@ -458,7 +458,7 @@ unsafe fn zelda_phantom_attack_s_effect(fighter: &mut L2CAgentBase) {
 unsafe fn zelda_phantom_attack_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-	let rush_speed = 5.75;
+	let rush_speed = 5.5;
 	frame(lua_state, 0.0);
 	if is_excute(fighter) {
 		//FT_MOTION_RATE(fighter, 20.0/3.0);
