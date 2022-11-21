@@ -29,7 +29,7 @@
     <struct index="0">
       <float hash="start_speed_mul_x">1</float>
       <float hash="air_start_speed_mul_y">0.5</float>
-      <float hash="air_accel_y">0.0398</float>
+      <float hash="air_accel_y">0.05</float>
       <float hash="air_speed_y_stable">1.2</float>
       <int hash="landing_frame">4</int>
     </struct>
