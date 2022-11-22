@@ -11,7 +11,7 @@ function set_mode(mode_name, is_enabled) {
 }
 
 function exit_with_modes() {
-    if (event && event.keyCode !== 13) return
+    //if (event && event.keyCode !== 13) return
     var enabled_str = "";
     for (const [key, value] of modes_enabled) {
         if (value === true) {
