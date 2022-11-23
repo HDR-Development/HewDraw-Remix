@@ -36,6 +36,11 @@ unsafe fn update_room_hook(_: &skyline::hooks::InlineCtx) {
             CURRENT_INPUT_BUFFER -= 1;
         }
         CURRENT_COUNTER = (CURRENT_COUNTER + 1) % 15;
+    } else if ninput::any::is_press(ninput::Buttons::DOWN) {
+        if CURRENT_COUNTER == 0 {
+            // open session
+        }
+        CURRENT_COUNTER = (CURRENT_COUNTER + 1) % 15;
     } else {
         CURRENT_COUNTER = 0;
     }
