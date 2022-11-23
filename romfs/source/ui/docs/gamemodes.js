@@ -1,49 +1,31 @@
-var modes_enabled = new Map();
-
-window.onerror = function (msg, url, lineNo, columnNo, error) {
-    alert("Error Message: " + msg + "\nURL: " + url + " : " + lineNo + "," + columnNo + "\nError Object: " + error);
-    return false;
-}
-
-function do_alert(...data) {
-    alert(data);
-}
-
-console.error = do_alert;
-console.warn = do_alert;
-console.trace = do_alert;
+var enabled_modes = new Map();
+enabled_modes.set('tag', false);
+enabled_modes.set('turbo', false);
+enabled_modes.set('hitfall', false);
 
 function toggle_mode(mode_name) {
-    alert("toggling mode: " + mode_name);
-    // toggle the mode
-    if (modes_enabled.has(mode_name)) {
-        modes_enabled.set(mode_name, !modes_enabled.get(mode_name));
-    } else {
-        modes_enabled.set(mode_name, true);
-    }
-
-    var is_enabled = modes_enabled.get(mode_name);
-    var id = mode_name + "-text";
-    var element = document.getElementById(id);
-    var on_off = is_enabled ? "ON" : "OFF";
-    var button_text = mode_name.charAt(0).toUpperCase() + mode_name.slice(1) + " Mode(yay): " + on_off;
-    element.innerHTML = button_text;
+    if (event && event.keyCode !== 13) return
+    alert("toggling: " + mode_name);
+    var is_now_enabled = !enabled_modes.get(mode_name.toLowerCase());
+    enabled_modes.set(mode_name.toLowerCase(), is_now_enabled);
+    var button_text = mode_name + " Mode (" + (is_now_enabled ? "ON" : "OFF") + ")";
+    document.getElementById(mode_name.toLowerCase() + "-text-field").innerHTML = button_text;
 }
 
-function exit_with_modes(e) {
-    alert("exit called");
+function exit_with_id() {
     if (event && event.keyCode !== 13) return
-    var enabled_str = "";
-    for (const [key, value] of modes_enabled) {
-        if (value === true) {
-            enabled_str += key + "-";
+    var str = "";
+    enabled_modes.forEach((v, k) => {
+        if (v === true) {
+            str += k + '-';
         }
+    });
+    if (str.endsWith('-')) {
+        str = str.substring(0, str.length - 1);
     }
-    if (enabled_str.endsWith('-')) {
-        enabled_str = enabled_str.substring(0, enabled_str.length - 1);
+    if (str.length == 0) {
+        str = "none";
     }
-    if (enabled_str.length = 0) {
-        enabled_str = "none";
-    }
-    location.href = "http://localhost/" + enabled_str;
+    alert("exiting with str: " + str);
+    location.href = "http://localhost/" + str;
 }
