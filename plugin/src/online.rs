@@ -26,19 +26,24 @@ const MIN_INPUT_BUFFER: isize = -1;
 
 unsafe fn set_info<S>(latency: S) where S: Display {
     let modes = utils::get_custom_mode();
+    // for every mode in the list, we need to add leading newlines.
+    let mut modes_newlines = "".to_string();
     let modes_string = match modes {
         Some(mode_set) => {
-            format!("Modes: {}", mode_set.into_iter().map(|entry| format!("{}", entry)).collect::<Vec<String>>().join(", "))
+            mode_set.into_iter().map(|entry| {modes_newlines += "\n";format!("{} is ON", entry)}).collect::<Vec<String>>().join("\n")
         },
         None => "No Custom Modes".to_string()
     };
 
     set_text_string(
         CURRENT_PANE_HANDLE as u64,
-        format!("\n\nArena ID: {}
-            Input Latency: ◄ {} ►
+        format!("\n\n{}
+            Arena ID: {}
+            Input Delay: {}
             {}
-            dpad ▼ : Modes Menu\0",
+            DPAD ◄► Set Delay
+            DPAD ▼ Edit Modes\0",
+            modes_newlines,
             CURRENT_ARENA_ID, 
             latency,
             modes_string,
