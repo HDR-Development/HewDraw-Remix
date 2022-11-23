@@ -124,6 +124,7 @@ unsafe fn once_per_game_frame(game_state_ptr: u64) {
 
     // check if current match mode is not regular smash, if so sub out the custom mode
     if utils_dyn::util::get_match_mode().0 != 1 {
+        println!("mode is {}, so not running custom game modes.", utils_dyn::util::get_match_mode().0);
         CURRENT_CUSTOM_MODES = None;
     }
 

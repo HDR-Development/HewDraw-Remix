@@ -1,4 +1,5 @@
 use skyline::hooks::InlineCtx;
+use std::fmt::Display;
 
 #[skyline::from_offset(0x37a1270)]
 unsafe fn set_text_string(pane: u64, string: *const u8);
@@ -23,6 +24,28 @@ static mut MOST_RECENT_AUTO: isize = -1;
 const MAX_INPUT_BUFFER: isize = 25;
 const MIN_INPUT_BUFFER: isize = -1;
 
+unsafe fn set_info<S>(latency: S) where S: Display {
+    let modes = utils::get_custom_mode();
+    let modes_string = match modes {
+        Some(mode_set) => {
+            format!("Modes: {}", mode_set.into_iter().map(|entry| format!("{}", entry)).collect::<Vec<String>>().join(", "))
+        },
+        None => "No Custom Modes".to_string()
+    };
+
+    set_text_string(
+        CURRENT_PANE_HANDLE as u64,
+        format!("\n\nArena ID: {}
+            Input Latency: ◄ {} ►
+            {}
+            dpad ▼ : Modes Menu\0",
+            CURRENT_ARENA_ID, 
+            latency,
+            modes_string,
+        ).as_ptr(),
+    );
+}
+
 #[skyline::hook(offset = 0x1887700, inline)]
 unsafe fn update_room_hook(_: &skyline::hooks::InlineCtx) {
     static mut CURRENT_COUNTER: usize = 0;
@@ -39,8 +62,9 @@ unsafe fn update_room_hook(_: &skyline::hooks::InlineCtx) {
     } else if ninput::any::is_press(ninput::Buttons::DOWN) {
         if CURRENT_COUNTER == 0 {
             // open session
+            utils::open_modes_session();
         }
-        CURRENT_COUNTER = (CURRENT_COUNTER + 1) % 15;
+        CURRENT_COUNTER = (CURRENT_COUNTER + 1) % 60;
     } else {
         CURRENT_COUNTER = 0;
     }
@@ -48,18 +72,12 @@ unsafe fn update_room_hook(_: &skyline::hooks::InlineCtx) {
     CURRENT_INPUT_BUFFER = CURRENT_INPUT_BUFFER.clamp(MIN_INPUT_BUFFER, MAX_INPUT_BUFFER);
     if CURRENT_INPUT_BUFFER == -1 {
         if MOST_RECENT_AUTO == -1 {
-            set_text_string(
-                CURRENT_PANE_HANDLE as u64,
-                format!("ROOM ID: {}\nInput Latency: Auto\0", CURRENT_ARENA_ID).as_ptr(),
-            );
+            set_info("Auto".to_string());
         } else {
-            set_text_string(
-                CURRENT_PANE_HANDLE as u64,
-                format!("ROOM ID: {}\nInput Latency: Auto ({})\0", CURRENT_ARENA_ID, MOST_RECENT_AUTO).as_ptr()
-            )
+            set_info(format!("Auto ({})", MOST_RECENT_AUTO));
         }
     } else {
-        set_text_string(CURRENT_PANE_HANDLE as u64, format!("ROOM ID: {}\nInput Latency: {}\0", CURRENT_ARENA_ID, CURRENT_INPUT_BUFFER).as_ptr());
+        set_info(format!("{}", CURRENT_INPUT_BUFFER));
     }
 }
 
