@@ -15,6 +15,7 @@ pub use utils_dyn::util;
 pub use hdr_macros::*;
 
 pub use modules::*;
+pub use game_modes::open_modes_session;
 
 pub fn init() {
     modules::init();

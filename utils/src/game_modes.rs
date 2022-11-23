@@ -80,6 +80,10 @@ unsafe fn on_rule_select_hook(_: &skyline::hooks::InlineCtx) {
         return;
     }
 
+    open_modes_session();
+}
+
+pub unsafe fn open_modes_session() {
     let response = Webpage::new()
         .htdocs_dir("contents")
         .file("help/html/USen/gamemodes.html", GAME_MODE_HTML.as_slice())
