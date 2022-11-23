@@ -36,51 +36,51 @@
   </div>
   <div class="l-sidebar">
     <div class="l-sidebar-content">
-      <a id="btn-tag" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onclick="set_mode('tag', true)" nx-se-disabled="">
+      <a id="btn-tag" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="toggle_mode('tag')" nx-se-disabled="">
         <div class="abstract-icon-back-decoration"></div>
         <div class="abstract-button-border">
           <div class="abstract-button-inner">
             <div class="abstract-icon-wrapper">
               <img class="abstract-icon" ref="../../img/icon/juji.svg" />
             </div>
-            <div id="tag-text" class="abstract-button-text f-u-bold"><span data-msgid="textbox_id-4-1">Tag Mode: OFF</span></div>
+            <div class="abstract-button-text f-u-bold"><span id="tag-text" data-msgid="textbox_id-4-1">Tag Mode: OFF</span></div>
           </div>
         </div>
       </a>
-      <a id="btn-turbo" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onclick="set_mode('turbo', true)" nx-se-disabled="">
+      <a id="btn-turbo" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="toggle_mode('turbo')" nx-se-disabled="">
         <div class="abstract-icon-back-decoration"></div>
         <div class="abstract-button-border">
           <div class="abstract-button-inner">
             <div class="abstract-icon-wrapper">
               <img class="abstract-icon" ref="../../img/icon/juji.svg" />
             </div>
-            <div id="turbo-text" class="abstract-button-text f-u-bold"><span data-msgid="textbox_id-4-1">Turbo Mode: OFF</span></div>
+            <div class="abstract-button-text f-u-bold"><span id="turbo-text" data-msgid="textbox_id-4-1">Turbo Mode: OFF</span></div>
           </div>
         </div>
       </a>
-      <a id="btn-hitfall" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onclick="set_mode('hitfall', true)" nx-se-disabled="">
+      <a id="btn-hitfall" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="toggle_mode('hitfall')" nx-se-disabled="">
         <div class="abstract-icon-back-decoration"></div>
         <div class="abstract-button-border">
           <div class="abstract-button-inner">
             <div class="abstract-icon-wrapper">
               <img class="abstract-icon" ref="../../img/icon/juji.svg" />
             </div>
-            <div id="hitfall-text" class="abstract-button-text f-u-bold"><span data-msgid="textbox_id-4-1">Hitfall Mode: OFF</span></div>
+            <div class="abstract-button-text f-u-bold"><span id="hitfall-text" data-msgid="textbox_id-4-1">Hitfall Mode: OFF</span></div>
           </div>
         </div>
       </a>
-      <a id="btn-airdash" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onclick="set_mode('airdash', true)" nx-se-disabled="">
+      <a id="btn-airdash" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="toggle_mode('airdash')" nx-se-disabled="">
         <div class="abstract-icon-back-decoration"></div>
         <div class="abstract-button-border">
           <div class="abstract-button-inner">
             <div class="abstract-icon-wrapper">
               <img class="abstract-icon" ref="../../img/icon/juji.svg" />
             </div>
-            <div id="airdash-text" class="abstract-button-text f-u-bold"><span data-msgid="textbox_id-4-1">Airdash Mode: OFF</span></div>
+            <div class="abstract-button-text f-u-bold"><span id="airdash-text" data-msgid="textbox_id-4-1">Airdash Mode: OFF</span></div>
           </div>
         </div>
       </a>
-      <a id="btn-play" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onclick="exit_with_modes()" nx-se-disabled="">
+      <a id="btn-play" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="exit_with_modes(this)" nx-se-disabled="">
         <div class="abstract-icon-back-decoration"></div>
         <div class="abstract-button-border">
           <div class="abstract-button-inner">

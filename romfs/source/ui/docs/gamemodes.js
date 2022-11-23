@@ -1,8 +1,28 @@
 var modes_enabled = new Map();
 
-function set_mode(mode_name, is_enabled) {
-    modes_enabled.set(mode_name, is_enabled);
+window.onerror = function (msg, url, lineNo, columnNo, error) {
+    alert("Error Message: " + msg + "\nURL: " + url + " : " + lineNo + "," + columnNo + "\nError Object: " + error);
+    return false;
+}
 
+function do_alert(...data) {
+    alert(data);
+}
+
+console.error = do_alert;
+console.warn = do_alert;
+console.trace = do_alert;
+
+function toggle_mode(mode_name) {
+    alert("toggling mode: " + mode_name);
+    // toggle the mode
+    if (modes_enabled.has(mode_name)) {
+        modes_enabled.set(mode_name, !modes_enabled.get(mode_name));
+    } else {
+        modes_enabled.set(mode_name, true);
+    }
+
+    var is_enabled = modes_enabled.get(mode_name);
     var id = mode_name + "-text";
     var element = document.getElementById(id);
     var on_off = is_enabled ? "ON" : "OFF";
@@ -10,8 +30,9 @@ function set_mode(mode_name, is_enabled) {
     element.innerHTML = button_text;
 }
 
-function exit_with_modes() {
-    //if (event && event.keyCode !== 13) return
+function exit_with_modes(e) {
+    alert("exit called");
+    if (event && event.keyCode !== 13) return
     var enabled_str = "";
     for (const [key, value] of modes_enabled) {
         if (value === true) {
