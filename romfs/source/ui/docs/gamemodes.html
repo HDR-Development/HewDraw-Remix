@@ -36,7 +36,7 @@
   </div>
   <div class="l-sidebar">
     <div class="l-sidebar-content">
-      <a id="btn-tag" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="toggle_mode('Tag')" nx-se-disabled="">
+      <a id="btn-tag" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="toggle_mode('Tag', this)" nx-se-disabled="">
         <div class="abstract-icon-back-decoration"></div>
         <div class="abstract-button-border">
           <div class="abstract-button-inner">
@@ -47,7 +47,7 @@
           </div>
         </div>
       </a>
-      <a id="btn-turbo" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="toggle_mode('Turbo')" nx-se-disabled="">
+      <a id="btn-turbo" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="toggle_mode('Turbo', this)" nx-se-disabled="">
         <div class="abstract-icon-back-decoration"></div>
         <div class="abstract-button-border">
           <div class="abstract-button-inner">
@@ -58,7 +58,7 @@
           </div>
         </div>
       </a>
-      <a id="btn-hitfall" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="toggle_mode('Hitfall')" nx-se-disabled="">
+      <a id="btn-hitfall" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="toggle_mode('Hitfall', this)" nx-se-disabled="">
         <div class="abstract-icon-back-decoration"></div>
         <div class="abstract-button-border">
           <div class="abstract-button-inner">
@@ -66,6 +66,17 @@
               <img class="abstract-icon" ref="../../img/icon/juji.svg" />
             </div>
             <div class="abstract-button-text f-u-bold"><span id="hitfall-text-field" data-msgid="textbox_id-4-1">Hitfall Mode (OFF)</span></div>
+          </div>
+        </div>
+      </a>
+      <a id="btn-airdash" tabindex="0" class="flex-button abstract-button" onfocus="focusMenu(this)" onkeydown="toggle_mode('Airdash', this)" nx-se-disabled="">
+        <div class="abstract-icon-back-decoration"></div>
+        <div class="abstract-button-border">
+          <div class="abstract-button-inner">
+            <div class="abstract-icon-wrapper">
+              <img class="abstract-icon" ref="../../img/icon/juji.svg" />
+            </div>
+            <div class="abstract-button-text f-u-bold"><span id="airdash-text-field" data-msgid="textbox_id-4-1">Airdash Mode (OFF)</span></div>
           </div>
         </div>
       </a>
@@ -116,6 +127,18 @@
       <div class="l-description">
         <div class="f-b-bold">
           <p class="sentence"><span data-msgid="textbox_id-5">Hitfall mode!<br />In this custom game mode, players can immediately fastfall during hitlag, even if you are rising. <br />Make some cool combos using forced fastfalls!</span></p>
+        </div>
+      </div>
+    </div>
+    <div id="about-airdash" class="l-main-content is-hidden">
+      <div class="l-screen-shot-wrapper">
+        <div class="screen-shot-wrapper">
+          <img class="screen-shot video" ref="../../../hdr/turbo.webp" />
+        </div>
+      </div>
+      <div class="l-description">
+        <div class="f-b-bold">
+          <p class="sentence"><span data-msgid="textbox_id-5">Airdash mode!<br />In this custom game mode, players can immediately cancel their airdodge, keeping the momentum.<br />This behavior is inspired by certain fighting games, as well as Project NX.</span></p>
         </div>
       </div>
     </div>
