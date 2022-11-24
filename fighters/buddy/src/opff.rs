@@ -340,7 +340,7 @@ unsafe fn buddy_meter_display_update(fighter: &mut L2CFighterCommon, boma: &mut 
 
     let FEATHERS_GOLD_COUNT = WorkModule::get_int(boma,  *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN);
 	//let hudZ = if (RedFeather) {25.0} else {0.0};
-	let position = Vector3f::new(0.0,15.0,0.0);
+	let position = Vector3f::new(0.0,20.0,0.0);
 	let handle = EffectModule::req_follow(
 		boma,
 		Hash40::new("buddy_special_s_count"),
@@ -462,7 +462,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     breegull_bayonet(fighter,boma);
     buddy_meter_controller(fighter,boma);
 
-    if !boma.is_status_one_of(&[
+    if boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_ENTRY,
         *FIGHTER_STATUS_KIND_REBIRTH]) {
         on_rebirth(fighter,boma);
