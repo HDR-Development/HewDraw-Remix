@@ -24,16 +24,16 @@
   </list>
   <list hash="param_special_n">
     <struct index="0">
-      <float hash="continuous_generate_x_mul">0.86</float>
-      <float hash="continuous_generate_x_mul_big">0.86</float>
-      <float hash="0x1a89765685">1</float>
-      <float hash="0x1a0a95e89a">0.5</float>
-      <float hash="0x1a1bb90606">0.85</float>
-      <float hash="0x1b78f1e855">0.8</float>
-      <float hash="0x1aa714f1ca">0.75</float>
+      <float hash="continuous_generate_x_mul">0.76</float>
+      <float hash="continuous_generate_x_mul_big">0.5</float>
+      <float hash="0x1a89765685">2</float>
+      <float hash="0x1a0a95e89a">0.75</float>
+      <float hash="0x1a1bb90606">1</float>
+      <float hash="0x1b78f1e855">0.95</float>
+      <float hash="0x1aa714f1ca">0.9</float>
       <float hash="0x1da2122271">0.65</float>
-      <int hash="mining_iron_get_num">2</int>
-      <int hash="mining_red_stone_get_num">4</int>
+      <int hash="mining_iron_get_num">1</int>
+      <int hash="mining_red_stone_get_num">3</int>
       <float hash="walk_speed_mul">1</float>
     </struct>
     <hash40 index="1">dummy</hash40>
@@ -41,9 +41,9 @@
     <hash40 index="3">dummy</hash40>
   </list>
   <struct hash="param_pickelobject">
-    <float hash="hp_grade_1">12</float>
-    <float hash="hp_wood">16</float>
-    <float hash="hp_stone">20</float>
-    <float hash="hp_iron">24</float>
+    <float hash="hp_grade_1">6</float>
+    <float hash="hp_wood">10</float>
+    <float hash="hp_stone">16</float>
+    <float hash="hp_iron">20</float>
   </struct>
 </struct>

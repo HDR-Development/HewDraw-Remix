@@ -138,56 +138,56 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
             }
         }
 
-        else if fighter_kind == *FIGHTER_KIND_PICKEL {
-            if [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL].contains(&StatusModule::status_kind(boma)) {
-                if ControlModule::get_stick_x(boma) * PostureModule::lr(boma) > 0.5 {
-                    if x1 == hash40("param_special_n") && x2 == hash40("generate_pickelobject_offset_x") {
-                        return 10.5;
-                    }
-                }
-                if ControlModule::get_stick_y(boma) > 0.5 {
-                    if x1 == hash40("param_special_n") && x2 == hash40("generate_pickelobject_offset_y") {
-                        return 22.5;
-                    }
-                }
-                else if ControlModule::get_stick_y(boma) < -0.5 {
-                    if x1 == hash40("param_special_n") && x2 == hash40("generate_pickelobject_offset_y") {
-                        return -7.5;
-                    }
-                }
-                else {
-                    if ControlModule::get_stick_x(boma) * PostureModule::lr(boma) > 0.5 {
-                        if x1 == hash40("param_special_n") && x2 == hash40("generate_pickelobject_offset_y") {
-                            return 3.5;
-                        }
-                    }
-                }
-            }
-            if [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK].contains(&StatusModule::status_kind(boma)) {
-                if ControlModule::get_stick_x(boma) * PostureModule::lr(boma) > 0.5 {
-                    if x1 == hash40("param_special_n") && x2 == hash40("generate_pickelobject_offset_x") {
-                        return 9.5;
-                    }
-                }
-                if ControlModule::get_stick_y(boma) > 0.5 {
-                    if x1 == hash40("param_special_n") && x2 == hash40("generate_pickelobject_offset_y") {
-                        return 22.5;
-                    }
-                }
-                else if ControlModule::get_stick_y(boma) < 0.0 {
-                    if x1 == hash40("param_special_n") && x2 == hash40("generate_pickelobject_offset_y") {
-                        return -7.5;
-                    }
-                }
-                else {
-                    if ControlModule::get_stick_x(boma) * PostureModule::lr(boma) > 0.5 {
-                        if x1 == hash40("param_special_n") && x2 == hash40("generate_pickelobject_offset_y") {
-                            return 3.5;
-                        }
-                    }
-                }
-            }
-        }
+        // else if fighter_kind == *FIGHTER_KIND_PICKEL {
+        //     if [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL].contains(&StatusModule::status_kind(boma)) {
+        //         if ControlModule::get_stick_x(boma) * PostureModule::lr(boma) > 0.5 {
+        //             if x1 == hash40("param_special_n") && x2 == hash40("generate_pickelobject_offset_x") {
+        //                 return 10.5;
+        //             }
+        //         }
+        //         if ControlModule::get_stick_y(boma) > 0.5 {
+        //             if x1 == hash40("param_special_n") && x2 == hash40("generate_pickelobject_offset_y") {
+        //                 return 22.5;
+        //             }
+        //         }
+        //         else if ControlModule::get_stick_y(boma) < -0.5 {
+        //             if x1 == hash40("param_special_n") && x2 == hash40("generate_pickelobject_offset_y") {
+        //                 return -7.5;
+        //             }
+        //         }
+        //         else {
+        //             if ControlModule::get_stick_x(boma) * PostureModule::lr(boma) > 0.5 {
+        //                 if x1 == hash40("param_special_n") && x2 == hash40("generate_pickelobject_offset_y") {
+        //                     return 3.5;
+        //                 }
+        //             }
+        //         }
+        //     }
+        //     if [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK].contains(&StatusModule::status_kind(boma)) {
+        //         if ControlModule::get_stick_x(boma) * PostureModule::lr(boma) > 0.5 {
+        //             if x1 == hash40("param_special_n") && x2 == hash40("generate_pickelobject_offset_x") {
+        //                 return 9.5;
+        //             }
+        //         }
+        //         if ControlModule::get_stick_y(boma) > 0.5 {
+        //             if x1 == hash40("param_special_n") && x2 == hash40("generate_pickelobject_offset_y") {
+        //                 return 22.5;
+        //             }
+        //         }
+        //         else if ControlModule::get_stick_y(boma) < 0.0 {
+        //             if x1 == hash40("param_special_n") && x2 == hash40("generate_pickelobject_offset_y") {
+        //                 return -7.5;
+        //             }
+        //         }
+        //         else {
+        //             if ControlModule::get_stick_x(boma) * PostureModule::lr(boma) > 0.5 {
+        //                 if x1 == hash40("param_special_n") && x2 == hash40("generate_pickelobject_offset_y") {
+        //                     return 3.5;
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
     
     }
     else if boma_reference.is_weapon() {
