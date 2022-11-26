@@ -68,6 +68,7 @@ unsafe fn update_room_hook(_: &skyline::hooks::InlineCtx) {
         if CURRENT_COUNTER == 0 {
             // open session
             utils::open_modes_session();
+            skyline_web::DialogOk::ok("Please ensure that all players have the same custom modes enabled!");
         }
         CURRENT_COUNTER = (CURRENT_COUNTER + 1) % 60;
     } else {

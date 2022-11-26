@@ -122,8 +122,9 @@ pub unsafe fn open_modes_session() {
 #[skyline::hook(offset = offsets::once_per_game_frame())]
 unsafe fn once_per_game_frame(game_state_ptr: u64) {
 
-    // check if current match mode is not regular smash, if so sub out the custom mode
-    if utils_dyn::util::get_match_mode().0 != 1 {
+    // check the current match mode
+    // 1 is regular smash, 45 is online arena match
+    if utils_dyn::util::get_match_mode().0 != 1 && utils_dyn::util::get_match_mode().0 != 45 {
         println!("mode is {}, so not running custom game modes.", utils_dyn::util::get_match_mode().0);
         CURRENT_CUSTOM_MODES = None;
     }
