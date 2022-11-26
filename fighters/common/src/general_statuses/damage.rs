@@ -455,7 +455,9 @@ pub unsafe fn exec_damage_elec_hit_stop_hook(fighter: &mut L2CFighterCommon) {
             if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_PARALYZE_STOP) {
                 return;
             }
-            // fighter.FighterStatusUniqProcessDamage_check_hit_stop_delay_flick(hashmap);
+        }
+        else {
+            fighter.FighterStatusUniqProcessDamage_check_hit_stop_delay_flick(hashmap);
         }
     }
     else {
