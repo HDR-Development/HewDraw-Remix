@@ -275,19 +275,17 @@ pub mod vars {
     pub mod buddy {
         pub mod instance {
             // flag
-            /// This flag stores whether or not Luigi currently has a misfire stored.
             pub const BEAKBOMB_ACTIVE: i32 = 0x0100;
+            pub const BAYONET_ACTIVE: i32 = 0x0101;
             
             // int
-            /// -1: unable to bayonet. 0: able to bayonet. 1: in bayonet animation. 2: in recovery frames of bayonet
-            pub const BAYONET_STATE: i32 = 0x0100;
-            pub const HUD_DISPLAY_TIME: i32 = 0x0101;
+            pub const HUD_DISPLAY_TIME: i32 = 0x0100;
             //Current frame of Beakbomb, used to detect mislanding
-            pub const BEAKBOMB_FRAME: i32 = 0x0102;
+            pub const BEAKBOMB_FRAME: i32 = 0x0101;
             // 0: Normal Bounce (can be cancelled) 1: weak bounce 2: heavy bounce.
-            pub const BEAKBOMB_BOUNCE: i32 = 0x0103;
+            pub const BEAKBOMB_BOUNCE: i32 = 0x0102;
             //Eggs fired gets reset when entering Bayonet, so we have to temporarily store current eggs fired
-            pub const BAYONET_EGGS: i32 = 0x0104;
+            pub const BAYONET_EGGS: i32 = 0x0103;
 
             // float
             pub const FEATHERS_RED_COOLDOWN: i32 = 0x0100;
@@ -862,6 +860,10 @@ pub mod statuses {
 
     pub mod ryu {
         pub const AIR_DASH: i32 = 0;
+    }
+
+    pub mod buddy {
+        pub const BUDDY_BAYONET_END: i32 = 0;
     }
 
 }

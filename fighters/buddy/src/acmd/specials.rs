@@ -6,6 +6,9 @@ pub fn install() {
         buddy_special_s_dash_game,
         buddy_special_air_s_dash_game,
         
+        buddy_attack_special_n_upperfire_game,
+        buddy_attack_special_n_fire2_game,
+
         buddy_special_air_s_start_game,
         buddy_special_air_s_start_effect,
         buddy_special_air_s_start_sound,
@@ -60,6 +63,63 @@ unsafe fn buddy_special_s_dash_game(fighter: &mut L2CAgentBase) {
         //AttackModule::set_captured_same_time_attack_damage_mul(boma, 0, 0.25);
         //AttackModule::set_captured_same_time_attack_damage_mul(boma, 1, 0.25);
         ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 0, 1, 0.28);
+    }
+}
+
+
+unsafe fn will_Bayonet(fighter: &mut L2CAgentBase) -> bool
+{
+    let is_csticking = ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 != 0;
+    if (is_csticking) {
+        return true;
+    }
+    return false;
+}
+
+#[acmd_script( agent = "buddy", script = "game_specialnupperfire" , category = ACMD_GAME , low_priority)]
+unsafe fn buddy_attack_special_n_upperfire_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    for _ in 0..4
+    {
+        if is_excute(fighter) && will_Bayonet(fighter){
+            VarModule::on_flag(boma.object(), vars::buddy::instance::BAYONET_ACTIVE);
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_S3, true);
+            VarModule::set_int(boma.object(), vars::buddy::instance::BAYONET_EGGS,*FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_N_BAKYUN_BULLET_SHOOT_COUNT);
+            return;
+        }
+        wait(lua_state, 1.0);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_GENERATE_BULLET);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_START_PRECEDE_CHECK);
+    }
+}
+#[acmd_script( agent = "buddy", script = "game_specialnfire2" , category = ACMD_GAME , low_priority)]
+unsafe fn buddy_attack_special_n_fire2_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    for _ in 0..4
+    {
+        if is_excute(fighter) && will_Bayonet(fighter){
+            VarModule::on_flag(boma.object(), vars::buddy::instance::BAYONET_ACTIVE);
+                       
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_S3, true);
+            return;
+        }
+        wait(lua_state, 1.0);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_GENERATE_BULLET);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_START_PRECEDE_CHECK);
     }
 }
 

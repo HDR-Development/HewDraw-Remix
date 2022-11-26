@@ -42,10 +42,77 @@ pub unsafe fn buddy_special_s_dash_pre(fighter: &mut L2CFighterCommon) -> L2CVal
     return original!(fighter);
 }
 
+/// pre status for bayonet
+/// handles initialization
+pub unsafe extern "C" fn bayonet_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_MOTION_BIND,
+        *GROUND_CORRECT_KIND_GROUND as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT,
+        0
+    );
+
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        0,
+        0,
+        0,
+        0
+    );
+
+    0.into()
+}
+
+/// main status loop for bayonet_end
+unsafe extern "C" fn bayonet_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // exit if the animation is not done yet
+    if !MotionModule::is_end(fighter.module_accessor) {
+        return 0.into();
+    }
+
+    // if the animation is over, transition to shoot
+    fighter.change_status(FIGHTER_BUDDY_STATUS_KIND_SPECIAL_N_SHOOT.into(), false.into());
+    1.into()
+}
+
+pub unsafe extern "C" fn bayonet_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // change summon anim depending on LR
+    let frame = 26.0;
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_shoot_start"), frame, 1.0, false, 0.0, false, false);
+    ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, Hash40::new("special_n_start"), false, frame);
+
+    fighter.main_shift(bayonet_end_main_loop)
+}
+pub unsafe extern "C" fn bayonet_end_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // re-enable energies and remove the screenwide effect
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    0.into()
+}
+
 pub fn install() {
     install_status_scripts!(
         end_run,
         buddy_special_s_pre,
         buddy_special_s_dash_pre
+    );
+    CustomStatusManager::add_new_agent_status_script(
+        Hash40::new("fighter_kind_buddy"),
+        statuses::buddy::BUDDY_BAYONET_END,
+        StatusInfo::new()
+            .with_pre(bayonet_end_pre)
+            .with_main(bayonet_end_main)
+            .with_end(bayonet_end_end)
     );
 }
