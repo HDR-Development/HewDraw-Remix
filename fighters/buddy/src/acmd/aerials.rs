@@ -80,13 +80,10 @@ unsafe fn buddy_attack_air_n_game(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "buddy", script = "effect_attackairn", category = ACMD_EFFECT )]
 unsafe fn buddy_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    frame(lua_state, 5.0);
+    frame(lua_state, 9.0);
     if is_excute(fighter) {
-        LANDING_EFFECT_FLIP(fighter, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("shoulderr"), 0, -2, 0, 0, 0, 0, 2.5, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_NONE);
-    }
-    frame(lua_state, 17.0);
-    if is_excute(fighter) {
-        LANDING_EFFECT_FLIP(fighter, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("shoulderr"), 0, -2, 0, 0, 0, 0, 2.5, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_NONE);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("rot"), 0, 2.5, 0, 0, 180, 0, 1.5, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(fighter, 0.6);
     }
 }
 
