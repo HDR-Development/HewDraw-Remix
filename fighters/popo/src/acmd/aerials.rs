@@ -149,6 +149,22 @@ unsafe fn popo_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "popo", script = "effect_landingairlw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn popo_landing_air_lw_effect(fighter: &mut L2CAgentBase) {
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+#[acmd_script( agent = "popo", script = "expression_landingairlw" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn popo_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    frame(lua_state, 18.0);
+    if is_excute(fighter){
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_L, 4);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         popo_attack_air_n_game,
@@ -156,5 +172,7 @@ pub fn install() {
         popo_attack_air_b_game,
         popo_attack_air_hi_game,
         popo_attack_air_lw_game,
+        popo_landing_air_lw_effect,
+        popo_landing_air_lw_expression,
     );
 }
