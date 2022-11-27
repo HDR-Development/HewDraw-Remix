@@ -1,7 +1,27 @@
-#[derive(Copy, Clone, PartialEq, Eq)]
+use std::str::FromStr;
+use std::collections::HashSet;
+
+#[derive(Copy, Clone, PartialEq, Eq, Hash)]
 pub enum CustomMode {
-    SmashballTag,
-    TurboMode
+    SmashballTag = 0,
+    TurboMode = 1,
+    HitfallMode = 2,
+    AirdashMode = 3,
+}
+
+impl FromStr for CustomMode {
+
+    type Err = ();
+
+    fn from_str(input: &str) -> Result<CustomMode, Self::Err> {
+        match input {
+            "tag"  => Ok(CustomMode::SmashballTag),
+            "turbo"  => Ok(CustomMode::TurboMode),
+            "hitfall"  => Ok(CustomMode::HitfallMode),
+            "airdash" => Ok(CustomMode::AirdashMode),
+            _      => Err(()),
+        }
+    }
 }
 
 extern "Rust" {
@@ -9,7 +29,7 @@ extern "Rust" {
     fn _is_custom_mode() -> bool;
 
     #[link_name = "hdr__game_modes__get_custom_mode"]
-    fn _get_custom_mode() -> Option<CustomMode>;
+    fn _get_custom_mode() -> Option<HashSet<CustomMode>>;
 
     #[link_name = "hdr__game_modes__signal_new_game"]
     fn _signal_new_game();
@@ -21,7 +41,7 @@ pub fn is_custom_mode() -> bool {
     }
 }
 
-pub fn get_custom_mode() -> Option<CustomMode> {
+pub fn get_custom_mode() -> Option<HashSet<CustomMode>> {
     unsafe {
         _get_custom_mode()
     }
