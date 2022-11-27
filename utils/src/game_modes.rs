@@ -14,10 +14,8 @@ lazy_static! {
     static ref GAME_MODE_JS: Vec<u8> = std::fs::read("mods:/ui/docs/gamemodes.js").unwrap();
     static ref TAG_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/tag.webp").unwrap();
     static ref TURBO_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/turbo.webp").unwrap();
-    /// todo, make this a real video of hitfall
-    static ref HITFALL_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/turbo.webp").unwrap();
-    /// todo, make this a real video of airdash
-    static ref AIRDASH_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/turbo.webp").unwrap();
+    static ref HITFALL_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/hitfall.webp").unwrap();
+    static ref AIRDASH_WEBP: Vec<u8> = std::fs::read("mods:/ui/docs/airdash.webp").unwrap();
 }
 
 static mut CURRENT_CUSTOM_MODES: Option<HashSet<CustomMode>> = None;
