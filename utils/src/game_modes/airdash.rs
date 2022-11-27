@@ -15,7 +15,7 @@ pub unsafe fn update() {
         return;
     }
 
-    println!("doing airdash update!");
+    // println!("doing airdash update!");
     for i in 0..8 {
         if let Some(object_id) = util::get_active_battle_object_id_from_entry_id(i) {
             let object = util::get_battle_object_from_id(object_id);
@@ -38,9 +38,7 @@ pub unsafe fn update() {
 }
 
 unsafe fn check_airdash(fighter: &mut L2CFighterCommon) {
-    println!("handling airdash for a boma");
     if fighter.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR) {
-        println!("is in airdodge!");
         if fighter.status_frame() < 1 {
             let speed_x = KineticModule::get_sum_speed_x(fighter.boma(), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             let speed_y = KineticModule::get_sum_speed_y(fighter.boma(), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -65,7 +63,6 @@ unsafe fn check_airdash(fighter: &mut L2CFighterCommon) {
         }
 
         CancelModule::enable_cancel(fighter.boma());
-        println!("did do cancel");
         if fighter.is_situation(*SITUATION_KIND_AIR) {
             fighter.sub_air_check_fall_common();
         }

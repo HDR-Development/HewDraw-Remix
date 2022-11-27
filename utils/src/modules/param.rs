@@ -411,7 +411,7 @@ impl ParamModule {
         match ty {
             ParamType::Common => {
                 let read = GLOBAL_COMMON_PARAM.read();
-                println!("{}", read.is_none());
+                //println!("{}", read.is_none());
                 read
                 .as_ref()
                 .map(|x| x.index(key))
