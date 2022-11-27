@@ -77,30 +77,31 @@ unsafe fn phantom_special_cancel(fighter: &mut L2CFighterCommon, boma: &mut Batt
 
 unsafe fn nayru_fastfall_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+        if situation_kind == *SITUATION_KIND_GROUND {
+            if StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR && frame < 54.0 {
+                //StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+                WorkModule::on_flag(boma, *FIGHTER_ZELDA_STATUS_SPECIAL_N_FLAG_REFLECTOR_END);
+                MotionModule::set_frame_sync_anim_cmd(boma, 56.0, true, true, false);
+            }
         }
-        else if situation_kind == *SITUATION_KIND_AIR && frame >= 30.0 {
-            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+        else if situation_kind == *SITUATION_KIND_AIR {
+            if frame >= 30.0 {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+                if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
+                    WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+                }
             }
         }
     }
 }
 
-/// Handles land canceling when airborne and canceling into up special when grounded
+/// Handles land canceling when airborne
 unsafe fn dins_fire_cancels(boma: &mut BattleObjectModuleAccessor){
     if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_S_END) {
         if boma.is_situation(*SITUATION_KIND_GROUND) {
             if StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
                 boma.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
             }
-            // else if StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_GROUND {
-            //     if boma.is_cat_flag(Cat1::SpecialHi) {
-            //         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI, false);
-            //     }
-            // }
         }
     }
 }
@@ -122,7 +123,6 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     dins_fire_cancels(boma);
     dins_flag_reset(boma);
     nayru_fastfall_land_cancel(boma, status_kind, situation_kind, cat[2], stick_y, frame);
-    //teleport_startup_ledgegrab(fighter);
     phantom_special_cancel(fighter, boma);
 }
 
@@ -197,15 +197,5 @@ pub fn phantom_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
                 StatusModule::change_status_force(weapon.module_accessor, *WEAPON_ZELDA_PHANTOM_STATUS_KIND_ATTACK, false);
             }
         }
-        /*
-        if weapon.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_BUILD) {
-            let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-            let palutena = utils::util::get_battle_object_from_id(owner_id);
-            let palutena_boma = &mut *(*palutena).module_accessor;
-            if AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_ATTACK){
-                StatusModule::change_status_request_from_script(weapon.module_accessor, *WEAPON_PALUTENA_REFLECTIONBOARD_STATUS_KIND_BREAK, false);
-            }
-        }
-        */
     }
 }
