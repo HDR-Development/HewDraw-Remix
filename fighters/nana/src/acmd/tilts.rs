@@ -62,22 +62,16 @@ unsafe fn nana_attack_hi3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 125, 100, 75, 0, 3.5, 0.0, 4.0, -6.0, Some(0.0), Some(4.0), Some(6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HAMMER);
     }
-    wait(lua_state, 6.0);
+    frame(lua_state, 9.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 0.2, 115, 10, 0, 65, 4.5, 0.0, 7.5, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HAMMER);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 0.2, 125, 10, 0, 60, 6.0, 0.0, 16.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HAMMER);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 0.2, 160, 10, 0, 20, 6.0, 0.0, 16.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HAMMER);    
     }
-    frame(lua_state, 8.0);
-    for _ in 0..6 {
-        if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 0.2, 115, 10, 0, 65, 4.5, 0.0, 7.5, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HAMMER);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 0.2, 125, 10, 0, 60, 6.0, 0.0, 16.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HAMMER);
-            ATTACK(fighter, 2, 0, Hash40::new("top"), 0.2, 160, 10, 0, 20, 6.0, 0.0, 16.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HAMMER);
-        }
-        wait(lua_state, 2.0);
-        if is_excute(fighter) {
-            AttackModule::clear_all(boma);
-        }
-        wait(lua_state, 1.0);
+    frame(lua_state, 32.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
@@ -88,7 +82,23 @@ unsafe fn nana_attack_hi3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+}
+
+#[acmd_script( agent = "nana", script = "effect_attackhi3_nana" , category = ACMD_EFFECT , low_priority)]
+unsafe fn nana_attack_hi3_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 9.0);
+    for _ in 0..3 {
+        if is_excute(fighter) {
+            EFFECT_ALPHA(fighter, Hash40::new("sys_spin_wind"), Hash40::new("havel"), 0, 7.5, 0, 0, 0, 0, 0.6, 0, 7, 0, 0, 360, 0, true, 0.4);
+        }
+        wait(lua_state, 5.0);
+    }
+    frame(lua_state, 32.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 17.0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, true);
+    }
 }
 
 #[acmd_script( agent = "nana", script = "game_attacklw3_nana" , category = ACMD_GAME , low_priority)]
@@ -124,6 +134,7 @@ pub fn install() {
         nana_attack_s3_s_game,
         nana_attack_s3_lw_game,
         nana_attack_hi3_game,
+        nana_attack_hi3_effect,
         nana_attack_lw3_game,
     );
 }
