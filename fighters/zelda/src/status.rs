@@ -2,6 +2,8 @@ use smash::app::sv_battle_object::module_accessor;
 
 use super::*;
 
+mod dein;
+
 // Prevents side special from being used if a Din's Fire is present
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     let dein_object_id = VarModule::get_int(fighter.battle_object, vars::zelda::instance::DEIN_OBJECT_ID) as u32;
@@ -26,4 +28,5 @@ fn zelda_init(fighter: &mut L2CFighterCommon) {
 
 pub fn install() {
     smashline::install_agent_init_callbacks!(zelda_init);
+    dein::install();
 }

@@ -178,14 +178,21 @@ unsafe fn zelda_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "zelda_dein", script = "game_move" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "zelda_dein_s", script = "game_move" , category = ACMD_GAME , low_priority)]
 unsafe fn zelda_dein_move_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-	let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-	if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_ZELDA {
-		let zelda = utils::util::get_battle_object_from_id(owner_id);
-		VarModule::set_int(zelda, vars::zelda::instance::DEIN_OBJECT_ID, fighter.battle_object_id as i32);
+	if is_excute(fighter) {
+		ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 52, 97, 0, 50, 4.8, 0.0, 0.0, 0.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+		AREA_WIND_2ND_RAD_arg9(fighter, 0, 2, 0.05, 200, 1, 0, 0, 12, 60);
+	}
+	frame(lua_state, 6.0);
+	if is_excute(fighter) {
+		AttackModule::clear_all(boma);
+	}
+	frame(lua_state, 20.0);
+	if is_excute(fighter) {
+		AreaModule::erase_wind(boma, 0);
 	}
 }
 
