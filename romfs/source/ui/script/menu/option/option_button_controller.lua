@@ -465,17 +465,9 @@ end
 
 local wait_for_save = function (controller_id) 
     local not_assigned = UiScriptPlayer.invoke("get_not_assigned_operation_num", controller_id)
-    if 0 == not_assigned then
+    if not_assigned >= 0 then
         UiSoundManager:play_se_label("se_system_save")
         return true
-    elseif not_assigned > 0 then
-        repeat
-            if AppPopupManager.is_busy() == false then
-                local result = AppPopupManager.get_result()
-                return result == POPUP_RESULT_YES
-            end
-            coroutine.yield()
-        until false
     else
         repeat
             if AppPopupManager.is_busy() == false then
