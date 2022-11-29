@@ -90,7 +90,7 @@ unsafe fn zelda_attack_air_f_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         FT_MOTION_RATE(fighter, 22.0/(37.0 - 18.0));
     }
-    frame(lua_state, 34.0);
+    frame(lua_state, 31.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -140,7 +140,7 @@ unsafe fn zelda_attack_air_b_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         FT_MOTION_RATE(fighter, 14.0/(38.0 - 16.0));
     }
-    frame(lua_state, 36.0);
+    frame(lua_state, 39.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
