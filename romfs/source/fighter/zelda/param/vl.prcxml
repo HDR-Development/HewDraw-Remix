@@ -15,7 +15,8 @@
   </list>
   <list hash="param_dein">
     <struct index="0">
-      <float hash="speed">1.5</float>
+      <float hash="speed">1.75</float>
+      <float hash="speed_max">8</float>
       <float hash="angle_add">3.0</float>
       <float hash="angle_max">85</float>
       <float hash="life">50</float>
