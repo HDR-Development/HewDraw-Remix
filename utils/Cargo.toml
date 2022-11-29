@@ -15,7 +15,7 @@ parking_lot = "0.11.2"
 hdr-macros = { path = "../hdr-macros" }
 utils-dyn = { package = "dynamic", path = "../dynamic" }
 ninput = { git = "https://github.com/blu-dev/ninput" }
-skyline-web = { git = "https://github.com/techyCoder81/skyline-web", branch = "fix-file-directory-issues" }
+skyline-web = { git = "https://github.com/skyline-rs/skyline-web" }
 smash_script = { git = "https://github.com/blu-dev/smash-script", branch = "development" }
 once_cell = "1.15.0"
 colorgrad = "0.6.2"
