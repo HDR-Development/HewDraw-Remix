@@ -224,7 +224,6 @@ pub fn install() {
         get_touch_flag_hook,
         groundcollision__processgroundcollisioninfo_check_landing,
         ground_module_ecb_point_calc_hook,
-        model_module_joint_global_position_with_offset_hook,
-        //groundmodule__setcorrect
+        model_module_joint_global_position_with_offset_hook
     );
 }
