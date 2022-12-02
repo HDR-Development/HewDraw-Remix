@@ -6,12 +6,6 @@ use super::*;
 unsafe fn littlemac_special_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    // frame(lua_state, 1.0);
-    // if is_excute(fighter) {
-    //     if VarModule::is_flag(fighter.battle_object, vars::littlemac::status::IS_STRAIGHT_LUNGE_CANCEL) {
-    //         VarModule::off_flag(fighter.battle_object, vars::littlemac::status::IS_STRAIGHT_LUNGE_CANCEL);
-    //     }
-    // }
     frame(lua_state, 23.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_CHECK_DASH);
@@ -23,12 +17,6 @@ unsafe fn littlemac_special_air_n_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
-    // frame(lua_state, 1.0);
-    // if is_excute(fighter) {
-    //     if VarModule::is_flag(fighter.battle_object, vars::littlemac::status::IS_STRAIGHT_LUNGE_CANCEL) {
-    //         VarModule::off_flag(fighter.battle_object, vars::littlemac::status::IS_STRAIGHT_LUNGE_CANCEL);
-    //     }
-    // }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 15.0);
