@@ -674,6 +674,14 @@ pub mod vars {
         }
     }
     
+    pub mod szerosuit {
+        pub mod status {
+            // flags
+            pub const ATTACK_AIR_LW_REBOUND: i32 = 0x1100;
+            pub const SPECIAL_LW_MANUAL_FLIPSTOOL_ENABLE: i32 = 0x1101;
+        }
+    }
+
     pub mod trail {
         pub mod instance {
             // flags
@@ -838,6 +846,28 @@ pub mod vars {
             pub const CHARGE_DAMAGE_MUL: i32 = 0x0100;
             pub const CHARGE_RECOIL_MUL: i32 = 0x0101;
             pub const DISCHARGE_POWER_MUL: i32 = 0x0102;
+        }
+    }
+
+    pub mod zelda {
+        pub mod instance {
+            // flags
+            pub const DEIN_ACTIVE: i32 = 0x0100;
+
+            // ints
+            pub const DEIN_OBJECT_ID: i32 = 0x0100;
+        }
+    }
+    
+    pub mod murabito {
+        pub mod instance {
+            // flags
+            pub const IS_TILT_LW_SAPLING_PULL: i32 = 0x0100;
+
+            // floats
+            pub const SAPLING_PULL_SAPLING_POS_X: i32 = 0x0101;
+            pub const SAPLING_PULL_SAPLING_POS_Y: i32 = 0x0102;
+            pub const SAPLING_PULL_SAPLING_POS_Z: i32 = 0x0103;
         }
     }
 

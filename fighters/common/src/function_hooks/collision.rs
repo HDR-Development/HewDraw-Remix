@@ -6,9 +6,12 @@ use globals::*;
 unsafe fn is_touch_hook(boma: &mut BattleObjectModuleAccessor, ground_touch_flags: u32) -> bool {
     let mut ground_touch_flags = ground_touch_flags;
     let normal_y = GroundModule::get_touch_normal_y(boma, *GROUND_TOUCH_FLAG_DOWN as u32);
+    let prev_pos = *PostureModule::prev_pos(boma);
+    let pos = *PostureModule::pos(boma);
 
     if boma.is_weapon()
     && (normal_y >= 0.99 && normal_y <= 1.01)  // if touching a near-flat platform/ground
+    && prev_pos.y <= pos.y  // if the projectile wasn't moving downwards
     && [*WEAPON_KIND_SAMUS_CSHOT,
         *WEAPON_KIND_RYU_HADOKEN,
         *WEAPON_KIND_LUCAS_PK_FIRE,
@@ -57,9 +60,12 @@ unsafe fn is_touch_hook(boma: &mut BattleObjectModuleAccessor, ground_touch_flag
 unsafe fn is_floor_touch_line_hook(boma: &mut BattleObjectModuleAccessor, ground_touch_flags: u32) -> bool {
     let mut ground_touch_flags = ground_touch_flags;
     let normal_y = GroundModule::get_touch_normal_y(boma, *GROUND_TOUCH_FLAG_DOWN as u32);
+    let prev_pos = *PostureModule::prev_pos(boma);
+    let pos = *PostureModule::pos(boma);
 
     if boma.is_weapon()
     && (normal_y >= 0.99 && normal_y <= 1.01)  // if touching a near-flat platform/ground
+    && prev_pos.y <= pos.y  // if the projectile wasn't moving downwards
     && ( ([*WEAPON_KIND_KROOL_IRONBALL, *WEAPON_KIND_KROOL_SPITBALL].contains(&boma.kind())
             && boma.is_status(*WEAPON_KROOL_IRONBALL_STATUS_KIND_SHOOT))
         || (boma.kind() == *WEAPON_KIND_KOOPAJR_CANNONBALL
