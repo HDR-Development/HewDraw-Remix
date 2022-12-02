@@ -1,5 +1,6 @@
 use std::str::FromStr;
 use std::collections::HashSet;
+use std::fmt;
 
 #[derive(Copy, Clone, PartialEq, Eq, Hash)]
 pub enum CustomMode {
@@ -7,6 +8,17 @@ pub enum CustomMode {
     TurboMode = 1,
     HitfallMode = 2,
     AirdashMode = 3,
+}
+
+impl fmt::Display for CustomMode {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            CustomMode::SmashballTag => write!(f, "Tag"),
+            CustomMode::TurboMode => write!(f, "Turbo"),
+            CustomMode::HitfallMode => write!(f, "Hitfall"),
+            CustomMode::AirdashMode => write!(f, "Airdash"),
+        }
+    }
 }
 
 impl FromStr for CustomMode {

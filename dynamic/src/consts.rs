@@ -844,6 +844,28 @@ pub mod vars {
         }
     }
 
+    pub mod zelda {
+        pub mod instance {
+            // flags
+            pub const DEIN_ACTIVE: i32 = 0x0100;
+
+            // ints
+            pub const DEIN_OBJECT_ID: i32 = 0x0100;
+        }
+    }
+    
+    pub mod murabito {
+        pub mod instance {
+            // flags
+            pub const IS_TILT_LW_SAPLING_PULL: i32 = 0x0100;
+
+            // floats
+            pub const SAPLING_PULL_SAPLING_POS_X: i32 = 0x0101;
+            pub const SAPLING_PULL_SAPLING_POS_Y: i32 = 0x0102;
+            pub const SAPLING_PULL_SAPLING_POS_Z: i32 = 0x0103;
+        }
+    }
+
 }
 
 pub mod statuses {

@@ -101,6 +101,20 @@ unsafe fn szerosuit_special_air_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "szerosuit_whip", script = "game_specialairs" , category = ACMD_GAME , low_priority)]
+unsafe fn szerosuit_whip_special_air_s_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        MotionModule::set_rate(boma, 1.0);
+    }
+    frame(lua_state, 48.0);
+    if is_excute(fighter) {
+        VisibilityModule::set_whole(boma, false);
+    }
+}
+
 #[acmd_script( agent = "szerosuit", script = "game_specials2" , category = ACMD_GAME , low_priority)]
 unsafe fn szerosuit_special_s_2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -131,6 +145,36 @@ unsafe fn szerosuit_whip_special_s2_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 57.0);
     if is_excute(fighter) {
         VisibilityModule::set_whole(boma, false);
+    }
+}
+
+#[acmd_script( agent = "szerosuit_whip", script = "effect_specials2" , category = ACMD_EFFECT , low_priority)]
+unsafe fn szerosuit_whip_special_s2_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("szero_whip_flash"), Hash40::new("plasmawhip1"), 1, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("szero_pwhip"), true, true);
+        EFFECT_FLW_POS(fighter, Hash40::new("szero_whip"), Hash40::new("attach"), 0, 0, 0, 0, 0, 0, 0.4, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip2"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip3"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip4"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip5"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip6"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip7"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip8"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 45.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("szero_gbeam_lightning"), false, true);
+    }
+    frame(lua_state, 54.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("szero_whip"), false, true);
+    }
+    frame(lua_state, 56.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("szero_whip_flash"), false, true);
     }
 }
 
@@ -391,8 +435,10 @@ pub fn install() {
         szerosuit_special_s_game,
         szerosuit_whip_special_s_game,
         szerosuit_special_air_s_game,
+        szerosuit_whip_special_air_s_game,
         szerosuit_special_s_2_game,
         szerosuit_whip_special_s2_game,
+        szerosuit_whip_special_s2_effect,
         szerosuit_special_air_s_2_game,
         szerosuit_special_hi_game,
         szerosuit_special_air_hi_game,
