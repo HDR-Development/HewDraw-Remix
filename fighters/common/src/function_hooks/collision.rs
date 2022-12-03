@@ -212,7 +212,7 @@ unsafe fn groundcollision__processgroundcollisioninfo_check_landing_sub(groundco
 pub fn install() {
     unsafe {
         // Removes 0.3 unit leniency above ECB bottom when deciding whether to land
-        // which reduces frequency of NILs
+        // which reduces frequency of platform cancels
         skyline::patching::Patch::in_text(0x540dd8).data(0x529ae148);
         skyline::patching::Patch::in_text(0x540ddc).data(0x72a78468);
     }
