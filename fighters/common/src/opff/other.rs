@@ -137,10 +137,24 @@ pub unsafe fn cliff_xlu_frame_counter(fighter: &mut L2CFighterCommon) {
     }
 }
 
+pub unsafe fn ecb_shift_disabled_motions(fighter: &mut L2CFighterCommon) {
+    if ( (fighter.kind() == *FIGHTER_KIND_SZEROSUIT
+            && fighter.is_motion(Hash40::new("attack_air_hi")))
+        || (fighter.kind() == *FIGHTER_KIND_PALUTENA
+            && fighter.is_motion(Hash40::new("attack_air_n")))
+        || (fighter.kind() == *FIGHTER_KIND_GANON
+            && fighter.is_motion_one_of(&[Hash40::new("attack_air_n"), Hash40::new("attack_air_lw"), Hash40::new("attack_air_hi")])) )
+    && !VarModule::is_flag(fighter.battle_object, vars::common::status::DISABLE_ECB_SHIFT)
+    {
+        VarModule::on_flag(fighter.battle_object, vars::common::status::DISABLE_ECB_SHIFT);
+    }
+}
+
 pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     
     airdodge_refresh_on_hit_disable(boma, status_kind);
     suicide_throw_mashout(fighter, boma);
     cliff_xlu_frame_counter(fighter);
+    ecb_shift_disabled_statuses(fighter);
 }
 

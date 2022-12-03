@@ -130,7 +130,6 @@ unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *m
         *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
         *FIGHTER_STATUS_KIND_THROWN])
     && (*boma).is_situation(*SITUATION_KIND_AIR)
-    && !GroundModule::is_touch(boma, *GROUND_TOUCH_FLAG_DOWN as u32)
     && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) >= ParamModule::get_int((*boma).object(), ParamType::Common, "ecb_shift_air_trans_frame") {
         // This check passes after 9 frames of airtime, if not in a grabbed/thrown state
         param_6 = 1;
@@ -172,18 +171,24 @@ unsafe fn groundcollision__processgroundcollisioninfo(groundcollisioninfo: *mut 
 // Performs ground correct
 #[skyline::hook(offset = 0x53fe30)]
 unsafe fn groundcollision__processgroundcollisioninfo_check_landing(groundcollisioninfo: *mut f32, groundcollision: *mut u64) {
+    let flags = *(groundcollisioninfo.add(0x5d8 / 4) as *mut u32);
+    let is_fighter = flags >> 27 & 1 == 0;
+
     call_original!(groundcollisioninfo, groundcollision);
+
     let prev_touch_pos_y = *groundcollisioninfo.add(0x1A4 / 4);
     let touch_pos_y = *groundcollisioninfo.add(0xB4 / 4);
-    let ecb_y_offset = *groundcollisioninfo.add(0x3d4 / 4);
+    let ecb_offset_y = *groundcollisioninfo.add(0x3d4 / 4);
     //println!("situation kind {}", *groundcollisioninfo.add(0x5a0 / 4));
 
-    if prev_touch_pos_y == 0.0
+    if is_fighter
+    && prev_touch_pos_y == 0.0
     && touch_pos_y != 0.0
-    && ecb_y_offset != 0.0
+    && ecb_offset_y != 0.0
     {
         // When landing, sets your position to the coordinates of the surface you are landing on
         *groundcollisioninfo.add(0x634 / 4) = touch_pos_y;
+        // Reset ECB offset to 0.0
         *groundcollisioninfo.add(0x3d4 / 4) = 0.0;
     }
 }
@@ -203,18 +208,11 @@ unsafe fn groundcollision__processgroundcollisioninfo_check_landing_sub(groundco
     }
     call_original!(groundcollision, arg2, prev_ecb_bottom_pos, ecb_bottom_translation, arg5, arg6, arg7)
 }
-// Unused for now
-// Adds 0.01 to y pos when landing
-#[skyline::hook(offset = 0x548560)]
-unsafe fn groundcollision__processgroundcollisioninfo_sub(groundcollisioninfo: *mut f32, groundcollision: *mut u64) {
-    call_original!(groundcollisioninfo, groundcollision);
-
-}
 
 pub fn install() {
     unsafe {
         // Removes 0.3 unit leniency above ECB bottom when deciding whether to land
-        // Reduces frequency of NILs
+        // which reduces frequency of NILs
         skyline::patching::Patch::in_text(0x540dd8).data(0x529ae148);
         skyline::patching::Patch::in_text(0x540ddc).data(0x72a78468);
     }
