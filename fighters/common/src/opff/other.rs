@@ -155,6 +155,6 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleA
     airdodge_refresh_on_hit_disable(boma, status_kind);
     suicide_throw_mashout(fighter, boma);
     cliff_xlu_frame_counter(fighter);
-    ecb_shift_disabled_statuses(fighter);
+    ecb_shift_disabled_motions(fighter);
 }
 
