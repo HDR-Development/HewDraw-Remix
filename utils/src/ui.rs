@@ -25,6 +25,33 @@ pub struct UiManager {
 }
 
 impl UiManager {
+    /// Gets the relevant UI entry based on the entry_id of the fighter.
+    /// This is nececessary because the UI is indexed from zero every match,
+    /// but the entry_id is based on player entries, I.E. the portraits in
+    /// the character select screen. So if player 2 and player 4 are playing
+    /// a 1v1 match, player 2 will have the first UI slot, and player 4 will
+    /// have the second UI slot.
+    /// # Arguments
+    /// - entry_id: the entry id of this fighter
+    /// # Returns:
+    /// - the ui index
+    fn get_ui_index_from_entry_id(entry_id: u32) -> u32 {
+        // start at index 0
+        let mut index = 0;
+
+        // check all of the possible entry IDs less than or equal to this one,
+        // and see how many "slots" should be filled, counting up from 0.
+        for n in 0..entry_id {
+            if crate::util::get_battle_object_from_entry_id(n).is_some() {
+                // this is a valid fighter in this match, which means they will
+                // be occupying a UI slot. Thus, we cannot take that slot.
+                index += 1;
+            }
+        }
+
+        return index;
+    }
+
     #[export_name = "UiManager__set_dk_barrel_enable"]
     pub extern "C" fn set_dk_barrel_enable(entry_id: u32, enable: bool) {
         // let manager = UI_MANAGER.read();
@@ -92,7 +119,7 @@ impl UiManager {
     pub extern "C" fn set_ex_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
         unsafe {
-            manager.ex_meter[entry_id as usize].set_enable(enable);
+            manager.ex_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
         }
     }
 
@@ -100,7 +127,7 @@ impl UiManager {
     pub extern "C" fn set_ex_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
         let mut manager = UI_MANAGER.write();
         unsafe {
-            manager.ex_meter[entry_id as usize].set_meter_info(current, max, per_level);
+            manager.ex_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_meter_info(current, max, per_level);
         }
     }
 
@@ -108,7 +135,7 @@ impl UiManager {
     pub extern "C" fn set_ff_meter_enable(entry_id: u32, enable: bool) {
         let mut manager = UI_MANAGER.write();
         unsafe {
-            manager.ff_meter[entry_id as usize].set_enable(enable);
+            manager.ff_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
         }
     }
 
@@ -116,7 +143,7 @@ impl UiManager {
     pub extern "C" fn set_ff_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
         let mut manager = UI_MANAGER.write();
         unsafe {
-            manager.ff_meter[entry_id as usize].set_meter_info(current, max, per_level);
+            manager.ff_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_meter_info(current, max, per_level);
         }
     }
 }
@@ -245,6 +272,14 @@ unsafe fn get_set_info_alpha(ctx: &skyline::hooks::InlineCtx) {
 
 #[skyline::hook(offset = 0x138a6f0, inline)]
 fn hud_update(_: &skyline::hooks::InlineCtx) {
+    unsafe {
+        // check the global static menu-based mode field
+        let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0) as *const u64;
+        // if we are in the controls menu mode, there is no ui overlay, so dont update the hud
+        if *mode == 0x6020000 {
+            return;
+        }
+    }
     let mut mgr = UI_MANAGER.write();
     for ex_meter in mgr.ex_meter.iter_mut() {
         if ex_meter.is_valid() && ex_meter.is_enabled() {

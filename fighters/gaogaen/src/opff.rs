@@ -247,5 +247,6 @@ pub fn gaogaen_opff(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModul
         alolan_whip_special_grabs(fighter);
         lariat_ledge_slipoff(fighter);
         rotate_revenge_uthrow(boma);
+        fighter.check_hitfall();
     }
 }

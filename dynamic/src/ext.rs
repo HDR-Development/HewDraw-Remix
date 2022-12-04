@@ -468,13 +468,15 @@ pub trait BomaExt {
     unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController;
     // tech/general subroutine
     unsafe fn handle_waveland(&mut self, require_airdodge: bool) -> bool;
-    unsafe fn shift_ecb_on_landing(&mut self);
     unsafe fn set_front_cliff_hangdata(&mut self, x: f32, y: f32);
     unsafe fn set_back_cliff_hangdata(&mut self, x: f32, y: f32);
     unsafe fn set_center_cliff_hangdata(&mut self, x: f32, y: f32);
 
-    // Checks for status and enables transition to jump
+    /// Checks for status and enables transition to jump
     unsafe fn check_jump_cancel(&mut self);
+
+    /// check for hitfall (should be called once per frame)
+    unsafe fn check_hitfall(&mut self);
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -799,34 +801,27 @@ impl BomaExt for BattleObjectModuleAccessor {
             return false;
         }
     
-        // ecb is top, bottom, left, right
-        let shift = if self.is_situation(*SITUATION_KIND_AIR) && self.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= crate::ParamModule::get_int(self.object(), crate::ParamType::Common, "ecb_shift_air_trans_frame") {
-            let group = crate::ParamModule::get_int(self.object(), crate::ParamType::Shared, "ecb_group_shift");
-            let shift = match group {
-                0 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.small"),
-                1 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.medium"),
-                2 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.large"),
-                3 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.x_large"),
-                4 => crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_group_shift_amount.xx_large"),
-                _ => panic!("malformed parammodule file! unknown group number for ecb shift: {}", group)
-            };
-            shift + crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "ecb_shift_for_waveland")
-        } else {
-            0.0
-        };
-    
+        // The distance from your ECB's bottom point to your Top bone is your waveland snap threshold
         let ecb_bottom = *GroundModule::get_rhombus(self, true).add(1);
-        let snap_leniency = crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold");
-        let line_bottom = Vector2f::new(ecb_bottom.x, shift + ecb_bottom.y - snap_leniency);
-        let mut out_pos = Vector2f::zero();
-        let within_snap_distance_any = GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, shift + ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut out_pos, true);
-        let within_snap_distance_stage = GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, shift + ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut out_pos, false);
-        let can_snap = within_snap_distance_any != 0 && (within_snap_distance_stage == 0
+        let pos = *PostureModule::pos(self);
+        let snap_leniency = if WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0 {
+                // For a downwards/horizontal airdodge, waveland snap threshold = the distance from your ECB bottom to your Top bone
+                ecb_bottom.y - pos.y
+            } else {
+                // For an upwards airdodge, waveland snap threshold = 5 units below ECB bottom, if the distance from your ECB bottom to your Top bone is < 5
+                (ecb_bottom.y - pos.y).max(crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold"))
+            };
+        let line_bottom = Vector2f::new(ecb_bottom.x, ecb_bottom.y - snap_leniency);
+        let mut ground_pos_any = Vector2f::zero();
+        let mut ground_pos_stage = Vector2f::zero();
+        GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut ground_pos_any, true);
+        GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut ground_pos_stage, false);
+        let can_snap = ground_pos_any != Vector2f::zero() && (ground_pos_stage == Vector2f::zero()
             || WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0);
         if can_snap { // pretty sure it returns a pointer, at least it defo returns a non-0 value if success
-            let pos = PostureModule::pos(self);
-            PostureModule::set_pos(self, &Vector3f::new((*pos).x, out_pos.y + 0.01, (*pos).z));
-            GroundModule::attach_ground(self, true);
+            crate::VarModule::on_flag(self.object(), crate::consts::vars::common::status::DISABLE_ECB_SHIFT);
+            PostureModule::set_pos(self, &Vector3f::new(pos.x, ground_pos_any.y + 0.1, pos.z));
+            GroundModule::attach_ground(self, false);
             true
         } else {
             false
@@ -836,21 +831,6 @@ impl BomaExt for BattleObjectModuleAccessor {
     /// gets the current status kind for the fighter
     unsafe fn status(&mut self) -> i32 {
         return StatusModule::status_kind(self);
-    }
-    
-    unsafe fn shift_ecb_on_landing(&mut self) {
-        if self.is_situation(*SITUATION_KIND_GROUND) {
-            if !self.is_prev_situation(*SITUATION_KIND_GROUND) {
-                // shift ECB back to normal offset
-                let mut fighter_pos = Vector3f {
-                    x: PostureModule::pos_x(self),
-                    y: PostureModule::pos_y(self),
-                    z: PostureModule::pos_z(self)
-                };
-                fighter_pos.y += crate::VarModule::get_float(self.object(), crate::consts::vars::common::instance::ECB_Y_OFFSETS);
-                PostureModule::set_pos(self, &fighter_pos);
-            }
-        }
     }
 
     unsafe fn check_jump_cancel(&mut self) {
@@ -915,6 +895,39 @@ impl BomaExt for BattleObjectModuleAccessor {
         let ground_data = *((ground_module + 0x28) as *mut *mut f32);
         *ground_data.add(0x520 / 4) = x;
         *ground_data.add(0x524 / 4) = y;
+    }
+
+    /// checks whether you should hitfall (call this once per frame)
+    unsafe fn check_hitfall(&mut self) {
+        if self.is_situation(*SITUATION_KIND_AIR)
+        && self.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR)
+        {
+            /* this is written this way because stick_y_flick wont update during
+                hitlag, which means we need a flag to allow you to hitfall 1 frame
+                after the end of hitlag as well, and we need to check previous 
+                stick y directly to detect hitfall. That way, with the 5 frame buffer,
+                if you input a fastfall during hitlag, it will get registered after
+                the hitlag is over. Without the HITFALL_BUFFER flag, you have to
+                input the fastfall BEFORE you hit the move, only.
+            */
+            if !AttackModule::is_infliction_status(self, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+            || AttackModule::is_infliction(self, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+            {
+               crate::VarModule::set_int(self.object(), crate::consts::vars::common::instance::HITFALL_BUFFER, 0);
+            }
+
+            if AttackModule::is_infliction_status(self, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+               crate::VarModule::inc_int(self.object(), crate::consts::vars::common::instance::HITFALL_BUFFER);
+            }
+
+            let buffer =crate::VarModule::get_int(self.object(), crate::consts::vars::common::instance::HITFALL_BUFFER);
+
+            if self.is_cat_flag(Cat2::FallJump)
+            && 0 < buffer && buffer <= 5 
+            {
+                WorkModule::on_flag(self, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            }
+        }
     }
 }
 

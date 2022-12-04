@@ -29,6 +29,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       with:
         releaseNameRegEx: beta
+        searchLimit: 250
 
     - id: echo_release_info
       shell: bash
@@ -49,6 +50,7 @@ jobs:
         sinceTag: ${{ steps.get_last_beta.outputs.tag_name }}
         stripHeaders: true
         token: ${{ secrets.GITHUB_TOKEN  }}
+        maxIssues: 500
         verbose: false
         issuesWoLabels: false
         compareLink: false
