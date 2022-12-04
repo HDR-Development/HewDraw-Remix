@@ -74,25 +74,26 @@ unsafe fn groundcollision__processgroundcollisioninfo_check_landing(groundcollis
     let touch_pos_y = (vertex_1_y + vertex_2_y) / 2.0;
     
     let flags = *(groundcollisioninfo.add(0x5d8 / 4) as *mut u32);
-    let is_fighter = flags >> 27 & 1 == 0;
+    let is_fighter = flags >> 0x1b & 1 == 0;
     let situation_kind = *(groundcollisioninfo.add(0x5a0 / 4) as *mut i32);  // 1 = ground, 2 = air, 3 = cliff...
     let pos_y = *groundcollisioninfo.add(0x634 / 4);
-    let translation = *groundcollisioninfo.add(0x624 / 4);
     let prev_ecb_offset_y = *groundcollisioninfo.add(0x424 / 4);
     let ecb_offset_y = *groundcollisioninfo.add(0x3d4 / 4);
 
     if !is_fighter
     && situation_kind == 2
-    && (prev_ecb_offset_y == 0.0 && ecb_offset_y != 0.0)
-    && pos_y < touch_pos_y
+    && (prev_ecb_offset_y == 0.0 && ecb_offset_y != 0.0)  // this only passes on the spawn frame of a projectile
+    && pos_y < touch_pos_y  // checks if the projectile's position is underneath the surface it is touching
     {
-        *groundcollisioninfo.add(0x420 / 4) = *groundcollisioninfo.add(0x3d0 / 4);
-        *groundcollisioninfo.add(0x424 / 4) = *groundcollisioninfo.add(0x3d4 / 4);
-        *((groundcollision + 0x39f) as *mut bool) = true;
+        *groundcollisioninfo.add(0x420 / 4) = *groundcollisioninfo.add(0x3d0 / 4);  // prev_ecb_offset_x = ecb_offset_x
+        *groundcollisioninfo.add(0x424 / 4) = *groundcollisioninfo.add(0x3d4 / 4);  // prev_ecb_offset_y = ecb_offset_y
+        *((groundcollision + 0x39f) as *mut bool) = true;  // sets a flag in GroundCollision which tells subsequent functions to ignore ground collision
     } else {
         *((groundcollision + 0x39f) as *mut bool) = false;
     };
+
     call_original!(groundcollisioninfo, groundcollision);
+
     let prev_touch_pos_y = *groundcollisioninfo.add(0x1A4 / 4);
     let touch_pos_y = *groundcollisioninfo.add(0xB4 / 4);
     let ecb_offset_y = *groundcollisioninfo.add(0x3d4 / 4);
@@ -112,6 +113,7 @@ unsafe fn groundcollision__processgroundcollisioninfo_check_landing(groundcollis
 #[skyline::hook(offset = 0x52d900)]
 unsafe fn groundcollision__processgroundcollisioninfo_check_landing_sub(groundcollision: u64, arg2: *mut u64, prev_ecb_bottom_pos: *mut smash::phx::Vector2f, ecb_bottom_translation: *mut smash::phx::Vector2f, arg5: u64, arg6: u64, arg7: *mut u64) -> *mut GroundCollisionLine {
     if *((groundcollision + 0x39f) as *mut bool) {
+        // Ignore ground collision
         return 0 as *mut GroundCollisionLine;
     }
     call_original!(groundcollision, arg2, prev_ecb_bottom_pos, ecb_bottom_translation, arg5, arg6, arg7)
