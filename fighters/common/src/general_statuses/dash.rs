@@ -387,6 +387,15 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
         interrupt!(fighter, *FIGHTER_STATUS_KIND_APPEAL, false);
     }
 
+    let pass_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("pass_stick_y"));
+    let pass_flick_y = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("pass_flick_y"));
+    if GroundModule::is_passable_ground(fighter.module_accessor)
+    && fighter.global_table[FLICK_Y].get_i32() < pass_flick_y
+    && fighter.global_table[STICK_Y].get_f32() < pass_stick_y
+    {
+        interrupt!(fighter, *FIGHTER_STATUS_KIND_PASS, true);
+    }
+
     interrupt_if!(fighter.sub_transition_group_check_ground_attack().get_bool());
 
     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_ENABLE_ATTACK_FRAME) > 0
@@ -515,6 +524,14 @@ unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 		initial_speed = applied_speed_clamped;
 	}
+    else if StatusModule::status_kind_next(fighter.module_accessor) == *FIGHTER_STATUS_KIND_PASS {
+        let applied_speed_clamped = initial_speed.clamp(-run_speed_max, run_speed_max);
+        let dash_end_speed_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dash_end_speed_mul"));
+
+        fighter.clear_lua_stack();
+		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed_clamped / dash_end_speed_mul);
+		app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+    }
     VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
 
     if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_TURN {
