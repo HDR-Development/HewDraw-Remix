@@ -27,7 +27,13 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
             *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
             *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
             *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
-            *FIGHTER_STATUS_KIND_THROWN])
+            *FIGHTER_STATUS_KIND_THROWN,
+            *FIGHTER_STATUS_KIND_CATCHED_GANON,
+            *FIGHTER_STATUS_KIND_CATCHED_AIR_GANON,
+            *FIGHTER_STATUS_KIND_CATCHED_REFLET,
+            *FIGHTER_STATUS_KIND_CATCHED_RIDLEY,
+            *FIGHTER_STATUS_KIND_CAPTURE_JACK_WIRE,
+            *FIGHTER_STATUS_KIND_CAPTURE_MASTER_SWORD])
         && situation.0 == *SITUATION_KIND_AIR
         {
             WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
