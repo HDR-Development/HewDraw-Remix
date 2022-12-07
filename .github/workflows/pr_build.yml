@@ -9,7 +9,7 @@ jobs:
   pr_build:
     env:
       PLUGIN_NAME: hdr
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container: 
       image: jugeeya/cargo-skyline:3.2.0-no-dkp
     steps:

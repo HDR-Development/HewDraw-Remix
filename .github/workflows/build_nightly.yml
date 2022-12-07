@@ -7,7 +7,7 @@ on:
 jobs:
   # bump the version and build the changelog
   version_and_changelog:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
       GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
     outputs: 
@@ -77,7 +77,7 @@ jobs:
   plugin_build:
     env:
       PLUGIN_NAME: hdr
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: version_and_changelog
     container: 
       image: jugeeya/cargo-skyline:3.2.0-no-dkp
@@ -116,7 +116,7 @@ jobs:
 
   ##############  handle uploading the files to the release  ##############
   upload_to_release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [plugin_build, version_and_changelog]
     steps:
     - uses: actions/download-artifact@v3
@@ -139,7 +139,7 @@ jobs:
   # wait for any previous nightlies to complete, since we dont want to step on any 
   # full package uploads prior to this one.
   wait_for_previous_builds:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: upload_to_release
     steps:
       - name: checkout version
@@ -153,7 +153,7 @@ jobs:
 
   ##############  handle the creasion of the full package installation  ##############
   full_package:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [version_and_changelog, wait_for_previous_builds]
     steps:
     - name: checkout version
@@ -239,7 +239,7 @@ jobs:
 
   ################  handle the creation of to-nightly.zip  ################
   to_nightly:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [full_package, version_and_changelog]
     steps:
     - name: checkout version
@@ -304,7 +304,7 @@ jobs:
 
   ################  handle the creation of to-beta.zip  ################
   to_beta:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [full_package, version_and_changelog]
     steps:
     - name: checkout version
