@@ -1,13 +1,18 @@
 use super::*;
 use utils::ext::*;
 
+
 static mut IS_STOP: bool = false;
 
-#[skyline::hook(offset = 0x3a7f90, inline)]
+// Keeps track of hitlag
+#[skyline::hook(offset = 0x3a7f74, inline)]
 unsafe fn battle_object__process_begin_sub(ctx: &skyline::hooks::InlineCtx) {
-    IS_STOP = *ctx.registers[19].w.as_ref() & 1 != 0;
+    let boma = *ctx.registers[23].x.as_ref() as *mut BattleObjectModuleAccessor;
+    let stop_module = *(boma as *mut BattleObjectModuleAccessor as *mut u64).add(0x90 / 8) as *const u64;
+    IS_STOP = *(stop_module as *const bool).add(0x3c);
 }
 
+// Doubles camera speed while not in hitlag
 #[skyline::hook(offset = 0x2606270)]
 unsafe fn cameramanager__update_frame(camera_manager: *mut *mut u64) {
     call_original!(camera_manager);
@@ -15,7 +20,6 @@ unsafe fn cameramanager__update_frame(camera_manager: *mut *mut u64) {
         call_original!(camera_manager);
     }
 }
-
 #[skyline::hook(offset = 0x4f0a80)]
 unsafe fn cameramanager__update(camera_manager: *mut *mut u64) {
     call_original!(camera_manager);
