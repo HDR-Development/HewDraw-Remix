@@ -13,13 +13,6 @@ unsafe fn battle_object__process_begin_sub(ctx: &skyline::hooks::InlineCtx) {
 }
 
 // Doubles camera speed while not in hitlag
-#[skyline::hook(offset = 0x2606270)]
-unsafe fn cameramanager__update_frame(camera_manager: *mut *mut u64) {
-    call_original!(camera_manager);
-    if !IS_STOP {
-        call_original!(camera_manager);
-    }
-}
 #[skyline::hook(offset = 0x4f0a80)]
 unsafe fn cameramanager__update(camera_manager: *mut *mut u64) {
     call_original!(camera_manager);
@@ -31,7 +24,6 @@ unsafe fn cameramanager__update(camera_manager: *mut *mut u64) {
 pub fn install() {
     skyline::install_hooks!(
         battle_object__process_begin_sub,
-        cameramanager__update_frame,
         cameramanager__update
     );
 }
