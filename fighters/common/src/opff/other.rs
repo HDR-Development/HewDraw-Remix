@@ -150,11 +150,18 @@ pub unsafe fn ecb_shift_disabled_motions(fighter: &mut L2CFighterCommon) {
     }
 }
 
+// For use with camera function hooks in function_hooks/camera.rs
+pub static mut IS_STOP: bool = false;
+pub unsafe fn is_stop(fighter: &mut L2CFighterCommon) {
+    IS_STOP = StopModule::is_stop(fighter.module_accessor);
+}
+
 pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     
     airdodge_refresh_on_hit_disable(boma, status_kind);
     suicide_throw_mashout(fighter, boma);
     cliff_xlu_frame_counter(fighter);
     ecb_shift_disabled_motions(fighter);
+    is_stop(fighter);
 }
 
