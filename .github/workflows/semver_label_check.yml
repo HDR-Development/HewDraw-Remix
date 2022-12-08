@@ -5,7 +5,7 @@ on:
 jobs:
   check-pr:
     name: Validate Release Labels
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: jesusvasquez333/verify-pr-label-action@v1.4.0
         with:
