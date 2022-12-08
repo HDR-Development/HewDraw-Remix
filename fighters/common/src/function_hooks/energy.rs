@@ -328,6 +328,7 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
             }
         },
         Turn => {
+            stick.x = 0.0;
             // Perfect Pivot
             if VarModule::is_flag(boma.object(), vars::common::instance::IS_SMASH_TURN)
             && VarModule::is_flag(boma.object(), vars::common::instance::CAN_PERFECT_PIVOT)
