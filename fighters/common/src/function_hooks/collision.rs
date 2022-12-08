@@ -168,7 +168,9 @@ unsafe fn groundcollision__processgroundcollisioninfo(groundcollisioninfo: *mut 
     call_original!(groundcollisioninfo, groundcollision)
 }
 
-// Performs ground correct
+pub static mut RESET_AIRTIME: bool = false;
+
+// Performs ground correct/sets situation kind
 #[skyline::hook(offset = 0x53fe30)]
 unsafe fn groundcollision__processgroundcollisioninfo_check_landing(groundcollisioninfo: *mut f32, groundcollision: *mut u64) {
     let flags = *(groundcollisioninfo.add(0x5d8 / 4) as *mut u32);
@@ -190,6 +192,7 @@ unsafe fn groundcollision__processgroundcollisioninfo_check_landing(groundcollis
         *groundcollisioninfo.add(0x634 / 4) = touch_pos_y;
         // Reset ECB offset to 0.0
         *groundcollisioninfo.add(0x3d4 / 4) = 0.0;
+        RESET_AIRTIME = true;
     }
 }
 // Unused for now

@@ -15,6 +15,7 @@ use smash_script::*;
 use crate::misc::*;
 use globals::*;
 use crate::util::get_fighter_common_from_accessor;
+use crate::function_hooks::collision::RESET_AIRTIME;
 
 unsafe fn hitstun_overlay_orange(boma: &mut BattleObjectModuleAccessor, id: usize) {
     let cmb_vec1 = Vector4f{x: 0.949, y: 0.5137, z: 0.08643, w: 0.69};
@@ -138,15 +139,22 @@ pub unsafe fn cliff_xlu_frame_counter(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn ecb_shift_disabled_motions(fighter: &mut L2CFighterCommon) {
-    if ( (fighter.kind() == *FIGHTER_KIND_SZEROSUIT
-            && fighter.is_motion(Hash40::new("attack_air_hi")))
-        || (fighter.kind() == *FIGHTER_KIND_PALUTENA
-            && fighter.is_motion(Hash40::new("attack_air_n")))
+    if ( (fighter.kind() == *FIGHTER_KIND_KIRBY
+            && fighter.is_motion(Hash40::new("throw_f")))
         || (fighter.kind() == *FIGHTER_KIND_GANON
-            && fighter.is_motion_one_of(&[Hash40::new("attack_air_n"), Hash40::new("attack_air_lw"), Hash40::new("attack_air_hi")])) )
+            && fighter.is_motion(Hash40::new("attack_air_lw")))
+        || (fighter.kind() == *FIGHTER_KIND_ROSETTA
+            && fighter.is_motion(Hash40::new("attack_air_lw"))) )
     && !VarModule::is_flag(fighter.battle_object, vars::common::status::DISABLE_ECB_SHIFT)
     {
         VarModule::on_flag(fighter.battle_object, vars::common::status::DISABLE_ECB_SHIFT);
+    }
+}
+
+pub unsafe fn reset_airtime(boma: &mut BattleObjectModuleAccessor) {
+    if RESET_AIRTIME {
+        WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
+        RESET_AIRTIME = false;
     }
 }
 
@@ -156,5 +164,6 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleA
     suicide_throw_mashout(fighter, boma);
     cliff_xlu_frame_counter(fighter);
     ecb_shift_disabled_motions(fighter);
+    reset_airtime(boma);
 }
 
