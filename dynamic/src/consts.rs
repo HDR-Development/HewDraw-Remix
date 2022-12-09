@@ -866,6 +866,24 @@ pub mod vars {
         }
     }
 
+    pub mod ridley {
+        pub mod instance {
+            // flags
+            pub const SPECIAL_LW_IS_GRAB: i32 = 0x0100;
+            pub const SPECIAL_LW_IS_THROW: i32 = 0x101;
+            pub const SPECIAL_LW_ENABLE_LANDING: i32 = 0x0102;
+            pub const SPECIAL_LW_IS_LANDING: i32 = 0x0103;
+            pub const SPECIAL_LW_ENABLE_BOUNCE: i32 = 0x0104;
+            
+            // floats
+            pub const SPECIAL_LW_BOUNCE_PREV_POS: i32 = 0x0100;   //vector, requires two indexes
+            pub const SPECIAL_S_FAILURE_CANCEL_FRAME: i32 = 0x0102;
+
+            // ints
+            pub const SPECIAL_LW_CATCH_ID: i32 = 0x0100;
+        }
+    }
+
 }
 
 pub mod statuses {
