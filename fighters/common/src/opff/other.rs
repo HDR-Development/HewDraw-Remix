@@ -47,14 +47,6 @@ pub unsafe fn ecb_visualizer(boma: &mut BattleObjectModuleAccessor) {
     EffectModule::req_2d(boma, Hash40::new("sys_ripstick_bullet"), &pos_bottom, &Vector3f::zero(), 0.25, 0);
 }
 
-pub unsafe fn buffer_clearing(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    // disables buffered wiggle inputs during high knockback
-    if [*FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL].contains(&status_kind) {
-        ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_DASH);
-        ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_TURN_DASH);
-    }
-}
-
 pub unsafe fn sliding_smash_disable(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, fighter_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_S4_START && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_TURN_DASH && MotionModule::frame(boma) <= 1.0 {
         if fighter_kind != *FIGHTER_KIND_ROCKMAN {
@@ -116,10 +108,11 @@ pub unsafe fn suicide_throw_mashout(fighter: &mut L2CFighterCommon, boma: &mut B
         else {
             let ecb_bottom = *GroundModule::get_rhombus(boma.get_grabber_boma(), true).add(1);
             let line_bottom = Vector2f::new(ecb_bottom.x, ecb_bottom.y - 999.0);
-            let mut out_pos = Vector2f::zero();
+            let mut stage_pos = Vector2f::zero();
+            GroundModule::line_segment_check(boma.get_grabber_boma(), &Vector2f::new(ecb_bottom.x, ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut stage_pos, false);
 
             if GroundModule::get_correct(boma.get_grabber_boma()) == *GROUND_CORRECT_KIND_AIR
-            && GroundModule::line_segment_check(boma.get_grabber_boma(), &Vector2f::new(ecb_bottom.x, ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut out_pos, false) == 0 {
+            && stage_pos == Vector2f::zero() {
                 // can only mash out if offstage
                 if ControlModule::get_clatter_time(boma, 0) <= 0.0 {
                     fighter.change_status(FIGHTER_STATUS_KIND_CAPTURE_JUMP.into(), false.into());
@@ -144,13 +137,24 @@ pub unsafe fn cliff_xlu_frame_counter(fighter: &mut L2CFighterCommon) {
     }
 }
 
+pub unsafe fn ecb_shift_disabled_motions(fighter: &mut L2CFighterCommon) {
+    if ( (fighter.kind() == *FIGHTER_KIND_SZEROSUIT
+            && fighter.is_motion(Hash40::new("attack_air_hi")))
+        || (fighter.kind() == *FIGHTER_KIND_PALUTENA
+            && fighter.is_motion(Hash40::new("attack_air_n")))
+        || (fighter.kind() == *FIGHTER_KIND_GANON
+            && fighter.is_motion_one_of(&[Hash40::new("attack_air_n"), Hash40::new("attack_air_lw"), Hash40::new("attack_air_hi")])) )
+    && !VarModule::is_flag(fighter.battle_object, vars::common::status::DISABLE_ECB_SHIFT)
+    {
+        VarModule::on_flag(fighter.battle_object, vars::common::status::DISABLE_ECB_SHIFT);
+    }
+}
+
 pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     
-    
-    buffer_clearing(boma, status_kind);
-    //sliding_smash_disable(fighter, boma, status_kind, fighter_kind);
     airdodge_refresh_on_hit_disable(boma, status_kind);
     suicide_throw_mashout(fighter, boma);
     cliff_xlu_frame_counter(fighter);
+    ecb_shift_disabled_motions(fighter);
 }
 

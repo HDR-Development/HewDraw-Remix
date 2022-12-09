@@ -6,9 +6,12 @@ use globals::*;
 unsafe fn is_touch_hook(boma: &mut BattleObjectModuleAccessor, ground_touch_flags: u32) -> bool {
     let mut ground_touch_flags = ground_touch_flags;
     let normal_y = GroundModule::get_touch_normal_y(boma, *GROUND_TOUCH_FLAG_DOWN as u32);
+    let prev_pos = *PostureModule::prev_pos(boma);
+    let pos = *PostureModule::pos(boma);
 
     if boma.is_weapon()
     && (normal_y >= 0.99 && normal_y <= 1.01)  // if touching a near-flat platform/ground
+    && prev_pos.y <= pos.y  // if the projectile wasn't moving downwards
     && [*WEAPON_KIND_SAMUS_CSHOT,
         *WEAPON_KIND_RYU_HADOKEN,
         *WEAPON_KIND_LUCAS_PK_FIRE,
@@ -57,9 +60,12 @@ unsafe fn is_touch_hook(boma: &mut BattleObjectModuleAccessor, ground_touch_flag
 unsafe fn is_floor_touch_line_hook(boma: &mut BattleObjectModuleAccessor, ground_touch_flags: u32) -> bool {
     let mut ground_touch_flags = ground_touch_flags;
     let normal_y = GroundModule::get_touch_normal_y(boma, *GROUND_TOUCH_FLAG_DOWN as u32);
+    let prev_pos = *PostureModule::prev_pos(boma);
+    let pos = *PostureModule::pos(boma);
 
     if boma.is_weapon()
     && (normal_y >= 0.99 && normal_y <= 1.01)  // if touching a near-flat platform/ground
+    && prev_pos.y <= pos.y  // if the projectile wasn't moving downwards
     && ( ([*WEAPON_KIND_KROOL_IRONBALL, *WEAPON_KIND_KROOL_SPITBALL].contains(&boma.kind())
             && boma.is_status(*WEAPON_KROOL_IRONBALL_STATUS_KIND_SHOOT))
         || (boma.kind() == *WEAPON_KIND_KOOPAJR_CANNONBALL
@@ -99,28 +105,6 @@ unsafe fn get_touch_flag_hook(boma: &mut BattleObjectModuleAccessor) -> i32 {
 }
 
 
-// Unused for now
-#[skyline::hook(offset = 0x6ca950)]
-unsafe fn ground_module_update_hook(ground_module: u64) {
-    let boma = *((ground_module + 0x20) as *mut *mut BattleObjectModuleAccessor);
-    // The original function calls ground_module_update_rhombus_sub
-    call_original!(ground_module);
-}
-
-
-// Unused for now
-
-// This function is used to calculate your ECB's 4 points
-// Once calculated, it stores each point's coordinates as a Vector4f
-// These 4 Vector4fs are stored in param_3's Vector4f pointer
-#[skyline::hook(offset = 0x45f6c0)]
-unsafe fn ground_module_update_rhombus_sub(ground_module: u64, param_2: u64, param_3: *mut Vector4f) {
-    let boma = *((ground_module + 0x20) as *mut *mut BattleObjectModuleAccessor);
-    // The original function calls ground_module_ecb_point_calc_hook
-    call_original!(ground_module, param_2, param_3);
-}
-
-
 // This function is used to calculate the following:
 //      param_2: Left ECB point's horizontal offset from Top bone (negative number)
 //      param_3: Bottom ECB point's vertical offset from Top bone (positive number, 0.0 in vanilla)
@@ -145,7 +129,7 @@ unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *m
         *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
         *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
         *FIGHTER_STATUS_KIND_THROWN])
-    && (*boma).is_situation(*SITUATION_KIND_AIR) 
+    && (*boma).is_situation(*SITUATION_KIND_AIR)
     && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) >= ParamModule::get_int((*boma).object(), ParamType::Common, "ecb_shift_air_trans_frame") {
         // This check passes after 9 frames of airtime, if not in a grabbed/thrown state
         param_6 = 1;
@@ -178,11 +162,65 @@ unsafe fn model_module_joint_global_position_with_offset_hook(model_module: u64,
     call_original!(model_module, bone, param_3, param_4, param_5);
 }
 
+// Unused for now
+#[skyline::hook(offset = 0x523a60)]
+unsafe fn groundcollision__processgroundcollisioninfo(groundcollisioninfo: *mut f32, groundcollision: *mut u64) {
+    call_original!(groundcollisioninfo, groundcollision)
+}
+
+// Performs ground correct
+#[skyline::hook(offset = 0x53fe30)]
+unsafe fn groundcollision__processgroundcollisioninfo_check_landing(groundcollisioninfo: *mut f32, groundcollision: *mut u64) {
+    let flags = *(groundcollisioninfo.add(0x5d8 / 4) as *mut u32);
+    let is_fighter = flags >> 27 & 1 == 0;
+
+    call_original!(groundcollisioninfo, groundcollision);
+
+    let prev_touch_pos_y = *groundcollisioninfo.add(0x1A4 / 4);
+    let touch_pos_y = *groundcollisioninfo.add(0xB4 / 4);
+    let ecb_offset_y = *groundcollisioninfo.add(0x3d4 / 4);
+    //println!("situation kind {}", *groundcollisioninfo.add(0x5a0 / 4));
+
+    if is_fighter
+    && prev_touch_pos_y == 0.0
+    && touch_pos_y != 0.0
+    && ecb_offset_y != 0.0
+    {
+        // When landing, sets your position to the coordinates of the surface you are landing on
+        *groundcollisioninfo.add(0x634 / 4) = touch_pos_y;
+        // Reset ECB offset to 0.0
+        *groundcollisioninfo.add(0x3d4 / 4) = 0.0;
+    }
+}
+// Unused for now
+// Sets GroundCollisionLine
+#[skyline::hook(offset = 0x52d900)]
+unsafe fn groundcollision__processgroundcollisioninfo_check_landing_sub(groundcollision: u64, arg2: *mut u64, prev_ecb_bottom_pos: *mut smash::phx::Vector2f, ecb_bottom_translation: *mut smash::phx::Vector2f, arg5: u64, arg6: u64, arg7: *mut u64) -> *mut GroundCollisionLine {
+    if arg5 == 2048 && arg6 == 1048576 {
+        let groundcollisionline = *((groundcollision + 0x320) as *mut u64) as *mut GroundCollisionLine;
+        let groundcollisionline_prev = *((groundcollision + 0x328) as *mut u64) as *mut GroundCollisionLine;
+
+        let groundcollisionline_next = *(groundcollisionline as *mut *mut GroundCollisionLine);
+        let normal = *(((groundcollisionline_next as u64) + 0xA0) as *mut smash::phx::Vector2f);
+        let vertex_1_y = *(((groundcollisionline_next as u64) + 0x24) as *mut f32);
+        let vertex_2_y = *(((groundcollisionline_next as u64) + 0x34) as *mut f32);
+
+    }
+    call_original!(groundcollision, arg2, prev_ecb_bottom_pos, ecb_bottom_translation, arg5, arg6, arg7)
+}
+
 pub fn install() {
+    unsafe {
+        // Removes 0.3 unit leniency above ECB bottom when deciding whether to land
+        // which reduces frequency of platform cancels
+        skyline::patching::Patch::in_text(0x540dd8).data(0x529ae148);
+        skyline::patching::Patch::in_text(0x540ddc).data(0x72a78468);
+    }
     skyline::install_hooks!(
         is_touch_hook,
         is_floor_touch_line_hook,
         get_touch_flag_hook,
+        groundcollision__processgroundcollisioninfo_check_landing,
         ground_module_ecb_point_calc_hook,
         model_module_joint_global_position_with_offset_hook
     );

@@ -11,7 +11,7 @@ on:
 
 jobs:
   version_and_changelog:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     if: startsWith(github.ref, 'refs/tags')
     env:
       GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
@@ -29,6 +29,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       with:
         releaseNameRegEx: beta
+        searchLimit: 250
 
     - id: echo_release_info
       shell: bash
@@ -47,14 +48,14 @@ jobs:
       uses: heinrichreimer/github-changelog-generator-action@v2.3
       with:
         sinceTag: ${{ steps.get_last_beta.outputs.tag_name }}
-        stripHeaders: true
         token: ${{ secrets.GITHUB_TOKEN  }}
-        maxIssues: 500
+        stripHeaders: true
         verbose: false
         issuesWoLabels: false
+        maxIssues: 500
+        stripGeneratorNotice: true
         compareLink: false
         simpleList: true
-
 
     - name: Upload changelog
       uses: actions/upload-artifact@v3
@@ -65,10 +66,10 @@ jobs:
   plugin_build:
     env:
       PLUGIN_NAME: hdr
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: version_and_changelog
     container: 
-      image: jugeeya/cargo-skyline:3.0.0-dkp-beta
+      image: jugeeya/cargo-skyline:3.2.0-no-dkp
     outputs: 
       trimmed_tag: ${{ steps.trimmed_tag.outputs.tag }}
     steps:
@@ -91,8 +92,7 @@ jobs:
 
     # build the project
     - run: |
-        export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin \
-        && cd scripts && python3 make_dist.py build version=${{ steps.trimmed_tag.outputs.tag }}-beta name=hdr && cd ..
+        cd scripts && python3 make_dist.py build version=${{ steps.trimmed_tag.outputs.tag }}-beta name=hdr && cd ..
       env:
         HOME: /root
 
@@ -131,7 +131,7 @@ jobs:
         body: ${{ needs.version_and_changelog.outputs.changelog }}
 
   full_package:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [version_and_changelog, plugin_build]
     steps:
     - name: checkout version
@@ -236,7 +236,7 @@ jobs:
 
   ################  handle the creation of to-nightly.zip  ################
   to_nightly:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [full_package, version_and_changelog]
     steps:
     - name: checkout version
