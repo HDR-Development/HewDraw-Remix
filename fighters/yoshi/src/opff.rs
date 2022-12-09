@@ -7,27 +7,13 @@ use globals::*;
 unsafe fn egg_roll_jc_waveland(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_YOSHI_STATUS_KIND_SPECIAL_S_LOOP,
-        *FIGHTER_YOSHI_STATUS_KIND_SPECIAL_S_TURN].contains(&status_kind) {
-        if situation_kind == *SITUATION_KIND_AIR {
-            if boma.is_cat_flag(Cat1::AirEscape) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
-            }
-        }
+        *FIGHTER_YOSHI_STATUS_KIND_SPECIAL_S_TURN].contains(&status_kind)
+    {
+        boma.check_airdodge_cancel();
     }
 
     if status_kind == *FIGHTER_YOSHI_STATUS_KIND_SPECIAL_S_END {
-        if boma.is_input_jump() {
-            if situation_kind == *SITUATION_KIND_AIR {
-                if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                }
-            } else if situation_kind == *SITUATION_KIND_GROUND {
-                if stick_x * facing < 0.0 {
-                    PostureModule::reverse_lr(boma);
-                }
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-            }
-        }
+        boma.check_jump_cancel(true);
     }
 }
 
