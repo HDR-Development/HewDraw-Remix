@@ -6,7 +6,7 @@ unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let kinetic;
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         motion = Hash40::new("special_air_lw");
-        kinetic = *FIGHTER_KINETIC_TYPE_AIR_STOP;
+        kinetic = *FIGHTER_KINETIC_TYPE_FALL;
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING);
     }
     else {

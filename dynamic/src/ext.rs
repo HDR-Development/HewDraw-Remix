@@ -478,6 +478,9 @@ pub trait BomaExt {
     unsafe fn check_airdodge_cancel(&mut self) -> bool;
     // Checks for status and enables transition to dash
     unsafe fn check_dash_cancel(&mut self) -> bool;
+
+    /// check for hitfall (should be called once per frame)
+    unsafe fn check_hitfall(&mut self);
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -813,14 +816,15 @@ impl BomaExt for BattleObjectModuleAccessor {
                 (ecb_bottom.y - pos.y).max(crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold"))
             };
         let line_bottom = Vector2f::new(ecb_bottom.x, ecb_bottom.y - snap_leniency);
-        let mut out_pos = Vector2f::zero();
-        let within_snap_distance_any = GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut out_pos, true);
-        let within_snap_distance_stage = GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut out_pos, false);
-        let can_snap = within_snap_distance_any != 0 && (within_snap_distance_stage == 0
+        let mut ground_pos_any = Vector2f::zero();
+        let mut ground_pos_stage = Vector2f::zero();
+        GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut ground_pos_any, true);
+        GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut ground_pos_stage, false);
+        let can_snap = ground_pos_any != Vector2f::zero() && (ground_pos_stage == Vector2f::zero()
             || WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0);
         if can_snap { // pretty sure it returns a pointer, at least it defo returns a non-0 value if success
             crate::VarModule::on_flag(self.object(), crate::consts::vars::common::status::DISABLE_ECB_SHIFT);
-            PostureModule::set_pos(self, &Vector3f::new(pos.x, out_pos.y + 0.01, pos.z));
+            PostureModule::set_pos(self, &Vector3f::new(pos.x, ground_pos_any.y + 0.1, pos.z));
             GroundModule::attach_ground(self, false);
             true
         } else {
@@ -927,6 +931,39 @@ impl BomaExt for BattleObjectModuleAccessor {
         let ground_data = *((ground_module + 0x28) as *mut *mut f32);
         *ground_data.add(0x520 / 4) = x;
         *ground_data.add(0x524 / 4) = y;
+    }
+
+    /// checks whether you should hitfall (call this once per frame)
+    unsafe fn check_hitfall(&mut self) {
+        if self.is_situation(*SITUATION_KIND_AIR)
+        && self.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR)
+        {
+            /* this is written this way because stick_y_flick wont update during
+                hitlag, which means we need a flag to allow you to hitfall 1 frame
+                after the end of hitlag as well, and we need to check previous 
+                stick y directly to detect hitfall. That way, with the 5 frame buffer,
+                if you input a fastfall during hitlag, it will get registered after
+                the hitlag is over. Without the HITFALL_BUFFER flag, you have to
+                input the fastfall BEFORE you hit the move, only.
+            */
+            if !AttackModule::is_infliction_status(self, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+            || AttackModule::is_infliction(self, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+            {
+               crate::VarModule::set_int(self.object(), crate::consts::vars::common::instance::HITFALL_BUFFER, 0);
+            }
+
+            if AttackModule::is_infliction_status(self, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+               crate::VarModule::inc_int(self.object(), crate::consts::vars::common::instance::HITFALL_BUFFER);
+            }
+
+            let buffer =crate::VarModule::get_int(self.object(), crate::consts::vars::common::instance::HITFALL_BUFFER);
+
+            if self.is_cat_flag(Cat2::FallJump)
+            && 0 < buffer && buffer <= 5 
+            {
+                WorkModule::on_flag(self, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            }
+        }
     }
 }
 

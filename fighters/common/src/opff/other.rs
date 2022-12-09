@@ -108,10 +108,11 @@ pub unsafe fn suicide_throw_mashout(fighter: &mut L2CFighterCommon, boma: &mut B
         else {
             let ecb_bottom = *GroundModule::get_rhombus(boma.get_grabber_boma(), true).add(1);
             let line_bottom = Vector2f::new(ecb_bottom.x, ecb_bottom.y - 999.0);
-            let mut out_pos = Vector2f::zero();
+            let mut stage_pos = Vector2f::zero();
+            GroundModule::line_segment_check(boma.get_grabber_boma(), &Vector2f::new(ecb_bottom.x, ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut stage_pos, false);
 
             if GroundModule::get_correct(boma.get_grabber_boma()) == *GROUND_CORRECT_KIND_AIR
-            && GroundModule::line_segment_check(boma.get_grabber_boma(), &Vector2f::new(ecb_bottom.x, ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut out_pos, false) == 0 {
+            && stage_pos == Vector2f::zero() {
                 // can only mash out if offstage
                 if ControlModule::get_clatter_time(boma, 0) <= 0.0 {
                     fighter.change_status(FIGHTER_STATUS_KIND_CAPTURE_JUMP.into(), false.into());
@@ -136,10 +137,24 @@ pub unsafe fn cliff_xlu_frame_counter(fighter: &mut L2CFighterCommon) {
     }
 }
 
+pub unsafe fn ecb_shift_disabled_motions(fighter: &mut L2CFighterCommon) {
+    if ( (fighter.kind() == *FIGHTER_KIND_SZEROSUIT
+            && fighter.is_motion(Hash40::new("attack_air_hi")))
+        || (fighter.kind() == *FIGHTER_KIND_PALUTENA
+            && fighter.is_motion(Hash40::new("attack_air_n")))
+        || (fighter.kind() == *FIGHTER_KIND_GANON
+            && fighter.is_motion_one_of(&[Hash40::new("attack_air_n"), Hash40::new("attack_air_lw"), Hash40::new("attack_air_hi")])) )
+    && !VarModule::is_flag(fighter.battle_object, vars::common::status::DISABLE_ECB_SHIFT)
+    {
+        VarModule::on_flag(fighter.battle_object, vars::common::status::DISABLE_ECB_SHIFT);
+    }
+}
+
 pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     
     airdodge_refresh_on_hit_disable(boma, status_kind);
     suicide_throw_mashout(fighter, boma);
     cliff_xlu_frame_counter(fighter);
+    ecb_shift_disabled_motions(fighter);
 }
 
