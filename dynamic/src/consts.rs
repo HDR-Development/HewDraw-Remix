@@ -219,6 +219,7 @@ pub mod vars {
 
             pub const IS_DASH_TO_RUN_FRAME: i32 = 0x1000;
             pub const IS_AFTER_DASH_TO_RUN_FRAME: i32 = 0x1001;
+            pub const APPLY_DASH_END_SPEED_MUL: i32 = 0x1002;
 
             pub const ATTACK_DASH_CANCEL_DISABLE: i32 = 0x1000;
             pub const ATTACK_DASH_ENABLE_AIR_FALL: i32 = 0x1001;

@@ -276,39 +276,29 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     */
 
     interrupt_if!(fighter.sub_transition_group_check_ground_guard().get_bool());
-    interrupt_if!(fighter.sub_transition_group_check_special_command().get_bool());
-    interrupt_if!(fighter.sub_transition_group_check_ground_special().get_bool());
-    interrupt_if!(fighter.sub_transition_specialflag_hoist().get_bool());
     
-    interrupt_if!(
-        fighter,
-        FIGHTER_STATUS_KIND_ITEM_SWING_S4_START,
-        true,
-        WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_4) &&
-        {
-            fighter.clear_lua_stack();
-            lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_SWING);
-            app::sv_module_access::item(fighter.lua_state_agent);
-            fighter.pop_lua_stack(1).get_bool()
-        } &&
-        fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_DASH_ATTACK_S4 != 0 &&
-        !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4)
-    );
+    if fighter.sub_transition_group_check_special_command().get_bool()
+    || fighter.sub_transition_group_check_ground_special().get_bool()
+    || fighter.sub_transition_specialflag_hoist().get_bool()
+    {
+        VarModule::on_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL);
+        return L2CValue::I32(1);
+    }
 
-    interrupt_if!(
-        fighter,
-        FIGHTER_STATUS_KIND_ITEM_SWING_S4_START,
-        true,
-        WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_4) &&
-        {
-            fighter.clear_lua_stack();
-            lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_SWING);
-            app::sv_module_access::item(fighter.lua_state_agent);
-            fighter.pop_lua_stack(1).get_bool()
-        } &&
-        fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_DASH_ATTACK_S4 != 0 &&
-        !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4)
-    );
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_4)
+    && {
+        fighter.clear_lua_stack();
+        lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_SWING);
+        app::sv_module_access::item(fighter.lua_state_agent);
+        fighter.pop_lua_stack(1).get_bool()
+    }
+    && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_DASH_ATTACK_S4 != 0
+    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4)
+    {
+        fighter.change_status(FIGHTER_STATUS_KIND_ITEM_SWING_S4_START.into(), true.into());
+        VarModule::on_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL);
+        return L2CValue::I32(1);
+    }
 
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT_S4) 
     && {
@@ -320,10 +310,12 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
     && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4) {
         if ItemModule::get_shoot_item_bullet(fighter.module_accessor, 0) <= 0 {
-            interrupt!(fighter, FIGHTER_STATUS_KIND_ITEM_THROW, false);
+            fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
         } else {
-            interrupt!(fighter, FIGHTER_STATUS_KIND_ITEM_SHOOT_WAIT, true);
+            fighter.change_status(FIGHTER_STATUS_KIND_ITEM_SHOOT_WAIT.into(), true.into());
         }
+        VarModule::on_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL);
+        return L2CValue::I32(1);
     }
 
     interrupt_if!(
@@ -334,19 +326,22 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     );
 
     // dash startup -> fsmash leniency window
-    interrupt_if!(
-        fighter,
-        FIGHTER_STATUS_KIND_ATTACK_S4_START,
-        true,
-        WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START)
-            && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_DASH_ATTACK_S4 != 0  
-            && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4)
-    );
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START)
+    && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_DASH_ATTACK_S4 != 0  
+    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4)
+    {
+        fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_S4_START.into(), true.into());
+        VarModule::on_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL);
+        return L2CValue::I32(1);
+    }
 
     // dash startup -> ftilt leniency window for tilt attack button, just like fsmash
     if fighter.is_cat_flag(CatHdr::TiltAttack)
-       && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4) {
-        interrupt!(fighter, *FIGHTER_STATUS_KIND_ATTACK_S3, true);
+    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4)
+    {
+        fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_S3.into(), true.into());
+        VarModule::on_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL);
+        return L2CValue::I32(1);
     }
     
     interrupt_if!(
@@ -396,7 +391,10 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
         interrupt!(fighter, *FIGHTER_STATUS_KIND_PASS, true);
     }
 
-    interrupt_if!(fighter.sub_transition_group_check_ground_attack().get_bool());
+    if fighter.sub_transition_group_check_ground_attack().get_bool() {
+        VarModule::on_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL);
+        return L2CValue::I32(1);
+    }
 
     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_ENABLE_ATTACK_FRAME) > 0
     && (fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
@@ -413,7 +411,9 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
             }
             && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_PICKUP_HEAVY_DASH)
             && !ItemModule::is_have_item(fighter.module_accessor, 0) {
-                interrupt!(fighter, FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP, true);
+                fighter.change_status(FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP.into(), true.into());
+                VarModule::on_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL);
+                return L2CValue::I32(1);
             } else if ItemModule::get_pickable_item_size(fighter.module_accessor) == ITEM_SIZE_LIGHT
             && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_PICKUP_LIGHT_DASH) &&
             {
@@ -422,7 +422,9 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
                 app::sv_module_access::item(fighter.lua_state_agent);
                 fighter.pop_lua_stack(1).get_bool()
             } {
-                interrupt!(fighter, FIGHTER_STATUS_KIND_ITEM_LIGHT_PICKUP, true);
+                fighter.change_status(FIGHTER_STATUS_KIND_ITEM_LIGHT_PICKUP.into(), true.into());
+                VarModule::on_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL);
+                return L2CValue::I32(1);
             }
         }
     }
@@ -524,12 +526,12 @@ unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 		initial_speed = applied_speed_clamped;
 	}
-    else if StatusModule::status_kind_next(fighter.module_accessor) == *FIGHTER_STATUS_KIND_PASS {
+    if VarModule::is_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL) {
         let applied_speed_clamped = initial_speed.clamp(-run_speed_max, run_speed_max);
-        let dash_end_speed_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dash_end_speed_mul"));
+        let dash_end_speed_mul = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dash_end_speed_mul");
 
         fighter.clear_lua_stack();
-		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed_clamped / dash_end_speed_mul);
+		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed_clamped * dash_end_speed_mul);
 		app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
     }
     VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
