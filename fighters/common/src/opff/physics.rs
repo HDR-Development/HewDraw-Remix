@@ -19,6 +19,7 @@ use smash_script::{self, *, macros::*};
 
 /// Sets the extra traction flag depending on current speed and current status in order to prevent
 /// the game feeling too slippery
+/// TODO: get rid of this horrible shit and move it to energy funcs
 unsafe fn extra_traction(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     let speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
     let max_walk = WorkModule::get_param_float(boma, hash40("walk_speed_max"), 0);
@@ -51,7 +52,11 @@ unsafe fn extra_traction(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         *FIGHTER_STATUS_KIND_CATCH_WAIT,
         *FIGHTER_STATUS_KIND_CATCH_ATTACK,
         *FIGHTER_STATUS_KIND_CATCH_PULL,
-        *FIGHTER_STATUS_KIND_ITEM_THROW
+        *FIGHTER_STATUS_KIND_ITEM_THROW,
+        *FIGHTER_STATUS_KIND_DOWN,
+        *FIGHTER_STATUS_KIND_DOWN_WAIT,
+        *FIGHTER_STATUS_KIND_PASSIVE,
+        *FIGHTER_STATUS_KIND_PASSIVE_FB
     ];
 
     if boma.is_status_one_of(&double_traction_statuses) {
@@ -69,7 +74,9 @@ unsafe fn extra_traction(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         }
         if speed_x.abs() > max_walk
         && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
-        && !VarModule::is_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK) {
+        && ( !VarModule::is_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK)
+            || boma.is_status(*FIGHTER_STATUS_KIND_PASSIVE_FB) )
+        {
             if boma.is_prev_status_one_of(&double_traction_statuses) {
                 KineticModule::add_speed(boma, &added_traction);
             }
