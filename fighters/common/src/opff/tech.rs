@@ -121,9 +121,7 @@ unsafe fn dash_drop(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     && boma.stick_y() < flick_y_sens
     && boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_RUN,
-        *FIGHTER_STATUS_KIND_RUN_BRAKE,
-        *FIGHTER_STATUS_KIND_DASH,
-        *FIGHTER_STATUS_KIND_TURN_DASH
+        *FIGHTER_STATUS_KIND_RUN_BRAKE
     ])
     {
         boma.change_status_req(*FIGHTER_STATUS_KIND_PASS, true);

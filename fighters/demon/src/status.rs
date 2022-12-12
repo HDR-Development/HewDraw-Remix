@@ -2,7 +2,6 @@ use super::*;
 use globals::*;
 
 utils::import_noreturn!(common::shoto_status::{
-    fgc_pre_dashback,
     fgc_end_dashback,
     ryu_idkwhatthisis2
 });
@@ -78,12 +77,6 @@ pub unsafe fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 // FIGHTER_DEMON_STATUS_KIND_DASH_BACK //
-
-#[status_script(agent = "demon", status = FIGHTER_DEMON_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    common::shoto_status::fgc_pre_dashback(fighter);
-    original!(fighter)
-}
 
 #[status_script(agent = "demon", status = FIGHTER_DEMON_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 pub unsafe fn main_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -355,7 +348,6 @@ pub fn install() {
     //skyline::install_hooks!(demon_ongrab);
     install_status_scripts!(
         pre_turndash,
-        pre_dashback,
         main_dashback,
         end_dashback,
         status_dash,
