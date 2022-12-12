@@ -60,10 +60,56 @@ unsafe fn wing_blitz_drift(boma: &mut BattleObjectModuleAccessor, status_kind: i
 //     }
 // }
 
+// Angle tail based on stick y position and frame
+unsafe fn rotate_bone(boma: &mut BattleObjectModuleAccessor, max_angle: f32, min_angle: f32, strength: f32) {
+    let mut angle = min_angle.abs();
+    if strength > 0.0 {
+        angle = max_angle
+    }
+    let mut rotation = Vector3f{x: ((angle * -1.0 * strength) - 2.5), y: 0.0, z: 0.0};
+    let mut inverse_rotation = Vector3f{x: 0.0, y: 0.0, z: -((angle * -1.0 * strength) - 2.5)};
+
+    // this has to be called every frame, or you snap back to the normal joint angle
+    ModelModule::set_joint_rotate(boma, Hash40::new("tail0"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+    ModelModule::set_joint_rotate(boma, Hash40::new("top"), &inverse_rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+}
+
+// boma: its a boma 
+// lean_frame: frame to interpolate to the intended angle amount until
+// return_frame: frame to start interpolating back to regular angle
+// max_angle: maximum angle you can lean upwards, in degrees
+// min_angle: minimum angle that we should be able to rotate downwards, in degrees
+unsafe fn tail_lean(boma: &mut BattleObjectModuleAccessor, lean_frame: f32, return_frame: f32, max_angle: f32, min_angle: f32) {
+    let stick_y = ControlModule::get_stick_y(boma);
+    let frame = MotionModule::frame(boma);
+    let end_frame = MotionModule::end_frame(boma);
+    let tail_y = VarModule::get_float(boma.object(), vars::ridley::status::SKEWER_STICK_Y);
+    if frame >= 0.0 && frame < lean_frame {
+        // linear interpolate to stick position,
+        // while getting stick position still
+        VarModule::set_float(boma.object(), vars::ridley::status::SKEWER_STICK_Y, stick_y);
+        rotate_bone(boma, max_angle, min_angle, stick_y * ((frame as f32) / 30.0));
+    } else if frame >= lean_frame && frame < return_frame {
+        // rotate at selected angle for each frame
+        rotate_bone(boma, max_angle, min_angle, tail_y);
+    } else {
+        // linear interpolate back to normal
+        rotate_bone(boma, max_angle, min_angle, tail_y * (1.0 - ((frame - return_frame) / (end_frame - return_frame))));
+    }
+}
+
+// Handles angling of tail
+unsafe fn angled_skewer(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.is_situation(*SITUATION_KIND_GROUND) {
+        tail_lean(fighter.boma(), 30.0, 40.0, 90.0, -30.0);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //space_pirate_rush_flight(boma, status_kind, situation_kind, stick_x);
     wing_blitz_drift(boma, status_kind, situation_kind, stick_x, stick_y);
     //stab_footstool(fighter);
+    //angled_skewer(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_RIDLEY )]

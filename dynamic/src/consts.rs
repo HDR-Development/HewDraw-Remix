@@ -882,6 +882,11 @@ pub mod vars {
             // ints
             pub const SPECIAL_LW_CATCH_ID: i32 = 0x0100;
         }
+        pub mod status {
+            // floats
+            pub const SKEWER_STICK_X: i32 = 0x1100;
+            pub const SKEWER_STICK_Y: i32 = 0x1101;
+        }
     }
 
 }
