@@ -42,7 +42,7 @@ pub unsafe fn attack_lw4_map_correction(fighter: &mut L2CFighterCommon) -> L2CVa
     let start_air_frame = 2.0;
     let fall_start_frame = 16.0;
     let fall_stop_frame = 17.0;
-    let landing_frame = 19.0;
+    let landing_frame = 18.0;
 
     if frame <= fall_start_frame {
         return 0.into()
