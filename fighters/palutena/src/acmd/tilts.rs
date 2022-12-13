@@ -6,10 +6,7 @@ use super::*;
 unsafe fn palutena_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.571);
-    }
+    FT_MOTION_RATE(fighter, 11.0/(16.0-0.0));
     frame(lua_state, 16.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.667);
@@ -120,7 +117,7 @@ unsafe fn palutena_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 25.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
+        FT_MOTION_RATE(fighter, 12.0/(35.0-25.0));
         AttackModule::clear_all(boma);
     }
     
