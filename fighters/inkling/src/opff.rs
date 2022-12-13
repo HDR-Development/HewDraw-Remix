@@ -30,12 +30,7 @@ unsafe fn dair_splatter(boma: &mut BattleObjectModuleAccessor, motion_kind: u64,
 
 unsafe fn roller_jump_cancel(boma: &mut BattleObjectModuleAccessor){
     if boma.is_status(*FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_END) && boma.is_situation(*SITUATION_KIND_GROUND) && MotionModule::frame(boma) > 10.0 {
-        if boma.is_input_jump() {
-            if PostureModule::lr(boma) * ControlModule::get_stick_x(boma) < 0.0 {
-                PostureModule::reverse_lr(boma);
-            }
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-        }
+        boma.check_jump_cancel(true);
     }
     if boma.is_motion(Hash40::new("special_s_jump_end")){
         VarModule::on_flag(boma.object(), vars::inkling::status::IS_ENABLE_SPECIAL_S_JUMP_EARLY_CANCEL)

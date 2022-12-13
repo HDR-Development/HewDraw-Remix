@@ -105,61 +105,6 @@ unsafe fn get_touch_flag_hook(boma: &mut BattleObjectModuleAccessor) -> i32 {
 }
 
 
-// Unused for now
-#[skyline::hook(offset = 0x6ca950)]
-unsafe fn ground_module_update_hook(ground_module: u64) {
-    let boma = *((ground_module + 0x20) as *mut *mut BattleObjectModuleAccessor);
-    // The original function calls ground_module_update_rhombus_sub
-    call_original!(ground_module);
-}
-
-
-// Unused for now
-
-// This function is used to calculate your ECB's 4 points
-// Once calculated, it stores each point's coordinates as a Vector4f
-// These 4 Vector4fs are stored in param_3's Vector4f pointer
-#[skyline::hook(offset = 0x45f6c0)]
-unsafe fn ground_module_update_rhombus_sub(ground_module: u64, param_2: u64, param_3: *mut Vector4f) {
-    let boma = *((ground_module + 0x20) as *mut *mut BattleObjectModuleAccessor);
-    // This routine corrects your position upon landing
-    // Otherwise, characters will appear stuck halfway into the ground on the first frame of landing
-    if (*boma).is_fighter() {
-        let prev_pos = *PostureModule::prev_pos(boma);
-        let pos = *PostureModule::pos(boma);
-        let prev_ecb_bottom_y_offset = VarModule::get_float((*boma).object(), vars::common::instance::ECB_BOTTOM_Y_OFFSET);
-        let prev_ecb_bottom_pos_y = prev_pos.y + prev_ecb_bottom_y_offset + 0.2;
-        let mut prev_ground_pos = Vector2f::zero();
-        GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, prev_ecb_bottom_pos_y), &Vector2f::new(pos.x, prev_ecb_bottom_pos_y - 999.0), &Vector2f::zero(), &mut prev_ground_pos, true);
-
-        // The original function calls ground_module_ecb_point_calc_hook
-        call_original!(ground_module, param_2, param_3);
-
-        let ecb_bottom_pos_y = pos.y + (*param_3.add(1)).y;
-        // (*param_3.add(1)).y is your ECB bottom's vertical offset from your base position (AKA your vertical ECB shift)
-        if (*param_3.add(1)).y != 0.0 {
-            let mut ground_pos_any = Vector2f::zero();
-            let mut ground_pos_stage = Vector2f::zero();
-            GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, ecb_bottom_pos_y), &Vector2f::new(pos.x, ecb_bottom_pos_y + 999.0), &Vector2f::zero(), &mut ground_pos_any, true);
-            GroundModule::line_segment_check(boma, &Vector2f::new(pos.x, ecb_bottom_pos_y), &Vector2f::new(pos.x, ecb_bottom_pos_y + 999.0), &Vector2f::zero(), &mut ground_pos_stage, false);
-
-            if ecb_bottom_pos_y < prev_ecb_bottom_pos_y  // if your ECB was moving downwards
-            && ((ground_pos_any != Vector2f::zero() && ground_pos_stage == Vector2f::zero() && !GroundModule::is_passable_check(boma))  // if you touched a platform without passing through
-                || ground_pos_stage != Vector2f::zero())  // or you touched stage
-            && (prev_ground_pos.y - ground_pos_any.y).abs() < 1.0  // if the same surface that was under your ECB bottom on the previous frame is now above your ECB bottom on the current frame
-            {
-                // Reset your ECB shift to 0.0
-                (*param_3.add(1)).y = 0.0;
-            }
-        }
-        VarModule::set_float((*boma).object(), vars::common::instance::ECB_BOTTOM_Y_OFFSET, (*param_3.add(1)).y);
-    }
-    else {
-        call_original!(ground_module, param_2, param_3);
-    }
-}
-
-
 // This function is used to calculate the following:
 //      param_2: Left ECB point's horizontal offset from Top bone (negative number)
 //      param_3: Bottom ECB point's vertical offset from Top bone (positive number, 0.0 in vanilla)
@@ -185,7 +130,6 @@ unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *m
         *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
         *FIGHTER_STATUS_KIND_THROWN])
     && (*boma).is_situation(*SITUATION_KIND_AIR)
-    && !GroundModule::is_touch(boma, *GROUND_TOUCH_FLAG_DOWN as u32)
     && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) >= ParamModule::get_int((*boma).object(), ParamType::Common, "ecb_shift_air_trans_frame") {
         // This check passes after 9 frames of airtime, if not in a grabbed/thrown state
         param_6 = 1;
@@ -218,12 +162,65 @@ unsafe fn model_module_joint_global_position_with_offset_hook(model_module: u64,
     call_original!(model_module, bone, param_3, param_4, param_5);
 }
 
+// Unused for now
+#[skyline::hook(offset = 0x523a60)]
+unsafe fn groundcollision__processgroundcollisioninfo(groundcollisioninfo: *mut f32, groundcollision: *mut u64) {
+    call_original!(groundcollisioninfo, groundcollision)
+}
+
+// Performs ground correct
+#[skyline::hook(offset = 0x53fe30)]
+unsafe fn groundcollision__processgroundcollisioninfo_check_landing(groundcollisioninfo: *mut f32, groundcollision: *mut u64) {
+    let flags = *(groundcollisioninfo.add(0x5d8 / 4) as *mut u32);
+    let is_fighter = flags >> 27 & 1 == 0;
+
+    call_original!(groundcollisioninfo, groundcollision);
+
+    let prev_touch_pos_y = *groundcollisioninfo.add(0x1A4 / 4);
+    let touch_pos_y = *groundcollisioninfo.add(0xB4 / 4);
+    let ecb_offset_y = *groundcollisioninfo.add(0x3d4 / 4);
+    //println!("situation kind {}", *groundcollisioninfo.add(0x5a0 / 4));
+
+    if is_fighter
+    && prev_touch_pos_y == 0.0
+    && touch_pos_y != 0.0
+    && ecb_offset_y != 0.0
+    {
+        // When landing, sets your position to the coordinates of the surface you are landing on
+        *groundcollisioninfo.add(0x634 / 4) = touch_pos_y;
+        // Reset ECB offset to 0.0
+        *groundcollisioninfo.add(0x3d4 / 4) = 0.0;
+    }
+}
+// Unused for now
+// Sets GroundCollisionLine
+#[skyline::hook(offset = 0x52d900)]
+unsafe fn groundcollision__processgroundcollisioninfo_check_landing_sub(groundcollision: u64, arg2: *mut u64, prev_ecb_bottom_pos: *mut smash::phx::Vector2f, ecb_bottom_translation: *mut smash::phx::Vector2f, arg5: u64, arg6: u64, arg7: *mut u64) -> *mut GroundCollisionLine {
+    if arg5 == 2048 && arg6 == 1048576 {
+        let groundcollisionline = *((groundcollision + 0x320) as *mut u64) as *mut GroundCollisionLine;
+        let groundcollisionline_prev = *((groundcollision + 0x328) as *mut u64) as *mut GroundCollisionLine;
+
+        let groundcollisionline_next = *(groundcollisionline as *mut *mut GroundCollisionLine);
+        let normal = *(((groundcollisionline_next as u64) + 0xA0) as *mut smash::phx::Vector2f);
+        let vertex_1_y = *(((groundcollisionline_next as u64) + 0x24) as *mut f32);
+        let vertex_2_y = *(((groundcollisionline_next as u64) + 0x34) as *mut f32);
+
+    }
+    call_original!(groundcollision, arg2, prev_ecb_bottom_pos, ecb_bottom_translation, arg5, arg6, arg7)
+}
+
 pub fn install() {
+    unsafe {
+        // Removes 0.3 unit leniency above ECB bottom when deciding whether to land
+        // which reduces frequency of platform cancels
+        skyline::patching::Patch::in_text(0x540dd8).data(0x529ae148);
+        skyline::patching::Patch::in_text(0x540ddc).data(0x72a78468);
+    }
     skyline::install_hooks!(
         is_touch_hook,
         is_floor_touch_line_hook,
         get_touch_flag_hook,
-        ground_module_update_rhombus_sub,
+        groundcollision__processgroundcollisioninfo_check_landing,
         ground_module_ecb_point_calc_hook,
         model_module_joint_global_position_with_offset_hook
     );

@@ -19,6 +19,7 @@ pub mod stage_hazards;
 pub mod set_fighter_status_data;
 pub mod attack;
 pub mod collision;
+pub mod camera;
 
 
 pub fn install() {
@@ -41,6 +42,7 @@ pub fn install() {
     set_fighter_status_data::install();
     attack::install();
     collision::install();
+    camera::install();
 
     unsafe {
         // Handles getting rid of the kill zoom
