@@ -24,6 +24,13 @@ unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut 
         data.vector = 361;
         data.sub_shield = 0;
     }
+    if (*boma).is_status(*FIGHTER_STATUS_KIND_CLIFF_ATTACK) {
+        data.power = 8.0;
+        data.vector = 361;
+        data.r_eff = 50;  // KBG
+        data.r_add = 70;  // BKB
+        data.sub_shield = 0;
+    }
     
     call_original!(module, id, group, data)
 }
