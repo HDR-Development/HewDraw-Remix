@@ -3,7 +3,7 @@ use super::*;
 
 
 #[acmd_script( agent = "yoshi", script = "game_attacks4hi" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacks4hi(fighter: &mut L2CAgentBase) {
+unsafe fn yoshi_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -30,7 +30,7 @@ unsafe fn game_attacks4hi(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "yoshi", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacks4(fighter: &mut L2CAgentBase) {
+unsafe fn yoshi_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -57,7 +57,7 @@ unsafe fn game_attacks4(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "yoshi", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacks4lw(fighter: &mut L2CAgentBase) {
+unsafe fn yoshi_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -84,7 +84,7 @@ unsafe fn game_attacks4lw(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "yoshi", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackhi4(fighter: &mut L2CAgentBase) {
+unsafe fn yoshi_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -111,7 +111,7 @@ unsafe fn game_attackhi4(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "yoshi", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attacklw4(fighter: &mut L2CAgentBase) {
+unsafe fn yoshi_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 4.0);
@@ -137,17 +137,57 @@ unsafe fn game_attacklw4(fighter: &mut L2CAgentBase) {
     wait(lua_state, 2.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-    }
-    
+    } 
 }
+
+
+#[acmd_script( agent = "yoshi", script = "effect_attacklw4" , category = ACMD_EFFECT , low_priority)]
+unsafe fn yoshi_attack_lw4_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 3, -5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), -2.5, 4.0, 6, -4.564, 0.576, -162.823, 1.2, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_COLOR(fighter, 0.198, 0.754, 1.5);
+        LAST_EFFECT_SET_RATE(fighter, 2);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 3.5, 20, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 360, true);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 3, -5, 172.748, -44.731, 5.118, 1.3, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_COLOR(fighter, 0.198, 0.754, 1.5);
+        LAST_EFFECT_SET_RATE(fighter, 2);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), -20, 3, -15, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 360, false);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 180, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
 
 pub fn install() {
     install_acmd_scripts!(
-        game_attacks4hi,
-        game_attacks4,
-        game_attacks4lw,
-        game_attackhi4,
-        game_attacklw4,
+        yoshi_attack_s4_hi_game,
+        yoshi_attack_s4_s_game,
+        yoshi_attack_s4_lw_game,
+        yoshi_attack_hi4_game,
+        yoshi_attack_lw4_game,
+        yoshi_attack_lw4_effect,
     );
 }
 
