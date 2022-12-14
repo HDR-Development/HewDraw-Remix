@@ -145,14 +145,6 @@ unsafe fn aerial_acrobatics(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
     }
 }
 
-// Re-enable Gale Strike once tornado is gone
-unsafe fn gale_strike_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
-    let gimmick_timer = VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
-	if gimmick_timer > 0 {
-        VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, gimmick_timer - 1);
-    }
-}
-
 // Skyward Slash Dash actionability
 unsafe fn skyward_slash_dash_act(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
 	if status_kind == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH {
@@ -220,7 +212,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     //land_cancel(boma, id, status_kind, motion_kind);
 	sword_length(fighter, boma);
     //aerial_acrobatics(fighter, boma, id, status_kind, situation_kind, cat[0], motion_kind, frame);
-    gale_strike_timer(fighter, boma, id);
     skyward_slash_dash_act(fighter, boma, id, status_kind, situation_kind, frame);
     //kinesis_blade(fighter, boma, status_kind, motion_kind);
     //hitgrab_transition(fighter, boma, status_kind, motion_kind);
