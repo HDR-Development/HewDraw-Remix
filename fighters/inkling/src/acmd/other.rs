@@ -363,6 +363,7 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         VisibilityModule::set_whole(boma, true);
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
     frame(lua_state, 43.0);
     if is_excute(fighter) {
@@ -412,6 +413,7 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
         VisibilityModule::set_whole(boma, true);
     }
     frame(lua_state, 34.0);

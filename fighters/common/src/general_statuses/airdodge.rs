@@ -22,7 +22,7 @@ pub fn install() {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            //setup_escape_air_slide_common
+            setup_escape_air_slide_common
         );
     }
 }
@@ -45,7 +45,7 @@ pub unsafe fn status_pre_EscapeAir(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_AIR),
-        *FIGHTER_KINETIC_TYPE_MOTION_FALL,
+        *FIGHTER_KINETIC_TYPE_UNIQ,
         *GROUND_CORRECT_KIND_AIR as u32,
         app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         false,
@@ -247,54 +247,21 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
 
     // RoA airdodge stalling
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
-        if StatusModule::is_changing(fighter.module_accessor) {
-            let escape_air_slide_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("escape_air_slide_speed"), 0);
-            
-            VarModule::set_float(fighter.battle_object, vars::common::instance::ESCAPE_AIR_SLIDE_SPEED_X, escape_air_slide_speed * WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X));
-            VarModule::set_float(fighter.battle_object, vars::common::instance::ESCAPE_AIR_SLIDE_SPEED_Y, escape_air_slide_speed * WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y));
-        }
-        else {
-            if curr_frame < 30 {
-                KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_BRAKE);
-                
-                let x_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::ESCAPE_AIR_SLIDE_SPEED_X);
-                let y_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::ESCAPE_AIR_SLIDE_SPEED_Y);
+        if (!StatusModule::is_changing(fighter.module_accessor) || VarModule::is_flag(fighter.battle_object, vars::common::instance::EARLY_AIRDODGE_ENERGY) )
+        && KineticModule::get_kinetic_type(fighter.module_accessor) != *FIGHTER_KINETIC_TYPE_FALL {
+            let dir_x = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
+            let dir_y = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
+        
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.149375 * dir_x, 0.149375 * dir_y);
+            app::sv_kinetic_energy::add_speed(fighter.lua_state_agent);
 
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-                app::sv_kinetic_energy::unable(fighter.lua_state_agent);
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                app::sv_kinetic_energy::unable(fighter.lua_state_agent);
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, (x_speed * 0.9), (y_speed * 0.9));
-                app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-
-                VarModule::set_float(fighter.battle_object, vars::common::instance::ESCAPE_AIR_SLIDE_SPEED_X, x_speed * 0.9);
-                VarModule::set_float(fighter.battle_object, vars::common::instance::ESCAPE_AIR_SLIDE_SPEED_Y, y_speed * 0.9);
-            }
-            if curr_frame == 30 {
-                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-            }
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.9, 0.9);
+            app::sv_kinetic_energy::mul_speed(fighter.lua_state_agent);
         }
     }
-    else {
-        if curr_frame >= 1 && curr_frame < 30 {
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-            app::sv_kinetic_energy::unable(fighter.lua_state_agent);
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-            app::sv_kinetic_energy::unable(fighter.lua_state_agent);
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
-            app::sv_kinetic_energy::unable(fighter.lua_state_agent);
-        }
-        if curr_frame == 30 {
-            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-        }
-    }
+    println!("speed {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN));
     
     /***println!("");
     fighter.clear_lua_stack();
@@ -495,6 +462,10 @@ unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterC
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_setup_escape_air_slide_common)]
 unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, stick_x: L2CValue, stick_y: L2CValue) {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
+        KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
+        KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
         return;
     }
     StatusModule::set_situation_kind(fighter.module_accessor, app::SituationKind(*SITUATION_KIND_AIR), true);
@@ -518,8 +489,9 @@ unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, stick_x:
     lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, -1.0, -1.0);
     app::sv_kinetic_energy::set_limit_speed(fighter.lua_state_agent);
 
-    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_GRAVITY, fighter.module_accessor);
-    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, fighter.module_accessor);
+    KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
+    KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
 
     let mut escape_air_slide_stiff_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_stiff_frame"));
     let escape_air_slide_u_stiff_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_u_stiff_frame"));
