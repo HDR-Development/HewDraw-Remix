@@ -22,7 +22,8 @@ pub fn install() {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            setup_escape_air_slide_common
+            setup_escape_air_slide_common,
+            exec_escape_air_slide
         );
     }
 }
@@ -244,58 +245,6 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
     let id = VarModule::get_int(fighter.battle_object, vars::common::instance::COSTUME_SLOT_NUMBER) as usize;
     let curr_frame = fighter.global_table[CURRENT_FRAME].get_i32();
     let cancel_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_cancel_frame")) - 1.0;  // subtract 1 because curr_frame is 0 indexed
-
-    // RoA airdodge stalling
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
-        if (!StatusModule::is_changing(fighter.module_accessor) || VarModule::is_flag(fighter.battle_object, vars::common::instance::EARLY_AIRDODGE_ENERGY) )
-        && KineticModule::get_kinetic_type(fighter.module_accessor) != *FIGHTER_KINETIC_TYPE_FALL {
-            let dir_x = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
-            let dir_y = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
-        
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.149375 * dir_x, 0.149375 * dir_y);
-            app::sv_kinetic_energy::add_speed(fighter.lua_state_agent);
-
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.9, 0.9);
-            app::sv_kinetic_energy::mul_speed(fighter.lua_state_agent);
-        }
-    }
-    println!("speed {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN));
-    
-    /***println!("");
-    fighter.clear_lua_stack();
-    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-	let control_speed_x = smash::app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-    println!("control_speed_x: {}", control_speed_x);
-    fighter.clear_lua_stack();
-    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-	let control_speed_y = smash::app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-    println!("control_speed_y: {}", control_speed_y);
-
-    fighter.clear_lua_stack();
-    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
-	let stop_speed_x = smash::app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-    println!("stop_speed_x: {}", stop_speed_x);
-    fighter.clear_lua_stack();
-    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
-	let stop_speed_y = smash::app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-    println!("stop_speed_y: {}", stop_speed_y);
-
-    fighter.clear_lua_stack();
-    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-	let gravity_speed_x = smash::app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-    println!("gravity_speed_x: {}", gravity_speed_x);
-    fighter.clear_lua_stack();
-    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-	let gravity_speed_y = smash::app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-    println!("gravity_speed_y: {}", gravity_speed_y);
-
-    println!("");
-
-    println!("x speed: {}", KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN));
-    println!("y speed: {}", KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL));
-    ***/
 
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return L2CValue::Bool(true);
@@ -527,4 +476,71 @@ unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, stick_x:
         0,
         0
     );
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_exec_escape_air_slide)]
+unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
+    let mut step = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_STEP);
+    let back_end_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_BACK_END_FRAME);
+    if step == 0 {
+        let frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_FRAME);
+        if frame >= back_end_frame {
+            WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_FRAME);
+            WorkModule::set_int(fighter.module_accessor, 1, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_STEP);
+        }
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_KINE_FALL) {
+        return;
+    }
+    step = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_STEP);
+    if step != 0 {
+        if step != 1 {
+            return;
+        }
+        if !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING) {
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING);
+        }
+        let frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_FRAME);
+        if frame >= 1 || VarModule::is_flag(fighter.battle_object, vars::common::instance::EARLY_AIRDODGE_ENERGY) {
+            if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_KEEP_AIR_TURNED_OFF) {
+                StatusModule::set_situation_kind(fighter.module_accessor, app::SituationKind(*SITUATION_KIND_AIR), false);
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_KEEP_AIR_TURNED_OFF);
+            }
+            let speed_mul = ParamModule::get_float(fighter.battle_object, ParamType::Common, "escape_air_slide_speed_mul");
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, speed_mul, speed_mul);
+            app::sv_kinetic_energy::mul_speed(fighter.lua_state_agent);
+        }
+        let fall_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "escape_air_slide_fall_frame");
+        if frame >= fall_frame {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
+            let speed_x = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
+            let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
+
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST_NO_CAP, speed_x, 0.0, 0.0, 0.0, 0.0);
+            app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+            app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+            app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+            KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_STOP, fighter.module_accessor);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_KINE_FALL);
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY);
+            WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_FRAME);
+            WorkModule::set_int(fighter.module_accessor, 2, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_STEP);
+        }
+    }
 }
