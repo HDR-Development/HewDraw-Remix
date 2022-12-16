@@ -113,6 +113,71 @@ std::arch::global_asm!(
     "#
 );
 
+extern "C" {
+    #[link_name = "_ZN2nn2sf4hipc31InitializeHipcServiceResolutionEv"]
+    fn init_hipc() -> u32;
+
+    #[link_name = "_ZN2nn2sf4hipc20ConnectToHipcServiceEPNS_3svc6HandleEPKc"]
+    fn connect_to_hipc_service(handle: *mut u32, name: *const u8) -> u32;
+
+    #[link_name = "_ZN2nn2sm16GetServiceHandleEPNS_3svc6HandleEPKcm"]
+    fn get_service_handle(handle: *mut u32, name: *const u8, len: usize) -> u32;
+
+    #[link_name = "_ZN2nn2sm15RegisterServiceEPNS_3svc6HandleEPKcmib"]
+    fn register_service(handle: *mut u32, name: *const u8, len: usize, max: i32, is_light: bool) -> u32;
+
+    #[link_name = "_ZN2nn2sm17UnregisterServiceEPKcm"]
+    fn unregister_service(name: *const u8, len: usize) -> u32;
+}
+
+unsafe fn does_hid_hdr_exist() -> bool {
+    let mut handle = 0;
+    let result = register_service(&mut handle, b"hid:hdr\0".as_ptr(), 7, 100, false);
+    if result == 0 {
+        unregister_service(b"hid:hdr\0".as_ptr(), 7);
+    }
+    println!("{:#x}", result);
+    result == 0x815
+}
+
+unsafe fn setup_hid_hdr(handle: u32) {
+    let tls_ptr = skyline_ex::nx::get_tls() as *mut u32;
+    *tls_ptr.add(0) = 0x4; // Request
+    *tls_ptr.add(1) = 0x8; // No extra info, raw data size of 8
+    *tls_ptr.add(2) = 0; // padding 0
+    *tls_ptr.add(3) = 0; // padding 1
+    *tls_ptr.add(4) = 0x49434653; // SFCI magic
+    *tls_ptr.add(5) = 1; // version 1
+    *tls_ptr.add(6) = 0; // command id 0
+    *tls_ptr.add(7) = 0; // raw header padding
+    *tls_ptr.add(8) = 0; // padding 2
+    *tls_ptr.add(9) = 0; // padding 3
+
+    skyline_ex::nx::send_sync_request(handle).unwrap();
+
+    let tls_ptr = skyline_ex::nx::get_tls() as *const u32;
+    let is_installed = *tls_ptr.add(8) != 0;
+
+    if !is_installed {
+        panic!("Service hid:hdr is not set up!");
+    }
+    let tls_ptr = skyline_ex::nx::get_tls() as *mut u32;
+    *tls_ptr.add(0) = 0x4; // Request
+    *tls_ptr.add(1) = 0x9; // No extra info, raw data size of 8
+    *tls_ptr.add(2) = 0; // padding 0
+    *tls_ptr.add(3) = 0; // padding 1
+    *tls_ptr.add(4) = 0x49434653; // SFCI magic
+    *tls_ptr.add(5) = 1; // version 1
+    *tls_ptr.add(6) = 1; // command id 0
+    *tls_ptr.add(7) = 0; // raw header padding
+    *tls_ptr.add(8) = 1; // turn on stick control
+    *tls_ptr.add(9) = 0; // padding 2
+    *tls_ptr.add(10) = 0; // padding 3
+
+    skyline_ex::nx::send_sync_request(handle).unwrap();
+
+}
+
 #[no_mangle]
 pub extern "C" fn main() {
     #[cfg(feature = "main_nro")] {
@@ -122,6 +187,18 @@ pub extern "C" fn main() {
         controls::install();
         lua::install();
         online::install();
+        if !is_on_ryujinx() {
+            let mut handle = 0;
+            unsafe {
+                if !does_hid_hdr_exist() {
+                    skyline_web::DialogOk::ok("hid:hdr service is unavailable, GC controller sticks will feel worse");
+                } else if get_service_handle(&mut handle, b"hid:hdr\0".as_ptr(), 7) != 0 {
+                    skyline_web::DialogOk::ok("Unable to get the handle to service manager, your sticks will feel like ASS");
+                } else {
+                    setup_hid_hdr(handle);
+                }
+            }
+        }
     }
 
     #[cfg(not(feature = "runtime"))]
