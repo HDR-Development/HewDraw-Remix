@@ -2140,7 +2140,7 @@
       <float hash="landing_attack_air_frame_b">13</float>
       <float hash="landing_attack_air_frame_hi">12</float>
       <float hash="landing_attack_air_frame_lw">14</float>
-      <bool hash="air_lasso_type">true</bool>
+      <bool hash="air_lasso_type">false</bool>
       <int hash="landing_heavy_frame">5</int>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
