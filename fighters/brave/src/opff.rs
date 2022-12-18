@@ -33,12 +33,8 @@ unsafe fn dash_cancel_frizz(fighter: &mut L2CFighterCommon) {
     && fighter.motion_frame() > 19.0 && fighter.motion_frame() < 43.0 // after F20 and before the FAF
     && (WorkModule::get_float(fighter.module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLOAT_SP) > 12.0)
     {
-        if fighter.is_cat_flag(Cat1::Dash) {
+        if fighter.check_dash_cancel() {
             FighterSpecializer_Brave::add_sp(&mut brave_fighter, -12.0);
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_DASH, false);
-        } else if fighter.is_cat_flag(Cat1::TurnDash) {
-            FighterSpecializer_Brave::add_sp(&mut brave_fighter, -12.0);
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_TURN_DASH, false);
         }
     }
 }
