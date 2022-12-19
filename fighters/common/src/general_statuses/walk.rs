@@ -42,7 +42,6 @@ unsafe fn status_walk_common(fighter: &mut L2CFighterCommon) {
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_SLIP);
 
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
-    VarModule::off_flag(fighter.battle_object, vars::common::status::DISABLE_BACKDASH);
 }
 
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon19sub_walk_uniq_checkEv")]
@@ -87,13 +86,6 @@ unsafe extern "C" fn status_walk_main_common(fighter: &mut L2CFighterCommon, arg
 	let stick_x = fighter.global_table[STICK_X].get_f32();
 	let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
 	let mut lr_modifier = 1.0;
-
-    if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
-        VarModule::on_flag(fighter.battle_object, vars::common::status::DISABLE_BACKDASH);
-    }
-    if stick_x == 0.0 {
-        VarModule::off_flag(fighter.battle_object, vars::common::status::DISABLE_BACKDASH);
-    }
 
 	if [hash40("walk_slow_b"), hash40("walk_middle_b"), hash40("walk_fast_b")].contains(&MotionModule::motion_kind(fighter.module_accessor)) { // for auto-turn characters
 		lr_modifier = -1.0;
