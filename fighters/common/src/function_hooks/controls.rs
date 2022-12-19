@@ -1,6 +1,86 @@
 use super::*;
 use utils::ext::*;
 
+#[skyline::from_offset(0x3665e90)]
+fn controller_process_inputs(controller: &mut Controller, buttons: u64, lstick_x: i32, lstick_y: i32, rstick_x: i32, rstick_y: i32);
+
+#[skyline::hook(offset = 0x3665be0)]
+unsafe fn controller_update(controller: &mut Controller) {
+    use skyline::nn::hid;
+    let hid::NpadStyleSet { flags: style_set } = hid::GetNpadStyleSet(&controller.npad_number);
+
+    controller.previous_buttons = controller.current_buttons;
+
+    if style_set & 1 != 0 {
+        controller.style = ControllerStyle::ProController;
+        let mut state = hid::NpadHandheldState::default();
+        hid::GetNpadFullKeyState(&mut state, &controller.npad_number);
+        controller.is_valid_controller = true;
+        controller.is_left_connected = false;
+        controller.is_right_connected = false;
+        controller.is_left_wired = false;
+        controller.is_right_wired = false;
+        controller.is_connected = state.Flags & 1 != 0;
+        controller.is_wired = state.Flags & 2 != 0;
+
+        controller_process_inputs(controller, state.Buttons, state.LStickX, state.LStickY, state.RStickX, state.RStickY);
+    } else if style_set & 4 != 0 {
+        controller.style = ControllerStyle::DualJoycon;
+        let mut state = hid::NpadHandheldState::default();
+        hid::GetNpadJoyDualState(&mut state, &controller.npad_number);
+        controller.is_valid_controller = true;
+        controller.is_connected = state.Flags & 1 != 0;
+        controller.is_left_connected = state.Flags & 4 != 0;
+        controller.is_right_connected = state.Flags & 0x10 != 0;
+        controller.is_wired = state.Flags & 2 != 0;
+        controller.is_left_wired = state.Flags & 8 != 0;
+        controller.is_right_wired = state.Flags & 0x20 != 0;
+
+        controller_process_inputs(controller, state.Buttons, state.LStickX, state.LStickY, state.RStickX, state.RStickY);
+    } else if style_set & 8 != 0 {
+        controller.style = ControllerStyle::LeftJoycon;
+        let mut state = hid::NpadHandheldState::default();
+        hid::GetNpadJoyLeftState(&mut state, &controller.npad_number);
+        controller.is_valid_controller = true;
+        controller.is_right_connected = false;
+        controller.is_right_wired = false;
+        controller.is_connected = state.Flags & 1 != 0;
+        controller.is_left_connected = state.Flags & 4 != 0;
+        controller.is_wired = state.Flags & 2 != 0;
+        controller.is_left_wired = state.Flags & 8 != 0;
+
+        controller_process_inputs(controller, state.Buttons, state.LStickX, state.LStickY, state.RStickX, state.RStickY);
+    } else if style_set & 0x10 != 0 {
+        controller.style = ControllerStyle::RightJoycon;
+        let mut state = hid::NpadHandheldState::default();
+        hid::GetNpadJoyRightState(&mut state, &controller.npad_number);
+        controller.is_valid_controller = true;
+        controller.is_left_connected = false;
+        controller.is_left_wired = false;
+        controller.is_connected = state.Flags & 1 != 0;
+        controller.is_right_connected = state.Flags & 0x10 != 0;
+        controller.is_wired = state.Flags & 2 != 0;
+        controller.is_right_wired = state.Flags & 0x20 != 0;
+
+        controller_process_inputs(controller, state.Buttons, state.LStickX, state.LStickY, state.RStickX, state.RStickY);
+    } else if style_set & 0x20 != 0 {
+        controller.style = ControllerStyle::GCController;
+        let mut state = hid::NpadGcState::default();
+        hid::GetNpadGcState(&mut state, &controller.npad_number);
+        controller.is_valid_controller = true;
+        controller.is_left_connected = false;
+        controller.is_right_connected = false;
+        controller.is_left_wired = false;
+        controller.is_right_wired = false;
+        controller.is_connected = state.Flags & 1 != 0;
+        controller.is_wired = state.Flags & 2 != 0;
+
+        controller_process_inputs(controller, state.Buttons, state.LStickX, state.LStickY, state.RStickX, state.RStickY);
+        controller.left_trigger = state.LTrigger as f32 / 0x7FFF as f32;
+        controller.right_trigger = state.RTrigger as f32 / 0x7FFF as f32;
+    }
+}
+
 #[skyline::hook(offset = 0x16d948c, inline)]
 unsafe fn packed_packet_creation(ctx: &mut skyline::hooks::InlineCtx) {
     // *ctx.registers[8].x.as_mut() |= 0xFC_00000000;
@@ -497,7 +577,8 @@ pub fn install() {
         write_packet,
         parse_inputs,
         handle_incoming_packet,
-        after_exec
+        after_exec,
+        controller_update
     );
     skyline::nro::add_hook(nro_hook);
 }
