@@ -121,9 +121,7 @@ unsafe fn dash_drop(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     && boma.stick_y() < flick_y_sens
     && boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_RUN,
-        *FIGHTER_STATUS_KIND_RUN_BRAKE,
-        *FIGHTER_STATUS_KIND_DASH,
-        *FIGHTER_STATUS_KIND_TURN_DASH
+        *FIGHTER_STATUS_KIND_RUN_BRAKE
     ])
     {
         boma.change_status_req(*FIGHTER_STATUS_KIND_PASS, true);
@@ -204,39 +202,6 @@ extern "C" {
     pub fn stage_id() -> i32;
 }
 
-pub unsafe fn hitfall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, fighter_kind: i32, cat: [i32 ; 4]) {
-    if boma.kind() == *FIGHTER_KIND_GAOGAEN
-    && boma.is_situation(*SITUATION_KIND_AIR)
-    && boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR)
-    {
-        /* this is written this way because stick_y_flick wont update during
-            hitlag, which means we need a flag to allow you to hitfall 1 frame
-            after the end of hitlag as well, and we need to check previous 
-            stick y directly to detect hitfall. That way, with the 5 frame buffer,
-            if you input a fastfall during hitlag, it will get registered after
-            the hitlag is over. Without the HITFALL_BUFFER flag, you have to
-            input the fastfall BEFORE you hit the move, only.
-        */
-        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-        || AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-        {
-            VarModule::set_int(boma.object(), vars::common::instance::HITFALL_BUFFER, 0);
-        }
-
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::inc_int(boma.object(), vars::common::instance::HITFALL_BUFFER);
-        }
-
-        let buffer = VarModule::get_int(boma.object(), vars::common::instance::HITFALL_BUFFER);
-
-        if boma.is_cat_flag(Cat2::FallJump)
-        && 0 < buffer && buffer <= 5 
-        {
-            WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
-        }
-    }
-}
-
 pub unsafe fn respawn_taunt(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if !boma.is_status(*FIGHTER_STATUS_KIND_REBIRTH) {
         return;
@@ -313,7 +278,6 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mu
     double_shield_button_airdodge(boma, status_kind, situation_kind, cat[0]);
     drift_di(fighter, boma, status_kind, situation_kind);
     waveland_plat_drop(boma, cat[1], status_kind);
-    hitfall(boma, status_kind, situation_kind, fighter_kind, cat);
     respawn_taunt(boma, status_kind);
     teeter_cancel(fighter, boma);
 }
