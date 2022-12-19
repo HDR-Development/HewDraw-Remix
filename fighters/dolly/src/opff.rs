@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, backdash_energy});
+utils::import_noreturn!(common::opff::{fighter_common_opff});
 use super::*;
 use globals::*;
 
@@ -218,7 +218,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
     // Magic Series
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
-    common::opff::backdash_energy(fighter);
 }
 
 unsafe fn ex_special_scripting(boma: &mut BattleObjectModuleAccessor) {
