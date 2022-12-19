@@ -391,7 +391,8 @@ pub mod vars {
             pub const FLOAT_ENABLE_ACTIONS: i32 = 0x1100;
             pub const FLOAT_FALL_SPEED_Y_INCREASE: i32 = 0x1101;
             pub const FLOAT_CANCEL: i32 = 0x1102;
-            pub const FLOAT_GROUND_CHANGE_KINETIC: i32 = 0x1103;
+            pub const FLOAT_GROUND_DECIDE_ANGLE: i32 = 0x1103;
+            pub const FLOAT_GROUND_CHANGE_KINETIC: i32 = 0x1104;
         }
 
     }
