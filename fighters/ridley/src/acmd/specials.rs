@@ -184,6 +184,64 @@ unsafe fn ridley_special_air_n_explode_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ridley", scripts = ["game_specialsstart", "game_specialairsstart"], category = ACMD_GAME, low_priority )]
+unsafe fn ridley_special_s_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        FighterAreaModuleImpl::enable_fix_jostle_area_xy(boma, 8.0, 6.0, 7.5, 7.5);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.5);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_RIDLEY_STATUS_SPECIAL_S_FLAG_START_JUMP);
+        FighterAreaModuleImpl::enable_fix_jostle_area_xy(boma, 7.0, 6.0, 7.5, 5.5);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("top"), 9.0, 0.0, 10.0, 18.0, None, None, None, *FIGHTER_STATUS_KIND_CATCHED_RIDLEY, *COLLISION_SITUATION_MASK_G);
+        CATCH(fighter, 1, Hash40::new("top"), 7.0, 0.0, 10.0, 18.0, None, None, None, *FIGHTER_STATUS_KIND_CATCHED_RIDLEY, *COLLISION_SITUATION_MASK_A);
+        CATCH(fighter, 2, Hash40::new("top"), 5.0, 0.0, 8.0, 6.5, None, None, None, *FIGHTER_STATUS_KIND_CATCHED_RIDLEY, *COLLISION_SITUATION_MASK_G);
+        GrabModule::set_constraint(boma, 0, true);
+        GrabModule::set_constraint(boma, 1, true);
+        GrabModule::set_constraint(boma, 2, true);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 2);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.8);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+    }
+    frame(lua_state, 37.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
+    frame(lua_state, 39.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        GrabModule::set_rebound(boma, false);
+    }
+    frame(lua_state, 49.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_RIDLEY_STATUS_SPECIAL_S_FLAG_ENABLE_GRAVITY);
+    }
+}
+
 #[acmd_script( agent = "ridley", script = "game_specialairhichargelw" , category = ACMD_GAME , low_priority)]
 unsafe fn ridley_special_air_hi_charge_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -431,6 +489,7 @@ pub fn install() {
         ridley_special_air_n_explode_effect,
         ridley_special_air_n_explode_sound,
         ridley_special_air_n_explode_expression,
+        ridley_special_s_start_game,
         ridley_special_air_hi_charge_lw_game,
         ridley_special_lw_stab_game,
         ridley_special_lw_finish_game,
