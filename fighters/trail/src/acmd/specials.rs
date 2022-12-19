@@ -317,7 +317,7 @@ unsafe fn sound_specials3(fighter: &mut L2CAgentBase) {
     }
     else {
         if macros::is_excute(fighter) {
-            macros::PLAY_SE(fighter, Hash40::new("se_trail_special_s03"));
+            macros::PLAY_SE(fighter, Hash40::new("se_trail_special_s04"));
         }
     }
 }
