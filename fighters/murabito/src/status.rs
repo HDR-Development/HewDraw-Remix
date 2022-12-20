@@ -70,7 +70,7 @@ pub unsafe fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
         let mut turnip_num = WorkModule::get_int(fighter.module_accessor, *FIGHTER_MURABITO_INSTANCE_WORK_ID_INT_TURNIP_NUM);
         // Adds 1 to the turnip count. If the new turnip count is not 1, 2, or 3, reset it back to 1.
         turnip_num += 1;
-        if (1..=3).contains(&turnip_num) {
+        if !(1..=3).contains(&turnip_num) {
             turnip_num = 1;
         }
         WorkModule::set_int(fighter.module_accessor, turnip_num, *FIGHTER_MURABITO_INSTANCE_WORK_ID_INT_TURNIP_NUM);
