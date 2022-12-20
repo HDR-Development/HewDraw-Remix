@@ -5,8 +5,7 @@ use super::*;
 unsafe fn attack_dash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let attack_motion_rate = 11.0/(20.0-8.0);
-    let attack_speed_reduction = -0.8;
+    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.85);
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::samus::instance::SHINESPARK_USED);
@@ -20,8 +19,6 @@ unsafe fn attack_dash(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        KineticModule::add_speed(boma, &Vector3f::new(attack_speed_reduction, 0.0, 0.0));
-        FT_MOTION_RATE(fighter, attack_motion_rate);
         ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 13.0, 55, 80, 0, 76, 5.5, 0.0, 2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
         ATTACK(fighter, 1, 0, Hash40::new("bust"), 13.0, 55, 80, 0, 76, 4.5, 0.0, 0.0, 0.0, Some(0.0), Some(9.0), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
         if VarModule::is_flag(fighter.battle_object, vars::samus::instance::SHINESPARK_USED) {
@@ -45,9 +42,8 @@ unsafe fn attack_dash(fighter: &mut L2CAgentBase) {
             ATK_SET_SHIELD_SETOFF_MUL_arg4(fighter, 0, 1, 2, 0.2);
         }
     }
-    frame(lua_state, 8.0 + 4.0/attack_motion_rate);
+    frame(lua_state, 12.0);
     if is_excute(fighter) {
-        frame(lua_state, 8.0 + 4.0/attack_motion_rate);
         ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 9.0, 55, 80, 0, 76, 5.5, 0.0, 2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
         ATTACK(fighter, 1, 0, Hash40::new("bust"), 9.0, 55, 80, 0, 76, 4.0, 0.0, 0.0, 0.0, Some(0.0), Some(9.0), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
         if VarModule::is_flag(fighter.battle_object, vars::samus::instance::SHINESPARK_USED) {
@@ -57,12 +53,11 @@ unsafe fn attack_dash(fighter: &mut L2CAgentBase) {
             ATK_SET_SHIELD_SETOFF_MUL_arg4(fighter, 0, 1, 2, 0.2);
         }
     }
-    frame(lua_state, 19.0);
+    frame(lua_state, 17.0);
     if is_excute(fighter) {
-        KineticModule::add_speed(boma, &Vector3f::new(-attack_speed_reduction, 0.0, 0.0));
-        FT_MOTION_RATE(fighter, 18.0/(33.0-19.0));
+        FT_MOTION_RATE(fighter, 21.0/(34.0-17.0));
     }
-    frame(lua_state, 20.0);
+    frame(lua_state, 18.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         if VarModule::is_flag(fighter.battle_object, vars::samus::instance::SHINESPARK_USED) {
