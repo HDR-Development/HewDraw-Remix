@@ -826,8 +826,13 @@ pub mod vars {
     pub mod littlemac {
         pub mod status {
             // flags
-            pub const IS_DREAMLAND_EXPRESS: i32 = 0x1100;
-            pub const IS_LATE_DLE_INPUT: i32 = 0x1101;
+            pub const IS_DREAMLAND_EXPRESS: i32 = 0x0100;
+            pub const IS_LATE_DLE_INPUT: i32 = 0x0101;
+            //pub const IS_STRAIGHT_LUNGE_CANCEL: i32 = 0x1102;
+            //pub const IS_REVERSED: i32 = 0x1103;
+
+            // floats
+            //pub const CANCEL_FRAME: i32 = 0x0100;
         }
     }
 
