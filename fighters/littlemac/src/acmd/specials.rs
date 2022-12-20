@@ -2,6 +2,31 @@
 use super::*;
 
 
+#[acmd_script( agent = "littlemac", script = "game_specialnstart" , category = ACMD_GAME , low_priority)]
+unsafe fn littlemac_special_n_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_CHECK_DASH);
+    }
+}
+
+#[acmd_script( agent = "littlemac", script = "game_specialairnstart" , category = ACMD_GAME , low_priority)]
+unsafe fn littlemac_special_air_n_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 15.0);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_LITTLEMAC_STATUS_SPECIAL_N_FLAG_CHECK_DASH);
+    }
+}
+
 #[acmd_script( agent = "littlemac", script = "game_specialn2" , category = ACMD_GAME , low_priority)]
 unsafe fn littlemac_special_n2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

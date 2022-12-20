@@ -217,10 +217,9 @@ pub mod vars {
             // flags
             pub const DISABLE_ECB_SHIFT: i32 = 0x10FF;
 
-            pub const DISABLE_BACKDASH: i32 = 0x1000;
-            pub const IS_MOONWALK: i32 = 0x1001;
-            pub const IS_DASH_TO_RUN_FRAME: i32 = 0x1002;
-            pub const IS_AFTER_DASH_TO_RUN_FRAME: i32 = 0x1003;
+            pub const IS_DASH_TO_RUN_FRAME: i32 = 0x1000;
+            pub const IS_AFTER_DASH_TO_RUN_FRAME: i32 = 0x1001;
+            pub const APPLY_DASH_END_SPEED_MUL: i32 = 0x1002;
 
             pub const ATTACK_DASH_CANCEL_DISABLE: i32 = 0x1000;
             pub const ATTACK_DASH_ENABLE_AIR_FALL: i32 = 0x1001;
@@ -552,6 +551,10 @@ pub mod vars {
     }
 
     pub mod master {
+        pub mod instance {
+            // flags
+            pub const SPECIAL_AIR_HI_CATCH:            i32 = 0x0100;
+        }
         pub mod status {
             // flags
             pub const IS_ENABLE_SPECIAL_S_DASH_CANCEL: i32 = 0x1100;
@@ -823,8 +826,13 @@ pub mod vars {
     pub mod littlemac {
         pub mod status {
             // flags
-            pub const IS_DREAMLAND_EXPRESS: i32 = 0x1100;
-            pub const IS_LATE_DLE_INPUT: i32 = 0x1101;
+            pub const IS_DREAMLAND_EXPRESS: i32 = 0x0100;
+            pub const IS_LATE_DLE_INPUT: i32 = 0x0101;
+            //pub const IS_STRAIGHT_LUNGE_CANCEL: i32 = 0x1102;
+            //pub const IS_REVERSED: i32 = 0x1103;
+
+            // floats
+            //pub const CANCEL_FRAME: i32 = 0x0100;
         }
     }
 

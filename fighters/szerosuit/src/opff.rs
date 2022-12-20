@@ -7,14 +7,7 @@ use globals::*;
 unsafe fn paralyzer_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_SZEROSUIT_STATUS_KIND_SPECIAL_N_SHOOT {
         if frame > 7.0 {
-            if situation_kind == *SITUATION_KIND_GROUND {
-                if boma.is_cat_flag(Cat1::Dash) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
-                }
-                if boma.is_cat_flag(Cat1::TurnDash) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_TURN_DASH, false);
-                }
-            }
+            boma.check_dash_cancel();
         }
     }
 }
@@ -25,10 +18,8 @@ unsafe fn flip_jump_jc_flipstool(boma: &mut BattleObjectModuleAccessor, status_k
         || motion_kind == hash40("special_lw_start")
         || motion_kind == hash40("special_air_lw_start") {
         if frame > 20.0 {
-            if boma.is_input_jump() && !boma.is_in_hitlag() {
-                if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                }
+            if !boma.is_in_hitlag() {
+                boma.check_jump_cancel(false);
             }
         }
         // Turn on the vanilla flip jump footstool-enable flag if you're holding the special button and you're in the window to be able to flipstool manually

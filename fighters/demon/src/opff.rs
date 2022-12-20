@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, backdash_energy});
+utils::import_noreturn!(common::opff::{fighter_common_opff});
 use super::*;
 use globals::*;
 
@@ -175,7 +175,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     spinning_demon(boma, cat[0], status_kind, situation_kind, motion_kind, frame);
     enable_both_recovery_specials(boma);
     rotate_forward_bair(boma);
-    common::opff::backdash_energy(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_DEMON )]
