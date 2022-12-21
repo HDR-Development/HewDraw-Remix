@@ -68,11 +68,12 @@ unsafe fn murabito_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
+//Not an ideal solution as hitbox will appear a frame before effects begin. Will have to revisit this in the future for a better solution 
 #[acmd_script( agent = "murabito", script = "effect_attackairb" , category = ACMD_EFFECT , low_priority)]
 unsafe fn murabito_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 12.0);
+    frame(lua_state, 13.0);
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new_raw(0x1156ac182a), Hash40::new("haver"), 0.0, -4.0, 0.0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 360, true);
         LAST_EFFECT_SET_ALPHA(fighter, 0.6);
@@ -93,7 +94,7 @@ unsafe fn murabito_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new_raw(0x1946174757));
     }
-    frame(lua_state, 12.0);
+    frame(lua_state, 13.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new_raw(0x152d914323));
     }

@@ -37,7 +37,7 @@
   </list>
   <list hash="param_sprout">
     <struct index="0">
-      <int hash="tree_frame">6</int>
+      <int hash="tree_frame">7</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
