@@ -68,6 +68,7 @@ pub fn install() {
         // stubs vanilla fullhop initial y velocity calculations
         skyline::patching::Patch::in_text(0x6d2174).nop();
 
+        // Stubs ControlModule::get_stick_x calls when calculating horizontal jump velocity
         skyline::patching::Patch::in_text(0x6ce6b8).nop();
         skyline::patching::Patch::in_text(0x6d19a4).nop();
         skyline::patching::Patch::in_text(0x6d1af0).nop();
