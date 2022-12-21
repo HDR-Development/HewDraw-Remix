@@ -4,7 +4,6 @@ use utils::{
     consts::*,
 	consts::globals::*
 };
-use crate::misc::calc_melee_momentum;
 use smash_script::*;
 use smash::app::BattleObjectModuleAccessor;
 use smash::phx::*;
@@ -46,29 +45,6 @@ pub unsafe fn momentum_transfer_helper(fighter: &mut L2CFighterCommon, lua_state
 
 	if fighter_kind == *FIGHTER_KIND_TANTAN && [*FIGHTER_TANTAN_STATUS_KIND_ATTACK_JUMP_SQUAT].contains(&status_kind) && VarModule::get_int(boma.object(), vars::common::instance::JUMP_SQUAT_FRAME) < WorkModule::get_param_int(boma, hash40("jump_squat_frame"), 0) {
 		VarModule::set_float(boma.object(), vars::common::instance::JUMPSQUAT_VELOCITY, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
-	}
-
-	if KineticModule::get_kinetic_type(boma) == *FIGHTER_KINETIC_TYPE_JUMP {
-		if !VarModule::is_flag(boma.object(), vars::common::instance::JUMP_NEXT) {
-			VarModule::on_flag(boma.object(), vars::common::instance::JUMP_NEXT);
-			/* Moves that should bypass the momentum logic (in terms of the jump status script) */
-			const MOMENTUM_EXCEPTION_MOVES: [smash::lib::LuaConst ; 1] = [
-				FIGHTER_SONIC_STATUS_KIND_SPIN_JUMP
-			];
-
-			if !MOMENTUM_EXCEPTION_MOVES.iter().any(|x| *x == fighter.global_table[FIGHTER_KIND] ) {
-				let mut new_speed = calc_melee_momentum(fighter, false, false, false);
-				fighter.clear_lua_stack();
-				lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, new_speed);
-				app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-				fighter.clear_lua_stack();
-				//println!("Post-jump horizontal velocity: {}", new_speed);
-				VarModule::set_float(fighter.battle_object, vars::common::instance::CURRENT_MOMENTUM, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN)); // Set the current momentum to what was just calculated
-			}
-		}
-	}
-	else {
-		VarModule::off_flag(boma.object(), vars::common::instance::JUMP_NEXT);
 	}
 }
 

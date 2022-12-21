@@ -1,6 +1,7 @@
 // status imports
 use super::*;
 use globals::*;
+
 // This file contains code for wavelanding
 
 pub fn install() {
@@ -29,11 +30,17 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     }
 }
 
+/* Moves that should bypass the momentum logic (in terms of the jump status script) */
+const MOMENTUM_EXCEPTION_MOVES: [smash::lib::LuaConst ; 1] = [
+    FIGHTER_SONIC_STATUS_KIND_SPIN_JUMP
+];
+
 #[common_status_script(status = FIGHTER_STATUS_KIND_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE,
     symbol = "_ZN7lua2cpp16L2CFighterCommon15status_pre_JumpEv")]
 unsafe fn status_pre_Jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     let interrupted = fighter.status_pre_Jump_Common_param(L2CValue::Bool(true)).get_bool();
     if !interrupted {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
         fighter.status_pre_Jump_sub();
     }
     L2CValue::Bool(interrupted)
@@ -89,9 +96,6 @@ unsafe extern "C" fn status_pre_Jump_sub_param(fighter: &mut L2CFighterCommon, f
     let float_keep = float_keep.get_i32();
     let mut kinetic_type = kinetic_type.get_i32();
     let arg = arg.get_i32();
-    if KineticModule::get_kinetic_type(fighter.module_accessor) == *FIGHTER_KINETIC_TYPE_JUMP {
-        kinetic_type = *FIGHTER_KINETIC_TYPE_UNIQ;
-    }
     let status_kind = StatusModule::status_kind(fighter.module_accessor);
     let ground_correct_kind = app::FighterUtil::get_ground_correct_kind_air_trans(fighter.module_accessor, status_kind);
     StatusModule::init_settings(
@@ -159,6 +163,9 @@ unsafe extern "C" fn status_Jump_Main(fighter: &mut L2CFighterCommon) -> L2CValu
 
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon15status_Jump_subEN3lib8L2CValueES2_")]
 unsafe extern "C" fn status_Jump_sub(fighter: &mut L2CFighterCommon, arg1: L2CValue, arg2: L2CValue) -> L2CValue {
+    let mut x_vel = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
+    println!("x vel: {}", x_vel);
+
     ControlModule::reset_flick_y(fighter.module_accessor);
     ControlModule::reset_flick_sub_y(fighter.module_accessor);
     fighter.global_table[FLICK_Y].assign(&0xFE.into());
