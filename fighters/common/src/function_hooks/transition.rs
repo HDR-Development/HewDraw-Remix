@@ -81,27 +81,6 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
             return false;
         }
     
-        // Allow Aidou with smash stick with only A button held, rather than A+B
-        let attacks = [
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_100,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3
-        ];
-        if attacks.contains(&flag) {
-            if boma.was_prev_button_on(Buttons::AttackAll) && ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_CSTICK_ON) && ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_ATTACK) {  // smash stick input
-                for x in attacks.iter() {
-                    WorkModule::unable_transition_term_group_ex(boma, *x);
-                }
-                return false;
-            }
-        }
-    
         // Disable transition to double jump if you have float juice and are holding down
         if [*FIGHTER_KIND_SAMUSD, *FIGHTER_KIND_MEWTWO, *FIGHTER_KIND_REFLET].contains(&fighter_kind) {
             if [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON].contains(&flag) {

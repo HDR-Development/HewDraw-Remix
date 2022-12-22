@@ -12,6 +12,9 @@ mod controls;
 #[cfg(feature = "main_nro")]
 mod lua;
 
+#[cfg(feature = "main_nro")]
+mod online;
+
 use skyline::libc::c_char;
 #[cfg(feature = "main_nro")]
 use skyline_web::*;
@@ -118,6 +121,7 @@ pub extern "C" fn main() {
         random::install();
         controls::install();
         lua::install();
+        online::install();
     }
 
     #[cfg(not(feature = "runtime"))]
