@@ -17,7 +17,7 @@ unsafe fn clown_cannon_shield_cancel(boma: &mut BattleObjectModuleAccessor, stat
 }
 
 // Bowser Jr. Clown Cannon Dash Cancel
-//unsafe fn clown_cannon_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+// unsafe fn clown_cannon_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
    // if status_kind == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_N_SHOOT {
         // if frame > 13.0 {
             // if situation_kind == *SITUATION_KIND_GROUND {
