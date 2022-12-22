@@ -1,6 +1,59 @@
 
 use super::*;
 
+#[acmd_script( agent = "yoshi", script = "game_specialsloop" , category = ACMD_GAME , low_priority)]
+unsafe fn yoshi_special_s_loop_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 80, 50, 0, 70, 4.0, 0.0, 6.6, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 30, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        JostleModule::set_status(fighter.module_accessor, false);
+    }
+}
+
+
+#[acmd_script( agent = "yoshi", script = "game_specialairsloop" , category = ACMD_GAME , low_priority)]
+unsafe fn yoshi_special_air_s_loop_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 80, 50, 0, 70, 4.0, 0.0, 6.6, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 30, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        JostleModule::set_status(fighter.module_accessor, false);
+    }
+}
+
+
+#[acmd_script( agent = "yoshi", script = "game_specialsend" , category = ACMD_GAME , low_priority)]
+unsafe fn yoshi_special_s_end_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.5);
+        AttackModule::clear_all(boma);
+        JostleModule::set_status(boma, true);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_YOSHI_STATUS_SPECIAL_S_FLAG_HIDE_EGG);
+    }
+}
+
+
+#[acmd_script( agent = "yoshi", script = "game_specialairsend" , category = ACMD_GAME , low_priority)]
+unsafe fn yoshi_special_air_s_end_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.5);
+        AttackModule::clear_all(boma);
+        JostleModule::set_status(boma, true);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_YOSHI_STATUS_SPECIAL_S_FLAG_HIDE_EGG);
+    }
+}
+
 
 #[acmd_script( agent = "yoshi", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
 unsafe fn yoshi_special_lw_game(fighter: &mut L2CAgentBase) {
@@ -49,6 +102,10 @@ unsafe fn yoshi_special_air_lw_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        yoshi_special_s_loop_game,
+        yoshi_special_air_s_loop_game,
+        yoshi_special_s_end_game,
+        yoshi_special_air_s_end_game,
         yoshi_special_lw_game,
         yoshi_special_air_lw_game,
     );
