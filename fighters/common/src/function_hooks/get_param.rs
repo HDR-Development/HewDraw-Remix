@@ -138,6 +138,19 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
             }
         }
 
+        else if fighter_kind == *FIGHTER_KIND_PACKUN {
+            if [*FIGHTER_PACKUN_STATUS_KIND_SPECIAL_N_SHOOT].contains(&StatusModule::status_kind(boma)) {
+                if VarModule::get_int(boma_reference.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
+                    if x1 == hash40("shoot_speed_x_max") {
+                        return ParamModule::get_float(boma_reference.object(), ParamType::Agent, "shoot_speed_x_max") * 0.65;
+                    }
+                    else if x1 == hash40("shoot_speed_x_min") {
+                        return ParamModule::get_float(boma_reference.object(), ParamType::Agent, "shoot_speed_x_min") * 0.65;
+                    }
+                }
+            }
+        }
+
         // else if fighter_kind == *FIGHTER_KIND_PICKEL {
         //     if [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL].contains(&StatusModule::status_kind(boma)) {
         //         if ControlModule::get_stick_x(boma) * PostureModule::lr(boma) > 0.5 {

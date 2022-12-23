@@ -842,7 +842,7 @@ pub mod vars {
             //flags
             pub const IS_CHARGE_ATTACK: i32 = 0x0102;
 
-            //ints
+            // ints
             pub const CHARGE_LEVEL: i32 = 0x0100;
             pub const CHARGE_EFFECT_HANDLER: i32 = 0x0101;
 
@@ -872,6 +872,21 @@ pub mod vars {
             pub const SAPLING_PULL_SAPLING_POS_X: i32 = 0x0101;
             pub const SAPLING_PULL_SAPLING_POS_Y: i32 = 0x0102;
             pub const SAPLING_PULL_SAPLING_POS_Z: i32 = 0x0103;
+        }
+    }
+
+    pub mod packun {
+        pub mod instance {
+            // flags
+            pub const NEED_SET_SPEEDS: i32 = 0x0100;
+            
+            // ints
+            pub const CURRENT_STANCE: i32 = 0x0100; // 0 = Normal, 1 = Poison, 2 = Brute
+        }
+        pub mod status {
+            // flags
+            pub const IS_ENABLE_STANCE_CHANGE_TO_TOXIN: i32 = 0x1100;
+            pub const IS_ENABLE_STANCE_CHANGE_TO_BRUTE: i32 = 0x1101;
         }
     }
 

@@ -11,6 +11,12 @@
       <float hash="p1_y">23.25</float>
     </struct>
   </list>
+  <list hash="param_spikeball">
+    <struct index="0">
+      <int hash="life">240</int>
+      <int hash="hop_life">150</int>
+    </struct>
+  </list>
   <list hash="param_special_hi">
     <struct index="0">
       <int hash="landing_frame">24</int>
