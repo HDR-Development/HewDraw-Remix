@@ -9,6 +9,10 @@ unsafe fn ganon_float_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WHOLE_HIT(fighter, *HIT_STATUS_XLU);
     }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, vars::ganon::status::FLOAT_GROUND_DECIDE_ANGLE);
+    }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
         WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
