@@ -10,7 +10,12 @@ unsafe fn dair_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     {
         MotionModule::set_frame_sync_anim_cmd(boma, 54.0, true, true, false);
         AttackModule::clear_all(boma);
-        SET_SPEED_EX(fighter, 0, 1.625, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+        SET_SPEED_EX(fighter, 0, 1.7, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        } else if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+        SET_SPEED_EX(fighter, 0, 0.85, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        }
     }
 }
 
