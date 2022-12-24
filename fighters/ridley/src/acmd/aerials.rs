@@ -116,7 +116,7 @@ unsafe fn ridley_attack_air_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        FT_MOTION_RATE(fighter, 0.461);
+        FT_MOTION_RATE(fighter, 7.0/(13.0 - 1.0));
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
@@ -126,8 +126,8 @@ unsafe fn ridley_attack_air_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("legr"), 12.0, 55, 94, 0, 35, 6.0, 0.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        ATTACK(fighter, 1, 0, Hash40::new("kneer"), 16.0, 361, 92, 0, 35, 7.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        ATTACK(fighter, 2, 0, Hash40::new("footr"), 16.0, 361, 92, 0, 35, 8.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 1, 0, Hash40::new("kneer"), 16.0, 361, 92, 0, 35, 6.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 2, 0, Hash40::new("footr"), 16.0, 361, 92, 0, 35, 7.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     wait(lua_state, 5.0);
     if is_excute(fighter) {
@@ -135,7 +135,7 @@ unsafe fn ridley_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 27.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 7.0/(31.0 - 27.0));
+        FT_MOTION_RATE(fighter, 5.0/(31.0 - 27.0));
     }
     frame(lua_state, 31.0);
     if is_excute(fighter) {
@@ -149,7 +149,7 @@ unsafe fn ridley_attack_air_b_game(fighter: &mut L2CAgentBase) {
 unsafe fn ridley_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 11.0);
+    frame(lua_state, 10.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("ridley_air_b"), Hash40::new("ridley_air_b"), Hash40::new("top"), 0, 8, -6, -183, 35, 18, 0.9, true, *EF_FLIP_YZ);
     }
