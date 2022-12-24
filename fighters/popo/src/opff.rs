@@ -3,7 +3,16 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
+unsafe fn dair_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
+    if (motion_kind == hash40("attack_air_lw") || motion_kind == hash40("attack_air_lw_nana"))
+    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    && frame < 54.0
+    {
+        MotionModule::set_frame_sync_anim_cmd(boma, 54.0, true, true, false);
+        AttackModule::clear_all(boma);
+        SET_SPEED_EX(fighter, 0, 1.625, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    }
+}
 
 // Ice Climbers Cheer Cancel (Techy)
 unsafe fn cheer_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
@@ -84,6 +93,7 @@ pub unsafe fn ice_climbers_moveset(fighter: &mut L2CFighterCommon, boma: &mut Ba
     //clear_jc_grab_flag(boma, id, status_kind);
     get_nana_boma(fighter, boma, id);
     nana_death_effect(fighter, boma, id, status_kind, frame);
+    dair_bounce(fighter, boma, motion_kind, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_POPO )]

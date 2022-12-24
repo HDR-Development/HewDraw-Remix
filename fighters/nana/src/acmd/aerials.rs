@@ -117,8 +117,10 @@ unsafe fn nana_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 unsafe fn nana_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 3.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.091);
+        // skipping the frames where they bring hammer way above their head
+        FT_MOTION_RATE(fighter, 1.0/(11.0 - 3.0));
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
@@ -127,12 +129,20 @@ unsafe fn nana_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("havel"), 7.0, 55, 70, 0, 80, 4.5, 0.0, 6.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HAMMER);
+        ATTACK(fighter, 0, 0, Hash40::new("havel"), 5.0, 60, 70, 0, 80, 4.5, 0.0, 6.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HAMMER);
     }
     frame(lua_state, 54.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        FT_MOTION_RATE(fighter, 18.0/(63.0 - 54.0));
+    }
+    frame(lua_state, 60.0);
+    if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+    frame(lua_state, 63.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
     }
 }
 
