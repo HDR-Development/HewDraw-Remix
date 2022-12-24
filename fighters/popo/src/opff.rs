@@ -10,7 +10,7 @@ unsafe fn dair_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     {
         MotionModule::set_frame_sync_anim_cmd(boma, 54.0, true, true, false);
         AttackModule::clear_all(boma);
-        
+
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
         SET_SPEED_EX(fighter, 0, 1.7, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         } else if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
@@ -32,9 +32,9 @@ unsafe fn cheer_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 // Ice Climbers Spotdodge Desync
 unsafe fn spotdodge_desync(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if boma.kind() == *FIGHTER_KIND_NANA {
-        if ![*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B].contains(&status_kind){
+        if ![*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B, *FIGHTER_STATUS_KIND_CLIFF_ESCAPE, *FIGHTER_STATUS_KIND_CLIFF_CLIMB].contains(&status_kind){
             InputModule::disable_persist(boma.object());
-        } else if [*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B].contains(&StatusModule::status_kind_next(boma)) {
+        } else if [*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B, *FIGHTER_STATUS_KIND_CLIFF_ESCAPE, *FIGHTER_STATUS_KIND_CLIFF_CLIMB].contains(&StatusModule::status_kind_next(boma)) {
             InputModule::enable_persist(boma.object());
         }
     }
