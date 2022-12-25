@@ -72,7 +72,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
 
             // --- Ice Climbers Code ---
 
-            // if opponent is not Popo, we're done
+            // if opponent is Popo
             let module_accessor = &mut *(*object).module_accessor;
             if !(module_accessor.is_fighter() && module_accessor.kind() == *FIGHTER_KIND_POPO) {
                 continue;
