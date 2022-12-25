@@ -13,26 +13,34 @@ unsafe fn change_status_request_hook(boma: &mut BattleObjectModuleAccessor, stat
             let pos = GroundModule::hang_cliff_pos_3f(boma);
 
             for i in 0..8 {
+                if i == player_number {
+                    continue;
+                }
                 if let Some(object_id) = ::utils::util::get_active_battle_object_id_from_entry_id(i) {
                     let object = ::utils::util::get_battle_object_from_id(object_id);
+                    if object.is_null() {
+                        continue;
+                    }
+
+                    // if opponent is on a ledge and it's the same ledge as this one
+                    if VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) != 0.0 && pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
+                        next_status = *FIGHTER_STATUS_KIND_CLIFF_ROBBED;
+                    }
+
+                    // --- Ice Climbers Code ---
+        
+                    // if opponent is not Popo, we're done
+                    let module_accessor = &mut *(*object).module_accessor;
+                    if !(module_accessor.is_fighter() && module_accessor.kind() == *FIGHTER_KIND_POPO) {
+                        continue;
+                    }
+                    // get Nana's Battle Object
+                    let nana_object_id = WorkModule::get_int(module_accessor, *FIGHTER_POPO_INSTANCE_WORK_ID_INT_PARTNER_OBJECT_ID) as u32;
+                    let object = ::utils::util::get_battle_object_from_id(nana_object_id);
                     if !object.is_null() {
-                        if i == player_number || VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) == 0.0 {
-                            continue;
-                        }
-    
-                        if pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
+                        // same check as before, but with Nana
+                        if VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) != 0.0 && pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
                             next_status = *FIGHTER_STATUS_KIND_CLIFF_ROBBED;
-                        }
-    
-                        let module_accessor = &mut *(*object).module_accessor;
-                        if module_accessor.kind() == *FIGHTER_KIND_POPO {
-                            let nana_object_id = WorkModule::get_int(module_accessor, *FIGHTER_POPO_INSTANCE_WORK_ID_INT_PARTNER_OBJECT_ID) as u32;
-                            let object = ::utils::util::get_battle_object_from_id(nana_object_id);
-                            if !object.is_null() {
-                                if pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
-                                    next_status = *FIGHTER_STATUS_KIND_CLIFF_ROBBED;
-                                }
-                            }
                         }
                     }
                 }
