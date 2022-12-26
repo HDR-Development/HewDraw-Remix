@@ -66,12 +66,9 @@ unsafe fn rotate_bone(boma: &mut BattleObjectModuleAccessor, max_angle: f32, min
     if strength > 0.0 {
         angle = max_angle
     }
-    let mut rotation = Vector3f{x: ((angle * -1.0 * strength) - 2.5), y: 0.0, z: 0.0};
-    let mut inverse_rotation = Vector3f{x: 0.0, y: 0.0, z: -((angle * -1.0 * strength) - 2.5)};
-
-    // this has to be called every frame, or you snap back to the normal joint angle
-    ModelModule::set_joint_rotate(boma, Hash40::new("tail0"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
-    ModelModule::set_joint_rotate(boma, Hash40::new("top"), &inverse_rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
+    let mut rotation = Vector3f{x: 0.0, y: 0.0, z: -((angle * -1.0 * strength) - 2.5)};
+    let fighter = utils::util::get_fighter_common_from_accessor(boma);
+    fighter.set_joint_rotate("tail1", rotation);
 }
 
 // boma: its a boma 
@@ -101,7 +98,7 @@ unsafe fn tail_lean(boma: &mut BattleObjectModuleAccessor, lean_frame: f32, retu
 // Handles angling of tail
 unsafe fn angled_skewer(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.is_situation(*SITUATION_KIND_GROUND) {
-        tail_lean(fighter.boma(), 30.0, 40.0, 90.0, -30.0);
+        tail_lean(fighter.boma(), 30.0, 40.0, 25.0, -15.0);
     }
 }
 
@@ -109,7 +106,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     //space_pirate_rush_flight(boma, status_kind, situation_kind, stick_x);
     wing_blitz_drift(boma, status_kind, situation_kind, stick_x, stick_y);
     //stab_footstool(fighter);
-    //angled_skewer(fighter);
+    angled_skewer(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_RIDLEY )]

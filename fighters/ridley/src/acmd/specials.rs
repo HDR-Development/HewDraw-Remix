@@ -280,14 +280,31 @@ unsafe fn ridley_special_lw_stab_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 30.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 45.0, 25, 10, 0, 70, 2.2, 0.0, 7.0, 24.5, Some(0.0), Some(7.0), Some(29.5), 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -20.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_BODY_HEAD, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_TAIL);
-        //second hit-box for non-grabable objects
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 45.0, 25, 10, 0, 70, 2.2, 0.0, 7.0, 24.5, Some(0.0), Some(7.0), Some(29.5), 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -20.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_TAIL);
+        let grab_y = VarModule::get_float(fighter.battle_object, vars::ridley::status::SKEWER_STICK_Y);
+        let mut z_mod = -1.0 * grab_y;
+        // no angle (normal Skewer)
+        if grab_y == 0.0 {
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 45.0, 25, 10, 0, 70, 2.2, 0.0, 7.0, 24.5, Some(0.0), Some(7.0), Some(29.5), 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -20.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_BODY_HEAD, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_TAIL);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 45.0, 25, 10, 0, 70, 2.2, 0.0, 7.0, 24.5, Some(0.0), Some(7.0), Some(29.5), 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -20.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_TAIL);
+            ATTACK(fighter, 2, 0, Hash40::new("top"), 5.0, 361, 50, 0, 30, 2.2, 0.0, 7.0, 8.0, Some(0.0), Some(7.0), Some(29.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_TAIL);
+        }
+        // angle up
+        else if grab_y > 0.0 {
+            z_mod = 3.0 * grab_y;
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 45.0, 25, 10, 0, 70, 2.2, 0.0, (grab_y * 7.0) + 8.0, 24.5 - z_mod, Some(0.0), Some((grab_y * 11.0) + 7.0), Some(29.5 - z_mod), 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -20.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_BODY_HEAD, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_TAIL);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 45.0, 25, 10, 0, 70, 2.2, 0.0, (grab_y * 7.0) + 8.0, 24.5 - z_mod, Some(0.0), Some((grab_y * 11.0) + 7.0), Some(29.5 - z_mod), 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -20.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_TAIL);
+            ATTACK(fighter, 2, 0, Hash40::new("top"), 5.0, 361, 50, 0, 30, 2.2, 0.0, 7.0, 8.0, Some(0.0), Some((grab_y * 11.0) + 7.0), Some(29.5 - z_mod), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_TAIL);
+        }
+        // angle down
+        else {
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 45.0, 25, 10, 0, 70, 2.2, 0.0, (grab_y * 5.0) + 7.0, 24.5 - z_mod, Some(0.0), Some((grab_y * 6.0) + 7.0), Some(29.5 - z_mod), 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -20.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_BODY_HEAD, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_TAIL);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 45.0, 25, 10, 0, 70, 2.2, 0.0, (grab_y * 5.0) + 7.0, 24.5 - z_mod, Some(0.0), Some((grab_y * 6.0) + 7.0), Some(29.5 - z_mod), 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -20.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_TAIL);
+            ATTACK(fighter, 2, 0, Hash40::new("top"), 5.0, 361, 50, 0, 30, 2.2, 0.0, 7.0, 8.0, Some(0.0), Some((grab_y * 6.0) + 7.0), Some(29.5 - z_mod), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_TAIL);
+        }
         if WorkModule::get_int(boma, *FIGHTER_RIDLEY_INSTANCE_WORK_ID_INT_DISABLE_SPECIAL_LW_FINISH_COUNT) <= 0 {
             AttackModule::set_no_dead_all(boma, true, false);
         }
-        ATTACK(fighter, 2, 0, Hash40::new("top"), 5.0, 361, 50, 0, 30, 2.2, 0.0, 7.0, 8.0, Some(0.0), Some(7.0), Some(29.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_TAIL);
-        ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 0, 1, 0.4);
+        ATK_SET_SHIELD_SETOFF_MUL_arg3(fighter, 0, 1, 0.3);
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
@@ -297,6 +314,40 @@ unsafe fn ridley_special_lw_stab_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 1.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "ridley", scripts = ["effect_speciallwstab", "effect_specialairlwstab"], category = ACMD_EFFECT , low_priority )]
+unsafe fn ridley_special_lw_stab_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("tail8"), 4, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        let grab_y = VarModule::get_float(fighter.battle_object, vars::ridley::status::SKEWER_STICK_Y);
+        let mut rot = 0 - ((grab_y * 25.0) as i32);
+        let mut y_mod = if grab_y == 0.0 {0.0} else if grab_y > 0.0 {6.0} else {-3.0};
+        if grab_y < 0.0 {
+            rot = 0 - ((grab_y * 15.0) as i32);
+        }
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("ridley_death_stab_line"), Hash40::new("ridley_death_stab_line"), Hash40::new("top"), 0, 8.0 + y_mod, 18, rot, 0, 0, 0.9, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW(fighter, Hash40::new("ridley_death_stab_flare"), Hash40::new("tail8"), 0, 0, 0, 0, 180, 0, 1, true);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_sp_flash"), Hash40::new("tail8"), 10, -0.0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 32.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, -5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 38.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("ridley_death_stab_flare"), false, true);
     }
 }
 
@@ -510,6 +561,7 @@ pub fn install() {
         ridley_special_air_hi_charge_hi_game,
         ridley_special_air_hi_charge_lw_game,
         ridley_special_lw_stab_game,
+        ridley_special_lw_stab_effect,
         ridley_special_lw_finish_game,
         ridley_special_lw_pogo_game,
         ridley_special_lw_pogo_effect,
