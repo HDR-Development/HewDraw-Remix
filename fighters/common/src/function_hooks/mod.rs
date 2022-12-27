@@ -1,4 +1,5 @@
 use super::*;
+use crate::globals::*;
 pub mod energy;
 pub mod effect;
 pub mod edge_slipoffs;
@@ -129,7 +130,9 @@ unsafe fn run_lua_status_hook(ctx: &skyline::hooks::InlineCtx) {
         let status_module = *(boma as *mut BattleObjectModuleAccessor as *mut u64).add(0x40 / 8) as *const u64;
         let vtable = *(status_module as *const *const u64);
         let status_module__run_lua_status: extern "C" fn(*const u64) = std::mem::transmute(*(((vtable as u64) + 0x68) as *const u64));
+        VarModule::on_flag((*boma).object(), vars::common::instance::UPDATE_MAIN_STATUS_ONLY);
         status_module__run_lua_status(status_module);
+        VarModule::off_flag((*boma).object(), vars::common::instance::UPDATE_MAIN_STATUS_ONLY);
 
         let something_module = *(boma as *mut BattleObjectModuleAccessor as *mut u64).add(0xe8 / 8) as *const u64;
         let vtable = *(something_module as *const *const u64);
@@ -142,7 +145,6 @@ unsafe fn run_lua_status_hook(ctx: &skyline::hooks::InlineCtx) {
         effect_module__idk(effect_module, 1);
     }
 }
-
 
 pub fn install() {
     energy::install();

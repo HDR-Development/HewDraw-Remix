@@ -65,7 +65,7 @@ pub unsafe fn samusd_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-#[smashline::weapon_frame(agent = WEAPON_KIND_SAMUSD_BOMB)]
+#[smashline::weapon_frame(agent = WEAPON_KIND_SAMUSD_BOMB, main)]
 pub fn samusd_bomb_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe {
         let boma = weapon.boma();

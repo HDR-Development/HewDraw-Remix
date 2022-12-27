@@ -69,7 +69,7 @@ pub unsafe fn koopajr_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-#[smashline::weapon_frame( agent = WEAPON_KIND_KOOPAJR_REMAINCLOWN)]
+#[smashline::weapon_frame( agent = WEAPON_KIND_KOOPAJR_REMAINCLOWN, main)]
 pub fn koopajr_weapon_remainclown_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe {
         let boma = weapon.boma();
@@ -84,7 +84,7 @@ pub fn install_remainclown() {
     smashline::install_agent_frame!(koopajr_weapon_remainclown_frame);
 }
 
-#[smashline::weapon_frame( agent = WEAPON_KIND_KOOPAJR_CANNONBALL )]
+#[smashline::weapon_frame( agent = WEAPON_KIND_KOOPAJR_CANNONBALL, main )]
 pub fn koopajr_weapon_frame_wrapper(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe {
         koopajr_weapon_frame(weapon)

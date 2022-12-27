@@ -81,7 +81,7 @@ unsafe fn reel_in(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situa
 }
  
 //Disable grab on fishingrod when pullingback
-#[smashline::weapon_frame_callback]
+#[smashline::weapon_frame_callback(main)]
 pub fn fishingrod_callback(weapon : &mut L2CFighterBase) {
     unsafe {
         let object_id = (*weapon.battle_object).battle_object_id;

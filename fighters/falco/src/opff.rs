@@ -91,7 +91,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     aim_throw_lasers(boma);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_FALCO )]
+#[utils::macros::opff(FIGHTER_KIND_FALCO)]
 pub fn falco_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);

@@ -443,6 +443,8 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
         VarModule::on_flag(fighter.battle_object, vars::common::status::IS_AFTER_DASH_TO_RUN_FRAME);
     }
 
+    interrupt_if!(fighter.sub_transition_group_check_ground_jump().get_bool());
+    
     // Disables dashbacks when stick falls below threshold
     // For ease of moonwalking
     let moonwalk_disable_dashback_stick_y = ParamModule::get_float(fighter.battle_object, ParamType::Common, "moonwalk_disable_dashback_stick_y");
@@ -482,8 +484,6 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
             }
         }
     }
-
-    interrupt_if!(fighter.sub_transition_group_check_ground_jump().get_bool());
 
     interrupt_if!(
         arg.get_bool() &&

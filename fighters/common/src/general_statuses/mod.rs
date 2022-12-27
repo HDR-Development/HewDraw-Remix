@@ -165,7 +165,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_transition_group_check_air_escape,
             sub_transition_group_check_ground_escape,
             sub_transition_group_check_ground_guard,
-            sub_transition_group_check_ground
+            sub_transition_group_check_ground,
+            sys_line_status_system_control_hook
         );
     }
 }
@@ -216,6 +217,7 @@ pub unsafe fn status_pre_landing_fall_special(fighter: &mut L2CFighterCommon) ->
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_Landing_MainSub)]
 pub unsafe fn status_Landing_MainSub(fighter: &mut L2CFighterCommon) -> L2CValue {
+    println!("landing main sub");
     let boma = app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
 
     if StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_ESCAPE_AIR || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
@@ -402,6 +404,21 @@ unsafe fn sub_transition_group_check_ground(fighter: &mut L2CFighterCommon, to_s
         }
     }
     false.into()
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterBase_sys_line_status_system_control)]
+pub unsafe fn sys_line_status_system_control_hook(fighter: &mut L2CFighterBase) -> L2CValue {
+    println!("status sys control");
+    if VarModule::is_flag(fighter.battle_object, vars::common::instance::UPDATE_MAIN_STATUS_ONLY) {
+        let situation_kind = StatusModule::situation_kind(fighter.module_accessor);
+        fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(situation_kind));
+        fighter.global_table[0xD].assign(&L2CValue::Bool(false));
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::UPDATE_MAIN_STATUS_ONLY);
+        0.into()
+    }
+    else {
+        call_original!(fighter)
+    }
 }
 
 pub fn install() {
