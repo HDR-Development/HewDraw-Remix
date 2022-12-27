@@ -13,6 +13,8 @@ pub unsafe fn end_run(fighter: &mut L2CFighterCommon) -> L2CValue {
 pub unsafe fn buddy_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     if (fighter.is_situation(*SITUATION_KIND_AIR) )
     {
+        GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_NONE));
+        GroundModule::set_attach_ground(fighter.module_accessor, false);
         if (WorkModule::is_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_FAIL))
         {
             fighter.change_status(
@@ -38,6 +40,11 @@ pub unsafe fn buddy_special_s_dash_pre(fighter: &mut L2CFighterCommon) -> L2CVal
     if (fighter.is_situation(*SITUATION_KIND_AIR))
     {
         return false.into();
+    }
+    else if (fighter.is_prev_situation(*SITUATION_KIND_AIR))
+    {
+        fighter.change_status(FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL.into(), false.into());
+        return true.into();
     }
     return original!(fighter);
 }

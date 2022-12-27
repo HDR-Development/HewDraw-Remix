@@ -1,3 +1,5 @@
+use smash::app::sv_animcmd::EFFECT_WORK;
+
 use super::*;
 
 
@@ -17,7 +19,8 @@ pub fn install() {
         buddy_special_air_s_dash_effect,
         buddy_special_air_s_dash_sound,
         buddy_special_air_s_wall_game,
-        buddy_special_air_s_wall_sound
+        buddy_special_air_s_wall_sound,
+        buddy_special_air_s_wall_effect
     );
 }
 
@@ -238,7 +241,7 @@ unsafe fn buddy_special_air_s_start_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         let play_vc = app::sv_math::rand(hash40("fighter"), 3);
         if play_vc == 0 {
-            PLAY_SE(fighter, Hash40::new("vc_buddy_smash_h01_vc"));
+            PLAY_SE(fighter, Hash40::new("vc_buddy_attack05"));
         }
     }
     frame(lua_state, 4.0);
@@ -252,14 +255,13 @@ unsafe fn buddy_special_air_s_dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;    
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        PLAY_STATUS(fighter, Hash40::new("se_buddy_smash_h06"));
-        //PLAY_STATUS(fighter, Hash40::new("vc_buddy_attackhard_l01"));
+        PLAY_STATUS(fighter, Hash40::new("se_buddy_appear_s02"));
     }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
-        let play_vc = app::sv_math::rand(hash40("fighter"), 100);
+        let play_vc = app::sv_math::rand(hash40("fighter"), 3);
         if play_vc == 0 {
-            //PLAY_SE(fighter, Hash40::new("vc_buddy_damage_twinkle"));
+            PLAY_SE(fighter, Hash40::new("vc_buddy_smash_h01_vc"));
         }
     }
     frame(lua_state, 3.0);
@@ -335,22 +337,21 @@ unsafe fn buddy_special_air_s_start_game(fighter: &mut L2CAgentBase) {
             set_accel,
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            0.05
+            0.0
         );
-        SET_SPEED_EX(fighter, -0.5, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        //FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.0, 6.0);
+        SET_SPEED_EX(fighter, -0.5, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
     frame(lua_state, 8.0);
     FT_MOTION_RATE(fighter, 2.0);
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        SET_SPEED_EX(fighter, 0, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        SET_SPEED_EX(fighter, 0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
     FT_MOTION_RATE(fighter, 1.0);
 
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        SET_SPEED_EX(fighter, 2.0, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        SET_SPEED_EX(fighter, 2.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
     //6 frames of armor
     frame(lua_state, 14.0);
@@ -420,5 +421,21 @@ unsafe fn buddy_special_air_s_wall_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 47.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_LANDING_HEAVY);
+    }
+}
+#[acmd_script( agent = "buddy", script = "effect_specialairswall", category = ACMD_EFFECT )]
+unsafe fn buddy_special_air_s_wall_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent; 
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state); 
+    let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD);
+    let lr = PostureModule::lr(boma)==0.0;
+
+    let size = if (has_hit_shield) {0.5} else {0.75};
+    let xRot = if (lr) {-90.0} else {90.0};
+    let yRot = if (lr) {0.0} else {180.0};
+
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("buddy_special_s_wall"), Hash40::new("top"), 5, 12.5, 0, xRot, yRot, 0, size, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW_WORK(fighter, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_EFFECT_KIND_SCATTER, Hash40::new("top"), -7, 12.5, 0, xRot, yRot, 0, 1, false);
     }
 }

@@ -41,9 +41,14 @@ unsafe fn buddy_attack_hi3_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        AttackModule::clear(boma,0,false);
+        AttackModule::clear(boma,1,false);
         HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_NORMAL);
         HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_NORMAL);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
     }
 }
 #[acmd_script( agent = "buddy", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
@@ -59,6 +64,7 @@ unsafe fn buddy_attack_hi3_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 4, 11.5, 6, 0, 4, 115, 0.9, true, *EF_FLIP_YZ);
         //Kazooie
         EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), -0.25, 14, 1.5, 180, 4, 76, 0.8, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(fighter,0.5);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
