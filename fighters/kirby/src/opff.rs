@@ -16,15 +16,15 @@ unsafe fn final_cutter_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, 
 
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_HI2 {
         if frame < 5.0 { // earliest point to buffer dive
-            VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
+            VarModule::on_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_CANCEL);
         } else if frame < 14.0 { // latest point to buffer dive
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-                // MotionModule::set_frame_sync_anim_cmd(boma, 16.0, true, true, false);
-                VarModule::off_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
+                VarModule::off_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_CANCEL);
             }
         } else { // actual dive (frame after previous block)
-            if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL) {
+            if VarModule::is_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_CANCEL) {
                 if VarModule::is_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_HIT) {
+                    VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
                 } else {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
