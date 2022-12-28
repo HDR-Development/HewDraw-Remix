@@ -15,7 +15,6 @@ use smash_script::*;
 use crate::misc::*;
 use globals::*;
 use crate::util::get_fighter_common_from_accessor;
-use crate::function_hooks::collision::RESET_AIRTIME;
 
 unsafe fn hitstun_overlay_orange(boma: &mut BattleObjectModuleAccessor, id: usize) {
     let cmb_vec1 = Vector4f{x: 0.949, y: 0.5137, z: 0.08643, w: 0.69};
@@ -151,19 +150,11 @@ pub unsafe fn ecb_shift_disabled_motions(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe fn reset_airtime(boma: &mut BattleObjectModuleAccessor) {
-    if RESET_AIRTIME {
-        WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
-        RESET_AIRTIME = false;
-    }
-}
-
 pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     
     airdodge_refresh_on_hit_disable(boma, status_kind);
     suicide_throw_mashout(fighter, boma);
     cliff_xlu_frame_counter(fighter);
     ecb_shift_disabled_motions(fighter);
-    reset_airtime(boma);
 }
 

@@ -106,12 +106,12 @@ unsafe fn groundcollision__processgroundcollisioninfo_check_landing(groundcollis
     && prev_touch_pos_y == 0.0
     && touch_pos_y != 0.0
     && ecb_offset_y != 0.0
+    && lua_bind::BattleObjectSlow::is_adjust(utils::singletons::BattleObjectSlow())
     {
         // When landing, sets your position to the coordinates of the surface you are landing on
         *groundcollisioninfo.add(0x634 / 4) = touch_pos_y;
         // Reset ECB offset to 0.0
         *groundcollisioninfo.add(0x3d4 / 4) = 0.0;
-        RESET_AIRTIME = true;
     }
 }
 // Sets GroundCollisionLine
