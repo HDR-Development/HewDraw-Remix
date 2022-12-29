@@ -62,7 +62,7 @@ unsafe fn wonderwing_fail(fighter: &mut L2CFighterCommon){
 unsafe fn dash_attack_jump_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH
     && situation_kind == *SITUATION_KIND_AIR
-    && MotionModule::frame(boma) >= 27.0 {
+    && MotionModule::frame(boma) >= 26.0 {
         fighter.check_jump_cancel();
     }
 }
@@ -238,9 +238,6 @@ unsafe fn beakbomb_wall(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
     if fighter.is_motion(Hash40::new("special_air_s_wall"))
     && fighter.motion_frame() < start_frame
     && fighter.motion_frame() > 0.0 {
-
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL); 
-        KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         //WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         let x_bounce = match VarModule::get_int(boma.object(), vars::buddy::instance::BEAKBOMB_BOUNCE){
             0=> -1.0,
