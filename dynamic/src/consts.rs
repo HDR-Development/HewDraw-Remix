@@ -159,7 +159,7 @@ pub mod vars {
 
             pub const IS_GETTING_POSITION_FOR_ECB: i32 = 0x0055;
 
-            pub const UPDATE_MAIN_STATUS_ONLY: i32 = 0x0056;
+            pub const CHECK_CHANGE_MOTION_ONLY: i32 = 0x0056;
 
             // ints
 

@@ -164,7 +164,6 @@ unsafe extern "C" fn status_Jump_Main(fighter: &mut L2CFighterCommon) -> L2CValu
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon15status_Jump_subEN3lib8L2CValueES2_")]
 unsafe extern "C" fn status_Jump_sub(fighter: &mut L2CFighterCommon, arg1: L2CValue, arg2: L2CValue) -> L2CValue {
     let mut x_vel = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
-    println!("x vel: {}", x_vel);
 
     ControlModule::reset_flick_y(fighter.module_accessor);
     ControlModule::reset_flick_sub_y(fighter.module_accessor);

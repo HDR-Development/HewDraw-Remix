@@ -394,8 +394,6 @@ unsafe fn control_initialize(energy: &mut FighterKineticEnergyControl, boma: &mu
             energy.speed_limit = PaddedVec2::new(air_x_speed_max, 0.0);
             energy.accel_mul_x = WorkModule::get_param_float(boma, smash::hash40("air_accel_x_mul"), 0);
             energy.accel_add_x = WorkModule::get_param_float(boma, smash::hash40("air_accel_x_add"), 0);
-
-            println!("energy.speed.x {}", energy.speed.x);
         },
         FlyAdjust => {
             let kind = app::utility::get_kind(boma);

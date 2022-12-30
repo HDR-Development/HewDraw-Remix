@@ -244,7 +244,6 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
 
     // `angle_whole` is the angle to rotate the energy by, regardless of whether or not its reset type is AirTransAngle
     if energy.angle_whole != 0.0 {
-        println!("Rotating on angle whole: {}", energy.angle_whole);
         move_speed.x = move_speed.x * energy.angle_whole.cos() - move_speed.y * energy.angle_whole.sin();
         move_speed.y = move_speed.y * energy.angle_whole.cos() + move_speed.x * energy.angle_whole.sin();
     }
@@ -269,9 +268,6 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
     if !energy.update_flag {
         if move_speed.x == 0.0 {
             move_speed.x = energy.prev_speed.x;
-        }
-        if reset_type.is_air() && move_speed.y == 0.0 {
-            move_speed.y = energy.prev_speed.y;
         }
     }
 
@@ -320,12 +316,10 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
         // This multiplies by the angle set with (afaik) app::sv_kinetic_energy::set_angle
         // Set angle whole is used regardless of the energy reset type
         AirTransAngle => {
-            println!("Rotating on angle: {}", energy.angle);
-            energy.active_flag = true;
             PaddedVec2::new(
                 move_speed.x * energy.angle.cos() - move_speed.y * energy.angle.sin(),
                 move_speed.y * energy.angle.cos() + move_speed.x * energy.angle.sin()
-            )    
+            )
         },
 
         // Here we zero out the X speed and literally only use the Y speed. Epic!
@@ -338,19 +332,23 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
             let stick_x = ControlModule::get_stick_x(boma);
             let dir = WorkModule::get_float(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_FLOAT_CONST_DIR_STICK_X);
             let angle = if stick_x.abs() <= dir {
-                -energy.angle
+                energy.angle
             } else {
                 let interp = (stick_x.abs() - dir) / (1.0 - dir);
                 let interp = interp * WorkModule::get_float(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_FLOAT_CONST_DIR_MUL);
-                let new_angle = -interp.to_radians();
+                let new_angle = if stick_x <= 0.0 {
+                    interp.to_radians()
+                } else {
+                    -interp.to_radians()
+                };
                 if energy.angle.abs() < new_angle.abs() {
                     energy.angle = new_angle;
                 }
                 energy.angle
             };
             PaddedVec2::new(
-                move_speed.x * angle.cos() + move_speed.y * angle.sin(),
-                move_speed.y * angle.cos() - move_speed.x * angle.sin()
+                move_speed.x * angle.cos() - move_speed.y * energy.angle.sin(),
+                move_speed.y * angle.cos() + move_speed.x * energy.angle.sin()
             )
         },
 
@@ -369,6 +367,9 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
                 z: vec.z,
                 w: vec.w
             };
+            if reset_type == CliffTransGround {
+                energy.active_flag = true;
+            }
             let vec = handle_cliff(boma, &vec);
             if reset_type == CliffTransIntp {
                 let frame = WorkModule::get_int(boma, 0x11000005);
@@ -381,6 +382,7 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
 
         // LadderMove appears to be for when you are actually moving up/down the later
         LadderMove => {
+            energy.active_flag = true;
             let stick_y = ControlModule::get_stick_y(boma);
             let speed_y = if 0.5 <= stick_y.abs() {
                 if stick_y <= 0.0 {
@@ -400,6 +402,7 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
         // The reason I say this, is due to a bug in reimplementation, when you would get off the ladder you
         // would meet god in the top blastzone
         LadderTrans => {
+            energy.active_flag = true;
             let ladder_end_y = WorkModule::get_float(boma, *FIGHTER_STATUS_LADDER_WORK_FLOAT_LADDER_END_Y);
             let ladder_end_start_y = WorkModule::get_float(boma, *FIGHTER_STATUS_LADDER_WORK_FLOAT_LADDER_END_START_Y);
             let mut vec = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
@@ -413,7 +416,6 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
 
     // It is unclear to me why this specific case is handled so explicitly, but it is
     if reset_type.is_ground() && energy.update_flag && speed.x == 0.0 && energy.prev_speed.x == 0.0 {
-        println!("special case");
         energy.set_values_and_process(
             PaddedVec2::zeros(),
             PaddedVec2::zeros(),
@@ -423,7 +425,6 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
         return;
     }
 
-    println!("motion {} {}", energy.speed.x, speed.x);
     // energy.update_flag determines whether or not we have gone for at least a frame of movement
     // Here are the two possible situations for when this code gets run:
     // 1.) This is the first frame of motion energy since our energy change. I will take, for example,
@@ -432,24 +433,22 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
     //      so that is what you want to change from
     // 2.) This is not the first frame of motion energy, so you have a previous frame's energy to change from
     let speed_to_change_from = if energy.update_flag {
-        println!("true");
         energy.prev_speed
     } else {
-        println!("false");
         energy.update_flag = true;
         energy.speed
     };
 
-    println!("accel = {}", speed.x - speed_to_change_from.x);
-
     // Since acceleration is just the difference in speed between two frames, just subtract where we want to be 
     // and where we were/are
-    energy.set_values_and_process(
-        PaddedVec2::new(speed.x - speed_to_change_from.x, speed.y - speed_to_change_from.y),
-        PaddedVec2::new(-1.0, -1.0),
-        speed,
-        boma
-    );
+    energy.accel = PaddedVec2::new(speed.x - speed_to_change_from.x, speed.y - speed_to_change_from.y);
+    energy.speed_max = PaddedVec2::new(-1.0, -1.0);
+    if reset_type.is_air() {
+        energy.speed.x = 0.0;
+    }
+    energy.process(boma);
+    energy.active_flag = true;
+    energy.prev_speed = speed;
 }
 
 pub fn install() {
