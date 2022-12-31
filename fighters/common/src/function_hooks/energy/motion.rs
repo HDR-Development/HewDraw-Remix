@@ -265,8 +265,8 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
     // the following flag is set for the same reset types mentioned in the above LR check, except for AirTransAngleSuperJumpPunch
     energy.active_flag = false;
 
-    if !energy.update_flag {
-        if move_speed.x == 0.0 {
+    if reset_type.is_ground() && !energy.update_flag {
+        if move_speed.x.abs() < 0.1 {
             move_speed.x = energy.prev_speed.x;
         }
     }
@@ -441,14 +441,12 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
 
     // Since acceleration is just the difference in speed between two frames, just subtract where we want to be 
     // and where we were/are
-    energy.accel = PaddedVec2::new(speed.x - speed_to_change_from.x, speed.y - speed_to_change_from.y);
-    energy.speed_max = PaddedVec2::new(-1.0, -1.0);
-    if reset_type.is_air() {
-        energy.speed.x = 0.0;
-    }
-    energy.process(boma);
-    energy.active_flag = true;
-    energy.prev_speed = speed;
+    energy.set_values_and_process(
+        PaddedVec2::new(speed.x - speed_to_change_from.x, speed.y - speed_to_change_from.y),
+        PaddedVec2::new(-1.0, -1.0),
+        speed,
+        boma
+    );
 }
 
 pub fn install() {

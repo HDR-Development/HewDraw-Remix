@@ -46,6 +46,11 @@ unsafe fn battleobject__call_update_movement(ctx: &skyline::hooks::InlineCtx) {
     let vtable = *(item_module as *const *const u64);
     let item_module__something: extern "C" fn(*const u64) = std::mem::transmute(*(((vtable as u64) + 0x50) as *const u64));
     item_module__something(item_module);
+    
+    let physics_module = *(boma as *mut BattleObjectModuleAccessor as *mut u64).add(0x80 / 8) as *const u64;
+    let vtable = *(physics_module as *const *const u64);
+    let physics_module__update_rope_matrix: extern "C" fn(*const u64, bool, bool) = std::mem::transmute(*(((vtable as u64) + 0x60) as *const u64));
+    physics_module__update_rope_matrix(physics_module, false, false);
 
     let motion_module = *(boma as *mut BattleObjectModuleAccessor as *mut u64).add(0x88 / 8) as *const u64;
     let vtable = *(motion_module as *const *const u64);
@@ -96,6 +101,11 @@ unsafe fn battleobject__call_update_movement_stop(ctx: &skyline::hooks::InlineCt
     let vtable = *(slow_module as *const *const u64);
     let slow_module__is_skip: extern "C" fn(*const u64) -> bool = std::mem::transmute(*(((vtable as u64) + 0xb0) as *const u64));
     let is_skip = slow_module__is_skip(slow_module);
+
+    let physics_module = *(boma as *mut BattleObjectModuleAccessor as *mut u64).add(0x80 / 8) as *const u64;
+    let vtable = *(physics_module as *const *const u64);
+    let physics_module__update_rope_matrix: extern "C" fn(*const u64, bool, bool) = std::mem::transmute(*(((vtable as u64) + 0x60) as *const u64));
+    physics_module__update_rope_matrix(physics_module, false, false);
 
     let ground_module = *(boma as *mut BattleObjectModuleAccessor as *mut u64).add(0x58 / 8) as *const u64;
     let vtable = *(ground_module as *const *const u64);
@@ -188,7 +198,14 @@ unsafe fn run_lua_status_hook(ctx: &skyline::hooks::InlineCtx) {
             let vtable = *(item_module as *const *const u64);
             let item_module__something: extern "C" fn(*const u64) = std::mem::transmute(*(((vtable as u64) + 0x50) as *const u64));
             item_module__something(item_module);
+        }
 
+        let physics_module = *(boma as *mut BattleObjectModuleAccessor as *mut u64).add(0x80 / 8) as *const u64;
+        let vtable = *(physics_module as *const *const u64);
+        let physics_module__update_rope_matrix: extern "C" fn(*const u64, bool, bool) = std::mem::transmute(*(((vtable as u64) + 0x60) as *const u64));
+        physics_module__update_rope_matrix(physics_module, false, false);
+
+        if !is_stop {
             let motion_module = *(boma as *mut BattleObjectModuleAccessor as *mut u64).add(0x88 / 8) as *const u64;
             let vtable = *(motion_module as *const *const u64);
             let motion_module__something: extern "C" fn(*const u64) = std::mem::transmute(*(((vtable as u64) + 0x208) as *const u64));
@@ -266,6 +283,7 @@ pub fn install() {
         // These functions are run separately in run_lua_status_hook
         skyline::patching::Patch::in_text(0x3a8518).nop();
         skyline::patching::Patch::in_text(0x3a8528).nop();
+        skyline::patching::Patch::in_text(0x3a8540).nop();
         skyline::patching::Patch::in_text(0x3a8568).nop();
         skyline::patching::Patch::in_text(0x3a859c).nop();
         skyline::patching::Patch::in_text(0x3a85b0).nop();
