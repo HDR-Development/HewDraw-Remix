@@ -92,13 +92,13 @@ unsafe fn nana_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     for _ in 0..3 {
         if is_excute(fighter) {
-            EFFECT_ALPHA(fighter, Hash40::new("sys_spin_wind"), Hash40::new("havel"), 0, 7.5, 0, 0, 0, 0, 0.6, 0, 7, 0, 0, 360, 0, true, 0.4);
+            EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_spin_wind"), Hash40::new("havel"), 0.0, 7.5, 0.0, 0.0, 0.0, 0.0, 0.6, true, 0.4);
         }
         wait(lua_state, 5.0);
     }
     frame(lua_state, 32.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 17.0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0.0, 17.0, 0.0, 0.0, 0.0, 0.0, 1.5, true);
     }
 }
 
