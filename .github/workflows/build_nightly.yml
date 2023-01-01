@@ -247,7 +247,7 @@ jobs:
 
     # get the nightly
     - id: latest_nightly
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       with:
         repository: "HDR-Development/HDR-Nightlies"
         tag: ${{ needs.version_and_changelog.outputs.version }}
@@ -312,7 +312,7 @@ jobs:
 
     # get the beta
     - id: latest_beta
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       with:
         repository: "HDR-Development/HDR-Releases"
         latest: true
