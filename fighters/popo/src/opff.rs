@@ -95,22 +95,20 @@ unsafe fn voluntary_sopo(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         return;
     }
 
+    let nana = nana_boma[id] as *mut BattleObjectModuleAccessor;
     if VarModule::is_flag(boma.object(), vars::iceclimbers::instance::IS_VOLUNTARY_SOPO) {
-        let nana = nana_boma[id] as *mut BattleObjectModuleAccessor;
-        if (*nana).is_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY]) {
-            StatusModule::change_status_request(nana, *FIGHTER_STATUS_KIND_DEAD, false);
-        }
         if (*nana).is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH]) {
             StatusModule::change_status_request(nana, *FIGHTER_STATUS_KIND_STANDBY, false);
         }
         return;
     }
 
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY])
-    && ninput::any::is_press(ninput::Buttons::DOWN)
-    && ninput::any::is_press(ninput::Buttons::L)
-    && ninput::any::is_press(ninput::Buttons::R) {
+    if fighter.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY])
+    && fighter.is_button_on(Buttons::Guard) 
+    && fighter.is_button_on(Buttons::Special) 
+    && fighter.is_button_on(Buttons::AppealLw) {
         VarModule::on_flag(boma.object(), vars::iceclimbers::instance::IS_VOLUNTARY_SOPO);
+        StatusModule::change_status_request(nana, *FIGHTER_STATUS_KIND_DEAD, false);
     }
 }
 
