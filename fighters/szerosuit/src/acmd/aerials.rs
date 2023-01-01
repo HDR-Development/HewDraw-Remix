@@ -195,7 +195,7 @@ unsafe fn szerosuit_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("szero_smash_fire_02"), Hash40::new("toer"), 0, -0.7, 0, 0, 0, 0, 0.6, true);
-        EFFECT_FOLLOW(fighter, Hash40::new("szero_atk_air_hi"), Hash40::new("top"), 0, 14.0, -1.0, -5.8, 45, 92.4, 0.85, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("szero_atk_air_hi"), Hash40::new("top"), 0, 9.5, -1.0, -5.8, 45, 92.4, 0.85, true);
         LAST_EFFECT_SET_RATE(fighter, 0.8);
     }
     frame(lua_state, 16.0);
