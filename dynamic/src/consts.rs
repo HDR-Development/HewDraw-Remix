@@ -875,6 +875,13 @@ pub mod vars {
         }
     }
 
+    pub mod iceclimbers {
+        pub mod instance {
+            //flags
+            pub const IS_VOLUNTARY_SOPO: i32 = 0x0100;
+        }
+    }
+
 }
 
 pub mod statuses {

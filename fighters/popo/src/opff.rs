@@ -80,6 +80,30 @@ unsafe fn nana_death_effect(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
     }
 }
 
+unsafe fn voluntary_sopo(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
+    if fighter.kind() != *FIGHTER_KIND_POPO {
+        return;
+    }
+
+    if VarModule::is_flag(boma.object(), vars::iceclimbers::instance::IS_VOLUNTARY_SOPO) {
+        let nana = nana_boma[id] as *mut BattleObjectModuleAccessor;
+        if (*nana).is_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY]) {
+            StatusModule::change_status_request(nana, *FIGHTER_STATUS_KIND_DEAD, false);
+        }
+        if (*nana).is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH]) {
+            StatusModule::change_status_request(nana, *FIGHTER_STATUS_KIND_STANDBY, false);
+        }
+        return;
+    }
+
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY])
+    && ninput::any::is_press(ninput::Buttons::DOWN)
+    && ninput::any::is_press(ninput::Buttons::L)
+    && ninput::any::is_press(ninput::Buttons::R) {
+        VarModule::on_flag(boma.object(), vars::iceclimbers::instance::IS_VOLUNTARY_SOPO);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     // nothing lol
 }
@@ -99,6 +123,7 @@ pub unsafe fn ice_climbers_moveset(fighter: &mut L2CFighterCommon, boma: &mut Ba
     get_nana_boma(fighter, boma, id);
     nana_death_effect(fighter, boma, id, status_kind, frame);
     dair_bounce(fighter, boma, motion_kind, frame);
+    voluntary_sopo(fighter, boma, id, status_kind, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_POPO )]
