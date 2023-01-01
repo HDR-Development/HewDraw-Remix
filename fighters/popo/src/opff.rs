@@ -12,9 +12,19 @@ unsafe fn dair_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
         AttackModule::clear_all(boma);
 
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-        SET_SPEED_EX(fighter, 0, 1.7, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            SET_SPEED_EX(fighter, 0, 1.7, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            if fighter.kind() == *FIGHTER_KIND_POPO {
+                PLAY_SE(fighter, Hash40::new("vc_popo_attack04"));
+            } else if fighter.kind() == *FIGHTER_KIND_NANA {
+                PLAY_SE(fighter, Hash40::new("vc_nana_attack04"));
+            } 
         } else if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
-        SET_SPEED_EX(fighter, 0, 0.85, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            SET_SPEED_EX(fighter, 0, 0.85, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            if fighter.kind() == *FIGHTER_KIND_POPO {
+                PLAY_SE(fighter, Hash40::new("vc_popo_attack04"));
+            } else if fighter.kind() == *FIGHTER_KIND_NANA {
+                PLAY_SE(fighter, Hash40::new("vc_nana_attack04"));
+            } 
         }
     }
 }
