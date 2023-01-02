@@ -166,8 +166,7 @@ unsafe fn beakbomb_check(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     ].contains(&status);
     let side_special_dash = fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH);
     let side_special_wall = fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_WALL);
-    let in_Air = fighter.is_prev_situation(*SITUATION_KIND_AIR);
-    
+    let in_Air = fighter.is_situation(*SITUATION_KIND_AIR);
 	if (status == *FIGHTER_STATUS_KIND_SPECIAL_S && in_Air)
 	{
         GroundModule::set_attach_ground(fighter.module_accessor, false);
@@ -192,6 +191,10 @@ unsafe fn beakbomb_check(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         VarModule::add_int(boma.object(), vars::buddy::instance::BEAKBOMB_FRAME,1);
         beakbomb_checkForHit(fighter,boma);
         beakbomb_control(fighter,boma);
+    }
+    else if (side_special_dash && !in_Air)
+    {
+        GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
     }
     else if (side_special_wall)
     {
@@ -377,7 +380,7 @@ unsafe fn buddy_meter_display(fighter: &mut L2CFighterCommon, boma: &mut BattleO
 }
 unsafe fn buddy_meter_controller(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
     let status = StatusModule::status_kind(fighter.module_accessor);
-    let in_Air = fighter.is_prev_situation(*SITUATION_KIND_AIR);
+    let in_Air = fighter.is_situation(*SITUATION_KIND_AIR);
 	if (VarModule::get_float(boma.object(), vars::buddy::instance::FEATHERS_RED_COOLDOWN)>0.0)
 	{
 		let cool = if (in_Air) {1.0} else {FEATHERS_RED_COOLDOWN_GROUND_RATE};
