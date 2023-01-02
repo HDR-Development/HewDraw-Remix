@@ -162,7 +162,7 @@ unsafe fn effect_air_b(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 9, -19, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 360, true);
+        EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 7, -19, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 360, true);
     }
 }
 
