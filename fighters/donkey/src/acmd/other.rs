@@ -170,7 +170,7 @@ unsafe fn heavy_item_throw_f(fighter: &mut L2CAgentBase) {
   let lua_state = fighter.lua_state_agent;
   let boma = fighter.boma();
   if is_excute(fighter) {
-    FT_MOTION_RATE(fighter, 1.0);
+    FT_MOTION_RATE(fighter, 0.75);
   }
   frame(lua_state, 16.0);
   if is_excute(fighter) {
@@ -183,7 +183,7 @@ unsafe fn heavy_item_throw_b(fighter: &mut L2CAgentBase) {
   let lua_state = fighter.lua_state_agent;
   let boma = fighter.boma();
   if is_excute(fighter) {
-    FT_MOTION_RATE(fighter, 1.0);
+    FT_MOTION_RATE(fighter, 0.75);
   }
   frame(lua_state, 18.0);
   if is_excute(fighter) {
