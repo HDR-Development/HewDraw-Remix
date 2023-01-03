@@ -127,7 +127,7 @@ unsafe fn beakbomb_control(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
     KineticModule::add_speed_outside(fighter.module_accessor, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
 
 }
-unsafe fn beakbomb_update(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
+unsafe fn beakbomb_update(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor,status: i32){
     let sideSpecial = [
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH,
@@ -217,19 +217,19 @@ unsafe fn beakbomb_checkForFail(fighter: &mut L2CFighterCommon, boma: &mut Battl
             {DamageModule::add_damage(fighter.module_accessor, 10.0,0);}
 
         KineticModule::clear_speed_all(fighter.module_accessor);
-        fighter.change_status_req(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL, false);
+        fighter.change_status_req(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL, true);
         PLAY_SE(fighter, Hash40::new("vc_buddy_missfoot01"));
     }
     else
     {
-        fighter.change_status_req(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_END, false);
+        fighter.change_status_req(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_END, true);
     }
 
 }
 
-unsafe fn breegull_bayonet(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
-    let status = StatusModule::status_kind(fighter.module_accessor);
+unsafe fn breegull_bayonet(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor,status: i32){
     let entry = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    let in_Hitstop = SlowModule::frame(fighter.module_accessor, *FIGHTER_SLOW_KIND_HIT) > 0;
 
     if (VarModule::is_flag(boma.object(), vars::buddy::instance::BAYONET_ACTIVE))
     {
@@ -263,6 +263,9 @@ unsafe fn breegull_bayonet(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         let currentEggs = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_N_BAKYUN_BULLET_SHOOT_COUNT);
         //VarModule::set_int(boma.object(), vars::buddy::instance::BAYONET_EGGS,currentEggs);
         BAYONET_EGGS[entry] = currentEggs;
+    }
+    else if in_Hitstop {
+        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST));
     }
 }
 
@@ -325,8 +328,11 @@ unsafe fn buddy_meter_display(fighter: &mut L2CFighterCommon, boma: &mut BattleO
 	}
 }
 //This causes vectoring?
-unsafe fn buddy_meter_controller(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
-    let status = StatusModule::status_kind(fighter.module_accessor);
+unsafe fn buddy_meter_controller(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor,status: i32){
+    if (status == *FIGHTER_STATUS_KIND_WIN) { 
+		EffectModule::kill_kind(boma, Hash40::new("buddy_special_s_count"), false, true);
+        return;
+    }
     let in_Air = fighter.is_situation(*SITUATION_KIND_AIR);
 	if (VarModule::get_float(boma.object(), vars::buddy::instance::FEATHERS_RED_COOLDOWN)>0.0)
 	{
@@ -399,6 +405,7 @@ unsafe fn training_reset(fighter: &mut L2CFighterCommon,boma: &mut BattleObjectM
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+
     dair_bounce(fighter);
     //wonderwing_fail(fighter);
     blue_eggs_land_cancels(fighter);
@@ -406,9 +413,9 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     dash_attack_jump_cancels(fighter, boma, status_kind, situation_kind);
     indicator_breegull_fatigue(fighter);
 
-    beakbomb_update(fighter,boma);
-    breegull_bayonet(fighter,boma);
-    buddy_meter_controller(fighter,boma);
+    beakbomb_update(fighter,boma,status_kind);
+    breegull_bayonet(fighter,boma,status_kind);
+    buddy_meter_controller(fighter,boma,status_kind);
     training_reset(fighter,boma);
 
     if boma.is_status_one_of(&[

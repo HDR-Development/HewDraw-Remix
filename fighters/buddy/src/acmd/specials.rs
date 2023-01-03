@@ -169,7 +169,18 @@ unsafe fn buddy_special_air_s_dash_expression(fighter: &mut L2CAgentBase) {
 unsafe fn buddy_special_air_s_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent; 
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state); 
-
+    
+    
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("buddy_special_s_start"), Hash40::new("rot"), -2, -2, -14, 0, 0, 0, 0.75, true);
+        LAST_EFFECT_SET_COLOR(fighter,1,0.5,0);
+    }
+    frame(fighter.lua_state_agent, 2.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("buddy_special_s_hold"), Hash40::new("virtualcenter"), 1.5, 0, 0, 0, 0, 0, 0.75, true);
+        LAST_EFFECT_SET_COLOR(fighter,1,0.5,0);
+        EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
+    }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0.4, 0, 0.2);
@@ -199,6 +210,7 @@ unsafe fn buddy_special_air_s_dash_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_COLOR(fighter, 1, 0.3, 0);
         
         EFFECT_FLW_POS(fighter, Hash40::new("buddy_special_s_flash2"), Hash40::new("k_head"), -1, 0, -4, 0, 0, 0, 0.5, true);
+        LAST_EFFECT_SET_COLOR(fighter,1,0.5,0);
         EffectModule::enable_sync_init_pos_last(boma);
     }
 
@@ -238,7 +250,10 @@ unsafe fn buddy_special_air_s_start_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent; 
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state); 
     
-    //WorkModule::is_flag(boma, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_FAIL);
+    frame(lua_state, 1.0);
+    if is_excute(fighter) && !WorkModule::is_flag(boma, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_FAIL){
+        PLAY_SE(fighter, Hash40::new("se_buddy_special_s01"));
+    }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         let play_vc = app::sv_math::rand(hash40("fighter"), 3);
@@ -248,7 +263,7 @@ unsafe fn buddy_special_air_s_start_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_buddy_special_s04_01"));
+        PLAY_SE(fighter, Hash40::new("se_buddy_special_s01"));
     }
 }
 
@@ -257,7 +272,7 @@ unsafe fn buddy_special_air_s_dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;    
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        PLAY_STATUS(fighter, Hash40::new("se_buddy_appear_s02"));
+        PLAY_STATUS(fighter, Hash40::new("se_buddy_special_s05"));
     }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
@@ -269,7 +284,6 @@ unsafe fn buddy_special_air_s_dash_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_common_throw_02"));
-        //se_common_blowaway_s,se_common_throw_02
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {

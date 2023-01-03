@@ -22,6 +22,7 @@ pub unsafe fn buddy_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
                 L2CValue::I32(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL),
                 L2CValue::Bool(true)
             );
+            PLAY_SE(fighter, Hash40::new("se_buddy_special_s04_02"));
             return false.into();
         }
     }
@@ -106,6 +107,7 @@ pub unsafe extern "C" fn bayonet_end_end(fighter: &mut L2CFighterCommon) -> L2CV
     // re-enable energies and remove the screenwide effect
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+
     0.into()
 }
 
