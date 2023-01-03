@@ -85,8 +85,8 @@ unsafe fn salty_check(fighter: &mut L2CFighterCommon) -> bool {
 pub unsafe fn moveset_edits(fighter: &mut L2CFighterCommon, info: &FrameInfo) {
     let boma = &mut *info.boma;
 
-    // fighter.set_cliff_xlu_frame(10.0.into());
-
+    // allow ledge regrab iframes
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CLIFF_XLU);
 
     // General Engine Edits
     if salty_check(fighter) {
