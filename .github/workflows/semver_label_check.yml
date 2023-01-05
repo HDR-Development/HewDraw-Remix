@@ -30,7 +30,7 @@ jobs:
       - name: check_backroom_labels
         if: >
             contains(github.event.pull_request.labels.*.name, 'character change')
-            && !contains(github.event.pull_request.labels.*.name, 'backroom approved'
+            && !contains(github.event.pull_request.labels.*.name, 'backroom approved')
         uses: actions/github-script@v3
         with:
           script: |
