@@ -58,14 +58,14 @@ unsafe fn miigunner_attack_air_f_game(fighter: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 6.0);
 	if is_excute(fighter) {
-		FT_MOTION_RATE(fighter, 1.5);
+		FT_MOTION_RATE(fighter, 4.0/(9.0 - 6.0));
 	}
-	frame(lua_state, 8.0);
+	frame(lua_state, 9.0);
     if is_excute(fighter) {
 		// Trigger boosted aerial
 		if boma.is_button_on(Buttons::Attack) {
 			VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-			FT_MOTION_RATE(fighter, 2.5);
+			FT_MOTION_RATE(fighter, 5.0/(10.0 - 9.0));
 		}
     }
 	frame(lua_state, 10.0);
@@ -121,10 +121,10 @@ unsafe fn miigunner_attack_air_f_effect(fighter: &mut L2CAgentBase) {
 	if is_excute(fighter) {
 		EFFECT_FOLLOW(fighter, Hash40::new_raw(0x16688e0af6), Hash40::new("armr"), 6.0, 0, 0, 0, 90, 0, 1.0, true);
 	}
-	frame(lua_state, 8.0);
+	frame(lua_state, 9.0);
 	if is_excute(fighter) {
 		if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
-			EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("arml"), 4.289, -0.272, -0.135, 0, 0, 0, 1.1, true);
+			EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 10, 10, 0, 0, 0, 1, true);
 			EFFECT_FOLLOW(fighter, Hash40::new_raw(0x16688e0af6), Hash40::new("armr"), 6.0, 0, 0, 0, 90, 0, 1.5, true);
 			LAST_EFFECT_SET_RATE(fighter, 2.0);
 			
@@ -150,13 +150,13 @@ unsafe fn miigunner_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-	frame(lua_state, 7.0);
+	frame(lua_state, 8.0);
     if is_excute(fighter) {
 		// Trigger boosted aerial
 		let cat1 = 0;
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) || fighter.is_cat_flag(Cat1::AttackS3) || fighter.is_cat_flag(Cat1::AttackS4) || fighter.is_cat_flag(Cat1::AttackN) {
             VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-			FT_MOTION_RATE(fighter, 2.5);
+			FT_MOTION_RATE(fighter, 5.0/(9.0 - 8.0));
         }
     }
     frame(lua_state, 9.0);
@@ -227,11 +227,11 @@ unsafe fn miigunner_attack_air_b_game(fighter: &mut L2CAgentBase) {
 unsafe fn miigunner_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-	frame(lua_state, 7.0);
+	frame(lua_state, 8.0);
     if is_excute(fighter) {
         // Flash to indicate boosted aerial
 		if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
-			EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("arml"), 4.289, -0.272, -0.135, 0, 0, 0, 1.1, true);
+			EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 10, -11, 0, 0, 0, 1, true);
 		}
     }
 	frame(lua_state, 9.0);

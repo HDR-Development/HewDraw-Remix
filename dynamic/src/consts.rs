@@ -805,6 +805,10 @@ pub mod vars {
             pub const CHARGE_ATTACK_LEVEL: i32 = 0x1100;
             pub const IS_CHARGE_FINISHED: i32 = 0x1101;
         }
+        pub mod instance {
+            // flags
+            pub const LUNAR_LAUNCH_AIR_USED: i32 = 0x0100;
+        }
     }
 
     pub mod metaknight {

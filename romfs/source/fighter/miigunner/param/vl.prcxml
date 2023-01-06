@@ -11,7 +11,9 @@
     </struct>
   </list>
   <list hash="param_special_s">
-    <hash40 index="0">dummy</hash40>
+    <struct index="0">
+      <float hash="s1_angle_ground">-15</float>
+    </struct>
     <struct index="1">
       <float hash="s2_accel_y">0.018</float>
       <float hash="s2_landing_frame">20</float>
@@ -32,8 +34,20 @@
       <float hash="bang_time">100</float>
     </struct>
   </list>
+  <list hash="param_miimissile">
+    <struct index="0">
+      <int hash="max_req">1</int>
+    </struct>
+  </list>
+  <list hash="param_supermissile">
+    <struct index="0">
+      <int hash="max_req">1</int>
+    </struct>
+  </list>
   <list hash="param_special_hi">
-    <hash40 index="0">dummy</hash40>
+    <struct index="0">
+      <float hash="hi1_jump_y_speed_mul">0.1</float>
+    </struct>
     <struct index="1">
       <float hash="hi2_jump_stable_speed_x_mul">0.95</float>
     </struct>
@@ -48,6 +62,8 @@
     <struct index="2">
       <float hash="lw3_start_xmul">0.85</float>
       <float hash="lw3_start_ymul">0.1</float>
+      <float hash="lw3_accel_y">0.07</float>
+      <float hash="lw3_phy_magnet_size">9.0</float>
     </struct>
     <hash40 index="3">dummy</hash40>
   </list>

@@ -95,11 +95,9 @@ unsafe fn cannon_jump_kick_actionability(boma: &mut BattleObjectModuleAccessor, 
 unsafe fn arm_rocket_airdash(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
 	let prev_status_kind = StatusModule::prev_status_kind(boma, 0);
 	if [*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI3_RUSH].contains(&status_kind) {
-		// Release B to end the up special early
+		// Transition into rush_end early
 		if frame > 15.0 {
-			if !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-				StatusModule::change_status_request_from_script(boma, *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI3_RUSH_END, false);
-			}
+			StatusModule::change_status_request_from_script(boma, *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI3_RUSH_END, false);
 		}
 	}
 	if [*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI3_RUSH_END].contains(&status_kind) {
@@ -110,6 +108,30 @@ unsafe fn arm_rocket_airdash(boma: &mut BattleObjectModuleAccessor, id: usize, s
     }
 }
 
+/// Allow uncharged or slight charged Lunar Launch to be actionable
+unsafe fn lunar_launch_actionability(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
+    if [hash40("special_hi1"),
+        hash40("special_air_hi1")].contains(&motion_kind) {
+        if frame >= 34.0 && VarModule::get_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL) <= 5.0 {
+            // if already used once this airtime
+            if VarModule::is_flag(boma.object(), vars::miigunner::instance::LUNAR_LAUNCH_AIR_USED) {
+                VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
+            }
+            else {
+                VarModule::on_flag(boma.object(), vars::miigunner::instance::LUNAR_LAUNCH_AIR_USED);
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
+            }
+        }
+    }
+}
+
+/// Resets Lunar Launch use count
+unsafe fn lunar_launch_reset(fighter: &mut L2CFighterCommon) {
+    if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_status(*FIGHTER_STATUS_KIND_CLIFF_CATCH) {
+        VarModule::off_flag(fighter.battle_object, vars::miigunner::instance::LUNAR_LAUNCH_AIR_USED);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     nspecial_cancels(boma, status_kind, situation_kind, cat[0], cat[1]);
     absorb_vortex_jc_turnaround_shinejump_cancel(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
@@ -117,42 +139,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     missile_land_cancel(fighter, boma, id, status_kind, situation_kind);
 	cannon_jump_kick_actionability(boma, id, status_kind, frame);
 	arm_rocket_airdash(boma, id, status_kind, frame);
-
-    // Frame Data
-    //frame_data(boma, status_kind, motion_kind, frame);
-}
-
-unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-        /*
-        if motion_kind == hash40("attack_air_n") {
-            if frame < 7.0 {
-                MotionModule::set_rate(boma, 1.75);
-            }
-            if frame >= 7.0 {
-                MotionModule::set_rate(boma, 1.0);
-            }
-        }
-        */
-        if motion_kind == hash40("attack_air_f") {
-            if frame < 9.0 {
-                MotionModule::set_rate(boma, 1.0);
-            }
-            if frame >= 9.0 {
-                MotionModule::set_rate(boma, 1.0);
-            }
-        }
-        /*
-        if motion_kind == hash40("attack_air_hi") {
-            if frame < 16.0 {
-                MotionModule::set_rate(boma, 1.455);
-            }
-            if frame >= 16.0 {
-                MotionModule::set_rate(boma, 1.0);
-            }
-        }
-        */
-    }
+    lunar_launch_actionability(fighter, boma, motion_kind, frame);
+    lunar_launch_reset(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MIIGUNNER )]
