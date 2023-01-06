@@ -10,31 +10,7 @@ unsafe fn nana_throws(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     if status_kind != *FIGHTER_STATUS_KIND_CATCH_WAIT {
         return;
     }
-
-    // set weights of each throw
-    // they are all 25 rn but can be adjusted to reward 
-    let f_weight = 25;
-    let b_weight = 25;
-    let hi_weight = 25;
-    let lw_weight = 25;
-
-    let sum = f_weight + b_weight + hi_weight + lw_weight;
-    // cannot use this in practice, because true random is likely going to cause a desync
-    let rand = sv_math::rand(hash40("fighter"), sum) as i32;
-
     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_THROW, false);
-    /*
-    let next_motion = motion_kind;
-    if rand < f_weight {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("throwf_nana"), 0.0, 1.0, false, 0.0, false, false);
-    } else if rand < b_weight + f_weight {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("throwb_nana"), 0.0, 1.0, false, 0.0, false, false);
-    } else if rand < hi_weight + b_weight + f_weight {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("throwhi_nana"), 0.0, 1.0, false, 0.0, false, false);
-    } else {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("throwlw_nana"), 0.0, 1.0, false, 0.0, false, false);
-    }
-    */
 }
 
 unsafe fn dair_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
