@@ -160,6 +160,18 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
                     return false
             }
         }
+
+        if fighter_kind == *FIGHTER_KIND_NANA {
+            if [*FIGHTER_STATUS_KIND_WAIT, 
+                *FIGHTER_STATUS_KIND_TURN, 
+                *FIGHTER_STATUS_KIND_WALK, 
+                *FIGHTER_STATUS_KIND_WALK_BRAKE, 
+                *FIGHTER_STATUS_KIND_RUN_BRAKE, 
+                *FIGHTER_STATUS_KIND_JUMP_SQUAT].contains(&status_kind)
+            && flag == FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH {
+                return true;
+            }
+        }
     }   
     original!()(boma, flag)
 }

@@ -3,6 +3,37 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
+unsafe fn nana_throws(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
+    if fighter.kind() != *FIGHTER_KIND_NANA {
+        return;
+    }
+    if status_kind != *FIGHTER_STATUS_KIND_CATCH_WAIT {
+        return;
+    }
+
+    // set weights of each throw
+    // they are all 25 rn but can be adjusted to reward 
+    let f_weight = 25;
+    let b_weight = 25;
+    let hi_weight = 25;
+    let lw_weight = 25;
+
+    let sum = f_weight + b_weight + hi_weight + lw_weight;
+    let rand = sv_math::rand(hash40("fighter"), sum) as i32;
+
+    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_THROW, false);
+    let next_motion = motion_kind;
+    if rand < f_weight {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("throwf_nana"), 0.0, 1.0, false, 0.0, false, false);
+    } else if rand < b_weight + f_weight {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("throwb_nana"), 0.0, 1.0, false, 0.0, false, false);
+    } else if rand < hi_weight + b_weight + f_weight {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("throwhi_nana"), 0.0, 1.0, false, 0.0, false, false);
+    } else {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("throwlw_nana"), 0.0, 1.0, false, 0.0, false, false);
+    }
+}
+
 unsafe fn dair_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
     if (motion_kind == hash40("attack_air_lw") || motion_kind == hash40("attack_air_lw_nana"))
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
@@ -31,12 +62,12 @@ unsafe fn dair_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
 // Ice Climbers Cheer Cancel (Techy)
 unsafe fn cheer_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if boma.kind() == *FIGHTER_KIND_NANA {
-        if status_kind == *FIGHTER_POPO_STATUS_KIND_THROW_NANA {
-            MotionModule::set_frame(boma, MotionModule::end_frame(boma), true);
-            StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_WAIT, true);
-        }
-    }
+    // if boma.kind() == *FIGHTER_KIND_NANA {
+    //     if status_kind == *FIGHTER_POPO_STATUS_KIND_THROW_NANA {
+    //         MotionModule::set_frame(boma, MotionModule::end_frame(boma), true);
+    //         StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_WAIT, true);
+    //     }
+    // }
 }
 
 // Ice Climbers Spotdodge Desync
@@ -132,6 +163,7 @@ pub unsafe fn ice_climbers_moveset(fighter: &mut L2CFighterCommon, boma: &mut Ba
     nana_death_effect(fighter, boma, id, status_kind, frame);
     dair_bounce(fighter, boma, motion_kind, frame);
     voluntary_sopo(fighter, boma, id, status_kind, frame);
+    nana_throws(fighter, boma, id, status_kind, situation_kind, motion_kind, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_POPO )]

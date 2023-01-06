@@ -214,6 +214,84 @@ unsafe fn blizzard_fly_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "nana", script = "game_catch_nana", category = ACMD_GAME , low_priority)]
+unsafe fn nana_catch_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.200);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.000);
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("top"), 5.0, 0.0, 5.0, 0.0, Some(0.0), Some(5.0), Some(7.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+    }
+    game_CaptureCutCommon(fighter);
+    wait(lua_state, 3.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.176);
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+}
+
+#[acmd_script( agent = "nana", script = "game_catchdash_nana" , category = ACMD_GAME , low_priority)]
+unsafe fn nana_catch_dash_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 1.285);
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 8.0);
+    FT_MOTION_RATE(fighter, 1.000);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("top"), 2.9, 0.0, 5.0, 4.0, Some(0.0), Some(5.0), Some(8.1), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
+        CATCH(fighter, 1, Hash40::new("top"), 1.45, 0.0, 5.0, 2.55, Some(0.0), Some(5.0), Some(9.55), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_A);
+    }
+    game_CaptureCutCommon(fighter);
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+    FT_MOTION_RATE(fighter, 1.21);
+}
+
+#[acmd_script( agent = "nana", script = "game_catchturn_nana" , category = ACMD_GAME , low_priority)]
+unsafe fn nana_catch_turn_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 1.125);
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 9.0);
+    FT_MOTION_RATE(fighter, 1.000);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("top"), 3.6, 0.0, 5.0, -4.0, Some(0.0), Some(5.0), Some(-11.4), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
+        CATCH(fighter, 1, Hash40::new("top"), 1.8, 0.0, 5.0, -2.2, Some(0.0), Some(5.0), Some(-13.2), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_A);
+    }
+    game_CaptureCutCommon(fighter);
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -226,7 +304,10 @@ pub fn install() {
         damageflyn_sound,
         damageflyroll_sound,
         damageflytop_sound,
-        blizzard_fly_game
+        blizzard_fly_game,
+        nana_catch_game,
+        nana_catch_dash_game,
+        nana_catch_turn_game
     );
 }
 
