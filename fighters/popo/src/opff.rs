@@ -3,24 +3,79 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
+unsafe fn nana_throws(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
+    if fighter.kind() != *FIGHTER_KIND_NANA {
+        return;
+    }
+    if status_kind != *FIGHTER_STATUS_KIND_CATCH_WAIT {
+        return;
+    }
+
+    // set weights of each throw
+    // they are all 25 rn but can be adjusted to reward 
+    let f_weight = 25;
+    let b_weight = 25;
+    let hi_weight = 25;
+    let lw_weight = 25;
+
+    let sum = f_weight + b_weight + hi_weight + lw_weight;
+    let rand = sv_math::rand(hash40("fighter"), sum) as i32;
+
+    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_THROW, false);
+    let next_motion = motion_kind;
+    if rand < f_weight {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("throwf_nana"), 0.0, 1.0, false, 0.0, false, false);
+    } else if rand < b_weight + f_weight {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("throwb_nana"), 0.0, 1.0, false, 0.0, false, false);
+    } else if rand < hi_weight + b_weight + f_weight {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("throwhi_nana"), 0.0, 1.0, false, 0.0, false, false);
+    } else {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("throwlw_nana"), 0.0, 1.0, false, 0.0, false, false);
+    }
+}
+
+unsafe fn dair_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
+    if (motion_kind == hash40("attack_air_lw") || motion_kind == hash40("attack_air_lw_nana"))
+    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    && frame < 54.0
+    {
+        MotionModule::set_frame_sync_anim_cmd(boma, 54.0, true, true, false);
+        AttackModule::clear_all(boma);
+
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+            SET_SPEED_EX(fighter, 0, 1.7, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            if fighter.kind() == *FIGHTER_KIND_POPO {
+                PLAY_SE(fighter, Hash40::new("vc_popo_attack04"));
+            } else if fighter.kind() == *FIGHTER_KIND_NANA {
+                PLAY_SE(fighter, Hash40::new("vc_nana_attack04"));
+            } 
+        } else if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+            SET_SPEED_EX(fighter, 0, 0.85, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            if fighter.kind() == *FIGHTER_KIND_POPO {
+                PLAY_SE(fighter, Hash40::new("vc_popo_attack04"));
+            } else if fighter.kind() == *FIGHTER_KIND_NANA {
+                PLAY_SE(fighter, Hash40::new("vc_nana_attack04"));
+            } 
+        }
+    }
+}
 
 // Ice Climbers Cheer Cancel (Techy)
 unsafe fn cheer_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if boma.kind() == *FIGHTER_KIND_NANA {
-        if status_kind == *FIGHTER_POPO_STATUS_KIND_THROW_NANA {
-            MotionModule::set_frame(boma, MotionModule::end_frame(boma), true);
-            StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_WAIT, true);
-        }
-    }
+    // if boma.kind() == *FIGHTER_KIND_NANA {
+    //     if status_kind == *FIGHTER_POPO_STATUS_KIND_THROW_NANA {
+    //         MotionModule::set_frame(boma, MotionModule::end_frame(boma), true);
+    //         StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_WAIT, true);
+    //     }
+    // }
 }
 
 // Ice Climbers Spotdodge Desync
 unsafe fn spotdodge_desync(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if boma.kind() == *FIGHTER_KIND_NANA {
-        if ![*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B].contains(&status_kind){
+        if ![*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B, *FIGHTER_STATUS_KIND_CLIFF_ESCAPE, *FIGHTER_STATUS_KIND_CLIFF_CLIMB].contains(&status_kind){
             InputModule::disable_persist(boma.object());
-        } else if [*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B].contains(&StatusModule::status_kind_next(boma)) {
+        } else if [*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B, *FIGHTER_STATUS_KIND_CLIFF_ESCAPE, *FIGHTER_STATUS_KIND_CLIFF_CLIMB].contains(&StatusModule::status_kind_next(boma)) {
             InputModule::enable_persist(boma.object());
         }
     }
@@ -66,6 +121,28 @@ unsafe fn nana_death_effect(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
     }
 }
 
+unsafe fn voluntary_sopo(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
+    if fighter.kind() != *FIGHTER_KIND_POPO {
+        return;
+    }
+
+    let nana = nana_boma[id] as *mut BattleObjectModuleAccessor;
+    if VarModule::is_flag(boma.object(), vars::iceclimbers::instance::IS_VOLUNTARY_SOPO) {
+        if (*nana).is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH]) {
+            StatusModule::change_status_request(nana, *FIGHTER_STATUS_KIND_STANDBY, false);
+        }
+        return;
+    }
+
+    if fighter.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY])
+    && fighter.is_button_on(Buttons::Guard) 
+    && fighter.is_button_on(Buttons::Special) 
+    && fighter.is_button_on(Buttons::AppealLw) {
+        VarModule::on_flag(boma.object(), vars::iceclimbers::instance::IS_VOLUNTARY_SOPO);
+        StatusModule::change_status_request(nana, *FIGHTER_STATUS_KIND_DEAD, false);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     // nothing lol
 }
@@ -84,6 +161,9 @@ pub unsafe fn ice_climbers_moveset(fighter: &mut L2CFighterCommon, boma: &mut Ba
     //clear_jc_grab_flag(boma, id, status_kind);
     get_nana_boma(fighter, boma, id);
     nana_death_effect(fighter, boma, id, status_kind, frame);
+    dair_bounce(fighter, boma, motion_kind, frame);
+    voluntary_sopo(fighter, boma, id, status_kind, frame);
+    nana_throws(fighter, boma, id, status_kind, situation_kind, motion_kind, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_POPO )]
