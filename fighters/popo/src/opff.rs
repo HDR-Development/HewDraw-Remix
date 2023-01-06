@@ -63,16 +63,6 @@ unsafe fn dair_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     }
 }
 
-// Ice Climbers Cheer Cancel (Techy)
-unsafe fn cheer_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    // if boma.kind() == *FIGHTER_KIND_NANA {
-    //     if status_kind == *FIGHTER_POPO_STATUS_KIND_THROW_NANA {
-    //         MotionModule::set_frame(boma, MotionModule::end_frame(boma), true);
-    //         StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_WAIT, true);
-    //     }
-    // }
-}
-
 // Ice Climbers Spotdodge Desync
 unsafe fn spotdodge_desync(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if boma.kind() == *FIGHTER_KIND_NANA {
@@ -81,16 +71,6 @@ unsafe fn spotdodge_desync(boma: &mut BattleObjectModuleAccessor, status_kind: i
         } else if [*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B, *FIGHTER_STATUS_KIND_CLIFF_ESCAPE, *FIGHTER_STATUS_KIND_CLIFF_CLIMB].contains(&StatusModule::status_kind_next(boma)) {
             InputModule::enable_persist(boma.object());
         }
-    }
-}
-
-// Clear JC grab flag
-unsafe fn clear_jc_grab_flag(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32) {
-    if boma.kind() == *FIGHTER_KIND_POPO {
-        //VarModule::set_flag(boma.object(), vars::common::POPO_JC_GRAB,
-        //[*FIGHTER_STATUS_KIND_CATCH,
-        //    *FIGHTER_STATUS_KIND_CATCH_PULL,
-        //    *FIGHTER_STATUS_KIND_CATCH_WAIT].contains(&status_kind));
     }
 }
 
@@ -159,9 +139,7 @@ pub unsafe extern "Rust" fn ice_climbers_common(fighter: &mut L2CFighterCommon) 
 }
 
 pub unsafe fn ice_climbers_moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    cheer_cancel(fighter, boma, status_kind);
     spotdodge_desync(boma, status_kind);
-    //clear_jc_grab_flag(boma, id, status_kind);
     get_nana_boma(fighter, boma, id);
     nana_death_effect(fighter, boma, id, status_kind, frame);
     dair_bounce(fighter, boma, motion_kind, frame);

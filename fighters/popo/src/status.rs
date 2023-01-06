@@ -5,7 +5,6 @@ use globals::*;
 pub fn install() {
     install_status_scripts!(
         dash
-        //cheer
     );
 }
 
@@ -30,23 +29,4 @@ unsafe extern "C" fn ics_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "popo", status = FIGHTER_STATUS_KIND_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 pub unsafe fn dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     ics_dash(fighter)
-}
-
-#[utils::export(popo)]
-pub unsafe fn ics_cheer(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.sub_wait_common();
-    fighter.sub_shift_status_main(L2CValue::Ptr(ics_cheer_main as *const () as _))
-}
-
-unsafe extern "C" fn ics_cheer_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    println!("the cheer status hook worked");
-    fighter.status_Wait_Main();
-    0.into()
-}
-
-// FIGHTER_POPO_STATUS_KIND_CHEER_NANA //
-
-#[status_script(agent = "popo", status = FIGHTER_POPO_STATUS_KIND_CHEER_NANA, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn cheer(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ics_cheer(fighter)
 }
