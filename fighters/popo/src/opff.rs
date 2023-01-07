@@ -3,6 +3,19 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
+unsafe fn nana_couple_indicator(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
+    if fighter.kind() != *FIGHTER_KIND_NANA {
+        return;
+    }
+    let cbm_vec1 = Vector4f{ /* Red */ x: 0.94, /* Green */ y: 0.64, /* Blue */ z: 0.75, /* Alpha */ w: 0.0};
+    let cbm_vec2 = Vector4f{ /* Red */ x: 0.94, /* Green */ y: 0.64, /* Blue */ z: 0.75, /* Alpha */ w: 0.0};
+    if PostureModule::pos_z(boma) == 0.0 {
+        ColorBlendModule::set_main_color(boma, /* Brightness */ &cbm_vec1, /* Diffuse */ &cbm_vec2, 0.21, 2.2, 5, /* Display Color */ true);
+    } else {
+        ColorBlendModule::cancel_main_color(boma, 0);
+    }
+}
+
 unsafe fn nana_throws(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
     if fighter.kind() != *FIGHTER_KIND_NANA {
         return;
@@ -121,6 +134,7 @@ pub unsafe fn ice_climbers_moveset(fighter: &mut L2CFighterCommon, boma: &mut Ba
     dair_bounce(fighter, boma, motion_kind, frame);
     voluntary_sopo(fighter, boma, id, status_kind, frame);
     nana_throws(fighter, boma, id, status_kind, situation_kind, motion_kind, frame);
+    nana_couple_indicator(fighter, boma, id, status_kind, situation_kind, motion_kind, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_POPO )]
