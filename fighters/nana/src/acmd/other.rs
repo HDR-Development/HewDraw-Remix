@@ -338,6 +338,41 @@ unsafe fn nana_catch_turn_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "nana", script = "game_catchattack_nana" , category = ACMD_GAME , low_priority)]
+unsafe fn nana_catch_attack_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 361, 100, 30, 0, 5.8, 0.0, 7.2, 7.4, None, None, None, 1.7, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
+        AttackModule::set_catch_only_all(boma, true, false);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "nana", script = "effect_catchattack_nana" , category = ACMD_EFFECT , low_priority)]
+unsafe fn nana_catch_attack_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -1, 11, -1.5, 10, 0, 0, 0.55, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.2);
+    }
+}
+
+#[acmd_script( agent = "nana", script = "expression_catchattack_nana" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn nana_catch_attack_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_L);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -356,7 +391,10 @@ pub fn install() {
         nana_catch_dash_game,
         nana_catch_dash_sound,
         nana_catch_turn_game,
-        nana_catch_turn_sound
+        nana_catch_turn_sound,
+        nana_catch_attack_game,
+        nana_catch_attack_effect,
+        nana_catch_attack_expression
     );
 }
 

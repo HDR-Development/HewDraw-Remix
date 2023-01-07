@@ -470,38 +470,17 @@ unsafe fn handle_incoming_packet(ctx: &mut skyline::hooks::InlineCtx) {
 unsafe extern "C" fn is_throw_stick(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     let mut out = fighter.local_func__fighter_status_catch_1();
-    if fighter.kind() == *FIGHTER_KIND_NANA {
-        // set weights of each throw
-        // they are all 25 rn but can be adjusted to reward 
-        let f_weight = 25;
-        let b_weight = 25;
-        let hi_weight = 25;
-        let lw_weight = 25;
-        let sum = f_weight + b_weight + hi_weight + lw_weight;
-
-        let rand = sv_math::rand(hash40("fighter"), sum) as i32;
-        if rand < f_weight {
-            out["f"] = true.into();
-        } else if rand < b_weight + f_weight {
-            out["b"] = true.into();
-        } else if rand < hi_weight + b_weight + f_weight {
-            out["lw"] = true.into();
-        } else {
-            out["hi"] = true.into();
-        }
-    } else {
-        let stick_x = fighter.stick_x() * PostureModule::lr(fighter.boma());
-        let stick_y = fighter.stick_y();
-        if stick_x > fighter.get_param_float("common", "attack_lw3_stick_x") {
-            out["f"] = true.into();
-        } else if stick_x < -fighter.get_param_float("common", "attack_lw3_stick_x") {
-            out["b"] = true.into();
-        }
-        if stick_y > fighter.get_param_float("common", "attack_hi4_stick_y") {
-            out["hi"] = true.into();
-        } else if stick_y < fighter.get_param_float("common", "attack_lw4_stick_y") {
-            out["lw"] = true.into();
-        }
+    let stick_x = fighter.stick_x() * PostureModule::lr(fighter.boma());
+    let stick_y = fighter.stick_y();
+    if stick_x > fighter.get_param_float("common", "attack_lw3_stick_x") {
+        out["f"] = true.into();
+    } else if stick_x < -fighter.get_param_float("common", "attack_lw3_stick_x") {
+        out["b"] = true.into();
+    }
+    if stick_y > fighter.get_param_float("common", "attack_hi4_stick_y") {
+        out["hi"] = true.into();
+    } else if stick_y < fighter.get_param_float("common", "attack_lw4_stick_y") {
+        out["lw"] = true.into();
     }
     out
 }

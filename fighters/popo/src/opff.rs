@@ -16,16 +16,6 @@ unsafe fn nana_couple_indicator(fighter: &mut L2CFighterCommon, boma: &mut Battl
     }
 }
 
-unsafe fn nana_throws(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
-    if fighter.kind() != *FIGHTER_KIND_NANA {
-        return;
-    }
-    if status_kind != *FIGHTER_STATUS_KIND_CATCH_WAIT {
-        return;
-    }
-    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_THROW, false);
-}
-
 unsafe fn dair_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
     if (motion_kind == hash40("attack_air_lw") || motion_kind == hash40("attack_air_lw_nana"))
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
@@ -133,7 +123,6 @@ pub unsafe fn ice_climbers_moveset(fighter: &mut L2CFighterCommon, boma: &mut Ba
     nana_death_effect(fighter, boma, id, status_kind, frame);
     dair_bounce(fighter, boma, motion_kind, frame);
     voluntary_sopo(fighter, boma, id, status_kind, frame);
-    nana_throws(fighter, boma, id, status_kind, situation_kind, motion_kind, frame);
     nana_couple_indicator(fighter, boma, id, status_kind, situation_kind, motion_kind, frame);
 }
 

@@ -6,7 +6,8 @@ utils::import!(popo::{ics_dash});
 pub fn install() {
     install_status_scripts!(
         dash,
-        throw
+        throw,
+        catchwait_main
     );
 }
 
@@ -45,9 +46,9 @@ pub unsafe fn throw(fighter: &mut L2CFighterCommon) -> L2CValue {
         // any other scenario, random weighted throw
         let selected = app::sv_math::rand(hash40("fighter"), 100);
         throw_name = match selected {
-            0..=19 => "throw_b",
-            20..=39 => "throw_f",
-            40..=59 => "throw_lw",
+            0..=14 => "throw_b",
+            15..=29 => "throw_f",
+            30..=49 => "throw_lw",
             _ => "throw_hi"
         };
     }
@@ -57,4 +58,21 @@ pub unsafe fn throw(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     // shift into the L2CFighterCommon's throw impl (instead of nana's default, modified impl)
     return fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_Throw_Main as *const () as _));
+}
+
+#[status_script(agent = "nana", status = FIGHTER_STATUS_KIND_CATCH_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn catchwait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.sub_shift_status_main(L2CValue::Ptr(catchwait_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn catchwait_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // let boma = fighter.boma();
+    // let opponent_boma = boma.get_grabbed_opponent_boma();
+    // let damage = DamageModule::damage(opponent_boma, 0);
+    // if damage > 50.0 {
+    //     fighter.change_status(FIGHTER_STATUS_KIND_CATCH_ATTACK.into(), false.into());
+    //     return 0.into();
+    // }
+    fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), false.into());
+    0.into()
 }
