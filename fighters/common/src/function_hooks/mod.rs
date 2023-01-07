@@ -22,6 +22,18 @@ pub mod collision;
 pub mod camera;
 
 
+#[skyline::hook(offset = 0x3a85b4, inline)]
+unsafe fn run_lua_status_hook(ctx: &skyline::hooks::InlineCtx) {
+    let boma = *ctx.registers[22].x.as_ref() as *mut BattleObjectModuleAccessor;
+
+    if (*boma).is_fighter()
+    && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR
+    && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
+    {
+        WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
+    }
+}
+
 pub fn install() {
     energy::install();
     effect::install();
@@ -55,4 +67,7 @@ pub fn install() {
         // removes phantoms
         skyline::patching::Patch::in_text(0x3e6ce8).data(0x14000012u32);
     }
+    skyline::install_hooks!(
+        run_lua_status_hook
+    );
 }
