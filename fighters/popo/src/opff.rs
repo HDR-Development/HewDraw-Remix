@@ -4,7 +4,13 @@ use super::*;
 use globals::*;
 
 unsafe fn nana_couple_indicator(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
-    if fighter.kind() != *FIGHTER_KIND_NANA {
+    if fighter.kind() != *FIGHTER_KIND_NANA 
+    || [*FIGHTER_STATUS_KIND_DEMO, 
+        *FIGHTER_STATUS_KIND_ENTRY, 
+        *FIGHTER_STATUS_KIND_REBIRTH, 
+        *FIGHTER_STATUS_KIND_WIN, 
+        *FIGHTER_STATUS_KIND_LOSE, 
+        *FIGHTER_STATUS_KIND_DEAD].contains(&status_kind) {
         return;
     }
     let cbm_vec1 = Vector4f{ /* Red */ x: 0.94, /* Green */ y: 0.64, /* Blue */ z: 0.75, /* Alpha */ w: 0.0};
