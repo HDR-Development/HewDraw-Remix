@@ -3,7 +3,7 @@ use super::*;
 
 
 #[acmd_script( agent = "miigunner", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_11_game(fighter: &mut L2CAgentBase) {
+unsafe fn miigunner_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 5.0);
@@ -31,7 +31,7 @@ unsafe fn attack_11_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "miigunner", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_12_game(fighter: &mut L2CAgentBase) {
+unsafe fn miigunner_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 4.0);
@@ -56,7 +56,7 @@ unsafe fn attack_12_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "miigunner", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_13_game(fighter: &mut L2CAgentBase) {
+unsafe fn miigunner_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 1.0);
@@ -88,7 +88,7 @@ unsafe fn attack_13_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "miigunner", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_dash_game(fighter: &mut L2CAgentBase) {
+unsafe fn miigunner_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 10.0);
@@ -112,10 +112,10 @@ unsafe fn attack_dash_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        attack_11_game,
-		attack_12_game,
-		attack_13_game,
-		attack_dash_game,
+        miigunner_attack_11_game,
+		miigunner_attack_12_game,
+		miigunner_attack_13_game,
+		miigunner_attack_dash_game,
     );
 }
 

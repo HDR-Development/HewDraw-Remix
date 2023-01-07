@@ -3,7 +3,7 @@ use super::*;
 
 
 #[acmd_script( agent = "miigunner", script = "game_throwf" , category = ACMD_GAME , low_priority)]
-unsafe fn throwf_game(fighter: &mut L2CAgentBase) {
+unsafe fn miigunner_throw_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -25,11 +25,12 @@ unsafe fn throwf_game(fighter: &mut L2CAgentBase) {
 	if is_excute(fighter) {
 		ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
 		AttackModule::clear_all(boma);
+		FT_MOTION_RATE(fighter, 18.0/(34.0 - 12.0));
 	}
 }
 
 #[acmd_script( agent = "miigunner", script = "game_throwb" , category = ACMD_GAME , low_priority)]
-unsafe fn throwb_game(fighter: &mut L2CAgentBase) {
+unsafe fn miigunner_throw_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
@@ -43,7 +44,7 @@ unsafe fn throwb_game(fighter: &mut L2CAgentBase) {
         }
 		// Normal throw
 		else {
-			ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 7.0, 50, 45, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+			ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 7.0, 50, 45, 0, 50, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
 		}
 		
 		ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -85,7 +86,7 @@ unsafe fn throwb_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "miigunner", script = "effect_throwb" , category = ACMD_EFFECT , low_priority)]
-unsafe fn throwb_effect(fighter: &mut L2CAgentBase) {
+unsafe fn miigunner_throw_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 4.0);
@@ -127,7 +128,7 @@ unsafe fn throwb_effect(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "miigunner", script = "sound_throwb" , category = ACMD_SOUND , low_priority)]
-unsafe fn throwb_sound(fighter: &mut L2CAgentBase) {
+unsafe fn miigunner_throw_b_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 2.0);
@@ -157,14 +158,40 @@ unsafe fn throwb_sound(fighter: &mut L2CAgentBase) {
 		}
 	}
 }
+
+#[acmd_script( agent = "miigunner", script = "game_throwhi" , category = ACMD_GAME , low_priority)]
+unsafe fn miigunner_throw_hi_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+	if is_excute(fighter) {
+		ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 7.0, 91, 54, 2, 76, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+		ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+	}
+	frame(lua_state, 7.0);
+	if is_excute(fighter) {
+		ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
+	}
+	frame(lua_state, 18.0);
+	if is_excute(fighter) {
+		ArticleModule::generate_article(boma, *FIGHTER_MIIGUNNER_GENERATE_ARTICLE_RAPIDSHOT_BULLET, false, 0);
+		ArticleModule::change_motion(boma, *FIGHTER_MIIGUNNER_GENERATE_ARTICLE_RAPIDSHOT_BULLET, Hash40::new("fly_throw_hi"), false, 0.0);
+	}
+	frame(lua_state, 28.0);
+	if is_excute(fighter) {
+		ArticleModule::generate_article(boma, *FIGHTER_MIIGUNNER_GENERATE_ARTICLE_RAPIDSHOT_BULLET, false, 0);
+		ArticleModule::change_motion(boma, *FIGHTER_MIIGUNNER_GENERATE_ARTICLE_RAPIDSHOT_BULLET, Hash40::new("fly_throw_hi_2"), false, 0.0);
+		FT_MOTION_RATE(fighter, 20.0/(52.0 - 28.0));
+	}
+}
    
 
 pub fn install() {
     install_acmd_scripts!(
-		throwf_game,
-		throwb_game,
-		throwb_effect,
-		throwb_sound,
+		miigunner_throw_f_game,
+		miigunner_throw_b_game,
+		miigunner_throw_b_effect,
+		miigunner_throw_b_sound,
+		miigunner_throw_hi_game,
 	);
 }
 

@@ -62,6 +62,7 @@ unsafe fn laser_blaze_ff_land_cancel(boma: &mut BattleObjectModuleAccessor, situ
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
         }
         if situation_kind == *SITUATION_KIND_AIR {
+            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
             if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66
                 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
                 WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
@@ -70,27 +71,38 @@ unsafe fn laser_blaze_ff_land_cancel(boma: &mut BattleObjectModuleAccessor, situ
     }
 }
 
-unsafe fn missile_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
-    if [*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_1_GROUND,
-        *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_1_AIR,
-        *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_2_GROUND,
+unsafe fn missile_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
+    if [*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_1_AIR,
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_2_AIR].contains(&status_kind) {
         if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+            // Set additional landing lag if the missile has been fired
+            if frame >= 22.0 {
+                if status_kind == *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_1_AIR {
+                    //let landing_frame = (41.0 - frame).max(30.0);
+                    MotionModule::set_frame(boma, 30.0, false);
+                }
+                else {
+                    //let landing_frame = (50.0 - frame).max(40.0);
+                    MotionModule::set_frame(boma, 40.0, false);
+                }
+            }
+            else {
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+            }
         }
     }
 }
 
-unsafe fn cannon_jump_kick_actionability(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
-    if [*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI2_JUMP].contains(&status_kind) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-			if frame > 35.0 {
-				VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
-				CancelModule::enable_cancel(boma);
-			}
-		}
-    }
-}
+// unsafe fn cannon_jump_kick_actionability(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
+//     if [*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI2_JUMP].contains(&status_kind) {
+//         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+// 			if frame > 35.0 {
+// 				VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
+// 				CancelModule::enable_cancel(boma);
+// 			}
+// 		}
+//     }
+// }
 
 unsafe fn arm_rocket_airdash(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
 	let prev_status_kind = StatusModule::prev_status_kind(boma, 0);
@@ -108,11 +120,11 @@ unsafe fn arm_rocket_airdash(boma: &mut BattleObjectModuleAccessor, id: usize, s
     }
 }
 
-/// Allow uncharged or slight charged Lunar Launch to be actionable
+/// Allow uncharged or slightly charged Lunar Launch to be actionable
 unsafe fn lunar_launch_actionability(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
     if [hash40("special_hi1"),
         hash40("special_air_hi1")].contains(&motion_kind) {
-        if frame >= 34.0 && VarModule::get_float(fighter.battle_object, vars::miigunner::status::CHARGE_ATTACK_LEVEL) <= 5.0 {
+        if frame >= 34.0 && VarModule::get_float(boma.object(), vars::miigunner::status::CHARGE_ATTACK_LEVEL) <= 10.0 {
             // if already used once this airtime
             if VarModule::is_flag(boma.object(), vars::miigunner::instance::LUNAR_LAUNCH_AIR_USED) {
                 VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
@@ -132,15 +144,24 @@ unsafe fn lunar_launch_reset(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn stealth_burst_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
+    if status_kind == *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S2_END {
+        if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     nspecial_cancels(boma, status_kind, situation_kind, cat[0], cat[1]);
     absorb_vortex_jc_turnaround_shinejump_cancel(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     laser_blaze_ff_land_cancel(boma, situation_kind, motion_kind, cat[1], stick_y);
-    missile_land_cancel(fighter, boma, id, status_kind, situation_kind);
-	cannon_jump_kick_actionability(boma, id, status_kind, frame);
+    missile_land_cancel(fighter, boma, id, status_kind, situation_kind, frame);
+	//cannon_jump_kick_actionability(boma, id, status_kind, frame);
 	arm_rocket_airdash(boma, id, status_kind, frame);
     lunar_launch_actionability(fighter, boma, motion_kind, frame);
     lunar_launch_reset(fighter);
+    stealth_burst_land_cancel(boma, status_kind, situation_kind);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MIIGUNNER )]

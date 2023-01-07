@@ -808,6 +808,9 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const LUNAR_LAUNCH_AIR_USED: i32 = 0x0100;
+
+            // ints
+            pub const LUNAR_LAUNCH_EFF_HANDLER: i32 = 0x0100;
         }
     }
 

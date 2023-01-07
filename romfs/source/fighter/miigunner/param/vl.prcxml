@@ -15,7 +15,7 @@
       <float hash="s1_angle_ground">-15</float>
     </struct>
     <struct index="1">
-      <float hash="s2_accel_y">0.018</float>
+      <float hash="s2_accel_y">0.08</float>
       <float hash="s2_landing_frame">20</float>
       <int hash="s2_no_bang">6</int>
     </struct>
@@ -24,10 +24,10 @@
   </list>
   <list hash="param_stealthbomb">
     <struct index="0">
-      <float hash="speed">1</float>
-      <float hash="size_min">1.4</float>
+      <float hash="speed">2.0</float>
+      <float hash="size_min">1.5</float>
       <float hash="accel">0.05</float>
-      <float hash="speed_max">1.75</float>
+      <float hash="speed_max">4.0</float>
       <float hash="stick_min">0.5</float>
       <float hash="angle_add">3</float>
       <float hash="angle_max">90</float>
@@ -49,7 +49,8 @@
       <float hash="hi1_jump_y_speed_mul">0.1</float>
     </struct>
     <struct index="1">
-      <float hash="hi2_jump_stable_speed_x_mul">0.95</float>
+      <float hash="hi2_jump_accel_x_mul">0.8</float>
+      <float hash="hi2_jump_stable_speed_x_mul">1.0</float>
     </struct>
     <struct index="2">
       <float hash="hi3_rush_speed">2</float>

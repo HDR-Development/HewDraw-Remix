@@ -240,6 +240,31 @@ unsafe fn catch_turn_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
+#[acmd_script( agent = "miigunner_attackairf_bullet", script = "effect_fly" , category = ACMD_EFFECT , low_priority)]
+unsafe fn miigunner_attackairf_bullet_fly_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("miigunner_atk_air_bullet"), Hash40::new("top"), 0, -0.5, 0.5, 0, 180, 0, 0.8, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.7);
+    }
+}
+
+#[acmd_script( agent = "miigunner_rapidshot_bullet", script = "game_fly" , category = ACMD_GAME , low_priority)]
+unsafe fn miigunner_rapidshot_bullet_fly_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 361, 100, 3, 0, 1.4, 0.0, 0.0, 0.8, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MIIGUNNER_BLASTER, *ATTACK_REGION_ENERGY);
+        AttackModule::enable_safe_pos(boma);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 361, 100, 3, 0, 1.4, 0.0, 0.0, 0.8, Some(0.0), Some(0.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MIIGUNNER_BLASTER, *ATTACK_REGION_ENERGY);
+    }
+    wait(lua_state, 6.0);
+}
+
 #[acmd_script( agent = "miigunner_rapidshot_bullet", script = "game_flythrowb" , category = ACMD_GAME , low_priority)]
 unsafe fn miigunner_rapidshot_bullet_flythrowb_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -322,8 +347,8 @@ unsafe fn miigunner_bottomshoot_shoot_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
 	let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
 	if is_excute(fighter) {
-        if VarModule::get_float(owner_module_accessor.object(), vars::miigunner::status::CHARGE_ATTACK_LEVEL) <= 5.0 {
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 80, 35, 0, 120, 8.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_ENERGY);
+        if VarModule::get_float(owner_module_accessor.object(), vars::miigunner::status::CHARGE_ATTACK_LEVEL) <= 10.0 {
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 80, 35, 0, 120, 9.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_ENERGY);
             AttackModule::set_add_reaction_frame(boma, 0, -15.0, false);
         }
         else {
@@ -391,6 +416,8 @@ pub fn install() {
 		catch_dash_game,
 		catch_turn_game,
 		miigunner_gunnercharge_shoot_game,
+        miigunner_attackairf_bullet_fly_effect,
+        miigunner_rapidshot_bullet_fly_game,
 		miigunner_rapidshot_bullet_flythrowb_game,
 		//miigunner_fullthrottle_final_game,
 		miigunner_stealthbomb_tame_effect,
