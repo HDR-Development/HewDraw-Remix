@@ -83,7 +83,7 @@
   <byte hash="super_special_command_life_max">20</byte>
   <float hash="catch_dash_brake_mul">1</float>
   <int hash="shield_setoff_catch_frame">0</int>
-  <int hash="invalid_capture_frame">35</int>
+  <int hash="invalid_capture_frame">1</int>
   <int hash="cliff_catch_move_frame">0</int>
   <float hash="cliff_next_stick">0.2</float>
   <int hash="cliff_no_catch_frame">25</int>
@@ -94,7 +94,9 @@
   <float hash="cliff_robbed_speed_x">-0.5</float>
   <float hash="cliff_robbed_speed_y">17.5</float>
   <int hash="cliff_robbed_no_control_frame">40</int>
-  <int hash="air_lasso_catch_num">6</int>
+  <int hash="air_lasso_catch_num">999</int>
+  <int hash="cliff_max_count">999</int>
+  <int hash="0x189f0b0c96">999</int>
   <int hash="air_lasso_cliff_wait_frame">7</int>
   <int hash="air_lasso_landing_frame">25</int>
   <float hash="stand_stick_y">0.2</float>
