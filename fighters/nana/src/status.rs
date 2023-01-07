@@ -20,10 +20,10 @@ pub unsafe fn dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "nana", status = FIGHTER_STATUS_KIND_THROW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 pub unsafe fn throw(fighter: &mut L2CFighterCommon) -> L2CValue {
 
-    // check if we are near a ledge
-    let is_near_cliff = GroundModule::is_near_cliff(fighter.boma(),35.0,100.0);
+    // TODO: this check has issues.
+    // - if we grab on a platform far off stage (like smashville) this check fails
+    let is_near_cliff = GroundModule::is_near_cliff(fighter.boma(),30.0,30.0);
 
-    // if near a ledge, then throw towards ledge, else throw randomly
     let throw_name;
     if is_near_cliff {
         // the side of the stage she's on 
@@ -31,20 +31,23 @@ pub unsafe fn throw(fighter: &mut L2CFighterCommon) -> L2CValue {
         let center_x = GroundModule::get_center_pos(fighter.boma());
         let side = center_x.signum();
 
-        // the direction she's facing
         let facing = PostureModule::lr(fighter.boma());
 
-        throw_name = match side == facing {
-            true => "throw_f", // if she's facing the edge
-            false => "throw_b", // if she's facing away from the edge
-        }
+        let selected = app::sv_math::rand(hash40("fighter"), 100); 
+        throw_name = match selected {
+            0..=59 => match side == facing {
+                true => "throw_f", // if she's facing the edge
+                false => "throw_b", // if she's facing away from the edge
+            },
+            _ => "throw_lw"
+        };
     } else {
-        // force nana into a random throw
+        // any other scenario, random weighted throw
         let selected = app::sv_math::rand(hash40("fighter"), 100);
         throw_name = match selected {
-            0..=24 => "throw_b",
-            25..=49 => "throw_f",
-            50..=74 => "throw_lw",
+            0..=19 => "throw_b",
+            20..=39 => "throw_f",
+            40..=59 => "throw_lw",
             _ => "throw_hi"
         };
     }
