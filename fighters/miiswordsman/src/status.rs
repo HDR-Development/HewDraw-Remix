@@ -402,16 +402,12 @@ unsafe extern "C" fn special_s2_dash_main(fighter: &mut L2CFighterCommon) -> L2C
     // custom [
     // Jump and Attack cancels
     let pad_flag = ControlModule::get_pad_flag(fighter.module_accessor);
-    if fighter.is_input_jump() {
-        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND && MotionModule::frame(fighter.module_accessor) > 7.0 {
-            if PostureModule::lr(fighter.module_accessor) * fighter.global_table[STICK_X].get_f32() < 0.0 {
-                PostureModule::reverse_lr(fighter.module_accessor);
-            }
-            fighter.change_status(FIGHTER_STATUS_KIND_JUMP_SQUAT.into(),true.into());
+    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND && MotionModule::frame(fighter.module_accessor) > 7.0 {
+        if fighter.check_jump_cancel(true) {
             return 1.into()
         }
     }
-    else if compare_mask(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || compare_mask(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
+    if compare_mask(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || compare_mask(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
         fighter.change_status(FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK.into(),true.into());
         return 1.into()
     }
