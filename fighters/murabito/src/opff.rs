@@ -44,7 +44,7 @@ unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
     }
 }
- 
+
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     dspecial_cancels(boma, situation_kind, frame);
     uspecial_cancels(boma, situation_kind, frame);
@@ -61,5 +61,14 @@ pub fn murabito_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub unsafe fn murabito_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+    }
+}
+
+#[weapon_frame( agent = WEAPON_KIND_MURABITO_FLOWERPOT )]
+fn flowerpot_frame(weapon: &mut L2CFighterBase) {
+    unsafe {
+        if weapon.is_status( *WEAPON_MURABITO_FLOWERPOT_STATUS_KIND_THROWED ) && AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT) {
+            weapon.change_status(WEAPON_MURABITO_FLOWERPOT_STATUS_KIND_BURST.into(), false.into());
+        }
     }
 }

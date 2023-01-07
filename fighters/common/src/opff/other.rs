@@ -138,12 +138,12 @@ pub unsafe fn cliff_xlu_frame_counter(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn ecb_shift_disabled_motions(fighter: &mut L2CFighterCommon) {
-    if ( (fighter.kind() == *FIGHTER_KIND_SZEROSUIT
-            && fighter.is_motion(Hash40::new("attack_air_hi")))
-        || (fighter.kind() == *FIGHTER_KIND_PALUTENA
-            && fighter.is_motion(Hash40::new("attack_air_n")))
+    if ( (fighter.kind() == *FIGHTER_KIND_KIRBY
+            && fighter.is_motion(Hash40::new("throw_f")))
         || (fighter.kind() == *FIGHTER_KIND_GANON
-            && fighter.is_motion_one_of(&[Hash40::new("attack_air_n"), Hash40::new("attack_air_lw"), Hash40::new("attack_air_hi")])) )
+            && fighter.is_motion(Hash40::new("attack_air_lw")))
+        || (fighter.kind() == *FIGHTER_KIND_ROSETTA
+            && fighter.is_motion(Hash40::new("attack_air_lw"))) )
     && !VarModule::is_flag(fighter.battle_object, vars::common::status::DISABLE_ECB_SHIFT)
     {
         VarModule::on_flag(fighter.battle_object, vars::common::status::DISABLE_ECB_SHIFT);
