@@ -37,9 +37,9 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: hdr-switch
-        path: distributions/hdr-switch
+        path: build/hdr-switch
     - name: Upload hdr-ryujinx
       uses: actions/upload-artifact@v3
       with:
         name: hdr-ryujinx
-        path: distributions/hdr-ryujinx
+        path: build/hdr-ryujinx
