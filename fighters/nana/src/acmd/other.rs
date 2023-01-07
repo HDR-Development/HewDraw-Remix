@@ -241,6 +241,20 @@ unsafe fn nana_catch_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "nana", script = "sound_catch_nana", category = ACMD_SOUND , low_priority)]
+unsafe fn nana_catch_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_swing_02"));
+    }
+    wait(lua_state, 4.0);
+    if is_excute(fighter) {
+        STOP_SE(fighter, Hash40::new("se_common_swing_02"));
+    }
+}
+
 #[acmd_script( agent = "nana", script = "game_catchdash_nana" , category = ACMD_GAME , low_priority)]
 unsafe fn nana_catch_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -265,6 +279,24 @@ unsafe fn nana_catch_dash_game(fighter: &mut L2CAgentBase) {
         GrabModule::set_rebound(boma, false);
     }
     FT_MOTION_RATE(fighter, 1.21);
+}
+
+#[acmd_script( agent = "nana", script = "sound_catchdash_nana", category = ACMD_SOUND , low_priority)]
+unsafe fn nana_catch_dash_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_swing_02"));
+    }
+    wait(lua_state, 4.0);
+    if is_excute(fighter) {
+        STOP_SE(fighter, Hash40::new("se_common_swing_02"));
+    }
+    wait(lua_state, 23.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_popo_landing01"));
+    }
 }
 
 #[acmd_script( agent = "nana", script = "game_catchturn_nana" , category = ACMD_GAME , low_priority)]
@@ -292,6 +324,20 @@ unsafe fn nana_catch_turn_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "nana", script = "sound_catchturn_nana", category = ACMD_SOUND , low_priority)]
+unsafe fn nana_catch_turn_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_common_swing_02"));
+    }
+    wait(lua_state, 4.0);
+    if is_excute(fighter) {
+        STOP_SE(fighter, Hash40::new("se_common_swing_02"));
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -306,8 +352,11 @@ pub fn install() {
         damageflytop_sound,
         blizzard_fly_game,
         nana_catch_game,
+        nana_catch_sound,
         nana_catch_dash_game,
-        nana_catch_turn_game
+        nana_catch_dash_sound,
+        nana_catch_turn_game,
+        nana_catch_turn_sound
     );
 }
 
