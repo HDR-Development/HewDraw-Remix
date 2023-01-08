@@ -161,6 +161,8 @@ pub mod vars {
 
             pub const CHECK_CHANGE_MOTION_ONLY: i32 = 0x0056;
 
+            pub const IGNORE_ENERGY_UPDATE: i32 = 0x0057;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;

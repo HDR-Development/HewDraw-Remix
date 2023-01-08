@@ -14,6 +14,7 @@ pub fn opff(attrs: TokenStream, item: TokenStream) -> TokenStream {
 
     let usr_fn_name = usr_fn.sig.ident.clone();
 
+    let runtime_name = quote::format_ident!("{}_runtime", usr_fn_name);
     let static_name = quote::format_ident!("{}_static", usr_fn_name);
 
     quote::quote!(
@@ -27,8 +28,24 @@ pub fn opff(attrs: TokenStream, item: TokenStream) -> TokenStream {
             }
         }
 
+        #[smashline::fighter_frame_callback(main)]
+        fn #runtime_name(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+            #[allow(unused_unsafe)]
+            unsafe {
+                let category = smash::app::utility::get_category(&mut *fighter.module_accessor);
+                let kind = smash::app::utility::get_kind(&mut *fighter.module_accessor);
+                if category == *smash::lib::lua_const::BATTLE_OBJECT_CATEGORY_FIGHTER && kind == *#attrs {
+                    #usr_fn_name(fighter)
+                }
+            }
+        }
+
         pub fn install(is_runtime: bool) {
-            smashline::install_agent_frame!(#static_name);
+            if is_runtime {
+                smashline::install_agent_frame_callback!(#runtime_name);
+            } else {
+                smashline::install_agent_frame!(#static_name);
+            }
         }
     ).into()
 }

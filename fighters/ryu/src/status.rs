@@ -249,7 +249,7 @@ unsafe fn escape_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_AIR),
-        *FIGHTER_KINETIC_TYPE_MOTION_FALL,
+        *FIGHTER_KINETIC_TYPE_UNIQ,
         *GROUND_CORRECT_KIND_AIR as u32,
         app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         false,
