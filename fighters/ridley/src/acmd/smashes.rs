@@ -54,10 +54,44 @@ unsafe fn ridley_attack_hi4_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "ridley", script = "expression_attacklw4", category = ACMD_EXPRESSION )]
+unsafe fn ridley_attack_lw4_expression(fighter : &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 6);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, 0);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_NONE);
+    }frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        slope!(fighter,*MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 3);
+    }frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_impact"), 0, false, 0);
+    }
+    frame(lua_state, 53.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 8);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         ridley_attack_s4_s_game,
         ridley_attack_hi4_game,
+        ridley_attack_lw4_expression,
     );
 }
 

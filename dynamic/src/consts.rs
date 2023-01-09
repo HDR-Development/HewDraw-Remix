@@ -280,6 +280,24 @@ pub mod vars {
     }
 
     pub mod buddy {
+        pub mod instance {
+            // flag
+            pub const BEAKBOMB_ACTIVE: i32 = 0x0100;
+            pub const BAYONET_ACTIVE: i32 = 0x0101;
+            
+            // int
+            pub const HUD_DISPLAY_TIME: i32 = 0x0100;
+            //Current frame of Beakbomb, used to detect mislanding
+            pub const BEAKBOMB_FRAME: i32 = 0x0101;
+            // 0: Normal Bounce (can be cancelled) 1: weak bounce 2: heavy bounce.
+            pub const BEAKBOMB_BOUNCE: i32 = 0x0102;
+            //Eggs fired gets reset when entering Bayonet, so we have to temporarily store current eggs fired
+            pub const BAYONET_EGGS: i32 = 0x0103;
+
+            // float
+            pub const FEATHERS_RED_COOLDOWN: i32 = 0x0100;
+            pub const BEAKBOMB_ANGLE: i32 = 0x0101;
+        }
         pub mod status {
             // flags
             pub const IS_BURY_DTHROW: i32 = 0x1100;
@@ -879,6 +897,28 @@ pub mod vars {
         }
     }
 
+    pub mod ridley {
+        pub mod instance {
+            // flags
+            pub const SPECIAL_LW_IS_GRAB: i32 = 0x0100;
+            pub const SPECIAL_LW_IS_THROW: i32 = 0x101;
+            pub const SPECIAL_LW_ENABLE_LANDING: i32 = 0x0102;
+            pub const SPECIAL_LW_IS_LANDING: i32 = 0x0103;
+            pub const SPECIAL_LW_ENABLE_BOUNCE: i32 = 0x0104;
+            
+            // floats
+            pub const SPECIAL_LW_BOUNCE_PREV_POS: i32 = 0x0100;   //vector, requires two indexes
+            pub const SPECIAL_S_FAILURE_CANCEL_FRAME: i32 = 0x0102;
+
+            // ints
+            pub const SPECIAL_LW_CATCH_ID: i32 = 0x0100;
+        }
+        pub mod status {
+            // floats
+            pub const SKEWER_STICK_Y: i32 = 0x1100;
+        }
+    }
+
 }
 
 pub mod statuses {
@@ -896,6 +936,10 @@ pub mod statuses {
 
     pub mod ryu {
         pub const AIR_DASH: i32 = 0;
+    }
+
+    pub mod buddy {
+        pub const BUDDY_BAYONET_END: i32 = 0;
     }
 
 }
