@@ -72,8 +72,8 @@ unsafe fn mewtwo_attack_air_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        HIT_NO(fighter, 12, *HIT_STATUS_ON);
-        HIT_NO(fighter, 13, *HIT_STATUS_ON);
+        HIT_NO(fighter, 12, *HIT_STATUS_NORMAL);
+        HIT_NO(fighter, 13, *HIT_STATUS_NORMAL);
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
@@ -108,8 +108,8 @@ unsafe fn mewtwo_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
-        HIT_NO(fighter, 12, *HIT_STATUS_ON);
-        HIT_NO(fighter, 13, *HIT_STATUS_ON);
+        HIT_NO(fighter, 12, *HIT_STATUS_NORMAL);
+        HIT_NO(fighter, 13, *HIT_STATUS_NORMAL);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 7.0);
