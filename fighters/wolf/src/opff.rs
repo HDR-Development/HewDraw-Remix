@@ -7,6 +7,18 @@ use globals::*;
 unsafe fn airdodge_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
         if frame > 17.0 {
+            FighterStatusModuleImpl::set_fighter_status_data(
+                boma,
+                false,
+                *FIGHTER_TREADED_KIND_NO_REAC,
+                false,
+                false,
+                false,
+                (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_N | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON | *FIGHTER_LOG_MASK_FLAG_SHOOT) as u64,
+                0,
+                *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_N as u32,
+                0
+            );
             boma.check_airdodge_cancel();
         }
     }
