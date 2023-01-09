@@ -10,7 +10,7 @@ unsafe fn wolf_special_s_end_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 28, 85, 0, 30, 5.5, 0.0, 5.5, 5.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
     }
-    frame(lua_state, 6.0);
+    frame(lua_state, 3.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
@@ -119,6 +119,28 @@ unsafe fn wolf_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script(agent = "wolf", scripts = ["effect_specialairsend", "effect_specialsend"], category = ACMD_EFFECT, low_priority)]
+unsafe fn wolf_special_s_end_effect(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("wolf_slash_scratch"), Hash40::new("top"), 5, 13, 0, -40, 0, 0, 0.45, true);
+        macros::LAST_EFFECT_SET_RATE(fighter, 2);
+    }
+    frame(fighter.lua_state_agent, 2.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 5.5, 5.5, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+        macros::LAST_EFFECT_SET_RATE(fighter, 1.8);
+    }
+}
+
+#[acmd_script(agent = "wolf", scripts = ["effect_specialairs", "effect_specials"], category = ACMD_EFFECT, low_priority)]
+unsafe fn wolf_special_s_effect(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("wolf_slash"), Hash40::new("top"), -3, 5.5, 0, 65, 0, 0, 0.75, false);
+        EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
+        // macros::EFFECT_FOLLOW(fighter, Hash40::new("wolf_slash_rush"), Hash40::new("top"), -3, 20.7, 35, 65, 0, 0, 0.75, false);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         wolf_special_s_end_game,
@@ -126,6 +148,9 @@ pub fn install() {
         wolf_special_lw_start_game,
         wolf_special_air_lw_start_game,
         wolf_special_hi_fall_game,
+
+        wolf_special_s_end_effect,
+        wolf_special_s_effect,
     );
 }
 

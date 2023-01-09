@@ -124,6 +124,8 @@ pub unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> 
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
             if step == *FIGHTER_FOX_ILLUSION_STEP_END {
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+                macros::EFFECT_DETACH_KIND(fighter, Hash40::new("wolf_slash_rush"), -1);
+                macros::EFFECT_DETACH_KIND(fighter, Hash40::new("wolf_slash"), -1);
                 special_s_change_mot(fighter, Hash40::new("special_air_s_end"));
                 special_s_air_control(fighter);
                 fighter.sub_fighter_cliff_check(GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES.into());
