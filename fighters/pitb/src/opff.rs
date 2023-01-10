@@ -32,6 +32,12 @@ unsafe fn guardian_orbitar_jc(boma: &mut BattleObjectModuleAccessor, status_kind
     }
 }
 
+// Important
+unsafe fn dark_pit_tpose(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if(fighter.boma().is_prev_status(*FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_HOLD) && fighter.boma().is_situation(*SITUATION_KIND_AIR) && fighter.boma().get_num_used_jumps() == 3) {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("peepeepoopoo"), 0.0, 1.0, false, 0.0, false, false); // <3 JOB
+    }
+}
 
 extern "Rust" {
     fn pits_common(boma: &mut BattleObjectModuleAccessor, status_kind: i32);
@@ -47,7 +53,8 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
 pub fn pitb_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-		pitb_frame(fighter)
+		pitb_frame(fighter);
+        dark_pit_tpose(fighter);
     }
 }
 
