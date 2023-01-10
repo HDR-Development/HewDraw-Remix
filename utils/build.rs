@@ -12,7 +12,7 @@ fn rebuild_xml_to_prc(root_src_path: &Path, root_dst_path: &Path) {
 
 fn rebuild_romfs(root_src_path: &Path, root_dst_path: &Path) {
     for entry in WalkDir::new(root_src_path) {
-        if let Ok(entry) = entry {
+        if let Ok(entry) = entry { 
             if entry.file_type().is_file() {
                 let path = entry.path();
                 let local_path = path.strip_prefix(root_src_path).expect("Path in root was not in root! Possible symlink?");

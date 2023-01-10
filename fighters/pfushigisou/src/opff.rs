@@ -14,14 +14,8 @@ unsafe fn special_s_article_fix(boma: &mut BattleObjectModuleAccessor, id: usize
 
 // Ivysaur Razor Leaf Airdodge Cancel
 unsafe fn razorleaf_adc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if status_kind != *FIGHTER_STATUS_KIND_SPECIAL_S || situation_kind != *SITUATION_KIND_AIR {
-        return;
-    }
-
-    if frame > 23.0 {
-        if boma.is_cat_flag(Cat1::AirEscape) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, false);
-        }
+    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame > 23.0 {
+        boma.check_airdodge_cancel();
     }
 }
 

@@ -1,16 +1,40 @@
 name: validate pr labels
 on:
   pull_request_target:
-    types: [labeled, unlabeled, opened, edited, reopened, synchronize, ready_for_review]
+    types: [labeled, unlabeled, opened, reopened, synchronize, ready_for_review]
 jobs:
   check-pr:
     name: Validate Release Labels
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
-      - uses: jesusvasquez333/verify-pr-label-action@v1.4.0
+      # ensure that a semantic version label is present
+      - name: check_semver_labels
+        if: >
+            !(contains(github.event.pull_request.labels.*.name, 'semver:feature') 
+              || contains(github.event.pull_request.labels.*.name, 'semver:patch'))
+        uses: actions/github-script@v3
         with:
-          github-token: '${{ secrets.GITHUB_TOKEN }}'
-          valid-labels: 'semver:feature, semver:patch'
-          invalid-labels: 'for next beta'
-          pull-request-number: '${{ github.event.pull_request.number }}'
-          disable-reviews: true
+          script: |
+              core.setFailed('No semver label was found on this PR!')
+
+      # ensure that the 'for next beta' label is not present
+      - name: check_for_next_beta_labels
+        if: >
+            contains(github.event.pull_request.labels.*.name, 'for next beta')
+        uses: actions/github-script@v3
+        with:
+          script: |
+              core.setFailed('This PR is labeled to wait until next beta cycle for release.')
+
+      # ensure that this is not a character change waiting for backroom approval
+      - name: check_backroom_labels
+        if: >
+            contains(github.event.pull_request.labels.*.name, 'character change')
+            && !contains(github.event.pull_request.labels.*.name, 'backroom approved')
+        uses: actions/github-script@v3
+        with:
+          script: |
+              core.setFailed('This character change has not been approved by balance backroom yet.')
+      
+      - name: all_is_well
+        run: echo "This PR is in an appropriately labeled state."

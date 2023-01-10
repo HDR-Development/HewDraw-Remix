@@ -19,7 +19,20 @@ pub mod stage_hazards;
 pub mod set_fighter_status_data;
 pub mod attack;
 pub mod collision;
+pub mod camera;
 
+
+#[skyline::hook(offset = 0x3a85b4, inline)]
+unsafe fn run_lua_status_hook(ctx: &skyline::hooks::InlineCtx) {
+    let boma = *ctx.registers[22].x.as_ref() as *mut BattleObjectModuleAccessor;
+
+    if (*boma).is_fighter()
+    && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR
+    && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
+    {
+        WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
+    }
+}
 
 pub fn install() {
     energy::install();
@@ -41,6 +54,7 @@ pub fn install() {
     set_fighter_status_data::install();
     attack::install();
     collision::install();
+    camera::install();
 
     unsafe {
         // Handles getting rid of the kill zoom
@@ -53,4 +67,7 @@ pub fn install() {
         // removes phantoms
         skyline::patching::Patch::in_text(0x3e6ce8).data(0x14000012u32);
     }
+    skyline::install_hooks!(
+        run_lua_status_hook
+    );
 }
