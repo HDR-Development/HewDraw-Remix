@@ -10,6 +10,10 @@ unsafe fn wolf_special_s_end_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 28, 85, 0, 30, 5.5, 0.0, 5.5, 5.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
     }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        AttackModule::clear(fighter.module_accessor, 1, false);
+    }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
@@ -132,12 +136,41 @@ unsafe fn wolf_special_s_end_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script(agent = "wolf", scripts = ["game_specialairs", "game_specials"], category = ACMD_GAME, low_priority)]
+unsafe fn wolf_special_s_game(fighter: &mut L2CAgentBase) {
+    FT_MOTION_RATE(fighter, 1.5);
+    if macros::is_excute(fighter) {
+        JostleModule::set_status(fighter.module_accessor, false);
+    }
+    frame(fighter.lua_state_agent, 0.66);
+    if macros::is_excute(fighter) {
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_WOLF_GENERATE_ARTICLE_ILLUSION, false, -1);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0, 60, 60, 0, 68, 3.0, 0.0, 5.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
+    }
+}
+
+#[acmd_script(agent = "wolf_illusion", scripts = ["game_moveair", "game_moveground"], category = ACMD_GAME, low_priority)]
+unsafe fn wolf_illusion_move_game(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        // macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 60, 60, 0, 68, 3.0, 0.0, 5.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
+    }
+}
+
 #[acmd_script(agent = "wolf", scripts = ["effect_specialairs", "effect_specials"], category = ACMD_EFFECT, low_priority)]
 unsafe fn wolf_special_s_effect(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("wolf_slash"), Hash40::new("top"), -3, 5.5, 0, 65, 0, 0, 0.75, false);
         EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
         // macros::EFFECT_FOLLOW(fighter, Hash40::new("wolf_slash_rush"), Hash40::new("top"), -3, 20.7, 35, 65, 0, 0, 0.75, false);
+    }
+}
+
+#[acmd_script(agent = "wolf", scripts = ["sound_specialairs", "sound_specials"], category = ACMD_SOUND, low_priority)]
+unsafe fn wolf_special_s_sound(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.33);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("vc_wolf_special_s01"));
+        macros::PLAY_SE(fighter, Hash40::new("se_wolf_special_s02"));
     }
 }
 
@@ -188,7 +221,11 @@ pub fn install() {
         wolf_special_s_end_effect,
         wolf_special_s_effect,
 
-        wolf_special_air_n_game
+        wolf_special_air_n_game,
+
+        wolf_special_s_game,
+        wolf_illusion_move_game,
+        wolf_special_s_sound
     );
 }
 
