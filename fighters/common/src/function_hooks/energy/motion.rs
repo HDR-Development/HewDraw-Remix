@@ -265,11 +265,11 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
     // the following flag is set for the same reset types mentioned in the above LR check, except for AirTransAngleSuperJumpPunch
     energy.active_flag = false;
 
-    if reset_type.is_ground() && !energy.update_flag {
-        if move_speed.x.abs() < 1.0 {
-            move_speed.x = energy.prev_speed.x;
-        }
-    }
+    //if reset_type.is_ground() && !energy.update_flag {
+    //    if move_speed.x.abs() < 1.0 {
+    //        move_speed.x = energy.prev_speed.x;
+    //    }
+    //}
 
     let speed = match reset_type {
         // It appears that when grounded and your animation is controlling your kinetic energy,

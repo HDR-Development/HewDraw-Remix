@@ -3,17 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
-
-// Ice Climbers Cheer Cancel (Techy)
-unsafe fn cheer_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if boma.kind() == *FIGHTER_KIND_NANA {
-        if status_kind == *FIGHTER_POPO_STATUS_KIND_THROW_NANA {
-            MotionModule::set_frame(boma, MotionModule::end_frame(boma), true);
-            StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_WAIT, true);
-        }
-    }
-}
 
 // Ice Climbers Spotdodge Desync
 unsafe fn spotdodge_desync(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
@@ -79,7 +68,6 @@ pub unsafe extern "Rust" fn ice_climbers_common(fighter: &mut L2CFighterCommon) 
 }
 
 pub unsafe fn ice_climbers_moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    cheer_cancel(fighter, boma, status_kind);
     spotdodge_desync(boma, status_kind);
     //clear_jc_grab_flag(boma, id, status_kind);
     get_nana_boma(fighter, boma, id);

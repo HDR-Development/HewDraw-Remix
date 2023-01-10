@@ -142,12 +142,6 @@ unsafe fn battleobject__call_update_movement_stop(ctx: &skyline::hooks::InlineCt
 unsafe fn run_lua_status_hook(ctx: &skyline::hooks::InlineCtx) {
     let boma = *ctx.registers[22].x.as_ref() as *mut BattleObjectModuleAccessor;
 
-    /*let slow_num = *((utils::singletons::BattleObjectSlow() as u64) as *mut u64);
-    let slow_bool = *(((utils::singletons::BattleObjectSlow() as u64) + 2) as *mut bool);
-    if slow_bool && slow_num != 2 {
-        println!("slow?");
-    }*/
-
     if (*boma).is_fighter()
     && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR
     && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
@@ -290,7 +284,7 @@ pub fn install() {
         skyline::patching::Patch::in_text(0x3e6ce8).data(0x14000012u32);
         
         // Stubs MAIN status execution functions
-        // These functions are run separately in run_lua_status_hook
+        // These functions are run conditionally in run_lua_status_hook
         skyline::patching::Patch::in_text(0x3a8518).nop();
         skyline::patching::Patch::in_text(0x3a8528).nop();
         skyline::patching::Patch::in_text(0x3a8540).nop();
