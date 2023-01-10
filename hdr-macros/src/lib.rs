@@ -15,18 +15,9 @@ pub fn opff(attrs: TokenStream, item: TokenStream) -> TokenStream {
     let usr_fn_name = usr_fn.sig.ident.clone();
 
     let runtime_name = quote::format_ident!("{}_runtime", usr_fn_name);
-    let static_name = quote::format_ident!("{}_static", usr_fn_name);
 
     quote::quote!(
         #usr_fn
-
-        #[smashline::fighter_frame(agent = #attrs, main)]
-        fn #static_name(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-            #[allow(unused_unsafe)]
-            unsafe {
-                #usr_fn_name(fighter)
-            }
-        }
 
         #[smashline::fighter_frame_callback(main)]
         fn #runtime_name(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
@@ -41,11 +32,7 @@ pub fn opff(attrs: TokenStream, item: TokenStream) -> TokenStream {
         }
 
         pub fn install(is_runtime: bool) {
-            if is_runtime {
-                smashline::install_agent_frame_callback!(#runtime_name);
-            } else {
-                smashline::install_agent_frame!(#static_name);
-            }
+            smashline::install_agent_frame_callback!(#runtime_name);
         }
     ).into()
 }

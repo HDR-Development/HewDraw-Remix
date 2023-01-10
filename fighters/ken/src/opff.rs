@@ -18,12 +18,18 @@ extern "Rust" {
     fn shotos_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
 
+#[fighter_frame( agent = FIGHTER_KIND_KEN )]
+pub fn ken_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    unsafe {
+        shotos_common(fighter);
+    }
+}
+
 #[utils::macros::opff(FIGHTER_KIND_KEN)]
 pub fn ken_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		ken_frame(fighter);
-        shotos_common(fighter);
     }
 }
 

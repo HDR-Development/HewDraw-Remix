@@ -253,14 +253,7 @@ unsafe fn kinetic_module__update_energy(kinetic_module: u64, arg2: u64) {
         VarModule::off_flag((*boma).object(), vars::common::instance::IGNORE_ENERGY_UPDATE);
         return;
     }
-    if VarModule::has_var_module((*boma).object()) { VarModule::off_flag((*boma).object(), vars::common::instance::IGNORE_ENERGY_UPDATE); }
     call_original!(kinetic_module, arg2);
-}
-
-#[skyline::hook(offset = 0x6cdc40)]
-unsafe fn kinetic_module__reset_energy(kinetic_module: u64, arg2: u64, boma: &mut BattleObjectModuleAccessor) {
-    if VarModule::has_var_module(boma.object()) { VarModule::on_flag(boma.object(), vars::common::instance::IGNORE_ENERGY_UPDATE); }
-    call_original!(kinetic_module, arg2, boma)
 }
 
 pub fn install() {
@@ -313,6 +306,5 @@ pub fn install() {
         battleobject__call_update_movement_stop,
         run_lua_status_hook,
         kinetic_module__update_energy,
-        kinetic_module__reset_energy
     );
 }

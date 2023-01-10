@@ -266,7 +266,7 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
     energy.active_flag = false;
 
     if reset_type.is_ground() && !energy.update_flag {
-        if move_speed.x.abs() < 0.1 {
+        if move_speed.x.abs() < 1.0 {
             move_speed.x = energy.prev_speed.x;
         }
     }
@@ -451,6 +451,6 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
 
 pub fn install() {
     skyline::install_hooks!(
-        motion_update
+        //motion_update
     );
 }

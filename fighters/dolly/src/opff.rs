@@ -741,10 +741,9 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 
 }
 
-#[utils::macros::opff(FIGHTER_KIND_DOLLY )]
-pub fn dolly_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+#[fighter_frame( agent = FIGHTER_KIND_DOLLY )]
+pub fn dolly_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        common::opff::fighter_common_opff(fighter);
         MeterModule::update(fighter.object(), false);
         // if fighter.is_button_on(Buttons::AppealAll) {
         //     MeterModule::show(fighter.object());
@@ -758,6 +757,13 @@ pub fn dolly_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
             ParamModule::get_float(fighter.object(), ParamType::Common, "meter_max_damage"),
             MeterModule::meter_per_level(fighter.object())
         );
+    }
+}
+
+#[utils::macros::opff(FIGHTER_KIND_DOLLY )]
+pub fn dolly_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    unsafe {
+        common::opff::fighter_common_opff(fighter);
 		dolly_frame(fighter)
     }
 }

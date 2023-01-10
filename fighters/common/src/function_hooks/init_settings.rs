@@ -118,6 +118,8 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
 
     }
 
+    if VarModule::has_var_module(boma.object()) { VarModule::on_flag(boma.object(), vars::common::instance::IGNORE_ENERGY_UPDATE); }
+
     // VarModule Status Variable reset checks
     // This makes the assumption that if the KEEP_FLAG is not NONE, you want to clear the
     // status variable array for that data type. Because Smash shares its space between
