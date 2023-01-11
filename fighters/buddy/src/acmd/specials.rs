@@ -6,7 +6,6 @@ use super::*;
 pub fn install() {
     install_acmd_scripts!(
         buddy_special_s_dash_game,
-        buddy_special_air_s_dash_game,
         
         buddy_attack_special_n_upperfire_game,
         buddy_attack_special_n_fire2_game,
@@ -89,17 +88,20 @@ unsafe fn buddy_attack_special_n_upperfire_game(fighter: &mut L2CAgentBase) {
             VarModule::on_flag(boma.object(), vars::buddy::instance::BAYONET_ACTIVE);
             fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_S3, true);
             VarModule::set_int(boma.object(), vars::buddy::instance::BAYONET_EGGS,*FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_N_BAKYUN_BULLET_SHOOT_COUNT);
-            return;
+            break;
         }
         wait(lua_state, 1.0);
     }
-    frame(lua_state, 4.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_GENERATE_BULLET);
-    }
-    frame(lua_state, 5.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_START_PRECEDE_CHECK);
+    if !VarModule::is_flag(boma.object(), vars::buddy::instance::BAYONET_ACTIVE)
+    {
+        frame(lua_state, 4.0);
+        if is_excute(fighter) {
+            WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_GENERATE_BULLET);
+        }
+        frame(lua_state, 5.0);
+        if is_excute(fighter) {
+            WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_BUDDY_STATUS_SPECIAL_N_FLAG_START_PRECEDE_CHECK);
+        }
     }
 }
 #[acmd_script( agent = "buddy", script = "game_specialnfire2" , category = ACMD_GAME , low_priority)]
@@ -167,7 +169,18 @@ unsafe fn buddy_special_air_s_dash_expression(fighter: &mut L2CAgentBase) {
 unsafe fn buddy_special_air_s_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent; 
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state); 
-
+    
+    
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("buddy_special_s_start"), Hash40::new("rot"), -2, -2, -14, 0, 0, 0, 0.75, true);
+        LAST_EFFECT_SET_COLOR(fighter,1,0.5,0);
+    }
+    frame(fighter.lua_state_agent, 2.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("buddy_special_s_hold"), Hash40::new("virtualcenter"), 1.5, 0, 0, 0, 0, 0, 0.75, true);
+        LAST_EFFECT_SET_COLOR(fighter,1,0.5,0);
+        EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
+    }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         FLASH(fighter, 1, 0.4, 0, 0.2);
@@ -197,6 +210,7 @@ unsafe fn buddy_special_air_s_dash_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_COLOR(fighter, 1, 0.3, 0);
         
         EFFECT_FLW_POS(fighter, Hash40::new("buddy_special_s_flash2"), Hash40::new("k_head"), -1, 0, -4, 0, 0, 0, 0.5, true);
+        LAST_EFFECT_SET_COLOR(fighter,1,0.5,0);
         EffectModule::enable_sync_init_pos_last(boma);
     }
 
@@ -236,7 +250,10 @@ unsafe fn buddy_special_air_s_start_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent; 
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state); 
     
-    //WorkModule::is_flag(boma, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_FAIL);
+    frame(lua_state, 1.0);
+    if is_excute(fighter) && !WorkModule::is_flag(boma, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_FAIL){
+        PLAY_SE(fighter, Hash40::new("se_buddy_special_s01"));
+    }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         let play_vc = app::sv_math::rand(hash40("fighter"), 3);
@@ -246,7 +263,7 @@ unsafe fn buddy_special_air_s_start_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_buddy_special_s04_01"));
+        PLAY_SE(fighter, Hash40::new("se_buddy_special_s01"));
     }
 }
 
@@ -255,7 +272,7 @@ unsafe fn buddy_special_air_s_dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;    
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        PLAY_STATUS(fighter, Hash40::new("se_buddy_appear_s02"));
+        PLAY_STATUS(fighter, Hash40::new("se_buddy_special_s05"));
     }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
@@ -267,7 +284,6 @@ unsafe fn buddy_special_air_s_dash_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_common_throw_02"));
-        //se_common_blowaway_s,se_common_throw_02
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
@@ -328,6 +344,7 @@ unsafe fn buddy_special_air_s_start_game(fighter: &mut L2CAgentBase) {
         //Clear speed
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP); 
         KineticModule::clear_speed_all(fighter.module_accessor);
+        GroundModule::set_attach_ground(fighter.module_accessor, false);
         sv_kinetic_energy!(
             clear_speed,
             fighter,
@@ -375,6 +392,29 @@ unsafe fn buddy_special_air_s_dash_game(fighter: &mut L2CAgentBase) {
         //Prevents losing a gold feather
         WorkModule::add_int(boma, 1, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN);
 
+        //Set control
+        VarModule::on_flag(boma.object(), vars::buddy::instance::BEAKBOMB_ACTIVE);
+        VarModule::set_int(boma.object(), vars::buddy::instance::BEAKBOMB_FRAME,0);
+        VarModule::set_int(boma.object(), vars::buddy::instance::BEAKBOMB_BOUNCE,0);
+        let stick_y: f32 = ControlModule::get_stick_y(boma);
+        VarModule::set_float(boma.object(), vars::buddy::instance::BEAKBOMB_ANGLE,stick_y.signum());
+        if (stick_y.abs())<0.1
+        {
+            VarModule::set_float(boma.object(), vars::buddy::instance::BEAKBOMB_ANGLE,0.0);
+        }
+        //Clear gravity speed (prevents exponential movement from cliff jump)
+        sv_kinetic_energy!(
+            clear_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY
+        );
+        sv_kinetic_energy!(
+            set_accel,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            0.0
+        );
+
         let shieldDamage = 4;
         JostleModule::set_status( boma, false);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 16.0, 43, 70, 0, 76, 3.2, 0.0, 9.2, 8.8, Some(0.0), Some(9.2), Some(12.4), 1.125, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, shieldDamage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
@@ -403,8 +443,25 @@ unsafe fn buddy_special_air_s_dash_game(fighter: &mut L2CAgentBase) {
 unsafe fn buddy_special_air_s_wall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;    
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state); 
-    
-    //DamageModule::add_damage(fighter.module_accessor, 10.0,0);
+
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD);
+        if (!has_hit_shield
+        && VarModule::get_int(boma.object(), vars::buddy::instance::BEAKBOMB_BOUNCE)==0)
+        {
+            CancelModule::enable_cancel(fighter.module_accessor);
+        }
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD);
+        if (!has_hit_shield
+        && VarModule::get_int(boma.object(), vars::buddy::instance::BEAKBOMB_BOUNCE)==0)
+        {
+            WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_LANDING_HEAVY);
+        }
+    }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
         if (WorkModule::is_flag(boma, /*Flag*/ *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_LANDING_HEAVY))
