@@ -7,7 +7,8 @@ pub fn install() {
     install_status_scripts!(
         dash,
         throw,
-        catchwait_main
+        catchwait_main,
+        // catchattack_main
     );
 }
 
@@ -76,3 +77,14 @@ unsafe extern "C" fn catchwait_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), false.into());
     0.into()
 }
+
+// uncomment this to prevent buffering pummels with nana
+// #[status_script(agent = "nana", status = FIGHTER_STATUS_KIND_CATCH_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+// unsafe fn catchattack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     fighter.sub_shift_status_main(L2CValue::Ptr(catchattack_main_loop as *const () as _))
+// }
+
+// unsafe extern "C" fn catchattack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), false.into());
+//     0.into()
+// }
