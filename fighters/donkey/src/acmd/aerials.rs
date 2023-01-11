@@ -113,8 +113,12 @@ unsafe fn donkey_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("donkey_attack_arc_c"), Hash40::new("donkey_attack_arc_c"), Hash40::new("top"), 0.0, 10, 0.0 /*left-right */, -155.5, -115, 57, 1.25, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("donkey_attack_arc_c"), Hash40::new("donkey_attack_arc_c"), Hash40::new("top"), 0.0, 9, -1.0 /*left-right */, -155.5, -125, 57, 1.35, true, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        LAST_EFFECT_SET_RATE(fighter, 2.0);
     }
 }
 
