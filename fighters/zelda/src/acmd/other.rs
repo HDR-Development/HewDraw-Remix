@@ -201,26 +201,34 @@ unsafe fn zelda_dein_tame_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
-		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_bullet_end"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.5, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("zelda_din_bullet_end"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, true);
 	}
 	frame(lua_state, 20.0);
 	if is_excute(fighter) {
-		EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, true);
+		EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
+		EFFECT(fighter, Hash40::new("zelda_appeal_s_fire"), Hash40::new("top"), 2.0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
 	}
-	frame(lua_state, 40.0);
+	frame(lua_state, 45.0);
 	if is_excute(fighter) {
-		EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-		LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.25, 0.25);
-	}
-	frame(lua_state, 60.0);
-	if is_excute(fighter) {
-		EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-		LAST_EFFECT_SET_COLOR(fighter, 0.885, 0.051, 0.051);
-	}
-	frame(lua_state, 76.0);
-	if is_excute(fighter) {
-		EFFECT(fighter, Hash40::new("zelda_atk"), Hash40::new("top"), 0, 0, 0, 90, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, true);
+		EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0.50, 0, 0, 0, 0, 0, true);
 		LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.5, 0.5);
+		EFFECT(fighter, Hash40::new("zelda_appeal_s_fire"), Hash40::new("top"), 2.0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
+		LAST_EFFECT_SET_COLOR(fighter, 3.0, 0.5, 0.5);
+
+	}
+	frame(lua_state, 70.0);
+	if is_excute(fighter) {
+		EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, 1.0, 0, 0, 0, 0, 0, true);
+		LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.25, 0.25);
+		EFFECT(fighter, Hash40::new("zelda_appeal_s_fire"), Hash40::new("top"), 2.0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
+		LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.25, 0.25);
+		}
+	frame(lua_state, 97.0);
+	if is_excute(fighter) {
+		EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.20, 0, 0, 0, 0, 0, 0, true);
+		LAST_EFFECT_SET_COLOR(fighter, 0.885, 0.051, 0.051);
+		EFFECT(fighter, Hash40::new("zelda_atk"), Hash40::new("top"), 0, 2.0, 0, 90, 0, 0, 1.15, 0, 0, 0, 0, 0, 0, true);
+		LAST_EFFECT_SET_COLOR(fighter, 0.885, 0.051, 0.051);
 	}
 }
 
@@ -394,8 +402,10 @@ unsafe fn zelda_phantom_attack_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
-		EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 1.0, 20.0, -10.0, 0, 0, 0, 1.25, 0, 0, 0, 0, 0, 0, true);
+		EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 1.0, 20.0, -10.0, 0, 0, 0, 1.25, 0, 0, 0, 0, 0, 0, true);
 		LAST_EFFECT_SET_COLOR(fighter, 0.885, 0.051, 0.051);
+		LAST_EFFECT_SET_RATE(fighter, 0.50);
+		EFFECT(fighter, Hash40::new("zelda_appeal_s_fire"), Hash40::new("top"), 1.0, 20.0, -10.0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
 		LAST_EFFECT_SET_RATE(fighter, 0.75);
 		if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
 			EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
@@ -490,9 +500,12 @@ unsafe fn zelda_phantom_attack_l_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
-		EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 1.0, 20.0, -10.0, 0, 0, 0, 1.25, 0, 0, 0, 0, 0, 0, true);
+		EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 1.0, 20.0, -10.0, 0, 0, 0, 1.25, 0, 0, 0, 0, 0, 0, true);
 		LAST_EFFECT_SET_COLOR(fighter, 0.4, 0.0, 1.0);
+		LAST_EFFECT_SET_RATE(fighter, 0.50);
+		EFFECT(fighter, Hash40::new("zelda_appeal_s_fire"), Hash40::new("top"), 1.0, 20.0, -10.0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
 		LAST_EFFECT_SET_RATE(fighter, 0.75);
+		LAST_EFFECT_SET_COLOR(fighter, 0.4, 0.0, 50.0);
 		if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
 			EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
 		}
@@ -621,7 +634,8 @@ unsafe fn zelda_phantom_attack_max_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
 	if is_excute(fighter) {
 		EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 1.0, 20.0, -10.0, 0, 0, 0, 1.25, 0, 0, 0, 0, 0, 0, true);
-		LAST_EFFECT_SET_RATE(fighter, 0.75);
+		LAST_EFFECT_SET_RATE(fighter, 0.50);
+		EFFECT(fighter, Hash40::new("zelda_atk_flash"), Hash40::new("top"), 1.0, 20.0, -10.0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, true);
 		if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
 			EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
 		}
