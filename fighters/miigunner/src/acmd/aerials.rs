@@ -167,7 +167,7 @@ unsafe fn miigunner_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
 		// Trigger boosted aerial
 		let cat1 = 0;
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) || fighter.is_cat_flag(Cat1::AttackS3) || fighter.is_cat_flag(Cat1::AttackS4) || fighter.is_cat_flag(Cat1::AttackN) {
+        if boma.is_button_on(Buttons::Attack) {
             VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
 			FT_MOTION_RATE(fighter, 5.0/(9.0 - 8.0));
         }
@@ -293,7 +293,7 @@ unsafe fn miigunner_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
 		// Trigger boosted aerial
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) || fighter.is_cat_flag(Cat1::AttackS3) || fighter.is_cat_flag(Cat1::AttackS4) || fighter.is_cat_flag(Cat1::AttackN) {
+        if boma.is_button_on(Buttons::Attack) {
             VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
 			FT_MOTION_RATE(fighter, 8.0/(17.0 - 15.0));
         }
@@ -512,8 +512,8 @@ unsafe fn miigunner_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 		}
 		else {
 			/* Ground-only */
-			ATTACK(fighter, 0, 0, Hash40::new("handr"), 10.0, 270, 90, 0, 5, 4.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
-			ATTACK(fighter, 1, 0, Hash40::new("handr"), 15.0, 270, 90, 0, 5, 5.5, 8.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
+			ATTACK(fighter, 0, 0, Hash40::new("handr"), 10.0, 270, 80, 0, 20, 4.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
+			ATTACK(fighter, 1, 0, Hash40::new("handr"), 15.0, 270, 80, 0, 20, 5.5, 8.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
 			/* Air-only */
 			ATTACK(fighter, 2, 0, Hash40::new("handr"), 10.0, 270, 88, 0, 5, 4.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
 			ATTACK(fighter, 3, 0, Hash40::new("handr"), 15.0, 270, 66, 0, 5, 5.5, 8.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);

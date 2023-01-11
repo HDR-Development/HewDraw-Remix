@@ -35,18 +35,16 @@ unsafe fn miigunner_throw_b_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
 	if is_excute(fighter) {
 		VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-		
 		// Heavy throw
 		if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_CATCH) {
             VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-			FT_MOTION_RATE(fighter, 4.0);
+			FT_MOTION_RATE(fighter, 8.0/(3.0 - 1.0));
 			ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 7.0, 52, 56, 2, 75, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         }
 		// Normal throw
 		else {
 			ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 7.0, 50, 45, 0, 50, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
 		}
-		
 		ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
 	}
 	frame(lua_state, 3.0);
@@ -61,22 +59,19 @@ unsafe fn miigunner_throw_b_game(fighter: &mut L2CAgentBase) {
 		ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
 		// Heavy throw
 		if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
-			FT_MOTION_RATE(fighter, 0.75);
+			FT_MOTION_RATE(fighter, 9.0/(21.0 - 10.0));
 		}
 		// Normal throw
 		else {
-			FT_MOTION_RATE(fighter, 0.5);
+			FT_MOTION_RATE(fighter, 25.0/(50.0 - 10.0));
 		}
 	}
 	frame(lua_state, 21.0);
 	if is_excute(fighter) {
 		// Explosion on heavy throw
 		if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
-			FT_MOTION_RATE(fighter, 1.0);
+			FT_MOTION_RATE(fighter, 24.0/(50.0 - 21.0));
 			ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 142, 40, 0, 98, 18.0, 0.0, 22.0, -31.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
-		}
-		else {
-			FT_MOTION_RATE(fighter, 0.75);
 		}
 	}
 	frame(lua_state, 24.0);
@@ -122,7 +117,7 @@ unsafe fn miigunner_throw_b_effect(fighter: &mut L2CAgentBase) {
 			LAST_EFFECT_SET_COLOR(fighter, 10.0, 0.7, 0.7);
 			LAST_EFFECT_SET_RATE(fighter, 1.6);
 			
-			EFFECT(fighter, Hash40::new("sys_bomb_a"), Hash40::new("top"), 0, 22.0, -31.0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
+			EFFECT(fighter, Hash40::new("sys_bomb_a"), Hash40::new("top"), 0, 19.0, -26.5, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
 		}
 	}
 }

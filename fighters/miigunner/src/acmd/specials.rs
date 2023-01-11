@@ -67,7 +67,7 @@ unsafe fn miigunner_special_n1_fire_max_effect(fighter: &mut L2CAgentBase) {
 		if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
 			EFFECT_FOLLOW(fighter, Hash40::new("miigunner_sb_tama"), Hash40::new("armr"), 6.0, 0, 0, 0, 0, 0, 3.5, true);
 			LAST_EFFECT_SET_RATE(fighter, 2.0);
-			LAST_EFFECT_SET_COLOR(fighter, 0.15, 100.0, 5.0);
+			LAST_EFFECT_SET_COLOR(fighter, 0.15, 100.0, 10.0);
 			EFFECT_FOLLOW(fighter, Hash40::new("miigunner_sb_tama"), Hash40::new("armr"), 6.0, 0, 0, 90, 0, 0, 3.5, true);
 			LAST_EFFECT_SET_RATE(fighter, 2.0);
 			LAST_EFFECT_SET_COLOR(fighter, 0.15, 100.0, 3.0);
@@ -258,8 +258,8 @@ unsafe fn miigunner_special_s1_game(fighter: &mut L2CAgentBase) {
 	}
 }
 
-#[acmd_script( agent = "miigunner", scripts = ["game_specials31", "game_specialairs31"] , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_special_s3_homing_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "miigunner", scripts = ["game_specials32", "game_specialairs32"] , category = ACMD_GAME , low_priority)]
+unsafe fn miigunner_special_s3_super_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 23.0);
@@ -554,7 +554,7 @@ pub fn install() {
 		miigunner_special_n3_start_game,
 		miigunner_special_n3_end_game,
 		miigunner_special_s1_game,
-		miigunner_special_s3_homing_game,
+		miigunner_special_s3_super_game,
 		miigunner_special_hi1_game,
 		miigunner_special_hi1_effect,
 		miigunner_special_hi1_landing_effect,
