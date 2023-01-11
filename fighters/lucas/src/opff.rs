@@ -359,8 +359,15 @@ unsafe fn smash_s_angle_handler(fighter: &mut L2CFighterCommon, frame: f32) {
     }
 }
 
+unsafe fn dashgrab_position_fix(fighter: &mut L2CFighterCommon, frame: f32) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_CATCH_DASH) {
+        joint_rotator(fighter, frame, Hash40::new("joint1"), Vector3f{x:-10.0, y:0.0, z:0.0}, 5.0, 12.0, 30.0, 45.0);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     smash_s_angle_handler(fighter, frame);
+    dashgrab_position_fix(fighter, frame);
     psi_magnet_jc(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     //pk_thunder_cancel(boma, id, status_kind, situation_kind);
     //pk_thunder_wall_ride_shorten(fighter, boma, id, status_kind, situation_kind);
