@@ -6,12 +6,11 @@ use globals::*;
  
 unsafe fn header_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
     let status_kind_prev = StatusModule::prev_status_kind(boma, 0);
-    if status_kind == *FIGHTER_STATUS_KIND_FALL_SPECIAL
-        && [*FIGHTER_STATUS_KIND_SPECIAL_S,*FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_JUMP, *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_HEADING].contains(&status_kind_prev)
+    if [*FIGHTER_STATUS_KIND_SPECIAL_S,*FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_JUMP, *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_HEADING].contains(&status_kind)
         && situation_kind == *SITUATION_KIND_AIR {
         if  !VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL) {
             VarModule::on_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL);
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
         }
     }
 }
