@@ -71,7 +71,7 @@
       <float hash="lw3_start_xmul">0.85</float>
       <float hash="lw3_start_ymul">0.1</float>
       <float hash="lw3_accel_y">0.07</float>
-      <float hash="lw3_phy_magnet_size">9.0</float>
+      <float hash="lw3_phy_magnet_size">14.0</float>
     </struct>
     <hash40 index="3">dummy</hash40>
   </list>

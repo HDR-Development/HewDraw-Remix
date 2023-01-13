@@ -485,56 +485,24 @@ unsafe fn miigunner_special_lw3_start_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
 	frame(lua_state, 1.0);
 	if is_excute(fighter) {
-		FT_MOTION_RATE(fighter, 3.0/(6.0 - 1.0));
+		FT_MOTION_RATE(fighter, 4.0/(6.0 - 1.0));
 	}
 }
 
-#[acmd_script( agent = "miigunner", script = "game_speciallw3hold" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "miigunner", scripts = ["game_speciallw3hold", "game_specialairlw3hold"] , category = ACMD_GAME , low_priority)]
 unsafe fn miigunner_special_lw3_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
-		ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 0, 15, 0, 59, 8.0, 0.0, 6.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
-		ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 24, 15, 0, 59, 8.0, 0.0, 6.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
+		let offset_y = if fighter.is_situation(*SITUATION_KIND_GROUND) { 6.5 } else { 9.5 };
+		ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 0, 15, 0, 59, 12.5, 0.0, offset_y, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
+		ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 24, 15, 0, 59, 12.5, 0.0, offset_y, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
 	}
 	wait(lua_state, 2.0);
 	if is_excute(fighter) {
 		AttackModule::clear_all(boma);
 	}
 }
-
-#[acmd_script( agent = "miigunner", script = "game_specialairlw3hold" , category = ACMD_GAME , low_priority)]
-unsafe fn miigunner_special_air_lw3_hold_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-	if is_excute(fighter) {
-		ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 0, 19, 0, 62, 8.0, 0.0, 9.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
-		ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 24, 19, 0, 62, 8.0, 0.0, 9.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
-	}
-	wait(lua_state, 2.0);
-	if is_excute(fighter) {
-		AttackModule::clear_all(boma);
-	}
-}
-
-// #[acmd_script( agent = "miigunner", scripts = ["effect_speciallw3hold", "effect_specialairlw3hold"] , category = ACMD_EFFECT , low_priority)]
-// unsafe fn miigunner_special_lw3_hold_effect(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
-//     let boma = fighter.boma();
-// 	if is_excute(fighter) {
-// 		EFFECT_FOLLOW(fighter, Hash40::new("miigunner_absorberlight"), Hash40::new("armr"), 0, 0, 0, 0, 0, 0, 1.0, true);
-// 		EffectModule::enable_sync_init_pos_last(boma);
-// 	}
-// 	COL_NORMAL(fighter);
-// 	if is_excute(fighter) {
-// 		FLASH(fighter, 0.5, 0.7, 1, 0.6);
-// 	}
-// 	wait(lua_state, 2.0);
-// 	if is_excute(fighter) {
-// 		FLASH_FRM(fighter, 3, 0, 0.2, 0.5, 0);
-// 	}
-// 	wait(lua_state, 3.0);
-// }
 
 #[acmd_script( agent = "miigunner", scripts = ["game_speciallw3end", "game_specialairlw3end"] , category = ACMD_GAME , low_priority)]
 unsafe fn miigunner_special_lw3_end_game(fighter: &mut L2CAgentBase) {
@@ -567,8 +535,6 @@ pub fn install() {
 		miigunner_special_air_lw1_start_game,
 		miigunner_special_lw3_start_game,
 		miigunner_special_lw3_hold_game,
-		miigunner_special_air_lw3_hold_game,
-		//miigunner_special_lw3_hold_effect,
 		miigunner_special_lw3_end_game,
 	);
 }
