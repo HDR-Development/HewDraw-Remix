@@ -31,6 +31,32 @@ unsafe fn nana_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "nana", script = "effect_attacks4_nana" , category = ACMD_EFFECT , low_priority)]
+unsafe fn nana_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 7, -7, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("popo_smash_arc"), Hash40::new("popo_smash_arc"), Hash40::new("top"), -1, 9, 0, -146, -160, 80, 1, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(fighter, 2.0);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -4.5, 0, 6, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_quake"), Hash40::new("top"), -4.5, 0, 6, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 8, 4, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
+        LANDING_EFFECT_FLIP(fighter, Hash40::new("sys_crown"), Hash40::new("sys_crown"), Hash40::new("top"), 7, 0, 5, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
+    }
+}
+
 #[acmd_script( agent = "nana", script = "game_attackhi4_nana" , category = ACMD_GAME , low_priority)]
 unsafe fn nana_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -91,6 +117,7 @@ unsafe fn nana_attack_lw4_game(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         nana_attack_s4_s_game,
+        nana_attack_s4_s_effect,
         nana_attack_hi4_game,
         nana_attack_lw4_game,
     );
