@@ -920,6 +920,9 @@ pub mod vars {
             //flags
             pub const IS_VOLUNTARY_SOPO: i32 = 0x0100;
             pub const IS_SEPARATED: i32 = 0x0101;
+
+            //ints
+            pub const SEPARATED_EFFECT: i32 = 0x0110;
         }
     }
 

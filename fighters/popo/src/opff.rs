@@ -4,34 +4,53 @@ use super::*;
 use globals::*;
 
 unsafe fn nana_couple_indicator(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
-    if fighter.kind() != *FIGHTER_KIND_NANA 
-    || [*FIGHTER_STATUS_KIND_DEMO, 
-        *FIGHTER_STATUS_KIND_ENTRY, 
-        *FIGHTER_STATUS_KIND_REBIRTH, 
-        *FIGHTER_STATUS_KIND_WIN, 
-        *FIGHTER_STATUS_KIND_LOSE, 
-        *FIGHTER_STATUS_KIND_DEAD].contains(&status_kind) {
-        return;
-    }
+    // if fighter.kind() != *FIGHTER_KIND_NANA 
+    // || [*FIGHTER_STATUS_KIND_DEMO, 
+    //     *FIGHTER_STATUS_KIND_ENTRY, 
+    //     *FIGHTER_STATUS_KIND_REBIRTH, 
+    //     *FIGHTER_STATUS_KIND_WIN, 
+    //     *FIGHTER_STATUS_KIND_LOSE, 
+    //     *FIGHTER_STATUS_KIND_DEAD,
+    //     *FIGHTER_STATUS_KIND_STANDBY].contains(&status_kind) {
+    //     if VarModule::is_flag(boma.object(), vars::iceclimbers::instance::IS_SEPARATED) {
+    //         VarModule::off_flag(boma.object(), vars::iceclimbers::instance::IS_SEPARATED);
+    //         let effect_handle = VarModule::get_int(boma.object(), vars::iceclimbers::instance::SEPARATED_EFFECT) as u32;
+    //         if EffectModule::is_exist_effect(boma, effect_handle) {
+    //             EffectModule::kill(boma, effect_handle, true, true);
+    //             println!("killing effect");
+    //         } else {
+    //             println!("failed to kill effect");
+    //         }
+    //     }
+    //     return;
+    // }
 
-    let pos_z = PostureModule::pos_z(boma);
-    // This if else block lets us only kill the effect when necessary
-    if pos_z == 0.0 {
-        if !VarModule::is_flag(boma.object(), vars::iceclimbers::instance::IS_SEPARATED) {
-            VarModule::on_flag(boma.object(), vars::iceclimbers::instance::IS_SEPARATED);
-        }
-    } else {
-        if VarModule::is_flag(boma.object(), vars::iceclimbers::instance::IS_SEPARATED) {
-            VarModule::off_flag(boma.object(), vars::iceclimbers::instance::IS_SEPARATED);
-            EffectModule::kill_kind(boma, Hash40::new("sys_falling_smoke"), false, true);
-        }
-    }
+    // let pos_z = PostureModule::pos_z(boma);
+    // // This if else block lets us only kill the effect when necessary
+    // if pos_z == 0.0 {
+    //     if !VarModule::is_flag(boma.object(), vars::iceclimbers::instance::IS_SEPARATED) {
+    //         VarModule::on_flag(boma.object(), vars::iceclimbers::instance::IS_SEPARATED);
+    //     }
+    // } else {
+    //     if VarModule::is_flag(boma.object(), vars::iceclimbers::instance::IS_SEPARATED) {
+    //         VarModule::off_flag(boma.object(), vars::iceclimbers::instance::IS_SEPARATED);
+    //         let effect_handle = VarModule::get_int(boma.object(), vars::iceclimbers::instance::SEPARATED_EFFECT) as u32;
+    //         if EffectModule::is_exist_effect(boma, effect_handle) {
+    //             EffectModule::kill(boma, effect_handle, true, true);
+    //             println!("killing effect");
+    //         } else {
+    //             println!("failed to kill effect");
+    //         }
+    //     }
+    // }
 
-    // This if block creates thew effects when flag is set
-    if VarModule::is_flag(boma.object(), vars::iceclimbers::instance::IS_SEPARATED) {
-        let effect = EffectModule::req_follow(boma, Hash40::new("sys_falling_smoke"), Hash40::new("neck"), &Vector3f::zero(), &Vector3f::zero(), 1.1, true, 0, 0, 0, 0, 0, true, true) as u32;
-        EffectModule::set_rgb(boma, effect, 1.0, 0.85, 0.85);
-    }
+    // // This if block creates thew effects when flag is set
+    // if VarModule::is_flag(boma.object(), vars::iceclimbers::instance::IS_SEPARATED) {
+    //     EffectModule::
+    //     let effect = EffectModule::req_follow(boma, Hash40::new("sys_falling_smoke"), Hash40::new("neck"), &Vector3f::zero(), &Vector3f::zero(), 1.1, true, 0, 0, 0, 0, 0, true, true) as u32;
+    //     EffectModule::set_rgb(boma, effect, 1.0, 0.85, 0.85);
+    //     VarModule::set_int(boma.object(), vars::iceclimbers::instance::SEPARATED_EFFECT, effect as i32);
+    // }
 }
 
 unsafe fn dair_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
