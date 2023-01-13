@@ -90,10 +90,25 @@ unsafe fn simon_special_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "simon", scripts = [ "game_specialn" , "game_specialairn" ] , category = ACMD_GAME , low_priority)]
+unsafe fn simon_special_n_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    FT_MOTION_RATE(fighter, 0.8);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, false, 0);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter){
+        ArticleModule::shoot(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE,  app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         simon_special_hi_game,
         simon_special_air_hi_game,
+        simon_special_n_game,
     );
 }
 
