@@ -919,6 +919,7 @@ pub mod vars {
         pub mod instance {
             //flags
             pub const IS_VOLUNTARY_SOPO: i32 = 0x0100;
+            pub const IS_SEPARATED: i32 = 0x0101;
         }
     }
 

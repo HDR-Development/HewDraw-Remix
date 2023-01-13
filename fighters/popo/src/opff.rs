@@ -13,12 +13,24 @@ unsafe fn nana_couple_indicator(fighter: &mut L2CFighterCommon, boma: &mut Battl
         *FIGHTER_STATUS_KIND_DEAD].contains(&status_kind) {
         return;
     }
-    let cbm_vec1 = Vector4f{ /* Red */ x: 0.94, /* Green */ y: 0.64, /* Blue */ z: 0.75, /* Alpha */ w: 0.0};
-    let cbm_vec2 = Vector4f{ /* Red */ x: 0.94, /* Green */ y: 0.64, /* Blue */ z: 0.75, /* Alpha */ w: 0.0};
-    if PostureModule::pos_z(boma) == 0.0 {
-        ColorBlendModule::set_main_color(boma, /* Brightness */ &cbm_vec1, /* Diffuse */ &cbm_vec2, 0.21, 2.2, 5, /* Display Color */ true);
+
+    let pos_z = PostureModule::pos_z(boma);
+    // This if else block lets us only kill the effect when necessary
+    if pos_z == 0.0 {
+        if !VarModule::is_flag(boma.object(), vars::iceclimbers::instance::IS_SEPARATED) {
+            VarModule::on_flag(boma.object(), vars::iceclimbers::instance::IS_SEPARATED);
+        }
     } else {
-        ColorBlendModule::cancel_main_color(boma, 0);
+        if VarModule::is_flag(boma.object(), vars::iceclimbers::instance::IS_SEPARATED) {
+            VarModule::off_flag(boma.object(), vars::iceclimbers::instance::IS_SEPARATED);
+            EffectModule::kill_kind(boma, Hash40::new("sys_falling_smoke"), false, true);
+        }
+    }
+
+    // This if block creates thew effects when flag is set
+    if VarModule::is_flag(boma.object(), vars::iceclimbers::instance::IS_SEPARATED) {
+        let effect = EffectModule::req_follow(boma, Hash40::new("sys_falling_smoke"), Hash40::new("neck"), &Vector3f::zero(), &Vector3f::zero(), 1.1, true, 0, 0, 0, 0, 0, true, true) as u32;
+        EffectModule::set_rgb(boma, effect, 1.0, 0.85, 0.85);
     }
 }
 
