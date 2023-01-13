@@ -130,36 +130,31 @@ unsafe extern "C" fn special_lw_main_motion_helper(fighter: &mut L2CFighterCommo
 }
 
 unsafe extern "C" fn special_lw_check_follow_up(fighter: &mut L2CFighterCommon) {
-    if VarModule::is_flag(fighter.battle_object, vars::lucina::status::SPECIAL_LW_SPECIAL_CHECK)
-    && fighter.global_table[globals::PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER != 0 {
-        let stick_y = fighter.global_table[globals::STICK_Y].get_f32();
-        let mot;
-        let mot_air;
-        if stick_y >= 0.5 {
-            mot = hash40("special_s4_hi");
-            mot_air = hash40("special_air_s4_hi");
-        }
-        else if stick_y <= -0.5 {
-            mot = hash40("special_s4_lw");
-            mot_air = hash40("special_air_s4_lw")
-        }
-        else {
-            mot = hash40("special_s4_s");
-            mot_air = hash40("special_air_s4_s")
-        }
-        VarModule::set_int64(fighter.battle_object, vars::lucina::status::SPECIAL_LW_MOTION, mot);
-        VarModule::set_int64(fighter.battle_object, vars::lucina::status::SPECIAL_LW_MOTION_AIR, mot_air);
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_CONTINUE_MOT);
-        special_lw_main_motion_helper(fighter);
-        let stick_x = fighter.global_table[globals::STICK_X].get_f32();
-        let lr = PostureModule::lr(fighter.module_accessor);
-        if stick_x < -0.33 {
-            PostureModule::reverse_lr(fighter.module_accessor);
-            PostureModule::update_rot_y_lr(fighter.module_accessor);
-        }
-        VarModule::off_flag(fighter.battle_object,vars::lucina::status::SPECIAL_LW_SPECIAL_CHECK);
+    let stick_y = fighter.global_table[globals::STICK_Y].get_f32();
+    let mot;
+    let mot_air;
+    if stick_y >= 0.5 {
+        mot = hash40("special_s4_hi");
+        mot_air = hash40("special_air_s4_hi");
     }
-
+    else if stick_y <= -0.5 {
+        mot = hash40("special_s4_lw");
+        mot_air = hash40("special_air_s4_lw")
+    }
+    else {
+        mot = hash40("special_s4_s");
+        mot_air = hash40("special_air_s4_s")
+    }
+    VarModule::set_int64(fighter.battle_object, vars::lucina::status::SPECIAL_LW_MOTION, mot);
+    VarModule::set_int64(fighter.battle_object, vars::lucina::status::SPECIAL_LW_MOTION_AIR, mot_air);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_CONTINUE_MOT);
+    special_lw_main_motion_helper(fighter);
+    let stick_x = fighter.global_table[globals::STICK_X].get_f32();
+    let lr = PostureModule::lr(fighter.module_accessor);
+    if stick_x * lr < -0.33 {
+        PostureModule::reverse_lr(fighter.module_accessor);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    }
 }
 
 unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -170,17 +165,21 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         }
     }
 
-    special_lw_check_follow_up(fighter);
-
-    if !StatusModule::is_changing(fighter.module_accessor)
-    || StatusModule::is_situation_changed(fighter.module_accessor) {
-        special_lw_main_motion_helper(fighter);
+    if !StatusModule::is_changing(fighter.module_accessor) {
+        if VarModule::is_flag(fighter.battle_object, vars::lucina::status::SPECIAL_LW_SPECIAL_CHECK)
+        && fighter.global_table[globals::PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER != 0 {
+            special_lw_check_follow_up(fighter);
+            VarModule::off_flag(fighter.battle_object,vars::lucina::status::SPECIAL_LW_SPECIAL_CHECK);
+        }
+        if StatusModule::is_situation_changed(fighter.module_accessor) {
+            special_lw_main_motion_helper(fighter);
+        }
     }
     if MotionModule::is_end(fighter.module_accessor) {
-        if fighter.boma().is_situation(*SITUATION_KIND_GROUND) {
+        if fighter.global_table[globals::SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         }
-        if fighter.boma().is_situation(*SITUATION_KIND_AIR) {
+        else {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         }
     }
