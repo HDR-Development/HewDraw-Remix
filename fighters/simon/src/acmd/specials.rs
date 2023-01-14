@@ -39,9 +39,9 @@ unsafe fn simon_special_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 32.0);
+    frame(lua_state, 27.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_SIMON_STATUS_SPECIAL_HI_FLAG_MOVE);
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
     
 }
@@ -83,9 +83,9 @@ unsafe fn simon_special_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 32.0);
+    frame(lua_state, 27.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_SIMON_STATUS_SPECIAL_HI_FLAG_MOVE);
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
     
 }
