@@ -31,6 +31,7 @@ unsafe fn toonlink_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 16.0/(42.0-15.0));
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 42.0);
@@ -46,7 +47,7 @@ unsafe fn toonlink_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 0.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 11.0/(11.15-0.0));
+        FT_MOTION_RATE(fighter, 8.0/(11.15-0.0));
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
@@ -62,11 +63,12 @@ unsafe fn toonlink_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
+        FT_MOTION_RATE(fighter,16.0/(32.0-16.0));
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 32.0);
     if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     
