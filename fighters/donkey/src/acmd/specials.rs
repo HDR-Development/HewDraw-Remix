@@ -452,7 +452,7 @@ unsafe fn game_special_air_hi(fighter: &mut L2CAgentBase) {
     wait(lua_state, 4.0);
 
     // loop increasingly weak multihits
-    let mut damage = 7.0;
+    let mut damage = 5.0;
     for _ in 0..13 {
         if is_excute(fighter) {
             ATTACK(fighter, 0, 0, Hash40::new("arml"), damage + 2, 361, 80, 0, 30, 5.0, 5.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
@@ -462,7 +462,7 @@ unsafe fn game_special_air_hi(fighter: &mut L2CAgentBase) {
         }
         wait(lua_state, 4.0);
         if is_excute(fighter) {
-            damage = damage * 0.75;
+            damage = damage * 0.85;
             WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_CLIFF_CHECK);
             AttackModule::clear_all(boma);
         }
