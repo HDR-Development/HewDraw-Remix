@@ -17,10 +17,10 @@ unsafe fn heros_bow_ff(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
 }
 
 // Lengthen sword
-unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
-	let long_sword_scale = Vector3f{x: 1.2, y: 1.0, z: 1.0};
-	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("sword2"), &long_sword_scale);
-}
+//unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
+//	let long_sword_scale = Vector3f{x: 1.2, y: 1.0, z: 1.0};
+//	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("sword2"), &long_sword_scale);
+//}
 
 // symbol-based call for the links' common opff
 extern "Rust" {
@@ -29,25 +29,25 @@ extern "Rust" {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     heros_bow_ff(boma, status_kind, situation_kind, cat[1], stick_y);
-	sword_length(boma);
+//	sword_length(boma);
     
 
     // Frame Data
-    frame_data(boma, status_kind, motion_kind, frame);
+    //frame_data(boma, status_kind, motion_kind, frame);
 }
 
-unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_ATTACK {
-        if motion_kind == hash40("attack_11") {
-            if frame < 5.0 {
-                MotionModule::set_rate(boma, 1.667);
-            }
-            if frame >= 5.0 {
-                MotionModule::set_rate(boma, 1.0);
-            }
-        }
-    }
-}
+//unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
+    //if status_kind == *FIGHTER_STATUS_KIND_ATTACK {
+        //if motion_kind == hash40("attack_11") {
+            //if frame < 5.0 {
+                //MotionModule::set_rate(boma, 1.667);
+            //}
+            //if frame >= 5.0 {
+                //MotionModule::set_rate(boma, 1.0);
+            //}
+        //}
+    //}
+//}
 
 #[utils::macros::opff(FIGHTER_KIND_TOONLINK )]
 pub fn toonlink_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
