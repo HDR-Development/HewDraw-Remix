@@ -462,7 +462,7 @@ unsafe fn game_special_air_hi(fighter: &mut L2CAgentBase) {
         }
         wait(lua_state, 4.0);
         if is_excute(fighter) {
-            damage = damage * 0.5;
+            damage = damage * 0.75;
             WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_CLIFF_CHECK);
             AttackModule::clear_all(boma);
         }
