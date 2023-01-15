@@ -1,7 +1,9 @@
 use super::*;
 use globals::*;
-// status script import
  
+
+// FIGHTER_STATUS_KIND_WALK
+
 #[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_WALK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 pub unsafe fn pre_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
@@ -43,9 +45,42 @@ unsafe extern "C" fn walk_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
+// FIGHTER_ROCKMAN_STATUS_KIND_SPECIAL_HI_JUMP
+
+#[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn special_hi_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let accel_recover_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("jump_accel_recover_frame"));
+    WorkModule::set_int(fighter.module_accessor, accel_recover_frame, *FIGHTER_ROCKMAN_STATUS_SPECIAL_HI_WORK_INT_ADVANCE_COUNTER);
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_FALL);
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi"), 0.0, 1.0, false, 0.0, false, false);
+    fighter.main_shift(special_hi_jump_main_loop)
+}
+
+pub unsafe extern "C" fn special_hi_jump_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let recover_gravity_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_ROCKMAN_STATUS_SPECIAL_HI_JUMP_WORK_INT_RECOVER_GRAVITY_COUNTER);
+    if recover_gravity_count >= 0 {
+        WorkModule::dec_int(fighter.module_accessor, *FIGHTER_ROCKMAN_STATUS_SPECIAL_HI_JUMP_WORK_INT_RECOVER_GRAVITY_COUNTER);
+    }
+    if fighter.sub_transition_group_check_air_cliff().get_bool() {
+        return 1.into();
+    }
+    if !CancelModule::is_enable_cancel(fighter.module_accessor) || (CancelModule::is_enable_cancel(fighter.module_accessor) && !fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool() && !fighter.sub_air_check_fall_common().get_bool()) {
+        if fighter.global_table[SITUATION_KIND].get_i32() == SITUATION_KIND_GROUND {
+            fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
+            return 0.into();
+        }
+        if MotionModule::is_end(fighter.module_accessor) {
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+            return 0.into();
+        }
+    }
+    0.into()
+}
+
 pub fn install() {
     install_status_scripts!(
         pre_walk,
-        walk
+        walk,
+        special_hi_jump_main
     );
 }

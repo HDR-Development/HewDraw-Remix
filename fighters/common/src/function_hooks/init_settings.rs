@@ -116,9 +116,12 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
             cliff_check_kind = app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
         }
 
-    }
+        VarModule::off_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK);
 
-    if VarModule::has_var_module(boma.object()) { VarModule::on_flag(boma.object(), vars::common::instance::IGNORE_ENERGY_UPDATE); }
+        if boma.is_prev_status(*FIGHTER_STATUS_KIND_SWALLOWED_DRINK) {
+            VisibilityModule::set_whole(boma, true);
+        }
+    }
 
     // VarModule Status Variable reset checks
     // This makes the assumption that if the KEEP_FLAG is not NONE, you want to clear the

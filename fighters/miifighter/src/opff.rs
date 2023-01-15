@@ -13,6 +13,7 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor, id: usize, stat
                 if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
                     ControlModule::clear_command(boma, true);
                     VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
+                    ControlModule::reset_trigger(boma);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
                 }
             }

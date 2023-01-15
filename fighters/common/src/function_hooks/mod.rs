@@ -240,23 +240,6 @@ unsafe fn run_lua_status_hook(ctx: &skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x479380)]
-unsafe fn kinetic_module__update_energy(kinetic_module: u64, arg2: u64) {
-    let boma = *(kinetic_module as *mut *mut BattleObjectModuleAccessor).add(1);
-    if VarModule::has_var_module((*boma).object()) && VarModule::is_flag((*boma).object(), vars::common::instance::IGNORE_ENERGY_UPDATE) {
-        VarModule::off_flag((*boma).object(), vars::common::instance::IGNORE_ENERGY_UPDATE);
-        return;
-    }
-    call_original!(kinetic_module, arg2);
-}
-
-#[skyline::hook(offset = 0x6ba9f0)]
-unsafe fn control_module__clear_command(control_module: u64, arg2: bool) {
-    let boma= *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
-    ControlModule::reset_trigger(boma);
-    call_original!(control_module, arg2);
-}
-
 pub fn install() {
     energy::install();
     effect::install();
@@ -306,7 +289,5 @@ pub fn install() {
         battleobject__call_update_movement,
         battleobject__call_update_movement_stop,
         run_lua_status_hook,
-        kinetic_module__update_energy,
-        control_module__clear_command,
     );
 }

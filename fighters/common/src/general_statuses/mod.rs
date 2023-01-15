@@ -166,7 +166,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_transition_group_check_ground_escape,
             sub_transition_group_check_ground_guard,
             sub_transition_group_check_ground,
-            sys_line_status_system_control_hook
+            sys_line_status_system_control_hook,
+            status_FallSub_hook
         );
     }
 }
@@ -418,6 +419,18 @@ pub unsafe fn sys_line_status_system_control_hook(fighter: &mut L2CFighterBase) 
     }
     else {
         call_original!(fighter)
+    }
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_FallSub)]
+pub unsafe fn status_FallSub_hook(fighter: &mut L2CFighterCommon, arg2: L2CValue) {
+    call_original!(fighter, arg2);
+    let move_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
+    if move_speed * PostureModule::lr(fighter.module_accessor) < 0.0
+    && MotionModule::motion_kind(fighter.module_accessor) != hash40("fall") {
+        // Avoid runfall/walkfall animation if you were moving backwards out of dash
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("fall"), 0.0, 1.0, false, 0.0, false, false);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_RUN_FALL);
     }
 }
 

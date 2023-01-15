@@ -39,8 +39,7 @@ unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind
     } else if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_END]) && frame > 6.0 {
             VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
-            WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
-            ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+            ControlModule::reset_trigger(boma);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
     }
 }

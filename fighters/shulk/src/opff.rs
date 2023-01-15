@@ -10,6 +10,7 @@ unsafe fn air_slash_cancels(boma: &mut BattleObjectModuleAccessor, id: usize, st
             if frame > 22.0 {
                 if boma.is_cat_flag(Cat1::AirEscape) {
                     VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
+                    ControlModule::reset_trigger(boma);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
                 }
             }

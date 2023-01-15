@@ -176,7 +176,7 @@ unsafe fn drift_di(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
         let damage_speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
         let damage_speed_y = fighter.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
 
-        if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
+        if fighter.global_table[CURRENT_FRAME].get_i32() == 1 {
             VarModule::set_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_X, damage_speed_x);
             VarModule::set_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_Y, damage_speed_y);
         }
