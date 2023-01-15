@@ -308,6 +308,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const SOARING_SLASH_HIT: i32 = 0x1100;
+            pub const SOARING_SLASH_CANCEL: i32 = 0x1101;
         }
     }
 
@@ -463,6 +464,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const FINAL_CUTTER_HIT: i32 = 0x1100;
+            pub const FINAL_CUTTER_CANCEL: i32 = 0x1101;
         }
     }
 
