@@ -29,13 +29,14 @@ extern "Rust" {
 
 // Barrel Timer Count
 unsafe fn barrel_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
-    let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
-    if gimmick_timerr > 0 && gimmick_timerr < 901 {
-        if gimmick_timerr > 899 {
+    let gimmick_timer = VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
+    if gimmick_timer > 0 {
+        // 7 seconds
+        if gimmick_timer > 420 {
             VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
             gimmick_flash(boma);
         } else {
-            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, gimmick_timerr + 1);
+            VarModule::inc_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
         }
     }
 }
@@ -121,6 +122,23 @@ pub unsafe fn dk_bair_rotation(fighter: &mut L2CFighterCommon) {
 pub unsafe fn special_hi_slipoff_grab(fighter: &mut L2CFighterCommon) {
     if fighter.is_situation(*SITUATION_KIND_AIR) && fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
         fighter.set_back_cliff_hangdata(20.0, 10.0);
+        fighter.set_front_cliff_hangdata(20.0, 10.0);
+    }
+}
+
+/// make grounded uspecial flat, so that moving forward and back isnt jarring
+pub unsafe fn flatten_uspecial(fighter: &mut L2CFighterCommon) {
+    if fighter.is_motion(Hash40::new("special_hi")) && fighter.motion_frame() > 15.0 && fighter.motion_frame() < 60.0 {
+        // flattens dk out during uspecial
+        fighter.set_joint_rotate("rot", Vector3f::new(0.0, 20.0, 50.0));
+
+        // moves dk's trans bone slightly down to compensate for lifted feet during uspecial
+        let slightly_lower = Vector3f{x:0.0, y: -4.0, z: 0.0 };
+        ModelModule::set_joint_translate(fighter.boma(), Hash40::new("trans"), &slightly_lower, false, false);
+
+        // leans left and right based on movement
+        let movement_lean = 20.0 * KineticModule::get_sum_speed_x(fighter.boma(), *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        fighter.set_joint_rotate("trans", Vector3f::new(0.0, movement_lean, 0.0));
     }
 }
 
@@ -140,8 +158,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
         utils::ui::UiManager::set_shoto_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
     }
 
-    // Magic Series
-    //down_special_cancels(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
 }
 #[utils::macros::opff(FIGHTER_KIND_DONKEY )]
 pub fn donkey_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
@@ -150,6 +166,7 @@ pub fn donkey_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 		donkey_frame(fighter);
         dk_bair_rotation(fighter);
         special_hi_slipoff_grab(fighter);
+        flatten_uspecial(fighter);
     }
 }
 
