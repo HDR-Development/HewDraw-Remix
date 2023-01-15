@@ -105,6 +105,8 @@ unsafe fn zelda_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk_air_line"), Hash40::new("top"), 0, 4, 1, 0, 0, 0, 1, true);
         EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk_air_flash"), Hash40::new("toel"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_status_defense_up"), Hash40::new("toel"), 0, 0, 0, 0, 0, 0, 0.25, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.7);
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
@@ -151,12 +153,16 @@ unsafe fn zelda_attack_air_b_game(fighter: &mut L2CAgentBase) {
 unsafe fn zelda_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    //let mut handle: u32 = 0;
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk"), Hash40::new("toer"), 0.0, 0.0, -2.0, 0, 0, 0, 1.15, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.3);
+    }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk_air_line"), Hash40::new("top"), 0, 5.7, -1, 0, 180, 180, 1, true);
         EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk_air_flash"), Hash40::new("toer"), 0, 0, 0, 0, 0, 0, 1, true);
-        EFFECT_FOLLOW(fighter, Hash40::new("zelda_atk"), Hash40::new("toer"), 0.0, 0.0, -2.0, 0, 0, 0, 1.20, true);
-        LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
 }
 

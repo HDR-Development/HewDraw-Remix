@@ -82,8 +82,8 @@ unsafe fn zelda_special_s_end_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, true);
-        EFFECT(fighter, Hash40::new("zelda_appeal_s_fire"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, true);    
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 0.45, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("zelda_appeal_s_fire"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 0.45, 0, 0, 0, 0, 0, 0, true);    
         LAST_EFFECT_SET_RATE(fighter, 2.0);
     }
     frame(lua_state, 14.0);
