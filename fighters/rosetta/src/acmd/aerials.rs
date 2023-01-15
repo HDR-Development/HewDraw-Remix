@@ -124,9 +124,12 @@ unsafe fn rosetta_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::remove_exist(boma, *FIGHTER_ROSETTA_GENERATE_ARTICLE_RING, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
+    frame(lua_state, 41.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 2.0);
+    }
     frame(lua_state, 45.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 4.0);
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     
