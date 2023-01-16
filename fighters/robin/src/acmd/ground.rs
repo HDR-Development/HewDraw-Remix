@@ -93,6 +93,7 @@ unsafe fn reflet_attack_13_game(fighter: &mut L2CAgentBase) {
 unsafe fn reflet_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.94);
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("sword"), 12.5, 38, 52, 0, 70, 4.0, 0.0, 7.0, -0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);

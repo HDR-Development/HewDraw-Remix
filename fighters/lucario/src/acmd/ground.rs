@@ -6,6 +6,7 @@ use super::*;
 unsafe fn lucario_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.91);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_FORCE_AURAPOWER_ATTACK_POWER_MUL);
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.0, 5.0);

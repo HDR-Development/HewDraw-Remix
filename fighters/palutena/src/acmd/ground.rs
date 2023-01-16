@@ -49,6 +49,7 @@ unsafe fn palutena_attack_100_end_game(fighter: &mut L2CAgentBase) {
 unsafe fn palutena_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.91);
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("bust"), *HIT_STATUS_NORMAL);

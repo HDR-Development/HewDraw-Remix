@@ -21,9 +21,20 @@ unsafe fn pichu_attack_11_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
+
+#[acmd_script( agent = "pichu", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attack_dash(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.93);
+    original!(fighter);
+    
+}
+
 pub fn install() {
     install_acmd_scripts!(
         pichu_attack_11_game,
+        game_attack_dash
     );
 }
 
