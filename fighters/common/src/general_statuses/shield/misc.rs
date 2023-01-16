@@ -322,6 +322,7 @@ pub unsafe fn sub_ftStatusUniqProcessGuardFunc_updateShield(fighter: &mut L2CFig
         WorkModule::set_float(fighter.module_accessor, delta_y, *FIGHTER_STATUS_GUARD_ON_WORK_FLOAT_REACH_PREV_Y);
     }
 
+    println!("_ZN7lua2cpp16L2CFighterCommon45sub_ftStatusUniqProcessGuardFunc_updateShieldEN3lib8L2CValueE");
     let shield = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
     let scale = super::fighter_status_guard::calc_shield_scale(fighter, shield.into()).get_f32();
     ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("throw"), &Vector3f { x: scale, y: scale, z: scale });
@@ -335,7 +336,7 @@ pub fn install() {
         //check_guard_attack_special_hi,
         //status_guard_main_common,
         //sub_ftStatusUniqProcessGuardOn_initStatus_common,
-        //sub_ftStatusUniqProcessGuardFunc_updateShield,
+        sub_ftStatusUniqProcessGuardFunc_updateShield,
     );
     skyline::nro::add_hook(nro_hook);
 }

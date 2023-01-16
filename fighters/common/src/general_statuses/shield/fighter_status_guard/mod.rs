@@ -6,7 +6,13 @@ use globals::*;
 pub unsafe fn calc_shield_scale(fighter: &mut L2CFighterCommon, shield_level: L2CValue) -> L2CValue {
     let shield_level = shield_level.get_f32();
     let shield_max = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MAX);
-    let interpolated = shield_level / shield_max;
+    
+    let x = shield_level / shield_max;
+    let k = -0.95 as f32;
+    let interpolated = (x - x * k) / (k - x.abs() * 2.0 * k + 1.0) as f32;
+
+    println!("shield health: {}", x);
+    println!("shield scale: {}", interpolated);
 
     let shield_size = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_size"));
     let shield_scale = WorkModule::get_param_float(fighter.module_accessor, hash40("shield_scale"), 0);
@@ -124,5 +130,7 @@ pub unsafe fn set_shield_scale(fighter: &mut L2CFighterCommon, scale: L2CValue) 
 }
 
 pub fn install() {
-    
+    install_hooks!(
+        calc_shield_scale
+    );
 }
