@@ -100,6 +100,8 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,

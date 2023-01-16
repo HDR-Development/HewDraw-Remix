@@ -915,6 +915,17 @@ pub mod vars {
         }
     }
 
+    pub mod packun {
+        pub mod instance {
+            // flags
+            pub const STANCE_NEED_SET_SPEEDS: i32 = 0x0100;
+            
+            // ints
+            pub const CURRENT_STANCE: i32 = 0x0100; // 0 = Normal, 1 = Putrid, 2 = Prickly
+            pub const STANCE_STATUS: i32 = 0x0101;
+        }
+    }
+
 }
 
 pub mod statuses {
@@ -936,6 +947,10 @@ pub mod statuses {
 
     pub mod buddy {
         pub const BUDDY_BAYONET_END: i32 = 0;
+    }
+
+    pub mod packun {
+        pub const ADAPTIVE_ROOTS: i32 = 0;
     }
 
 }
