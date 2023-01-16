@@ -53,7 +53,7 @@ unsafe extern "C" fn adaptive_roots_main_loop(fighter: &mut L2CFighterCommon) ->
 
 /// main status for metaquick summon
 pub unsafe extern "C" fn adaptive_roots_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let motion = Hash40::new("final");
+    let motion = Hash40::new("squat_rv");
 
     MotionModule::change_motion(fighter.module_accessor, motion, 0.0, 1.5, false, 0.0, false, false);
 
