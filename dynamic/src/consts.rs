@@ -815,6 +815,7 @@ pub mod vars {
             // ints
             pub const LUNAR_LAUNCH_EFF_HANDLER: i32 = 0x0100;
             pub const MISSILE_OBJECT_ID: i32 = 0x0101;
+            pub const STEALTHBOMB_EFF_HANDLER: i32 = 0x0102;
         }
     }
 

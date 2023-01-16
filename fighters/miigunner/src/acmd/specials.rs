@@ -195,6 +195,7 @@ unsafe fn miigunner_special_n2_loop_game(fighter: &mut L2CAgentBase) {
 	if is_excute(fighter) {
 		AttackModule::clear_all(boma);
 	}
+
 }
 
 #[acmd_script( agent = "miigunner", scripts = ["game_specialn3start", "game_specialairn3start"] , category = ACMD_GAME , low_priority)]
@@ -228,7 +229,7 @@ unsafe fn miigunner_special_n3_start_game(fighter: &mut L2CAgentBase) {
 	frame(lua_state, 25.0);
 	if is_excute(fighter) {
 		FT_MOTION_RATE(fighter, 1.0);
-	} 
+	}
 
 }
 
@@ -239,7 +240,7 @@ unsafe fn miigunner_special_n3_end_game(fighter: &mut L2CAgentBase) {
 	frame(lua_state, 1.0);
 	if is_excute(fighter) {
 		ArticleModule::generate_article_enable(boma, *FIGHTER_MIIGUNNER_GENERATE_ARTICLE_GRENADELAUNCHER, false, 0);
-		FT_MOTION_RATE(fighter, 25.0/(23.0 - 1.0));
+		FT_MOTION_RATE(fighter, 30.0/(23.0 - 1.0));
 	}
 }
 
