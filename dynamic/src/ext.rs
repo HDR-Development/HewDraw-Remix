@@ -481,6 +481,9 @@ pub trait BomaExt {
 
     /// check for hitfall (should be called once per frame)
     unsafe fn check_hitfall(&mut self);
+
+    /// If inside a for loop, this will transition an effect from one color alpha to another
+    unsafe fn blend_effect_rgb(&mut self, fighter_kind: i32, effect_varconst: i32, start_frame: f32, end_frame: f32, i: f32, start_color: Vector3f, end_color: Vector3f, is_weapon: bool);
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -968,6 +971,42 @@ impl BomaExt for BattleObjectModuleAccessor {
             }
         }
     }
+
+    /// Transitions an effect from one color alpha into another. Should be called inside a for loop
+    /// 
+    /// # Arguments
+    /// * `fighter_kind` - The FIGHTER_KIND LuaConst for the character
+    /// * `effect_varconst` - A VarModule constant to store the effect handle. Should be an instance int and needs an effect stored in it beforehand
+    /// * `start_frame` - The starting frame of the loop
+    /// * `end_frame` - The ending frame of the loop
+    /// * `i` - The iterator variable of the for loop
+    /// * `start_color` - The RGB alpha value of the first color
+    /// * `end_color` - The RGB alpha value of the final color
+    /// * `is_weapon` - Set to true if being applied to an article's effect acmd, false if it is in the fighter's effect acmd
+    unsafe fn blend_effect_rgb(&mut self, fighter_kind: i32, effect_varconst: i32, start_frame: f32, end_frame: f32, i: f32, start_color: Vector3f, end_color: Vector3f, is_weapon: bool) {
+        let mut fighter_object;
+        let mut eff_handle = 0 as u64;
+        // Get fighter object and effect handle
+        if is_weapon {
+          let owner_id = WorkModule::get_int(self, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+            if sv_battle_object::kind(owner_id) == fighter_kind {
+              fighter_object = super::util::get_battle_object_from_id(owner_id);
+              eff_handle = crate::VarModule::get_int64(fighter_object, effect_varconst);
+            }
+        }
+        else {
+          fighter_object = super::util::get_battle_object_from_accessor(self);
+          eff_handle = crate::VarModule::get_int64(fighter_object, effect_varconst);
+        }
+        // Smoothly interpolate from starting to ending color based on current frame
+        let blend_vector = Vector3f {
+          x: start_color.x + ((end_color.x - start_color.x) * ((i - start_frame) / (end_frame - start_frame))),
+          y: start_color.y + ((end_color.y - start_color.y) * ((i - start_frame) / (end_frame - start_frame))),
+          z: start_color.z + ((end_color.z - start_color.z) * ((i - start_frame) / (end_frame - start_frame)))
+        };
+        // Apply color shift
+        EffectModule::set_rgb(self, eff_handle as u32, blend_vector.x, blend_vector.y, blend_vector.z);
+      }
 }
 
 pub trait LuaUtil {
