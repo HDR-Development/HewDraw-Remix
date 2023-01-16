@@ -77,7 +77,7 @@ unsafe fn sephiroth_attack_11_effect(fighter: &mut L2CAgentBase) {
 unsafe fn sephiroth_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.78);
+    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.87);
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.5);
     frame(lua_state, 11.0);
