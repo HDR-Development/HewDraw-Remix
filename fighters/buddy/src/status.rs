@@ -11,17 +11,19 @@ pub unsafe fn end_run(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "buddy", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 pub unsafe fn buddy_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
+
     if (fighter.is_situation(*SITUATION_KIND_AIR) )
     {
-        GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_NONE));
+        GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         GroundModule::set_attach_ground(fighter.module_accessor, false);
-        if (WorkModule::is_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_FAIL))
+        if (VarModule::get_float(fighter.battle_object, vars::buddy::instance::FEATHERS_RED_COOLDOWN)>0.0)
         {
             fighter.change_status(
                 L2CValue::I32(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL),
                 L2CValue::Bool(true)
             );
-            return true.into();
+            PLAY_SE(fighter, Hash40::new("se_buddy_special_s04_02"));
+            return false.into();
         }
     }
     else if (WorkModule::get_int(fighter.module_accessor,  *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN) == 0)
@@ -105,6 +107,7 @@ pub unsafe extern "C" fn bayonet_end_end(fighter: &mut L2CFighterCommon) -> L2CV
     // re-enable energies and remove the screenwide effect
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+
     0.into()
 }
 

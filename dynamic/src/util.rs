@@ -154,6 +154,30 @@ pub fn get_active_battle_object_id_from_entry_id(entry_id: u32) -> Option<u32> {
     }
 }
 
+/// includes nana
+pub unsafe fn get_all_player_battle_object_ids() -> Vec<u32> {
+    use smash::lib::lua_const::*;
+    use smash::app::lua_bind::*;
+    use super::ext::*;
+    let mut vec: Vec<u32> = Vec::new();
+    for i in 0..8 {
+        if let Some(fighter) = get_fighter_common_from_entry_id(i) {
+            vec.push(fighter.battle_object_id);
+            if fighter.kind() != *FIGHTER_KIND_POPO {
+                continue;
+            }
+            let nana_object_id = WorkModule::get_int(fighter.boma(), *FIGHTER_POPO_INSTANCE_WORK_ID_INT_PARTNER_OBJECT_ID) as u32;
+            let object = get_battle_object_from_id(nana_object_id);
+            if object.is_null() {
+                continue;
+            }
+            let nana_fighter = get_fighter_common_from_accessor(&mut *(*object).module_accessor);
+            vec.push(nana_fighter.battle_object_id);
+        }
+    }
+    return vec;
+}
+
 extern "C" {
     #[link_name = "\u{1}_ZN3app8lua_bind38FighterManager__get_fighter_entry_implEPNS_14FighterManagerENS_14FighterEntryIDE"]
     fn get_fighter_entry(manager: *mut smash::app::FighterManager, entry_id: u32) -> *mut u8;
