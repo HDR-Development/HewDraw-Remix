@@ -265,7 +265,7 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
     // the following flag is set for the same reset types mentioned in the above LR check, except for AirTransAngleSuperJumpPunch
     energy.active_flag = false;
 
-    if !energy.update_flag {
+    if boma.status_frame() == 0 {
         move_speed.x = energy.prev_speed.x;
     }
 
