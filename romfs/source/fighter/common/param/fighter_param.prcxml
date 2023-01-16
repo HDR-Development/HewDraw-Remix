@@ -2810,8 +2810,8 @@
       <float hash="damage_fly_top_speed_y_stable">1.78</float>
       <float hash="weight">101</float>
       <float hash="landing_attack_air_frame_n">7</float>
-      <float hash="landing_attack_air_frame_f">9</float>
-      <float hash="landing_attack_air_frame_b">9</float>
+      <float hash="landing_attack_air_frame_f">10</float>
+      <float hash="landing_attack_air_frame_b">10</float>
       <float hash="landing_attack_air_frame_hi">11</float>
       <float hash="landing_attack_air_frame_lw">13</float>
       <int hash="landing_heavy_frame">5</int>
