@@ -37,15 +37,16 @@ unsafe fn set_info<S>(latency: S) where S: Display {
 
     set_text_string(
         CURRENT_PANE_HANDLE as u64,
-        format!("\n\n\n\n{}
+        format!("\n\n\n\n\n\n{}
             Arena ID: {}
             Input Delay: {}
             {}
             DPAD ◄► Set Delay
             DPAD ▼ Edit Modes
 
-            HDR v{}
-            Assets v{}\0",
+            HDR Version:
+            {}
+            Assets {}\0",
             modes_newlines,
             CURRENT_ARENA_ID, 
             latency,
