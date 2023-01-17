@@ -157,12 +157,12 @@ unsafe fn lucina_specials2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_LW) {
         WorkModule::set_int64(
             fighter.module_accessor,
-            hash40("special_s3_s") as i64,
+            hash40("special_s2_lw") as i64,
             *FIGHTER_MARTH_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND
         );
         WorkModule::set_int64(
             fighter.module_accessor,
-            hash40("special_air_s3_s") as i64,
+            hash40("special_air_s2_lw") as i64,
             *FIGHTER_MARTH_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND_AIR
         );
     }
