@@ -11,7 +11,7 @@
   <list hash="param_special_s">
     <struct index="0">
       <float hash="throw_angle_max">75</float>
-      <float hash="throw_angle_min">310</float>
+      <float hash="throw_angle_min">50</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -33,6 +33,14 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="jump_start_speed_y">6.4</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_star">
+    <struct index="0">
+      <int hash="life">14</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
