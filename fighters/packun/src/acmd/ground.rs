@@ -5,7 +5,6 @@ use super::*;
 unsafe fn packun_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.8);
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 5.0, 4.0);
     }
@@ -86,6 +85,7 @@ unsafe fn packun_attack_13_game(fighter: &mut L2CAgentBase) {
 unsafe fn packun_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.6);
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 8.0, 5.0);

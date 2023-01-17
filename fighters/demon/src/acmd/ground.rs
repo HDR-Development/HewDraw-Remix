@@ -78,7 +78,6 @@ unsafe fn game_flashpunch(fighter: &mut L2CAgentBase) {
 unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.11);
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
