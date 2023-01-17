@@ -106,13 +106,12 @@ unsafe fn grab_jump_refresh(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn plat_cancels(fighter: &mut L2CFighterCommon) {
-    if fighter.is_prev_status(*FIGHTER_STATUS_KIND_PASS)
-    && fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR)
-    {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) {
         let hitlag_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_HIT_STOP_ATTACK_SUSPEND_FRAME);
         let pass_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("pass_stick_y"));
+        
         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
-        && hitlag_frame >= 0
+        && hitlag_frame <= 0
         && fighter.global_table[STICK_Y].get_f32() > pass_stick_y
         {
             GroundModule::clear_pass_floor(fighter.module_accessor);
