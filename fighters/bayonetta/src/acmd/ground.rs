@@ -21,6 +21,7 @@ unsafe fn bayonetta_attack_11_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 50, 8, 0, 36, 3.5, 0.0, 10.0, 7.2, None, None, None, 1.05, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 2, 0, Hash40::new("top"), 2.0, 50, 8, 0, 36, 3.5, 0.0, 10.0, 3.5, None, None, None, 1.05, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 3, 0, Hash40::new("top"), 2.0, 361, 8, 0, 32, 2.5, 0.0, 5.0, 3.0, Some(0.0), Some(5.0), Some(11.0), 1.05, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+       //Changed 0-2 angles from 75 to 50 
         AttackModule::set_add_reaction_frame(boma, 0, 4.0, false);
         AttackModule::set_add_reaction_frame(boma, 1, 4.0, false);
         AttackModule::set_add_reaction_frame(boma, 2, 4.0, false);
@@ -52,6 +53,7 @@ unsafe fn bayonetta_attack_12_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0, 50, 8, 0, 42, 3.05, 0.0, 10.6, 7.2, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 2, 0, Hash40::new("top"), 3.0, 50, 8, 0, 42, 3.0, 0.0, 10.8, 3.5, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 3, 0, Hash40::new("top"), 3.0, 361, 8, 0, 38, 2.5, 0.0, 4.5, 6.0, Some(0.0), Some(4.5), Some(9.0), 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        //Changed 0-2 angles from 75 to 50
         AttackModule::set_add_reaction_frame(boma, 0, 5.0, false);
         AttackModule::set_add_reaction_frame(boma, 1, 5.0, false);
         AttackModule::set_add_reaction_frame(boma, 2, 5.0, false);
@@ -90,6 +92,7 @@ unsafe fn bayonetta_attack_13_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 0, 0, Hash40::new("handl"), 4.0, 40, 20, 0, 40, 4.0, 0.0, 0.0, 2.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 1, 0, Hash40::new("arml"), 4.0, 40, 20, 0, 40, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 2, 0, Hash40::new("shoulderl"), 4.0, 40, 20, 0, 40, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        //Changed 0-2 angles from 65 to 40
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
