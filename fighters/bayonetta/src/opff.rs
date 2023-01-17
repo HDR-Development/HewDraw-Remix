@@ -143,9 +143,8 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
                 Some(AerialKind::Fair) | None => return,
                 _ => {
                     if !fighter.is_in_hitlag() {
-                    // disable fair2 cancels
-                    //  VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_NONSPECIAL_CANCEL);
-                    //  fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
+                        VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_NONSPECIAL_CANCEL);
+                        fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
                         return;
                     }
                 }
