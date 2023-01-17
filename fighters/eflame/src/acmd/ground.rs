@@ -81,19 +81,10 @@ unsafe fn eflame_12(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attack_dash(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.05);
-    original!(fighter);
-}
-
 pub fn install() {
     install_acmd_scripts!(
         eflame_11,
         eflame_12,
-        game_attack_dash
     );
 }
 
