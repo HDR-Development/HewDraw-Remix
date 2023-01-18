@@ -22,13 +22,13 @@ unsafe extern "C" fn clayrocket_ready_main_loop(weapon: &mut L2CWeaponCommon) ->
     );
     if !StatusModule::is_changing(weapon.module_accessor) {
         if WorkModule::is_flag(weapon.module_accessor, *WEAPON_SHIZUE_CLAYROCKET_STATUS_WORK_ID_FLAG_HIT) {
-            LinkModule::send_event_parents(weapon.module_accessor, *WEAPON_LINK_NO_CONSTRAINT, Hash40::new_raw(0x77c8e319));
+            LinkModule::send_event_parents(weapon.module_accessor, *WEAPON_LINK_NO_CONSTRAINT, Hash40::new_raw(0x2477c8e319));
         }
         let damage = WorkModule::get_float(weapon.module_accessor, *WEAPON_SHIZUE_CLAYROCKET_INSTANCE_WORK_ID_FLOAT_DAMAGE);
         let life = WorkModule::get_param_float(weapon.module_accessor, hash40("param_clayrocket"), hash40("life_1"));
         if damage >= life {
             WorkModule::on_flag(weapon.module_accessor, *WEAPON_SHIZUE_CLAYROCKET_INSTANCE_WORK_ID_FLAG_BURST_DAMAGE);
-            weapon.change_status(WEAPON_SHIZUE_CLAYROCKET_INSTANCE_WORK_ID_FLAG_BURST_DAMAGE.into(), false.into());
+            weapon.change_status(WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_BURST.into(), false.into());
             return 0.into();
         }
         let erase_time = WorkModule::get_param_int(weapon.module_accessor, hash40("param_clayrocket"), hash40("erase_time"));
