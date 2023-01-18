@@ -150,11 +150,27 @@ pub unsafe fn ecb_shift_disabled_motions(fighter: &mut L2CFighterCommon) {
     }
 }
 
+pub unsafe fn decrease_knockdown_bounce_heights(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_DOWN) {
+        let mut rot_offset = Vector3f::zero();
+        ModelModule::joint_global_offset_from_top(fighter.module_accessor, Hash40::new("rot"), &mut rot_offset);
+        let mut hip_offset = Vector3f::zero();
+        ModelModule::joint_global_offset_from_top(fighter.module_accessor, Hash40::new("hip"), &mut hip_offset);
+
+        // Halves hip bone's vertical movement and applies offset to rot bone
+        // Cannot apply offset to hip as it is already offset from rot, while rot is directly offset from top bone
+        let bounce_height_mul = 0.5;
+        rot_offset.y += hip_offset.y * -bounce_height_mul;
+        ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("rot"), &Vector3f{ x: 0.0, y: rot_offset.y, z: 0.0 }, false, false);
+    }
+}
+
 pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     
     airdodge_refresh_on_hit_disable(boma, status_kind);
     suicide_throw_mashout(fighter, boma);
     cliff_xlu_frame_counter(fighter);
     ecb_shift_disabled_motions(fighter);
+    decrease_knockdown_bounce_heights(fighter);
 }
 
