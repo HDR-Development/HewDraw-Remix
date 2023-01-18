@@ -431,9 +431,9 @@ unsafe fn miigunner_supermissile_burst_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         let gunner = utils::util::get_battle_object_from_id(owner_id);
-        if VarModule::is_flag(gunner, vars::common::instance::IS_HEAVY_ATTACK) {
-           VarModule::off_flag(gunner, vars::common::instance::IS_HEAVY_ATTACK);
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 20.0, 50, 80, 0, 70, 14.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_BOMB);
+        if VarModule::is_flag(gunner, vars::miigunner::status::MISSILE_DETONATE) {
+           VarModule::off_flag(gunner, vars::miigunner::status::MISSILE_DETONATE);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 20.0, 50, 80, 0, 70, 14.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -5, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_BOMB);
         }
     }
     frame(lua_state, 2.0);
@@ -454,7 +454,7 @@ unsafe fn miigunner_supermissile_burst_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
        if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_MIIGUNNER {
            let gunner = utils::util::get_battle_object_from_id(owner_id);
-           if VarModule::is_flag(gunner, vars::common::instance::IS_HEAVY_ATTACK) {
+           if VarModule::is_flag(gunner, vars::miigunner::status::MISSILE_DETONATE) {
                EFFECT(fighter, Hash40::new("miigunner_atk_shot5"), Hash40::new("top"), -14, 0, 0, 0, 0, 0, 1.75, 0, 0, 0, 0, 0, 0, false);
                LAST_EFFECT_SET_COLOR(fighter, 0.5, 10.0, 25.0);
            }
@@ -475,7 +475,7 @@ unsafe fn miigunner_supermissile_burst_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_MIIGUNNER {
            let gunner = utils::util::get_battle_object_from_id(owner_id);
-           if VarModule::is_flag(gunner, vars::common::instance::IS_HEAVY_ATTACK) {
+           if VarModule::is_flag(gunner, vars::miigunner::status::MISSILE_DETONATE) {
                PLAY_SE(fighter, Hash40::new("se_miigunner_special_c2_s03"));
                PLAY_SE_REMAIN(fighter, Hash40::new("se_common_bomb_l"));
            }
