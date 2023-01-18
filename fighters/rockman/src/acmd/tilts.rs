@@ -6,6 +6,7 @@ use super::*;
 unsafe fn rockman_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.5);
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);
@@ -14,23 +15,17 @@ unsafe fn rockman_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        // MotionModule::set_rate(boma, 1.25);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 10.5, 69, 45, 0, 76, 4.0, 0.0, 3.2, 3.5, Some(0.0), Some(3.2), Some(4.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        FT_MOTION_RATE(fighter, 7.0 / (22.0 - 5.0));
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 69, 70, 0, 70, 4.0, 0.0, 3.2, 3.5, Some(0.0), Some(3.2), Some(4.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
     }
-    wait(lua_state, 4.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 7.5, 65, 55, 0, 75, 4.0, 0.0, 3.2, 3.5, Some(0.0), Some(3.2), Some(4.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        // AttackModule::set_add_reaction_frame(boma, 0, 5.0, false);
-        AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
-    }
-    wait(lua_state, 4.0);
+    frame(lua_state, 16.0);
     if is_excute(fighter) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
-        // MotionModule::set_rate(boma, 1.00);
+        FT_MOTION_RATE(fighter, 29.0 / (46.0 - 22.0));
         JostleModule::set_status(boma, true);
         AttackModule::clear_all(boma);
     }
@@ -51,7 +46,7 @@ unsafe fn rockman_attack_hi3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
             FT_MOTION_RATE(fighter, 16.0 / (20.0 - 6.0));
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 17.0, 85, 105, 0, 40, 3.5, 0.0, 6.0, 8.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 17.0, 85, 73, 0, 80, 3.5, 0.0, 6.0, 8.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
         } else {
             FT_MOTION_RATE(fighter, 11.0 / (20.0 - 6.0));
             ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 85, 54, 0, 80, 3.5, 0.0, 6.0, 8.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
