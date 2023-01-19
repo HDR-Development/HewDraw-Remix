@@ -30,11 +30,6 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     }
 }
 
-/* Moves that should bypass the momentum logic (in terms of the jump status script) */
-const MOMENTUM_EXCEPTION_MOVES: [smash::lib::LuaConst ; 1] = [
-    FIGHTER_SONIC_STATUS_KIND_SPIN_JUMP
-];
-
 #[common_status_script(status = FIGHTER_STATUS_KIND_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE,
     symbol = "_ZN7lua2cpp16L2CFighterCommon15status_pre_JumpEv")]
 unsafe fn status_pre_Jump(fighter: &mut L2CFighterCommon) -> L2CValue {
