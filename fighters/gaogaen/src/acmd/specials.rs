@@ -931,7 +931,7 @@ unsafe fn gaogaen_special_hi_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         VarModule::off_flag(boma.object(), vars::gaogaen::status::IS_HIT_SPECIAL_HI_RISE);
-        VarModule::off_flag(boma.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL);
+        VarModule::on_flag(boma.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
@@ -1012,7 +1012,7 @@ unsafe fn gaogaen_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         VarModule::off_flag(boma.object(), vars::gaogaen::status::IS_HIT_SPECIAL_HI_RISE);
-        VarModule::off_flag(boma.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL);
+        VarModule::on_flag(boma.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
