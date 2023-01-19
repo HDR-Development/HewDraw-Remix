@@ -310,6 +310,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const SOARING_SLASH_HIT: i32 = 0x1100;
+            pub const SOARING_SLASH_CANCEL: i32 = 0x1101;
         }
     }
 
@@ -350,7 +351,7 @@ pub mod vars {
             // flags
             pub const SPECIAL_CHECKS: i32 = 0x1100;
 
-            pub const SPECIAL_AIR_LW_STOP: i32 = 0x1100;
+            // pub const SPECIAL_AIR_LW_STOP: i32 = 0x1100;
         }
     }
 
@@ -465,6 +466,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const FINAL_CUTTER_HIT: i32 = 0x1100;
+            pub const FINAL_CUTTER_CANCEL: i32 = 0x1101;
         }
     }
 
@@ -806,6 +808,15 @@ pub mod vars {
             // floats
             pub const CHARGE_ATTACK_LEVEL: i32 = 0x1100;
             pub const IS_CHARGE_FINISHED: i32 = 0x1101;
+        }
+        pub mod instance {
+            // flags
+            pub const LUNAR_LAUNCH_AIR_USED: i32 = 0x0100;
+            pub const DETONATE_READY: i32 = 0x0101;
+
+            // ints
+            pub const LUNAR_LAUNCH_EFF_HANDLER: i32 = 0x0100;
+            pub const MISSILE_OBJECT_ID: i32 = 0x0101;
         }
     }
 

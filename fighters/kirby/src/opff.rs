@@ -15,8 +15,14 @@ unsafe fn final_cutter_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, 
     }
 
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_HI2 {
-        if frame > 10.0 && frame < 19.0 {
-            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
+        if frame < 5.0 { // earliest point to buffer dive
+            VarModule::on_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_CANCEL);
+        } else if frame < 14.0 { // latest point to buffer dive
+            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
+                VarModule::off_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_CANCEL);
+            }
+        } else { // actual dive (frame after previous block)
+            if VarModule::is_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_CANCEL) {
                 if VarModule::is_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_HIT) {
                     VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
                     ControlModule::reset_trigger(boma);
