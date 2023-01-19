@@ -13,6 +13,8 @@ unsafe fn mewtwo_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
+        HIT_NO(fighter, 12, *HIT_STATUS_NORMAL);
+        HIT_NO(fighter, 13, *HIT_STATUS_NORMAL);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
@@ -23,6 +25,8 @@ unsafe fn mewtwo_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 5.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        HIT_NO(fighter, 12, *HIT_STATUS_OFF);
+        HIT_NO(fighter, 13, *HIT_STATUS_OFF);
     }
     
 }
@@ -38,6 +42,8 @@ unsafe fn mewtwo_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
+        HIT_NO(fighter, 12, *HIT_STATUS_NORMAL);
+        HIT_NO(fighter, 13, *HIT_STATUS_NORMAL);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
@@ -48,6 +54,8 @@ unsafe fn mewtwo_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 5.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        HIT_NO(fighter, 12, *HIT_STATUS_OFF);
+        HIT_NO(fighter, 13, *HIT_STATUS_OFF);
     }
     
 }
@@ -63,6 +71,8 @@ unsafe fn mewtwo_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
+        HIT_NO(fighter, 12, *HIT_STATUS_NORMAL);
+        HIT_NO(fighter, 13, *HIT_STATUS_NORMAL);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
@@ -74,6 +84,8 @@ unsafe fn mewtwo_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 5.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        HIT_NO(fighter, 12, *HIT_STATUS_OFF);
+        HIT_NO(fighter, 13, *HIT_STATUS_OFF);
     }
     
 }
@@ -89,6 +101,8 @@ unsafe fn mewtwo_attack_hi3_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
+        HIT_NO(fighter, 12, *HIT_STATUS_NORMAL);
+        HIT_NO(fighter, 13, *HIT_STATUS_NORMAL);
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
@@ -108,6 +122,8 @@ unsafe fn mewtwo_attack_hi3_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        HIT_NO(fighter, 12, *HIT_STATUS_OFF);
+        HIT_NO(fighter, 13, *HIT_STATUS_OFF);
     }
     
 }
@@ -118,6 +134,8 @@ unsafe fn mewtwo_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 5.0);
     if is_excute(fighter) {
+        HIT_NO(fighter, 12, *HIT_STATUS_NORMAL);
+        HIT_NO(fighter, 13, *HIT_STATUS_NORMAL);
         ATTACK(fighter, 0, 0, Hash40::new("s_tail3"), 5.0, 80, 84, 0, 60, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
         ATTACK(fighter, 1, 0, Hash40::new("s_tail5"), 4.5, 80, 84, 0, 65, 4.0, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
         ATTACK(fighter, 2, 0, Hash40::new("s_tail7"), 4.0, 90, 80, 0, 60, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
@@ -126,6 +144,8 @@ unsafe fn mewtwo_attack_lw3_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        HIT_NO(fighter, 12, *HIT_STATUS_OFF);
+        HIT_NO(fighter, 13, *HIT_STATUS_OFF);
     }
     
 }

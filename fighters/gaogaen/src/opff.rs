@@ -25,9 +25,9 @@ unsafe fn cross_chop_techniques(fighter: &mut L2CFighterCommon) {
         }
         */
         if MotionModule::frame(fighter.module_accessor) > 20.0 && !VarModule::is_flag(fighter.object(), vars::gaogaen::status::SHOULD_CROSS_CHOP_DIVE_EARLY) { // Not checking for the SHOULD_CROSS_CHOP_DIVE_EARLY flag has interesting behavior if holding special and shield, allows him to do a little aerial flip that stalls him in the air a bit
-            if fighter.is_button_on(Buttons::Guard) {
+            if fighter.is_button_on(Buttons::Special) {
                 //DamageModule::add_damage(fighter.module_accessor, 1.0, 0);
-                VarModule::on_flag(fighter.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL);
+                VarModule::off_flag(fighter.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL);
             }    
         }
     }
