@@ -152,16 +152,26 @@ pub unsafe fn ecb_shift_disabled_motions(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn decrease_knockdown_bounce_heights(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_DOWN) {
-        let mut rot_offset = Vector3f::zero();
-        ModelModule::joint_global_offset_from_top(fighter.module_accessor, Hash40::new("rot"), &mut rot_offset);
         let mut hip_offset = Vector3f::zero();
         ModelModule::joint_global_offset_from_top(fighter.module_accessor, Hash40::new("hip"), &mut hip_offset);
+        if fighter.motion_frame() <= 1.0 {
+            VarModule::set_float(fighter.battle_object, vars::common::status::RESTING_HIP_OFFSET_Y, hip_offset.y);
+        }
 
-        // Halves hip bone's vertical movement and applies offset to rot bone
-        // Cannot apply offset to hip as it is already offset from rot, while rot is directly offset from top bone
-        let bounce_height_mul = 0.5;
-        rot_offset.y += hip_offset.y * -bounce_height_mul;
-        ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("rot"), &Vector3f{ x: 0.0, y: rot_offset.y, z: 0.0 }, false, false);
+        // Checks if our hip bone position is above our "resting" position (hip position when laying on the floor)
+        // which determines whether we are bouncing or not
+        let lower_limit = VarModule::get_float(fighter.battle_object, vars::common::status::RESTING_HIP_OFFSET_Y);
+        if hip_offset.y > lower_limit {
+            // Halves hip bone's vertical movement and applies offset to rot bone
+            // Cannot apply offset to hip as it is already offset from rot, while rot is directly offset from top bone
+            let mut rot_translate = Vector3f::zero();
+            MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("rot"), false, &mut rot_translate);
+            let bounce_height_mul = 0.5;
+            let bounce_height = hip_offset.y - lower_limit;
+            
+            rot_translate.y += bounce_height * -bounce_height_mul;
+            ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("rot"), &Vector3f{ x: 0.0, y: rot_translate.y, z: 0.0 }, false, false);
+        }
     }
 }
 
