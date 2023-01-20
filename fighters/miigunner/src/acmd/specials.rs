@@ -390,8 +390,7 @@ unsafe fn miigunner_special_hi2_squat_game(fighter: &mut L2CAgentBase) {
 	frame(lua_state, 11.0);
 	FT_MOTION_RATE(fighter, 1);
 	if is_excute(fighter) {
-		ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 270, 100, 0, 5, 9.0, 0.0, 0.0, 3.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-		ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0, 110, 85, 40, 90, 9.0, 0.0, 0.0, 3.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+		ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 110, 85, 40, 90, 9.0, 0.0, 0.0, 3.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
 	}
 	frame(lua_state, 13.0);
 	if is_excute(fighter) {
