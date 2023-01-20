@@ -276,11 +276,11 @@ unsafe extern "C" fn special_s_end_pre(fighter: &mut L2CFighterCommon) -> L2CVal
 
 unsafe extern "C" fn special_s_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) {
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        // KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         MotionModule::change_motion(fighter.module_accessor, "special_air_s_end".to_hash(), 0.0, 1.0, false, 0.0, false, false);
         fighter.sub_fighter_cliff_check(GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES.into());
     } else {
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+        // KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         MotionModule::change_motion(fighter.module_accessor, "special_s_end".to_hash(), 0.0, 1.0, false, 0.0, false, false);
     }
@@ -315,6 +315,7 @@ unsafe extern "C" fn special_s_end_main_loop(fighter: &mut L2CFighterCommon) -> 
     }
 
     if !StatusModule::is_changing(fighter.module_accessor) {
+        KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
         if MotionModule::is_end(fighter.module_accessor) {
             if fighter.is_situation(*SITUATION_KIND_GROUND) {
                 fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
@@ -386,7 +387,6 @@ unsafe extern "C" fn special_s_end_init(fighter: &mut L2CFighterCommon) -> L2CVa
     sv_kinetic_energy!(set_accel, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 0.0);
     sv_kinetic_energy!(set_limit_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 10.0);
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
     0.into()
 }
 
