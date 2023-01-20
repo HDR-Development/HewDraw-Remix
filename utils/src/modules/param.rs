@@ -1,4 +1,6 @@
-use std::collections::HashMap;
+use std::convert::TryInto;
+use std::io::Seek;
+use std::{collections::HashMap, borrow::BorrowMut};
 use std::sync::Arc;
 
 use arcropolis_api::{arc_callback, load_original_file};
@@ -274,6 +276,133 @@ lazy_static! {
         }
         hashes
     };
+}
+
+const STAGE_DB_PRC: &str = "ui/param/database/ui_stage_db.prc";
+const STAGE_SELECT_LAYOUT: &str = "ui/layout/menu/stage_select/stage_select/layout.arc";
+const STAGE_SELECT_PATCH_LAYOUT: &str = "ui/layout/patch/stage_select2/stage_select2/layout.arc";
+const STAGE_SELECT_TOURNEY_LAYOUT: &str = "ui/layout/menu/stage_select/stage_select/layout.tourney.arc";
+
+use serde::{Deserialize, Serialize};
+use serde_json::Result;
+use prc::{ParamList, ParamStruct};
+
+/// stores the tournament mode configuration
+#[derive(Serialize, Deserialize, Debug)]
+struct TourneyConfig {
+    /// whether the tourney mode is enabled
+    enabled: bool,
+    /// the ordered list of stages which should be enabled,
+    /// or `None` if the stage list should not be modified
+    stages: Option<Vec<String>>
+}
+
+/// This is used for tournament mode. Modifies on-the-fly whether individual stages will 
+/// be shown or not on the stage select screen.
+#[arc_callback]
+fn ui_stage_db_prc_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
+    // ensure this is the file data it should be
+    assert_eq!(hash, hash40(STAGE_DB_PRC));
+
+    // load the tourney config
+    let config: TourneyConfig = match std::fs::read_to_string("sd:/ultimate/hdr-config/tourney_mode.json") {
+        Ok(json) => serde_json::from_str(&json).expect("A tourney_mode.json was found, but its contents were invalid!"),
+        Err(e) => {
+            println!("No tourney mode config was found. Assuming tourney mode is disabled.");
+            return None;
+        }
+    };
+
+    // if tourney mode is not enabled or no stage list is configured,
+    // then we shouldn't modify the file.
+    if !config.enabled || config.stages.is_none() {
+        return None;
+    }
+
+    // load the original file data first
+    let size = load_original_file(hash, &mut data).expect("Unable to load ui_stage_db.prc!");
+
+    // get the slice of the allocated buffer which was *actually filled* via loading the original file
+    let loaded_data = &data[..size];
+    let mut base_struct = match prc::read_stream(&mut std::io::Cursor::new(loaded_data)) {
+        Ok(struc) => struc,
+        Err(e) => {
+            panic!("Unable to parse '{}'. Reason: {:?}", STAGE_DB_PRC, e)
+        }
+    };
+
+    // get the db_root list
+    let db_root = &mut (&mut (&mut base_struct).0)[0];
+    assert_eq!(*db_root.0, hash40("db_root"));
+    let list_kind = (&mut db_root.1);
+    let param_list = list_kind.try_into_mut::<ParamList>().expect("Failed to load db_root list from ui_stage_db.prc!");
+    let list = &mut param_list.0;
+
+    let stages = config.stages.unwrap();
+
+    // disable and enable the appropriate stages
+    for entry in list {
+        let stage_entry = &mut (entry.try_into_mut::<ParamStruct>().expect("failed to get struct from ui_stage_db.prc entry!").0);
+        
+        // the name_id of the stage: BattleField, Yoshi_Story, Kirby_Pupupu64, etc
+        let name_id = stage_entry.iter()
+            .find(|param| param.0 == prc::hash40::Hash40(hash40("name_id")))
+            .unwrap()
+            .1
+            .try_into_ref::<String>()
+            .expect("Could not get name_id as String for a stage entry in tourney mode!")
+            .clone();
+
+        // the display order for the stage
+        let disp_order = stage_entry.iter_mut()
+            .find(|param| param.0 == prc::hash40::Hash40(hash40("disp_order")))
+            .unwrap()
+            .1
+            .try_into_mut::<i8>()
+            .expect("Could not get disp_order as an i8 for a stage entry in tourney mode");
+        
+        // set the display order to show or hide the stage
+        match stages.contains(&name_id) {
+            true => {
+                *disp_order = 1;
+            },
+            false => {
+                *disp_order = -1;
+            }
+        };
+    }
+
+    // write the data back into the buffer
+    let buf = &mut std::io::Cursor::new(data);
+    prc::write_stream(buf, &base_struct);
+    let size = buf.stream_len().unwrap() as usize;
+
+    Some(size)
+}
+
+#[arc_callback]
+fn stage_select_layout_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
+    // load the tourney config
+    let config: TourneyConfig = match std::fs::read_to_string("sd:/ultimate/hdr-config/tourney_mode.json") {
+        Ok(json) => serde_json::from_str(&json).expect("A tourney_mode.json was found, but its contents were invalid!"),
+        Err(e) => {
+            println!("No tourney mode config was found. Assuming tourney mode is disabled.");
+            return None;
+        }
+    };
+
+    // if tourney mode is not enabled or no stage list is configured,
+    // then we shouldn't load the tourney layout
+    if !config.enabled || config.stages.is_none() {
+        println!("tourney mode stages are not enabled");
+        return None;
+    }
+
+    println!("loading tourney mode layout");
+
+    // load the tourney layout
+    let size = load_original_file(hash40(STAGE_SELECT_TOURNEY_LAYOUT), &mut data).expect("Unable to load '/ui/layout/menu/stage_select/stage_select/layout.tourney.arc'");
+    Some(size)
 }
 
 #[arc_callback]
@@ -641,6 +770,14 @@ impl ParamModule {
 
 pub(crate) fn init() {
     fighter_param_callback::install("fighter/common/hdr/param/fighter_param.prc", hdr_macros::size_of_rom_file!("fighter/common/hdr/param/fighter_param.prc"));
+
+    // install the callback for selectively displaying stages
+    // max_size is technically unknown, but since we aren't adding new data to the prc, and the
+    // hdr file is presently 16kb, this should be sufficient.
+    ui_stage_db_prc_callback::install(STAGE_DB_PRC, /* 20kb */ 20480);
+    stage_select_layout_callback::install(STAGE_SELECT_LAYOUT, /* 10mb */ 10485760);
+    stage_select_layout_callback::install(STAGE_SELECT_PATCH_LAYOUT, /* 10mb */ 10485760);
+
     common_param_callback::install("fighter/common/hdr/param/common.prc", hdr_macros::size_of_rom_file!("fighter/common/hdr/param/common.prc"));
     for (file, (_, size)) in AGENT_PARAM_REVERSE.iter() {
         agent_param_callback::install(arcropolis_api::Hash40(file.hash), *size);
