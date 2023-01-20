@@ -1,4 +1,6 @@
 use super::*;
+use crate::consts::*;
+use crate::consts::globals::*;
 
 #[repr(C)]
 pub struct KineticEnergyVTable {
@@ -325,6 +327,20 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
                 0.0
             }
         },
+        Turn => {
+            stick.x = 0.0;
+            // Perfect Pivot
+            if VarModule::is_flag(boma.object(), vars::common::instance::IS_SMASH_TURN)
+            && VarModule::is_flag(boma.object(), vars::common::instance::CAN_PERFECT_PIVOT)
+            && ControlModule::get_stick_x(boma).abs() < WorkModule::get_param_float(boma, hash40("common"), hash40("dash_stick_x")) {
+                VarModule::off_flag(boma.object(), vars::common::instance::CAN_PERFECT_PIVOT);
+                do_standard_accel = false;
+                energy.speed.x = -energy.lr * WorkModule::get_param_float(boma, smash::hash40("dash_speed"), 0) * ParamModule::get_float(boma.object(), ParamType::Common, "perfect_pivot_speed_mul");
+                0.0
+            } else {
+                0.0
+            }
+        },
         Dash | DashBack => loop {
             // Don't apply or change the speed by any ammount during the first keep frames of dash
             let keep_frame = WorkModule::get_param_int(boma, smash::hash40("common"), smash::hash40("dash_speed_keep_frame"));
@@ -344,17 +360,42 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
                 }
             }
 
-            let direction = -PostureModule::lr(boma);
-            let direction = if reset_type != DashBack {
-                -direction
+            // Late pivot
+            if reset_type == Dash
+            && boma.status_frame() == 0
+            && ControlModule::get_stick_x(boma).abs() < WorkModule::get_param_float(boma, hash40("common"), hash40("dash_stick_x"))
+            && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_TURN 
+            && StatusModule::prev_status_kind(boma, 1) == *FIGHTER_STATUS_KIND_DASH { // if you are in a backdash
+                energy.speed.x = if VarModule::is_flag(boma.object(), vars::common::instance::CAN_PERFECT_PIVOT) {
+                    // Late Perfect Pivot
+                    energy.lr * WorkModule::get_param_float(boma, smash::hash40("dash_speed"), 0) * ParamModule::get_float(boma.object(), ParamType::Common, "perfect_pivot_speed_mul")
+                } else {
+                    0.0
+                };
+                break 0.0;
+            }
+            // Dashback
+            let dashback_input = if reset_type == Dash {
+                ControlModule::get_stick_x(boma) * PostureModule::lr(boma) <= ParamModule::get_float(boma.object(), ParamType::Common, "dashback_stick_x")
+                && ControlModule::get_flick_x(boma) <= WorkModule::get_param_int(boma, hash40("common"), hash40("dash_flick_x"))
             } else {
-                direction
+                ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0
             };
-
-            // Prevents any negative acceleration from happening during dash
-            // (this kills any potential of moonwalks)
-            if stick.x * direction <= 0.0 {
-                energy.speed_max.x = 0.0;
+            // Disables dashbacks when stick falls below threshold
+            // For ease of moonwalking
+            let moonwalk_disable_dashback_stick_y = ParamModule::get_float(boma.object(), ParamType::Common, "moonwalk_disable_dashback_stick_y");
+            if stick.y <= moonwalk_disable_dashback_stick_y
+            && WorkModule::is_enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH) {
+                WorkModule::unable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
+            }
+            if WorkModule::is_enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH)
+            && dashback_input {
+                energy.speed.x *= ParamModule::get_float(boma.object(), ParamType::Common, "dash_end_speed_mul");
+                break 0.0;
+            }
+            // Shield Stop
+            if boma.is_pad_flag(PadFlag::GuardTrigger) && boma.is_button_off(Buttons::Catch) {
+                energy.speed.x = 0.0;
                 break 0.0;
             }
 
@@ -375,13 +416,23 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
             }
             energy.speed_brake.x = brake;
             if 0.0 <= mul * energy.lr {
+                // If stick is at neutral
                 do_standard_accel = false;
                 energy.accel.x = 0.0;
                 energy.accel.y = change_y;
                 energy.speed_max.x = 0.0;
                 0.0
             } else {
-                mul
+                if energy.speed.x.abs() >= energy.speed_max.x
+                && mul.abs() > brake {
+                    // Boost run
+                    do_standard_accel = false;
+                    energy.accel.x = mul - (brake * mul.signum());
+                    energy.speed_max.x = -1.0;
+                    0.0
+                } else {
+                    mul
+                }
             }
         },
         Free => {
@@ -419,7 +470,7 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
             energy.speed_max.y = -1.0;
             accel_add_x * stick.x.signum() + stick.x * energy.accel_mul_x
         },
-        Turn | TurnNoStop | TurnNoStopAir => {
+        TurnNoStop | TurnNoStopAir => {
             if reset_type == TurnNoStop || reset_type == TurnNoStopAir {
                 if (!TurnModule::is_turn(boma) || energy.accel_mul_x == 0.0) && energy.speed.x == 0.0 {
                     energy.parent.enable = false;
@@ -596,7 +647,7 @@ unsafe fn initialize(energy: &mut FighterKineticEnergyControl, boma: &mut Battle
         },
         Turn | TurnNoStop => {
             energy.speed_max = PaddedVec2::new(
-                WorkModule::get_param_float(boma, smash::hash40("walk_speed_max"), 0),
+                WorkModule::get_param_float(boma, smash::hash40("run_speed_max"), 0),
                 -1.0
             );
             energy.speed_limit = PaddedVec2::new(
@@ -733,30 +784,38 @@ unsafe fn setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyCont
                 energy.speed.x = cap.abs() * speed.x.signum();
             }
         }, // not reached in game afaik
-        Dash | TurnRun | DashBack => {
+        Dash | DashBack => {
             let dash_speed = if reset_type == DashBack {
                 -energy.lr * WorkModule::get_param_float(boma, smash::hash40("dash_speed"), 0)
             } else {
                 energy.lr * WorkModule::get_param_float(boma, smash::hash40("dash_speed"), 0)
             };
-            energy.speed.x = if 0.0 <= energy.speed.x * energy.lr {
-                dash_speed
+            energy.speed.x = if energy.speed.x * energy.lr >= 0.0 {
+                if reset_type == DashBack {
+                    dash_speed + energy.speed.x
+                } else {
+                    dash_speed
+                }
             } else {
-                dash_speed + energy.speed.x
+                if reset_type == DashBack {
+                    dash_speed
+                } else {
+                    dash_speed + energy.speed.x
+                }
             };
         },
         ShootDash => {
-            energy.speed.x = if 0.0 >= energy.speed.x * energy.lr {
-                -energy.lr * WorkModule::get_param_float(boma, smash::hash40("shoot_dash_speed_f"), 0)
+            energy.speed.x = if 0.0 <= energy.speed.x * energy.lr {
+                energy.lr * WorkModule::get_param_float(boma, smash::hash40("shoot_dash_speed_f"), 0)
             } else {
-                energy.speed.x - energy.lr * WorkModule::get_param_float(boma, smash::hash40("shoot_dash_speed_f"), 0)
+                energy.speed.x + energy.lr * WorkModule::get_param_float(boma, smash::hash40("shoot_dash_speed_f"), 0)
             };
         },
         ShootBackDash => {
             energy.speed.x = if 0.0 <= energy.speed.x * energy.lr {
-                energy.lr * WorkModule::get_param_float(boma, smash::hash40("shoot_dash_speed_b"), 0)
+                -energy.lr * WorkModule::get_param_float(boma, smash::hash40("shoot_dash_speed_b"), 0)
             } else {
-                energy.speed.x + energy.lr * WorkModule::get_param_float(boma, smash::hash40("shoot_dash_speed_b"), 0)
+                energy.speed.x - energy.lr * WorkModule::get_param_float(boma, smash::hash40("shoot_dash_speed_b"), 0)
             };
         },
         RevolveSlashAir => {

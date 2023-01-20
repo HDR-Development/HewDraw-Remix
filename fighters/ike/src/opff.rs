@@ -25,7 +25,7 @@ unsafe fn quickdraw_jump_attack_cancels(boma: &mut BattleObjectModuleAccessor, i
     
     // Wall Jump & ECB correction
     if situation_kind == *SITUATION_KIND_AIR {
-        GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, 0.05));
+        //GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, 0.05));
         if  !VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_WALL_JUMP) {
             let touch_right = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
             let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
@@ -40,16 +40,14 @@ unsafe fn quickdraw_jump_attack_cancels(boma: &mut BattleObjectModuleAccessor, i
 
     // Jump and Attack cancels
     let pad_flag = ControlModule::get_pad_flag(boma);
-
-    if boma.is_input_jump() && !VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL) {
-        if situation_kind == *SITUATION_KIND_GROUND {
-            if facing * stick_x < 0.0 {
-                PostureModule::reverse_lr(boma);
-            }
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-        }
-    } else if compare_mask(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || compare_mask(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
+    
+    if compare_mask(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || compare_mask(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK, true);
+    }
+    if !VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL) {
+        if situation_kind == *SITUATION_KIND_GROUND {
+            boma.check_jump_cancel(true);
+        }
     }
 }
 

@@ -18,58 +18,17 @@ use vars::*;
 //=================================================================
 //== TUMBLE EXIT
 //=================================================================
-unsafe fn tumble_exit(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32) {
-    // TODO: Move some of this into ParamModule
-    let remaining_hitstun = WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
-    let total_hitstun = WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME_LAST);
-    let hitstun_passed = total_hitstun - remaining_hitstun;
-    /*
-     * Pick: damage fall OR (damage_fly variant + hitstun + 5 frame)
-     */
-
-    if remaining_hitstun > 0.0
-    && VarModule::is_flag(boma.object(), common::instance::CAN_ESCAPE_TUMBLE)
-    && boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL
-    ])
-    {
-        VarModule::off_flag(boma.object(), common::instance::CAN_ESCAPE_TUMBLE);
-    }
-
-    if FighterStopModuleImpl::is_damage_stop(boma) {
-        return;
-    }
-
-    if !VarModule::is_flag(boma.object(), common::instance::TUMBLE_KB)
-    && (boma.is_status(*FIGHTER_STATUS_KIND_DAMAGE_FALL)
-        || (boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL])
-                && remaining_hitstun > 0.0 && hitstun_passed > 5.0))
-    && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
-    && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
-    {
-        VarModule::on_flag(boma.object(), common::instance::TUMBLE_KB);
-    }
-
-    if !boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_DAMAGE_FALL,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL
-    ])
-    {
-        VarModule::off_flag(boma.object(), common::instance::TUMBLE_KB);
-        VarModule::off_flag(boma.object(), common::instance::CAN_ESCAPE_TUMBLE);
-    }
-
-    if VarModule::is_flag(boma.object(), common::instance::TUMBLE_KB) && remaining_hitstun == 0.0 {
-        VarModule::on_flag(boma.object(), common::instance::CAN_ESCAPE_TUMBLE);
-    }
-
-    if boma.is_situation(*SITUATION_KIND_AIR)
-    && VarModule::is_flag(boma.object(), common::instance::CAN_ESCAPE_TUMBLE)
-    && boma.is_cat_flag(Cat1::Dash | Cat1::TurnDash)
-    {
-        boma.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
+unsafe fn tumble_exit(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_DAMAGE_FALL) {
+        if boma.status_frame() == 0 {
+            ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_DASH);
+            ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_TURN_DASH);
+        }
+        if !(WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR) || WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND))
+        && boma.is_cat_flag(Cat1::Dash | Cat1::TurnDash)
+        {
+            boma.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
+        }
     }
 }
 
@@ -156,13 +115,13 @@ unsafe fn waveland_plat_drop(boma: &mut BattleObjectModuleAccessor, cat2: i32, s
 //=================================================================
 unsafe fn dash_drop(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     let flick_y_sens = ParamModule::get_float(boma.object(), ParamType::Common, "general_flick_y_sens");
+    let flick_y = ControlModule::get_flick_y(boma);
     if GroundModule::is_passable_ground(boma)
-    && boma.is_flick_y(flick_y_sens)
+    && flick_y != 0xFE
+    && boma.stick_y() < flick_y_sens
     && boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_RUN,
-        *FIGHTER_STATUS_KIND_RUN_BRAKE,
-        *FIGHTER_STATUS_KIND_DASH,
-        *FIGHTER_STATUS_KIND_TURN_DASH
+        *FIGHTER_STATUS_KIND_RUN_BRAKE
     ])
     {
         boma.change_status_req(*FIGHTER_STATUS_KIND_PASS, true);
@@ -181,35 +140,7 @@ unsafe fn run_squat(boma: &mut BattleObjectModuleAccessor, status_kind: i32, sti
     }
 }
 
-//=================================================================
-//== GLIDE TOSS
-//=================================================================
-unsafe fn glide_toss(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, facing: f32) {
-    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B])
-    {
-        let max_ditcit_frame = ParamModule::get_float(boma.object(), ParamType::Common, "glide_toss_cancel_frame");
-        VarModule::set_flag(boma.object(), vars::common::instance::CAN_GLIDE_TOSS, MotionModule::frame(boma) <= max_ditcit_frame);
-        VarModule::set_float(boma.object(), vars::common::instance::ROLL_DIR, facing);
-        return;
-    }
-
-    if boma.is_status(*FIGHTER_STATUS_KIND_ITEM_THROW)
-    && VarModule::is_flag(boma.object(), vars::common::instance::CAN_GLIDE_TOSS)
-    {
-        let multiplier = 2.8 * (MotionModule::end_frame(boma) - MotionModule::frame(boma)) / MotionModule::end_frame(boma);
-        let speed_x = if boma.is_prev_status(*FIGHTER_STATUS_KIND_ESCAPE_F) {
-            multiplier * VarModule::get_float(boma.object(), vars::common::instance::ROLL_DIR)
-        } else if boma.is_prev_status(*FIGHTER_STATUS_KIND_ESCAPE_B) {
-            multiplier * VarModule::get_float(boma.object(), vars::common::instance::ROLL_DIR) * -1.0
-        } else {
-            return;
-        };
-
-        KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &Vector3f::new(speed_x, 0.0, 0.0));
-    }
-}
-
-unsafe fn shield_lock_tech(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
+unsafe fn double_shield_button_airdodge(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     // airdodge with second shield button while holding another shield button
     if boma.is_situation(*SITUATION_KIND_AIR)
     && boma.is_button_trigger(Buttons::GuardHold)
@@ -228,14 +159,6 @@ unsafe fn shield_lock_tech(boma: &mut BattleObjectModuleAccessor, status_kind: i
         boma.change_status_req(*FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
         return;
     }
-
-    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD])
-    && boma.is_cat_flag(Cat1::JumpButton)
-    && ((boma.is_button_on(Buttons::SpecialAll) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_GUARD_HOLD_SPECIAL_BUTTON))
-        || boma.is_button_on(Buttons::GuardHold))
-    {
-        boma.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-    }
 }
  
 unsafe fn drift_di(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
@@ -250,29 +173,26 @@ unsafe fn drift_di(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U
     ])
     {
-        let speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
-        let speed_y = fighter.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+        let damage_speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+        let damage_speed_y = fighter.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+
+        if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
+            VarModule::set_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_X, damage_speed_x);
+            VarModule::set_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_Y, damage_speed_y);
+        }
+        let speed_x = VarModule::get_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_X);
+        let speed_y = VarModule::get_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_Y);
 
         let mut speed_mul = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_mul_base");
         let speed_mul_add_max = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_mul_add_max");
 
-        let lerp_min_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_lerp_min");
         let lerp_max_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_lerp_max");
 
-        if speed_x.abs() < lerp_min_speed {
-            speed_mul += speed_mul_add_max;
-        } else if speed_x.abs() < lerp_max_speed {
-            let ratio = 1.0 - ((speed_x.abs() - lerp_min_speed) / (lerp_max_speed - lerp_min_speed));
-            speed_mul += ratio * speed_mul_add_max;
-        }
+        let ratio = 1.0 - (speed_x.abs() / lerp_max_speed).clamp(0.0, 1.0);
+        speed_mul = (speed_mul + speed_mul_add_max) * ratio;
 
-        let current_damage = DamageModule::damage(boma, 0);
-        // println!("Current damage: {}", current_damage);
-        let percent_mul = (1.0 - (current_damage / 100.0) * ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.drift_reduction_mul_at_100")).max(0.0);
-        // println!("percent based multiplier: {}", percent_mul);
-
-        let drift_value = boma.left_stick_x() * speed_mul * percent_mul;
-        fighter.set_speed(Vector2f::new(speed_x + drift_value, speed_y), *FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+        let drift_value = boma.left_stick_x() * speed_mul;
+        fighter.set_speed(Vector2f::new(damage_speed_x + drift_value, damage_speed_y), *FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
     }
 }
 
@@ -280,39 +200,6 @@ unsafe fn drift_di(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 extern "C" {
     #[link_name = "\u{1}_ZN3app14sv_information8stage_idEv"]
     pub fn stage_id() -> i32;
-}
-
-pub unsafe fn hitfall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, fighter_kind: i32, cat: [i32 ; 4]) {
-    if boma.kind() == *FIGHTER_KIND_GAOGAEN
-    && boma.is_situation(*SITUATION_KIND_AIR)
-    && boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR)
-    {
-        /* this is written this way because stick_y_flick wont update during
-            hitlag, which means we need a flag to allow you to hitfall 1 frame
-            after the end of hitlag as well, and we need to check previous 
-            stick y directly to detect hitfall. That way, with the 5 frame buffer,
-            if you input a fastfall during hitlag, it will get registered after
-            the hitlag is over. Without the HITFALL_BUFFER flag, you have to
-            input the fastfall BEFORE you hit the move, only.
-        */
-        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-        || AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-        {
-            VarModule::set_int(boma.object(), vars::common::instance::HITFALL_BUFFER, 0);
-        }
-
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::inc_int(boma.object(), vars::common::instance::HITFALL_BUFFER);
-        }
-
-        let buffer = VarModule::get_int(boma.object(), vars::common::instance::HITFALL_BUFFER);
-
-        if boma.is_cat_flag(Cat2::FallJump)
-        && 0 < buffer && buffer <= 5 
-        {
-            WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
-        }
-    }
 }
 
 pub unsafe fn respawn_taunt(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
@@ -384,15 +271,13 @@ pub unsafe fn teeter_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
 }
 
 pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mut L2CAgent, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32, curr_frame: f32) {
-    tumble_exit(boma, cat[0], status_kind, situation_kind);
+    tumble_exit(boma);
     non_tumble_di(fighter, lua_state, l2c_agent, boma, status_kind);
     dash_drop(boma, status_kind);
     run_squat(boma, status_kind, stick_y); // Must be done after dash_drop()
-    glide_toss(fighter, boma, status_kind, facing);
-    shield_lock_tech(boma, status_kind, situation_kind, cat[0]);
+    double_shield_button_airdodge(boma, status_kind, situation_kind, cat[0]);
     drift_di(fighter, boma, status_kind, situation_kind);
     waveland_plat_drop(boma, cat[1], status_kind);
-    hitfall(boma, status_kind, situation_kind, fighter_kind, cat);
     respawn_taunt(boma, status_kind);
     teeter_cancel(fighter, boma);
 }

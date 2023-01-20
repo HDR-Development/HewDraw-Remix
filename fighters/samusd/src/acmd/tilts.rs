@@ -47,6 +47,7 @@ unsafe fn effect_attacks3hi(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -3, 13.5, 14.5, 32, 6, -192, 0.9, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
 }
@@ -95,6 +96,7 @@ unsafe fn effect_attacks3(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), -1.5, 11.5, 14, 2, 5, 165, 0.95, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
 }
@@ -144,6 +146,7 @@ unsafe fn effect_attacks3lw(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), -2, 6, 11, -15, 0, 195, 1, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
 }
@@ -185,6 +188,7 @@ unsafe fn effect_attackhi3(fighter: &mut L2CAgentBase) {
     frame(lua_state, 16.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 1, 11, 5, 1.7, -39, -92, 1.65, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.7, 3.0);
         LAST_EFFECT_SET_RATE(fighter, 1);
     }
     frame(lua_state, 18.0);
@@ -205,6 +209,7 @@ unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
     wait(lua_state, 3.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        FT_MOTION_RATE(fighter, 26.0/(36.0 - 8.0));
     }
     
 }

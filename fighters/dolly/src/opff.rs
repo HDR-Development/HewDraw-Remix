@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, backdash_energy});
+utils::import_noreturn!(common::opff::{fighter_common_opff});
 use super::*;
 use globals::*;
 
@@ -52,11 +52,7 @@ unsafe fn power_wave_dash_cancel_super_cancels(fighter: &mut L2CFighterCommon, b
 
         // Dash Cancel
         if frame > 33.0 {
-            if situation_kind == *SITUATION_KIND_GROUND {
-                if boma.is_cat_flag(Cat4::Command6N6) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
-                }
-            }
+            boma.check_dash_cancel();
         }
     }
 }
@@ -222,7 +218,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
     // Magic Series
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
-    common::opff::backdash_energy(fighter);
 }
 
 unsafe fn ex_special_scripting(boma: &mut BattleObjectModuleAccessor) {
@@ -750,12 +745,19 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 pub fn dolly_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-        MeterModule::update(fighter.object(), true);
-        if fighter.is_button_on(Buttons::AppealAll) {
-            MeterModule::show(fighter.object());
-        } else {
-            MeterModule::stop_show(fighter.object());
-        }
+        MeterModule::update(fighter.object(), false);
+        // if fighter.is_button_on(Buttons::AppealAll) {
+        //     MeterModule::show(fighter.object());
+        // } else {
+        //     MeterModule::stop_show(fighter.object());
+        // }
+        utils::ui::UiManager::set_ff_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+        utils::ui::UiManager::set_ff_meter_info(
+            fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+            MeterModule::meter(fighter.object()),
+            ParamModule::get_float(fighter.object(), ParamType::Common, "meter_max_damage"),
+            MeterModule::meter_per_level(fighter.object())
+        );
 		dolly_frame(fighter)
     }
 }

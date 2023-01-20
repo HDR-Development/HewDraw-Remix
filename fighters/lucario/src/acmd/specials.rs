@@ -95,7 +95,7 @@ unsafe fn lucario_special_air_s_throw_game(fighter: &mut L2CAgentBase) {
         let rot = 270 - kb_angle;
         VarModule::set_int(fighter.battle_object, vars::lucario::status::FORCE_PALM_ROT_ANGLE, rot as i32);
         
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 13.0, kb_angle, 86, 0, 10, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 13.0, kb_angle, 66, 0, 10, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_THROW);
     }
     frame(lua_state, 23.0);
     if is_excute(fighter) {

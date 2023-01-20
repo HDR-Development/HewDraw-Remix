@@ -24,14 +24,8 @@ unsafe fn normal_side_special(boma: &mut BattleObjectModuleAccessor, status_kind
 unsafe fn straight_lunge_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, cat2: i32, frame: f32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START].contains(&status_kind) {
         if frame > 25.0 {
-            if boma.is_input_jump() && !boma.is_in_hitlag() {
-                if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                    }
-                } else if situation_kind == *SITUATION_KIND_GROUND {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                }
+            if !boma.is_in_hitlag() {
+                boma.check_jump_cancel(false);
             }
             /*
             if boma.is_cat_flag(Cat2::CommonGuard) {

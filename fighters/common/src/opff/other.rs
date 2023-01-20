@@ -47,14 +47,6 @@ pub unsafe fn ecb_visualizer(boma: &mut BattleObjectModuleAccessor) {
     EffectModule::req_2d(boma, Hash40::new("sys_ripstick_bullet"), &pos_bottom, &Vector3f::zero(), 0.25, 0);
 }
 
-pub unsafe fn buffer_clearing(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    // disables buffered wiggle inputs during high knockback
-    if [*FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL].contains(&status_kind) {
-        ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_DASH);
-        ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_TURN_DASH);
-    }
-}
-
 pub unsafe fn sliding_smash_disable(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, fighter_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_S4_START && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_TURN_DASH && MotionModule::frame(boma) <= 1.0 {
         if fighter_kind != *FIGHTER_KIND_ROCKMAN {
@@ -88,38 +80,40 @@ pub unsafe fn suicide_throw_mashout(fighter: &mut L2CFighterCommon, boma: &mut B
         {
             return;
         }
-        
-        get_fighter_common_from_accessor(boma.get_grabber_boma()).clear_lua_stack();
-        get_fighter_common_from_accessor(boma.get_grabber_boma()).push_lua_stack(&mut L2CValue::new_int(*FIGHTER_KINETIC_ENERGY_ID_MOTION as u64));
-        // if in descent of suicide throw
-        if GroundModule::get_correct(boma.get_grabber_boma()) == *GROUND_CORRECT_KIND_AIR
-        && (app::sv_kinetic_energy::get_speed_y(get_fighter_common_from_accessor(boma.get_grabber_boma()).lua_state_agent) < -0.5 || KineticModule::get_kinetic_type(boma.get_grabber_boma()) == *FIGHTER_KINETIC_TYPE_FALL) {
-            if !VarModule::is_flag(boma.object(), vars::common::status::SUICIDE_THROW_CAN_CLATTER) {
-                // allow mashing to begin
-                let throw_frame = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.throw_frame");
-                let damage_frame_mul = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.damage_frame_mul");
-                let recovery_frame = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.recovery_frame");
-                let clatter_frame_base = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.clatter_frame_base");
-                let clatter_frame_max = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.clatter_frame_max");
-                let clatter_frame_min = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.clatter_frame_min");
-                let thrown_damage = DamageModule::damage(boma, 0);
-                let thrower_damage = DamageModule::damage(boma.get_grabber_boma(), 0);
-                let damage_difference = thrower_damage - thrown_damage;
-                let clatter_frame_add = damage_difference * damage_frame_mul;
-                let mut clatter_frame = clatter_frame_base + clatter_frame_add;
+    
+        if !VarModule::is_flag(boma.object(), vars::common::status::SUICIDE_THROW_CAN_CLATTER) {
+            // allow mashing to begin
+            let throw_frame = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.throw_frame");
+            let damage_frame_mul = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.damage_frame_mul");
+            let recovery_frame = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.recovery_frame");
+            let clatter_frame_base = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.clatter_frame_base");
+            let clatter_frame_max = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.clatter_frame_max");
+            let clatter_frame_min = ParamModule::get_float(fighter.object(), ParamType::Common, "suicide_throw.clatter_frame_min");
+            let thrown_damage = DamageModule::damage(boma, 0);
+            let thrower_damage = DamageModule::damage(boma.get_grabber_boma(), 0);
+            let damage_difference = thrower_damage - thrown_damage;
+            let clatter_frame_add = damage_difference * damage_frame_mul;
+            let mut clatter_frame = clatter_frame_base + clatter_frame_add;
 
-                if clatter_frame < clatter_frame_min {
-                    clatter_frame = clatter_frame_min;
-                }
-                if clatter_frame > clatter_frame_max {
-                    clatter_frame = clatter_frame_max;
-                }
-                
-                ControlModule::start_clatter(boma, throw_frame, recovery_frame, clatter_frame, 127, 0, false, false);
-                VarModule::on_flag(boma.object(), vars::common::status::SUICIDE_THROW_CAN_CLATTER);
+            if clatter_frame < clatter_frame_min {
+                clatter_frame = clatter_frame_min;
             }
-            else {
-                // can only mash out during descent, before thrower reaches ground
+            if clatter_frame > clatter_frame_max {
+                clatter_frame = clatter_frame_max;
+            }
+            
+            ControlModule::start_clatter(boma, throw_frame, recovery_frame, clatter_frame, 127, 0, false, false);
+            VarModule::on_flag(boma.object(), vars::common::status::SUICIDE_THROW_CAN_CLATTER);
+        }
+        else {
+            let ecb_bottom = *GroundModule::get_rhombus(boma.get_grabber_boma(), true).add(1);
+            let line_bottom = Vector2f::new(ecb_bottom.x, ecb_bottom.y - 999.0);
+            let mut stage_pos = Vector2f::zero();
+            GroundModule::line_segment_check(boma.get_grabber_boma(), &Vector2f::new(ecb_bottom.x, ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut stage_pos, false);
+
+            if GroundModule::get_correct(boma.get_grabber_boma()) == *GROUND_CORRECT_KIND_AIR
+            && stage_pos == Vector2f::zero() {
+                // can only mash out if offstage
                 if ControlModule::get_clatter_time(boma, 0) <= 0.0 {
                     fighter.change_status(FIGHTER_STATUS_KIND_CAPTURE_JUMP.into(), false.into());
                 }
@@ -127,12 +121,40 @@ pub unsafe fn suicide_throw_mashout(fighter: &mut L2CFighterCommon, boma: &mut B
         }
     }
 }
+
+pub unsafe fn cliff_xlu_frame_counter(fighter: &mut L2CFighterCommon) {
+    let cliff_xlu = VarModule::get_int(fighter.battle_object, vars::common::instance::CLIFF_XLU_FRAME);
+    // If you have ledge intan frames left
+    if cliff_xlu > 0 {
+        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+            // Remove ledge intan on landing
+            HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
+            VarModule::set_int(fighter.battle_object, vars::common::instance::CLIFF_XLU_FRAME, 0);
+        }
+        else{
+            VarModule::dec_int(fighter.battle_object, vars::common::instance::CLIFF_XLU_FRAME);
+        }
+    }
+}
+
+pub unsafe fn ecb_shift_disabled_motions(fighter: &mut L2CFighterCommon) {
+    if ( (fighter.kind() == *FIGHTER_KIND_KIRBY
+            && fighter.is_motion(Hash40::new("throw_f")))
+        || (fighter.kind() == *FIGHTER_KIND_GANON
+            && fighter.is_motion(Hash40::new("attack_air_lw")))
+        || (fighter.kind() == *FIGHTER_KIND_ROSETTA
+            && fighter.is_motion(Hash40::new("attack_air_lw"))) )
+    && !VarModule::is_flag(fighter.battle_object, vars::common::status::DISABLE_ECB_SHIFT)
+    {
+        VarModule::on_flag(fighter.battle_object, vars::common::status::DISABLE_ECB_SHIFT);
+    }
+}
+
 pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     
-    
-    buffer_clearing(boma, status_kind);
-    //sliding_smash_disable(fighter, boma, status_kind, fighter_kind);
     airdodge_refresh_on_hit_disable(boma, status_kind);
     suicide_throw_mashout(fighter, boma);
+    cliff_xlu_frame_counter(fighter);
+    ecb_shift_disabled_motions(fighter);
 }
 

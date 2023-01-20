@@ -8,7 +8,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
+            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
@@ -18,7 +18,7 @@ unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
+        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
             app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
@@ -34,7 +34,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
+            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
@@ -44,7 +44,7 @@ unsafe fn damageflylw_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
+        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
             app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
@@ -60,7 +60,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
+            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
@@ -70,7 +70,7 @@ unsafe fn damageflyn_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
+        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
             app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
@@ -102,7 +102,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         if !StopModule::is_stop(fighter.module_accessor) {
-            let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
+            let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
                 app::sv_math::rand(hash40("fighter"), 3)
             } else {
                 0
@@ -112,7 +112,7 @@ unsafe fn damageflytop_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 1.1);
     if is_excute(fighter) {
-        let play_vc = if WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) < 50.0 {
+        let play_vc = if DamageModule::reaction(boma, 0) < 100.0 {
             app::sv_math::rand(hash40("fighter"), 3)
         } else {
             0
@@ -139,7 +139,7 @@ unsafe fn szerosuit_catch_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        CATCH(fighter, 0, Hash40::new("top"), 4.5, 0.0, 7.5, 0.0, Some(0.0), Some(7.5), Some(8.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 0, Hash40::new("top"), 4.0, 0.0, 9.0, 5.0, Some(0.0), Some(9.0), Some(7.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(fighter);
     frame(lua_state, 10.0);
@@ -154,6 +154,81 @@ unsafe fn szerosuit_catch_game(fighter: &mut L2CAgentBase) {
         //StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
     }
     
+}
+
+#[acmd_script( agent = "szerosuit", script = "game_catchdash" , category = ACMD_GAME , low_priority)]
+unsafe fn szerosuit_catch_dash_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP, false, 0);
+        ArticleModule::change_motion(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP, Hash40::new("catch_dash"), false, 0.0);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        GrabModule::set_rebound(fighter.module_accessor, true);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("throw"), 3.0, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 1, Hash40::new("handr"), 3.0, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 2, Hash40::new("armr"), 3.0, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 3, Hash40::new("shoulderr"), 3.0, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+    }
+    game_CaptureCutCommon(fighter);
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 1);
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 2);
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 3);
+    }
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        GrabModule::set_rebound(fighter.module_accessor, false);
+    }
+    frame(lua_state, 76.0);
+    if is_excute(fighter) {
+        ArticleModule::remove_exist(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+
+#[acmd_script( agent = "szerosuit", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
+unsafe fn szerosuit_catch_turn_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP, false, 0);
+        ArticleModule::change_motion(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP, Hash40::new("catch_turn"), false, 0.0);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        GrabModule::set_rebound(fighter.module_accessor, true);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("throw"), 3.0, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 1, Hash40::new("handr"), 3.0, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 2, Hash40::new("armr"), 3.0, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 3, Hash40::new("shoulderr"), 3.0, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+    }
+    game_CaptureCutCommon(fighter);
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 1);
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 2);
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 3);
+    }
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        GrabModule::set_rebound(fighter.module_accessor, false);
+    }
+    frame(lua_state, 57.0);
+    if is_excute(fighter) {
+        ArticleModule::remove_exist(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+
 }
 
 #[acmd_script( agent = "szerosuit", script = "sound_catch" , category = ACMD_SOUND , low_priority)]
@@ -202,18 +277,23 @@ unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "szerosuit", script = "effect_dash" , category = ACMD_EFFECT , low_priority)]
-unsafe fn dash_effect(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "szerosuit", script = "sound_dash" , category = ACMD_SOUND , low_priority)]
+unsafe fn dash_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 4.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 0.53, 0, 0, 0, 0, 0, 0, false);
-        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
+        let dash_sfx_handle = SoundModule::play_se(fighter.module_accessor, Hash40::new("se_szerosuit_dash_start"), true, false, false, false, app::enSEType(0));
+        SoundModule::set_se_vol(boma, dash_sfx_handle as i32, 0.5, 0);
     }
-    frame(lua_state, 13.0);
+    wait(lua_state, 8.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 10, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-    }    
+        PLAY_STEP(fighter, Hash40::new("se_szerosuit_step_right_l"));
+    }
+    wait(lua_state, 6.0);
+    if is_excute(fighter) {
+        PLAY_STEP(fighter, Hash40::new("se_szerosuit_step_left_l"));
+    }
 }
 
 #[acmd_script( agent = "szerosuit", script = "game_turndash" , category = ACMD_GAME , low_priority)]
@@ -295,15 +375,12 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
 unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let escape_air_slide_hit_xlu_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_slide_hit_xlu_frame"));
-    let escape_air_slide_hit_normal_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_slide_hit_normal_frame"));
-    let ledgegrab_frame = (escape_air_slide_hit_xlu_frame + escape_air_slide_hit_normal_frame) + 4.0;
-
+    
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
     }
-    frame(lua_state, ledgegrab_frame);
+    frame(lua_state, 34.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
@@ -317,8 +394,10 @@ pub fn install() {
         szerosuit_catch_sound,
         szerosuit_catch_effect,
         szerosuit_catch_expression,
+        szerosuit_catch_dash_game,
+        szerosuit_catch_turn_game,
         dash_game,
-        //dash_effect,
+        dash_sound,
         turn_dash_game,
         szerosuit_paralyzer_bullet_shoot_game,
         szerosuit_paralyzer_bullet_shoot_tame_game,

@@ -28,13 +28,13 @@
   </list>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">20.5</float>
+      <float hash="p1_y">25.5</float>
     </struct>
     <struct index="1">
-      <float hash="p1_y">21</float>
+      <float hash="p1_y">26</float>
     </struct>
     <struct index="2">
-      <float hash="p1_y">21</float>
+      <float hash="p1_y">26</float>
     </struct>
   </list>
   <list hash="param_special_hi">

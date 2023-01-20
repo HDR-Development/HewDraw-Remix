@@ -3,25 +3,25 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
+ // Mii Swordfighter Airborne Assault Aerial FAF Frame 75
+
+unsafe fn airborne_assault_lag(fighter: &mut L2CFighterCommon) {
+if fighter.is_status(*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END) {
+    if  fighter.is_situation(*SITUATION_KIND_AIR) && fighter.motion_frame() > 75.0 {
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        } 
+    }
+}
+
 unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32, frame: f32) {
     // Rush
     if [*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_DASH].contains(&status_kind) {
         // Jump and Attack cancels
         let pad_flag = ControlModule::get_pad_flag(boma);
-        if boma.is_input_jump() {
-            if situation_kind == *SITUATION_KIND_AIR && frame > 8.0 {
-                if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                }
-            } else if situation_kind == *SITUATION_KIND_GROUND {
-                if facing * stick_x < 0.0 {
-                    PostureModule::reverse_lr(boma);
-                }
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-            }
+        if boma.check_jump_cancel(true) {
+            return;
         }
-        else if compare_mask(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || compare_mask(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
+        if compare_mask(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || compare_mask(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK, true);
         }
         // Wall Jump
@@ -42,17 +42,8 @@ unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleO
     if [*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK].contains(&status_kind) {
         // Jump cancels
         let pad_flag = ControlModule::get_pad_flag(boma);
-        if boma.is_input_jump() && frame > 6.0 && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
-            if situation_kind == *SITUATION_KIND_AIR {
-                if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                }
-            } else if situation_kind == *SITUATION_KIND_GROUND {
-                if facing * stick_x < 0.0 {
-                    PostureModule::reverse_lr(boma);
-                }
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-            }
+        if frame > 6.0 && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
+            boma.check_jump_cancel(true);
         }
     }
 }
@@ -136,14 +127,6 @@ unsafe fn aerial_acrobatics(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
     }
 }
 
-// Re-enable Gale Strike once tornado is gone
-unsafe fn gale_strike_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
-    let gimmick_timer = VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
-	if gimmick_timer > 0 {
-        VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, gimmick_timer - 1);
-    }
-}
-
 // Skyward Slash Dash actionability
 unsafe fn skyward_slash_dash_act(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
 	if status_kind == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH {
@@ -211,11 +194,10 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     //land_cancel(boma, id, status_kind, motion_kind);
 	sword_length(fighter, boma);
     //aerial_acrobatics(fighter, boma, id, status_kind, situation_kind, cat[0], motion_kind, frame);
-    gale_strike_timer(fighter, boma, id);
     skyward_slash_dash_act(fighter, boma, id, status_kind, situation_kind, frame);
     //kinesis_blade(fighter, boma, status_kind, motion_kind);
     //hitgrab_transition(fighter, boma, status_kind, motion_kind);
-
+    airborne_assault_lag(fighter)
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MIISWORDSMAN )]

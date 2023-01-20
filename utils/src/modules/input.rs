@@ -1,10 +1,17 @@
-use smash::app::{BattleObject, lua_bind::ControlModule, BattleObjectModuleAccessor};
+use smash::app::{BattleObject, lua_bind::ControlModule, lua_bind::WorkModule, BattleObjectModuleAccessor};
 use utils_dyn::ext::*;
 
 use crate::offsets;
 use crate::util::get_battle_object_from_id;
+use crate::util::get_fighter_common_from_accessor;
+use crate::consts::*;
+use crate::consts::globals::*;
+use smash::hash40;
+use crate::modules::*;
 
 use super::INPUT_MODULE_OFFSET;
+
+use globals::*;
 
 macro_rules! get_input_module {
     ($object:ident) => {{
@@ -425,7 +432,31 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
             ControlModule::get_button((*input_module.owner).module_accessor)
         )
     };
-    
+
+    unsafe {
+        // Allow Aidou with only A button held
+        // Also extends directional inputs for Tilt Stick Aidou
+        if (*input_module.owner).was_prev_button_on(Buttons::AttackAll)
+        && triggered_buttons.intersects(Buttons::CStickOn) {  // smash stick input
+            let stick_x = ControlModule::get_stick_x((*input_module.owner).module_accessor);
+            let stick_y = ControlModule::get_stick_y((*input_module.owner).module_accessor);
+            let dash_stick_x = WorkModule::get_param_float((*input_module.owner).module_accessor, hash40("common"), hash40("dash_stick_x"));
+            let squat_stick_y = WorkModule::get_param_float((*input_module.owner).module_accessor, hash40("common"), hash40("squat_stick_y")) * -1.0;
+            if stick_x != 0.0 && stick_x.abs() < dash_stick_x {
+                ControlModule::set_main_stick_x((*input_module.owner).module_accessor, dash_stick_x * stick_x.signum());
+            }
+            if stick_y != 0.0 && stick_y.abs() < squat_stick_y {
+                ControlModule::set_main_stick_y((*input_module.owner).module_accessor, squat_stick_y * stick_y.signum());
+            }
+            ControlModule::reset_trigger((*input_module.owner).module_accessor);
+        }
+        // Prevent game from thinking you are inputting a flick on the frame the cstick stops overriding left stick
+        if (*input_module.owner).is_button_release(Buttons::CStickOverride) {
+            ControlModule::reset_flick_x((*input_module.owner).module_accessor);
+            ControlModule::reset_flick_y((*input_module.owner).module_accessor);
+        }
+    }
+
     // TiltAttack cat flag
     let tilt_attack_offset = CatHdr::TiltAttack.bits().trailing_zeros() as usize;
     if triggered_buttons.intersects(Buttons::TiltAttack) {
@@ -455,6 +486,42 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
         input_module.hdr_cat.valid_frames[wavedash_offset] -= 1;
     }
 
+    // ShieldDrop cat flag
+    let shielddrop_offset = CatHdr::ShieldDrop.bits().trailing_zeros() as usize;
+    let pass_flick_y = unsafe {WorkModule::get_param_int((*input_module.owner).module_accessor, hash40("common"), hash40("pass_flick_y"))};
+    let pass_stick_y = unsafe {
+        if VarModule::is_flag(&mut (*input_module.owner), vars::common::status::ENABLE_UCF) {
+            ParamModule::get_float(&mut (*input_module.owner), ParamType::Common, "ucf_pass_stick_y")
+        }
+        else {
+            WorkModule::get_param_float((*input_module.owner).module_accessor, hash40("common"), hash40("pass_stick_y"))
+        }
+    };
+    let escape_stick_y = unsafe {
+        if VarModule::is_flag(&mut (*input_module.owner), vars::common::status::ENABLE_UCF) {
+            ParamModule::get_float(&mut (*input_module.owner), ParamType::Common, "ucf_escape_stick_y")
+        }
+        else {
+            WorkModule::get_param_float((*input_module.owner).module_accessor, hash40("common"), hash40("escape_stick_y"))
+        }
+    };
+    let shielddrop_input = unsafe {
+        buttons.intersects(Buttons::Guard)
+        && ControlModule::get_flick_y((*input_module.owner).module_accessor) < pass_flick_y
+        && ControlModule::get_stick_y((*input_module.owner).module_accessor) <= pass_stick_y
+        && ControlModule::get_stick_y((*input_module.owner).module_accessor) > escape_stick_y
+    };
+    if shielddrop_input {
+        if input_module.hdr_cat.valid_frames[shielddrop_offset] == 0 {
+            input_module.hdr_cat.valid_frames[shielddrop_offset] = unsafe {
+                ControlModule::get_command_life_count_max((*input_module.owner).module_accessor) as u8
+            };
+        }
+    }
+    if input_module.hdr_cat.valid_frames[shielddrop_offset] != 0
+    && !(input_module.hdr_cat.valid_frames[shielddrop_offset] == 1 && shielddrop_input) {
+        input_module.hdr_cat.valid_frames[shielddrop_offset] -= 1;
+    }
     call_original();
 
     let cats = unsafe {

@@ -17,7 +17,7 @@ pub fn install() {
         pre_special_hi2_rush,
         //exec_special_hi2_rush,
         //exec_special_hi2_rush_end,
-        exec_special_hi3_hold,
+        //exec_special_hi3_hold,
         pre_special_hi3_end,
         special_hi3_end,
         //special_lw,
@@ -92,8 +92,7 @@ unsafe extern "C" fn miiswordsman_specials1_main(fighter: &mut L2CFighterCommon)
 #[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_s1_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     let id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-
-    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_HENSOKU_SLASH_WORK_FLAG_HIT);
+    VarModule::on_flag(fighter.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT); // Removes on side special attack
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         VarModule::on_flag(fighter.object(), vars::common::instance::SIDE_SPECIAL_CANCEL);
     }
@@ -203,35 +202,16 @@ unsafe extern "C" fn miiswordsman_specials1attack_mainloop(fighter: &mut L2CFigh
     // ]
     
     // This is just (as straight of) an impl that I can get of the main loop, what the hell were the smash devs
+    // Can only use side special once per aerial time
     if !fighter.sub_transition_group_check_air_cliff().get_bool() {
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_HENSOKU_SLASH_WORK_FLAG_HIT) == false {
-            if MotionModule::is_end(fighter.module_accessor) == false {
-                if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-                    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_HENSOKU_SLASH_WORK_FLAG_HIT) {
-                        fighter.change_status(FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END.into(), false.into());
-                    }
-                    else {
-                        fighter.change_status(FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_HIT.into(), false.into());
-                    }
-                    return L2CValue::I32(1);
-                }
-                // Transition into the attack upon special button press
-                if compare_mask(ControlModule::get_pad_flag(fighter.module_accessor), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER){
-                    fighter.change_status(FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_HIT.into(), false.into());
-                }
-                return L2CValue::I32(0);
-            }
-            if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_HENSOKU_SLASH_WORK_FLAG_HIT) {
+        if MotionModule::is_end(fighter.module_accessor) == false {
+            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
                 fighter.change_status(FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END.into(), false.into());
+                return L2CValue::I32(1);
             }
-            else {
-                fighter.change_status(FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_HIT.into(), false.into());
-            }
+            return L2CValue::I32(0);
         }
-        else {
-            fighter.change_status(FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_HIT.into(), false.into());
-        }
-        
+        fighter.change_status(FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END.into(), false.into());
     }
     L2CValue::I32(0)
 }
@@ -422,16 +402,12 @@ unsafe extern "C" fn special_s2_dash_main(fighter: &mut L2CFighterCommon) -> L2C
     // custom [
     // Jump and Attack cancels
     let pad_flag = ControlModule::get_pad_flag(fighter.module_accessor);
-    if fighter.is_input_jump() {
-        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND && MotionModule::frame(fighter.module_accessor) > 7.0 {
-            if PostureModule::lr(fighter.module_accessor) * fighter.global_table[STICK_X].get_f32() < 0.0 {
-                PostureModule::reverse_lr(fighter.module_accessor);
-            }
-            fighter.change_status(FIGHTER_STATUS_KIND_JUMP_SQUAT.into(),true.into());
+    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND && MotionModule::frame(fighter.module_accessor) > 7.0 {
+        if fighter.check_jump_cancel(true) {
             return 1.into()
         }
     }
-    else if compare_mask(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || compare_mask(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
+    if compare_mask(pad_flag, *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) || compare_mask(pad_flag, *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
         fighter.change_status(FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK.into(),true.into());
         return 1.into()
     }
@@ -511,24 +487,6 @@ unsafe extern "C" fn special_s2_attack_main(fighter: &mut L2CFighterCommon) -> L
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 0.into();
     }
-    // custom [
-    // Jump cancels
-    let pad_flag = ControlModule::get_pad_flag(fighter.module_accessor);
-    if fighter.is_input_jump() && MotionModule::frame(fighter.module_accessor) > 5.0 && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) && !fighter.is_in_hitlag() {
-        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
-            if fighter.get_num_used_jumps() < fighter.get_jump_count_max() {
-                fighter.change_status(FIGHTER_STATUS_KIND_JUMP_AERIAL.into(), false.into());
-                return 1.into()
-            }
-        } else if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-            if PostureModule::lr(fighter.module_accessor) * fighter.global_table[STICK_X].get_f32() < 0.0 {
-                PostureModule::reverse_lr(fighter.module_accessor);
-            }
-            fighter.change_status(FIGHTER_STATUS_KIND_JUMP_SQUAT.into(), true.into());
-            return 1.into()
-        }
-    }
-    // ]
     if !CancelModule::is_enable_cancel(fighter.module_accessor) || (CancelModule::is_enable_cancel(fighter.module_accessor) && !fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool() && !fighter.sub_air_check_fall_common().get_bool()) {
         special_s2_attack_main_helper(fighter);
     }
