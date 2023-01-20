@@ -164,18 +164,18 @@ unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 0 {
             apply_status_speed_mul(fighter, 1.0);
         } else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
-            apply_status_speed_mul(fighter, 0.7);
+            apply_status_speed_mul(fighter, 0.9);
         } else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
-            apply_status_speed_mul(fighter, 0.5);
+            apply_status_speed_mul(fighter, 0.75);
         }
         VarModule::off_flag(fighter.object(), vars::packun::instance::STANCE_NEED_SET_SPEEDS);
     }
 
-    if VarModule::get_int(fighter.object(), vars::packun::instance::STANCE_STATUS) != VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) {
+    if fighter.status() != VarModule::get_int(fighter.object(), vars::packun::instance::STANCE_STATUS) {
         //println!("Status is changing!");
         VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_NEED_SET_SPEEDS);
-        VarModule::set_int(fighter.object(), vars::packun::instance::STANCE_STATUS, VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE));
-        //println!("new meta quick status: {}", VarModule::get_int(fighter.object(), vars::metaknight::instance::META_QUICK_STATUS));
+        VarModule::set_int(fighter.object(), vars::packun::instance::STANCE_STATUS, fighter.status());
+        //println!("new stance status: {}", VarModule::get_int(fighter.object(), vars::packun::instance::STANCE_STATUS));
     }
 }
 
