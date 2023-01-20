@@ -2,13 +2,11 @@ use super::*;
 use globals::*;
 use smashline::*;
 
-
 pub fn install() {
   install_status_scripts!(
       pre_dash
   );
 }
-
 
 #[status_script(agent = "sonic", status = FIGHTER_STATUS_KIND_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 pub unsafe fn pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
