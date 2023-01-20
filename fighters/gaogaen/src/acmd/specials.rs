@@ -1168,24 +1168,24 @@ unsafe fn gaogaen_special_air_hi_turn_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL){
-            EFFECT_FOLLOW(fighter, Hash40::new("gaogaen_belt_fire_appeal"), Hash40::new("feeler"), 0, 3, 0, 0, 0, 0, 1.0, true);
-            LAST_EFFECT_SET_COLOR(fighter, 0.3, 0.3, 1.5);
-            LAST_EFFECT_SET_RATE(fighter, 1.25);
-        }
-        else if VarModule::is_flag(boma.object(), vars::gaogaen::status::SHOULD_CROSS_CHOP_DIVE_EARLY) {
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("bust"), 0.0, 0, 0, 0, 0, 0, 0.4, true);
-            LAST_EFFECT_SET_RATE(fighter, 0.25);
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("arml"), 1.0, 0, 0, 0, 0, 0, 0.4, true);
-            LAST_EFFECT_SET_RATE(fighter, 0.25);
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("arml"), 7.0, 0, 0, 0, 0, 0, 0.4, true);
-            LAST_EFFECT_SET_RATE(fighter, 0.25);
+        // if VarModule::is_flag(boma.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL){
+        //     EFFECT_FOLLOW(fighter, Hash40::new("gaogaen_belt_fire_appeal"), Hash40::new("feeler"), 0, 3, 0, 0, 0, 0, 1.0, true);
+        //     LAST_EFFECT_SET_COLOR(fighter, 0.3, 0.3, 1.5);
+        //     LAST_EFFECT_SET_RATE(fighter, 1.25);
+        // }
+        // else if VarModule::is_flag(boma.object(), vars::gaogaen::status::SHOULD_CROSS_CHOP_DIVE_EARLY) {
+        //     EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("bust"), 0.0, 0, 0, 0, 0, 0, 0.4, true);
+        //     LAST_EFFECT_SET_RATE(fighter, 0.25);
+        //     EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("arml"), 1.0, 0, 0, 0, 0, 0, 0.4, true);
+        //     LAST_EFFECT_SET_RATE(fighter, 0.25);
+        //     EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("arml"), 7.0, 0, 0, 0, 0, 0, 0.4, true);
+        //     LAST_EFFECT_SET_RATE(fighter, 0.25);
 
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("armr"), 1.0, 0, 0, 0, 0, 0, 0.4, true);
-            LAST_EFFECT_SET_RATE(fighter, 0.25);
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("armr"), 7.0, 0, 0, 0, 0, 0, 0.4, true);
-            LAST_EFFECT_SET_RATE(fighter, 0.25);
-        }
+        //     EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("armr"), 1.0, 0, 0, 0, 0, 0, 0.4, true);
+        //     LAST_EFFECT_SET_RATE(fighter, 0.25);
+        //     EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("armr"), 7.0, 0, 0, 0, 0, 0, 0.4, true);
+        //     LAST_EFFECT_SET_RATE(fighter, 0.25);
+        // }
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
