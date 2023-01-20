@@ -22,7 +22,7 @@ unsafe fn power_wave_dash_cancel_super_cancels(fighter: &mut L2CFighterCommon, b
 
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
         // Super Cancel
-        if frame > 21.0 {
+        if frame > 22.0 {
             // Check to see if supers are available
             if WorkModule::is_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL) {
                 // Enable transition term
@@ -51,7 +51,7 @@ unsafe fn power_wave_dash_cancel_super_cancels(fighter: &mut L2CFighterCommon, b
         }
 
         // Dash Cancel
-        if frame > 33.0 {
+        if frame > 34.0 {
             boma.check_dash_cancel();
         }
     }
@@ -142,7 +142,7 @@ unsafe fn power_dunk_break(boma: &mut BattleObjectModuleAccessor) {
 unsafe fn cancel_supers_early(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
     if [*FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL,
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2].contains(&status_kind) {
-        if frame < 25.0 {
+        if frame < 26.0 {
             if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_GUARD) {
                 if situation_kind == *SITUATION_KIND_GROUND {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_END, false);

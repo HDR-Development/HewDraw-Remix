@@ -15,9 +15,9 @@ unsafe fn final_cutter_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, 
     }
 
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_HI2 {
-        if frame < 5.0 { // earliest point to buffer dive
+        if frame < 6.0 { // earliest point to buffer dive
             VarModule::on_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_CANCEL);
-        } else if frame < 14.0 { // latest point to buffer dive
+        } else if frame < 15.0 { // latest point to buffer dive
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
                 VarModule::off_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_CANCEL);
             }
@@ -312,10 +312,10 @@ unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, mo
         MotionModule::set_rate(boma, 1.75);
     }
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK {
-        if frame <= 10.0 {
+        if frame <= 11.0 {
             MotionModule::set_rate(boma, 2.5);
         }
-        if frame > 10.0 {
+        if frame > 11.0 {
             MotionModule::set_rate(boma, 1.0);
         }
     }

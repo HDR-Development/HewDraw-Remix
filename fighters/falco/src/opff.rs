@@ -46,7 +46,7 @@ unsafe fn shine_jc_turnaround(fighter: &mut L2CFighterCommon, frame: f32) {
                 smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.02666667);
             }
         }
-        if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && frame > 2.0)  // Allows for jump cancel on frame 4 in game
+        if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && frame > 3.0)  // Allows for jump cancel on frame 4 in game
         || fighter.is_status_one_of(&[
             *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT,
             *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
@@ -70,14 +70,14 @@ unsafe fn aim_throw_lasers(boma: &mut BattleObjectModuleAccessor) {
     let lr = PostureModule::lr(boma);
 
     if boma.is_motion(Hash40::new("throw_hi"))
-    && 12.0 <= frame
-    && frame < 22.0 {
+    && 13.0 <= frame
+    && frame < 23.0 {
         let rot = Vector3f::new(0.0, boma.stick_x() * lr * -20.0, 0.0);
         boma.set_joint_rotate("clavicler", rot);
     }
     else if boma.is_motion(Hash40::new("throw_b"))
-    && 8.0 <= frame
-    && frame < 20.0 {
+    && 9.0 <= frame
+    && frame < 21.0 {
         let rot = Vector3f::new(0.0, boma.stick_y() * -20.0, 0.0);
         boma.set_joint_rotate("shoulderr", rot);
     }

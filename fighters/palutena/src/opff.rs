@@ -29,7 +29,7 @@ unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut Bat
         }
     }
     // Actionability when double jump isn't burned
-    if status_kind == *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_3 && situation_kind == *SITUATION_KIND_AIR && frame > 6.0 {
+    if status_kind == *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_3 && situation_kind == *SITUATION_KIND_AIR && frame > 7.0 {
         if boma.get_num_used_jumps() < boma.get_jump_count_max() {
             VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
             CancelModule::enable_cancel(boma);
@@ -44,7 +44,7 @@ unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut Bat
 unsafe fn dj_upB_jump_refresh(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_JUMP_AERIAL) {
         // If first 3 frames of dj
-        if fighter.motion_frame() <= 2.0 {
+        if fighter.motion_frame() <= 3.0 {
             VarModule::on_flag(fighter.battle_object, vars::palutena::instance::UP_SPECIAL_JUMP_REFRESH);
         }
         else {

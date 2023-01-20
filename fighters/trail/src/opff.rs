@@ -97,7 +97,7 @@ unsafe fn jab_2_ftilt_cancel(boma: &mut BattleObjectModuleAccessor, cat1: i32, s
 // Magic cancels
 unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor) {
     // Fire airdodge cancel
-    if boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1_SHOOT) && boma.is_motion(Hash40::new("special_air_n1")) && MotionModule::frame(boma) > 1.0 {
+    if boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1_SHOOT) && boma.is_motion(Hash40::new("special_air_n1")) && MotionModule::frame(boma) > 2.0 {
         //DamageModule::add_damage(boma, 1.0, 0);
         boma.check_airdodge_cancel();
     }
@@ -120,7 +120,7 @@ unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor) {
 // Actionability after hitting aerial sweep
 unsafe fn aerial_sweep_hit_actionability(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI){
-        if MotionModule::frame(boma) > 37.0 {
+        if MotionModule::frame(boma) > 38.0 {
             if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
                 VarModule::on_flag(boma.object(), vars::trail::status::UP_SPECIAL_HIT);
                 VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);

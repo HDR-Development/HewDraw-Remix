@@ -9,10 +9,10 @@ unsafe fn super_sheet_stall(boma: &mut BattleObjectModuleAccessor, status_kind: 
         let motion_vec = Vector3f{x: 0.0, y: 2.5, z: 0.0};
         let motion_vec_2 = Vector3f{x: 0.75, y: 0.0, z: 0.0};
         if situation_kind == *SITUATION_KIND_AIR {
-            if frame >= 1.0 && frame < 2.0 {
+            if frame >= 2.0 && frame < 3.0 {
                 KineticModule::mul_speed(boma, &motion_vec_2, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             }
-            if frame >= 9.0 && frame <= 12.0 {
+            if frame >= 10.0 && frame <= 13.0 {
                 KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
             }
         }
@@ -21,13 +21,13 @@ unsafe fn super_sheet_stall(boma: &mut BattleObjectModuleAccessor, status_kind: 
 
 unsafe fn up_special_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, stick_x: f32, facing: f32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI{
-        if frame < 3.0 {
+        if frame < 4.0 {
             if facing * stick_x < 0.0 {
                 VarModule::on_flag(boma.object(), vars::mariod::status::IS_SPECIAL_HI_UNABLE_CANCEL);
             }
         }
         
-        if situation_kind == *SITUATION_KIND_GROUND && frame == 4.0 {
+        if situation_kind == *SITUATION_KIND_GROUND && frame == 5.0 {
             if facing * stick_x < -0.0 && !VarModule::is_flag(boma.object(), vars::mariod::status::IS_SPECIAL_HI_UNABLE_CANCEL) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
             }

@@ -20,9 +20,9 @@ unsafe fn soaring_slash_drift(fighter: &mut L2CFighterCommon) {
 unsafe fn soaring_slash_cancel(fighter: &mut L2CFighterCommon) {
     let frame = fighter.motion_frame();
     if fighter.is_status(*FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2) {
-        if frame < 15.0 { // earliest point to buffer dive
+        if frame < 16.0 { // earliest point to buffer dive
             VarModule::on_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_CANCEL);
-        } else if frame < 28.0 { // latest point to buffer dive
+        } else if frame < 29.0 { // latest point to buffer dive
             if ControlModule::check_button_on(fighter.boma(), *CONTROL_PAD_BUTTON_SPECIAL) {
                 VarModule::off_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_CANCEL);
             }

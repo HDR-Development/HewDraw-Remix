@@ -6,7 +6,7 @@ use globals::*;
  
 unsafe fn jc_light_utilt_hit(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI3 {
-        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) && frame > 20.0 {
+        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) && frame > 21.0 {
             if  !VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
                 boma.check_jump_cancel(false);
             }
@@ -17,7 +17,7 @@ unsafe fn jc_light_utilt_hit(boma: &mut BattleObjectModuleAccessor, id: usize, s
 // Jump cancel ligh utilt on hit
 unsafe fn jc_dtilt_hit(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_LW3 {
-        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) && frame > 12.0 {
+        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) && frame > 13.0 {
             boma.check_jump_cancel(false);
         }
     }
@@ -26,7 +26,7 @@ unsafe fn jc_dtilt_hit(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
 // Mega Man Metal Blad Toss Airdodge Cancel
 unsafe fn blade_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if frame > 16.0 {
+        if frame > 17.0 {
             boma.check_airdodge_cancel();
         }
     }

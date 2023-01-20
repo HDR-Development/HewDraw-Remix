@@ -5,7 +5,7 @@ use globals::*;
 
  
 unsafe fn bouncing_fish_return_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if status_kind != *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_RETURN || frame <= 10.0 {
+    if status_kind != *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_RETURN || frame <= 11.0 {
         return;
     }
 
@@ -37,7 +37,7 @@ unsafe fn grenade_pull(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         return;
     }
 
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame < 15.0 {
+    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame < 16.0 {
         if boma.check_airdodge_cancel() {
             VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1); // Start counting
         }

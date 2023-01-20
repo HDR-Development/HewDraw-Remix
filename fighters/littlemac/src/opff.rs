@@ -23,7 +23,7 @@ unsafe fn normal_side_special(boma: &mut BattleObjectModuleAccessor, status_kind
 // Straight Lunge charge jump cancel
 unsafe fn straight_lunge_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, cat2: i32, frame: f32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START].contains(&status_kind) {
-        if frame > 25.0 {
+        if frame > 26.0 {
             if !boma.is_in_hitlag() {
                 boma.check_jump_cancel(false);
             }
@@ -43,7 +43,7 @@ unsafe fn straight_lunge_cancels(boma: &mut BattleObjectModuleAccessor, status_k
 
 // Tech Roll distance help
 unsafe fn tech_roll_help(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, facing: f32, frame: f32) {
-    if frame < 5.0 {
+    if frame < 6.0 {
         let mut motion_vec = Vector3f{x: 1.75, y: 0.0, z: 0.0};
         if motion_kind == hash40("passive_stand_f") {
             motion_vec.x *= facing;

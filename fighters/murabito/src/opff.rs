@@ -15,7 +15,7 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_WALK_BRAKE_B,
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_WALK_BRAKE_F,
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_WALK_F])
-    && frame > 11.0
+    && frame > 12.0
     && boma.is_button_on(Buttons::Guard) {
         if situation_kind == *SITUATION_KIND_AIR {
             WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
@@ -37,7 +37,7 @@ unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH, true);
             }
     } else if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH, 
-        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_END]) && frame > 6.0 {
+        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_END]) && frame > 7.0 {
             VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
             ControlModule::reset_trigger(boma);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);

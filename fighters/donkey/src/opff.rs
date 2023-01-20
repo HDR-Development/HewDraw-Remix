@@ -7,7 +7,7 @@ unsafe fn dash_attack_jump_cancels(fighter: &mut L2CFighterCommon, boma: &mut Ba
     //PM-like neutral-b canceling
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH
     && situation_kind == *SITUATION_KIND_AIR
-    && MotionModule::frame(boma) >= 25.0 {
+    && MotionModule::frame(boma) >= 26.0 {
         fighter.check_jump_cancel(false);
     }
 }
@@ -76,7 +76,7 @@ unsafe fn headbutt_aerial_stall(fighter: &mut L2CFighterCommon, boma: &mut Battl
         let motion_vec = Vector3f{x: 1.0, y: 0.0, z: 1.0};
         if situation_kind == *SITUATION_KIND_AIR {
             if  !VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_STALL_USED) {
-                if frame < 25.0 {
+                if frame < 26.0 {
                     if motion_value < 0.0 {
                         VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_STALL);
                         KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
@@ -85,7 +85,7 @@ unsafe fn headbutt_aerial_stall(fighter: &mut L2CFighterCommon, boma: &mut Battl
             }
         }
     }
-    if VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_STALL) && (status_kind != *FIGHTER_STATUS_KIND_SPECIAL_S || (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame >= 25.0)) {
+    if VarModule::is_flag(boma.object(), vars::common::instance::SPECIAL_STALL) && (status_kind != *FIGHTER_STATUS_KIND_SPECIAL_S || (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame >= 26.0)) {
             VarModule::on_flag(boma.object(), vars::common::instance::SPECIAL_STALL_USED);
             VarModule::off_flag(boma.object(), vars::common::instance::SPECIAL_STALL);
     }
@@ -102,7 +102,7 @@ unsafe fn down_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut Battle
         if AttackModule::is_infliction(boma, 2) {
             VarModule::on_flag(boma.object(), vars::donkey::status::SPECIAL_CHECKS);
         }
-        if VarModule::is_flag(boma.object(), vars::donkey::status::SPECIAL_CHECKS) && frame > 5.0 {
+        if VarModule::is_flag(boma.object(), vars::donkey::status::SPECIAL_CHECKS) && frame > 6.0 {
             boma.check_jump_cancel(false);
         }
     } else {
@@ -128,7 +128,7 @@ pub unsafe fn special_hi_slipoff_grab(fighter: &mut L2CFighterCommon) {
 
 /// make grounded uspecial flat, so that moving forward and back isnt jarring
 pub unsafe fn flatten_uspecial(fighter: &mut L2CFighterCommon) {
-    if fighter.is_motion(Hash40::new("special_hi")) && fighter.motion_frame() > 15.0 && fighter.motion_frame() < 60.0 {
+    if fighter.is_motion(Hash40::new("special_hi")) && fighter.motion_frame() > 16.0 && fighter.motion_frame() < 61.0 {
         // flattens dk out during uspecial
         fighter.set_joint_rotate("rot", Vector3f::new(0.0, 20.0, 50.0));
 

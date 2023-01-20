@@ -34,7 +34,7 @@ unsafe fn parachute_dj(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
 // Game & Watch Fair cake box position readjustment
 unsafe fn fair_repositioning(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR && motion_kind == hash40("attack_air_f") {
-        if frame < 9.0 || (frame >= 9.0 && frame < 10.0 && boma.is_in_hitlag()) {
+        if frame < 10.0 || (frame >= 10.0 && frame < 11.0 && boma.is_in_hitlag()) {
             ModelModule::set_joint_translate(boma, Hash40::new("havel"), &Vector3f{ x: -3.5, y: 6.5, z: 0.0 }, false, false);
             ModelModule::set_joint_rotate(boma, Hash40::new("havel"), &Vector3f{ x: -15.0, y: 0.0, z: 0.0 }, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
             ModelModule::set_joint_rotate(boma, Hash40::new("shoulderl"), &Vector3f{ x: 0.0, y: 0.0, z: -40.0 }, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
@@ -63,10 +63,10 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
 
 unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if frame <= 18.0 {
+        if frame <= 19.0 {
             MotionModule::set_rate(boma, 2.0);
         }
-        if frame > 18.0 {
+        if frame > 19.0 {
             MotionModule::set_rate(boma, 1.0);
         }
     }
@@ -130,7 +130,7 @@ pub fn box_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
         if gnw_boma.is_motion(Hash40::new("attack_air_f")) {
             let gnw_fighter = utils::util::get_fighter_common_from_accessor(gnw_boma);
             if let Some(info) = FrameInfo::update_and_get(gnw_fighter) {
-                if info.frame < 10.0 {
+                if info.frame < 11.0 {
                     ModelModule::set_scale(weapon.module_accessor, 0.75);
                 }
                 else {

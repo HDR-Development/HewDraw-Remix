@@ -81,12 +81,12 @@ unsafe fn forward_bair_rotation(boma: &mut BattleObjectModuleAccessor, start_fra
 unsafe fn rotate_forward_bair(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_motion(Hash40::new("attack_air_b")){
         if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
-            forward_bair_rotation(boma, 5.0, 7.5, 10.0, 30.0);
+            forward_bair_rotation(boma, 6.0, 8.5, 11.0, 31.0);
         }
     }
     else if boma.is_motion(Hash40::new("landing_air_b")){
         if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
-            forward_bair_rotation(boma, 0.0, 0.1, 0.2, 10.0);
+            forward_bair_rotation(boma, 0.0, 0.1, 0.2, 11.0);
         }
     }
 }
