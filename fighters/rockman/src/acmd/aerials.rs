@@ -33,7 +33,7 @@ unsafe fn rockman_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 8.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("havel"), 13.0, 55, 89, 0, 53, 4.0, 0.0, 11.0, -2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 1, 0, Hash40::new("havel"), 11.0, 55, 89, 0, 53, 4.0, 0.0, 7.0, -2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
@@ -59,11 +59,7 @@ unsafe fn rockman_attack_air_f_game(fighter: &mut L2CAgentBase) {
 unsafe fn rockman_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 2.0);
-    if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("handr"), 0.0, -4, 0.0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
-    }
-    frame(lua_state, 6.0);
+    frame(lua_state, 7.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new_raw(0x12c494c114), Hash40::new("havel"), 0.0, 0.0, 0.0, 0, 0, 0, 1.0, true);
     }
