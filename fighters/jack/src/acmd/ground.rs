@@ -103,8 +103,6 @@ unsafe fn jack_attack_dash_game(fighter: &mut L2CAgentBase) {
         if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 6.5, 361, 82, 0, 85, 5.0, 0.0, 8.0, 7.0, Some(0.0), Some(8.0), Some(12.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
             ATTACK(fighter, 1, 1, Hash40::new("top"), 3.0, 361, 82, 0, 85, 5.0, 0.0, 8.0, 7.0, Some(0.0), Some(8.0), Some(12.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_KICK);
-            ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 1.1);
-            ATK_SET_SHIELD_SETOFF_MUL(fighter, 1, 1.1);
         }
     }
     frame(lua_state, 17.0);
@@ -112,8 +110,6 @@ unsafe fn jack_attack_dash_game(fighter: &mut L2CAgentBase) {
         if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 6.5, 361, 82, 0, 85, 5.0, 0.0, 10.0, 7.0, Some(0.0), Some(10.0), Some(13.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_KICK);
             ATTACK(fighter, 1, 1, Hash40::new("top"), 3.0, 361, 82, 0, 85, 5.0, 0.0, 10.0, 7.0, Some(0.0), Some(10.0), Some(13.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_KICK);
-            ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 1.1);
-            ATK_SET_SHIELD_SETOFF_MUL(fighter, 1, 1.1);
         }
     }
     frame(lua_state, 19.0);
@@ -121,8 +117,6 @@ unsafe fn jack_attack_dash_game(fighter: &mut L2CAgentBase) {
         if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 6.5, 361, 82, 0, 85, 5.0, 0.0, 11.0, 7.0, Some(0.0), Some(11.0), Some(11.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_KICK);
             ATTACK(fighter, 1, 1, Hash40::new("top"), 3.0, 361, 82, 0, 85, 5.0, 0.0, 11.0, 7.0, Some(0.0), Some(11.0), Some(11.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_KICK);
-            ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 1.1);
-            ATK_SET_SHIELD_SETOFF_MUL(fighter, 1, 1.1);
         }
     }
     frame(lua_state, 25.0);
