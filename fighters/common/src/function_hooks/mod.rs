@@ -23,7 +23,7 @@ pub mod collision;
 pub mod camera;
 
 
-/* Moves that should bypass the momentum logic (in terms of the jump status script) */
+// Articles that should bypass running their MAIN status before KineticModule::UpdateEnergy and GroundCollision::process
 const EARLY_MAIN_STATUS_RUN_EXCEPTION_KINDS: [smash::lib::LuaConst ; 14] = [
     WEAPON_KIND_PICKEL_PLATE,
     WEAPON_KIND_SIMON_WHIP,
@@ -177,8 +177,8 @@ unsafe fn run_lua_status_hook(ctx: &skyline::hooks::InlineCtx) {
     }
 
     // No need to check for motion kind changes if we are:
-    // 1. Not currently detecting surface collision
-    // 2. Neither on the ground nor in the air
+    //   1. Not currently detecting surface collision
+    //   2. Neither on the ground nor in the air
     if GroundModule::get_correct(boma) == *GROUND_CORRECT_KIND_NONE
     || ![*SITUATION_KIND_GROUND, *SITUATION_KIND_AIR].contains(&StatusModule::situation_kind(boma))
     {
