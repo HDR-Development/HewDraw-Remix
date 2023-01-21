@@ -427,7 +427,7 @@ unsafe fn jack_attack_air_lw_game(fighter: &mut L2CAgentBase) {
             ATTACK(fighter, 5, 0, Hash40::new("knife"), 7.0, 325, 75, 0, 25, 3.5, 0.0, 2.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
     }
-    frame(lua_state, 22.0);
+    frame(lua_state, 20.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
