@@ -13,7 +13,7 @@ crate-type = ["cdylib"]
 [dependencies]
 skyline = "0.2.1"
 skyline_smash = { git = "https://github.com/blu-dev/skyline-smash", features = ["weak_l2cvalue"]}
-smashline = { git = "https://github.com/jobrien97/smashline", branch = "development" }
+smashline = { git = "https://github.com/blu-dev/smashline", branch = "development" }
 utils = { path = "../utils" }
 fighters = { path = "../fighters" }
 semver = { version = "1", optional = true }
