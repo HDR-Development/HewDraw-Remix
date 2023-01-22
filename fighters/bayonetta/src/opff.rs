@@ -80,7 +80,7 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
 
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F])
     && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-    && !fighter.is_motion_one_of(&[Hash40::new("attack_air_n_hold"), Hash40::new("attack_air_f"), Hash40::new("attack_air_f_hold"), Hash40::new("attack_air_f2_hold"), Hash40::new("attack_air_f3_hold"), Hash40::new("attack_air_hi_hold"), Hash40::new("attack_air_lw_hold")])
+    && !fighter.is_motion_one_of(&[Hash40::new("attack_air_n_hold"), Hash40::new("attack_air_f"), Hash40::new("attack_air_f_hold"), Hash40::new("attack_air_f2_hold"), Hash40::new("attack_air_f3_hold"), Hash40::new("attack_air_lw_hold")])
     && !VarModule::is_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS)
     {
         let mut new_status = 0;
@@ -112,6 +112,11 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
         }
 
         if is_input_cancel {
+            if fighter.is_motion(Hash40::new("attack_air_hi")) {
+                if fighter.motion_frame() < 23.0 {
+                    return;
+                }
+            }
             if !fighter.is_in_hitlag(){
                 //disable fair1 special/attack cancel
                 // if fighter.is_motion(Hash40::new("attack_air_f")) {
@@ -124,7 +129,8 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
                     if new_status == *FIGHTER_STATUS_KIND_JUMP_AERIAL {
                         return;
                     }
-                }
+                }        
+
 
                 if new_status == *FIGHTER_STATUS_KIND_SPECIAL_S {
                     VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME);
@@ -143,8 +149,9 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
                 Some(AerialKind::Fair) | None => return,
                 _ => {
                     if !fighter.is_in_hitlag() {
-                        VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_NONSPECIAL_CANCEL);
-                        fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
+                    // disable fair2 cancels
+                    //  VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_NONSPECIAL_CANCEL);
+                    //  fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
                         return;
                     }
                 }
@@ -198,7 +205,7 @@ unsafe fn recovery_resource_management(fighter: &mut L2CFighterCommon) {
                 *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
                 *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
                 *FIGHTER_STATUS_KIND_DAMAGE_FALL]){
-                VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED, 1);
+                VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED, 0);
             }
         }
         else{
