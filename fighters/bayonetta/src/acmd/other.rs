@@ -138,8 +138,7 @@ unsafe fn bayonetta_catch_game(fighter: &mut L2CAgentBase) {
         grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
-    }
-    
+    }  
 }
 
 #[acmd_script( agent = "bayonetta", script = "game_dash" , category = ACMD_GAME , low_priority)]
@@ -340,6 +339,16 @@ unsafe fn bayonetta_specialn_bullet_move_charge_bullet_game(fighter: &mut L2CAge
     }
 }
 
+#[acmd_script( agent = "bayonetta_specialn_bullet", script = "game_move" , category = ACMD_GAME , low_priority)]
+unsafe fn bayonetta_specialn_bullet_move_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.25, 361, 35, 0, 0, 0.8, 0.0, 0.0, 0.0, None, None, None, 0.7, 1.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -0.3, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_BAYONETTA_HIT_01, *ATTACK_REGION_OBJECT);
+        AttackModule::enable_safe_pos(boma);
+    }
+}
+
 #[acmd_script( agent = "bayonetta", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
 unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -444,6 +453,7 @@ pub fn install() {
         bayonetta_wickedweavearm_attack_hi4_game,
         bayonetta_wickedweaveleg_attack_lw4_game,
         bayonetta_specialn_bullet_move_charge_bullet_game,
+        bayonetta_specialn_bullet_move_game,
         damageflyhi_sound,
         damageflylw_sound,
         damageflyn_sound,
@@ -451,7 +461,7 @@ pub fn install() {
         damageflytop_sound,
         escape_n_game,
         escape_f_game,
-        escape_b_game
+        escape_b_game,
     );
 }
 

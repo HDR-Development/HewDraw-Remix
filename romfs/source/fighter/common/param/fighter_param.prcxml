@@ -2073,7 +2073,7 @@
       <float hash="landing_attack_air_frame_n">8</float>
       <float hash="landing_attack_air_frame_f">9</float>
       <float hash="landing_attack_air_frame_b">10</float>
-      <float hash="landing_attack_air_frame_lw">18</float>
+      <float hash="landing_attack_air_frame_lw">20</float>
       <int hash="landing_heavy_frame">4</int>
       <float hash="scale">1.03</float>
       <float hash="shield_radius">12.6</float>
