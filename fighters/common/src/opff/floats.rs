@@ -48,7 +48,9 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         }
     }
 
-    if situation_kind == *SITUATION_KIND_AIR {
+    if situation_kind == *SITUATION_KIND_AIR 
+    && !boma.is_prev_status(*SITUATION_KIND_GROUND)
+    {
 
         if WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) {
             VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
@@ -162,6 +164,7 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
 
     // Reset Float Time
     if situation_kind == *SITUATION_KIND_GROUND {
+        WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
         WorkModule::set_int(boma, VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION), *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
     }
     
