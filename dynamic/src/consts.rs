@@ -518,6 +518,18 @@ pub mod vars {
         }
     }
 
+    pub mod lucina {
+
+        pub mod status {
+            // int
+            pub const SPECIAL_LW_MOTION: i32 = 0x1100;
+            pub const SPECIAL_LW_MOTION_AIR: i32 = 0x1101;
+
+            // flag
+            pub const SPECIAL_LW_SPECIAL_CHECK: i32 = 0x1100;
+        }
+    }
+
     pub mod luigi {
         pub mod instance {
             // flag
