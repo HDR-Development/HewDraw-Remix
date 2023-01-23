@@ -19,25 +19,8 @@ unsafe fn super_sheet_stall(boma: &mut BattleObjectModuleAccessor, status_kind: 
     }
 }
 
-unsafe fn up_special_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, stick_x: f32, facing: f32, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI{
-        if frame < 4.0 {
-            if facing * stick_x < 0.0 {
-                VarModule::on_flag(boma.object(), vars::mariod::status::IS_SPECIAL_HI_UNABLE_CANCEL);
-            }
-        }
-        
-        if situation_kind == *SITUATION_KIND_GROUND && frame == 5.0 {
-            if facing * stick_x < -0.0 && !VarModule::is_flag(boma.object(), vars::mariod::status::IS_SPECIAL_HI_UNABLE_CANCEL) {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
-            }
-        }
-    }
-}
-
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //super_sheet_stall(boma, status_kind, situation_kind, frame);
-    up_special_cancel(boma, status_kind, situation_kind, stick_x, facing, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MARIOD )]
