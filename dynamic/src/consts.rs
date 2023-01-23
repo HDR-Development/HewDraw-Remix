@@ -246,6 +246,8 @@ pub mod vars {
             pub const INITIAL_KNOCKBACK_VEL_X: i32 = 0x1000;
             pub const INITIAL_KNOCKBACK_VEL_Y: i32 = 0x1001;
 
+            pub const RESTING_HIP_OFFSET_Y: i32 = 0x1000;
+
         }
     }
 
