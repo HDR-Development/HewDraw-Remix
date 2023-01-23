@@ -29,6 +29,7 @@ mod catch;
 mod damage;
 mod escape;
 mod dead;
+mod damageflyreflect;
 // [LUA-REPLACE-REBASE]
 // [SHOULD-CHANGE]
 // Reimplement the whole status script (already done) instead of doing this.
@@ -92,62 +93,10 @@ pub unsafe fn status_pre_DamageAir(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_DamageFlyCommon_init)]
 pub unsafe fn damage_fly_common_init(fighter: &mut L2CFighterCommon) {
     ControlModule::set_command_life_extend(fighter.module_accessor, 5);
-    //if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_KNOCKDOWN_THROW) {
-
-    // never allow transition into the ground bounce status. 
-    // This will result in melee-style knockdown from spikes, rather than a ground bounce.
-    WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_D);
-    
-    //}
+    if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_KNOCKDOWN_THROW) {
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_D);
+    }
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_KNOCKDOWN_THROW);
-    original!()(fighter)
-}
-
-#[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon20status_end_DamageFlyEv")]
-pub unsafe fn damage_fly_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
-    original!()(fighter)
-}
-
-#[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon28status_end_DamageFlyReflectDEv")]
-pub unsafe fn damage_fly_reflect_d_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
-    original!()(fighter)
-}
-
-#[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_JUMP_BOARD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon36status_end_DamageFlyReflectJumpBoardEv")]
-pub unsafe fn damage_fly_reflect_jump_board_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
-    original!()(fighter)
-}
-
-#[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon29status_end_DamageFlyReflectLREv")]
-pub unsafe fn damage_fly_reflect_lr_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
-    original!()(fighter)
-}
-
-#[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon28status_end_DamageFlyReflectUEv")]
-pub unsafe fn damage_fly_reflect_u_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
-    original!()(fighter)
-}
-
-#[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon24status_end_DamageFlyRollEv")]
-pub unsafe fn damage_fly_roll_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
-    original!()(fighter)
-}
-
-#[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-pub unsafe fn damage_fly_meteor_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
     original!()(fighter)
 }
 
@@ -472,16 +421,7 @@ pub fn install() {
     damage::install();
     escape::install();
     dead::install();
-
-    smashline::install_status_scripts!(
-        damage_fly_end,
-        damage_fly_reflect_d_end,
-        damage_fly_reflect_jump_board_end,
-        damage_fly_reflect_lr_end,
-        damage_fly_reflect_u_end,
-        damage_fly_roll_end,
-        damage_fly_meteor_end
-    );
+    damageflyreflect::install();
 
     skyline::nro::add_hook(nro_hook);
 }
