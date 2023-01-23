@@ -442,7 +442,6 @@ unsafe fn bayonetta_special_lw (fighter: &mut L2CAgentBase) {
 	frame(lua_state, 33.0);
 	if is_excute(fighter) {
 		WorkModule::off_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_LW_FLAG_ENABLE_NEXT_NO_COMP);
-        CancelModule::enable_cancel(fighter.module_accessor);
 	}
 }
 
@@ -472,7 +471,6 @@ unsafe fn bayonetta_special_air_lw (fighter: &mut L2CAgentBase) {
 	frame(lua_state, 33.0);
 	if is_excute(fighter) {
 		WorkModule::off_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_LW_FLAG_ENABLE_NEXT_NO_COMP);
-        CancelModule::enable_cancel(fighter.module_accessor);
 	}
 }
 
