@@ -495,6 +495,7 @@ pub mod vars {
             pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1: i32 = 0x0100;
             pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2: i32 = 0x0101;
             pub const SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL: i32 = 0x0102;
+            pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE3: i32 = 0x0103;
         }
 
         pub mod status {
