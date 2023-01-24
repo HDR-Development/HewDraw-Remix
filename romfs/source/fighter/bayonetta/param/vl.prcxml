@@ -36,6 +36,7 @@
       <int hash="ab_d_fall_landing_frame">14</int>
       <int hash="ab_d_fall_landing_frame_2nd">22</int>
       <int hash="0x17a1daf6ee">300</int>
+	  <float hash="guard_speed_mul_x">1.1</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
