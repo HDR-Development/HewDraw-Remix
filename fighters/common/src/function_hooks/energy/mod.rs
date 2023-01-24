@@ -1,6 +1,7 @@
 use super::*;
 mod control;
 mod motion;
+mod stop;
 
 
 #[repr(C)]
@@ -179,4 +180,5 @@ impl KineticEnergy {
 pub fn install() {
     control::install();
     motion::install();
+    stop::install();
 }

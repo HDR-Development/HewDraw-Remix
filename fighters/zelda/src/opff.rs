@@ -7,46 +7,40 @@ unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &m
     if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2) {
         if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
             VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-            boma.change_status_req(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3, false);
-            ControlModule::clear_command(boma, false);
+            boma.change_status_req(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3, true);
         }
     }
 
     // Wall Ride momentum fixes
-    let mut wall_ride = Vector3f{x: 1.0, y: 1.0, z: 1.0};
     let touch_right = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
     let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
-    let warp_speed = WorkModule::get_param_float(boma, hash40("param_special_hi"), hash40("wrap_speed_add")) + WorkModule::get_param_float(boma, hash40("param_special_hi"), hash40("wrap_speed_multi"));
 
     if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2) {
-        // Manipulate ECB for landing purposes
-        //GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, 0.0));
         if touch_right || touch_left || VarModule::is_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE) {
-            VarModule::on_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE);
-            if (touch_right && KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) < 0.0) || (touch_left && KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0) {
-                let rise_speed = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-                if rise_speed > 0.0 {
-                    wall_ride = Vector3f{x: 0.0, y: (warp_speed / rise_speed), z: 1.0};
-                }
-                else {
-                    wall_ride = Vector3f{x: 0.0, y: 1.0, z: 1.0};
-                }
-                KineticModule::mul_speed(boma, &wall_ride, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            if !VarModule::is_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE) {
+                VarModule::on_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE);
+            }
+            let init_speed_y = VarModule::get_float(boma.object(), vars::common::status::TELEPORT_INITIAL_SPEED_Y);
+
+            if init_speed_y > 0.0 {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, init_speed_y);
+                app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
             }
         }
     }
     else if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_3) {
-        // Manipulate ECB for landing purposes
-        //GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, 0.0));
         if touch_right || touch_left {
-            if (touch_right && KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) < 0.0) || (touch_left && KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0) {
-                wall_ride = Vector3f{x: 0.0, y: 1.0, z: 1.0};
-                KineticModule::mul_speed(boma, &wall_ride, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            if KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0 {
+                let wall_ride = Vector3f{x: 0.0, y: 1.0, z: 1.0};
+                KineticModule::mul_speed(boma, &wall_ride, *FIGHTER_KINETIC_ENERGY_ID_STOP);
             }
         }
     }
     else {
-        VarModule::off_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE);
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE) {
+            VarModule::off_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE);
+        }
     }
 }
 
