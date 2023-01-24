@@ -246,6 +246,8 @@ pub mod vars {
             pub const INITIAL_KNOCKBACK_VEL_X: i32 = 0x1000;
             pub const INITIAL_KNOCKBACK_VEL_Y: i32 = 0x1001;
 
+            pub const RESTING_HIP_OFFSET_Y: i32 = 0x1000;
+
         }
     }
 
@@ -308,6 +310,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const SOARING_SLASH_HIT: i32 = 0x1100;
+            pub const SOARING_SLASH_CANCEL: i32 = 0x1101;
         }
     }
 
@@ -348,7 +351,7 @@ pub mod vars {
             // flags
             pub const SPECIAL_CHECKS: i32 = 0x1100;
 
-            pub const SPECIAL_AIR_LW_STOP: i32 = 0x1100;
+            // pub const SPECIAL_AIR_LW_STOP: i32 = 0x1100;
         }
     }
 
@@ -463,6 +466,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const FINAL_CUTTER_HIT: i32 = 0x1100;
+            pub const FINAL_CUTTER_CANCEL: i32 = 0x1101;
         }
     }
 
@@ -493,6 +497,7 @@ pub mod vars {
             pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1: i32 = 0x0100;
             pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2: i32 = 0x0101;
             pub const SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL: i32 = 0x0102;
+            pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE3: i32 = 0x0103;
         }
 
         pub mod status {
@@ -512,6 +517,18 @@ pub mod vars {
             pub const SPECIAL_HI_ATTACK_X_DIRECTION: i32 = 0x1105;
             pub const SPECIAL_HI_ATTACK_WALL_TOUCH_FRAME: i32 = 0x1106;
             pub const SPECIAL_HI_ATTACK_WALL_LEAVE_FRAME: i32 = 0x1107;
+        }
+    }
+
+    pub mod lucina {
+
+        pub mod status {
+            // int
+            pub const SPECIAL_LW_MOTION: i32 = 0x1100;
+            pub const SPECIAL_LW_MOTION_AIR: i32 = 0x1101;
+
+            // flag
+            pub const SPECIAL_LW_SPECIAL_CHECK: i32 = 0x1100;
         }
     }
 
@@ -804,6 +821,17 @@ pub mod vars {
             // floats
             pub const CHARGE_ATTACK_LEVEL: i32 = 0x1100;
             pub const IS_CHARGE_FINISHED: i32 = 0x1101;
+            pub const MISSILE_DETONATE: i32 = 0x1102;
+        }
+        pub mod instance {
+            // flags
+            pub const LUNAR_LAUNCH_AIR_USED: i32 = 0x0100;
+            pub const DETONATE_READY: i32 = 0x0101;
+
+            // ints
+            pub const LUNAR_LAUNCH_EFF_HANDLER: i32 = 0x0100;
+            pub const MISSILE_OBJECT_ID: i32 = 0x0101;
+            pub const STEALTHBOMB_EFF_HANDLER: i32 = 0x0102;
         }
     }
 
@@ -875,9 +903,13 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const DEIN_ACTIVE: i32 = 0x0100;
+            pub const PHANTOM_RELEASED: i32 = 0x0101;
 
             // ints
             pub const DEIN_OBJECT_ID: i32 = 0x0100;
+            pub const DEIN_EFF_HANDLER_FLASH: i32 = 0x0101;
+            pub const DEIN_EFF_HANDLER_FIRE: i32 = 0x0102;
+            pub const PHANTOM_EFF_HANDLER: i32 = 0x0103;
         }
     }
     
