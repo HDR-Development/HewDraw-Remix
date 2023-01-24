@@ -248,22 +248,6 @@ unsafe fn littlemac_special_air_s_blow_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "littlemac", script = "effect_specialairsblow" , category = ACMD_EFFECT , low_priority)]
-unsafe fn littlemac_special_air_s_blow_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("littlemac_attack_arc2_aura"), Hash40::new("top"), 1, 10, -1.5, 0, -20, -110, 1, false);
-        EFFECT_FOLLOW(fighter, Hash40::new("littlemac_attack_arc2"), Hash40::new("top"), 1, 8.5, -1.5, 0, -20, -110, 1, false);
-        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("littlemac_attack_arc2_splash"), Hash40::new("top"), 1, 10, -1.5, 0, -20, -110, 1, false);
-    }
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("littlemac_joltblow"), false, false);
-        EffectModule::enable_sync_init_pos_last(boma);
-    }
-}
-
 #[acmd_script( agent = "littlemac", script = "game_specialhistart" , category = ACMD_GAME , low_priority)]
 unsafe fn littlemac_special_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -436,7 +420,6 @@ pub fn install() {
         littlemac_special_air_n2_sound,
         littlemac_special_s_jump_game,
         littlemac_special_air_s_blow_game,
-        littlemac_special_air_s_blow_effect,
         littlemac_special_air_hi_start_game,
         littlemac_special_hi_start_game,
         littlemac_special_hi_game,

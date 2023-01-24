@@ -76,6 +76,24 @@ unsafe fn zelda_special_s_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "zelda", scripts = ["effect_specialsend", "effect_specialairsend"] , category = ACMD_EFFECT , low_priority)]
+unsafe fn zelda_special_s_end_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 0.45, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("zelda_appeal_s_fire"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 0.45, 0, 0, 0, 0, 0, 0, true);    
+        LAST_EFFECT_SET_RATE(fighter, 2.0);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(fighter, Hash40::new("sys_damage_fire"), Hash40::new("havel"), 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_damage_fire"), Hash40::new("havel"), 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+
 #[acmd_script( agent = "zelda", script = "game_specialhistart" , category = ACMD_GAME , low_priority)]
 unsafe fn zelda_special_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -83,8 +101,13 @@ unsafe fn zelda_special_hi_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
     }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 8.0/(6.0 - 1.0));
+    }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 90, 30, 0, 125, 9.5, 0.0, 8.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
     }
     wait(lua_state, 3.0);
@@ -104,9 +127,11 @@ unsafe fn zelda_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_NONE);
+        FT_MOTION_RATE(fighter, 8.0/(6.0 - 1.0));
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 80, 85, 0, 60, 10.5, 0.0, 8.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
     }
     wait(lua_state, 3.0);
@@ -269,6 +294,7 @@ pub fn install() {
         zelda_special_n_game,
         zelda_special_n_air_game,
         zelda_special_s_start_game,
+        zelda_special_s_end_effect,
         zelda_special_hi_start_game,
         zelda_special_air_hi_start_game,
         zelda_special_hi_game,
