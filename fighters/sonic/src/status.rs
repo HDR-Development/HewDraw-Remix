@@ -35,7 +35,6 @@ pub unsafe fn pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "sonic", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn sonic_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.sub_status_pre_SpecialNCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
