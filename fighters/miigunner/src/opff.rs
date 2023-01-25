@@ -216,7 +216,7 @@ pub fn miigunner_missile_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
                     || WorkModule::is_enable_transition_term_group(gunner_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL)
                     || WorkModule::is_enable_transition_term_group(gunner_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL) {
                     StatusModule::change_status_request_from_script(boma, *WEAPON_MIIGUNNER_SUPERMISSILE_STATUS_KIND_S_BURST, false);
-                    VarModule::on_flag(gunner, vars::common::instance::IS_HEAVY_ATTACK);
+                    VarModule::on_flag(gunner, vars::miigunner::status::MISSILE_DETONATE);
                     VarModule::off_flag(gunner, vars::miigunner::instance::DETONATE_READY);
                     gunner_boma.clear_commands(Cat1::SpecialS); // Clear command so Gunner doesn't immediately fire another missile
                 }
