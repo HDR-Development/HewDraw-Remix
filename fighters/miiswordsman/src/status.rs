@@ -863,11 +863,7 @@ unsafe extern "C" fn sub_special_hi3_end_Main(fighter: &mut L2CFighterCommon) ->
     GroundModule::set_cliff_check(fighter.module_accessor, app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES));
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL) {
         if !MotionModule::is_end(fighter.module_accessor) {
-            if GroundModule::can_entry_cliff(fighter.module_accessor) == 1 && fighter.global_table[STICK_Y].get_f32() > -0.66 {
-                fighter.change_status(
-                    L2CValue::I32(*FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE),
-                    L2CValue::Bool(false)
-                );
+            if fighter.sub_transition_group_check_air_cliff().get_bool() {
                 return 1.into()
             }
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT) && MotionModule::is_end(fighter.module_accessor) {
