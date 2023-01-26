@@ -95,7 +95,7 @@ unsafe extern "C" fn bayonetta_attack_main_hit_uniq_chk(fighter: &mut L2CFighter
 }
 
 unsafe extern "C" fn bayonetta_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_13") {
+    if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_12") {
         fighter.check_100_count();
     }
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
