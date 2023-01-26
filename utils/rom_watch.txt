@@ -6,3 +6,4 @@ fighter/lucas/param/hdr.xml
 fighter/lucario/param/hdr.xml
 fighter/pichu/param/hdr.xml
 fighter/ike/param/hdr.xml
+fighter/donkey/param/hdr.xml

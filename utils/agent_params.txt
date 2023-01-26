@@ -4,3 +4,4 @@ lucas: fighter/lucas/param/hdr.prc
 lucario: fighter/lucario/param/hdr.prc
 pichu: fighter/pichu/param/hdr.prc
 ike: fighter/ike/param/hdr.prc
+donkey: fighter/donkey/param/hdr.prc

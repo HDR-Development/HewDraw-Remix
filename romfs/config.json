@@ -21,6 +21,9 @@
 		],
 		"fighter/ike/cmn": [
 			"fighter/ike/param/hdr.prc"
+		],
+		"fighter/donkey/cmn": [
+			"fighter/donkey/param/hdr.prc"
 		]
 	}
 }
