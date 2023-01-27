@@ -55,7 +55,7 @@ unsafe fn nana_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("popo_attack_arc"), Hash40::new("popo_attack_arc"), Hash40::new("top"), 2, 8, 1, 4.3, -22.9, -89.6, 1.15, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("popo_attack_arc"), Hash40::new("popo_attack_arc"), Hash40::new("top"), 2, 8, 1, 4.3, -22.9, -89.6, 0.95, true, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
 }
@@ -78,6 +78,17 @@ unsafe fn nana_attack_air_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 19.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+}
+
+#[acmd_script( agent = "nana", script = "effect_attackairb_nana", category = ACMD_EFFECT, low_priority )]
+unsafe fn nana_effect_attackairb_nana(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("popo_attack_arc_b"), Hash40::new("popo_attack_arc_b"), Hash40::new("top"), 0.5, 6, -3, 16.42, 228.9, -5.3, 1.25, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(fighter, 1.3);
     }
 }
 
@@ -181,6 +192,7 @@ pub fn install() {
         nana_attack_air_f_game,
         nana_attack_air_f_effect,
         nana_attack_air_b_game,
+        nana_effect_attackairb_nana,
         nana_attack_air_hi_game,
         nana_attack_air_hi_effect,
         nana_attack_air_lw_game,

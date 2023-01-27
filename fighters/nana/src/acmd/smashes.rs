@@ -39,9 +39,9 @@ unsafe fn nana_attack_s4_s_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 7, -7, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
-    frame(lua_state, 10.0);
+    frame(lua_state, 10.5);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("popo_smash_arc"), Hash40::new("popo_smash_arc"), Hash40::new("top"), -1, 9, 0, -146, -160, 80, 1, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("popo_smash_arc"), Hash40::new("popo_smash_arc"), Hash40::new("top"), -1, 9, 5, -146, -160, 80, 1, true, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(fighter, 2.0);
     }
     frame(lua_state, 11.0);
