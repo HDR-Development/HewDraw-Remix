@@ -166,10 +166,9 @@ unsafe fn miigunner_attack_air_b_game(fighter: &mut L2CAgentBase) {
 	frame(lua_state, 8.0);
     if is_excute(fighter) {
 		// Trigger boosted aerial
-		let cat1 = 0;
         if boma.is_button_on(Buttons::Attack) {
             VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-			FT_MOTION_RATE(fighter, 5.0/(9.0 - 8.0));
+			FT_MOTION_RATE(fighter, 7.0/(9.0 - 8.0));
         }
     }
     frame(lua_state, 9.0);
@@ -213,7 +212,7 @@ unsafe fn miigunner_attack_air_b_game(fighter: &mut L2CAgentBase) {
         // Clear boosted hitboxes
 		AttackModule::clear_all(boma);
 		if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
-			FT_MOTION_RATE(fighter, 0.6);
+			FT_MOTION_RATE(fighter, 13.0/(32.0 - 22.0));
 		}
     }
     frame(lua_state, 32.0);
@@ -226,7 +225,7 @@ unsafe fn miigunner_attack_air_b_game(fighter: &mut L2CAgentBase) {
 			WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
 		}
     }
-	frame(lua_state, 41.0);
+	frame(lua_state, 35.0);
     if is_excute(fighter) {
 		// Boosted autocancel
 		if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {

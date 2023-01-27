@@ -10,7 +10,6 @@ pub mod transition;
 pub mod djcancel;
 pub mod init_settings;
 pub mod momentum_transfer;
-pub mod directional_influence;
 pub mod hitstun;
 pub mod change_status;
 pub mod is_flag;

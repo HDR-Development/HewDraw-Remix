@@ -248,7 +248,10 @@ pub mod vars {
             pub const INITIAL_KNOCKBACK_VEL_X: i32 = 0x1000;
             pub const INITIAL_KNOCKBACK_VEL_Y: i32 = 0x1001;
 
+            pub const RESTING_HIP_OFFSET_Y: i32 = 0x1000;
+
             pub const TELEPORT_INITIAL_SPEED_Y: i32 = 0x1000;
+
         }
     }
 
@@ -820,6 +823,7 @@ pub mod vars {
             // floats
             pub const CHARGE_ATTACK_LEVEL: i32 = 0x1100;
             pub const IS_CHARGE_FINISHED: i32 = 0x1101;
+            pub const MISSILE_DETONATE: i32 = 0x1102;
         }
         pub mod instance {
             // flags
@@ -829,6 +833,7 @@ pub mod vars {
             // ints
             pub const LUNAR_LAUNCH_EFF_HANDLER: i32 = 0x0100;
             pub const MISSILE_OBJECT_ID: i32 = 0x0101;
+            pub const STEALTHBOMB_EFF_HANDLER: i32 = 0x0102;
         }
     }
 
