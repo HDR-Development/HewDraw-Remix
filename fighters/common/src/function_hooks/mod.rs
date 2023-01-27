@@ -24,10 +24,8 @@ pub mod camera;
 
 
 // Articles that should bypass running their MAIN status before KineticModule::UpdateEnergy and GroundCollision::process
-const EARLY_MAIN_STATUS_RUN_EXCEPTION_KINDS: [smash::lib::LuaConst ; 14] = [
+const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 10] = [
     WEAPON_KIND_PICKEL_PLATE,
-    WEAPON_KIND_SIMON_WHIP,
-    WEAPON_KIND_RICHTER_WHIP,
     WEAPON_KIND_MASTER_SWORD,
     WEAPON_KIND_LUCAS_HIMOHEBI,
     WEAPON_KIND_SZEROSUIT_WHIP,
@@ -35,11 +33,34 @@ const EARLY_MAIN_STATUS_RUN_EXCEPTION_KINDS: [smash::lib::LuaConst ; 14] = [
     WEAPON_KIND_SAMUS_GBEAM,
     WEAPON_KIND_SAMUSD_GBEAM,
     WEAPON_KIND_SHIZUE_FISHINGLINE,
-    WEAPON_KIND_JACK_WIREROPE,
-    WEAPON_KIND_PFUSHIGISOU_VINE,
     WEAPON_KIND_TOONLINK_HOOKSHOT,
     WEAPON_KIND_YOUNGLINK_HOOKSHOT
 ];
+
+// For one reason or another, the below statuses/kinds do not play well with running before energy update/ground collision
+// so they must be ran using vanilla's order of operations
+unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor) -> bool {
+    if (*boma).is_fighter()
+    && ( ((*boma).kind() == *FIGHTER_KIND_RICHTER
+    && (*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_LW4]))
+        || ((*boma).kind() == *FIGHTER_KIND_SIMON
+            && (*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_LW4]))
+        || ((*boma).kind() == *FIGHTER_KIND_MASTER
+            && (*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_TURN, *FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_HOLD]))
+        || ((*boma).kind() == *FIGHTER_KIND_JACK
+            && (*boma).is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI))
+        || ((*boma).kind() == *FIGHTER_KIND_PFUSHIGISOU
+            && (*boma).is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)) )
+    {
+        return true;
+    }
+
+    if (*boma).is_weapon()
+    && EXCEPTION_WEAPON_KINDS.iter().any(|x| **x == (*boma).kind() ) {
+        return true;
+    }
+    false
+}
 
 // This group of functions is normally run after KineticModule::UpdateEnergy and GroundCollision::process
 // Calls MAIN status script, and associated functions
@@ -104,8 +125,7 @@ unsafe fn run_main_status_original(boma: *mut BattleObjectModuleAccessor, is_sto
 unsafe fn kinetic_module__call_update_energy_hook(ctx: &skyline::hooks::InlineCtx) {
     let boma = *ctx.registers[23].x.as_ref() as *mut BattleObjectModuleAccessor;
 
-    if (*boma).is_weapon()
-    && EARLY_MAIN_STATUS_RUN_EXCEPTION_KINDS.iter().any(|x| **x == (*boma).kind() ) {
+    if skip_early_main_status(boma) {
         return;
     }
 
@@ -128,8 +148,7 @@ unsafe fn kinetic_module__call_update_energy_hook(ctx: &skyline::hooks::InlineCt
 unsafe fn kinetic_module__call_update_energy_stop_hook(ctx: &skyline::hooks::InlineCtx) {
     let boma = *ctx.registers[23].x.as_ref() as *mut BattleObjectModuleAccessor;
 
-    if (*boma).is_weapon()
-    && EARLY_MAIN_STATUS_RUN_EXCEPTION_KINDS.iter().any(|x| **x == (*boma).kind() ) {
+    if skip_early_main_status(boma) {
         return;
     }
 
@@ -162,8 +181,7 @@ unsafe fn run_lua_status_hook(ctx: &skyline::hooks::InlineCtx) {
     let slow_module__is_skip: extern "C" fn(*const u64) -> bool = std::mem::transmute(*(((vtable as u64) + 0xb0) as *const u64));
     let is_skip = slow_module__is_skip(slow_module);
 
-    if (*boma).is_weapon()
-    && EARLY_MAIN_STATUS_RUN_EXCEPTION_KINDS.iter().any(|x| **x == (*boma).kind() ) {
+    if skip_early_main_status(boma) {
         run_main_status_original(boma, is_stop, is_skip);
         return;
     }
