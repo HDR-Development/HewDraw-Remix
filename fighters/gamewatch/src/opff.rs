@@ -34,7 +34,7 @@ unsafe fn parachute_dj(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
 // Game & Watch Fair cake box position readjustment
 unsafe fn fair_repositioning(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR && motion_kind == hash40("attack_air_f") {
-        if frame < 10.0 || (frame >= 10.0 && frame < 11.0 && boma.is_in_hitlag()) {
+        if frame < 10.0 {
             ModelModule::set_joint_translate(boma, Hash40::new("havel"), &Vector3f{ x: -3.5, y: 6.5, z: 0.0 }, false, false);
             ModelModule::set_joint_rotate(boma, Hash40::new("havel"), &Vector3f{ x: -15.0, y: 0.0, z: 0.0 }, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
             ModelModule::set_joint_rotate(boma, Hash40::new("shoulderl"), &Vector3f{ x: 0.0, y: 0.0, z: -40.0 }, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
