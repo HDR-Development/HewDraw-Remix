@@ -18,10 +18,10 @@
     <float hash="final_vector_max">45</float>
   </struct>
   <list hash="param_specialn_bullet">
-	  <struct index="0">
-		  <int hash="0x0d76ae442e">3</int>
-		  <int hash="0x0d91166929">5</int>
-	  </struct>
+      <struct index="0">
+          <int hash="0x0d76ae442e">3</int>
+          <int hash="0x0d91166929">5</int>
+      </struct>
   <list hash="param_special_s">
     <struct index="0">
       <int hash="ab_u_landing_frame">18</int>
@@ -36,7 +36,7 @@
       <int hash="ab_d_fall_landing_frame">14</int>
       <int hash="ab_d_fall_landing_frame_2nd">22</int>
       <int hash="0x17a1daf6ee">300</int>
-	  <float hash="guard_speed_mul_x">1.1</float>
+      <float hash="guard_speed_mul_x">1.1</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -60,11 +60,10 @@
     <struct index="0">
       <int hash="success_cancel_frame">12</int>
       <float hash="base_slow_frame_max">85</float>
-	  <float hash="slow_frame_max">150</float>
-	  <float hash="batwithin_slow_frame_mul">100</float>
+      <float hash="slow_frame_max">150</float>
+      <float hash="batwithin_slow_frame_mul">100</float>
       <int hash="0x1f3421e7d7">25</int>
-      <float hash="recover_slow_frame">0.06</float>
-		
+      <float hash="recover_slow_frame">0.06</float>		
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
