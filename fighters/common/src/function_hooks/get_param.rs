@@ -68,7 +68,7 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
             if VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
                 if x1 == hash40("param_spikeball") { 
                     if x2 == hash40("hop_life") {
-                        return 90;
+                        return 60;
                     }
                 }
             }
@@ -271,13 +271,13 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
                         return 1.5;
                     }
                     else if x2 == hash40("shoot_speed_y_max") {
-                        return 1.0;
+                        return 1.3;
                     }
                     else if x2 == hash40("shoot_speed_x_min") {
-                        return 0.35;
+                        return 0.5;
                     }
                     else if x2 == hash40("shoot_speed_y_min") {
-                        return 0.25;
+                        return 0.4;
                     }
                 }
             }

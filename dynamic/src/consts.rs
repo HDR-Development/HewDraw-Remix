@@ -951,6 +951,9 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const STANCE_NEED_SET_SPEEDS: i32 = 0x0100;
+
+            // floats
+            pub const PTOOIE_SCALE: i32 = 0x0100;
             
             // ints
             pub const CURRENT_STANCE: i32 = 0x0100; // 0 = Normal, 1 = Putrid, 2 = Prickly
