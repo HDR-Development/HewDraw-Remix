@@ -28,6 +28,11 @@ unsafe fn mario_11(fighter: &mut L2CAgentBase) {
     
 }
 
+/*
+    This script modifies Mario's Jab 1.
+*/
+
+
 #[acmd_script( agent = "mario", script = "game_attack12" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_12(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -57,6 +62,12 @@ unsafe fn mario_12(fighter: &mut L2CAgentBase) {
     
 }
 
+/*
+    This script modifies Mario's Jab 2.
+*/
+
+
+
 #[acmd_script( agent = "mario", script = "game_attack13" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_13(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -76,8 +87,12 @@ unsafe fn mario_13(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 1.0);
         AttackModule::clear_all(boma);
     }
-    
 }
+
+/*
+    This script modifies Mario's Jab 3 air.
+*/
+
 
 #[acmd_script( agent = "mario", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_attack_dash_game(fighter: &mut L2CAgentBase) {
@@ -110,6 +125,11 @@ unsafe fn mario_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
     
 }
+
+/*
+    This script modifies Mario's Dash attack.
+*/
+
 
 pub fn install() {
     install_acmd_scripts!(

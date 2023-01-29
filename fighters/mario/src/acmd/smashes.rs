@@ -16,8 +16,12 @@ unsafe fn mario_attack_s4_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
 }
+/*
+    This script modifies Mario's Forward Smash (Upward angle).
+*/
+
+
 
 #[acmd_script( agent = "mario", script = "game_attacks4" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_attack_s4_s_game(fighter: &mut L2CAgentBase) {
@@ -37,8 +41,11 @@ unsafe fn mario_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
 }
+
+/*
+    This script modifies Mario's Forward Smash (Middle angle).
+*/
 
 #[acmd_script( agent = "mario", script = "game_attacks4lw" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
@@ -58,8 +65,11 @@ unsafe fn mario_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
 }
+
+/*
+    This script modifies Mario's Forward Smash (Lower Angle).
+*/
 
 #[acmd_script( agent = "mario", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_attack_hi4_game(fighter: &mut L2CAgentBase) {
@@ -87,6 +97,10 @@ unsafe fn mario_attack_hi4_game(fighter: &mut L2CAgentBase) {
     }
     
 }
+
+/*
+    This script modifies Mario's Up Smash.
+*/
 
 #[acmd_script( agent = "mario", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_attack_lw4_game(fighter: &mut L2CAgentBase) {
@@ -118,6 +132,10 @@ unsafe fn mario_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
     
 }
+
+/*
+    This script modifies Mario's Down Smash.
+*/
 
 pub fn install() {
     install_acmd_scripts!(

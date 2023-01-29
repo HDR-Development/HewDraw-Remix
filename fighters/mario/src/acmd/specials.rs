@@ -357,6 +357,10 @@ unsafe fn mario_special_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+/*
+    This script modifies Mario's Side special.
+*/
+
 #[acmd_script( agent = "mario", script = "game_specialairs" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -481,8 +485,11 @@ unsafe fn mario_special_hi_game(fighter: &mut L2CAgentBase) {
             AttackModule::clear_all(boma);
         }
     }
-    
 }
+
+/*
+    This script modifies Mario's Up Special (Grounded).
+*/
 
 #[acmd_script( agent = "mario", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_special_air_hi_game(fighter: &mut L2CAgentBase) {
@@ -572,8 +579,11 @@ unsafe fn mario_special_air_hi_game(fighter: &mut L2CAgentBase) {
             AttackModule::clear_all(boma);
         }
     }
-    
 }
+
+/*
+    This script modifies Mario's Up special (aerial).
+*/
 
 pub fn install() {
     install_acmd_scripts!(

@@ -25,8 +25,11 @@ unsafe fn mario_attack_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
+
+/*
+    This script modifies Mario's neutral air.
+*/
 
 #[acmd_script( agent = "mario", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_attack_air_f_game(fighter: &mut L2CAgentBase) {
@@ -96,6 +99,11 @@ unsafe fn mario_attack_air_f_game(fighter: &mut L2CAgentBase) {
 
 }
 
+/*
+    This script modifies Mario's Forward air.
+*/
+
+
 #[acmd_script( agent = "mario", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -128,6 +136,11 @@ unsafe fn mario_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
 
 }
+/*
+    This script modifies Mario's Back air.
+*/
+
+
 
 #[acmd_script( agent = "mario", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_attack_air_hi_game(fighter: &mut L2CAgentBase) {
@@ -162,6 +175,11 @@ unsafe fn mario_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
 
 }
+
+/*
+    This script modifies Mario's Up air.
+*/
+
 
 #[acmd_script( agent = "mario", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_attack_air_lw_game(fighter: &mut L2CAgentBase) {
@@ -200,6 +218,11 @@ unsafe fn mario_attack_air_lw_game(fighter: &mut L2CAgentBase) {
 
 }
 
+/*
+    This script modifies Mario's Down air.
+*/
+
+
 #[acmd_script( agent = "mario", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -216,6 +239,11 @@ unsafe fn mario_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     */
 
 }
+
+/*
+    This script modifies Mario's Landing Down air.
+*/
+
 
 pub fn install() {
     install_acmd_scripts!(

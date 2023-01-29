@@ -241,8 +241,14 @@ unsafe fn mario_fireball_regular_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 361, 20, 0, 22, 2.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MARIO_FIREBALL, *ATTACK_REGION_NONE);
     }
-    
 }
+
+/*
+    This script modifies Mario's fireball. (Most projectiles from specials are placed in the other catagory and not the special file in order to clean some shit up.)
+    Note: This only seems to modify the fireball's frame data and not physics, figure it out later.
+
+*/
+
 
 pub fn install() {
     install_acmd_scripts!(
@@ -261,4 +267,9 @@ pub fn install() {
         damageflytop_sound
     );
 }
+
+
+/*
+    These scripts modify other shit.
+*/
 

@@ -26,8 +26,11 @@ unsafe fn mario_grab(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }
-    
 }
+
+/*
+    This script modifies Mario's Standing Grab.
+*/
 
 #[acmd_script( agent = "mario", script = "game_catchdash" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_dashgrab(fighter: &mut L2CAgentBase) {
@@ -48,8 +51,11 @@ unsafe fn mario_dashgrab(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }
-    
 }
+/*
+    This script modifies Mario's Dash Grab.
+*/
+
 
 #[acmd_script( agent = "mario", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_pivotgrab(fighter: &mut L2CAgentBase) {
@@ -70,8 +76,11 @@ unsafe fn mario_pivotgrab(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }
-    
 }
+
+/*
+    This script modifies Mario's Pivot Grab.
+*/
 
 #[acmd_script( agent = "mario", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
 unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
@@ -89,8 +98,11 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
     }
-    
 }
+
+/*
+    This script modifies Mario's Down Throw. (Note: It only seems like the team has modified ONLY Down throw and the other grabs have been untouched in this build)
+*/
 
 pub fn install() {
     install_acmd_scripts!(
