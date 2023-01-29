@@ -74,34 +74,32 @@ unsafe fn jab_2_ftilt_cancel(boma: &mut BattleObjectModuleAccessor, cat1: i32, s
 }
 
 // Fair 2 -> aerial cancel
-unsafe fn fair_cancels(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64) {
+//unsafe fn fair_cancels(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64) {
     // Check for aerial attack inputs during fair 2
-    if status_kind == *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F && motion_kind == hash40("attack_air_f2") /*&& WorkModule::is_flag(boma, *FIGHTER_TRAIL_STATUS_ATTACK_AIR_F_FLAG_ENABLE_COMBO)*/ {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N
-                                    | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3
-                                    | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4
-                                    | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3
-                                    | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4)
-                && ControlModule::get_attack_air_kind(boma) != *FIGHTER_COMMAND_ATTACK_AIR_KIND_F
-                && ControlModule::get_attack_air_kind(boma) != *FIGHTER_COMMAND_ATTACK_AIR_KIND_B {
-                if !boma.is_in_hitlag() {
-                    VarModule::on_flag(boma.object(), vars::trail::instance::COMBO_PLUS_AIR);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
-                }
-            }
-        }
-    }
-}
+    //if status_kind == *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F && motion_kind == hash40("attack_air_f2") /*&& WorkModule::is_flag(boma, *FIGHTER_TRAIL_STATUS_ATTACK_AIR_F_FLAG_ENABLE_COMBO)*/ {
+     //   if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+         //   if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N
+              //                      | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3
+                 //                   | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4
+                 //                   | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3
+                  //                  | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4)
+               // && ControlModule::get_attack_air_kind(boma) != *FIGHTER_COMMAND_ATTACK_AIR_KIND_F
+               // && ControlModule::get_attack_air_kind(boma) != *FIGHTER_COMMAND_ATTACK_AIR_KIND_B {
+               // if !boma.is_in_hitlag() {
+                //    VarModule::on_flag(boma.object(), vars::trail::instance::COMBO_PLUS_AIR);
+               //     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
+             //   }
+          //  }
+       // }
+  //  }
+//}
 
 // Magic cancels
 unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor) {
     // Fire airdodge cancel
     if boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1_SHOOT) && boma.is_motion(Hash40::new("special_air_n1")) && MotionModule::frame(boma) > 1.0 {
         //DamageModule::add_damage(boma, 1.0, 0);
-        if boma.is_cat_flag(Cat1::AirEscape) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
-        }
+        boma.check_airdodge_cancel();
     }
     // Thunder land cancel
     if boma.is_status(*FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N3)
@@ -159,15 +157,8 @@ unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon,
         && (WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num")) - 1) > WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT) {
             VarModule::on_flag(boma.object(), vars::trail::status::SIDE_SPECIAL_HIT);
             if !VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_TO_SIDE_SPECIAL)
-            && fighter.is_input_jump() {
-                if situation_kind == *SITUATION_KIND_GROUND {
-                    fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                    return;
-                }
-                else if fighter.get_num_used_jumps() < fighter.get_jump_count_max() {
-                    fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                    return;
-                }
+            && fighter.check_jump_cancel(false) {
+                return;
             }
         }
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
@@ -184,15 +175,8 @@ unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon,
         if VarModule::is_flag(boma.object(), vars::trail::status::SIDE_SPECIAL_HIT)
         && WorkModule::get_param_int(boma, hash40("param_special_s"), hash40("attack_num")) > WorkModule::get_int(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_S_INT_ATTACK_COUNT) {
             if !VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_TO_SIDE_SPECIAL)
-            && fighter.is_input_jump() {
-                if situation_kind == *SITUATION_KIND_GROUND {
-                    fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                    return;
-                }
-                else if fighter.get_num_used_jumps() < fighter.get_jump_count_max() {
-                    fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                    return;
-                }
+            && fighter.check_jump_cancel(false) {
+                return;
             }
         }
     }
@@ -214,7 +198,7 @@ unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon,
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     jab_2_ftilt_cancel(boma, cat[0], status_kind, situation_kind, motion_kind);
-    fair_cancels(boma, cat[0], status_kind, situation_kind, motion_kind);
+    //fair_cancels(boma, cat[0], status_kind, situation_kind, motion_kind);
     side_special_hit_check(fighter, boma, status_kind, situation_kind, id);
     nair_fair_momentum_handling(fighter, boma);
     magic_cancels(boma);
@@ -226,7 +210,6 @@ pub fn trail_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		trail_frame(fighter);
-       //trail_specials1_rotation(fighter);
     }
 }
 
@@ -240,16 +223,3 @@ pub unsafe fn trail_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
-// Sora Sonic-Blade 1 Rotation
-// If your current motion is sonicblade 1 and your current frame less than frame 5, then get stick y which you save in var module, rotate top or rot bone calling fighter
-//pub unsafe fn trail_specials1_rotation(fighter: &mut L2CFighterCommon) {
-   // if fighter.is_motion(Hash40::new("special_air_s_start")) 
-      //  || fighter.is_motion(Hash40::new("special_s_start"))
-      // || fighter.is_motion(Hash40::new("special_air_s1"))
-       // || fighter.is_motion(Hash40::new("special_s1")) {
-        
-        //let stick_y = fighter.stick_y();
-        
-        //fighter.set_joint_rotate("top", Vector3f::new(0.0, 0.0, -90.0 * stick_y))
-    //}
-//}

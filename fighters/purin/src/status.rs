@@ -29,53 +29,54 @@ pub unsafe fn special_lw(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !fighter.sub_transition_group_check_air_cliff().get_bool() {
-        if !CancelModule::is_enable_cancel(fighter.module_accessor) || (CancelModule::is_enable_cancel(fighter.module_accessor) && !fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool() && !fighter.sub_air_check_fall_common().get_bool()) {
-            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_FLAG_HIT) && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-                if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_FLAG_HIT_CANCEL_OK) {
-                    let frame = MotionModule::frame(fighter.module_accessor);
-                    let cancel_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_ENABLE_HIT_CANCEL_FRAME) as f32;
+    if fighter.sub_transition_group_check_air_cliff().get_bool() {
+        return 1.into();
+    }
 
-                    if frame >= cancel_frame {
-                        CancelModule::enable_cancel(fighter.module_accessor);
-                        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_FLAG_HIT_CANCEL_OK);
-                    }
-                }
-            }
-            if !StatusModule::is_changing(fighter.module_accessor) {
-                if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_GROUND {
-                    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
-                        special_lw_situation_helper(fighter);
-                    }
-                }
-                if fighter.global_table[PREV_SITUATION_KIND] != SITUATION_KIND_GROUND {
-                    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-                        special_lw_situation_helper(fighter);
-                    }
-                }
-            }
-            if MotionModule::is_end(fighter.module_accessor) {
-                if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
-                    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
-                        fighter.change_status(
-                            L2CValue::I32(*FIGHTER_STATUS_KIND_FALL),
-                            L2CValue::Bool(false)
-                        );
-                        return 1.into()
-                    }
-                }
-                else {
-                    fighter.change_status(
-                        L2CValue::I32(*FIGHTER_STATUS_KIND_WAIT),
-                        L2CValue::Bool(false)
-                    );
-                    return 1.into()
-                }
-            }
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(L2CValue::Bool(false)).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
         }
     }
-    else {
-        return 1.into()
+
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_FLAG_HIT)
+    && (
+        !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)
+        || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    )
+    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_FLAG_HIT_CANCEL_OK) {
+        let frame = fighter.global_table[CURRENT_FRAME].get_i32();
+        let cancel_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_WORK_INT_ENABLE_HIT_CANCEL_FRAME);
+
+        if frame == cancel_frame - 30 {
+            // Skip to wake-up animation, 30 frames before on-hit FAF
+            // Wake-up anim lasts 30 frames
+            MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 179.0, true, true, false);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PURIN_STATUS_SPECIAL_LW_FLAG_HIT_CANCEL_OK);
+        }
+    }
+
+    if !StatusModule::is_changing(fighter.module_accessor)
+    && StatusModule::is_situation_changed(fighter.module_accessor) {
+        special_lw_situation_helper(fighter);
+    }
+
+    if MotionModule::is_end(fighter.module_accessor) {
+        if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
+            fighter.change_status(
+                L2CValue::I32(*FIGHTER_STATUS_KIND_FALL),
+                L2CValue::Bool(false)
+            );
+            return 1.into()
+        }
+        else {
+            fighter.change_status(
+                L2CValue::I32(*FIGHTER_STATUS_KIND_WAIT),
+                L2CValue::Bool(false)
+            );
+            return 1.into()
+        }
     }
     return 0.into()
 }

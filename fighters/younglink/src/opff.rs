@@ -12,6 +12,17 @@ unsafe fn special_s_article_fix(fighter: &mut L2CFighterCommon, boma: &mut Battl
     }
 }
 
+// Young Link Dash Attack Jump
+unsafe fn da_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
+    if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH {
+        if situation_kind == *SITUATION_KIND_AIR && !boma.is_in_hitlag() {
+            EffectModule::kill_kind(fighter.module_accessor, Hash40::new("sys_spin_wind_s"), true, true);
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP,true);
+            KineticModule::add_speed(boma, &Vector3f::new(0.0, -2.0, 0.0)); //Reduces the jump height from fullhop height
+        }
+    }
+}
+
 // Young Link Fire Arrow fast fall
 unsafe fn fire_arrow_ff(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
@@ -73,12 +84,10 @@ unsafe fn sword_length(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 unsafe fn holdable_dair(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
     // young link dair hold
     if motion_kind == hash40("attack_air_lw")
-        && frame > 20.0 && frame < 65.0 
+        && frame > 20.0 && frame < 57.0 
         && ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_ATTACK)
     {
-        
-        MotionModule::set_frame_sync_anim_cmd(boma, 68.0, true, true, false);
-        
+        MotionModule::set_frame_sync_anim_cmd(boma, 60.0, true, true, false);
     }
 }
 
@@ -90,6 +99,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     bombchu_training(fighter, id, status_kind);
 	sword_length(fighter, boma);
     holdable_dair(boma, motion_kind,frame);
+    da_jump(fighter, boma, status_kind, situation_kind);
 }
 
 // symbol-based call for the links' common opff

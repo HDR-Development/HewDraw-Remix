@@ -5,36 +5,40 @@ use std::arch::asm;
 
 #[skyline::hook(offset = 0x3dc160)]
 unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut smash2::app::AttackData) {
+    let boma = *(module as *mut *mut BattleObjectModuleAccessor).add(1);
+
     // if a hitbox does not intentionally trip 100% of time, remove random trip chance
     if data.slip < 1.0 {
         // -1.0 trip chance prevents any tripping whatsoever
         data.slip = -1.0;
     }
+
+    // Reduce strength of getup attacks
+    if (*boma).is_status(*FIGHTER_STATUS_KIND_DOWN_STAND_ATTACK) {
+        data.power = 6.0;  // damage
+        data.vector = 361;  // angle
+        data.r_eff = 50;  // KBG
+        data.r_add = 80;  // BKB
+        data.sub_shield = 0;  // shield damage modifier
+    }
+    if (*boma).is_status(*FIGHTER_STATUS_KIND_SLIP_STAND_ATTACK) {
+        data.power = 5.0;
+        data.vector = 361;
+        data.r_eff = 50;
+        data.r_add = 80;
+        data.sub_shield = 0;
+    }
+    if (*boma).is_status(*FIGHTER_STATUS_KIND_CLIFF_ATTACK) {
+        data.power = 8.0;
+        data.vector = 361;
+        data.r_eff = 50;
+        data.r_add = 70;
+        data.sub_shield = 0;
+    }
+    
     call_original!(module, id, group, data)
 }
 
-// Shoving this here for now until collision.rs gets merged
-// TODO: move to collision.rs
-#[skyline::hook(offset = 0x6ca950)]
-unsafe fn ground_module_update_hook(ground_module: u64) {
-    call_original!(ground_module);
-    let boma = *((ground_module + 0x20) as *mut *mut BattleObjectModuleAccessor);
-    let line = *((ground_module + 0x28) as *mut *mut f32);
-    let shift = VarModule::get_float((*boma).object(), vars::common::instance::ECB_Y_OFFSETS);
-    if (*boma).is_fighter()
-    && !(*boma).is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_ENTRY,
-        *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
-        *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
-        *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
-        *FIGHTER_STATUS_KIND_THROWN])
-    && (*boma).is_situation(*SITUATION_KIND_AIR)
-    && shift != 0.0
-    {
-        *line.add(0x3D4 / 4) += shift;
-    }
-}
-
 pub fn install() {
-    skyline::install_hooks!(attack_module_set_attack, ground_module_update_hook);
+    skyline::install_hooks!(attack_module_set_attack);
 }

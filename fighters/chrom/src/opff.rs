@@ -19,15 +19,22 @@ unsafe fn soaring_slash_drift(fighter: &mut L2CFighterCommon) {
 // Chrome Soaring Slash Cancel
 unsafe fn soaring_slash_cancel(fighter: &mut L2CFighterCommon) {
     let frame = fighter.motion_frame();
-    if fighter.is_status(*FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2)
-    && 27.0 < frame && frame < 30.0
-    && fighter.is_button_on(Buttons::Guard)
-    {
-        if VarModule::is_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_HIT) {
-            VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
-        } else {
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+    if fighter.is_status(*FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2) {
+        if frame < 15.0 { // earliest point to buffer dive
+            VarModule::on_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_CANCEL);
+        } else if frame < 28.0 { // latest point to buffer dive
+            if ControlModule::check_button_on(fighter.boma(), *CONTROL_PAD_BUTTON_SPECIAL) {
+                VarModule::off_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_CANCEL);
+            }
+        } else { // actual dive (frame after previous block)
+            if VarModule::is_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_CANCEL) {
+                if VarModule::is_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_HIT) {
+                    VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
+                    StatusModule::change_status_request_from_script(fighter.boma(), *FIGHTER_STATUS_KIND_FALL, true);
+                } else {
+                    StatusModule::change_status_request_from_script(fighter.boma(), *FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+                }
+            }
         }
     }
 }
@@ -96,16 +103,8 @@ unsafe fn side_special_cancels(fighter: &mut L2CFighterCommon) {
             fighter.is_situation(*SITUATION_KIND_AIR)
         },
 
-        utils::hash40!("special_s4_hi") | utils::hash40!("special_air_s4_hi") if fighter.is_input_jump() && !fighter.is_in_hitlag() => {
-            if fighter.is_situation(*SITUATION_KIND_AIR)
-            && fighter.get_num_used_jumps() < fighter.get_jump_count_max()
-            {
-                fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                return;
-            } 
-
-            if fighter.is_situation(*SITUATION_KIND_GROUND) {
-                fighter.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
+        utils::hash40!("special_s4_hi") | utils::hash40!("special_air_s4_hi") if !fighter.is_in_hitlag() => {
+            if fighter.check_jump_cancel(false) {
                 return;
             }
 
@@ -139,6 +138,18 @@ unsafe fn soaring_slash(fighter: &mut L2CFighterCommon) {
     }
 }
 
+pub unsafe fn double_edge_dance_vertical_momentum(fighter: &mut L2CFighterCommon){
+    let fighter_gravity = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut FighterKineticEnergyGravity;
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_ROY_STATUS_KIND_SPECIAL_S2]) && fighter.is_situation(*SITUATION_KIND_AIR) {
+        smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.072);
+        smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -2.0);
+    }
+
+    if fighter.is_situation(*SITUATION_KIND_GROUND) && VarModule::is_flag(fighter.battle_object, vars::common::instance::SPECIAL_STALL_USED) {
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::SPECIAL_STALL_USED);
+    }
+}
+
 // symbol-based call for the fe characters' common opff
 extern "Rust" {
     fn fe_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
@@ -152,6 +163,7 @@ pub unsafe fn chrom_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon
     soaring_slash_cancel(fighter);
     side_special_cancels(fighter);
     soaring_slash(fighter);
+    double_edge_dance_vertical_momentum(fighter);
     
     // Sword remains the same size throughout jab and utilt
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_HI3,

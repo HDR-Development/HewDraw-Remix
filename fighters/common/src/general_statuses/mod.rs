@@ -25,10 +25,11 @@ mod damagefall;
 mod downdamage;
 mod crawl;
 mod cliff;
-mod catchcut;
+mod catch;
 mod damage;
 mod escape;
 mod dead;
+mod damageflyreflect;
 // [LUA-REPLACE-REBASE]
 // [SHOULD-CHANGE]
 // Reimplement the whole status script (already done) instead of doing this.
@@ -77,6 +78,15 @@ pub unsafe fn status_pre_DamageAir(fighter: &mut L2CFighterCommon) -> L2CValue {
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR);
         return 1.into();
     }
+
+    // Checks whether you have successfully CC'd into non-tumble knockback
+    // This is so we can apply half hitstun upon landing from a CC'd attack
+    if fighter.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_SQUAT, *FIGHTER_STATUS_KIND_SQUAT_WAIT]) {
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE);
+    }
+    else {
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE);
+    }
     call_original!(fighter)
 }
 
@@ -87,54 +97,6 @@ pub unsafe fn damage_fly_common_init(fighter: &mut L2CFighterCommon) {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_D);
     }
     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_KNOCKDOWN_THROW);
-    original!()(fighter)
-}
-
-#[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon20status_end_DamageFlyEv")]
-pub unsafe fn damage_fly_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
-    original!()(fighter)
-}
-
-#[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon28status_end_DamageFlyReflectDEv")]
-pub unsafe fn damage_fly_reflect_d_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
-    original!()(fighter)
-}
-
-#[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_JUMP_BOARD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon36status_end_DamageFlyReflectJumpBoardEv")]
-pub unsafe fn damage_fly_reflect_jump_board_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
-    original!()(fighter)
-}
-
-#[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon29status_end_DamageFlyReflectLREv")]
-pub unsafe fn damage_fly_reflect_lr_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
-    original!()(fighter)
-}
-
-#[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon28status_end_DamageFlyReflectUEv")]
-pub unsafe fn damage_fly_reflect_u_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
-    original!()(fighter)
-}
-
-#[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon24status_end_DamageFlyRollEv")]
-pub unsafe fn damage_fly_roll_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
-    original!()(fighter)
-}
-
-#[smashline::common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-pub unsafe fn damage_fly_meteor_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ControlModule::set_command_life_extend(fighter.module_accessor, 0);
     original!()(fighter)
 }
 
@@ -164,12 +126,14 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_LandingStiffness)]
 pub unsafe fn status_LandingStiffness(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_DAMAGE_AIR
-    || fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_SAVING_DAMAGE_AIR {
-        // halve hitstun on landing, with a minimum of your heavy landing lag value
+    && VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE) {
+        // halve hitstun on non-tumble landing if CC'd
+        // if halved hitstun is less than your heavy landing lag value, use your heavy landing lag value
         let hitstun = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
         let landing_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_frame"), 0);
         WorkModule::set_float(fighter.module_accessor, (hitstun * 0.5).max(landing_frame), *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
     }
+    VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_CC_NON_TUMBLE);
     original!()(fighter)
 }
 
@@ -412,20 +376,11 @@ pub fn install() {
     downdamage::install();
     crawl::install();
     cliff::install();
-    catchcut::install();
+    catch::install();
     damage::install();
     escape::install();
     dead::install();
-
-    smashline::install_status_scripts!(
-        damage_fly_end,
-        damage_fly_reflect_d_end,
-        damage_fly_reflect_jump_board_end,
-        damage_fly_reflect_lr_end,
-        damage_fly_reflect_u_end,
-        damage_fly_roll_end,
-        damage_fly_meteor_end
-    );
+    damageflyreflect::install();
 
     skyline::nro::add_hook(nro_hook);
 }

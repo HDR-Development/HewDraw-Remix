@@ -52,7 +52,7 @@ download_and_extract("Raytwo", "ARCropolis", "latest", "release.zip")
 download_and_extract("skyline-dev", "skyline", "beta", "skyline.zip", "/atmosphere/contents/01006A800016E000/")
 
 print("getting libnro_hook.nro")
-urllib.request.urlretrieve("https://github.com/ultimate-research/nro-hook-plugin/releases/download/beta/libnro_hook.nro", "libnro_hook.nro")
+urllib.request.urlretrieve("https://github.com/ultimate-research/nro-hook-plugin/releases/latest/download/libnro_hook.nro", "libnro_hook.nro")
 shutil.move("libnro_hook.nro", "switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
 
 print("getting libsmashline_hook.nro")
@@ -64,7 +64,7 @@ shutil.move("libsmashline_hook.nro", "switch-package/atmosphere/contents/01006A8
 #shutil.move("libsmashline_hook_development.nro", "switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
 
 print("getting hdr-launcher.nro")
-urllib.request.urlretrieve("https://github.com/HDR-Development/hdr-launcher/releases/latest/download/hdr-launcher.nro", "hdr-launcher.nro")
+urllib.request.urlretrieve("https://github.com/techyCoder81/hdr-launcher-react/releases/latest/download/hdr-launcher.nro", "hdr-launcher.nro")
 shutil.move("hdr-launcher.nro", "switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
 
 

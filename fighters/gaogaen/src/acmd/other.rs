@@ -147,12 +147,17 @@ unsafe fn gaogaen_catch_game(fighter: &mut L2CAgentBase) {
         if grab_y > 0.0 {
             z_mod = 3.0 * grab_y;
         }
+        else if grab_y < 0.0 {
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 361, 20, 10, 0, 5.0, 0.0, (grab_y * 8.0) + 11.0, 13.0 - z_mod, Some(0.0), Some(10.0), Some(2.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        }
+        
         CATCH(fighter, 0, Hash40::new("top"), 5.0, 0.0, (grab_y * 8.0) + 11.0, 13.0 - z_mod, Some(0.0), Some(10.0), Some(2.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(fighter);
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        AttackModule::clear_all(boma);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }
@@ -199,12 +204,17 @@ unsafe fn gaogaen_catchturn_game(fighter: &mut L2CAgentBase) {
         if grab_y > 0.0 {
             z_mod = 3.0 * grab_y;
         }
+        else if grab_y < 0.0 {
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 361, 20, 10, 0, 4.0, 0.0, (grab_y * 8.0) + 11.0, -17.0 - z_mod, Some(0.0), Some(10.0), Some(-2.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        }
+
         CATCH(fighter, 0, Hash40::new("top"), 4.0, 0.0, (grab_y * 8.0) + 11.0, -17.0 + z_mod, Some(0.0), Some(10.0), Some(-2.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(fighter);
     wait(lua_state, 3.0);
     if is_excute(fighter) {
         grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        AttackModule::clear_all(boma);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }
@@ -251,12 +261,17 @@ unsafe fn gaogaen_catchdash_game(fighter: &mut L2CAgentBase) {
         if grab_y > 0.0 {
             z_mod = 4.0 * grab_y;
         }
+        else if grab_y < 0.0 {
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 361, 20, 10, 0, 3.5, 0.0, (grab_y * 8.0) + 9.0, 12.0 - z_mod, Some(0.0), Some(9.0), Some(2.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        }
+
         CATCH(fighter, 0, Hash40::new("top"), 3.5, 0.0, (grab_y * 8.0) + 9.0, 12.0 - z_mod, Some(0.0), Some(9.0), Some(2.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(fighter);
     wait(lua_state, 3.0);
     if is_excute(fighter) {
         grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        AttackModule::clear_all(boma);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(boma, false);
     }

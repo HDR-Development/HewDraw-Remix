@@ -1,6 +1,51 @@
 
 use super::*;
 
+
+#[acmd_script( agent = "reflet", script = "game_specialntronstart" , category = ACMD_GAME , low_priority)]
+unsafe fn reflet_special_n_tron_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 15.0/(19.0-1.0));
+    frame(lua_state, 19.0);
+    FT_MOTION_RATE(fighter, 1.0);
+}
+
+
+
+#[acmd_script( agent = "reflet", script = "game_specialairntronstart" , category = ACMD_GAME , low_priority)]
+unsafe fn reflet_special_air_n_tron_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 15.0/(19.0-1.0));
+    frame(lua_state, 19.0);
+    FT_MOTION_RATE(fighter, 1.0);
+}
+
+
+
+#[acmd_script( agent = "reflet", script = "game_specialntronend" , category = ACMD_GAME , low_priority)]
+unsafe fn reflet_special_n_tron_end_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.7); //FAF is frame 61
+    }
+}
+
+
+#[acmd_script( agent = "reflet", script = "game_specialairntronend" , category = ACMD_GAME , low_priority)]
+unsafe fn reflet_special_air_n_tron_end_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.35); //FAF is frame 63
+    }
+}
+
+
 #[acmd_script( agent = "reflet", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn reflet_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -20,7 +65,7 @@ unsafe fn reflet_special_hi_game(fighter: &mut L2CAgentBase) {
             WorkModule::on_flag(boma,  *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND);
         }
         else{
-            MotionModule::set_rate(boma, 1.3);
+            MotionModule::set_rate(boma, 2.0);
         }
     }
     wait(lua_state, 1.0);
@@ -34,6 +79,7 @@ unsafe fn reflet_special_hi_game(fighter: &mut L2CAgentBase) {
     }
     
 }
+
 
 #[acmd_script( agent = "reflet", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn reflet_special_air_hi_game(fighter: &mut L2CAgentBase) {
@@ -54,7 +100,7 @@ unsafe fn reflet_special_air_hi_game(fighter: &mut L2CAgentBase) {
             WorkModule::on_flag(boma,  *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND);
         }
         else{
-            MotionModule::set_rate(boma, 1.3);
+            MotionModule::set_rate(boma, 2.0);
         }
     }
     wait(lua_state, 1.0);
@@ -71,6 +117,10 @@ unsafe fn reflet_special_air_hi_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        reflet_special_n_tron_start_game,
+        reflet_special_air_n_tron_start_game,
+        reflet_special_n_tron_end_game,
+        reflet_special_air_n_tron_end_game,
         reflet_special_hi_game,
         reflet_special_air_hi_game,
     );
