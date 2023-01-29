@@ -32,8 +32,8 @@ unsafe fn lucas_attack_air_n_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 26.0);
     if is_excute(fighter) {
         MotionModule::set_rate(boma, 1.0);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 40, 127, 0, 35, 4.0, 0.0, 4.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 40, 127, 0, 35, 9.0, 0.0, 3.7, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 50, 127, 0, 35, 1.5, 0.0, 4.5, 2.2, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 50, 127, 0, 35, 9.0, 0.0, 3.7, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
     }
     wait(lua_state, 4.0);
     if is_excute(fighter) {
@@ -207,15 +207,15 @@ unsafe fn lucas_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("kneer"), 6.5, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
     }
-    frame(lua_state, 13.0);
+    frame(lua_state, 12.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 8.0, -0.2, 0, 155, 90, 0.95, true);
-        LAST_EFFECT_SET_RATE(fighter, 0.8);
+        LAST_EFFECT_SET_RATE(fighter, 0.9);
         LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.8, 0.1);
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("lucas_psi_atk"), Hash40::new("kneer"), 4.7, 0, 0, 0, 90, 0, 0.5, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucas_psi_atk"), Hash40::new("kneer"), 6.7, -2.0, 0, 0, 90, 0, 0.4, true);
         LAST_EFFECT_SET_RATE(fighter, 1.6);
     }
     frame(lua_state, 20.0);

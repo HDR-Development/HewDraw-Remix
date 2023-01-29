@@ -5,6 +5,7 @@ pub mod offsets;
 
 mod modules;
 mod game_modes;
+mod ui;
 
 pub use utils_dyn::ext;
 pub use utils_dyn::consts;
@@ -14,11 +15,14 @@ pub use utils_dyn::util;
 pub use hdr_macros::*;
 
 pub use modules::*;
+pub use game_modes::open_modes_session;
+pub use game_modes::get_custom_mode;
 
 pub fn init() {
     modules::init();
     singletons::init();
     game_modes::install();
+    ui::install();
 
     std::panic::set_hook(Box::new(|info| {
         let location = info.location().unwrap();

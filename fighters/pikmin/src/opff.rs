@@ -9,9 +9,7 @@ unsafe fn winged_pikmin_cancel(boma: &mut BattleObjectModuleAccessor, status_kin
         if boma.is_cat_flag(Cat1::SpecialN) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_END, false);
         }
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
-        }
+        boma.check_airdodge_cancel();
     }
 }
 

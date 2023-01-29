@@ -12,6 +12,9 @@ mod controls;
 #[cfg(feature = "main_nro")]
 mod lua;
 
+#[cfg(feature = "main_nro")]
+mod online;
+
 use skyline::libc::c_char;
 #[cfg(feature = "main_nro")]
 use skyline_web::*;
@@ -41,6 +44,46 @@ extern "Rust" {
 #[export_name = "hdr_is_available"]
 pub extern "Rust" fn is_available() -> bool { true }
 
+pub fn is_on_ryujinx() -> bool {
+    unsafe { // Ryujinx skip based on text addr
+        let text_addr = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64;
+        if text_addr == 0x8004000 {
+            println!("we are on Ryujinx");
+            return true;
+        } else {
+            println!("we are not on Ryujinx");
+            return false;
+        }
+    }
+}
+
+#[cfg(feature = "main_nro")]
+use once_cell::sync::OnceCell;
+
+/// gets the currently loaded assets version string for display
+#[cfg(feature = "main_nro")]
+pub fn get_romfs_version() -> &'static String {
+    static INSTANCE: OnceCell<String> = OnceCell::new();
+    INSTANCE.get_or_init(|| {
+        match std::fs::read_to_string("mods:/ui/romfs_version.txt") {
+            Ok(version_value) => version_value.trim().to_string(),
+            Err(_) => String::from("UNKNOWN"),
+        }
+    })
+}
+
+/// gets the main plugin version string for display
+#[cfg(feature = "main_nro")]
+pub fn get_plugin_version() -> &'static String {
+    static INSTANCE: OnceCell<String> = OnceCell::new();
+    INSTANCE.get_or_init(|| {
+        match std::fs::read_to_string("mods:/ui/hdr_version.txt") {
+            Ok(version_value) => version_value.trim().to_string(),
+            Err(_) => String::from("UNKNOWN")
+        }
+    })
+}
+
 extern "C" {
     fn change_version_string(arg: u64, string: *const c_char);
 }
@@ -50,16 +93,15 @@ extern "C" {
 fn change_version_string_hook(arg: u64, string: *const c_char) {
     let original_str = unsafe { skyline::from_c_str(string) };
     if original_str.contains("Ver.") {
-        let romfs_version = match std::fs::read_to_string("mods:/ui/romfs_version.txt") {
-            Ok(version_value) => version_value.trim().to_string(),
-            Err(_) => String::from("UNKNOWN"),
-        };
+        let romfs_version = get_romfs_version();
         let hdr_version = match std::fs::read_to_string("mods:/ui/hdr_version.txt") {
             Ok(version_value) => version_value.trim().to_string(),
             Err(_) => {
                 
                 #[cfg(feature = "main_nro")]
-                skyline_web::DialogOk::ok("hdr-assets is not enabled! Please enable hdr-assets in arcropolis config.");
+                if !is_on_ryujinx() {
+                    skyline_web::DialogOk::ok("hdr-assets is not enabled! Please enable hdr-assets in arcropolis config.");
+                }
                 
                 String::from("UNKNOWN")
             }
@@ -118,6 +160,7 @@ pub extern "C" fn main() {
         random::install();
         controls::install();
         lua::install();
+        online::install();
     }
 
     #[cfg(not(feature = "runtime"))]
@@ -144,18 +187,6 @@ pub extern "C" fn main() {
 
 }
 
-pub fn is_on_ryujinx() -> bool {
-    unsafe { // Ryujinx skip based on text addr
-        let text_addr = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64;
-        if text_addr == 0x8004000 {
-            println!("we are on Ryujinx");
-            return true;
-        } else {
-            println!("we are not on Ryujinx");
-            return false;
-        }
-    }
-}
 
 #[cfg(feature = "main_nro")]
 pub fn quick_validate_install() {
