@@ -23,7 +23,7 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
-// Squirtle Withdraw Jump Cancels
+// Squirtle Withdraw Actionability On-Hit
 unsafe fn withdraw_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32, frame: f32) {
     /*
     if [*FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_LOOP,
@@ -31,42 +31,9 @@ unsafe fn withdraw_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
         *FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_END].contains(&status_kind)
         || status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame > 10.0 {
     */
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S {
-        VarModule::set_float(boma.object(), vars::pzenigame::instance::WITHDRAW_FRAME, 0.0);
-    }
-    if [*FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_LOOP].contains(&status_kind) {
-        // Increment the Withdraw frame every frame you're in the SPECIAL_S_LOOP status kind
-        VarModule::add_float(boma.object(), vars::pzenigame::instance::WITHDRAW_FRAME, 1.0);
-        // JC Lockout: frame 30
-        if VarModule::get_float(boma.object(), vars::pzenigame::instance::WITHDRAW_FRAME) > 15.0 {
-            if boma.is_input_jump() && !boma.is_in_hitlag() {
-                if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                    }
-                } else if situation_kind == *SITUATION_KIND_GROUND {
-                    if facing * stick_x < 0.0 {
-                        PostureModule::reverse_lr(boma);
-                    }
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                }
-            }
-        }
-    }
-
-    if [*FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_END].contains(&status_kind) && frame < 10.0 {
-        if boma.is_input_jump() && !boma.is_in_hitlag() {
-            if situation_kind == *SITUATION_KIND_AIR {
-                if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                }
-            } else if situation_kind == *SITUATION_KIND_GROUND {
-                if facing * stick_x < 0.0 {
-                    PostureModule::reverse_lr(boma);
-                }
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-            }
-        }
+    if [*FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_HIT].contains(&status_kind) && frame >= 13.0 && !boma.is_in_hitlag() {
+        //boma.check_jump_cancel(true);
+        CancelModule::enable_cancel(boma);
     }
 
 }
