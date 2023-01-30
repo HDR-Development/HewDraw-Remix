@@ -468,6 +468,7 @@ unsafe fn handle_incoming_packet(ctx: &mut skyline::hooks::InlineCtx) {
 /// fix throws not respecting the cstick, especially dk cargo throw
 #[skyline::hook(replace = L2CFighterCommon_IsThrowStick)]
 unsafe extern "C" fn is_throw_stick(fighter: &mut L2CFighterCommon) -> L2CValue {
+
     let mut out = fighter.local_func__fighter_status_catch_1();
     let stick_x = fighter.stick_x() * PostureModule::lr(fighter.boma());
     let stick_y = fighter.stick_y();
