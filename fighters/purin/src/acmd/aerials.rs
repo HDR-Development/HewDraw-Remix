@@ -24,14 +24,16 @@ unsafe fn purin_attack_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.125);
         AttackModule::clear_all(boma);
-    }
-    frame(lua_state, 40.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
+    }
+    //frame(lua_state, 34.0);
+    //if is_excute(fighter) {
+    //    FT_MOTION_RATE(fighter, 1.0);
+     //   WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     
-}
+    
+
 
 #[acmd_script( agent = "purin", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn purin_attack_air_f_game(fighter: &mut L2CAgentBase) {
