@@ -202,10 +202,10 @@ unsafe fn sound_specialairn(fighter: &mut L2CAgentBase) {
 unsafe fn game_specialairsstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        KineticModule::mul_speed(boma, &Vector3f{x: 1.0, y: 0.0, z: 1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-    }
+    //frame(lua_state, 1.0);
+    //if is_excute(fighter) {
+        //KineticModule::mul_speed(boma, &Vector3f{x: 1.0, y: 0.0, z: 1.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    //}
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_FLAG_REVERSE_LR);
@@ -426,6 +426,7 @@ unsafe fn game_specialairlw(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 4.0);
     if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.8);
         WorkModule::on_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_LW_FLAG_LIMIT_X_DEC);
         WorkModule::off_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_LW_FLAG_RISE);
         WorkModule::on_flag(boma, *FIGHTER_LUIGI_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_BUOYANCY);
