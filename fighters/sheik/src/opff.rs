@@ -4,21 +4,21 @@ use super::*;
 use globals::*;
 
  
-unsafe fn bouncing_fish_return_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if status_kind != *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_RETURN || frame <= 10.0 {
-        return;
-    }
+// unsafe fn bouncing_fish_return_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+//     if status_kind != *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_RETURN || frame <= 10.0 {
+//         return;
+//     }
 
-    if situation_kind == *SITUATION_KIND_AIR {
-        if boma.check_jump_cancel(false)
-        || boma.check_airdodge_cancel() {
-            return;
-        }
-        if boma.is_cat_flag(Cat1::SpecialHi) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI, true);
-        }
-    }
-}
+//     if situation_kind == *SITUATION_KIND_AIR {
+//         if boma.check_jump_cancel(false)
+//         || boma.check_airdodge_cancel() {
+//             return;
+//         }
+//         if boma.is_cat_flag(Cat1::SpecialHi) {
+//             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI, true);
+//         }
+//     }
+// }
 
 unsafe fn nspecial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
     //PM-like neutral-b canceling
@@ -133,11 +133,14 @@ pub unsafe fn sheik_teleport_cancel(boma: &mut BattleObjectModuleAccessor, statu
     else {
         VarModule::off_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE);
     }
+
+    // if status_kind == *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL && fighter.is_prev_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_END) {
+    //     println!("Is this autocanceling?");
+    // }
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-
-    bouncing_fish_return_cancel(fighter, boma, status_kind, situation_kind, cat[0], frame);
+    //bouncing_fish_return_cancel(fighter, boma, status_kind, situation_kind, cat[0], frame);
     nspecial_cancels(fighter, boma, status_kind, situation_kind);
     //grenade_pull(fighter, boma, id, status_kind, situation_kind, frame);
     grenade_cancel_timer(fighter, boma, id);

@@ -16,8 +16,9 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
+      <float hash="speed_y">2.5</float>
       <float hash="warp_speed_add">1.34</float>
-      <float hash="special_hi_landing_frame">34</float>
+      <float hash="special_hi_landing_frame">30</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -32,6 +33,7 @@
       <float hash="jump_speed_max">2.35</float>
       <int hash="attack_frame">10</int>
       <int hash="somersault_attack_frame">15</int>
+      <float hash="wall_somersault_speed_y">2.4</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
