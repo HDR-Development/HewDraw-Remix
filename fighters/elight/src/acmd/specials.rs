@@ -352,6 +352,181 @@ unsafe fn game_specialairlw(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
+#[acmd_script( agent = "elight", scripts = ["game_specialairsstart", "game_specialsstart"] , category = ACMD_GAME , low_priority)]
+unsafe fn game_specialsstart (fighter: &mut L2CAgentBase) { 
+    let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        MotionModule::set_rate(boma, 2.0);
+    }
+}
+
+#[acmd_script( agent = "elight", scripts = ["game_specials", "game_specialairs"] , category = ACMD_GAME , low_priority)]
+unsafe fn game_specials (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	frame(lua_state, 1.0);
+	if is_excute(fighter) {
+        MotionModule::set_rate(boma, 1.7);
+        JostleModule::set_status(fighter.module_accessor, false);
+	}
+	if is_excute(fighter) {
+		HIT_NODE(fighter, Hash40::new("waist"), *HIT_STATUS_XLU);
+		HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
+		HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
+		HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
+		HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
+		HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
+		HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_XLU);
+		HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_XLU);
+		HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_XLU);
+		HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
+		//ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 30, 100, 40, 35, 5.0, 0.0, 6.0, 8.0, Some(0.0), Some(6.0), Some(12.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+		//ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 35, 100, 40, 25, 5.0, 0.0, 6.0, 8.0, Some(0.0), Some(6.0), Some(12.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+	}
+	frame(lua_state, 2.0);
+	if is_excute(fighter) {
+		//ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 50, 100, 40, 35, 5.0, 0.0, 6.0, 12.0, Some(0.0), Some(6.0), Some(27.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+		//ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 35, 100, 40, 25, 5.0, 0.0, 6.0, 12.0, Some(0.0), Some(6.0), Some(27.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+	}
+	frame(lua_state, 3.0);
+	if is_excute(fighter) {
+		AttackModule::clear_all(fighter.module_accessor);
+		HIT_NODE(fighter, Hash40::new("waist"), *HIT_STATUS_NORMAL);
+		HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_NORMAL);
+		HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_NORMAL);
+		HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_NORMAL);
+		HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_NORMAL);
+		HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_NORMAL);
+		HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_NORMAL);
+		HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_NORMAL);
+		HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
+		HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_NORMAL);
+	}
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        //MotionModule::set_frame(boma, 15.0, true);
+        WorkModule::set_int(fighter.module_accessor, 4, *FIGHTER_ELIGHT_STATUS_SPECIAL_S_WORK_INT_BUNSHIN_NUM);
+        if ArticleModule::get_num(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_BUNSHIN) == 0 {
+			ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_BUNSHIN, false, -1);
+            ArticleModule::set_rate(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_BUNSHIN, 1.0);
+		}
+        VisibilityModule::set_whole(fighter.module_accessor, false);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        MotionModule::set_rate(boma, (22.0-18.0)/1.0);
+    }
+	frame(lua_state, 23.0);
+	if is_excute(fighter) {
+        MotionModule::set_rate(boma, 1.0);
+	}
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        MotionModule::set_rate(boma, 3.0);
+    }
+	if is_excute(fighter) {
+		WorkModule::off_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_ELIGHT_STATUS_SPECIAL_S_FLAG_IS_CHECK_CLIFF);
+	}
+}
+
+#[acmd_script( agent = "elight", script = "effect_specials", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_specials(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FLW_UNSYNC_VIS(fighter, Hash40::new("elight_photon_speedline"), Hash40::new("top"), 0, 7, 0, 0, 0, 0, 0.6, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(fighter, -0.3);
+        EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_body_lihgt"), Hash40::new("hip"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 36.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -14, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+#[acmd_script( agent = "elight", scripts = ["sound_specials", "sound_specialairs"], category = ACMD_SOUND, low_priority )]
+unsafe fn sound_specials(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("vc_elight_special_s01"));
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_elight_attackhard_l01"));
+    }
+}
+
+#[acmd_script( agent = "elight_bunshin", scripts = ["game_specialairs4", "game_specials4"], category = ACMD_GAME, low_priority )]
+unsafe fn game_specials4(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("rot"), 16.0, 90, 115, 0, 45, 3.5, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("rot"), 11.0, 60, 100, 65, 45, 12.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        AttackModule::clear(boma, 1, false);
+        ATTACK(fighter, 0, 0, Hash40::new("rot"), 4.0, 72, 115, 0, 45, 5.5, 0.0, 0.0, 5.0, Some(0.0), Some(0.0), Some(21.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("rot"), 4.0, 72, 115, 0, 45, 5.5, 0.0, 0.0, 21.0, Some(0.0), Some(0.0), Some(35.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        VisibilityModule::set_whole(fighter.module_accessor, false);
+    }
+}
+
+#[acmd_script( agent = "elight_bunshin", scripts = ["effect_specialairs4", "effect_specials4"], category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_specials4(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("elight_photon_body_lihgt"), Hash40::new("hip"), 0, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+        LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(fighter, -1);
+        EFFECT(fighter, Hash40::new("elight_photon_appear"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("elight_photon_speedline"), Hash40::new("throw"), 0, 0, 0, 0, -24, -43, 0.6, 0, 0, 0, 0, 0, 0, true);
+        AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_elight_sword3"), Hash40::new("tex_elight_sword2"), 5, Hash40::new("sword1"), 0.0, 0.0, -0.08, Hash40::new("sword1"), 19.5, 0.0, -0.08, true, Hash40::new("null"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("elight_photon_appear"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.7);
+        EFFECT(fighter, Hash40::new("elight_photon_start"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("elight_appeal_spark"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1.6, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+        EFFECT(fighter, Hash40::new("elight_photon_speedline"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.5);
+        EFFECT(fighter, Hash40::new("elight_photon_slash4_light"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        AFTER_IMAGE_OFF(fighter, 3);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("elight_photon_vanish"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("elight_photon_body_lihgt"), false, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("elight_photon_sword"), true, true);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         game_specialairhi1,
@@ -371,6 +546,13 @@ pub fn install() {
 
         game_speciallw,
         game_specialairlw,
+
+        game_specialsstart,
+        game_specials,
+        effect_specials,
+        sound_specials,
+        game_specials4,
+        effect_specials4,
     );
 }
 
