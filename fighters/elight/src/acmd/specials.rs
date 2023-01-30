@@ -387,12 +387,15 @@ unsafe fn game_specials (fighter: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 2.0);
 	if is_excute(fighter) {
-		//ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 50, 100, 40, 35, 5.0, 0.0, 6.0, 12.0, Some(0.0), Some(6.0), Some(27.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-		//ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 35, 100, 40, 25, 5.0, 0.0, 6.0, 12.0, Some(0.0), Some(6.0), Some(27.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+		WorkModule::set_int(fighter.module_accessor, 4, *FIGHTER_ELIGHT_STATUS_SPECIAL_S_WORK_INT_BUNSHIN_NUM);
+        if ArticleModule::get_num(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_BUNSHIN) == 0 {
+			ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_BUNSHIN, false, -1);
+            ArticleModule::set_rate(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_BUNSHIN, 1.0);
+		}
+        VisibilityModule::set_whole(fighter.module_accessor, false);
 	}
 	frame(lua_state, 3.0);
 	if is_excute(fighter) {
-		AttackModule::clear_all(fighter.module_accessor);
 		HIT_NODE(fighter, Hash40::new("waist"), *HIT_STATUS_NORMAL);
 		HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_NORMAL);
 		HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_NORMAL);
@@ -404,16 +407,6 @@ unsafe fn game_specials (fighter: &mut L2CAgentBase) {
 		HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
 		HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_NORMAL);
 	}
-    frame(lua_state, 4.0);
-    if is_excute(fighter) {
-        //MotionModule::set_frame(boma, 15.0, true);
-        WorkModule::set_int(fighter.module_accessor, 4, *FIGHTER_ELIGHT_STATUS_SPECIAL_S_WORK_INT_BUNSHIN_NUM);
-        if ArticleModule::get_num(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_BUNSHIN) == 0 {
-			ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_BUNSHIN, false, -1);
-            ArticleModule::set_rate(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_BUNSHIN, 1.0);
-		}
-        VisibilityModule::set_whole(fighter.module_accessor, false);
-    }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
         MotionModule::set_rate(boma, (22.0-18.0)/1.0);
