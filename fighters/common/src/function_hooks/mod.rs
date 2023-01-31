@@ -51,7 +51,7 @@ unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor) -> bool 
         || ((*boma).kind() == *FIGHTER_KIND_PFUSHIGISOU
             && (*boma).is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI))
         || ((*boma).kind() == *FIGHTER_KIND_KAMUI
-            && (*boma).is_status_one_of(&[*FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_ATTACK])) )
+            && (*boma).is_status_one_of(&[*FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_ATTACK, *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL, *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_F, *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_B])) )
     {
         return true;
     }
