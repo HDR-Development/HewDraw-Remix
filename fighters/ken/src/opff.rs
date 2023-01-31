@@ -248,11 +248,11 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     // }
 
     // jump cancels
-    if boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_ATTACK_HI4,
-    ]) {
-        boma.check_jump_cancel(false);
-        return;
-    }
+    // if boma.is_status_one_of(&[
+    //     *FIGHTER_STATUS_KIND_ATTACK_HI4,
+    // ]) {
+    //     boma.check_jump_cancel(false);
+    //     return;
+    // }
     
 }
