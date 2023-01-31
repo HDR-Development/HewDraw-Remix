@@ -72,6 +72,25 @@ unsafe fn ken_attack_s3_s_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "ken", script = "effect_attacks3s", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attacks3s(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("trans"), 0, 14, -3, 0, 0, 0, 0.7, true, *EF_FLIP_YZ, 0.6);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("armr"), 3.0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 360, false, 0.4);
+    }
+}
+
 #[acmd_script( agent = "ken", script = "game_attackhi3w" , category = ACMD_GAME , low_priority)]
 unsafe fn ken_attack_hi3_w_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -359,6 +378,7 @@ pub fn install() {
     install_acmd_scripts!(
         ken_attack_s3_s_w_game,
         ken_attack_s3_s_s_game,
+        effect_attacks3s,
         ken_attack_hi3_w_game,
         ken_attack_hi3_s_game,
         ken_attack_lw3_w_game,
