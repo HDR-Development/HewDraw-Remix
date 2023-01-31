@@ -484,6 +484,62 @@ unsafe fn mario_special_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "mario", script = "effect_specialhi", category = ACMD_EFFECT, low_priority )]
+unsafe fn mario_special_hi_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("mario_superjump_power"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_action_smoke_h"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("handl"), 0, -0.4, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("mario_superjump_fnish"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 0.5, true);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("mario_superjump_power"), false, false);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("mario_superjump_fnish"), -1);
+    }
+}
+
+#[acmd_script( agent = "mario", script = "effect_specialairhi", category = ACMD_EFFECT, low_priority )]
+unsafe fn mario_special_air_hi_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("mario_superjump_power"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("handl"), 0, -0.4, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("mario_superjump_fnish"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 0.5, true);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("mario_superjump_power"), false, false);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("mario_superjump_fnish"), -1);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         mario_special_n_game,
@@ -495,6 +551,8 @@ pub fn install() {
         mario_special_s_game,
         mario_special_air_s_game,
         mario_special_hi_game,
+        mario_special_hi_effect,
+        mario_special_air_hi_effect,
     );
 }
 
