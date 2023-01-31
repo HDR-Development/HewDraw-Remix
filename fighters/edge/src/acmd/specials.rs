@@ -188,6 +188,96 @@ unsafe fn edge_special_hi2_game(fighter: &mut L2CAgentBase) {
     //clear_special_hi_jostle_area();
 }
 
+#[acmd_script( agent = "edge", script = "effect_specialhi2", category = ACMD_EFFECT, low_priority )]
+unsafe fn edge_special_hi2_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("edge_octaslash_charge"), false, false);
+        if WorkModule::is_flag(boma, *FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_ONE_WINGED_ACTIVATED) {
+            EFFECT(fighter, Hash40::new("edge_octaslash_illution_wing"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        }
+        EFFECT(fighter, Hash40::new("edge_octaslash_illution_01"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_octaslash_sword_flare"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_octaslash_speed_line"), Hash40::new("rot"), 0, -1, 0, 0, 0, 0, 2, true);
+        EffectModule::enable_sync_init_pos_last(boma);
+        if WorkModule::is_flag(boma, *FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_SITUATION_GROUND) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 0.8, 0, 0, 4, 0, 0, 0, false);
+        }
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_octaslash_arc2"), Hash40::new("rot"), 0, 4, 2, 0, -3.5, 196, 0.4, true);
+        EffectModule::set_disable_render_offset_last(boma);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        if WorkModule::is_flag(boma, *FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_SITUATION_GROUND) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_sliding_smoke"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 0.6, 0, 0, 3, 0, 0, 0, false);
+        }
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_octaslash_arc2"), Hash40::new("rot"), 0, 3, 2, -4, -19, 13, 0.4, true);
+        EffectModule::set_disable_render_offset_last(boma);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+        if WorkModule::is_flag(boma, *FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_SITUATION_GROUND) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 0.45, 0, 0, 3, 0, 0, 0, false);
+        }
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_octaslash_arc2"), Hash40::new("rot"), 0, 6, 2, -15, -18, -144.7, 0.4, true);
+        EffectModule::set_disable_render_offset_last(boma);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+        if WorkModule::is_flag(boma, *FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_SITUATION_GROUND) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 0.45, 0, 0, 3, 0, 0, 0, false);
+        }
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_octaslash_arc2"), Hash40::new("rot"), 0, 2.6, 2, 29, -55, -13, 0.4, true);
+        EffectModule::set_disable_render_offset_last(boma);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+    if is_excute(fighter) {
+        if WorkModule::is_flag(boma, *FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_SITUATION_GROUND) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 0.45, 0, 0, 3, 0, 0, 0, false);
+        }
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_octaslash_arc2"), Hash40::new("rot"), 0, 2.5, 2, -2.5, -20, -163, 0.4, true);
+        EffectModule::set_disable_render_offset_last(boma);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+        if WorkModule::is_flag(boma, *FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_SITUATION_GROUND) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 0.45, 0, 0, 3, 0, 0, 0, false);
+        }
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_octaslash_arc2"), Hash40::new("rot"), 0, 5.3, 10, -12, -38, 35, 0.3, true);
+        EffectModule::set_disable_render_offset_last(boma);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        if WorkModule::is_flag(boma, *FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_SITUATION_GROUND) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 0.45, 0, 0, 3, 0, 0, 0, false);
+        }
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("edge_octaslash_arc2"), Hash40::new("rot"), 0, 7.5, 7, -2.7, -24.5, -141, 0.25, 0, 0, 0, 0, 0, 0, true);
+        EffectModule::set_disable_render_offset_last(boma);
+        LAST_EFFECT_SET_RATE(fighter, 2);
+        EFFECT_FOLLOW(fighter, Hash40::new("edge_octaslash_arc"), Hash40::new("rot"), -3.2, 3.8, -3, -5.7, -0.5, 23, 0.4, true);
+        EffectModule::set_disable_render_offset_last(boma);
+        EFFECT_OFF_KIND(fighter, Hash40::new("edge_octaslash_sword_flare"), false, true);
+    }
+}
+
 #[acmd_script( agent = "edge", script = "game_specialhi1end" , category = ACMD_GAME , low_priority)]
 unsafe fn edge_special_hi1_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -254,6 +344,7 @@ pub fn install() {
         edge_special_n2_game,
         edge_special_air_n2_game,
         edge_special_hi2_game,
+        edge_special_hi2_effect,
         edge_special_hi1_end_game,
         edge_special_hi2_end_game,
         edge_special_air_hi_2_end_game
