@@ -369,6 +369,7 @@ unsafe fn sub_transition_group_check_ground(fighter: &mut L2CFighterCommon, to_s
 pub unsafe fn sys_line_status_system_control_hook(fighter: &mut L2CFighterBase) -> L2CValue {
     if VarModule::has_var_module(fighter.battle_object)
     && VarModule::is_flag(fighter.battle_object, vars::common::instance::CHECK_CHANGE_MOTION_ONLY)
+    && fighter.global_table[CURRENT_FRAME].get_i32() != 0
     {
         // When we are calling MAIN status for the sole purpose of changing motion kind upon contact with a surface,
         // there is no need to increment the CURRENT_FRAME counter,
@@ -382,6 +383,7 @@ pub unsafe fn sys_line_status_system_control_hook(fighter: &mut L2CFighterBase) 
         0.into()
     }
     else {
+        if VarModule::has_var_module(fighter.battle_object) { VarModule::off_flag(fighter.battle_object, vars::common::instance::CHECK_CHANGE_MOTION_ONLY); }
         call_original!(fighter)
     }
 }

@@ -111,8 +111,7 @@ unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor) {
         // 11F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
         let landing_lag = 12.0;
         if MotionModule::frame(boma) < (special_n_fire_cancel_frame_ground - landing_lag) {
-            VarModule::on_flag(boma.object(), vars::trail::status::IS_LAND_CANCEL_THUNDER);
-            MotionModule::set_frame_sync_anim_cmd(boma, special_n_fire_cancel_frame_ground - landing_lag, true, true, false);
+            MotionModule::set_frame_sync_anim_cmd(boma, special_n_fire_cancel_frame_ground - landing_lag, true, true, true);
         }
     }
 }
