@@ -705,7 +705,7 @@
       <float hash="jump_initial_y">17.0573</float>
       <float hash="mini_jump_y">12</float>
       <float hash="jump_aerial_y">46.51</float>
-      <float hash="air_accel_x_mul">0.07</float>
+      <float hash="air_accel_x_mul">0.06</float>
       <float hash="air_accel_x_add">0.02</float>
       <float hash="air_speed_x_stable">0.83</float>
       <float hash="air_brake_x">0.02</float>
@@ -930,7 +930,8 @@
       <float hash="jump_speed_x_max">1.415</float>
       <float hash="jump_initial_y">11.44</float>
       <float hash="mini_jump_y">14.32</float>
-      <float hash="air_accel_x_mul">0.075</float>
+      <float hash="air_accel_x_mul">0.062</float>
+      <float hash="air_accel_x_add">0.01</float>
       <float hash="air_speed_x_stable">1.215</float>
       <float hash="air_brake_x">0.015</float>
       <float hash="air_accel_y">0.12</float>
@@ -1463,7 +1464,7 @@
       <float hash="jump_speed_x_max">1.2</float>
       <float hash="jump_initial_y">13.585</float>
       <float hash="mini_jump_y">17.98</float>
-      <float hash="air_accel_x_mul">0.005</float>
+      <float hash="air_accel_x_mul">0.025</float>
       <float hash="air_accel_x_add">0.04</float>
       <float hash="air_speed_x_stable">1.08</float>
       <float hash="air_brake_x">0.01</float>
@@ -1608,7 +1609,7 @@
       <float hash="jump_speed_x_max">1.3</float>
       <float hash="jump_initial_y">11.726</float>
       <float hash="mini_jump_y">11.99</float>
-      <float hash="air_accel_x_mul">0.083</float>
+      <float hash="air_accel_x_mul">0.055</float>
       <float hash="air_accel_x_add">0.01</float>
       <float hash="air_speed_x_stable">1.08</float>
       <float hash="air_brake_x">0.025</float>
@@ -2726,7 +2727,7 @@
       <float hash="jump_speed_x_max">1.34</float>
       <float hash="jump_initial_y">9.975</float>
       <float hash="mini_jump_y">13.45</float>
-      <float hash="air_accel_x_mul">0.058</float>
+      <float hash="air_accel_x_mul">0.03</float>
       <float hash="air_accel_x_add">0.01</float>
       <float hash="air_speed_x_stable">0.911</float>
       <float hash="air_accel_y">0.109</float>
