@@ -168,6 +168,29 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
                     return false
             }
         }
+
+        if fighter_kind == *FIGHTER_KIND_NANA {
+            if ([*FIGHTER_STATUS_KIND_WAIT, 
+                *FIGHTER_STATUS_KIND_TURN, 
+                *FIGHTER_STATUS_KIND_WALK, 
+                *FIGHTER_STATUS_KIND_WALK_BRAKE, 
+                *FIGHTER_STATUS_KIND_RUN_BRAKE, 
+                *FIGHTER_STATUS_KIND_JUMP_SQUAT,
+                *FIGHTER_STATUS_KIND_SQUAT,
+                *FIGHTER_STATUS_KIND_SQUAT_WAIT,
+                *FIGHTER_STATUS_KIND_SQUAT_RV].contains(&status_kind)
+            && flag == FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH) || 
+            ([*FIGHTER_STATUS_KIND_DASH, 
+                *FIGHTER_STATUS_KIND_TURN_DASH, 
+                *FIGHTER_STATUS_KIND_RUN].contains(&status_kind)
+            && flag == FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH) || 
+            ([*FIGHTER_STATUS_KIND_DASH,
+                *FIGHTER_STATUS_KIND_TURN_DASH, 
+                *FIGHTER_STATUS_KIND_RUN].contains(&status_kind)
+            && flag == FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN) {
+                return true;
+            }
+        }
     }   
     original!()(boma, flag)
 }

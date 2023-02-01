@@ -37,16 +37,22 @@ unsafe fn set_info<S>(latency: S) where S: Display {
 
     set_text_string(
         CURRENT_PANE_HANDLE as u64,
-        format!("\n\n{}
+        format!("\n\n\n\n\n\n{}
             Arena ID: {}
             Input Delay: {}
             {}
             DPAD ◄► Set Delay
-            DPAD ▼ Edit Modes\0",
+            DPAD ▼ Edit Modes
+
+            HDR Version:
+            {}
+            Assets {}\0",
             modes_newlines,
             CURRENT_ARENA_ID, 
             latency,
             modes_string,
+            crate::get_plugin_version(),
+            crate::get_romfs_version()
         ).as_ptr(),
     );
 }
