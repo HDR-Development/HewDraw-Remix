@@ -140,14 +140,9 @@ unsafe fn purin_effect_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
-        FT_MOTION_RATE(fighter, 0.2);
     if is_excute(fighter) {
         EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 8, 1, 0, -110, -90, 0.7, true, *EF_FLIP_YZ, 0.3);
-        LAST_EFFECT_SET_RATE(fighter, 1.2);
-    frame(lua_state, 22.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.5)
-    }
+        LAST_EFFECT_SET_RATE(fighter, 0.8);
     }
 }
 
