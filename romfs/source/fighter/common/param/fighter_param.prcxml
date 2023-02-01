@@ -932,7 +932,7 @@
       <float hash="mini_jump_y">14.32</float>
       <float hash="air_accel_x_mul">0.062</float>
       <float hash="air_accel_x_add">0.01</float>
-      <float hash="air_speed_x_stable">1.215</float>
+      <float hash="air_speed_x_stable">1</float>
       <float hash="air_brake_x">0.015</float>
       <float hash="air_accel_y">0.12</float>
       <float hash="air_speed_y_stable">2.44</float>
