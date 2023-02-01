@@ -47,6 +47,14 @@ unsafe fn utaunt_cancel_fire_fox(boma: &mut BattleObjectModuleAccessor, motion_k
 unsafe fn firefox_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
         // allows ledgegrab during Firefox startup
+        if WorkModule::get_int(fighter.module_accessor, *FIGHTER_FOX_FIRE_STATUS_WORK_ID_INT_STOP_Y_FRAME) <= 0 {
+            sv_kinetic_energy!(
+                set_accel,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                0.0
+            );
+        }
         fighter.sub_transition_group_check_air_cliff();
     }
 }
