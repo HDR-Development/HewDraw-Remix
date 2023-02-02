@@ -23,7 +23,7 @@ pub mod camera;
 
 
 // Articles that should bypass running their MAIN status before KineticModule::UpdateEnergy and GroundCollision::process
-const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 10] = [
+const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 11] = [
     WEAPON_KIND_PICKEL_PLATE,
     WEAPON_KIND_MASTER_SWORD,
     WEAPON_KIND_LUCAS_HIMOHEBI,
@@ -33,7 +33,8 @@ const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 10] = [
     WEAPON_KIND_SAMUSD_GBEAM,
     WEAPON_KIND_SHIZUE_FISHINGLINE,
     WEAPON_KIND_TOONLINK_HOOKSHOT,
-    WEAPON_KIND_YOUNGLINK_HOOKSHOT
+    WEAPON_KIND_YOUNGLINK_HOOKSHOT,
+    WEAPON_KIND_JACK_DOYLE
 ];
 
 // For one reason or another, the below statuses/kinds do not play well with running before energy update/ground collision
@@ -47,7 +48,7 @@ unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor) -> bool 
         || ((*boma).kind() == *FIGHTER_KIND_MASTER
             && (*boma).is_status_one_of(&[*FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_MAX_SHOOT]))
         || ((*boma).kind() == *FIGHTER_KIND_JACK
-            && (*boma).is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI))
+            && (*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_STATUS_KIND_SPECIAL_S]))
         || ((*boma).kind() == *FIGHTER_KIND_PFUSHIGISOU
             && (*boma).is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI))
         || ((*boma).kind() == *FIGHTER_KIND_KAMUI
