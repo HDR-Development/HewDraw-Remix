@@ -41,9 +41,9 @@ const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 10] = [
 unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor) -> bool {
     if (*boma).is_fighter()
     && ( ((*boma).kind() == *FIGHTER_KIND_RICHTER
-    && (*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_LW4]))
+    && (*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_LW4]))
         || ((*boma).kind() == *FIGHTER_KIND_SIMON
-            && (*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_LW4]))
+            && (*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_LW4]))
         || ((*boma).kind() == *FIGHTER_KIND_MASTER
             && (*boma).is_status_one_of(&[*FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_MAX_SHOOT]))
         || ((*boma).kind() == *FIGHTER_KIND_JACK
@@ -128,6 +128,8 @@ unsafe fn run_main_status_original(boma: *mut BattleObjectModuleAccessor, is_sto
 unsafe fn kinetic_module__call_update_energy_hook(ctx: &skyline::hooks::InlineCtx) {
     let boma = *ctx.registers[23].x.as_ref() as *mut BattleObjectModuleAccessor;
 
+    if VarModule::has_var_module((*boma).object()) { VarModule::on_flag((*boma).object(), vars::common::instance::BEFORE_GROUND_COLLISION); }
+
     if skip_early_main_status(boma) {
         return;
     }
@@ -151,6 +153,8 @@ unsafe fn kinetic_module__call_update_energy_hook(ctx: &skyline::hooks::InlineCt
 unsafe fn kinetic_module__call_update_energy_stop_hook(ctx: &skyline::hooks::InlineCtx) {
     let boma = *ctx.registers[23].x.as_ref() as *mut BattleObjectModuleAccessor;
 
+    if VarModule::has_var_module((*boma).object()) { VarModule::on_flag((*boma).object(), vars::common::instance::BEFORE_GROUND_COLLISION); }
+
     if skip_early_main_status(boma) {
         return;
     }
@@ -173,6 +177,8 @@ unsafe fn kinetic_module__call_update_energy_stop_hook(ctx: &skyline::hooks::Inl
 #[skyline::hook(offset = 0x3a85b4, inline)]
 unsafe fn run_lua_status_hook(ctx: &skyline::hooks::InlineCtx) {
     let boma = *ctx.registers[22].x.as_ref() as *mut BattleObjectModuleAccessor;
+
+    if VarModule::has_var_module((*boma).object()) { VarModule::off_flag((*boma).object(), vars::common::instance::BEFORE_GROUND_COLLISION); }
     
     let stop_module = *(boma as *mut BattleObjectModuleAccessor as *mut u64).add(0x90 / 8) as *const u64;
     let vtable = *(stop_module as *const *const u64);
@@ -185,7 +191,19 @@ unsafe fn run_lua_status_hook(ctx: &skyline::hooks::InlineCtx) {
     let is_skip = slow_module__is_skip(slow_module);
 
     if skip_early_main_status(boma) {
-        run_main_status_original(boma, is_stop, is_skip);
+        if (*boma).is_fighter()
+        && !StatusModule::is_changing(boma)
+        && (*boma).status_frame() == 0
+        {
+            let status_module = *(boma as *mut BattleObjectModuleAccessor as *mut u64).add(0x40 / 8) as *const u64;
+            *(((status_module as u64) + 0xf4) as *mut bool) = true;  // StatusModule::is_changing = true
+            run_main_status_original(boma, is_stop, is_skip);
+            *(((status_module as u64) + 0xf4) as *mut bool) = false;  // StatusModule::is_changing = false
+
+        }
+        else {
+            run_main_status_original(boma, is_stop, is_skip);
+        }
         return;
     }
 
@@ -230,6 +248,20 @@ unsafe fn run_lua_status_hook(ctx: &skyline::hooks::InlineCtx) {
         run_main_status_original(boma, is_stop, is_skip);
         if VarModule::has_var_module((*boma).object()) { VarModule::off_flag((*boma).object(), vars::common::instance::CHECK_CHANGE_MOTION_ONLY); }
     }
+}
+
+// This runs immediately before MAIN status script
+#[skyline::hook(offset = 0x48baf0)]
+unsafe fn lua_module__call_line_status_system(lua_module: u64) {
+    let boma = *(lua_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    if (*boma).is_fighter()
+    && skip_early_main_status(boma)
+    && StatusModule::is_changing(boma)
+    && VarModule::is_flag((*boma).object(), vars::common::instance::BEFORE_GROUND_COLLISION) {
+        
+        return;
+    }
+    call_original!(lua_module)
 }
 
 pub fn install() {
@@ -281,5 +313,6 @@ pub fn install() {
         kinetic_module__call_update_energy_hook,
         kinetic_module__call_update_energy_stop_hook,
         run_lua_status_hook,
+        lua_module__call_line_status_system,
     );
 }

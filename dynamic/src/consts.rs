@@ -161,6 +161,8 @@ pub mod vars {
 
             pub const CHECK_CHANGE_MOTION_ONLY: i32 = 0x0056;
 
+            pub const BEFORE_GROUND_COLLISION: i32 = 0x0057;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
