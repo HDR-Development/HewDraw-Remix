@@ -80,7 +80,7 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
     && fighter.global_table[CURRENT_FRAME].get_f32() >= 5.0
     && !StatusModule::is_changing(fighter.module_accessor) {
-        fighter.check_jump_cancel();
+        fighter.check_jump_cancel(false);
     }
     // temporary
     // if MotionModule::motion_kind(fighter.module_accessor) == hash40("dash") {
