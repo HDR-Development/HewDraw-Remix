@@ -163,58 +163,6 @@ unsafe fn ken_attack_hi3_w_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "ken", script = "game_attackhi3s" , category = ACMD_GAME , low_priority)]
-unsafe fn ken_attack_hi3_s_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        MeterModule::watch_damage(fighter.battle_object, true);
-        WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
-    }
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
-        HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
-        HIT_NODE(fighter, Hash40::new("bust"), *HIT_STATUS_XLU);
-        HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
-        ATTACK(fighter, 0, 0, Hash40::new("bust"), 9.0, 75, 45, 0, 80, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 0.75, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("shoulderl"), 9.0, 75, 45, 0, 80, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 0.75, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 2, 0, Hash40::new("arml"), 9.0, 75, 45, 0, 80, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 0.75, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 3, 0, Hash40::new("arml"), 9.0, 75, 45, 0, 80, 4.5, 4.0, 0.0, 0.0, None, None, None, 1.5, 0.75, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 3, 0, Hash40::new("arml"), 9.0, 75, 45, 0, 80, 3.5, 4.0, 0.0, 0.0, None, None, None, 1.5, 0.75, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
-    }
-    frame(lua_state, 9.0);
-    if is_excute(fighter) {
-        AttackModule::clear(boma, 4, false);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        AttackModule::clear(boma, 4, false);
-        ATTACK(fighter, 0, 0, Hash40::new("bust"), 8.0, 77, 30, 0, 86, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 0.75, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("shoulderl"), 9.0, 77, 40, 0, 86, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 0.75, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 2, 0, Hash40::new("arml"), 8.0, 77, 30, 0, 86, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 0.75, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 3, 0, Hash40::new("arml"), 8.0, 77, 30, 0, 86, 3.5, 4.0, 0.0, 0.0, None, None, None, 1.5, 0.75, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
-    }
-    wait(lua_state, 2.0);
-    if is_excute(fighter) {
-        HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_NORMAL);
-        HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_NORMAL);
-        HIT_NODE(fighter, Hash40::new("bust"), *HIT_STATUS_NORMAL);
-        HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_NORMAL);
-        AttackModule::clear_all(boma);
-        MeterModule::watch_damage(fighter.battle_object, false);
-        WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-    }
-    frame(lua_state, 21.0);
-    if is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
-    }
-}
-
 #[acmd_script( agent = "ken", script = "game_attacklw3w" , category = ACMD_GAME , low_priority)]
 unsafe fn ken_attack_lw3_w_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -354,13 +302,14 @@ unsafe fn ken_attack_lw3_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
+// if you're looking for strong up tilt, it's a motion list remap to strong distance jab
+// so go look for attack11s in ground.rs
 pub fn install() {
     install_acmd_scripts!(
         ken_attack_s3_s_w_game,
         ken_attack_s3_s_s_game,
         effect_attacks3s,
         ken_attack_hi3_w_game,
-        ken_attack_hi3_s_game,
         ken_attack_lw3_w_game,
         ken_attack_lw3_s_game,
     );
