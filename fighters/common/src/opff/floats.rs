@@ -163,7 +163,12 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
     }
 
     // Reset Float Time
-    if situation_kind == *SITUATION_KIND_GROUND {
+    if situation_kind == *SITUATION_KIND_GROUND
+    || boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_ENTRY,
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_REBIRTH])
+    {
         WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
         WorkModule::set_int(boma, VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION), *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
     }

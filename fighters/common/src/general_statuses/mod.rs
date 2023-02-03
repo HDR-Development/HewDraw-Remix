@@ -120,7 +120,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_transition_group_check_ground_guard,
             sub_transition_group_check_ground,
             sys_line_status_system_control_hook,
-            status_FallSub_hook
+            status_FallSub_hook,
+            super_jump_punch_main_hook
         );
     }
 }
@@ -397,6 +398,24 @@ pub unsafe fn status_FallSub_hook(fighter: &mut L2CFighterCommon, arg2: L2CValue
         // Avoid runfall/walkfall animation if you were moving backwards out of dash
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("fall"), 0.0, 1.0, false, 0.0, false, false);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_RUN_FALL);
+    }
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_super_jump_punch_main)]
+pub unsafe fn super_jump_punch_main_hook(fighter: &mut L2CFighterCommon) {
+    if fighter.sub_transition_group_check_air_cliff().get_bool() {
+        return;
+    }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_FALL_SPECIAL) {
+        if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_AIR
+        && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
+        {
+            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+        }
+    }
+    if MotionModule::is_end(fighter.module_accessor) {
+        let new_status = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_STATUS_KIND_END);
+        fighter.change_status_req(new_status, false);
     }
 }
 
