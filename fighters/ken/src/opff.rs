@@ -159,14 +159,15 @@ unsafe fn special_fadc_super_cancels(boma: &mut BattleObjectModuleAccessor) {
 // 1: Prox jab into far heavy jab
 // 2: Prox ftilt into light ftilt
 unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_motion_one_of(&[Hash40::new("attack_near_w")]){
+    if boma.is_motion_one_of(&[Hash40::new("attack_hi3_w")]){
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD){
             if boma.is_cat_flag(Cat1::AttackN) 
             && !boma.is_cat_flag(Cat1::AttackLw3)
             && !boma.is_cat_flag(Cat1::AttackS3)
             && !boma.is_cat_flag(Cat1::AttackHi3) {
                 WorkModule::off_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
-                MotionModule::change_motion(boma, Hash40::new("attack_11_w"), -1.0, 1.0, false, 0.0, false, false);
+                WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK);
+                boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK, false);
             }
         }
     }
