@@ -259,7 +259,7 @@ unsafe fn littlemac_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        SA_SET(fighter, *SITUATION_KIND_AIR);
+        //SA_SET(fighter, *SITUATION_KIND_AIR);
         WHOLE_HIT(fighter, *HIT_STATUS_XLU);
     }
     frame(lua_state, 1.0);

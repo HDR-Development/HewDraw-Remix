@@ -406,7 +406,7 @@ unsafe fn cloud_special_hi_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        SA_SET(fighter, *SITUATION_KIND_AIR);
+        //SA_SET(fighter, *SITUATION_KIND_AIR);
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 9.0);
@@ -540,7 +540,7 @@ unsafe fn cloud_special_hi_lb_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        SA_SET(fighter, *SITUATION_KIND_AIR);
+        //SA_SET(fighter, *SITUATION_KIND_AIR);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
@@ -617,7 +617,7 @@ unsafe fn cloud_special_air_hi_lb_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        SA_SET(fighter, *SITUATION_KIND_AIR);
+        //SA_SET(fighter, *SITUATION_KIND_AIR);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {

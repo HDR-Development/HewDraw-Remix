@@ -12,7 +12,7 @@ unsafe fn miifighter_special_hi3_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        SA_SET(fighter, *SITUATION_KIND_AIR);
+        //SA_SET(fighter, *SITUATION_KIND_AIR);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
         HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 0.8, 80, 100, 170, 0, 3.5, 0.0, 5.5, 3.5, Some(0.0), Some(12.5), Some(3.5), 0.75, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -83,7 +83,7 @@ unsafe fn miifighter_special_air_hi3_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        SA_SET(fighter, *SITUATION_KIND_AIR);
+        //SA_SET(fighter, *SITUATION_KIND_AIR);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
         HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 0.8, 80, 100, 170, 0, 3.5, 0.0, 5.5, 3.5, Some(0.0), Some(12.5), Some(3.5), 0.75, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);

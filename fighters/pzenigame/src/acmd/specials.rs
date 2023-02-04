@@ -8,7 +8,7 @@ unsafe fn pzenigame_special_hi_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
-        SA_SET(fighter, *SITUATION_KIND_AIR);
+        //SA_SET(fighter, *SITUATION_KIND_AIR);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
@@ -48,7 +48,7 @@ unsafe fn pzenigame_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
-        SA_SET(fighter, *SITUATION_KIND_AIR);
+        //SA_SET(fighter, *SITUATION_KIND_AIR);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
