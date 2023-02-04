@@ -35,14 +35,14 @@ unsafe fn mario_special_n_game(fighter: &mut L2CAgentBase) {
             FT_MOTION_RATE(fighter, 1.0);
         }
     }
-    frame(lua_state, 24.0);
+    frame(lua_state, 22.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
             AttackModule::clear_all(boma);
-            FT_MOTION_RATE(fighter, 32.0/(49.0 - 24.0));
+            FT_MOTION_RATE(fighter, 32.0/(49.0 - 22.0));
         }
         else {
-            FT_MOTION_RATE(fighter, 23.0/(49.0 - 24.0));
+            FT_MOTION_RATE(fighter, 23.0/(49.0 - 22.0));
         }
     }
     
@@ -206,14 +206,14 @@ unsafe fn mario_special_air_n_game(fighter: &mut L2CAgentBase) {
             FT_MOTION_RATE(fighter, 1.0);
         }
     }
-    frame(lua_state, 24.0);
+    frame(lua_state, 22.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
             AttackModule::clear_all(boma);
-            FT_MOTION_RATE(fighter, 32.0/(49.0 - 24.0));
+            FT_MOTION_RATE(fighter, 32.0/(49.0 - 22.0));
         }
         else {
-            FT_MOTION_RATE(fighter, 23.0/(49.0 - 24.0));
+            FT_MOTION_RATE(fighter, 23.0/(49.0 - 22.0));
         }
     }
 }
