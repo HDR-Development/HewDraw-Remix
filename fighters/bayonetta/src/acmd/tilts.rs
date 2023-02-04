@@ -62,16 +62,11 @@ unsafe fn bayonetta_attack_s3_s2_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_L_LEG, true, false, false, 10, 3, 10, 5, true);
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
-        FT_MOTION_RATE(fighter, 9.0/(17.0-1.0));
+        FT_MOTION_RATE(fighter, 7.0/(17.0-1.0));
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.500);
-    }
-    wait(lua_state, 1.0);
-    if is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+        FT_MOTION_RATE(fighter, 1.0)
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
@@ -93,8 +88,8 @@ unsafe fn bayonetta_attack_s3_s2_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
         AttackModule::clear_all(boma);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
     
 }

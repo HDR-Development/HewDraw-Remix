@@ -64,10 +64,12 @@ unsafe fn tilt_cancels(fighter: &mut L2CFighterCommon) {
 
     if is_input_cancel {
         if !fighter.is_in_hitlag(){
-            if new_status == *FIGHTER_STATUS_KIND_SPECIAL_S {
-                StatusModule::set_situation_kind(fighter.module_accessor, app::SituationKind(*SITUATION_KIND_AIR), true);
+            if fighter.motion_frame() > 23.0 {
+                if new_status == *FIGHTER_STATUS_KIND_SPECIAL_S {
+                    StatusModule::set_situation_kind(fighter.module_accessor, app::SituationKind(*SITUATION_KIND_AIR), true);
+                }
+                fighter.change_status_req(new_status, false);
             }
-            fighter.change_status_req(new_status, false);
         }
     }
 }
@@ -240,7 +242,34 @@ unsafe fn abk_flight_drift(fighter: &mut L2CFighterCommon) {
             KineticModule::add_speed_outside(fighter.module_accessor, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &Vector3f::new(0.0, 1.0 * stick_y, 0.0));
         }
     }
-    
+}
+
+unsafe fn branching_ftilt_jab(fighter: &mut L2CFighterCommon) {
+    let boma = fighter.boma();
+    if MotionModule::motion_kind(boma) == hash40("attack_s3_s") {
+        if fighter.motion_frame() > 28.0 {
+            if (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
+                StatusModule::change_status_request(boma, *FIGHTER_STATUS_KIND_ATTACK_S3, false);
+            }
+        }
+    }
+    if MotionModule::motion_kind(boma) == hash40("attack_s3_s2") {
+        if fighter.motion_frame() < 10.0 {
+            if (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW)) {
+                StatusModule::change_status_request(boma, *FIGHTER_STATUS_KIND_ATTACK_S3, false);
+            }
+        }
+    }
+    if MotionModule::motion_kind(boma) == hash40("attack_12") {
+        if (fighter.motion_frame() > 14.0 && fighter.motion_frame() < 25.0) {
+            if (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW)) {
+                StatusModule::change_status_request(boma, *FIGHTER_STATUS_KIND_ATTACK_100, false);
+            }
+            if (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
+                MotionModule::change_motion(boma, Hash40::new("attack_13"), 0.0, 1.0, false, 0.0, false, false);
+            }
+        }
+    }
 }
 
 #[utils::macros::opff(FIGHTER_KIND_BAYONETTA )]
@@ -256,6 +285,7 @@ pub unsafe fn bayonetta_frame_wrapper(fighter: &mut L2CFighterCommon) {
         recovery_resource_management(fighter);
         abk_flight_drift(fighter);
         clear_proration(fighter, info.boma);
+        branching_ftilt_jab(fighter);
     }
 
     
