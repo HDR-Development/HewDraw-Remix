@@ -47,7 +47,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
     // Ledgehog code
     let pos = GroundModule::hang_cliff_pos_3f(boma);
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32;
-    for object_id in util::get_all_player_battle_object_ids() {
+    for object_id in util::get_all_active_battle_object_ids() {
         let object = ::utils::util::get_battle_object_from_id(object_id);
         if !object.is_null() {
             if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) == WorkModule::get_int(&mut *(*object).module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID)
