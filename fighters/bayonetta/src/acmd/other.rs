@@ -441,6 +441,186 @@ unsafe fn escape_b_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "bayonetta", script = "game_appealhir" , category = ACMD_GAME , low_priority)]
+unsafe fn up_taunt_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    FT_MOTION_RATE(fighter, 210/(100-1));
+}
+
+#[acmd_script( agent = "bayonetta", script = "game_appealhil" , category = ACMD_GAME , low_priority)]
+unsafe fn up_taunt_left_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    FT_MOTION_RATE(fighter, 210/(100-1));
+}
+
+#[acmd_script( agent = "bayonetta", script = "game_appeallwr" , category = ACMD_GAME , low_priority)]
+unsafe fn down_taunt_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    FT_MOTION_RATE(fighter, 240/(100-1));
+}
+
+#[acmd_script( agent = "bayonetta", script = "game_appeallwl" , category = ACMD_GAME , low_priority)]
+unsafe fn down_taunt_left_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    FT_MOTION_RATE(fighter, 240/(100-1));
+}
+
+#[acmd_script( agent = "bayonetta", script = "game_appealsr" , category = ACMD_GAME , low_priority)]
+unsafe fn side_taunt_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    FT_MOTION_RATE(fighter, 144/(90-1));
+}
+
+#[acmd_script( agent = "bayonetta", script = "game_appealsl" , category = ACMD_GAME , low_priority)]
+unsafe fn side_taunt_left_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    FT_MOTION_RATE(fighter, 144/(90-1));
+}
+
+#[acmd_script( agent = "bayonetta", script = "sound_appealhir" , category = ACMD_SOUND , low_priority)]
+unsafe fn sound_appealhir (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	frame(lua_state, 1.0);
+		if is_excute(fighter) {
+			fighter.clear_lua_stack();
+            lua_args!(fighter, Hash40::new("vc_bayonetta_appeal01"));
+            sv_animcmd::PLAY_DAMAGESTOP(fighter.lua_state_agent);
+		}
+		frame(lua_state, 4.0);
+		if is_excute(fighter) {
+			PLAY_SE(fighter, Hash40::new("se_bayonetta_appeal_h01"));
+		}
+		frame(lua_state, 8.0);
+		if is_excute(fighter) {
+			PLAY_SE(fighter, Hash40::new("se_bayonetta_appeal_h02"));
+		}
+		frame(lua_state, 25.0);
+		if is_excute(fighter) {
+			PLAY_SE(fighter, Hash40::new("se_bayonetta_step_right_s"));
+		}
+		frame(lua_state, 41.0);
+		if is_excute(fighter) {
+			PLAY_SE(fighter, Hash40::new("se_bayonetta_appeal_h03"));
+            fighter.clear_lua_stack();
+            lua_args!(fighter, Hash40::new("vc_bayonetta_appeal01_02"));
+            sv_animcmd::PLAY_DAMAGESTOP(fighter.lua_state_agent);
+		}
+		frame(lua_state, 45.0);
+		if is_excute(fighter) {
+			PLAY_SE(fighter, Hash40::new("se_bayonetta_step_right_m"));
+		}
+	}
+
+#[acmd_script( agent = "bayonetta", script = "sound_appealhil" , category = ACMD_SOUND , low_priority)]
+unsafe fn sound_appealhil (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+		frame(lua_state, 1.0);
+		if is_excute(fighter) {
+			fighter.clear_lua_stack();
+            lua_args!(fighter, Hash40::new("vc_bayonetta_appeal01"));
+            sv_animcmd::PLAY_DAMAGESTOP(fighter.lua_state_agent);
+		}
+		frame(lua_state, 4.0);
+		if is_excute(fighter) {
+			PLAY_SE(fighter, Hash40::new("se_bayonetta_appeal_h01"));
+		}
+		frame(lua_state, 8.0);
+		if is_excute(fighter) {
+			PLAY_SE(fighter, Hash40::new("se_bayonetta_appeal_h02"));
+		}
+		frame(lua_state, 25.0);
+		if is_excute(fighter) {
+			PLAY_SE(fighter, Hash40::new("se_bayonetta_step_right_s"));
+		}
+		frame(lua_state, 41.0);
+		if is_excute(fighter) {
+			PLAY_SE(fighter, Hash40::new("se_bayonetta_appeal_h03"));
+            fighter.clear_lua_stack();
+            lua_args!(fighter, Hash40::new("vc_bayonetta_appeal01_02"));
+            sv_animcmd::PLAY_DAMAGESTOP(fighter.lua_state_agent);
+		}
+		frame(lua_state, 45.0);
+		if is_excute(fighter) {
+			PLAY_SE(fighter, Hash40::new("se_bayonetta_step_right_m"));
+		}
+	}
+
+    #[acmd_script( agent = "bayonetta", script = "sound_appeallwr", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_appeallwr(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_bayonetta_appeal_l03"));
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_bayonetta_appeal_l04"));
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+         PLAY_SE(fighter, Hash40::new("vc_bayonetta_win08"));
+    }
+    frame(lua_state, 37.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_bayonetta_step_left_m"));
+    }
+    frame(lua_state, 40.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_bayonetta_appeal_l05"));
+    }
+    frame(lua_state, 58.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_bayonetta_appeal_l06"));
+    }
+    frame(lua_state, 95.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_bayonetta_step_right_m"));
+    }
+}
+
+    #[acmd_script( agent = "bayonetta", script = "sound_appeallwl", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_appeallwl(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_bayonetta_appeal_l03"));
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_bayonetta_appeal_l04"));
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+         PLAY_SE(fighter, Hash40::new("vc_bayonetta_win06"));
+    }
+    frame(lua_state, 37.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_bayonetta_step_left_m"));
+    }
+    frame(lua_state, 40.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_bayonetta_appeal_l05"));
+    }
+    frame(lua_state, 58.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_bayonetta_appeal_l06"));
+    }
+    frame(lua_state, 95.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_bayonetta_step_right_m"));
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -462,6 +642,16 @@ pub fn install() {
         escape_n_game,
         escape_f_game,
         escape_b_game,
+        up_taunt_game,
+        up_taunt_left_game,
+        side_taunt_game,
+        side_taunt_left_game,
+        down_taunt_game,
+        down_taunt_left_game,
+        sound_appealhir,
+        sound_appealhil,
+        sound_appeallwr,
+        sound_appeallwl
     );
 }
 

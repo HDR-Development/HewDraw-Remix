@@ -22,6 +22,7 @@
           <int hash="0x0d76ae442e">3</int>
           <int hash="0x0d91166929">5</int>
       </struct>
+  </list>
   <list hash="param_special_s">
     <struct index="0">
       <int hash="ab_u_landing_frame">18</int>

@@ -255,15 +255,22 @@ unsafe fn branching_ftilt_jab(fighter: &mut L2CFighterCommon) {
     }
     if MotionModule::motion_kind(boma) == hash40("attack_s3_s2") {
         if fighter.motion_frame() < 10.0 {
-            if (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW)) {
+            if (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
                 StatusModule::change_status_request(boma, *FIGHTER_STATUS_KIND_ATTACK_S3, false);
             }
         }
     }
     if MotionModule::motion_kind(boma) == hash40("attack_12") {
-        if (fighter.motion_frame() > 14.0 && fighter.motion_frame() < 25.0) {
-            if (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW)) {
-                StatusModule::change_status_request(boma, *FIGHTER_STATUS_KIND_ATTACK_100, false);
+        if fighter.motion_frame() > 14.0 {
+            if fighter.motion_frame() < 25.0 {
+                if (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW)) {
+                    StatusModule::change_status_request(boma, *FIGHTER_STATUS_KIND_ATTACK_100, false);
+                }
+            }
+            else {
+                if (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW)) {
+                     MotionModule::change_motion(boma, Hash40::new("attack_13"), 0.0, 1.0, false, 0.0, false, false);
+                }
             }
             if (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
                 MotionModule::change_motion(boma, Hash40::new("attack_13"), 0.0, 1.0, false, 0.0, false, false);
