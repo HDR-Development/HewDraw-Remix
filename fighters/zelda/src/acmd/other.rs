@@ -215,15 +215,15 @@ unsafe fn zelda_dein_tame_effect(fighter: &mut L2CAgentBase) {
 			VarModule::set_int64(zelda, vars::zelda::instance::DEIN_EFF_HANDLER_FIRE, fire_handle);
 		}
 	}
-	for h in 21..=97 {
+	for h in 21..=146 {
 		if is_excute(fighter) {
 			let start_color = Vector3f { x: 1.0, y: 1.0, z: 1.0 };
 			let end_color = Vector3f { x: 0.885, y: 0.051, z: 0.051 };
 			// Smoothly interpolate from starting to ending color
 			let blend_vector = Vector3f {
-				x: start_color.x + ((end_color.x - start_color.x) * ((h as f32) / 97.0)),
-				y: start_color.y + ((end_color.y - start_color.y) * ((h as f32) / 97.0)),
-				z: start_color.z + ((end_color.z - start_color.z) * ((h as f32) / 97.0))
+				x: start_color.x + ((end_color.x - start_color.x) * ((h as f32) / 146.0)),
+				y: start_color.y + ((end_color.y - start_color.y) * ((h as f32) / 146.0)),
+				z: start_color.z + ((end_color.z - start_color.z) * ((h as f32) / 146.0))
 			};
 			//println!("blend: {}, {}, {}", blend_vector.x, blend_vector.y, blend_vector.z);
 			let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
@@ -232,10 +232,10 @@ unsafe fn zelda_dein_tame_effect(fighter: &mut L2CAgentBase) {
 				let flash_handle = VarModule::get_int64(zelda, vars::zelda::instance::DEIN_EFF_HANDLER_FLASH);
 				let fire_handle = VarModule::get_int64(zelda, vars::zelda::instance::DEIN_EFF_HANDLER_FIRE);
 				// Spawn (and store) new effects at certain frame intervals
-				if [45, 70, 97].contains(&h) {
+				if [50, 80, 112, 146].contains(&h) {
 					//println!("aha! h is {}", h);
-					let flash_size = if h == 45 { 0.8 } else if h == 70 { 1.0 } else { 1.2 };
-					let fire_size = if h == 97 { 1.15 } else { 1.0 };
+					let flash_size = if h == 50 { 0.8 } else if h == 80 { 1.10 } else if h == 112 { 1.5} else {1.8};
+					let fire_size = if h == 146 { 1.15 } else { 1.0 };
 					let flash_handle = EffectModule::req_follow(boma, Hash40::new("sys_flash"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), flash_size, false, 0, 0, 0, 0, 0, false, false);
 					let fire_handle = EffectModule::req_follow(boma, Hash40::new("zelda_appeal_s_fire"), Hash40::new("top"), &Vector3f::new(2.0, 0.0, 0.0), &Vector3f::zero(), fire_size, false, 0, 0, 0, 0, 0, false, false);
 					// Apply color blend
