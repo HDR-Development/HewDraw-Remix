@@ -1,71 +1,77 @@
 use super::*;
 
+#[acmd_script( agent = "trail", script = "effect_specialn3", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_specialn3(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 28.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("trail_thunder_shot"), Hash40::new("top"), 0, 10.7, 12.5, 0, 0, 0, 1, true);
+    }
+}
+
 #[acmd_script( agent = "trail", script = "game_specialn3" , category = ACMD_GAME , low_priority)]
 unsafe fn game_specialn3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();  
+    FT_MOTION_RATE(fighter, 0.5);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 75, 30, 0, 90, 10.0, 0.0, 10.0, 12.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+        WorkModule::on_flag(boma,  *FIGHTER_TRAIL_STATUS_SPECIAL_N3_FLAG_CHANGE_MAGIC);
+    }
+    frame(lua_state, 46.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.2);
+    }
+}
+
+#[acmd_script( agent = "trail", script = "effect_specialairn3", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_specialairn3(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 28.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
-        VarModule::off_flag(boma.object(), vars::trail::status::IS_LAND_CANCEL_THUNDER);
-    }
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        WorkModule::set_int(boma, 0, *FIGHTER_TRAIL_STATUS_SPECIAL_N3_INT_THUNDER_NUM);
-        if !VarModule::is_flag(boma.object(), vars::trail::status::IS_LAND_CANCEL_THUNDER){
-            ArticleModule::generate_article(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_CLOUD, false, 0);
-        }
-        WorkModule::on_flag(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_N3_FLAG_CHANGE_MAGIC);
-    }
-    wait(lua_state, 14.0);
-    if is_excute(fighter) {
-        WorkModule::set_int(boma, 1, *FIGHTER_TRAIL_STATUS_SPECIAL_N3_INT_THUNDER_NUM);
-        if !VarModule::is_flag(boma.object(), vars::trail::status::IS_LAND_CANCEL_THUNDER){
-            ArticleModule::generate_article(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_CLOUD, false, 0);
-        }
-    }
-    wait(lua_state, 14.0);
-    if is_excute(fighter) {
-        WorkModule::set_int(boma, 2, *FIGHTER_TRAIL_STATUS_SPECIAL_N3_INT_THUNDER_NUM);
-        if !VarModule::is_flag(boma.object(), vars::trail::status::IS_LAND_CANCEL_THUNDER){
-            ArticleModule::generate_article(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_CLOUD, false, 0);
-        }
-    }
-    frame(lua_state, 60.0);
-    if is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
+        EFFECT_FOLLOW(fighter, Hash40::new("trail_thunder_shot"), Hash40::new("top"), 0, 10.7, 12.5, 0, 0, 0, 1, true);
     }
 }
 
 #[acmd_script( agent = "trail", script = "game_specialairn3" , category = ACMD_GAME , low_priority)]
 unsafe fn game_specialairn3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+    let boma = fighter.boma();  
+    FT_MOTION_RATE(fighter, 0.5);
     if is_excute(fighter) {
         WorkModule::on_flag(boma,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
     }
+    // For a brief period, give the player the opportunity to float
+    frame(lua_state, 1.0); 
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION);
+        VarModule::set_int(boma.object(), vars::common::instance::FLOAT_DURATION,999);
+        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
+        WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
+    }
+    // If B has been let go by frame 14, Sora should land on the ground normally, if not the float will continue
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        WorkModule::set_int(boma, 0, *FIGHTER_TRAIL_STATUS_SPECIAL_N3_INT_THUNDER_NUM);
-        ArticleModule::generate_article(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_CLOUD, false, 0);
-        WorkModule::on_flag(boma,  *FIGHTER_TRAIL_STATUS_SPECIAL_N3_FLAG_CHANGE_MAGIC); 
+        if fighter.is_button_off(Buttons::Special) {
+            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+        }
     }
-    wait(lua_state, 14.0);
+    // Do the attack and change the magic to Blizzaga
+    frame(lua_state, 28.0);
     if is_excute(fighter) {
-        WorkModule::set_int(boma, 1, *FIGHTER_TRAIL_STATUS_SPECIAL_N3_INT_THUNDER_NUM);
-        ArticleModule::generate_article(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_CLOUD, false, 0);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 75, 30, 0, 90, 10.0, 0.0, 10.0, 12.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+        WorkModule::on_flag(boma,  *FIGHTER_TRAIL_STATUS_SPECIAL_N3_FLAG_CHANGE_MAGIC);
     }
-    wait(lua_state, 14.0);
+    // Sped up at the end so the effect and hitbox line up and so the move is relatively shorter
+    frame(lua_state, 46.0);
     if is_excute(fighter) {
-        WorkModule::set_int(boma, 2, *FIGHTER_TRAIL_STATUS_SPECIAL_N3_INT_THUNDER_NUM);
-        ArticleModule::generate_article(boma, *FIGHTER_TRAIL_GENERATE_ARTICLE_CLOUD, false, 0);
-    }
-    frame(lua_state, 60.0);
-    if is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
-    }
-    frame(lua_state, 70.0);
-    if is_excute(fighter) {
-        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+        FT_MOTION_RATE(fighter, 0.2);
     }
 }
 
@@ -778,7 +784,9 @@ pub fn install() {
     install_acmd_scripts!(
         game_trail_fire_fly,
         game_specialairn3,
+        effect_specialairn3,
         game_specialn3,
+        effect_specialn3,
         game_specials1,
         game_specialairs1,
         game_specials2,
