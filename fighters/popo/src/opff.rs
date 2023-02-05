@@ -60,6 +60,7 @@ unsafe fn dair_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     {
         MotionModule::set_frame_sync_anim_cmd(boma, 54.0, true, true, false);
         AttackModule::clear_all(boma);
+        EffectModule::kill_kind(boma, Hash40::new("popo_air_lw"), false, true);
 
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
             SET_SPEED_EX(fighter, 0, 1.7, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
