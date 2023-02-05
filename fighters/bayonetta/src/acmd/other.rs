@@ -505,12 +505,15 @@ unsafe fn sound_appealhir (fighter: &mut L2CAgentBase) {
 		if is_excute(fighter) {
 			PLAY_SE(fighter, Hash40::new("se_bayonetta_step_right_s"));
 		}
-		frame(lua_state, 41.0);
-		if is_excute(fighter) {
-			PLAY_SE(fighter, Hash40::new("se_bayonetta_appeal_h03"));
+        frame(lua_state, 39.0);
+        if is_excute(fighter) {
             fighter.clear_lua_stack();
             lua_args!(fighter, Hash40::new("vc_bayonetta_appeal01_02"));
             sv_animcmd::PLAY_DAMAGESTOP(fighter.lua_state_agent);
+        }
+		frame(lua_state, 41.0);
+		if is_excute(fighter) {
+			PLAY_SE(fighter, Hash40::new("se_bayonetta_appeal_h03"));
 		}
 		frame(lua_state, 45.0);
 		if is_excute(fighter) {
@@ -540,12 +543,15 @@ unsafe fn sound_appealhil (fighter: &mut L2CAgentBase) {
 		if is_excute(fighter) {
 			PLAY_SE(fighter, Hash40::new("se_bayonetta_step_right_s"));
 		}
-		frame(lua_state, 41.0);
-		if is_excute(fighter) {
-			PLAY_SE(fighter, Hash40::new("se_bayonetta_appeal_h03"));
+        frame(lua_state, 39.0);
+        if is_excute(fighter) {
             fighter.clear_lua_stack();
             lua_args!(fighter, Hash40::new("vc_bayonetta_appeal01_02"));
             sv_animcmd::PLAY_DAMAGESTOP(fighter.lua_state_agent);
+        }
+		frame(lua_state, 41.0);
+		if is_excute(fighter) {
+			PLAY_SE(fighter, Hash40::new("se_bayonetta_appeal_h03"));
 		}
 		frame(lua_state, 45.0);
 		if is_excute(fighter) {
