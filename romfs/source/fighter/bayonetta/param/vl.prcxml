@@ -10,10 +10,10 @@
     <float hash="attack_air_f2_hit_speed_y">1.4</float>
     <float hash="combo_attack_ari_f2_end">30</float>
     <float hash="combo_attack_ari_f3_end">30</float>
-    <int hash="attack_air_n_shoot_landing_frame">3</int>
-    <int hash="attack_air_f_shoot_landing_frame">3</int>
-    <int hash="attack_air_b_shoot_landing_frame">3</int>
-    <int hash="attack_air_hi_shoot_landing_frame">3</int>
+    <int hash="attack_air_n_shoot_landing_frame">2</int>
+    <int hash="attack_air_f_shoot_landing_frame">2</int>
+    <int hash="attack_air_b_shoot_landing_frame">2</int>
+    <int hash="attack_air_hi_shoot_landing_frame">2</int>
     <float hash="final_vector_min">40</float>
     <float hash="final_vector_max">45</float>
   </struct>
@@ -38,7 +38,7 @@
       <int hash="ab_d_fall_landing_frame">14</int>
       <int hash="ab_d_fall_landing_frame_2nd">22</int>
       <int hash="0x17a1daf6ee">300</int>
-      <float hash="guard_speed_mul_x">1.1</float>
+      <float hash="guard_speed_mul_x">1.2</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -49,7 +49,7 @@
       <float hash="speed_mul_y">1.3</float>
       <float hash="air_speed_mul_y">1.20</float>
       <float hash="speed_mul_y_2nd">1.10</float>
-      <int hash="landing_frame">15</int>
+      <int hash="landing_frame">14</int>
       <int hash="act_landing_frame">18</int>
       <int hash="landing_frame_2nd">20</int>
       <int hash="act_landing_frame_2nd">27</int>
