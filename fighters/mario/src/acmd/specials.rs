@@ -20,7 +20,7 @@ unsafe fn mario_special_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
             ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 10.0, 50, 110, 0, 50, 2.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 0, Hash40::new("arml"), 12.0, 50, 115, 0, 50, 5.5, 5.5, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 1, 0, Hash40::new("arml"), 12.0, 50, 115, 0, 50, 5.5, 5.2, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
             FT_MOTION_RATE(fighter, 1.0);
         }
         else {
@@ -31,7 +31,7 @@ unsafe fn mario_special_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
             ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 8.0, 50, 100, 0, 50, 2.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 0, Hash40::new("arml"), 8.0, 50, 100, 0, 50, 5.5, 5.5, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 1, 0, Hash40::new("arml"), 8.0, 50, 100, 0, 50, 5.5, 5.2, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
             FT_MOTION_RATE(fighter, 1.0);
         }
     }
@@ -76,8 +76,8 @@ unsafe fn mario_special_n_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_flame"), Hash40::new("havel"), 1.0, 0, 0, 0, 0, 0, 0.5, true);
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_bomb_a"), Hash40::new("handl"), 1.0, 0, 0, 0, 0, 0, 0.25, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_flame"), Hash40::new("havel"), 1.0, 0, 0, 0, 0, 0, 0.3, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_bomb_a"), Hash40::new("handl"), 1.0, 0, 0, 0, 0, 0, 0.23, true);
             LAST_EFFECT_SET_RATE(fighter, 1.2);
             EffectModule::enable_sync_init_pos_last(boma);
         }
@@ -99,6 +99,7 @@ unsafe fn mario_special_n_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
             FLASH(fighter, 1, 0, 0, 0.75);
+            EFFECT_OFF_KIND(fighter, Hash40::new("sys_bomb_a"), false, false);
         }
     }
     frame(lua_state, 21.0);
@@ -125,13 +126,14 @@ unsafe fn mario_special_n_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
-            FLASH(fighter, 0.95, 0.522, 0.051, 0.75);
+            FLASH(fighter, 0.95, 0.522, 0.051, 0.75);  
         }
     }
     frame(lua_state, 33.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.35);
+            EFFECT_OFF_KIND(fighter, Hash40::new("sys_flame"), false, false);
         }
     }
     frame(lua_state, 36.0);
@@ -191,7 +193,7 @@ unsafe fn mario_special_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
             ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 10.0, 50, 110, 0, 50, 2.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 0, Hash40::new("arml"), 12.0, 50, 115, 0, 50, 5.5, 5.5, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 1, 0, Hash40::new("arml"), 12.0, 50, 115, 0, 50, 5.5, 5.2, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
             FT_MOTION_RATE(fighter, 1.0);
         }
         else {
@@ -202,7 +204,7 @@ unsafe fn mario_special_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
             ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 8.0, 50, 100, 0, 50, 2.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 0, Hash40::new("arml"), 8.0, 50, 100, 0, 50, 5.5, 5.5, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 1, 0, Hash40::new("arml"), 8.0, 50, 100, 0, 50, 5.5, 5.2, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
             FT_MOTION_RATE(fighter, 1.0);
         }
     }
@@ -241,8 +243,8 @@ unsafe fn mario_special_air_n_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_flame"), Hash40::new("havel"), 1.0, 0, 0, 0, 0, 0, 0.5, true);
-            EFFECT_FOLLOW(fighter, Hash40::new("sys_bomb_a"), Hash40::new("handl"), 1.0, 0, 0, 0, 0, 0, 0.25, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_flame"), Hash40::new("havel"), 1.0, 0, 0, 0, 0, 0, 0.3, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_bomb_a"), Hash40::new("handl"), 1.0, 0, 0, 0, 0, 0, 0.23, true);
             LAST_EFFECT_SET_RATE(fighter, 1.2);
             EffectModule::enable_sync_init_pos_last(boma);
         }
@@ -253,7 +255,7 @@ unsafe fn mario_special_air_n_effect(fighter: &mut L2CAgentBase) {
             FLASH(fighter, 1, 0, 0, 0.5);
         }
         else{
-            FLASH(fighter, 1, 0, 0, 0.353);
+            FLASH(fighter, 1, 0, 0, 0.35);
         }
     }
     frame(lua_state, 17.0);
@@ -264,6 +266,7 @@ unsafe fn mario_special_air_n_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
             FLASH(fighter, 1, 0, 0, 1.0);
+            EFFECT_OFF_KIND(fighter, Hash40::new("sys_bomb_a"), false, false);
         }
     }
     frame(lua_state, 21.0);
@@ -297,6 +300,7 @@ unsafe fn mario_special_air_n_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.5);
+            EFFECT_OFF_KIND(fighter, Hash40::new("sys_flame"), false, false);
         }
     }
     frame(lua_state, 36.0);
