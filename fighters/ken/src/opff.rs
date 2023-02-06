@@ -159,16 +159,32 @@ unsafe fn special_fadc_super_cancels(boma: &mut BattleObjectModuleAccessor) {
 // 1: Prox jab into far heavy jab
 // 2: Prox ftilt into light ftilt
 unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
+
+    if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+        return;
+    }
+
     if boma.is_motion_one_of(&[Hash40::new("attack_hi3_w")]){
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD){
-            if boma.is_cat_flag(Cat1::AttackN) 
-            && !boma.is_cat_flag(Cat1::AttackLw3)
-            && !boma.is_cat_flag(Cat1::AttackS3)
-            && !boma.is_cat_flag(Cat1::AttackHi3) {
-                WorkModule::off_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
-                WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK);
-                boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK, false);
-            }
+        if boma.is_cat_flag(Cat1::AttackN) 
+        && !boma.is_cat_flag(Cat1::AttackLw3)
+        && !boma.is_cat_flag(Cat1::AttackS3)
+        && !boma.is_cat_flag(Cat1::AttackHi3) {
+            WorkModule::off_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+            WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK);
+            boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK, false);
+        }
+    }
+    else if boma.is_motion(Hash40::new("attack_s3_s_w")) {
+        WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N);
+        WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND);
+        if boma.is_cat_flag(Cat1::SpecialAny)
+        && boma.is_cat_flag(Cat4::SpecialNCommand) {
+            WorkModule::off_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+            boma.change_status_req(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND, true);
+        }
+        else if boma.is_cat_flag(Cat1::SpecialN) {
+            WorkModule::off_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+            boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_N, true);
         }
     }
 }
