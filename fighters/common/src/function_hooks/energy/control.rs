@@ -154,10 +154,6 @@ unsafe fn control_update(energy: &mut FighterKineticEnergyControl, boma: &mut Ba
                 0.0
             }
         },
-        Turn => {
-            stick.x = 0.0;
-            0.0
-        },
         Dash | DashBack => loop {
             // Don't apply or change the speed by any ammount during the first keep frames of dash
             let dash_frame = WorkModule::get_int(boma, *FIGHTER_STATUS_DASH_WORK_INT_COUNT);
@@ -269,7 +265,7 @@ unsafe fn control_update(energy: &mut FighterKineticEnergyControl, boma: &mut Ba
             energy.speed_max.y = -1.0;
             accel_add_x * stick.x.signum() + stick.x * energy.accel_mul_x
         },
-        TurnNoStop | TurnNoStopAir => {
+        Turn | TurnNoStop | TurnNoStopAir => {
             if reset_type == TurnNoStop || reset_type == TurnNoStopAir {
                 if (!TurnModule::is_turn(boma) || energy.accel_mul_x == 0.0) && energy.speed.x == 0.0 {
                     energy.parent.enable = false;
