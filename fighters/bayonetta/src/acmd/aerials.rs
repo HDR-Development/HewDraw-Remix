@@ -344,7 +344,7 @@ unsafe fn bayonetta_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2bfb02b69a), false);
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE(fighter, 9/(37-32));
+        FT_MOTION_RATE(fighter, 8.5/(37.0-32.0));
     }
     frame(lua_state, 34.0);
     if is_excute(fighter) {
