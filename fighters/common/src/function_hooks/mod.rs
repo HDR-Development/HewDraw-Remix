@@ -19,6 +19,7 @@ pub mod set_fighter_status_data;
 pub mod attack;
 pub mod collision;
 pub mod camera;
+pub mod shotos;
 
 
 #[skyline::hook(offset = 0x3a85b4, inline)]
@@ -54,6 +55,7 @@ pub fn install() {
     attack::install();
     collision::install();
     camera::install();
+    shotos::install();
 
     unsafe {
         // Handles getting rid of the kill zoom
