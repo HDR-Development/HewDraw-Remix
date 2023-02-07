@@ -290,7 +290,10 @@ unsafe fn kill_quick_effect(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 /// This should only be called once per status, or you will get some multiplicative effects
 unsafe fn apply_status_speed_mul(fighter: &mut smash::lua2cpp::L2CFighterCommon, mul: f32) {
     // set the X motion speed multiplier (where movement is baked into an anim)
-    lua_bind::FighterKineticEnergyMotion::set_speed_mul(fighter.get_motion_energy(), mul);
+    fighter.clear_lua_stack();
+    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+    let og_speed_mul = app::sv_kinetic_energy::get_speed_mul(fighter.lua_state_agent);
+    lua_bind::FighterKineticEnergyMotion::set_speed_mul(fighter.get_motion_energy(), og_speed_mul * mul);
 
     // set the X motion accel multiplier for control energy (used in the air, during walk, fall, etc)
     lua_bind::FighterKineticEnergyController::mul_x_accel_mul( fighter.get_controller_energy(), mul);
