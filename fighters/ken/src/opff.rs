@@ -11,6 +11,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     kamabaraigeri(boma, frame);
     rotate_forward_bair(boma);
     turn_run_back_status(fighter, boma, status_kind);
+    tatsu_behavior(fighter, boma);
 }
 
 // symbol-based call for the shotos' common opff
@@ -30,6 +31,25 @@ pub fn ken_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub unsafe fn ken_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+    }
+}
+
+unsafe fn tatsu_behavior(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if !fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_S, 
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, 
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END, 
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP
+    ]) {
+        return;
+    }
+
+    if !boma.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END)
+    && boma.is_situation(*SITUATION_KIND_AIR)
+    && boma.is_button_on(Buttons::Special | Buttons::Attack)
+    && KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) < 0.0
+    {
+        KineticModule::mul_speed(boma, &Vector3f::new(1.0, 0.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
 }
 
