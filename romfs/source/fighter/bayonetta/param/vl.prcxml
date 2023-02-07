@@ -16,9 +16,7 @@
     <int hash="attack_air_hi_shoot_landing_frame">2</int>
     <float hash="final_vector_min">40</float>
     <float hash="final_vector_max">45</float>
-    <float hash="batwithin_escape_air_speed">0.01</float>
-    <float hash="0x1f5881d7c2">0.05</float>
-    <int hash="bat_escape_air_frame">70</int>
+    <int hash="bat_escape_air_frame">45</int>
   </struct>
   <list hash="param_specialn_bullet">
       <struct index="0">
