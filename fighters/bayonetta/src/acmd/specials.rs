@@ -131,7 +131,6 @@ unsafe fn bayonetta_special_air_s_u_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME);
     frame(lua_state, 1.0);
-    frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.500);
         JostleModule::set_status(boma, false);
