@@ -10,6 +10,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     target_combos(boma);
     kamabaraigeri(boma, frame);
     rotate_forward_bair(boma);
+    turn_run_back_status(fighter, boma, status_kind);
 }
 
 // symbol-based call for the shotos' common opff
@@ -30,6 +31,13 @@ pub unsafe fn ken_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+
+unsafe fn turn_run_back_status(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if status_kind != *FIGHTER_RYU_STATUS_KIND_TURN_RUN_BACK {
+        return;
+    }
+    WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD);
 }
 
 /// start_frame: frame to start interpolating the body rotation
