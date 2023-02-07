@@ -457,7 +457,7 @@ unsafe fn control_initialize(energy: &mut FighterKineticEnergyControl, boma: &mu
         },
         Turn | TurnNoStop => {
             energy.speed_max = PaddedVec2::new(
-                WorkModule::get_param_float(boma, smash::hash40("run_speed_max"), 0),
+                WorkModule::get_param_float(boma, smash::hash40("walk_speed_max"), 0),
                 -1.0
             );
             energy.speed_limit = PaddedVec2::new(
