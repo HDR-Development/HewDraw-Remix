@@ -63,6 +63,7 @@
   <list hash="param_special_lw">
     <struct index="0">
       <int hash="success_cancel_frame">12</int>
+      <int hash="batwithin_success_xlu_frame">28</int>
       <float hash="base_slow_frame_max">85</float>
       <float hash="slow_frame_max">150</float>
       <float hash="batwithin_slow_frame_mul">100</float>

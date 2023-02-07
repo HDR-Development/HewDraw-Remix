@@ -57,12 +57,10 @@ unsafe fn bayonetta_attack_12_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 2.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE(fighter, 19/(25-11));
     }
     frame(lua_state, 25.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
-        FT_MOTION_RATE(fighter, 1.0);
     }
 }
 
