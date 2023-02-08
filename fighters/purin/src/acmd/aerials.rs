@@ -105,7 +105,7 @@ unsafe fn purin_effect_air_b_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0.0,3.7,-10,0,190,165,0.9,true);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 0.0, 3.7, -7.5, 0, 190, -25, 0.9, true, *EFFECT_AXIS_Z);
         LAST_EFFECT_SET_RATE(fighter, 1.6);
     }
     
@@ -143,10 +143,10 @@ unsafe fn purin_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 unsafe fn purin_effect_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 5.0);
+    frame(lua_state, 9.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 8, 1, 0, -110, -90, 0.7, true, *EF_FLIP_YZ, 0.3);
-        LAST_EFFECT_SET_RATE(fighter, 0.8);
+        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 7, 1, 0, -75, -90, 0.85, true, *EF_FLIP_YZ, 0.3);
+        LAST_EFFECT_SET_RATE(fighter, 0.9);
     }
 }
 
