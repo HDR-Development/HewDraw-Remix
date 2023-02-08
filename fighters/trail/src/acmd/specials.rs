@@ -5,8 +5,16 @@ unsafe fn effect_specialn3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 28.0);
+    // NEED TO LINE UP EFFECTS AND HITBOXES BEFORE PR
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("trail_thunder_shot"), Hash40::new("top"), 0, 10.7, 12.5, 0, 0, 0, 1, true);
+        if fighter.is_button_off(Buttons::Special) {
+            EFFECT_FOLLOW(fighter, Hash40::new("trail_thunder_shot"), Hash40::new("top"), 0, 10.7, 12.5, 0, 0, 0, 1, true);
+        }
+        else {
+            if boma.is_situation(*SITUATION_KIND_GROUND) && !boma.is_prev_situation(*SITUATION_KIND_AIR) {
+                EFFECT_FOLLOW(fighter, Hash40::new("trail_thunder_shot"), Hash40::new("top"), 0, 10.7, 73, 0, 0, 0, 0.8, true);
+            }
+        }
     }
 }
 
@@ -14,18 +22,30 @@ unsafe fn effect_specialn3(fighter: &mut L2CAgentBase) {
 unsafe fn game_specialn3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();  
-    FT_MOTION_RATE(fighter, 0.5);
+    FT_MOTION_RATE(fighter, 0.9);
     if is_excute(fighter) {
         WorkModule::on_flag(boma,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
     }
-    frame(lua_state, 28.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 75, 30, 0, 90, 10.0, 0.0, 10.0, 12.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+        frame(lua_state, 20.0);
+        if fighter.is_button_off(Buttons::Special) {
+            frame(lua_state, 28.0);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 85, 30, 0, 90, 10.0, 0.0, 10.0, 12.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+            frame(lua_state, 42.0);
+            AttackModule::clear_all(fighter.module_accessor);
+        }
+        else {
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 105, 95, 0, 40, 8.0, 0.0, 10.0, 70.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+            frame(lua_state, 42.0);
+            AttackModule::clear_all(fighter.module_accessor);
+            if !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+                FT_MOTION_RATE(fighter, 1.4)
+            }
+            else {
+                FT_MOTION_RATE(fighter, 0.5)
+            }
+        }
         WorkModule::on_flag(boma,  *FIGHTER_TRAIL_STATUS_SPECIAL_N3_FLAG_CHANGE_MAGIC);
-    }
-    frame(lua_state, 46.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.2);
     }
 }
 
@@ -43,35 +63,14 @@ unsafe fn effect_specialairn3(fighter: &mut L2CAgentBase) {
 unsafe fn game_specialairn3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();  
-    FT_MOTION_RATE(fighter, 0.5);
+    FT_MOTION_RATE(fighter, 0.9);
     if is_excute(fighter) {
         WorkModule::on_flag(boma,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
-    }
-    // For a brief period, give the player the opportunity to float
-    frame(lua_state, 1.0); 
-    if is_excute(fighter) {
-        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION);
-        VarModule::set_int(boma.object(), vars::common::instance::FLOAT_DURATION,999);
-        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
-        WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
-    }
-    // If B has been let go by frame 14, Sora should land on the ground normally, if not the float will continue
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        if fighter.is_button_off(Buttons::Special) {
-            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-        }
-    }
-    // Do the attack and change the magic to Blizzaga
-    frame(lua_state, 28.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 75, 30, 0, 90, 10.0, 0.0, 10.0, 12.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+        frame(lua_state, 28.0);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 85, 30, 0, 90, 10.0, 0.0, 10.0, 12.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+        frame(lua_state, 36.0);
+        AttackModule::clear_all(fighter.module_accessor);
         WorkModule::on_flag(boma,  *FIGHTER_TRAIL_STATUS_SPECIAL_N3_FLAG_CHANGE_MAGIC);
-    }
-    // Sped up at the end so the effect and hitbox line up and so the move is relatively shorter
-    frame(lua_state, 46.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.2);
     }
 }
 
@@ -784,9 +783,9 @@ pub fn install() {
     install_acmd_scripts!(
         game_trail_fire_fly,
         game_specialairn3,
-        effect_specialairn3,
         game_specialn3,
         effect_specialn3,
+        effect_specialairn3,
         game_specials1,
         game_specialairs1,
         game_specials2,
