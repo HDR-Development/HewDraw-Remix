@@ -11,7 +11,7 @@
   <list hash="param_special_s">
     <struct index="0">
       <float hash="throw_angle_max">75</float>
-      <float hash="throw_angle_min">50</float>
+      <float hash="throw_angle_min">310</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
