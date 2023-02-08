@@ -174,7 +174,7 @@ unsafe fn special_s_common(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
     }
-    frame(lua_state, 19.0);
+    frame(lua_state, 17.0);
     if is_excute(fighter) {
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
     }
