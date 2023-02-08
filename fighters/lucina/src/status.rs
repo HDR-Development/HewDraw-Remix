@@ -436,16 +436,16 @@ unsafe extern "C" fn special_lw_check_follow_up(fighter: &mut L2CFighterCommon) 
         mot = hash40("special_s4_s");
         mot_air = hash40("special_air_s4_s")
     }
-    VarModule::set_int64(fighter.battle_object, vars::lucina::status::SPECIAL_LW_MOTION, mot);
-    VarModule::set_int64(fighter.battle_object, vars::lucina::status::SPECIAL_LW_MOTION_AIR, mot_air);
-    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_CONTINUE_MOT);
-    special_lw_main_motion_helper(fighter);
     let stick_x = fighter.global_table[globals::STICK_X].get_f32();
     let lr = PostureModule::lr(fighter.module_accessor);
     if stick_x * lr < -0.33 {
         PostureModule::reverse_lr(fighter.module_accessor);
         PostureModule::update_rot_y_lr(fighter.module_accessor);
     }
+    VarModule::set_int64(fighter.battle_object, vars::lucina::status::SPECIAL_LW_MOTION, mot);
+    VarModule::set_int64(fighter.battle_object, vars::lucina::status::SPECIAL_LW_MOTION_AIR, mot_air);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_CONTINUE_MOT);
+    special_lw_main_motion_helper(fighter);
 }
 
 unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
