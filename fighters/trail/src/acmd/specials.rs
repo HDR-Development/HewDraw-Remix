@@ -11,7 +11,7 @@ unsafe fn effect_specialn3(fighter: &mut L2CAgentBase) {
             EFFECT_FOLLOW(fighter, Hash40::new("trail_thunder_shot"), Hash40::new("top"), 0, 10.7, 12.5, 0, 0, 0, 1, true);
         }
         else {
-            if boma.is_situation(*SITUATION_KIND_GROUND) && !boma.is_prev_situation(*SITUATION_KIND_AIR) {
+            if (fighter.is_button_on(Buttons::Special) && boma.is_situation(*SITUATION_KIND_GROUND)) | (boma.is_situation(*SITUATION_KIND_GROUND) && !boma.is_prev_situation(*SITUATION_KIND_AIR)) {
                 EFFECT_FOLLOW(fighter, Hash40::new("trail_thunder_shot"), Hash40::new("top"), 0, 10.7, 73, 0, 0, 0, 0.8, true);
             }
         }
@@ -31,11 +31,14 @@ unsafe fn game_specialn3(fighter: &mut L2CAgentBase) {
         if fighter.is_button_off(Buttons::Special) {
             frame(lua_state, 28.0);
             ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 85, 30, 0, 90, 10.0, 0.0, 10.0, 12.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+            WorkModule::on_flag(boma,  *FIGHTER_TRAIL_STATUS_SPECIAL_N3_FLAG_CHANGE_MAGIC);
             frame(lua_state, 42.0);
             AttackModule::clear_all(fighter.module_accessor);
         }
         else {
+            frame(lua_state, 28.0);
             ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 105, 95, 0, 40, 8.0, 0.0, 10.0, 70.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+            WorkModule::on_flag(boma,  *FIGHTER_TRAIL_STATUS_SPECIAL_N3_FLAG_CHANGE_MAGIC);
             frame(lua_state, 42.0);
             AttackModule::clear_all(fighter.module_accessor);
             if !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
@@ -45,7 +48,10 @@ unsafe fn game_specialn3(fighter: &mut L2CAgentBase) {
                 FT_MOTION_RATE(fighter, 0.5)
             }
         }
-        WorkModule::on_flag(boma,  *FIGHTER_TRAIL_STATUS_SPECIAL_N3_FLAG_CHANGE_MAGIC);
+    }
+    frame(lua_state, 60.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
     }
 }
 
@@ -66,11 +72,17 @@ unsafe fn game_specialairn3(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 0.9);
     if is_excute(fighter) {
         WorkModule::on_flag(boma,  *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
+    }
+    if is_excute(fighter) {
         frame(lua_state, 28.0);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 85, 30, 0, 90, 10.0, 0.0, 10.0, 12.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+        WorkModule::on_flag(boma,  *FIGHTER_TRAIL_STATUS_SPECIAL_N3_FLAG_CHANGE_MAGIC);
         frame(lua_state, 36.0);
         AttackModule::clear_all(fighter.module_accessor);
-        WorkModule::on_flag(boma,  *FIGHTER_TRAIL_STATUS_SPECIAL_N3_FLAG_CHANGE_MAGIC);
+    }
+    frame(lua_state, 60.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
     }
 }
 
