@@ -421,7 +421,7 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         VisibilityModule::set_whole(boma, true);
     }
-    frame(lua_state, 34.0);
+    frame(lua_state, 39.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }

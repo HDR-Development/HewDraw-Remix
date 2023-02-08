@@ -221,7 +221,7 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
         VisibilityModule::set_whole(boma, true);
         ArticleModule::remove(boma, *FIGHTER_MEWTWO_GENERATE_ARTICLE_ESCAPEAIRDUMMY, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    frame(lua_state, 34.0);
+    frame(lua_state, 39.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
