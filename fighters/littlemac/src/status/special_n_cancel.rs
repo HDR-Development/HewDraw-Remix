@@ -33,7 +33,6 @@ unsafe extern "C" fn special_n_cancel_pre(fighter: &mut L2CFighterCommon) -> L2C
 
 unsafe extern "C" fn special_n_cancel_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
-        println!("Change motion on ground");
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_cancel"), 0.0, 1.0, false, 0.0, false, false);
@@ -60,12 +59,10 @@ unsafe extern "C" fn special_n_cancel_main_loop(fighter: &mut L2CFighterCommon) 
         VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_NONE);
     }
     if VarModule::get_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE) == vars::littlemac::SPECIAL_N_CANCEL_TYPE_NONE && MotionModule::is_end(fighter.module_accessor) {
-        println!("fast shift 1");
         fighter.fastshift(L2CValue::Ptr(special_n_cancel_main_loop_electric_boogaloo as *const () as _))
     }
     else if VarModule::get_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE) != vars::littlemac::SPECIAL_N_CANCEL_TYPE_NONE
         && (MotionModule::is_end(fighter.module_accessor) || (!MotionModule::is_end(fighter.module_accessor) && CancelModule::is_enable_cancel(fighter.module_accessor))) {
-        println!("fast shift 2");
         fighter.fastshift(L2CValue::Ptr(special_n_cancel_main_loop_electric_boogaloo as *const () as _))
     }
     else {
