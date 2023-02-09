@@ -1,8 +1,11 @@
 use super::*;
-use globals::*;
+
+mod special_n_cancel;
  
 pub fn install() {
-    install_status_scripts!(
+    special_n_cancel::install();
+}
 
-    );
+pub fn add_statuses() {
+    special_n_cancel::install();
 }
