@@ -31,7 +31,10 @@ unsafe fn littlemac_special_air_n_start_game(fighter: &mut L2CAgentBase) {
 unsafe fn littlemac_special_n_cancel_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 9.0/(39.0 - 1.0));
+    }
 }
 
 #[acmd_script( agent = "littlemac", script = "effect_specialncancel" , category = ACMD_EFFECT , low_priority)]
