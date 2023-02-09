@@ -14,26 +14,28 @@ use globals::*;
 // Vanilla passes 0 by default, so we have to forcibly pass in 1
 #[skyline::hook(offset = 0x45f420)]
 unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *mut Hash40, param_2: *mut f32, param_3: *mut f32, param_4: *mut f32, param_5: *mut f32, param_6: u32) {
+    // The original function calls model_module_joint_global_position_with_offset_hook
     let boma = *((ground_module + 0x20) as *mut *mut BattleObjectModuleAccessor);
-    let mut param_6 = param_6.clone();
-    if (*boma).is_fighter()
-    && !VarModule::is_flag((*boma).object(), vars::common::status::DISABLE_ECB_SHIFT)
-    && !(*boma).is_status_one_of(&[
+    if (*boma).is_fighter() { VarModule::on_flag((*boma).object(), vars::common::instance::IS_GETTING_POSITION_FOR_ECB); }
+    call_original!(ground_module, param_1, param_2, param_3, param_4, param_5, 1);
+    if (*boma).is_fighter() {
+        VarModule::off_flag((*boma).object(), vars::common::instance::IS_GETTING_POSITION_FOR_ECB);
+        VarModule::set_float((*boma).object(), vars::common::instance::ECB_BOTTOM_Y_OFFSET, *param_3);
+    }
+    if !(*boma).is_fighter()
+    || VarModule::is_flag((*boma).object(), vars::common::status::DISABLE_ECB_SHIFT)
+    || (*boma).is_status_one_of(&[
         *FIGHTER_STATUS_KIND_DEMO,
         *FIGHTER_STATUS_KIND_ENTRY,
         *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
         *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
         *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
         *FIGHTER_STATUS_KIND_THROWN])
-    && (*boma).is_situation(*SITUATION_KIND_AIR)
-    && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) >= ParamModule::get_int((*boma).object(), ParamType::Common, "ecb_shift_air_trans_frame") {
+    || !(*boma).is_situation(*SITUATION_KIND_AIR)
+    || WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) < ParamModule::get_int((*boma).object(), ParamType::Common, "ecb_shift_air_trans_frame") {
         // This check passes after 9 frames of airtime, if not in a grabbed/thrown state
-        param_6 = 1;
+        *param_3 = 0.0;
     }
-    // The original function calls model_module_joint_global_position_with_offset_hook
-    if (*boma).is_fighter() { VarModule::on_flag((*boma).object(), vars::common::instance::IS_GETTING_POSITION_FOR_ECB); }
-    call_original!(ground_module, param_1, param_2, param_3, param_4, param_5, param_6);
-    if (*boma).is_fighter() { VarModule::off_flag((*boma).object(), vars::common::instance::IS_GETTING_POSITION_FOR_ECB); }
 }
 
 
