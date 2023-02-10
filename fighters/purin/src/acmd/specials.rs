@@ -51,54 +51,6 @@ unsafe fn purin_special_air_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "purin", script = "game_speciallwr" , category = ACMD_GAME , low_priority)]
-unsafe fn purin_special_lw_r_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        JostleModule::set_status(boma, false);
-    }
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("bust"), 25.0, 361, 79, 0, 85, 2.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BAT, *ATTACK_REGION_BODY);
-    }
-    wait(lua_state, 1.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-        JostleModule::set_status(boma, true);
-        if(AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)){
-            if (DamageModule::damage(boma, 0) > 5.0) {
-                DamageModule::add_damage(boma, -5.0, 0);
-            }
-        }
-    }
-    
-}
-
-#[acmd_script( agent = "purin", script = "game_speciallwl" , category = ACMD_GAME , low_priority)]
-unsafe fn purin_special_lw_l_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        JostleModule::set_status(boma, false);
-    }
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("bust"), 25.0, 361, 79, 0, 85, 2.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BAT, *ATTACK_REGION_BODY);
-    }
-    wait(lua_state, 1.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-        JostleModule::set_status(boma, true);
-        if(AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)){
-            if (DamageModule::damage(boma, 0) > 5.0) {
-                DamageModule::add_damage(boma, -5.0, 0);
-            }
-        }
-    }
-    
-}
-
 #[acmd_script( agent = "purin", scripts = ["game_specialairlwl", "game_specialairlwr"] , category = ACMD_GAME , low_priority)]
 unsafe fn purin_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -127,8 +79,6 @@ pub fn install() {
     install_acmd_scripts!(
         purin_special_s_game,
         purin_special_air_s_game,
-        purin_special_lw_r_game,
-        purin_special_lw_l_game,
         purin_special_air_lw_game,
     );
 }
