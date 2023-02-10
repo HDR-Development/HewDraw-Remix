@@ -105,7 +105,7 @@ unsafe fn purin_effect_air_b_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0.0,3.7,-10,0,190,165,0.9,true);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 0.0, 3.7, -7.5, 0, 190, 165, 0.9, true, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(fighter, 1.6);
     }
     
@@ -120,18 +120,18 @@ unsafe fn purin_attack_air_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 9.0);
-        FT_MOTION_RATE(fighter, 3.5/(22.0-9.0));
     if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 4.0/(20.0-9.0));
         ATTACK(fighter, 0, 0, Hash40::new("shoulderl"), 12.0, 85, 100, 0, 30, 4.0, 7.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 1, 0, Hash40::new("shoulderl"), 12.0, 85, 100, 0, 30, 3.0, 4.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 2, 0, Hash40::new("shoulderl"), 12.0, 85, 100, 0, 30, 3.0, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
     }
-    frame(lua_state, 22.0);
+    frame(lua_state, 20.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.5);
+        FT_MOTION_RATE(fighter, 1.0);
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 38.0);
+    frame(lua_state, 36.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -143,10 +143,10 @@ unsafe fn purin_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 unsafe fn purin_effect_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 5.0);
+    frame(lua_state, 9.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 8, 1, 0, -110, -90, 0.7, true, *EF_FLIP_YZ, 0.3);
-        LAST_EFFECT_SET_RATE(fighter, 0.8);
+        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 7, 1, 0, -85, -90, 0.85, true, *EF_FLIP_YZ, 0.3);
+        LAST_EFFECT_SET_RATE(fighter, 0.9);
     }
 }
 
