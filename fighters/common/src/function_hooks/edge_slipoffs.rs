@@ -84,7 +84,8 @@ unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, kind: GroundCorrec
             *FIGHTER_STATUS_KIND_LANDING,
             *FIGHTER_STATUS_KIND_TURN_DASH,
             *FIGHTER_STATUS_KIND_DASH,
-            *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL].contains(&status_kind) {
+            *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL,
+            *FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP].contains(&status_kind) {
             return original!()(boma, GroundCorrectKind(1));
         }
 

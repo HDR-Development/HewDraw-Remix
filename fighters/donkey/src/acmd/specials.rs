@@ -343,10 +343,6 @@ unsafe fn special_air_lw(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        // if you already have an item, transition into pickup instead
-        if ItemModule::is_have_item(boma, 0) {
-            fighter.change_status_req(FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP.into(), true.into());
-        }
         MotionModule::set_rate(boma, 0.67);
     }
     frame(lua_state, 7.0);
@@ -370,28 +366,9 @@ unsafe fn special_air_lw(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         grab!(fighter, MA_MSC_CMD_GRAB_CLEAR_ALL);
         MotionModule::set_rate(boma, 6.0);
-        /*
-        ItemModule::pickup_item(boma, ItemSize{_address: *ITEM_SIZE_HEAVY as u8}, *FIGHTER_HAVE_ITEM_WORK_MAIN, *ITEM_TRAIT_ALL, QuickItemTreatType{_address: *QUICK_ITEM_TREAT_TYPE_FORCE_HAVE as u8}, ItemPickupSearchMode{_address: *ITEM_PICKUP_SEARCH_MODE_NORMAL as u8});
-        ItemModule::pickup_item(boma, ItemSize{_address: *ITEM_SIZE_LIGHT as u8}, *FIGHTER_HAVE_ITEM_WORK_MAIN, *ITEM_TRAIT_ALL, QuickItemTreatType{_address: *QUICK_ITEM_TREAT_TYPE_FORCE_HAVE as u8}, ItemPickupSearchMode{_address: *ITEM_PICKUP_SEARCH_MODE_NORMAL as u8});
-        // if there is a heavy item to pick up nearby, grab it
-        if !ItemModule::is_have_item(boma, 0) {
-            WorkModule::off_flag(boma,*FIGHTER_INSTANCE_WORK_ID_FLAG_NO_PICKUP_ITEM);
-            ItemModule::pickup_item(boma, ItemSize{_address: *ITEM_SIZE_HEAVY as u8}, *FIGHTER_HAVE_ITEM_WORK_MAIN, *ITEM_TRAIT_ALL, QuickItemTreatType{_address: *QUICK_ITEM_TREAT_TYPE_FORCE_HAVE as u8}, ItemPickupSearchMode{_address: *ITEM_PICKUP_SEARCH_MODE_NORMAL as u8});
-        }
-        // if there is a light item nearby, grab it
-        if !ItemModule::is_have_item(boma, 0) {
-            WorkModule::off_flag(boma,*FIGHTER_INSTANCE_WORK_ID_FLAG_NO_PICKUP_ITEM);
-            ItemModule::pickup_item(boma, ItemSize{_address: *ITEM_SIZE_LIGHT as u8}, *FIGHTER_HAVE_ITEM_WORK_MAIN, *ITEM_TRAIT_ALL, QuickItemTreatType{_address: *QUICK_ITEM_TREAT_TYPE_FORCE_HAVE as u8}, ItemPickupSearchMode{_address: *ITEM_PICKUP_SEARCH_MODE_NORMAL as u8});
-        }
-        // if you have any items at all, transition into pickup
-        if ItemModule::is_have_item(boma, 0) {
-            fighter.change_status_req(FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP.into(), true.into());
-        }
-        */
     }
     wait(lua_state, 6.0);
     if is_excute(fighter) {
-        grab!(fighter, MA_MSC_CMD_GRAB_CLEAR_ALL);
         MotionModule::set_rate(boma, 0.9);
     }
 }

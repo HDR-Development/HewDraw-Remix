@@ -47,7 +47,7 @@ unsafe extern "C" fn status_change(fighter: &mut L2CFighterCommon) -> L2CValue {
 fn donkey_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         if smash::app::utility::get_kind(&mut *fighter.module_accessor) == *FIGHTER_KIND_DONKEY {
-            fighter.global_table[0x34].assign(&L2CValue::Ptr(when_shield as *const () as _));
+            //fighter.global_table[0x34].assign(&L2CValue::Ptr(when_shield as *const () as _));
             fighter.global_table[STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(status_change as *const () as _));
         }
     }

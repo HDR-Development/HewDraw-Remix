@@ -466,7 +466,8 @@ pub trait BomaExt {
     // ENERGY
     unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion;
     unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController;
-    // tech/general subroutine
+
+    // tech/general subroutines
     unsafe fn handle_waveland(&mut self, require_airdodge: bool) -> bool;
     unsafe fn set_front_cliff_hangdata(&mut self, x: f32, y: f32);
     unsafe fn set_back_cliff_hangdata(&mut self, x: f32, y: f32);
@@ -481,6 +482,9 @@ pub trait BomaExt {
 
     /// check for hitfall (should be called once per frame)
     unsafe fn check_hitfall(&mut self);
+
+    /// try to pickup an item nearby
+    unsafe fn try_pickup_item(&mut self, range: f32, bone: Option<Hash40>, offset: Option<&Vector2f>) -> Option<&mut BattleObjectModuleAccessor> ;
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -967,6 +971,67 @@ impl BomaExt for BattleObjectModuleAccessor {
                 WorkModule::on_flag(self, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
             }
         }
+    }
+
+    unsafe fn try_pickup_item(&mut self, range: f32, bone: Option<Hash40>, offset: Option<&Vector2f>) -> Option<&mut BattleObjectModuleAccessor> {
+        use smash2::app::ItemManager;
+
+        // non fighters cant pickup items
+        if !self.is_fighter() {
+            return None;
+        }
+
+        // if you already have an item, return that item instead
+        if ItemModule::is_have_item(self, 0) {
+            let have_id = ItemModule::get_have_item_id(self, 0);
+            let item = ItemManager::find_active_item_from_id(ItemManager::instance().unwrap(), have_id as u32) as *mut smash::app::Item;
+            let item_module_accessor = smash::app::lua_bind::Item::item_module_accessor(item) as *mut ItemModuleAccessor;
+            let item_boma = &mut (*item_module_accessor).battle_object_module_accessor;
+            return Some(item_boma);
+        }
+        
+        let total = ItemManager::get_num_of_active_item_all(ItemManager::instance().unwrap());
+        println!("total items: {}", total);
+
+        // get the global position of the bone
+        let fighter_pos = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
+        let bone_hash = bone.unwrap_or(Hash40::new("top"));
+        ModelModule::joint_global_position(self, bone_hash, fighter_pos, false);
+        // zero out the z axis
+        fighter_pos.z = 0.0;
+        match offset {
+            Some(offset) => {
+                fighter_pos.x += offset.x * PostureModule::lr(self);
+                fighter_pos.y += offset.y;
+            },
+            None => {}
+        }
+        
+
+        let pickup_range = 10.0;
+
+        for id in 0..total {
+            // pointer to the item
+            let item_ptr = ItemManager::get_active_item(ItemManager::instance().unwrap(), id as u64);
+            if item_ptr.is_null() {
+                continue;
+            }
+
+            // if this item is close to us, grab it?
+            println!("active item for id {}", id);
+            let item = item_ptr as *mut smash::app::Item;
+            let item_module_accessor = smash::app::lua_bind::Item::item_module_accessor(item) as *mut ItemModuleAccessor;
+            let item_boma = &mut (*item_module_accessor).battle_object_module_accessor;
+            let item_pos = PostureModule::pos(item_boma);
+
+            if ((*item_pos).x - (*fighter_pos).x).abs() < pickup_range
+                && ((*item_pos).y - (*fighter_pos).y).abs() < pickup_range {
+                println!("picking up item!");
+                ItemModule::have_item_instance(self, item, 0, false, false, false, false);
+                return Some(item_boma);
+            }
+        }
+        return None;
     }
 }
 
