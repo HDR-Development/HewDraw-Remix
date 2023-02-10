@@ -25,13 +25,13 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
-      <float hash="jump_speed_x">1</float>
-      <float hash="jump_air_speed_x">1</float>
+      <float hash="jump_speed_x">.55</float>
+      <float hash="jump_air_speed_x">.55</float>
       <float hash="jump_accel_front">0.35</float>
       <float hash="jump_accel_back">-0.2</float>
-      <float hash="jump_speed_max">2.35</float>
-      <int hash="attack_frame">10</int>
-      <int hash="somersault_attack_frame">15</int>
+      <float hash="jump_speed_max">1.4</float>
+      <int hash="attack_frame">5</int>
+      <int hash="somersault_attack_frame">10</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
