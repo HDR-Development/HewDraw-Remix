@@ -73,6 +73,26 @@ unsafe fn sheik_special_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "sheik", script = "game_speciallw", category = ACMD_GAME, low_priority )]
+unsafe fn sheik_special_lw_ground_attack_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_SHEIK_STATUS_SPECIAL_LW_FLAG_ACCEL);
+    }
+}
+
+#[acmd_script( agent = "sheik", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
+unsafe fn sheik_special_lw_air_attack_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_SHEIK_STATUS_SPECIAL_LW_FLAG_ACCEL);
+    }
+}
+
 #[acmd_script( agent = "sheik", script = "game_speciallwattack" , category = ACMD_GAME , low_priority)]
 unsafe fn sheik_special_lw_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -102,7 +122,9 @@ pub fn install() {
         sheik_special_air_s_game,
         sheik_special_hi_game,
         sheik_special_air_hi_game,
-        sheik_special_lw_attack_game,
+		sheik_special_lw_ground_attack_game,
+		sheik_special_lw_air_attack_game,
+        sheik_special_lw_attack_game
     );
 }
 
