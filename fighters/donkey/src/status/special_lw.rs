@@ -18,6 +18,7 @@ unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
           VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER) == 0 {
             VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1);
             ItemModule::have_item(fighter.module_accessor, ItemKind(*ITEM_KIND_BARREL),0,0,false,false);
+            EFFECT(fighter, Hash40::new("donkey_handslap"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, false);
         }
         
         // change into the heavy item pickup status either way
@@ -48,27 +49,6 @@ unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe extern "C" fn special_lw_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR)
     && param_1.get_bool() {
-        /* if VarModule::is_flag(fighter.battle_object, vars::donkey::status::SPECIAL_AIR_LW_STOP) {
-            VarModule::off_flag(fighter.battle_object, vars::donkey::status::SPECIAL_AIR_LW_STOP);
-            if !VarModule::is_flag(fighter.battle_object, vars::donkey::instance::SPECIAL_AIR_LW_USED_STALL) {
-                /*sv_kinetic_energy!(
-                    set_speed,
-                    fighter,
-                    FIGHTER_KINETIC_ENERGY_ID_STOP,
-                    0.0,
-                    0.0
-                );
-                sv_kinetic_energy!(
-                    set_speed,
-                    fighter,
-                    FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                    0.5,
-                );
-                */
-                VarModule::on_flag(fighter.battle_object, vars::donkey::instance::SPECIAL_AIR_LW_USED_STALL);
-            }
-        }
-        */
         // enable fastfall
         if fighter.is_cat_flag(Cat2::FallJump)
             && fighter.stick_y() < -0.66
@@ -78,15 +58,17 @@ unsafe extern "C" fn special_lw_substatus(fighter: &mut L2CFighterCommon, param_
 
         // try to pick up an item nearby
         let frame = fighter.motion_frame();
-        if frame > 5.0 && frame < 15.0 {
-            let range = 15.0;
-            fighter.try_pickup_item(range, Some(Hash40::new("top")), Some(&Vector2f{x: 10.0, y: 3.0}));
+        if frame > 5.0 && frame < 16.0 {
+            let range = 20.0;
+            fighter.try_pickup_item(range, Some(Hash40::new("top")), Some(&Vector2f{x: 10.0, y: 0.0}));
         }
 
         // if at any time during dspecial you are holding 
         // an item, transition into heavy pickup.
         if ItemModule::is_have_item(fighter.boma(), 0) {
             fighter.change_status_req(FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP.into(), true.into());
+            grab!(fighter, MA_MSC_CMD_GRAB_CLEAR_ALL);
+            return 1.into();
         }
     }
     0.into()

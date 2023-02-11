@@ -7,9 +7,10 @@ mod special_hi;
 mod special_lw;
 mod link_event;
 mod catch_pull;
-mod cargo_carry;
+mod shoulder;
+mod super_lift;
 
-unsafe extern "C" fn when_shield(fighter: &mut L2CFighterCommon) -> L2CValue {
+/*unsafe extern "C" fn when_shield(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
         && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
         && ControlModule::get_stick_y(fighter.module_accessor) < 0.3 {
@@ -29,7 +30,7 @@ unsafe extern "C" fn when_shield(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
     }
     return false.into();
-}
+}*/
 
 unsafe extern "C" fn status_change(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR
@@ -53,12 +54,14 @@ fn donkey_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
+pub fn install(is_runtime: bool) {
     item_throw_heavy::install();
     special_hi::install();
     special_lw::install();
     link_event::install();
     catch_pull::install();
-    cargo_carry::install();
+    shoulder::install();
+    super_lift::install(is_runtime);
+    super_lift::install_statuses();
     smashline::install_agent_init_callbacks!(donkey_init);
 }

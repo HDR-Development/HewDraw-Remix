@@ -39,6 +39,7 @@ pub unsafe fn init_settings_edges(boma: &mut BattleObjectModuleAccessor, situati
             *FIGHTER_STATUS_KIND_GUARD_DAMAGE,
             // *FIGHTER_STATUS_KIND_ESCAPE_AIR,
             // *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE,
+            *FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP,
             *FIGHTER_STATUS_KIND_DAMAGE].contains(&status_kind) {
             fix = *GROUND_CORRECT_KIND_GROUND as u32;
         }
@@ -84,8 +85,7 @@ unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, kind: GroundCorrec
             *FIGHTER_STATUS_KIND_LANDING,
             *FIGHTER_STATUS_KIND_TURN_DASH,
             *FIGHTER_STATUS_KIND_DASH,
-            *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL,
-            *FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP].contains(&status_kind) {
+            *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL].contains(&status_kind) {
             return original!()(boma, GroundCorrectKind(1));
         }
 

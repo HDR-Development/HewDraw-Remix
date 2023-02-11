@@ -66,7 +66,12 @@ unsafe fn barrel_pull(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
                     fighter.change_status(FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP.into(),true.into());
             }
         }
-    } 
+    } else {
+        if status_kind == *FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP {
+            KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        }
+    }
 }
 
 // DK Headbutt aerial stall

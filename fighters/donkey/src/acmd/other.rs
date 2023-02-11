@@ -228,8 +228,31 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "donkey", script = "expression_superliftlanding", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_superliftlanding(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        //QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_impact"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
+#[acmd_script( agent = "donkey", script = "expression_shoulderlanding", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_shoulderlanding(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        //QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_landl_hv"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
+        expression_superliftlanding,
+        expression_shoulderlanding,
         escape_air_game,
         escape_air_slide_game,
         dash_sound,
