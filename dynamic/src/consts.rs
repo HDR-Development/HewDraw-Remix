@@ -139,7 +139,7 @@ pub mod vars {
 
             pub const UP_SPECIAL_INTERRUPT: i32 = 0x0023; // Ness and Lucas use this
             pub const UP_SPECIAL_INTERRUPT_AIRTIME: i32 = 0x0024; // Ness and Lucas use this
-            
+
             pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 0x0025; // Luigi, Ivysaur, and Young Link use this
             pub const IS_TELEPORT_WALL_RIDE: i32 = 0x0026; // Mewtwo, Palutena, Sheik, and Zelda use this
             pub const SPIN_ATTACK_LAND_CANCEL: i32 = 0x003E; // Link and Mii Sword use this
@@ -282,7 +282,7 @@ pub mod vars {
             // flag
             pub const BEAKBOMB_ACTIVE: i32 = 0x0100;
             pub const BAYONET_ACTIVE: i32 = 0x0101;
-            
+
             // int
             pub const HUD_DISPLAY_TIME: i32 = 0x0100;
             //Current frame of Beakbomb, used to detect mislanding
@@ -373,7 +373,7 @@ pub mod vars {
             pub const TICO_RAYCAST: i32 = 0x0106;
             pub const TICO_X_DIST: i32 = 0x0107;
             pub const TICO_Y_DIST: i32 = 0x0108;
-			
+
 			// flag
             pub const IS_TICO_DEAD: i32 = 0x0105;
         }
@@ -537,7 +537,7 @@ pub mod vars {
             // flag
             /// This flag stores whether or not Luigi currently has a misfire stored.
             pub const IS_MISFIRE_STORED: i32 = 0x0100;
-            
+
             // int
             /// This int stores the number of remaining green missile's luigi must do before getting a misfire
             pub const REMAINING_SPECIAL_S_UNTIL_MISFIRE: i32 = 0x0100;
@@ -705,14 +705,14 @@ pub mod vars {
             pub const PULSE_HITBOX: i32 = 0x1100;
         }
     }
-    
+
     pub mod snake {
         pub mod instance {
             // ints
             pub const SNAKE_GRENADE_COUNTER: i32 = 0x0100;
         }
     }
-    
+
     pub mod szerosuit {
         pub mod status {
             // flags
@@ -859,17 +859,17 @@ pub mod vars {
             pub const META_QUICK_CHARGE_EFFECT_HANDLE: i32 = 0x0104;
         }
     }
-    
+
     // pub mod miifighter {
     //     // floats
     //     pub const CHARGE_ATTACK_LEVEL: i32 = 0x1000;
-        
+
     //     // flags
     //     pub const IS_COUNTER_THROW_PARRIED_ATTACK: i32 = 0x1000;
     //     pub const IS_CURRENT_IRONBALL_HEAVY:       i32 = 0x1001;
 
     // }
-    
+
     pub mod littlemac {
         pub mod status {
             // flags
@@ -912,7 +912,7 @@ pub mod vars {
             pub const PHANTOM_EFF_HANDLER: i32 = 0x0103;
         }
     }
-    
+
     pub mod murabito {
         pub mod instance {
             // flags
@@ -933,7 +933,7 @@ pub mod vars {
             pub const SPECIAL_LW_ENABLE_LANDING: i32 = 0x0102;
             pub const SPECIAL_LW_IS_LANDING: i32 = 0x0103;
             pub const SPECIAL_LW_ENABLE_BOUNCE: i32 = 0x0104;
-            
+
             // floats
             pub const SPECIAL_LW_BOUNCE_PREV_POS: i32 = 0x0100;   //vector, requires two indexes
             pub const SPECIAL_S_FAILURE_CANCEL_FRAME: i32 = 0x0102;
@@ -946,7 +946,16 @@ pub mod vars {
             pub const SKEWER_STICK_Y: i32 = 0x1100;
         }
     }
+    pub mod iceclimbers {
+        pub mod instance {
+            //flags
+            pub const IS_VOLUNTARY_SOPO: i32 = 0x0100;
+            pub const IS_SEPARATED: i32 = 0x0101;
 
+            //ints
+            pub const SEPARATED_EFFECT: i32 = 0x0110;
+        }
+    }
     pub mod packun {
         pub mod instance {
             // flags
