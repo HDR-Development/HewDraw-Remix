@@ -39,10 +39,9 @@ use utils::{
 };
 use smashline::*;
 
-#[status_script(agent = "packun", status = FIGHTER_STATUS_KIND_GUARD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn guard_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
-    && ControlModule::get_stick_y(fighter.module_accessor) < 0.3 {
+/*pub unsafe extern "C" fn guard_cont_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if ControlModule::get_stick_y(fighter.module_accessor) < 0.3
+    && StatusModule::situation_kind(fighter.module_accessor) == SITUATION_KIND_GROUND {
         if ((ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_R)
         || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L))
         && VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) != 0)
@@ -50,16 +49,22 @@ unsafe fn guard_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         && VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) != 1)
         || (ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW)
         && VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) != 2) {
-            StatusModule::set_status_kind_interrupt(
-                fighter.module_accessor,
-                CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::packun::ADAPTIVE_ROOTS)
-            );
-            return 1.into();
+            fighter.change_to_custom_status(statuses::packun::ADAPTIVE_ROOTS, false, false);
+            return true.into();
         }
-    
     }
+    return false.into();
+}*/
 
-    original!(fighter)
+#[fighter_reset]
+fn packun_reset(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
+        if fighter_kind != *FIGHTER_KIND_PACKUN {
+            return;
+        }
+        //fighter.global_table[0x34].assign(&L2CValue::Ptr(guard_cont_pre as *const () as _));
+    }
 }
 
 #[fighter_init]
@@ -76,12 +81,13 @@ pub fn install(is_runtime: bool) {
         utils::singletons::init();
     }
 
+    smashline::install_agent_resets!(packun_reset);
     smashline::install_agent_init_callbacks!(packun_init);
     acmd::install();
     //status::install();
     opff::install(is_runtime);
 
-    smashline::install_status_script!(guard_main);
+    //smashline::install_status_script!(guard_cont_pre);
 
     if !is_runtime || is_hdr_available() {
         adaptive_roots::install();

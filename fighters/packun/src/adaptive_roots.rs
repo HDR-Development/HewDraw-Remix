@@ -32,7 +32,7 @@ pub unsafe extern "C" fn adaptive_roots_pre(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-/// main status loop for metaquick summon
+/// main status loop
 unsafe extern "C" fn adaptive_roots_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     // exit if the animation is not done yet
     if !MotionModule::is_end(fighter.module_accessor) {
@@ -51,28 +51,40 @@ unsafe extern "C" fn adaptive_roots_main_loop(fighter: &mut L2CFighterCommon) ->
     1.into()
 }
 
-/// main status for metaquick summon
+/// main status
 pub unsafe extern "C" fn adaptive_roots_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let motion = Hash40::new("squat_rv");
-
-    MotionModule::change_motion(fighter.module_accessor, motion, 0.0, 1.5, false, 0.0, false, false);
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("squat_rv"), 0.0, 1.5, false, 0.0, false, false);
 
     fighter.main_shift(adaptive_roots_main_loop)
 }
 
-/// end status for metaquick summon
+/// end status
 pub unsafe extern "C" fn adaptive_roots_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-/// handles starting metaquick
-unsafe fn handle_start_adaptive_roots(fighter: &mut L2CFighterCommon) {
+/// handles start
+unsafe fn handle_start_adaptive_roots(fighter: &mut L2CFighterCommon, stance: i32) {
     if fighter.is_situation(*SITUATION_KIND_GROUND) {
         if fighter.is_status_one_of(&[
             *FIGHTER_STATUS_KIND_GUARD,
             *FIGHTER_STATUS_KIND_GUARD_ON]){
             fighter.change_to_custom_status(statuses::packun::ADAPTIVE_ROOTS, false, false);
+            VarModule::set_int(fighter.object(), vars::packun::instance::CURRENT_STANCE, stance);
+            stance_init_effects(fighter, stance);
         }
+    }
+}
+
+unsafe fn stance_init_effects(fighter: &mut L2CFighterCommon, stance: i32) {
+    if stance == 0 {
+        LANDING_EFFECT(fighter, Hash40::new("sys_grass"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false);
+    }
+    else if stance == 1 {
+        LANDING_EFFECT(fighter, Hash40::new("packun_poison_max"), Hash40::new("mouth"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
+    else if stance == 2 {
+        LANDING_EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
@@ -87,21 +99,15 @@ pub unsafe fn run(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         if (ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_R)
         || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L))
         && VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) != 0 {
-            handle_start_adaptive_roots(fighter);
-            LANDING_EFFECT(fighter, Hash40::new("sys_grass"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false);
-            VarModule::set_int(fighter.object(), vars::packun::instance::CURRENT_STANCE, 0);
+            handle_start_adaptive_roots(fighter, 0);
         }
         else if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
         && VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) != 1 {
-            handle_start_adaptive_roots(fighter);
-            LANDING_EFFECT(fighter, Hash40::new("packun_poison_max"), Hash40::new("mouth"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-            VarModule::set_int(fighter.object(), vars::packun::instance::CURRENT_STANCE, 1);
+            handle_start_adaptive_roots(fighter, 1);
         }
         else if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW)
         && VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) != 2 {
-            handle_start_adaptive_roots(fighter);
-            LANDING_EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-            VarModule::set_int(fighter.object(), vars::packun::instance::CURRENT_STANCE, 2);
+            handle_start_adaptive_roots(fighter, 2);
         }
     }
 
@@ -164,9 +170,9 @@ unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 0 {
             apply_status_speed_mul(fighter, 1.0);
         } else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
-            apply_status_speed_mul(fighter, 0.9);
+            apply_status_speed_mul(fighter, 0.85);
         } else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
-            apply_status_speed_mul(fighter, 0.75);
+            apply_status_speed_mul(fighter, 0.72);
         }
         VarModule::off_flag(fighter.object(), vars::packun::instance::STANCE_NEED_SET_SPEEDS);
     }
@@ -175,13 +181,12 @@ unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         //println!("Status is changing!");
         VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_NEED_SET_SPEEDS);
         VarModule::set_int(fighter.object(), vars::packun::instance::STANCE_STATUS, fighter.status());
-        //println!("new stance status: {}", VarModule::get_int(fighter.object(), vars::packun::instance::STANCE_STATUS));
+        println!("new stance status: {}", VarModule::get_int(fighter.object(), vars::packun::instance::STANCE_STATUS));
     }
 }
 
-/// checks if meta quick should have its state reset due to death or match end
+/// checks if stance should be reset due to death or match end
 unsafe fn check_reset(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    // we dont want meta quick *or* the ready effect to persist during these states
     if fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_WIN,
         *FIGHTER_STATUS_KIND_LOSE,

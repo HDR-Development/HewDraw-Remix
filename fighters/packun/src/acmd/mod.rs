@@ -27,15 +27,15 @@ impl From<i32> for StanceInfo {
                 bkb_normals: 0,
                 delta_angle: 0
             },
-            1 => StanceInfo { // Toxic
+            1 => StanceInfo { // Putrid
                 label: 1,
-                damage_bite: 1.1,
+                damage_bite: 0.8,
                 damage_head: 0.75,
                 damage_other: 0.9,
-                bkb_normals: 20,
+                bkb_normals: 10,
                 delta_angle: 0
             },
-            2 => StanceInfo { // Brute
+            2 => StanceInfo { // Prickly
                 label: 2,
                 damage_bite: 1.05,
                 damage_head: 1.4,
