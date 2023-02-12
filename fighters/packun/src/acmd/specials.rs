@@ -66,7 +66,7 @@ unsafe fn packun_special_s_shoot_game(fighter: &mut L2CAgentBase) {
     }
     else if stance == 2 {
         if is_excute(fighter) {
-            FT_MOTION_RATE(fighter, (15.0/5.0));
+            FT_MOTION_RATE(fighter, (13.0/5.0));
         }
         frame(lua_state, 5.0);
         if is_excute(fighter) {
@@ -74,9 +74,6 @@ unsafe fn packun_special_s_shoot_game(fighter: &mut L2CAgentBase) {
             if charged {
                 ATTACK(fighter, 0, 0, Hash40::new("mouth"), 16.0, 290, 100, 5, 0, 9.0, 2.0, 0.0, 0.0, Some(5.5), Some(0.0), Some(0.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
                 AttackModule::set_add_reaction_frame(boma, 0, 30.0, false);
-                if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
-                    FT_MOTION_RATE(fighter, 0.5);
-                }
             }
             else {
                 ATTACK(fighter, 0, 0, Hash40::new("mouth"), 10.0, 290, 100, 5, 0, 9.0, 2.0, 0.0, 0.0, Some(5.5), Some(0.0), Some(0.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 5.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
@@ -86,6 +83,7 @@ unsafe fn packun_special_s_shoot_game(fighter: &mut L2CAgentBase) {
         wait(lua_state, 3.0);
         if is_excute(fighter) {
             AttackModule::clear_all(boma);
+            FT_MOTION_RATE(fighter, 0.8);
         }
     }
 }
@@ -153,7 +151,7 @@ unsafe fn packun_special_air_s_shoot_game(fighter: &mut L2CAgentBase) {
     }
     else if stance == 2 {
         if is_excute(fighter) {
-            FT_MOTION_RATE(fighter, (15.0/5.0));
+            FT_MOTION_RATE(fighter, (13.0/5.0));
         }
         frame(lua_state, 5.0);
         if is_excute(fighter) {
@@ -161,9 +159,6 @@ unsafe fn packun_special_air_s_shoot_game(fighter: &mut L2CAgentBase) {
             if charged {
                 ATTACK(fighter, 0, 0, Hash40::new("mouth"), 16.0, 290, 100, 5, 0, 9.0, 2.0, 0.0, 0.0, Some(5.5), Some(0.0), Some(0.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
                 AttackModule::set_add_reaction_frame(boma, 0, 30.0, false);
-                if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
-                    FT_MOTION_RATE(fighter, 0.5);
-                }
             }
             else {
                 ATTACK(fighter, 0, 0, Hash40::new("mouth"), 10.0, 290, 100, 5, 0, 9.0, 2.0, 0.0, 0.0, Some(5.5), Some(0.0), Some(0.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 5.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
@@ -173,6 +168,7 @@ unsafe fn packun_special_air_s_shoot_game(fighter: &mut L2CAgentBase) {
         wait(lua_state, 3.0);
         if is_excute(fighter) {
             AttackModule::clear_all(boma);
+            FT_MOTION_RATE(fighter, 0.8);
         }
     }
 }
