@@ -4,10 +4,15 @@ use super::*;
 use globals::*;
 
  
-unsafe fn piranhacopter_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 0 {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
+unsafe fn piranhacopter_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
+    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
+        if situation_kind == *SITUATION_KIND_GROUND {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_HI_END, false);
+        } 
+        else if situation_kind == *SITUATION_KIND_AIR {
+            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, false);
+            }
         }
     }
 }
@@ -61,7 +66,7 @@ unsafe fn ptooie_scale(boma: &mut BattleObjectModuleAccessor) {
 }
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    piranhacopter_cancel(boma, status_kind, cat[0]);
+    piranhacopter_cancel(boma, status_kind, situation_kind, cat[0]);
 	//spike_head_mesh_test(boma);
     sspecial_cancel(boma, status_kind, situation_kind);
     ptooie_scale(boma);
