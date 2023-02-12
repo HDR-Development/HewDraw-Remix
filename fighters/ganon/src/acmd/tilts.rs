@@ -2,8 +2,8 @@
 use super::*;
 
 
-#[acmd_script( agent = "ganon", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn ganon_attack_s3_s_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "ganon", scripts = ["game_attacks3", "game_attacks3hi", "game_attacks3lw"] , category = ACMD_GAME , low_priority)]
+unsafe fn ganon_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
@@ -21,7 +21,38 @@ unsafe fn ganon_attack_s3_s_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
-    
+}
+
+#[acmd_script( agent = "ganon", script = "effect_attacks3hi", category = ACMD_EFFECT , low_priority)]
+unsafe fn ganon_attack_s3_hi_effect(fighter: &mut L2CAgentBase) 
+{
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 11.8, -10, -22, 0, 0, 1.6, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 19.5, 18.5, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, true, 0.8);
+    }
+}
+
+#[acmd_script( agent = "ganon", script = "effect_attacks3lw", category = ACMD_EFFECT , low_priority)]
+unsafe fn ganon_attack_s3_lw_effect(fighter: &mut L2CAgentBase) 
+{
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 11.8, -10, 22, 0, 0, 1.6, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 5.5, 18.5, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, true, 0.8);
+    }
 }
 
 #[acmd_script( agent = "ganon", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
@@ -131,7 +162,9 @@ unsafe fn ganon_attack_hi3_sound(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        ganon_attack_s3_s_game,
+        ganon_attack_s3_game,
+        ganon_attack_s3_hi_effect,
+        ganon_attack_s3_lw_effect,
         ganon_attack_lw3_game,
         ganon_attack_hi3_game,
         ganon_attack_hi3_effect,
