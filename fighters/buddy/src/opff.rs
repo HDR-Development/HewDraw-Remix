@@ -264,9 +264,9 @@ unsafe fn breegull_bayonet(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         //VarModule::set_int(boma.object(), vars::buddy::instance::BAYONET_EGGS,currentEggs);
         BAYONET_EGGS[entry] = currentEggs;
     }
-    else if in_Hitstop {
-        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST));
-    }
+    // else if in_Hitstop {
+    //     ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST));
+    // }
 }
 
 unsafe fn buddy_meter_update_HUD(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor,RedFeather: bool) {

@@ -14,7 +14,7 @@ unsafe fn game_catch(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         GrabModule::set_rebound(fighter.module_accessor, true);
     }
-    frame(lua_state, 10.0);
+    frame(lua_state, 12.0);
     if is_excute(fighter) {
         //CATCH(fighter, 0, Hash40::new("throw"), 3.0, 0.0, 0.0, 0.5, Some(0.0), Some(0.0), Some(-5.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
         CATCH(fighter, 0, Hash40::new("throw"), 3.0, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
@@ -48,7 +48,7 @@ unsafe fn game_catchdash(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         GrabModule::set_rebound(fighter.module_accessor, true);
     }
-    frame(lua_state, 12.0);
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
         //CATCH(fighter, 0, Hash40::new("throw"), 3.0, 0.0, 0.0, 0.5, Some(0.0), Some(0.0), Some(-5.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
         CATCH(fighter, 0, Hash40::new("throw"), 3.0, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
