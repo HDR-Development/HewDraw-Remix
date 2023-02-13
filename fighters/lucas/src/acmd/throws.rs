@@ -8,7 +8,7 @@ unsafe fn game_catch(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_HIMOHEBI, false, 0);
         ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_HIMOHEBI, Hash40::new("catch"), false, 0.0);
-        FT_MOTION_RATE(fighter, 48.0/(69.0-1.0));
+        //FT_MOTION_RATE(fighter, 48.0/(69.0-1.0));
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
@@ -42,7 +42,7 @@ unsafe fn game_catchdash(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_HIMOHEBI, false, 0);
         ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_HIMOHEBI, Hash40::new("catch"), false, 0.0);
-        FT_MOTION_RATE(fighter, 62.0/(79.0-1.0));
+        //FT_MOTION_RATE(fighter, 62.0/(79.0-1.0));
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
