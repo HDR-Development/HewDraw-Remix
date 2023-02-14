@@ -117,8 +117,7 @@ unsafe fn beakbomb_checkForCancel(fighter: &mut L2CFighterCommon, boma: &mut Bat
 
 unsafe fn beakbomb_control(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
     //Do not update flight during hitstop
-    let in_Hitstop = SlowModule::frame(fighter.module_accessor, *FIGHTER_SLOW_KIND_HIT) > 0 ;
-    if in_Hitstop {return;}
+    if boma.is_in_hitlag() {return;}
 
     //Movement
     let motion_factor = 0.425;
@@ -229,7 +228,6 @@ unsafe fn beakbomb_checkForFail(fighter: &mut L2CFighterCommon, boma: &mut Battl
 
 unsafe fn breegull_bayonet(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor,status: i32){
     let entry = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    let in_Hitstop = SlowModule::frame(fighter.module_accessor, *FIGHTER_SLOW_KIND_HIT) > 0;
 
     if (VarModule::is_flag(boma.object(), vars::buddy::instance::BAYONET_ACTIVE))
     {
@@ -263,9 +261,6 @@ unsafe fn breegull_bayonet(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         let currentEggs = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_N_BAKYUN_BULLET_SHOOT_COUNT);
         //VarModule::set_int(boma.object(), vars::buddy::instance::BAYONET_EGGS,currentEggs);
         BAYONET_EGGS[entry] = currentEggs;
-    }
-    else if in_Hitstop {
-        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST));
     }
 }
 
