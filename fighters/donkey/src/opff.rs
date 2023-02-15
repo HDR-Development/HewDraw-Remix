@@ -59,8 +59,12 @@ unsafe fn barrel_pull(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // barrel pull
     if situation_kind == *SITUATION_KIND_GROUND {
         if status_kind == *FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP {
-            MotionModule::set_rate(boma, 1.4);
-        } else if [*FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD_OFF].contains(&status_kind) {
+            let lift_rate = match VarModule::is_flag(fighter.object(), vars::donkey::instance::DID_SPAWN_BARREL) {
+                true => 1.4,
+                false => 2.0
+            };
+            MotionModule::set_rate(boma, lift_rate);
+        } else if [*FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD_OFF, *FIGHTER_STATUS_KIND_WAIT].contains(&status_kind) {
             if ItemModule::is_have_item(boma, 0)
                 && ItemModule::get_have_item_kind(fighter.module_accessor, 0) == *ITEM_KIND_BARREL {
                     fighter.change_status(FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP.into(),true.into());

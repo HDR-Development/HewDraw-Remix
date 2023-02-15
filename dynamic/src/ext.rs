@@ -983,19 +983,19 @@ impl BomaExt for BattleObjectModuleAccessor {
             return None;
         }
 
+        // item manager singleton instance
+        let item_manager = ItemManager::instance().unwrap();
+
         // if you already have an item, return that item instead
         if ItemModule::is_have_item(self, 0) {
             let have_id = ItemModule::get_have_item_id(self, 0);
-            let item = ItemManager::find_active_item_from_id(ItemManager::instance().unwrap(), have_id as u32) as *mut smash::app::Item;
+            let item = item_manager.find_active_item_from_id(have_id as u32) as *mut smash::app::Item;
             let item_module_accessor = smash::app::lua_bind::Item::item_module_accessor(item) as *mut ItemModuleAccessor;
             let item_boma = &mut (*item_module_accessor).battle_object_module_accessor;
             return Some(item_boma);
         }
         
-        let total = ItemManager::get_num_of_active_item_all(ItemManager::instance().unwrap());
-        println!("total items: {}", total);
-
-        // get the global position of the bone
+        // get the global position of the bone, defaulting to "top"
         let fighter_pos = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
         let bone_hash = bone.unwrap_or(Hash40::new("top"));
         ModelModule::joint_global_position(self, bone_hash, fighter_pos, false);
@@ -1009,26 +1009,22 @@ impl BomaExt for BattleObjectModuleAccessor {
             None => {}
         }
         
-
-        let pickup_range = 10.0;
-
+        let total = item_manager.get_num_of_active_item_all();
         for id in 0..total {
             // pointer to the item
-            let item_ptr = ItemManager::get_active_item(ItemManager::instance().unwrap(), id as u64);
+            let item_ptr = item_manager.get_active_item(id as u64);
             if item_ptr.is_null() {
                 continue;
             }
 
-            // if this item is close to us, grab it?
-            println!("active item for id {}", id);
+            // if this item is close to us, grab it
             let item = item_ptr as *mut smash::app::Item;
             let item_module_accessor = smash::app::lua_bind::Item::item_module_accessor(item) as *mut ItemModuleAccessor;
             let item_boma = &mut (*item_module_accessor).battle_object_module_accessor;
             let item_pos = PostureModule::pos(item_boma);
 
-            if ((*item_pos).x - (*fighter_pos).x).abs() < pickup_range
-                && ((*item_pos).y - (*fighter_pos).y).abs() < pickup_range {
-                println!("picking up item!");
+            if ((*item_pos).x - (*fighter_pos).x).abs() < range
+                && ((*item_pos).y - (*fighter_pos).y).abs() < range {
                 ItemModule::have_item_instance(self, item, 0, false, false, false, false);
                 return Some(item_boma);
             }

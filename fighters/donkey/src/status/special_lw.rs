@@ -5,6 +5,7 @@ unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     // if you are grounded, pick up heavy item/spawn barrel
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+
         // if you aren't already holding an item, try to pick up one nearby
         if !ItemModule::is_have_item(fighter.module_accessor, 0) {
             ItemModule::pickup_item(fighter.module_accessor, ItemSize{_address: *ITEM_SIZE_HEAVY as u8}, *FIGHTER_HAVE_ITEM_WORK_MAIN, *ITEM_TRAIT_ALL, QuickItemTreatType{_address: *QUICK_ITEM_TREAT_TYPE_FORCE_HAVE as u8}, ItemPickupSearchMode{_address: *ITEM_PICKUP_SEARCH_MODE_NORMAL as u8});
@@ -14,11 +15,16 @@ unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
         
         // if you still arent holding an item, try to spawn a barrel
-        if !ItemModule::is_have_item(fighter.module_accessor, 0) &&
-          VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER) == 0 {
-            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1);
-            ItemModule::have_item(fighter.module_accessor, ItemKind(*ITEM_KIND_BARREL),0,0,false,false);
-            EFFECT(fighter, Hash40::new("donkey_handslap"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, false);
+        if !ItemModule::is_have_item(fighter.module_accessor, 0) {
+            VarModule::on_flag(fighter.object(), vars::donkey::instance::DID_SPAWN_BARREL);
+            if VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER) == 0 {
+                VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1);
+                ItemModule::have_item(fighter.module_accessor, ItemKind(*ITEM_KIND_BARREL),0,0,false,false);
+                VarModule::on_flag(fighter.object(), vars::donkey::instance::DID_SPAWN_BARREL);
+                EFFECT(fighter, Hash40::new("donkey_handslap"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, false);
+            }
+        } else {
+            VarModule::off_flag(fighter.object(), vars::donkey::instance::DID_SPAWN_BARREL);
         }
         
         // change into the heavy item pickup status either way

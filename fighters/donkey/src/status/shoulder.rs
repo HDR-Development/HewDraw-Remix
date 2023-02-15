@@ -17,10 +17,10 @@ unsafe extern "C" fn shoulder_landing_main_loop(fighter: &mut L2CFighterCommon) 
     }
 
     // if its been long enough, transition into wait
-    // HDR only: halve the landing lag
-    if fighter.motion_frame() > MotionModule::end_frame(fighter.boma()) / 3.0 {
+    // HDR only: reduce the landing lag
+    if fighter.motion_frame() > MotionModule::end_frame(fighter.boma()) / 4.0 {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            fighter.change_status(FIGHTER_DONKEY_STATUS_KIND_SHOULDER_WAIT.into(), false.into());
+            fighter.change_status(FIGHTER_DONKEY_STATUS_KIND_SHOULDER_WAIT.into(), true.into());
             return 1.into();
         }
     }
