@@ -140,10 +140,10 @@
   <!-- dk cargo carry: -->
   <!-- flat amount of clatter added when you enter cargo carry -->
   <float hash="shouldered_frame_add">30</float>
-  <!-- additional clatter added when entering cargo = shouldered_frame_mul * percent -->
+  <!-- additional clatter added when entering cargo (formula unknown?) -->
   <float hash="shouldered_frame_mul">1.25</float>
-  <!-- clatter removal due to mashing -->
+  <!-- possibly the length of time you are inactionable when breaking out of cargo -->
   <float hash="shouldered_cratter_frame">10</float>
-  <!-- clatter removal due to mashing in the air -->
+  <!-- possibly the length of time you are inactionable when breaking out of cargo in the air -->
   <float hash="shouldered_cratter_frame_air">13</float>
 </struct>
