@@ -1,34 +1,22 @@
 
 use super::*;
 
-
-#[acmd_script( agent = "rockman", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn rockman_attack_lw3_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "rockman", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+unsafe fn rockman_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 3.0);
+    frame(lua_state, 2.0);
     if is_excute(fighter) {
-        JostleModule::set_status(boma, false);
-        HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_XLU);
-        HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
+        ArticleModule::generate_article_enable(boma, *FIGHTER_ROCKMAN_GENERATE_ARTICLE_ROCKBUSTER, false, 0);
+        WorkModule::on_flag(boma, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_ROCKBUSTER_SHOOT);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 361, 135, 0, 40, 3.0, 0.0, 9.6, 5.5, Some(0.0), Some(3.7), Some(5.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 1.0, 361, 135, 0, 40, 3.0, 0.0, 8.0, 8.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 1.0, 361, 25, 0, 25, 2.5, 0.0, 3.2, 5.5, Some(0.0), Some(3.2), Some(8.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
     }
-    frame(lua_state, 5.0);
+    wait(lua_state, 3.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 12.0 / (22.0 - 5.0));
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 77, 70, 0, 70, 4.0, 0.0, 3.2, 3.5, Some(0.0), Some(3.2), Some(4.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
-    }
-    frame(lua_state, 16.0);
-    if is_excute(fighter) {
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-    }
-    frame(lua_state, 22.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 30.0 / (46.0 - 22.0));
-        JostleModule::set_status(boma, true);
         AttackModule::clear_all(boma);
     }
-
 }
 
 #[acmd_script( agent = "rockman", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
@@ -42,7 +30,7 @@ unsafe fn rockman_attack_hi3_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 17.0, 85, 75, 0, 84, 3.5, 0.0, 6.0, 8.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 17.0, 85, 73, 0, 84, 3.5, 0.0, 6.0, 8.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
@@ -92,10 +80,35 @@ unsafe fn rockman_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "rockman", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
+unsafe fn rockman_attack_lw3_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.75);
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        JostleModule::set_status(boma, false);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 12.0 / (22.0 - 5.0));
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 67, 60, 0, 70, 3.25, 0.0, 3.2, 3.5, Some(0.0), Some(3.2), Some(4.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 30.0 / (46.0 - 22.0));
+        JostleModule::set_status(boma, true);
+        AttackModule::clear_all(boma);
+    }
+
+}
+
 pub fn install() {
     install_acmd_scripts!(
-        rockman_attack_lw3_game,
+        rockman_attack_s3_game,
         rockman_attack_hi3_game,
-        rockman_attack_hi3_effect
+        rockman_attack_hi3_effect,
+        rockman_attack_lw3_game,
     );
 }
