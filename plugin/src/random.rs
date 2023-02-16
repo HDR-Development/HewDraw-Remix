@@ -1,3 +1,4 @@
+use nnsdk::nn::aoc::ListAddOnContent;
 use once_cell::sync::Lazy;
 use rand::prelude::SliceRandom;
 use rand::Rng;
@@ -98,11 +99,6 @@ fn is_random(entry: u64) -> bool {
 
 fn key(entry: u64) -> u64 {
     entry & KEY_MASK
-}
-
-extern "C" {
-    #[link_name = "\u{1}_ZN2nn3aoc16ListAddOnContentEPiii"]
-    pub fn ListAddOnContent(out_indices: *mut i32, offset: i32, count: i32);
 }
 
 #[skyline::hook(offset = 0x1a13780, inline)]
