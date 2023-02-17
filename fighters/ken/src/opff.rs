@@ -6,12 +6,13 @@ use globals::*;
  
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
-    special_fadc_super_cancels(boma);
+    special_fadc_super(boma, frame);
     target_combos(boma);
     kamabaraigeri(boma, frame);
     rotate_forward_bair(boma);
     turn_run_back_status(fighter, boma, status_kind);
     tatsu_behavior(fighter, boma);
+    fadc_instant_dash(boma);
 }
 
 // symbol-based call for the shotos' common opff
@@ -150,35 +151,52 @@ unsafe fn kamabaraigeri(boma: &mut BattleObjectModuleAccessor, frame: f32) {
     }
 }
 
-unsafe fn special_fadc_super_cancels(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_status_one_of(&[
+unsafe fn fadc_instant_dash(boma: &mut BattleObjectModuleAccessor) {
+    if !boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW]) || boma.is_status_one_of(&[*FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F]) {
+        return;
+    }
+    boma.change_status_req(*FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, false);
+}
+
+unsafe fn special_fadc_super(boma: &mut BattleObjectModuleAccessor, frame: f32) {
+    if (
+        boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
         *FIGHTER_STATUS_KIND_SPECIAL_HI,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP
-    ]) {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD){
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
+        *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1,
+        *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2,
+        ]) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    )
+    || (
+        boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
+        ]) && frame > 13.0
+    ) {
+        if boma.is_cat_flag(Cat4::SpecialSCommand | Cat4::SpecialHiCommand) 
+        && !boma.is_in_hitlag()
+        && !VarModule::is_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC)
+        && MeterModule::drain(boma.object(), 10) {
             VarModule::on_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC);
+            WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+            WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+            WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
+            boma.change_status_req(*FIGHTER_STATUS_KIND_FINAL, false); // TODO: sometimes this doesn't work, but it burned meter
         }
-        if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC){
-            if boma.is_cat_flag(Cat1::SpecialLw){
-                if MeterModule::drain(boma.object(), 2){
-                    StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
-                }
-            }
-            if boma.is_cat_flag(Cat4::SpecialSCommand | Cat4::SpecialHiCommand){
-                if MeterModule::drain(boma.object(), 10) {
-                    WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-                    WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
-                    StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_FINAL, true);
-                } 
-            }
+        else if boma.is_cat_flag(Cat1::SpecialLw)
+        && !boma.is_in_hitlag()
+        && !VarModule::is_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC)
+        && MeterModule::drain(boma.object(), 1) {
+            VarModule::on_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC);
+            WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
+            boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_LW, false); // TODO: sometimes this doesn't work, but it burned meter
         }
-    }
-    else{
+    } else {
         VarModule::off_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC);
     }
 }
