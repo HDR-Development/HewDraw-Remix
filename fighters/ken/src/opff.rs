@@ -191,7 +191,7 @@ unsafe fn special_fadc_super(boma: &mut BattleObjectModuleAccessor, frame: f32) 
         else if boma.is_cat_flag(Cat1::SpecialLw)
         && !boma.is_in_hitlag()
         && !VarModule::is_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC)
-        && MeterModule::drain(boma.object(), 1) {
+        && MeterModule::drain(boma.object(), 2) {
             VarModule::on_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC);
             WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
             boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_LW, false); // TODO: sometimes this doesn't work, but it burned meter
