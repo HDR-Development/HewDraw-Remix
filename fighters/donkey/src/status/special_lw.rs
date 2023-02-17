@@ -28,7 +28,7 @@ unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
         
         // change into the heavy item pickup status either way
-        fighter.change_status(FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP.into(),true.into());
+        fighter.change_status(FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP.into(),false.into());
         return true.into();
     }
 
@@ -72,7 +72,7 @@ unsafe extern "C" fn special_lw_substatus(fighter: &mut L2CFighterCommon, param_
         // if at any time during dspecial you are holding 
         // an item, transition into heavy pickup.
         if ItemModule::is_have_item(fighter.boma(), 0) {
-            fighter.change_status_req(FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP.into(), true.into());
+            fighter.change_status_req(FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP.into(), false.into());
             grab!(fighter, MA_MSC_CMD_GRAB_CLEAR_ALL);
             return 1.into();
         }

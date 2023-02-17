@@ -67,7 +67,7 @@ unsafe fn barrel_pull(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
         } else if [*FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD_OFF, *FIGHTER_STATUS_KIND_WAIT].contains(&status_kind) {
             if ItemModule::is_have_item(boma, 0)
                 && ItemModule::get_have_item_kind(fighter.module_accessor, 0) == *ITEM_KIND_BARREL {
-                    fighter.change_status(FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP.into(),true.into());
+                    fighter.change_status(FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP.into(),false.into());
             }
         }
     } else {

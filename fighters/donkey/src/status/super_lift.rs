@@ -20,7 +20,7 @@ unsafe extern "C" fn super_lift_landing_main_loop(fighter: &mut L2CFighterCommon
     // HDR only: reduce the landing lag
     if fighter.motion_frame() > MotionModule::end_frame(fighter.boma()) / 4.0 {
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
-            fighter.change_status(FIGHTER_DONKEY_STATUS_KIND_SUPER_LIFT_WAIT.into(), true.into());
+            fighter.change_status(FIGHTER_DONKEY_STATUS_KIND_SUPER_LIFT_WAIT.into(), false.into());
             return 1.into();
         }
     }
@@ -71,7 +71,7 @@ pub unsafe fn super_lift_turn(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     super_lift_platdrop(fighter);
     fighter.set_rate(1.5);
     if fighter.status_frame() >= 5 && fighter.stick_x().abs() > 0.33 {
-        fighter.change_status_req(*FIGHTER_DONKEY_STATUS_KIND_SUPER_LIFT_WALK, true);
+        fighter.change_status_req(*FIGHTER_DONKEY_STATUS_KIND_SUPER_LIFT_WALK, false);
     }
 
     // enable actionability for all of the turn status
