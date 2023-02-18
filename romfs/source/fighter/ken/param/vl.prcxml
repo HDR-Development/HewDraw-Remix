@@ -73,6 +73,7 @@
   <list hash="param_special_lw">
     <struct index="0">
       <float hash="start_speed_x_mul">1.0</float>
+      <float hash="start_speed_y_mul">0.0</float>
       <float hash="hit_stop_frame_mul">2.3</float>
       <float hash="step_cancel_invalid_frame">5</float>
       <float hash="hit_cancel_frame">5</float>

@@ -738,6 +738,10 @@ unsafe fn effect_speciallwstepf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), 0, 11.5, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("footl"), 0, 0, 0, 0, 0, 0, 1.0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("footr"), 0, 0, 0, 0, 0, 0, 1.0, true);
+
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
@@ -745,12 +749,23 @@ unsafe fn effect_speciallwstepf(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ken", script = "game_specialairlwstepf", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialairlwstepf(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.75);
+    }
+}
+
 #[acmd_script( agent = "ken", script = "effect_specialairlwstepf", category = ACMD_EFFECT, low_priority )]
 unsafe fn effect_specialairlwstepf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.75); // TODO: write a game script to put this in
     if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), 0, 11.5, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("footl"), 0, 0, 0, 0, 0, 0, 1.0, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("footr"), 0, 0, 0, 0, 0, 0, 1.0, true);
     }
 }
 #[acmd_script( agent = "ken", script = "effect_speciallwstart", category = ACMD_EFFECT, low_priority )]
@@ -788,6 +803,7 @@ pub fn install() {
         game_specialairlwturn,
         game_speciallwstepf,
         effect_speciallwstepf,
+        game_specialairlwstepf,
         effect_specialairlwstepf,
         effect_speciallwstart,
         effect_specialairlwstart
