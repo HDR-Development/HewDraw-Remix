@@ -13,6 +13,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     turn_run_back_status(fighter, boma, status_kind);
     tatsu_behavior(fighter, boma);
     fadc_instant_dash(boma);
+    air_hado_distinguish(fighter, boma, frame);
 }
 
 // symbol-based call for the shotos' common opff
@@ -33,6 +34,16 @@ pub unsafe fn ken_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
+}
+
+unsafe fn air_hado_distinguish(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
+    if !fighter.is_motion_one_of(&[
+        Hash40::new("special_air_n"), 
+    ]) 
+    || frame != 12.0 {
+        return;
+    }
+    VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_EX);
 }
 
 unsafe fn tatsu_behavior(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
