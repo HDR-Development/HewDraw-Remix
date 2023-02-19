@@ -11,8 +11,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     kamabaraigeri(boma, frame);
     rotate_forward_bair(boma);
     turn_run_back_status(fighter, boma, status_kind);
-    tatsu_behavior(fighter, boma);
-    fadc_instant_dash(boma);
+    tatsu_behavior(fighter, boma, frame);
+    fadc_heat_rush(boma, frame);
     air_hado_distinguish(fighter, boma, frame);
 }
 
@@ -37,16 +37,28 @@ pub unsafe fn ken_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 unsafe fn air_hado_distinguish(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
-    if !fighter.is_motion_one_of(&[
-        Hash40::new("special_air_n"), 
-    ]) 
-    || frame != 12.0 {
+    if !boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
+    ]) {
         return;
     }
-    VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_EX);
+    if frame == 12.0 && fighter.is_motion_one_of(&[
+        Hash40::new("special_air_n"), 
+    ]) {
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_EX);
+    }
+    if (frame > 13.0 || fighter.is_motion_one_of(&[
+        Hash40::new("special_air_n_empty"), 
+        Hash40::new("special_n_empty"), 
+    ])) 
+    && boma.is_situation(*SITUATION_KIND_GROUND) 
+    && boma.is_prev_situation(*SITUATION_KIND_AIR) {
+        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
+    }
 }
 
-unsafe fn tatsu_behavior(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+unsafe fn tatsu_behavior(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
     if !fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_S, 
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, 
@@ -54,6 +66,9 @@ unsafe fn tatsu_behavior(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP
     ]) {
         return;
+    }
+    if frame == 1.0 && boma.is_situation(*SITUATION_KIND_AIR) {
+        VarModule::on_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
     }
 
     if !boma.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END)
@@ -162,11 +177,16 @@ unsafe fn kamabaraigeri(boma: &mut BattleObjectModuleAccessor, frame: f32) {
     }
 }
 
-unsafe fn fadc_instant_dash(boma: &mut BattleObjectModuleAccessor) {
-    if !boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW]) || boma.is_status_one_of(&[*FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F]) {
-        return;
+unsafe fn fadc_heat_rush(boma: &mut BattleObjectModuleAccessor, frame: f32) {
+    if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW]) {
+        boma.change_status_req(*FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, false);
     }
-    boma.change_status_req(*FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, false);
+
+    // can jump cancel at <cancel_fame> - <jump_squat_frame> 
+    // in order to get access to aerials on same frame as grounded options
+    if boma.is_status_one_of(&[*FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F]) && frame >= 16.0 {
+        boma.check_jump_cancel(false);
+    }
 }
 
 unsafe fn special_fadc_super(boma: &mut BattleObjectModuleAccessor, frame: f32) {
