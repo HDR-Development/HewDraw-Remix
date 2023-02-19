@@ -29,8 +29,16 @@ unsafe fn bayonetta_special_n_charge_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", scripts = ["game_specialnendh", "game_specialnendf", "game_specialairnendh", "game_specialairnendf"] , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "bayonetta", scripts = ["game_specialnlooph", "game_specialnloopf", "game_specialairnloopth", "game_specialairnloopf"] , category = ACMD_GAME , low_priority)]
 unsafe fn bayonetta_special_n_loop_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 50.0);
+}
+
+#[acmd_script( agent = "bayonetta", scripts = ["game_specialnendh", "game_specialnendf", "game_specialairnendh", "game_specialairnendf"] , category = ACMD_GAME , low_priority)]
+unsafe fn bayonetta_special_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -450,6 +458,7 @@ pub fn install() {
     install_acmd_scripts!(
         bayonetta_special_n_charge_game,
         bayonetta_special_n_loop_game,
+        bayonetta_special_n_end_game,
         bayonetta_special_n_start_game,
         bayonetta_special_s_hold_end_game,
         bayonetta_shootinglegl_atk_on_special_air_s_u_game,

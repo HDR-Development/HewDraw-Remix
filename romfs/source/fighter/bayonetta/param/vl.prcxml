@@ -6,10 +6,10 @@
     </struct>
   </list>
   <struct hash="param_private">
-    <float hash="attack_air_f_hit_speed_y">1.4</float>
-    <float hash="attack_air_f2_hit_speed_y">1.4</float>
-    <float hash="combo_attack_ari_f2_end">30</float>
-    <float hash="combo_attack_ari_f3_end">30</float>
+    <float hash="attack_air_f_hit_speed_y">1.3</float>
+    <float hash="attack_air_f2_hit_speed_y">1.3</float>
+    <float hash="combo_attack_ari_f2_end">27</float>
+    <float hash="combo_attack_ari_f3_end">27</float>
     <int hash="attack_air_n_shoot_landing_frame">2</int>
     <int hash="attack_air_f_shoot_landing_frame">2</int>
     <int hash="attack_air_b_shoot_landing_frame">2</int>
@@ -18,11 +18,18 @@
     <float hash="final_vector_max">45</float>
     <int hash="bat_escape_air_frame">45</int>
   </struct>
-  <list hash="param_specialn_bullet">
-      <struct index="0">
-          <int hash="0x0d76ae442e">3</int>
-          <int hash="0x0d91166929">5</int>
-      </struct>
+  <list hash="param_special_n">
+    <struct index="0">
+      <int hash="cancel_frame">74</int>
+      <float hash="air_start_speed_mul_x">0.2</float>
+    </struct>
+  </list>
+  <list hash="param_special_n_bullet">
+    <struct index="0">
+      <int hash="0x0d76ae442e">2</int>
+      <int hash="0x0d91166929">5</int>
+      <float hash="attack_scale_mul">1.25</float>
+    </struct>
   </list>
   <list hash="param_special_s">
     <struct index="0">
@@ -39,6 +46,7 @@
       <int hash="ab_d_fall_landing_frame">14</int>
       <int hash="ab_d_fall_landing_frame_2nd">22</int>
       <int hash="0x17a1daf6ee">600</int>
+      <int hash="ab_d_enable_frame">12</int>
       <float hash="guard_speed_mul_x">1.2</float>
     </struct>
     <hash40 index="1">dummy</hash40>
