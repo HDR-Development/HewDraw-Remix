@@ -314,7 +314,7 @@ unsafe fn bat_within_speed(fighter: &mut L2CFighterCommon) {
         let stick_y =  ControlModule::get_stick_y(fighter.module_accessor);
         let stick_x =  ControlModule::get_stick_x(fighter.module_accessor);
         sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 0.25 * stick_y);
-        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.25 * stick_x);
+        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.5 * stick_x);
         //KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         //KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
