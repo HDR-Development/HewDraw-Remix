@@ -266,10 +266,15 @@ unsafe fn heel_slide_off(fighter: &mut L2CFighterCommon, boma: *mut BattleObject
 }
 
 unsafe fn neutral_b_drift(fighter: &mut L2CFighterCommon, boma: *mut BattleObjectModuleAccessor) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) && fighter.is_situation(*SITUATION_KIND_AIR) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) || fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE) && fighter.is_situation(*SITUATION_KIND_AIR) {
         KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         let stick_x =  ControlModule::get_stick_x(fighter.module_accessor);
-        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.50 * stick_x);
+        if fighter.is_motion_one_of(&[Hash40::new("game_specialairnlooph"), Hash40::new("game_specialairnloopf")]) {
+            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.5 * stick_x);
+        }
+        else {
+            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.3 * stick_x);
+        }     
     }
 }
 
