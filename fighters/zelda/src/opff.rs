@@ -63,6 +63,7 @@ unsafe fn phantom_special_cancel(fighter: &mut L2CFighterCommon, boma: &mut Batt
     && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
     && !fighter.is_in_hitlag() {
         if fighter.is_cat_flag(Cat1::SpecialLw) {
+            VarModule::on_flag(fighter.battle_object, vars::zelda::instance::HIT_CANCEL_PHANTOM);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, false);
         }
     }
@@ -118,12 +119,26 @@ unsafe fn dins_flag_reset(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
+pub unsafe fn phantom_charge_platdrop(fighter:&mut smash::lua2cpp::L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
+        let pass_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("pass_stick_y"));
+        let pass_flick_y = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("pass_flick_y"));
+        if GroundModule::is_passable_ground(fighter.module_accessor)
+        && fighter.global_table[FLICK_Y].get_i32() < pass_flick_y
+        && fighter.global_table[STICK_Y].get_f32() < pass_stick_y
+        {
+            GroundModule::pass_floor(fighter.module_accessor);
+        }
+    }
+ }
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     teleport_tech(fighter, boma, frame);
     dins_fire_cancels(boma);
     dins_flag_reset(boma);
     nayru_fastfall_land_cancel(boma, status_kind, situation_kind, cat[2], stick_y, frame);
     phantom_special_cancel(fighter, boma);
+    phantom_charge_platdrop(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_ZELDA )]
@@ -152,6 +167,15 @@ pub fn phantom_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
             let zelda = utils::util::get_battle_object_from_id(owner_id);
             let zelda_boma = &mut *(*zelda).module_accessor;
             let remaining_hitstun = WorkModule::get_float(zelda_boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
+            if weapon.is_situation(*SITUATION_KIND_AIR){
+                let through_passable_ground_stick_y= WorkModule::get_param_float(zelda_boma, hash40("common"), hash40("through_passable_ground_stick_y")) * -1.0;
+                if zelda_boma.stick_y() < through_passable_ground_stick_y {
+                    GroundModule::set_passable_check(weapon.module_accessor, true);
+                }
+                else {
+                    GroundModule::set_passable_check(weapon.module_accessor, false);
+                }
+            }
             if zelda_boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_GUARD,
                                             *FIGHTER_STATUS_KIND_ESCAPE,
                                             *FIGHTER_STATUS_KIND_ESCAPE,
