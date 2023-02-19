@@ -148,7 +148,7 @@ unsafe fn attack_air_hi(fighter: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
-        HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
+        //HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
