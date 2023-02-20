@@ -264,7 +264,6 @@ unsafe fn zelda_phantom_build_game(fighter: &mut L2CAgentBase) {
 		let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
         let zelda = utils::util::get_battle_object_from_id(owner_id);
 		if VarModule::is_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM) {
-			println!("success");	
 			let pos_x = PostureModule::pos_x(boma);
 			let pos_y = PostureModule::pos_y(boma);
 			let pos = smash::phx::Vector3f { x: pos_x + 35.0 * (1.0*PostureModule::lr(boma)) , y: pos_y, z: 0.0 };

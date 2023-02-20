@@ -162,11 +162,15 @@ pub fn phantom_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
             return
         }
         GroundModule::correct(weapon.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+        let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+        let zelda = utils::util::get_battle_object_from_id(owner_id);
+        let zelda_boma = &mut *(*zelda).module_accessor;
+        if weapon.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_DISAPPEAR) {
+            VarModule::on_flag(zelda, vars::zelda::instance::READY_PHANTOM);
+        }
         if weapon.is_status(*WEAPON_ZELDA_PHANTOM_STATUS_KIND_BUILD) {
-            let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-            let zelda = utils::util::get_battle_object_from_id(owner_id);
-            let zelda_boma = &mut *(*zelda).module_accessor;
             let remaining_hitstun = WorkModule::get_float(zelda_boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
+            VarModule::off_flag(zelda, vars::zelda::instance::READY_PHANTOM);
             if weapon.is_situation(*SITUATION_KIND_AIR){
                 let through_passable_ground_stick_y= WorkModule::get_param_float(zelda_boma, hash40("common"), hash40("through_passable_ground_stick_y")) * -1.0;
                 if zelda_boma.stick_y() < through_passable_ground_stick_y {
