@@ -267,7 +267,7 @@ unsafe fn zelda_phantom_build_game(fighter: &mut L2CAgentBase) {
 			println!("success");	
 			let pos_x = PostureModule::pos_x(boma);
 			let pos_y = PostureModule::pos_y(boma);
-			let pos = smash::phx::Vector3f { x: pos_x + 50.0 * (1.0*PostureModule::lr(boma)) , y: pos_y, z: 0.0 };
+			let pos = smash::phx::Vector3f { x: pos_x + 35.0 * (1.0*PostureModule::lr(boma)) , y: pos_y, z: 0.0 };
 			PostureModule::set_pos(boma, &pos);
 			VarModule::off_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM);
 		}
