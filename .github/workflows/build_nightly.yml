@@ -35,6 +35,7 @@ jobs:
 
       # wait for any previous versions to be tagged and committed
       - uses: lewagon/wait-on-check-action@v1.2.0
+        continue-on-error: true
         with:
           ref: ${{ steps.last_merge.outputs.short_hash }}
           check-name: 'version_and_changelog'

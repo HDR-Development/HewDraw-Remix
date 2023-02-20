@@ -51,8 +51,8 @@ unsafe fn purin_special_air_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "purin", scripts = ["game_specialairlwl", "game_specialairlwr"] , category = ACMD_GAME , low_priority)]
-unsafe fn purin_special_air_lw_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "purin", scripts = ["game_speciallwl", "game_speciallwr", "game_specialairlwl", "game_specialairlwr"] , category = ACMD_GAME , low_priority)]
+unsafe fn purin_special_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -79,7 +79,7 @@ pub fn install() {
     install_acmd_scripts!(
         purin_special_s_game,
         purin_special_air_s_game,
-        purin_special_air_lw_game,
+        purin_special_lw_game,
     );
 }
 
