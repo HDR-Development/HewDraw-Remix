@@ -1,5 +1,5 @@
 use super::*;
- 
+use globals::*;
 utils::import_noreturn!(common::opff::fighter_common_opff);
 
 unsafe fn dash_attack_cancels(fighter: &mut L2CFighterCommon) {
@@ -176,12 +176,19 @@ unsafe fn special_cancels(fighter: &mut L2CFighterCommon) {
 
 unsafe fn nspecial_cancels(fighter: &mut L2CFighterCommon) {
     //PM-like neutral-b canceling
-    if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE)
-    && fighter.is_situation(*SITUATION_KIND_AIR)
-    && fighter.is_cat_flag(Cat1::AirEscape)
-    {
-        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
-        ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+    if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE) {
+        if fighter.is_situation(*SITUATION_KIND_AIR) && fighter.is_cat_flag(Cat1::AirEscape) {
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
+            ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+        }
+        let pass_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("pass_stick_y"));
+        let pass_flick_y = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("pass_flick_y"));
+        if GroundModule::is_passable_ground(fighter.module_accessor)
+        && fighter.global_table[FLICK_Y].get_i32() < pass_flick_y
+        && fighter.global_table[STICK_Y].get_f32() < pass_stick_y
+        {
+            GroundModule::pass_floor(fighter.module_accessor);
+        }
     }
 }
 
@@ -245,12 +252,27 @@ unsafe fn abk_flight_drift(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn hold_dabk(fighter: &mut L2CFighterCommon, boma: *mut BattleObjectModuleAccessor) {
-    if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U) {
-        if fighter.motion_frame() < 7.0 {
-            if (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW)) {
-                StatusModule::change_status_request(boma, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D, false);
+    if fighter.is_situation(*SITUATION_KIND_AIR) {   
+        if fighter.is_cat_flag(Cat1::SpecialS) && !fighter.is_in_hitlag() {  
+            if fighter.is_status(*FIGHTER_STATUS_KIND_FALL) || fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) || fighter.is_status(*FIGHTER_STATUS_KIND_FALL_AERIAL) {
+                if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME) == 1 && VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_SPECIAL_S_HIT) && !VarModule::is_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL) {
+                    fighter.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_S, false);
+                }
             }
         }
+        if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D_HIT) {
+                    VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_SPECIAL_S_HIT);
+                }
+        if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U) {
+            if fighter.motion_frame() < 8.0 {
+                if (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW)) {
+                    StatusModule::change_status_request(boma, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D, false);                
+                }
+            }
+        }
+    }
+    else {
+        VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_SPECIAL_S_HIT);
     }
 }
 
@@ -266,14 +288,14 @@ unsafe fn heel_slide_off(fighter: &mut L2CFighterCommon, boma: *mut BattleObject
 }
 
 unsafe fn neutral_b_drift(fighter: &mut L2CFighterCommon, boma: *mut BattleObjectModuleAccessor) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) || fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE) && fighter.is_situation(*SITUATION_KIND_AIR) {
+    if (fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) || fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_N_CHARGE)) && fighter.is_situation(*SITUATION_KIND_AIR) {
         KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         let stick_x =  ControlModule::get_stick_x(fighter.module_accessor);
-        if fighter.is_motion_one_of(&[Hash40::new("game_specialairnlooph"), Hash40::new("game_specialairnloopf")]) {
-            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.5 * stick_x);
+        if !fighter.is_motion_one_of(&[Hash40::new("game_specialairnchargeh"), Hash40::new("game_specialairnchargef")]) {
+            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.2 * stick_x);
         }
         else {
-            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.3 * stick_x);
+            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.55 * stick_x);
         }     
     }
 }
@@ -318,8 +340,8 @@ unsafe fn bat_within_speed(fighter: &mut L2CFighterCommon) {
     if ((fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_BATWITHIN) && fighter.is_situation(*SITUATION_KIND_AIR)) || fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_LW_BATWITHIN)) {
         let stick_y =  ControlModule::get_stick_y(fighter.module_accessor);
         let stick_x =  ControlModule::get_stick_x(fighter.module_accessor);
-        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 0.25 * stick_y);
-        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.5 * stick_x);
+        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 0.33 * stick_y);
+        sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.33 * stick_x);
         //KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         //KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }

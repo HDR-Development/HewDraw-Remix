@@ -191,7 +191,10 @@ unsafe fn bayonetta_attack_air_f2_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 8/(37-30));
+    }
 }
 
 #[acmd_script( agent = "bayonetta", script = "game_attackairf3" , category = ACMD_GAME , low_priority)]
@@ -379,7 +382,7 @@ unsafe fn bayonetta_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-        SET_SPEED_EX(fighter, 0, -4.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        SET_SPEED_EX(fighter, 0, -4.1, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
         /* Air-only */
         ATTACK(fighter, 0, 0, Hash40::new("kneel"), 7.0, 70, 120, 0, 30, 4.0, -5.0, 1.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -425,8 +428,8 @@ unsafe fn bayonetta_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     }
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_L_LEG, false, false, false, 10, 3, 3, 0, true);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.5, 45, 124, 0, 73, 4.0, 0.0, 3.0, 4.0, Some(0.0), Some(3.0), Some(13.2), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 5.5, 45, 124, 0, 73, 4.0, 0.0, 7.0, 4.0, Some(0.0), Some(7.0), Some(13.2), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.5, 45, 127, 0, 73, 4.0, 0.0, 3.0, 4.0, Some(0.0), Some(3.0), Some(13.2), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 5.5, 45, 127, 0, 73, 4.0, 0.0, 7.0, 4.0, Some(0.0), Some(7.0), Some(13.2), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {

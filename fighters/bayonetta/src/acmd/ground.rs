@@ -28,6 +28,13 @@ unsafe fn bayonetta_attack_11_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            FT_MOTION_RATE(fighter, 2.000);
+        }
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.000);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
@@ -56,8 +63,17 @@ unsafe fn bayonetta_attack_12_game(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
         AttackModule::clear_all(boma);
+        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            FT_MOTION_RATE(fighter, 2.000);
+        }
+        else {
+            FT_MOTION_RATE(fighter, 1.000);
+        }
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.000);
     }
     frame(lua_state, 25.0);
     if is_excute(fighter) {
@@ -175,7 +191,7 @@ unsafe fn bayonetta_attack_100_end_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 44, 136, 0, 58, 6.5, 0.0, 8.5, 6.8, Some(0.0), Some(8.5), Some(13.8), 1.2, 0.4, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 41, 136, 0, 58, 6.5, 0.0, 8.5, 6.8, Some(0.0), Some(8.5), Some(13.8), 1.2, 0.4, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {

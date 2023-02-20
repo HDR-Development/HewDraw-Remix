@@ -169,10 +169,10 @@ unsafe fn bayonetta_attack_hi3_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 1, Hash40::new("shoulderr"), 5.5, 91, 62, 0, 91, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 2, 1, Hash40::new("armr"), 5.5, 91, 62, 0, 91, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 3, 1, Hash40::new("armr"), 5.5, 91, 62, 0, 91, 4.0, 4.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        AttackModule::set_add_reaction_frame(boma, 0, -3.0, false);
-        AttackModule::set_add_reaction_frame(boma, 1, -3.0, false);
-        AttackModule::set_add_reaction_frame(boma, 2, -3.0, false);
-        AttackModule::set_add_reaction_frame(boma, 3, -3.0, false);
+        AttackModule::set_add_reaction_frame(boma, 0, -1.0, false);
+        AttackModule::set_add_reaction_frame(boma, 1, -1.0, false);
+        AttackModule::set_add_reaction_frame(boma, 2, -1.0, false);
+        AttackModule::set_add_reaction_frame(boma, 3, -1.0, false);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
@@ -186,7 +186,7 @@ unsafe fn bayonetta_attack_hi3_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 10.0/(25.0-20.0));
+        FT_MOTION_RATE(fighter, 11.0/(25.0-20.0));
     }
     frame(lua_state, 25.0);
     if is_excute(fighter) {
@@ -221,7 +221,7 @@ unsafe fn bayonetta_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 28.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
+        FT_MOTION_RATE(fighter, 8/(34-28));
     }
     frame(lua_state, 29.0);
     if is_excute(fighter) {
