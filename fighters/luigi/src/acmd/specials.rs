@@ -456,7 +456,7 @@ unsafe fn game_specialhi(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        //SA_SET(fighter, *SITUATION_KIND_AIR);
+        SA_SET(fighter, *SITUATION_KIND_AIR);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
@@ -489,7 +489,7 @@ unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        //SA_SET(fighter, *SITUATION_KIND_AIR);
+        SA_SET(fighter, *SITUATION_KIND_AIR);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {

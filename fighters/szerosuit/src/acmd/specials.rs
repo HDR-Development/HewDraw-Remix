@@ -204,7 +204,7 @@ unsafe fn szerosuit_special_hi_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        //SA_SET(fighter, *SITUATION_KIND_AIR);
+        SA_SET(fighter, *SITUATION_KIND_AIR);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
     }
@@ -264,7 +264,7 @@ unsafe fn szerosuit_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        //SA_SET(fighter, *SITUATION_KIND_AIR);
+        SA_SET(fighter, *SITUATION_KIND_AIR);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
     }

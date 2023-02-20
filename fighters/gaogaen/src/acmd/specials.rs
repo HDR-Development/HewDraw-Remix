@@ -940,7 +940,7 @@ unsafe fn gaogaen_special_hi_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         //FT_MOTION_RATE(fighter, 1.0);
-        //SA_SET(fighter, *SITUATION_KIND_AIR);
+        SA_SET(fighter, *SITUATION_KIND_AIR);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
@@ -1021,7 +1021,7 @@ unsafe fn gaogaen_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
-        //SA_SET(fighter, *SITUATION_KIND_AIR);
+        SA_SET(fighter, *SITUATION_KIND_AIR);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {

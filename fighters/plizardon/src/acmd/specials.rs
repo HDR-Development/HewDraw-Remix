@@ -18,7 +18,7 @@ unsafe fn game_specialhi(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        //SA_SET(fighter, *SITUATION_KIND_AIR);
+        SA_SET(fighter, *SITUATION_KIND_AIR);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
         AttackModule::clear_all(boma);
     }
@@ -66,7 +66,7 @@ unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        //SA_SET(fighter, *SITUATION_KIND_AIR);
+        SA_SET(fighter, *SITUATION_KIND_AIR);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
         AttackModule::clear_all(boma);
     }

@@ -406,12 +406,22 @@ pub unsafe fn super_jump_punch_main_hook(fighter: &mut L2CFighterCommon) {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return;
     }
-    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_FALL_SPECIAL)
-    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS) {
-        if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_AIR
-        && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
-        {
-            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_FALL_SPECIAL) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS) {
+            if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_AIR
+            && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
+            && MotionModule::trans_move_speed(fighter.module_accessor).y < 0.0
+            {
+                fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+            }
+        }
+        else {
+            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_CHANGE_KINE)
+            && fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_AIR
+            && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
+            {
+                fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+            }
         }
     }
     if MotionModule::is_end(fighter.module_accessor) {
