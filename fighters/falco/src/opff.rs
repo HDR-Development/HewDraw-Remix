@@ -10,7 +10,6 @@ unsafe fn laser_ff_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kin
             StatusModule::change_status_request(boma, *FIGHTER_STATUS_KIND_LANDING, true);
         }
         if situation_kind == *SITUATION_KIND_AIR {
-            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
             if boma.is_cat_flag(Cat2::FallJump)
                 && stick_y < -0.66
                 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {

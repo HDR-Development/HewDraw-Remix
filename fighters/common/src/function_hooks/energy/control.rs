@@ -556,6 +556,18 @@ unsafe fn control_setup(energy: &mut FighterKineticEnergyControl, reset_type: En
     energy.accel_add_y = 0.0;
     energy.lr = PostureModule::lr(boma);
     energy.unk[3] = 1;
+
+    if boma.is_situation(*SITUATION_KIND_AIR) {
+        // characters whose special moves should conserve momentum
+        let should_conserve_special_momentum =
+        ( [*FIGHTER_KIND_MARIO, *FIGHTER_KIND_LUIGI, *FIGHTER_KIND_CAPTAIN, *FIGHTER_KIND_MARIOD, *FIGHTER_KIND_DIDDY, *FIGHTER_KIND_PIKACHU, *FIGHTER_KIND_PICHU, *FIGHTER_KIND_GANON, *FIGHTER_KIND_FALCO, *FIGHTER_KIND_FOX, *FIGHTER_KIND_GAMEWATCH, *FIGHTER_KIND_WOLF]
+            .contains(&boma.kind()) && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) )
+        || ( boma.kind() == *FIGHTER_KIND_DIDDY && boma.is_status_one_of(&[*FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_CHARGE, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_SHOOT]) );
+
+        if should_conserve_special_momentum {
+            WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
+        }
+    }
     
     use EnergyControllerResetType::*;
     match reset_type {

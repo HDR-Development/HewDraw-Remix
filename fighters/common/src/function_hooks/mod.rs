@@ -49,7 +49,7 @@ unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor) -> bool 
         || ((*boma).kind() == *FIGHTER_KIND_MASTER
             && (*boma).is_status_one_of(&[*FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_MAX_SHOOT]))
         || ((*boma).kind() == *FIGHTER_KIND_JACK
-            && (*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_STATUS_KIND_SPECIAL_S]))
+            && (*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_JACK_STATUS_KIND_SPECIAL_CUSTOMIZE]))
         || ((*boma).kind() == *FIGHTER_KIND_PFUSHIGISOU
             && (*boma).is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI))
         || ((*boma).kind() == *FIGHTER_KIND_KAMUI
