@@ -20,27 +20,6 @@ unsafe fn normal_side_special(boma: &mut BattleObjectModuleAccessor, status_kind
     }
 }
 
-// Straight Lunge charge jump cancel
-unsafe fn straight_lunge_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, cat2: i32, frame: f32) {
-    if [*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START].contains(&status_kind) {
-        if frame > 26.0 {
-            if !boma.is_in_hitlag() {
-                boma.check_jump_cancel(false);
-            }
-            /*
-            if boma.is_cat_flag(Cat2::CommonGuard) {
-                for trans_group in [*FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE].iter() {
-                    WorkModule::unable_transition_term_group(boma, *trans_group);
-                }
-                if situation_kind == *SITUATION_KIND_AIR {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
-                }
-            }
-            */
-        }
-    }
-}
-
 // Tech Roll distance help
 unsafe fn tech_roll_help(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, facing: f32, frame: f32) {
     if frame < 6.0 {
@@ -71,24 +50,25 @@ unsafe fn nspecial_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma:
                 VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE_B);
                 fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
             }
-            else if fighter.is_cat_flag(Cat1::JumpButton) || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump) && fighter.sub_check_button_frick().get_bool()) {
+            else if (fighter.is_cat_flag(Cat1::JumpButton) || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump) && fighter.sub_check_button_frick().get_bool())) {
                 VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_GROUND_JUMP);
                 fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
             }
             if fighter.sub_check_command_guard().get_bool() {
                 VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_GUARD);
                 fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
-                ControlModule::clear_command(fighter.module_accessor, true);
-                ControlModule::reset_trigger(fighter.module_accessor);
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON);
             }
         }
         else {
-            if fighter.is_pad_flag(PadFlag::GuardTrigger) {
+            if fighter.is_cat_flag(Cat1::AirEscape)  {
                 VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_ESCAPE_AIR);
                 fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL, true, false);
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
             }
-            else if (fighter.is_cat_flag(Cat1::JumpButton) || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump) && fighter.sub_check_button_frick().get_bool()))
-                && fighter.get_num_used_jumps() < fighter.get_jump_count_max() {
+            else if (fighter.is_cat_flag(Cat1::JumpButton) || (ControlModule::is_enable_flick_jump(fighter.module_accessor) && fighter.is_cat_flag(Cat1::Jump)))
+            && fighter.get_num_used_jumps() < fighter.get_jump_count_max()
+            {
                 VarModule::set_int(fighter.battle_object, vars::littlemac::status::SPECIAL_N_CANCEL_TYPE, vars::littlemac::SPECIAL_N_CANCEL_TYPE_JUMP_AERIAL);
                 fighter.change_to_custom_status(statuses::littlemac::SPECIAL_N_CANCEL_JUMP, true, false);
             }
@@ -98,7 +78,6 @@ unsafe fn nspecial_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma:
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     normal_side_special(boma, status_kind);
-    straight_lunge_cancels(boma, status_kind, situation_kind, cat[0], cat[1], frame);
     tech_roll_help(boma, motion_kind, facing, frame);
     nspecial_cancels(fighter, boma, status_kind, situation_kind, cat[0], frame);
 }
