@@ -29,20 +29,12 @@ unsafe fn bayonetta_special_n_charge_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", scripts = ["game_specialnlooph", "game_specialnloopf", "game_specialairnloopth", "game_specialairnloopf"] , category = ACMD_GAME , low_priority)]
-unsafe fn bayonetta_special_n_loop_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 50.0);
-}
-
 #[acmd_script( agent = "bayonetta", scripts = ["game_specialnendh", "game_specialnendf", "game_specialairnendh", "game_specialairnendf"] , category = ACMD_GAME , low_priority)]
 unsafe fn bayonetta_special_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 0.3);
+    FT_MOTION_RATE(fighter, 0.333);
 }
 
 #[acmd_script( agent = "bayonetta", script = "game_specialsholdend", category = ACMD_GAME, low_priority )]
@@ -100,19 +92,14 @@ unsafe fn bayonetta_special_air_s_u_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 2.0);
+        FT_MOTION_RATE(fighter, 0.5);
         JostleModule::set_status(boma, false);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_R_LEG, false, false, true, 5, 0, 20, 0, false);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b7cb92b79), *FIGHTER_BAYONETTA_SHOOTING_SLOT_L_LEG, false, false, true, 5);
     }
-    frame(lua_state, 2.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.5);
-    }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
-        VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME);
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_FLAG_WALL_CHECK);
         ATTACK(fighter, 0, 0, Hash40::new("kneer"), 5.0, 65, 30, 0, 60, 5.0, 4.0, 0.0, 0.0, Some(-1.5), Some(0.0), Some(0.0), 1.2, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);   
         AttackModule::set_add_reaction_frame(boma, 0, 3.0, false);
@@ -151,9 +138,6 @@ unsafe fn bayonetta_special_air_s_u_game(fighter: &mut L2CAgentBase) {
             if VarModule::get_int(boma.object(), vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) < 2{
                 VarModule::inc_int(boma.object(), vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED);
             }
-        else {
-            VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_SPECIAL_S_HIT);
-            }
         }
     }
     frame(lua_state, 28.0);
@@ -171,7 +155,6 @@ unsafe fn bayonetta_special_air_s_u_game(fighter: &mut L2CAgentBase) {
 unsafe fn bayonetta_special_air_s_d_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_S_CANCEL_THIS_AIRTIME);
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);
     }
@@ -464,7 +447,6 @@ unsafe fn bayonetta_special_air_lw (fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         bayonetta_special_n_charge_game,
-        bayonetta_special_n_loop_game,
         bayonetta_special_n_end_game,
         bayonetta_special_n_start_game,
         bayonetta_special_s_hold_end_game,
