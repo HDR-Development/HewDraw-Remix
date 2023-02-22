@@ -22,7 +22,7 @@ unsafe fn normal_side_special(boma: &mut BattleObjectModuleAccessor, status_kind
 
 // Tech Roll distance help
 unsafe fn tech_roll_help(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, facing: f32, frame: f32) {
-    if frame < 5.0 {
+    if frame < 6.0 {
         let mut motion_vec = Vector3f{x: 1.75, y: 0.0, z: 0.0};
         if motion_kind == hash40("passive_stand_f") {
             motion_vec.x *= facing;

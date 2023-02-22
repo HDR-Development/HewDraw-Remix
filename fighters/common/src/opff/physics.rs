@@ -64,10 +64,6 @@ unsafe fn extra_traction(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
         let motion_accel = smash::app::sv_kinetic_energy::get_accel(fighter.lua_state_agent);
 
-        // reset flag at beginning of any status
-        if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
-            VarModule::off_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK);
-        }
         // if we detect that the current animation is trans-motion-based (shifts your character's position), disable traction for the entire attack 
         if motion_accel.x != 0.0 && !VarModule::is_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK) {
             VarModule::on_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK);
