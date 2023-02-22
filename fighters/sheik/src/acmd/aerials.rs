@@ -235,8 +235,6 @@ unsafe fn sheik_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_impact"), 0, false, 0);
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
