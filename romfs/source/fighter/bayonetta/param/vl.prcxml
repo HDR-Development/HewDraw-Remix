@@ -31,8 +31,8 @@
   </list>
   <list hash="param_specialn_bullet">
     <struct index="0">
-      <float hash="shoot_angle_f">2</float>
-      <float hash="shoot_angle_h">5</float>
+      <float hash="shoot_angle_f">3</float>
+      <float hash="shoot_angle_h">6</float>
       <float hash="attack_scale_mul">1.25</float>
     </struct>
     <hash40 index="1">dummy</hash40>
