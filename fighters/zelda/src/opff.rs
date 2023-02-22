@@ -62,7 +62,7 @@ unsafe fn phantom_special_cancel(fighter: &mut L2CFighterCommon, boma: &mut Batt
                                         *FIGHTER_STATUS_KIND_ATTACK_AIR])
     && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
     && !fighter.is_in_hitlag() {
-        if fighter.is_cat_flag(Cat1::SpecialLw) {
+        if fighter.is_cat_flag(Cat1::SpecialLw) && VarModule::is_flag(fighter.battle_object, vars::zelda::instance::READY_PHANTOM) {
             VarModule::on_flag(fighter.battle_object, vars::zelda::instance::HIT_CANCEL_PHANTOM);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, false);
         }
