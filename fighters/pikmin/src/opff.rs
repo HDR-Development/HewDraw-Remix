@@ -19,23 +19,23 @@ pub unsafe fn solimar_scaling(boma: &mut BattleObjectModuleAccessor, status_kind
         let olimar_hand_scale = Vector3f{x: 1.5, y: 1.35, z: 1.35};
         let olimar_hand_midpoint_scale = Vector3f{x: 1.2, y: 1.17, z: 1.17};
         if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-            if frame > 4.0 && frame < 15.0 {
+            if frame > 5.0 && frame < 16.0 {
                 ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handr"), &olimar_hand_scale);
-            } else if frame >= 15.0 && frame < 17.0 {
+            } else if frame >= 16.0 && frame < 18.0 {
                 ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handr"), &olimar_hand_midpoint_scale);
             }
         }/* else if status_kind == *FIGHTER_STATUS_KIND_ATTACK_LW4 {
-            if frame > 9.0 && frame < 13.0 {
+            if frame > 10.0 && frame < 14.0 {
                 ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handr"), &olimar_hand_scale);
                 ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handl"), &olimar_hand_scale);
-            } else if frame >= 13.0 && frame < 15.0 {
+            } else if frame >= 14.0 && frame < 16.0 {
                 ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handl"), &olimar_hand_midpoint_scale);
                 ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handl"), &olimar_hand_midpoint_scale);
             }
         } else if (status_kind == *FIGHTER_STATUS_KIND_ATTACK_S4 || status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI4) {
-            if frame > 10.0 && frame < 13.0 {
+            if frame > 11.0 && frame < 14.0 {
                 ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handl"), &olimar_hand_scale);
-            } else if frame >= 13.0 && frame < 15.0 {
+            } else if frame >= 14.0 && frame < 16.0 {
                 ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handl"), &olimar_hand_midpoint_scale);
             }
         }*/

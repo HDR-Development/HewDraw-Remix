@@ -15,26 +15,26 @@ unsafe fn gentleman(boma: &mut BattleObjectModuleAccessor, status_kind: i32, fig
     let mut jab_finisher_end = 1.0;   // End of window for rapid jab finisher transition, determined by character
 
     if [*FIGHTER_KIND_KIRBY, *FIGHTER_KIND_FOX, *FIGHTER_KIND_SHEIK, *FIGHTER_KIND_FALCO, *FIGHTER_KIND_MURABITO, *FIGHTER_KIND_KOOPAJR, *FIGHTER_KIND_SIMON, *FIGHTER_KIND_RICHTER, *FIGHTER_KIND_MIIFIGHTER].contains(&fighter_kind) {
-        jab_finisher_start = 5.0;
-        jab_finisher_end = 13.0;
-    } else if fighter_kind == *FIGHTER_KIND_ZELDA {
-        jab_finisher_start = 8.0;
-        jab_finisher_end = 18.0;
-    } else if fighter_kind == *FIGHTER_KIND_MEWTWO {
-        jab_finisher_start = 8.0;
-        jab_finisher_end = 16.0;
-    } else if fighter_kind == *FIGHTER_KIND_PFUSHIGISOU {
         jab_finisher_start = 6.0;
         jab_finisher_end = 14.0;
+    } else if fighter_kind == *FIGHTER_KIND_ZELDA {
+        jab_finisher_start = 9.0;
+        jab_finisher_end = 19.0;
+    } else if fighter_kind == *FIGHTER_KIND_MEWTWO {
+        jab_finisher_start = 9.0;
+        jab_finisher_end = 17.0;
+    } else if fighter_kind == *FIGHTER_KIND_PFUSHIGISOU {
+        jab_finisher_start = 7.0;
+        jab_finisher_end = 15.0;
     } else if fighter_kind == *FIGHTER_KIND_GAMEWATCH {
-        jab_finisher_start = 6.0;
-        jab_finisher_end = 13.0;
+        jab_finisher_start = 7.0;
+        jab_finisher_end = 14.0;
     } else if fighter_kind == *FIGHTER_KIND_DEDEDE {
-        jab_finisher_start = 16.0;
-        jab_finisher_end = 24.0;
+        jab_finisher_start = 17.0;
+        jab_finisher_end = 25.0;
     } else if fighter_kind == *FIGHTER_KIND_PALUTENA {
-        jab_finisher_start = 13.0;
-        jab_finisher_end = 21.0;
+        jab_finisher_start = 14.0;
+        jab_finisher_end = 22.0;
     }
     if status_kind == FIGHTER_STATUS_KIND_ATTACK {
         if [*FIGHTER_KIND_ZELDA, *FIGHTER_KIND_MEWTWO, *FIGHTER_KIND_PALUTENA].contains(&fighter_kind) {
