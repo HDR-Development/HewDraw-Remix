@@ -36,3 +36,6 @@ romfs/source/fighter/buddy/motion/
 scripts/banjo.bat
 
 *.bat
+*.vsidx
+*.vsidx
+*.vsidx

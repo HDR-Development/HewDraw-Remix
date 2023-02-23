@@ -34,6 +34,8 @@
       <float hash="shoot_angle_f">3</float>
       <float hash="shoot_angle_h">6</float>
       <float hash="attack_scale_mul">1.25</float>
+      <float hash="speed">13.5</float>
+      <int hash="life">11</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
