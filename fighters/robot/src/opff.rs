@@ -10,7 +10,7 @@ unsafe fn gyro_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i
     // Use 50% fuel to dash cancel gyro
     let boost_fuel_depletion = max_fuel * 0.50;
     if status_kind == *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_LW_END {
-        if frame > 10.0 {
+        if frame > 11.0 {
             if current_fuel > boost_fuel_depletion {
                 boma.check_dash_cancel();
             }

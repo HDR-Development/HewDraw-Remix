@@ -443,6 +443,16 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
         VarModule::on_flag(fighter.battle_object, vars::common::status::IS_AFTER_DASH_TO_RUN_FRAME);
     }
 
+    interrupt_if!(fighter.sub_transition_group_check_ground_jump().get_bool());
+    
+    // Disables dashbacks when stick falls below threshold
+    // For ease of moonwalking
+    let moonwalk_disable_dashback_stick_y = ParamModule::get_float(fighter.battle_object, ParamType::Common, "moonwalk_disable_dashback_stick_y");
+    if fighter.global_table[STICK_Y].get_f32() <= moonwalk_disable_dashback_stick_y
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH) {
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
+    }
+
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH)  // if backdash transition term is enabled (it is by default)
     && is_backdash_input {  // AND is a backdash input
         //println!("transition to backdash");
@@ -454,6 +464,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
             VarModule::off_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT);
         }
         VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
+        VarModule::on_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL);
         interrupt!(fighter, FIGHTER_STATUS_KIND_TURN, true);
     }
 
@@ -473,8 +484,6 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
             }
         }
     }
-
-    interrupt_if!(fighter.sub_transition_group_check_ground_jump().get_bool());
 
     interrupt_if!(
         arg.get_bool() &&
@@ -526,6 +535,31 @@ unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 		initial_speed = applied_speed_clamped;
 	}
+    if StatusModule::status_kind_next(fighter.module_accessor) == *FIGHTER_STATUS_KIND_GUARD_ON {
+        fighter.clear_lua_stack();
+		lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+		app::sv_kinetic_energy::clear_speed(fighter.lua_state_agent);
+    }
+    if StatusModule::status_kind_next(fighter.module_accessor) == *FIGHTER_STATUS_KIND_TURN {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_LATE_PIVOT) {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+            app::sv_kinetic_energy::clear_speed(fighter.lua_state_agent);
+            if VarModule::is_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT) {
+                VarModule::off_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT);
+                let dash_speed: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0);
+                let speed_mul = ParamModule::get_float(fighter.object(), ParamType::Common, "perfect_pivot_speed_mul");
+                let pivot_boost = dash_speed * speed_mul * PostureModule::lr(fighter.module_accessor) * -1.0;
+                fighter.clear_lua_stack();
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, pivot_boost);
+                app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+            }
+        }
+    }
+    else {
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT);
+    }
+
     if VarModule::is_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL) {
         let applied_speed_clamped = initial_speed.clamp(-run_speed_max, run_speed_max);
         let dash_end_speed_mul = ParamModule::get_float(fighter.battle_object, ParamType::Common, "dash_end_speed_mul");
@@ -535,10 +569,6 @@ unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 		app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
     }
     VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, initial_speed);
-
-    if StatusModule::status_kind_next(fighter.module_accessor) != *FIGHTER_STATUS_KIND_TURN {
-        VarModule::off_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT);
-    }
 
     call_original!(fighter)
 }

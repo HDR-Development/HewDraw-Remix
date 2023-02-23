@@ -34,11 +34,11 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 				VarModule::set_int(fighter.battle_object, vars::rosetta::instance::TICO_Y_DIST, (rosa_y-tico_y) as i32);
 				//Teleport!
 				if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW && !VarModule::is_flag(fighter.battle_object, vars::rosetta::instance::IS_TICO_DEAD) && VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) == 0 {
-					if frame == 12.0 {
+					if frame == 13.0 {
 						macros::EFFECT(fighter, Hash40::new("rosetta_escape"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
 						VarModule::set_int(fighter.battle_object, vars::rosetta::status::INVIS_FRAMES, 1);
 					};
-					if frame > 16.0 && frame < 19.0 {
+					if frame > 17.0 && frame < 20.0 {
 						HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_XLU), 0);
 						VisibilityModule::set_whole(boma, false);
 						JostleModule::set_status(boma, false);	
@@ -49,17 +49,17 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 						PostureModule::init_pos(boma, &pos, true, true);
 						VarModule::set_int(fighter.battle_object, vars::rosetta::status::INVIS_FRAMES, 2);
 					};
-					if frame == 25.0 {
+					if frame == 26.0 {
 						macros::EFFECT(fighter, Hash40::new("rosetta_escape_end"), Hash40::new("top"), 0, 0, -1.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
 						VarModule::set_int(fighter.battle_object, vars::rosetta::status::INVIS_FRAMES, 3);
 					};
-					if frame > 25.0{
+					if frame > 26.0{
 						VisibilityModule::set_whole(boma, true);
 						JostleModule::set_status(boma, true);	
 						VarModule::set_int(fighter.battle_object, vars::rosetta::status::INVIS_FRAMES, 4);
 						HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
 					};
-					if frame > 37.0{
+					if frame > 38.0{
 						CancelModule::enable_cancel(boma);
 					};
 				} else {
@@ -69,7 +69,7 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 						HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
 						JostleModule::set_status(boma, true);	
 						VisibilityModule::set_whole(boma, true);
-						if frame > 37.0{
+						if frame > 38.0 {
 							CancelModule::enable_cancel(boma);
 						};
 					};

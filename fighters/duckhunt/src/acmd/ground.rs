@@ -4,6 +4,7 @@ use super::*;
 unsafe fn duckhunt_attackdash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.94);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.70);
     }
