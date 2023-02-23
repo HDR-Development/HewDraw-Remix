@@ -56,7 +56,7 @@ unsafe fn nana_couple_indicator(fighter: &mut L2CFighterCommon, boma: &mut Battl
 unsafe fn dair_bounce(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
     if (motion_kind == hash40("attack_air_lw") || motion_kind == hash40("attack_air_lw_nana"))
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-    && frame < 54.0
+    && frame < 55.0
     {
         MotionModule::set_frame_sync_anim_cmd(boma, 54.0, true, true, false);
         AttackModule::clear_all(boma);
