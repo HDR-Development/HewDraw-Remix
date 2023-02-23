@@ -63,8 +63,8 @@ pub unsafe fn init_specials(fighter: &mut L2CFighterCommon, arg: u64) -> L2CValu
             else{
                 aerial_y_speed = 0.0;
             }
-            let reset_speed_2f = smash::phx::Vector2f { x: aerial_x_speed, y: aerial_y_speed };
-            let reset_speed_gravity_2f = smash::phx::Vector2f { x: 0.0, y: 0.0 };
+            let reset_speed_2f = smash::phx::Vector2f { x: aerial_x_speed, y: 0.0 };
+            let reset_speed_gravity_2f = smash::phx::Vector2f { x: 0.0, y: aerial_y_speed };
             let reset_speed_3f = smash::phx::Vector3f { x: 0.0, y: 0.0, z: 0.0 };
             smash::app::lua_bind::KineticEnergy::reset_energy(stop_energy, *ENERGY_STOP_RESET_TYPE_AIR, &reset_speed_2f, &reset_speed_3f, fighter.module_accessor);
             smash::app::lua_bind::KineticEnergy::reset_energy(gravity_energy, *ENERGY_GRAVITY_RESET_TYPE_GRAVITY, &reset_speed_gravity_2f, &reset_speed_3f, fighter.module_accessor);
@@ -436,16 +436,16 @@ unsafe extern "C" fn special_lw_check_follow_up(fighter: &mut L2CFighterCommon) 
         mot = hash40("special_s4_s");
         mot_air = hash40("special_air_s4_s")
     }
-    VarModule::set_int64(fighter.battle_object, vars::lucina::status::SPECIAL_LW_MOTION, mot);
-    VarModule::set_int64(fighter.battle_object, vars::lucina::status::SPECIAL_LW_MOTION_AIR, mot_air);
-    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_CONTINUE_MOT);
-    special_lw_main_motion_helper(fighter);
     let stick_x = fighter.global_table[globals::STICK_X].get_f32();
     let lr = PostureModule::lr(fighter.module_accessor);
     if stick_x * lr < -0.33 {
         PostureModule::reverse_lr(fighter.module_accessor);
         PostureModule::update_rot_y_lr(fighter.module_accessor);
     }
+    VarModule::set_int64(fighter.battle_object, vars::lucina::status::SPECIAL_LW_MOTION, mot);
+    VarModule::set_int64(fighter.battle_object, vars::lucina::status::SPECIAL_LW_MOTION_AIR, mot_air);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_CONTINUE_MOT);
+    special_lw_main_motion_helper(fighter);
 }
 
 unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
