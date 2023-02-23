@@ -305,16 +305,21 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
         let situation_kind = fighter.global_table[SITUATION_KIND].clone();
         fighter.global_table[PREV_SITUATION_KIND].assign(&situation_kind);
         if VarModule::is_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_JUMPSQUAT) {
-            if fighter.global_table[STICK_Y].get_f32() <= 0.2
+            // check if we are doing directional airdodge
+            let stick = app::sv_math::vec2_length(fighter.global_table[STICK_X].get_f32(), fighter.global_table[STICK_Y].get_f32());
+            if stick >= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_stick"))
+                && fighter.global_table[STICK_Y].get_f32() <= 0.2
             {
                 VarModule::on_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);
                 // change kinetic/ground properties for wavedash
-                //GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_NONE));
+                GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_NONE));
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_ESCAPE);
                 WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
             } else {
                 VarModule::off_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);
-                // change kinetic properties for rising airdodge
+                // change kinetic properties for rising nairdodge
                 GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP);
             }
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
         } else {
@@ -322,6 +327,7 @@ unsafe fn uniq_process_JumpSquat_exec_status_param(fighter: &mut L2CFighterCommo
             VarModule::off_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH);
             GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
             WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FROM_SQUAT, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_JUMP_FROM);
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP);
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START);
         }
     }

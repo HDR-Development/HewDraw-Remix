@@ -20,7 +20,7 @@ pub fn opff(attrs: TokenStream, item: TokenStream) -> TokenStream {
     quote::quote!(
         #usr_fn
 
-        #[smashline::fighter_frame(agent = #attrs, main)]
+        #[smashline::fighter_frame(agent = #attrs)]
         fn #static_name(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
             #[allow(unused_unsafe)]
             unsafe {
@@ -28,7 +28,7 @@ pub fn opff(attrs: TokenStream, item: TokenStream) -> TokenStream {
             }
         }
 
-        #[smashline::fighter_frame_callback(main)]
+        #[smashline::fighter_frame_callback]
         fn #runtime_name(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
             #[allow(unused_unsafe)]
             unsafe {

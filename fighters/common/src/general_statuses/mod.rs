@@ -118,10 +118,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_transition_group_check_air_escape,
             sub_transition_group_check_ground_escape,
             sub_transition_group_check_ground_guard,
-            sub_transition_group_check_ground,
-            sys_line_status_system_control_hook,
-            status_FallSub_hook,
-            super_jump_punch_main_hook
+            sub_transition_group_check_ground
         );
     }
 }
@@ -358,76 +355,6 @@ unsafe fn sub_transition_group_check_ground(fighter: &mut L2CFighterCommon, to_s
         }
     }
     false.into()
-}
-
-// This function runs once per frame for all battle objects, immediately before MAIN status
-// Processes of this function include:
-//   1. Incrementing CURRENT_FRAME counter in global table
-//   2. Calling INIT status
-//   3. Calling sub statuses
-//   4. Updating situation kind in global table
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterBase_sys_line_status_system_control)]
-pub unsafe fn sys_line_status_system_control_hook(fighter: &mut L2CFighterBase) -> L2CValue {
-    if VarModule::has_var_module(fighter.battle_object)
-    && VarModule::is_flag(fighter.battle_object, vars::common::instance::CHECK_CHANGE_MOTION_ONLY)
-    && fighter.global_table[CURRENT_FRAME].get_i32() != 0
-    {
-        // When we are calling MAIN status for the sole purpose of changing motion kind upon contact with a surface,
-        // there is no need to increment the CURRENT_FRAME counter,
-        // or run sub statuses (which are often used to increment various counters used during a status)
-        // So we are only updating situation kind, then returning
-        // MAIN status will then be called after returning
-        let situation_kind = StatusModule::situation_kind(fighter.module_accessor);
-        fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(situation_kind));
-        fighter.global_table[0xD].assign(&L2CValue::Bool(false));
-        VarModule::off_flag(fighter.battle_object, vars::common::instance::CHECK_CHANGE_MOTION_ONLY);
-        0.into()
-    }
-    else {
-        if VarModule::has_var_module(fighter.battle_object) { VarModule::off_flag(fighter.battle_object, vars::common::instance::CHECK_CHANGE_MOTION_ONLY); }
-        call_original!(fighter)
-    }
-}
-
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_FallSub)]
-pub unsafe fn status_FallSub_hook(fighter: &mut L2CFighterCommon, arg2: L2CValue) {
-    call_original!(fighter, arg2);
-    let move_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
-    if move_speed * PostureModule::lr(fighter.module_accessor) < 0.0
-    && MotionModule::motion_kind(fighter.module_accessor) != hash40("fall") {
-        // Avoid runfall/walkfall animation if you were moving backwards out of dash
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("fall"), 0.0, 1.0, false, 0.0, false, false);
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_RUN_FALL);
-    }
-}
-
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_super_jump_punch_main)]
-pub unsafe fn super_jump_punch_main_hook(fighter: &mut L2CFighterCommon) {
-    if fighter.sub_transition_group_check_air_cliff().get_bool() {
-        return;
-    }
-    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_FALL_SPECIAL) {
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS) {
-            if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_AIR
-            && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
-            && MotionModule::trans_move_speed(fighter.module_accessor).y < 0.0
-            {
-                fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
-            }
-        }
-        else {
-            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_CHANGE_KINE)
-            && fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_AIR
-            && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
-            {
-                fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
-            }
-        }
-    }
-    if MotionModule::is_end(fighter.module_accessor) {
-        let new_status = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_STATUS_KIND_END);
-        fighter.change_status_req(new_status, false);
-    }
 }
 
 pub fn install() {

@@ -5,9 +5,6 @@ use super::*;
 unsafe fn miiswordsman_special_n1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-    }
 
     frame(lua_state, 17.0);
     if is_excute(fighter) {
@@ -23,9 +20,6 @@ unsafe fn miiswordsman_special_n1_game(fighter: &mut L2CAgentBase) {
 unsafe fn miiswordsman_special_air_n1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-    }
 
     frame(lua_state, 17.0);
     if is_excute(fighter) {

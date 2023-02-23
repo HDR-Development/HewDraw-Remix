@@ -6,7 +6,7 @@ use globals::*;
  
 unsafe fn clown_cannon_shield_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
     if status_kind == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_N_HOLD {
-        if frame > 16.0 {
+        if frame > 15.0 {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
                 if situation_kind == *SITUATION_KIND_GROUND {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_GUARD_ON, true);
@@ -76,7 +76,7 @@ pub unsafe fn koopajr_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-#[smashline::weapon_frame( agent = WEAPON_KIND_KOOPAJR_REMAINCLOWN, main)]
+#[smashline::weapon_frame( agent = WEAPON_KIND_KOOPAJR_REMAINCLOWN)]
 pub fn koopajr_weapon_remainclown_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe {
         let boma = weapon.boma();
@@ -91,7 +91,7 @@ pub fn install_remainclown() {
     smashline::install_agent_frame!(koopajr_weapon_remainclown_frame);
 }
 
-#[smashline::weapon_frame( agent = WEAPON_KIND_KOOPAJR_CANNONBALL, main )]
+#[smashline::weapon_frame( agent = WEAPON_KIND_KOOPAJR_CANNONBALL )]
 pub fn koopajr_weapon_frame_wrapper(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe {
         koopajr_weapon_frame(weapon)
