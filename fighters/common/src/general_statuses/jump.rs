@@ -1,6 +1,7 @@
 // status imports
 use super::*;
 use globals::*;
+
 // This file contains code for wavelanding
 
 pub fn install() {
@@ -34,6 +35,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 unsafe fn status_pre_Jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     let interrupted = fighter.status_pre_Jump_Common_param(L2CValue::Bool(true)).get_bool();
     if !interrupted {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
         fighter.status_pre_Jump_sub();
     }
     L2CValue::Bool(interrupted)
@@ -89,9 +91,6 @@ unsafe extern "C" fn status_pre_Jump_sub_param(fighter: &mut L2CFighterCommon, f
     let float_keep = float_keep.get_i32();
     let mut kinetic_type = kinetic_type.get_i32();
     let arg = arg.get_i32();
-    if KineticModule::get_kinetic_type(fighter.module_accessor) == *FIGHTER_KINETIC_TYPE_JUMP {
-        kinetic_type = *FIGHTER_KINETIC_TYPE_UNIQ;
-    }
     let status_kind = StatusModule::status_kind(fighter.module_accessor);
     let ground_correct_kind = app::FighterUtil::get_ground_correct_kind_air_trans(fighter.module_accessor, status_kind);
     StatusModule::init_settings(
