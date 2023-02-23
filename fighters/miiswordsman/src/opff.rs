@@ -7,7 +7,7 @@ use globals::*;
 
 unsafe fn airborne_assault_lag(fighter: &mut L2CFighterCommon) {
 if fighter.is_status(*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_END) {
-    if  fighter.is_situation(*SITUATION_KIND_AIR) && fighter.motion_frame() > 75.0 {
+    if  fighter.is_situation(*SITUATION_KIND_AIR) && fighter.motion_frame() > 76.0 {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         } 
     }
@@ -42,7 +42,7 @@ unsafe fn gale_stab_jc_attack(fighter: &mut L2CFighterCommon, boma: &mut BattleO
     if [*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK].contains(&status_kind) {
         // Jump cancels
         let pad_flag = ControlModule::get_pad_flag(boma);
-        if frame > 6.0 && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
+        if frame > 7.0 && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
             boma.check_jump_cancel(true);
         }
     }
@@ -102,7 +102,7 @@ unsafe fn land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 unsafe fn aerial_acrobatics(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, motion_kind: u64, frame: f32) {
 
     if status_kind == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S1_ATTACK {
-        if motion_kind == hash40("special_s1") || (motion_kind == hash40("special_air_s1") && frame >= 15.0){
+        if motion_kind == hash40("special_s1") || (motion_kind == hash40("special_air_s1") && frame >= 16.0) {
             VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
             if boma.is_cat_flag(Cat1::AttackN) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, true);
@@ -138,7 +138,7 @@ unsafe fn skyward_slash_dash_act(fighter: &mut L2CFighterCommon, boma: &mut Batt
     if status_kind == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END {
         if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::instance::SKYWARD_SLASH_DASH_HIT) && !VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) && situation_kind == *SITUATION_KIND_AIR {
             //println!("SSD Success");
-            if frame >= 30.0 {
+            if frame >= 31.0 {
                 //println!("SSD Fall Act");
                 VarModule::off_flag(fighter.battle_object, vars::miiswordsman::instance::SKYWARD_SLASH_DASH_HIT);
                 VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
@@ -170,7 +170,7 @@ unsafe fn kinesis_blade(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
 
 // Transition into hitgrab on hit
 unsafe fn hitgrab_transition(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64) {
-	if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW && ((motion_kind == hash40("special_lw3") && MotionModule::frame(boma) > 16.0) || (motion_kind == hash40("special_air_lw3") && MotionModule::frame(boma) > 10.0)){
+	if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW && ((motion_kind == hash40("special_lw3") && MotionModule::frame(boma) > 17.0) || (motion_kind == hash40("special_air_lw3") && MotionModule::frame(boma) > 11.0)) {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !fighter.is_in_hitlag() {
             //println!("Swordfighter gon' give it to ya");
             StatusModule::change_status_request(boma, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END, false);

@@ -42,7 +42,7 @@ unsafe fn absorb_vortex_jc_turnaround_shinejump_cancel(boma: &mut BattleObjectMo
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_END,
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_LOOP].contains(&status_kind) {
         if !boma.is_in_hitlag() {
-            if (status_kind == *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD && frame > 3.0)
+            if (status_kind == *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD && frame > 4.0)
                 || (status_kind != *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD)
             {
                 boma.check_jump_cancel(false);
@@ -91,7 +91,7 @@ unsafe fn missile_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleO
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_2_AIR].contains(&status_kind) {
         if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
             // Set additional landing lag if the missile has been fired
-            if frame >= 22.0 {
+            if frame >= 23.0 {
                 if status_kind == *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_1_AIR {
                     //let landing_frame = (41.0 - frame).max(30.0);
                     MotionModule::set_frame(boma, 30.0, false);
@@ -112,12 +112,12 @@ unsafe fn arm_rocket_airdash(boma: &mut BattleObjectModuleAccessor, id: usize, s
 	let prev_status_kind = StatusModule::prev_status_kind(boma, 0);
 	if [*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI3_RUSH].contains(&status_kind) {
 		// Transition into rush_end early
-		if frame > 15.0 {
+		if frame > 16.0 {
 			StatusModule::change_status_request_from_script(boma, *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI3_RUSH_END, false);
 		}
 	}
 	if [*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI3_RUSH_END].contains(&status_kind) {
-		if frame > 10.0 {
+		if frame > 11.0 {
 			VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
 			StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
 		}
@@ -128,7 +128,7 @@ unsafe fn arm_rocket_airdash(boma: &mut BattleObjectModuleAccessor, id: usize, s
 unsafe fn lunar_launch_actionability(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
     if [hash40("special_hi1"),
         hash40("special_air_hi1")].contains(&motion_kind) {
-        if frame >= 34.0 && VarModule::get_float(boma.object(), vars::miigunner::status::CHARGE_ATTACK_LEVEL) <= 10.0 {
+        if frame >= 35.0 && VarModule::get_float(boma.object(), vars::miigunner::status::CHARGE_ATTACK_LEVEL) <= 10.0 {
             // if already used once this airtime
             if VarModule::is_flag(boma.object(), vars::miigunner::instance::LUNAR_LAUNCH_AIR_USED) {
                 VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
