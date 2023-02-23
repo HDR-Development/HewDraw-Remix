@@ -10,7 +10,6 @@ unsafe fn laser_ff_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kin
             StatusModule::change_status_request(boma, *FIGHTER_STATUS_KIND_LANDING, true);
         }
         if situation_kind == *SITUATION_KIND_AIR {
-            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
             if boma.is_cat_flag(Cat2::FallJump)
                 && stick_y < -0.66
                 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
@@ -46,7 +45,7 @@ unsafe fn shine_jc_turnaround(fighter: &mut L2CFighterCommon, frame: f32) {
                 smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.02666667);
             }
         }
-        if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && frame > 2.0)  // Allows for jump cancel on frame 4 in game
+        if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && frame > 3.0)  // Allows for jump cancel on frame 4 in game
         || fighter.is_status_one_of(&[
             *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT,
             *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
@@ -61,6 +60,14 @@ unsafe fn shine_jc_turnaround(fighter: &mut L2CFighterCommon, frame: f32) {
 unsafe fn firebird_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
         // allows ledgegrab during Firebird startup
+        if WorkModule::get_int(fighter.module_accessor, *FIGHTER_FALCO_FIRE_STATUS_WORK_ID_INT_STOP_Y_FRAME) <= 0 {
+            sv_kinetic_energy!(
+                set_accel,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                0.0
+            );
+        }
         fighter.sub_transition_group_check_air_cliff();
     }
 }
@@ -70,14 +77,14 @@ unsafe fn aim_throw_lasers(boma: &mut BattleObjectModuleAccessor) {
     let lr = PostureModule::lr(boma);
 
     if boma.is_motion(Hash40::new("throw_hi"))
-    && 12.0 <= frame
-    && frame < 22.0 {
+    && 13.0 <= frame
+    && frame < 23.0 {
         let rot = Vector3f::new(0.0, boma.stick_x() * lr * -20.0, 0.0);
         boma.set_joint_rotate("clavicler", rot);
     }
     else if boma.is_motion(Hash40::new("throw_b"))
-    && 8.0 <= frame
-    && frame < 20.0 {
+    && 9.0 <= frame
+    && frame < 21.0 {
         let rot = Vector3f::new(0.0, boma.stick_y() * -20.0, 0.0);
         boma.set_joint_rotate("shoulderr", rot);
     }
@@ -91,7 +98,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     aim_throw_lasers(boma);
 }
 
-#[utils::macros::opff(FIGHTER_KIND_FALCO )]
+#[utils::macros::opff(FIGHTER_KIND_FALCO)]
 pub fn falco_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);

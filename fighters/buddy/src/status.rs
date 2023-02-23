@@ -14,6 +14,7 @@ pub unsafe fn buddy_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
 
     if (fighter.is_situation(*SITUATION_KIND_AIR) )
     {
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_FAIL);
         GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         GroundModule::set_attach_ground(fighter.module_accessor, false);
         if (VarModule::get_float(fighter.battle_object, vars::buddy::instance::FEATHERS_RED_COOLDOWN)>0.0)
@@ -37,6 +38,21 @@ pub unsafe fn buddy_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     return false.into();
 }
 
+#[status_script(agent = "buddy", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+unsafe extern "C" fn buddy_special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    
+    if WorkModule::get_int(fighter.module_accessor,  *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN) == 0
+    && !fighter.is_situation(*SITUATION_KIND_AIR)
+    {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_FAIL);
+    }
+    else
+    {
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BUDDY_STATUS_SPECIAL_S_FLAG_FAIL);
+    }
+    return 0.into()
+}
+
 #[status_script(agent = "buddy", status = FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 pub unsafe fn buddy_special_s_dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     if (fighter.is_situation(*SITUATION_KIND_AIR))
@@ -50,7 +66,6 @@ pub unsafe fn buddy_special_s_dash_pre(fighter: &mut L2CFighterCommon) -> L2CVal
     }
     return original!(fighter);
 }
-
 /// pre status for bayonet
 /// handles initialization
 pub unsafe extern "C" fn bayonet_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -115,6 +130,7 @@ pub fn install() {
     install_status_scripts!(
         end_run,
         buddy_special_s_pre,
+        buddy_special_s_exec,
         buddy_special_s_dash_pre
     );
     CustomStatusManager::add_new_agent_status_script(

@@ -6,7 +6,7 @@ use globals::*;
  
 unsafe fn airdodge_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if frame > 16.0 {
+        if frame > 17.0 {
             boma.check_airdodge_cancel();
         }
     }
@@ -17,7 +17,7 @@ unsafe fn shine_jump_cancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= 1 {
         GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     }
-    if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.motion_frame() > 6.0)  // Allows for jump cancel on frame 5 in game
+    if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.motion_frame() > 7.0)  // Allows for jump cancel on frame 5 in game
         || fighter.is_status_one_of(&[
             *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_HIT,
             *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_LOOP,
@@ -33,7 +33,7 @@ unsafe fn side_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kin
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
             || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
-            if frame > 20.0 {
+            if frame > 21.0 {
                 CancelModule::enable_cancel(boma);
             }
             if frame >= MotionModule::end_frame(boma) - 3.0{

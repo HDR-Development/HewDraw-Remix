@@ -18,7 +18,7 @@ unsafe fn ledge_act(boma: &mut BattleObjectModuleAccessor, status_kind: i32, fig
         *FIGHTER_STATUS_KIND_CLIFF_CATCH,
         *FIGHTER_STATUS_KIND_CLIFF_WAIT].contains(&status_kind) {
         if fighter_kind != *FIGHTER_KIND_NANA {
-            if MotionModule::frame(boma) > 6.0 {
+            if MotionModule::frame(boma) > 7.0 {
                 WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_CHANGE_STATUS_DLAY_MOTION);
             }
         }
