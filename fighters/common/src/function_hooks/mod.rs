@@ -226,6 +226,7 @@ unsafe fn run_lua_status_hook(ctx: &skyline::hooks::InlineCtx) {
     //   2. Neither on the ground nor in the air
     if GroundModule::get_correct(boma) == *GROUND_CORRECT_KIND_NONE
     || ![*SITUATION_KIND_GROUND, *SITUATION_KIND_AIR].contains(&StatusModule::situation_kind(boma))
+    || ![*SITUATION_KIND_GROUND, *SITUATION_KIND_AIR].contains(&StatusModule::prev_situation_kind(boma))
     {
         return;
     }
@@ -244,10 +245,10 @@ unsafe fn run_lua_status_hook(ctx: &skyline::hooks::InlineCtx) {
     let collision_line_down = ((ground_collision_info as u64) + 0xa0) as *mut GroundCollisionLine;
 
     // This check passes only on the first frame you come into contact with a surface (ground/wall/ceiling)
-    if *(prev_collision_line_up as *mut u64) == 0 && *(collision_line_up as *mut u64) != 0
-    || *(prev_collision_line_left as *mut u64) == 0 && *(collision_line_left as *mut u64) != 0
-    || *(prev_collision_line_right as *mut u64) == 0 && *(collision_line_right as *mut u64) != 0
-    || *(prev_collision_line_down as *mut u64) == 0 && *(collision_line_down as *mut u64) != 0 {
+    if *(prev_collision_line_up as *mut u64) != *(collision_line_up as *mut u64)
+    || *(prev_collision_line_left as *mut u64) != *(collision_line_left as *mut u64)
+    || *(prev_collision_line_right as *mut u64) != *(collision_line_right as *mut u64)
+    || *(prev_collision_line_down as *mut u64) != *(collision_line_down as *mut u64) {
         // This runs the MAIN status once, ignoring sub-statuses, to ensure we change motion kind when coming into contact with a surface
         // Otherwise, our motion kind will update a frame late (e.g. landing animation)
         if VarModule::has_var_module((*boma).object()) { VarModule::on_flag((*boma).object(), vars::common::instance::CHECK_CHANGE_MOTION_ONLY); }

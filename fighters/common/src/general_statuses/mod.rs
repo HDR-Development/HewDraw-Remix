@@ -121,7 +121,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_transition_group_check_ground,
             sys_line_status_system_control_hook,
             status_FallSub_hook,
-            super_jump_punch_main_hook
+            super_jump_punch_main_hook,
+            sub_cliff_uniq_process_exec_fix_pos
         );
     }
 }
@@ -428,6 +429,14 @@ pub unsafe fn super_jump_punch_main_hook(fighter: &mut L2CFighterCommon) {
         let new_status = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_STATUS_KIND_END);
         fighter.change_status_req(new_status, false);
     }
+}
+
+// I honestly don't know why this function was needed in vanilla in the first place
+// Forces situation kind changes during ledge actions, even though situation kind automatically changes based on character position
+// Also forces ECB shape changes, while stubbing this doesn't affect ECB shape whatsoever
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_cliff_uniq_process_exec_fix_pos)]
+pub unsafe fn sub_cliff_uniq_process_exec_fix_pos(fighter: &mut L2CFighterCommon) {
+    return;
 }
 
 pub fn install() {
