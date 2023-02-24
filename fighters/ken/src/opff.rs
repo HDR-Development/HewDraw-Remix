@@ -275,6 +275,12 @@ unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
             boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_N, true);
         }
     }
+    else if boma.is_motion(Hash40::new("attack_near_w"))
+    && boma.is_cat_flag(Cat1::AttackLw4) {
+        WorkModule::off_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+        WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4);
+        boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_LW4, false);
+    }
 }
 
 unsafe fn magic_flag_reset(boma: &mut BattleObjectModuleAccessor) {
