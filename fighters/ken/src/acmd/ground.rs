@@ -82,6 +82,18 @@ unsafe fn ken_attack_11_near_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ken", script = "effect_attack11nears", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attack11nears(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("ken_attack_arc"), Hash40::new("ken_attack_arc"), Hash40::new("top"), 1, 14.5, 4.5, -5, -13, 109, 0.7, true, *EF_FLIP_YZ, 0.35);
+        LAST_EFFECT_SET_RATE(fighter, 1.6);
+    }
+}
+
 /// This is actually now strong up tilt - remapped in motion list.
 #[acmd_script( agent = "ken", script = "game_attack11s" , category = ACMD_GAME , low_priority)]
 unsafe fn ken_attack_11_s_game(fighter: &mut L2CAgentBase) {
@@ -122,6 +134,27 @@ unsafe fn ken_attack_11_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ken", script = "effect_attack11s", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attack11s(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        EFFECT_ALPHA(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 12, 7, -90, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true, 0.5);
+        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 7, 5, -90, 0, 0, 0.8, true, *EF_FLIP_YZ, 0.15);
+        LAST_EFFECT_SET_RATE(fighter, 1);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("ken_attack_arc2"), Hash40::new("ken_attack_arc2"), Hash40::new("top"), 0, 13.5, 8.0, 0, -14, -90, 0.8, true, *EF_FLIP_YZ, 0.2);
+        LAST_EFFECT_SET_RATE(fighter, 1.6);
+    }
+}
+
 #[acmd_script( agent = "ken", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
 unsafe fn ken_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -155,7 +188,9 @@ pub fn install() {
     install_acmd_scripts!(
         ken_attack_12_game,
         ken_attack_11_near_s_game,
+        effect_attack11nears,
         ken_attack_11_s_game,
+        effect_attack11s,
         ken_attack_dash_game,
     );
 }
