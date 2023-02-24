@@ -49,7 +49,7 @@ unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor) -> bool 
         || ((*boma).kind() == *FIGHTER_KIND_MASTER
             && (*boma).is_status_one_of(&[*FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_MAX_SHOOT]))
         || ((*boma).kind() == *FIGHTER_KIND_JACK
-            && (*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_JACK_STATUS_KIND_SPECIAL_CUSTOMIZE]))
+            && (*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_STATUS_KIND_SPECIAL_S]))
         || ((*boma).kind() == *FIGHTER_KIND_PFUSHIGISOU
             && (*boma).is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI))
         || ((*boma).kind() == *FIGHTER_KIND_KAMUI
@@ -198,9 +198,9 @@ unsafe fn run_lua_status_hook(ctx: &skyline::hooks::InlineCtx) {
 
     if skip_early_main_status(boma) {
         if (*boma).is_fighter()
-        && !StatusModule::is_changing(boma)
-        && (*boma).status_frame() == 0
+        && VarModule::is_flag((*boma).object(), vars::common::instance::IS_IGNORED_STATUS_FRAME_0)
         {
+            VarModule::off_flag((*boma).object(), vars::common::instance::IS_IGNORED_STATUS_FRAME_0);
             let status_module = *(boma as *mut BattleObjectModuleAccessor as *mut u64).add(0x40 / 8) as *const u64;
             *(((status_module as u64) + 0xf4) as *mut bool) = true;  // StatusModule::is_changing = true
             run_main_status_original(boma, is_stop, is_skip);
@@ -263,8 +263,9 @@ unsafe fn lua_module__call_line_status_system(lua_module: u64) {
     if (*boma).is_fighter()
     && skip_early_main_status(boma)
     && StatusModule::is_changing(boma)
-    && VarModule::is_flag((*boma).object(), vars::common::instance::BEFORE_GROUND_COLLISION) {
-        
+    && VarModule::is_flag((*boma).object(), vars::common::instance::BEFORE_GROUND_COLLISION)
+    {
+        VarModule::on_flag((*boma).object(), vars::common::instance::IS_IGNORED_STATUS_FRAME_0);
         return;
     }
     call_original!(lua_module)
