@@ -57,10 +57,15 @@ unsafe fn air_hado_distinguish(fighter: &mut L2CFighterCommon, boma: &mut Battle
     if (frame > 13.0 || fighter.is_motion_one_of(&[
         Hash40::new("special_air_n_empty"), 
         Hash40::new("special_n_empty"), 
-    ])) 
+    ]))
     && boma.is_situation(*SITUATION_KIND_GROUND) 
     && boma.is_prev_situation(*SITUATION_KIND_AIR) {
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
+        if frame < 70.0 {
+            WorkModule::set_float(boma, 11.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+            boma.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
+        } else {
+            boma.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
+        }
     }
 }
 

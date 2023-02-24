@@ -107,6 +107,7 @@ unsafe fn ken_special_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         MeterModule::add(fighter.battle_object, 2.0);
+        FT_MOTION_RATE(fighter, 36.0 / (58.0 - 14.0));
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
@@ -116,35 +117,76 @@ unsafe fn ken_special_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
     }
-    
+    frame(lua_state, 58.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
 }
 
 #[acmd_script( agent = "ken", script = "game_specialairn" , category = ACMD_GAME , low_priority)]
 unsafe fn ken_special_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
     }
-    frame(lua_state, 13.0);
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
     }
-    frame(lua_state, 14.0);
+    frame(lua_state, 15.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         MeterModule::add(fighter.battle_object, 2.0);
+        FT_MOTION_RATE(fighter, 36.0 / (70.0 - 15.0));
     }
-    frame(lua_state, 22.0);
+    frame(lua_state, 40.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        WorkModule::off_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
     }
-    frame(lua_state, 28.0);
+    frame(lua_state, 70.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
+        FT_MOTION_RATE(fighter, 1.0);
     }
-    
+}
+
+#[acmd_script( agent = "ken", script = "effect_specialairn", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_specialairn(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
+        if is_excute(fighter) {
+            EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        }
+    }
+    if !WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED) {
+        frame(lua_state, 4.0);
+        if is_excute(fighter) {
+            if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_TYPE) == 0 {
+                EFFECT_FOLLOW(fighter, Hash40::new("ken_hadoken_hold"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
+            }
+        }
+        frame(lua_state, 8.0);
+        if is_excute(fighter) {
+            FLASH(fighter, 0.392, 1, 1, 0.353);
+        }
+        frame(lua_state, 11.0);
+        if is_excute(fighter) {
+            COL_NORMAL(fighter);
+            EFFECT_FOLLOW(fighter, Hash40::new("ken_hadoken_shot"), Hash40::new("top"), 0, 6, 11, 30, 0, 0, 1, true);
+        }
+    } else {
+        frame(lua_state, 14.0);
+        if is_excute(fighter) {
+            EFFECT(fighter, Hash40::new("sys_misfire"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+        }
+    }
 }
 
 #[acmd_script( agent = "ken", script = "game_specialsstart" , category = ACMD_GAME , low_priority)]
@@ -777,6 +819,7 @@ pub fn install() {
         game_attackcommand3,
         ken_special_n_game,
         ken_special_air_n_game,
+        effect_specialairn,
         ken_special_s_start_game,
         ken_special_s_game,
         ken_special_s_end_game,

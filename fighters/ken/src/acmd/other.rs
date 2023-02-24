@@ -251,7 +251,7 @@ unsafe fn game_movew(fighter: &mut L2CAgentBase) {
         let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
         if (VarModule::is_flag(owner_module_accessor.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_EX)) {
             let lr = PostureModule::lr(owner_module_accessor);
-            KineticModule::reflect_speed(boma, &Vector3f{x: 0.37, y: lr * 0.93, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            KineticModule::reflect_speed(boma, &Vector3f{x: 0.26, y: lr * 0.97, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
             VarModule::off_flag(owner_module_accessor.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_EX);
         }
     }
@@ -273,7 +273,7 @@ unsafe fn game_movem(fighter: &mut L2CAgentBase) {
         let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
         if (VarModule::is_flag(owner_module_accessor.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_EX)) {
             let lr = PostureModule::lr(owner_module_accessor);
-            KineticModule::reflect_speed(boma, &Vector3f{x: 0.37, y: lr * 0.93, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            KineticModule::reflect_speed(boma, &Vector3f{x: 0.26, y: lr * 0.97, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
             VarModule::off_flag(owner_module_accessor.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_EX);
         }
     }
@@ -295,7 +295,7 @@ unsafe fn game_moves(fighter: &mut L2CAgentBase) {
         let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
         if (VarModule::is_flag(owner_module_accessor.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_EX)) {
             let lr = PostureModule::lr(owner_module_accessor);
-            KineticModule::reflect_speed(boma, &Vector3f{x: 0.37, y: lr * 0.93, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            KineticModule::reflect_speed(boma, &Vector3f{x: 0.26, y: lr * 0.97, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
             VarModule::off_flag(owner_module_accessor.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_EX);
         }
     }
