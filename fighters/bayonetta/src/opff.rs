@@ -46,6 +46,11 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
                     return;
                 }
             }
+            if fighter.is_motion(Hash40::new("attack_air_f3")) {
+                if fighter.motion_frame() < 18.0 {
+                    return;
+                }
+            }
             if !fighter.is_in_hitlag(){
                 //disable fair1 special/attack cancel
                 // if fighter.is_motion(Hash40::new("attack_air_f")) {
@@ -72,7 +77,7 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
             match fighter.get_aerial() {
                 Some(AerialKind::Fair) | None => return,
                 _ => {
-                    if !fighter.is_in_hitlag() {
+                    if !fighter.is_in_hitlag() && fighter.motion_frame() < 13.5 {
                     // disable fair2 cancels
                     //  VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_NONSPECIAL_CANCEL);
                     //  fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
