@@ -28,7 +28,7 @@ extern "Rust" {
     fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
 }
 
-pub unsafe fn teleport_wall_ride(boma: &mut BattleObjectModuleAccessor, status_kind: i32, id: usize) {
+pub unsafe fn teleport_wall_ride(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, id: usize) {
     /*
     if status_kind == *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_MOVE {
         if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
@@ -87,7 +87,7 @@ pub unsafe fn teleport_wall_ride(boma: &mut BattleObjectModuleAccessor, status_k
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     bouncing_fish_return_cancel(fighter, boma, status_kind, situation_kind, cat[0], frame);
     nspecial_cancels(fighter, boma, status_kind, situation_kind);
-    teleport_wall_ride(boma, status_kind, id);
+    teleport_wall_ride(fighter, boma, status_kind, id);
     //hitfall_aerials(fighter, frame);
 }
 
