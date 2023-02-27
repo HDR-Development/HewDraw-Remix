@@ -26,13 +26,10 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="blow_accel_y">-0.02</float>
+      <float hash="blow_accel_y">0.14</float>
       <float hash="up_speed_limit">1.15</float>
-	  <float hash="0x13eba5f359">2</float>
-	  <float hash="0x139ca2c3cf">1</float>
-      <float hash="up_power_limit_power">0.01</float>
+      <float hash="up_power_limit_power">0.0025</float>
       <float hash="speed_max_y">1.15</float>
-	  <float hash="hovering_accel_x">0.15</float>
       <float hash="hovering_speed_max_x">0.9</float>
       <float hash="energy_max_frame">100</float>
       <float hash="recovery_energy">0.2</float>
