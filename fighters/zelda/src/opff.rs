@@ -112,6 +112,17 @@ unsafe fn dins_flag_reset(boma: &mut BattleObjectModuleAccessor) {
         VarModule::off_flag(boma.object(), vars::zelda::instance::DEIN_ACTIVE);
     }
 }
+/// Reset use of Phantom Cancels on stock loss or match end
+unsafe fn phantom_special_cancel_reset(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_WIN,
+        *FIGHTER_STATUS_KIND_LOSE,
+        *FIGHTER_STATUS_KIND_ENTRY,
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_REBIRTH]) || !sv_information::is_ready_go() {
+        VarModule::on_flag(boma.object(), vars::zelda::instance::READY_PHANTOM);
+    }
+}
 
 pub unsafe fn phantom_charge_platdrop(fighter:&mut smash::lua2cpp::L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
@@ -132,6 +143,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     dins_flag_reset(boma);
     nayru_fastfall_land_cancel(boma, status_kind, situation_kind, cat[2], stick_y, frame);
     phantom_special_cancel(fighter, boma);
+    phantom_special_cancel_reset(boma);
     phantom_charge_platdrop(fighter);
 }
 
