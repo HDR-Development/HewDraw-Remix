@@ -10,7 +10,7 @@
       <float hash= "speed">1.5</float>
       <float hash= "gravity_accel">0.08</float>
       <float hash= "angle">-10</float>
-      <float hash= "bound_ref_speed_mul">.92</float>
+      <float hash= "bound_ref_speed_mul">0.92</float>
       <float hash= "bounded_speed_y_min">1.5</float>
       <float hash= "bounded_speed_y_max">2.5</float>
     </struct>
