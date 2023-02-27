@@ -227,7 +227,7 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    frame(lua_state, 12.0);
+    frame(lua_state, 8.0);
     if is_excute(fighter) {
         /*
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
@@ -247,11 +247,11 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
         }
         
     }
-    frame(lua_state, 15.0);
+    frame(lua_state, 10.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
     }
-    frame(lua_state, 19.0);
+    frame(lua_state, 11.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK) {
             SET_SPEED_EX(fighter, 1.55, 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -269,18 +269,18 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
         }
         
     }
-    frame(lua_state, 24.0);
+    frame(lua_state, 20.0);
     if is_excute(fighter) {
         //KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         ATTACK(fighter, 0, 0, Hash40::new("knee"), 10.0, 361, 91, 0, 35, 6.0, 0.0, 0.0, 0.0, Some(4.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
         ATTACK(fighter, 1, 0, Hash40::new("hip"), 10.0, 361, 91, 0, 35, 4.0, 4.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
         ATTACK(fighter, 2, 0, Hash40::new("knee"), 10.0, 361, 91, 0, 35, 4.0, 0.0, 0.0, 0.0, Some(10.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
     }
-    frame(lua_state, 30.0);
+    frame(lua_state, 25.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 51.0);
+    frame(lua_state, 40.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -309,7 +309,7 @@ unsafe fn robot_attack_air_b_effect(fighter: &mut L2CAgentBase) {
             LAST_EFFECT_SET_RATE(fighter, 0.5);
         }
     }
-    frame(lua_state, 19.0);
+    frame(lua_state, 11.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK) {
             EFFECT_FOLLOW(fighter, Hash40::new("robot_atk_ab_jet"), Hash40::new("knee1"), 1.5, 0, 0, 0, 0, -90, 0.9, true);
@@ -323,14 +323,14 @@ unsafe fn robot_attack_air_b_effect(fighter: &mut L2CAgentBase) {
             EffectModule::set_scale_last(boma, &Vector3f::new(0.9, 0.55, 1.0));
         }
     }
-    frame(lua_state, 35.0);
+    frame(lua_state, 21.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("robot_nozzle_flare"), Hash40::new("knee"), 0, 0, 0, 90, -90, 0, 1, true);
         if VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK) {
             LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 10.0);
         }
     }
-    frame(lua_state, 45.0);
+    frame(lua_state, 25.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("robot_nozzle_flare"), false, false);
     }
@@ -347,7 +347,7 @@ unsafe fn robot_attack_air_b_sound(fighter: &mut L2CAgentBase) {
             PLAY_SE(fighter, Hash40::new("vc_robot_attack05"));
         }
     }
-    frame(lua_state, 19.0);
+    frame(lua_state, 11.0);
     if is_excute(fighter) {
         PLAY_SEQUENCE(fighter, Hash40::new("seq_robot_rnd_attack"));
         PLAY_SE(fighter, Hash40::new("se_robot_attackair_b01"));
