@@ -43,7 +43,7 @@
       <float hash="limit_x">2.35</float>
       <float hash="air_limit_x">0.8</float>
       <float hash="buoyancy">1.1</float>
-      <float hash="buoyancy_max">1.3</float>
+      <float hash="buoyancy_max">1.45</float>
       <float hash="limit_x_dec">0.66</float>
     </struct>
     <hash40 index="1">dummy</hash40>
