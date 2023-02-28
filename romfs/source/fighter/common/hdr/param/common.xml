@@ -37,4 +37,5 @@
     <float hash="dash_end_speed_mul">0.225</float>
     <float hash="escape_air_slide_speed_mul">0.9</float>
     <int hash="escape_air_slide_fall_frame">28</int>
+    <int hash="tether_trump_landing_lag">30</int>
 </struct>
