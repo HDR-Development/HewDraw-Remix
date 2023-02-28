@@ -906,6 +906,7 @@ pub mod vars {
             pub const CHARGE_DAMAGE_MUL: i32 = 0x0100;
             pub const CHARGE_RECOIL_MUL: i32 = 0x0101;
             pub const DISCHARGE_POWER_MUL: i32 = 0x0102;
+            pub const DISCHARGE_SIZE_MUL: i32 = 0x0103;
         }
     }
 
