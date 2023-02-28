@@ -21,7 +21,6 @@
     </struct>
     <int hash="dash_perfect_pivot_window">3</int>
     <float hash="perfect_pivot_speed_mul">-0.75</float>
-    <float hash="late_perfect_pivot_speed_mul">-0.5</float>
     <struct hash="suicide_throw">
         <float hash="throw_frame">300.0</float>
         <float hash="damage_frame_mul">0.25</float>
@@ -36,4 +35,7 @@
     <float hash="wavedash_speed_mul">0.8945</float>
     <float hash="dashback_stick_x">-0.6</float>
     <float hash="dash_end_speed_mul">0.225</float>
+    <float hash="escape_air_slide_speed_mul">0.9</float>
+    <int hash="escape_air_slide_fall_frame">28</int>
+    <int hash="tether_trump_landing_lag">30</int>
 </struct>

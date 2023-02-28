@@ -8,10 +8,10 @@ unsafe fn areadbhar_autocancel(boma: &mut BattleObjectModuleAccessor, id: usize,
     if [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_FRONT,
         *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind) {
         if situation_kind == *SITUATION_KIND_AIR {
-            if frame < 26.0 {
+            if frame < 27.0 {
                 VarModule::off_flag(boma.object(), vars::master::status::AIR_SPECIAL_S_AUTOCANCEL);
             }
-            if frame >= 26.0 {
+            if frame >= 27.0 {
                 VarModule::on_flag(boma.object(), vars::master::status::AIR_SPECIAL_S_AUTOCANCEL);
             }
         }
@@ -53,7 +53,7 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
 
 unsafe fn aymr_slowdown(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_HIT)  {
-        if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) && MotionModule::frame(boma) < 10.0{
+        if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) && MotionModule::frame(boma) < 11.0 {
             SlowModule::set_whole(boma, 7, 100);
         }
     }

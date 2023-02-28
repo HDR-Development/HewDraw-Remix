@@ -24,7 +24,7 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
-      <int hash="hit_cancel_frame">139</int>
+      <int hash="hit_cancel_frame">179</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

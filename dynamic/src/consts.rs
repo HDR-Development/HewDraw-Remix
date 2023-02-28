@@ -159,6 +159,10 @@ pub mod vars {
 
             pub const IS_GETTING_POSITION_FOR_ECB: i32 = 0x0055;
 
+            pub const CHECK_CHANGE_MOTION_ONLY: i32 = 0x0056;
+
+            pub const BEFORE_GROUND_COLLISION: i32 = 0x0057;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -247,6 +251,8 @@ pub mod vars {
             pub const INITIAL_KNOCKBACK_VEL_Y: i32 = 0x1001;
 
             pub const RESTING_HIP_OFFSET_Y: i32 = 0x1000;
+
+            pub const TELEPORT_INITIAL_SPEED_Y: i32 = 0x1000;
 
         }
     }
@@ -638,8 +644,6 @@ pub mod vars {
         pub mod status {
             // flags
             pub const IS_SPECIAL_N_CHILL_PILL:       i32 = 0x1100;
-
-            pub const IS_SPECIAL_HI_UNABLE_CANCEL:   i32 = 0x1100;
         }
     }
 
@@ -875,12 +879,19 @@ pub mod vars {
             // flags
             pub const IS_DREAMLAND_EXPRESS: i32 = 0x0100;
             pub const IS_LATE_DLE_INPUT: i32 = 0x0101;
-            //pub const IS_STRAIGHT_LUNGE_CANCEL: i32 = 0x1102;
-            //pub const IS_REVERSED: i32 = 0x1103;
 
-            // floats
-            //pub const CANCEL_FRAME: i32 = 0x0100;
+            // ints
+            pub const SPECIAL_N_CANCEL_TYPE: i32 = 0x1100;
         }
+
+        pub const SPECIAL_N_CANCEL_TYPE_NONE: i32 = 0x0;
+        pub const SPECIAL_N_CANCEL_TYPE_GROUND_JUMP: i32 = 0x1;
+        pub const SPECIAL_N_CANCEL_TYPE_JUMP_AERIAL: i32 = 0x2;
+        pub const SPECIAL_N_CANCEL_TYPE_GUARD: i32 = 0x3;
+        pub const SPECIAL_N_CANCEL_TYPE_ESCAPE: i32 = 0x4;
+        pub const SPECIAL_N_CANCEL_TYPE_ESCAPE_AIR: i32 = 0x5;
+        pub const SPECIAL_N_CANCEL_TYPE_ESCAPE_F: i32 = 0x6;
+        pub const SPECIAL_N_CANCEL_TYPE_ESCAPE_B: i32 = 0x7;
     }
 
     pub mod pichu {
@@ -896,6 +907,7 @@ pub mod vars {
             pub const CHARGE_DAMAGE_MUL: i32 = 0x0100;
             pub const CHARGE_RECOIL_MUL: i32 = 0x0101;
             pub const DISCHARGE_POWER_MUL: i32 = 0x0102;
+            pub const DISCHARGE_SIZE_MUL: i32 = 0x0103;
         }
     }
 
@@ -979,6 +991,11 @@ pub mod statuses {
 
     pub mod buddy {
         pub const BUDDY_BAYONET_END: i32 = 0;
+    }
+
+    pub mod littlemac {
+        pub const SPECIAL_N_CANCEL: i32 = 0;
+        pub const SPECIAL_N_CANCEL_JUMP: i32 = 1;
     }
 
 }
