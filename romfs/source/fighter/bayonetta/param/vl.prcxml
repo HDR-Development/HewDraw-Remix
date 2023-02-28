@@ -65,9 +65,9 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="speed_mul_y">1.3</float>
-      <float hash="air_speed_mul_y">1.17</float>
-      <float hash="speed_mul_y_2nd">1.10</float>
+      <float hash="speed_mul_y">1.24</float>
+      <float hash="air_speed_mul_y">1.16</float>
+      <float hash="speed_mul_y_2nd">1.08</float>
       <float hash="air_start_speed_mul_y">0.25</float>
       <int hash="landing_frame">14</int>
       <int hash="act_landing_frame">18</int>

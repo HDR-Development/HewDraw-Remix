@@ -267,7 +267,8 @@ pub mod vars {
 
             // ints
             pub const NUM_RECOVERY_RESOURCE_USED:         i32 = 0x0100;
-            pub const NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME: i32 = 0x0101;
+            pub const NUM_SPECIAL_S_CANCEL_THIS_AIRTIME:  i32 = 0x0101;
+            pub const NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME: i32 = 0x0102;
         }
         pub mod status {
             // flags
