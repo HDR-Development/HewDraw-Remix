@@ -121,7 +121,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_transition_group_check_ground,
             sys_line_status_system_control_hook,
             status_FallSub_hook,
-            super_jump_punch_main_hook
+            super_jump_punch_main_hook,
+            end_pass_ground
         );
     }
 }
@@ -428,6 +429,19 @@ pub unsafe fn super_jump_punch_main_hook(fighter: &mut L2CFighterCommon) {
         let new_status = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_STATUS_KIND_END);
         fighter.change_status_req(new_status, false);
     }
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_end_pass_ground)]
+pub unsafe fn end_pass_ground(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_STATUS_KIND_DASH
+    && (fighter.kind() != *FIGHTER_KIND_RYU || fighter.global_table[PREV_STATUS_KIND] != FIGHTER_RYU_STATUS_KIND_DASH_BACK)
+    && (fighter.kind() != *FIGHTER_KIND_KEN || fighter.global_table[PREV_STATUS_KIND] != FIGHTER_RYU_STATUS_KIND_DASH_BACK)
+    && (fighter.kind() != *FIGHTER_KIND_DOLLY || fighter.global_table[PREV_STATUS_KIND] != FIGHTER_DOLLY_STATUS_KIND_DASH_BACK)
+    && (fighter.kind() != *FIGHTER_KIND_DEMON || fighter.global_table[PREV_STATUS_KIND] != FIGHTER_DEMON_STATUS_KIND_DASH_BACK)
+    {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
+    }
+    call_original!(fighter)
 }
 
 pub fn install() {
