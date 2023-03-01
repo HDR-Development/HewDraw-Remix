@@ -9,9 +9,9 @@ unsafe fn up_special_reverse(boma: &mut BattleObjectModuleAccessor, fighter_kind
 
     // Marth/Lucina frame 6
     // Roy frame 10
-    let mut target_frame = 5.0;
+    let mut target_frame = 6.0;
     if fighter_kind == *FIGHTER_KIND_ROY {
-        target_frame = 9.0;
+        target_frame = 10.0;
     }
 
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
