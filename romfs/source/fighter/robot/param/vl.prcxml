@@ -15,8 +15,9 @@
   </list>
   <list hash="param_special_s">
     <struct index="0">
-      <float hash="attack_speed_x">2</float>
-      <float hash="attack_speed_y">0</float>
+      <float hash="attack_speed_x">0.5</float>
+      <float hash="attack_speed_y">1</float>
+	  <float hash="stick_angle_z_accel_max">24</float>
       <int hash="push_b_max">1</int>
       <float hash="0x164fbe4f35">0</float>
     </struct>
