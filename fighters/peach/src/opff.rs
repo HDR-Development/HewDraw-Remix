@@ -15,16 +15,14 @@ unsafe fn float_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) 
 unsafe fn wall_bounce(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_JUMP {
         let lr = PostureModule::lr(boma);
-        let pos_x = PostureModule::pos_x(boma);
-        let pos_y = PostureModule::pos_y(boma);
-        let dist = 6.0*lr;
         let frame = MotionModule::frame(boma) as i32;
-        if 
-            (
-                GroundModule::ray_check(boma, &smash::phx::Vector2f{ x: pos_x, y: pos_y}, &Vector2f{ x: dist, y: 0.0}, false) == 1
-                || GroundModule::ray_check(boma, &smash::phx::Vector2f{ x: pos_x, y: pos_y}, &Vector2f{ x: dist, y: 6.0}, false) == 1
-            )
-            && (1..25).contains(&frame){
+        let mut touch_wall = false;
+        if lr > 0.0 {
+            touch_wall = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT as u32);
+        } else {
+            touch_wall = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT as u32);
+        };
+        if touch_wall && (1..25).contains(&frame){
                 VarModule::on_flag(boma.object(), vars::peach::instance::IS_WALLBOUNCE);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_HIT_END, true);
         }
