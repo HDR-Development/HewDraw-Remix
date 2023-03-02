@@ -8,11 +8,11 @@
   <list hash="param_fireball">
     <struct index="0">
       <float hash= "speed">1.5</float>
-      <float hash= "gravity_accel">0.08</float>
+      <float hash= "gravity_accel">0.07</float>
       <float hash= "angle">-10</float>
-      <float hash= "bound_ref_speed_mul">0.92</float>
+      <float hash= "bound_ref_speed_mul">0.90</float>
       <float hash="bounded_speed_y_min">1.5</float>
-      <float hash="bounded_speed_y_max">2.5</float>
+      <float hash="bounded_speed_y_max">3.0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
