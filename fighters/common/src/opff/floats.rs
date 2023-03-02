@@ -31,7 +31,8 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         motion_value = 0.0;
     }
     if fighter_kind == *FIGHTER_KIND_MEWTWO {
-        VarModule::set_int(boma.object(), vars::common::instance::FLOAT_DURATION, 60);
+        VarModule::set_int(boma.object(), vars::common::instance::FLOAT_STYLE, 1);
+        VarModule::set_int(boma.object(), vars::common::instance::FLOAT_DURATION, 50);
         motion_value = 1.0;
     }
 
@@ -201,9 +202,9 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                 if fighter_kind == *FIGHTER_KIND_MEWTWO {
                     EffectModule::req_follow(boma, Hash40::new("mewtwo_final_aura"), Hash40::new("hip"), &Vector3f::zero(), &Vector3f::zero(), 1.25, true, 0, 0, 0, 0, 0, false, false);
                     // consume double jump on float activation
-                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
+                    /*if boma.get_num_used_jumps() < boma.get_jump_count_max() {
                         WorkModule::inc_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-                    }
+                    }*/
                 }
             }
         }
