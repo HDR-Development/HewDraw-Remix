@@ -40,7 +40,7 @@ unsafe fn dair_bounce(fighter: &mut L2CFighterCommon){
     if fighter.is_motion(Hash40::new("attack_air_lw"))
     && fighter.motion_frame() < 46.0
     {
-        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
             MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 45.0, true, true, false);
         }
     }
