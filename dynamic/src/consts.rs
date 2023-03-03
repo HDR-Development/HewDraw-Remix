@@ -972,13 +972,6 @@ pub mod vars {
         }
     }
 
-    pub mod sheik {
-        pub mod status {
-            //floats
-            pub const GRENADE_GRAVITY: i32 = 0x1100;
-        }
-    }
-
 }
 
 pub mod statuses {
