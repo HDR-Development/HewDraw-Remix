@@ -159,6 +159,10 @@ pub mod vars {
 
             pub const IS_GETTING_POSITION_FOR_ECB: i32 = 0x0055;
 
+            pub const CHECK_CHANGE_MOTION_ONLY: i32 = 0x0056;
+
+            pub const BEFORE_GROUND_COLLISION: i32 = 0x0057;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -247,6 +251,8 @@ pub mod vars {
             pub const INITIAL_KNOCKBACK_VEL_Y: i32 = 0x1001;
 
             pub const RESTING_HIP_OFFSET_Y: i32 = 0x1000;
+
+            pub const TELEPORT_INITIAL_SPEED_Y: i32 = 0x1000;
 
         }
     }
@@ -638,8 +644,6 @@ pub mod vars {
         pub mod status {
             // flags
             pub const IS_SPECIAL_N_CHILL_PILL:       i32 = 0x1100;
-
-            pub const IS_SPECIAL_HI_UNABLE_CANCEL:   i32 = 0x1100;
         }
     }
 
@@ -903,6 +907,7 @@ pub mod vars {
             pub const CHARGE_DAMAGE_MUL: i32 = 0x0100;
             pub const CHARGE_RECOIL_MUL: i32 = 0x0101;
             pub const DISCHARGE_POWER_MUL: i32 = 0x0102;
+            pub const DISCHARGE_SIZE_MUL: i32 = 0x0103;
         }
     }
 

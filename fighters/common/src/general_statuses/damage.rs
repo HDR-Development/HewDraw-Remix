@@ -149,6 +149,7 @@ unsafe extern "C" fn check_asdi(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR // prevents ASDI on wall bounces
     && fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U // prevents ASDI on ceiling bounces
     && fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D // prevents ASDI on ground bounces
+    && fighter.global_table[PREV_STATUS_KIND] != FIGHTER_STATUS_KIND_THROWN // prevents ASDI after getting thrown
     && !(fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_GROUND && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR && VarModule::is_flag(fighter.battle_object, vars::common::status::IS_SPIKE)) // prevents ASDI on grounded tumble-inducing spikes
     {
         let hashmap = fighter.local_func__fighter_status_damage_2();

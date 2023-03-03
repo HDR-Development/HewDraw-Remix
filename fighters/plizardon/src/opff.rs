@@ -10,7 +10,7 @@ unsafe fn flame_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
         return;
     }
 
-    if frame < 18.0 {
+    if frame < 19.0 {
         MotionModule::set_frame(boma, 18.0, true);
     }
 }
@@ -25,10 +25,10 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
 unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
         if motion_kind == hash40("attack_air_n") {
-            if frame < 7.0 {
+            if frame < 8.0 {
                 MotionModule::set_rate(boma, 1.75);
             }
-            if frame >= 7.0 {
+            if frame >= 8.0 {
                 MotionModule::set_rate(boma, 1.0);
             }
         }

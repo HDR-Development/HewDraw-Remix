@@ -1,8 +1,16 @@
 use super::*;
 use globals::*;
 
+
+#[status_script(agent = "littlemac", status = FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_N_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe extern "C" fn special_n_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if StatusModule::is_changing(fighter.module_accessor) {
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
+    }
+    original!(fighter)
+}
+
 unsafe extern "C" fn special_n_cancel_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    println!("pre");
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
@@ -161,6 +169,9 @@ unsafe extern "C" fn special_n_jump_cancel_end(fighter: &mut L2CFighterCommon) -
 }
 
 pub fn install() {
+    install_status_scripts!(
+        special_n_start_main
+    );
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_littlemac"),
         statuses::littlemac::SPECIAL_N_CANCEL,
