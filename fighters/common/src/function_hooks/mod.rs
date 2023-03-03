@@ -480,48 +480,48 @@ unsafe fn after_collision(object: *mut BattleObject) {
         else if skip_early_main_status(boma, StatusModule::status_kind(boma)) {
             run_main_status_original(module_accessor, is_stop, is_skip);
         }
-
-        // Reset airtime counter when your situation kind is changed, rather than when entering a landing status
-        if (*boma).is_fighter()
-        && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR
-        && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
-        {
-            WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
-        }
-
-        // No need to check for motion kind changes if we are:
-        //   1. Not currently detecting surface collision
-        //   2. Neither on the ground nor in the air
-        if GroundModule::get_correct(boma) == *GROUND_CORRECT_KIND_NONE
-        || ![*SITUATION_KIND_GROUND, *SITUATION_KIND_AIR].contains(&StatusModule::situation_kind(boma))
-        || ![*SITUATION_KIND_GROUND, *SITUATION_KIND_AIR].contains(&StatusModule::prev_situation_kind(boma))
-        {
-            return;
-        }
-
-        let ground_module = *(boma as *mut BattleObjectModuleAccessor as *const u64).add(0x58 / 8);
-        let ground_collision_info = *((ground_module + 0x28) as *mut *mut f32);
-
-        let prev_collision_line_up = ((ground_collision_info as u64) + 0x190) as *mut GroundCollisionLine;
-        let prev_collision_line_left = ((ground_collision_info as u64) + 0x1c0) as *mut GroundCollisionLine;
-        let prev_collision_line_right = ((ground_collision_info as u64) + 0x1f0) as *mut GroundCollisionLine;
-        let prev_collision_line_down = ((ground_collision_info as u64) + 0x220) as *mut GroundCollisionLine;
+        else {
+            // Reset airtime counter when your situation kind is changed, rather than when entering a landing status
+            if (*boma).is_fighter()
+            && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR
+            && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
+            {
+                WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
+            }
+            
+            // No need to check for motion kind changes if we are:
+            //   1. Not currently detecting surface collision
+            //   2. Neither on the ground nor in the air
+            if GroundModule::get_correct(boma) != *GROUND_CORRECT_KIND_NONE
+            && [*SITUATION_KIND_GROUND, *SITUATION_KIND_AIR].contains(&StatusModule::situation_kind(boma))
+            && [*SITUATION_KIND_GROUND, *SITUATION_KIND_AIR].contains(&StatusModule::prev_situation_kind(boma))
+            {
+                
+                let ground_module = *(boma as *mut BattleObjectModuleAccessor as *const u64).add(0x58 / 8);
+                let ground_collision_info = *((ground_module + 0x28) as *mut *mut f32);
         
-        let collision_line_up = ((ground_collision_info as u64) + 0x10) as *mut GroundCollisionLine;
-        let collision_line_left = ((ground_collision_info as u64) + 0x40) as *mut GroundCollisionLine;
-        let collision_line_right = ((ground_collision_info as u64) + 0x70) as *mut GroundCollisionLine;
-        let collision_line_down = ((ground_collision_info as u64) + 0xa0) as *mut GroundCollisionLine;
-
-        // This check passes only on the first frame you come into contact with a surface (ground/wall/ceiling)
-        if *(prev_collision_line_up as *mut u64) == 0 && *(collision_line_up as *mut u64) != 0
-        || *(prev_collision_line_left as *mut u64) == 0 && *(collision_line_left as *mut u64) != 0
-        || *(prev_collision_line_right as *mut u64) == 0 && *(collision_line_right as *mut u64) != 0
-        || *(prev_collision_line_down as *mut u64) != *(collision_line_down as *mut u64) {
-            // This runs the MAIN status once, ignoring sub-statuses, to ensure we change motion kind when coming into contact with a surface
-            // Otherwise, our motion kind will update a frame late (e.g. landing animation)
-            if VarModule::has_var_module((*boma).object()) { VarModule::on_flag((*boma).object(), vars::common::instance::CHECK_CHANGE_MOTION_ONLY); }
-            run_main_status_original(module_accessor, is_stop, is_skip);
-            if VarModule::has_var_module((*boma).object()) { VarModule::off_flag((*boma).object(), vars::common::instance::CHECK_CHANGE_MOTION_ONLY); }
+                let prev_collision_line_up = ((ground_collision_info as u64) + 0x190) as *mut GroundCollisionLine;
+                let prev_collision_line_left = ((ground_collision_info as u64) + 0x1c0) as *mut GroundCollisionLine;
+                let prev_collision_line_right = ((ground_collision_info as u64) + 0x1f0) as *mut GroundCollisionLine;
+                let prev_collision_line_down = ((ground_collision_info as u64) + 0x220) as *mut GroundCollisionLine;
+                
+                let collision_line_up = ((ground_collision_info as u64) + 0x10) as *mut GroundCollisionLine;
+                let collision_line_left = ((ground_collision_info as u64) + 0x40) as *mut GroundCollisionLine;
+                let collision_line_right = ((ground_collision_info as u64) + 0x70) as *mut GroundCollisionLine;
+                let collision_line_down = ((ground_collision_info as u64) + 0xa0) as *mut GroundCollisionLine;
+        
+                // This check passes only on the first frame you come into contact with a surface (ground/wall/ceiling)
+                if *(prev_collision_line_up as *mut u64) == 0 && *(collision_line_up as *mut u64) != 0
+                || *(prev_collision_line_left as *mut u64) == 0 && *(collision_line_left as *mut u64) != 0
+                || *(prev_collision_line_right as *mut u64) == 0 && *(collision_line_right as *mut u64) != 0
+                || *(prev_collision_line_down as *mut u64) != *(collision_line_down as *mut u64) {
+                    // This runs the MAIN status once, ignoring sub-statuses, to ensure we change motion kind when coming into contact with a surface
+                    // Otherwise, our motion kind will update a frame late (e.g. landing animation)
+                    if VarModule::has_var_module((*boma).object()) { VarModule::on_flag((*boma).object(), vars::common::instance::CHECK_CHANGE_MOTION_ONLY); }
+                    run_main_status_original(module_accessor, is_stop, is_skip);
+                    if VarModule::has_var_module((*boma).object()) { VarModule::off_flag((*boma).object(), vars::common::instance::CHECK_CHANGE_MOTION_ONLY); }
+                }
+            }
         }
         // </HDR>
 
