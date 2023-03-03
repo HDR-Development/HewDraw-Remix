@@ -6,7 +6,6 @@ pub mod acmd;
 
 //pub mod status;
 pub mod opff;
-pub mod adaptive_roots;
 
 use smash::{
     lib::{
@@ -89,11 +88,4 @@ pub fn install(is_runtime: bool) {
 
     //smashline::install_status_script!(guard_cont_pre);
 
-    if !is_runtime || is_hdr_available() {
-        adaptive_roots::install();
-    }
-}
-
-pub fn delayed_install() {
-    adaptive_roots::install();
 }

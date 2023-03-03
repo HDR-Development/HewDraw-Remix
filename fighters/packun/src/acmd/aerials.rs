@@ -70,8 +70,8 @@ unsafe fn packun_attack_air_f_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("potc"), 9.0 * stance.damage_other, 40, 94, 0, 30, 4.5, 3.0, 0.5, 0.0, Some(3.0), Some(0.5), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-        ATTACK(fighter, 1, 0, Hash40::new("potc"), 11.0 * stance.damage_other, 40, 94, 0, 30, 7.0, -3.0, 0.5, 0.0, Some(-3.0), Some(0.5), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("potc"), 9.0 * stance.damage_other, 40, 94, 0, 30, 4.5, 3.0, 0.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 1, 0, Hash40::new("potc"), 11.0 * stance.damage_other, 40, 94, 0, 30, 7.0, -3.0, 0.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -135,16 +135,10 @@ unsafe fn packun_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
         ATTACK(fighter, 0, 0, Hash40::new("mouth"), 8.0 * stance.damage_head, 85, 95, 0, 52 + stance.bkb_normals, 7.0, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
-        HIT_NODE(fighter, Hash40::new("mouth"), *HIT_STATUS_XLU);
-        HIT_NODE(fighter, Hash40::new("lipu3"), *HIT_STATUS_XLU);
-        HIT_NODE(fighter, Hash40::new("lipd3"), *HIT_STATUS_XLU);
     }
     wait(lua_state, 6.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        HIT_NODE(fighter, Hash40::new("mouth"), *HIT_STATUS_NORMAL);
-        HIT_NODE(fighter, Hash40::new("lipu3"), *HIT_STATUS_NORMAL);
-        HIT_NODE(fighter, Hash40::new("lipd3"), *HIT_STATUS_NORMAL);
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {

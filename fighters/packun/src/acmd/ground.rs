@@ -115,7 +115,7 @@ unsafe fn packun_attack_dash_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
     // base 0.93
-    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.8);
+    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, stance.da_speed);
     if is_excute(fighter) {
         if stance.label == 2 {
             FT_MOTION_RATE(fighter, (11.0/7.0));
