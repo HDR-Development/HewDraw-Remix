@@ -12,7 +12,7 @@ pub fn wm_param_to_int(boma: *mut app::BattleObjectModuleAccessor, param_cat: u6
     }
 }
 
-#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon17status_DashCommonEv")]
+#[skyline::hook(replace = L2CFighterCommon_status_DashCommon)]
 unsafe fn status_DashCommon(fighter: &mut L2CFighterCommon) {
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH);
@@ -97,7 +97,7 @@ unsafe fn status_DashCommon(fighter: &mut L2CFighterCommon) {
 }
 
 
-#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon15status_Dash_SubEv")]
+#[skyline::hook(replace = L2CFighterCommon_status_Dash_Sub)]
 unsafe fn status_Dash_sub(fighter: &mut L2CFighterCommon) {
     let value: f32 = if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_LANDING || fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_LANDING_LIGHT {
         6.0
@@ -106,7 +106,7 @@ unsafe fn status_Dash_sub(fighter: &mut L2CFighterCommon) {
     };
 
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("dash"), 0.0, 1.0, false, value, false, false);
-    status_DashCommon(fighter);
+    fighter.status_DashCommon();
 }
 
 macro_rules! interrupt {
@@ -135,20 +135,13 @@ macro_rules! ok_if {
     }}
 }
 
-#[common_status_script(status = FIGHTER_STATUS_KIND_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon11status_DashEv")]
+#[skyline::hook(replace = L2CFighterCommon_status_Dash)]
 unsafe fn status_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
-    status_Dash_sub(fighter);
-    fighter.sub_shift_status_main(L2CValue::Ptr(status_dash_main as *const () as _))
+    fighter.status_Dash_Sub();
+    fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_Dash_Main as *const () as _))
 }
 
-#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon16status_Dash_MainEv")]
-unsafe extern "C" fn status_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    status_dash_main_common(fighter, 0.into());
-    0.into()
-}
-
-#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon23status_Dash_Main_commonEN3lib8L2CValueE")]
+#[skyline::hook(replace = L2CFighterCommon_status_Dash_Main_common)]
 unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
     let dash_stick_x: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dash_stick_x"));
     let stick_x = fighter.global_table[STICK_X].get_f32();
@@ -524,8 +517,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     ok!()
 }
 
-#[common_status_script(status = FIGHTER_STATUS_KIND_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon15status_end_DashEv")]
+#[skyline::hook(replace = L2CFighterCommon_status_end_Dash)]
 unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 	let mut initial_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
 	let run_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("run_speed_max"), 0);
@@ -577,8 +569,7 @@ unsafe fn status_end_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 // FIGHTER_STATUS_KIND_TURN_DASH
 
 
-#[common_status_script(status = FIGHTER_STATUS_KIND_TURN_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE,
-    symbol = "_ZN7lua2cpp16L2CFighterCommon19status_pre_TurnDashEv")]
+#[skyline::hook(replace = L2CFighterCommon_status_pre_TurnDash)]
 unsafe fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
     //println!("pre turndash");
     VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
@@ -586,18 +577,19 @@ unsafe fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
     return 1.into()
 }
 
+fn nro_hook(info: &skyline::nro::NroInfo) {
+    if info.name == "common" {
+        skyline::install_hooks!(
+            status_DashCommon,
+            status_Dash_sub,
+            status_dash,
+            status_end_dash,
+            status_dash_main_common,
+            status_pre_turndash
+        );
+    }
+}
 
 pub fn install() {
-    install_hooks!(
-        status_DashCommon,
-        status_Dash_sub,
-        status_dash_main,
-        status_dash_main_common
-    );
-
-    install_status_scripts!(
-        status_pre_turndash,
-        status_dash,
-        status_end_dash
-    );
+    skyline::nro::add_hook(nro_hook);
 }
