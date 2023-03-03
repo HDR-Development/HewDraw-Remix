@@ -107,6 +107,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     mewtwo_teleport_wall_ride(fighter, boma, status_kind, id);
     dj_upB_jump_refresh(fighter);
 }
+
 #[utils::macros::opff(FIGHTER_KIND_MEWTWO )]
 pub fn mewtwo_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
