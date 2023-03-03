@@ -8,6 +8,19 @@ unsafe fn sheik_special_s_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 12.0);
     if is_excute(fighter) {
+        //VarModule::set_float(fighter.battle_object, vars::sheik::status::GRENADE_GRAVITY, 0.1 - ControlModule::get_stick_y(boma) * 0.95);
+        //println!("New gravity: {}", 0.1 - ControlModule::get_stick_y(boma) * 0.95);
+        // instead get item battleobject and set kinetic
+        // let item_id = VarModule::get_int(fighter.battle_object, vars::sheik::status::GRENADE_OBJECT_ID) as u32;
+        // let item_battle_object = utils::util::get_battle_object_from_id(item_id);
+        // let item_boma = (*item_battle_object).module_accessor;
+        // println!("Item id: {}", item_id);
+        // let mut gravity_energy = KineticModule::get_energy(item_boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut KineticEnergy;
+        // let gravity = 0.005;
+        // let reset_speed_gravity_2f = smash::phx::Vector2f { x: 0.0, y: gravity };
+        // let reset_speed_3f = smash::phx::Vector3f { x: 0.0, y: 0.0, z: 0.0 };
+        // smash::app::lua_bind::KineticEnergy::reset_energy(gravity_energy, *ENERGY_GRAVITY_RESET_TYPE_GRAVITY, &reset_speed_gravity_2f, &reset_speed_3f, item_boma);
+        // smash::app::lua_bind::KineticEnergy::enable(gravity_energy);
         WorkModule::on_flag(boma, *FIGHTER_SHEIK_STATUS_SPECIAL_S_FLAG_THROW);
     }
     
@@ -19,6 +32,7 @@ unsafe fn sheik_special_air_s_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 12.0);
     if is_excute(fighter) {
+        //VarModule::set_float(fighter.battle_object, vars::sheik::status::GRENADE_GRAVITY, 0.1 - ControlModule::get_stick_y(boma) * 0.95);
         WorkModule::on_flag(boma, *FIGHTER_SHEIK_STATUS_SPECIAL_S_FLAG_THROW);
     }
     
