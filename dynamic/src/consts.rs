@@ -974,6 +974,7 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const STANCE_NEED_SET_SPEEDS: i32 = 0x0100;
+            pub const STANCE_INIT: i32 = 0x0101;
 
             // floats
             pub const PTOOIE_SCALE: i32 = 0x0100;
@@ -1006,10 +1007,7 @@ pub mod statuses {
     pub mod buddy {
         pub const BUDDY_BAYONET_END: i32 = 0;
     }
-
-    pub mod packun {
-        pub const ADAPTIVE_ROOTS: i32 = 0;
-    }
+    
     pub mod littlemac {
         pub const SPECIAL_N_CANCEL: i32 = 0;
         pub const SPECIAL_N_CANCEL_JUMP: i32 = 1;

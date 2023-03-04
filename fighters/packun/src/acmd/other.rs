@@ -109,6 +109,7 @@ unsafe fn appeal_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, 0);
+    VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
 }
 
 #[acmd_script( agent = "packun", scripts = [ "game_appealsl", "game_appealsr" ], category = ACMD_GAME , low_priority)]
@@ -116,6 +117,7 @@ unsafe fn appeal_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, 2);
+    VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
 }
 
 #[acmd_script( agent = "packun", scripts = [ "game_appeallwl", "game_appeallwr" ], category = ACMD_GAME , low_priority)]
@@ -123,6 +125,7 @@ unsafe fn appeal_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, 1);
+    VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
 }
 
 #[acmd_script( agent = "packun_spikeball", script = "game_start", category = ACMD_GAME, low_priority )]
@@ -252,7 +255,13 @@ unsafe fn packun_spikeball_game_wait(fighter: &mut L2CAgentBase) {
     let stance = VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE);
     let scale = VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0 * scale, 55, 80, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+        if stance == 1 {
+            ATTACK(fighter, 0, 0, Hash40::new("trans"), 10.0, 55, 80, 0, 50, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
+            AttackModule::set_poison_param(boma, 0, 136, 45, 3.0, false);
+        }
+        else {
+            ATTACK(fighter, 0, 0, Hash40::new("trans"), 12.0 * scale, 55, 80, 0, 50, 5.0 * scale, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+        }
     }
     /*frame(lua_state, 55.0);
     if is_excute(fighter) {

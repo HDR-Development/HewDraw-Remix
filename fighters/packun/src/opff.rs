@@ -43,6 +43,21 @@ unsafe fn stance_head(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
+unsafe fn stance_init_effects(fighter: &mut L2CFighterCommon) {
+    if VarModule::is_flag(fighter.object(), vars::packun::instance::STANCE_INIT) {
+        if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 0 {
+            LANDING_EFFECT(fighter, Hash40::new("sys_grass"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false);
+        }
+        else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
+            LANDING_EFFECT(fighter, Hash40::new("packun_poison_max"), Hash40::new("mouth"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        }
+        else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
+            LANDING_EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        }
+        VarModule::off_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
+    }
+}
+
 /// handle speed application
 unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     
@@ -152,6 +167,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     stance_head(fighter);
     check_reset(fighter);
     check_apply_speeds(fighter);
+    stance_init_effects(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_PACKUN )]

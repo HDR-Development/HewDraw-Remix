@@ -56,18 +56,6 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
                 return 3;
             }
         }
-        else if fighter_kind == *FIGHTER_KIND_PACKUN {
-            if VarModule::get_int(boma_reference.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
-                if x1 == hash40("param_special_lw") {
-                    if x2 == hash40("charge_max_frame") {
-                        return 75;
-                    }
-                    else if x2 == hash40("attack_power_max") {
-                        return 37;
-                    }
-                }
-            }
-        }
 
     }
 
@@ -80,7 +68,14 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
             if VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
                 if x1 == hash40("param_spikeball") { 
                     if x2 == hash40("hop_life") {
-                        return 60;
+                        return 45;
+                    }
+                }
+            }
+            else if VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
+                if x1 == hash40("param_spikeball") { 
+                    if x2 == hash40("out_range_y") {
+                        return 45;
                     }
                 }
             }
@@ -216,19 +211,6 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         //         }
         //     }
         // }
-
-        else if fighter_kind == *FIGHTER_KIND_PACKUN {
-            if VarModule::get_int(boma_reference.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
-                if x1 == hash40("param_special_lw") {
-                    if x2 == hash40("shoot_speed_y_mul") {
-                        return 0.45;
-                    }
-                    else if x2 == hash40("shoot_stalk_accel_y") {
-                        return 0.02;
-                    }
-                }
-            }
-        }
     
     }
     else if boma_reference.is_weapon() {
