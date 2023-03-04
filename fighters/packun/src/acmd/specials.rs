@@ -49,7 +49,7 @@ unsafe fn packun_special_s_shoot_game(fighter: &mut L2CAgentBase) {
         wait(lua_state, 16.0);
         if is_excute(fighter) {
             if charged {
-                ATTACK(fighter, 0, 0, Hash40::new("mouth"), 3.0, 55, 66, 0, 65, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BITE);
+                ATTACK(fighter, 0, 0, Hash40::new("mouth"), 3.0, 50, 66, 0, 70, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BITE);
                 AttackModule::set_poison_param(boma, 0, 136, 45, 2.5, false);
             }
             else {
