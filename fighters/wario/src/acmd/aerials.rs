@@ -84,9 +84,10 @@ unsafe fn wario_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 27.0);
+    frame(lua_state, 21.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        FT_MOTION_RATE(fighter, 8.0 / (37.0 - 21.0));
     }
     
 }
