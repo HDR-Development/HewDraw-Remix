@@ -261,7 +261,7 @@ local strike_cancel = {
 }
 
 -- Stage paging information
-local PANELS_PER_PAGE = 39
+local PANELS_PER_PAGE = 14
 local total_pages = 0 -- to be filled in during setup
 local current_page = 0
 local Page = {
@@ -274,6 +274,16 @@ local Page = {
     end
 }
 local pages = {} -- to be filled in during setup
+
+-- custom for us
+local print_error_handler = function(err)
+    print("Error caught: " .. tostring(err))
+    
+end
+
+-- all of the (1 indexed) IDs which are actually RandomEnd (for tourney mode, to ignore them)
+-- this is basically a map<id, is_random>
+local random_stages = {}
 
 -- Performs interpolation of a value using a sin wave for a more natural curve than just linear
 -- CLOSURE_4, R64
@@ -632,10 +642,19 @@ local unselect_panel = function(panel_id)
     end
 end
 
+-- attempts to find the real desired panel using the given panel ID
 local find_proper_panel = function(panel_id)
     if panel_id == UI_INVALID_INDEX then
         return panel_id
     end
+
+    -- in tourney mode, dont allow selection of random stages.
+    -- They are used as a buffer to put the starters/counterpicks
+    -- in the right locations.
+    if random_stages[panel_id + 1] == true then
+        return UI_INVALID_INDEX
+    end
+
     local panel_min = current_page * PANELS_PER_PAGE
     local panel_max = (current_page + 1) * PANELS_PER_PAGE
     if panel_min <= panel_id and panel_id < panel_max then
@@ -926,15 +945,14 @@ local change_page = function(should_play_page_change)
 end
 
 local change_sub_page = function(target_page)
+    -- Page is actually all the parts of the set_parts_n_stage_XXX
     local current_page_ = pages[current_page + 1]
     local target_page_ = pages[target_page + 1]
 
-    
-
     local positions = {}
 
+    -- load the positions of the first set of panels
     for i=1,PANELS_PER_PAGE,1 do
-        print(string.format("Stage: %d", i))                                      
         local parts = root_view:get_parts(get_stage_panel_name(i - 1))
         local px, py = parts:get_root_pane():get_position()
         positions[i] = {
@@ -943,13 +961,49 @@ local change_sub_page = function(target_page)
         }
     end
 
+    -- hide all of the panels on the current page
     for i, panel in ipairs(current_page_) do
         panel:set_visible(false)
     end      
 
+    -- reposition and show the new page's panels
     for i, panel in ipairs(target_page_) do 
-        panel:set_visible(true)
-        panel:get_root_pane():set_position(positions[i].x, positions[i].y)
+        -- dont reposition or show any invalid stages
+        if i > STAGE_PANEL_LIST_NUM then
+            break
+        end
+        
+        -- set the preview    
+        UiScriptPlayer.invoke("set_stage_preview_from_panel", 0 , i - 1)
+        -- use the set preview to check if this preview is a random stage
+        local is_random = UiScriptPlayer.invoke("is_random_stage_preview",  0)
+
+        -- if its a random stage (which we are using as a buffer to align the stages),
+        -- then hide the stage, and record whether its random or not
+        print("is random: " .. tostring(is_random))   
+        if is_random == true then
+            -- save that this is a random stage
+            random_stages[i] = true
+            print("found the random stage: " .. i)
+            panel:set_visible(false)
+
+            --[[ for getting reflective data about the stages
+            for key,value in pairs(getmetatable(panel)) do
+                print("panel member " .. key .. ", value: " .. tostring(value) );
+            end
+
+            for key,value in pairs(getmetatable(panel:get_root_pane())) do
+                print("root pane member " .. key .. ", value: " .. tostring(value) );
+            end
+            ]]--
+        else
+            random_stages[i] = false
+            
+            -- print("setting root pane parent pane position")
+            -- panel:get_root_pane():get_parent_pane():set_position(positions[offset].x, positions[offset].y)  
+            print("bringing to front panel")
+            panel:set_visible(true)
+        end
     end
     current_page = target_page
 end
@@ -961,6 +1015,7 @@ local setup = function()
     virtual_input = layout_root:get_virtual_input()
     next_scene_animation = root_view:get_animation("anim_next_scene")
 
+    -- set up the previews (these are the 1-3 big previews on SSS)
     for i=1, USE_STAGE_MAX, 1 do
         stage_previews[i] = StagePreview.new()
         medals[i] = Medal.new()
@@ -1219,6 +1274,8 @@ local setup_from_environment = function()
     end
 
     UiScriptPlayer.invoke("setup_bgm")
+
+    change_sub_page(0)
 end
 
 -- Cancels, presumably a part of the exit sequence
@@ -2046,6 +2103,11 @@ local handle_change_page = function(dir)
         return
     end
 
+    -- if there is only one page, do nothing
+    if total_pages == 1 then
+        return
+    end
+
     -- Target page is going to be the page that we are transitioning to
     -- Since there is a max amount of pages (value of `target_pages`), we can use
     -- that value as the indicator of when we are going to be seeing the custom stages screen
@@ -2429,6 +2491,7 @@ local regular_main_update = function()
                             end
                         end
                     elseif virtual_input:is_decide() == true and get_page_button_dir() == 0 then
+                        -- possible
                         handle_panel_decide()
                     elseif virtual_input:is_pressed(INPUT_BGM_SELECT) == true then
                         local index = current_selected_preview
@@ -2437,6 +2500,7 @@ local regular_main_update = function()
                         end
                         open_bgm_select(index, false)
                     else
+                        -- possible
                         update_both_tabs()
                     end
                 end
@@ -2523,7 +2587,7 @@ end
 main = function()
     setup()
     stage_select_bgm:setup()
-    setup_from_environment()
+    xpcall(setup_from_environment, print_error_handler)
     root_view:play_animation("in", 1.0)
     if IS_SIMPLE_CANCEL == true then
         local parts = root_view:get_parts("set_parts_txt_head_00")
@@ -2538,9 +2602,9 @@ main = function()
     until root_view:is_animation_finished("in")
     virtual_input:set_enable(true)
     if IS_MY_MUSIC == true then
-        my_music_main_update()
+        xpcall(my_music_main_update, print_error_handler)
     else
-        regular_main_update()
+        xpcall(regular_main_update, print_error_handler)
     end
 
     stop_long_cancel_se()
@@ -2550,69 +2614,4 @@ end
 get_tab_switch = function()
     return tab_index
 end
--- here begins The Great Buffer of empty string data, so that 
--- arcropolis will correctly allocate the necessary space for 
--- loading the (larger) tourney mode version of this file.
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
-                                                                                       
+ 
