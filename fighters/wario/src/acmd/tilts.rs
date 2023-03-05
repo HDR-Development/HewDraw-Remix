@@ -91,7 +91,7 @@ unsafe fn wario_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 9.0/5.0);
+        FT_MOTION_RATE(fighter, 7.0/5.0);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
