@@ -449,6 +449,11 @@ fn ui_stage_db_prc_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
             },
             false => {}
         };
+
+        // otherwise, push this as hidden
+        *disp_order = -1;
+        out_list.push(entry.clone());
+        continue;
     }
 
     *list = out_list;
