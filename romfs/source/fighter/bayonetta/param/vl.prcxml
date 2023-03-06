@@ -49,6 +49,7 @@
       <float hash="ab_d_hit_after_max_accel_x">0.035</float>
       <float hash="ab_d_hit_after_front_max_speed_x">1</float>
       <float hash="ab_u_motion_speed_mul">0.81</float>
+      <int hash="ab_d_hit_after_stick_control_start_frame">1</int>
       <int hash="ab_d_hit_after_landing_frame">15</int>
       <int hash="ab_d_hit_after_landing_frame_2nd">30</int>
       <int hash="ab_d_landing_frame">30</int>
@@ -56,7 +57,8 @@
       <int hash="ab_d_fall_landing_frame">14</int>
       <int hash="ab_d_fall_landing_frame_2nd">22</int>
       <int hash="0x17a1daf6ee">600</int>
-      <int hash="ab_d_enable_frame">18</int>
+		<int hash="ab_d_enable_frame">18</int>
+      <int hash="ab_d_change_frame">4</int>
       <float hash="guard_speed_mul_x">0.6</float>
     </struct>
     <hash40 index="1">dummy</hash40>
