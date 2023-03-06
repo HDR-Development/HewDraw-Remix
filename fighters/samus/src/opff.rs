@@ -22,7 +22,7 @@ extern "Rust" {
 
 // Shinespark charge
 unsafe fn shinespark_charge(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
-    if [*FIGHTER_STATUS_KIND_RUN, *FIGHTER_STATUS_KIND_TURN_RUN].contains(&status_kind) && frame > 30.0 {
+    if [*FIGHTER_STATUS_KIND_RUN, *FIGHTER_STATUS_KIND_TURN_RUN].contains(&status_kind) && frame > 31.0 {
         if  !VarModule::is_flag(boma.object(), vars::samus::instance::SHINESPARK_READY) {
             VarModule::on_flag(boma.object(), vars::samus::instance::SHINESPARK_READY);
             gimmick_flash(boma);
@@ -48,7 +48,7 @@ unsafe fn shinespark_reset(boma: &mut BattleObjectModuleAccessor, id: usize, sta
 // PUBLIC
 pub unsafe fn morphball_crawl(boma: &mut BattleObjectModuleAccessor, status_kind: i32, frame: f32) {
     if [*FIGHTER_SAMUS_STATUS_KIND_SPECIAL_GROUND_LW, *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_AIR_LW].contains(&status_kind) {
-        if frame >= 31.0 {
+        if frame >= 32.0 {
             if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW))
                 && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
                 MotionModule::change_motion_force_inherit_frame(boma, Hash40::new("special_lw"), 12.0, 1.0, 1.0);

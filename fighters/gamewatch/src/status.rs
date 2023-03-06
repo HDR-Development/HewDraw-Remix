@@ -18,7 +18,7 @@ mod landing_attack_air;
 
 pub fn install() {
     // smashline::install_agent_init_callbacks!(gamewatch_init);
-    landing_attack_air::install();
+    //landing_attack_air::install();
     install_status_scripts!(
         
     );
