@@ -146,8 +146,7 @@ unsafe fn tatsu_behavior_and_ex(fighter: &mut L2CFighterCommon, boma: &mut Battl
     && frame == 4.0
     && MeterModule::drain(boma.object(), 2) {
         VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
-        boma.change_status_req(*FIGHTER_RYU_STATUS_KIND_FINAL_HIT, false);
-        MotionModule::change_motion(boma, Hash40::new("special_s_ex"), 0.0, 1.0, false, 0.0, false, false);
+        KineticModule::add_speed(boma, &Vector3f::new(2.0 , 0.0, 0.0));
     }
 
     // Tatsu gravity
