@@ -163,6 +163,8 @@ pub mod vars {
 
             pub const BEFORE_GROUND_COLLISION: i32 = 0x0057;
 
+            pub const IS_IGNORED_STATUS_FRAME_0: i32 = 0x0058;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
