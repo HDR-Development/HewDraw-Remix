@@ -349,14 +349,14 @@ impl TourneyConfig {
 /// recreating the prc file contents to *only* include those stages.
 /// 
 /// More specifically, if both counterpicks and starters are specified, then
-/// the `RandomEnd` stage is used as a buffer between the two sets of stages.
+/// the `Training` stage is used as a buffer between the two sets of stages.
 /// - Starter stages are given 1
-/// - RandomEnd is given 2
+/// - Training is given 2
 /// - Counterpick stages are given 3
 /// 
 /// The result is that the stages are given to the UI in a list,
-/// ordered as `[(starters), RandomEnd...RandomEnd, (counterpicks)]`. The UI then hides
-/// all RandomEnd stages, and makes them non-interactable, so that the UI looks as expected.
+/// ordered as `[(starters), Training...Training, (counterpicks)]`. The UI then hides
+/// all Training stages, and makes them non-interactable, so that the UI looks as expected.
 #[arc_callback]
 fn ui_stage_db_prc_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
     // ensure this is the file data it should be
@@ -430,9 +430,9 @@ fn ui_stage_db_prc_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
         };
 
         // set Random to 2 (see fn docs)
-        if name_id == "RandomEnd" {
+        if name_id == "Training" {
             *disp_order = 2;
-            // pad with a bunch of RandomEnd stages, which will be hidden
+            // pad with a bunch of Training stages, which will be hidden
             let len = starters.len();
             for _ in 0..(DEFAULT_ROW_LENGTH-len) {
                 out_list.push(entry.clone());
