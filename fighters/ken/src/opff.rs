@@ -14,6 +14,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     tatsu_behavior(fighter, boma, frame);
     fadc_heat_rush(boma, frame);
     air_hado_distinguish(fighter, boma, frame);
+    ken_ex_specials(fighter, boma, cat, status_kind, situation_kind, motion_kind, frame);
 }
 
 // symbol-based call for the shotos' common opff
@@ -39,6 +40,43 @@ pub fn ken_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub unsafe fn ken_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+    }
+}
+
+unsafe fn ken_ex_specials(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
+    if !boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
+    ]) {
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+        return;
+    }
+    if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+        return;
+    }
+    if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_S
+    && boma.is_button_on(Buttons::Attack)
+    && boma.is_button_on(Buttons::Special)
+    && frame < 8.0 {
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+        if boma.is_motion(Hash40::new("special_hi"))
+        && MeterModule::drain(boma.object(), 2) {
+            MotionModule::change_motion(boma, Hash40::new("special_hi_ex"), frame, 1.0, false, 0.0, false, false);
+        
+        } else if boma.is_motion(Hash40::new("special_hi_command"))
+        && MeterModule::drain(boma.object(), 2) {
+            MotionModule::change_motion(boma, Hash40::new("special_hi_command_ex"), frame, 1.0, false, 0.0, false, false);
+        
+        } else if boma.is_motion(Hash40::new("special_air_hi"))
+        && MeterModule::drain(boma.object(), 2) {
+            MotionModule::change_motion(boma, Hash40::new("special_air_hi_ex"), frame, 1.0, false, 0.0, false, false);
+        
+        } else if boma.is_motion(Hash40::new("special_air_hi_command"))
+        && MeterModule::drain(boma.object(), 2) {
+            MotionModule::change_motion(boma, Hash40::new("special_air_hi_command_ex"), frame, 1.0, false, 0.0, false, false);
+        
+        }
     }
 }
 
