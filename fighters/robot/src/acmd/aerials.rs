@@ -231,7 +231,7 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
 		if VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK){
 			FT_MOTION_RATE(fighter, 10.0/(8.0-3.0));
 		} else {
-			FT_MOTION_RATE(fighter, 0.7);
+			FT_MOTION_RATE(fighter, 12.0/(18.0-1.0));
 		}
     }
     frame(lua_state, 4.0);

@@ -6,7 +6,7 @@ unsafe fn robot_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 0.1);
+    FT_MOTION_RATE(fighter, 2.0/(12.0-1.0));
 }
 
 #[acmd_script( agent = "robot", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
@@ -14,7 +14,7 @@ unsafe fn robot_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 0.1);
+    FT_MOTION_RATE(fighter, 2.0/(12.0-1.0));
 }
 
 #[acmd_script( agent = "robot", script = "game_specials", category = ACMD_GAME, low_priority )]
