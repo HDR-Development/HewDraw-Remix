@@ -284,8 +284,8 @@ const STAGE_SELECT_PATCH_LAYOUT: &str = "ui/layout/patch/stage_select2/stage_sel
 const STAGE_SELECT_TOURNEY_LAYOUT: &str = "ui/layout/menu/stage_select/stage_select/layout.tourney.arc";
 const DEFAULT_ROW_LENGTH: usize = 7;
 
-const STAGE_SELECT_ACTOR_LUA: &str = "ui/script_patch/common/stage_select_actor3.lua";
-const STAGE_SELECT_ACTOR_LUA_TOURNEY: &str = "ui/script_patch/common/stage_select_actor3.tourney.lua";
+const STAGE_SELECT_ACTOR_LUA: &str = "ui/script_patch/common/stage_select_actor3.lc";
+const STAGE_SELECT_ACTOR_LUA_TOURNEY: &str = "mods:/ui/script_patch/common/stage_select_actor3.tourney.lc";
 
 use serde::{Deserialize, Serialize};
 use serde_json::Result;
@@ -449,6 +449,11 @@ fn ui_stage_db_prc_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> {
             },
             false => {}
         };
+
+        // otherwise, push this as hidden
+        *disp_order = -1;
+        out_list.push(entry.clone());
+        continue;
     }
 
     *list = out_list;
@@ -494,7 +499,7 @@ fn stage_select_actor_callback(hash: u64, mut data: &mut [u8]) -> Option<usize> 
     println!("loading tourney mode sss lua");
 
     // load the actor lua in hdr-dev (REMOVE THIS)
-    let mut bytes = match std::fs::read("mods:/ui/script_patch/common/stage_select_actor3.tourney.lua") {
+    let mut bytes = match std::fs::read(STAGE_SELECT_ACTOR_LUA_TOURNEY) {
         Ok(b) => b,
         Err(e) => {
             println!("\n\n\n\n\nFAILED TO LOAD DEV STAGE SELECT ACTOR!\n\n\n\n\n");
