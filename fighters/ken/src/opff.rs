@@ -58,7 +58,7 @@ unsafe fn ken_ex_specials(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_S
     && boma.is_button_on(Buttons::Attack)
     && boma.is_button_on(Buttons::Special)
-    && frame < 8.0 {
+    && frame == 4.0 {
         VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
         if boma.is_motion(Hash40::new("special_hi"))
         && MeterModule::drain(boma.object(), 2) {
