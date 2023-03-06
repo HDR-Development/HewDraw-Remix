@@ -295,7 +295,6 @@ unsafe fn bayonetta_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) { 
-    AttackModule::clear(boma, 0, false);
     AttackModule::clear(boma, 1, false);
     }
     frame(lua_state, 15.0);
