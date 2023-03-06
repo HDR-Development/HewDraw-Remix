@@ -11,10 +11,11 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     kamabaraigeri(boma, frame);
     rotate_forward_bair(boma);
     turn_run_back_status(fighter, boma, status_kind);
-    tatsu_behavior(fighter, boma, frame);
     fadc_heat_rush(boma, frame);
     air_hado_distinguish(fighter, boma, frame);
-    ken_ex_specials(fighter, boma, cat, status_kind, situation_kind, motion_kind, frame);
+    ken_ex_flag_reset(boma);
+    ken_ex_shoryu(fighter, boma, cat, status_kind, situation_kind, motion_kind, frame);
+    tatsu_behavior_and_ex(fighter, boma, frame);
 }
 
 // symbol-based call for the shotos' common opff
@@ -43,39 +44,53 @@ pub unsafe fn ken_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-unsafe fn ken_ex_specials(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
+unsafe fn ken_ex_flag_reset(boma: &mut BattleObjectModuleAccessor) {
     if !boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_HI,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
+        *FIGHTER_STATUS_KIND_SPECIAL_S, 
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, 
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END, 
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP
     ]) {
-        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
-        return;
+        VarModule::off_flag(boma.object(), vars::shotos::instance::IS_USE_EX_SPECIAL);
     }
-    if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
+}
+
+unsafe fn ken_ex_shoryu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
+    if !boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
+    ])
+    || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
         return;
     }
     if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_S
     && boma.is_button_on(Buttons::Attack)
     && boma.is_button_on(Buttons::Special)
     && frame == 4.0 {
-        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
         if boma.is_motion(Hash40::new("special_hi"))
         && MeterModule::drain(boma.object(), 2) {
             MotionModule::change_motion(boma, Hash40::new("special_hi_ex"), frame, 1.0, false, 0.0, false, false);
-        
+            VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+
         } else if boma.is_motion(Hash40::new("special_hi_command"))
         && MeterModule::drain(boma.object(), 2) {
             MotionModule::change_motion(boma, Hash40::new("special_hi_command_ex"), frame, 1.0, false, 0.0, false, false);
-        
+            VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+
         } else if boma.is_motion(Hash40::new("special_air_hi"))
         && MeterModule::drain(boma.object(), 2) {
             MotionModule::change_motion(boma, Hash40::new("special_air_hi_ex"), frame, 1.0, false, 0.0, false, false);
-        
+            VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+
         } else if boma.is_motion(Hash40::new("special_air_hi_command"))
         && MeterModule::drain(boma.object(), 2) {
             MotionModule::change_motion(boma, Hash40::new("special_air_hi_command_ex"), frame, 1.0, false, 0.0, false, false);
-        
+            VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+
         }
     }
 }
@@ -107,7 +122,7 @@ unsafe fn air_hado_distinguish(fighter: &mut L2CFighterCommon, boma: &mut Battle
     }
 }
 
-unsafe fn tatsu_behavior(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
+unsafe fn tatsu_behavior_and_ex(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
     if !fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_S, 
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, 
@@ -120,9 +135,25 @@ unsafe fn tatsu_behavior(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         VarModule::on_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
     }
 
+    // EX Tatsu
+    if fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_S, 
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, 
+    ])
+    && !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL)
+    && boma.is_button_on(Buttons::Attack)
+    && boma.is_button_on(Buttons::Special)
+    && frame == 4.0
+    && MeterModule::drain(boma.object(), 2) {
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+        boma.change_status_req(*FIGHTER_RYU_STATUS_KIND_FINAL_HIT, false);
+        MotionModule::change_motion(boma, Hash40::new("special_s_ex"), 0.0, 1.0, false, 0.0, false, false);
+    }
+
+    // Tatsu gravity
     if !boma.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END)
     && boma.is_situation(*SITUATION_KIND_AIR)
-    && boma.is_button_on(Buttons::Special | Buttons::Attack)
+    && boma.is_button_on(Buttons::Special)
     && KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) < 0.0
     {
         KineticModule::mul_speed(boma, &Vector3f::new(1.0, 0.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
