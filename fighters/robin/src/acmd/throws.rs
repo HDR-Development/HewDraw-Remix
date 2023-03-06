@@ -49,7 +49,7 @@ unsafe fn robin_throw_lw_game(fighter: &mut L2CAgentBase) {
         let target_no = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
     }
-    frame(lua_state, 33.0);
+    frame(lua_state, 24.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 11.0/(37.0 - 24.0));
     }
