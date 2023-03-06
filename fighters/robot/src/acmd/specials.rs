@@ -137,12 +137,12 @@ unsafe fn robot_special_hi_game (fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-		robot_special_s_start_game,
-		robot_special_air_s_start_game,
+	robot_special_s_start_game,
+	robot_special_air_s_start_game,
         robot_special_s_game,
-		robot_special_air_s_game,
+	robot_special_air_s_game,
         robot_special_s_end_game,
-		robot_special_air_s_end_game,
+	robot_special_air_s_end_game,
         robot_special_lw_game,
         robot_special_air_lw_game,
         robot_special_hi_game,
