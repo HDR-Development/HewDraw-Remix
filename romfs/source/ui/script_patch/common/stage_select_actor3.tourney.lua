@@ -281,9 +281,9 @@ local print_error_handler = function(err)
     
 end
 
--- all of the (1 indexed) IDs which are actually RandomEnd (for tourney mode, to ignore them)
--- this is basically a map<id, is_random>
-local random_stages = {}
+-- all of the (1 indexed) IDs which are actually Training (for tourney mode, to ignore them)
+-- this is basically a map<id, is_training>
+local training_stages = {}
 
 -- Performs interpolation of a value using a sin wave for a more natural curve than just linear
 -- CLOSURE_4, R64
@@ -648,10 +648,10 @@ local find_proper_panel = function(panel_id)
         return panel_id
     end
 
-    -- in tourney mode, dont allow selection of random stages.
+    -- in tourney mode, dont allow selection of training stage.
     -- They are used as a buffer to put the starters/counterpicks
     -- in the right locations.
-    if random_stages[panel_id + 1] == true then
+    if training_stages[panel_id + 1] == true then
         return UI_INVALID_INDEX
     end
 
@@ -975,15 +975,15 @@ local change_sub_page = function(target_page)
         
         -- set the preview    
         UiScriptPlayer.invoke("set_stage_preview_from_panel", 0 , i - 1)
-        -- use the set preview to check if this preview is a random stage
-        local is_random = UiScriptPlayer.invoke("is_random_stage_preview",  0)
+        -- use the set preview to check if this preview is the training stage
+        local is_random = UiScriptPlayer.invoke("is_training_stage_preview",  0)
 
-        -- if its a random stage (which we are using as a buffer to align the stages),
-        -- then hide the stage, and record whether its random or not
+        -- if its the training stage (which we are using as a buffer to align the stages),
+        -- then hide the stage, and record whether its the training stage or not
         print("is random: " .. tostring(is_random))   
         if is_random == true then
-            -- save that this is a random stage
-            random_stages[i] = true
+            -- save that this is the training stage
+            training_stages[i] = true
             print("found the random stage: " .. i)
             panel:set_visible(false)
 
@@ -997,7 +997,7 @@ local change_sub_page = function(target_page)
             end
             ]]--
         else
-            random_stages[i] = false
+            training_stages[i] = false
             
             -- print("setting root pane parent pane position")
             -- panel:get_root_pane():get_parent_pane():set_position(positions[offset].x, positions[offset].y)  
