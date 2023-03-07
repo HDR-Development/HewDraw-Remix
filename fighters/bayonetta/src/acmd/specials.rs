@@ -92,6 +92,14 @@ unsafe fn bayonetta_special_air_s_u_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_JUMP_KEEP) {
+            let pos_x = PostureModule::pos_x(boma);
+            let pos_y = PostureModule::pos_y(boma);
+            let pos = smash::phx::Vector3f { x: pos_x, y: pos_y - 6.5, z: 0.0 };
+            PostureModule::set_pos(boma, &pos);
+            WorkModule::dec_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+            VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_JUMP_KEEP);
+        }
         FT_MOTION_RATE(fighter, 0.5);
         JostleModule::set_status(boma, false);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_R_LEG, false, false, true, 5, 0, 20, 0, false);
@@ -162,6 +170,14 @@ unsafe fn bayonetta_special_air_s_d_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_JUMP_KEEP) {
+            let pos_x = PostureModule::pos_x(boma);
+            let pos_y = PostureModule::pos_y(boma);
+            let pos = smash::phx::Vector3f { x: pos_x, y: pos_y - 6.5, z: 0.0 };
+            PostureModule::set_pos(boma, &pos);
+            WorkModule::dec_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+            VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_JUMP_KEEP);
+        }
         JostleModule::set_status(boma, false);
     }
     frame(lua_state, 2.0);
@@ -281,6 +297,13 @@ unsafe fn bayonetta_special_air_hi_game(fighter: &mut L2CAgentBase) {
     VarModule::inc_int(fighter.battle_object, vars::bayonetta::instance::NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_JUMP_KEEP) {
+            let pos_x = PostureModule::pos_x(boma);
+            let pos_y = PostureModule::pos_y(boma);
+            let pos = smash::phx::Vector3f { x: pos_x, y: pos_y - 6.5, z: 0.0 };
+            PostureModule::set_pos(boma, &pos);
+            VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_JUMP_KEEP);
+        }
         FT_MOTION_RATE(fighter, 0.450);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_R_ARM, false, false, true, 20, 0, 15, 0, false);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b7cb92b79), *FIGHTER_BAYONETTA_SHOOTING_SLOT_L_ARM, false, false, true, 20);

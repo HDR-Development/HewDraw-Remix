@@ -86,16 +86,12 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
 unsafe fn special_cancels(fighter: &mut L2CFighterCommon) {
     let boma = fighter.boma();
     // Special Cancels
-    if fighter.is_motion_one_of(&[Hash40::new("jump_aerial_f"), Hash40::new("jump_aerial_b")]) && fighter.motion_frame() < 5.0 {
-        let pos_x = PostureModule::pos_x(boma);
-        let pos_y = PostureModule::pos_y(boma);
-        let pos = smash::phx::Vector3f { x: pos_x, y: pos_y - 6.7, z: 0.0 };
-        if fighter.is_cat_flag(Cat1::SpecialS) && !VarModule::is_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL) {
-            PostureModule::set_pos(boma, &pos);
-            WorkModule::dec_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+    if fighter.is_motion_one_of(&[Hash40::new("jump_aerial_f"), Hash40::new("jump_aerial_b")]) {
+        if fighter.motion_frame() < 5.0 {
+            VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_JUMP_KEEP);
         }
-        if fighter.is_cat_flag(Cat1::SpecialHi) && !VarModule::is_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL) {
-            PostureModule::set_pos(boma, &pos);
+        else {
+            VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_JUMP_KEEP);
         }
     }
     if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U)
@@ -134,6 +130,7 @@ unsafe fn recovery_resource_management(fighter: &mut L2CFighterCommon) {
                                   *FIGHTER_STATUS_KIND_LOSE,
                                   *FIGHTER_STATUS_KIND_ENTRY]){
         VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED, 0);
+        VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_JUMP_KEEP);
     }
     else{
         if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) >= 2 {
