@@ -266,6 +266,8 @@ pub mod vars {
             pub const SHOULD_PRORATE_DAMAGE:       i32 = 0x0101;
             pub const IS_SPECIAL_S_CANCELED_INTO:  i32 = 0x0102;
             pub const IS_SPECIAL_HI_CANCELED_INTO: i32 = 0x0103;
+            pub const IS_JUMP_KEEP:                i32 = 0x0104;
+
 
             // ints
             pub const NUM_RECOVERY_RESOURCE_USED:         i32 = 0x0100;

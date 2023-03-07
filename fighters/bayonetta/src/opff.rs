@@ -86,6 +86,9 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
 unsafe fn special_cancels(fighter: &mut L2CFighterCommon) {
     let boma = fighter.boma();
     // Special Cancels
+    if fighter.is_status(*FIGHTER_STATUS_KIND_FALL) {
+        VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_JUMP_KEEP);
+    }
     if fighter.is_motion_one_of(&[Hash40::new("jump_aerial_f"), Hash40::new("jump_aerial_b")]) {
         if fighter.motion_frame() < 5.0 {
             VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_JUMP_KEEP);
@@ -170,6 +173,7 @@ unsafe fn clear_proration(fighter: &mut L2CFighterCommon, boma: *mut BattleObjec
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
         *FIGHTER_STATUS_KIND_DAMAGE_FALL]) && VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_NONSPECIAL_CANCEL) {
             VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_NONSPECIAL_CANCEL);
+            VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_JUMP_KEEP);
         }
 }
 
