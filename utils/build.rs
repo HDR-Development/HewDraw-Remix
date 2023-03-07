@@ -38,8 +38,6 @@ fn main() {
     let rom_src_path = Path::new(hdr_macros::rom_source_path!());
     rebuild_romfs(rom_src_path, rom_dst_path);
     let rom_path = hdr_macros::rom_source_path!();
-    for file in ROM_WATCH.lines() {
-        println!("cargo:rerun-if-changed={}{}", rom_path, file);
-    }
     println!("cargo:rerun-if-changed=agent_params.txt");
+    println!("cargo:rerun-if-changed={}", rom_path);
 }

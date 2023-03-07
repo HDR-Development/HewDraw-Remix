@@ -163,6 +163,8 @@ pub mod vars {
 
             pub const BEFORE_GROUND_COLLISION: i32 = 0x0057;
 
+            pub const IS_IGNORED_STATUS_FRAME_0: i32 = 0x0058;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -907,6 +909,7 @@ pub mod vars {
             pub const CHARGE_DAMAGE_MUL: i32 = 0x0100;
             pub const CHARGE_RECOIL_MUL: i32 = 0x0101;
             pub const DISCHARGE_POWER_MUL: i32 = 0x0102;
+            pub const DISCHARGE_SIZE_MUL: i32 = 0x0103;
         }
     }
 
