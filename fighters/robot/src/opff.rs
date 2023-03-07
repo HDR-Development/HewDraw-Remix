@@ -36,7 +36,7 @@ unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind
 
 // JC grounded sideb on hit
 unsafe fn jc_sideb(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64) {
-    if (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S || status_kind == *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_S_END || status_kind == *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_S_ATTACK)
+    if ([*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_S_END, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_S_ATTACK].contains(&status_kind))
     && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
     && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
                 boma.check_jump_cancel(false);
@@ -186,7 +186,13 @@ unsafe fn fuel_indicator_effect(fighter: &mut smash::lua2cpp::L2CFighterCommon, 
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //gyro_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
-
+    //neutral_special_cancels(boma, status_kind, situation_kind, cat[0]);
+    jc_sideb(boma, cat[0], status_kind, situation_kind, motion_kind);
+    dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
+    uspecial_cancels(boma, situation_kind, frame);
+    bair_boost_detection(boma);
+    fuel_indicator_effect(fighter, boma);
+    //gyro_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
     //neutral_special_cancels(boma, status_kind, situation_kind, cat[0]);
     jc_sideb(boma, cat[0], status_kind, situation_kind, motion_kind);
     dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
