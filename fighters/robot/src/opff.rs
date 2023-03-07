@@ -22,16 +22,16 @@ unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind
     if WorkModule::is_flag(boma, *FIGHTER_ROBOT_STATUS_BURNER_FLAG_PUSH_B_BUTTON)
     && situation_kind == *SITUATION_KIND_AIR
     && frame > 11.0 {
-		if boma.is_button_on(Buttons::Guard) {
-			WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
-			ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
-			StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
-			//let vec = Vector3f{x: 0.0, y: -0.2, z: 0.0};
-			//KineticModule::add_speed(boma, &vec);
-		} else if boma.is_button_on(Buttons::Attack) {
-			StatusModule::change_status_request_from_script(boma, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_ATTACK, false);
-		}
-	}	
+        if boma.is_button_on(Buttons::Guard) {
+            WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
+            ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
+            //let vec = Vector3f{x: 0.0, y: -0.2, z: 0.0};
+            //KineticModule::add_speed(boma, &vec);
+        } else if boma.is_button_on(Buttons::Attack) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_ATTACK, false);
+        }
+    }   
 }
 
 // JC grounded sideb on hit
@@ -190,7 +190,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     //neutral_special_cancels(boma, status_kind, situation_kind, cat[0]);
     jc_sideb(boma, cat[0], status_kind, situation_kind, motion_kind);
     dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
-	uspecial_cancels(boma, situation_kind, frame);
+    uspecial_cancels(boma, situation_kind, frame);
     bair_boost_detection(boma);
     fuel_indicator_effect(fighter, boma);
 }
@@ -199,7 +199,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
 pub fn robot_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-		robot_frame(fighter)
+        robot_frame(fighter)
     }
 }
 

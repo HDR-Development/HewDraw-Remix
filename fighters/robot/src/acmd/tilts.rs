@@ -116,4 +116,3 @@ pub fn install() {
         robot_attack_lw3_game,
     );
 }
-

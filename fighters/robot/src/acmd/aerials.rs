@@ -53,9 +53,9 @@ unsafe fn robot_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 20.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("robot_atk_n_jet"), Hash40::new("knee1"), 1.5, 0, 0, 0, 0, -90, 0.8, true);
-		LAST_EFFECT_SET_RATE(fighter, 1.75);
-		LAST_EFFECT_SET_ALPHA(fighter, 0.45);
-		LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 10.0);
+        LAST_EFFECT_SET_RATE(fighter, 1.75);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.45);
+        LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 10.0);
     }
     frame(lua_state, 26.0);
     if is_excute(fighter) {
@@ -227,12 +227,12 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
                 WorkModule::set_float(boma, current_fuel - boost_fuel_depletion, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
             }
         }
-		
-		if VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK){
-			FT_MOTION_RATE(fighter, 10.0/(8.0-3.0));
-		} else {
-			FT_MOTION_RATE(fighter, 12.0/(18.0-1.0));
-		}
+        
+        if VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK){
+            FT_MOTION_RATE(fighter, 10.0/(8.0-3.0));
+        } else {
+            FT_MOTION_RATE(fighter, 12.0/(18.0-1.0));
+        }
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
@@ -242,13 +242,13 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 18.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK) {
-			SET_SPEED_EX(fighter, 1.75, 0.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-			ATTACK(fighter, 0, 0, Hash40::new("knee"), 16.0, 35, 95, 0, 30, 7.5, 3.0, 0.0, 0.0, Some(5.0), Some(0.0), Some(0.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
-			ATTACK(fighter, 1, 0, Hash40::new("hip"), 16.0, 35, 95, 0, 30, 4.0, 7.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
-			ATTACK(fighter, 2, 0, Hash40::new("knee"), 14.0, 35, 95, 0, 30, 4.0, 0.0, 0.0, 0.0, Some(16.0), Some(0.0), Some(0.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
-		} else {
+            SET_SPEED_EX(fighter, 1.75, 0.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            ATTACK(fighter, 0, 0, Hash40::new("knee"), 16.0, 35, 95, 0, 30, 7.5, 3.0, 0.0, 0.0, Some(5.0), Some(0.0), Some(0.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            ATTACK(fighter, 1, 0, Hash40::new("hip"), 16.0, 35, 95, 0, 30, 4.0, 7.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            ATTACK(fighter, 2, 0, Hash40::new("knee"), 14.0, 35, 95, 0, 30, 4.0, 0.0, 0.0, 0.0, Some(16.0), Some(0.0), Some(0.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+        } else {
             SET_SPEED_EX(fighter, 1.1, 0.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-			ATTACK(fighter, 0, 0, Hash40::new("knee"), 12.0, 35, 80, 0, 35, 6.0, 0.0, 0.0, 0.0, Some(4.0), Some(0.0), Some(0.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            ATTACK(fighter, 0, 0, Hash40::new("knee"), 12.0, 35, 80, 0, 35, 6.0, 0.0, 0.0, 0.0, Some(4.0), Some(0.0), Some(0.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
             ATTACK(fighter, 1, 0, Hash40::new("hip"), 12.0, 35, 80, 0, 35, 4.0, 7.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
             ATTACK(fighter, 2, 0, Hash40::new("knee"), 12.0, 35, 80, 0, 35, 4.0, 0.0, 0.0, 0.0, Some(12.0), Some(0.0), Some(0.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
         }
@@ -256,16 +256,16 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
-		if !VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK) {
-			ATTACK(fighter, 0, 0, Hash40::new("knee"), 9.0, 361, 91, 0, 35, 6.0, 0.0, 0.0, 0.0, Some(4.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
-			ATTACK(fighter, 1, 0, Hash40::new("hip"), 9.0, 361, 91, 0, 35, 4.0, 7.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
-			ATTACK(fighter, 2, 0, Hash40::new("knee"), 9.0, 361, 91, 0, 35, 4.0, 0.0, 0.0, 0.0, Some(10.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
-		}
-	}
+        if !VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK) {
+            ATTACK(fighter, 0, 0, Hash40::new("knee"), 9.0, 361, 91, 0, 35, 6.0, 0.0, 0.0, 0.0, Some(4.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            ATTACK(fighter, 1, 0, Hash40::new("hip"), 9.0, 361, 91, 0, 35, 4.0, 7.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            ATTACK(fighter, 2, 0, Hash40::new("knee"), 9.0, 361, 91, 0, 35, 4.0, 0.0, 0.0, 0.0, Some(10.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+        }
+    }
     frame(lua_state, 34.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-		FT_MOTION_RATE(fighter, 1.0);
+        FT_MOTION_RATE(fighter, 1.0);
     }
     frame(lua_state, 40.0);
     if is_excute(fighter) {
@@ -320,20 +320,20 @@ unsafe fn robot_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 20.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("robot_nozzle_flare"), false, false);
-	
-		if VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK) {	
-			EFFECT_FOLLOW(fighter, Hash40::new("robot_atk_ab_jet"), Hash40::new("knee1"), 1.5, 0, 0, 0, 0, -90, 0.9, true);
-			LAST_EFFECT_SET_RATE(fighter, 0.5);
-			LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 10.0);
-			EffectModule::set_scale_last(boma, &Vector3f::new(1.0, 0.8, 1.0));
-		} else {
-			EFFECT_FOLLOW(fighter, Hash40::new("robot_atk_ab_jet"), Hash40::new("knee1"), 1.5, 0, 0, 0, 0, -90, 0.9, true);
-			LAST_EFFECT_SET_RATE(fighter, 1.5);
-			LAST_EFFECT_SET_ALPHA(fighter, 0.35);
-			LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 3.0);
-			EffectModule::set_scale_last(boma, &Vector3f::new(1.0, 0.8, 1.0));
-		}
-	}
+    
+        if VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK) {   
+            EFFECT_FOLLOW(fighter, Hash40::new("robot_atk_ab_jet"), Hash40::new("knee1"), 1.5, 0, 0, 0, 0, -90, 0.9, true);
+            LAST_EFFECT_SET_RATE(fighter, 0.5);
+            LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 10.0);
+            EffectModule::set_scale_last(boma, &Vector3f::new(1.0, 0.8, 1.0));
+        } else {
+            EFFECT_FOLLOW(fighter, Hash40::new("robot_atk_ab_jet"), Hash40::new("knee1"), 1.5, 0, 0, 0, 0, -90, 0.9, true);
+            LAST_EFFECT_SET_RATE(fighter, 1.5);
+            LAST_EFFECT_SET_ALPHA(fighter, 0.35);
+            LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 3.0);
+            EffectModule::set_scale_last(boma, &Vector3f::new(1.0, 0.8, 1.0));
+        }
+    }
     
 }
 
@@ -349,14 +349,14 @@ unsafe fn robot_attack_air_b_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-		if VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK) {
-			wait(lua_state, 5.0);
-			PLAY_SEQUENCE(fighter, Hash40::new("seq_robot_rnd_attack"));
-			PLAY_SE(fighter, Hash40::new("se_robot_attackair_b01"));
-		} else {
-			PLAY_SEQUENCE(fighter, Hash40::new("seq_robot_rnd_attack"));
-			PLAY_SE(fighter, Hash40::new("se_robot_attackair_b01"));
-		}
+        if VarModule::is_flag(fighter.battle_object, vars::robot::status::BOOST_ATTACK) {
+            wait(lua_state, 5.0);
+            PLAY_SEQUENCE(fighter, Hash40::new("seq_robot_rnd_attack"));
+            PLAY_SE(fighter, Hash40::new("se_robot_attackair_b01"));
+        } else {
+            PLAY_SEQUENCE(fighter, Hash40::new("seq_robot_rnd_attack"));
+            PLAY_SE(fighter, Hash40::new("se_robot_attackair_b01"));
+        }
     }
     wait(lua_state, 3.0);
     if is_excute(fighter) {
@@ -505,12 +505,12 @@ unsafe fn robot_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("robot_atk_lw_jet"), Hash40::new("knee"), 0, 0, 0, -90, -90, 0, 0.8, true);
         LAST_EFFECT_SET_RATE(fighter, 0.8);
         EffectModule::set_scale_last(boma, &Vector3f::new(1.0, 0.75, 1.0));
-		
-		EFFECT_FOLLOW(fighter, Hash40::new("robot_atk_lw_jet"), Hash40::new("knee1"), 0, 0, 0, -90, -90, 0, 0.8, true);
-		LAST_EFFECT_SET_RATE(fighter, 1.5);
-		LAST_EFFECT_SET_ALPHA(fighter, 0.75);
-		LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 10.0);
-		EffectModule::set_scale_last(boma, &Vector3f::new(1.0, 0.75, 1.0));
+        
+        EFFECT_FOLLOW(fighter, Hash40::new("robot_atk_lw_jet"), Hash40::new("knee1"), 0, 0, 0, -90, -90, 0, 0.8, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.75);
+        LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.55, 10.0);
+        EffectModule::set_scale_last(boma, &Vector3f::new(1.0, 0.75, 1.0));
         
     }
     frame(lua_state, 21.0);
@@ -538,4 +538,3 @@ pub fn install() {
         robot_attack_air_lw_effect,
     );
 }
-

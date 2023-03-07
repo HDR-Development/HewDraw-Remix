@@ -51,4 +51,3 @@ pub fn install() {
         game_throwhi,
     );
 }
-
