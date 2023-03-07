@@ -192,13 +192,6 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     uspecial_cancels(boma, situation_kind, frame);
     bair_boost_detection(boma);
     fuel_indicator_effect(fighter, boma);
-    //gyro_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
-    //neutral_special_cancels(boma, status_kind, situation_kind, cat[0]);
-    jc_sideb(boma, cat[0], status_kind, situation_kind, motion_kind);
-    dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
-    uspecial_cancels(boma, situation_kind, frame);
-    bair_boost_detection(boma);
-    fuel_indicator_effect(fighter, boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_ROBOT )]
