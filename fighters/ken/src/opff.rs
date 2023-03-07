@@ -67,10 +67,14 @@ unsafe fn ken_ex_shoryu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
     || VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL) {
         return;
     }
+    // only check EX if this is a heavy shoryu with A+B on f4
     if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_S
     && boma.is_button_on(Buttons::Attack)
     && boma.is_button_on(Buttons::Special)
     && frame == 4.0 {
+        // change into different motions depending on current motion
+        // MeterModule and VarModule calls are repeated so that I know
+        // for 100% fact they can only be called if we change motion
         if boma.is_motion(Hash40::new("special_hi"))
         && MeterModule::drain(boma.object(), 2) {
             MotionModule::change_motion(boma, Hash40::new("special_hi_ex"), frame, 1.0, false, 0.0, false, false);
@@ -102,18 +106,21 @@ unsafe fn air_hado_distinguish(fighter: &mut L2CFighterCommon, boma: &mut Battle
     ]) {
         return;
     }
+    // set VarModule flag on f12 - this flag changes hado properties
     if frame == 12.0 && fighter.is_motion_one_of(&[
         Hash40::new("special_air_n"), 
     ]) {
         VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_EX);
     }
+    // after frame 13, disallow changing from aerial to grounded hadoken
+    // instead, we enter a landing animation
     if (frame > 13.0 || fighter.is_motion_one_of(&[
         Hash40::new("special_air_n_empty"), 
         Hash40::new("special_n_empty"), 
     ]))
     && boma.is_situation(*SITUATION_KIND_GROUND) 
     && boma.is_prev_situation(*SITUATION_KIND_AIR) {
-        if frame < 70.0 {
+        if frame < 70.0 { // the autocancel frame
             WorkModule::set_float(boma, 11.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
             boma.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
         } else {
@@ -131,11 +138,13 @@ unsafe fn tatsu_behavior_and_ex(fighter: &mut L2CFighterCommon, boma: &mut Battl
     ]) {
         return;
     }
+    // tatsu once per airtime
     if frame == 1.0 && boma.is_situation(*SITUATION_KIND_AIR) {
         VarModule::on_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
     }
 
     // EX Tatsu
+    // if A+B on f4 and not already EX tatsu, set EX_SPECIAL flag
     if fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_S, 
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, 
@@ -146,10 +155,13 @@ unsafe fn tatsu_behavior_and_ex(fighter: &mut L2CFighterCommon, boma: &mut Battl
     && frame == 4.0
     && MeterModule::drain(boma.object(), 2) {
         VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
+        // burst of speed specifically for EX tatsu
         KineticModule::add_speed(boma, &Vector3f::new(2.0 , 0.0, 0.0));
     }
 
     // Tatsu gravity
+    // if holding special in the air, we float
+    // params have been modified to make us fall otherwise
     if !boma.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END)
     && boma.is_situation(*SITUATION_KIND_AIR)
     && boma.is_button_on(Buttons::Special)
@@ -159,6 +171,7 @@ unsafe fn tatsu_behavior_and_ex(fighter: &mut L2CFighterCommon, boma: &mut Battl
     }
 }
 
+/// enables shield during transition from dashback to run
 unsafe fn turn_run_back_status(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if status_kind != *FIGHTER_RYU_STATUS_KIND_TURN_RUN_BACK {
         return;
@@ -166,6 +179,7 @@ unsafe fn turn_run_back_status(fighter: &mut L2CFighterCommon, boma: &mut Battle
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD);
 }
 
+/// rotates bair forward for the held version
 /// start_frame: frame to start interpolating the body rotation
 /// bend_frame: frame to interpolate to the intended angle amount until
 /// return_frame: frame to start interpolating back to regular angle
@@ -197,6 +211,7 @@ unsafe fn forward_bair_rotation(boma: &mut BattleObjectModuleAccessor, start_fra
     }
 }
 
+/// logic behind rotate forward bair activation
 unsafe fn rotate_forward_bair(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_motion(Hash40::new("attack_air_b")){
         if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
@@ -210,10 +225,11 @@ unsafe fn rotate_forward_bair(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-// start_frame: frame to start interpolating the leg rotation
-// bend_frame: frame to interpolate to the intended angle amount until
-// return_frame: frame to start interpolating back to regular angle
-// straight_frame: frame the leg should be at the regular angle again
+/// TODO: remove or replace
+/// start_frame: frame to start interpolating the leg rotation
+/// bend_frame: frame to interpolate to the intended angle amount until
+/// return_frame: frame to start interpolating back to regular angle
+/// straight_frame: frame the leg should be at the regular angle again
 unsafe fn fsmash_leg_rotate(boma: &mut BattleObjectModuleAccessor, start_frame: f32, bend_frame: f32, return_frame: f32, straight_frame: f32) {
     let frame = MotionModule::frame(boma);
     let end_frame = MotionModule::end_frame(boma);
@@ -241,9 +257,10 @@ unsafe fn fsmash_leg_rotate(boma: &mut BattleObjectModuleAccessor, start_frame: 
     }
 }
 
-// Kamabaraigeri: A special move from USFIV where Ken hits you with a roundhouse knee before extending his leg into a kick
-// Activated here via canceling into fsmash through magic series
-// Can be canceled into the axe kick like his other command kicks via holding the attack button
+/// TODO: remove or replace
+/// Kamabaraigeri: A special move from USFIV where Ken hits you with a roundhouse knee before extending his leg into a kick
+/// Activated here via canceling into fsmash through magic series
+/// Can be canceled into the axe kick like his other command kicks via holding the attack button
 unsafe fn kamabaraigeri(boma: &mut BattleObjectModuleAccessor, frame: f32) {
     if boma.is_motion(Hash40::new("attack_s4_s")){
         if VarModule::is_flag(boma.object(), vars::shotos::status::SHOULD_COMBOS_SCALE) {
@@ -256,6 +273,7 @@ unsafe fn kamabaraigeri(boma: &mut BattleObjectModuleAccessor, frame: f32) {
     }
 }
 
+/// implements heat rush by instantly canceling focus into FADC
 unsafe fn fadc_heat_rush(boma: &mut BattleObjectModuleAccessor, frame: f32) {
     if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW]) {
         boma.change_status_req(*FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, false);
@@ -268,6 +286,8 @@ unsafe fn fadc_heat_rush(boma: &mut BattleObjectModuleAccessor, frame: f32) {
     }
 }
 
+/// TODO: make this readable lol
+/// determines situations where we can cancel into downB or super
 unsafe fn special_fadc_super(boma: &mut BattleObjectModuleAccessor, frame: f32) {
     if (
         boma.is_status_one_of(&[
@@ -311,9 +331,10 @@ unsafe fn special_fadc_super(boma: &mut BattleObjectModuleAccessor, frame: f32) 
     }
 }
 
-// Target combos:
-// 1: Prox jab into far heavy jab
-// 2: Prox ftilt into light ftilt
+/// Target combos:
+/// 1: light jab into heavy jab
+/// 2: light up tilt into jab (either)
+/// 3: far light ftilt into hadouken
 unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
 
     if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
@@ -350,7 +371,8 @@ unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
         boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_LW4, false);
     }
 }
-
+ 
+/// TODO: decide if this is necessary
 unsafe fn magic_flag_reset(boma: &mut BattleObjectModuleAccessor) {
     if !(boma.is_motion_one_of(&[
         Hash40::new("attack_12"),
@@ -387,6 +409,7 @@ unsafe fn magic_flag_reset(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
+/// TODO: remove?
 unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     
     magic_flag_reset(boma);
