@@ -36,7 +36,7 @@ unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind
 
 // JC grounded sideb on hit
 unsafe fn jc_sideb(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64) {
-    if (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S || status_kind == *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_S_END || status_kind == *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_S_ATTACK)
+    if ([*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_S_END, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_S_ATTACK].contains(&status_kind))
     && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
     && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
                 boma.check_jump_cancel(false);
