@@ -36,5 +36,5 @@ unsafe fn catch_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         &Vector3f::zero(),
         0
     );
-    return false.into();
+    return original!(fighter);
 }
