@@ -28,48 +28,6 @@ extern "Rust" {
     fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
 }
 
-pub unsafe fn teleport_wall_ride(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, id: usize) {
-    /*
-    if status_kind == *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_MOVE {
-        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_END, false);
-        }
-    }
-    */
-
-    // Wall Ride momentum fixes
-    let touch_right = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
-    let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
-
-    if boma.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_MOVE) {
-        if touch_right || touch_left || VarModule::is_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE) {
-            if !VarModule::is_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE) {
-                VarModule::on_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE);
-            }
-            let init_speed_y = VarModule::get_float(boma.object(), vars::common::status::TELEPORT_INITIAL_SPEED_Y);
-
-            if init_speed_y > 0.0 {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, init_speed_y);
-                app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-            }
-        }
-    }
-    else if boma.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_END) {
-        if touch_right || touch_left {
-            if KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0 {
-                let wall_ride = Vector3f{x: 0.0, y: 1.0, z: 1.0};
-                KineticModule::mul_speed(boma, &wall_ride, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-            }
-        }
-    }
-    else {
-        if VarModule::is_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE) {
-            VarModule::off_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE);
-        }
-    }
-}
-
 // pub unsafe fn hitfall_aerials(fighter: &mut L2CFighterCommon, frame: f32) {
 //     if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) {
 //         // only allow the last hit of uair to be hitfalled
@@ -87,7 +45,6 @@ pub unsafe fn teleport_wall_ride(fighter: &mut L2CFighterCommon, boma: &mut Batt
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     bouncing_fish_return_cancel(fighter, boma, status_kind, situation_kind, cat[0], frame);
     nspecial_cancels(fighter, boma, status_kind, situation_kind);
-    teleport_wall_ride(fighter, boma, status_kind, id);
     //hitfall_aerials(fighter, frame);
 }
 
