@@ -1,5 +1,6 @@
 use super::*;
 use crate::globals::*;
+use std::arch::asm;
 pub mod energy;
 pub mod effect;
 pub mod edge_slipoffs;
@@ -328,6 +329,10 @@ pub fn install() {
         skyline::patching::Patch::in_text(0x3a85c0).nop();
         skyline::patching::Patch::in_text(0x3a85d8).nop();
         skyline::patching::Patch::in_text(0x3a85f0).nop();
+
+        // Resets projectile lifetime on parry, rather than using remaining lifetime
+        skyline::patching::Patch::in_text(0x33bd358).nop();
+        skyline::patching::Patch::in_text(0x33bd35c).data(0x2a0a03e1);
     }
     skyline::install_hooks!(
         kinetic_module__call_update_energy_hook,
