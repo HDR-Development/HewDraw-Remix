@@ -953,7 +953,7 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
 
     if fighter_kind == *FIGHTER_KIND_EFLAME {
         if status_kind == *FIGHTER_EFLAME_STATUS_KIND_SPECIAL_HI_JUMP {
-            if frame < 3.0 /*40 frames of up b travel time*/ {
+            if frame < 3.0 {
                 return 0;
             }
         }
