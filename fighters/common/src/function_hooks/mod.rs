@@ -420,14 +420,14 @@ unsafe fn run_main_status_original(module_accessor: ModuleAccessor, is_stop: boo
     }
 
     let ground_module__get_correct: extern "C" fn(*const TempModule) -> i32 = std::mem::transmute(*(((module_accessor.ground_module.vtable as u64) + 0x158) as *const u64));
-    let is_correct = ground_module__get_correct(module_accessor.ground_module);
+    let ground_correct_kind = ground_module__get_correct(module_accessor.ground_module);
 
-    if is_correct != 0 {
-        let ground_module__get_touch_pos: extern "C" fn(*const TempModule, u64) = std::mem::transmute(*(((module_accessor.ground_module.vtable as u64) + 0x4a0) as *const u64));
-        ground_module__get_touch_pos(module_accessor.ground_module, 8);
+    if ground_correct_kind != *GROUND_CORRECT_KIND_NONE {
+        let ground_module__is_touch: extern "C" fn(*const TempModule, i32) -> bool = std::mem::transmute(*(((module_accessor.ground_module.vtable as u64) + 0x4a0) as *const u64));
+        let is_touch = ground_module__is_touch(module_accessor.ground_module, *GROUND_TOUCH_FLAG_DOWN);
 
-        let effect_module__unk: extern "C" fn(*const TempModule) = std::mem::transmute(*(((module_accessor.effect_module.vtable as u64) + 0x3e0) as *const u64));
-        effect_module__unk(module_accessor.effect_module);
+        let effect_module__unk: extern "C" fn(*const TempModule, bool) = std::mem::transmute(*(((module_accessor.effect_module.vtable as u64) + 0x3e0) as *const u64));
+        effect_module__unk(module_accessor.effect_module, is_touch);
     }
 
     let status_module__run_lua_status: extern "C" fn(*const TempModule) = std::mem::transmute(*(((module_accessor.status_module.vtable as u64) + 0x68) as *const u64));
@@ -519,7 +519,8 @@ unsafe fn after_collision(object: *mut BattleObject) {
                     // This runs the MAIN status once, ignoring sub-statuses, to ensure we change motion kind when coming into contact with a surface
                     // Otherwise, our motion kind will update a frame late (e.g. landing animation)
                     if VarModule::has_var_module((*boma).object()) { VarModule::on_flag((*boma).object(), vars::common::instance::CHECK_CHANGE_MOTION_ONLY); }
-                    run_main_status_original(module_accessor, is_stop, is_skip);
+                    let status_module__run_lua_status: extern "C" fn(*const TempModule) = std::mem::transmute(*(((module_accessor.status_module.vtable as u64) + 0x68) as *const u64));
+                    status_module__run_lua_status(module_accessor.status_module);
                     if VarModule::has_var_module((*boma).object()) { VarModule::off_flag((*boma).object(), vars::common::instance::CHECK_CHANGE_MOTION_ONLY); }
                 }
             }
@@ -577,6 +578,25 @@ unsafe fn status_module__change_status(status_module: *const u64, status_kind_ne
     call_original!(status_module, status_kind_next);
 }
 
+// This function calls MAIN status
+#[skyline::hook(offset = 0x48baf0)]
+unsafe fn lua_module__call_line_status_system(lua_module: *const u64) {
+    call_original!(lua_module);
+    let boma = *(lua_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    let module_accessor: *mut ModuleAccessor = std::mem::transmute(boma);
+    let module_accessor = *module_accessor;
+    
+    // This block runs after MAIN status has already run
+    if StatusModule::is_changing(boma)
+    && !skip_early_main_status(boma, StatusModule::prev_status_kind(boma, 0))
+    && !skip_early_main_status(boma, StatusModule::status_kind(boma)) {
+        // Call EXEC status's calling function
+        // to allow energy applied in EXEC status to properly apply on frame 1 of a new status
+        let status_module__call_lua_line_system: extern "C" fn(*const TempModule) = std::mem::transmute(*(((module_accessor.status_module.vtable as u64) + 0x88) as *const u64));
+        status_module__call_lua_line_system(module_accessor.status_module);
+    }
+}
+
 pub fn install() {
     energy::install();
     effect::install();
@@ -609,21 +629,6 @@ pub fn install() {
 
         // removes phantoms
         skyline::patching::Patch::in_text(0x3e6ce8).data(0x14000012u32);
-        
-        // Stubs original CancelModule::enable_cancel call for Fighters
-        skyline::patching::Patch::in_text(0x61750c).nop();
-        
-        // Stubs MAIN status execution functions
-        // These functions are run conditionally in run_main_status_original
-        skyline::patching::Patch::in_text(0x3a8518).nop();
-        skyline::patching::Patch::in_text(0x3a8528).nop();
-        skyline::patching::Patch::in_text(0x3a8540).nop();
-        skyline::patching::Patch::in_text(0x3a8568).nop();
-        skyline::patching::Patch::in_text(0x3a859c).nop();
-        skyline::patching::Patch::in_text(0x3a85b0).nop();
-        skyline::patching::Patch::in_text(0x3a85c0).nop();
-        skyline::patching::Patch::in_text(0x3a85d8).nop();
-        skyline::patching::Patch::in_text(0x3a85f0).nop();
 
         // Resets projectile lifetime on parry, rather than using remaining lifetime
         skyline::patching::Patch::in_text(0x33bd358).nop();
@@ -632,6 +637,7 @@ pub fn install() {
     skyline::install_hooks!(
         before_collision,
         after_collision,
-        status_module__change_status
+        status_module__change_status,
+        lua_module__call_line_status_system
     );
 }
