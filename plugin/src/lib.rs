@@ -12,6 +12,9 @@ mod controls;
 #[cfg(feature = "main_nro")]
 mod lua;
 
+#[cfg(feature = "main_nro")]
+mod online;
+
 use skyline::libc::c_char;
 #[cfg(feature = "main_nro")]
 use skyline_web::*;
@@ -41,6 +44,46 @@ extern "Rust" {
 #[export_name = "hdr_is_available"]
 pub extern "Rust" fn is_available() -> bool { true }
 
+pub fn is_on_ryujinx() -> bool {
+    unsafe { // Ryujinx skip based on text addr
+        let text_addr = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64;
+        if text_addr == 0x8004000 {
+            println!("we are on Ryujinx");
+            return true;
+        } else {
+            println!("we are not on Ryujinx");
+            return false;
+        }
+    }
+}
+
+#[cfg(feature = "main_nro")]
+use once_cell::sync::OnceCell;
+
+/// gets the currently loaded assets version string for display
+#[cfg(feature = "main_nro")]
+pub fn get_romfs_version() -> &'static String {
+    static INSTANCE: OnceCell<String> = OnceCell::new();
+    INSTANCE.get_or_init(|| {
+        match std::fs::read_to_string("mods:/ui/romfs_version.txt") {
+            Ok(version_value) => version_value.trim().to_string(),
+            Err(_) => String::from("UNKNOWN"),
+        }
+    })
+}
+
+/// gets the main plugin version string for display
+#[cfg(feature = "main_nro")]
+pub fn get_plugin_version() -> &'static String {
+    static INSTANCE: OnceCell<String> = OnceCell::new();
+    INSTANCE.get_or_init(|| {
+        match std::fs::read_to_string("mods:/ui/hdr_version.txt") {
+            Ok(version_value) => version_value.trim().to_string(),
+            Err(_) => String::from("UNKNOWN")
+        }
+    })
+}
+
 extern "C" {
     fn change_version_string(arg: u64, string: *const c_char);
 }
@@ -50,16 +93,15 @@ extern "C" {
 fn change_version_string_hook(arg: u64, string: *const c_char) {
     let original_str = unsafe { skyline::from_c_str(string) };
     if original_str.contains("Ver.") {
-        let romfs_version = match std::fs::read_to_string("mods:/ui/romfs_version.txt") {
-            Ok(version_value) => version_value.trim().to_string(),
-            Err(_) => String::from("UNKNOWN"),
-        };
+        let romfs_version = get_romfs_version();
         let hdr_version = match std::fs::read_to_string("mods:/ui/hdr_version.txt") {
             Ok(version_value) => version_value.trim().to_string(),
             Err(_) => {
                 
                 #[cfg(feature = "main_nro")]
-                skyline_web::DialogOk::ok("hdr-assets is not enabled! Please enable hdr-assets in arcropolis config.");
+                if !is_on_ryujinx() {
+                    skyline_web::DialogOk::ok("hdr-assets is not enabled! Please enable hdr-assets in arcropolis config.");
+                }
                 
                 String::from("UNKNOWN")
             }
@@ -77,14 +119,91 @@ fn change_version_string_hook(arg: u64, string: *const c_char) {
     }
 }
 
-#[skyline::main(name = "hdr")]
-pub fn main() {
+#[skyline::from_offset(0x23ecb70)]
+unsafe fn music_function1(arg: u64);
+
+#[skyline::from_offset(0x23ed420)]
+unsafe fn music_function2(arg: u64, arg2: u64);
+
+#[skyline::hook(offset = 0x14f97bc, inline)]
+unsafe fn training_reset_music2(ctx: &skyline::hooks::InlineCtx) {
+    if !smash::app::smashball::is_training_mode() {
+        music_function2(*ctx.registers[0].x.as_ref(), *ctx.registers[1].x.as_ref());
+    }
+}
+
+#[skyline::hook(offset = 0x1509dc4, inline)]
+unsafe fn training_reset_music1(ctx: &skyline::hooks::InlineCtx) {
+    if !smash::app::smashball::is_training_mode() {
+        music_function1(*ctx.registers[0].x.as_ref());
+    }
+}
+
+#[skyline::hook(offset = 0x235be30, inline)]
+unsafe fn main_menu_quick(ctx: &skyline::hooks::InlineCtx) {
+    let sp = (ctx as *const skyline::hooks::InlineCtx as *mut u8).add(0x100);
+    *(sp.add(0x60) as *mut u64) = 0x1100000000;
+    let mut slice = std::slice::from_raw_parts_mut(sp.add(0x68), 18);
+    slice.copy_from_slice(b"MenuSequenceScene\0");
+    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0) as *const u64;
+    // if we are in the controls menu mode, there is no ui overlay, so dont update the hud
+    println!("{:#x}", *mode);
+}
+
+#[skyline::from_offset(0x353f4d0)]
+fn load_file_by_hash40(tables: u64, hash: u64);
+
+#[skyline::hook(offset = 0x1864310, inline)]
+unsafe fn title_screen_play(_: &skyline::hooks::InlineCtx) {
+    let tables = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *const u8).add(0x5330f20) as *const u64);
+    load_file_by_hash40(tables, smash::hash40("ui/layout/menu/main_menu/main_menu/layout.arc"));
+}
+
+std::arch::global_asm!(
+    r#"
+    .section .nro_header
+    .global __nro_header_start
+    .word 0
+    .word _mod_header
+    .word 0
+    .word 0
+    
+    .section .rodata.module_name
+        .word 0
+        .word 3
+        .ascii "hdr"
+    .section .rodata.mod0
+    .global _mod_header
+    _mod_header:
+        .ascii "MOD0"
+        .word __dynamic_start - _mod_header
+        .word __bss_start - _mod_header
+        .word __bss_end - _mod_header
+        .word __eh_frame_hdr_start - _mod_header
+        .word __eh_frame_hdr_end - _mod_header
+        .word __nx_module_runtime - _mod_header // runtime-generated module object offset
+    .global IS_NRO
+    IS_NRO:
+        .word 1
+    
+    .section .bss.module_runtime
+    __nx_module_runtime:
+    .space 0xD0
+    "#
+);
+
+#[no_mangle]
+pub extern "C" fn main() {
     #[cfg(feature = "main_nro")] {
         quick_validate_install();
         skyline::install_hooks!(change_version_string_hook);
         random::install();
         controls::install();
         lua::install();
+        online::install();
+        skyline::patching::Patch::in_text(0x14f97bc).nop().unwrap();
+        skyline::patching::Patch::in_text(0x1509dc4).nop().unwrap();
+        skyline::install_hooks!(training_reset_music1, training_reset_music2, main_menu_quick, title_screen_play);
     }
 
     #[cfg(not(feature = "runtime"))]
@@ -111,18 +230,6 @@ pub fn main() {
 
 }
 
-pub fn is_on_ryujinx() -> bool {
-    unsafe { // Ryujinx skip based on text addr
-        let text_addr = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64;
-        if text_addr == 0x8004000 {
-            println!("we are on Ryujinx");
-            return true;
-        } else {
-            println!("we are not on Ryujinx");
-            return false;
-        }
-    }
-}
 
 #[cfg(feature = "main_nro")]
 pub fn quick_validate_install() {

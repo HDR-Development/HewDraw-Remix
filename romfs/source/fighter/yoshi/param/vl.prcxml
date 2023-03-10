@@ -2,10 +2,10 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">17.5</float>
+      <float hash="p1_y">21</float>
     </struct>
     <struct index="1">
-      <float hash="p1_y">7.9</float>
+      <float hash="p1_y">11.5</float>
     </struct>
   </list>
   <struct hash="jump_aerial">
@@ -26,8 +26,17 @@
     <struct index="0">
       <float hash="y_spd_max">1.31</float>
       <float hash="y_spd_add">2.61</float>
-      <float hash="y_up_spd_max">2.7</float>
-      <float hash="hop_max">2</float>
+      <float hash="y_up_spd_max">2.2</float>
+      <float hash="hop_max">1</float>
+      <float hash="egg_angle_min">45</float>	
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+   <list hash="param_tamago">
+    <struct index="0">
+      <int hash="life">52</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

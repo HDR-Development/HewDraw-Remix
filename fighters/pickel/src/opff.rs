@@ -82,8 +82,10 @@ unsafe fn build_ecb_shift(boma: &mut BattleObjectModuleAccessor, status_kind: i3
         *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_AERIAL,
         *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT,
         *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK,
-        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK].contains(&status_kind) {
-        GroundModule::set_rhombus_offset(boma, &Vector2f::new(0.0, 0.0));
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK].contains(&status_kind)
+    && !VarModule::is_flag(boma.object(), vars::common::status::DISABLE_ECB_SHIFT)
+    {
+        VarModule::on_flag(boma.object(), vars::common::status::DISABLE_ECB_SHIFT);
     }
 }
 

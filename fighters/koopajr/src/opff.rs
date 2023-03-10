@@ -6,7 +6,7 @@ use globals::*;
  
 unsafe fn clown_cannon_shield_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
     if status_kind == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_N_HOLD {
-        if frame > 15.0 {
+        if frame > 16.0 {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
                 if situation_kind == *SITUATION_KIND_GROUND {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_GUARD_ON, true);
@@ -17,27 +17,25 @@ unsafe fn clown_cannon_shield_cancel(boma: &mut BattleObjectModuleAccessor, stat
 }
 
 // Bowser Jr. Clown Cannon Dash Cancel
-unsafe fn clown_cannon_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if status_kind == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_N_SHOOT {
-        if frame > 13.0 {
-            if situation_kind == *SITUATION_KIND_GROUND {
-                if boma.is_cat_flag(Cat1::Dash) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
-                }
-                if boma.is_cat_flag(Cat1::TurnDash) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_TURN_DASH, false);
-                }
-            }
-        }
-    }
-}
+// unsafe fn clown_cannon_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+   // if status_kind == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_N_SHOOT {
+        // if frame > 13.0 {
+            // if situation_kind == *SITUATION_KIND_GROUND {
+              //  if boma.is_cat_flag(Cat1::Dash) {
+                   // StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
+                // }
+               // if boma.is_cat_flag(Cat1::TurnDash) {
+                   // StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_TURN_DASH, false);
+                // }
+            // }
+        // }
+    // }
+// }
 
 // Bowser Jr. Kart Jump Waveland
 unsafe fn kart_jump_waveland(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
-    if status_kind == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_JUMP && situation_kind == *SITUATION_KIND_AIR {
-        if boma.is_cat_flag(Cat1::AirEscape) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
-        }
+    if status_kind == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_JUMP {
+        boma.check_airdodge_cancel();
     }
 }
 
@@ -58,7 +56,7 @@ unsafe fn upB_kart_respawn(boma: &mut BattleObjectModuleAccessor, status_kind: i
 
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     clown_cannon_shield_cancel(boma, status_kind, situation_kind, frame);
-    clown_cannon_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
+    // clown_cannon_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
     kart_jump_waveland(boma, status_kind, situation_kind, cat[0]);
     upB_kart_respawn(boma, status_kind);
 }
@@ -78,7 +76,7 @@ pub unsafe fn koopajr_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-#[smashline::weapon_frame( agent = WEAPON_KIND_KOOPAJR_REMAINCLOWN)]
+#[smashline::weapon_frame( agent = WEAPON_KIND_KOOPAJR_REMAINCLOWN, main)]
 pub fn koopajr_weapon_remainclown_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe {
         let boma = weapon.boma();
@@ -93,7 +91,7 @@ pub fn install_remainclown() {
     smashline::install_agent_frame!(koopajr_weapon_remainclown_frame);
 }
 
-#[smashline::weapon_frame( agent = WEAPON_KIND_KOOPAJR_CANNONBALL )]
+#[smashline::weapon_frame( agent = WEAPON_KIND_KOOPAJR_CANNONBALL, main )]
 pub fn koopajr_weapon_frame_wrapper(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe {
         koopajr_weapon_frame(weapon)

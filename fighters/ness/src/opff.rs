@@ -3,32 +3,27 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
-unsafe fn psi_magnet_jump_cancel_turnaround(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32, frame: f32) {
-    if [*FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HIT,
-        *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_END,
-        *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD].contains(&status_kind) {
-        if boma.is_input_jump() && !boma.is_in_hitlag() {
-            if (status_kind == *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD && frame > 3.0)
-                || (status_kind != *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD) {
-                if situation_kind == *SITUATION_KIND_AIR {
-                    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                    }
-                } else if situation_kind == *SITUATION_KIND_GROUND {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                }
-            }
-        }
-
-        if status_kind == *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD {
-            if stick_x * facing < 0.0 && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-                PostureModule::reverse_lr(boma);
-                PostureModule::update_rot_y_lr(boma);
-            }
+ // Magnet Jump Cancel and Turnaround
+unsafe fn psi_magnet_jump_cancel_turnaround(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status (*FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD) {
+        let facing = PostureModule::lr(fighter.module_accessor);
+        let stick_x = fighter.stick_x();
+        if stick_x * facing < 0.0 && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+            PostureModule::reverse_lr(fighter.module_accessor);
+            PostureModule::update_rot_y_lr(fighter.module_accessor);
         }
     }
-}
+    if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.motion_frame() > 8.0)  // Allows for jump cancel on frame 5 in game
+    || fighter.is_status_one_of(&[
+        *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HIT,
+        *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD,
+        *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_END]))
+    && !fighter.is_in_hitlag()
+        {
+            fighter.check_jump_cancel(false);
+        }
+}   
+
 
 // Ness PK Fire Fast Fall
 unsafe fn pk_fire_ff(boma: &mut BattleObjectModuleAccessor, stick_y: f32) {
@@ -105,8 +100,8 @@ unsafe fn pk_thunder_wall_ride(boma: &mut BattleObjectModuleAccessor, id: usize,
 
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    psi_magnet_jump_cancel_turnaround(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+    psi_magnet_jump_cancel_turnaround(fighter);
     pk_thunder_cancel(boma, id, status_kind, situation_kind);
     pk_thunder_wall_ride(boma, id, status_kind, situation_kind);
     pk_fire_ff(boma, stick_y);
@@ -122,6 +117,16 @@ pub fn ness_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn ness_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+    }
+}
+
+#[smashline::weapon_frame_callback]
+pub fn pkthunder_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    unsafe { 
+        if weapon.kind() != WEAPON_KIND_NESS_PK_THUNDER {
+            return
+        }
+        WorkModule::on_flag(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_FLAG_NO_DEAD);
     }
 }

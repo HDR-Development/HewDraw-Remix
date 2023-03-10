@@ -1,6 +1,6 @@
 use super::*;
 
-utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
+utils::import_noreturn!(common::opff::fighter_common_opff);
 
 unsafe fn nspecial_cancels(fighter: &mut L2CFighterCommon) {
     //PM-like neutral-b canceling
@@ -14,9 +14,6 @@ unsafe fn nspecial_cancels(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn dspecial_cancels(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START]){
-        common::opff::check_b_reverse(fighter);
-    }
     //PM-like down-b canceling
     if fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_CANCEL)
     && fighter.is_situation(*SITUATION_KIND_AIR)
@@ -27,27 +24,17 @@ unsafe fn dspecial_cancels(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn uspecial_b_rev(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI){
-        common::opff::check_b_reverse(fighter);
-    }
-}
-
 // Hero dash cancel Frizz
 unsafe fn dash_cancel_frizz(fighter: &mut L2CFighterCommon) {
     let mut brave_fighter = app::Fighter{battle_object: *(fighter.battle_object)};
     if fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_N_SHOOT)
     && fighter.is_situation(*SITUATION_KIND_GROUND)
     && fighter.is_motion(Hash40::new("special_n1"))
-    && fighter.motion_frame() > 19.0 && fighter.motion_frame() < 43.0 // after F20 and before the FAF
+    && fighter.motion_frame() > 20.0 && fighter.motion_frame() < 44.0 // after F20 and before the FAF
     && (WorkModule::get_float(fighter.module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLOAT_SP) > 12.0)
     {
-        if fighter.is_cat_flag(Cat1::Dash) {
+        if fighter.check_dash_cancel() {
             FighterSpecializer_Brave::add_sp(&mut brave_fighter, -12.0);
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_DASH, false);
-        } else if fighter.is_cat_flag(Cat1::TurnDash) {
-            FighterSpecializer_Brave::add_sp(&mut brave_fighter, -12.0);
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_TURN_DASH, false);
         }
     }
 }
@@ -55,7 +42,7 @@ unsafe fn dash_cancel_frizz(fighter: &mut L2CFighterCommon) {
 // Hero woosh cancel
 unsafe fn woosh_cancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_motion_one_of(&[Hash40::new("special_hi1"), Hash40::new("special_air_hi1"), Hash40::new("special_hi_empty"), Hash40::new("special_air_hi_empty")]){
-        if MotionModule::frame(fighter.module_accessor) >= 40.0{
+        if MotionModule::frame(fighter.module_accessor) >= 41.0 {
             VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
             fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
         }
@@ -69,7 +56,6 @@ pub unsafe fn brave_frame_wrapper(fighter: &mut L2CFighterCommon) {
 
     nspecial_cancels(fighter);
     dspecial_cancels(fighter);
-    uspecial_b_rev(fighter);
     dash_cancel_frizz(fighter);
     woosh_cancel(fighter);
 

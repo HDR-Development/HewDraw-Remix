@@ -56,6 +56,7 @@ pub mod globals {
     pub const CHECK_SPECIAL_COMMAND: i32 = 0x3C;
     pub const WAZA_CUSTOMIZE_CONTROL: i32 = 0x3D;
     pub const STATUS_CHANGE_CALLBACK: i32 = 0x3E;
+    pub const DAMAGE_MOTION_KIND_CALLBACK: i32 = 0x42;
     pub const DASH_POST_TRANSITION_CALLBACK: i32 = 0x57;
 }
 
@@ -138,7 +139,7 @@ pub mod vars {
 
             pub const UP_SPECIAL_INTERRUPT: i32 = 0x0023; // Ness and Lucas use this
             pub const UP_SPECIAL_INTERRUPT_AIRTIME: i32 = 0x0024; // Ness and Lucas use this
-            
+
             pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 0x0025; // Luigi, Ivysaur, and Young Link use this
             pub const IS_TELEPORT_WALL_RIDE: i32 = 0x0026; // Mewtwo, Palutena, Sheik, and Zelda use this
             pub const SPIN_ATTACK_LAND_CANCEL: i32 = 0x003E; // Link and Mii Sword use this
@@ -147,6 +148,22 @@ pub mod vars {
             pub const IS_LATE_PIVOT: i32 = 0x004E;
             pub const CAN_PERFECT_PIVOT: i32 = 0x004F;
             pub const IS_SMASH_TURN: i32 = 0x0050;
+
+            pub const ENABLE_AIR_ESCAPE_JUMPSQUAT: i32 = 0x0051;
+
+            pub const IS_KNOCKDOWN_THROW: i32 = 0x0052;
+
+            pub const IS_HEAVY_ATTACK: i32 = 0x0053;
+
+            pub const IS_CC_NON_TUMBLE: i32 = 0x0054;
+
+            pub const IS_GETTING_POSITION_FOR_ECB: i32 = 0x0055;
+
+            pub const CHECK_CHANGE_MOTION_ONLY: i32 = 0x0056;
+
+            pub const BEFORE_GROUND_COLLISION: i32 = 0x0057;
+
+            pub const IS_IGNORED_STATUS_FRAME_0: i32 = 0x0058;
 
             // ints
 
@@ -170,6 +187,9 @@ pub mod vars {
 
             pub const AGT_USED_COUNTER: i32 = 0x000A;
 
+            pub const CLIFF_XLU_FRAME: i32 = 0x000B;
+            pub const LAST_ATTACK_HITBOX_ID: i32 = 0x000C;
+
             // floats
 
             pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0000;
@@ -183,13 +203,13 @@ pub mod vars {
             pub const RAR_LENIENCY: i32 = 0x0006; // Only ever gets set, goes effectively unused.
             pub const CURRENT_MOMENTUM_SPECIALS: i32 = 0x0007;
             pub const DOUBLE_JUMP_TIMER: i32 = 0x0008; // Only used by Lucas, and it's commented out, goes unused.
-            pub const ROLL_DIR: i32 = 0x0009;
+            pub const ROLL_SPEED: i32 = 0x0009;
             pub const LEDGE_POS: i32 = 0x000A;
             pub const LEDGE_POS_X: i32 = 0x000A;
             pub const LEDGE_POS_Y: i32 = 0x000B;
             pub const LEDGE_POS_Z: i32 = 0x000C;
             pub const GET_DIST_TO_FLOOR: i32 = 0x000D;
-            pub const ECB_Y_OFFSETS: i32 = 0x000E;
+            pub const ECB_BOTTOM_Y_OFFSET: i32 = 0x000E;
             pub const CURR_DASH_SPEED: i32 = 0x000F;
             pub const MOONWALK_SPEED: i32 = 0x0010;
             pub const ESCAPE_AIR_SLIDE_SPEED_X: i32 = 0x0011;
@@ -198,25 +218,48 @@ pub mod vars {
             /// this multiplier can be set to a value between 0.1 and 3.0 to increase
             /// a character's jump speed max for momentum transfer (for meta quick, etc)
             pub const JUMP_SPEED_MAX_MUL: i32 = 0x0014;
+            pub const ECB_TOP_Y_OFFSET: i32 = 0x0015;
+            pub const LAST_ATTACK_HIT_LOCATION: i32 = 0x0016;
+            pub const LAST_ATTACK_HIT_LOCATION_X: i32 = 0x0016;
+            pub const LAST_ATTACK_HIT_LOCATION_Y: i32 = 0x0017;
+            pub const LAST_ATTACK_HIT_LOCATION_Z: i32 = 0x0018;
         }
         pub mod status {
             // flags
-            pub const IS_HEAVY_ATTACK: i32 = 0x1000;
+            pub const DISABLE_ECB_SHIFT: i32 = 0x10FF;
 
-            pub const DISABLE_BACKDASH: i32 = 0x1000;
-            pub const IS_MOONWALK: i32 = 0x1001;
+            pub const IS_DASH_TO_RUN_FRAME: i32 = 0x1000;
+            pub const IS_AFTER_DASH_TO_RUN_FRAME: i32 = 0x1001;
+            pub const APPLY_DASH_END_SPEED_MUL: i32 = 0x1002;
 
             pub const ATTACK_DASH_CANCEL_DISABLE: i32 = 0x1000;
-
-            pub const ENABLE_AIR_ESCAPE_JUMPSQUAT: i32 = 0x1000;
+            pub const ATTACK_DASH_ENABLE_AIR_FALL: i32 = 0x1001;
+            pub const ATTACK_DASH_ENABLE_AIR_CONTINUE: i32 = 0x1002;
+            pub const ATTACK_DASH_ENABLE_AIR_DRIFT: i32 = 0x1003;
+            pub const ATTACK_DASH_AIR_DRIFT_ENABLED: i32 = 0x1004;
+            pub const ATTACK_DASH_ENABLE_AIR_LANDING: i32 = 0x1005;
 
             pub const SHOULD_WAVELAND: i32 = 0x1000;
 
             pub const IS_JAB_LOCK_ROLL: i32 = 0x1000;
+            pub const IS_SPIKE: i32 = 0x1001;
+
+            pub const SUICIDE_THROW_CAN_CLATTER: i32 = 0x1000;
+
+            pub const ENABLE_UCF: i32 = 0x1000;
 
             // ints
 
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
+
+            // floats
+
+            pub const INITIAL_KNOCKBACK_VEL_X: i32 = 0x1000;
+            pub const INITIAL_KNOCKBACK_VEL_Y: i32 = 0x1001;
+
+            pub const RESTING_HIP_OFFSET_Y: i32 = 0x1000;
+
+            pub const TELEPORT_INITIAL_SPEED_Y: i32 = 0x1000;
 
         }
     }
@@ -224,7 +267,7 @@ pub mod vars {
     pub mod bayonetta {
         pub mod instance {
             // flags
-            pub const IS_ENABLE_SPECIAL_CANCEL:    i32 = 0x0100;
+            pub const IS_NONSPECIAL_CANCEL:        i32 = 0x0100;
             pub const SHOULD_PRORATE_DAMAGE:       i32 = 0x0101;
             pub const IS_SPECIAL_S_CANCELED_INTO:  i32 = 0x0102;
             pub const IS_SPECIAL_HI_CANCELED_INTO: i32 = 0x0103;
@@ -233,6 +276,10 @@ pub mod vars {
             pub const NUM_RECOVERY_RESOURCE_USED:         i32 = 0x0100;
             pub const NUM_SPECIAL_S_CANCEL_THIS_AIRTIME:  i32 = 0x0101;
             pub const NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME: i32 = 0x0102;
+        }
+        pub mod status {
+            // flags
+            pub const IS_BULLET_ARTS: i32 = 0x1100;
         }
     }
 
@@ -244,6 +291,24 @@ pub mod vars {
     }
 
     pub mod buddy {
+        pub mod instance {
+            // flag
+            pub const BEAKBOMB_ACTIVE: i32 = 0x0100;
+            pub const BAYONET_ACTIVE: i32 = 0x0101;
+
+            // int
+            pub const HUD_DISPLAY_TIME: i32 = 0x0100;
+            //Current frame of Beakbomb, used to detect mislanding
+            pub const BEAKBOMB_FRAME: i32 = 0x0101;
+            // 0: Normal Bounce (can be cancelled) 1: weak bounce 2: heavy bounce.
+            pub const BEAKBOMB_BOUNCE: i32 = 0x0102;
+            //Eggs fired gets reset when entering Bayonet, so we have to temporarily store current eggs fired
+            pub const BAYONET_EGGS: i32 = 0x0103;
+
+            // float
+            pub const FEATHERS_RED_COOLDOWN: i32 = 0x0100;
+            pub const BEAKBOMB_ANGLE: i32 = 0x0101;
+        }
         pub mod status {
             // flags
             pub const IS_BURY_DTHROW: i32 = 0x1100;
@@ -258,6 +323,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const SOARING_SLASH_HIT: i32 = 0x1100;
+            pub const SOARING_SLASH_CANCEL: i32 = 0x1101;
         }
     }
 
@@ -277,7 +343,7 @@ pub mod vars {
     // Note: Terry starts his flags on 0xXX5X instead due to also using the shotos generic flags.
     pub mod dolly {
         pub mod instance {
-            pub const SUPER_CANCEL: i32 = 0x0100;
+            pub const SUPER_CANCEL: i32 = 0x0150;
         }
         pub mod status {
             // flags
@@ -290,9 +356,15 @@ pub mod vars {
     }
 
     pub mod donkey {
+        pub mod instance {
+            // flags
+            pub const SPECIAL_AIR_LW_USED_STALL: i32 = 0x0100;
+        }
         pub mod status {
             // flags
             pub const SPECIAL_CHECKS: i32 = 0x1100;
+
+            // pub const SPECIAL_AIR_LW_STOP: i32 = 0x1100;
         }
     }
 
@@ -300,6 +372,28 @@ pub mod vars {
         pub mod instance {
             // int
             pub const GUNMAN_TIMER: i32 = 0x0100;
+        }
+    }
+
+    pub mod rosetta {
+        pub mod instance {
+            // ints
+            pub const COOLDOWN: i32 = 0x0100;
+            pub const ROSA_X: i32 = 0x0101;
+            pub const ROSA_Y: i32 = 0x0102;
+            pub const TICO_X: i32 = 0x0103;
+            pub const TICO_Y: i32 = 0x0104;
+            pub const TICO_RAYCAST: i32 = 0x0106;
+            pub const TICO_X_DIST: i32 = 0x0107;
+            pub const TICO_Y_DIST: i32 = 0x0108;
+
+			// flag
+            pub const IS_TICO_DEAD: i32 = 0x0105;
+        }
+        pub mod status {
+            // int
+            /// Used for determining what luma does
+            pub const INVIS_FRAMES: i32 = 0x1100;
         }
     }
 
@@ -321,25 +415,6 @@ pub mod vars {
         pub const SPECIAL_HI_JUMP_RESERVE_ACTION_FALL:    i32 = 0x2;
     }
 
-    pub mod fox {
-        pub mod status {
-            pub const ILLUSION_SHORTENED: i32 = 0x1100;
-            pub const ILLUSION_SHORTEN: i32 = 0x1101;
-        }
-    }
-
-    pub mod falco {
-        pub mod status {
-            pub use super::super::fox::status::*;
-        }
-    }
-
-    pub mod wolf {
-        pub mod status {
-            pub use super::super::fox::status::*;
-        }
-    }
-    
     pub mod ganon {
         pub mod instance {
             // flags
@@ -350,7 +425,8 @@ pub mod vars {
             pub const FLOAT_ENABLE_ACTIONS: i32 = 0x1100;
             pub const FLOAT_FALL_SPEED_Y_INCREASE: i32 = 0x1101;
             pub const FLOAT_CANCEL: i32 = 0x1102;
-            pub const FLOAT_GROUND_CHANGE_KINETIC: i32 = 0x1103;
+            pub const FLOAT_GROUND_DECIDE_ANGLE: i32 = 0x1103;
+            pub const FLOAT_GROUND_CHANGE_KINETIC: i32 = 0x1104;
         }
 
     }
@@ -394,7 +470,8 @@ pub mod vars {
     pub mod kamui {
         pub mod status {
             // flags
-            pub const BAIR_BOOST: i32 = 0x1100;
+            pub const IS_CHARGE_FINISHED: i32 = 0x1100;
+            pub const CHARGE_ATTACK_LEVEL: i32 = 0x1101;
         }
     }
 
@@ -402,17 +479,40 @@ pub mod vars {
         pub mod status {
             // flags
             pub const FINAL_CUTTER_HIT: i32 = 0x1100;
+            pub const FINAL_CUTTER_CANCEL: i32 = 0x1101;
         }
     }
 
-    pub mod koopa {
-        pub mod instance {
-            // flags
-            pub use super::super::mario::instance::NOKNOK_SHELL;
+    // pub mod koopa {
+    //     pub mod instance {
+    //         // flags
+    //         pub use super::super::mario::instance::NOKNOK_SHELL;
+    //     }
+    // }
+
+    pub mod lucario {
+        pub mod status {
+            // ints
+            pub const FORCE_PALM_ROT_ANGLE: i32 = 0x1100;
         }
     }
-
     pub mod lucas {
+
+        pub mod instance {
+            // flag
+            pub const SPECIAL_N_OFFENSE_UP_ACTIVE: i32 = 0x0100;
+            pub const SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF: i32 = 0x0101;
+            pub const SPECIAL_N_OFFENSE_UP_INIT: i32 = 0x0102;
+            pub const ATTACK_S4_ANGLE_DOWN: i32 = 0x0103;
+            pub const ATTACK_S4_ANGLE_UP: i32 = 0x0104;
+
+            // int
+            pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1: i32 = 0x0100;
+            pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2: i32 = 0x0101;
+            pub const SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL: i32 = 0x0102;
+            pub const SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE3: i32 = 0x0103;
+        }
+
         pub mod status {
             // flag
             pub const SPECIAL_HI_ATTACK_IS_TOUCH_WALL: i32 = 0x1100;
@@ -433,12 +533,24 @@ pub mod vars {
         }
     }
 
+    pub mod lucina {
+
+        pub mod status {
+            // int
+            pub const SPECIAL_LW_MOTION: i32 = 0x1100;
+            pub const SPECIAL_LW_MOTION_AIR: i32 = 0x1101;
+
+            // flag
+            pub const SPECIAL_LW_SPECIAL_CHECK: i32 = 0x1100;
+        }
+    }
+
     pub mod luigi {
         pub mod instance {
             // flag
             /// This flag stores whether or not Luigi currently has a misfire stored.
             pub const IS_MISFIRE_STORED: i32 = 0x0100;
-            
+
             // int
             /// This int stores the number of remaining green missile's luigi must do before getting a misfire
             pub const REMAINING_SPECIAL_S_UNTIL_MISFIRE: i32 = 0x0100;
@@ -488,6 +600,10 @@ pub mod vars {
     }
 
     pub mod master {
+        pub mod instance {
+            // flags
+            pub const SPECIAL_AIR_HI_CATCH:            i32 = 0x0100;
+        }
         pub mod status {
             // flags
             pub const IS_ENABLE_SPECIAL_S_DASH_CANCEL: i32 = 0x1100;
@@ -497,7 +613,15 @@ pub mod vars {
             pub const AYMR_CHARGE_LEVEL: i32 = 0x1100;
         }
     }
-    
+
+    pub mod mewtwo {
+        pub mod instance {
+            // flags
+            pub const GROUNDED_TELEPORT: i32 = 0x0100;
+            pub const UP_SPECIAL_JUMP_REFRESH: i32 = 0x0101;
+        }
+    }
+
     pub mod pickel {
         pub mod instance {
             // flags
@@ -527,11 +651,13 @@ pub mod vars {
         pub mod status {
             // flags
             pub const IS_SPECIAL_N_CHILL_PILL:       i32 = 0x1100;
+        }
+    }
 
-            pub const IS_SPECIAL_S_ELECTRIC_BLANKET: i32 = 0x1100;
-
-            pub const IS_SPECIAL_HI_UNABLE_CANCEL:   i32 = 0x1100;
-            pub const IS_SPECIAL_HI_SWEETSPOT_HIT:   i32 = 0x1101;
+    pub mod robin {
+        pub mod status {
+            // flags
+            pub const ELWIND1_CANCEL: i32 = 0x1100;
         }
     }
 
@@ -563,7 +689,6 @@ pub mod vars {
             pub const SHOULD_COMBOS_SCALE:           i32 = 0x1100;
             pub const REPEAT_INCREMENTED:            i32 = 0x1101;
             pub const IS_ENABLE_MAGIC_SERIES_CANCEL: i32 = 0x1102;
-            pub const IS_ENABLE_AIRDASH_CANCEL:      i32 = 0x1103;
         }
     }
 
@@ -575,6 +700,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const IS_NOT_QUICK_RELEASE: i32 = 0x1100;
+            pub const IS_DETACH_BOOST: i32 = 0x1101;
         }
     }
 
@@ -590,14 +716,22 @@ pub mod vars {
             pub const PULSE_HITBOX: i32 = 0x1100;
         }
     }
-    
+
     pub mod snake {
         pub mod instance {
             // ints
             pub const SNAKE_GRENADE_COUNTER: i32 = 0x0100;
         }
     }
-    
+
+    pub mod szerosuit {
+        pub mod status {
+            // flags
+            pub const ATTACK_AIR_LW_REBOUND: i32 = 0x1100;
+            pub const SPECIAL_LW_MANUAL_FLIPSTOOL_ENABLE: i32 = 0x1101;
+        }
+    }
+
     pub mod trail {
         pub mod instance {
             // flags
@@ -637,6 +771,16 @@ pub mod vars {
         }
     }
 
+    pub mod samusd {
+        pub mod instance {
+            // flags
+            pub const MANUAL_DETONATE_READY: i32 = 0x0100;
+
+            // ints
+            pub const BOMB_OBJECT_ID: i32 = 0x0100;
+        }
+    }
+
     pub mod robot {
         pub mod instance {
             // ints
@@ -657,12 +801,18 @@ pub mod vars {
             // floats
             pub const SPECIAL_LW_LR: i32 = 0x1100;
         }
+        pub mod instance {
+            // flags
+            pub const GROUNDED_TELEPORT: i32 = 0x0100;
+            pub const UP_SPECIAL_JUMP_REFRESH: i32 = 0x0101;
+        }
     }
 
     pub mod miiswordsman {
         pub mod instance {
             // flags
             pub const CHAKRAM_STICK_ATTACK: i32 = 0x0100;
+            pub const SKYWARD_SLASH_DASH_HIT: i32 = 0x0101;
 
             // ints
             pub const SPECIAL_LW1_CHARGE_LEVEL: i32 = 0x0100;
@@ -674,8 +824,6 @@ pub mod vars {
             pub const GALE_STAB_EDGE_CANCEL: i32 = 0x1100;
 
             pub const SPECIAL_LW1_ATTACK_TRIGGER: i32 = 0x1100;
-
-            pub const SKYWARD_SLASH_DASH_HIT: i32 = 0x1100;
         }
     }
 
@@ -684,6 +832,17 @@ pub mod vars {
             // floats
             pub const CHARGE_ATTACK_LEVEL: i32 = 0x1100;
             pub const IS_CHARGE_FINISHED: i32 = 0x1101;
+            pub const MISSILE_DETONATE: i32 = 0x1102;
+        }
+        pub mod instance {
+            // flags
+            pub const LUNAR_LAUNCH_AIR_USED: i32 = 0x0100;
+            pub const DETONATE_READY: i32 = 0x0101;
+
+            // ints
+            pub const LUNAR_LAUNCH_EFF_HANDLER: i32 = 0x0100;
+            pub const MISSILE_OBJECT_ID: i32 = 0x0101;
+            pub const STEALTHBOMB_EFF_HANDLER: i32 = 0x0102;
         }
     }
 
@@ -711,24 +870,119 @@ pub mod vars {
             pub const META_QUICK_CHARGE_EFFECT_HANDLE: i32 = 0x0104;
         }
     }
-    
+
     // pub mod miifighter {
     //     // floats
     //     pub const CHARGE_ATTACK_LEVEL: i32 = 0x1000;
-        
+
     //     // flags
     //     pub const IS_COUNTER_THROW_PARRIED_ATTACK: i32 = 0x1000;
     //     pub const IS_CURRENT_IRONBALL_HEAVY:       i32 = 0x1001;
 
     // }
-    
+
     pub mod littlemac {
         pub mod status {
             // flags
-            pub const IS_DREAMLAND_EXPRESS: i32 = 0x1100;
+            pub const IS_DREAMLAND_EXPRESS: i32 = 0x0100;
+            pub const IS_LATE_DLE_INPUT: i32 = 0x0101;
+
+            // ints
+            pub const SPECIAL_N_CANCEL_TYPE: i32 = 0x1100;
+        }
+
+        pub const SPECIAL_N_CANCEL_TYPE_NONE: i32 = 0x0;
+        pub const SPECIAL_N_CANCEL_TYPE_GROUND_JUMP: i32 = 0x1;
+        pub const SPECIAL_N_CANCEL_TYPE_JUMP_AERIAL: i32 = 0x2;
+        pub const SPECIAL_N_CANCEL_TYPE_GUARD: i32 = 0x3;
+        pub const SPECIAL_N_CANCEL_TYPE_ESCAPE: i32 = 0x4;
+        pub const SPECIAL_N_CANCEL_TYPE_ESCAPE_AIR: i32 = 0x5;
+        pub const SPECIAL_N_CANCEL_TYPE_ESCAPE_F: i32 = 0x6;
+        pub const SPECIAL_N_CANCEL_TYPE_ESCAPE_B: i32 = 0x7;
+    }
+
+    pub mod pichu {
+        pub mod instance {
+            //flags
+            pub const IS_CHARGE_ATTACK: i32 = 0x0102;
+
+            //ints
+            pub const CHARGE_LEVEL: i32 = 0x0100;
+            pub const CHARGE_EFFECT_HANDLER: i32 = 0x0101;
+
+            // floats
+            pub const CHARGE_DAMAGE_MUL: i32 = 0x0100;
+            pub const CHARGE_RECOIL_MUL: i32 = 0x0101;
+            pub const DISCHARGE_POWER_MUL: i32 = 0x0102;
+            pub const DISCHARGE_SIZE_MUL: i32 = 0x0103;
         }
     }
 
+    pub mod zelda {
+        pub mod instance {
+            // flags
+            pub const DEIN_ACTIVE: i32 = 0x0100;
+            pub const PHANTOM_RELEASED: i32 = 0x0101;
+
+            // ints
+            pub const DEIN_OBJECT_ID: i32 = 0x0100;
+            pub const DEIN_EFF_HANDLER_FLASH: i32 = 0x0101;
+            pub const DEIN_EFF_HANDLER_FIRE: i32 = 0x0102;
+            pub const PHANTOM_EFF_HANDLER: i32 = 0x0103;
+        }
+    }
+
+    pub mod murabito {
+        pub mod instance {
+            // flags
+            pub const IS_TILT_LW_SAPLING_PULL: i32 = 0x0100;
+
+            // floats
+            pub const SAPLING_PULL_SAPLING_POS_X: i32 = 0x0101;
+            pub const SAPLING_PULL_SAPLING_POS_Y: i32 = 0x0102;
+            pub const SAPLING_PULL_SAPLING_POS_Z: i32 = 0x0103;
+        }
+    }
+
+    pub mod ridley {
+        pub mod instance {
+            // flags
+            pub const SPECIAL_LW_IS_GRAB: i32 = 0x0100;
+            pub const SPECIAL_LW_IS_THROW: i32 = 0x101;
+            pub const SPECIAL_LW_ENABLE_LANDING: i32 = 0x0102;
+            pub const SPECIAL_LW_IS_LANDING: i32 = 0x0103;
+            pub const SPECIAL_LW_ENABLE_BOUNCE: i32 = 0x0104;
+
+            // floats
+            pub const SPECIAL_LW_BOUNCE_PREV_POS: i32 = 0x0100;   //vector, requires two indexes
+            pub const SPECIAL_S_FAILURE_CANCEL_FRAME: i32 = 0x0102;
+
+            // ints
+            pub const SPECIAL_LW_CATCH_ID: i32 = 0x0100;
+        }
+        pub mod status {
+            // floats
+            pub const SKEWER_STICK_Y: i32 = 0x1100;
+        }
+    }
+
+    pub mod iceclimbers {
+        pub mod instance {
+            //flags
+            pub const IS_VOLUNTARY_SOPO: i32 = 0x0100;
+            pub const IS_SEPARATED: i32 = 0x0101;
+
+            //ints
+            pub const SEPARATED_EFFECT: i32 = 0x0110;
+        }
+    }
+
+    pub mod wolf {
+        pub mod status {
+            // flags
+            pub const SPECIAL_S_RESERVE_FALL: i32 = 0x1100;
+        }
+    }
 
 }
 
@@ -745,4 +999,21 @@ pub mod statuses {
         pub const SPECIAL_N_FLOAT: i32 = 0;
     }
 
+    pub mod ryu {
+        pub const AIR_DASH: i32 = 0;
+    }
+
+    pub mod buddy {
+        pub const BUDDY_BAYONET_END: i32 = 0;
+    }
+
+    pub mod littlemac {
+        pub const SPECIAL_N_CANCEL: i32 = 0;
+        pub const SPECIAL_N_CANCEL_JUMP: i32 = 1;
+    }
+
+    pub mod wolf {
+        pub const SPECIAL_S_RUSH: i32 = 0;
+        pub const SPECIAL_S_END: i32 = 1;
+    }
 }

@@ -29,7 +29,7 @@ macro_rules! lua_settop {
 unsafe extern "C" fn luaL_tolstring(lua_state: u64, index: i32, size: *mut usize) -> *const u8;
 
 unsafe extern "C" fn lua_print_impl(lua_state: u64) -> i32 {
-    let num_args = lua_gettop!(lua_state);
+    let num_args = lua_gettop!(lua_state) - 1;
     for x in 1..=num_args {
         let mut size = 0;
         let c_str = luaL_tolstring(lua_state, x as i32, &mut size);
@@ -58,8 +58,8 @@ unsafe fn lua_load(arg: u64, arg2: u64, arg3: u64, arg4: u64, mode: *const u8) -
 
 pub fn install() {
     unsafe {
-        skyline::patching::patch_data(0x5291c70, &(lua_print_impl as *const ()));
-        skyline::patching::patch_data(0x372b4b0, &0xD503201Fu32);
+        skyline::patching::Patch::in_text(0x5291c70).data((lua_print_impl as *const ()));
+        skyline::patching::Patch::in_text(0x372b4b0).data(0xD503201Fu32);
     }
     skyline::install_hook!(lua_load);
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <int hash="charge_state_time">900</int>
+    <float hash="charge_state_damage_mul">1.2</float>
+    <float hash="charge_state_recoil_mul">1.25</float>
+    <float hash="discharge_min_power_mul">0.5</float>
+    <float hash="discharge_min_size_mul">0.75</float>
+</struct>

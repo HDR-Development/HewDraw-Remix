@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, backdash_energy});
+utils::import_noreturn!(common::opff::{fighter_common_opff});
 use super::*;
 use globals::*;
 
@@ -22,7 +22,7 @@ unsafe fn power_wave_dash_cancel_super_cancels(fighter: &mut L2CFighterCommon, b
 
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
         // Super Cancel
-        if frame > 21.0 {
+        if frame > 22.0 {
             // Check to see if supers are available
             if WorkModule::is_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL) {
                 // Enable transition term
@@ -51,12 +51,8 @@ unsafe fn power_wave_dash_cancel_super_cancels(fighter: &mut L2CFighterCommon, b
         }
 
         // Dash Cancel
-        if frame > 33.0 {
-            if situation_kind == *SITUATION_KIND_GROUND {
-                if boma.is_cat_flag(Cat4::Command6N6) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
-                }
-            }
+        if frame > 34.0 {
+            boma.check_dash_cancel();
         }
     }
 }
@@ -146,7 +142,7 @@ unsafe fn power_dunk_break(boma: &mut BattleObjectModuleAccessor) {
 unsafe fn cancel_supers_early(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
     if [*FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL,
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2].contains(&status_kind) {
-        if frame < 25.0 {
+        if frame < 26.0 {
             if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_GUARD) {
                 if situation_kind == *SITUATION_KIND_GROUND {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_END, false);
@@ -193,22 +189,6 @@ unsafe fn super_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
     }
 }
 
-// Terry Shield Stop and Run Drop
-unsafe fn shield_stop_run_drop(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_y: f32, situation_kind: i32) {
-    if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_GUARD_TRIGGER)
-        && ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_CATCH)
-        && situation_kind == *SITUATION_KIND_GROUND
-        && [*FIGHTER_STATUS_KIND_DASH, *FIGHTER_DOLLY_STATUS_KIND_DASH_BACK].contains(&status_kind)
-    {
-        let flick_y_sens = ParamModule::get_float(boma.object(), ParamType::Common, "general_flick_y_sens");
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_GUARD_ON, true);
-        ControlModule::clear_command(boma, true);
-        if GroundModule::is_passable_ground(boma) && boma.is_flick_y(flick_y_sens) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_PASS, true);
-        }
-    }
-}
-
 // TRAINING MODE
 // Full Meter Gain via shield during taunt
 unsafe fn full_meter_training_taunt(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
@@ -231,7 +211,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // super_special_meter_activation(boma);
     cancel_supers_early(boma, status_kind, situation_kind, frame);
     super_cancels(fighter, boma, id, status_kind, cat[3], motion_kind);
-    shield_stop_run_drop(boma, status_kind, stick_y, situation_kind);
     full_meter_training_taunt(fighter, boma, status_kind);
     power_dunk_break(boma);
     special_cancels(boma);
@@ -239,7 +218,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
     // Magic Series
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
-    common::opff::backdash_energy(fighter);
 }
 
 unsafe fn ex_special_scripting(boma: &mut BattleObjectModuleAccessor) {
@@ -569,7 +547,7 @@ unsafe fn dash_attack_cancels(boma: &mut BattleObjectModuleAccessor) {
     }
     if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD)
     && !VarModule::is_flag(boma.object(), vars::shotos::instance::IS_USE_EX_SPECIAL)
-    && !VarModule::is_flag(boma.object(), vars::common::status::IS_HEAVY_ATTACK){
+    && !VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK){
         // Rising Tackle
             if boma.is_cat_flag(Cat1::SpecialHi) {
             is_input_cancel = true;
@@ -763,16 +741,29 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 
 }
 
+#[fighter_frame( agent = FIGHTER_KIND_DOLLY )]
+pub fn dolly_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    unsafe {
+        MeterModule::update(fighter.object(), false);
+        // if fighter.is_button_on(Buttons::AppealAll) {
+        //     MeterModule::show(fighter.object());
+        // } else {
+        //     MeterModule::stop_show(fighter.object());
+        // }
+        utils::ui::UiManager::set_ff_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+        utils::ui::UiManager::set_ff_meter_info(
+            fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+            MeterModule::meter(fighter.object()),
+            ParamModule::get_float(fighter.object(), ParamType::Common, "meter_max_damage"),
+            MeterModule::meter_per_level(fighter.object())
+        );
+    }
+}
+
 #[utils::macros::opff(FIGHTER_KIND_DOLLY )]
 pub fn dolly_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-        MeterModule::update(fighter.object(), true);
-        if fighter.is_button_on(Buttons::AppealAll) {
-            MeterModule::show(fighter.object());
-        } else {
-            MeterModule::stop_show(fighter.object());
-        }
 		dolly_frame(fighter)
     }
 }

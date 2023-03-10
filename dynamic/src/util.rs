@@ -154,6 +154,40 @@ pub fn get_active_battle_object_id_from_entry_id(entry_id: u32) -> Option<u32> {
     }
 }
 
+/// This gets ALL active battle object IDs, including both Ice Climbers,
+/// and only the ACTIVE character of Pokemon Trainer and Aegis.
+pub unsafe fn get_all_active_battle_object_ids() -> Vec<u32> {
+    use smash::lib::lua_const::*;
+    use smash::app::lua_bind::*;
+    use super::ext::*;
+    let mut vec: Vec<u32> = Vec::new();
+    for entry_id in 0..8 {
+        // get the active battle object id and add it to the list
+        let id = get_active_battle_object_id_from_entry_id(entry_id).unwrap_or(*BATTLE_OBJECT_ID_INVALID as u32);
+        vec.push(id);
+
+        // from here on out, we are doing this to account for both ice climbers
+
+        // get the object back from the id
+        let object = get_battle_object_from_id(id);
+        if object.is_null() { continue; }
+        let object = unsafe { &mut *object };
+
+        // get the fighter kind - check if it is popo
+        let kind = object.kind as i32;
+        if kind != *FIGHTER_KIND_POPO { continue; }
+
+        // if it is popo, get nana and add her to the list too
+        let boma = &mut *(*object).module_accessor;
+        let nana_id = WorkModule::get_int(boma, *FIGHTER_POPO_INSTANCE_WORK_ID_INT_PARTNER_OBJECT_ID) as u32;
+        let nana_object = get_battle_object_from_id(nana_id);
+        if nana_object.is_null() { continue; }
+        let nana_object = unsafe { &mut *nana_object };
+        vec.push(nana_object.battle_object_id);
+    }
+    return vec;
+}
+
 extern "C" {
     #[link_name = "\u{1}_ZN3app8lua_bind38FighterManager__get_fighter_entry_implEPNS_14FighterManagerENS_14FighterEntryIDE"]
     fn get_fighter_entry(manager: *mut smash::app::FighterManager, entry_id: u32) -> *mut u8;

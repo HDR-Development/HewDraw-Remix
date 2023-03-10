@@ -4,8 +4,8 @@ use globals::*;
  
 pub fn install() {
     install_status_scripts!(
-        pre_jump,
-        jump
+        pre_jump, jump,
+        attack_air
     );
 }
 
@@ -53,4 +53,33 @@ pub unsafe fn jump(fighter: &mut L2CFighterCommon) -> L2CValue {
         fighter.status_Jump_sub(L2CValue::new_hash(0x62abde441), L2CValue::F32(0.0));
         fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_Jump_Main as *const () as _))
     }
+}
+
+// FIGHTER_STATUS_KIND_ATTACK_AIR
+
+#[status_script(agent = "murabito", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.sub_attack_air();
+    let motion = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
+    if [
+        hash40("attack_air_hi"),
+        hash40("attack_air_lw")
+    ].contains(&motion) {
+        // Usually there's code in here to check for the random turnip pulls. However... we don't want that.
+        // Instead, we want to force the turnip count to go in a rotation of 1 > 2 > 3 > 1 > 2 > 3 ...
+        let mut turnip_num = WorkModule::get_int(fighter.module_accessor, *FIGHTER_MURABITO_INSTANCE_WORK_ID_INT_TURNIP_NUM);
+        // Adds 1 to the turnip count. If the new turnip count is not 1, 2, or 3, reset it back to 1.
+        turnip_num += 1;
+        if !(1..=3).contains(&turnip_num) {
+            turnip_num = 1;
+        }
+        WorkModule::set_int(fighter.module_accessor, turnip_num, *FIGHTER_MURABITO_INSTANCE_WORK_ID_INT_TURNIP_NUM);
+    }
+    if [
+        hash40("attack_air_f"),
+        hash40("attack_air_b")
+    ].contains(&motion) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), 1, FIGHTER_LOG_DATA_INT_SHOOT_NUM);
+    }
+    fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_AttackAir_Main as *const () as _))
 }

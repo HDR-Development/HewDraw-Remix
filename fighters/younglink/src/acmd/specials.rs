@@ -12,13 +12,16 @@ unsafe fn younglink_special_s1_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
-        if !VarModule::is_flag(fighter.battle_object, vars::common::instance::SPECIAL_PROJECTILE_SPAWNED) {
-            ArticleModule::generate_article(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_BOOMERANG, false, 0);
-        }
+        ArticleModule::generate_article(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_BOOMERANG, false, 0);
     }
     frame(lua_state, 27.0);
     if is_excute(fighter) {
         ArticleModule::shoot(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_BOOMERANG, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
+        FT_MOTION_RATE(fighter, 2.0);
+    }
+    frame(lua_state, 31.0);
+    if is_excute (fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
     }
     
 }
@@ -35,7 +38,6 @@ unsafe fn younglink_special_air_s1_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
         if !ArticleModule::is_exist(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_BOOMERANG) {
-            VarModule::on_flag(fighter.battle_object, vars::common::instance::SPECIAL_PROJECTILE_SPAWNED);
             ArticleModule::generate_article(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_BOOMERANG, false, 0);
         }
     }
@@ -72,8 +74,13 @@ unsafe fn younglink_special_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 66.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LINK_STATUS_RSLASH_FLAG_RESET_SPEED_MAX_X);
+        FT_MOTION_RATE(fighter, 9.0/(70.0-66.0))
     }
-    
+    frame(lua_state, 70.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
+
 }
 
 #[acmd_script( agent = "younglink", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
