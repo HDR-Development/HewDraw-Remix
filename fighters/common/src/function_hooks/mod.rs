@@ -1,5 +1,6 @@
 use super::*;
 use crate::globals::*;
+use std::arch::asm;
 pub mod energy;
 pub mod effect;
 pub mod edge_slipoffs;
@@ -611,6 +612,22 @@ pub fn install() {
         
         // Stubs original CancelModule::enable_cancel call for Fighters
         skyline::patching::Patch::in_text(0x61750c).nop();
+        
+        // Stubs MAIN status execution functions
+        // These functions are run conditionally in run_main_status_original
+        skyline::patching::Patch::in_text(0x3a8518).nop();
+        skyline::patching::Patch::in_text(0x3a8528).nop();
+        skyline::patching::Patch::in_text(0x3a8540).nop();
+        skyline::patching::Patch::in_text(0x3a8568).nop();
+        skyline::patching::Patch::in_text(0x3a859c).nop();
+        skyline::patching::Patch::in_text(0x3a85b0).nop();
+        skyline::patching::Patch::in_text(0x3a85c0).nop();
+        skyline::patching::Patch::in_text(0x3a85d8).nop();
+        skyline::patching::Patch::in_text(0x3a85f0).nop();
+
+        // Resets projectile lifetime on parry, rather than using remaining lifetime
+        skyline::patching::Patch::in_text(0x33bd358).nop();
+        skyline::patching::Patch::in_text(0x33bd35c).data(0x2a0a03e1);
     }
     skyline::install_hooks!(
         before_collision,
