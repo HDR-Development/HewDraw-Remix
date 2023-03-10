@@ -91,7 +91,7 @@ unsafe fn reflet_attack_13_game(fighter: &mut L2CAgentBase) {
 unsafe fn reflet_attack_100_game(fighter: &mut L2CAgentBase) {
     for _ in 0..99 {
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 0.9, 65, 10, 0, 9, 8.0, 0.0, 9.0, 12.0, Some(0.0), Some(9.0), Some(8.0), 0.4, 0.6, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 0.9, 65, 10, 0, 9, 8.0, 0.0, 9.0, 12.0, Some(0.0), Some(9.0), Some(8.0), 0.4, 0.4, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
         AttackModule::set_add_reaction_frame(fighter.module_accessor, 0, 3.0, false);
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 3);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_100_CONTINUE_CHECK);
