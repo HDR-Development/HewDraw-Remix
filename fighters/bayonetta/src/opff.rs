@@ -90,7 +90,7 @@ unsafe fn special_cancels(fighter: &mut L2CFighterCommon) {
         VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_JUMP_KEEP);
     }
     if fighter.is_motion_one_of(&[Hash40::new("jump_aerial_f"), Hash40::new("jump_aerial_b")]) {
-        if fighter.motion_frame() < 5.0 {
+        if fighter.motion_frame() < 5.5 {
             VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_JUMP_KEEP);
         }
         else {
@@ -216,7 +216,7 @@ unsafe fn neutral_b_drift(fighter: &mut L2CFighterCommon, boma: *mut BattleObjec
             sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.25 * stick_x);
         }
         else {
-            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 1.0 * stick_x);
+            sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 1.25 * stick_x);
         }     
     }
 }

@@ -12,10 +12,10 @@
     <float hash="attack_air_f2_hit_speed_y">1.3</float>
     <float hash="combo_attack_ari_f2_end">29</float>
     <float hash="combo_attack_ari_f3_end">29</float>
-    <int hash="attack_air_n_shoot_landing_frame">2</int>
-    <int hash="attack_air_f_shoot_landing_frame">2</int>
-    <int hash="attack_air_b_shoot_landing_frame">2</int>
-    <int hash="attack_air_hi_shoot_landing_frame">2</int>
+    <int hash="attack_air_n_shoot_landing_frame">1</int>
+    <int hash="attack_air_f_shoot_landing_frame">1</int>
+    <int hash="attack_air_b_shoot_landing_frame">1</int>
+    <int hash="attack_air_hi_shoot_landing_frame">1</int>
     <float hash="final_vector_min">40</float>
     <float hash="final_vector_max">45</float>
     <float hash="bat_escape_air_frame">45</float>
@@ -24,6 +24,8 @@
     <struct index="0">
       <int hash="charge_frame_max">240</int>
       <float hash="air_start_speed_mul_x">0.3</float>
+      <float hash="air_start_max_speed_y">1.3</float>
+      <float hash="air_fire_max_speed_y">1.3</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -57,7 +59,7 @@
       <int hash="ab_d_fall_landing_frame">14</int>
       <int hash="ab_d_fall_landing_frame_2nd">22</int>
       <int hash="0x17a1daf6ee">600</int>
-		<int hash="ab_d_enable_frame">18</int>
+      <int hash="ab_d_enable_frame">18</int>
       <int hash="ab_d_change_frame">4</int>
       <float hash="guard_speed_mul_x">0.6</float>
     </struct>
@@ -67,15 +69,16 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="speed_mul_y">1.24</float>
-      <float hash="air_speed_mul_y">1.16</float>
-      <float hash="speed_mul_y_2nd">1.08</float>
+      <float hash="speed_mul_y">1.20</float>
+      <float hash="air_speed_mul_y">1.15</float>
+      <float hash="speed_mul_y_2nd">1.10</float>
       <float hash="air_start_speed_mul_y">0.25</float>
       <int hash="landing_frame">14</int>
       <int hash="act_landing_frame">18</int>
       <int hash="landing_frame_2nd">20</int>
       <int hash="act_landing_frame_2nd">27</int>
-    </struct>
+      <float hash="jump_count_reset_frame">5</float>
+	</struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
