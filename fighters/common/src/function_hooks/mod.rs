@@ -515,7 +515,8 @@ unsafe fn after_collision(object: *mut BattleObject) {
                 if *(prev_collision_line_up as *mut u64) == 0 && *(collision_line_up as *mut u64) != 0
                 || *(prev_collision_line_left as *mut u64) == 0 && *(collision_line_left as *mut u64) != 0
                 || *(prev_collision_line_right as *mut u64) == 0 && *(collision_line_right as *mut u64) != 0
-                || *(prev_collision_line_down as *mut u64) != *(collision_line_down as *mut u64) {
+                || *(prev_collision_line_down as *mut u64) != *(collision_line_down as *mut u64) 
+                || StatusModule::situation_kind(boma) != StatusModule::prev_situation_kind(boma) {
                     // This runs the MAIN status once, ignoring sub-statuses, to ensure we change motion kind when coming into contact with a surface
                     // Otherwise, our motion kind will update a frame late (e.g. landing animation)
                     if VarModule::has_var_module((*boma).object()) { VarModule::on_flag((*boma).object(), vars::common::instance::CHECK_CHANGE_MOTION_ONLY); }
