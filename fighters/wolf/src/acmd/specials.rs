@@ -81,19 +81,19 @@ unsafe fn wolf_special_hi_fall_game(fighter: &mut L2CAgentBase) {
 unsafe fn wolf_special_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
+    // frame(lua_state, 0.0);
+    // if is_excute(fighter) {
+    //     FT_MOTION_RATE(fighter, 2.0/(10.0-1.0));
+    // }
+    frame(lua_state, 0.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 2.0/(7.0-1.0));
-    }
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
+        //FT_MOTION_RATE(fighter, 1.000);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 69, 100, 0, 70, 8.0, 0.0, 7.7, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
         //Reflection begins on same frame shine hitbox is active
         ReflectorModule::set_status(boma, *FIGHTER_FOX_REFLECTOR_KIND_REFLECTOR, app::ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_EXTEND);
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.72);
     }
-    frame(lua_state, 8.0);
+    frame(lua_state, 2.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
@@ -104,23 +104,65 @@ unsafe fn wolf_special_lw_start_game(fighter: &mut L2CAgentBase) {
 unsafe fn wolf_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
+    frame(lua_state, 0.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 2.0/(7.0-1.0));
-    }
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 69, 100, 0, 70, 8.0, 0.0, 8.5, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
         ReflectorModule::set_status(boma, *FIGHTER_FOX_REFLECTOR_KIND_REFLECTOR, app::ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_EXTEND);
         // Reflection begins on same frame shine hitbox is active
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.75);
     }
-    frame(lua_state, 8.0);
+    frame(lua_state, 2.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
     
+}
+
+#[acmd_script( agent = "wolf", scripts = ["effect_speciallwstart", "effect_specialairlwstart"] , category = ACMD_EFFECT , low_priority)]
+unsafe fn wolf_special_lw_start_effect (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	//get_value_float(*SO_VAR_FLOAT_LR);
+	//if(0x108260(0, 0)){;
+    frame(lua_state, 0.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("wolf_ref_start"), Hash40::new("top"), 0, 6.5, 1, 0, 0, 0, 0.8, true);
+        //EFFECT_FOLLOW(fighter, Hash40::new("wolf_ref_flash"), Hash40::new("reflector"), -0.5, 0, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("wolf_ref_loop"), Hash40::new("top"), 0, 6.5, 0, 0, 0, 0, 1, true);
+        EFFECT_FLW_POS(fighter, Hash40::new("wolf_ref_ref"), Hash40::new("top"), 0, 6.5, 0, 0, 0, 0, 0.6, true);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        LAST_EFFECT_SET_RATE(fighter, 2.0);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        LAST_EFFECT_SET_RATE(fighter, 1.0);
+    }
+	frame(lua_state, 6.0);
+	if is_excute(fighter) {
+		EFFECT_DETACH_KIND(fighter, Hash40::new("wolf_ref_start"), -1);
+	}
+	else{;
+	frame(lua_state, 0.0);
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("wolf_ref_start"), Hash40::new("top"), 0, 6.5, 0, 0, 0, 0, 1, true);
+	}
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+    EFFECT_DETACH_KIND(fighter, Hash40::new("wolf_ref_start"), -1);
+    }
+}
+
+#[acmd_script( agent = "wolf", scripts = ["sound_speciallwstart", "sound_specialairlwstart"] , category = ACMD_SOUND , low_priority)]
+unsafe fn wolf_special_lw_start_sound (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	frame(lua_state, 0.0);
+	if is_excute(fighter) {
+		PLAY_SE(fighter, Hash40::new("se_wolf_special_l01"));
+	}
 }
 
 #[acmd_script(agent = "wolf", scripts = ["effect_specialairsend", "effect_specialsend"], category = ACMD_EFFECT, low_priority)]
@@ -210,6 +252,63 @@ unsafe fn wolf_special_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "wolf", script = "effect_specialn" , category = ACMD_EFFECT , low_priority)]
+unsafe fn wolf_special_n_effect (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	frame(lua_state, 8.0);
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("wolf_bayonet"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+		AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_wolf_bayonet1"), Hash40::new("tex_wolf_bayonet2"), 3, Hash40::new("haver"), 0.0, -0.3, 3.0, Hash40::new("haver"), 0.0, 0.77, 6.2, true, Hash40::new("null"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.3, 0.1);
+	}
+	frame(lua_state, 16.0);
+	if is_excute(fighter) {
+		AFTER_IMAGE_OFF(fighter, 4);
+		EFFECT_OFF_KIND(fighter, Hash40::new("wolf_bayonet"), false, false);
+		EFFECT(fighter, Hash40::new("wolf_blaster_shot"), Hash40::new("top"), 0, 9.8, 13.2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+	}
+	frame(lua_state, 17.0);
+	if is_excute(fighter) {
+		FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -8, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+	}
+	frame(lua_state, 19.0);
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("wolf_bayonet"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+		AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_wolf_bayonet1"), Hash40::new("tex_wolf_bayonet2"), 4, Hash40::new("haver"), 0.0, -0.3, 2.5, Hash40::new("haver"), 0.0, 0.77, 6.3, true, Hash40::new("null"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.3, 0.1);
+	}
+	frame(lua_state, 22.0);
+	if is_excute(fighter) {
+		AFTER_IMAGE_OFF(fighter, 3);
+		EFFECT_OFF_KIND(fighter, Hash40::new("wolf_bayonet"), false, false);
+	}
+}
+
+#[acmd_script( agent = "wolf", script = "effect_specialairn" , category = ACMD_EFFECT , low_priority)]
+unsafe fn wolf_special_air_n_effect (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	frame(lua_state, 8.0);
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("wolf_bayonet"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+		AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_wolf_bayonet1"), Hash40::new("tex_wolf_bayonet2"), 3, Hash40::new("haver"), 0.0, -0.3, 3.0, Hash40::new("haver"), 0.0, 0.77, 6.2, true, Hash40::new("null"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.3, 0.1);
+	}
+	frame(lua_state, 16.0);
+	if is_excute(fighter) {
+		AFTER_IMAGE_OFF(fighter, 4);
+		EFFECT(fighter, Hash40::new("wolf_blaster_shot"), Hash40::new("top"), 0, 9.8, 13.2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+	}
+	frame(lua_state, 19.0);
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("wolf_bayonet"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+		AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_wolf_bayonet1"), Hash40::new("tex_wolf_bayonet2"), 4, Hash40::new("haver"), 0.0, -0.3, 2.5, Hash40::new("haver"), 0.0, 0.77, 6.3, true, Hash40::new("null"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.3, 0.1);
+    }
+	frame(lua_state, 22.0);
+	if is_excute(fighter) {
+		AFTER_IMAGE_OFF(fighter, 3);
+		EFFECT_OFF_KIND(fighter, Hash40::new("wolf_bayonet"), false, false);
+	}
+}
+
 pub fn install() {
     install_acmd_scripts!(
         wolf_special_s_end_game,
@@ -220,8 +319,13 @@ pub fn install() {
 
         wolf_special_s_end_effect,
         wolf_special_s_effect,
+        wolf_special_lw_start_effect,
+        wolf_special_lw_start_sound,
 
         wolf_special_air_n_game,
+        wolf_special_n_effect,
+        wolf_special_air_n_effect,
+        
 
         wolf_special_s_game,
         wolf_illusion_move_game,

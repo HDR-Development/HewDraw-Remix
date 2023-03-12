@@ -196,12 +196,35 @@ unsafe fn falco_special_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 19.0);
-    if is_excute(fighter) {  }frame(lua_state, 51.0);
+    frame(lua_state, 51.0);
     if is_excute(fighter) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
     }
     
+}
+
+#[acmd_script( agent = "falco", scripts = ["effect_speciallw", "effect_specialairlw"] , category = ACMD_EFFECT , low_priority)]
+unsafe fn falco_special_lw_effect (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	if is_excute(fighter) {
+		//LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+		EFFECT_FOLLOW(fighter, Hash40::new("falco_ref_loop"), Hash40::new("top"), 0, 7, 0, 0, 0, 0, 1, true);
+		EffectModule::preset_limit_num(fighter.module_accessor, 2);
+		EFFECT_FOLLOW(fighter, Hash40::new("falco_ref_flash"), Hash40::new("reflector"), 1.4, 0, 0, 0, 0, 0, 1, true);
+        //FLASH(fighter, 1, 1, 1, 0.627);
+	}
+    frame(lua_state, 1.0);
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("falco_ref_ref"), Hash40::new("top"), 0, 7.27, 0, 0, 0, 0, 0.5, true);
+    }
+	frame(lua_state, 32.0);
+	if is_excute(fighter) {
+		EFFECT_OFF_KIND(fighter, Hash40::new("falco_ref_loop"), false, false);
+		EFFECT_OFF_KIND(fighter, Hash40::new("falco_ref_ref"), false, false);
+		EFFECT_OFF_KIND(fighter, Hash40::new("falco_ref_flash"), true, false);
+		EFFECT_FLW_POS(fighter, Hash40::new("sys_flash"), Hash40::new("reflector"), 1.4, -0.6, -0.5, 0, 0, 0, 0.5, true);
+	}
 }
 
 #[acmd_script( agent = "falco", script = "sound_speciallw" , category = ACMD_SOUND , low_priority)]
@@ -283,6 +306,7 @@ pub fn install() {
         falco_special_hi_game,
         falco_special_air_lw_game,
         falco_special_lw_game,
+        falco_special_lw_effect,
         falco_special_air_lw_sound,
         falco_special_n_start_sound,
         falco_special_air_n_start_sound,
