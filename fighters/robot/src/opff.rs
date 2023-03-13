@@ -50,19 +50,16 @@ unsafe fn jc_sideb(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind
 
 // Dair only bounces once per airtime
 unsafe fn dair_opa(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
-    let mut ground = true;
-    
     if situation_kind == *SITUATION_KIND_GROUND {
-        ground = true;
+        let mut ground = true;
     }
     
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR && motion_kind == hash40("attack_air_lw") {
         if frame == 19.0 && ground == true {
             SET_SPEED_EX(fighter, -0.1, 1.18, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+			ground = false;
         }
-        ground = false;
-    }
-        
+    }  
 }
 
 // Neutral Special Cancels
