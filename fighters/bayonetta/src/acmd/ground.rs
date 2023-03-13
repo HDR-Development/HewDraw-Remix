@@ -55,7 +55,7 @@ unsafe fn bayonetta_attack_12_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 50, 8, 0, 47, 3.0, 0.0, 10.8, 3.5, None, None, None, 1.0, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 3, 0, Hash40::new("top"), 3.0, 361, 8, 0, 38, 2.5, 0.0, 4.5, 6.0, Some(0.0), Some(4.5), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         AttackModule::set_add_reaction_frame(boma, 0, 1.0, false);
-        AttackModule::set_add_reaction_frame(boma, 1, 4.0, false);
+        AttackModule::set_add_reaction_frame(boma, 1, 3.0, false);
         AttackModule::set_add_reaction_frame(boma, 2, 1.0, false);
     }
     wait(lua_state, 2.0);
@@ -136,7 +136,7 @@ unsafe fn bayonetta_attack_100_game(fighter: &mut L2CAgentBase) {
         sv_animcmd::wait_loop_clear(lua_state);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_100_CHECK_COMBO_NUM);
     }
-    wait(lua_state, 3.0);
+    wait(lua_state, 4.0);
         if is_excute(fighter) {
             if ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             MotionModule::change_motion(boma, Hash40::new("attack_100_end"), 0.0, 1.0, false, 0.0, false, false);
