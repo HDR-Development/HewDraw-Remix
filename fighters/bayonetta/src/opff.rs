@@ -90,11 +90,15 @@ unsafe fn special_cancels(fighter: &mut L2CFighterCommon) {
         VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_JUMP_KEEP);
     }
     if fighter.is_motion_one_of(&[Hash40::new("jump_aerial_f"), Hash40::new("jump_aerial_b")]) {
-        if fighter.motion_frame() < 5.5 {
+        if fighter.motion_frame() < 6.0 {
             VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_JUMP_KEEP);
-        }
-        else {
+            }
+        if fighter.motion_frame() > 5.0 && fighter.motion_frame() < 9.0 {
             VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_JUMP_KEEP);
+            if fighter.is_cat_flag(Cat1::SpecialS) || fighter.is_cat_flag(Cat1::SpecialHi) {
+                EFFECT(fighter, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 5, 5, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                PLAY_SE(fighter, Hash40::new("vc_bayonetta_ottotto"));
+            }
         }
     }
     if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U)
@@ -139,24 +143,23 @@ unsafe fn recovery_resource_management(fighter: &mut L2CFighterCommon) {
         if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) >= 2 {
             VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
             VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
-            if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE,
-                *FIGHTER_STATUS_KIND_DAMAGE_AIR,
-                *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-                *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
-                *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
-                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
-                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
-                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-                *FIGHTER_STATUS_KIND_DAMAGE_FALL]){
-                VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED, 0);
-            }
         }
         else{
             VarModule::off_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
             VarModule::off_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
         }
+        if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE,
+            *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+            *FIGHTER_STATUS_KIND_DAMAGE_FALL]){
+            VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED, 0);
+        }
     }
-    
 }
 
 unsafe fn clear_proration(fighter: &mut L2CFighterCommon, boma: *mut BattleObjectModuleAccessor) {
@@ -224,7 +227,7 @@ unsafe fn neutral_b_drift(fighter: &mut L2CFighterCommon, boma: *mut BattleObjec
 unsafe fn branching_ftilt_jab(fighter: &mut L2CFighterCommon) {
     let boma = fighter.boma();
     let b_press = (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW));
-    let a_press = (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK) || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW));
+    let a_press = ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK);
     if MotionModule::motion_kind(boma) == hash40("attack_s3_s") && fighter.motion_frame() > 26.5 {
         if b_press {
             MotionModule::change_motion(boma, Hash40::new("attack_s3_s3"), 0.0, 1.0, false, 0.0, false, false);
@@ -233,19 +236,17 @@ unsafe fn branching_ftilt_jab(fighter: &mut L2CFighterCommon) {
     }
     if MotionModule::motion_kind(boma) == hash40("attack_12") {
         if fighter.motion_frame() > 13.0 {
-            if fighter.motion_frame() < 23.0 {
-                if a_press {
-                    StatusModule::change_status_request(boma, *FIGHTER_STATUS_KIND_ATTACK_100, false);
-                }
-            }
-            else {
-                if a_press == true {
-                    StatusModule::change_status_request(boma, *FIGHTER_STATUS_KIND_ATTACK, false);
-                }
-            }
             if b_press == true {
                 StatusModule::change_status_request(boma, *FIGHTER_STATUS_KIND_ATTACK, false);
             }
+        }
+        if WorkModule::is_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100) && a_press {
+            StatusModule::change_status_request(boma, *FIGHTER_STATUS_KIND_ATTACK_100, false);
+        }
+    }
+    if MotionModule::motion_kind(boma) == hash40("attack_11") {
+        if WorkModule::is_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) && a_press {
+            StatusModule::change_status_request(boma, *FIGHTER_STATUS_KIND_ATTACK, false);
         }
     }
 }
@@ -257,8 +258,6 @@ unsafe fn bat_within_speed(fighter: &mut L2CFighterCommon) {
         let stick_x =  ControlModule::get_stick_x(fighter.module_accessor);
         sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 0.38 * stick_y);
         sv_kinetic_energy!(set_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.38 * stick_x);
-        //KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-        //KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
 }
 

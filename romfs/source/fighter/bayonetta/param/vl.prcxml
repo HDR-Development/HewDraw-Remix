@@ -20,6 +20,9 @@
     <float hash="final_vector_max">45</float>
     <float hash="bat_escape_air_frame">45</float>
   </struct>
+  <struct hash="map_collision_wickedweaveleg">
+    <float hash="down">1.0</float>
+  </struct>
   <list hash="param_special_n">
     <struct index="0">
       <int hash="charge_frame_max">240</int>
