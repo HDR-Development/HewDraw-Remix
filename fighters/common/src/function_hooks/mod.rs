@@ -1,5 +1,6 @@
 use super::*;
 use crate::globals::*;
+use std::arch::asm;
 pub mod energy;
 pub mod effect;
 pub mod edge_slipoffs;
@@ -40,26 +41,26 @@ const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 12] = [
 
 // For one reason or another, the below statuses/kinds do not play well with running before energy update/ground collision
 // so they must be ran using vanilla's order of operations
-unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor) -> bool {
+unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor, status_kind: i32) -> bool {
     if (*boma).is_fighter()
     && ( ((*boma).kind() == *FIGHTER_KIND_RICHTER
-    && (*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_LW4]))
+            && [*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_SIMON
-            && (*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_LW4]))
+            && [*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_MASTER
-            && (*boma).is_status_one_of(&[*FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_MAX_SHOOT]))
+            && [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_MAX_SHOOT].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_JACK
-            && (*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_JACK_STATUS_KIND_SPECIAL_CUSTOMIZE]))
+            && [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_PFUSHIGISOU
-            && (*boma).is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI))
+            && [*FIGHTER_STATUS_KIND_SPECIAL_HI].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_KAMUI
-            && (*boma).is_status_one_of(&[*FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_ATTACK, *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL, *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_F, *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_B]))
+            && [*FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_ATTACK, *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL, *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_F, *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_B].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_INKLING
-            && (*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_DASH, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_RUN, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_RUN_TURN, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_WALK, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_WALK_TURN, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_END]))
+            && [*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_DASH, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_RUN, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_RUN_TURN, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_WALK, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_WALK_TURN, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_END].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_DOLLY
-            && (*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_FINAL, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL]))
+            && [*FIGHTER_STATUS_KIND_FINAL, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_PICKEL
-            && (*boma).is_status_one_of(&[*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING_LIGHT])) )
+            && [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING_LIGHT].contains(&status_kind)) )
     {
         return true;
     }
@@ -136,7 +137,7 @@ unsafe fn kinetic_module__call_update_energy_hook(ctx: &skyline::hooks::InlineCt
 
     if VarModule::has_var_module((*boma).object()) { VarModule::on_flag((*boma).object(), vars::common::instance::BEFORE_GROUND_COLLISION); }
 
-    if skip_early_main_status(boma) {
+    if skip_early_main_status(boma, StatusModule::status_kind(boma)) {
         return;
     }
 
@@ -161,7 +162,7 @@ unsafe fn kinetic_module__call_update_energy_stop_hook(ctx: &skyline::hooks::Inl
 
     if VarModule::has_var_module((*boma).object()) { VarModule::on_flag((*boma).object(), vars::common::instance::BEFORE_GROUND_COLLISION); }
 
-    if skip_early_main_status(boma) {
+    if skip_early_main_status(boma, StatusModule::status_kind(boma)) {
         return;
     }
 
@@ -196,20 +197,35 @@ unsafe fn run_lua_status_hook(ctx: &skyline::hooks::InlineCtx) {
     let slow_module__is_skip: extern "C" fn(*const u64) -> bool = std::mem::transmute(*(((vtable as u64) + 0xb0) as *const u64));
     let is_skip = slow_module__is_skip(slow_module);
 
-    if skip_early_main_status(boma) {
-        if (*boma).is_fighter()
-        && !StatusModule::is_changing(boma)
-        && (*boma).status_frame() == 0
-        {
-            let status_module = *(boma as *mut BattleObjectModuleAccessor as *mut u64).add(0x40 / 8) as *const u64;
-            *(((status_module as u64) + 0xf4) as *mut bool) = true;  // StatusModule::is_changing = true
-            run_main_status_original(boma, is_stop, is_skip);
-            *(((status_module as u64) + 0xf4) as *mut bool) = false;  // StatusModule::is_changing = false
+    if (*boma).is_fighter()
+    && VarModule::is_flag((*boma).object(), vars::common::instance::IS_IGNORED_STATUS_FRAME_0)
+    && skip_early_main_status(boma, StatusModule::status_kind_next(boma))
+    {
+        VarModule::off_flag((*boma).object(), vars::common::instance::IS_IGNORED_STATUS_FRAME_0);
 
-        }
-        else {
-            run_main_status_original(boma, is_stop, is_skip);
-        }
+        let status_module = *(boma as *mut BattleObjectModuleAccessor as *mut u64).add(0x40 / 8) as *const u64;
+        let vtable = *(status_module as *const *const u64);
+        let status_module__changeStatus: extern "C" fn(*const u64, i32) = std::mem::transmute(*(((vtable as u64) + 0x1f0) as *const u64));
+
+        *(((status_module as u64) + 0xf4) as *mut bool) = true;  // StatusModule::is_changing = true
+        status_module__changeStatus(status_module, StatusModule::status_kind_next(boma));
+        *(((status_module as u64) + 0xf4) as *mut bool) = false;  // StatusModule::is_changing = false
+
+        let something_module = *(boma as *mut BattleObjectModuleAccessor as *mut u64).add(0xe8 / 8) as *const u64;
+        let vtable = *(something_module as *const *const u64);
+        let something_module__idk: extern "C" fn(*const u64, u64, u64) = std::mem::transmute(*(((vtable as u64) + 0x48) as *const u64));
+        something_module__idk(something_module, is_stop as u64, is_skip as u64);
+
+        let effect_module = *(boma as *mut BattleObjectModuleAccessor as *mut u64).add(0x140 / 8) as *const u64;
+        let vtable = *(effect_module as *const *const u64);
+        let effect_module__idk: extern "C" fn(*const u64, u64) = std::mem::transmute(*(((vtable as u64) + 0x58) as *const u64));
+        effect_module__idk(effect_module, 1);
+        
+        return;
+    }
+
+    if skip_early_main_status(boma, StatusModule::status_kind(boma)) {
+        run_main_status_original(boma, is_stop, is_skip);
         return;
     }
 
@@ -256,18 +272,17 @@ unsafe fn run_lua_status_hook(ctx: &skyline::hooks::InlineCtx) {
     }
 }
 
-// This runs immediately before MAIN status script
-#[skyline::hook(offset = 0x48baf0)]
-unsafe fn lua_module__call_line_status_system(lua_module: u64) {
-    let boma = *(lua_module as *mut *mut BattleObjectModuleAccessor).add(1);
+#[skyline::hook(offset = 0x4debc0)]
+unsafe fn status_module__change_status(status_module: *const u64, status_kind_next: i32) {
+    let boma = *(status_module as *mut *mut BattleObjectModuleAccessor).add(1);
     if (*boma).is_fighter()
-    && skip_early_main_status(boma)
-    && StatusModule::is_changing(boma)
+    && skip_early_main_status(boma, status_kind_next)
     && VarModule::is_flag((*boma).object(), vars::common::instance::BEFORE_GROUND_COLLISION) {
-        
+        VarModule::on_flag((*boma).object(), vars::common::instance::IS_IGNORED_STATUS_FRAME_0);
+        *(((status_module as u64) + 0x9c) as *mut i32) = status_kind_next;  // setting StatusModule::status_kind_next
         return;
     }
-    call_original!(lua_module)
+    call_original!(status_module, status_kind_next);
 }
 
 pub fn install() {
@@ -314,11 +329,15 @@ pub fn install() {
         skyline::patching::Patch::in_text(0x3a85c0).nop();
         skyline::patching::Patch::in_text(0x3a85d8).nop();
         skyline::patching::Patch::in_text(0x3a85f0).nop();
+
+        // Resets projectile lifetime on parry, rather than using remaining lifetime
+        skyline::patching::Patch::in_text(0x33bd358).nop();
+        skyline::patching::Patch::in_text(0x33bd35c).data(0x2a0a03e1);
     }
     skyline::install_hooks!(
         kinetic_module__call_update_energy_hook,
         kinetic_module__call_update_energy_stop_hook,
         run_lua_status_hook,
-        lua_module__call_line_status_system,
+        status_module__change_status
     );
 }
