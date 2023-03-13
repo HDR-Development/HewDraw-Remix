@@ -20,20 +20,22 @@ unsafe fn gyro_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i
 
 unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
     if WorkModule::is_flag(boma, *FIGHTER_ROBOT_STATUS_BURNER_FLAG_PUSH_B_BUTTON)
-	&& situation_kind == *SITUATION_KIND_AIR {
-		if frame > 12.0 {
-			if boma.is_button_on(Buttons::Attack) {
-				StatusModule::change_status_request_from_script(boma, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_ATTACK, false);
-			}
-		} else if frame > 18.0 {
-			if boma.is_button_on(Buttons::Guard) {
-				WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
-				ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
-				StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
-				//let vec = Vector3f{x: 0.0, y: -0.2, z: 0.0};
-				//KineticModule::add_speed(boma, &vec);
-			}
-		}
+    && situation_kind == *SITUATION_KIND_AIR {
+        if frame > 12.0 {
+            if boma.is_button_on(Buttons::Attack) {
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_ATTACK, false);
+            }
+        } else if frame > 18.0 {
+            if boma.is_button_on(Buttons::Guard) {
+                WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
+                ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
+                //let vec = Vector3f{x: 0.0, y: -0.2, z: 0.0};
+                //KineticModule::add_speed(boma, &vec);
+            } else if boma.is_button_on(Buttons::Attack) {
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_ATTACK, false);
+            }
+        }
     }   
 }
 
@@ -48,19 +50,19 @@ unsafe fn jc_sideb(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind
 
 // Dair only bounces once per airtime
 unsafe fn dair_opa(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
-	let mut ground = true;
-	
-	if situation_kind == *SITUATION_KIND_GROUND {
-		ground = true;
-	}
-	
-	if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR && motion_kind == hash40("attack_air_lw") {
-		if frame == 19.0 && ground == true {
-			SET_SPEED_EX(fighter, -0.1, 1.18, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-		}
-		ground = false;
-	}
-		
+    let mut ground = true;
+    
+    if situation_kind == *SITUATION_KIND_GROUND {
+        ground = true;
+    }
+    
+    if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR && motion_kind == hash40("attack_air_lw") {
+        if frame == 19.0 && ground == true {
+            SET_SPEED_EX(fighter, -0.1, 1.18, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        }
+        ground = false;
+    }
+        
 }
 
 // Neutral Special Cancels
@@ -210,7 +212,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     //jc_sideb(boma, cat[0], status_kind, situation_kind, motion_kind);
     dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
     uspecial_cancels(boma, situation_kind, frame);
-	dair_opa(boma, status_kind, situation_kind, frame);
+    dair_opa(boma, status_kind, situation_kind, frame);
     bair_boost_detection(boma);
     fuel_indicator_effect(fighter, boma);
 }
