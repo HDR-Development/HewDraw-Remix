@@ -7,6 +7,18 @@ use globals::*;
 unsafe fn airdodge_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
         if frame > 17.0 {
+            FighterStatusModuleImpl::set_fighter_status_data(
+                boma,
+                false,
+                *FIGHTER_TREADED_KIND_NO_REAC,
+                false,
+                false,
+                false,
+                (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_N | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON | *FIGHTER_LOG_MASK_FLAG_SHOOT) as u64,
+                0,
+                *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_N as u32,
+                0
+            );
             boma.check_airdodge_cancel();
         }
     }
@@ -28,30 +40,9 @@ unsafe fn shine_jump_cancel(fighter: &mut L2CFighterCommon) {
         }
 }
 
-// Side Special Cancels
-unsafe fn side_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S {
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-            || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
-            if frame > 21.0 {
-                CancelModule::enable_cancel(boma);
-            }
-            if frame >= MotionModule::end_frame(boma) - 3.0{
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
-            }
-        }
-    }
-}
-
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     airdodge_cancel(boma, status_kind, situation_kind, cat[0], frame);
     shine_jump_cancel(fighter);
-
-    // Magic Series
-    side_special_cancels(boma, status_kind, frame);
-
-    // Frame Data
-    //frame_data(boma, status_kind, motion_kind, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_WOLF )]
