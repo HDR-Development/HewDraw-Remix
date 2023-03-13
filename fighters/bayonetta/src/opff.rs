@@ -93,7 +93,7 @@ unsafe fn special_cancels(fighter: &mut L2CFighterCommon) {
         if fighter.motion_frame() < 6.0 {
             VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_JUMP_KEEP);
             }
-        if fighter.motion_frame() > 5.0 && fighter.motion_frame() < 9.0 {
+        if fighter.motion_frame() > 5.0 && fighter.motion_frame() < 10.0 {
             VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_JUMP_KEEP);
             if fighter.is_cat_flag(Cat1::SpecialS) || fighter.is_cat_flag(Cat1::SpecialHi) {
                 EFFECT(fighter, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 5, 5, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
@@ -148,17 +148,18 @@ unsafe fn recovery_resource_management(fighter: &mut L2CFighterCommon) {
             VarModule::off_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
             VarModule::off_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
         }
-        if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE,
-            *FIGHTER_STATUS_KIND_DAMAGE_AIR,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
-            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-            *FIGHTER_STATUS_KIND_DAMAGE_FALL]){
-            VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED, 0);
-        }
+    }
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE,
+        *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+        *FIGHTER_STATUS_KIND_DAMAGE_FALL]){
+        VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED, 0);
+        VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_JUMP_KEEP);
     }
 }
 
@@ -202,12 +203,29 @@ unsafe fn hold_dabk(fighter: &mut L2CFighterCommon, boma: *mut BattleObjectModul
 
 unsafe fn heel_slide_off(fighter: &mut L2CFighterCommon, boma: *mut BattleObjectModuleAccessor) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) {
-        if fighter.motion_frame() < 22.0 {
+        if fighter.motion_frame() < 25.0 {
             GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-            }
-        else {
+            VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_HEEL_SLIDE);            }
+        if fighter.motion_frame() > 28.0 {
             GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
+            VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_HEEL_SLIDE);
         }
+    }
+    if fighter.is_status(*FIGHTER_STATUS_KIND_DAMAGE_FALL) {
+        if VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HEEL_SLIDE) {
+            StatusModule::change_status_request(boma, *FIGHTER_STATUS_KIND_FALL, false);
+            VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_HEEL_SLIDE)
+        }
+    }
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_DAMAGE,
+     *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+     *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+     *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+     *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+     *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+     *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+     *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D]){
+        VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_HEEL_SLIDE)
     }
 }
 

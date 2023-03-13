@@ -272,6 +272,7 @@ pub mod vars {
             pub const IS_SPECIAL_S_CANCELED_INTO:  i32 = 0x0102;
             pub const IS_SPECIAL_HI_CANCELED_INTO: i32 = 0x0103;
             pub const IS_JUMP_KEEP:                i32 = 0x0104;
+            pub const IS_HEEL_SLIDE:               i32 = 0x0105;
 
 
             // ints
