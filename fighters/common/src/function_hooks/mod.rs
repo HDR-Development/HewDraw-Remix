@@ -579,25 +579,6 @@ unsafe fn status_module__change_status(status_module: *const u64, status_kind_ne
     call_original!(status_module, status_kind_next);
 }
 
-// This function calls MAIN status
-#[skyline::hook(offset = 0x48baf0)]
-unsafe fn lua_module__call_line_status_system(lua_module: *const u64) {
-    call_original!(lua_module);
-    let boma = *(lua_module as *mut *mut BattleObjectModuleAccessor).add(1);
-    let module_accessor: *mut ModuleAccessor = std::mem::transmute(boma);
-    let module_accessor = *module_accessor;
-    
-    // This block runs after MAIN status has already run
-    if StatusModule::is_changing(boma)
-    && !skip_early_main_status(boma, StatusModule::prev_status_kind(boma, 0))
-    && !skip_early_main_status(boma, StatusModule::status_kind(boma)) {
-        // Call EXEC status's calling function
-        // to allow energy applied in EXEC status to properly apply on frame 1 of a new status
-        let status_module__call_lua_line_system: extern "C" fn(*const TempModule) = std::mem::transmute(*(((module_accessor.status_module.vtable as u64) + 0x88) as *const u64));
-        status_module__call_lua_line_system(module_accessor.status_module);
-    }
-}
-
 pub fn install() {
     energy::install();
     effect::install();
@@ -638,7 +619,6 @@ pub fn install() {
     skyline::install_hooks!(
         before_collision,
         after_collision,
-        status_module__change_status,
-        lua_module__call_line_status_system
+        status_module__change_status
     );
 }
