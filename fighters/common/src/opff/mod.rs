@@ -25,6 +25,8 @@ pub mod floats;
 pub mod other;
 pub mod fe;
 
+use other::*;
+
 /*
 pub fn install() {
     // acmd::add_custom_hooks!(sys_line_system_control_fighter_hook);
@@ -113,4 +115,12 @@ pub unsafe fn moveset_edits(fighter: &mut L2CFighterCommon, info: &FrameInfo) {
     // Character Moveset Changes
     // moveset_changes::run(boma, id, cat, status_kind, situation_kind, motion_kind, fighter_kind, stick_x, stick_y, facing, frame);
     floats::run(fighter, boma, info.cat, info.status_kind, info.situation_kind, info.fighter_kind, info.stick_x, info.stick_y, info.facing);
+}
+
+pub fn install() {
+    // Reserved for common OPFF to be placed on exec status
+    // rather than main status (default behavior)
+    smashline::install_agent_frame_callbacks!(
+        decrease_knockdown_bounce_heights
+    );
 }
