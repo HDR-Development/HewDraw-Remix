@@ -21,13 +21,9 @@ unsafe fn robin_throw_hi_game(fighter: &mut L2CAgentBase) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
     }
     frame(lua_state, 18.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 7.0/(28.0 - 18.0));
-    }
+     FT_MOTION_RATE(fighter, 7.0/(28.0 - 18.0));
     frame(lua_state, 28.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-    }
+    FT_MOTION_RATE(fighter, 1.0);
 }
 
 #[acmd_script( agent = "reflet", script = "game_throwlw", category = ACMD_GAME, low_priority )]
@@ -50,9 +46,7 @@ unsafe fn robin_throw_lw_game(fighter: &mut L2CAgentBase) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
     }
     frame(lua_state, 24.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 11.0/(37.0 - 24.0));
-    }
+    FT_MOTION_RATE(fighter, 11.0/(37.0 - 24.0));
 }
 
 pub fn install() {
