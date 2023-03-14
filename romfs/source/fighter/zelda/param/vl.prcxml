@@ -21,7 +21,7 @@
       <float hash="angle_max">85</float>
       <float hash="life">60</float>
       <float hash="count">60</float>
-      <float hash="size_max">4</float>
+      <float hash="size_max">3</float>
       <float hash="bang_time">180</float>
       <float hash="size_min">2</float>
     </struct>

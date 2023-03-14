@@ -46,6 +46,7 @@ fn zelda_init(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
+    install_status_scripts!();
     smashline::install_agent_init_callbacks!(zelda_init);
     dein::install();
     phantom::install();

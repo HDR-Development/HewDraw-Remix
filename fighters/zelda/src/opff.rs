@@ -45,6 +45,13 @@ unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &m
 }
 
 unsafe fn phantom_special_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR])
+    && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
+    && !fighter.is_in_hitlag() {
+        if fighter.is_cat_flag(Cat1::SpecialLw) && VarModule::is_flag(fighter.battle_object, vars::zelda::instance::READY_PHANTOM) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, false);
+        }
+    }
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK,
                                         *FIGHTER_STATUS_KIND_ATTACK_S3,
                                         *FIGHTER_STATUS_KIND_ATTACK_HI3,
@@ -52,8 +59,7 @@ unsafe fn phantom_special_cancel(fighter: &mut L2CFighterCommon, boma: &mut Batt
                                         *FIGHTER_STATUS_KIND_ATTACK_S4,
                                         *FIGHTER_STATUS_KIND_ATTACK_HI4,
                                         *FIGHTER_STATUS_KIND_ATTACK_LW4,
-                                        *FIGHTER_STATUS_KIND_ATTACK_DASH,
-                                        *FIGHTER_STATUS_KIND_ATTACK_AIR])
+                                        *FIGHTER_STATUS_KIND_ATTACK_DASH])
     && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
     && !fighter.is_in_hitlag() {
         if fighter.is_cat_flag(Cat1::SpecialLw) && VarModule::is_flag(fighter.battle_object, vars::zelda::instance::READY_PHANTOM) {
