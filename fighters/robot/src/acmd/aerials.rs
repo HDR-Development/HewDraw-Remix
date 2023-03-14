@@ -1,4 +1,4 @@
-
+use crate::vars::robot::instance::AIRTIME_DAIR;
 use super::*;
 
 #[acmd_script( agent = "robot", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
@@ -247,7 +247,10 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
             ATTACK(fighter, 1, 0, Hash40::new("hip"), 16.0, 35, 95, 0, 30, 4.0, 7.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
             ATTACK(fighter, 2, 0, Hash40::new("knee"), 14.0, 35, 95, 0, 30, 4.0, 0.0, 0.0, 0.0, Some(16.0), Some(0.0), Some(0.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
         } else {
-            SET_SPEED_EX(fighter, 1.1, 0.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            if WorkModule::is_flag(boma, vars::robot::instance::AIRTIME_BAIR) {
+                SET_SPEED_EX(fighter, 1.1, 0.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            }
+
             ATTACK(fighter, 0, 0, Hash40::new("knee"), 12.0, 35, 80, 0, 35, 6.0, 0.0, 0.0, 0.0, Some(4.0), Some(0.0), Some(0.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
             ATTACK(fighter, 1, 0, Hash40::new("hip"), 12.0, 35, 80, 0, 35, 4.0, 7.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
             ATTACK(fighter, 2, 0, Hash40::new("knee"), 12.0, 35, 80, 0, 35, 4.0, 0.0, 0.0, 0.0, Some(12.0), Some(0.0), Some(0.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
@@ -265,6 +268,7 @@ unsafe fn robot_attack_air_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 34.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        WorkModule::off_flag(boma, vars::robot::instance::AIRTIME_BAIR);
         FT_MOTION_RATE(fighter, 1.0);
     }
     frame(lua_state, 40.0);
@@ -459,7 +463,9 @@ unsafe fn robot_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 19.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
-        //SET_SPEED_EX(fighter, -0.1, 1.18, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        if WorkModule::is_flag(boma, vars::robot::instance::AIRTIME_DAIR) {
+            SET_SPEED_EX(fighter, -0.1, 1.18, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        }
         /* Ground-only */
         ATTACK(fighter, 0, 0, Hash40::new("knee"), 12.0, 280, 90, 0, 15, 5.0, -4.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
         ATTACK(fighter, 1, 0, Hash40::new("knee"), 11.0, 280, 90, 0, 15, 7.5, 5.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
@@ -481,6 +487,7 @@ unsafe fn robot_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 27.0);
     if is_excute(fighter) {
+        WorkModule::off_flag(boma, vars::robot::instance::AIRTIME_DAIR);
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 51.0);
