@@ -11,7 +11,6 @@ unsafe fn piranhacopter_cancel(boma: &mut BattleObjectModuleAccessor, status_kin
     {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_HI_END, false);
     }
-
     if status_kind == *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_HI_END
     && boma.is_motion(Hash40::new("special_hi"))
     {
@@ -61,14 +60,15 @@ unsafe fn stance_head(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 unsafe fn stance_init_effects(fighter: &mut L2CFighterCommon) {
     if VarModule::is_flag(fighter.object(), vars::packun::instance::STANCE_INIT) {
+        EFFECT(fighter, Hash40::new("sys_level_up"), Hash40::new("top"), -2, 10, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, true);
         if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 0 {
-            LANDING_EFFECT(fighter, Hash40::new("sys_grass"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_grass"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.5, false);
         }
         else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
-            LANDING_EFFECT(fighter, Hash40::new("packun_poison_max"), Hash40::new("mouth"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+            EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("top"), 0, 15.5, 0, 0, 0, 0, 1.2, false);
         }
         else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
-            LANDING_EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, false);
         }
         VarModule::off_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
     }
@@ -175,6 +175,13 @@ unsafe fn ptooie_scale(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
+// Allows hold input to transition to rapid jab if in Putrid stance
+unsafe fn putrid_gentleman(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_motion(Hash40::new("attack_13")) && VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
+        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_100, false);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     piranhacopter_cancel(boma, status_kind, situation_kind, cat[0]);
 	//spike_head_mesh_test(boma);
@@ -184,6 +191,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     check_reset(fighter);
     check_apply_speeds(fighter);
     stance_init_effects(fighter);
+    putrid_gentleman(boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_PACKUN )]

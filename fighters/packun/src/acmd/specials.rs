@@ -51,7 +51,7 @@ unsafe fn packun_special_s_shoot_game(fighter: &mut L2CAgentBase) {
         if is_excute(fighter) {
             if charged {
                 ATTACK(fighter, 0, 0, Hash40::new("mouth"), 3.0, 50, 66, 0, 70, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BITE);
-                AttackModule::set_poison_param(boma, 0, 136, 45, 5.0, false);
+                AttackModule::set_poison_param(boma, 0, 136, 45, 4.0, false);
             }
             else {
                 ATTACK(fighter, 0, 0, Hash40::new("mouth"), 2.0, 50, 66, 0, 70, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BITE);
@@ -72,22 +72,23 @@ unsafe fn packun_special_s_shoot_game(fighter: &mut L2CAgentBase) {
         if is_excute(fighter) {
             FT_MOTION_RATE(fighter, 1.0);
             if charged {
-                ATTACK(fighter, 0, 0, Hash40::new("mouth"), 16.0, 290, 100, 30, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 2.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
-                AttackModule::set_add_reaction_frame(boma, 0, 20.0, false);
+                ATTACK(fighter, 0, 0, Hash40::new("mouth"), 16.0, 180, 100, 30, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+                ATTACK(fighter, 1, 0, Hash40::new("mouth"), 16.0, 90, 100, 80, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+                AttackModule::set_add_reaction_frame(boma, 0, 11.0, false);
             }
             else {
-                ATTACK(fighter, 0, 0, Hash40::new("mouth"), 10.0, 290, 100, 30, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 5.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
-            }
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
-                let hit = true;
+                ATTACK(fighter, 0, 0, Hash40::new("mouth"), 10.0, 180, 100, 30, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 5.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+                ATTACK(fighter, 1, 0, Hash40::new("mouth"), 10.0, 90, 100, 80, 0, 9.0, 2.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 1.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 5.0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BITE);
+                AttackModule::set_add_reaction_frame(boma, 0, 10.0, false);
             }
         }
-
         wait(lua_state, 3.0);
         if is_excute(fighter) {
             AttackModule::clear_all(boma);
-            if hit {
-                FT_MOTION_RATE(fighter, 0.5);
+            if stance == 2 {
+                if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+                    FT_MOTION_RATE(fighter, 0.5);
+                }
             }
             else {
                 FT_MOTION_RATE(fighter, 0.7);
@@ -103,6 +104,9 @@ unsafe fn packun_special_s_end_effect(fighter: &mut L2CAgentBase) {
     let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        if stance == 0 {
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_flash"), Hash40::new("mouth"), 2, -2, 0, 0, 0, 0, 0.75, false);
+        }
         if stance == 1 {
             EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("mouth"), 3, -1, 0, 0, 0, 0, 1, true);
         }
@@ -127,7 +131,12 @@ unsafe fn packun_special_s_shoot_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         if stance == 1 {
-            EFFECT(fighter, Hash40::new("packun_poison_breath2"), Hash40::new("mouth"), 2, -0.6, 0, 0, 90, -100, 2, 0, 0, 0, 0, 0, 0, true);
+            for _ in 0..4 {
+                if is_excute(fighter) {
+                    EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("mouth"), 6, -0.6, 0, 0, 0, 0, 1.0, true);
+                }
+                wait(lua_state, 4.0);
+            }
         }
         else if stance == 0 {
             EFFECT(fighter, Hash40::new("packun_spikeball_shoot"), Hash40::new("mouth"), 2, -0.6, 0, 0, 90, -100, 1, 0, 0, 0, 0, 0, 0, true);
@@ -144,6 +153,10 @@ unsafe fn packun_special_s_shoot_effect(fighter: &mut L2CAgentBase) {
             }
         }
     }
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("packun_poison_max"), false, false);
+    }
 }
 
 #[acmd_script( agent = "packun", script = "effect_specialairsend", category = ACMD_EFFECT, low_priority )]
@@ -152,6 +165,9 @@ unsafe fn packun_special_air_s_end_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
     if is_excute(fighter) {
+        if stance == 0 {
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_flash"), Hash40::new("mouth"), 2, -2, 0, 0, 0, 0, 0.75, false);
+        }
         if stance == 1 {
             EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("mouth"), 3, -1, 0, 0, 0, 0, 1, true);
         }
@@ -173,7 +189,12 @@ unsafe fn packun_special_air_s_shoot_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         if stance == 1 {
-            EFFECT(fighter, Hash40::new("packun_poison_breath2"), Hash40::new("mouth"), 2, -0.6, 0, 0, 90, -100, 2, 0, 0, 0, 0, 0, 0, true);
+            for _ in 0..4 {
+                if is_excute(fighter) {
+                    EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("mouth"), 6, -0.6, 0, 0, 0, 0, 1.0, true);
+                }
+                wait(lua_state, 4.0);
+            }
         }
         else if stance == 0 {
             EFFECT(fighter, Hash40::new("packun_spikeball_shoot"), Hash40::new("mouth"), 2, -0.6, 0, 0, 90, -100, 1, 0, 0, 0, 0, 0, 0, true);
@@ -190,6 +211,10 @@ unsafe fn packun_special_air_s_shoot_effect(fighter: &mut L2CAgentBase) {
             }
         }
     }
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("packun_poison_max"), false, false);
+    }
 }
 
 #[acmd_script( agent = "packun", scripts = ["sound_specialsshoot", "sound_specialairsshoot"], category = ACMD_SOUND, low_priority )]
@@ -200,13 +225,13 @@ unsafe fn packun_special_s_shoot_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         //sound!(fighter, *MA_MSC_CMD_SOUND_STOP_SE_STATUS);
-    }
-    frame(lua_state, 3.0);
-    if is_excute(fighter) {
         if stance == 0 {
             PLAY_SE(fighter, Hash40::new("se_packun_special_n03"));
         }
-        else if stance == 1 {
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        if stance == 1 {
             PLAY_SE(fighter, Hash40::new("se_packun_special_s03"));
         }
         else if stance == 2 {
