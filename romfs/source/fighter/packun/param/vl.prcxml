@@ -15,6 +15,7 @@
     <struct index="0">
       <float hash="speed_y_max">1.0</float>
       <float hash="speed_x_max">1.4</float>
+      <int hash="start_no_landing_frame">11</int>
       <int hash="landing_frame">24</int>
     </struct>
     <hash40 index="1">dummy</hash40>

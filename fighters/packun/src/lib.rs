@@ -4,7 +4,7 @@
 
 pub mod acmd;
 
-//pub mod status;
+pub mod status;
 pub mod opff;
 
 use smash::{
@@ -83,7 +83,7 @@ pub fn install(is_runtime: bool) {
     smashline::install_agent_resets!(packun_reset);
     smashline::install_agent_init_callbacks!(packun_init);
     acmd::install();
-    //status::install();
+    status::install();
     opff::install(is_runtime);
 
     //smashline::install_status_script!(guard_cont_pre);
