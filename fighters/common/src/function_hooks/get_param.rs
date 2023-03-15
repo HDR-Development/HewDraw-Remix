@@ -83,13 +83,13 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
                     }
                 }
             }
-            else if VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
-                if x1 == hash40("param_spikeball") { 
-                    if x2 == hash40("out_range_y") {
-                        return 45;
-                    }
-                }
-            }
+            // else if VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
+            //     if x1 == hash40("param_spikeball") { 
+            //         if x2 == hash40("out_range_y") {
+            //             return 45;
+            //         }
+            //     }
+            // }
         }
     }
 
@@ -289,7 +289,7 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
 
         else if fighter_kind == *WEAPON_KIND_PACKUN_SPIKEBALL {
             if VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
-                if x1 == hash40("param_spikeball") { 
+                if x1 == hash40("param_spikeball") {
                     if x2 == hash40("hop_speed_x") {
                         return 0.0;
                     }
@@ -299,7 +299,7 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
                 }
             }
             else if VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
-                if x1 == hash40("param_spikeball") { 
+                if x1 == hash40("param_spikeball") {
                     if x2 == hash40("shoot_speed_x_max") {
                         return 1.5;
                     }

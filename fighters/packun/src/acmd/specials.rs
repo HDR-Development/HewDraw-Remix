@@ -1,6 +1,27 @@
 
 use super::*;
 
+#[acmd_script( agent = "packun", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority )]
+unsafe fn packun_special_n_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
+    frame(lua_state, 1.0);
+    if stance != 2 {
+        FT_MOTION_RATE(fighter, 0.7);
+    }
+    else {
+        FT_MOTION_RATE(fighter, 9.0/(9.0 - 1.0));
+    }
+    frame(lua_state, 9.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_PACKUN_STATUS_SPECIAL_N_FLAG_GENERATE_ARTICLE_SPIKEBALL);
+    }
+    frame(lua_state, 11.0);
+    FT_MOTION_RATE(fighter, 0.7);
+}
 
 #[acmd_script( agent = "packun", scripts = [ "game_specialsshoot", "game_specialairsshoot" ] , category = ACMD_GAME , low_priority)]
 unsafe fn packun_special_s_shoot_game(fighter: &mut L2CAgentBase) {
@@ -399,6 +420,7 @@ unsafe fn packun_special_lw_bite__attack_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        packun_special_n_start_game,
         packun_special_s_shoot_game,
         packun_special_s_end_effect,
         packun_special_s_shoot_effect,
