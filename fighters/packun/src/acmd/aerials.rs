@@ -168,14 +168,25 @@ unsafe fn packun_attack_air_b_effect(fighter: &mut L2CAgentBase) {
                 EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_mouth"), Hash40::new("mouth"), 7.5, 0, 0, 0, 0, 0, 0.6, true);
                 if h >= 2 {
                     EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("top"), -1.2, 4.0, -9.5, 0, 0, 0, 1.0, true);
+                    LAST_EFFECT_SET_COLOR(fighter, 0.5, 0.5, 0.5);
+                    EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("top"), -1.2, 4.0, -9.5, 0, 0, 0, 0.9, true);
                 }
             }
             wait(lua_state, 2.0);
+        }
+        frame(lua_state, 13.0);
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_mouth"), Hash40::new("top"), -1.2, 4.0, -9.5, 0, 0, 0, 1.0, true);
+            LAST_EFFECT_SET_RATE(fighter, 2.0);
         }
         frame(lua_state, 16.0);
         for _ in 0..3 {
             if is_excute(fighter) {
                 EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("top"), -1.2, 4.0, -9.5, 0, 0, 0, 1.0, true);
+                LAST_EFFECT_SET_COLOR(fighter, 0.5, 0.5, 0.5);
+                EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("top"), -1.2, 4.0, -9.5, 0, 0, 0, 0.9, true);
+                EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_mouth"), Hash40::new("top"), -1.2, 4.0, -9.5, 0, 0, 0, 1.0, true);
+                LAST_EFFECT_SET_RATE(fighter, 2.0);
             }
             wait(lua_state, 3.0);
         }
@@ -184,6 +195,31 @@ unsafe fn packun_attack_air_b_effect(fighter: &mut L2CAgentBase) {
             EFFECT(fighter, Hash40::new("sys_flame"), Hash40::new("top"), 0, 4.0, -10.5, 0, 0, 0, 1.4, 0, 0, 0, 0, 0, 0, true);
             LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.01, 0.5);
             LAST_EFFECT_SET_RATE(fighter, 1.25);
+        }
+    }
+}
+
+#[acmd_script( agent = "packun", script = "sound_attackairb", category = ACMD_SOUND, low_priority )]
+unsafe fn packun_attack_air_b_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        if stance != 1 {
+            PLAY_SE(fighter, Hash40::new("se_packun_attackair_b01"));
+        }
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        if stance == 1 {
+            PLAY_SE(fighter, Hash40::new("se_packun_special_s03"));
+        }
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        if stance == 1 {
+            PLAY_SE(fighter, Hash40::new("se_packun_attackair_b01"));
         }
     }
 }
@@ -284,6 +320,7 @@ pub fn install() {
         packun_attack_air_f_game,
         packun_attack_air_b_game,
         packun_attack_air_b_effect,
+        packun_attack_air_b_sound,
         packun_attack_air_hi_game,
         packun_attack_air_lw_game,
     );

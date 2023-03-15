@@ -28,6 +28,24 @@ unsafe fn packun_catch_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "packun", script = "game_catchattack", category = ACMD_GAME, low_priority )]
+unsafe fn packun_catch_attack_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let stance = VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE);
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        let damage = if stance != 1 { 0.0 } else { 0.3 };
+        let effect = if stance != 1 { Hash40::new("collision_attr_normal") } else { Hash40::new("collision_attr_purple") };
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.4 + damage, 361, 100, 30, 0, 5.0, 0.0, 10.0, 10.0, None, None, None, 2.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, effect, *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_HEAD);
+        AttackModule::set_catch_only_all(boma, true, false);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
 #[acmd_script( agent = "packun", script = "game_dash" , category = ACMD_GAME , low_priority)]
 unsafe fn dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -112,6 +130,20 @@ unsafe fn appeal_hi_game(fighter: &mut L2CAgentBase) {
     VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
 }
 
+#[acmd_script( agent = "packun", scripts = ["sound_appealhil", "sound_appealhir"], category = ACMD_SOUND, low_priority )]
+unsafe fn appeal_hi_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_packun_appear01"));
+    }
+}
+
 #[acmd_script( agent = "packun", scripts = [ "game_appealsl", "game_appealsr" ], category = ACMD_GAME , low_priority)]
 unsafe fn appeal_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -120,12 +152,50 @@ unsafe fn appeal_s_game(fighter: &mut L2CAgentBase) {
     VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
 }
 
+#[acmd_script( agent = "packun", scripts = ["sound_appealsl", "sound_appealsr"], category = ACMD_SOUND, low_priority )]
+unsafe fn appeal_s_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_packun_appeal_s01"));
+        PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_packun_appeal_s02"));
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_packun_appeal_s03"));
+    }
+    frame(lua_state, 46.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_packun_appeal_s04"));
+    }
+}
+
 #[acmd_script( agent = "packun", scripts = [ "game_appeallwl", "game_appeallwr" ], category = ACMD_GAME , low_priority)]
 unsafe fn appeal_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, 1);
     VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
+}
+
+#[acmd_script( agent = "packun", scripts = ["sound_appeallwl", "sound_appeallwr"], category = ACMD_SOUND, low_priority )]
+unsafe fn appeal_lw_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_packun_appeal_l01"));
+        PLAY_SE(fighter, Hash40::new("se_packun_special_s02"));
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_packun_appeal_l02"));
+    }
 }
 
 #[acmd_script( agent = "packun_spikeball", script = "game_start", category = ACMD_GAME, low_priority )]
@@ -354,12 +424,16 @@ pub fn install() {
         escape_air_game,
         escape_air_slide_game,
         packun_catch_game,
+        packun_catch_attack_game,
         dash_game,
         dash_sound,
         turn_dash_game,
         appeal_hi_game,
+        appeal_hi_sound,
         appeal_s_game,
+        appeal_s_sound,
         appeal_lw_game,
+        appeal_lw_sound,
         packun_spikeball_game_start,
         packun_spikeball_game_start_air,
         packun_spikeball_game_loop,

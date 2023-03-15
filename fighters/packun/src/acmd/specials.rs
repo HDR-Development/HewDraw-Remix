@@ -155,6 +155,10 @@ unsafe fn packun_special_s_shoot_effect(fighter: &mut L2CAgentBase) {
             for _ in 0..4 {
                 if is_excute(fighter) {
                     EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("mouth"), 6, -0.6, 0, 0, 0, 0, 1.0, true);
+                    LAST_EFFECT_SET_COLOR(fighter, 0.5, 0.5, 0.5);
+                    EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("mouth"), 6, -0.6, 0, 0, 0, 0, 0.9, true);
+                    EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_mouth"), Hash40::new("mouth"), 6, -0.6, 0, 0, 0, 0, 1.0, true);
+                    LAST_EFFECT_SET_RATE(fighter, 2.0);
                 }
                 wait(lua_state, 4.0);
             }
@@ -213,6 +217,10 @@ unsafe fn packun_special_air_s_shoot_effect(fighter: &mut L2CAgentBase) {
             for _ in 0..4 {
                 if is_excute(fighter) {
                     EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("mouth"), 6, -0.6, 0, 0, 0, 0, 1.0, true);
+                    LAST_EFFECT_SET_COLOR(fighter, 0.5, 0.5, 0.5);
+                    EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("mouth"), 6, -0.6, 0, 0, 0, 0, 0.9, true);
+                    EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_mouth"), Hash40::new("mouth"), 6, -0.6, 0, 0, 0, 0, 1.0, true);
+                    LAST_EFFECT_SET_RATE(fighter, 2.0);
                 }
                 wait(lua_state, 4.0);
             }
@@ -418,6 +426,85 @@ unsafe fn packun_special_lw_bite__attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "packun", script = "effect_speciallwbite", category = ACMD_EFFECT, low_priority )]
+unsafe fn packun_special_lw_bite_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_v_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("packun_longrange_start"), Hash40::new("mouth"), 0, 0, 0, 180, 0, 0, 0.85, true);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("packun_longrange_bite_line"), Hash40::new("mouth"), 6, 0, 0, 0, 90, 0, 0.8, true);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        if stance.label == 1 {
+            EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("mouth"), 6, -0.6, 0, 0, 0, 0, 1.0, true);
+            LAST_EFFECT_SET_COLOR(fighter, 0.5, 0.5, 0.5);
+            EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("mouth"), 6, -0.6, 0, 0, 0, 0, 0.9, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_mouth"), Hash40::new("mouth"), 6, -0.6, 0, 0, 0, 0, 1.0, true);
+            LAST_EFFECT_SET_RATE(fighter, 2.0);
+        }
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        let size = if stance.label != 2 { 0.85 } else { 1.0 };
+        EFFECT_FOLLOW(fighter, Hash40::new("packun_longrange_bite"), Hash40::new("mouth"), 0, 0, 0, 180, 0, 0, size, true);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("packun_longrange_bite"), -1);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        let size = if stance.label != 2 { 0.9 } else { 1.0 };
+        EFFECT_FOLLOW(fighter, Hash40::new("packun_longrange_bite_line2"), Hash40::new("mouth"), 5, 0, 0, 0, 90, 0, size, true);
+    }
+}
+
+#[acmd_script( agent = "packun", script = "effect_specialairlwbite", category = ACMD_EFFECT, low_priority )]
+unsafe fn packun_special_air_lw_bite_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("packun_longrange_start"), Hash40::new("mouth"), 0, 0, 0, 180, 0, 0, 0.85, true);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        if stance.label == 1 {
+            EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("mouth"), 6, -0.6, 0, 0, 0, 0, 1.0, true);
+            LAST_EFFECT_SET_COLOR(fighter, 0.5, 0.5, 0.5);
+            EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_max"), Hash40::new("mouth"), 6, -0.6, 0, 0, 0, 0, 0.9, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("packun_poison_mouth"), Hash40::new("mouth"), 6, -0.6, 0, 0, 0, 0, 1.0, true);
+            LAST_EFFECT_SET_RATE(fighter, 2.0);
+        }
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        let size = if stance.label != 2 { 0.85 } else { 1.0 };
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("packun_longrange_bite_line"), Hash40::new("mouth"), 6, 0, 0, 0, 90, 0, 0.9, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("packun_longrange_bite"), Hash40::new("mouth"), 0, 0, 0, 180, 0, 0, size, true);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("packun_longrange_bite"), -1);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        let size = if stance.label != 2 { 0.9 } else { 1.0 };
+        EFFECT_FOLLOW(fighter, Hash40::new("packun_longrange_bite_line2"), Hash40::new("mouth"), 5, 0, 0, 0, 90, 0, size, true);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         packun_special_n_start_game,
@@ -431,5 +518,7 @@ pub fn install() {
         packun_special_air_hi_game,
         packun_special_lw_bite_attack_game,
         packun_special_lw_bite__attack_game,
+        packun_special_lw_bite_effect,
+        packun_special_air_lw_bite_effect,
     );
 }
