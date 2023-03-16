@@ -101,7 +101,7 @@ unsafe fn packun_attack_air_b_game(fighter: &mut L2CAgentBase) {
             WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         }
     }
-    else if stance.label == 1 {
+    else {
         frame(lua_state, 5.0);
         if is_excute(fighter) {
             WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -111,7 +111,7 @@ unsafe fn packun_attack_air_b_game(fighter: &mut L2CAgentBase) {
         if is_excute(fighter) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0 * stance.damage_other, 366, 90, 0, 25, 7.0, 0.0, 4.0, -8.5, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
         }
-        wait(lua_state, 12.0);
+        frame(lua_state, 26.0);
         if is_excute(fighter) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0 * stance.damage_other, 50, 108, 0, 25, 9.0, 0.0, 4.0, -8.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
             AttackModule::set_poison_param(boma, 0, 136, 45, 2.0, false);
