@@ -5,8 +5,11 @@ use globals::*;
 
  
 unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI
-    && boma.motion_frame() <= 1.0 {
+    && StatusModule::is_changing(boma) {
         VarModule::off_flag(boma.object(), vars::mewtwo::instance::GROUNDED_TELEPORT);
         if situation_kind == *SITUATION_KIND_GROUND {
             VarModule::on_flag(boma.object(), vars::mewtwo::instance::GROUNDED_TELEPORT);
@@ -35,7 +38,7 @@ unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut Bat
 unsafe fn dj_upB_jump_refresh(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_JUMP_AERIAL) {
         // If first 3 frames of dj
-        if fighter.motion_frame() <= 3.0 {
+        if fighter.status_frame() <= 2 {
             VarModule::on_flag(fighter.battle_object, vars::mewtwo::instance::UP_SPECIAL_JUMP_REFRESH);
         }
         else {

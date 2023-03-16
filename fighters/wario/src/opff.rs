@@ -10,6 +10,9 @@ unsafe fn bite_early_throw_turnaround(boma: &mut BattleObjectModuleAccessor, sta
             boma.change_status_req(*FIGHTER_WARIO_STATUS_KIND_SPECIAL_N_BITE_END, false);
         }
     }
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if status_kind == *FIGHTER_WARIO_STATUS_KIND_SPECIAL_N_BITE_END {
         if frame < 7.0 {
             if facing * stick_x < 0.0 {

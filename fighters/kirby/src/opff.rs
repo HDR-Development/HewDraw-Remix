@@ -5,6 +5,9 @@ use globals::*;
 
  
 unsafe fn final_cutter_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, cat1: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_HI2].contains(&status_kind){
         if(AttackModule::is_infliction(boma, 2)){
             VarModule::on_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_HIT);
@@ -309,6 +312,9 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 }
 
 unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if motion_kind == hash40("special_air_s_start") {
         MotionModule::set_rate(boma, 1.75);
     }
