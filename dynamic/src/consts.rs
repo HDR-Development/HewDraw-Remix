@@ -163,6 +163,8 @@ pub mod vars {
 
             pub const BEFORE_GROUND_COLLISION: i32 = 0x0057;
 
+            pub const IS_IGNORED_STATUS_FRAME_0: i32 = 0x0058;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -186,6 +188,7 @@ pub mod vars {
             pub const AGT_USED_COUNTER: i32 = 0x000A;
 
             pub const CLIFF_XLU_FRAME: i32 = 0x000B;
+            pub const LAST_ATTACK_HITBOX_ID: i32 = 0x000C;
 
             // floats
 
@@ -216,6 +219,10 @@ pub mod vars {
             /// a character's jump speed max for momentum transfer (for meta quick, etc)
             pub const JUMP_SPEED_MAX_MUL: i32 = 0x0014;
             pub const ECB_TOP_Y_OFFSET: i32 = 0x0015;
+            pub const LAST_ATTACK_HIT_LOCATION: i32 = 0x0016;
+            pub const LAST_ATTACK_HIT_LOCATION_X: i32 = 0x0016;
+            pub const LAST_ATTACK_HIT_LOCATION_Y: i32 = 0x0017;
+            pub const LAST_ATTACK_HIT_LOCATION_Z: i32 = 0x0018;
         }
         pub mod status {
             // flags
@@ -970,6 +977,13 @@ pub mod vars {
         }
     }
 
+    pub mod wolf {
+        pub mod status {
+            // flags
+            pub const SPECIAL_S_RESERVE_FALL: i32 = 0x1100;
+        }
+    }
+
 }
 
 pub mod statuses {
@@ -998,4 +1012,8 @@ pub mod statuses {
         pub const SPECIAL_N_CANCEL_JUMP: i32 = 1;
     }
 
+    pub mod wolf {
+        pub const SPECIAL_S_RUSH: i32 = 0;
+        pub const SPECIAL_S_END: i32 = 1;
+    }
 }

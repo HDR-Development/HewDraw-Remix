@@ -119,6 +119,46 @@ fn change_version_string_hook(arg: u64, string: *const c_char) {
     }
 }
 
+#[skyline::from_offset(0x23ecb70)]
+unsafe fn music_function1(arg: u64);
+
+#[skyline::from_offset(0x23ed420)]
+unsafe fn music_function2(arg: u64, arg2: u64);
+
+#[skyline::hook(offset = 0x14f97bc, inline)]
+unsafe fn training_reset_music2(ctx: &skyline::hooks::InlineCtx) {
+    if !smash::app::smashball::is_training_mode() {
+        music_function2(*ctx.registers[0].x.as_ref(), *ctx.registers[1].x.as_ref());
+    }
+}
+
+#[skyline::hook(offset = 0x1509dc4, inline)]
+unsafe fn training_reset_music1(ctx: &skyline::hooks::InlineCtx) {
+    if !smash::app::smashball::is_training_mode() {
+        music_function1(*ctx.registers[0].x.as_ref());
+    }
+}
+
+#[skyline::hook(offset = 0x235be30, inline)]
+unsafe fn main_menu_quick(ctx: &skyline::hooks::InlineCtx) {
+    let sp = (ctx as *const skyline::hooks::InlineCtx as *mut u8).add(0x100);
+    *(sp.add(0x60) as *mut u64) = 0x1100000000;
+    let mut slice = std::slice::from_raw_parts_mut(sp.add(0x68), 18);
+    slice.copy_from_slice(b"MenuSequenceScene\0");
+    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0) as *const u64;
+    // if we are in the controls menu mode, there is no ui overlay, so dont update the hud
+    println!("{:#x}", *mode);
+}
+
+#[skyline::from_offset(0x353f4d0)]
+fn load_file_by_hash40(tables: u64, hash: u64);
+
+#[skyline::hook(offset = 0x1864310, inline)]
+unsafe fn title_screen_play(_: &skyline::hooks::InlineCtx) {
+    let tables = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *const u8).add(0x5330f20) as *const u64);
+    load_file_by_hash40(tables, smash::hash40("ui/layout/menu/main_menu/main_menu/layout.arc"));
+}
+
 std::arch::global_asm!(
     r#"
     .section .nro_header
@@ -161,6 +201,9 @@ pub extern "C" fn main() {
         controls::install();
         lua::install();
         online::install();
+        skyline::patching::Patch::in_text(0x14f97bc).nop().unwrap();
+        skyline::patching::Patch::in_text(0x1509dc4).nop().unwrap();
+        skyline::install_hooks!(training_reset_music1, training_reset_music2, main_menu_quick, title_screen_play);
     }
 
     #[cfg(not(feature = "runtime"))]

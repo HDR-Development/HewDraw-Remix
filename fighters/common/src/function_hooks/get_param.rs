@@ -1,5 +1,6 @@
 use super::*;
 use globals::*;
+use std::arch::asm;
 // Addresses, offsets, and inline hooking
 use skyline::hooks::{getRegionAddress, Region, InlineCtx};
 
@@ -9,7 +10,9 @@ pub fn install() {
         //get_inline_offset,
         get_param_int_hook,
         get_param_float_hook,
+        //get_item_backtrace_inline,
     );
+    //skyline::nro::add_hook(item_nro_hook);
 }
 
 static INT_OFFSET: usize = 0x4e5380; // 12.0.0
@@ -138,6 +141,21 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
             }
         }
 
+        else if fighter_kind == *FIGHTER_KIND_SHEIK {
+            if x1 == hash40("param_special_s") {
+                if x2 == hash40("throw_angle") {
+                    if ControlModule::get_stick_y(boma) > 0.0 {
+                        return 10.0 + ControlModule::get_stick_y(boma) * 40.0;
+                    }
+                }
+                if x2 == hash40("throw_speed") {
+                    if ControlModule::get_stick_y(boma) > 0.0 {
+                        return 4.0 - ControlModule::get_stick_y(boma) * 1.0;
+                    }
+                }
+            }
+        }
+
         // else if fighter_kind == *FIGHTER_KIND_PICKEL {
         //     if [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL].contains(&StatusModule::status_kind(boma)) {
         //         if ControlModule::get_stick_x(boma) * PostureModule::lr(boma) > 0.5 {
@@ -241,3 +259,37 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
 
     original!()(x0, x1, x2)
 }
+
+// #[skyline::hook(offset=0x165d0b0, inline)]
+// unsafe fn get_item_backtrace_inline(ctx: &InlineCtx) {
+//     ::utils::dump_trace!(0x0);
+// }
+
+// fn item_nro_hook(info: &skyline::nro::NroInfo) {
+//     if info.name == "item" {
+//         unsafe {
+//             //println!("Module Base: {:#x}", (*info.module.ModuleObject).module_base);
+//             EXPLOSIONBOMB_ADDRESS += (*info.module.ModuleObject).module_base;
+//             skyline::install_hook!(get_explosionbomb_hook);
+//         }
+//     }
+// }
+
+// static mut EXPLOSIONBOMB_ADDRESS: u64 = 0x8c4940;//0x8c493c;
+
+// #[skyline::hook(replace=EXPLOSIONBOMB_ADDRESS, inline)]
+// pub unsafe fn get_explosionbomb_hook(ctx: &InlineCtx) {
+//     let agent = (*ctx.registers[21].x.as_ref()) as *mut L2CAgentBase;
+//     //println!("Agent: {}", (*agent).kind());
+//     let lua_state = (*agent).lua_state_agent;
+//     let item_boma = sv_system::battle_object_module_accessor(lua_state);
+//     let owner_id = WorkModule::get_int(item_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+//     if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_SHEIK {
+// 		let sheik = utils::util::get_battle_object_from_id(owner_id);
+//         let item_id = item_boma.battle_object_id;
+//         VarModule::set_int(sheik, vars::sheik::status::GRENADE_OBJECT_ID, item_id as i32);
+//         //let sheik_boma = &mut *(*zelda).module_accessor;
+//         //let value = VarModule::get_float(sheik, vars::sheik::status::GRENADE_GRAVITY);
+//         //asm!("fmov s0, w8", in("w8") value);
+//     }
+// }
