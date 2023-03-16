@@ -5,6 +5,9 @@ use globals::*;
 
  
 unsafe fn gyro_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     let current_fuel = WorkModule::get_float(boma, *FIGHTER_ROBOT_INSTANCE_WORK_ID_FLOAT_BURNER_ENERGY_VALUE);
     let max_fuel = WorkModule::get_param_float(boma, hash40("param_special_hi"), hash40("energy_max_frame"));
     // Use 50% fuel to dash cancel gyro
