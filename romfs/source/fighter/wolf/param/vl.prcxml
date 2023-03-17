@@ -48,7 +48,7 @@
   <list hash="param_special_lw">
     <struct index="0">
       <float hash="reflector_air_start_x_mul">0.8</float>
-      <int hash="reflector_air_stop_y_frame">4</int>
+      <int hash="reflector_air_stop_y_frame">3</int>
       <float hash="reflector_air_accel_y">0.04</float>
     </struct>
     <hash40 index="1">dummy</hash40>
