@@ -95,7 +95,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 pub fn sheik_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-		sheik_frame(fighter)
+        sheik_frame(fighter)
     }
 }
 
