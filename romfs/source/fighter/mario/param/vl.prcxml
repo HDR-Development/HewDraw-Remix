@@ -11,8 +11,8 @@
       <float hash="gravity_accel">0.07</float>
       <float hash="angle">-10</float>
       <float hash="bound_ref_speed_mul">0.90</float>
-      <float hash="bounded_speed_y_min">1.5</float>
-      <float hash="bounded_speed_y_max">3.0</float>
+      <float hash="bounded_speed_y_min">1.4</float>
+      <float hash="bounded_speed_y_max">2.8</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
