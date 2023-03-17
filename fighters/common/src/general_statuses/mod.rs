@@ -122,6 +122,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sys_line_status_system_control_hook,
             status_FallSub_hook,
             super_jump_punch_main_hook,
+            sub_cliff_uniq_process_exec_fix_pos,
             end_pass_ground
         );
     }
@@ -381,11 +382,9 @@ pub unsafe fn sys_line_status_system_control_hook(fighter: &mut L2CFighterBase) 
         let situation_kind = StatusModule::situation_kind(fighter.module_accessor);
         fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(situation_kind));
         fighter.global_table[0xD].assign(&L2CValue::Bool(false));
-        VarModule::off_flag(fighter.battle_object, vars::common::instance::CHECK_CHANGE_MOTION_ONLY);
         0.into()
     }
     else {
-        if VarModule::has_var_module(fighter.battle_object) { VarModule::off_flag(fighter.battle_object, vars::common::instance::CHECK_CHANGE_MOTION_ONLY); }
         call_original!(fighter)
     }
 }
@@ -429,6 +428,14 @@ pub unsafe fn super_jump_punch_main_hook(fighter: &mut L2CFighterCommon) {
         let new_status = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_STATUS_KIND_END);
         fighter.change_status_req(new_status, false);
     }
+}
+
+// I honestly don't know why this function was needed in vanilla in the first place
+// Forces situation kind changes during ledge actions, even though situation kind automatically changes based on character position
+// Also forces ECB shape changes, while stubbing this doesn't affect ECB shape whatsoever
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_cliff_uniq_process_exec_fix_pos)]
+pub unsafe fn sub_cliff_uniq_process_exec_fix_pos(fighter: &mut L2CFighterCommon) {
+    return;
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_end_pass_ground)]
