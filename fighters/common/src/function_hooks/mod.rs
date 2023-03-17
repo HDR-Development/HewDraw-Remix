@@ -306,8 +306,8 @@ unsafe fn before_collision(object: *mut BattleObject) {
             kinetic_module__update_energy(module_accessor.kinetic_module, unk3);
 
             let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3a8f50);
-            let battle_object__update_movement: extern "C" fn(*mut BattleObject, i32) = std::mem::transmute(func_addr);
-            battle_object__update_movement(object, unk3);
+            let battle_object__update_movement: extern "C" fn(*mut BattleObject, bool) = std::mem::transmute(func_addr);
+            battle_object__update_movement(object, !is_stop);
 
             let damage_module__update: extern "C" fn(*const TempModule) = std::mem::transmute(*(((module_accessor.damage_module.vtable as u64) + 0x58) as *const u64));
             damage_module__update(module_accessor.damage_module);
@@ -333,8 +333,8 @@ unsafe fn before_collision(object: *mut BattleObject) {
             kinetic_module__update_energy(module_accessor.kinetic_module, 24);
 
             let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3a8f50);
-            let battle_object__update_movement: extern "C" fn(*mut BattleObject, i32) = std::mem::transmute(func_addr);
-            battle_object__update_movement(object, unk2);
+            let battle_object__update_movement: extern "C" fn(*mut BattleObject, bool) = std::mem::transmute(func_addr);
+            battle_object__update_movement(object, !is_stop);
         }
     }
     else {
