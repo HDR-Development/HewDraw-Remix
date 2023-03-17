@@ -178,10 +178,10 @@ jobs:
         fileName: "lvd_dumper.zip"
 
     - name: extract lvd data
-        id: lvd_extract
-        shell: bash
-        run: |
-          . scripts/extract_lvd_data.sh
+      id: lvd_extract
+      shell: bash
+      run: |
+        . scripts/extract_lvd_data.sh
 
     # get the most recent latest full release
     - id: package_latest
