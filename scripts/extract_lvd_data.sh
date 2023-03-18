@@ -4,11 +4,10 @@ TOP="$(pwd)"
 
 ls -lart
 unzip lvd_dumper.zip
-cd scripts
-ls switch-package/
-ls switch-package/ultimate/mods/hdr-stages/stage/
+ls * -lart
+ls switch-package/sdcard/ultimate/mods/hdr-stages/stage/
 mkdir lvd
-cp switch-package/ultimate/mods/hdr-stages/stage/ lvd -rf
+cp switch-package/sdcard/ultimate/mods/hdr-stages/stage/ lvd -rf
 
 find lvd -not -name '*.lvd' -type f | xargs rm
 cd $TOP/publish
