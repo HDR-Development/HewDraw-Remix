@@ -192,6 +192,97 @@ std::arch::global_asm!(
     "#
 );
 
+use skyline::hooks::InlineCtx;
+use smash::lua2cpp::*;
+use smash::lib::lua_const::*;
+#[skyline::from_offset(0x15433b0)]
+unsafe fn ask_game_state_nicely(arg: *mut u64, game_state: u64, hash: u64);
+#[skyline::from_offset(0x135a0d0)]
+unsafe fn push_something_base(addr: u64);
+#[skyline::from_offset(0x135ac60)]
+unsafe fn push_hash_base(addr: u64);
+unsafe fn push_something(game_state: u64, amt: u32) {
+    let game_state = game_state as *mut u64;
+    let mut val1 = *game_state.add(0x100 / 8);
+    let mut val2 = *game_state.add(0x108 / 8);
+    let mut val3 = if val2 - val1 != 0 {
+        (val2 - val1) * 0x20 - 1
+    } else { 0 };
+
+    let mut val4 = *game_state.add(0x120 / 8) + *game_state.add(0x118 / 8);
+    if val4 == val3 {
+        push_something_base(game_state as u64 + 0xf8);
+        val4 = *game_state.add(0x120 / 8) + *game_state.add(0x118 / 8);
+        val1 = *game_state.add(0x100 / 8);
+        val2 = *game_state.add(0x108 / 8);
+    }
+    let addr = *((val1 + (val4 >> 5 & !0x7)) as *mut u64) + (val4 & 0xFF) * 0x10;
+    *(addr as *mut u32) = amt;
+    *(addr as *mut u64).add(1) = 0xFFFFFFFF_FFFFFFFF;
+    *game_state.add(0x120 / 8) += 1;
+}
+
+unsafe fn push_hash(game_state: u64, hash: u64) {
+    let game_state = game_state as *mut u64;
+    let mut val1 = *game_state.add(200 / 8);
+    let mut val2 = *game_state.add(0xd0 / 8);
+    let mut val3 = if val2 - val1 != 0 {
+        (val2 - val1) * 0x40 - 1
+    } else { 0 };
+    let mut val4 = *game_state.add(0xe8 / 8) + *game_state.add(0xe0 / 8);
+    if val4 == val3 {
+        push_hash_base(game_state as u64 + 0xc0);
+        val4 = *game_state.add(0xe8 / 8) + *game_state.add(0xe0 / 8);
+        val1 = *game_state.add(200 / 8);
+    }
+    let addr = *((val1 + (val4 >> 6 & !7)) as *mut u64) + (val4 & 0x1FF) * 8;
+    *(addr as *mut u64) = hash;
+    *game_state.add(0xe8 / 8) += 1;
+}
+
+// let this code stay dormant but this is an example of how to abuse the game state,
+// this will exit the game without going to results at the end.
+#[skyline::hook(offset = 0x14d6570)]
+unsafe fn game_end(game_state: u64) {
+    push_something(game_state, 2);
+    push_hash(game_state, smash::hash40("statewaitforruletofinish"));
+    push_hash(game_state, smash::hash40("statewaitendproduction"));
+    push_hash(game_state, smash::hash40("stateapplyparameters"));
+    push_hash(game_state, smash::hash40("statewaitforsyncwhenending"));
+    push_hash(game_state, smash::hash40("statefadeoutwhenending"));
+    push_hash(game_state, smash::hash40("stateexit"));
+}
+
+
+#[repr(C)]
+pub struct FuckingAssStringStructureShit {
+    pub fuck_if_i_know: u32,
+    pub len: u32,
+    pub shit_ass_string: [u8; 40]
+}
+
+impl FuckingAssStringStructureShit {
+    pub fn set(&mut self, replacement: &str) {
+        self.len = replacement.len() as u32;
+        self.shit_ass_string[..replacement.len()].copy_from_slice(replacement.as_bytes());
+        self.shit_ass_string[replacement.len()] = b'\0';
+    }
+}
+
+#[skyline::hook(offset = 0x2334b58, inline)]
+unsafe fn sss_to_css(ctx: &InlineCtx) {
+    let thing = *ctx.registers[1].x.as_ref() as *mut FuckingAssStringStructureShit;
+    (*thing).set("CharaSelectScene");
+}
+
+#[skyline::hook(offset = 0x23344e4, inline)]
+unsafe fn css_to_sss(ctx: &InlineCtx) {
+    let thing = *ctx.registers[1].x.as_ref() as *mut FuckingAssStringStructureShit;
+    (*thing).set("StageSelectScene");
+
+}
+
+
 #[no_mangle]
 pub extern "C" fn main() {
     #[cfg(feature = "main_nro")] {
@@ -203,7 +294,7 @@ pub extern "C" fn main() {
         online::install();
         skyline::patching::Patch::in_text(0x14f97bc).nop().unwrap();
         skyline::patching::Patch::in_text(0x1509dc4).nop().unwrap();
-        skyline::install_hooks!(training_reset_music1, training_reset_music2, main_menu_quick, title_screen_play);
+        skyline::install_hooks!(training_reset_music1, training_reset_music2, main_menu_quick, title_screen_play, sss_to_css, css_to_sss);
     }
 
     #[cfg(not(feature = "runtime"))]
