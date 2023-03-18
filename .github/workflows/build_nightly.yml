@@ -177,6 +177,11 @@ jobs:
         tag: release
         fileName: "lvd_dumper.zip"
 
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.408'
+
     - name: extract lvd data
       id: lvd_extract
       shell: bash
