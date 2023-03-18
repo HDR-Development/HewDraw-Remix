@@ -138,10 +138,61 @@ unsafe fn peach_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "peach", script = "game_specialhiopen", category = ACMD_GAME, low_priority )]
+unsafe fn peach_special_hi_open(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+    FT_MOTION_RATE(fighter, 0.1);
+    if is_excute(fighter) {
+        ArticleModule::change_motion(boma, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, Hash40::new("special_hi_open"), false, -1.0);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+        ATTACK(fighter, 0, 0, Hash40::new("havel"), 2.0, 80, 15, 0, 65, 2.0, -3.1, 6.5, 0.0, Some(3.1), Some(6.5), Some(0.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 18, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PEACH_PARASOL, *ATTACK_REGION_PARASOL);
+        AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
+    }
+}
+
+// #[acmd_script( agent = "peach", script = "game_speciallw", category = ACMD_GAME, low_priority )]
+// unsafe fn peach_special_lw(fighter: &mut L2CAgentBase) {
+//     let lua_state = fighter.lua_state_agent;
+//     let boma = fighter.boma();
+//     if WorkModule::get_int(boma, *FIGHTER_PEACH_STATUS_SPECIAL_LW_WORK_INT_IS_DAIKON_GENERATABLE) == 1 {
+//         if(methodlib::L2CValue::operator==(lib::L2CValueconst&)const(*FIGHTER_PEACH_STATUS_SPECIAL_LW_WORK_INT_UNIQ_ITEM_KIND, *ITEM_KIND_NONE)){
+//             if is_excute(fighter) {
+//                 KineticModule::add_speed(boma, &vec);
+//                 ArticleModule::generate_article(boma, *FIGHTER_PEACH_GENERATE_ARTICLE_DAIKON, false, -1);
+//             }
+//         }
+//         if(methodlib::L2CValue::operator==(lib::L2CValueconst&)const(*FIGHTER_PEACH_STATUS_SPECIAL_LW_WORK_INT_UNIQ_ITEM_KIND, *ITEM_KIND_BOMBHEI)){
+//             if is_excute(fighter) {
+//                 KineticModule::add_speed(boma, &vec);
+//                 ItemModule::have_item(boma, *ITEM_KIND_BOMBHEI);
+//             }
+//         }
+//         if(methodlib::L2CValue::operator==(lib::L2CValueconst&)const(false, *FIGHTER_PEACH_STATUS_SPECIAL_LW_WORK_INT_UNIQ_ITEM_KIND, *ITEM_KIND_DOSEISAN)){
+//             if is_excute(fighter) {
+//                 KineticModule::add_speed(boma, &vec);
+//                 ItemModule::have_item(boma, *ITEM_KIND_DOSEISAN);
+//             }
+//         }
+//         if(methodlib::L2CValue::operator==(lib::L2CValueconst&)const(false, *FIGHTER_PEACH_STATUS_SPECIAL_LW_WORK_INT_UNIQ_ITEM_KIND, *ITEM_KIND_BEAMSWORD)){
+//             if is_excute(fighter) {
+//                 KineticModule::add_speed(boma, &vec);
+//                 ItemModule::have_item(boma, *ITEM_KIND_BEAMSWORD);
+//             }
+//         }
+//     }
+// }
+
 pub fn install() {
     install_acmd_scripts!(
         peach_special_s_hit_end_game,
         peach_special_hi_start_game,
         peach_special_air_hi_start_game,
+        peach_special_hi_open,
+        //peach_special_lw,
     );
 }

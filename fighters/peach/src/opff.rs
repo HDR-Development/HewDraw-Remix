@@ -35,9 +35,18 @@ unsafe fn wall_bounce(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     }
 }
 
+unsafe fn parasol_ff(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    let direction = ControlModule::get_stick_y(boma);
+    if status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END && direction < 0.0 {
+        let vec = Vector3f{x: 0.0, y: -0.1, z: 0.0};
+        KineticModule::add_speed(boma, &vec);
+    }
+}
+
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     float_cancel(boma, status_kind);
     wall_bounce(boma, status_kind);
+    parasol_ff(boma, status_kind);
 }
 
 #[::utils::macros::opff(FIGHTER_KIND_PEACH )]

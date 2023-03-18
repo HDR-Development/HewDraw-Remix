@@ -63,7 +63,8 @@ pub unsafe fn init_settings_edges(boma: &mut BattleObjectModuleAccessor, situati
                                                        *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_LANDING].contains(&status_kind)) 
            || (boma.kind() == *FIGHTER_KIND_KOOPAJR && boma.is_status(*FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_LANDING))
            || (boma.kind() == *FIGHTER_KIND_SHEIK && [*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_ATTACK,
-                                                       *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_LANDING].contains(&status_kind)) {
+                                                       *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_LANDING].contains(&status_kind))
+           || (boma.kind() == *FIGHTER_KIND_PEACH && [*FIGHTER_STATUS_KIND_SPECIAL_LW].contains(&status_kind)) {
             fix = *GROUND_CORRECT_KIND_GROUND as u32;
         }
     }
@@ -100,7 +101,8 @@ unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, kind: GroundCorrec
             || (fighter_kind == *FIGHTER_KIND_KOOPA && status_kind == *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_G)
             || (fighter_kind == *FIGHTER_KIND_DONKEY && situation_kind == *SITUATION_KIND_GROUND && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI)
             || (fighter_kind == *FIGHTER_KIND_GAOGAEN && situation_kind == *SITUATION_KIND_GROUND && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N)
-            || (fighter_kind == *FIGHTER_KIND_LUIGI && situation_kind == *SITUATION_KIND_GROUND && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N) {
+            || (fighter_kind == *FIGHTER_KIND_LUIGI && situation_kind == *SITUATION_KIND_GROUND && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N)
+            || (fighter_kind == *FIGHTER_KIND_PEACH && situation_kind == *SITUATION_KIND_GROUND && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW) {
             return original!()(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         }
     }
