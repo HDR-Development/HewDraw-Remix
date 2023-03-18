@@ -15,5 +15,5 @@ cd $TOP/publish
 ls output
 ls output/stages
 cd output
-zip -f lvd.zip stages
+zip -r lvd.zip stages
 cp lvd.zip $TOP/scripts/artifacts
