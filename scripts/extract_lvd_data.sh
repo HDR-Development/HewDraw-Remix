@@ -16,4 +16,4 @@ ls output
 ls output/stages
 cd output
 zip -r lvd.zip stages
-cp lvd.zip $TOP/scripts/artifacts
+cp lvd.zip $TOP/artifacts
