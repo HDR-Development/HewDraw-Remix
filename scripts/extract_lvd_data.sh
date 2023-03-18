@@ -11,7 +11,7 @@ cp switch-package/sdcard/ultimate/mods/hdr-stages/stage/ lvd -rf
 
 find lvd -not -name '*.lvd' -type f | xargs rm
 cd $TOP/publish
-./Ultimate_LVD_data $TOP/scripts/lvd/stage
+./Ultimate_LVD_data $TOP/lvd/stage
 ls output
 ls output/stages
 cd output
