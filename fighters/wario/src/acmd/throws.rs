@@ -67,6 +67,8 @@ pub const FRAME_LAND: f32 = 55.0;
 
 #[acmd_script( agent = "wario", script = "game_throwhi", category = ACMD_GAME )]
 unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
+    let boma = fighter.boma();
+    
     let startPos = (*GroundModule::get_rhombus(fighter.module_accessor, true)).y;
     if is_excute(fighter) {
         macros::FT_LEAVE_NEAR_OTTOTTO(fighter, -2, 3);
@@ -75,7 +77,7 @@ unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
     //Affect hitbox size based on scale
-    let opponent = get_grabbed_opponent_boma(fighter.module_accessor);
+    let opponent = boma.get_grabbed_opponent_boma();
     let opponentScale = PostureModule::scale(opponent);
     let weight =  WorkModule::get_param_float(opponent, hash40("weight"), 0);
     let opponent_kind = utility::get_kind(&mut *opponent);
@@ -173,8 +175,9 @@ unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "wario", script = "effect_throwhi", category = ACMD_EFFECT )]
 unsafe fn effect_throwhi(fighter: &mut L2CAgentBase) {
-    let opponent = get_grabbed_opponent_boma(fighter.module_accessor);
-    let opponentScale = PostureModule::scale(opponent).max(0.6);
+    let boma = fighter.boma();
+    let opponent = boma.get_grabbed_opponent_boma();
+    let opponentScale = PostureModule::scale(opponent);
 
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
@@ -206,8 +209,6 @@ unsafe fn effect_throwhi(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "wario", script = "sound_throwhi", category = ACMD_SOUND )]
 unsafe fn sound_throwhi(fighter: &mut L2CAgentBase) {
-    let opponent = get_grabbed_opponent_boma(fighter.module_accessor);
-    let opponentScale = PostureModule::scale(opponent);
     
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -227,12 +228,11 @@ unsafe fn sound_throwhi(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, FRAME_FALL-5.0);
     if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("vc_wario_006")); //006,final01
+        macros::PLAY_SE(fighter, Hash40::new("vc_wario_006"));
     }
     wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_common_throw_02"));
-        //macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_wario_rnd_attack"));
     }
     frame(fighter.lua_state_agent, FRAME_LAND);
     if macros::is_excute(fighter) {
@@ -242,8 +242,6 @@ unsafe fn sound_throwhi(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "wario", script = "expression_throwhi", category = ACMD_EXPRESSION )]
 unsafe fn expression_throwhi(fighter: &mut L2CAgentBase) {
-    let opponent = get_grabbed_opponent_boma(fighter.module_accessor);
-    let opponentScale = PostureModule::scale(opponent);
 
     if macros::is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_L, 13);
@@ -341,7 +339,7 @@ unsafe fn expression_throwf(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        catch_attack,
+        game_catch_attack,
         effect_catch_attack,
         game_throwlw,
         

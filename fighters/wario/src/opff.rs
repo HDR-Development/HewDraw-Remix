@@ -28,7 +28,10 @@ unsafe fn bthrow_movement(boma: &mut BattleObjectModuleAccessor, status_kind: i3
     if status_kind == *FIGHTER_STATUS_KIND_THROW {
         if motion_kind == hash40("throw_b") {
             if situation_kind == *SITUATION_KIND_GROUND {
-                if stick_x != 0.0 {
+                let currentFrame = MotionModule::frame(boma);
+                let maxFrame = 46.0;
+                if stick_x != 0.0 
+                && currentFrame < maxFrame {
                     let motion_vec = x_motion_vec(1.0, stick_x);
                     KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
                 }

@@ -130,6 +130,7 @@ unsafe fn wario_attack_air_b_game(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 1, 0, Hash40::new("shoulderr"), 12.0, 361, 101, 0, 20, 4.6, 0.0, 0.0, 0.0, None,None,None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         macros::ATTACK(fighter, 2, 0, Hash40::new("armr"), 12.0, 361, 101, 0, 20, 3.8, 6.9, 0.0, 0.0, None,None,None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         macros::ATTACK(fighter, 3, 0, Hash40::new("armr"), 12.0, 361, 101, 0, 20, 3.8, 4.0, 0.0, 0.0, None,None,None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+    }
     wait(fighter.lua_state_agent, 2.0);
     if is_excute(fighter) {
         AttackModule::clear(fighter.module_accessor,0,false);
@@ -158,6 +159,7 @@ unsafe fn effect_attackairb(fighter: &mut L2CAgentBase) {
         macros::LAST_EFFECT_SET_RATE(fighter, 1.9);
     }
 }
+
 #[acmd_script( agent = "wario", script = "sound_attackairb", category = ACMD_SOUND )]
 unsafe fn sound_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
@@ -173,6 +175,7 @@ unsafe fn sound_attackairb(fighter: &mut L2CAgentBase) {
         macros::PLAY_SE(fighter, Hash40::new("se_wario_smash_s01"));
     }
 }
+
 #[acmd_script( agent = "wario", script = "expression_attackairb", category = ACMD_EXPRESSION )]
 unsafe fn expression_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
@@ -254,17 +257,16 @@ unsafe fn game_attackairlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
+    //Begin fall, spawn spike hitbox
     frame(fighter.lua_state_agent, FRAME_FALL);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
         macros::SET_SPEED_EX(fighter, 0, -3.8, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-    }
-    wait(fighter.lua_state_agent, 1.0);
-    if macros::is_excute(fighter) {
-        JostleModule::set_status(fighter.module_accessor, true);
+
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 270, 75, 0, 50, 5.2, 0.0, 0.8, 0.0, None,None,None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
     }
+    //weak hitbox
     wait(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 60, 95, 0, 30, 5.0, 0.0, -0.8, 0.0, None,None,None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
@@ -288,8 +290,6 @@ unsafe fn game_attackairlw(fighter: &mut L2CAgentBase) {
 unsafe fn effect_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, FRAME_FALL+1.0);
     if macros::is_excute(fighter) {
-        /* 
-        macros::EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 15, 0, -90, 0, 0, 1.1, 0, 1, 0, 0, 0, 0, true);*/
         macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_machstamp"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, true);
         LAST_EFFECT_SET_COLOR(fighter,1,1,0.625);
     }
@@ -380,6 +380,7 @@ unsafe fn expression_landingairlw(fighter: &mut L2CAgentBase) {
     }
 }
 
+//AttackAirLw2 is the upwards bounce//
 #[acmd_script( agent = "wario", script = "game_attackairlw2", category = ACMD_GAME )]
 unsafe fn game_attackairlw2(fighter: &mut L2CAgentBase) {
     let speed_max=0.75;
@@ -391,7 +392,6 @@ unsafe fn game_attackairlw2(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
         SET_SPEED_EX(fighter, 0, 1.875, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        println!("WARIO BOUNCE!");
         sv_kinetic_energy!(
             set_stable_speed,
             fighter,
@@ -420,6 +420,7 @@ unsafe fn game_attackairlw2(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
+
 #[acmd_script( agent = "wario", script = "effect_attackairlw2", category = ACMD_EFFECT )]
 unsafe fn effect_attackairlw2(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
@@ -427,6 +428,7 @@ unsafe fn effect_attackairlw2(fighter: &mut L2CAgentBase) {
         macros::EFFECT(fighter, Hash40::new("sys_bound_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.5, 0, 1, 0, 0, 0, 0, true);
     }
 }
+
 #[acmd_script( agent = "wario", script = "sound_attackairlw2", category = ACMD_SOUND )]
 unsafe fn sound_attackairlw2(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
@@ -434,13 +436,7 @@ unsafe fn sound_attackairlw2(fighter: &mut L2CAgentBase) {
         macros::PLAY_SE(fighter, Hash40::new("se_wario_jump02"));
     }
 }
-#[acmd_script( agent = "wario", script = "expression_attackairlw2", category = ACMD_EXPRESSION )]
-unsafe fn expression_attackairlw2(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 16.0);
-    if macros::is_excute(fighter) {
 
-    }
-}
 pub fn install() {
     install_acmd_scripts!(
         wario_attack_air_n_game,
@@ -455,7 +451,7 @@ pub fn install() {
         wario_attack_air_b_game,
         effect_attackairb,
         sound_attackairb,
-        expression_attackairb
+        expression_attackairb,
 
         game_attackairlw,
         effect_attackairlw,
@@ -469,8 +465,7 @@ pub fn install() {
 
         game_attackairlw2,
         effect_attackairlw2,
-        sound_attackairlw2,
-        expression_attackairlw
+        sound_attackairlw2
     );
 }
 
