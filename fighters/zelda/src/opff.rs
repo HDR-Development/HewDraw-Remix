@@ -20,7 +20,11 @@ unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &m
         let touch_normal_y_right = GroundModule::get_touch_normal_y(fighter.module_accessor, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
         if (touch_right && touch_normal_y_right != 0.0)
         || (touch_left && touch_normal_y_left != 0.0)
+        || VarModule::is_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE)
         {
+            if !VarModule::is_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE) {
+                VarModule::on_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE);
+            }
             let init_speed_y = VarModule::get_float(boma.object(), vars::common::status::TELEPORT_INITIAL_SPEED_Y);
 
             if init_speed_y > 0.0 {
@@ -36,6 +40,11 @@ unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &m
                 let wall_ride = Vector3f{x: 0.0, y: 1.0, z: 1.0};
                 KineticModule::mul_speed(boma, &wall_ride, *FIGHTER_KINETIC_ENERGY_ID_STOP);
             }
+        }
+    }
+    else {
+        if VarModule::is_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE) {
+            VarModule::off_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE);
         }
     }
 }
