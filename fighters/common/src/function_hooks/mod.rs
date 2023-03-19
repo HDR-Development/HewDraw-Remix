@@ -83,7 +83,7 @@ pub struct ModuleAccessor {
 }
 
 // Articles that should bypass running their MAIN status before KineticModule::UpdateEnergy and GroundCollision::process
-const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 13] = [
+const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 14] = [
     WEAPON_KIND_PICKEL_PLATE,
     WEAPON_KIND_MASTER_SWORD,
     WEAPON_KIND_LUCAS_HIMOHEBI,
@@ -96,7 +96,8 @@ const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 13] = [
     WEAPON_KIND_YOUNGLINK_HOOKSHOT,
     WEAPON_KIND_JACK_DOYLE,
     WEAPON_KIND_PICKEL_FORGE,
-    WEAPON_KIND_PICKEL_TROLLEY
+    WEAPON_KIND_PICKEL_TROLLEY,
+    WEAPON_KIND_MARIO_FIREBALL
 ];
 
 // For one reason or another, the below statuses/kinds do not play well with running before energy update/ground collision
@@ -104,12 +105,15 @@ const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 13] = [
 unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor, status_kind: i32) -> bool {
     if (*boma).is_fighter()
     && ( [*FIGHTER_STATUS_KIND_AIR_LASSO, *FIGHTER_STATUS_KIND_AIR_LASSO_REACH].contains(&status_kind)
+        || (*boma).kind() == *FIGHTER_KIND_NANA
         || ((*boma).kind() == *FIGHTER_KIND_RICHTER
             && [*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_SIMON
             && [*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_MASTER
             && [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_MAX_SHOOT].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_KIRBY
+            && [*FIGHTER_KIRBY_STATUS_KIND_MASTER_SPECIAL_N_MAX_SHOOT].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_JACK
             && [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_PFUSHIGISOU
