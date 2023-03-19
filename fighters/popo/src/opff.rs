@@ -111,7 +111,7 @@ unsafe fn nana_death_effect(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
             nana_pos_x = PostureModule::pos_x(nana_boma[id] as *mut BattleObjectModuleAccessor);
             nana_pos_y = PostureModule::pos_y(nana_boma[id] as *mut BattleObjectModuleAccessor);
         }
-        if status_kind == *FIGHTER_STATUS_KIND_REBIRTH && MotionModule::frame(boma) <= 1.0 && effect_on {
+        if status_kind == *FIGHTER_STATUS_KIND_REBIRTH && fighter.status_frame() <= 1 && effect_on {
             let pos =  Vector3f {x: nana_pos_x, y: nana_pos_y, z: 0.0};
             let rot =  Vector3f {x: 0.0, y: 0.0, z: 0.0};
             EffectModule::req(boma, Hash40::new("sys_recovery"), &pos, &rot, 1.0, *EFFECT_SUB_ATTRIBUTE_NO_JOINT_SCALE as u32, 0, true, 0);

@@ -5,6 +5,9 @@ use globals::*;
 
  
 unsafe fn airdodge_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
         if frame > 17.0 {
             FighterStatusModuleImpl::set_fighter_status_data(
@@ -29,7 +32,7 @@ unsafe fn shine_jump_cancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= 1 {
         GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     }
-    if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.motion_frame() > 7.0)  // Allows for jump cancel on frame 5 in game
+    if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.status_frame() > 2)  // Allows for jump cancel on frame 4 in game
         || fighter.is_status_one_of(&[
             *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_HIT,
             *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_LOOP,

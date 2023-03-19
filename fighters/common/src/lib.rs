@@ -35,4 +35,5 @@ pub fn install() {
     // tag::install();
     general_statuses::install();
     function_hooks::install();
+    opff::install();
 }
