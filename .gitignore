@@ -2,7 +2,6 @@
 **/*.py
 **/*.pyc
 **/build/
-**/.vscode/
 Cargo.lock
 !scripts/*
 .vscode
