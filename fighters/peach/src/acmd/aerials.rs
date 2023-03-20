@@ -179,7 +179,7 @@ unsafe fn peach_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 2.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE(fighter, 0.3);
+        FT_MOTION_RATE(fighter, 4.0/(38.0-32.0));;
     }
     frame(lua_state, 38.0);
     if is_excute(fighter) {
