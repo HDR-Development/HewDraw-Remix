@@ -1,5 +1,6 @@
 #![feature(ptr_metadata)]
 use std::any::Any;
+use std::any::TypeId;
 
 pub fn get_module_by_name<T: Module + DynamicModule>(
     module_accessor: *const smash::app::BattleObjectModuleAccessor,
@@ -19,6 +20,10 @@ pub trait Module: Sized {
 }
 
 pub trait DynamicModule: Any + 'static {
+    fn module_type_id(&self) -> TypeId {
+        TypeId::of::<Self>()
+    }
+
     #[allow(unused_variables)]
     fn start(&mut self, args: StartArgs) {}
     fn end(&mut self) {}
@@ -26,7 +31,7 @@ pub trait DynamicModule: Any + 'static {
 }
 
 fn cast<T: Any>(module: &'static mut dyn DynamicModule) -> &'static mut T {
-    if module.type_id() == std::any::TypeId::of::<T>() {
+    if module.module_type_id() == std::any::TypeId::of::<T>() {
         unsafe {
             let (ptr, _) = (module as *mut dyn DynamicModule).to_raw_parts();
             &mut *(ptr as *mut T)

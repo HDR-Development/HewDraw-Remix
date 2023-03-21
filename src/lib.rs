@@ -17,6 +17,7 @@ mod lua;
 #[cfg(feature = "main_nro")]
 mod online;
 
+use serde::Deserialize;
 use skyline::libc::c_char;
 #[cfg(feature = "main_nro")]
 use skyline_web::*;
@@ -293,6 +294,13 @@ unsafe fn css_to_sss(ctx: &InlineCtx) {
     (*thing).set("StageSelectScene");
 }
 
+#[derive(Deserialize, Debug)]
+pub struct MarioParams {
+    some_val: f32,
+    other_val: i32,
+    is_flag: bool,
+}
+
 #[variables::agent_variables]
 pub enum MarioVariables {
     SomeValue(i32),
@@ -300,12 +308,14 @@ pub enum MarioVariables {
 
 #[no_mangle]
 pub extern "C" fn main() {
-    println!("running hdr main");
-    let var = 0;
     module::add::<variables::VarModule>();
+    module::add::<params::ParamModule>();
     module::install();
 
-    variables::add::<MarioVariables>(smash::phx::Hash40::new("item_kind_capsule"));
+    params::add::<MarioParams>(
+        "fighter_kind_mario",
+        "sd:/ultimate/mods/hdr/hdr/params/mario.toml",
+    );
 
     std::panic::set_hook(Box::new(|info| {
         let location = info.location().unwrap();

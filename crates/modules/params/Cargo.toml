@@ -1,5 +1,5 @@
 [package]
-name = "variables"
+name = "params"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,8 +7,10 @@ edition = "2021"
 
 [dependencies]
 skyline_smash = { workspace = true }
-smashline = { workspace = true }
 module = { workspace = true }
-parking_lot = { workspace = true }
+serde = { workspace = true }
+toml = { workspace = true }
 once_cell = { workspace = true }
-variables-macros = { path = "../variables-macros" }
+parking_lot = { workspace = true }
+
+params-macros = { path = "../params-macros" }

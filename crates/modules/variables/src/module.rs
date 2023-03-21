@@ -132,7 +132,7 @@ impl Module for VarModule {
     fn new(init_args: module::InitArgs) -> Option<Self> {
         let state = VAR_AMOUNTS
             .read()
-            .get(&dbg!(init_args.agent_kind_hash))
+            .get(&init_args.agent_kind_hash)
             .copied()?;
         Some(Self {
             flags: vec![false; state.max_index.flag],

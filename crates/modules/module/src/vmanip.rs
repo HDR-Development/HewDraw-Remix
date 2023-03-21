@@ -195,6 +195,8 @@ struct NewVTable {
 
 #[skyline::hook(offset = INITIALIZE_MODULES_OFFSET)]
 fn boma_init(module_accessor: *mut BattleObjectModuleAccessor, args: ModuleInitArgs) {
+    call_original!(module_accessor, args);
+
     let init_args = InitArgs::from(args);
     let modules = REGISTERED_MODULES.read();
 
@@ -220,8 +222,6 @@ fn boma_init(module_accessor: *mut BattleObjectModuleAccessor, args: ModuleInitA
             (*module_accessor).vtable = &new_vtable.old as *const ModuleAccessorVTable as u64;
         }
     }
-
-    call_original!(module_accessor, args)
 }
 
 #[skyline::hook(offset = START_MODULES_OFFSET)]
@@ -230,23 +230,24 @@ fn boma_start(
     args: ModuleStartArgs,
     entry_id: u32,
 ) {
+    call_original!(module_accessor, args, entry_id);
     let start_args = StartArgs::from(args);
     if let Some(mut table) = ModuleTable::try_from_accessor(module_accessor) {
         table.start(start_args);
     }
-    call_original!(module_accessor, args, entry_id)
 }
 
 #[skyline::hook(offset = END_MODULES_OFFSET)]
 fn boma_end(module_accessor: *mut BattleObjectModuleAccessor) {
+    call_original!(module_accessor);
     if let Some(mut table) = ModuleTable::try_from_accessor(module_accessor) {
         table.end();
     }
-    call_original!(module_accessor)
 }
 
 #[skyline::hook(offset = FINALIZE_MODULES_OFFSET)]
 fn boma_fini(module_accessor: *mut BattleObjectModuleAccessor) {
+    call_original!(module_accessor);
     if let Some(mut table) = ModuleTable::try_from_accessor(module_accessor) {
         table.finalize();
 
@@ -257,7 +258,6 @@ fn boma_fini(module_accessor: *mut BattleObjectModuleAccessor) {
             drop(vtable);
         }
     }
-    call_original!(module_accessor)
 }
 
 pub fn install() {

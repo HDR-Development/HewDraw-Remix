@@ -11,6 +11,8 @@ members = [
 skyline = "0.2.1"
 once_cell = "1.17.1"
 parking_lot = "0.12.1"
+serde = { version = "1", features = ["derive"] }
+toml = "0.7.3" 
 
 # Git Dependencies
 skyline_smash = { git = "https://github.com/blu-dev/skyline-smash", features = ["weak_l2cvalue"] }
@@ -19,6 +21,7 @@ smashline = { git = "https://github.com/blu-dev/smashline", branch = "developmen
 # Local Dependencies
 module = { path = "crates/modules/module" }
 variables = { path = "crates/modules/variables" }
+params = { path = "crates/modules/params" }
 
 [package]
 name = "hdr"
@@ -46,6 +49,8 @@ semver = { version = "1", optional = true }
 # smash-arc = { version = "0.5", features = ["smash-runtime", "rust-zstd"]}
 once_cell = "1"
 module = { workspace = true }
+params = { workspace = true }
+serde = { workspace = true }
 variables = { workspace = true }
 
 [patch.crates-io]
