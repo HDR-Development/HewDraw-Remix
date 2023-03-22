@@ -10,3 +10,4 @@ parking_lot = { workspace = true }
 once_cell = { workspace = true }
 skyline = { workspace = true }
 skyline_smash = { workspace = true }
+paste = "1.0.12"

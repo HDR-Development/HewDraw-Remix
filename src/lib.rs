@@ -309,13 +309,16 @@ pub enum MarioVariables {
 #[no_mangle]
 pub extern "C" fn main() {
     module::add::<variables::VarModule>();
-    module::add::<params::ParamModule>();
+    // module::add::<params::ParamModule>();
     module::install();
-
-    params::add::<MarioParams>(
+    variables::add::<MarioVariables>(variables::__private::smash::phx::Hash40::new(
         "fighter_kind_mario",
-        "sd:/ultimate/mods/hdr/hdr/params/mario.toml",
-    );
+    ));
+
+    // params::add::<MarioParams>(
+    //     "fighter_kind_mario",
+    //     "sd:/ultimate/mods/hdr/hdr/params/mario.toml",
+    // );
 
     std::panic::set_hook(Box::new(|info| {
         let location = info.location().unwrap();

@@ -1,4 +1,5 @@
 #![feature(ptr_metadata)]
+#![feature(vec_into_raw_parts)]
 use std::any::Any;
 use std::any::TypeId;
 
@@ -28,6 +29,28 @@ pub trait DynamicModule: Any + 'static {
     fn start(&mut self, args: StartArgs) {}
     fn end(&mut self) {}
     fn finalize(&mut self) {}
+
+    fn process_begin(&mut self) {}
+
+    fn process_begin2(&mut self) {}
+
+    fn process_ground(&mut self) {}
+
+    fn process_map_collision(&mut self) {}
+
+    fn process_fix_position(&mut self) {}
+
+    fn process_pre_collision(&mut self) {}
+
+    fn process_collision(&mut self) {}
+
+    fn process_hit(&mut self) {}
+
+    fn process_fix_camera(&mut self) {}
+
+    fn process_end(&mut self) {}
+
+    fn process_end2(&mut self) {}
 }
 
 fn cast<T: Any>(module: &'static mut dyn DynamicModule) -> &'static mut T {

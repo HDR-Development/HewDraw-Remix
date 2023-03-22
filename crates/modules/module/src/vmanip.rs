@@ -1,7 +1,10 @@
 use crate::{DynamicModule, Module};
 use once_cell::sync::Lazy;
 use parking_lot::RwLock;
-use smash::{app::BattleObjectModuleAccessor, phx::Hash40};
+use smash::{
+    app::{BattleObject, BattleObjectModuleAccessor},
+    phx::Hash40,
+};
 use std::collections::HashMap;
 
 const HDR_MAGIC: u64 = u64::from_le_bytes([b'H', b'D', b'R', b'M', b'A', b'G', b'I', b'C']);
@@ -193,6 +196,9 @@ struct NewVTable {
     old: ModuleAccessorVTable,
 }
 
+#[skyline::from_offset(0x3ac540)]
+fn get_battle_object_from_id(id: u32) -> Option<&'static mut BattleObject>;
+
 #[skyline::hook(offset = INITIALIZE_MODULES_OFFSET)]
 fn boma_init(module_accessor: *mut BattleObjectModuleAccessor, args: ModuleInitArgs) {
     call_original!(module_accessor, args);
@@ -220,6 +226,9 @@ fn boma_init(module_accessor: *mut BattleObjectModuleAccessor, args: ModuleInitA
                 old: *((*module_accessor).vtable as *const ModuleAccessorVTable),
             }));
             (*module_accessor).vtable = &new_vtable.old as *const ModuleAccessorVTable as u64;
+            if let Some(object) = get_battle_object_from_id((*module_accessor).battle_object_id) {
+                patch_object_vtable(object);
+            }
         }
     }
 }
@@ -256,8 +265,118 @@ fn boma_fini(module_accessor: *mut BattleObjectModuleAccessor) {
             let vtable = Box::from_raw((*module_accessor).vtable as *mut NewVTable);
             (*module_accessor).vtable = vtable.p_old;
             drop(vtable);
+            if let Some(object) = get_battle_object_from_id((*module_accessor).battle_object_id) {
+                restore_object_vtable(object);
+            }
         }
     }
+}
+
+const PROCESS_BEGIN_VIRT_OFFSET: usize = 0x350;
+const PROCESS_BEGIN2_VIRT_OFFSET: usize = 0x358;
+const PROCESS_GROUND_VIRT_OFFSET: usize = 0x360;
+const PROCESS_MAP_COLLISION_VIRT_OFFSET: usize = 0x368;
+const PROCESS_FIX_POSITION_VIRT_OFFSET: usize = 0x370;
+const PROCESS_PRE_COLLISION_VIRT_OFFSET: usize = 0x378;
+const PROCESS_COLLISION_VIRT_OFFSET: usize = 0x380;
+const PROCESS_HIT_VIRT_OFFSET: usize = 0x388;
+const PROCESS_FIX_CAMERA_VIRT_OFFSET: usize = 0x390;
+const PROCESS_END_VIRT_OFFSET: usize = 0x398;
+const PROCESS_END2_VIRT_OFFSET: usize = 0x3A0;
+
+macro_rules! original {
+    ($object:ident, $off:expr) => {{
+        unsafe {
+            let vtable = (*$object).vtable;
+            let original_vtable = *(vtable as *const u64).sub(2);
+            let function = *(original_vtable as *const u64).add($off / 8);
+            let callable: extern "C" fn(*mut BattleObject) = std::mem::transmute(function);
+            callable($object);
+        }
+    }};
+}
+
+macro_rules! define_replace {
+    ($(($operation:ident, $offset:expr)),*) => {
+        $(
+            paste::paste! {
+                extern "C" fn [<$operation _replace>](object: *mut BattleObject) {
+                    let module_accessor = unsafe {
+                        (*object).module_accessor
+                    };
+                    if let Some(mut table) = ModuleTable::try_from_accessor(module_accessor) {
+                        table.$operation();
+                    }
+                    original!(object, $offset);
+                }
+            }
+        )*
+
+        impl ModuleTable {
+            $(
+                pub fn $operation(&mut self) {
+                    for info in self.0.iter_mut() {
+                        info.as_dyn_mod().$operation();
+                    }
+                }
+            )*
+        }
+
+        fn patch_object_vtable(object: *mut BattleObject) {
+            let mut new_vtable = vec![0; 4];
+            unsafe {
+                new_vtable[2] = (*object).vtable as u64;
+                let mut old_vtable = (*object).vtable as *const u64;
+                while *old_vtable != 0 {
+                    new_vtable.push(*old_vtable);
+                    old_vtable = old_vtable.add(1);
+                }
+            }
+            new_vtable[0] = new_vtable.capacity() as u64;
+            new_vtable[1] = new_vtable.len() as u64;
+            new_vtable[3] = HDR_MAGIC;
+
+            paste::paste! {
+                $(
+                    new_vtable[4 + $offset / 8] = [<$operation _replace>] as *const () as u64;
+                )*
+            }
+
+            let (ptr, _, _) = new_vtable.into_raw_parts();
+            unsafe {
+                (*object).vtable = ptr.add(4) as _;
+            }
+        }
+
+        fn restore_object_vtable(object: *mut BattleObject) {
+            unsafe {
+                let vtable = (*object).vtable as *const u64;
+                if *vtable.sub(1) != HDR_MAGIC {
+                    return;
+                }
+                let old_vtable = *vtable.sub(2);
+                let len = *vtable.sub(3);
+                let cap = *vtable.sub(4);
+
+                (*object).vtable = old_vtable as _;
+                drop(Vec::from_raw_parts(vtable.sub(4) as *mut u64, len as usize, cap as usize));
+            }
+        }
+    }
+}
+
+define_replace! {
+    (process_begin, PROCESS_BEGIN_VIRT_OFFSET),
+    (process_begin2, PROCESS_BEGIN2_VIRT_OFFSET),
+    (process_ground, PROCESS_GROUND_VIRT_OFFSET),
+    (process_map_collision, PROCESS_MAP_COLLISION_VIRT_OFFSET),
+    (process_fix_position, PROCESS_FIX_POSITION_VIRT_OFFSET),
+    (process_pre_collision, PROCESS_PRE_COLLISION_VIRT_OFFSET),
+    (process_collision, PROCESS_COLLISION_VIRT_OFFSET),
+    (process_hit, PROCESS_HIT_VIRT_OFFSET),
+    (process_fix_camera, PROCESS_FIX_CAMERA_VIRT_OFFSET),
+    (process_end, PROCESS_END_VIRT_OFFSET),
+    (process_end2, PROCESS_END2_VIRT_OFFSET)
 }
 
 pub fn install() {
