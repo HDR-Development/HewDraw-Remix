@@ -81,6 +81,14 @@ unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if VarModule::is_flag(fighter.object(), vars::packun::instance::STANCE_NEED_SET_SPEEDS) {
         if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 0 {
             apply_status_speed_mul(fighter, 1.0);
+        } else if fighter.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_ESCAPE_F,
+            *FIGHTER_STATUS_KIND_ESCAPE_B,
+            *FIGHTER_STATUS_KIND_SLIP_STAND_F,
+            *FIGHTER_STATUS_KIND_SLIP_STAND_B,
+            *FIGHTER_STATUS_KIND_DOWN_STAND_FB,
+            *FIGHTER_STATUS_KIND_PASSIVE_FB]) {
+                apply_status_speed_mul(fighter, 1.0);
         } else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
             apply_status_speed_mul(fighter, 0.88);
         } else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
@@ -148,13 +156,13 @@ unsafe fn apply_status_speed_mul(fighter: &mut smash::lua2cpp::L2CFighterCommon,
     lua_bind::FighterKineticEnergyMotion::set_speed_mul(fighter.get_motion_energy(), og_speed_mul * mul);
 
     // set the X motion accel multiplier for control energy (used in the air, during walk, fall, etc)
-    lua_bind::FighterKineticEnergyController::mul_x_accel_mul( fighter.get_controller_energy(), og_speed_mul * mul);
+    lua_bind::FighterKineticEnergyController::mul_x_accel_mul( fighter.get_controller_energy(), mul);
 
     // set the X motion accel multiplier for control energy (used in the air, during walk, fall, etc)
-    lua_bind::FighterKineticEnergyController::mul_x_accel_add( fighter.get_controller_energy(), og_speed_mul * mul);
+    lua_bind::FighterKineticEnergyController::mul_x_accel_add( fighter.get_controller_energy(), mul);
 
     // set the X speed max multiplier for control energy (used in the air, during walk, fall, etc)
-    lua_bind::FighterKineticEnergyController::mul_x_speed_max(fighter.get_controller_energy(), og_speed_mul * mul);
+    lua_bind::FighterKineticEnergyController::mul_x_speed_max(fighter.get_controller_energy(), mul);
 }
 
 unsafe fn sspecial_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
