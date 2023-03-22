@@ -119,7 +119,10 @@ pub struct MarioFireballParams {
 impl Module for ParamModule {
     const NAME: &'static str = "ParamModule";
 
-    fn new(init_args: module::InitArgs) -> Option<Self> {
+    fn new(
+        _module_accessor: *mut BattleObjectModuleAccessor,
+        init_args: module::InitArgs,
+    ) -> Option<Self> {
         let mut params = PARAM_LOADERS.write();
         let agent_params = if let Some(agent_params) = params.get_mut(&init_args.agent_kind_hash) {
             if let Some(agent_params) = agent_params.params.upgrade() {

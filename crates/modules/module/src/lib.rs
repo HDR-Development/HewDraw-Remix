@@ -11,13 +11,14 @@ pub fn get_module_by_name<T: Module + DynamicModule>(
 
 mod vmanip;
 
+use smash::app::BattleObjectModuleAccessor;
 pub use vmanip::InitArgs;
 pub use vmanip::StartArgs;
 
 pub trait Module: Sized {
     const NAME: &'static str;
 
-    fn new(init_args: InitArgs) -> Option<Self>;
+    fn new(module_accessor: *mut BattleObjectModuleAccessor, init_args: InitArgs) -> Option<Self>;
 }
 
 pub trait DynamicModule: Any + 'static {
@@ -26,8 +27,13 @@ pub trait DynamicModule: Any + 'static {
     }
 
     #[allow(unused_variables)]
+    fn listen_events(&mut self, module_accessor: *mut BattleObjectModuleAccessor) {}
+
+    #[allow(unused_variables)]
     fn start(&mut self, args: StartArgs) {}
+
     fn end(&mut self) {}
+
     fn finalize(&mut self) {}
 
     fn process_begin(&mut self) {}

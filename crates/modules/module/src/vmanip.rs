@@ -9,16 +9,24 @@ use std::collections::HashMap;
 
 const HDR_MAGIC: u64 = u64::from_le_bytes([b'H', b'D', b'R', b'M', b'A', b'G', b'I', b'C']);
 
-type BoxedInit = Box<dyn Fn(InitArgs) -> Option<Box<dyn DynamicModule>> + 'static + Send + Sync>;
+type BoxedInit = Box<
+    dyn Fn(*mut BattleObjectModuleAccessor, InitArgs) -> Option<Box<dyn DynamicModule>>
+        + 'static
+        + Send
+        + Sync,
+>;
 
 static REGISTERED_MODULES: Lazy<RwLock<HashMap<&'static str, BoxedInit>>> =
     Lazy::new(|| RwLock::new(HashMap::new()));
 
 /// Adds a module to be registered on a [`BattleObjectModuleAccessor`] at runtime
 pub fn add_module<T: Module + DynamicModule>() {
-    let func = Box::new(|init_args: InitArgs| {
-        T::new(init_args).map(|module| Box::new(module) as Box<dyn DynamicModule>)
-    });
+    let func = Box::new(
+        |module_accessor: *mut BattleObjectModuleAccessor, init_args: InitArgs| {
+            T::new(module_accessor, init_args)
+                .map(|module| Box::new(module) as Box<dyn DynamicModule>)
+        },
+    );
 
     REGISTERED_MODULES.write().insert(T::NAME, func);
 }
@@ -209,10 +217,12 @@ fn boma_init(module_accessor: *mut BattleObjectModuleAccessor, args: ModuleInitA
     let mut init_modules = vec![];
 
     for (name, init) in modules.iter() {
-        if let Some(module) = init(init_args) {
+        if let Some(module) = init(module_accessor, init_args) {
+            let module = Box::leak(Box::new(module));
+            module.listen_events(module_accessor);
             init_modules.push(DynamicModuleInfo {
                 name,
-                module: Box::leak(Box::new(module)) as *mut _ as *mut u8,
+                module: module as *mut _ as *mut u8,
             });
         }
     }

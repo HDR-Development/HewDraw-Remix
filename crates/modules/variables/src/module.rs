@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use events::OnStatusKindChanged;
 use module::{DynamicModule, Module};
 use once_cell::sync::Lazy;
 use parking_lot::RwLock;
@@ -129,7 +130,10 @@ pub fn add_var_amount<T: VariableId>(hash: Hash40) {
 impl Module for VarModule {
     const NAME: &'static str = "VarModule";
 
-    fn new(init_args: module::InitArgs) -> Option<Self> {
+    fn new(
+        _module_accessor: *mut BattleObjectModuleAccessor,
+        init_args: module::InitArgs,
+    ) -> Option<Self> {
         let state = VAR_AMOUNTS
             .read()
             .get(&init_args.agent_kind_hash)
@@ -144,16 +148,27 @@ impl Module for VarModule {
     }
 }
 
+impl OnStatusKindChanged for VarModule {
+    fn on_status_kind_changed(
+        &mut self,
+        prev: i32,
+        new: i32,
+        kinetic_type: i32,
+        succeeds_bits: u32,
+        ground_correct_kind: i32,
+        ground_cliff_check_kind: i32,
+    ) {
+    }
+}
+
 impl DynamicModule for VarModule {
-    fn start(&mut self, _args: module::StartArgs) {
-        println!("Module start");
+    fn listen_events(&mut self, module_accessor: *mut BattleObjectModuleAccessor) {
+        OnStatusKindChanged::listen(self, module_accessor);
     }
 
-    fn end(&mut self) {
-        println!("Module end");
-    }
+    fn start(&mut self, _args: module::StartArgs) {}
 
-    fn finalize(&mut self) {
-        println!("Module finalize");
-    }
+    fn end(&mut self) {}
+
+    fn finalize(&mut self) {}
 }

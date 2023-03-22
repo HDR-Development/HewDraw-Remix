@@ -12,3 +12,4 @@ module = { workspace = true }
 parking_lot = { workspace = true }
 once_cell = { workspace = true }
 variables-macros = { path = "../variables-macros" }
+events = { path = "../../lib/events" }
