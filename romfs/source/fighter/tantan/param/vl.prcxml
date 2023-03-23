@@ -29,6 +29,7 @@
     <float hash="walk_speed_max_mul">0.825</float>
     <float hash="walk_accel_mul_mul">0.75</float>
     <float hash="walk_accel_add_mul">0.55</float>
+    <int hash="start_both_frame">16000</int>
   </struct>
   <list hash="param_special_n">
     <struct index="0">
