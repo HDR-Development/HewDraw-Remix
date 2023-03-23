@@ -328,7 +328,8 @@ static mut IS_LOADING: bool = false;
 
 #[skyline::hook(offset = 0x1785348)]
 unsafe fn load_ingame_call_sequence_scene(arg: u64) {
-    IS_LOADING = true;
+    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0) as *const u64;
+    IS_LOADING = *mode != 0x4040000;
     call_original!(arg)
 }
 
