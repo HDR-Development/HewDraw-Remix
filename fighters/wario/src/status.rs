@@ -3,8 +3,9 @@ use globals::*;
  
 
 pub fn install() {
-    install_agent_init_callbacks!(wario_init);
-    install_agent_resets!(wario_reset);
+    smashline::install_agent_init_callbacks!(
+        wario_init
+    );
     install_status_scripts!(
         catch_attack_exec,
         catch_attack_end,
@@ -21,28 +22,15 @@ pub fn install() {
     );
 }
 
+pub const THROW_HI_STATUS_KIND: i32 = 0x47;
 #[smashline::fighter_init]
 fn wario_init(fighter: &mut L2CFighterCommon) {
     unsafe {
-        wario_start(fighter);
+        if fighter.kind() == *FIGHTER_KIND_WARIO {
+            fighter.global_table[THROW_HI_STATUS_KIND].assign(&FIGHTER_STATUS_KIND_THROW_KIRBY.into());
+            println!("Wario throw replaced");
+        }
     }
-}
-#[fighter_reset]
-fn wario_reset(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        wario_start(fighter);
-    }
-}
-
-//Force ThrowHi to use Throw_Kirby status
-unsafe fn wario_start(fighter: &mut L2CFighterCommon)
-{
-    let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-    if fighter_kind != *FIGHTER_KIND_WARIO {
-        return;
-    }
-    let THROW_LW_STATUS_KIND: i32 = 0x48;
-    fighter.global_table[THROW_LW_STATUS_KIND].assign(&FIGHTER_STATUS_KIND_THROW_KIRBY.into());
 }
 
 //Force opponent rotation
@@ -99,7 +87,6 @@ unsafe fn wario_throwk_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 #[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_THROW_KIRBY, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn wario_throwk_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    //StatusModule::change_status_force(fighter.module_accessor, *FIGHTER_STATUS_KIND_WAIT, false);
     macros::EFFECT_OFF_KIND(fighter, Hash40::new("sys_merikomi"),false,true);
     return fighter.status_end_ThrowKirby();
 }
@@ -136,22 +123,13 @@ unsafe fn wario_throwk_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
         let speed = smash::phx::Vector3f { x: 0.0, y: -0.425, z: 0.0 };
         KineticModule::add_speed(fighter.module_accessor, &speed);
     }
-    /*
-    else if currentFrame >= FRAME_FALL {
-        if (currentFrame <2.0 + FRAME_FALL) {println!("FALL");}
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-        KineticModule::suspend_energy(fighter.module_accessor,*FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-    } */
-
     //Groundcast to see if we touched the ground (only after falling), then cut to the landing frame
     if currentFrame >= FRAME_FALL
     {
         if GroundModule::is_touch(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32)
         {
             MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, FRAME_LAND, true,true,false);
-            println!("Wario Landed!");
             MotionModule::set_rate(fighter.module_accessor, 1.0);
-            //GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
             KineticModule::resume_energy(fighter.module_accessor,*FIGHTER_KINETIC_ENERGY_ID_CONTROL);
             
             //Spawn effects//
@@ -159,7 +137,7 @@ unsafe fn wario_throwk_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
             let opponent = boma.get_grabbed_opponent_boma();
             let opponentScale = PostureModule::scale(opponent);
 
-            macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_merikomi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, (opponentScale+0.4), true);
+           // macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_merikomi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, (opponentScale+0.4), true);
             
             macros::LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
             macros::LAST_EFFECT_SET_RATE(fighter, 0.8);

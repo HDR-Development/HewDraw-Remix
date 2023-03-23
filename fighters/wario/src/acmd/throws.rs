@@ -61,14 +61,14 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
 }
 
 
-pub const FRAME_FALL: f32 = 48.0;
-pub const FRAME_LAND: f32 = 55.0;
+pub const THROWHI_FRAME_FALL: f32 = 48.0;
+pub const THROWHI_FRAME_LAND: f32 = 55.0;
 
 
 #[acmd_script( agent = "wario", script = "game_throwhi", category = ACMD_GAME )]
 unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
-    
+
     let startPos = (*GroundModule::get_rhombus(fighter.module_accessor, true)).y;
     if is_excute(fighter) {
         macros::FT_LEAVE_NEAR_OTTOTTO(fighter, -2, 3);
@@ -81,6 +81,7 @@ unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
     let opponentScale = PostureModule::scale(opponent);
     let weight =  WorkModule::get_param_float(opponent, hash40("weight"), 0);
     let opponent_kind = utility::get_kind(&mut *opponent);
+    
     //Factor in mini and megashroom
     let extraLarge = opponentScale > 0.5
     && (opponentScale > 1.5 || [
@@ -96,8 +97,11 @@ unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
     ].contains(&opponent_kind)); 
     let extraHeavy = weight>110.0;
 
+    //Multiply hitbox size if opponent is mega, or opponent is of a large fighter kind
     let factorSize = (if extraLarge {1.5} else {1.0})*opponentScale.max(1.0);
+    //Multiply power if large/heavy
     let factorPower = if extraLarge || extraHeavy {1.2} else {1.0};
+    
     //Add rate based on item status
     let mut addRate = 0.0;
     if opponentScale != PostureModule::scale(fighter.module_accessor)
@@ -110,13 +114,12 @@ unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
     
     let factorRate = (if extraLarge || extraHeavy {1.375} else {1.0})+addRate;
 
-    println!("ExtraLarge: {} ExtraHeavy: {} Added Rate: {}",extraLarge,extraHeavy,addRate);
-
     frame(fighter.lua_state_agent, 8.0);
     FT_MOTION_RATE(fighter, factorRate);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_THROW_FLAG_START_AIR);
     }
+
     //Going up//
     frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
@@ -130,7 +133,7 @@ unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
     wait(fighter.lua_state_agent, 2.0);
     FT_MOTION_RATE(fighter, 1.0);
 
-    frame(fighter.lua_state_agent, FRAME_FALL);
+    frame(fighter.lua_state_agent, THROWHI_FRAME_FALL);
     if macros::is_excute(fighter) {
         
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
@@ -142,11 +145,8 @@ unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
         macros::ATTACK_IGNORE_THROW(fighter, 1, 0, Hash40::new("rot"), 8.0*factorPower, 50, 70, 0, 100, 6.0*factorSize, 0.0, 0.0, 0.0, Some(0.0), Some(2.5), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_THROW);
     }
     
-    frame(fighter.lua_state_agent, FRAME_LAND+1.0);
-    let currentPos = (*GroundModule::get_rhombus(fighter.module_accessor, true)).y;
-    let landOffset = (startPos-currentPos).abs() >= 10.0;
+    frame(fighter.lua_state_agent, THROWHI_FRAME_LAND+1.0);
     if macros::is_excute(fighter) {
-        //println!("Land Offset:{}",landOffset);
         //WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_THROW_FLAG_STOP);
         AttackModule::clear_all(fighter.module_accessor);
         
@@ -196,12 +196,12 @@ unsafe fn effect_throwhi(fighter: &mut L2CAgentBase) {
         macros::EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("wario_attack_air_n"), Hash40::new("wario_attack_air_n"), Hash40::new("rot"), 0, 5, 0, 0, -90, 0, (opponentScale+0.4), true, *EF_FLIP_YZ, 0.6);
         LAST_EFFECT_SET_RATE(fighter,1.25);
     }
-    wait(fighter.lua_state_agent, 1.0);
+    frame(fighter.lua_state_agent, THROWHI_FRAME_FALL+1.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("rot"), 0, 20, 0, 90, 0, 0, 1.2, true);
         macros::LAST_EFFECT_SET_RATE(fighter, 0.5);
     }
-    frame(fighter.lua_state_agent, FRAME_LAND+3.0);
+    frame(fighter.lua_state_agent, THROWHI_FRAME_LAND+3.0);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("throw"), 0, 0.0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
@@ -226,7 +226,7 @@ unsafe fn sound_throwhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_common_throw_01"));
     }
-    frame(fighter.lua_state_agent, FRAME_FALL-5.0);
+    frame(fighter.lua_state_agent, THROWHI_FRAME_FALL-5.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("vc_wario_006"));
     }
@@ -234,7 +234,7 @@ unsafe fn sound_throwhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_common_throw_02"));
     }
-    frame(fighter.lua_state_agent, FRAME_LAND);
+    frame(fighter.lua_state_agent, THROWHI_FRAME_LAND);
     if macros::is_excute(fighter) {
         macros::PLAY_LANDING_SE(fighter, Hash40::new("se_wario_landing02"));
     }
@@ -259,11 +259,11 @@ unsafe fn expression_throwhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(fighter.lua_state_agent, FRAME_FALL);
+    frame(fighter.lua_state_agent, THROWHI_FRAME_FALL);
     if macros::is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_attackm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(fighter.lua_state_agent, FRAME_LAND);
+    frame(fighter.lua_state_agent, THROWHI_FRAME_LAND);
     if macros::is_excute(fighter) {
         //macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_L);
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
