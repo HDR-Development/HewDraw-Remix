@@ -126,7 +126,8 @@ unsafe fn game_specialairnend(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
-    frame(fighter.lua_state_agent, 12.0);
+    //Landing lag cancel
+    frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
         CancelModule::enable_cancel(fighter.module_accessor);
     }
