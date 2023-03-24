@@ -41,15 +41,27 @@ unsafe fn mewtwo_special_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-
-#[acmd_script( agent = "mewtwo", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
-unsafe fn special_hi_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "mewtwo", script = "game_specialairhistart", category = ACMD_GAME, low_priority )]
+unsafe fn mewtwo_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        KineticModule::clear_speed_all(boma);
+    }
+}
 
+#[acmd_script( agent = "mewtwo", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
+unsafe fn mewtwo_special_air_hi_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
     if is_excute(fighter) {
         GroundModule::select_cliff_hangdata(boma, *FIGHTER_MEWTWO_CLIFF_HANG_DATA_SPECIAL_HI as u32);
-	    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
 }
 
@@ -96,7 +108,8 @@ unsafe fn bindball_shoot_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        //special_hi_game
+        mewtwo_special_air_hi_start_game,
+        mewtwo_special_air_hi_game,
         mewtwo_special_s_game,
         mewtwo_special_lw_game,
         mewtwo_special_air_lw_game,

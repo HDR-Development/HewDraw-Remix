@@ -37,4 +37,13 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="special_hi_pass_mul">0.9</float>
+      <float hash="special_air_hi_pass_mul">0.9</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
 </struct>

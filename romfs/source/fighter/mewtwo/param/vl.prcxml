@@ -39,8 +39,9 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="wrap_speed_add">3</float>
-      <float hash="wrap_speed_multi">2</float>
+      <float hash="wrap_speed_add">4.0</float>
+      <float hash="wrap_speed_multi">2.0</float>
+      <float hash="speed_mul_x">0.1</float>
       <float hash="landing_frame">25</float>
     </struct>
     <hash40 index="1">dummy</hash40>
