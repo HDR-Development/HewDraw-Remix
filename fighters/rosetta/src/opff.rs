@@ -21,71 +21,71 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 	if StatusModule::is_changing(boma) {
         return;
     }
-				let fighter_kind = smash::app::utility::get_kind(boma);
-				let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-				let frame = MotionModule::frame(boma);
-				if !smash::app::sv_information::is_ready_go(){
-					VarModule::set_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN, 0);
-					VarModule::off_flag(boma.object(), vars::rosetta::instance::IS_TICO_DEAD);
-				};
-				let rosa_x = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::ROSA_X) as f32;
-				let rosa_y = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::ROSA_Y) as f32;
-				let tico_x = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_X) as f32;
-				let tico_y = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_Y) as f32;
-				VarModule::set_int(fighter.battle_object, vars::rosetta::instance::TICO_RAYCAST, (GroundModule::ray_check(boma, &smash::phx::Vector2f{ x: rosa_x, y: rosa_y}, &Vector2f{ x: tico_x, y: tico_y}, false)) as i32);
-				VarModule::set_int(fighter.battle_object, vars::rosetta::instance::TICO_X_DIST, (rosa_x-tico_x) as i32);
-				VarModule::set_int(fighter.battle_object, vars::rosetta::instance::TICO_Y_DIST, (rosa_y-tico_y) as i32);
-				//Teleport!
-				if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW && !VarModule::is_flag(fighter.battle_object, vars::rosetta::instance::IS_TICO_DEAD) && VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) == 0 {
-					if frame == 13.0 {
-						macros::EFFECT(fighter, Hash40::new("rosetta_escape"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-						VarModule::set_int(fighter.battle_object, vars::rosetta::status::INVIS_FRAMES, 1);
-					};
-					if frame > 17.0 && frame < 20.0 {
-						HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_XLU), 0);
-						VisibilityModule::set_whole(boma, false);
-						JostleModule::set_status(boma, false);	
-						let new_x = tico_x;
-						let new_y = tico_y;
-						let pos = smash::phx::Vector3f { x: new_x, y: new_y, z: 0.0 };
-						PostureModule::set_pos(boma, &pos);
-						PostureModule::init_pos(boma, &pos, true, true);
-						VarModule::set_int(fighter.battle_object, vars::rosetta::status::INVIS_FRAMES, 2);
-					};
-					if frame == 26.0 {
-						macros::EFFECT(fighter, Hash40::new("rosetta_escape_end"), Hash40::new("top"), 0, 0, -1.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-						VarModule::set_int(fighter.battle_object, vars::rosetta::status::INVIS_FRAMES, 3);
-					};
-					if frame > 26.0{
-						VisibilityModule::set_whole(boma, true);
-						JostleModule::set_status(boma, true);	
-						VarModule::set_int(fighter.battle_object, vars::rosetta::status::INVIS_FRAMES, 4);
-						HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
-					};
-					if frame > 38.0{
-						CancelModule::enable_cancel(boma);
-					};
-				} else {
-					VarModule::set_int(fighter.battle_object, vars::rosetta::instance::ROSA_X, PostureModule::pos_x(boma) as i32);
-					VarModule::set_int(fighter.battle_object, vars::rosetta::instance::ROSA_Y, PostureModule::pos_y(boma) as i32);
-					if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-						HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
-						JostleModule::set_status(boma, true);	
-						VisibilityModule::set_whole(boma, true);
-						if frame > 38.0 {
-							CancelModule::enable_cancel(boma);
-						};
-					};
-				};
-				if VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) > 0 {
-					VarModule::dec_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN);
-				};
-				if VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) == 1 {
-					gimmick_flash(boma);
-				};
-				if status_kind == *FIGHTER_STATUS_KIND_DEAD {
-					VarModule::off_flag(fighter.battle_object, vars::rosetta::instance::IS_TICO_DEAD);
-				};
+	let fighter_kind = smash::app::utility::get_kind(boma);
+	let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+	let frame = MotionModule::frame(boma);
+	if !smash::app::sv_information::is_ready_go(){
+		VarModule::set_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN, 0);
+		VarModule::off_flag(boma.object(), vars::rosetta::instance::IS_TICO_DEAD);
+	};
+	let rosa_x = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::ROSA_X) as f32;
+	let rosa_y = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::ROSA_Y) as f32;
+	let tico_x = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_X) as f32;
+	let tico_y = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_Y) as f32;
+	VarModule::set_int(fighter.battle_object, vars::rosetta::instance::TICO_RAYCAST, (GroundModule::ray_check(boma, &smash::phx::Vector2f{ x: rosa_x, y: rosa_y}, &Vector2f{ x: tico_x, y: tico_y}, false)) as i32);
+	VarModule::set_int(fighter.battle_object, vars::rosetta::instance::TICO_X_DIST, (rosa_x-tico_x) as i32);
+	VarModule::set_int(fighter.battle_object, vars::rosetta::instance::TICO_Y_DIST, (rosa_y-tico_y) as i32);
+	//Teleport!
+	if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW && !VarModule::is_flag(fighter.battle_object, vars::rosetta::instance::IS_TICO_DEAD) && VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) == 0 {
+		if frame == 13.0 {
+			macros::EFFECT(fighter, Hash40::new("rosetta_escape"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+			VarModule::set_int(fighter.battle_object, vars::rosetta::status::INVIS_FRAMES, 1);
+		};
+		if frame > 17.0 && frame < 20.0 {
+			HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_XLU), 0);
+			VisibilityModule::set_whole(boma, false);
+			JostleModule::set_status(boma, false);	
+			let new_x = tico_x;
+			let new_y = tico_y;
+			let pos = smash::phx::Vector3f { x: new_x, y: new_y, z: 0.0 };
+			PostureModule::set_pos(boma, &pos);
+			PostureModule::init_pos(boma, &pos, true, true);
+			VarModule::set_int(fighter.battle_object, vars::rosetta::status::INVIS_FRAMES, 2);
+		};
+		if frame == 26.0 {
+			macros::EFFECT(fighter, Hash40::new("rosetta_escape_end"), Hash40::new("top"), 0, 0, -1.5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+			VarModule::set_int(fighter.battle_object, vars::rosetta::status::INVIS_FRAMES, 3);
+		};
+		if frame > 26.0{
+			VisibilityModule::set_whole(boma, true);
+			JostleModule::set_status(boma, true);	
+			VarModule::set_int(fighter.battle_object, vars::rosetta::status::INVIS_FRAMES, 4);
+			HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+		};
+		if frame > 38.0{
+			CancelModule::enable_cancel(boma);
+		};
+	} else {
+		VarModule::set_int(fighter.battle_object, vars::rosetta::instance::ROSA_X, PostureModule::pos_x(boma) as i32);
+		VarModule::set_int(fighter.battle_object, vars::rosetta::instance::ROSA_Y, PostureModule::pos_y(boma) as i32);
+		if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
+			HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+			JostleModule::set_status(boma, true);	
+			VisibilityModule::set_whole(boma, true);
+			if frame > 38.0 {
+				CancelModule::enable_cancel(boma);
+			};
+		};
+	};
+	if VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) > 0 {
+		VarModule::dec_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN);
+	};
+	if VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) == 1 {
+		gimmick_flash(boma);
+	};
+	if status_kind == *FIGHTER_STATUS_KIND_DEAD {
+		VarModule::off_flag(fighter.battle_object, vars::rosetta::instance::IS_TICO_DEAD);
+	};
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
