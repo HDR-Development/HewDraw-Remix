@@ -121,28 +121,31 @@ unsafe fn expression_specialairn(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "tantan", script = "game_landingspecialn", category = ACMD_GAME )]
-unsafe fn game_landingspecialn(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan", script = "game_specialairnend", category = ACMD_GAME )]
+unsafe fn game_specialairnend(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
-
+    frame(fighter.lua_state_agent, 12.0);
+    if macros::is_excute(fighter) {
+        CancelModule::enable_cancel(fighter.module_accessor);
+    }
 }
-#[acmd_script( agent = "tantan", script = "effect_landingspecialn", category = ACMD_EFFECT )]
-unsafe fn effect_landingspecialn(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan", script = "effect_specialairnend", category = ACMD_EFFECT )]
+unsafe fn effect_specialairnend(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
     }
 }
-#[acmd_script( agent = "tantan", script = "sound_landingspecialn", category = ACMD_SOUND )]
-unsafe fn sound_landingspecialn(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan", script = "sound_specialairnend", category = ACMD_SOUND )]
+unsafe fn sound_specialairnend(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         macros::PLAY_LANDING_SE(fighter, Hash40::new("se_tantan_landing02"));
     }
 }
-#[acmd_script( agent = "tantan", script = "expression_landingspecialn", category = ACMD_EXPRESSION )]
-unsafe fn expression_landingspecialn(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan", script = "expression_specialairnend", category = ACMD_EXPRESSION )]
+unsafe fn expression_specialairnend(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_lands"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
@@ -157,10 +160,10 @@ pub fn install() {
         sound_specialairn,
         expression_specialairn,
         
-        game_landingspecialn,
-        effect_landingspecialn,
-        sound_landingspecialn,
-        expression_landingspecialn
+        game_specialairnend,
+        effect_specialairnend,
+        sound_specialairnend,
+        expression_specialairnend
     );
 }
 
