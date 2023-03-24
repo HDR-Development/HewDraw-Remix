@@ -14,7 +14,7 @@ unsafe fn cross_chop_techniques(fighter: &mut L2CFighterCommon) {
         // Cancel into the dive if holding the special button during the aerial version
         /*
         if fighter.is_motion(Hash40::new("special_air_hi_start")){
-            if MotionModule::frame(fighter.module_accessor) > 14.0 && MotionModule::frame(fighter.module_accessor) < 16.0 {
+            if MotionModule::frame(fighter.module_accessor) > 15.0 && MotionModule::frame(fighter.module_accessor) < 17.0 {
                 if fighter.is_button_on(Buttons::Special) || fighter.is_button_on(Buttons::SpecialRaw) {
                     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
                     KineticModule::clear_speed_all(fighter.module_accessor);
@@ -24,7 +24,7 @@ unsafe fn cross_chop_techniques(fighter: &mut L2CFighterCommon) {
             }
         }
         */
-        if MotionModule::frame(fighter.module_accessor) > 20.0 && !VarModule::is_flag(fighter.object(), vars::gaogaen::status::SHOULD_CROSS_CHOP_DIVE_EARLY) { // Not checking for the SHOULD_CROSS_CHOP_DIVE_EARLY flag has interesting behavior if holding special and shield, allows him to do a little aerial flip that stalls him in the air a bit
+        if MotionModule::frame(fighter.module_accessor) > 21.0 && !VarModule::is_flag(fighter.object(), vars::gaogaen::status::SHOULD_CROSS_CHOP_DIVE_EARLY) { // Not checking for the SHOULD_CROSS_CHOP_DIVE_EARLY flag has interesting behavior if holding special and shield, allows him to do a little aerial flip that stalls him in the air a bit
             if fighter.is_button_on(Buttons::Special) {
                 //DamageModule::add_damage(fighter.module_accessor, 1.0, 0);
                 VarModule::off_flag(fighter.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL);
@@ -34,7 +34,7 @@ unsafe fn cross_chop_techniques(fighter: &mut L2CFighterCommon) {
     // Cancel out at the apex if the shield input was detected
     /*
     if fighter.is_motion(Hash40::new("special_air_hi_turn")) {
-        if MotionModule::frame(fighter.module_accessor) > 7.0 {
+        if MotionModule::frame(fighter.module_accessor) > 8.0 {
             if VarModule::is_flag(fighter.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL){
                 VarModule::on_flag(fighter.object(), vars::common::instance::UP_SPECIAL_CANCEL);
                 fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
@@ -100,13 +100,15 @@ unsafe fn catch_lean(boma: &mut BattleObjectModuleAccessor, lean_frame: f32, ret
 }
 
 unsafe fn angled_grab(fighter: &mut L2CFighterCommon) {
-
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
     if fighter.is_status(*FIGHTER_STATUS_KIND_CATCH) {
-        catch_lean(fighter.boma(), 7.0, 30.0, 50.0, 30.0);
+        catch_lean(fighter.boma(), 8.0, 31.0, 50.0, 30.0);
     } else if fighter.is_status(*FIGHTER_STATUS_KIND_CATCH_TURN) {
-        catch_lean(fighter.boma(), 12.0, 30.0, 30.0, 15.0);
+        catch_lean(fighter.boma(), 13.0, 31.0, 30.0, 15.0);
     } else if  fighter.is_status(*FIGHTER_STATUS_KIND_CATCH_DASH) {
-        catch_lean(fighter.boma(), 11.0, 30.0, 30.0, 15.0);
+        catch_lean(fighter.boma(), 12.0, 31.0, 30.0, 15.0);
     }
 }
 
@@ -155,11 +157,11 @@ unsafe fn alolan_whip_special_grabs(fighter: &mut L2CFighterCommon) {
         if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::IS_SPECIAL_S_ALTERNATE_GRAB) {
             // OTG Grab
             if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::IS_SPECIAL_S_GROUND_GRAB){
-                command_grab_joint_rotate(fighter.boma(), 20.0, 13.0, 18.0, 30.0, 45.0);
+                command_grab_joint_rotate(fighter.boma(), 20.0, 14.0, 19.0, 31.0, 46.0);
             }
             // Anti-air grab
             else if VarModule::is_flag(fighter.object(), vars::gaogaen::instance::IS_SPECIAL_S_AIR_GRAB){
-                command_grab_joint_rotate(fighter.boma(), -50.0, 13.0, 18.0, 30.0, 45.0);
+                command_grab_joint_rotate(fighter.boma(), -50.0, 14.0, 19.0, 31.0, 46.0);
             }
         }
     }
@@ -175,7 +177,7 @@ unsafe fn lariat_ledge_slipoff(fighter: &mut L2CFighterCommon) {
 unsafe fn rotate_revenge_uthrow(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_motion(Hash40::new("throw_hi")){
         if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
-            revenge_uthrow_rotation(boma, 10.0, 15.0, 16.0, 22.0);
+            revenge_uthrow_rotation(boma, 11.0, 16.0, 17.0, 23.0);
         }
     }
 }

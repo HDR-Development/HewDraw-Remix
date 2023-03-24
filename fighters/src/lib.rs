@@ -192,4 +192,8 @@ pub fn delayed_install() {
     { metaknight::delayed_install(); }
     #[cfg(feature = "include-ganon")]
     { ganon::delayed_install(); }
+    #[cfg(feature = "include-littlemac")]
+    { littlemac::delayed_install(); }
+    #[cfg(feature = "include-wolf")]
+    { wolf::delayed_install(); }
 }
