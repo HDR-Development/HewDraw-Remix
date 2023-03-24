@@ -32,6 +32,28 @@ pub trait Vec4Ext {
     fn zero() -> Self where Self: Sized;
 }
 
+pub trait Hash40Ext {
+    fn to_hash(self) -> Hash40;
+}
+
+impl Hash40Ext for Hash40 {
+    fn to_hash(self) -> Hash40 {
+        self
+    }
+}
+
+impl Hash40Ext for u64 {
+    fn to_hash(self) -> Hash40 {
+        Hash40::new_raw(self)
+    }
+}
+
+impl Hash40Ext for &str {
+    fn to_hash(self) -> Hash40 {
+        Hash40::new(self)
+    }
+}
+
 impl Vec2Ext for Vector2f {
     fn new(x: f32, y: f32) -> Self {
         Self {
@@ -462,6 +484,9 @@ pub trait BomaExt {
     unsafe fn get_param_int(&mut self, obj: &str, field: &str) -> i32;
     unsafe fn get_param_float(&mut self, obj: &str, field: &str) -> f32;
     unsafe fn get_param_int64(&mut self, obj: &str, field: &str) -> u64;
+    unsafe fn set_int_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext);
+    unsafe fn set_float_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext);
+    unsafe fn set_int64_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext);
 
     // ENERGY
     unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion;
@@ -742,12 +767,27 @@ impl BomaExt for BattleObjectModuleAccessor {
         WorkModule::set_int(self, value, what)
     }
 
+    unsafe fn set_int_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext) {
+        let int = WorkModule::get_param_int(self, object.to_hash().hash, param.to_hash().hash);
+        WorkModule::set_int(self, int, what);
+    }
+
     unsafe fn set_float(&mut self, value: f32, what: i32) {
         WorkModule::set_float(self, value, what)
     }
 
+    unsafe fn set_float_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext) {
+        let float = WorkModule::get_param_float(self, object.to_hash().hash, param.to_hash().hash);
+        WorkModule::set_float(self, float, what);
+    }
+
     unsafe fn set_int64(&mut self, value: i64, what: i32) {
         WorkModule::set_int64(self, value, what)
+    }
+
+    unsafe fn set_int64_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext) {
+        let int = WorkModule::get_param_int64(self, object.to_hash().hash, param.to_hash().hash);
+        WorkModule::set_int64(self, int as i64, what);
     }
 
     unsafe fn on_flag(&mut self, what: i32) {

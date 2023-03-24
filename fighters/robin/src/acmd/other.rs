@@ -177,7 +177,7 @@ unsafe fn reflet_catch_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "robin", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "reflet", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
 unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -194,7 +194,7 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "robin", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "reflet", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
 unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();

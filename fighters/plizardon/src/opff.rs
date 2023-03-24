@@ -9,7 +9,9 @@ unsafe fn flame_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
     if status_kind != *FIGHTER_STATUS_KIND_SPECIAL_N || situation_kind != *SITUATION_KIND_GROUND || prev_situation != *SITUATION_KIND_AIR {
         return;
     }
-
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if frame < 19.0 {
         MotionModule::set_frame(boma, 18.0, true);
     }

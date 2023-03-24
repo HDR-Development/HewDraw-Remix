@@ -39,26 +39,21 @@ unsafe fn kart_jump_waveland(boma: &mut BattleObjectModuleAccessor, status_kind:
     }
 }
 
-unsafe fn upB_kart_respawn(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if WorkModule::is_flag(boma, *FIGHTER_KOOPAJR_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_INTERRUPT)
-    && boma.is_situation(*SITUATION_KIND_GROUND) {
-        boma.change_status_req(*FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_LANDING, false);
-    }
-
-    if boma.is_status(*FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_LANDING) && boma.is_prev_status(*FIGHTER_STATUS_KIND_ITEM_THROW) {
-        KineticModule::clear_speed_all(boma);
-    }
-    
-    if [*FIGHTER_STATUS_KIND_DAMAGE_AIR, *FIGHTER_STATUS_KIND_DAMAGE_FALL, *FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL].contains(&status_kind) && WorkModule::get_float(boma, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) == 0.0 && WorkModule::is_flag(boma, *FIGHTER_KOOPAJR_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_INTERRUPT) {
+unsafe fn upB_kart_respawn(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    // Respawns Clown Kart and allows actionability once hitstun is over
+    // after getting hit into non-tumble knockback out of upB
+    if *FIGHTER_STATUS_KIND_DAMAGE_AIR == status_kind
+    && WorkModule::is_flag(boma, *FIGHTER_STATUS_DAMAGE_FLAG_END_REACTION)
+    && WorkModule::is_flag(boma, *FIGHTER_KOOPAJR_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_INTERRUPT) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_DAMAGE_END, false);
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     clown_cannon_shield_cancel(boma, status_kind, situation_kind, frame);
     // clown_cannon_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
     kart_jump_waveland(boma, status_kind, situation_kind, cat[0]);
-    upB_kart_respawn(boma, status_kind);
+    upB_kart_respawn(fighter, boma, status_kind);
 }
 
 
@@ -72,7 +67,7 @@ pub fn koopajr_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn koopajr_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
 

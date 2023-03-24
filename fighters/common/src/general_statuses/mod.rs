@@ -121,7 +121,9 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_transition_group_check_ground,
             sys_line_status_system_control_hook,
             status_FallSub_hook,
-            super_jump_punch_main_hook
+            super_jump_punch_main_hook,
+            sub_cliff_uniq_process_exec_fix_pos,
+            end_pass_ground
         );
     }
 }
@@ -380,11 +382,9 @@ pub unsafe fn sys_line_status_system_control_hook(fighter: &mut L2CFighterBase) 
         let situation_kind = StatusModule::situation_kind(fighter.module_accessor);
         fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(situation_kind));
         fighter.global_table[0xD].assign(&L2CValue::Bool(false));
-        VarModule::off_flag(fighter.battle_object, vars::common::instance::CHECK_CHANGE_MOTION_ONLY);
         0.into()
     }
     else {
-        if VarModule::has_var_module(fighter.battle_object) { VarModule::off_flag(fighter.battle_object, vars::common::instance::CHECK_CHANGE_MOTION_ONLY); }
         call_original!(fighter)
     }
 }
@@ -428,6 +428,99 @@ pub unsafe fn super_jump_punch_main_hook(fighter: &mut L2CFighterCommon) {
         let new_status = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_STATUS_KIND_END);
         fighter.change_status_req(new_status, false);
     }
+}
+
+// I honestly don't know why this function was needed in vanilla in the first place
+// Forces situation kind changes during ledge actions, even though situation kind automatically changes based on character position
+// Also forces ECB shape changes, while stubbing this doesn't affect ECB shape whatsoever
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_cliff_uniq_process_exec_fix_pos)]
+pub unsafe fn sub_cliff_uniq_process_exec_fix_pos(fighter: &mut L2CFighterCommon) {
+    if fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_CLIFF_WAIT
+    && fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_CLIFF_CATCH
+    && fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_CLIFF_ATTACK
+    && fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_CLIFF_CLIMB
+    && fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_CLIFF_ESCAPE
+    && fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_CLIFF_JUMP1
+    {
+        return;
+    }
+    if fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_CLIFF_WAIT {
+        if !GroundModule::is_status_cliff(fighter.module_accessor) {
+            if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
+                if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_CLIFF {
+                    return;
+                }
+                StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), false);
+                let situation_kind = fighter.global_table[SITUATION_KIND].get_i32();
+                fighter.global_table[PREV_SITUATION_KIND].assign(&L2CValue::I32(situation_kind));
+                fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_AIR));
+                fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+                return;
+            }
+            let correct = GroundModule::get_correct(fighter.module_accessor);
+            if correct != *GROUND_CORRECT_KIND_CLIFF {
+                return;
+            }
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+            app::sv_kinetic_energy::set_ground_trans(fighter.lua_state_agent);
+            GroundModule::set_shape_flag(fighter.module_accessor, *GROUND_CORRECT_SHAPE_RHOMBUS_MODIFY_FLAG_FRONT_FIX as u16, false);
+            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_CLIFF_FLAG_TO_GROUND);
+        }
+        else {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+            let is_cliff_ground_trans = app::sv_kinetic_energy::is_cliff_ground_trans(fighter.lua_state_agent);
+            if !is_cliff_ground_trans {
+                return;
+            }
+            let mut tra_out = Vector3f::zero();
+            MotionModule::trans_tra(fighter.module_accessor, &mut tra_out as *mut Vector3f, true, true);
+            if tra_out.z < 0.4  // 0.3 in vanilla
+            || tra_out.y < -0.02  // -0.03 in vanilla
+            {
+                return;
+            }
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
+            app::sv_kinetic_energy::set_ground_trans(fighter.lua_state_agent);
+            GroundModule::set_shape_flag(fighter.module_accessor, *GROUND_CORRECT_SHAPE_RHOMBUS_MODIFY_FLAG_FRONT_FIX as u16, false);
+            StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_GROUND), false);
+            let situation_kind = fighter.global_table[SITUATION_KIND].get_i32();
+            fighter.global_table[PREV_SITUATION_KIND].assign(&L2CValue::I32(situation_kind));
+            fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_GROUND));
+            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+            GroundModule::set_status_ground(fighter.module_accessor);
+            GroundModule::leave_cliff(fighter.module_accessor);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_CLIFF_FLAG_TO_GROUND);
+        }
+    }
+    else {
+        let is_touch_down = GroundModule::is_touch(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
+        if !is_touch_down {
+            return;
+        }
+        StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_GROUND), false);
+        let situation_kind = fighter.global_table[SITUATION_KIND].get_i32();
+        fighter.global_table[PREV_SITUATION_KIND].assign(&L2CValue::I32(situation_kind));
+        fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_GROUND));
+        fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+    }
+    return;
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_end_pass_ground)]
+pub unsafe fn end_pass_ground(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_STATUS_KIND_DASH
+    && (fighter.kind() != *FIGHTER_KIND_RYU || fighter.global_table[PREV_STATUS_KIND] != FIGHTER_RYU_STATUS_KIND_DASH_BACK)
+    && (fighter.kind() != *FIGHTER_KIND_KEN || fighter.global_table[PREV_STATUS_KIND] != FIGHTER_RYU_STATUS_KIND_DASH_BACK)
+    && (fighter.kind() != *FIGHTER_KIND_DOLLY || fighter.global_table[PREV_STATUS_KIND] != FIGHTER_DOLLY_STATUS_KIND_DASH_BACK)
+    && (fighter.kind() != *FIGHTER_KIND_DEMON || fighter.global_table[PREV_STATUS_KIND] != FIGHTER_DEMON_STATUS_KIND_DASH_BACK)
+    {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
+    }
+    call_original!(fighter)
 }
 
 pub fn install() {
