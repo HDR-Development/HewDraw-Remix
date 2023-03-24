@@ -83,7 +83,7 @@ pub struct ModuleAccessor {
 }
 
 // Articles that should bypass running their MAIN status before KineticModule::UpdateEnergy and GroundCollision::process
-const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 14] = [
+const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 19] = [
     WEAPON_KIND_PICKEL_PLATE,
     WEAPON_KIND_MASTER_SWORD,
     WEAPON_KIND_LUCAS_HIMOHEBI,
@@ -97,7 +97,12 @@ const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 14] = [
     WEAPON_KIND_JACK_DOYLE,
     WEAPON_KIND_PICKEL_FORGE,
     WEAPON_KIND_PICKEL_TROLLEY,
-    WEAPON_KIND_MARIO_FIREBALL
+    WEAPON_KIND_MARIO_FIREBALL,
+    WEAPON_KIND_TANTAN_SPIRALSIMPLE,
+    WEAPON_KIND_TANTAN_SPIRALLEFT,
+    WEAPON_KIND_TANTAN_SPIRALRIGHT,
+    WEAPON_KIND_TANTAN_SPIRALLEFTLOUPE,
+    WEAPON_KIND_TANTAN_SPIRALRIGHTLOUPE
 ];
 
 // For one reason or another, the below statuses/kinds do not play well with running before energy update/ground collision
@@ -124,7 +129,9 @@ unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor, status_k
         || ((*boma).kind() == *FIGHTER_KIND_DOLLY
             && [*FIGHTER_STATUS_KIND_FINAL, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_PICKEL
-            && [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING_LIGHT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_RIDE].contains(&status_kind)) )
+            && [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING_LIGHT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_RIDE].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_TANTAN
+            && [*FIGHTER_STATUS_KIND_SPECIAL_HI].contains(&status_kind)) )
     {
         return true;
     }
@@ -305,9 +312,6 @@ unsafe fn before_collision(object: *mut BattleObject) {
             let slow_module__is_skip: extern "C" fn(*const TempModule) -> bool = std::mem::transmute(*(((module_accessor.slow_module.vtable as u64) + 0xb0) as *const u64));
             let is_skip = slow_module__is_skip(module_accessor.slow_module);
 
-            let physics_module__update_rope_matrix: extern "C" fn(*const TempModule, bool, bool) = std::mem::transmute(*(((module_accessor.physics_module.vtable as u64) + 0x60) as *const u64));
-            physics_module__update_rope_matrix(module_accessor.physics_module, true, false);
-
             // Calling this BEFORE kinetic energy updates and stage collision is processed allows us to bypass the "1f physics delay"
             run_main_status_original(module_accessor, false, is_skip);
 
@@ -347,9 +351,6 @@ unsafe fn before_collision(object: *mut BattleObject) {
 
             let slow_module__is_skip: extern "C" fn(*const TempModule) -> bool = std::mem::transmute(*(((module_accessor.slow_module.vtable as u64) + 0xb0) as *const u64));
             let is_skip = slow_module__is_skip(module_accessor.slow_module);
-
-            let physics_module__update_rope_matrix: extern "C" fn(*const TempModule, bool, bool) = std::mem::transmute(*(((module_accessor.physics_module.vtable as u64) + 0x60) as *const u64));
-            physics_module__update_rope_matrix(module_accessor.physics_module, true, false);
 
             // Calling this BEFORE kinetic energy updates and stage collision is processed allows us to bypass the "1f physics delay"
             run_main_status_original(module_accessor, true, is_skip);
@@ -450,10 +451,8 @@ unsafe fn before_collision(object: *mut BattleObject) {
     let sound_module__something: extern "C" fn(*const TempModule, bool) = std::mem::transmute(*(((module_accessor.sound_module.vtable as u64) + 0x50) as *const u64));
     sound_module__something(module_accessor.sound_module, is_receiver_in_hitlag);
 
-    if is_slow && *battle_object_slow != 0 {
-        let physics_module__update_rope_matrix: extern "C" fn(*const TempModule, bool, bool) = std::mem::transmute(*(((module_accessor.physics_module.vtable as u64) + 0x60) as *const u64));
-        physics_module__update_rope_matrix(module_accessor.physics_module, true, false);
-    }
+    let physics_module__update_rope_matrix: extern "C" fn(*const TempModule, bool, bool) = std::mem::transmute(*(((module_accessor.physics_module.vtable as u64) + 0x60) as *const u64));
+    physics_module__update_rope_matrix(module_accessor.physics_module, true, false);
 }
 
 // This group of functions is normally run after KineticModule::UpdateEnergy and GroundCollision::process
