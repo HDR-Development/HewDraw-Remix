@@ -13,18 +13,18 @@
   <list hash="param_spiral">
     <struct index="0">
       <int hash="rewind_frame">18</int>
-      
+
       <float hash="punch_length">3.0</float>
       <float hash="shift_punch_length">3.0</float>
-      <float hash="long_punch_length">4.0</float>
-      <float hash="long_shift_punch_length">4.0</float>
+      <float hash="long_punch_length">3.5</float>
+      <float hash="long_shift_punch_length">3.5</float>
 
       <float hash="shift_control_angle_up_max">7.5</float>
-      <float hash="shift_control_angle_down_max">5.0</float>
+      <float hash="shift_control_angle_down_max">7.5</float>
       <float hash="shift_control_angle_up_add">2</float>
       <float hash="shift_control_angle_down_add">2</float>
       <float hash="long_shift_control_angle_up_max">15</float>
-      <float hash="long_shift_control_angle_down_max">15</float>
+      <float hash="long_shift_control_angle_down_max">20</float>
       <float hash="long_shift_control_angle_up_add">2</float>
       <float hash="long_shift_control_angle_down_add">2</float>
     </struct>
@@ -39,31 +39,17 @@
       <float hash="shift_angle_down">0.5</float>
 
       <float hash="shift_control_angle_up_max">30</float>
-      <float hash="shift_control_angle_down_max">10</float>
+      <float hash="shift_control_angle_down_max">15</float>
       <float hash="shift_control_angle_up_add">8</float>
       <float hash="shift_control_angle_down_add">6</float>
       <float hash="long_shift_control_angle_up_max">20</float>
-      <float hash="long_shift_control_angle_down_max">10</float>
+      <float hash="long_shift_control_angle_down_max">15</float>
       <float hash="long_shift_control_angle_up_add">7</float>
       <float hash="long_shift_control_angle_down_add">6</float>
 
       <float hash="punch_shoot_angle">10</float>
     </struct>
-    <struct index="3">
-      <float hash="punch_length">2.0</float>
-      <float hash="shift_punch_length">2.0</float>
-      <float hash="long_punch_length">3.4</float>
-      <float hash="long_shift_punch_length">3.4</float>
-
-      <float hash="shift_control_angle_up_max">15</float>
-      <float hash="shift_control_angle_down_max">15</float>
-      <float hash="shift_control_angle_up_add">3</float>
-      <float hash="shift_control_angle_down_add">2.5</float>
-      <float hash="long_shift_control_angle_up_max">15</float>
-      <float hash="long_shift_control_angle_down_max">15</float>
-      <float hash="long_shift_control_angle_up_add">2</float>
-      <float hash="long_shift_control_angle_down_add">2.5</float>
-    </struct>
+    <hash40 index="3">dummy</hash40>
     <hash40 index="4">dummy</hash40>
     <struct index="5">
       <float hash="punch_length">1.625</float>
@@ -71,16 +57,14 @@
       <float hash="long_punch_length">2.75</float>
       <float hash="long_shift_punch_length">2.75</float>
 
-      <float hash="shift_control_angle_up_max">20</float>
-      <float hash="shift_control_angle_down_max">10</float>
+      <float hash="shift_control_angle_up_max">25</float>
+      <float hash="shift_control_angle_down_max">15</float>
       <float hash="shift_control_angle_up_add">8</float>
       <float hash="shift_control_angle_down_add">6</float>
       <float hash="long_shift_control_angle_up_max">20</float>
-      <float hash="long_shift_control_angle_down_max">10</float>
+      <float hash="long_shift_control_angle_down_max">15</float>
       <float hash="long_shift_control_angle_up_add">13</float>
       <float hash="long_shift_control_angle_down_add">15</float>
-
-      <float hash="punch_shoot_angle">10</float>
     </struct>
   </list>
   <list hash="air_lasso_data">
