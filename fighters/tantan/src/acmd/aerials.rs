@@ -105,7 +105,7 @@ unsafe fn tantan_landing_air_lw_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "tantan", script = "game_attackairn", category = ACMD_GAME )]
+#[acmd_script( agent = "tantan", script = "game_attackairn", category = ACMD_GAME, low_priority)]
 unsafe fn game_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -127,7 +127,7 @@ unsafe fn game_attackairn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan", script = "effect_attackairn", category = ACMD_EFFECT )]
+#[acmd_script( agent = "tantan", script = "effect_attackairn", category = ACMD_EFFECT, low_priority)]
 unsafe fn effect_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -154,7 +154,7 @@ unsafe fn effect_attackairn(fighter: &mut L2CAgentBase) {
         //macros::EFFECT_OFF_KIND(fighter, Hash40::new("sys_attack_speedline"), true, true);
     }
 }
-#[acmd_script( agent = "tantan", script = "sound_attackairn", category = ACMD_SOUND )]
+#[acmd_script( agent = "tantan", script = "sound_attackairn", category = ACMD_SOUND, low_priority)]
 unsafe fn sound_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -166,7 +166,7 @@ unsafe fn sound_attackairn(fighter: &mut L2CAgentBase) {
         macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_tantan_rnd_attack03"));
     }
 }
-#[acmd_script( agent = "tantan", script = "expression_attackairn", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "tantan", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority)]
 unsafe fn expression_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -178,20 +178,20 @@ unsafe fn expression_attackairn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan", script = "effect_landingairn", category = ACMD_EFFECT )]
+#[acmd_script( agent = "tantan", script = "effect_landingairn", category = ACMD_EFFECT, low_priority)]
 unsafe fn effect_landingairn(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
-#[acmd_script( agent = "tantan", script = "sound_landingairn", category = ACMD_SOUND )]
+#[acmd_script( agent = "tantan", script = "sound_landingairn", category = ACMD_SOUND, low_priority)]
 unsafe fn sound_landingairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         macros::PLAY_LANDING_SE(fighter, Hash40::new("se_tantan_landing02"));
     }
 }
-#[acmd_script( agent = "tantan", script = "expression_landingairn", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "tantan", script = "expression_landingairn", category = ACMD_EXPRESSION, low_priority)]
 unsafe fn expression_landingairn(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_lands"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
@@ -202,7 +202,7 @@ unsafe fn expression_landingairn(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 6);
     }
 }
-#[acmd_script( agent = "tantan", script = "game_attackairf", category = ACMD_GAME )]
+#[acmd_script( agent = "tantan", script = "game_attackairf", category = ACMD_GAME, low_priority)]
 unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -239,7 +239,7 @@ unsafe fn game_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan", script = "effect_attackairf", category = ACMD_EFFECT )]
+#[acmd_script( agent = "tantan", script = "effect_attackairf", category = ACMD_EFFECT, low_priority)]
 unsafe fn effect_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 15.0);
     if is_excute(fighter) {
@@ -252,7 +252,7 @@ unsafe fn effect_attackairf(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 2);
     }
 }
-#[acmd_script( agent = "tantan", script = "sound_attackairf", category = ACMD_SOUND )]
+#[acmd_script( agent = "tantan", script = "sound_attackairf", category = ACMD_SOUND, low_priority)]
 unsafe fn sound_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
@@ -272,7 +272,7 @@ unsafe fn sound_attackairf(fighter: &mut L2CAgentBase) {
         macros::PLAY_SE(fighter, Hash40::new("se_tantan_swing_l01"));
     }
 }
-#[acmd_script( agent = "tantan", script = "expression_attackairf", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "tantan", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority)]
 unsafe fn expression_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -292,7 +292,7 @@ unsafe fn expression_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan", script = "game_landingairf", category = ACMD_GAME )]
+#[acmd_script( agent = "tantan", script = "game_landingairf", category = ACMD_GAME, low_priority)]
 unsafe fn game_landingairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -303,21 +303,21 @@ unsafe fn game_landingairf(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
     }
 }
-#[acmd_script( agent = "tantan", script = "effect_landingairf", category = ACMD_EFFECT )]
+#[acmd_script( agent = "tantan", script = "effect_landingairf", category = ACMD_EFFECT, low_priority)]
 unsafe fn effect_landingairf(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         //macros::LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
     }
 }
-#[acmd_script( agent = "tantan", script = "sound_landingairf", category = ACMD_SOUND )]
+#[acmd_script( agent = "tantan", script = "sound_landingairf", category = ACMD_SOUND, low_priority)]
 unsafe fn sound_landingairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         macros::PLAY_LANDING_SE(fighter, Hash40::new("se_tantan_landing02"));
     }
 }
-#[acmd_script( agent = "tantan", script = "expression_landingairf", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "tantan", script = "expression_landingairf", category = ACMD_EXPRESSION, low_priority)]
 unsafe fn expression_landingairf(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 2);
@@ -329,7 +329,7 @@ unsafe fn expression_landingairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan", script = "game_attackairb", category = ACMD_GAME )]
+#[acmd_script( agent = "tantan", script = "game_attackairb", category = ACMD_GAME, low_priority)]
 unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -350,7 +350,7 @@ unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan", script = "effect_attackairb", category = ACMD_EFFECT )]
+#[acmd_script( agent = "tantan", script = "effect_attackairb", category = ACMD_EFFECT, low_priority)]
 unsafe fn effect_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
@@ -364,7 +364,7 @@ unsafe fn effect_attackairb(fighter: &mut L2CAgentBase) {
         macros::LAST_EFFECT_SET_RATE(fighter, 1.3);
     }
 }
-#[acmd_script( agent = "tantan", script = "sound_attackairb", category = ACMD_SOUND )]
+#[acmd_script( agent = "tantan", script = "sound_attackairb", category = ACMD_SOUND, low_priority)]
 unsafe fn sound_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
@@ -378,7 +378,7 @@ unsafe fn sound_attackairb(fighter: &mut L2CAgentBase) {
         }
     }
 }
-#[acmd_script( agent = "tantan", script = "expression_attackairb", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "tantan", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority)]
 unsafe fn expression_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -390,20 +390,20 @@ unsafe fn expression_attackairb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan", script = "effect_landingairb", category = ACMD_EFFECT )]
+#[acmd_script( agent = "tantan", script = "effect_landingairb", category = ACMD_EFFECT, low_priority)]
 unsafe fn effect_landingairb(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
-#[acmd_script( agent = "tantan", script = "sound_landingairb", category = ACMD_SOUND )]
+#[acmd_script( agent = "tantan", script = "sound_landingairb", category = ACMD_SOUND, low_priority)]
 unsafe fn sound_landingairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         macros::PLAY_LANDING_SE(fighter, Hash40::new("se_tantan_landing02"));
     }
 }
-#[acmd_script( agent = "tantan", script = "expression_landingairb", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "tantan", script = "expression_landingairb", category = ACMD_EXPRESSION, low_priority)]
 unsafe fn expression_landingairb(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
