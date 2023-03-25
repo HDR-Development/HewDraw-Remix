@@ -333,14 +333,14 @@ unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
     wait(lua_state, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
-        CATCH(fighter, 0, Hash40::new("top"), 6.0, 0.0, 13.0, 7.0, *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN, *COLLISION_SITUATION_MASK_GA);
-        CATCH(fighter, 1, Hash40::new("top"), 4.0, 0.0, 8.8, 11.7, *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN, *COLLISION_SITUATION_MASK_G);
+        CATCH(fighter, 0, Hash40::new("top"), 6.0, 0.0, 13.0, 7.0, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 1, Hash40::new("top"), 4.0, 0.0, 8.8, 11.7, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN, *COLLISION_SITUATION_MASK_G);
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 0, 50, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_THROW);
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
-        CATCH(fighter, 0, Hash40::new("top"), 5.0, 0.0, 15.0, 6.0, *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN, *COLLISION_SITUATION_MASK_GA);
-        CATCH(fighter, 1, Hash40::new("top"), 5.0, 0.0, 11.0, 6.0, *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 0, Hash40::new("top"), 5.0, 0.0, 15.0, 6.0, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 1, Hash40::new("top"), 5.0, 0.0, 11.0, 6.0, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN, *COLLISION_SITUATION_MASK_GA);
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {

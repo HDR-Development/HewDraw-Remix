@@ -73,7 +73,7 @@ unsafe fn reset_flags(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
 /// this cancels side special early if you hit the opponent
 unsafe fn drill_rush_on_hit_cancel(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_RUSH)
-        && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+        && AttackModule::is_infliction_status(fighter.boma(), *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
         fighter.change_status_req(*FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END, false);
     }
 }
