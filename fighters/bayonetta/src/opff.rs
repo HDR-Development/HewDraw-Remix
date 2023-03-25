@@ -155,10 +155,13 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn special_cancels(fighter: &mut L2CFighterCommon) {
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
     // Special Cancels
     if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U)
     && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-    && fighter.motion_frame() > 31.0
+    && fighter.motion_frame() > 32.0
     && !VarModule::is_flag(fighter.battle_object, vars::bayonetta::status::IS_BULLET_ARTS)
     {
         CancelModule::enable_cancel(fighter.module_accessor);
@@ -227,7 +230,10 @@ unsafe fn clear_proration(fighter: &mut L2CFighterCommon, boma: *mut BattleObjec
 }
 
 unsafe fn abk_flight_drift(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U) && fighter.motion_frame() < 25.0 && !StopModule::is_stop(fighter.module_accessor){
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
+    if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U) && fighter.motion_frame() < 26.0 && !StopModule::is_stop(fighter.module_accessor){
         let stick_y =  ControlModule::get_stick_y(fighter.module_accessor);
         if stick_y != 0.0 && !fighter.is_in_hitlag(){
             KineticModule::add_speed_outside(fighter.module_accessor, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &Vector3f::new(0.0, 1.0 * stick_y, 0.0));

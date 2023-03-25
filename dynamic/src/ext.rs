@@ -32,6 +32,28 @@ pub trait Vec4Ext {
     fn zero() -> Self where Self: Sized;
 }
 
+pub trait Hash40Ext {
+    fn to_hash(self) -> Hash40;
+}
+
+impl Hash40Ext for Hash40 {
+    fn to_hash(self) -> Hash40 {
+        self
+    }
+}
+
+impl Hash40Ext for u64 {
+    fn to_hash(self) -> Hash40 {
+        Hash40::new_raw(self)
+    }
+}
+
+impl Hash40Ext for &str {
+    fn to_hash(self) -> Hash40 {
+        Hash40::new(self)
+    }
+}
+
 impl Vec2Ext for Vector2f {
     fn new(x: f32, y: f32) -> Self {
         Self {
@@ -462,6 +484,9 @@ pub trait BomaExt {
     unsafe fn get_param_int(&mut self, obj: &str, field: &str) -> i32;
     unsafe fn get_param_float(&mut self, obj: &str, field: &str) -> f32;
     unsafe fn get_param_int64(&mut self, obj: &str, field: &str) -> u64;
+    unsafe fn set_int_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext);
+    unsafe fn set_float_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext);
+    unsafe fn set_int64_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext);
 
     // ENERGY
     unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion;
@@ -741,12 +766,27 @@ impl BomaExt for BattleObjectModuleAccessor {
         WorkModule::set_int(self, value, what)
     }
 
+    unsafe fn set_int_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext) {
+        let int = WorkModule::get_param_int(self, object.to_hash().hash, param.to_hash().hash);
+        WorkModule::set_int(self, int, what);
+    }
+
     unsafe fn set_float(&mut self, value: f32, what: i32) {
         WorkModule::set_float(self, value, what)
     }
 
+    unsafe fn set_float_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext) {
+        let float = WorkModule::get_param_float(self, object.to_hash().hash, param.to_hash().hash);
+        WorkModule::set_float(self, float, what);
+    }
+
     unsafe fn set_int64(&mut self, value: i64, what: i32) {
         WorkModule::set_int64(self, value, what)
+    }
+
+    unsafe fn set_int64_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext) {
+        let int = WorkModule::get_param_int64(self, object.to_hash().hash, param.to_hash().hash);
+        WorkModule::set_int64(self, int as i64, what);
     }
 
     unsafe fn on_flag(&mut self, what: i32) {
@@ -808,18 +848,20 @@ impl BomaExt for BattleObjectModuleAccessor {
         // The distance from your ECB's bottom point to your Top bone is your waveland snap threshold
         let ecb_bottom = *GroundModule::get_rhombus(self, true).add(1);
         let pos = *PostureModule::pos(self);
+        let ecb_bottom_offset_y = crate::VarModule::get_float(self.object(), crate::consts::vars::common::instance::ECB_BOTTOM_Y_OFFSET);
+        let ecb_bottom_y = pos.y + ecb_bottom_offset_y;
         let snap_leniency = if WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0 {
                 // For a downwards/horizontal airdodge, waveland snap threshold = the distance from your ECB bottom to your Top bone
-                ecb_bottom.y - pos.y
+                ecb_bottom_offset_y
             } else {
                 // For an upwards airdodge, waveland snap threshold = 5 units below ECB bottom, if the distance from your ECB bottom to your Top bone is < 5
-                (ecb_bottom.y - pos.y).max(crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold"))
+                (ecb_bottom_offset_y).max(crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold"))
             };
-        let line_bottom = Vector2f::new(ecb_bottom.x, ecb_bottom.y - snap_leniency);
+        let line_bottom = Vector2f::new(ecb_bottom.x, ecb_bottom_y - snap_leniency);
         let mut ground_pos_any = Vector2f::zero();
         let mut ground_pos_stage = Vector2f::zero();
-        GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut ground_pos_any, true);
-        GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, ecb_bottom.y), &line_bottom, &Vector2f::zero(), &mut ground_pos_stage, false);
+        GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, ecb_bottom_y), &line_bottom, &Vector2f::zero(), &mut ground_pos_any, true);
+        GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, ecb_bottom_y), &line_bottom, &Vector2f::zero(), &mut ground_pos_stage, false);
         let can_snap = ground_pos_any != Vector2f::zero() && (ground_pos_stage == Vector2f::zero()
             || WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0);
         if can_snap { // pretty sure it returns a pointer, at least it defo returns a non-0 value if success
