@@ -10,11 +10,13 @@ unsafe fn rewind_cancel(boma: &mut BattleObjectModuleAccessor,status: i32,situat
     let currentFrame = MotionModule::frame(boma);
     let canCancel = WorkModule::is_flag(boma,*FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_ATTACK_REWIND_R)
     && ArticleModule::is_exist(boma,*FIGHTER_TANTAN_GENERATE_ARTICLE_RING)
-    && currentFrame > 10.0;
+    && currentFrame > 3.0;
     if !canCancel {return;}
     
     let mut new_status = 0;
-    if boma.is_cat_flag(Cat1::AttackS3) {
+    if boma.is_cat_flag(Cat1::AttackN) {
+        new_status = *FIGHTER_STATUS_KIND_ATTACK;
+    } else if boma.is_cat_flag(Cat1::AttackS3) {
         new_status = *FIGHTER_STATUS_KIND_ATTACK_S3;
     } else if boma.is_cat_flag(Cat1::AttackHi3) {
         new_status = *FIGHTER_STATUS_KIND_ATTACK_HI3;
@@ -28,9 +30,11 @@ unsafe fn rewind_cancel(boma: &mut BattleObjectModuleAccessor,status: i32,situat
     } else if boma.is_cat_flag(Cat1::AttackLw4) {
         new_status = *FIGHTER_STATUS_KIND_ATTACK_LW4_START;
     } 
+    println!("Can Cancel");
     if (new_status>0){
         println!("CANCEL!");
         if (situation_kind==*SITUATION_KIND_AIR)
+        && false
         {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
         }
@@ -42,7 +46,7 @@ unsafe fn rewind_cancel(boma: &mut BattleObjectModuleAccessor,status: i32,situat
 }
 
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    //rewind_cancel(boma,status_kind,situation_kind);
+    rewind_cancel(boma,status_kind,situation_kind);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_TANTAN )]
