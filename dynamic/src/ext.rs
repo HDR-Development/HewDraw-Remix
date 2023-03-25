@@ -465,6 +465,7 @@ pub trait BomaExt {
     // INSTANCE
     unsafe fn is_fighter(&mut self) -> bool;
     unsafe fn is_weapon(&mut self) -> bool;
+    unsafe fn is_item(&mut self) -> bool;
     unsafe fn kind(&mut self) -> i32;
     // gets the boma of the player who you are grabbing
     unsafe fn get_grabbed_opponent_boma(&mut self) -> &mut BattleObjectModuleAccessor;
@@ -724,6 +725,10 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn is_weapon(&mut self) -> bool {
         return smash::app::utility::get_category(self) == *BATTLE_OBJECT_CATEGORY_WEAPON;
+    }
+
+    unsafe fn is_item(&mut self) -> bool {
+        return smash::app::utility::get_category(self) == *BATTLE_OBJECT_CATEGORY_ITEM;
     }
 
     unsafe fn kind(&mut self) -> i32 {
