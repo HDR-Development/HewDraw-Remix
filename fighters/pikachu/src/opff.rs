@@ -6,6 +6,9 @@ use globals::*;
  
 // Disable QA jump cancels if not directly QA into the ground
 unsafe fn disable_qa_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if status_kind == *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP {
         // only allow QAC from QA1
         if WorkModule::get_int(boma, *FIGHTER_PIKACHU_STATUS_WORK_ID_INT_QUICK_ATTACK_COUNT) > 1 {
@@ -32,7 +35,7 @@ unsafe fn reset_jc_disable_flag(boma: &mut BattleObjectModuleAccessor, id: usize
 // JC Quick Attack/Agility
 unsafe fn jc_qa_agility(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL
-    && frame > 4.0
+    && boma.status_frame() > 3
     && situation_kind == *SITUATION_KIND_GROUND
     && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END
     && !VarModule::is_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC)

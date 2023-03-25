@@ -194,4 +194,6 @@ pub fn delayed_install() {
     { ganon::delayed_install(); }
     #[cfg(feature = "include-littlemac")]
     { littlemac::delayed_install(); }
+    #[cfg(feature = "include-wolf")]
+    { wolf::delayed_install(); }
 }

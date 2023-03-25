@@ -20,7 +20,8 @@ unsafe fn laser_ff_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kin
 }
 
 // Falco Shine Jump Cancels and Turnaround
-unsafe fn shine_jc_turnaround(fighter: &mut L2CFighterCommon, frame: f32) {
+unsafe fn shine_jc_turnaround(fighter: &mut L2CFighterCommon) {
+    let frame = fighter.status_frame();
     if fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) {
         let facing = PostureModule::lr(fighter.module_accessor);
         let stick_x = fighter.stick_x();
@@ -35,17 +36,14 @@ unsafe fn shine_jc_turnaround(fighter: &mut L2CFighterCommon, frame: f32) {
         KineticModule::suspend_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         let fighter_gravity = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut FighterKineticEnergyGravity;
         if fighter.is_status (*SITUATION_KIND_AIR) {
-            if frame <= 1.0 {
+            if frame <= 3 {
                 KineticModule::mul_speed(fighter.module_accessor, &Vector3f::new(0.0, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             }
-            if frame > 1.0 && fighter.motion_frame() <= 3.0 {
-                KineticModule::mul_speed(fighter.module_accessor, &Vector3f::new(0.0, 0.0, 0.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-            }
-            if frame > 3.0 {
+            if frame > 3 {
                 smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.02666667);
             }
         }
-        if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && frame > 3.0)  // Allows for jump cancel on frame 4 in game
+        if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && frame > 2)  // Allows for jump cancel on frame 4 in game
         || fighter.is_status_one_of(&[
             *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT,
             *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
@@ -60,14 +58,6 @@ unsafe fn shine_jc_turnaround(fighter: &mut L2CFighterCommon, frame: f32) {
 unsafe fn firebird_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
         // allows ledgegrab during Firebird startup
-        if WorkModule::get_int(fighter.module_accessor, *FIGHTER_FALCO_FIRE_STATUS_WORK_ID_INT_STOP_Y_FRAME) <= 0 {
-            sv_kinetic_energy!(
-                set_accel,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                0.0
-            );
-        }
         fighter.sub_transition_group_check_air_cliff();
     }
 }
@@ -93,7 +83,7 @@ unsafe fn aim_throw_lasers(boma: &mut BattleObjectModuleAccessor) {
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
 
     laser_ff_land_cancel(boma, status_kind, situation_kind, cat[1], stick_y);
-    shine_jc_turnaround(fighter, frame);
+    shine_jc_turnaround(fighter);
     firebird_startup_ledgegrab(fighter);
     aim_throw_lasers(boma);
 }
