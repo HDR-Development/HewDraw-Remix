@@ -591,6 +591,10 @@ unsafe fn lucas_attack_lw4_pt2_effect(fighter: &mut L2CAgentBase) {
             LAST_EFFECT_SET_RATE(fighter, 0.5);
         }
     }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -3, 0, 0, 0, 0, 0, 1, 2, 2, 2, 0, 0, 0, false);
+    }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("lucas_pkt_hold"), false, false);
