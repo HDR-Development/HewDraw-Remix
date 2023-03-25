@@ -24,7 +24,7 @@
       <float hash="shift_control_angle_up_add">2</float>
       <float hash="shift_control_angle_down_add">2</float>
       <float hash="long_shift_control_angle_up_max">15</float>
-      <float hash="long_shift_control_angle_down_max">20</float>
+      <float hash="long_shift_control_angle_down_max">10</float>
       <float hash="long_shift_control_angle_up_add">2</float>
       <float hash="long_shift_control_angle_down_add">2</float>
     </struct>
@@ -43,7 +43,7 @@
       <float hash="shift_control_angle_up_add">8</float>
       <float hash="shift_control_angle_down_add">6</float>
       <float hash="long_shift_control_angle_up_max">20</float>
-      <float hash="long_shift_control_angle_down_max">15</float>
+      <float hash="long_shift_control_angle_down_max">10</float>
       <float hash="long_shift_control_angle_up_add">7</float>
       <float hash="long_shift_control_angle_down_add">6</float>
 
