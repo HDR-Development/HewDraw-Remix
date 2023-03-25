@@ -951,6 +951,7 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <int hash="jump_count_max">5</int>
     </struct>
     <!-- PIT -->
     <struct index="28">

@@ -73,7 +73,7 @@ unsafe fn reset_flags(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
 /// this cancels side special early if you hit the opponent
 unsafe fn drill_rush_on_hit_cancel(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_RUSH)
-        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+        && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
         fighter.change_status_req(*FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END, false);
     }
 }
@@ -84,6 +84,14 @@ unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("havel"), &long_sword_scale);
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("haver"), &long_sword_scale);
 }				 
+
+unsafe fn fspecial_once_per_airtime(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S)
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        VarModule::on_flag(fighter.object(), vars::common::instance::SIDE_SPECIAL_CANCEL);
+    }
+}
+
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
 
     dim_cape_early_attack_cancel(boma, status_kind, frame);
@@ -107,5 +115,6 @@ pub unsafe fn metaknight_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
         drill_rush_on_hit_cancel(fighter);
+        fspecial_once_per_airtime(fighter);
     }
 }
