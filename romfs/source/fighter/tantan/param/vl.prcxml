@@ -20,13 +20,13 @@
       <float hash="long_shift_punch_length">3.5</float>
 
       <float hash="shift_control_angle_up_max">7.5</float>
-      <float hash="shift_control_angle_down_max">7.5</float>
-      <float hash="shift_control_angle_up_add">2</float>
-      <float hash="shift_control_angle_down_add">2</float>
-      <float hash="long_shift_control_angle_up_max">15</float>
-      <float hash="long_shift_control_angle_down_max">7.5</float>
-      <float hash="long_shift_control_angle_up_add">2</float>
-      <float hash="long_shift_control_angle_down_add">2</float>
+      <float hash="shift_control_angle_down_max">5</float>
+      <float hash="shift_control_angle_up_add">0.5</float>
+      <float hash="shift_control_angle_down_add">0.5</float>
+      <float hash="long_shift_control_angle_up_max">10</float>
+      <float hash="long_shift_control_angle_down_max">5</float>
+      <float hash="long_shift_control_angle_up_add">0.5</float>
+      <float hash="long_shift_control_angle_down_add">0.5</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <struct index="2">
@@ -55,14 +55,14 @@
       <float hash="long_punch_length">3.4</float>
       <float hash="long_shift_punch_length">3.4</float>
 
-      <float hash="shift_control_angle_up_max">15</float>
-      <float hash="shift_control_angle_down_max">7.5</float>
-      <float hash="shift_control_angle_up_add">3</float>
-      <float hash="shift_control_angle_down_add">1.5</float>
-      <float hash="long_shift_control_angle_up_max">15</float>
-      <float hash="long_shift_control_angle_down_max">7.5</float>
-      <float hash="long_shift_control_angle_up_add">2</float>
-      <float hash="long_shift_control_angle_down_add">1.0</float>
+      <float hash="shift_control_angle_up_max">10</float>
+      <float hash="shift_control_angle_down_max">5</float>
+      <float hash="shift_control_angle_up_add">1.0</float>
+      <float hash="shift_control_angle_down_add">0.5</float>
+      <float hash="long_shift_control_angle_up_max">10</float>
+      <float hash="long_shift_control_angle_down_max">5</float>
+      <float hash="long_shift_control_angle_up_add">1.0</float>
+      <float hash="long_shift_control_angle_down_add">0.5</float>
     </struct>
     <hash40 index="4">dummy</hash40>
     <struct index="5">
