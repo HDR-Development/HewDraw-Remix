@@ -30,7 +30,7 @@ unsafe fn rewind_cancel(boma: &mut BattleObjectModuleAccessor,status: i32,situat
     } else if boma.is_cat_flag(Cat1::AttackLw4) {
         new_status = *FIGHTER_STATUS_KIND_ATTACK_LW4_START;
     } 
-    println!("Can Cancel");
+
     if (new_status>0){
         println!("CANCEL!");
         if (situation_kind==*SITUATION_KIND_AIR)
@@ -46,14 +46,14 @@ unsafe fn rewind_cancel(boma: &mut BattleObjectModuleAccessor,status: i32,situat
 }
 
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    rewind_cancel(boma,status_kind,situation_kind);
+    //rewind_cancel(boma,status_kind,situation_kind);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_TANTAN )]
 pub fn tantan_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-		tantan_frame(fighter)
+		tantan_frame(fighter);
     }
 }
 
