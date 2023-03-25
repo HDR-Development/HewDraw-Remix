@@ -259,7 +259,7 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
-#[acmd_script( agent = "koopa", script = "expression_landingheavy" , category = ACMD_EXPRESSION , low_priority)]
+#[acmd_script( agent = "plizardon", script = "expression_landingheavy" , category = ACMD_EXPRESSION , low_priority)]
 unsafe fn expression_landingheavy(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
