@@ -230,8 +230,43 @@ unsafe fn snake_special_air_n_start_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "snake", script = "game_specialairhihang", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialairhihang(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        //damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 7);
+    }
+    frame(lua_state, 41.0);
+    if is_excute(fighter) {
+        WorkModule::enable_transition_term(boma, *FIGHTER_SNAKE_STATUS_CYPHER_HANG_TRANS_ID_CUT_STICK);
+    }
+    WorkModule::unable_transition_term_group_ex(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
+    WorkModule::unable_transition_term_group_ex(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+    WorkModule::unable_transition_term_group_ex(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+    }
+    frame(lua_state, 89.0);
+    if is_excute(fighter) {
+        WorkModule::enable_transition_term(boma, *FIGHTER_SNAKE_STATUS_CYPHER_HANG_TRANS_ID_CUT_TIME_OUT);
+    }
+}
+
+#[acmd_script( agent = "snake_cypher", script = "game_detach", category = ACMD_GAME, low_priority )]
+unsafe fn game_cypher_detach(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        //ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 42, 17, 0, 63, 2.5, 0.0, 1.5, -3.2, Some(0.0), Some(1.5), Some(3.2), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+        //ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 42, 17, 0, 63, 3.0, 0.0, 6.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
+        game_cypher_detach,
+        game_specialairhihang,
         snake_special_hi_start_game,
         snake_special_air_hi_start_game,
         snake_special_lw_blast_game,
