@@ -43,7 +43,6 @@ pub fn install(is_runtime: bool) {
         utils::singletons::init();
     }
 
-    acmd::install();
-    //status::install();
+    //acmd::install();
     opff::install(is_runtime);
 }
