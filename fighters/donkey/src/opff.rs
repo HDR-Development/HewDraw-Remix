@@ -126,15 +126,6 @@ pub unsafe fn dk_bair_rotation(fighter: &mut L2CFighterCommon) {
     }
 }
 
-/// this sets the ledgegrab box for the backside of up special, which 
-/// enables DK to more consistently grab ledge with slipoff uspecial
-pub unsafe fn special_hi_slipoff_grab(fighter: &mut L2CFighterCommon) {
-    if fighter.is_situation(*SITUATION_KIND_AIR) && fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
-        fighter.set_back_cliff_hangdata(20.0, 10.0);
-        fighter.set_front_cliff_hangdata(20.0, 10.0);
-    }
-}
-
 /// make grounded uspecial flat, so that moving forward and back isnt jarring
 pub unsafe fn flatten_uspecial(fighter: &mut L2CFighterCommon) {
     if fighter.is_motion(Hash40::new("special_hi")) && fighter.motion_frame() > 16.0 && fighter.motion_frame() < 61.0 {
@@ -174,7 +165,6 @@ pub fn donkey_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         common::opff::fighter_common_opff(fighter);
 		donkey_frame(fighter);
         dk_bair_rotation(fighter);
-        special_hi_slipoff_grab(fighter);
         flatten_uspecial(fighter);
     }
 }

@@ -4,6 +4,7 @@ use globals::*;
 const HUD_DISPLAY_TIME_MAX: i32 = 90;
 const FEATHERS_RED_COOLDOWN_GROUND_RATE: f32 = 1.25;
 const FEATHERS_RED_COOLDOWN_MAX: f32 = 450.0;
+const BEAKBOMB_END_FRAME: i32 = 25; //Dash timer is shared between ground and air in vl.prc
 
 static mut BAYONET_EGGS:[i32;8] = [0; 8]; //I have no idea why varmod doesn't work with this, so this will have to do
  
@@ -123,6 +124,9 @@ unsafe fn beakbomb_checkForCancel(fighter: &mut L2CFighterCommon, boma: &mut Bat
     let side_special = fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH);
     if !side_special {return;}
 
+    let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD);
+    if (has_hit_shield) {return;}
+
     let in_Air = fighter.is_situation(*SITUATION_KIND_AIR);
     if (!in_Air) {return;}
 
@@ -137,6 +141,13 @@ unsafe fn beakbomb_checkForCancel(fighter: &mut L2CFighterCommon, boma: &mut Bat
 }
 
 unsafe fn beakbomb_control(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
+    //If past the end frame, transition into end
+    if (VarModule::get_int(boma.object(), vars::buddy::instance::BEAKBOMB_FRAME) >= BEAKBOMB_END_FRAME)
+    {
+        fighter.change_status_req(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_END, true);
+        return;
+    }
+
     //Do not update flight during hitstop
     if boma.is_in_hitlag() {return;}
 
@@ -163,8 +174,8 @@ unsafe fn beakbomb_update(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
         if (VarModule::is_flag(boma.object(), vars::buddy::instance::BEAKBOMB_ACTIVE))
         {
             beakbomb_control(fighter,boma);
-            beakbomb_checkForHit(fighter,boma);
-            beakbomb_checkForFail(fighter,boma);
+            //beakbomb_checkForHit(fighter,boma);
+            beakbomb_checkForGround(fighter,boma);
             beakbomb_checkForCancel(fighter,boma);
 
             GroundModule::set_attach_ground(fighter.module_accessor, false);
@@ -187,7 +198,7 @@ unsafe fn beakbomb_update(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
 
 }
 
-//Check to see if Banjo hit the ground or a shield during beakbomb.
+//Check to see if Banjo hit a shield during beakbomb.
 unsafe fn beakbomb_checkForHit(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
     if StatusModule::is_changing(boma) {
         return;
@@ -225,7 +236,8 @@ unsafe fn beakbomb_wall(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
     }
 }
 
-unsafe fn beakbomb_checkForFail(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
+//Check if landed on the ground
+unsafe fn beakbomb_checkForGround(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
     let is_grounded = fighter.is_situation(*SITUATION_KIND_GROUND);
     let fail_safeFrames = 5;
     let fail_cutoff = 25;
