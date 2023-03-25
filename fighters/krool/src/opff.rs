@@ -7,12 +7,19 @@ use globals::*;
 unsafe fn jetpack_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
     if status_kind == *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI {
         let fuel = VarModule::get_int(boma.object(), vars::krool::instance::SPECIAL_HI_FUEL);
-        VarModule::set_int(boma.object(), vars::krool::instance::SPECIAL_HI_FUEL, fuel - 2);
+        VarModule::set_int(boma.object(), vars::krool::instance::SPECIAL_HI_FUEL, fuel - 3);
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)
             || fuel <= 0 {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END, true);
         }
-    } else if VarModule::get_int(boma.object(), vars::krool::instance::SPECIAL_HI_FUEL) < 480 {
+    } else if VarModule::get_int(boma.object(), vars::krool::instance::SPECIAL_HI_FUEL) < 540
+        && !boma.is_status_one_of(&[
+            *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL,
+            *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_LANDING,
+            *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START,
+            *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI,
+            *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END
+        ]) {
         VarModule::inc_int(boma.object(), vars::krool::instance::SPECIAL_HI_FUEL);
     }
 }
