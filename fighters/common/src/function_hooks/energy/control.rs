@@ -323,6 +323,16 @@ unsafe fn control_update(energy: &mut FighterKineticEnergyControl, boma: &mut Ba
         }
     }
 
+    let status_module = *(boma as *const BattleObjectModuleAccessor as *const u64).add(0x8);
+    if !*(status_module as *const bool).add(0x12a)
+    && boma.status_frame() > 0 {
+        // Double air brake value when above max jump speed
+        if StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR 
+        && energy.speed.x.abs() >= WorkModule::get_param_float(boma, hash40("jump_speed_x_max"), 0) {
+            energy.speed_brake.x *= 2.0;
+        }
+    }
+
     energy.process(boma);
 
     let status_module = *(boma as *const BattleObjectModuleAccessor as *const u64).add(0x8);
