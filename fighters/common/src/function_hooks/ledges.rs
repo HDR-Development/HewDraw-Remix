@@ -162,7 +162,13 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
 
     // Yoshi: Unchanged
 
-    // Kirby: Unchanged
+    if fighter_kind == *FIGHTER_KIND_KIRBY {
+        if status_kind == *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_HI2 {
+            if frame < 3.0 {
+                return 0;
+            }
+        }
+    }
 
     if fighter_kind == *FIGHTER_KIND_FOX {
         if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
