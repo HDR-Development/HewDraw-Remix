@@ -139,8 +139,18 @@ unsafe fn krool_special_special_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "krool_backpack", scripts = ["game_fly", "game_flywind"], category = ACMD_GAME, low_priority )]
+unsafe fn uspecial_propeller(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("wingl1"), 3.0, 80, 30, 0, 90, 5.0, 2.0, 0.0, 0.0, Some(-2.0), Some(0.0), Some(0.0), 1.0, 1.2, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 15, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
+        uspecial_propeller,
         krool_special_n_fire_game,
         krool_special_air_n_fire_game,
         krool_special_n_loop_game,
