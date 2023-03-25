@@ -4,7 +4,6 @@
 **/build/
 Cargo.lock
 !scripts/*
-.vscode
 distributions/
 scripts/change_summary.txt
 scripts/log.txt

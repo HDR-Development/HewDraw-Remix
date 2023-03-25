@@ -6,8 +6,10 @@ use smash::{
     phx::Hash40,
 };
 use std::collections::HashMap;
+use virtmanip::Vtable;
 
-const HDR_MAGIC: u64 = u64::from_le_bytes([b'H', b'D', b'R', b'M', b'A', b'G', b'I', b'C']);
+const BOMA_MAGIC: [u8; 8] = [b'B', b'O', b'M', b'A', b'D', b'E', b'E', b'Z'];
+const OBJECT_MAGIC: [u8; 8] = [b'O', b'B', b'J', b'E', b'C', b'T', b' ', b' '];
 
 type BoxedInit = Box<
     dyn Fn(*mut BattleObjectModuleAccessor, InitArgs) -> Option<Box<dyn DynamicModule>>
@@ -62,23 +64,18 @@ impl ModuleTable {
     /// # Panicking
     /// Panics if the module accessor does not have an associated module table
     pub fn from_accessor(module_accessor: *const BattleObjectModuleAccessor) -> Self {
-        Self::try_from_accessor(module_accessor)
-            .expect("BattleObjectModuleAccessor does not have module table")
+        let vtable = unsafe { &((*module_accessor).vtable as Vtable) };
+        let entries = virtmanip::entries(BOMA_MAGIC, vtable).unwrap();
+
+        Self(unsafe { &mut *(entries[0] as *mut Vec<DynamicModuleInfo>) })
     }
 
     /// Attempts to get the module table from this accessor
     pub fn try_from_accessor(module_accessor: *const BattleObjectModuleAccessor) -> Option<Self> {
-        unsafe {
-            let vtable = (*module_accessor).vtable;
-            let hdr_magic = *(vtable as *const u64).sub(1);
-            if hdr_magic != HDR_MAGIC {
-                return None;
-            }
-
-            let raw = *(vtable as *const u64).sub(2) as *mut Vec<DynamicModuleInfo>;
-
-            Some(Self(&mut *raw))
-        }
+        let vtable = unsafe { &((*module_accessor).vtable as Vtable) };
+        virtmanip::entries(BOMA_MAGIC, vtable)
+            .map(|entries| Self(unsafe { &mut *(entries[0] as *mut Vec<DynamicModuleInfo>) }))
+            .ok()
     }
 
     /// Find the dynamic module associated of the provided type
@@ -227,19 +224,20 @@ fn boma_init(module_accessor: *mut BattleObjectModuleAccessor, args: ModuleInitA
         }
     }
 
-    if !init_modules.is_empty() {
-        unsafe {
-            let new_vtable = Box::leak(Box::new(NewVTable {
-                p_old: (*module_accessor).vtable,
-                modules: Box::leak(Box::new(init_modules)),
-                magic: HDR_MAGIC,
-                old: *((*module_accessor).vtable as *const ModuleAccessorVTable),
-            }));
-            (*module_accessor).vtable = &new_vtable.old as *const ModuleAccessorVTable as u64;
-            if let Some(object) = get_battle_object_from_id((*module_accessor).battle_object_id) {
-                patch_object_vtable(object);
-            }
-        }
+    if init_modules.is_empty() {
+        return;
+    }
+
+    let vtable = unsafe { &mut ((*module_accessor).vtable as Vtable) };
+
+    virtmanip::rebuild(BOMA_MAGIC, None, 1, vtable).unwrap();
+    let entries = virtmanip::entries(BOMA_MAGIC, vtable).unwrap();
+
+    entries[0] = Box::leak(Box::new(init_modules)) as *mut _ as u64;
+
+    if let Some(object) = unsafe { get_battle_object_from_id((*module_accessor).battle_object_id) }
+    {
+        patch_object_vtable(object);
     }
 }
 
@@ -282,17 +280,17 @@ fn boma_fini(module_accessor: *mut BattleObjectModuleAccessor) {
     }
 }
 
-const PROCESS_BEGIN_VIRT_OFFSET: usize = 0x350;
-const PROCESS_BEGIN2_VIRT_OFFSET: usize = 0x358;
-const PROCESS_GROUND_VIRT_OFFSET: usize = 0x360;
-const PROCESS_MAP_COLLISION_VIRT_OFFSET: usize = 0x368;
-const PROCESS_FIX_POSITION_VIRT_OFFSET: usize = 0x370;
-const PROCESS_PRE_COLLISION_VIRT_OFFSET: usize = 0x378;
-const PROCESS_COLLISION_VIRT_OFFSET: usize = 0x380;
-const PROCESS_HIT_VIRT_OFFSET: usize = 0x388;
-const PROCESS_FIX_CAMERA_VIRT_OFFSET: usize = 0x390;
-const PROCESS_END_VIRT_OFFSET: usize = 0x398;
-const PROCESS_END2_VIRT_OFFSET: usize = 0x3A0;
+const PROCESS_BEGIN_VIRT_OFFSET: usize = 0x6A;
+const PROCESS_BEGIN2_VIRT_OFFSET: usize = 0x6B;
+const PROCESS_GROUND_VIRT_OFFSET: usize = 0x6C;
+const PROCESS_MAP_COLLISION_VIRT_OFFSET: usize = 0x6D;
+const PROCESS_FIX_POSITION_VIRT_OFFSET: usize = 0x6E;
+const PROCESS_PRE_COLLISION_VIRT_OFFSET: usize = 0x6F;
+const PROCESS_COLLISION_VIRT_OFFSET: usize = 0x70;
+const PROCESS_HIT_VIRT_OFFSET: usize = 0x71;
+const PROCESS_FIX_CAMERA_VIRT_OFFSET: usize = 0x72;
+const PROCESS_END_VIRT_OFFSET: usize = 0x73;
+const PROCESS_END2_VIRT_OFFSET: usize = 0x74;
 
 macro_rules! original {
     ($object:ident, $off:expr) => {{
@@ -333,44 +331,19 @@ macro_rules! define_replace {
         }
 
         fn patch_object_vtable(object: *mut BattleObject) {
-            let mut new_vtable = vec![0; 4];
-            unsafe {
-                new_vtable[2] = (*object).vtable as u64;
-                let mut old_vtable = (*object).vtable as *const u64;
-                while *old_vtable != 0 {
-                    new_vtable.push(*old_vtable);
-                    old_vtable = old_vtable.add(1);
-                }
-            }
-            new_vtable[0] = new_vtable.capacity() as u64;
-            new_vtable[1] = new_vtable.len() as u64;
-            new_vtable[3] = HDR_MAGIC;
+            let vtable = unsafe { &mut ((*object).vtable as Vtable) };
+            virtmanip::rebuild(OBJECT_MAGIC, None, 0, vtable).unwrap();
 
             paste::paste! {
                 $(
-                    new_vtable[4 + $offset / 8] = [<$operation _replace>] as *const () as u64;
+                    virtmanip::replace_function(OBJECT_MAGIC, $offset, [<$operation _replace>] as *const (), vtable).unwrap();
                 )*
-            }
-
-            let (ptr, _, _) = new_vtable.into_raw_parts();
-            unsafe {
-                (*object).vtable = ptr.add(4) as _;
             }
         }
 
         fn restore_object_vtable(object: *mut BattleObject) {
-            unsafe {
-                let vtable = (*object).vtable as *const u64;
-                if *vtable.sub(1) != HDR_MAGIC {
-                    return;
-                }
-                let old_vtable = *vtable.sub(2);
-                let len = *vtable.sub(3);
-                let cap = *vtable.sub(4);
-
-                (*object).vtable = old_vtable as _;
-                drop(Vec::from_raw_parts(vtable.sub(4) as *mut u64, len as usize, cap as usize));
-            }
+            let vtable = unsafe { &mut ((*object).vtable as Vtable) };
+            virtmanip::restore(OBJECT_MAGIC, vtable).unwrap();
         }
     }
 }

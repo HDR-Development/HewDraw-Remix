@@ -1,0 +1,7 @@
+{
+    "rust-analyzer.server.extraEnv": {
+        "RUSTFLAGS": "--cfg skyline_std_v3"
+    },
+    "rust-analyzer.check.command": "clippy",
+    "rust-analyzer.rustfmt.overrideCommand": null
+}
