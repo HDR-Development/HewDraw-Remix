@@ -131,10 +131,9 @@ unsafe fn arm_rocket_airdash(boma: &mut BattleObjectModuleAccessor, id: usize, s
 }
 
 /// Allow uncharged or slightly charged Lunar Launch to be actionable
-unsafe fn lunar_launch_actionability(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
-    if [hash40("special_hi1"),
-        hash40("special_air_hi1")].contains(&motion_kind) {
-        if boma.status_frame() >= 35 && VarModule::get_float(boma.object(), vars::miigunner::status::CHARGE_ATTACK_LEVEL) <= 10.0 {
+unsafe fn lunar_launch_actionability(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        if fighter.status_frame() >= 35 && VarModule::get_float(boma.object(), vars::miigunner::status::CHARGE_ATTACK_LEVEL) <= 10.0 {
             // if already used once this airtime
             if VarModule::is_flag(boma.object(), vars::miigunner::instance::LUNAR_LAUNCH_AIR_USED) {
                 VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
@@ -185,7 +184,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     remove_homing_missiles(boma, status_kind);
     missile_land_cancel(fighter, boma, id, status_kind, situation_kind, frame);
 	arm_rocket_airdash(boma, id, status_kind, frame);
-    lunar_launch_actionability(fighter, boma, motion_kind, frame);
+    lunar_launch_actionability(fighter, boma, motion_kind);
     lunar_launch_reset(fighter);
     lunar_launch_effect_reset(fighter, boma, status_kind);
     stealth_burst_land_cancel(boma, status_kind, situation_kind);
