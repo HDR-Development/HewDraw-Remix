@@ -172,7 +172,7 @@ unsafe fn heavy_item_throw_f(fighter: &mut L2CAgentBase) {
   }
   frame(lua_state, 16.0);
   if is_excute(fighter) {
-    ItemModule::throw_item(boma, 75.0, 4.0, 1.0, 0, true, 0.0);
+    ItemModule::throw_item(boma, 55.0, 4.0, 1.0, 0, true, 0.0);
   }
 }
 
@@ -193,7 +193,7 @@ unsafe fn heavy_item_throw_b(fighter: &mut L2CAgentBase) {
     // the exact *real* frame we are on needs to stay a whole
     // number in order for the barrel (or other item) to be 
     // released at an appropriate location.
-    ItemModule::throw_item(boma, 125.0, 4.0, 1.0, 0, true, 0.0);
+    ItemModule::throw_item(boma, 145.0, 4.0, 1.0, 0, true, 0.0);
     FT_MOTION_RATE(fighter, 0.75);
   }
 }
