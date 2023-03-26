@@ -14,7 +14,6 @@ pub fn install() {
         
         tantan_attack_s4_start_pre,
         tantan_attack_s4_start_main,
-
         tantan_attack_s4_hold_pre,
         tantan_attack_s4_hold_main,
 

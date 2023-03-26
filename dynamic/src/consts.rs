@@ -998,6 +998,14 @@ pub mod vars {
         }
     }
 
+    
+    pub mod tantan {
+        pub mod status {
+            // flags
+            pub const RAMRAM_CAN_CANCEL: i32 = 0x1100;
+        }
+    }
+
 }
 
 pub mod statuses {

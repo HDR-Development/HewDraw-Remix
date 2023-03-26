@@ -48,6 +48,7 @@
       <float hash="long_shift_control_angle_down_add">6</float>
 
       <float hash="punch_shoot_angle">10</float>
+      <int hash="reinforce_frame">4</int>
     </struct>
     <struct index="3">
       <float hash="punch_length">2.0</float>
@@ -63,6 +64,8 @@
       <float hash="long_shift_control_angle_down_max">5</float>
       <float hash="long_shift_control_angle_up_add">1.0</float>
       <float hash="long_shift_control_angle_down_add">0.5</float>
+      
+      <int hash="reinforce_frame">4</int>
     </struct>
     <hash40 index="4">dummy</hash40>
     <struct index="5">
@@ -79,6 +82,9 @@
       <float hash="long_shift_control_angle_down_max">15</float>
       <float hash="long_shift_control_angle_up_add">13</float>
       <float hash="long_shift_control_angle_down_add">15</float>
+
+      <int hash="bound_frame">4</int>
+      <int hash="reinforce_frame">4</int>
     </struct>
   </list>
   <list hash="air_lasso_data">
