@@ -134,7 +134,7 @@ unsafe fn arm_rocket_airdash(boma: &mut BattleObjectModuleAccessor, id: usize, s
 unsafe fn lunar_launch_actionability(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
     if [hash40("special_hi1"),
         hash40("special_air_hi1")].contains(&motion_kind) {
-        if frame >= 35.0 && VarModule::get_float(boma.object(), vars::miigunner::status::CHARGE_ATTACK_LEVEL) <= 10.0 {
+        if boma.status_frame() >= 35 && VarModule::get_float(boma.object(), vars::miigunner::status::CHARGE_ATTACK_LEVEL) <= 10.0 {
             // if already used once this airtime
             if VarModule::is_flag(boma.object(), vars::miigunner::instance::LUNAR_LAUNCH_AIR_USED) {
                 VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
@@ -220,7 +220,9 @@ pub fn miigunner_missile_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
                 if WorkModule::is_enable_transition_term_group(gunner_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ATTACK)
                     || WorkModule::is_enable_transition_term_group(gunner_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK)
                     || WorkModule::is_enable_transition_term_group(gunner_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL)
-                    || WorkModule::is_enable_transition_term_group(gunner_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL) {
+                    || WorkModule::is_enable_transition_term_group(gunner_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL)
+                    || WorkModule::is_enable_transition_term_group(gunner_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD)
+                    || gunner_boma.is_status(*FIGHTER_STATUS_KIND_DASH) {
                     StatusModule::change_status_request_from_script(boma, *WEAPON_MIIGUNNER_SUPERMISSILE_STATUS_KIND_S_BURST, false);
                     VarModule::on_flag(gunner, vars::miigunner::status::MISSILE_DETONATE);
                     VarModule::off_flag(gunner, vars::miigunner::instance::DETONATE_READY);
