@@ -8,21 +8,21 @@ use globals::*;
 unsafe fn recoil_cancel(boma: &mut BattleObjectModuleAccessor,status: i32,situation_kind: i32){
 
     let mut new_status = 0;
-    if boma.is_cat_flag(Cat1::AttackN) {
-        new_status = *FIGHTER_STATUS_KIND_ATTACK;
-    } else if boma.is_cat_flag(Cat1::AttackS3) {
+    if boma.is_cat_flag(Cat1::AttackS3) {
         new_status = *FIGHTER_STATUS_KIND_ATTACK_S3;
     } else if boma.is_cat_flag(Cat1::AttackHi3) {
         new_status = *FIGHTER_STATUS_KIND_ATTACK_HI3;
     } else if boma.is_cat_flag(Cat1::AttackLw3) {
         new_status = *FIGHTER_STATUS_KIND_ATTACK_LW3;
     }
-    if boma.is_cat_flag(Cat1::AttackS4) {
+    else if boma.is_cat_flag(Cat1::AttackS4) {
         new_status = *FIGHTER_STATUS_KIND_ATTACK_S4_START;
     } else if boma.is_cat_flag(Cat1::AttackHi4) {
         new_status = *FIGHTER_STATUS_KIND_ATTACK_HI4_START;
     } else if boma.is_cat_flag(Cat1::AttackLw4) {
         new_status = *FIGHTER_STATUS_KIND_ATTACK_LW4_START;
+    } else if boma.is_cat_flag(Cat1::AttackN) {
+        new_status = *FIGHTER_STATUS_KIND_ATTACK;
     } 
 
     if (new_status>0){
