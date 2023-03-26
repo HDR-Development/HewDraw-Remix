@@ -47,7 +47,7 @@ unsafe fn special_n_max(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
 	frame(lua_state, 11.0);
 	if is_excute(fighter) {
-		damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
+		//damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
 	}
 	frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -130,7 +130,7 @@ unsafe fn special_air_n_max(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
 	frame(lua_state, 11.0);
 	if is_excute(fighter) {
-		damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
+		//damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
 	}
 	frame(lua_state, 15.0);
     if is_excute(fighter) {

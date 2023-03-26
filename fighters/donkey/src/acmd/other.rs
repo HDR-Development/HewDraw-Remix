@@ -165,46 +165,6 @@ unsafe fn dk_turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "donkey", script = "game_itemheavythrowf" , category = ACMD_GAME , low_priority)]
-unsafe fn heavy_item_throw_f(fighter: &mut L2CAgentBase) {
-  let lua_state = fighter.lua_state_agent;
-  let boma = fighter.boma();
-  frame(lua_state, 2.0);
-  if is_excute(fighter) {
-    FT_MOTION_RATE(fighter, 0.5);
-  }
-  frame(lua_state, 10.0);
-  if is_excute(fighter) {
-    FT_MOTION_RATE(fighter, 1.0);
-  }
-  frame(lua_state, 16.0);
-  if is_excute(fighter) {
-    ItemModule::throw_item(boma, 75.0, 4.0, 1.0, 0, true, 0.0);
-  }
-}
-
-#[acmd_script( agent = "donkey", script = "game_itemheavythrowb" , category = ACMD_GAME , low_priority)]
-unsafe fn heavy_item_throw_b(fighter: &mut L2CAgentBase) {
-  let lua_state = fighter.lua_state_agent;
-  let boma = fighter.boma();
-  frame(lua_state, 2.0);
-  if is_excute(fighter) {
-    FT_MOTION_RATE(fighter, 0.5);
-  }
-  frame(lua_state, 10.0);
-  if is_excute(fighter) {
-    FT_MOTION_RATE(fighter, 1.0);
-  }
-  frame(lua_state, 18.0);
-  if is_excute(fighter) {
-    // the exact *real* frame we are on needs to stay a whole
-    // number in order for the barrel (or other item) to be 
-    // released at an appropriate location.
-    ItemModule::throw_item(boma, 125.0, 4.0, 1.0, 0, true, 0.0);
-    FT_MOTION_RATE(fighter, 0.75);
-  }
-}
-
 #[acmd_script( agent = "donkey", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
 unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -265,8 +225,6 @@ pub fn install() {
         escape_air_slide_game,
         dash_sound,
 		dk_turn_dash_game,
-        heavy_item_throw_f,
-        heavy_item_throw_b,
         expression_landingheavy,
 	    damageflyhi_sound,
         damageflylw_sound,

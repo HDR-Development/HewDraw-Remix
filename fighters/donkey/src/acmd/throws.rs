@@ -158,6 +158,70 @@ unsafe fn game_throwflw(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "donkey", script = "game_itemheavythrowlw4", category = ACMD_GAME, low_priority )]
+unsafe fn game_itemheavythrowlw(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        let speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        fighter.set_speed(Vector2f::new(speed_x, 10.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    }
+    original!(fighter);
+}
+
+#[acmd_script( agent = "donkey", script = "game_itemheavythrowlw", category = ACMD_GAME, low_priority )]
+unsafe fn game_itemheavythrowlw4(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        let speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        fighter.set_speed(Vector2f::new(speed_x, 10.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    }
+    original!(fighter);
+}
+
+#[acmd_script( agent = "donkey", script = "game_itemheavythrowf" , category = ACMD_GAME , low_priority)]
+unsafe fn heavy_item_throw_f(fighter: &mut L2CAgentBase) {
+  let lua_state = fighter.lua_state_agent;
+  let boma = fighter.boma();
+  frame(lua_state, 2.0);
+  if is_excute(fighter) {
+    FT_MOTION_RATE(fighter, 0.5);
+  }
+  frame(lua_state, 10.0);
+  if is_excute(fighter) {
+    FT_MOTION_RATE(fighter, 1.0);
+  }
+  frame(lua_state, 16.0);
+  if is_excute(fighter) {
+    ItemModule::throw_item(boma, 75.0, 4.0, 1.0, 0, true, 0.0);
+  }
+}
+
+#[acmd_script( agent = "donkey", script = "game_itemheavythrowb" , category = ACMD_GAME , low_priority)]
+unsafe fn heavy_item_throw_b(fighter: &mut L2CAgentBase) {
+  let lua_state = fighter.lua_state_agent;
+  let boma = fighter.boma();
+  frame(lua_state, 2.0);
+  if is_excute(fighter) {
+    FT_MOTION_RATE(fighter, 0.5);
+  }
+  frame(lua_state, 10.0);
+  if is_excute(fighter) {
+    FT_MOTION_RATE(fighter, 1.0);
+  }
+  frame(lua_state, 18.0);
+  if is_excute(fighter) {
+    // the exact *real* frame we are on needs to stay a whole
+    // number in order for the barrel (or other item) to be 
+    // released at an appropriate location.
+    ItemModule::throw_item(boma, 125.0, 4.0, 1.0, 0, true, 0.0);
+    FT_MOTION_RATE(fighter, 0.75);
+  }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         catch,
@@ -167,6 +231,10 @@ pub fn install() {
         game_throwfb,
         game_throwfhi,
         game_throwflw,
+        game_itemheavythrowlw,
+        game_itemheavythrowlw4,
+        heavy_item_throw_f,
+        heavy_item_throw_b,
     );
 }
 
