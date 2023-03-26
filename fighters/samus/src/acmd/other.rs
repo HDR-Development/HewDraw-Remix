@@ -99,6 +99,59 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "samus", scripts = ["effect_appealsl", "effect_appealsr"] , category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_appeals(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 0.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::samus::instance::STANCE_ICE) {
+            VarModule::off_flag(fighter.battle_object, vars::samus::instance::STANCE_ICE);
+        }
+        else {
+            VarModule::on_flag(fighter.battle_object, vars::samus::instance::STANCE_ICE);
+        }
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        //EFFECT_FOLLOW(fighter, Hash40::new("samus_appeal_s"), Hash40::new("armr"), 7, 0, 0, 0, 0, 90, 1, true);
+        if !VarModule::is_flag(fighter.battle_object, vars::samus::instance::STANCE_ICE) {
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("armr"), 7.0, 0.0, 0.0, 0.0, 0.0, 90.0, 0.3, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_flame"), Hash40::new("armr"), 7.0, 0.0, 0.0, 0.0, 0.0, 90.0, 0.3, true);
+        }
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::samus::instance::STANCE_ICE) {
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_freezer"), Hash40::new("armr"), 7.0, 0.0, 0.0, 0.0, 0.0, 90.0, 0.3, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_steam"), Hash40::new("armr"), 7.0, 0.0, 0.0, 0.0, 0.0, 90.0, 0.3, true);
+            LAST_EFFECT_SET_COLOR(fighter, 1.0, 1.2, 1.9);
+            LAST_EFFECT_SET_ALPHA(fighter, 1.2);
+        }
+        else {
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("armr"), 7.0, 0.0, 0.0, 0.0, 0.0, 90.0, 0.3, true);
+        }
+    }
+    frame(lua_state, 33.0);
+    if is_excute(fighter) {
+        if !VarModule::is_flag(fighter.battle_object, vars::samus::instance::STANCE_ICE) {
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("armr"), 7.0, 0.0, 0.0, 0.0, 0.0, 90.0, 0.3, true);
+        }
+    }
+    frame(lua_state, 43.0);
+    if is_excute(fighter) {
+        if !VarModule::is_flag(fighter.battle_object, vars::samus::instance::STANCE_ICE) {
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("armr"), 7.0, 0.0, 0.0, 0.0, 0.0, 90.0, 0.3, true);
+        }
+    }
+    frame(lua_state, 53.0);
+    if is_excute(fighter) {
+        if !VarModule::is_flag(fighter.battle_object, vars::samus::instance::STANCE_ICE) {
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("armr"), 7.0, 0.0, 0.0, 0.0, 0.0, 90.0, 0.3, true);
+        }
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         dash_sound,
@@ -108,6 +161,7 @@ pub fn install() {
         samus_cshot_shoot_game,
         escape_air_game,
         escape_air_slide_game,
+        effect_appeals,
     );
 }
 

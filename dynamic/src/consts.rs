@@ -782,6 +782,13 @@ pub mod vars {
             // flags
             pub const SHINESPARK_USED: i32 = 0x0100;
             pub const SHINESPARK_READY: i32 = 0x0101;
+            pub const STANCE_ICE: i32 = 0x0102;
+        }
+        pub mod status {
+            // flags
+            pub const ATTACK_LW3_ADVANCE_STOP: i32 = 0x1100;
+            pub const ATTACK_HIT_STOP_EFFECT: i32 = 0x1101;
+            pub const ATTACK_CHARGE_REACHED: i32 = 0x1102;
         }
     }
 

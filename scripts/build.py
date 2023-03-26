@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import shutil, os, sys, pkgutil, characters
+from os import path
 
 if "help" in sys.argv or "--help" in sys.argv or "-h" in sys.argv:
   print("no arguments required for simple build. To build parts of the project"
@@ -278,4 +279,15 @@ for arg in sys.argv:
       print("ip specified but not ip argument given!")
       break
     install_with_ip(arg.split('=')[1], is_dev_build)
+    break
+  elif "ryufull" in arg:
+    src_dir = os.path.join('../build/hdr-ryujinx/sdcard')
+    print("Copying to Ryujinx...")
+    if not "=" in arg:
+      dst_dir = path.expandvars(r'%APPDATA%\\Ryujinx\\sdcard')
+    else:
+      dst_dir = arg.split('=')[1]
+      print('Copying to ' + arg.split('=')[1])
+    shutil.copytree(src_dir, dst_dir, symlinks=False, ignore=None, ignore_dangling_symlinks=False, dirs_exist_ok=True)
+    print("Copied!")
     break

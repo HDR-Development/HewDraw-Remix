@@ -201,14 +201,140 @@ unsafe fn effect_attackhi3(fighter: &mut L2CAgentBase) {
 unsafe fn attack_lw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 100, 77, 0, 80, 8.7, 0.0, 2.5, 13.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
-        AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
+    if !VarModule::is_flag(fighter.battle_object, vars::samus::instance::STANCE_ICE) { 
+        frame(lua_state, 6.0);
+        if is_excute(fighter) {
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 100, 77, 0, 80, 8.7, 0.0, 2.5, 13.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+            AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
+        }
+        wait(lua_state, 3.0);
+        if is_excute(fighter) {
+            AttackModule::clear_all(boma);
+        }
+    } 
+    else {
+        frame(lua_state, 6.0);
+        if is_excute(fighter) {
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 5, 100, 63, 0, 5.7, 0.0, 2.5, 13.5, None, None, None, 0.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_MAGIC);
+            AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
+        }
+        wait(lua_state, 3.0);
+        if is_excute(fighter) {
+            AttackModule::clear_all(boma);
+            let pos = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
+            ModelModule::joint_global_position_with_offset(fighter.module_accessor, Hash40::new("top"), &Vector3f{x: 0.0, y: 2.5, z: 18.5}, pos, true);
+            if GroundModule::ray_check(fighter.module_accessor, &Vector2f{x: pos.x, y: pos.y}, &Vector2f{x: 0.0, y: -2.5}, true) == 1 {
+                ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 5, 100, 40, 0, 5.3, 0.0, 2.5, 20.5, None, None, None, 0.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_MAGIC);
+                AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
+            }
+            else {
+                VarModule::set_flag(fighter.battle_object, vars::samus::status::ATTACK_LW3_ADVANCE_STOP, true);
+                println!("No ground detected!");
+            }
+        }
+        wait(lua_state, 3.0);
+        if is_excute(fighter) {
+            if !VarModule::is_flag(fighter.battle_object, vars::samus::status::ATTACK_LW3_ADVANCE_STOP) {
+                AttackModule::clear_all(boma);
+                let pos = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
+                ModelModule::joint_global_position_with_offset(fighter.module_accessor, Hash40::new("top"), &Vector3f{x: 0.0, y: 2.5, z: 23.5}, pos, true);
+                if GroundModule::ray_check(fighter.module_accessor, &Vector2f{x: pos.x, y: pos.y}, &Vector2f{x: 0.0, y: -2.5}, true) == 1 {
+                    ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 5, 100, 40, 0, 4.7, 0.0, 2.5, 27.5, None, None, None, 0.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_MAGIC);
+                    AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
+                }
+                else {
+                    VarModule::set_flag(fighter.battle_object, vars::samus::status::ATTACK_LW3_ADVANCE_STOP, true);
+                    println!("No ground detected!");
+                }
+            }
+        }
+        wait(lua_state, 3.0);
+        if is_excute(fighter) {
+            if !VarModule::is_flag(fighter.battle_object, vars::samus::status::ATTACK_LW3_ADVANCE_STOP) {
+                AttackModule::clear_all(boma);
+                let pos = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
+                ModelModule::joint_global_position_with_offset(fighter.module_accessor, Hash40::new("top"), &Vector3f{x: 0.0, y: 2.5, z: 28.5}, pos, true);
+                if GroundModule::ray_check(fighter.module_accessor, &Vector2f{x: pos.x, y: pos.y}, &Vector2f{x: 0.0, y: -2.5}, true) == 1 {
+                    ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 5, 100, 63, 0, 4.3, 0.0, 2.5, 35.5, None, None, None, 0.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_MAGIC);
+                    AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
+                }
+            }
+        }
+        wait(lua_state, 3.0);
+        if is_excute(fighter) {
+            AttackModule::clear_all(boma);
+        }
     }
-    wait(lua_state, 3.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
+    
+    // let ground_hit_pos = &mut Vector2f{x: 0.0, y: 0.0};
+    //     if GroundModule::ray_check_hit_pos(
+    //         // checks for ground between previous tail pos and current tail pos, saves collision pos to "ground_hit_pos"
+    //         fighter.module_accessor,
+    //         &Vector2f{x: pos_x_prev + pos_x_global, y: pos_y_prev + pos_y_global},
+    //         &Vector2f{x: (v3f_tail_pos.x - (pos_x_prev + pos_x_global)) + (8.0 * lr), y: v3f_tail_pos.y - (pos_y_prev + pos_y_global) - 8.0},
+    //         ground_hit_pos,
+    //         true
+    //     ) == 1
+}
+
+#[acmd_script( agent = "samus", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attacklw3(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if !VarModule::is_flag(fighter.battle_object, vars::samus::instance::STANCE_ICE) {
+        if is_excute(fighter) {
+            FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        }
+        frame(lua_state, 6.0);
+        if is_excute(fighter) {
+            EFFECT(fighter, Hash40::new("samus_atk_bomb"), Hash40::new("armr"), 14.387, -0.341, -0.169, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+            EFFECT(fighter, Hash40::new("sys_bomb_a"),  Hash40::new("top"), 0, 0, 13.4, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
+            EFFECT(fighter, Hash40::new("sys_bomb_b"),  Hash40::new("top"), 0, 0, 13.4, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
+        }
+    } else {
+        if is_excute(fighter) {
+            FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_ice"), Hash40::new("armr"), 2.5, 0.0, 0.0, 0.0, 0.0, 20.0, 0.15, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_ice"), Hash40::new("armr"), 5.0, 0.0, 0.0, 0.0, 0.0, 20.0, 0.15, true);
+        }
+        frame(lua_state, 6.0);
+        if is_excute(fighter) {
+            EFFECT_OFF_KIND(fighter, Hash40::new("sys_ice"), false, true);
+            EFFECT(fighter, Hash40::new("sys_freezer"), Hash40::new("top"), 0, 0, 13.4, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, true);
+            EFFECT(fighter, Hash40::new("sys_steam"), Hash40::new("top"), 0, 0, 13.4, 0, 0, 0, 2.0, 0, 0, 0, 0, 0, 0, true);
+            LAST_EFFECT_SET_COLOR(fighter, 1.0, 1.2, 1.9);
+            LAST_EFFECT_SET_ALPHA(fighter, 1.2);
+        }
+        wait(lua_state, 3.0);
+        if is_excute(fighter) {
+            if !VarModule::is_flag(fighter.battle_object, vars::samus::status::ATTACK_LW3_ADVANCE_STOP) {
+                EFFECT_OFF_KIND(fighter, Hash40::new("sys_ice"), false, true);
+                EFFECT(fighter, Hash40::new("sys_freezer"), Hash40::new("top"), 0, 0, 20.4, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                EFFECT(fighter, Hash40::new("sys_steam"), Hash40::new("top"), 0, 0, 20.4, 0, 0, 0, 1.4, 0, 0, 0, 0, 0, 0, true);
+                LAST_EFFECT_SET_COLOR(fighter, 1.0, 1.2, 1.9);
+                LAST_EFFECT_SET_ALPHA(fighter, 1.2);
+            }
+        }
+        wait(lua_state, 3.0);
+        if is_excute(fighter) {
+            if !VarModule::is_flag(fighter.battle_object, vars::samus::status::ATTACK_LW3_ADVANCE_STOP) {
+                EFFECT_OFF_KIND(fighter, Hash40::new("sys_ice"), false, true);
+                EFFECT(fighter, Hash40::new("sys_freezer"), Hash40::new("top"), 0, 0, 27.4, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
+                EFFECT(fighter, Hash40::new("sys_steam"), Hash40::new("top"), 0, 0, 27.4, 0, 0, 0, 1.15, 0, 0, 0, 0, 0, 0, true);
+                LAST_EFFECT_SET_COLOR(fighter, 1.0, 1.2, 1.9);
+                LAST_EFFECT_SET_ALPHA(fighter, 1.2);
+            }
+        }
+        wait(lua_state, 3.0);
+        if is_excute(fighter) {
+            if !VarModule::is_flag(fighter.battle_object, vars::samus::status::ATTACK_LW3_ADVANCE_STOP) {
+                EFFECT_OFF_KIND(fighter, Hash40::new("sys_ice"), false, true);
+                EFFECT(fighter, Hash40::new("sys_freezer"), Hash40::new("top"), 0, 0, 35.4, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, true);
+                EFFECT(fighter, Hash40::new("sys_steam"), Hash40::new("top"), 0, 0, 35.4, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                LAST_EFFECT_SET_COLOR(fighter, 1.0, 1.2, 1.9);
+                LAST_EFFECT_SET_ALPHA(fighter, 1.2);
+            }
+        }
     }
     
 }
@@ -224,6 +350,7 @@ pub fn install() {
         attack_hi3,
         effect_attackhi3,
         attack_lw3,
+        effect_attacklw3,
     );
 }
 
