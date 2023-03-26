@@ -158,30 +158,6 @@ unsafe fn game_throwflw(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "donkey", script = "game_itemheavythrowlw4", category = ACMD_GAME, low_priority )]
-unsafe fn game_itemheavythrowlw(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 13.0);
-    if is_excute(fighter) {
-        let speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        fighter.set_speed(Vector2f::new(speed_x, 10.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-    }
-    original!(fighter);
-}
-
-#[acmd_script( agent = "donkey", script = "game_itemheavythrowlw", category = ACMD_GAME, low_priority )]
-unsafe fn game_itemheavythrowlw4(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 13.0);
-    if is_excute(fighter) {
-        let speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        fighter.set_speed(Vector2f::new(speed_x, 10.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-    }
-    original!(fighter);
-}
-
 #[acmd_script( agent = "donkey", script = "game_itemheavythrowf" , category = ACMD_GAME , low_priority)]
 unsafe fn heavy_item_throw_f(fighter: &mut L2CAgentBase) {
   let lua_state = fighter.lua_state_agent;
@@ -231,8 +207,6 @@ pub fn install() {
         game_throwfb,
         game_throwfhi,
         game_throwflw,
-        game_itemheavythrowlw,
-        game_itemheavythrowlw4,
         heavy_item_throw_f,
         heavy_item_throw_b,
     );

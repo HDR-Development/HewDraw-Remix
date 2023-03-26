@@ -2,9 +2,11 @@
 <struct>
   <list hash="params">
     <hash40 index="0">dummy</hash40>
+    <!-- barrel -->
     <struct index="1">
       <float hash="gravity_accel">0.15</float>
       <float hash="gravity_accel_max">2</float>
+      <float hash="hp">50</float><!--vanilla is 14-->
     </struct>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
