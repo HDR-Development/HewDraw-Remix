@@ -26,7 +26,6 @@ unsafe fn recoil_cancel(boma: &mut BattleObjectModuleAccessor,status: i32,situat
     } 
 
     if (new_status>0){
-        println!("CANCEL!");
         if (situation_kind==*SITUATION_KIND_AIR)
         {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
