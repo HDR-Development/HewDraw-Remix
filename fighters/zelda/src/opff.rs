@@ -16,7 +16,12 @@ unsafe fn teleport_tech(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &m
     let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
 
     if boma.is_status(*FIGHTER_ZELDA_STATUS_KIND_SPECIAL_HI_2) {
-        if touch_right || touch_left || VarModule::is_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE) {
+        let touch_normal_y_left = GroundModule::get_touch_normal_y(fighter.module_accessor, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
+        let touch_normal_y_right = GroundModule::get_touch_normal_y(fighter.module_accessor, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
+        if (touch_right && touch_normal_y_right != 0.0)
+        || (touch_left && touch_normal_y_left != 0.0)
+        || VarModule::is_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE)
+        {
             if !VarModule::is_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE) {
                 VarModule::on_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE);
             }

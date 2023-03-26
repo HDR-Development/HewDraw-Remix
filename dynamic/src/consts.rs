@@ -374,6 +374,20 @@ pub mod vars {
             pub const GUNMAN_TIMER: i32 = 0x0100;
         }
     }
+    pub mod peach {
+        pub mod instance {
+            // flag
+            // Used to check if sideb wall bounce happens
+            pub const IS_WALLBOUNCE: i32 = 0x0100;
+        }
+    }
+    pub mod daisy {
+        pub mod instance {
+            // flag
+            // Used to check if sideb wall bounce happens
+            pub const IS_WALLBOUNCE: i32 = 0x0100;
+        }
+    }
 
     pub mod rosetta {
         pub mod instance {
