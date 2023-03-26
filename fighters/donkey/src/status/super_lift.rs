@@ -55,23 +55,28 @@ pub unsafe fn super_lift_fastfall(fighter: &mut smash::lua2cpp::L2CFighterCommon
 
 /// callback run during SUPER_LIFT_WAIT
 pub unsafe fn super_lift_wait(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 0.0);
+    
     super_lift_platdrop(fighter);
 }
 
 /// callback run during SUPER_LIFT_WALK
 pub unsafe fn super_lift_walk(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 0.0);
+    
     super_lift_platdrop(fighter);
 }
 
 /// callback run during SUPER_LIFT_TURN
 pub unsafe fn super_lift_turn(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 0.0);
+    
     super_lift_platdrop(fighter);
     fighter.set_rate(1.5);
     if fighter.status_frame() >= 5 && fighter.stick_x().abs() > 0.33 {
         fighter.change_status_req(*FIGHTER_DONKEY_STATUS_KIND_SUPER_LIFT_WALK, false);
+    }
+
+    // allow transition into item toss during turnaround
+    if fighter.is_cat_flag(Cat1::AttackS4 | Cat1::AttackS3) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_ITEM_THROW_HEAVY, false);
     }
 
     // enable actionability for all of the turn status
@@ -82,19 +87,19 @@ pub unsafe fn super_lift_turn(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 /// callback run during SUPER_LIFT_FALL
 pub unsafe fn super_lift_fall(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 0.0);
+    
     super_lift_fastfall(fighter);
 }
 
 /// callback run during SUPER_LIFT_JUMP
 pub unsafe fn super_lift_jump(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 0.0);
+    
     super_lift_fastfall(fighter);
 }
 
 /// callback run during SUPER_LIFT_PASS
 pub unsafe fn super_lift_pass(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 0.0);
+    
     if fighter.status_frame() > 5 {
         super_lift_fastfall(fighter);
     }
@@ -102,17 +107,17 @@ pub unsafe fn super_lift_pass(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 /// callback run during SUPER_LIFT_LANDING
 pub unsafe fn super_lift_landing(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 0.0);
+    
 }
 
 /// callback run during SUPER_LIFT_JUMP_SQUAT
 pub unsafe fn super_lift_jump_squat(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 0.0);
+    
 }
 
 /// callback run during SUPER_LIFT_JUMP_SQUAT_B
 pub unsafe fn super_lift_jump_squat_b(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 0.0);
+    
 }
 
 /// opff specifically against the super lift mains

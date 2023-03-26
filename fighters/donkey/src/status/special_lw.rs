@@ -17,10 +17,12 @@ unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         // if you still arent holding an item, try to spawn a barrel
         if !ItemModule::is_have_item(fighter.module_accessor, 0) {
             VarModule::on_flag(fighter.object(), vars::donkey::instance::DID_SPAWN_BARREL);
-            if VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER) == 0 {
-                VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1);
+            let itemmanager = smash2::app::ItemManager::instance().unwrap();
+            let barrel_count = smash2::app::ItemManager::get_num_of_ownered_item(
+                itemmanager, fighter.boma().battle_object_id, 
+                smash2::app::ItemKind::Barrel);
+            if barrel_count == 0 {
                 ItemModule::have_item(fighter.module_accessor, ItemKind(*ITEM_KIND_BARREL),0,0,false,false);
-                VarModule::on_flag(fighter.object(), vars::donkey::instance::DID_SPAWN_BARREL);
                 EFFECT(fighter, Hash40::new("donkey_handslap"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, false);
             }
         } else {
