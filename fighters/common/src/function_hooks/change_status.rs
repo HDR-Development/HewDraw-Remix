@@ -29,14 +29,15 @@ unsafe fn change_status_request_hook(boma: &mut BattleObjectModuleAccessor, stat
     } else if boma.is_item() {
         // handle barrel item not breaking when it hits someone
         if boma.kind() == *ITEM_KIND_BARREL {
-            println!("Barrel is changing into: {:x}", next_status);
+            println!("Barrel is requesting change into: {:x}", next_status);
             if next_status == *ITEM_STATUS_KIND_BORN || next_status == *ITEM_STATUS_KIND_LOST {
-                let bounce_mul = Vector3f { x: -0.5, y: -0.5, z: 0.0 };
+                let bounce_mul = Vector3f { x: -0.25, y: -0.25, z: -0.25 };
                 KineticModule::mul_speed(boma, &bounce_mul, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                 PostureModule::reverse_lr(boma);
-                //AttackModule::clear_all(boma);
-                let status = boma.status();
-                return original!()(boma, status, arg3);
+                AttackModule::clear_all(boma);
+
+                // instead change into fall
+                next_status = *ITEM_STATUS_KIND_FALL;
             }
         }
     }

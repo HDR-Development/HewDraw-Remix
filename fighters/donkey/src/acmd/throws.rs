@@ -170,9 +170,14 @@ unsafe fn heavy_item_throw_f(fighter: &mut L2CAgentBase) {
   if is_excute(fighter) {
     FT_MOTION_RATE(fighter, 1.0);
   }
-  frame(lua_state, 16.0);
+  frame(lua_state, 15.0);
+  if is_excute(fighter) {
+    FT_MOTION_RATE(fighter, 2.0);
+  }
+  frame(lua_state, 17.0);
   if is_excute(fighter) {
     ItemModule::throw_item(boma, 55.0, 4.0, 1.0, 0, true, 0.0);
+    FT_MOTION_RATE(fighter, 1.0);
   }
 }
 
@@ -188,14 +193,43 @@ unsafe fn heavy_item_throw_b(fighter: &mut L2CAgentBase) {
   if is_excute(fighter) {
     FT_MOTION_RATE(fighter, 1.0);
   }
-  frame(lua_state, 18.0);
+  frame(lua_state, 19.0);
+  if is_excute(fighter) {
+    FT_MOTION_RATE(fighter, 2.0);
+  }
+  frame(lua_state, 19.5);
   if is_excute(fighter) {
     // the exact *real* frame we are on needs to stay a whole
     // number in order for the barrel (or other item) to be 
     // released at an appropriate location.
     ItemModule::throw_item(boma, 145.0, 4.0, 1.0, 0, true, 0.0);
+  }
+  frame(lua_state, 20.0);
+  if is_excute(fighter) {
     FT_MOTION_RATE(fighter, 0.75);
   }
+}
+
+#[acmd_script( agent = "donkey", scripts = ["game_itemheavythrowlw", "game_itemheavythrowlw4"], category = ACMD_GAME, low_priority )]
+unsafe fn game_itemheavythrowlw(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        ItemModule::throw_item(boma, 270.0, 4.0, 1.0, 0, true, 0.0);
+        
+        
+
+        // change to kinetic type fall
+        KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
+        GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
+        let kinetic = *FIGHTER_KINETIC_TYPE_FALL;
+        KineticModule::change_kinetic(fighter.module_accessor, kinetic);
+        let speed_x = PostureModule::lr(fighter.module_accessor) * KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        SET_SPEED_EX(fighter, speed_x, 2.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    }
 }
 
 pub fn install() {
@@ -209,6 +243,7 @@ pub fn install() {
         game_throwflw,
         heavy_item_throw_f,
         heavy_item_throw_b,
+        game_itemheavythrowlw,
     );
 }
 

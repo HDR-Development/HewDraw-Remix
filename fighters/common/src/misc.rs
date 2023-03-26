@@ -24,7 +24,7 @@ pub fn install() {
 unsafe fn set_hit_team_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
     original!()(boma, arg2);
     if (boma.kind() == *ITEM_KIND_BARREL) {
-        println!("set hit team called for barrel.");
+        println!("set hit team called for barrel: {:x}", arg2);
         return;
     }
 }
@@ -33,7 +33,7 @@ unsafe fn set_hit_team_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
 unsafe fn set_hit_team_second_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
     original!()(boma, arg2);
     if (boma.kind() == *ITEM_KIND_BARREL) {
-        println!("set hit team second called for barrel.");
+        println!("set hit team second called for barrel: {:x}", arg2);
         return;
     }
 }
@@ -45,7 +45,7 @@ unsafe fn set_hit_team_second_hook(boma: &mut BattleObjectModuleAccessor, arg2: 
 unsafe fn set_team_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32, arg3: bool) {
     if (smash::app::utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_ITEM 
       && boma.kind() == *ITEM_KIND_BARREL) {
-        println!("set team ignored for barrel");
+        println!("set team ignored for barrel: {:x}", arg2);
     } else {
         original!()(boma, arg2, arg3);
     }
@@ -55,7 +55,7 @@ unsafe fn set_team_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32, arg3: 
 unsafe fn set_team_second_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
     original!()(boma, arg2);
     if (boma.kind() == *ITEM_KIND_BARREL) {
-        println!("set team second called for barrel.");
+        println!("set team second called for barrel: {:x}", arg2);
         return;
     }
 }
@@ -64,7 +64,7 @@ unsafe fn set_team_second_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32)
 unsafe fn set_team_owner_id_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
     original!()(boma, arg2);
     if (boma.kind() == *ITEM_KIND_BARREL) {
-        println!("set team owner id called for barrel.");
+        println!("set team owner id called for barrel: {:x}", arg2);
         return;
     }
 }

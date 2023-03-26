@@ -89,9 +89,8 @@ unsafe fn attack_dash(fighter: &mut L2CAgentBase) {
         );
         VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_DRIFT);
     }
-    frame(lua_state, 32.0);
+    frame(lua_state, 30.0);
     if is_excute(fighter) {
-        // actionable effectively frame 39, instead of frame 35
         MotionModule::set_rate(boma, 0.5);
     }
 }
