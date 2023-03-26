@@ -139,13 +139,8 @@ unsafe fn phantom_special_cancel_reset(boma: &mut BattleObjectModuleAccessor) {
 }
 
 pub unsafe fn phantom_charge_platdrop(fighter:&mut smash::lua2cpp::L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-        let pass_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("pass_stick_y"));
-        let pass_flick_y = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("pass_flick_y"));
-        if GroundModule::is_passable_ground(fighter.module_accessor)
-        && fighter.global_table[FLICK_Y].get_i32() < pass_flick_y
-        && fighter.global_table[STICK_Y].get_f32() < pass_stick_y
-        {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.status_frame() > 9 {
+        if ControlModule::get_stick_y(fighter.module_accessor) < -0.66 && GroundModule::is_passable_ground(fighter.module_accessor) {
             GroundModule::pass_floor(fighter.module_accessor);
         }
     }
