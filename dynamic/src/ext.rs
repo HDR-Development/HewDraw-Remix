@@ -496,6 +496,7 @@ pub trait BomaExt {
     unsafe fn set_front_cliff_hangdata(&mut self, x: f32, y: f32);
     unsafe fn set_back_cliff_hangdata(&mut self, x: f32, y: f32);
     unsafe fn set_center_cliff_hangdata(&mut self, x: f32, y: f32);
+    unsafe fn select_cliff_hangdata_from_name(&mut self, cliff_hangdata_type: &str);
 
     // Checks for status and enables transition to jump
     unsafe fn check_jump_cancel(&mut self, update_lr: bool) -> bool;
