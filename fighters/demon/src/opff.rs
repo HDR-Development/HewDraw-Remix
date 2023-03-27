@@ -30,7 +30,7 @@ unsafe fn slaughter_high_kick_devastator(boma: &mut BattleObjectModuleAccessor, 
 
 unsafe fn jaw_breaker(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
     if [*FIGHTER_STATUS_KIND_ESCAPE].contains(&status_kind)
-        && frame > 18.0 {
+        && boma.status_frame() > 17 {
         if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N){
             VarModule::on_flag(boma.object(), vars::demon::instance::JAW_BREAKER);
             boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_HI3, false);

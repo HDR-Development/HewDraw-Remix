@@ -86,8 +86,15 @@ unsafe extern "C" fn status_turn_main(fighter: &mut L2CFighterCommon) -> L2CValu
                     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
                     interrupt!(fighter, FIGHTER_STATUS_KIND_DASH, true);
                 }
+
+                let lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1);
                 if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0 {
-                    interrupt!(fighter, FIGHTER_STATUS_KIND_TURN_DASH, true);
+                    let next_status = if [*FIGHTER_KIND_RYU, *FIGHTER_KIND_KEN, *FIGHTER_KIND_DOLLY, *FIGHTER_KIND_DEMON].contains(&fighter.kind()) && lr != 0.0 {
+                        FIGHTER_RYU_STATUS_KIND_DASH_BACK
+                    } else {
+                        FIGHTER_STATUS_KIND_TURN_DASH
+                    };
+                    interrupt!(fighter, next_status, true);
                 }
             }
             return L2CValue::I32(0);
