@@ -26,7 +26,7 @@ unsafe fn dedede_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 27.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE(fighter, 18.0/(43.0-27.0));
+        FT_MOTION_RATE(fighter, 23.0/(43.0-27.0));
     }
     frame(lua_state, 43.0);
     if is_excute(fighter) {
