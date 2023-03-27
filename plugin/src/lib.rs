@@ -259,7 +259,10 @@ unsafe fn push_hash(game_state: u64, hash: u64) {
 unsafe fn game_end(game_state: u64) {
     let one =
         *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c31b2);
-    if one == 0 {
+    let mode =
+        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0) as *const u64;
+    if one == 0 
+    && *mode != 0x4040000 {
         push_something(game_state, 2);
         // push_hash(game_state, smash::hash40("statewaitforruletofinish"));
         // push_hash(game_state, smash::hash40("statewaitendproduction"));
@@ -276,7 +279,10 @@ unsafe fn game_end(game_state: u64) {
 unsafe fn game_exit(game_state: u64, arg: u64) {
     let one =
         *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c31b2);
-    if one == 0 { 
+    let mode =
+        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0) as *const u64;
+    if one == 0
+    && *mode != 0x4040000 { 
         push_something(game_state, 2);
         // push_hash(game_state, smash::hash40("statewaitforruletofinish"));
         // push_hash(game_state, smash::hash40("statewaitendproduction"));
@@ -328,13 +334,13 @@ static mut IS_LOADING: bool = false;
 
 #[skyline::hook(offset = 0x1785348)]
 unsafe fn load_ingame_call_sequence_scene(arg: u64) {
-    IS_LOADING = true;
+    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0) as *const u64;
+    IS_LOADING = *mode != 0x4040000;
     call_original!(arg)
 }
 
 #[skyline::hook(offset = 0x1850190)]
 unsafe fn load_melee_scene(arg: u64) {
-    println!("{}", arg);
     IS_LOADING = false;
     call_original!(arg);
 }
