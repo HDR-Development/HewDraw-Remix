@@ -403,6 +403,7 @@ pub mod vars {
 
 			// flag
             pub const IS_TICO_DEAD: i32 = 0x0105;
+            pub const IS_WARP:      i32 = 0x0106;
         }
         pub mod status {
             // int
