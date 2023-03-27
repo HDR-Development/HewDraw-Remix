@@ -8,37 +8,39 @@ use globals::*;
 unsafe fn recoil_cancel(boma: &mut BattleObjectModuleAccessor,status: i32,situation_kind: i32){
 
     let mut new_status = 0;
-    if boma.is_cat_flag(Cat1::AttackS3) {
-        new_status = *FIGHTER_STATUS_KIND_ATTACK_S3;
-    } else if boma.is_cat_flag(Cat1::AttackHi3) {
-        new_status = *FIGHTER_STATUS_KIND_ATTACK_HI3;
-    } else if boma.is_cat_flag(Cat1::AttackLw3) {
-        new_status = *FIGHTER_STATUS_KIND_ATTACK_LW3;
-    }
-    else if boma.is_cat_flag(Cat1::AttackS4) {
+    if boma.is_cat_flag(Cat1::AttackS4) {
         new_status = *FIGHTER_STATUS_KIND_ATTACK_S4_START;
     } else if boma.is_cat_flag(Cat1::AttackHi4) {
         new_status = *FIGHTER_STATUS_KIND_ATTACK_HI4_START;
     } else if boma.is_cat_flag(Cat1::AttackLw4) {
         new_status = *FIGHTER_STATUS_KIND_ATTACK_LW4_START;
+    } else if boma.is_cat_flag(Cat1::AttackS3) {
+        new_status = *FIGHTER_STATUS_KIND_ATTACK_S3;
+    } else if boma.is_cat_flag(Cat1::AttackHi3) {
+        new_status = *FIGHTER_STATUS_KIND_ATTACK_HI3;
+    } else if boma.is_cat_flag(Cat1::AttackLw3) {
+        new_status = *FIGHTER_STATUS_KIND_ATTACK_LW3;
     } else if boma.is_cat_flag(Cat1::AttackN) {
         new_status = *FIGHTER_STATUS_KIND_ATTACK;
+    }
+    if boma.is_pad_flag(PadFlag::JumpTrigger)
+    && situation_kind == *SITUATION_KIND_GROUND {
+        new_status = *FIGHTER_STATUS_KIND_JUMP_SQUAT;
     } 
-
     if (new_status>0){
-        if (situation_kind==*SITUATION_KIND_AIR)
+        if (situation_kind!=*SITUATION_KIND_AIR)
         {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
+            StatusModule::change_status_force(boma, new_status, false);
         }
         else{
-            StatusModule::change_status_request_from_script(boma, new_status, false);
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
         }
-        VarModule::off_flag(boma.object(), vars::tantan::status::RAMRAM_CAN_CANCEL);
+        VarModule::off_flag(boma.object(), vars::tantan::status::ARMS_ATTACK_CANCEL);
     }
 }
 
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    if VarModule::is_flag(boma.object(), vars::tantan::status::RAMRAM_CAN_CANCEL)
+    if VarModule::is_flag(boma.object(), vars::tantan::status::ARMS_ATTACK_CANCEL)
     {
         recoil_cancel(boma,status_kind,situation_kind);
     }
