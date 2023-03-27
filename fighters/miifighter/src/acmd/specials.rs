@@ -461,6 +461,139 @@ unsafe fn miifighter_special_air_lw2_auto_attack_game(fighter: &mut L2CAgentBase
         AttackModule::clear_all(boma);
     }
 }
+#[acmd_script( agent = "miifighter", scripts = ["game_speciallw3catch", "game_specialairlw3catch"] , category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_lw3_catch_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+    }
+    FT_MOTION_RATE(fighter, 2.5);
+    frame(lua_state, 4.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    if is_excute(fighter) {
+        //SEARCH(fighter, 0, 0, Hash40::new("top"), 5.0, 0.0, 7.0, 9.0, Some(0.0), Some(7.0), Some(10.5), *COLLISION_KIND_MASK_ALL, *HIT_STATUS_MASK_NORMAL, 0, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIEB, *COLLISION_PART_MASK_ALL, false);
+        GrabModule::set_rebound(boma, true);
+        CATCH(fighter, 2, Hash40::new("top"), 5.0, 0.0, 7.0, 9.0, Some(0.0), Some(7.0), Some(10.5), *FIGHTER_STATUS_KIND_MIIFIGHTER_SUPLEX_THROWN, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 6.0);
+    FT_MOTION_RATE(fighter, 1.2);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        GrabModule::set_rebound(boma, false);
+        //search!(fighter, *MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR_ALL);
+    }
+}
+#[acmd_script( agent = "miifighter", script = "game_speciallw3throw", category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_lw3_throw_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        WHOLE_HIT(fighter, *HIT_STATUS_INVINCIBLE);
+        REVERSE_LR(fighter);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 45, 66, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        FT_CATCH_STOP(fighter, 5, 1);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        ATTACK_IGNORE_THROW(fighter, 0, 0, Hash40::new("armr"), 9.0, 361, 85, 0, 80, 5.0, 6.0, 0.0, 0.0, Some(6.0), Some(0.0), Some(0.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        ATTACK_IGNORE_THROW(fighter, 0, 0, Hash40::new("top"), 9.0, 361, 85, 0, 80, 4.0, 0.0, 3.0, -5.0, Some(0.0), Some(3.0), Some(-11.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        FT_CATCH_STOP(fighter, 5, 1);
+        CHECK_FINISH_CAMERA(fighter, 14, 0);
+        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.3);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        let target = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
+        let target_group = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
+        let target_no = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
+        ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
+        WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
+    }
+}
+#[acmd_script( agent = "miifighter", script = "game_specialairlw3throw", category = ACMD_GAME , low_priority)]
+unsafe fn miifighter_special_air_lw3_throw_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_MIIFIGHTER_STATUS_COUNTER_THROW_FLAG_THROW_AFTER_LANDING);
+        WHOLE_HIT(fighter, *HIT_STATUS_INVINCIBLE);
+        REVERSE_LR(fighter);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 1.0, 270, 100, 1, 0, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        FT_CATCH_STOP(fighter, 5, 1);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        ATTACK_IGNORE_THROW(fighter, 0, 0, Hash40::new("armr"), 9.0, 361, 85, 0, 80, 5.0, 6.0, 0.0, 0.0, Some(6.0), Some(0.0), Some(0.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        FT_CATCH_STOP(fighter, 5, 1);
+        CHECK_FINISH_CAMERA(fighter, 14, 0);
+        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.3);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        let target = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
+        let target_group = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
+        let target_no = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
+        ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
+        WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("throw"), 13.0, 280, 65, 0, 10, 12.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 5, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_nomal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_KICK);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+#[acmd_script( agent = "miifighter", script = "effect_specialairlw3throw", category = ACMD_EFFECT , low_priority)]
+unsafe fn miifighter_special_air_lw3_throw_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        COL_PRI(fighter, 101);
+        FLASH(fighter, 1, 1, 1, 0);
+        EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("sys_catch"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.8, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.8);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        COL_NORMAL(fighter);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("miifighter_counter_arc"), Hash40::new("miifighter_counter_arc"), Hash40::new("top"), -1, 8, 1, 0, 112, 90, 0.8, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(fighter, 0.8);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        FLASH(fighter, 1, 1, 1, 0);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        COL_NORMAL(fighter);
+    }
+}
 
 pub fn install() {
     install_acmd_scripts!(
@@ -472,6 +605,10 @@ pub fn install() {
         miifighter_special_air_hi3_game,
         miifighter_special_hi2_game,
         miifighter_special_air_hi2_game,
+        miifighter_special_lw3_catch_game,
+        miifighter_special_lw3_throw_game,
+        miifighter_special_air_lw3_throw_game,
+        miifighter_special_air_lw3_throw_effect
     );
 }
 

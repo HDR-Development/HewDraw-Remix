@@ -34,10 +34,17 @@ unsafe fn feint_jump_jc(boma: &mut BattleObjectModuleAccessor) {
         }
     }
 }
+// Counter Throw turned into just Throw
+unsafe fn ct_force(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_motion_one_of(&[Hash40::new("special_lw3"),Hash40::new("special_air_lw3")]) {
+        StatusModule::change_status_request_from_script(boma, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW3_CATCH, false);
+    }
+}
 
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     special_cancels(boma, id, status_kind, frame);
     feint_jump_jc(boma);
+    ct_force(boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MIIFIGHTER )]
