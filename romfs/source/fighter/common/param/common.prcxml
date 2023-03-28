@@ -26,7 +26,7 @@
   <int hash="tread_jump_after_xlu_frame">0</int>
   <int hash="tread_jump_disable_frame_after_attack">8</int>
   <float hash="shield_max">60</float>
-  <int hash="shield_min_frame">4</int>
+  <int hash="shield_min_frame">1</int>
   <float hash="shield_dec1">0.255</float>
   <float hash="shield_recovery1">0.07</float>
   <float hash="shield_damage_mul">1.4</float>
