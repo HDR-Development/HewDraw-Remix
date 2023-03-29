@@ -11,6 +11,8 @@
   </list>
   <list hash="param_special_n">
     <struct index="0">
+      <float hash="blaster_shoot_x">0</float>
+      <float hash="blaster_air_shoot_x">0</float>
       <float hash="blaster_air_shoot_y">0.9</float>
     </struct>
     <hash40 index="1">dummy</hash40>

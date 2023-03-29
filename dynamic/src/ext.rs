@@ -32,6 +32,28 @@ pub trait Vec4Ext {
     fn zero() -> Self where Self: Sized;
 }
 
+pub trait Hash40Ext {
+    fn to_hash(self) -> Hash40;
+}
+
+impl Hash40Ext for Hash40 {
+    fn to_hash(self) -> Hash40 {
+        self
+    }
+}
+
+impl Hash40Ext for u64 {
+    fn to_hash(self) -> Hash40 {
+        Hash40::new_raw(self)
+    }
+}
+
+impl Hash40Ext for &str {
+    fn to_hash(self) -> Hash40 {
+        Hash40::new(self)
+    }
+}
+
 impl Vec2Ext for Vector2f {
     fn new(x: f32, y: f32) -> Self {
         Self {
@@ -462,6 +484,9 @@ pub trait BomaExt {
     unsafe fn get_param_int(&mut self, obj: &str, field: &str) -> i32;
     unsafe fn get_param_float(&mut self, obj: &str, field: &str) -> f32;
     unsafe fn get_param_int64(&mut self, obj: &str, field: &str) -> u64;
+    unsafe fn set_int_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext);
+    unsafe fn set_float_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext);
+    unsafe fn set_int64_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext);
 
     // ENERGY
     unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion;
@@ -471,6 +496,7 @@ pub trait BomaExt {
     unsafe fn set_front_cliff_hangdata(&mut self, x: f32, y: f32);
     unsafe fn set_back_cliff_hangdata(&mut self, x: f32, y: f32);
     unsafe fn set_center_cliff_hangdata(&mut self, x: f32, y: f32);
+    unsafe fn select_cliff_hangdata_from_name(&mut self, cliff_hangdata_type: &str);
 
     // Checks for status and enables transition to jump
     unsafe fn check_jump_cancel(&mut self, update_lr: bool) -> bool;
@@ -741,12 +767,27 @@ impl BomaExt for BattleObjectModuleAccessor {
         WorkModule::set_int(self, value, what)
     }
 
+    unsafe fn set_int_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext) {
+        let int = WorkModule::get_param_int(self, object.to_hash().hash, param.to_hash().hash);
+        WorkModule::set_int(self, int, what);
+    }
+
     unsafe fn set_float(&mut self, value: f32, what: i32) {
         WorkModule::set_float(self, value, what)
     }
 
+    unsafe fn set_float_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext) {
+        let float = WorkModule::get_param_float(self, object.to_hash().hash, param.to_hash().hash);
+        WorkModule::set_float(self, float, what);
+    }
+
     unsafe fn set_int64(&mut self, value: i64, what: i32) {
         WorkModule::set_int64(self, value, what)
+    }
+
+    unsafe fn set_int64_from_param(&mut self, what: i32, object: impl Hash40Ext, param: impl Hash40Ext) {
+        let int = WorkModule::get_param_int64(self, object.to_hash().hash, param.to_hash().hash);
+        WorkModule::set_int64(self, int as i64, what);
     }
 
     unsafe fn on_flag(&mut self, what: i32) {
@@ -936,6 +977,24 @@ impl BomaExt for BattleObjectModuleAccessor {
         let ground_data = *((ground_module + 0x28) as *mut *mut f32);
         *ground_data.add(0x520 / 4) = x;
         *ground_data.add(0x524 / 4) = y;
+    }
+
+    unsafe fn select_cliff_hangdata_from_name(&mut self, name: &str) {
+        let p1_x = crate::ParamModule::get_float(self.object(), crate::ParamType::Agent, &format!("cliff_hang_data.{}.p1_x", name));
+        let p1_y = crate::ParamModule::get_float(self.object(), crate::ParamType::Agent, &format!("cliff_hang_data.{}.p1_y", name));
+        let p2_x = crate::ParamModule::get_float(self.object(), crate::ParamType::Agent, &format!("cliff_hang_data.{}.p2_x", name));
+        let p2_y = crate::ParamModule::get_float(self.object(), crate::ParamType::Agent, &format!("cliff_hang_data.{}.p2_y", name));
+
+        // Can uncomment and test hardcoded values here, while working on a character
+        // so you don't have to rebuild hdr.prc every time
+        //let p1_x = 16.0;
+        //let p1_y = 18.0;
+        //let p2_x = -9.6;
+        //let p2_y = 9.0;
+
+        self.set_front_cliff_hangdata(p1_x, (p1_y - p2_y));
+        self.set_back_cliff_hangdata((p2_x * -1.0), (p1_y - p2_y));
+        self.set_center_cliff_hangdata(0.0, p2_y);
     }
 
     /// checks whether you should hitfall (call this once per frame)
