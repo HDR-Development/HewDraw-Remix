@@ -176,7 +176,7 @@ unsafe fn heavy_item_throw_f(fighter: &mut L2CAgentBase) {
   }
   frame(lua_state, 17.0);
   if is_excute(fighter) {
-    ItemModule::throw_item(boma, 55.0, 4.0, 1.0, 0, true, 0.0);
+    ItemModule::throw_item(boma, 55.0, 3.0, 1.0, 0, true, 0.0);
     FT_MOTION_RATE(fighter, 1.0);
   }
 }
