@@ -88,7 +88,7 @@ unsafe fn groundcollision__processgroundcollisioninfo_check_landing(groundcollis
     && !is_item
     && situation_kind == 2
     && (prev_ecb_offset_y == 0.0 && ecb_offset_y != 0.0)  // this only passes on the frame a projectile spawns
-    && (prev_pos_y + ecb_offset_y) <= touch_pos_y  // checks if the projectile's ECB bottom position on the previous frame was underneath the nearest surface
+    && (prev_pos_y + prev_ecb_offset_y) >= (pos_y + ecb_offset_y)  // checks if the projectile is descending
     && (pos_y + ecb_offset_y) <= touch_pos_y  // checks if the projectile's ECB bottom position is underneath the nearest surface
     {
         *groundcollisioninfo.add(0x420 / 4) = *groundcollisioninfo.add(0x3d0 / 4);  // prev_ecb_offset_x = ecb_offset_x
