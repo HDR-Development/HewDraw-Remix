@@ -231,7 +231,7 @@ unsafe fn game_itemheavythrowlw(fighter: &mut L2CAgentBase) {
     }
 
     // when we reach the cancel frame, transition into fall instead
-    let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
+    let motion_kind = Hash40::new_raw(MotionModule::motion_kind(fighter.module_accessor));
     let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(
         boma, motion_kind, true);
     frame(lua_state, cancel_frame);
