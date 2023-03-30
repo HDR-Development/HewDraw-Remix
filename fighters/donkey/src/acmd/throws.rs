@@ -218,9 +218,8 @@ unsafe fn game_itemheavythrowlw(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ItemModule::throw_item(boma, 270.0, 4.0, 1.0, 0, true, 0.0);
         
-        
-
         // change to kinetic type fall
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
         GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
@@ -229,6 +228,16 @@ unsafe fn game_itemheavythrowlw(fighter: &mut L2CAgentBase) {
         KineticModule::change_kinetic(fighter.module_accessor, kinetic);
         let speed_x = PostureModule::lr(fighter.module_accessor) * KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         SET_SPEED_EX(fighter, speed_x, 2.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    }
+
+    // when we reach the cancel frame, transition into fall instead
+    let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(
+        boma, Hash40::new_raw(fighter.get_motion_kind()), true);
+    frame(lua_state, cancel_frame);
+    if is_excute(fighter) {
+        if fighter.is_situation(*SITUATION_KIND_AIR) {
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
+        }
     }
 }
 
