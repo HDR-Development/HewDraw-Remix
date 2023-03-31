@@ -181,7 +181,6 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleA
     suicide_throw_mashout(fighter, boma);
     cliff_xlu_frame_counter(fighter);
     ecb_shift_disabled_motions(fighter);
-    decrease_knockdown_bounce_heights(fighter);
     april_fools(fighter, status_kind);
 }
 
