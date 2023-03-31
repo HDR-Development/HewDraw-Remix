@@ -218,7 +218,10 @@ unsafe fn game_itemheavythrowlw(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ItemModule::throw_item(boma, 270.0, 4.0, 1.0, 0, true, 0.0);
         
-        // change to kinetic type fall
+        let main_speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) * PostureModule::lr(fighter.module_accessor);
+        let stick_add_x = fighter.stick_x() * 1.5;
+        
+        // change to kinetic type fall and change to air situation
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
         GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
@@ -226,8 +229,9 @@ unsafe fn game_itemheavythrowlw(fighter: &mut L2CAgentBase) {
         StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
         let kinetic = *FIGHTER_KINETIC_TYPE_FALL;
         KineticModule::change_kinetic(fighter.module_accessor, kinetic);
-        let speed_x = PostureModule::lr(fighter.module_accessor) * KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        SET_SPEED_EX(fighter, speed_x, 2.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+
+        // pop up into the air
+        SET_SPEED_EX(fighter, main_speed_x + stick_add_x, 2.25, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
 
     // when we reach the cancel frame, transition into fall instead

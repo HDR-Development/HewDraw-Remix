@@ -128,11 +128,11 @@ unsafe fn donkey_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state,6.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter,Hash40::new("donkey_attack_line"), Hash40::new("donkey_attack_line"), Hash40::new("top"), 0, 8, 11, 180, 0, 0, 1.8, true, *EF_FLIP_YZ)
+        EFFECT_FOLLOW_FLIP(fighter,Hash40::new("donkey_attack_line"), Hash40::new("donkey_attack_line"), Hash40::new("top"), 0, 8, 11, 180, 0, 0, 1.5, true, *EF_FLIP_YZ)
     }
     frame(lua_state,7.0);
     if is_excute(fighter) {
-        EFFECT(fighter,Hash40::new("sys_attack_impact"), Hash40::new("top"), -2.5, 9, -16, 0, 0, 0, 1.8, 0, 0, 0, 0, 0, 360, true);
+        EFFECT(fighter,Hash40::new("sys_attack_impact"), Hash40::new("top"), -2.5, 9, -13, 0, 0, 0, 1.8, 0, 0, 0, 0, 0, 360, true);
     }
     
 }
