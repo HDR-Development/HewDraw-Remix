@@ -3,13 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn sspecial_once_per_airtime(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S
-    && situation_kind == *SITUATION_KIND_AIR {
-        VarModule::on_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL);
-    }
-}
-
 unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
     if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_AIR, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_DASH_B, 
@@ -54,7 +47,6 @@ unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     dspecial_cancels(boma, situation_kind, frame);
     uspecial_cancels(boma, situation_kind, frame);
-    sspecial_once_per_airtime(boma, status_kind, situation_kind, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MURABITO )]
@@ -77,5 +69,13 @@ fn flowerpot_frame(weapon: &mut L2CFighterBase) {
         if weapon.is_status( *WEAPON_MURABITO_FLOWERPOT_STATUS_KIND_THROWED ) && AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT) {
             weapon.change_status(WEAPON_MURABITO_FLOWERPOT_STATUS_KIND_BURST.into(), false.into());
         }
+    }
+}
+
+/// prevents rocket from despawning in the blastzone
+#[weapon_frame( agent = WEAPON_KIND_MURABITO_CLAYROCKET )]
+fn clayrocket_frame(weapon: &mut L2CFighterBase) {
+    unsafe {
+        WorkModule::on_flag(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_FLAG_NO_DEAD);
     }
 }
