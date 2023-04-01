@@ -5,8 +5,11 @@ use globals::*;
 
 
 pub unsafe fn morphball_crawl(boma: &mut BattleObjectModuleAccessor, status_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if [*FIGHTER_SAMUS_STATUS_KIND_SPECIAL_GROUND_LW, *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_AIR_LW].contains(&status_kind) {
-        if frame >= 31.0 {
+        if frame >= 32.0 {
             if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW))
                 && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
                 MotionModule::change_motion_force_inherit_frame(boma, Hash40::new("special_lw"), 12.0, 1.0, 1.0);
@@ -33,10 +36,10 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
 unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
         if motion_kind == hash40("attack_air_b") {
-            if frame >= 11.0 && frame < 15.0 {
+            if frame >= 12.0 && frame < 16.0 {
                 MotionModule::set_rate(boma, 0.4);
             }
-            if frame >= 15.0 {
+            if frame >= 16.0 {
                 MotionModule::set_rate(boma, 1.0);
             }
         }
@@ -65,7 +68,7 @@ pub unsafe fn samusd_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-#[smashline::weapon_frame(agent = WEAPON_KIND_SAMUSD_BOMB)]
+#[smashline::weapon_frame(agent = WEAPON_KIND_SAMUSD_BOMB, main)]
 pub fn samusd_bomb_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe {
         let boma = weapon.boma();

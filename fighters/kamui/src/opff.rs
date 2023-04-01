@@ -5,16 +5,19 @@ use globals::*;
 
  
 unsafe fn dragon_fang_shot_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if status_kind == *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_N_SHOOT && frame > 7.0 {
+    if status_kind == *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_N_SHOOT && frame > 8.0 {
         boma.check_dash_cancel();
     }
 }
 
 unsafe fn pin_drop_waveland(fighter: &mut L2CFighterCommon, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
     let boma = fighter.boma();
     if status_kind == *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_END {
         if !fighter.is_in_hitlag() 
-        && frame >= 12.0 {
+        && frame >= 13.0 {
             fighter.check_airdodge_cancel();
         } 
     }

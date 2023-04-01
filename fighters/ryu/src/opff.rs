@@ -17,12 +17,18 @@ extern "Rust" {
     fn shotos_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
 
+#[fighter_frame( agent = FIGHTER_KIND_RYU )]
+pub fn ryu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    unsafe {
+        shotos_common(fighter);
+    }
+}
+
 #[utils::macros::opff(FIGHTER_KIND_RYU )]
 pub fn ryu_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		ryu_frame(fighter);
-        shotos_common(fighter);
     }
 }
 
@@ -75,12 +81,12 @@ unsafe fn forward_bair_rotation(boma: &mut BattleObjectModuleAccessor, start_fra
 unsafe fn rotate_forward_bair(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_motion(Hash40::new("attack_air_b")){
         if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
-            forward_bair_rotation(boma, 5.0, 7.5, 10.0, 30.0);
+            forward_bair_rotation(boma, 6.0, 8.5, 11.0, 31.0);
         }
     }
     else if boma.is_motion(Hash40::new("landing_air_b")){
         if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
-            forward_bair_rotation(boma, 0.0, 0.1, 0.2, 10.0);
+            forward_bair_rotation(boma, 0.0, 0.1, 0.2, 11.0);
         }
     }
 }
@@ -427,7 +433,7 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 }
 
 /*
-#[smashline::weapon_frame_callback]
+#[smashline::weapon_frame_callback(main)]
 pub fn hadoken_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe { 
         if weapon.kind() != WEAPON_KIND_RYU_HADOKEN {

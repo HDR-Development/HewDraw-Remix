@@ -36,18 +36,18 @@ use globals::*;
 // }
 
 // Jump cancel dtilt on hit
-// unsafe fn jc_dtilt_hit(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-//     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_LW3 {
-//         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) && frame > 12.0 {
-//             boma.check_jump_cancel(false);
-//         }
-//     }
-// }
+unsafe fn jc_dtilt_hit(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    if boma.is_motion(Hash40::new("attack_lw3")) {
+        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) && frame > 12.0 {
+            boma.check_jump_cancel(false);
+        }
+    }
+}
 
 // Mega Man Metal Blad Toss Airdodge Cancel
 unsafe fn blade_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if frame > 16.0 {
+        if boma.status_frame() > 16 {
             boma.check_airdodge_cancel();
         }
     }
@@ -67,7 +67,7 @@ unsafe fn side_special_ff(boma: &mut BattleObjectModuleAccessor, status_kind: i3
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     // light_utilt_cancel(boma, id, status_kind, situation_kind, cat[0], frame);
     // utilt_command_input(boma, id, status_kind, situation_kind, frame);
-    // jc_dtilt_hit(boma, status_kind, situation_kind, cat[0], frame);
+    jc_dtilt_hit(boma, status_kind, situation_kind, cat[0], frame);
     blade_toss_ac(boma, status_kind, situation_kind, cat[0], frame);
     side_special_ff(boma, status_kind, situation_kind, cat[1], stick_y);
 }

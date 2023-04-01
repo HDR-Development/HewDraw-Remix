@@ -136,6 +136,26 @@ unsafe fn game_specialairlwstart(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "fox", scripts = ["effect_speciallwstart", "effect_specialairlwstart"] , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_specialairlwstart (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("fox_ref_loop"), Hash40::new("top"), 0, 6, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("fox_ref_ref"), Hash40::new("top"), 0, 6, 0, 0, 0, 0, 0.5, true);
+	}
+}
+
+#[acmd_script( agent = "fox", scripts = ["sound_speciallwstart", "sound_specialairlwstart"] , category = ACMD_SOUND , low_priority)]
+unsafe fn sound_speciallwstart (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	frame(lua_state, 0.0);
+	if is_excute(fighter) {
+		PLAY_SE(fighter, Hash40::new("se_fox_special_l01"));
+	}
+}
+
 pub fn install() {
     install_acmd_scripts!(
         game_specialairsend,
@@ -145,7 +165,10 @@ pub fn install() {
         game_speciallwstart,
         game_specialairlwstart,
 
-        sound_specialhi
+        effect_specialairlwstart,
+
+        sound_specialhi,
+        sound_speciallwstart
     );
 }
 
