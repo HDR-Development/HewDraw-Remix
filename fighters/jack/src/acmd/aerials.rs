@@ -150,9 +150,9 @@ unsafe fn jack_attack_air_f_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 17.0);
     if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
         FT_MOTION_RATE(fighter, 1.250);
+    }
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        }
     }
     frame(lua_state, 29.0);
     if is_excute(fighter) {
