@@ -79,7 +79,6 @@ unsafe fn littlemac_special_n2_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear(boma, 1, false);
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
         SA_SET(fighter, *SITUATION_KIND_AIR);
-        StatusModule::set_situation_kind(boma, app::SituationKind(*SITUATION_KIND_AIR), false);
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
@@ -146,7 +145,9 @@ unsafe fn littlemac_special_air_n2_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear(boma, 1, false);
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
     }
-    wait(lua_state, 4.0);
+    frame(lua_state, 11.0);
+    SA_SET(fighter, *SITUATION_KIND_AIR);
+    wait(lua_state, 3.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }

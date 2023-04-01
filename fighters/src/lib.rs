@@ -188,8 +188,6 @@ pub fn install() {
 pub fn delayed_install() {
     #[cfg(feature = "include-elight")]
     { elight::delayed_install(); }
-    #[cfg(feature = "include-metaknight")]
-    { metaknight::delayed_install(); }
     #[cfg(feature = "include-ganon")]
     { ganon::delayed_install(); }
     #[cfg(feature = "include-littlemac")]
