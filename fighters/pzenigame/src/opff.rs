@@ -29,7 +29,7 @@ unsafe fn withdraw_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
     if [*FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_LOOP,
         *FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_HIT,
         *FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_END].contains(&status_kind)
-        || status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame > 10.0 {
+        || status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame > 11.0 {
     */
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S {
         VarModule::set_float(boma.object(), vars::pzenigame::instance::WITHDRAW_FRAME, 0.0);
@@ -43,7 +43,7 @@ unsafe fn withdraw_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
         }
     }
 
-    if [*FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_END].contains(&status_kind) && frame < 10.0 && !boma.is_in_hitlag() {
+    if [*FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_END].contains(&status_kind) && boma.status_frame() < 10 && !boma.is_in_hitlag() {
         boma.check_jump_cancel(true);
     }
 

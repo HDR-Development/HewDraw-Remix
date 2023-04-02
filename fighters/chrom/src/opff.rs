@@ -18,9 +18,12 @@ unsafe fn soaring_slash_drift(fighter: &mut L2CFighterCommon) {
 
 // Chrome Soaring Slash Cancel
 unsafe fn soaring_slash_cancel(fighter: &mut L2CFighterCommon) {
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
     let frame = fighter.motion_frame();
     if fighter.is_status(*FIGHTER_ROY_STATUS_KIND_SPECIAL_HI_2)
-    && 27.0 < frame && frame < 30.0
+    && 28.0 < frame && frame < 31.0
     && fighter.is_button_on(Buttons::Guard)
     {
         if VarModule::is_flag(fighter.battle_object, vars::chrom::status::SOARING_SLASH_HIT) {
