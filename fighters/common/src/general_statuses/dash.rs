@@ -163,10 +163,6 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
         true
     };
 
-    if fighter.status_frame() == 5 && app::sv_math::rand(hash40("fighter"), 10) == 0 {
-        fighter.change_status_req(*FIGHTER_STATUS_KIND_SLIP, false);
-    }
-
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW)
     && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
     && can_s4 {
