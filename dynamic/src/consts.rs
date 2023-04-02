@@ -190,8 +190,6 @@ pub mod vars {
             pub const CLIFF_XLU_FRAME: i32 = 0x000B;
             pub const LAST_ATTACK_HITBOX_ID: i32 = 0x000C;
 
-            pub const APRIL_FOOLS_STATUS_STORAGE: i32 = 0x000C;
-
             // floats
 
             pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0000;
