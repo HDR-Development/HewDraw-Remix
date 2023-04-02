@@ -10,13 +10,12 @@ unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
         ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("swordl1"), &sword_scale);
         ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("swordr1"), &sword_scale);
     }
-    // else {
-    //     let long_sword_scale = Vector3f{x: 0.9, y: 1.0, z: 1.0};
-    //     ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("swordl1"), &long_sword_scale);
-    //     ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("swordr1"), &long_sword_scale);
-    //     //println!("Sephiroth Success! Sephiroth's Fighter Kind Number: {}", *FIGHTER_KIND_EDGE);
-    // }
-    
+    else {
+        let long_sword_scale = Vector3f{x: 0.95, y: 1.0, z: 1.0};
+        ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("swordl1"), &long_sword_scale);
+        ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("swordr1"), &long_sword_scale);
+        //println!("Sephiroth Success! Sephiroth's Fighter Kind Number: {}", *FIGHTER_KIND_EDGE);
+    }
 }
 
 // Limit Blade Rush jump cancel on hit
