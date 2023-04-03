@@ -863,25 +863,10 @@ pub mod vars {
     pub mod metaknight {
         pub mod instance {
             // flags
-            pub const COMPLETED_SET_SPEEDS: i32 = 0x0100;
-            pub const META_QUICK_NEED_SET_SPEEDS: i32 = 0x0101;
-            pub const META_QUICK_PLAY_VC: i32 = 0x0102;
             pub const NEUTRAL_SPECIAL_HIT: i32 = 0x0103;
             pub const SIDE_SPECIAL_HIT: i32 = 0x0104;
             pub const UP_SPECIAL_HIT: i32 = 0x0105;
             pub const DOWN_SPECIAL_HIT: i32 = 0x0106;
-
-            // ints
-            /// i32 timer for color flashing when meta quick is ready
-            pub const META_QUICK_READY_FLASH_TIMER: i32 = 0x0100;
-            pub const META_QUICK_STATUS: i32 = 0x0101;
-
-            /// u32 effect handle
-            pub const META_QUICK_EFFECT_HANDLE: i32 = 0x0102;
-            pub const META_QUICK_EFFECT_HANDLE2: i32 = 0x0103;
-
-            /// u32 effect handle for the charge, 0xFFFF_FFFF for invalid
-            pub const META_QUICK_CHARGE_EFFECT_HANDLE: i32 = 0x0104;
         }
     }
 
@@ -937,6 +922,8 @@ pub mod vars {
             // flags
             pub const DEIN_ACTIVE: i32 = 0x0100;
             pub const PHANTOM_RELEASED: i32 = 0x0101;
+            pub const HIT_CANCEL_PHANTOM: i32 = 0x0102;
+            pub const READY_PHANTOM: i32 = 0x0103;
 
             // ints
             pub const DEIN_OBJECT_ID: i32 = 0x0100;
@@ -1011,10 +998,6 @@ pub mod vars {
 pub mod statuses {
     pub mod elight {
         pub const SPECIAL_HI_FINISH2: i32 = 0;
-    }
-
-    pub mod metaknight {
-        pub const METAQUICK_SUMMON: i32 = 0;
     }
 
     pub mod ganon {
