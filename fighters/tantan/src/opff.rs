@@ -44,6 +44,7 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     {
         recoil_cancel(boma,status_kind,situation_kind);
     }
+    WorkModule::off_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_ATTACK_COMBO_ENABLE);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_TANTAN )]

@@ -24,7 +24,10 @@ pub fn install() {
         
         tantan_special_n_pre,
         tantan_special_n_main,
-        tantan_landing_air_main
+        tantan_special_n_exec,
+        tantan_landing_air_main,
+
+        tantan_attack_landing_exec
     );
 }
 
@@ -60,6 +63,16 @@ pub unsafe fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
         return 0.into()
     }
+}
+
+//ARMS land, prevents ARMDashing
+#[status_script(agent = "tantan", status = FIGHTER_TANTAN_STATUS_KIND_ATTACK_LANDING_LIGHT, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+unsafe fn tantan_attack_landing_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.motion_frame() < 2.0 {
+        sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.5);
+    }
+
+    return 0.into();
 }
 
 // Normal Jab //
@@ -145,19 +158,14 @@ unsafe fn tantan_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         return original!(fighter);
     }
 }
-unsafe extern "C" fn tantan_special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if MotionModule::is_end(fighter.module_accessor) {
-        fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
+#[status_script(agent = "tantan", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+unsafe fn tantan_special_n_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
+        return 0.into();
     }
-    if StatusModule::situation_kind(fighter.module_accessor) ==*SITUATION_KIND_GROUND{
-        if (WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING)){
-            fighter.change_status(FIGHTER_TANTAN_STATUS_KIND_ATTACK_LANDING.into(), false.into());
-        }
-        else{
-            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
-        }
-    }
-    return true.into()
+
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_ATTACK_SHORT_R);
+    return 0.into();
 }
 
 #[status_script(agent = "tantan", status = FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
