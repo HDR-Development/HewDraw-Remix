@@ -3,7 +3,7 @@ use super::*;
 
 
 #[acmd_script( agent = "tantan", script = "game_specialairn", category = ACMD_GAME, low_priority)]
-unsafe fn game_specialairn(fighter: &mut L2CAgentBase) {
+unsafe fn tantan_special_n_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let armType =  WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R);
@@ -47,7 +47,7 @@ unsafe fn game_specialairn(fighter: &mut L2CAgentBase) {
     }
 }
 #[acmd_script( agent = "tantan", script = "effect_specialairn", category = ACMD_EFFECT, low_priority)]
-unsafe fn effect_specialairn(fighter: &mut L2CAgentBase) {
+unsafe fn tantan_special_n_air_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let armType =  WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R);
@@ -69,7 +69,7 @@ unsafe fn effect_specialairn(fighter: &mut L2CAgentBase) {
     }
 }
 #[acmd_script( agent = "tantan", script = "sound_specialairn", category = ACMD_SOUND, low_priority)]
-unsafe fn sound_specialairn(fighter: &mut L2CAgentBase) {
+unsafe fn tantan_special_n_air_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let armType =  WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R);
@@ -103,7 +103,7 @@ unsafe fn sound_specialairn(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "tantan", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority)]
-unsafe fn expression_specialairn(fighter: &mut L2CAgentBase) {
+unsafe fn tantan_special_n_air_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let armType =  WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R);
@@ -130,7 +130,7 @@ unsafe fn expression_specialairn(fighter: &mut L2CAgentBase) {
 
 
 #[acmd_script( agent = "tantan", script = "game_specialairnend", category = ACMD_GAME, low_priority)]
-unsafe fn game_specialairnend(fighter: &mut L2CAgentBase) {
+unsafe fn tantan_special_n_air_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let armType =  WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R);
@@ -159,7 +159,7 @@ unsafe fn game_specialairnend(fighter: &mut L2CAgentBase) {
     }
 }
 #[acmd_script( agent = "tantan", script = "effect_specialairnend", category = ACMD_EFFECT, low_priority)]
-unsafe fn effect_specialairnend(fighter: &mut L2CAgentBase) {
+unsafe fn tantan_special_n_air_end_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
 
     if is_excute(fighter) {
@@ -167,7 +167,7 @@ unsafe fn effect_specialairnend(fighter: &mut L2CAgentBase) {
     }
 }
 #[acmd_script( agent = "tantan", script = "sound_specialairnend", category = ACMD_SOUND, low_priority)]
-unsafe fn sound_specialairnend(fighter: &mut L2CAgentBase) {
+unsafe fn tantan_special_n_air_end_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
 
     frame(lua_state, 2.0);
@@ -176,7 +176,7 @@ unsafe fn sound_specialairnend(fighter: &mut L2CAgentBase) {
     }
 }
 #[acmd_script( agent = "tantan", script = "expression_specialairnend", category = ACMD_EXPRESSION, low_priority)]
-unsafe fn expression_specialairnend(fighter: &mut L2CAgentBase) {
+unsafe fn tantan_special_n_air_end_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -187,7 +187,7 @@ unsafe fn expression_specialairnend(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "tantan_punch1", script = "game_specialairhiattack", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialairhiattack(fighter: &mut L2CAgentBase) {
+unsafe fn tantan_special_hi_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -203,7 +203,7 @@ unsafe fn game_specialairhiattack(fighter: &mut L2CAgentBase) {
     }
 }
 #[acmd_script( agent = "tantan_punch1", script = "game_specialairhiattackdragon", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialairhiattackdragon(fighter: &mut L2CAgentBase) {
+unsafe fn tantan_special_hi_attack_dragon_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -221,18 +221,18 @@ unsafe fn game_specialairhiattackdragon(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        game_specialairn,
-        effect_specialairn,
-        sound_specialairn,
-        expression_specialairn,
+        tantan_special_n_air_game,
+        tantan_special_n_air_effect,
+        tantan_special_n_air_sound,
+        tantan_special_n_air_expression,
         
-        game_specialairnend,
-        effect_specialairnend,
-        sound_specialairnend,
-        expression_specialairnend,
+        tantan_special_n_air_end_game,
+        tantan_special_n_air_end_effect,
+        tantan_special_n_air_end_sound,
+        tantan_special_n_air_end_expression,
 
-        game_specialairhiattack,
-        game_specialairhiattackdragon
+        tantan_special_hi_attack_game,
+        tantan_special_hi_attack_dragon_game
     );
 }
 

@@ -80,7 +80,7 @@ unsafe fn tantan_attack_lw4_game(fighter: &mut L2CAgentBase) {
 
 
 #[acmd_script( agent = "tantan", script = "game_attacks4", category = ACMD_GAME, low_priority)]
-unsafe fn game_attacks4(fighter: &mut L2CAgentBase) {
+unsafe fn tantan_attack_s4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 5.0);
@@ -109,7 +109,7 @@ unsafe fn game_attacks4(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "tantan", script = "effect_attacks4", category = ACMD_EFFECT, low_priority)]
-unsafe fn effect_attacks4(fighter: &mut L2CAgentBase) {
+unsafe fn tantan_attack_s4_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -155,7 +155,7 @@ unsafe fn effect_attacks4(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "tantan", script = "sound_attacks4", category = ACMD_SOUND, low_priority)]
-unsafe fn sound_attacks4(fighter: &mut L2CAgentBase) {
+unsafe fn tantan_attack_s4_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 5.0);
     if is_excute(fighter) {
@@ -181,7 +181,7 @@ unsafe fn sound_attacks4(fighter: &mut L2CAgentBase) {
     }
 }
 #[acmd_script( agent = "tantan", script = "expression_attacks4", category = ACMD_EXPRESSION, low_priority)]
-unsafe fn expression_attacks4(fighter: &mut L2CAgentBase) {
+unsafe fn tantan_attack_s4_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -228,7 +228,7 @@ unsafe fn expression_attacks4(fighter: &mut L2CAgentBase) {
 
 
 #[acmd_script( agent = "tantan", script = "effect_attacks4charge", category = ACMD_EFFECT, low_priority)]
-unsafe fn effect_attacks4charge(fighter: &mut L2CAgentBase) {
+unsafe fn tantan_attack_s4_charge_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
 
     for i in 1..i32::MAX{
@@ -241,7 +241,7 @@ unsafe fn effect_attacks4charge(fighter: &mut L2CAgentBase) {
     }
 }
 #[acmd_script( agent = "tantan", script = "sound_attacks4charge", category = ACMD_SOUND, low_priority)]
-unsafe fn sound_attacks4charge(fighter: &mut L2CAgentBase) {
+unsafe fn tantan_attack_s4_charge_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
 
     frame(lua_state, 2.0);
@@ -250,7 +250,7 @@ unsafe fn sound_attacks4charge(fighter: &mut L2CAgentBase) {
     }
 }
 #[acmd_script( agent = "tantan", script = "expression_attacks4charge", category = ACMD_EXPRESSION, low_priority)]
-unsafe fn expression_attacks4charge(fighter: &mut L2CAgentBase) {
+unsafe fn tantan_attack_s4_charge_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
@@ -274,14 +274,14 @@ pub fn install() {
         tantan_attack_hi4_game,
         tantan_attack_lw4_game,
         
-        game_attacks4,
-        effect_attacks4,
-        sound_attacks4,
-        expression_attacks4,
+        tantan_attack_s4_game,
+        tantan_attack_s4_effect,
+        tantan_attack_s4_sound,
+        tantan_attack_s4_expression,
 
-        effect_attacks4charge,
-        sound_attacks4charge,
-        expression_attacks4charge,
+        tantan_attack_s4_charge_effect,
+        tantan_attack_s4_charge_sound,
+        tantan_attack_s4_charge_expression,
     );
 }
 
