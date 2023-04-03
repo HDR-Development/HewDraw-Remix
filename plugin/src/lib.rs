@@ -381,13 +381,13 @@ pub extern "C" fn main() {
             training_reset_music2,
             main_menu_quick,
             title_screen_play,
-            sss_to_css,
-            css_to_sss,
-            copy_fighter_info,
-            load_ingame_call_sequence_scene,
-            load_melee_scene,
-            game_end,
-            game_exit
+            //sss_to_css,
+            //css_to_sss,
+            //copy_fighter_info,
+            //load_ingame_call_sequence_scene,
+            //load_melee_scene,
+            //game_end,
+            //game_exit
         );
     }
 
