@@ -307,7 +307,6 @@ unsafe fn jack_landing_air_hi_game(fighter: &mut L2CAgentBase) {
 
 }
 
-
 #[acmd_script( agent = "jack", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -396,7 +395,7 @@ unsafe fn jack_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
         FT_MOTION_RATE(fighter, landing_frame_arsene/landing_frame_joker);
     }
-     
+
 }
 
 
