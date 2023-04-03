@@ -186,8 +186,28 @@ unsafe fn tantan_special_n_air_end_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "tantan", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
+unsafe fn tantan_special_hi_air_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        HIT_NO(fighter, 3, *HIT_STATUS_OFF);
+        HIT_NO(fighter, 9, *HIT_STATUS_OFF);
+        HIT_NO(fighter, 10, *HIT_STATUS_OFF);
+        HIT_NO(fighter, 11, *HIT_STATUS_OFF);
+        HIT_NO(fighter, 12, *HIT_STATUS_OFF);
+        HIT_NO(fighter, 13, *HIT_STATUS_OFF);
+        HIT_NO(fighter, 19, *HIT_STATUS_OFF);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_TANTAN_STATUS_SPECIAL_HI_FLAG_TO_CONTROL_SPEED);
+    }
+}
+
 #[acmd_script( agent = "tantan_punch1", script = "game_specialairhiattack", category = ACMD_GAME, low_priority )]
-unsafe fn tantan_special_hi_attack_game(fighter: &mut L2CAgentBase) {
+unsafe fn dragon_special_hi_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -203,7 +223,7 @@ unsafe fn tantan_special_hi_attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 #[acmd_script( agent = "tantan_punch1", script = "game_specialairhiattackdragon", category = ACMD_GAME, low_priority )]
-unsafe fn tantan_special_hi_attack_dragon_game(fighter: &mut L2CAgentBase) {
+unsafe fn dragon_special_hi_attack_dragon_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
@@ -231,8 +251,10 @@ pub fn install() {
         tantan_special_n_air_end_sound,
         tantan_special_n_air_end_expression,
 
-        tantan_special_hi_attack_game,
-        tantan_special_hi_attack_dragon_game
+        tantan_special_hi_air_game,
+
+        dragon_special_hi_attack_game,
+        dragon_special_hi_attack_dragon_game
     );
 }
 

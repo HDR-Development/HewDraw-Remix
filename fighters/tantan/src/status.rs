@@ -21,13 +21,17 @@ pub fn install() {
         
         tantan_attack_air_pre,
         tantan_attack_air_end,
+        tantan_attack_landing_exec,
         
         tantan_special_n_pre,
         tantan_special_n_main,
         tantan_special_n_exec,
         tantan_landing_air_main,
 
-        tantan_attack_landing_exec
+        tantan_special_hi_exec,
+        tantan_special_hi_air_pre,
+        tantan_special_hi_air_exec,
+        tantan_special_hi_air_reach_exec
     );
 }
 
@@ -178,4 +182,47 @@ unsafe fn tantan_landing_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     else{
         return original!(fighter);
     }
+}
+
+#[status_script(agent = "tantan", status = FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_GROUND, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+unsafe fn tantan_special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if (fighter.motion_frame() <= 8.0)
+    && !fighter.is_button_on(Buttons::Special)
+    {
+        println!("convert");
+        fighter.change_status_req(*FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_AIR, false);
+        return 0.into();
+    }
+    return original!(fighter);
+}
+
+#[status_script(agent = "tantan", status = FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn tantan_special_hi_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_prev_status(*FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_GROUND){
+
+        return 0.into();
+    }
+    else
+    {
+        return original!(fighter);
+    }
+}
+#[status_script(agent = "tantan", status = FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_AIR, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+unsafe fn tantan_special_hi_air_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    return 0.into();
+}
+#[status_script(agent = "tantan", status = FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_AIR_REACH, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+unsafe fn tantan_special_hi_air_reach_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let mut angle = WorkModule::get_float(fighter.module_accessor,*FIGHTER_TANTAN_INSTANCE_WORK_ID_FLOAT_ATTACK_SHIFT_ANGLE_L);
+    if (fighter.motion_frame() < 2.0)
+    {
+        let stick = Vector2f::new(
+            fighter.stick_x(),
+            fighter.stick_y()        
+        );
+        angle = ((stick.x)*-10.0*PostureModule::lr(fighter.module_accessor))-5.0;
+        WorkModule::set_float(fighter.module_accessor, angle, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLOAT_ATTACK_SHIFT_ANGLE_L);
+    }
+    fighter.set_joint_rotate("claviclel", Vector3f::new(0.0, angle, 0.0));
+    return 0.into();
 }
