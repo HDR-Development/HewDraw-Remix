@@ -8,14 +8,9 @@ unsafe fn jack_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 8.0/(10.0-1.0));
-    if is_excute(fighter) {
-    }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    }
-    frame(lua_state, 9.0);
-    if is_excute(fighter) {
     }
     frame(lua_state, 10.0);
     FT_MOTION_RATE(fighter, 1.0);
@@ -54,6 +49,7 @@ unsafe fn jack_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 48.0);
     FT_MOTION_RATE(fighter, 1.0);
+
 }
 
 #[acmd_script( agent = "jack", script = "effect_attackairn" , category = ACMD_EFFECT , low_priority)]
@@ -85,19 +81,19 @@ unsafe fn jack_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AFTER_IMAGE_OFF(fighter, 0);
     }
+
 }
 
 #[acmd_script( agent = "jack", script = "game_landingairn" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_landing_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        let landing_frame_joker = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_attack_air_frame_n"), 0);
-        let landing_frame_arsene = landing_frame_joker + 3.0;
-        if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
-            FT_MOTION_RATE(fighter, landing_frame_arsene/landing_frame_joker);
-        }
-    } 
+    let landing_frame_joker = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_attack_air_frame_n"), 0);
+    let landing_frame_arsene = landing_frame_joker + 3.0;
+    if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
+        FT_MOTION_RATE(fighter, landing_frame_arsene/landing_frame_joker);
+    }
+
 }
 
 #[acmd_script( agent = "jack", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
@@ -164,28 +160,25 @@ unsafe fn jack_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
+
 }
 
 #[acmd_script( agent = "jack", script = "game_landingairf" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_landing_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        let landing_frame_joker = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_attack_air_frame_f"), 0);
-        let landing_frame_arsene = landing_frame_joker + 5.0;
-        if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
-            FT_MOTION_RATE(fighter, landing_frame_arsene/landing_frame_joker);
-        }
-    } 
-}
+    let landing_frame_joker = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_attack_air_frame_f"), 0);
+    let landing_frame_arsene = landing_frame_joker + 5.0;
+    if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
+        FT_MOTION_RATE(fighter, landing_frame_arsene/landing_frame_joker);
+    }
+
+} 
 
 #[acmd_script( agent = "jack", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-    }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -242,7 +235,7 @@ unsafe fn jack_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "jack", script = "game_landingairb" , category = ACMD_GAME , low_priority)]
@@ -256,6 +249,7 @@ unsafe fn jack_landing_air_b_game(fighter: &mut L2CAgentBase) {
             FT_MOTION_RATE(fighter, landing_frame_arsene/landing_frame_joker);
         }
     }
+
 }
 
 #[acmd_script( agent = "jack", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
@@ -305,14 +299,14 @@ unsafe fn jack_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 unsafe fn jack_landing_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        let landing_frame_joker = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_attack_air_frame_hi"), 0);
-        let landing_frame_arsene = landing_frame_joker + 5.0;
-        if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
-            FT_MOTION_RATE(fighter, landing_frame_arsene/landing_frame_joker);
-        } 
-    }
+    let landing_frame_joker = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_attack_air_frame_hi"), 0);
+    let landing_frame_arsene = landing_frame_joker + 5.0;
+    if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
+        FT_MOTION_RATE(fighter, landing_frame_arsene/landing_frame_joker);
+    } 
+
 }
+
 
 #[acmd_script( agent = "jack", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_attack_air_lw_game(fighter: &mut L2CAgentBase) {
@@ -320,16 +314,12 @@ unsafe fn jack_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 8.0/(12.0-1.0));
-    if is_excute(fighter) {
-    }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 12.0);
     FT_MOTION_RATE(fighter, 1.0/(12.5-12.0));
-    if is_excute(fighter) {
-    }
     frame(lua_state, 12.5);
     FT_MOTION_RATE(fighter, 1.0/(13.0-12.5));
     if is_excute(fighter) {
@@ -348,8 +338,6 @@ unsafe fn jack_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0);
     FT_MOTION_RATE(fighter, 1.0);
-    if is_excute(fighter) {
-    }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
@@ -396,19 +384,19 @@ unsafe fn jack_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
+
 }
 
 #[acmd_script( agent = "jack", script = "game_landingairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        let landing_frame_joker = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_attack_air_frame_lw"), 0);
-        let landing_frame_arsene = landing_frame_joker + 5.0;
-        if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
-            FT_MOTION_RATE(fighter, landing_frame_arsene/landing_frame_joker);
-        } 
+    let landing_frame_joker = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_attack_air_frame_lw"), 0);
+    let landing_frame_arsene = landing_frame_joker + 5.0;
+    if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
+        FT_MOTION_RATE(fighter, landing_frame_arsene/landing_frame_joker);
     }
+     
 }
 
 

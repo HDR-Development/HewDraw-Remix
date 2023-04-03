@@ -12,8 +12,6 @@ unsafe fn jack_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 7.0);
     FT_MOTION_RATE(fighter, 8.0/(15.5-7.0));
-    if is_excute(fighter) {
-    }
     frame(lua_state, 15.5);
     FT_MOTION_RATE(fighter, 1.0/(16.0-15.5));
     if is_excute(fighter) {
@@ -76,8 +74,6 @@ unsafe fn jack_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 2.0);
     FT_MOTION_RATE(fighter, 0.667);
-    if is_excute(fighter) {
-    }
     frame(lua_state, 7.0);
     FT_MOTION_RATE(fighter, 1.000);
     if is_excute(fighter) {
@@ -85,10 +81,8 @@ unsafe fn jack_attack_hi4_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     FT_MOTION_RATE(fighter, 0.667);
-    if is_excute(fighter) {
-    }
     frame(lua_state, 12.0);
-    FT_MOTION_RATE(fighter, 1.00);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 83, 116, 0, 43, 4.0, 0.0, 7.0, 8.0, Some(0.0), Some(13.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 1, 0, Hash40::new("armr"), 12.0, 83, 116, 0, 43, 3.5, -1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);

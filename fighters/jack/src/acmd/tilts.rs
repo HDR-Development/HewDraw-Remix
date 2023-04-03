@@ -116,6 +116,7 @@ unsafe fn jack_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
             MotionModule::set_rate(boma, 0.9);
         }
     }
+
 }
 
 #[acmd_script( agent = "jack", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
@@ -152,13 +153,9 @@ unsafe fn jack_attack_hi3_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 23.0);
     FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 24.0);
-    if is_excute(fighter){
-        FT_MOTION_RATE(fighter, 1.25);
-    }
+    FT_MOTION_RATE(fighter, 1.25);
     frame(lua_state, 26.0);
-    if is_excute(fighter){
-        FT_MOTION_RATE(fighter, 1.0);
-    }
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 27.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
@@ -166,6 +163,7 @@ unsafe fn jack_attack_hi3_game(fighter: &mut L2CAgentBase) {
             MotionModule::set_rate(boma, 0.8);
         }
     }
+
 }
 
 #[acmd_script( agent = "jack", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
@@ -174,16 +172,12 @@ unsafe fn jack_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.75);
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if WorkModule::is_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
-            MotionModule::set_rate(boma, (7.0-1.0)/8.0);
-        }
+    if WorkModule::is_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
+        MotionModule::set_rate(boma, (7.0-1.0)/8.0);
     }
     frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        JostleModule::set_status(boma, false);
-        MotionModule::set_rate(boma, 1.0);
-    }
+    JostleModule::set_status(boma, false);
+    MotionModule::set_rate(boma, 1.0);
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         if WorkModule::is_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
@@ -208,11 +202,11 @@ unsafe fn jack_attack_lw3_game(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 17.0);
+    if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
+        MotionModule::set_rate(boma, 0.9);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         JostleModule::set_status(boma, true);
-        if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
-            MotionModule::set_rate(boma, 0.9);
         }
     }
 
