@@ -74,7 +74,7 @@ unsafe fn tantan_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 #[acmd_script( agent = "tantan", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attackairlw(fighter: &mut L2CAgentBase) {
+unsafe fn tantan_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 14.0);
@@ -90,7 +90,7 @@ unsafe fn effect_attackairlw(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "tantan", script = "sound_attackairlw", category = ACMD_SOUND, low_priority )]
-unsafe fn sound_attackairlw(fighter: &mut L2CAgentBase) {
+unsafe fn tantan_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
@@ -227,7 +227,7 @@ unsafe fn tantan_attack_air_f_game(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ATTACK(fighter, 1, 0, Hash40::new("footl"), 13.25, 361, 90, 0, 25, 5.0, 0.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
 
-        ATTACK(fighter, 0, 0, Hash40::new("kneel"), 11.25, 361, 100, 0, 25, 4.375, 0.0, 0.3, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 0, 0, Hash40::new("kneel"), 11.5, 361, 100, 0, 25, 4.375, 0.0, 0.3, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
@@ -237,7 +237,7 @@ unsafe fn tantan_attack_air_f_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 1, 0, Hash40::new("footl"), 13.25, 1, 90, 0, 25, 5.0, 1.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
 
         ATTACK(fighter, 0, 0, Hash40::new("kneel"), 11.5, 361, 100, 0, 25, 4.375, -1.0, 0.3, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        ATTACK(fighter, 3, 0, Hash40::new("footl"), 11.25, 361, 100, 0, 25, 5.5, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 3, 0, Hash40::new("footl"), 11.5, 361, 100, 0, 25, 5.5, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     wait(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -414,8 +414,8 @@ pub fn install() {
     install_acmd_scripts!(
         tantan_attack_air_hi_game,
         tantan_attack_air_lw_game,
-        effect_attackairlw,
-        sound_attackairlw,
+        tantan_attack_air_lw_effect,
+        tantan_attack_air_lw_sound,
         tantan_landing_air_lw_game,
 
         tantan_attack_air_n_game,
