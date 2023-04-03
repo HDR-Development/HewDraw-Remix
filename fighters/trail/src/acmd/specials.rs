@@ -72,10 +72,6 @@ unsafe fn effect_specialn2(fighter: &mut L2CAgentBase) {
         EffectModule::enable_sync_init_pos_last(boma);
         EFFECT_FOLLOW(fighter, Hash40::new("trail_ice_sword_flare"), Hash40::new("haver"), 0, 10, -1, -90, 0, 0, 1, true);
     }
-    frame(lua_state, 23.0);
-    if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -1.5, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-    }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("trail_ice_shot"), Hash40::new("top"), 2, 8, 15, -90, 0, -270, 1, true);
@@ -98,10 +94,6 @@ unsafe fn effect_specialairn2(fighter: &mut L2CAgentBase) {
         EffectModule::enable_sync_init_pos_last(boma);
         EFFECT_FOLLOW(fighter, Hash40::new("trail_ice_sword_flare"), Hash40::new("haver"), 0, 10, -1, -90, 0, 0, 1, true);
     }
-    //frame(lua_state, 23.0);
-    //if is_excute(fighter) {
-        //LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -1.5, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-    //}
     frame(lua_state, 21.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("trail_ice_shot"), Hash40::new("top"), 2, 8, 15, -90, 0, -270, 1, true);
