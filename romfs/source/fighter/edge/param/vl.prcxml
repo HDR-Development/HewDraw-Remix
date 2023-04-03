@@ -21,7 +21,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="rush_speed">11.78</float>
+      <float hash="rush_speed">11.2</float>
       <int hash="landing_fix_frame">25</int>
       <int hash="charged_landing_fix_frame">40</int>
     </struct>
