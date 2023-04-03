@@ -34,17 +34,26 @@ unsafe fn feint_jump_jc(boma: &mut BattleObjectModuleAccessor) {
         }
     }
 }
-// Counter Throw turned into just Throw
-unsafe fn ct_force(boma: &mut BattleObjectModuleAccessor) {
+
+//Wild Throw
+unsafe fn wild_throw(boma: &mut BattleObjectModuleAccessor, status_kind: i32, frame: f32) {
+    // Counter Throw turned into just Throw
     if boma.is_motion_one_of(&[Hash40::new("special_lw3"),Hash40::new("special_air_lw3")]) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW3_CATCH, false);
+    }
+    if status_kind == *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW3_CATCH {
+        if frame < 15.0 {
+            StatusModule::set_keep_situation_air(boma, true);
+        } else {
+            StatusModule::set_keep_situation_air(boma, false);
+        }
     }
 }
 
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     special_cancels(boma, id, status_kind, frame);
     feint_jump_jc(boma);
-    ct_force(boma);
+    wild_throw(boma, status_kind);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MIIFIGHTER )]
