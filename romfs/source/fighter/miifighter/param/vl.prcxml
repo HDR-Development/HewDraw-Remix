@@ -11,8 +11,8 @@
   <list hash="param_special_hi">
     <hash40 index="0">dummy</hash40>
     <struct index="1">
-      <float hash="hi2_air_start_spd_y">2.3</float>
-      <float hash="hi2_air_gravity_y_mul">0.385</float>
+      <float hash="hi2_air_start_spd_y">2.22</float>
+      <float hash="hi2_air_gravity_y_mul">0.4</float>
     </struct>
     <struct index="2">
       <float hash="air_hi3_pass_mul">0.85</float>
