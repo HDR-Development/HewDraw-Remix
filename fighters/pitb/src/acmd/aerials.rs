@@ -14,16 +14,16 @@ unsafe fn pitb_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("pitb_atk_air_n"), true, true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("pitb_sword"), false, false);
     }
     frame(lua_state, 23.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("pitb_atk_air_n"), Hash40::new("bowr"), 0, 0, 0, -90, 90, 0, 1.1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("pitb_atk_air_n"), Hash40::new("bowl"), 0, 0, 0, -90, 90, 0, 1.3, true);
         AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_pitb_sword1"), Hash40::new("tex_pitb_sword2"), 3, Hash40::new("swordr1"), 0.0, 1.0, -0.2, Hash40::new("swordr1"), 0.0, 11.4, -1.2, true, Hash40::new("null"), Hash40::new("swordr1"), 0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
-        EFFECT_OFF_KIND(fighter, Hash40::new("pitb_sword"), false, false);
-        EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 0, 7, 8, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 0, 9, 2, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
     frame(lua_state, 25.0);
@@ -44,7 +44,7 @@ unsafe fn pitb_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_STATUS(fighter, Hash40::new("se_pitb_attackair_n01"));
     }
-    wait(lua_state, 14.0);
+    frame(lua_state, 18.0);
     if is_excute(fighter) {
         sound!(fighter, *MA_MSC_CMD_SOUND_STOP_SE_STATUS);
     }
@@ -64,20 +64,20 @@ unsafe fn pitb_attack_air_n_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 4.0);
+    FT_MOTION_RATE(fighter, 15.0 / (24.0 - 4.0));
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.700);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 65, 45, 0, 50, 9.0, 1.0, 8.5, 5.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 65, 45, 0, 50, 9.0, 1.0, 9.0, 5.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 25.0);
+    frame(lua_state, 24.0);
+    FT_MOTION_RATE(fighter, 1.000);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
-        ATTACK(fighter, 1, 1, Hash40::new("top"), 7.0, 361, 85, 0, 50, 10.5, 1.0, 9.5, 3.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
+        ATTACK(fighter, 1, 1, Hash40::new("top"), 7.0, 361, 85, 0, 50, 11.5, 1.0, 10.0, 3.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
     }
-    wait(lua_state, 2.0);
+    wait(lua_state, 1.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
