@@ -166,21 +166,11 @@ pub fn decrease_knockdown_bounce_heights(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub unsafe fn april_fools(fighter: &mut L2CFighterCommon, status_kind: i32) {
-    if app::sv_information::is_ready_go() && fighter.status() != VarModule::get_int(fighter.battle_object, vars::common::instance::APRIL_FOOLS_STATUS_STORAGE) && app::sv_math::rand(hash40("fighter"), 100) == 0{
-        if ![*FIGHTER_STATUS_KIND_WAIT, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_ENTRY, *FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_WIN, *FIGHTER_STATUS_KIND_LOSE, *FIGHTER_STATUS_KIND_NONE, *FIGHTER_STATUS_KIND_STANDBY].contains(&status_kind) {
-            fighter.change_status_req(FIGHTER_STATUS_KIND_DEAD.into(), false);
-        }
-    }
-    VarModule::set_int(fighter.battle_object, vars::common::instance::APRIL_FOOLS_STATUS_STORAGE, fighter.status());
-}
-
 pub unsafe fn run(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     
     airdodge_refresh_on_hit_disable(boma, status_kind);
     suicide_throw_mashout(fighter, boma);
     cliff_xlu_frame_counter(fighter);
     ecb_shift_disabled_motions(fighter);
-    april_fools(fighter, status_kind);
 }
 
