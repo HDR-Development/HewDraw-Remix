@@ -10,22 +10,39 @@ unsafe fn game_catch(fighter: &mut L2CAgentBase) {
         ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_HIMOHEBI, Hash40::new("catch"), false, 0.0);
         //FT_MOTION_RATE(fighter, 48.0/(69.0-1.0));
     }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.5);
+    }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
         GrabModule::set_rebound(fighter.module_accessor, true);
+        
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         //CATCH(fighter, 0, Hash40::new("throw"), 3.0, 0.0, 0.0, 0.5, Some(0.0), Some(0.0), Some(-5.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
-        CATCH(fighter, 0, Hash40::new("throw"), 3.0, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 0, Hash40::new("top"), 3.5, 0.0, 6.3, 7.4, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 1, Hash40::new("top"), 3.5, 0.0, 6.3, 12.3, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(fighter);
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 2, Hash40::new("top"), 3.5, 0.0, 6.3, 17.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 3, Hash40::new("top"), 3.5, 0.0, 6.3, 20.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+    }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        //CATCH(fighter, 0, Hash40::new("throw"), 2.8, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 0);
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 1); //Clear the first two, and set the 2 tip grabboxes to ignore aerial opponents
+        CATCH(fighter, 2, Hash40::new("top"), 3.5, 0.0, 6.3, 17.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
+        CATCH(fighter, 3, Hash40::new("top"), 3.5, 0.0, 6.3, 20.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
+        FT_MOTION_RATE(fighter, 0.5);
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
         grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         GrabModule::set_rebound(fighter.module_accessor, false);
     }
@@ -51,13 +68,21 @@ unsafe fn game_catchdash(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         //CATCH(fighter, 0, Hash40::new("throw"), 3.0, 0.0, 0.0, 0.5, Some(0.0), Some(0.0), Some(-5.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
-        CATCH(fighter, 0, Hash40::new("throw"), 3.0, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
-        CATCH(fighter, 1, Hash40::new("haver"), 3.0, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 0, Hash40::new("top"), 3.5, 0.0, 6.3, 7.5, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 1, Hash40::new("top"), 3.5, 0.0, 6.3, 13.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(fighter);
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 2, Hash40::new("top"), 3.5, 0.0, 6.3, 19.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 3, Hash40::new("top"), 3.5, 0.0, 6.3, 24.5, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+    }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 0);
         grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 1);
+        CATCH(fighter, 2, Hash40::new("top"), 3.5, 0.0, 6.3, 20.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
+        CATCH(fighter, 3, Hash40::new("top"), 3.5, 0.0, 6.3, 24.5, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
         //CATCH(fighter, 0, Hash40::new("throw"), 2.8, 0.0, 0.0, 0.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     frame(lua_state, 20.0);
@@ -69,6 +94,47 @@ unsafe fn game_catchdash(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_HIMOHEBI, ArticleOperationTarget(0));
     }
+}
+
+#[acmd_script( agent = "lucas", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
+unsafe fn game_catchturn (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	if is_excute(fighter) {
+		ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_HIMOHEBI, false, 0);
+        ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_HIMOHEBI, Hash40::new("catch_turn"), false, 0.0);
+	}
+	frame(lua_state, 14.0);
+	if is_excute(fighter) {
+		GrabModule::set_rebound(fighter.module_accessor, /*CanCatchRebound*/ true);
+	}
+	frame(lua_state, 15.0);
+	if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("top"), 3.5, 0.0, 6.3, -7.5, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 1, Hash40::new("top"), 3.5, 0.0, 6.3, -13.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+	}
+    game_CaptureCutCommon(fighter);
+	frame(lua_state, 16.0);
+	if is_excute(fighter) {
+        CATCH(fighter, 2, Hash40::new("top"), 3.5, 0.0, 6.3, -17.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 3, Hash40::new("top"), 3.5, 0.0, 6.3, -20.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+	}
+    frame(lua_state, 17.0);
+	if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 0);
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 1);
+        CATCH(fighter, 2, Hash40::new("top"), 3.5, 0.0, 6.3, -17.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
+        CATCH(fighter, 3, Hash40::new("top"), 3.5, 0.0, 6.3, -20.0, None, None, None, *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
+	}
+	frame(lua_state, 21.0);
+	if is_excute(fighter) {
+		grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        GrabModule::set_rebound(fighter.module_accessor, false);
+	}
+	frame(lua_state, 75.0);
+	if is_excute(fighter) {
+		ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_HIMOHEBI, ArticleOperationTarget(0));
+	}
 }
 
 #[acmd_script( agent = "lucas", script = "game_aircatch" , category = ACMD_GAME , low_priority)]
@@ -214,6 +280,7 @@ pub fn install() {
     install_acmd_scripts!(
         game_catch,
         game_catchdash,
+        game_catchturn,
         game_aircatch,
         game_throwf,
         game_throwb,
