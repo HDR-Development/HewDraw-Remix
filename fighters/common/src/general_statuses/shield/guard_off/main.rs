@@ -4,6 +4,13 @@ use globals::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_guard_off_main_common_cancel)]
 unsafe fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF) {
+        if fighter.status_frame() <= 30 {
+            return 0.into();
+        }
+    }
+
+
     if !CancelModule::is_enable_cancel(fighter.module_accessor) {
         if !fighter
             .sub_transition_group_check_ground_jump_mini_attack()
