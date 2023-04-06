@@ -13,6 +13,7 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_execStatus_common(fighter: &mut L2C
         let scale = fighter_status_guard::calc_shield_scale(fighter, shield_level.into()).get_f32();
         ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("throw"), &Vector3f{ x: scale, y: scale, z: scale });
     }
+    // who shit my pants
 }
 
 #[common_status_script(status = FIGHTER_STATUS_KIND_GUARD_DAMAGE, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS,
