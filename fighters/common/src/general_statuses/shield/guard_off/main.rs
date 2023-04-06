@@ -264,16 +264,32 @@ unsafe fn status_GuardOff_Common(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = L2CFighterCommon_status_GuardOff)]
 unsafe fn status_GuardOff(fighter: &mut L2CFighterCommon) -> L2CValue {
     let rate = status_GuardOff_Common(fighter).get_f32();
-    MotionModule::change_motion(
-        fighter.module_accessor,
-        Hash40::new("guard_off"),
-        0.0,
-        rate,
-        false,
-        0.0,
-        false,
-        false,
-    );
+    if VarModule::is_flag(
+        fighter.object(),
+        vars::common::instance::IS_PARRY_FOR_GUARD_OFF,
+    ) {
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new("just_shield_off"),
+            0.0,
+            rate,
+            false,
+            0.0,
+            false,
+            false,
+        );
+    } else {
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new("guard_off"),
+            0.0,
+            rate,
+            false,
+            0.0,
+            false,
+            false,
+        );
+    }
     fighter.sub_shift_status_main(L2CValue::Ptr(status_GuardOff_Main as *const () as _))
 }
 
