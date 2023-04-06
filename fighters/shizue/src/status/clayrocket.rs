@@ -47,6 +47,6 @@ unsafe extern "C" fn clayrocket_ready_main_loop(weapon: &mut L2CWeaponCommon) ->
 
 pub fn install() {
     smashline::install_status_scripts!(
-        clayrocket_ready_main
+        //clayrocket_ready_main
     );
 }
