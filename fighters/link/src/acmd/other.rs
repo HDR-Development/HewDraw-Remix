@@ -1,4 +1,6 @@
 
+use smash::app::sv_animcmd::THROW_ITEM_arg3;
+
 use super::*;
 
 #[acmd_script( agent = "link", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
@@ -250,7 +252,7 @@ pub fn install() {
         damageflylw_sound,
         damageflyn_sound,
         damageflyroll_sound,
-        damageflytop_sound
+        damageflytop_sound,
     );
 }
 
