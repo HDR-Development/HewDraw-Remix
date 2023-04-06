@@ -22,10 +22,10 @@ unsafe fn bayonetta_throw_hi_game(fighter: &mut L2CAgentBase) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
     }
     frame(lua_state, 15.0);
+    FT_MOTION_RATE(fighter, 0.8);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    FT_MOTION_RATE(fighter, 0.8);
 }
 
 #[acmd_script( agent = "bayonetta", script = "game_throwlw" , category = ACMD_GAME , low_priority)]
@@ -43,17 +43,17 @@ unsafe fn bayonetta_throw_lw_game(fighter: &mut L2CAgentBase) {
         CHECK_FINISH_CAMERA(fighter, 15, 0);
     }
     frame(lua_state, 21.0);
+    FT_MOTION_RATE(fighter, 0.8);
     if is_excute(fighter) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
         AttackModule::clear_all(boma);
     }
-    FT_MOTION_RATE(fighter, 0.8);
 }
 
 pub fn install() {
     install_acmd_scripts!(
         bayonetta_throw_hi_game,
-        bayonetta_throw_lw_game,
+        bayonetta_throw_lw_game
     );
 }
 
