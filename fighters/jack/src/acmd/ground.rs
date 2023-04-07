@@ -64,7 +64,7 @@ unsafe fn jack_attack_13_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
-        FT_MOTION_RATE(fighter, 1.250);
+        FT_MOTION_RATE(fighter, 27.0/(28.0-6.0));
     }
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
@@ -119,7 +119,7 @@ unsafe fn jack_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 25.0);
     if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
-        FT_MOTION_RATE(fighter, 1.250);
+        FT_MOTION_RATE(fighter, 26.0/(46.0-25.0));
     }
     if is_excute(fighter) {
         AttackModule::clear_all(boma);

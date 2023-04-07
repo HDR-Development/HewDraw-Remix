@@ -59,7 +59,7 @@ unsafe fn jack_attack_s4_s_game(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 19.0);
-    FT_MOTION_RATE(fighter, 1.111);
+    FT_MOTION_RATE(fighter, 42.0/(57.0-19.0));
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
@@ -73,14 +73,14 @@ unsafe fn jack_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
-    FT_MOTION_RATE(fighter, 0.667);
+    FT_MOTION_RATE(fighter, 3.0/(7.0-2.0));
     frame(lua_state, 7.0);
-    FT_MOTION_RATE(fighter, 1.000);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
     frame(lua_state, 8.0);
-    FT_MOTION_RATE(fighter, 0.667);
+    FT_MOTION_RATE(fighter, 3.0/(12.0-8.0));
     frame(lua_state, 12.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
@@ -117,7 +117,7 @@ unsafe fn jack_attack_hi4_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
-        FT_MOTION_RATE(fighter, 1.111);
+        FT_MOTION_RATE(fighter, 47.0/(60.0-18.0));
     }
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
@@ -165,8 +165,8 @@ unsafe fn jack_attack_lw4_game(fighter: &mut L2CAgentBase) {
         }
     }
     wait(lua_state, 2.0);
-    if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
-        FT_MOTION_RATE(fighter, 1.111);
+    if WorkModule::is_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
+        FT_MOTION_RATE(fighter, 40.0/(54.0-18.0));
     }
     if is_excute(fighter) {
         AttackModule::clear_all(boma);

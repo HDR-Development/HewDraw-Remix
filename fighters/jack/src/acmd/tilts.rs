@@ -32,11 +32,11 @@ unsafe fn jack_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 18.0);
+    if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
+        FT_MOTION_RATE(fighter, 19.0/(35.0-18.0));
+    }
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
-            MotionModule::set_rate(boma, 0.9);
-        }
     }
     
 }
@@ -71,13 +71,13 @@ unsafe fn jack_attack_s3_s_game(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 18.0);
+    if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
+        FT_MOTION_RATE(fighter, 19.0/(35.0-18.0));
+    }
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
-            MotionModule::set_rate(boma, 0.9);
-        }
     }
-    
+
 }
 
 #[acmd_script( agent = "jack", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
@@ -110,61 +110,52 @@ unsafe fn jack_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 18.0);
+    if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
+        FT_MOTION_RATE(fighter, 19.0/(35.0-18.0));
+    }
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
-            MotionModule::set_rate(boma, 0.9);
-        }
     }
 
 }
+
 
 #[acmd_script( agent = "jack", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if !WorkModule::is_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
-            MotionModule::set_rate(boma, 1.5);
-        }
+    if !WorkModule::is_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
+        FT_MOTION_RATE(fighter, 5.0/(9.0-1.0));
     }
+    frame(lua_state, 9.0);
+        FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1.0);
-    }
-    frame(lua_state, 11.0);
-    FT_MOTION_RATE(fighter, 5.0/(23.0-11.0));
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("armr"),2.0, 115, 100, 140, 0, 2.5, -1.0, 0.0, 0.0, Some(1.0), Some(0.0), Some(0.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 115, 100, 140, 0, 2.5, 0.0, 4.0, 4.0, Some(0.0), Some(8.0), Some(7.5), 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 2, 0, Hash40::new("knife"), 2.0, 115, 100, 140, 0, 2.0, 0.0, 1.2, 0.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 3, 0, Hash40::new("knife"), 2.0, 115, 100, 140, 0, 2.0, 0.0, 3.3, 0.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("armr"),2.0, 115, 100, 80, 0, 2.5, -1.0, 0.0, 0.0, Some(1.0), Some(0.0), Some(0.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 115, 100, 80, 0, 2.5, 0.0, 4.0, 4.0, Some(0.0), Some(8.0), Some(7.5), 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 2, 0, Hash40::new("knife"), 2.0, 115, 100, 80, 0, 2.0, 0.0, 1.2, 0.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 3, 0, Hash40::new("knife"), 2.0, 115, 100, 80, 0, 2.0, 0.0, 3.3, 0.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        ATTACK(fighter, 0, 0, Hash40::new("knife"), 5.0, 90, 122, 0, 50, 5.0, 0.0, 1.7, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 90, 122, 0, 50, 3.0, 0.0, 19.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("knife"), 5.0, 90, 116, 0, 75, 5.0, 0.0, 1.7, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 90, 116, 0,75, 3.0, 0.0, 19.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         if WorkModule::is_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
-            ATTACK(fighter, 2, 1, Hash40::new("knife"), 10.0, 90, 86, 0, 50, 5.0, 0.0, 1.6, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 2, 1, Hash40::new("knife"), 10.0, 90, 84, 0, 66, 5.0, 0.0, 1.6, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
         }
     }
-    frame(lua_state, 23.0);
-    FT_MOTION_RATE(fighter, 1.0);
-    frame(lua_state, 24.0);
-    FT_MOTION_RATE(fighter, 1.25);
-    frame(lua_state, 26.0);
-    FT_MOTION_RATE(fighter, 1.0);
-    frame(lua_state, 27.0);
+    frame(lua_state, 22.0);
+    if WorkModule::is_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
+        FT_MOTION_RATE(fighter, 10.0/(30.0-22.0));
+    }
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if WorkModule::is_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
-            MotionModule::set_rate(boma, 0.8);
-        }
     }
 
 }
+
 
 #[acmd_script( agent = "jack", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_attack_lw3_game(fighter: &mut L2CAgentBase) {
@@ -173,11 +164,11 @@ unsafe fn jack_attack_lw3_game(fighter: &mut L2CAgentBase) {
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.75);
     frame(lua_state, 1.0);
     if WorkModule::is_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
-        MotionModule::set_rate(boma, (7.0-1.0)/8.0);
+        FT_MOTION_RATE(fighter, 8.0/(7.0-1.0));
     }
     frame(lua_state, 7.0);
     JostleModule::set_status(boma, false);
-    MotionModule::set_rate(boma, 1.0);
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         if WorkModule::is_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
@@ -203,14 +194,15 @@ unsafe fn jack_attack_lw3_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 17.0);
     if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
-        MotionModule::set_rate(boma, 0.9);
+        FT_MOTION_RATE(fighter, 23.0/(38.0-17.0));
+    } 
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         JostleModule::set_status(boma, true);
-        }
     }
 
 }
+
 
 pub fn install() {
     install_acmd_scripts!(
