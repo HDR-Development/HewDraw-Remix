@@ -481,7 +481,7 @@
       <float hash="landing_attack_air_frame_lw">22</float>
       <float hash="landing_frame">4</float>
       <int hash="landing_heavy_frame">5</int>
-      <bool hash="wall_jump_type">true</bool>
+      <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
