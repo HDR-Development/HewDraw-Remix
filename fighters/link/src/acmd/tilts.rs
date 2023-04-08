@@ -7,7 +7,6 @@ unsafe fn attack_s3_s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
     FT_MOTION_RATE(fighter, 1.0/(3.0-1.0));
     frame(lua_state, 3.0);
     FT_MOTION_RATE(fighter, 8.0/(13.0-3.0));
@@ -28,7 +27,6 @@ unsafe fn attack_s3_s(fighter: &mut L2CAgentBase) {
     wait(lua_state, 5.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-    }
     }
 
 }
