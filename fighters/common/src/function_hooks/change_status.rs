@@ -107,6 +107,13 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         && VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL) {
             next_status = *FIGHTER_STATUS_KIND_FALL;
         }
+        if boma.kind() == *FIGHTER_KIND_WARIO
+        && StatusModule::status_kind(boma) == *FIGHTER_WARIO_STATUS_KIND_SPECIAL_S_ESCAPE_START
+        && next_status == *FIGHTER_WARIO_STATUS_KIND_SPECIAL_S_ESCAPE
+        && boma.get_num_used_jumps() >= boma.get_jump_count_max() {
+            next_status = *FIGHTER_STATUS_KIND_FALL;
+            clear_buffer = true;
+        }
     }
     original!()(boma, next_status, clear_buffer)
 }
