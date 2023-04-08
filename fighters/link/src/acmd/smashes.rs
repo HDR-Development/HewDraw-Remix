@@ -140,7 +140,7 @@ unsafe fn attack_lw4(fighter: &mut L2CAgentBase) {
 		AttackModule::clear_all(boma);
 	}  
 	frame(lua_state, 38.0);
-	MotionModule::set_rate(fighter.module_accessor, 1.33);
+	FT_MOTION_RATE(fighter, 12.0/(56.0-38.0));
 }
 
 pub fn install() {
