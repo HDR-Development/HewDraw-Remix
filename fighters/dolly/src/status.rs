@@ -27,8 +27,52 @@ pub fn install() {
         pre_superspecial2,
         wait_pre,
         //wait_main,
-        landing_main
+        landing_main,
+        init_special_s,
+        init_special_s_command,
+        init_special_b,
+        init_special_b_command
     );
+}
+
+// FIGHTER_STATUS_KIND_SPECIAL_S //
+
+#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+pub unsafe fn init_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
+    }
+    0.into()
+}
+
+// FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND //
+
+#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+pub unsafe fn init_special_s_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
+    }
+    0.into()
+}
+
+// FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B //
+
+#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+pub unsafe fn init_special_b(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
+    }
+    0.into()
+}
+
+// FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND //
+
+#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+pub unsafe fn init_special_b_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
+    }
+    0.into()
 }
 
 // FIGHTER_STATUS_KIND_TURN_DASH //
