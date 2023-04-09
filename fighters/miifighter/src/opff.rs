@@ -49,11 +49,20 @@ unsafe fn wild_throw(boma: &mut BattleObjectModuleAccessor, status_kind: i32, fr
         }
     }
 }
+//Earthquake Punch
+unsafe fn earthquake_punch(boma: &mut BattleObjectModuleAccessor, frame: f32) {
+    if boma.is_motion_one_of(&[Hash40::new("special_lw1")]) {
+        if MotionModule::end_frame(boma) - frame < 2.0 {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
+        }
+    }
+}
 
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     special_cancels(boma, id, status_kind, frame);
     feint_jump_jc(boma);
     wild_throw(boma, status_kind, frame);
+    earthquake_punch(boma, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MIIFIGHTER )]
