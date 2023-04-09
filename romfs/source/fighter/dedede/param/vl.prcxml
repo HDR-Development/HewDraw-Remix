@@ -27,7 +27,7 @@
       <float hash="0x1f6c5eefa5">5</float>
       <float hash="hop_speed_y">1.5</float>
       <float hash="speed_y_mul">0.9</float>
-      <int hash="remove_bound_num">1</int>
+      <int hash="remove_bound_num">2</int>
       <int hash="wall_stop">100</int>
       <int hash="wall_stop_life">200</int>
       <float hash="shot_start_speed_x">3.0</float>
