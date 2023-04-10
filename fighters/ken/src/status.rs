@@ -106,13 +106,13 @@ pub unsafe extern "C" fn ken_check_special_command(fighter: &mut L2CFighterCommo
         }
 
         // kamabaraigeri
-        // if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N_COMMAND != 0
-        // && fighter.is_situation(*SITUATION_KIND_GROUND)
-        // && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND) {
-        //     fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_S4.into(), true.into());
-        //     VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
-        //     return true.into();
-        // }
+        if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N_COMMAND != 0
+        && fighter.is_situation(*SITUATION_KIND_GROUND)
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND) {
+            fighter.change_status(FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2.into(), true.into());
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_s4"), 1.0 , 1.0, false, 0.0, false, false);
+            return true.into();
+        }
     
         // crescent kick
         if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_ATTACK_COMMAND1 != 0

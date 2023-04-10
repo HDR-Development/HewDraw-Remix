@@ -5,10 +5,8 @@ use globals::*;
 
  
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
     special_fadc_super(boma, frame);
     target_combos(boma);
-    kamabaraigeri(boma, frame);
     rotate_forward_bair(boma);
     turn_run_back_status(fighter, boma, status_kind);
     fadc_heat_rush(boma, frame);
@@ -253,22 +251,6 @@ unsafe fn fsmash_leg_rotate(boma: &mut BattleObjectModuleAccessor, start_frame: 
     }
 }
 
-/// TODO: remove or replace
-/// Kamabaraigeri: A special move from USFIV where Ken hits you with a roundhouse knee before extending his leg into a kick
-/// Activated here via canceling into fsmash through magic series
-/// Can be canceled into the axe kick like his other command kicks via holding the attack button
-unsafe fn kamabaraigeri(boma: &mut BattleObjectModuleAccessor, frame: f32) {
-    if boma.is_motion(Hash40::new("attack_s4_s")){
-        if VarModule::is_flag(boma.object(), vars::shotos::status::SHOULD_COMBOS_SCALE) {
-            fsmash_leg_rotate(boma, 10.0, 13.0, 15.0, 17.0);
-        }
-        if frame >= (MotionModule::end_frame(boma) - 1.0) {
-            // Fix getting stuck in the anim due to not setting the charge flag
-            StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_WAIT, false);
-        }
-    }
-}
-
 /// implements heat rush by instantly canceling focus into FADC
 unsafe fn fadc_heat_rush(boma: &mut BattleObjectModuleAccessor, frame: f32) {
     if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW]) {
@@ -366,68 +348,4 @@ unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4);
         boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_LW4, false);
     }
-}
- 
-/// TODO: decide if this is necessary
-unsafe fn magic_flag_reset(boma: &mut BattleObjectModuleAccessor) {
-    if !(boma.is_motion_one_of(&[
-        Hash40::new("attack_12"),
-        Hash40::new("attack_s3_s_w"),
-        Hash40::new("attack_s3_s_s"),
-        Hash40::new("attack_near_w"),
-        Hash40::new("attack_hi3_w"),
-        Hash40::new("attack_hi3_s"),
-        Hash40::new("attack_lw3_w"),
-        Hash40::new("attack_lw3_s"),
-        Hash40::new("attack_s4"),
-        Hash40::new("attack_s4_hold"),
-        Hash40::new("attack_hi4"),
-        Hash40::new("attack_hi4_hold"),
-        Hash40::new("attack_lw4"),
-        Hash40::new("attack_lw4_hold")
-    ]) || boma.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
-        *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
-        *FIGHTER_STATUS_KIND_SPECIAL_HI,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
-        *FIGHTER_STATUS_KIND_SPECIAL_LW,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_ATTACK,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_ATTACK_TURN,
-        *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1,
-        *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2
-    ])) {
-        VarModule::off_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
-    }
-}
-
-/// TODO: remove?
-unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    
-    magic_flag_reset(boma);
-
-    if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) /*&& VarModule::is_flag(boma.object(), vars::shotos::status::IS_ENABLE_MAGIC_SERIES_CANCEL)*/ {
-        return;
-    }
-
-    // dash cancels
-    // if boma.is_motion_one_of(&[
-    //     Hash40::new("attack_s3_s_w"),
-    // ]) {
-    //     boma.check_dash_cancel();
-    //     return;
-    // }
-
-    // jump cancels
-    // if boma.is_status_one_of(&[
-    //     *FIGHTER_STATUS_KIND_ATTACK_HI4,
-    // ]) {
-    //     boma.check_jump_cancel(false);
-    //     return;
-    // }
-    
 }
