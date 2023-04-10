@@ -138,10 +138,6 @@ unsafe fn tatsu_behavior_and_ex(fighter: &mut L2CFighterCommon, boma: &mut Battl
     ]) {
         return;
     }
-    // tatsu once per airtime
-    if frame == 1.0 && boma.is_situation(*SITUATION_KIND_AIR) {
-        VarModule::on_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
-    }
 
     // EX Tatsu
     // if A+B on f4 and not already EX tatsu, set EX_SPECIAL flag
