@@ -239,7 +239,13 @@ unsafe fn lucas_attack_lw3_effect(fighter: &mut L2CAgentBase) {
         LAST_EFFECT_SET_RATE(fighter, 1.5);
         LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.8, 0.1);
         FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), -2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new("lucas_psi_atk"), Hash40::new("kneer"), 4.0, 0.1, -1.0, 0, 0, 0, 0.35, true);
+        if PostureModule::lr(boma) > 0.0{
+            EFFECT_FOLLOW(fighter, Hash40::new("lucas_psi_atk"), Hash40::new("kneer"), 3.8, -1.0, -0.7, 0, 0, 0, 0.3, false);
+        }
+        else{
+            EFFECT_FOLLOW(fighter, Hash40::new("lucas_psi_atk"), Hash40::new("kneer"), 3.8, -1.0, 0.7, 0, 0, 0, 0.3, false);
+        }
+        //EFFECT_FOLLOW(fighter, Hash40::new("lucas_psi_atk"), Hash40::new("kneer"), 6.0, 0.0, -1.0, 0, 0, 0, 0.35, false);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
     frame(lua_state, 5.0);
