@@ -870,15 +870,15 @@ pub mod vars {
         }
     }
 
-    // pub mod miifighter {
-    //     // floats
-    //     pub const CHARGE_ATTACK_LEVEL: i32 = 0x1000;
+    pub mod miifighter {
+        pub mod status {
+            // ints
+            pub const SPECIAL_LW1_CHARGE: i32 = 0x1100;
 
-    //     // flags
-    //     pub const IS_COUNTER_THROW_PARRIED_ATTACK: i32 = 0x1000;
-    //     pub const IS_CURRENT_IRONBALL_HEAVY:       i32 = 0x1001;
-
-    // }
+            // floats
+            pub const SPECIAL_LW1_CHARGE_DISTANCE: i32 = 0x1101;
+        }
+    }
 
     pub mod littlemac {
         pub mod status {
