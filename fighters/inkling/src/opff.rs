@@ -51,14 +51,6 @@ unsafe fn roller_jump_cancel(boma: &mut BattleObjectModuleAccessor){
     */
 }
 
-unsafe fn fspecial_once_per_airtime(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S)
-    && fighter.is_situation(*SITUATION_KIND_AIR) {
-        VarModule::on_flag(fighter.object(), vars::common::instance::SIDE_SPECIAL_CANCEL);
-    }
-}
-
-
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     dair_splatter(boma, motion_kind, id);
     roller_jump_cancel(boma);
@@ -69,7 +61,6 @@ pub fn inkling_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		inkling_frame(fighter);
-        fspecial_once_per_airtime(fighter);
     }
 }
 
