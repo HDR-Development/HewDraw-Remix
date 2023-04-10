@@ -83,7 +83,7 @@ pub struct ModuleAccessor {
 }
 
 // Articles that should bypass running their MAIN status before KineticModule::UpdateEnergy and GroundCollision::process
-const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 14] = [
+const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 15] = [
     WEAPON_KIND_PICKEL_PLATE,
     WEAPON_KIND_MASTER_SWORD,
     WEAPON_KIND_LUCAS_HIMOHEBI,
@@ -97,7 +97,8 @@ const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 14] = [
     WEAPON_KIND_JACK_DOYLE,
     WEAPON_KIND_PICKEL_FORGE,
     WEAPON_KIND_PICKEL_TROLLEY,
-    WEAPON_KIND_MARIO_FIREBALL
+    WEAPON_KIND_MARIO_FIREBALL,
+    WEAPON_KIND_SHIZUE_CLAYROCKET
 ];
 
 // For one reason or another, the below statuses/kinds do not play well with running before energy update/ground collision
@@ -124,7 +125,11 @@ unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor, status_k
         || ((*boma).kind() == *FIGHTER_KIND_DOLLY
             && [*FIGHTER_STATUS_KIND_FINAL, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_PICKEL
-            && [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING_LIGHT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_RIDE].contains(&status_kind)) )
+            && [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING_LIGHT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_RIDE].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_MIIGUNNER
+            && [*FIGHTER_STATUS_KIND_SPECIAL_HI].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_GEKKOUGA
+            && [*FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_S_ATTACK].contains(&status_kind)) )
     {
         return true;
     }
@@ -564,12 +569,18 @@ unsafe fn after_collision(object: *mut BattleObject) {
                 let collision_line_right = ((ground_collision_info as u64) + 0x70) as *mut GroundCollisionLine;
                 let collision_line_down = ((ground_collision_info as u64) + 0xa0) as *mut GroundCollisionLine;
         
-                // This check passes only on the first frame you come into contact with a surface (ground/wall/ceiling)
-                if *(prev_collision_line_up as *mut u64) == 0 && *(collision_line_up as *mut u64) != 0
-                || *(prev_collision_line_left as *mut u64) == 0 && *(collision_line_left as *mut u64) != 0
-                || *(prev_collision_line_right as *mut u64) == 0 && *(collision_line_right as *mut u64) != 0
-                || *(prev_collision_line_down as *mut u64) != *(collision_line_down as *mut u64) 
-                || StatusModule::situation_kind(boma) != StatusModule::prev_situation_kind(boma) {
+                // This check passes only on the first frame you come into contact with/leave a surface (ground/wall/ceiling)
+                // except when jumping, as the game already changes motion earlier on
+                if ( (*(prev_collision_line_up as *mut u64) == 0 && *(collision_line_up as *mut u64) != 0)
+                ||   (*(prev_collision_line_left as *mut u64) == 0 && *(collision_line_left as *mut u64) != 0)
+                ||   (*(prev_collision_line_right as *mut u64) == 0 && *(collision_line_right as *mut u64) != 0)
+                ||   (*(prev_collision_line_down as *mut u64) != *(collision_line_down as *mut u64))
+                ||   (StatusModule::situation_kind(boma) != StatusModule::prev_situation_kind(boma)) )
+                && !( (*boma).is_fighter()
+                    && (*boma).status_frame() == 0
+                    && ((*boma).is_status(*FIGHTER_STATUS_KIND_JUMP) || (*boma).is_prev_status(*FIGHTER_STATUS_KIND_JUMP))
+                    && ((*(prev_collision_line_down as *mut u64) != *(collision_line_down as *mut u64)) != (StatusModule::situation_kind(boma) != StatusModule::prev_situation_kind(boma))) )
+                {
                     // This runs the MAIN status once, ignoring sub-statuses, to ensure we change motion kind when coming into contact with a surface
                     // Otherwise, our motion kind will update a frame late (e.g. landing animation)
                     if VarModule::has_var_module((*boma).object()) { VarModule::on_flag((*boma).object(), vars::common::instance::CHECK_CHANGE_MOTION_ONLY); }

@@ -69,6 +69,9 @@ unsafe fn lightning_screw_uppercut(boma: &mut BattleObjectModuleAccessor, cat1: 
 }
 
 unsafe fn spinning_demon(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if motion_kind == hash40("attack_step_2s") {
         if frame > 16.0 && frame < 18.0{
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
