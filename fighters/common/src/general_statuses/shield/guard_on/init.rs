@@ -7,7 +7,7 @@ unsafe fn sub_ftStatusUniqProcessGuardOn_initStatus_common(fighter: &mut L2CFigh
     ShieldModule::set_status(
         fighter.module_accessor,
         *FIGHTER_SHIELD_KIND_GUARD,
-        app::ShieldStatus(*SHIELD_STATUS_NONE),
+        app::ShieldStatus(*SHIELD_STATUS_NORMAL),
         0,
     );
     let hit_stop_mul =
@@ -32,5 +32,8 @@ unsafe fn ftStatusUniqProcessGuardOn_initStatus(fighter: &mut L2CFighterCommon) 
 }
 
 pub fn install() {
-    skyline::install_hooks!(sub_ftStatusUniqProcessGuardOn_initStatus_common, ftStatusUniqProcessGuardOn_initStatus);
+    skyline::install_hooks!(
+        sub_ftStatusUniqProcessGuardOn_initStatus_common,
+        ftStatusUniqProcessGuardOn_initStatus
+    );
 }

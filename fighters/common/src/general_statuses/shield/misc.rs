@@ -64,9 +64,17 @@ pub unsafe fn sub_guard_on_uniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -
                 hash40("common"),
                 hash40("shield_dec1"),
             );
+            // let analog = InputModule::get_analog_for_guard(fighter.battle_object);
+            // let dec = if analog > 0.0 && analog < 1.0 {
+            //     let variable = 1.9 * analog;
+            //     (variable + 0.1) * shield_dec1 / 2.0
+            // } else {
+            let dec = shield_dec1;
+            // };
+
             let shield_frame =
                 WorkModule::get_param_float(fighter.module_accessor, hash40("shield_frame"), 0);
-            let shield_dec_rate = shield_dec1 / shield_frame;
+            let shield_dec_rate = dec / shield_frame;
             WorkModule::sub_float(
                 fighter.module_accessor,
                 shield_dec_rate,
@@ -133,7 +141,7 @@ pub unsafe fn check_guard_hold(fighter: &mut L2CFighterCommon) -> L2CValue {
         .any(|x| ControlModule::check_button_on(fighter.module_accessor, *x));
     let guard_hold =
         ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD_HOLD);
-    L2CValue::Bool((special_hold && !special_disabled) || guard_hold)
+    L2CValue::Bool(/* (special_hold && !special_disabled) || */ guard_hold)
 }
 
 #[skyline::hook(replace = L2CFighterCommon_check_guard_attack_special_hi)]
@@ -290,8 +298,7 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
             }
             // Shielddrop with either traditional shielddrop input, or with taunt buttons
             if GroundModule::is_passable_ground(fighter.module_accessor)
-                && (fighter.is_cat_flag(CatHdr::ShieldDrop)
-                    || fighter.is_button_trigger(Buttons::AppealAll))
+                && fighter.is_cat_flag(CatHdr::ShieldDrop)
             {
                 fighter.change_status(FIGHTER_STATUS_KIND_PASS.into(), true.into());
                 return true.into();
@@ -328,8 +335,7 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
             // <HDR>\
             // If we are in shield lock, shielddrop input only requires a downwards flick (or taunt input)
             if GroundModule::is_passable_ground(fighter.module_accessor)
-                && (cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_GUARD_TO_PASS != 0
-                    || fighter.is_button_trigger(Buttons::AppealAll))
+                && (cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_GUARD_TO_PASS != 0)
             {
                 fighter.change_status(FIGHTER_STATUS_KIND_PASS.into(), true.into());
                 return true.into();
@@ -377,7 +383,17 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
             return true.into();
         }
     }
-    false.into()
+
+    if fighter.is_button_trigger(Buttons::Parry) {
+        fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
+        VarModule::on_flag(
+            fighter.object(),
+            vars::common::instance::IS_PARRY_FOR_GUARD_OFF,
+        );
+        true.into()
+    } else {
+        false.into()
+    }
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_guard_main_common)]
@@ -386,24 +402,28 @@ pub unsafe fn status_guard_main_common(fighter: &mut L2CFighterCommon) -> L2CVal
         fighter.module_accessor,
         *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD,
     );
+
+    let handle = VarModule::get_int(
+        fighter.object(),
+        vars::common::instance::SHIELD_EFFECT_HANDLE,
+    ) as u32;
+
+    // let analog = InputModule::get_analog_for_guard(fighter.object());
+    // if analog > 0.0 && analog < 1.0 {
+    //     EffectModule::set_alpha(fighter.module_accessor, handle as _, analog);
+    // } else {
+    //     EffectModule::set_alpha(fighter.module_accessor, handle as _, 1.0);
+    // }
+
     if shield < 0.0 {
         fighter.change_status(FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY.into(), false.into());
         true.into()
     } else {
-        if fighter.is_button_trigger(Buttons::Special) {
-            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
-            VarModule::on_flag(
-                fighter.object(),
-                vars::common::instance::IS_PARRY_FOR_GUARD_OFF,
-            );
-            true.into()
-        } else if ControlModule::check_button_off(
-            fighter.module_accessor,
-            *CONTROL_PAD_BUTTON_GUARD,
-        ) && WorkModule::get_int(
-            fighter.module_accessor,
-            *FIGHTER_STATUS_GUARD_ON_WORK_INT_MIN_FRAME,
-        ) <= 0
+        if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
+            && WorkModule::get_int(
+                fighter.module_accessor,
+                *FIGHTER_STATUS_GUARD_ON_WORK_INT_MIN_FRAME,
+            ) <= 0
             && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
         {
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());

@@ -300,11 +300,6 @@ unsafe fn status_GuardDamage_common(fighter: &mut L2CFighterCommon, arg: L2CValu
             hash40("common"),
             hash40("just_shield_precede_extension"),
         );
-        ControlModule::set_command_life_extend(
-            fighter.module_accessor,
-            just_shield_precede_extension as u8,
-        );
-        InputModule::enable_persist(fighter.battle_object);
         notify_event_msc_cmd!(
             fighter,
             Hash40::new_raw(0x20cbc92683),
@@ -368,6 +363,16 @@ unsafe fn status_GuardDamage_common(fighter: &mut L2CFighterCommon, arg: L2CValu
             false,
             app::enSEType(0),
         );
+        CancelModule::enable_cancel(fighter.module_accessor);
+        WorkModule::unable_transition_term_group(
+            fighter.module_accessor,
+            *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ESCAPE,
+        );
+        WorkModule::unable_transition_term_group(
+            fighter.module_accessor,
+            *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD,
+        );
+        ControlModule::clear_command(fighter.module_accessor, false);
     }
     if !StopModule::is_stop(fighter.module_accessor) {
         sub_GuardDamageUniq(fighter, false.into());
@@ -407,7 +412,20 @@ unsafe fn status_guard_damage_main_common(fighter: &mut L2CFighterCommon) -> L2C
             *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_SPECIAL_HI,
         );
     }
-    if WorkModule::is_enable_transition_term(
+
+    if fighter.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        if fighter.is_button_release(Buttons::Guard)
+            || WorkModule::get_int(
+                fighter.module_accessor,
+                *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME,
+            ) == 0
+        {
+            WorkModule::enable_transition_term_group(
+                fighter.module_accessor,
+                *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD,
+            );
+        }
+    } else if WorkModule::is_enable_transition_term(
         fighter.module_accessor,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD,
     ) && WorkModule::get_int(
@@ -423,6 +441,7 @@ unsafe fn status_guard_damage_main_common(fighter: &mut L2CFighterCommon) -> L2C
         fighter.module_accessor,
         *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME,
     ) == 0
+        || fighter.is_flag(*FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD)
     {
         if WorkModule::is_flag(
             fighter.module_accessor,
@@ -519,7 +538,7 @@ unsafe fn status_GuardDamage_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
                     *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_TRANSITION_STATUS_STOP,
                 );
             }
-            if CancelModule::is_enable_cancel(fighter.module_accessor)
+            if (CancelModule::is_enable_cancel(fighter.module_accessor) || true)
                 && fighter
                     .sub_wait_ground_check_common(false.into())
                     .get_bool()

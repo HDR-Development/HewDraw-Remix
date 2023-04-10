@@ -12,7 +12,6 @@ pub unsafe fn calc_shield_scale(
         fighter.module_accessor,
         *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MAX,
     );
-    let interpolated = shield_level / shield_max;
 
     let shield_size = WorkModule::get_param_float(
         fighter.module_accessor,
@@ -29,10 +28,14 @@ pub unsafe fn calc_shield_scale(
     let shield_radius =
         WorkModule::get_param_float(fighter.module_accessor, hash40("shield_radius"), 0);
 
-    L2CValue::F32(
-        (interpolated * shield_size * shield_scale * (1.0 - shield_scale_min) + shield_scale_min)
-            * shield_radius,
-    )
+    // let analog = InputModule::get_analog_for_guard(fighter.battle_object);
+    // let scale = if analog > 0.0 && analog < 1.0 {
+    //     (shield_level * (2.0 - analog) / shield_max) * (1.0 - shield_scale_min) + shield_scale_min
+    // } else {
+    let scale = (shield_level / shield_max) * (1.0 - shield_scale_min) + shield_scale_min;
+    // };
+
+    L2CValue::F32(scale * shield_radius)
 }
 
 #[skyline::hook(replace = L2CFighterCommon_FighterStatusGuard__check_hit_stop_delay)]
@@ -116,7 +119,7 @@ pub unsafe fn is_continue_just_shield_count(fighter: &mut L2CFighterCommon) -> L
         hash40("common"),
         hash40("continue_just_shield_count"),
     );
-    L2CValue::Bool(just_shield_count <= max_count)
+    L2CValue::Bool(dbg!(just_shield_count) <= max_count)
 }
 
 #[skyline::hook(replace = L2CFighterCommon_FighterStatusGuard__landing_effect_control)]

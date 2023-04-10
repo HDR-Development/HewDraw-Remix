@@ -67,6 +67,8 @@ unsafe fn status_GuardOn_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ) && 0.0 < fighter.global_table[CURRENT_FRAME].get_f32()
     {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x262a7a102d));
+        let handle = EffectModule::get_last_handle(fighter.module_accessor) as u32;
+        VarModule::set_int(fighter.object(), vars::common::instance::SHIELD_EFFECT_HANDLE, handle as _);
         WorkModule::on_flag(
             fighter.module_accessor,
             *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_EFFECT,

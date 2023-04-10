@@ -191,6 +191,7 @@ pub mod vars {
 
             pub const CLIFF_XLU_FRAME: i32 = 0x000B;
             pub const LAST_ATTACK_HITBOX_ID: i32 = 0x000C;
+            pub const SHIELD_EFFECT_HANDLE: i32 = 0x000D;
 
             // floats
 

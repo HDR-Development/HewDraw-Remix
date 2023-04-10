@@ -4,12 +4,14 @@ use globals::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_guard_off_main_common_cancel)]
 unsafe fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF) {
+    if VarModule::is_flag(
+        fighter.object(),
+        vars::common::instance::IS_PARRY_FOR_GUARD_OFF,
+    ) {
         if fighter.status_frame() <= 30 {
             return 0.into();
         }
     }
-
 
     if !CancelModule::is_enable_cancel(fighter.module_accessor) {
         if !fighter
@@ -109,7 +111,10 @@ unsafe fn sub_status_guard_off_main_common_air(fighter: &mut L2CFighterCommon) -
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_guard_off_main_common_control)]
 unsafe fn sub_status_guard_off_main_common_control(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.sub_transition_group_check_ground_jump().get_bool()
+    if !VarModule::is_flag(
+        fighter.object(),
+        vars::common::instance::IS_PARRY_FOR_GUARD_OFF,
+    ) && fighter.sub_transition_group_check_ground_jump().get_bool()
         && super::super::misc::check_guard_attack_special_hi(fighter, false.into()).get_bool()
     {
         true.into()
@@ -175,6 +180,13 @@ unsafe fn sub_guard_off_uniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L
                     app::ShieldStatus(*SHIELD_STATUS_NONE),
                     *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD,
                 );
+
+                ModelModule::disable_gold_eye(fighter.module_accessor);
+                MotionModule::set_rate(
+                    fighter.module_accessor,
+                    MotionModule::end_frame(fighter.module_accessor)
+                        / (30.0 - fighter.status_frame() as f32),
+                );
             }
         }
         let cancel_frame = WorkModule::get_int(
@@ -196,15 +208,20 @@ unsafe fn sub_guard_off_uniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L
 
 #[skyline::hook(replace = L2CFighterCommon_status_GuardOff_Common)]
 unsafe fn status_GuardOff_Common(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let enables = [
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD,
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT,
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON,
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
-    ];
-    for x in enables.iter() {
-        WorkModule::enable_transition_term(fighter.module_accessor, *x);
+    if !VarModule::is_flag(
+        fighter.object(),
+        vars::common::instance::IS_PARRY_FOR_GUARD_OFF,
+    ) {
+        let enables = [
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON,
+        ];
+        for x in enables.iter() {
+            WorkModule::enable_transition_term(fighter.module_accessor, *x);
+        }
     }
     let shield_just_frame = WorkModule::get_param_int(
         fighter.module_accessor,
@@ -279,11 +296,47 @@ unsafe fn status_GuardOff(fighter: &mut L2CFighterCommon) -> L2CValue {
             fighter.module_accessor,
             Hash40::new("just_shield_off"),
             0.0,
-            rate,
+            0.0,
             false,
             0.0,
             false,
             false,
+        );
+        app::FighterUtil::flash_eye_info(fighter.module_accessor);
+        if !WorkModule::is_flag(
+            fighter.module_accessor,
+            *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL,
+        ) {
+            ModelModule::enable_gold_eye(fighter.module_accessor);
+            WorkModule::on_flag(
+                fighter.module_accessor,
+                *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE,
+            );
+        }
+        EffectModule::req_on_joint(
+            fighter.module_accessor,
+            Hash40::new_raw(0xff4f9200f),
+            Hash40::new("throw"),
+            &Vector3f::zero(),
+            &Vector3f::zero(),
+            0.5,
+            &Vector3f::zero(),
+            &Vector3f::zero(),
+            false,
+            *EFFECT_SUB_ATTRIBUTE_NONE as u32,
+            *EFFECT_FLIP_NONE,
+            1,
+        );
+        EffectModule::req_common(fighter.module_accessor, Hash40::new("just_shield"), 0.0);
+        // let shield_se = app::FighterUtil::get_just_shield_se(fighter.global_table[0x2].get_i32());
+        SoundModule::play_se(
+            fighter.module_accessor,
+            smash::phx::Hash40::new("se_item_deathscythe_swing_m"),
+            true,
+            false,
+            false,
+            false,
+            app::enSEType(0),
         );
     } else {
         MotionModule::change_motion(

@@ -20,6 +20,13 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter: &mut L2CF
         hash40("shield_setoff_mul"),
     );
 
+    // let analog = InputModule::get_analog_for_guard(fighter.battle_object);
+    // let param_setoff_mul = if analog > 0.0 && analog < 1.0 {
+    //     ((1.0 - analog) * 0.65 + param_setoff_mul / 1.5) * 1.5
+    // } else {
+    //     param_setoff_mul
+    // };
+
     let mut shield_power = shield_power * setoff_mul * param_setoff_mul;
     let object_id = WorkModule::get_int(
         fighter.module_accessor,
@@ -227,12 +234,21 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter: &mut L2CF
         ControlModule::clear_command(fighter.module_accessor, false);
     }
 
-    let mut setoff_speed = shield_power
-        * WorkModule::get_param_float(
-            fighter.module_accessor,
-            hash40("common"),
-            hash40("shield_setoff_speed_mul"),
-        );
+    let setoff_speed_mul = WorkModule::get_param_float(
+        fighter.module_accessor,
+        hash40("common"),
+        hash40("shield_setoff_speed_mul"),
+    );
+
+    // let analog = InputModule::get_analog_for_guard(fighter.battle_object);
+    // let setoff_speed_mul = if analog > 0.0 && analog < 1.0 {
+    //     0.195 * (1.0 - analog) + setoff_speed_mul
+    // } else {
+    //     setoff_speed_mul
+    // };
+
+    let mut setoff_speed = shield_power * setoff_speed_mul;
+
     if WorkModule::is_flag(
         fighter.module_accessor,
         *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD,
