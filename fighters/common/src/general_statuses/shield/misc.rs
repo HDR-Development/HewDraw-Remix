@@ -64,13 +64,13 @@ pub unsafe fn sub_guard_on_uniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -
                 hash40("common"),
                 hash40("shield_dec1"),
             );
-            // let analog = InputModule::get_analog_for_guard(fighter.battle_object);
-            // let dec = if analog > 0.0 && analog < 1.0 {
-            //     let variable = 1.9 * analog;
-            //     (variable + 0.1) * shield_dec1 / 2.0
-            // } else {
-            let dec = shield_dec1;
-            // };
+            let analog = InputModule::get_analog_for_guard(fighter.battle_object);
+            let dec = if analog > 0.0 && analog < 1.0 {
+                let variable = 1.9 * analog;
+                (variable + 0.1) * shield_dec1 / 2.0
+            } else {
+                shield_dec1
+            };
 
             let shield_frame =
                 WorkModule::get_param_float(fighter.module_accessor, hash40("shield_frame"), 0);
@@ -408,12 +408,12 @@ pub unsafe fn status_guard_main_common(fighter: &mut L2CFighterCommon) -> L2CVal
         vars::common::instance::SHIELD_EFFECT_HANDLE,
     ) as u32;
 
-    // let analog = InputModule::get_analog_for_guard(fighter.object());
-    // if analog > 0.0 && analog < 1.0 {
-    //     EffectModule::set_alpha(fighter.module_accessor, handle as _, analog);
-    // } else {
-    //     EffectModule::set_alpha(fighter.module_accessor, handle as _, 1.0);
-    // }
+    let analog = InputModule::get_analog_for_guard(fighter.object());
+    if analog > 0.0 && analog < 1.0 {
+        EffectModule::set_alpha(fighter.module_accessor, handle as _, analog);
+    } else {
+        EffectModule::set_alpha(fighter.module_accessor, handle as _, 1.0);
+    }
 
     if shield < 0.0 {
         fighter.change_status(FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY.into(), false.into());

@@ -28,12 +28,12 @@ pub unsafe fn calc_shield_scale(
     let shield_radius =
         WorkModule::get_param_float(fighter.module_accessor, hash40("shield_radius"), 0);
 
-    // let analog = InputModule::get_analog_for_guard(fighter.battle_object);
-    // let scale = if analog > 0.0 && analog < 1.0 {
-    //     (shield_level * (2.0 - analog) / shield_max) * (1.0 - shield_scale_min) + shield_scale_min
-    // } else {
-    let scale = (shield_level / shield_max) * (1.0 - shield_scale_min) + shield_scale_min;
-    // };
+    let analog = InputModule::get_analog_for_guard(fighter.battle_object);
+    let scale = if analog > 0.0 && analog < 1.0 {
+        (shield_level * (2.0 - analog) / shield_max) * (1.0 - shield_scale_min) + shield_scale_min
+    } else {
+        (shield_level / shield_max) * (1.0 - shield_scale_min) + shield_scale_min
+    };
 
     L2CValue::F32(scale * shield_radius)
 }
