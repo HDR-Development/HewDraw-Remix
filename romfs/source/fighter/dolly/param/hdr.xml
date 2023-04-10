@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <struct hash="cliff_hang_data">
+        <struct hash="special_hi">
+            <float hash="p1_x">16</float>
+            <float hash="p1_y">22</float>
+            <float hash="p2_x">-9.5</float>
+            <float hash="p2_y">12.5</float>
+        </struct>
+    </struct>
+</struct>

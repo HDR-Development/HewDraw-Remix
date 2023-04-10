@@ -5,3 +5,4 @@ lucario: fighter/lucario/param/hdr.prc
 pichu: fighter/pichu/param/hdr.prc
 ike: fighter/ike/param/hdr.prc
 donkey: fighter/donkey/param/hdr.prc
+dolly: fighter/dolly/param/hdr.prc

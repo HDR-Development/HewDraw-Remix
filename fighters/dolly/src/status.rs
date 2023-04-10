@@ -31,7 +31,9 @@ pub fn install() {
         init_special_s,
         init_special_s_command,
         init_special_b,
-        init_special_b_command
+        init_special_b_command,
+        init_special_hi_jump,
+        init_special_hi_fall
     );
     smashline::install_agent_init_callbacks!(dolly_init);
 }
@@ -102,6 +104,22 @@ pub unsafe fn init_special_b_command(fighter: &mut L2CFighterCommon) -> L2CValue
     if fighter.is_situation(*SITUATION_KIND_AIR) {
         VarModule::on_flag(fighter.battle_object, vars::dolly::instance::DISABLE_SPECIAL_S);
     }
+    0.into()
+}
+
+// FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_JUMP
+
+#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+pub unsafe fn init_special_hi_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.select_cliff_hangdata_from_name("special_hi");
+    0.into()
+}
+
+// FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_FALL
+
+#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_FALL, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+pub unsafe fn init_special_hi_fall(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.select_cliff_hangdata_from_name("special_hi");
     0.into()
 }
 
