@@ -344,6 +344,7 @@ pub mod vars {
     pub mod dolly {
         pub mod instance {
             pub const SUPER_CANCEL: i32 = 0x0150;
+            pub const DISABLE_SPECIAL_S: i32 = 0x0151;
         }
         pub mod status {
             // flags
