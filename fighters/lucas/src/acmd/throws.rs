@@ -83,38 +83,38 @@ unsafe fn game_catchdash(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucas", script = "game_catchturn" , category = ACMD_GAME , low_priority)]
 unsafe fn game_catchturn (fighter: &mut L2CAgentBase) {
-	let lua_state = fighter.lua_state_agent;
-	let boma = fighter.boma();
-	if is_excute(fighter) {
-		ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_HIMOHEBI, false, 0);
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_HIMOHEBI, false, 0);
         ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_HIMOHEBI, Hash40::new("catch_turn"), false, 0.0);
-	}
-	frame(lua_state, 14.0);
-	if is_excute(fighter) {
-		GrabModule::set_rebound(fighter.module_accessor, /*CanCatchRebound*/ true);
-	}
-	frame(lua_state, 15.0);
-	if is_excute(fighter) {
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        GrabModule::set_rebound(fighter.module_accessor, /*CanCatchRebound*/ true);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
         CATCH(fighter, 0, Hash40::new("top"), 3.5, 0.0, 6.3, -7.5, Some(0.0), Some(6.3), Some(-13.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(fighter);
-	frame(lua_state, 16.0);
-	if is_excute(fighter) {
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
         CATCH(fighter, 0, Hash40::new("top"), 3.5, 0.0, 6.3, -7.5, Some(0.0), Some(6.3), Some(-20.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     frame(lua_state, 17.0);
-	if is_excute(fighter) {
+    if is_excute(fighter) {
         CATCH(fighter, 0, Hash40::new("top"), 3.5, 0.0, 6.3, -17.0, Some(0.0), Some(6.3), Some(-20.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
     }
-	frame(lua_state, 21.0);
-	if is_excute(fighter) {
-		grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         GrabModule::set_rebound(fighter.module_accessor, false);
-	}
-	frame(lua_state, 75.0);
-	if is_excute(fighter) {
-		ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_HIMOHEBI, ArticleOperationTarget(0));
-	}
+    }
+    frame(lua_state, 75.0);
+    if is_excute(fighter) {
+        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_HIMOHEBI, ArticleOperationTarget(0));
+    }
 }
 
 #[acmd_script( agent = "lucas", script = "game_aircatch" , category = ACMD_GAME , low_priority)]
