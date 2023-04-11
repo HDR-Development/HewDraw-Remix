@@ -40,7 +40,7 @@ unsafe fn catch_attack_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     let boma = fighter.boma();
 
     let mut vec =Vector3f{x: 0.0, y: 0.0, z: 0.0};
-    let offset = ModelModule::joint_global_rotation(boma,Hash40::new("throw"),&mut vec,false);
+    let offset = ModelModule::joint_global_rotation(fighter.module_accessor,Hash40::new("throw"),&mut vec,false);
     let rot = Vector3f{x: vec.x, y: 0.0, z: 0.0};
     PostureModule::set_rot(
         boma.get_grabbed_opponent_boma(),
@@ -62,9 +62,10 @@ unsafe fn catch_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     return original!(fighter);
 }
 
-
 #[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_THROW_KIRBY, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn wario_throwk_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let boma = fighter.boma();
+
     return fighter.status_pre_ThrowKirby();
 }
 #[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_THROW_KIRBY, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
@@ -82,20 +83,17 @@ unsafe fn wario_throwk_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 #[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_THROW_KIRBY, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
 unsafe fn wario_throwk_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
-    macros::EFFECT_OFF_KIND(fighter, Hash40::new("sys_merikomi"),false,true);
+    EFFECT_OFF_KIND(fighter, Hash40::new("sys_merikomi"),false,true);
     return fighter.sub_status_uniq_process_ThrowKirby_exitStatus();
 }
 #[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_THROW_KIRBY, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn wario_throwk_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    macros::EFFECT_OFF_KIND(fighter, Hash40::new("sys_merikomi"),false,true);
+    EFFECT_OFF_KIND(fighter, Hash40::new("sys_merikomi"),false,true);
     return fighter.status_end_ThrowKirby();
 }
 
 #[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_THROW_KIRBY, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe fn wario_throwk_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    CameraModule::set_enable_camera(fighter.module_accessor,true,0);
-    CameraModule::set_enable_update_pos(fighter.module_accessor,*CAMERA_UPDATE_POS_Y as u8,0);
-
     let FRAME_FALL = 48.0;
     let FRAME_FALLLOOP = FRAME_FALL+2.0;
     let FRAME_LAND = 55.0;
@@ -137,11 +135,11 @@ unsafe fn wario_throwk_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
             let opponent = boma.get_grabbed_opponent_boma();
             let opponentScale = PostureModule::scale(opponent);
 
-           // macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_merikomi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, (opponentScale+0.4), true);
+           // EFFECT_FOLLOW(fighter, Hash40::new("sys_merikomi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, (opponentScale+0.4), true);
             
-            macros::LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-            macros::LAST_EFFECT_SET_RATE(fighter, 0.8);
-            macros::EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+            LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+            LAST_EFFECT_SET_RATE(fighter, 0.8);
+            EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
         }
     }
 
@@ -151,7 +149,7 @@ unsafe fn wario_throwk_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn wario_landing_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    macros::EFFECT_OFF_KIND(fighter, Hash40::new("sys_merikomi"),false,true);
+    EFFECT_OFF_KIND(fighter, Hash40::new("sys_merikomi"),false,true);
     return false.into();
 }
 
@@ -165,7 +163,7 @@ unsafe fn wario_attack_air_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     if (AttackModule::is_infliction_status(fighter.module_accessor,  *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)){
         MotionModule::change_motion(fighter.module_accessor, dairRiseAnim, 18.0, 1.0, false, 0.0, false, false);
-        macros::EFFECT_OFF_KIND(fighter, Hash40::new("sys_machstamp"),false,true);
+        EFFECT_OFF_KIND(fighter, Hash40::new("sys_machstamp"),false,true);
         AttackModule::clear_all(fighter.module_accessor);
     }
     
