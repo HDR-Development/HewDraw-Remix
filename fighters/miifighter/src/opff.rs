@@ -56,11 +56,9 @@ unsafe fn onslaught(boma: &mut BattleObjectModuleAccessor, frame: f32) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S1_END, true);
         }
     }
-    if boma.is_motion_one_of(&[Hash40::new("special_s1"),Hash40::new("special_air_s1")]) {
-        if StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR {
-            if MotionModule::end_frame(boma) - frame < 6.0 {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
-            }
+    if boma.is_motion_one_of(&[Hash40::new("special_s1_end"),Hash40::new("special_air_s1_end")]) {
+        if MotionModule::end_frame(boma) - frame < 6.0 {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
         }
     }
 }
