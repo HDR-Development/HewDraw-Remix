@@ -41,8 +41,19 @@ unsafe fn recoil_cancel(boma: &mut BattleObjectModuleAccessor,status: i32,situat
     }
 }
 
+unsafe fn arms_switch_during_normals(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64) {
+    if [*FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_LW3, *FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind)
+       || ([*FIGHTER_STATUS_KIND_ATTACK].contains(&status_kind) && motion_kind == hash40("attack_13")){
+        if !boma.is_in_hitlag() {
+            if boma.is_cat_flag(Cat1::SpecialLw) {
+                WorkModule::on_flag(boma,*FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_CHANGE_PUNCH_R);
+            }
+        }
+    }
+}
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     recoil_cancel(boma,status_kind,situation_kind);
+    arms_switch_during_normals(boma, cat[0], status_kind, situation_kind, motion_kind);
     //Prevent B Jab
     WorkModule::off_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_ATTACK_COMBO_ENABLE);
 }

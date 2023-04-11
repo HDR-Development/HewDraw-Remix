@@ -186,7 +186,7 @@ unsafe fn tantan_landing_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "tantan", status = FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_GROUND, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe fn tantan_special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if (fighter.motion_frame() <= 10.0)
+    if (fighter.motion_frame() <= 30.0)
     && !fighter.is_button_on(Buttons::Special)
     {
         fighter.change_status_req(*FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_AIR, false);

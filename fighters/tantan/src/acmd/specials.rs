@@ -142,6 +142,7 @@ unsafe fn tantan_special_n_air_end_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if (armType!=2) {
+        //Additional landing lag for using Dragon/Megawatt
         FT_MOTION_RATE(fighter, 1.0);
         if (armType==0){
             frame(lua_state, 7.0);
