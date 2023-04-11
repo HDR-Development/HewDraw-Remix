@@ -53,21 +53,21 @@ pub unsafe extern "C" fn ken_check_special_command(fighter: &mut L2CFighterCommo
 
         // the tatsu super
         // TODO: determine if necessary
-        if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
-        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND)
-        && MeterModule::drain(fighter.battle_object, 10) {
-            fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
-            return true.into();
-        }
+        // if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
+        // && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND)
+        // && MeterModule::drain(fighter.battle_object, 10) {
+        //     fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
+        //     return true.into();
+        // }
 
         // the shinryuken
         // TODO: determine if necessary
-        if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND != 0
-        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND)
-        && MeterModule::drain(fighter.battle_object, 10) {
-            fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
-            return true.into();
-        }
+        // if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND != 0
+        // && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND)
+        // && MeterModule::drain(fighter.battle_object, 10) {
+        //     fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
+        //     return true.into();
+        // }
 
         // shoryu
         if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_HI_COMMAND != 0
@@ -76,6 +76,15 @@ pub unsafe extern "C" fn ken_check_special_command(fighter: &mut L2CFighterCommo
             fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND.into(), true.into());
             return true.into();
         }
+
+        // // EX hado
+        // if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N2_COMMAND != 0
+        // && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND)
+        // && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[USE_SPECIAL_N_CALLBACK].clone()).get_bool()
+        // && MeterModule::drain(fighter.battle_object, 1) {
+        //     fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND.into(), true.into());
+        //     return true.into();
+        // }
 
         // hado
         if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N_COMMAND != 0

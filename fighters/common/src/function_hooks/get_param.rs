@@ -98,7 +98,7 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
 
         // Ken aerial hadouken modified offsets for aerial version
         else if fighter_kind == *FIGHTER_KIND_KEN {
-            if VarModule::is_flag(boma_reference.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_EX) {
+            if VarModule::is_flag(boma_reference.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_AIR) {
                 if x1 == hash40("param_special_n") {
                     if x2 == hash40("shoot_x") {
                         return 11.0;

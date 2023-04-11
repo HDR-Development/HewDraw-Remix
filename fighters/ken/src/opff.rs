@@ -104,11 +104,21 @@ unsafe fn air_hado_distinguish(fighter: &mut L2CFighterCommon, boma: &mut Battle
     ]) {
         return;
     }
+
+    // EX Hado
+    if !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_EX)
+    && boma.is_button_on(Buttons::Attack)
+    && boma.is_button_on(Buttons::Special)
+    && frame <= 4.0
+    && MeterModule::drain(boma.object(), 1) {
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_EX);
+    }
+
     // set VarModule flag on f12 - this flag changes hado properties
     if frame == 12.0 && fighter.is_motion_one_of(&[
         Hash40::new("special_air_n"), 
     ]) {
-        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_EX);
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_AIR);
     }
     // after frame 13, disallow changing from aerial to grounded hadoken
     // instead, we enter a landing animation
@@ -146,7 +156,7 @@ unsafe fn tatsu_behavior_and_ex(fighter: &mut L2CFighterCommon, boma: &mut Battl
     && !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL)
     && boma.is_button_on(Buttons::Attack)
     && boma.is_button_on(Buttons::Special)
-    && frame == 4.0
+    && frame <= 4.0
     && MeterModule::drain(boma.object(), 2) {
         VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
         // burst of speed specifically for EX tatsu
