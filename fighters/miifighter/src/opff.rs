@@ -49,8 +49,24 @@ unsafe fn wild_throw(boma: &mut BattleObjectModuleAccessor, status_kind: i32, fr
         }
     }
 }
+//Onslaught Shield Activation + No Freefall on hit
+unsafe fn onslaught(boma: &mut BattleObjectModuleAccessor, frame: f32) {
+    if boma.is_motion_one_of(&[Hash40::new("special_s1_start"),Hash40::new("special_air_s1_start")]) {
+        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S1_END, true);
+        }
+    }
+    if boma.is_motion_one_of(&[Hash40::new("special_s1"),Hash40::new("special_air_s1")]) {
+        if StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR {
+            if MotionModule::end_frame(boma) - frame < 6.0 {
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
+            }
+        }
+    }
+}
 //Earthquake Punch
 unsafe fn earthquake_punch(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, frame: f32) {
+    //All the charge logic
     if status_kind == *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW1_GROUND {
         let is_hold = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL);
         let charge = VarModule::get_int(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE);
@@ -79,6 +95,13 @@ unsafe fn earthquake_punch(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
             MotionModule::set_rate(fighter.module_accessor, 1.0);
         }
     }
+    //Allows Divekick to be cancelled into freefall with second B press
+    if boma.is_motion_one_of(&[Hash40::new("special_lw1_loop")]) {
+        let is_press = ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL);
+        if is_press {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, false);
+        }
+    }
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
@@ -86,6 +109,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     feint_jump_jc(boma);
     wild_throw(boma, status_kind, frame);
     earthquake_punch(fighter, boma, status_kind, frame);
+    onslaught(boma, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MIIFIGHTER )]
