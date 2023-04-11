@@ -655,6 +655,12 @@ pub mod vars {
         }
     }
 
+    pub mod plizardon {
+        pub mod instance {
+            pub const DISABLE_SPECIAL_S: i32 = 0x0100;
+        }
+    }
+
     pub mod pzenigame {
         pub mod instance {
             pub const WITHDRAW_FRAME: i32 = 0x0100;
