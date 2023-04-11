@@ -83,7 +83,7 @@ pub struct ModuleAccessor {
 }
 
 // Articles that should bypass running their MAIN status before KineticModule::UpdateEnergy and GroundCollision::process
-const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 14] = [
+const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 15] = [
     WEAPON_KIND_PICKEL_PLATE,
     WEAPON_KIND_MASTER_SWORD,
     WEAPON_KIND_LUCAS_HIMOHEBI,
@@ -97,14 +97,15 @@ const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 14] = [
     WEAPON_KIND_JACK_DOYLE,
     WEAPON_KIND_PICKEL_FORGE,
     WEAPON_KIND_PICKEL_TROLLEY,
-    WEAPON_KIND_MARIO_FIREBALL
+    WEAPON_KIND_MARIO_FIREBALL,
+    WEAPON_KIND_SHIZUE_CLAYROCKET
 ];
 
 // For one reason or another, the below statuses/kinds do not play well with running before energy update/ground collision
 // so they must be ran using vanilla's order of operations
 unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor, status_kind: i32) -> bool {
     if (*boma).is_fighter()
-    && ( [*FIGHTER_STATUS_KIND_AIR_LASSO, *FIGHTER_STATUS_KIND_AIR_LASSO_REACH].contains(&status_kind)
+    && ( [*FIGHTER_STATUS_KIND_AIR_LASSO, *FIGHTER_STATUS_KIND_AIR_LASSO_REACH, *FIGHTER_STATUS_KIND_AIR_LASSO_HANG, *FIGHTER_STATUS_KIND_AIR_LASSO_REWIND].contains(&status_kind)
         || ((*boma).kind() == *FIGHTER_KIND_RICHTER
             && [*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_SIMON
@@ -124,15 +125,23 @@ unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor, status_k
         || ((*boma).kind() == *FIGHTER_KIND_DOLLY
             && [*FIGHTER_STATUS_KIND_FINAL, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_PICKEL
-            && [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING_LIGHT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_RIDE].contains(&status_kind)) )
+            && [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING_LIGHT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_RIDE].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_MIIGUNNER
+            && [*FIGHTER_STATUS_KIND_SPECIAL_HI].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_GEKKOUGA
+            && [*FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_S_ATTACK].contains(&status_kind)) )
     {
         return true;
     }
 
     if (*boma).is_weapon()
-    && EXCEPTION_WEAPON_KINDS.iter().any(|x| **x == (*boma).kind() ) {
+    && ( EXCEPTION_WEAPON_KINDS.iter().any(|x| **x == (*boma).kind() )
+        || ((*boma).kind() == *WEAPON_KIND_TANTAN_SPIRALLEFT
+            && [*WEAPON_TANTAN_SPIRALLEFT_STATUS_KIND_SPECIAL_HI_AIR, *WEAPON_TANTAN_SPIRALLEFT_STATUS_KIND_REACH].contains(&status_kind)) )
+    {
         return true;
     }
+
     false
 }
 
@@ -305,9 +314,6 @@ unsafe fn before_collision(object: *mut BattleObject) {
             let slow_module__is_skip: extern "C" fn(*const TempModule) -> bool = std::mem::transmute(*(((module_accessor.slow_module.vtable as u64) + 0xb0) as *const u64));
             let is_skip = slow_module__is_skip(module_accessor.slow_module);
 
-            let physics_module__update_rope_matrix: extern "C" fn(*const TempModule, bool, bool) = std::mem::transmute(*(((module_accessor.physics_module.vtable as u64) + 0x60) as *const u64));
-            physics_module__update_rope_matrix(module_accessor.physics_module, true, false);
-
             // Calling this BEFORE kinetic energy updates and stage collision is processed allows us to bypass the "1f physics delay"
             run_main_status_original(module_accessor, false, is_skip);
 
@@ -347,9 +353,6 @@ unsafe fn before_collision(object: *mut BattleObject) {
 
             let slow_module__is_skip: extern "C" fn(*const TempModule) -> bool = std::mem::transmute(*(((module_accessor.slow_module.vtable as u64) + 0xb0) as *const u64));
             let is_skip = slow_module__is_skip(module_accessor.slow_module);
-
-            let physics_module__update_rope_matrix: extern "C" fn(*const TempModule, bool, bool) = std::mem::transmute(*(((module_accessor.physics_module.vtable as u64) + 0x60) as *const u64));
-            physics_module__update_rope_matrix(module_accessor.physics_module, true, false);
 
             // Calling this BEFORE kinetic energy updates and stage collision is processed allows us to bypass the "1f physics delay"
             run_main_status_original(module_accessor, true, is_skip);
@@ -450,10 +453,8 @@ unsafe fn before_collision(object: *mut BattleObject) {
     let sound_module__something: extern "C" fn(*const TempModule, bool) = std::mem::transmute(*(((module_accessor.sound_module.vtable as u64) + 0x50) as *const u64));
     sound_module__something(module_accessor.sound_module, is_receiver_in_hitlag);
 
-    if is_slow && *battle_object_slow != 0 {
-        let physics_module__update_rope_matrix: extern "C" fn(*const TempModule, bool, bool) = std::mem::transmute(*(((module_accessor.physics_module.vtable as u64) + 0x60) as *const u64));
-        physics_module__update_rope_matrix(module_accessor.physics_module, true, false);
-    }
+    let physics_module__update_rope_matrix: extern "C" fn(*const TempModule, bool, bool) = std::mem::transmute(*(((module_accessor.physics_module.vtable as u64) + 0x60) as *const u64));
+    physics_module__update_rope_matrix(module_accessor.physics_module, true, false);
 }
 
 // This group of functions is normally run after KineticModule::UpdateEnergy and GroundCollision::process
@@ -568,12 +569,18 @@ unsafe fn after_collision(object: *mut BattleObject) {
                 let collision_line_right = ((ground_collision_info as u64) + 0x70) as *mut GroundCollisionLine;
                 let collision_line_down = ((ground_collision_info as u64) + 0xa0) as *mut GroundCollisionLine;
         
-                // This check passes only on the first frame you come into contact with a surface (ground/wall/ceiling)
-                if *(prev_collision_line_up as *mut u64) == 0 && *(collision_line_up as *mut u64) != 0
-                || *(prev_collision_line_left as *mut u64) == 0 && *(collision_line_left as *mut u64) != 0
-                || *(prev_collision_line_right as *mut u64) == 0 && *(collision_line_right as *mut u64) != 0
-                || *(prev_collision_line_down as *mut u64) != *(collision_line_down as *mut u64) 
-                || StatusModule::situation_kind(boma) != StatusModule::prev_situation_kind(boma) {
+                // This check passes only on the first frame you come into contact with/leave a surface (ground/wall/ceiling)
+                // except when jumping, as the game already changes motion earlier on
+                if ( (*(prev_collision_line_up as *mut u64) == 0 && *(collision_line_up as *mut u64) != 0)
+                ||   (*(prev_collision_line_left as *mut u64) == 0 && *(collision_line_left as *mut u64) != 0)
+                ||   (*(prev_collision_line_right as *mut u64) == 0 && *(collision_line_right as *mut u64) != 0)
+                ||   (*(prev_collision_line_down as *mut u64) != *(collision_line_down as *mut u64))
+                ||   (StatusModule::situation_kind(boma) != StatusModule::prev_situation_kind(boma)) )
+                && !( (*boma).is_fighter()
+                    && (*boma).status_frame() == 0
+                    && ((*boma).is_status(*FIGHTER_STATUS_KIND_JUMP) || (*boma).is_prev_status(*FIGHTER_STATUS_KIND_JUMP))
+                    && ((*(prev_collision_line_down as *mut u64) != *(collision_line_down as *mut u64)) != (StatusModule::situation_kind(boma) != StatusModule::prev_situation_kind(boma))) )
+                {
                     // This runs the MAIN status once, ignoring sub-statuses, to ensure we change motion kind when coming into contact with a surface
                     // Otherwise, our motion kind will update a frame late (e.g. landing animation)
                     if VarModule::has_var_module((*boma).object()) { VarModule::on_flag((*boma).object(), vars::common::instance::CHECK_CHANGE_MOTION_ONLY); }

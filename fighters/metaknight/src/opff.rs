@@ -106,7 +106,6 @@ pub fn metaknight_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) 
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		metaknight_frame(fighter);
-        meta_quick::run(fighter);
         // println!("motion: {:#x}", MotionModule::motion_kind(fighter.module_accessor));
     }
 }
