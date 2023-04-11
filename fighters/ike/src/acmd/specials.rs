@@ -163,6 +163,13 @@ unsafe fn ike_special_s_dash_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ike", script = "game_specialairsdash" , category = ACMD_GAME , low_priority)]
+unsafe fn ike_special_air_s_dash_game(fighter: &mut L2CAgentBase) {
+    if is_excute(fighter) {
+        fighter.select_cliff_hangdata_from_name("special_s");
+    }
+}
+
 #[acmd_script( agent = "ike", script = "game_specialsattack" , category = ACMD_GAME , low_priority)]
 unsafe fn ike_special_s_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -392,12 +399,27 @@ unsafe fn ike_special_s_end_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ike", script = "game_specialairsend" , category = ACMD_GAME , low_priority)]
+unsafe fn ike_special_air_s_end_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        fighter.select_cliff_hangdata_from_name("special_s");
+        WorkModule::on_flag(boma, *FIGHTER_IKE_STATUS_SPECIAL_S_FLAG_ATTACK_END);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_IKE_STATUS_SPECIAL_S_FLAG_END_NO_LANDING);
+    }
+}
+
 #[acmd_script( agent = "ike", script = "game_specialhi2" , category = ACMD_GAME , low_priority)]
 unsafe fn ike_special_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
+        boma.select_cliff_hangdata_from_name("special_hi");
         WorkModule::off_flag(boma, *FIGHTER_IKE_INSTANCE_WORK_ID_FLAG_SWORD_FINAL);
         ArticleModule::generate_article(boma, *FIGHTER_IKE_GENERATE_ARTICLE_SWORD, false, 0);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 88, 100, 150, 0, 3.5, 0.0, 5.0, 7.0, Some(0.0), Some(5.0), Some(8.0), 0.8, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_IKE, *ATTACK_REGION_SWORD);
@@ -442,12 +464,33 @@ unsafe fn ike_special_hi2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ike", script = "game_specialhi3" , category = ACMD_GAME , low_priority)]
+unsafe fn ike_special_hi3_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        boma.select_cliff_hangdata_from_name("special_hi");
+        camera!(fighter, *MA_MSC_CMD_CAMERA_CAM_OFFSET, 0, -20);
+        KineticModule::clear_speed_all(boma);
+        ADD_SPEED_NO_LIMIT(fighter, 0, -6);
+        ATTACK(fighter, 0, 0, Hash40::new("sword"), 3.0, 70, 30, 0, 120, 6.5, 0.0, 6.8, -1.0, Some(0.0), Some(6.8), Some(-12.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("sword"), 3.0, 270, 100, 165, 0, 4.8, 0.0, 6.8, -1.0, Some(0.0), Some(6.8), Some(-13.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        AttackModule::set_no_finish_camera(boma, 1, true, false);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("sword"), 3.0, 70, 50, 0, 0, 4.8, 0.0, 6.8, -1.0, None, None, None, 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("sword"), 3.0, 270, 100, 150, 0, 4.8, 0.0, 6.8, -1.0, None, None, None, 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+    }
+}
+
 #[acmd_script( agent = "ike", script = "game_specialairhi2" , category = ACMD_GAME , low_priority)]
 unsafe fn ike_special_air_hi2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
+        boma.select_cliff_hangdata_from_name("special_hi");
         WorkModule::off_flag(boma, *FIGHTER_IKE_INSTANCE_WORK_ID_FLAG_SWORD_FINAL);
         ArticleModule::generate_article(boma, *FIGHTER_IKE_GENERATE_ARTICLE_SWORD, false, 0);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 88, 100, 150, 0, 3.5, 0.0, 5.0, 7.0, Some(0.0), Some(5.0), Some(8.0), 0.8, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_IKE, *ATTACK_REGION_SWORD);
@@ -502,12 +545,15 @@ pub fn install() {
         ike_special_s_dash_game,
         ike_special_s_dash_effect,
         ike_special_s_dash_sound,
+        ike_special_air_s_dash_game,
         ike_special_s_attack_game,
         ike_special_s_attack_effect,
         ike_special_air_s_attack_game,
         ike_special_air_s_attack_effect,
         ike_special_s_end_effect,
+        ike_special_air_s_end_game,
         ike_special_hi2_game,
+        ike_special_hi3_game,
         ike_special_air_hi2_game,
     );
 }
