@@ -323,6 +323,26 @@ unsafe fn control_update(energy: &mut FighterKineticEnergyControl, boma: &mut Ba
         }
     }
 
+    // Double air brake value when above max horizontal jump speed
+    let status_module = *(boma as *const BattleObjectModuleAccessor as *const u64).add(0x8);
+    if !*(status_module as *const bool).add(0x12a)
+    && boma.status_frame() > 0 {
+        let run_speed_max = WorkModule::get_param_float(boma, hash40("run_speed_max"), 0);
+        let ratio = VarModule::get_float(boma.object(), vars::common::instance::JUMP_SPEED_RATIO);
+        // get the multiplier for any special mechanics that require additional jump speed max (meta quick, etc)
+        let mut jump_speed_max_mul = VarModule::get_float(boma.object(), vars::common::instance::JUMP_SPEED_MAX_MUL);
+        match jump_speed_max_mul {
+            // if its not between 0.1 and 3.0, it is likely not a real value and we should ignore it
+            0.1..=3.0 => {},
+            _ => { jump_speed_max_mul = 1.0 }
+        }
+        let jump_speed_x_max = run_speed_max * ratio * jump_speed_max_mul;
+        if StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR 
+        && energy.speed.x.abs() >= jump_speed_x_max {
+            energy.speed_brake.x *= 2.0;
+        }
+    }
+
     energy.process(boma);
 
     let status_module = *(boma as *const BattleObjectModuleAccessor as *const u64).add(0x8);

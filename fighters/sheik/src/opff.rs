@@ -5,9 +5,10 @@ use globals::*;
 
  
 unsafe fn bouncing_fish_return_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if status_kind == *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_RETURN && boma.status_frame() <= 14 {
+    if status_kind == *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_RETURN && boma.status_frame() > 14 {
         if situation_kind == *SITUATION_KIND_AIR {
             boma.check_jump_cancel(false);
+            boma.check_airdodge_cancel();
         }
     }
 }
