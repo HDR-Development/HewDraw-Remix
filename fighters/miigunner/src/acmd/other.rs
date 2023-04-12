@@ -338,27 +338,7 @@ unsafe fn miigunner_stealthbomb_tame_effect(fighter: &mut L2CAgentBase) {
             VarModule::set_int64(gunner, vars::miigunner::instance::STEALTHBOMB_EFF_HANDLER, flash_handle);
         }
 	}
-    blend_effect_rgb!(*FIGHTER_KIND_MIIGUNNER, vars::miigunner::instance::STEALTHBOMB_EFF_HANDLER, 101.0, 120.0, Vector3f::new(0.15, 0.15, 10.0), Vector3f::new(10.0, 0.15, 0.15), true);
-    // for h in 101..=120 {
-	// 	if is_excute(fighter) {
-	// 		let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-    // 		if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_MIIGUNNER {
-    //     		let gunner = utils::util::get_battle_object_from_id(owner_id);
-	// 			let flash_handle = VarModule::get_int64(gunner, vars::miigunner::instance::STEALTHBOMB_EFF_HANDLER);
-	// 			let start_color = Vector3f { x: 0.15, y: 0.15, z: 10.0 };
-    //             let end_color = Vector3f { x: 10.0, y: 0.15, z: 0.15 };
-    //             // Smoothly interpolate from starting to ending color
-    //             let blend_vector = Vector3f {
-    //                 x: start_color.x + ((end_color.x - start_color.x) * (((h as f32) - 100.0) / 20.0)),
-    //                 y: start_color.y + ((end_color.y - start_color.y) * (((h as f32) - 100.0) / 20.0)),
-    //                 z: start_color.z + ((end_color.z - start_color.z) * (((h as f32) - 100.0) / 20.0))
-    //             };
-    //             // Apply color blend
-    //             EffectModule::set_rgb(boma, flash_handle as u32, blend_vector.x, blend_vector.y, blend_vector.z);
-	// 		}
-	// 	}
-	// 	wait(lua_state, 1.0);
-	// }
+    utils::blend_effect_rgb!(fighter, *FIGHTER_KIND_MIIGUNNER, vars::miigunner::instance::STEALTHBOMB_EFF_HANDLER, 101.0, 120.0, (0.15, 0.15, 10.0), (10.0, 0.15, 0.15), true);
 }
 
 #[acmd_script( agent = "miigunner_stealthbomb_s", script = "game_move" , category = ACMD_GAME , low_priority)]
