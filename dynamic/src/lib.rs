@@ -37,9 +37,9 @@ pub use frame_info::*;
 /// * `is_article` - Set to true if being applied to an article's effect acmd, false if it is in the fighter's effect acmd
 #[macro_export]
 macro_rules! blend_effect_rgb {
-    ($fighter:expr, $fighter_kind:expr, $effect_handler:expr, $start_frame:expr, $end_frame:expr, ($r1:expr, $g1:expr, $b1:expr), ($r2:expr, $g2:expr, $g3:expr), $is_article:expr) => {
+    ($fighter:expr, $fighter_kind:expr, $effect_handler:expr, $start_frame:expr, $end_frame:expr, ($r1:expr, $g1:expr, $b1:expr), ($r2:expr, $g2:expr, $b2:expr), $is_article:expr) => {
         let start_color = Vector3f::new($r1 as f32, $g1 as f32, $b1 as f32);
-        let end_color = Vector3f::new($r1 as f32, $g1 as f32, $b1 as f32);
+        let end_color = Vector3f::new($r2 as f32, $g2 as f32, $b2 as f32);
         let eff_handle = if $is_article {
             let owner_id = WorkModule::get_int($fighter.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
             let owner_object = get_battle_object_from_id(owner_id);
