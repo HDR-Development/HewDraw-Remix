@@ -11,7 +11,7 @@ unsafe fn tantan_attack_hi4_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
     frame(lua_state, 4.0);
-    FT_MOTION_RATE(fighter, 2.0);
+    FT_MOTION_RATE(fighter, 4.0/(6.0-4.0));
     frame(lua_state, 6.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {

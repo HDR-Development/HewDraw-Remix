@@ -228,7 +228,7 @@ unsafe fn tantan_special_hi_air_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_TANTAN_STATUS_SPECIAL_HI_FLAG_REVERSE_LR);
     }
     frame(lua_state, 5.0);
-    FT_MOTION_RATE(fighter, 1.75);
+    FT_MOTION_RATE(fighter, 5.0/(8.0-5.0));
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK);

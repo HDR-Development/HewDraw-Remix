@@ -54,7 +54,7 @@ unsafe fn tantan_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 2, 0, Hash40::new("top"), 11.0, 80, 79, 0, 70, 4.5, 0.0, 6.0, -2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     frame(lua_state, 18.0);
-    FT_MOTION_RATE(fighter, 10.0/(41.0-18.0));
+    FT_MOTION_RATE(fighter, 14.0/(41.0-18.0));
     frame(lua_state, 36.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
@@ -125,7 +125,7 @@ unsafe fn tantan_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "tantan", script = "game_attackairn", category = ACMD_GAME, low_priority)]
 unsafe fn tantan_attack_air_n_game(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
-    FT_MOTION_RATE(fighter, 1.5);
+    FT_MOTION_RATE(fighter, 3.0/(3.0-1.0));
     frame(fighter.lua_state_agent, 3.0);
     FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 6.0);
