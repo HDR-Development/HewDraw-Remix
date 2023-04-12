@@ -5,11 +5,15 @@ use globals::*;
 
  
 unsafe fn air_slash_cancels(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, cat1: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-            if frame > 22.0 {
+            if frame > 23.0 {
                 if boma.is_cat_flag(Cat1::AirEscape) {
                     VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
+                    ControlModule::reset_trigger(boma);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
                 }
             }

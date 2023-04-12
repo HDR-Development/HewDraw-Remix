@@ -58,6 +58,23 @@ unsafe extern "C" fn status_turn_main(fighter: &mut L2CFighterCommon) -> L2CValu
         let stick_x = fighter.global_table[STICK_X].get_f32();
         let turn_work_lr: f32 = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_TURN_WORK_FLOAT_LR);
 
+        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
+        && stick_x * -1.0 * turn_work_lr < dash_stick_x  // if left stick is below dash threshold
+        && VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN)  // AND you are currently in a smash turn
+        && StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_DASH  // AND your previous status was a dash (not turn)
+        && MotionModule::frame(fighter.module_accessor) == 1.0  // AND you are on frame 2 of your smash turn
+        && VarModule::is_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT) {  // AND you input smash turn within dash's perfect pivot window
+            // perfect pivot
+            VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
+            VarModule::off_flag(fighter.battle_object, vars::common::instance::CAN_PERFECT_PIVOT);
+            let dash_speed: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0);
+            let speed_mul = ParamModule::get_float(fighter.object(), ParamType::Common, "perfect_pivot_speed_mul");
+            let pivot_boost = dash_speed * speed_mul * PostureModule::lr(fighter.module_accessor);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, pivot_boost);
+            app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+        }
+
         if !status_turncommon(fighter).get_bool() {
             if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
             && MotionModule::frame(fighter.module_accessor) >= 1.0 {
@@ -69,8 +86,15 @@ unsafe extern "C" fn status_turn_main(fighter: &mut L2CFighterCommon) -> L2CValu
                     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_SMASH_TURN);
                     interrupt!(fighter, FIGHTER_STATUS_KIND_DASH, true);
                 }
+
+                let lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1);
                 if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0 {
-                    interrupt!(fighter, FIGHTER_STATUS_KIND_TURN_DASH, true);
+                    let next_status = if [*FIGHTER_KIND_RYU, *FIGHTER_KIND_KEN, *FIGHTER_KIND_DOLLY, *FIGHTER_KIND_DEMON].contains(&fighter.kind()) && lr != 0.0 {
+                        FIGHTER_RYU_STATUS_KIND_DASH_BACK
+                    } else {
+                        FIGHTER_STATUS_KIND_TURN_DASH
+                    };
+                    interrupt!(fighter, next_status, true);
                 }
             }
             return L2CValue::I32(0);

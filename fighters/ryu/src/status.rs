@@ -32,7 +32,7 @@ pub fn install() {
         statuses::ryu::AIR_DASH,
         StatusInfo::new()
             .with_init(air_dash_init)
-            .with_pre(status_pre_EscapeAir)
+            .with_pre(air_dash_pre)
             .with_main(air_dash_main)
             .with_end(status_end_EscapeAir)
     );
@@ -207,7 +207,9 @@ unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 
 #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_ESCAPE_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn escape_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH) || fighter.handle_waveland(false) {
+    if fighter.global_table[PREV_STATUS_KIND] != FIGHTER_STATUS_KIND_DAMAGE_FALL
+    && (VarModule::is_flag(fighter.battle_object, vars::common::instance::PERFECT_WAVEDASH) || fighter.handle_waveland(false))
+    {
         VarModule::on_flag(fighter.battle_object, vars::common::status::SHOULD_WAVELAND);
         GroundModule::attach_ground(fighter.module_accessor, true);
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
@@ -239,17 +241,42 @@ unsafe fn escape_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
             // 2. change_motion to run so we change into airdodge animation
             // 3. Certain flags/transition terms to be set, such as FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR
             let air_dash_status_kind = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::ryu::AIR_DASH);
-            fighter.change_status(
-                air_dash_status_kind.into(),
-                false.into()
-            );
-            return 0.into();
+            StatusModule::set_status_kind_interrupt(fighter.module_accessor, air_dash_status_kind);
+            return 1.into();
         }
     }
     StatusModule::init_settings(
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_AIR),
-        *FIGHTER_KINETIC_TYPE_MOTION_FALL,
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_AIR as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        false,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_DISABLE,
+        false,
+        false,
+        false,
+        0,
+        0,
+        0,
+        0
+    );
+    0.into()
+}
+
+pub unsafe extern "C" fn air_dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_AIR),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
         *GROUND_CORRECT_KIND_AIR as u32,
         app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         false,
@@ -275,18 +302,74 @@ unsafe fn escape_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub unsafe extern "C" fn air_dash_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE);
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR);
 
-    // Clear knockback energy for airdash out of hitstun
+    let stick_x = fighter.global_table[STICK_X].clone();
+    let stick_y = fighter.global_table[STICK_Y].clone();
+    StatusModule::set_situation_kind(fighter.module_accessor, app::SituationKind(*SITUATION_KIND_AIR), true);
+    let stick_vec = sv_math::vec2_normalize(stick_x.get_f32(), stick_y.get_f32());
+    WorkModule::set_float(fighter.module_accessor, stick_vec.x, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
+    WorkModule::set_float(fighter.module_accessor, stick_vec.y, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
+    let escape_air_slide_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_speed"));
+    let escape_air_slide_speed_vec = Vector2f{x: escape_air_slide_speed * stick_vec.x, y: escape_air_slide_speed * stick_vec.y};
+    
     fighter.clear_lua_stack();
-    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
-    app::sv_kinetic_energy::clear_speed(fighter.lua_state_agent);
+    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, ENERGY_STOP_RESET_TYPE_FREE, escape_air_slide_speed_vec.x, escape_air_slide_speed_vec.y, 0.0, 0.0, 0.0);
+    app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+
+    fighter.clear_lua_stack();
+    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
+    app::sv_kinetic_energy::set_stable_speed(fighter.lua_state_agent);
+
+    fighter.clear_lua_stack();
+    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, -1.0, -1.0);
+    app::sv_kinetic_energy::set_limit_speed(fighter.lua_state_agent);
+
+    KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
+    KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+
+    EffectModule::req_on_joint(
+        fighter.module_accessor,
+        Hash40::new("sys_smash_flash_s"),
+        Hash40::new("hip"),
+        &Vector3f{x: 0.0, y: 4.0, z: 8.0},
+        &Vector3f::zero(),
+        1.1,
+        &Vector3f{x: 18.0, y: 12.0, z: 0.0},
+        &Vector3f::zero(),
+        false,
+        0,
+        0,
+        0
+    );
 
     0.into()
 }
 
 // Air Dash main status
 pub unsafe extern "C" fn air_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_sub_escape_air_uniq as *const () as _));
+    ControlModule::reset_trigger(fighter.module_accessor);
+    WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO);
+    let enables = [
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL_JUMP_BUTTON,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL_JUMP,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_CEIL
+    ];
+    for x in enables.iter() {
+        WorkModule::enable_transition_term(fighter.module_accessor, *x);
+    }
+    WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_INSTANCE_WORK_ID_INT_NO_WATER_INOUT_FRAME);
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("escape_air_slide"), 0.0, 1.0, false, 0.0, false, false);
+    VarModule::on_flag(fighter.battle_object, vars::common::instance::ENABLE_AIR_ESCAPE_MAGNET);
+
     fighter.main_shift(air_dash_main_loop)
 }
 
@@ -318,13 +401,65 @@ unsafe extern "C" fn air_dash_main_loop(fighter: &mut L2CFighterCommon) -> L2CVa
     if frame == 34 {
         smash_script::notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
+
+    if frame <= WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("item_air_catch_frame_escape")) {
+        fighter.sub_GetLightItemImm(L2CValue::Void());
+    }
+    air_dash_exec(fighter);
     
-    if !StatusModule::is_changing(fighter.module_accessor) {
-        if !fighter.sub_escape_air_common_main().get_bool() {
-            fighter.sub_escape_check_rumble();
-        }
+    if !fighter.sub_escape_air_common_main().get_bool() {
+        fighter.sub_escape_check_rumble();
     }
     0.into()
+}
+
+unsafe extern "C" fn air_dash_exec(fighter: &mut L2CFighterCommon) {
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_KINE_FALL) {
+        return;
+    }
+    if !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING) {
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING);
+    }
+    let frame = fighter.global_table[CURRENT_FRAME].get_i32();
+    if frame >= 1 {
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_KEEP_AIR_TURNED_OFF) {
+            StatusModule::set_situation_kind(fighter.module_accessor, app::SituationKind(*SITUATION_KIND_AIR), false);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_KEEP_AIR_TURNED_OFF);
+        }
+        let speed_mul = ParamModule::get_float(fighter.battle_object, ParamType::Common, "escape_air_slide_speed_mul");
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, speed_mul, speed_mul);
+        app::sv_kinetic_energy::mul_speed(fighter.lua_state_agent);
+    }
+    let fall_frame = ParamModule::get_int(fighter.battle_object, ParamType::Common, "escape_air_slide_fall_frame");
+    if frame >= fall_frame {
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
+        let speed_x = app::sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
+        let speed_y = app::sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
+
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST_NO_CAP, speed_x, 0.0, 0.0, 0.0, 0.0);
+        app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, speed_y, 0.0, 0.0, 0.0);
+        app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        app::sv_kinetic_energy::enable(fighter.lua_state_agent);
+
+        KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_STOP, fighter.module_accessor);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_KINE_FALL);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY);
+    }
 }
 
 // FIGHTER_STATUS_KIND_WAIT //

@@ -82,6 +82,7 @@ unsafe fn gaogaen_attack_13_game(fighter: &mut L2CAgentBase) {
 unsafe fn gaogaen_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.91);
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);

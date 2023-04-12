@@ -24,7 +24,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
     let status_kind = StatusModule::status_kind(boma);
     let fighter_kind = boma.kind();
 
-    let rising: f32 = KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY); // Rising while jumping/airdodging
+    let rising: f32 = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN); // Rising while jumping/airdodging
 
     let tether_zair = boma.is_fighter()
                         && [*FIGHTER_KIND_LUCAS, *FIGHTER_KIND_YOUNGLINK, *FIGHTER_KIND_TOONLINK, *FIGHTER_KIND_SAMUS, *FIGHTER_KIND_SAMUSD, *FIGHTER_KIND_SZEROSUIT].contains(&fighter_kind)
@@ -47,7 +47,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
     // Ledgehog code
     let pos = GroundModule::hang_cliff_pos_3f(boma);
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32;
-    for object_id in util::get_all_player_battle_object_ids() {
+    for object_id in util::get_all_active_battle_object_ids() {
         let object = ::utils::util::get_battle_object_from_id(object_id);
         if !object.is_null() {
             if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) == WorkModule::get_int(&mut *(*object).module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID)
@@ -947,6 +947,14 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
         if(status_kind == *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_GLIDING){
             if VarModule::get_float(boma.object(), vars::pickel::status::GLIDE_TIMER) < 40.0 /*40 frames of up b travel time*/ {
                 return 1;
+            }
+        }
+    }
+
+    if fighter_kind == *FIGHTER_KIND_EFLAME {
+        if status_kind == *FIGHTER_EFLAME_STATUS_KIND_SPECIAL_HI_JUMP {
+            if frame < 3.0 {
+                return 0;
             }
         }
     }

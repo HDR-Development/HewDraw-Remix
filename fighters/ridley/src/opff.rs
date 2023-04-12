@@ -98,7 +98,7 @@ unsafe fn tail_lean(boma: &mut BattleObjectModuleAccessor, lean_frame: f32, retu
 // Handles angling of tail
 unsafe fn angled_skewer(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.is_situation(*SITUATION_KIND_GROUND) {
-        tail_lean(fighter.boma(), 30.0, 40.0, 25.0, -15.0);
+        tail_lean(fighter.boma(), 31.0, 41.0, 25.0, -15.0);
     }
 }
 

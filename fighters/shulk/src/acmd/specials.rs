@@ -10,13 +10,10 @@ unsafe fn shulk_special_hi_game(fighter: &mut L2CAgentBase) {
         SA_SET(fighter, *SITUATION_KIND_AIR);
         WorkModule::on_flag(boma,*FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
     }
-    wait(lua_state, 1.0);
+    frame(lua_state, 10.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma,*FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
         WorkModule::on_flag(boma,*FIGHTER_SHULK_STATUS_SPECIAL_HI_FLAG_IS_ADD_SHIFT_RESERVE_INPUT);
-    }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
         ATTACK(fighter, 1, 0, Hash40::new("haver"), 6.0, 78, 100, 140, 0, 3.8, 0.0, 7.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 0, 0, Hash40::new("haver"), 6.0, 78, 100, 140, 0, 3.8, 0.0, 2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 3, 0, Hash40::new("haver"), 6.0, 78, 100, 140, 0, 3.8, 0.0, 7.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);

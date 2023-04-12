@@ -6,7 +6,7 @@ use globals::*;
 
 unsafe fn psi_magnet_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32, frame: f32) {
     if [*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_HIT, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind) {
-        if frame > 1.0 {
+        if boma.status_frame() > 0 {
             if !boma.is_in_hitlag() {
                 boma.check_jump_cancel(false);
             }
@@ -343,18 +343,21 @@ unsafe fn joint_rotator(fighter: &mut L2CFighterCommon, frame: f32, joint: Hash4
 }
 
 unsafe fn smash_s_angle_handler(fighter: &mut L2CFighterCommon, frame: f32) {
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_S4_START]) {
         // Up Tilted Side Smash
         if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP) {
-            joint_rotator(fighter, frame, Hash40::new("waist"), Vector3f{x: 0.0, y:-30.0, z:0.0}, 10.0, 14.0, 16.0, 24.0);
-            joint_rotator(fighter, frame, Hash40::new("bust"), Vector3f{x: 0.0, y:-20.0, z:0.0}, 10.0, 14.0, 16.0, 24.0);
+            joint_rotator(fighter, frame, Hash40::new("waist"), Vector3f{x: 0.0, y:-30.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("bust"), Vector3f{x: 0.0, y:-20.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
         }
         // Down Tilted Side Smash
         else if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN) {
-            joint_rotator(fighter, frame, Hash40::new("waist"), Vector3f{x: 0.0, y:10.0, z:0.0}, 10.0, 14.0, 16.0, 24.0);
-            joint_rotator(fighter, frame, Hash40::new("bust"), Vector3f{x: 0.0, y:10.0, z:0.0}, 10.0, 14.0, 16.0, 24.0);
-            joint_rotator(fighter, frame, Hash40::new("handl"), Vector3f{x: 0.0, y:20.0, z:0.0}, 10.0, 14.0, 16.0, 24.0);
-            joint_rotator(fighter, frame, Hash40::new("handr"), Vector3f{x: 0.0, y:20.0, z:0.0}, 10.0, 14.0, 16.0, 24.0);
+            joint_rotator(fighter, frame, Hash40::new("waist"), Vector3f{x: 0.0, y:10.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("bust"), Vector3f{x: 0.0, y:10.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("handl"), Vector3f{x: 0.0, y:20.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("handr"), Vector3f{x: 0.0, y:20.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
         }
     }
 }
