@@ -101,17 +101,18 @@ unsafe fn air_hado_distinguish(fighter: &mut L2CFighterCommon, boma: &mut Battle
     if !boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND,
     ]) {
         return;
     }
 
     // EX Hado
-    if !VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_EX)
+    if !boma.is_status_one_of(&[*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND])
     && boma.is_button_on(Buttons::Attack)
     && boma.is_button_on(Buttons::Special)
     && frame <= 4.0
     && MeterModule::drain(boma.object(), 1) {
-        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_CURRENT_HADOKEN_EX);
+        boma.change_status_req(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, true);
     }
 
     // set VarModule flag on f12 - this flag changes hado properties

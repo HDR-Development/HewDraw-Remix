@@ -20,6 +20,10 @@
       <int hash="life_w">57</int>
       <int hash="life_m">50</int>
       <int hash="life_s">43</int>
+      <int hash="life_w_sp">57</int>
+      <int hash="life_m_sp">50</int>
+      <int hash="life_s_sp">43</int>
+      <int hash="max_hit_num">2</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

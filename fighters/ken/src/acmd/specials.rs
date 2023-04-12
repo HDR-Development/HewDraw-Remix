@@ -106,7 +106,9 @@ unsafe fn ken_special_n_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-        MeterModule::add(fighter.battle_object, 2.0);
+        if !fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+            MeterModule::add(fighter.battle_object, 2.0);
+        }
         FT_MOTION_RATE(fighter, 36.0 / (58.0 - 14.0));
     }
     frame(lua_state, 22.0);
@@ -141,7 +143,9 @@ unsafe fn ken_special_air_n_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-        MeterModule::add(fighter.battle_object, 2.0);
+        if !fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+            MeterModule::add(fighter.battle_object, 2.0);
+        }
         FT_MOTION_RATE(fighter, 36.0 / (70.0 - 15.0));
     }
     frame(lua_state, 40.0);
@@ -152,6 +156,126 @@ unsafe fn ken_special_air_n_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 70.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
+    }
+}
+
+#[acmd_script( agent = "ken", scripts = ["sound_specialn", "sound_specialairn"], category = ACMD_SOUND, low_priority )]
+unsafe fn sound_specialn(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED) {
+        wait(lua_state, 10.0);
+        if is_excute(fighter) {
+            PLAY_SE(fighter, Hash40::new("se_ken_special_n03"));
+        }
+        wait(lua_state, 2.0);
+        if is_excute(fighter) {
+            PLAY_SE(fighter, Hash40::new("vc_ken_special_n02"));
+        }
+    } else{
+        if !WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
+            if is_excute(fighter) {
+                PLAY_SE(fighter, Hash40::new("se_ken_special_n01"));
+            }
+            wait(lua_state, 10.0);
+            if is_excute(fighter) {
+                PLAY_SE(fighter, Hash40::new("se_ken_special_n03"));
+            }
+            wait(lua_state, 2.0);
+            if is_excute(fighter) {
+                PLAY_SE(fighter, Hash40::new("vc_ken_special_n01"));
+            }
+        } else {
+            if is_excute(fighter) {
+                PLAY_SE(fighter, Hash40::new("se_ken_command_success"));
+                PLAY_SE(fighter, Hash40::new("se_ken_special_n01"));
+            }
+            wait(lua_state, 10.0);
+            if is_excute(fighter) {
+                PLAY_SE(fighter, Hash40::new("se_ken_special_n03"));
+            }
+            wait(lua_state, 2.0);
+            if is_excute(fighter) {
+                PLAY_SE(fighter, Hash40::new("vc_ken_special_n01_command"));
+            }
+        }
+    }
+}
+
+#[acmd_script( agent = "ken", script = "effect_specialn", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_specialn(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
+        if is_excute(fighter) {
+            EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 11, -6, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        }
+    }
+    frame(lua_state, 4.0);
+    if !WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED) {
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("ken_hadoken_hold"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1, true);
+            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+                FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
+            }
+        }
+        frame(lua_state, 6.0);
+        if is_excute(fighter) {
+            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+                FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
+            }
+        }
+        frame(lua_state, 8.0);
+        if is_excute(fighter) {
+            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+                FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
+            } else {
+                FLASH(fighter, 0.392, 1, 1, 0.353);
+            }
+        }
+        frame(lua_state, 10.0);
+        if is_excute(fighter) {
+            FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 12, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+                FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
+            }
+        }
+        frame(lua_state, 11.0);
+        if is_excute(fighter) {
+            COL_NORMAL(fighter);
+            EFFECT_FOLLOW(fighter, Hash40::new("ken_hadoken_shot"), Hash40::new("top"), 0, 11.5, 14.5, 0, 0, 0, 1, true);
+        }
+        frame(lua_state, 12.0);
+        if is_excute(fighter) {
+            FOOT_EFFECT(fighter, Hash40::new("ken_hadoken_smoke"), Hash40::new("top"), 8, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+                FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
+            }
+        }
+        frame(lua_state, 14.0);
+        if is_excute(fighter) {
+            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+                FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
+            }
+        }
+        frame(lua_state, 16.0);
+        if is_excute(fighter) {
+            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+                COL_NORMAL(fighter);
+            }
+        }
+    }
+    else{
+        frame(lua_state, 10.0);
+        if is_excute(fighter) {
+            FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 12, 0, -4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        }
+        frame(lua_state, 12.0);
+        if is_excute(fighter) {
+            EFFECT(fighter, Hash40::new("sys_misfire"), Hash40::new("throw"), 0, 0, 0, 90, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+        }
     }
 }
 
@@ -168,18 +292,53 @@ unsafe fn effect_specialairn(fighter: &mut L2CAgentBase) {
     if !WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED) {
         frame(lua_state, 4.0);
         if is_excute(fighter) {
-            if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_TYPE) == 0 {
-                EFFECT_FOLLOW(fighter, Hash40::new("ken_hadoken_hold"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
+            EFFECT_FOLLOW(fighter, Hash40::new("ken_hadoken_hold"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
+            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+                FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
+            }
+        }
+        frame(lua_state, 6.0);
+        if is_excute(fighter) {
+            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+                FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
             }
         }
         frame(lua_state, 8.0);
         if is_excute(fighter) {
-            FLASH(fighter, 0.392, 1, 1, 0.353);
+            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+                FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
+            } else {
+                FLASH(fighter, 0.392, 1, 1, 0.353);
+            }
+        }
+        frame(lua_state, 10.0);
+        if is_excute(fighter) {
+            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+                FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
+            }
         }
         frame(lua_state, 11.0);
         if is_excute(fighter) {
             COL_NORMAL(fighter);
             EFFECT_FOLLOW(fighter, Hash40::new("ken_hadoken_shot"), Hash40::new("top"), 0, 6, 11, 30, 0, 0, 1, true);
+        }
+        frame(lua_state, 12.0);
+        if is_excute(fighter) {
+            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+                FLASH(fighter, 0.95, 0.522, 0.051, 1.7);
+            }
+        }
+        frame(lua_state, 14.0);
+        if is_excute(fighter) {
+            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+                FLASH(fighter, 0.95, 0.522, 0.051, 0.7);
+            }
+        }
+        frame(lua_state, 16.0);
+        if is_excute(fighter) {
+            if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
+                COL_NORMAL(fighter);
+            }
         }
     } else {
         frame(lua_state, 14.0);
@@ -1046,7 +1205,9 @@ pub fn install() {
         game_attackcommand3,
         ken_special_n_game,
         ken_special_air_n_game,
+        effect_specialn,
         effect_specialairn,
+        sound_specialn,
         ken_special_s_start_game,
         ken_special_s_game,
         ken_special_s_end_game,
