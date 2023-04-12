@@ -108,6 +108,7 @@ unsafe fn air_hado_distinguish(fighter: &mut L2CFighterCommon, boma: &mut Battle
 
     // EX Hado
     if !boma.is_status_one_of(&[*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND])
+    && !ArticleModule::is_exist(boma, *FIGHTER_RYU_GENERATE_ARTICLE_HADOKEN)
     && boma.is_button_on(Buttons::Attack)
     && boma.is_button_on(Buttons::Special)
     && frame <= 4.0
@@ -295,6 +296,7 @@ unsafe fn special_fadc_super(boma: &mut BattleObjectModuleAccessor, frame: f32) 
         boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
         ]) && frame > 13.0
     ) {
         if boma.is_cat_flag(Cat4::SpecialSCommand | Cat4::SpecialHiCommand) 
