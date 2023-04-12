@@ -16,14 +16,15 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     }
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_CatchDash)]
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_CatchDash_common)]
 unsafe fn status_pre_CatchDash(fighter: &mut L2CFighterCommon) -> L2CValue {
     JostleModule::set_overlap_rate_mul(fighter.module_accessor, 6.666);  // 0.3 (base overlap rate) * 6.666 = 2.0 overlap rate
     call_original!(fighter)
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_CatchDash)]
-unsafe fn status_end_CatchDash(fighter: &mut L2CFighterCommon) -> L2CValue {
-    JostleModule::set_overlap_rate_mul(fighter.module_accessor, 1.0);  // reset to 0.3 overlap rate
-    call_original!(fighter)
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_bind_address_call_status_end_CatchDash)]
+unsafe fn status_end_CatchDash(agent: &mut L2CAgent) -> L2CValue {
+    let boma = GetObjects::get_boma(agent);
+    JostleModule::set_overlap_rate_mul(boma, 1.0);  // reset to 0.3 overlap rate
+    0.into()
 }
