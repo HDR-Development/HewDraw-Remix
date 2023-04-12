@@ -1,17 +1,70 @@
 
 use super::*;
 
+#[acmd_script( agent = "szerosuit", script = "game_specialnstart", category = ACMD_GAME, low_priority )]
+unsafe fn szerosuit_special_n_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 15.0/(21.0-1.0));
+}
+
+#[acmd_script( agent = "szerosuit", script = "game_specialairnstart", category = ACMD_GAME, low_priority )]
+unsafe fn szerosuit_special_air_n_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 15.0/(21.0-1.0));
+}
+
+#[acmd_script( agent = "szerosuit", script = "game_specialnshoot", category = ACMD_GAME, low_priority )]
+unsafe fn szerosuit_special_n_shoot_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 26.0/(28.0-1.0));
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_N_FLAG_SHOOT);
+        ArticleModule::generate_article(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_PARALYZER_BULLET, false, -1);
+    }
+}
+
+
+#[acmd_script( agent = "szerosuit", script = "game_specialairnshoot", category = ACMD_GAME, low_priority )]
+unsafe fn szerosuit_special_air_n_shoot_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 26.0/(28.0-1.0));
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_N_FLAG_SHOOT);
+        ArticleModule::generate_article(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_PARALYZER_BULLET, false, -1);
+    }
+}
+
+
+#[acmd_script( agent = "szerosuit", script = "game_specialnlanding", category = ACMD_GAME, low_priority )]
+unsafe fn szerosuit_special_n_landing_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 9.0/(14.0-1.0));
+}
+
+
 #[acmd_script( agent = "szerosuit", script = "game_specials" , category = ACMD_GAME , low_priority)]
 unsafe fn szerosuit_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 23.0/(28.0-1.0));
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 23.0/(28.0-1.0));
+        WorkModule::on_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_S_FLAG_S2);
     }
     frame(lua_state, 28.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 15, 100, 90, 0, 4.0, 0.0, 8.0, 9.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_WHIP);
         ATTACK(fighter, 1, 1, Hash40::new("top"), 4.0, 20, 100, 80, 0, 3.5, 0.0, 8.0, 19.0, Some(0.0), Some(8.0), Some(17.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_WHIP);
         ATTACK(fighter, 2, 1, Hash40::new("top"), 4.0, 25, 100, 50, 0, 4.0, 0.0, 8.0, 30.0, Some(0.0), Some(8.0), Some(26.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_WHIP);
@@ -19,7 +72,6 @@ unsafe fn szerosuit_special_s_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 30.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_S_FLAG_S2);
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 32.0);
@@ -37,13 +89,9 @@ unsafe fn szerosuit_whip_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, (28.0-1.0)/23.0);
-    }
+    MotionModule::set_rate(boma, (28.0-1.0)/23.0);
     frame(lua_state, 28.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1.0);
-    }
+    MotionModule::set_rate(boma, 1.0);
     frame(lua_state, 48.0);
     if is_excute(fighter) {
         VisibilityModule::set_whole(boma, false);
@@ -106,9 +154,7 @@ unsafe fn szerosuit_whip_special_air_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1.0);
-    }
+    MotionModule::set_rate(boma, 1.0);
     frame(lua_state, 48.0);
     if is_excute(fighter) {
         VisibilityModule::set_whole(boma, false);
@@ -119,11 +165,23 @@ unsafe fn szerosuit_whip_special_air_s_game(fighter: &mut L2CAgentBase) {
 unsafe fn szerosuit_special_s_2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 28.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 15, 100, 90, 0, 4.0, 0.0, 8.0, 9.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_WHIP);
+        ATTACK(fighter, 1, 1, Hash40::new("top"), 4.0, 20, 100, 80, 0, 3.5, 0.0, 8.0, 19.0, Some(0.0), Some(8.0), Some(17.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_WHIP);
+        ATTACK(fighter, 2, 1, Hash40::new("top"), 4.0, 25, 100, 50, 0, 4.0, 0.0, 8.0, 30.0, Some(0.0), Some(8.0), Some(26.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_WHIP);
+        AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
     frame(lua_state, 32.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 5, Hash40::new("top"), 7.0, 110, 60, 0, 90, 6.0, 0.0, 8.0, 34.0, Some(0.0), Some(8.0), Some(30.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_WHIP);
         //AttackModule::set_add_reaction_frame(boma, 0, 4.0, false);
-    }
+        }
     wait(lua_state, 4.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
@@ -135,13 +193,9 @@ unsafe fn szerosuit_whip_special_s2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, (28.0-1.0)/23.0);
-    }
+    MotionModule::set_rate(boma, (28.0-1.0)/23.0);
     frame(lua_state, 28.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(boma, 1.0);
-    }
+    MotionModule::set_rate(boma, 1.0);
     frame(lua_state, 57.0);
     if is_excute(fighter) {
         VisibilityModule::set_whole(boma, false);
@@ -154,15 +208,25 @@ unsafe fn szerosuit_whip_special_s2_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("szero_whip_flash"), Hash40::new("plasmawhip1"), 1, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 4.0);
         EFFECT_OFF_KIND(fighter, Hash40::new("szero_pwhip"), true, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 4.0);
         EFFECT_FLW_POS(fighter, Hash40::new("szero_whip"), Hash40::new("attach"), 0, 0, 0, 0, 0, 0, 0.4, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 4.0);
         EFFECT_FOLLOW(fighter, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip2"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 4.0);
         EFFECT_FOLLOW(fighter, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip3"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 4.0);
         EFFECT_FOLLOW(fighter, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip4"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 4.0);
         EFFECT_FOLLOW(fighter, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip5"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 4.0);
         EFFECT_FOLLOW(fighter, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip6"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 4.0);
         EFFECT_FOLLOW(fighter, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip7"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 4.0);
         EFFECT_FOLLOW(fighter, Hash40::new("szero_gbeam_lightning"), Hash40::new("plasmawhip8"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 4.0);
     }
     frame(lua_state, 45.0);
     if is_excute(fighter) {
@@ -182,6 +246,11 @@ unsafe fn szerosuit_whip_special_s2_effect(fighter: &mut L2CAgentBase) {
 unsafe fn szerosuit_special_air_s_2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
+            WorkModule::set_flag(boma, false, *FIGHTER_SZEROSUIT_STATUS_SPECIAL_S_FLAG_S2_CHECK);
+        }
+    }
     frame(lua_state, 32.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 5, Hash40::new("top"), 7.0, 110, 60, 0, 90, 6.0, 0.0, 8.0, 34.0, Some(0.0), Some(8.0), Some(30.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_WHIP);
@@ -199,9 +268,7 @@ unsafe fn szerosuit_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 5.0/(8.0-1.0));
-    }
+    FT_MOTION_RATE(fighter, 5.0/(8.0-1.0));
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         SA_SET(fighter, *SITUATION_KIND_AIR);
@@ -209,11 +276,12 @@ unsafe fn szerosuit_special_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
     }
     frame(lua_state, 8.0);
+    FT_MOTION_RATE(fighter, 2.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 84, 100, 150, 0, 6.0, 0.0, 8.0, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        FT_MOTION_RATE(fighter, 1.0);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 90, 100, 150, 0, 6.0, 0.0, 8.0, 5.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     frame(lua_state, 10.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 1.3, 367, 100, 50, 0, 7.0, 0.0, 19.0, 5.5, None, None, None, 0.75, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -237,7 +305,7 @@ unsafe fn szerosuit_special_hi_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 32.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 48, 208, 0, 50, 8.0, 0.0, 12.5, 11.0, Some(0.0), Some(12.0), Some(9.0), 1.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 48, 208, 0, 40, 8.0, 0.0, 12.5, 11.0, Some(0.0), Some(12.0), Some(9.0), 1.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     wait(lua_state, 3.0);
     if is_excute(fighter) {
@@ -259,9 +327,7 @@ unsafe fn szerosuit_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 5.0/(8.0-1.0));
-    }
+    FT_MOTION_RATE(fighter, 5.0/(8.0-1.0));
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         SA_SET(fighter, *SITUATION_KIND_AIR);
@@ -269,11 +335,12 @@ unsafe fn szerosuit_special_air_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
     }
     frame(lua_state, 8.0);
+    FT_MOTION_RATE (fighter, 2.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 84, 100, 150, 0, 6.0, 0.0, 8.0, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        FT_MOTION_RATE(fighter, 1.0);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 366, 100, 150, 0, 6.0, 0.0, 8.0, 5.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     frame(lua_state, 10.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 1.3, 367, 100, 50, 0, 7.0, 0.0, 19.0, 5.5, None, None, None, 0.75, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -297,7 +364,7 @@ unsafe fn szerosuit_special_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 32.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 48, 196, 0, 50, 8.0, 0.0, 12.5, 11.0, Some(0.0), Some(12.0), Some(9.0), 1.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 48, 196, 0, 35, 8.0, 0.0, 12.5, 11.0, Some(0.0), Some(12.0), Some(9.0), 1.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     wait(lua_state, 3.0);
     if is_excute(fighter) {
@@ -432,6 +499,11 @@ unsafe fn szerosuit_special_air_lw_flip_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        szerosuit_special_n_start_game,
+        szerosuit_special_air_n_start_game,
+        szerosuit_special_n_shoot_game,
+        szerosuit_special_air_n_shoot_game,
+        szerosuit_special_n_landing_game,
         szerosuit_special_s_game,
         szerosuit_whip_special_s_game,
         szerosuit_special_air_s_game,
