@@ -10,17 +10,14 @@ unsafe fn normal_camera(ptr: u64, float: f32) {
 }
 
 // Standardizes normal_camera_min_distance for all stages
-#[skyline::hook(offset = 0x26209b8, inline)]
+#[skyline::hook(offset = 0x26209bc, inline)]
 unsafe fn parse_stprm_normal_camera_min_distance(ctx: &mut skyline::hooks::InlineCtx) {
-    let normal_camera_min_distance: f32 = 125.0;
-    asm!("fmov s0, w8", in("w8") normal_camera_min_distance)
-}
-
-// Standardizes normal_camera_max_distance for all stages
-#[skyline::hook(offset = 0x2620a7c, inline)]
-unsafe fn parse_stprm_normal_camera_max_distance(ctx: &mut skyline::hooks::InlineCtx) {
-    let normal_camera_max_distance: f32 = 1000.0;
-    asm!("fmov s0, w8", in("w8") normal_camera_max_distance)
+    let normal_camera_min_distance: f32;
+    asm!("fmov w20, s0", out("w20") normal_camera_min_distance);
+    if normal_camera_min_distance < 125.0 {
+        let normal_camera_min_distance: f32 = 125.0;
+        asm!("fmov s0, w8", in("w8") normal_camera_min_distance);
+    }
 }
 
 // Standardizes normal_camera_vertical_angle and normal_camera_look_down_vertical_angle for all stages
@@ -46,15 +43,12 @@ unsafe fn parse_stprm_target_interpolation_rate(ctx: &mut skyline::hooks::Inline
 
 pub fn install() {
     unsafe {
-        skyline::patching::Patch::in_text(0x26209b8).nop();
-        skyline::patching::Patch::in_text(0x2620a7c).nop();
         skyline::patching::Patch::in_text(0x2620e50).nop();
         skyline::patching::Patch::in_text(0x2620fec).nop();
     }
     skyline::install_hooks!(
         normal_camera,
         parse_stprm_normal_camera_min_distance,
-        parse_stprm_normal_camera_max_distance,
         parse_stprm_normal_camera_angles,
         parse_stprm_target_interpolation_rate
     );
