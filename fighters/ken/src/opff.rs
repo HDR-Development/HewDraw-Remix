@@ -5,11 +5,11 @@ use globals::*;
 
  
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    special_fadc_super(boma, frame);
+    metered_cancels(boma, frame);
     target_combos(boma);
     rotate_forward_bair(boma);
     turn_run_back_status(fighter, boma, status_kind);
-    fadc_heat_rush(boma, frame);
+    heat_rush(boma, frame);
     air_hado_distinguish(fighter, boma, frame);
     ken_ex_flag_reset(boma);
     ken_ex_shoryu(fighter, boma, cat, status_kind, situation_kind, motion_kind, frame);
@@ -231,40 +231,8 @@ unsafe fn rotate_forward_bair(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
-/// TODO: remove or replace
-/// start_frame: frame to start interpolating the leg rotation
-/// bend_frame: frame to interpolate to the intended angle amount until
-/// return_frame: frame to start interpolating back to regular angle
-/// straight_frame: frame the leg should be at the regular angle again
-unsafe fn fsmash_leg_rotate(boma: &mut BattleObjectModuleAccessor, start_frame: f32, bend_frame: f32, return_frame: f32, straight_frame: f32) {
-    let frame = MotionModule::frame(boma);
-    let end_frame = MotionModule::end_frame(boma);
-    let max_y_rotation = 20.0;
-    let max_z_rotation = 75.0;
-    let mut rotation = Vector3f{x: 0.0, y: 0.0, z: 0.0};
-        
-    if frame >= start_frame && frame < return_frame {
-        // this has to be called every frame, or you snap back to the normal joint angle
-        // interpolate to the respective leg bend angle
-        let calc_y_rotate = max_y_rotation * (frame / (bend_frame - start_frame));
-        let y_rotation = calc_y_rotate.clamp(0.0, max_y_rotation);
-        let calc_z_rotate = max_z_rotation * (frame / (bend_frame - start_frame));
-        let z_rotation = calc_z_rotate.clamp(0.0, max_z_rotation);
-        rotation = Vector3f{x: 0.0, y: y_rotation, z: z_rotation};
-        ModelModule::set_joint_rotate(boma, Hash40::new("kneer"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
-    } else if frame >= return_frame && frame < straight_frame {
-        // linear interpolate back to normal
-        let calc_y_rotate = max_y_rotation *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
-        let y_rotation = calc_y_rotate.clamp(0.0, max_y_rotation);
-        let calc_z_rotate = max_z_rotation *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
-        let z_rotation = calc_z_rotate.clamp(0.0, max_z_rotation);
-        rotation = Vector3f{x: 0.0, y: y_rotation, z: z_rotation};
-        ModelModule::set_joint_rotate(boma, Hash40::new("kneer"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8})
-    }
-}
-
 /// implements heat rush by instantly canceling focus into FADC
-unsafe fn fadc_heat_rush(boma: &mut BattleObjectModuleAccessor, frame: f32) {
+unsafe fn heat_rush(boma: &mut BattleObjectModuleAccessor, frame: f32) {
     if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW]) {
         boma.change_status_req(*FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, false);
     }
@@ -278,9 +246,15 @@ unsafe fn fadc_heat_rush(boma: &mut BattleObjectModuleAccessor, frame: f32) {
 
 /// TODO: make this readable lol
 /// determines situations where we can cancel into downB or super
-unsafe fn special_fadc_super(boma: &mut BattleObjectModuleAccessor, frame: f32) {
-    if (
-        boma.is_status_one_of(&[
+unsafe fn metered_cancels(boma: &mut BattleObjectModuleAccessor, frame: f32) {
+
+    // don't do anything during hitlag
+    if boma.is_in_hitlag() {
+        return;
+    }
+
+    // don't do anything unless we're in a special and hit something (special case for NSpecial)
+    if !((boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END,
@@ -291,34 +265,31 @@ unsafe fn special_fadc_super(boma: &mut BattleObjectModuleAccessor, frame: f32) 
         *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1,
         *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2,
         ]) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-    )
-    || (
-        boma.is_status_one_of(&[
+    ) || (boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
         ]) && frame > 13.0
-    ) {
-        if boma.is_cat_flag(Cat4::SpecialSCommand | Cat4::SpecialHiCommand) 
-        && !boma.is_in_hitlag()
-        && !VarModule::is_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC)
-        && MeterModule::drain(boma.object(), 10) {
-            VarModule::on_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC);
-            WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-            WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
-            WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
-            boma.change_status_req(*FIGHTER_STATUS_KIND_FINAL, false); // TODO: sometimes this doesn't work, but it burned meter
-        }
-        else if boma.is_cat_flag(Cat1::SpecialLw)
-        && !boma.is_in_hitlag()
-        && !VarModule::is_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC)
-        && MeterModule::drain(boma.object(), 2) {
-            VarModule::on_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC);
-            WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
-            boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_LW, false); // TODO: sometimes this doesn't work, but it burned meter
-        }
-    } else {
-        VarModule::off_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC);
+    )) {
+        return;
+    }
+    // from this point on, the fighter is in a valid spot to try and cancel
+    
+    // super cancels
+    if boma.is_cat_flag(Cat4::SpecialSCommand | Cat4::SpecialHiCommand) 
+    && MeterModule::drain(boma.object(), 10) {
+        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+        WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
+        boma.change_status_req(*FIGHTER_STATUS_KIND_FINAL, false);
+        return;
+    }
+    // DSpecial cancels
+    if boma.is_cat_flag(Cat1::SpecialLw)
+    && MeterModule::drain(boma.object(), 2) {
+        WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
+        boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_LW, false);
+        return;
     }
 }
 
