@@ -129,7 +129,9 @@ unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor, status_k
         || ((*boma).kind() == *FIGHTER_KIND_MIIGUNNER
             && [*FIGHTER_STATUS_KIND_SPECIAL_HI].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_GEKKOUGA
-            && [*FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_S_ATTACK].contains(&status_kind)) )
+            && [*FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_S_ATTACK].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_LITTLEMAC
+            && [*FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_S_JUMP].contains(&status_kind)) )
     {
         return true;
     }
