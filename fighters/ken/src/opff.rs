@@ -202,14 +202,9 @@ unsafe fn forward_bair_rotation(boma: &mut BattleObjectModuleAccessor, start_fra
         let calc_body_rotate = max_rotation * ((frame - start_frame) / (bend_frame - start_frame));
         let body_rotation = calc_body_rotate.clamp(0.0, max_rotation);
         rotation = Vector3f{x: 0.0, y: body_rotation, z: 0.0};
-        // println!("current body rotation: {}", body_rotation);
         ModelModule::set_joint_rotate(boma, Hash40::new("rot"), &rotation, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
     } else if frame >= return_frame && frame < straight_frame {
         // linear interpolate back to normal
-        /*
-        let calc_body_rotate = max_rotation *(1.0 - (frame - return_frame) / (straight_frame - return_frame));
-        let body_rotation = calc_body_rotate.clamp(0.0, max_rotation);
-        */
         let calc_body_rotate = 180.0 *((frame - return_frame) / (straight_frame - return_frame)) + 180.0;
         let body_rotation = calc_body_rotate.clamp(180.0, 360.0);
         rotation = Vector3f{x: 0.0, y: body_rotation, z: 0.0};
@@ -244,8 +239,7 @@ unsafe fn heat_rush(boma: &mut BattleObjectModuleAccessor, frame: f32) {
     }
 }
 
-/// TODO: make this readable lol
-/// determines situations where we can cancel into downB or super
+/// determines what cancels can be done out of specials
 unsafe fn metered_cancels(boma: &mut BattleObjectModuleAccessor, frame: f32) {
 
     // don't do anything during hitlag
@@ -293,16 +287,15 @@ unsafe fn metered_cancels(boma: &mut BattleObjectModuleAccessor, frame: f32) {
     }
 }
 
-/// Target combos:
-/// 1: light jab into heavy jab
-/// 2: light up tilt into jab (either)
-/// 3: far light ftilt into hadouken
+/// Target combos
 unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
-
+    if boma.is_in_hitlag() {
+        return;
+    }
     if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
         return;
     }
-
+    // light UTilt --> jab
     if boma.is_motion_one_of(&[Hash40::new("attack_hi3_w")]){
         if boma.is_cat_flag(Cat1::AttackN) 
         && !boma.is_cat_flag(Cat1::AttackLw3)
@@ -313,6 +306,8 @@ unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
             boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK, false);
         }
     }
+
+    // far light FTilt --> NSpecial
     else if boma.is_motion(Hash40::new("attack_s3_s_w")) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N);
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND);
@@ -326,6 +321,8 @@ unsafe fn target_combos(boma: &mut BattleObjectModuleAccessor) {
             boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_N, true);
         }
     }
+
+    // close FTilt --> DSmash
     else if boma.is_motion(Hash40::new("attack_near_w"))
     && boma.is_cat_flag(Cat1::AttackLw4) {
         WorkModule::off_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
