@@ -6,7 +6,7 @@ use globals::*;
  
 unsafe fn duck_jump_cancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_FLY)
-    && fighter.motion_frame() > 20.0
+    && fighter.status_frame() > 20
     && fighter.is_cat_flag(Cat1::SpecialHi) {
         fighter.change_status_req(*FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_END, true);
     }
@@ -35,7 +35,7 @@ pub fn duckhunt_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-#[smashline::weapon_frame_callback]
+#[smashline::weapon_frame_callback(main)]
 pub fn gunman_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe { 
         if weapon.kind() != WEAPON_KIND_DUCKHUNT_GUNMAN {

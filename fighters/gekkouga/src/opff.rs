@@ -6,15 +6,8 @@ use globals::*;
  
 unsafe fn max_water_shuriken_dc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_N_MAX_SHOT {
-        if frame > 11.0 {
-            if situation_kind == *SITUATION_KIND_GROUND {
-                if boma.is_cat_flag(Cat1::Dash) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_DASH, false);
-                }
-                if boma.is_cat_flag(Cat1::TurnDash) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_TURN_DASH, false);
-                }
-            }
+        if frame > 12.0 {
+            boma.check_dash_cancel();
         }
     }
 }
@@ -22,7 +15,7 @@ unsafe fn max_water_shuriken_dc(boma: &mut BattleObjectModuleAccessor, status_ki
 // Greninja Shadow Sneak Smash Attack Cancel
 unsafe fn shadow_sneak_smash_attack_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_S_ATTACK {
-        if frame < 6.0 {
+        if boma.status_frame() < 6 {
             if situation_kind == *SITUATION_KIND_GROUND {
                 if boma.is_cat_flag(Cat1::AttackS4) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START, false);
@@ -41,12 +34,10 @@ unsafe fn shadow_sneak_smash_attack_cancel(boma: &mut BattleObjectModuleAccessor
 // Dair Jump Cancel
 unsafe fn dair_jc(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, cat1: i32, motion_kind: u64, frame: f32) {
     if motion_kind == hash40("attack_air_lw") {
-        if boma.is_input_jump() && !boma.is_in_hitlag() {
-            if frame > 30.0 {
+        if !boma.is_in_hitlag() {
+            if frame > 31.0 {
                 if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                    }
+                    boma.check_jump_cancel(false);
                 }
             }
         }

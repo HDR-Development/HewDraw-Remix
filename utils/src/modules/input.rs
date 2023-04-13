@@ -432,7 +432,31 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
             ControlModule::get_button((*input_module.owner).module_accessor)
         )
     };
-    
+
+    unsafe {
+        // Allow Aidou with only A button held
+        // Also extends directional inputs for Tilt Stick Aidou
+        if (*input_module.owner).was_prev_button_on(Buttons::AttackAll)
+        && triggered_buttons.intersects(Buttons::CStickOn) {  // smash stick input
+            let stick_x = ControlModule::get_stick_x((*input_module.owner).module_accessor);
+            let stick_y = ControlModule::get_stick_y((*input_module.owner).module_accessor);
+            let dash_stick_x = WorkModule::get_param_float((*input_module.owner).module_accessor, hash40("common"), hash40("dash_stick_x"));
+            let squat_stick_y = WorkModule::get_param_float((*input_module.owner).module_accessor, hash40("common"), hash40("squat_stick_y")) * -1.0;
+            if stick_x != 0.0 && stick_x.abs() < dash_stick_x {
+                ControlModule::set_main_stick_x((*input_module.owner).module_accessor, dash_stick_x * stick_x.signum());
+            }
+            if stick_y != 0.0 && stick_y.abs() < squat_stick_y {
+                ControlModule::set_main_stick_y((*input_module.owner).module_accessor, squat_stick_y * stick_y.signum());
+            }
+            ControlModule::reset_trigger((*input_module.owner).module_accessor);
+        }
+        // Prevent game from thinking you are inputting a flick on the frame the cstick stops overriding left stick
+        if (*input_module.owner).is_button_release(Buttons::CStickOverride) {
+            ControlModule::reset_flick_x((*input_module.owner).module_accessor);
+            ControlModule::reset_flick_y((*input_module.owner).module_accessor);
+        }
+    }
+
     // TiltAttack cat flag
     let tilt_attack_offset = CatHdr::TiltAttack.bits().trailing_zeros() as usize;
     if triggered_buttons.intersects(Buttons::TiltAttack) {

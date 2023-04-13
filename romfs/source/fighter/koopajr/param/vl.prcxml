@@ -21,7 +21,7 @@
       <int hash="back_frame_ground">15</int>
       <float hash="back_speed_ground">0.65</float>
       <float hash="back_speed_x_air">0.65</float>
-      <float hash="dash_no_damage_power">8</float>
+      <float hash="dash_no_damage_power">0</float>
       <float hash="dash_speed_ground">2.2</float>
       <float hash="dash_speed_x_air">2.2</float>
       <float hash="dash_limit_speed_down_ground">3</float>
@@ -41,6 +41,14 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <float hash="offset_x">3.8</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_remainclown">
     <struct index="0">
       <int hash="burst_frame">25</int>
@@ -51,7 +59,7 @@
   </list>
   <list hash="param_mechakoopa">
     <struct index="0">
-      <int hash="burst_frame">360</int>
+      <int hash="burst_frame">180</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

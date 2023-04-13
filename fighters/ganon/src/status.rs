@@ -3,6 +3,7 @@ use super::*;
 mod special_n;
 mod special_n_float;
 mod special_lw;
+mod special_s;
 
 /// Prevents side b from being used again in air when it has been disabled by up-b fall
 unsafe extern "C" fn should_use_special_n_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -38,6 +39,7 @@ pub fn install() {
     smashline::install_agent_init_callbacks!(ganon_init);
     special_n::install();
     special_lw::install();
+    special_s::install();
 }
 
 pub fn add_statuses() {

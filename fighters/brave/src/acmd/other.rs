@@ -136,7 +136,7 @@ unsafe fn brave_catch_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
-        CATCH(fighter, 0, Hash40::new("top"), 4.3, 0.0, 7.0, 0.0, Some(0.0), Some(7.0), Some(6.5), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 0, Hash40::new("top"), 4.3, 0.0, 7.0, 0.0, Some(0.0), Some(7.0), Some(7.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     game_CaptureCutCommon(fighter);
     wait(lua_state, 2.0);
@@ -146,6 +146,27 @@ unsafe fn brave_catch_game(fighter: &mut L2CAgentBase) {
         GrabModule::set_rebound(boma, false);
     }
     
+}
+
+#[acmd_script( agent = "brave", script = "game_catchdash", category = ACMD_GAME, low_priority )]
+unsafe fn brave_catch_dash_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        GrabModule::set_rebound(boma, true);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("top"), 3.5, 0.0, 7.0, 4.0, Some(0.0), Some(7.0), Some(10.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+    }
+    game_CaptureCutCommon(fighter);
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
 }
 
 #[acmd_script( agent = "brave", script = "game_dash" , category = ACMD_GAME , low_priority)]
@@ -197,8 +218,8 @@ unsafe fn brave_spark_special_s1_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 90, 80, 0, 80, 8.0, 0.0, 10.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_MAGIC);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 90, 80, 0, 80, 15.0, 0.0, 10.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_MAGIC);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 82, 76, 0, 80, 8.0, 0.0, 10.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_MAGIC);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 82, 76, 0, 80, 15.0, 0.0, 10.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_MAGIC);
         ATTACK(fighter, 2, 0, Hash40::new("top"), 2.5, 90, 40, 0, 100, 6.0, 0.0, 22.0, 0.0, Some(0.0), Some(75.0), Some(0.0), 0.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_MAGIC);
     }
 }
@@ -228,12 +249,98 @@ unsafe fn brave_fireball_burst_l_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "brave_tornado", script = "game_specialhi1", category = ACMD_GAME, low_priority )]
+unsafe fn brave_tornado_special_hi1_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("tornado1"), 7.0, 108, 100, 160, 0, 6.0, 0.0, 2.5, 4.0, Some(0.0), Some(2.5), Some(-4.0), 0.5, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, -3, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+        ATTACK(fighter, 1, 0, Hash40::new("tornado1"), 7.0, 108, 55, 0, 85, 6.0, 0.0, 2.5, 4.0, Some(0.0), Some(2.5), Some(-4.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, -3, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+    }
+}
+
+#[acmd_script( agent = "brave_tornado", script = "effect_specialhi1", category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_tornado_special_hi1_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("brave_tornado1"), Hash40::new("tornado1"), 0, 0, 0, 0, 0, 0, 0.75, true);
+    }
+}
+
+#[acmd_script( agent = "brave_tornado", script = "game_specialhi2", category = ACMD_GAME, low_priority )]
+unsafe fn brave_tornado_special_hi2_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("tornado1"), 3.0, 130, 100, 60, 0, 6.0, 0.0, 4.0, 2.3, Some(0.0), Some(4.0), Some(-2.3), 0.5, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, -1, 0.0, 7, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+        ATTACK(fighter, 1, 0, Hash40::new("tornado1"), 3.0, 367, 100, 40, 0, 6.5, 0.0, 13.0, 2.5, Some(0.0), Some(13.0), Some(-2.5), 0.5, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, -1, 0.0, 7, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 1, Hash40::new("tornado1"), 4.0, 120, 120, 0, 85, 6.0, 0.0, 4.0, 2.3, Some(0.0), Some(4.0), Some(-2.3), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+        ATTACK(fighter, 1, 1, Hash40::new("tornado1"), 4.0, 120, 120, 0, 85, 6.5, 0.0, 13.0, 2.5, Some(0.0), Some(13.0), Some(-2.5), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+    }
+}
+
+#[acmd_script( agent = "brave_tornado", script = "effect_specialhi2", category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_tornado_special_hi2_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("brave_tornado2"), Hash40::new("tornado1"), 0, 0, 0, 0, 0, 0, 0.75, true);
+    }
+}
+
+#[acmd_script( agent = "brave_tornado", script = "game_specialhi3", category = ACMD_GAME, low_priority )]
+unsafe fn brave_tornado_special_hi3_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    for _ in 0..i32::MAX {
+        if is_excute(fighter) {
+            ATTACK(fighter, 0, 0, Hash40::new("tornado1"), 3.0, 130, 100, 60, 0, 6.0, 0.0, 3.5, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, -1, 0.0, 10, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+            ATTACK(fighter, 1, 0, Hash40::new("tornado2"), 3.0, 130, 100, 60, 0, 6.0, 0.0, 3.5, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, -1, 0.0, 10, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+            ATTACK(fighter, 2, 0, Hash40::new("tornado1"), 3.0, 140, 100, 45, 0, 6.0, 0.0, 11.5, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, -1, 0.0, 10, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+            ATTACK(fighter, 3, 0, Hash40::new("tornado2"), 3.0, 140, 100, 45, 0, 6.0, 0.0, 11.5, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, -1, 0.0, 10, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+            ATTACK(fighter, 4, 0, Hash40::new("tornado1"), 3.0, 175, 100, 35, 0, 6.0, 0.0, 19.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, -1, 0.0, 10, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+            ATTACK(fighter, 5, 0, Hash40::new("tornado2"), 3.0, 175, 100, 35, 0, 6.0, 0.0, 19.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, -1, 0.0, 10, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+        }
+        if WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LIFE) <= 2 {
+            if is_excute(fighter) {
+                ATTACK(fighter, 0, 1, Hash40::new("tornado1"), 4.0, 120, 125, 0, 85, 6.5, 0.0, 3.5, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+                ATTACK(fighter, 1, 1, Hash40::new("tornado2"), 4.0, 120, 125, 0, 85, 6.5, 0.0, 3.5, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+                ATTACK(fighter, 2, 1, Hash40::new("tornado1"), 4.0, 120, 125, 0, 85, 6.5, 0.0, 11.5, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+                ATTACK(fighter, 3, 1, Hash40::new("tornado2"), 4.0, 120, 125, 0, 85, 6.5, 0.0, 11.5, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+                ATTACK(fighter, 4, 1, Hash40::new("tornado1"), 4.0, 120, 125, 0, 85, 6.5, 0.0, 19.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+                ATTACK(fighter, 5, 1, Hash40::new("tornado2"), 4.0, 120, 125, 0, 85, 6.5, 0.0, 19.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+                ATTACK(fighter, 6, 1, Hash40::new("top"), 4.0, 120, 125, 0, 85, 6.5, 0.0, 5.0, 0.0, Some(0.0), Some(18.0), Some(0.0), 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+            }
+        }
+        wait(lua_state, 1.0);
+    }
+    
+}
+
+#[acmd_script( agent = "brave_tornado", script = "effect_specialhi3", category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_tornado_special_hi3_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("brave_tornado3"), Hash40::new("tornado1"), 0, 0, 0, 0, 0, 0, 0.75, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("brave_tornado3"), Hash40::new("tornado2"), 0, 0, 0, 0, 180, 0, 0.75, true);
+    }
+}
+
 #[acmd_script( agent = "brave", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
 unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
 
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+    }
     frame(lua_state, escape_air_cancel_frame);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
@@ -245,11 +352,11 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
-    frame(lua_state, 30.0);
+    frame(lua_state, 29.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
     }
-    frame(lua_state, 34.0);
+    frame(lua_state, 39.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
@@ -260,11 +367,18 @@ pub fn install() {
         escape_air_game,
         escape_air_slide_game,
         brave_catch_game,
+        brave_catch_dash_game,
         dash_game,
         dash_sound,
         turn_dash_game,
         brave_spark_special_s1_game,
         brave_fireball_burst_l_game,
+        brave_tornado_special_hi1_game,
+        brave_tornado_special_hi1_effect,
+        brave_tornado_special_hi2_game,
+        brave_tornado_special_hi2_effect,
+        brave_tornado_special_hi3_game,
+        brave_tornado_special_hi3_effect,
         damageflyhi_sound,
         damageflylw_sound,
         damageflyn_sound,

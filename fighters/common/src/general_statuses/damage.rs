@@ -15,7 +15,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_DamageFly_Main_hook,
             calc_damage_motion_rate_hook,
             sub_DamageFlyCommon_hook,
-            exec_damage_elec_hit_stop_hook
+            exec_damage_elec_hit_stop_hook,
+            FighterStatusDamage__is_enable_damage_fly_effect_hook
         );
     }
 }
@@ -149,6 +150,7 @@ unsafe extern "C" fn check_asdi(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR // prevents ASDI on wall bounces
     && fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U // prevents ASDI on ceiling bounces
     && fighter.global_table[STATUS_KIND] != FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D // prevents ASDI on ground bounces
+    && fighter.global_table[PREV_STATUS_KIND] != FIGHTER_STATUS_KIND_THROWN // prevents ASDI after getting thrown
     && !(fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_GROUND && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR && VarModule::is_flag(fighter.battle_object, vars::common::status::IS_SPIKE)) // prevents ASDI on grounded tumble-inducing spikes
     {
         let hashmap = fighter.local_func__fighter_status_damage_2();
@@ -433,10 +435,11 @@ pub unsafe fn exec_damage_elec_hit_stop_hook(fighter: &mut L2CFighterCommon) {
     if hit_stop_frame > 0 {
         WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_HIT_STOP_FRAME);
     }
-    let damage_stop_frame = FighterStopModuleImpl::get_damage_stop_frame(fighter.module_accessor);
-    if damage_stop_frame == 1.0 {
-        fighter.FighterStatusDamage__req_fly_roll_smoke_first();
-    }
+    // Unused
+    // let damage_stop_frame = FighterStopModuleImpl::get_damage_stop_frame(fighter.module_accessor);
+    // if damage_stop_frame == 1.0 {
+    //     fighter.FighterStatusDamage__req_fly_roll_smoke_first();
+    // }
     fighter.sub_FighterStatusDamage_correctDamageVectorExecStop();
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_KOZUKATA_DAMAGE) {
         let clatter_time = ControlModule::get_clatter_time(fighter.module_accessor, 0);
@@ -514,4 +517,14 @@ pub unsafe fn exec_damage_elec_hit_stop_hook(fighter: &mut L2CFighterCommon) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_PARALYZE_STOP);
         check_asdi(fighter);
     }
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_FighterStatusDamage__is_enable_damage_fly_effect)]
+pub unsafe fn FighterStatusDamage__is_enable_damage_fly_effect_hook(fighter: &mut L2CFighterCommon, arg2: L2CValue, arg3: L2CValue, arg4: L2CValue, arg5: L2CValue) -> L2CValue {
+    let ret = call_original!(fighter, arg2, arg3, arg4, arg5);
+    let hit_stop_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_HIT_STOP_FRAME);
+    if ret.get_bool() && WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_FLY_DIST) < 3.0 {
+        return L2CValue::Bool(false);
+    }
+    ret
 }

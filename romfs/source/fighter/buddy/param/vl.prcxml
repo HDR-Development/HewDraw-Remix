@@ -32,6 +32,46 @@
       <float hash="start_brake_x_air">0.005</float>
       <float hash="start_speed_y_add_air">0.2</float>
       <float hash="add_speed_y_shoot">0.5</float>
+      <int hash="bakyun_power_down_1_num">10</int>
+      <int hash="bakyun_power_down_2_num">20</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_s">
+    <struct index="0">
+      <float hash="start_speed_x_mul_air">0.5</float>
+      <float hash="start_brake_x_air">0.02</float>
+      <float hash="start_control_accel_x_mul_air">0</float>
+      <float hash="start_control_max_speed_x_mul_air">0</float>
+	  
+      <int hash="start_stop_y_frame_air">0</int>
+      <float hash="start_accel_y_mul_air">0</float>
+      <float hash="start_max_speed_y_mul_air">1</float>
+      <float hash="start_speed_y_air">0</float>
+      <float hash="start_speed_y_mul_air">0</float>
+      <float hash="start_speed_y_add_air">-10</float>
+	  
+      <float hash="dash_speed_x_air">4.55</float>
+      <float hash="dash_accel_x_air">-0.11</float>
+      <float hash="dash_speed_x_limit_air">4.6</float>
+      <float hash="dash_speed_x_min_air">2.0</float>
+	  
+      <float hash="dash_gravity_mul">0.0</float>
+      <float hash="dash_gravity_limit_mul">0.0</float>
+	  
+      <float hash="attack_mul_on_hit_on_ground">1</float>
+      <float hash="speed_x_mul_on_hit_on_ground">1.0</float>
+      <float hash="attack_mul_on_hit_on_air">1</float>
+      <float hash="speed_x_mul_on_hit_on_air">1.0</float>
+      <int hash="dash_time">36</int>
+	  
+      <float hash="dash_end_speed_x_mul_air">1.0</float>
+      <float hash="dash_end_accel_x_air">0.05</float>
+      <float hash="dash_end_gravity_mul">0.9</float>
+	  
+      <float hash="hud_offset_y">-2000</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

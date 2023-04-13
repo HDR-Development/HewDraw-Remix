@@ -22,7 +22,7 @@ skyline-web = { git = "https://github.com/skyline-rs/skyline-web", optional = tr
 rand = { git = "https://github.com/skyline-rs/rand" }
 ninput = { git = "https://github.com/blu-dev/ninput" }
 smash-arc = { version = "0.5", features = ["smash-runtime", "rust-zstd"]}
-skyline_ex = { package = "skyline", git = "https://github.com/Skyline-ex/skylinex" }
+once_cell = "1"
 
 [patch.crates-io]
 ring = { git = "https://github.com/skyline-rs/ring", branch = "0.16.20" }

@@ -121,9 +121,7 @@ unsafe fn dash_drop(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     && boma.stick_y() < flick_y_sens
     && boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_RUN,
-        *FIGHTER_STATUS_KIND_RUN_BRAKE,
-        *FIGHTER_STATUS_KIND_DASH,
-        *FIGHTER_STATUS_KIND_TURN_DASH
+        *FIGHTER_STATUS_KIND_RUN_BRAKE
     ])
     {
         boma.change_status_req(*FIGHTER_STATUS_KIND_PASS, true);
@@ -169,6 +167,7 @@ unsafe fn drift_di(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
     && boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_DAMAGE_FLY,
         *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
@@ -178,22 +177,29 @@ unsafe fn drift_di(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
         let damage_speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
         let damage_speed_y = fighter.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
 
-        if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
+        let mut initial_speed_x = VarModule::get_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_X);
+        let mut initial_speed_y = VarModule::get_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_Y);
+
+        // if these floats are both exactly zero, its because
+        // status change reset them to zero. Thus, we should set them.
+        if initial_speed_x == 0.0 && initial_speed_y == 0.0 {
             VarModule::set_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_X, damage_speed_x);
             VarModule::set_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_Y, damage_speed_y);
+            
+            initial_speed_x = VarModule::get_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_X);
+            initial_speed_y = VarModule::get_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_Y);
         }
-        let speed_x = VarModule::get_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_X);
-        let speed_y = VarModule::get_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_Y);
-
+        
         let mut speed_mul = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_mul_base");
         let speed_mul_add_max = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_mul_add_max");
 
         let lerp_max_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_lerp_max");
 
-        let ratio = 1.0 - (speed_x.abs() / lerp_max_speed).clamp(0.0, 1.0);
+        let ratio = 1.0 - (initial_speed_x.abs() / lerp_max_speed).clamp(0.0, 1.0);
         speed_mul = (speed_mul + speed_mul_add_max) * ratio;
 
         let drift_value = boma.left_stick_x() * speed_mul;
+        
         fighter.set_speed(Vector2f::new(damage_speed_x + drift_value, damage_speed_y), *FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
     }
 }
@@ -202,39 +208,6 @@ unsafe fn drift_di(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 extern "C" {
     #[link_name = "\u{1}_ZN3app14sv_information8stage_idEv"]
     pub fn stage_id() -> i32;
-}
-
-pub unsafe fn hitfall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, fighter_kind: i32, cat: [i32 ; 4]) {
-    if boma.kind() == *FIGHTER_KIND_GAOGAEN
-    && boma.is_situation(*SITUATION_KIND_AIR)
-    && boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR)
-    {
-        /* this is written this way because stick_y_flick wont update during
-            hitlag, which means we need a flag to allow you to hitfall 1 frame
-            after the end of hitlag as well, and we need to check previous 
-            stick y directly to detect hitfall. That way, with the 5 frame buffer,
-            if you input a fastfall during hitlag, it will get registered after
-            the hitlag is over. Without the HITFALL_BUFFER flag, you have to
-            input the fastfall BEFORE you hit the move, only.
-        */
-        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-        || AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-        {
-            VarModule::set_int(boma.object(), vars::common::instance::HITFALL_BUFFER, 0);
-        }
-
-        if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::inc_int(boma.object(), vars::common::instance::HITFALL_BUFFER);
-        }
-
-        let buffer = VarModule::get_int(boma.object(), vars::common::instance::HITFALL_BUFFER);
-
-        if boma.is_cat_flag(Cat2::FallJump)
-        && 0 < buffer && buffer <= 5 
-        {
-            WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
-        }
-    }
 }
 
 pub unsafe fn respawn_taunt(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
@@ -313,7 +286,6 @@ pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mu
     double_shield_button_airdodge(boma, status_kind, situation_kind, cat[0]);
     drift_di(fighter, boma, status_kind, situation_kind);
     waveland_plat_drop(boma, cat[1], status_kind);
-    hitfall(boma, status_kind, situation_kind, fighter_kind, cat);
     respawn_taunt(boma, status_kind);
     teeter_cancel(fighter, boma);
 }

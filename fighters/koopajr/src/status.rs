@@ -170,9 +170,9 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
         if fighter.handle_waveland(false) {
             return true.into();
         }
-        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING) {
+        if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
             fighter.change_status(
-                L2CValue::I32(*FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_LANDING),
+                L2CValue::I32(*FIGHTER_STATUS_KIND_LANDING),
                 L2CValue::Bool(false)
             );
             return L2CValue::Bool(true);

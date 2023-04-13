@@ -11,7 +11,8 @@ unsafe fn header_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status
         && situation_kind == *SITUATION_KIND_AIR {
         if  !VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL) {
             VarModule::on_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL);
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
+            ControlModule::reset_trigger(boma);
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
         }
     }
 }

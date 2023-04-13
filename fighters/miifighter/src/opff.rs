@@ -5,14 +5,18 @@ use globals::*;
 
  
 unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if status_kind == *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_HI1_2 {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
             || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
             // Check for shield inputs during Soaring Axe Kick
-            if frame > 19.0 {
+            if frame > 20.0 {
                 if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
                     ControlModule::clear_command(boma, true);
                     VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
+                    ControlModule::reset_trigger(boma);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
                 }
             }
@@ -23,11 +27,9 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor, id: usize, stat
 // Feint Jump Jump Cancel
 unsafe fn feint_jump_jc(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_motion_one_of(&[Hash40::new("special_lw2_start"),Hash40::new("special_air_lw2_start")]) {
-        if MotionModule::frame(boma) > 30.0 {
-            if boma.is_input_jump() && !boma.is_in_hitlag() {
-                if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                }
+        if MotionModule::frame(boma) > 31.0 {
+            if !boma.is_in_hitlag() {
+                boma.check_jump_cancel(false);
             }
         }
     }

@@ -101,6 +101,11 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <struct hash="map_collision_pkthunder">
+    <hash40 hash="shape_type">grcorrect_shape_circle</hash40>
+    <float hash="center_y">0</float>
+    <float hash="radius">0.2</float>
+  </struct>
   <list hash="param_special_lw">
     <struct index="0">
       <int hash="stop_y_time">0</int>

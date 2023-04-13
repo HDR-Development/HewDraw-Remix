@@ -92,6 +92,9 @@ unsafe fn super_fs_cancel(boma: &mut BattleObjectModuleAccessor) -> bool {
 
 // Shotos Hadoken FADC and Super (FS) cancels
 unsafe fn hadoken_fadc_sfs_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, cat: [i32; 4], frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
 
     let mut agent_base = fighter.fighter_base.agent_base;
     let cat1 = cat[0];
@@ -105,7 +108,7 @@ unsafe fn hadoken_fadc_sfs_cancels(fighter: &mut L2CFighterCommon, boma: &mut Ba
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
     ])
-    || frame <= 5.0 {
+    || frame <= 6.0 {
         return;
     }
 
@@ -122,7 +125,7 @@ unsafe fn hadoken_fadc_sfs_cancels(fighter: &mut L2CFighterCommon, boma: &mut Ba
         return;
     }
 
-    if frame > 15.0
+    if frame > 16.0
     && boma.is_cat_flag(Cat1::SpecialLw)
     && MeterModule::drain(boma.object(), 2)
     {
@@ -174,7 +177,6 @@ pub unsafe fn shotos_moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
     // } else {
     //     MeterModule::stop_show(fighter.battle_object);
     // }
-    backdash_energy(fighter);
 }
 
 unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
@@ -206,12 +208,12 @@ unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
 
 unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_HI3)
-    && boma.is_input_jump()
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
     {
-        VarModule::on_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
-        boma.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-        return;
+        if boma.check_jump_cancel(false) {
+            VarModule::on_flag(boma.object(), vars::shotos::instance::IS_MAGIC_SERIES_CANCEL);
+            return;
+        }
     }
 
     let new_status = if boma.is_cat_flag(Cat1::AttackS4) {
@@ -254,10 +256,9 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
     }
 
     if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_HI4)
-    && boma.is_input_jump()
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
     {
-        boma.change_status_req(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
+        boma.check_jump_cancel(false);
     }
 
     let new_status = if boma.is_cat_flag(Cat1::SpecialN) {
@@ -282,11 +283,9 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
 }
 
 unsafe fn aerial_cancels(boma: &mut BattleObjectModuleAccessor) {
-    if boma.is_input_jump()
+    if boma.check_jump_cancel(false)
     && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-    && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX)
     {
-        boma.change_status_req(*FIGHTER_STATUS_KIND_JUMP_AERIAL, true);
         return;
     }
 
@@ -364,83 +363,5 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     ]) {
         special_cancels(boma);
         return;
-    }
-}
-
-#[utils::export(common::opff)]
-pub unsafe fn backdash_energy(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status_one_of(&[*FIGHTER_RYU_STATUS_KIND_DASH_BACK, *FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, *FIGHTER_DEMON_STATUS_KIND_DASH_BACK]) {
-        let run_accel_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("run_accel_add"), 0);
-        let run_accel_add = WorkModule::get_param_float(fighter.module_accessor, hash40("run_accel_mul"), 0);
-        let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);
-        let dash_speed: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("dash_speed"), 0);
-        let run_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("run_speed_max"), 0);
-        let dash_stick_x: f32 = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dash_stick_x"));
-        let stick_x = fighter.global_table[STICK_X].get_f32();
-
-        if fighter.is_button_release(Buttons::CStickOverride) {
-            // prevent game from thinking you are inputting a dashback on the frame the cstick stops overriding left stick (0.625 -> -1.0)
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH);
-        }
-        if stick_x == 0.0 {
-            // if you return stick to neutral after a cstick dash, allow dashbacks again
-            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
-            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH);
-        }
-
-        if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
-            // apply initial dash energy on f2 of dash (CURRENT_FRAME counter hasn't updated yet)
-            let prev_speed = VarModule::get_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED);
-            let added_accel = if stick_x.abs() >= dash_stick_x {
-                stick_x.signum() * ((run_accel_mul + (run_accel_add * stick_x.abs())))
-            }
-            else {
-                0.0
-            };
-            let applied_speed = (dash_speed * -1.0 * PostureModule::lr(fighter.module_accessor)) + added_accel + prev_speed;
-            //println!("Changing current dash speed: {}", applied_speed);
-            let applied_speed_clamped = applied_speed.clamp(-run_speed_max, run_speed_max);
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed_clamped);
-            app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-        }
-
-        let is_dash_input: bool = (fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0);
-        let is_backdash_input: bool = (fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0);
-
-        if (WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH)
-        && is_dash_input)  // if valid backdash input
-        || (WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("re_dash_frame")) as f32 <= MotionModule::frame(fighter.module_accessor)  // if current frame is after redash frame
-        && is_backdash_input) {  // OR valid re-dash input
-            let mut initial_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
-
-            let mut applied_speed = (initial_speed * 0.25) + (ground_brake * PostureModule::lr(fighter.module_accessor));  // Only retain a fraction of your momentum into a re-dash or backdash; makes for snappy dash dancing (Melee functionality)
-            if (is_backdash_input && VarModule::is_flag(fighter.battle_object, vars::common::status::IS_MOONWALK) && FighterMotionModuleImpl::is_valid_cancel_frame(fighter.module_accessor, -1, true)) || fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0 {  // if the jump button is held, retain full momentum into next status
-                //println!("full momentum");
-                applied_speed = initial_speed + (ground_brake * PostureModule::lr(fighter.module_accessor));
-            }
-            let applied_speed_clamped = applied_speed.clamp(-run_speed_max, run_speed_max);
-
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP);
-            app::sv_kinetic_energy::unable(fighter.lua_state_agent);
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-            app::sv_kinetic_energy::enable(fighter.lua_state_agent);
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, applied_speed_clamped);
-            app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-
-            let end_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
-            VarModule::set_float(fighter.battle_object, vars::common::instance::CURR_DASH_SPEED, end_speed);
-        }
-        
-        // Shield Stop energy
-        if fighter.is_pad_flag(PadFlag::GuardTrigger) && fighter.is_button_off(Buttons::Catch) {
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.0);
-            app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-        }
     }
 }

@@ -1,5 +1,27 @@
 use super::*;
 
+
+#[acmd_script( agent = "buddy", script = "game_jumpaerialf1" , category = ACMD_GAME , low_priority)]
+unsafe fn buddy_jump_aerial_f1_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;    
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_STATUS_JUMP_FLY_NEXT);
+    }
+}
+#[acmd_script( agent = "buddy", script = "game_jumpaerialf2" , category = ACMD_GAME , low_priority)]
+unsafe fn buddy_jump_aerial_f2_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;    
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_STATUS_JUMP_FLY_NEXT);
+    }
+}
+
 #[acmd_script( agent = "buddy", script = "sound_damageflyhi" , category = ACMD_SOUND , low_priority)]
 unsafe fn damageflyhi_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -242,6 +264,10 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
 
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+    }
     frame(lua_state, escape_air_cancel_frame);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
@@ -253,11 +279,11 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
-    frame(lua_state, 30.0);
+    frame(lua_state, 29.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
     }
-    frame(lua_state, 34.0);
+    frame(lua_state, 39.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
@@ -265,6 +291,8 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        //buddy_jump_aerial_f1_game,
+        //buddy_jump_aerial_f2_game,
         escape_air_game,
         escape_air_slide_game,
         buddy_catch_game,
