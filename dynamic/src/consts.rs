@@ -468,6 +468,11 @@ pub mod vars {
     }
 
     pub mod ike {
+        pub mod instance {
+            // flags
+            pub const DISABLE_SPECIAL_S: i32 = 0x0100;
+
+        }
         pub mod status {
             // flags
             pub const IS_QUICK_DRAW_INSTAKILL: i32 = 0x1100;
@@ -652,6 +657,12 @@ pub mod vars {
     pub mod pikachu {
         pub mod instance {
             pub const DISABLE_QA_JC: i32 = 0x0100;
+        }
+    }
+
+    pub mod plizardon {
+        pub mod instance {
+            pub const DISABLE_SPECIAL_S: i32 = 0x0100;
         }
     }
 
