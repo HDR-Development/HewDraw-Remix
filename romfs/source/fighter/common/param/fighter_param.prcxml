@@ -1086,11 +1086,11 @@
       <float hash="damage_fly_top_speed_y_stable">2.12</float>
       <float hash="dive_speed_y">2.89</float>
       <float hash="weight">105</float>
-      <float hash="landing_attack_air_frame_n">8</float>
-      <float hash="landing_attack_air_frame_f">13</float>
+      <float hash="landing_attack_air_frame_n">12</float>
+      <float hash="landing_attack_air_frame_f">14</float>
       <float hash="landing_attack_air_frame_b">10</float>
       <float hash="landing_attack_air_frame_hi">10</float>
-      <float hash="landing_attack_air_frame_lw">10</float>
+      <float hash="landing_attack_air_frame_lw">12</float>
       <float hash="scale">0.97</float>
       <float hash="shield_radius">12.4</float>
       <float hash="tread_jump_speed_y_mul">0.825</float>
