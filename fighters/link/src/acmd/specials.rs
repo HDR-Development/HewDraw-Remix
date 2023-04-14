@@ -276,7 +276,7 @@ pub fn install() {
         special_hi,
         special_air_hi,
         special_air_hi_effect,
-        special_hi_effect
+        special_hi_effect 
     );
 }
 
