@@ -192,25 +192,14 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
     }
 
     // Extreme Speed Cancels
-    //if status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END {
-  //      if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
-  //        || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag()) {
-
-  //        // Check for jump inputs
-  //        if boma.is_input_jump()
-  //            && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
-  //            if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-  //                if situation_kind == *SITUATION_KIND_AIR {
-  //                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL,false);
-  //                }
-  //                if situation_kind == *SITUATION_KIND_GROUND {
-  //                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT,true);
-  //                }
-  //            }
-  //        }
-  //    }
-
+    if status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END {
+        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
+            || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag())
+        {
+            boma.check_jump_cancel(false);
+        }
     }
+}
 
 #[utils::macros::opff(FIGHTER_KIND_LUCARIO )]
 pub fn lucario_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
@@ -225,4 +214,3 @@ pub unsafe fn lucario_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
-
