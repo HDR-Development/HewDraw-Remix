@@ -29,7 +29,6 @@ unsafe fn parse_stprm_target_interpolation_rate(ctx: &mut skyline::hooks::Inline
 
 pub fn install() {
     unsafe {
-        skyline::patching::Patch::in_text(0x2620e50).nop();
         skyline::patching::Patch::in_text(0x2620fec).nop();
     }
     skyline::install_hooks!(
