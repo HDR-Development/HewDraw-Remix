@@ -20,20 +20,6 @@ unsafe fn parse_stprm_normal_camera_min_distance(ctx: &mut skyline::hooks::Inlin
     }
 }
 
-// Standardizes normal_camera_vertical_angle and normal_camera_look_down_vertical_angle for all stages
-#[skyline::hook(offset = 0x2620e50, inline)]
-unsafe fn parse_stprm_normal_camera_angles(ctx: &mut skyline::hooks::InlineCtx) {
-    let hash = *ctx.registers[18].x.as_ref();
-    let mut angle: f32 = 0.0;
-    if hash == hash40("normal_camera_vertical_angle") {
-        angle = -5.5;
-    }
-    else if hash == hash40("normal_camera_look_down_vertical_angle") {
-        angle = -25.0;
-    }
-    asm!("fmov s0, w8", in("w8") angle)
-}
-
 // Standardizes target_interpolation_rate for all stages
 #[skyline::hook(offset = 0x2620fec, inline)]
 unsafe fn parse_stprm_target_interpolation_rate(ctx: &mut skyline::hooks::InlineCtx) {
@@ -49,7 +35,6 @@ pub fn install() {
     skyline::install_hooks!(
         normal_camera,
         parse_stprm_normal_camera_min_distance,
-        parse_stprm_normal_camera_angles,
         parse_stprm_target_interpolation_rate
     );
 }
