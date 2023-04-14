@@ -74,22 +74,22 @@ unsafe fn ken_ex_shoryu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
         // MeterModule and VarModule calls are repeated so that I know
         // for 100% fact they can only be called if we change motion
         if boma.is_motion(Hash40::new("special_hi"))
-        && MeterModule::drain(boma.object(), 2) {
+        && MeterModule::drain(boma.object(), 4) {
             MotionModule::change_motion(boma, Hash40::new("special_hi_ex"), frame, 1.0, false, 0.0, false, false);
             VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
 
         } else if boma.is_motion(Hash40::new("special_hi_command"))
-        && MeterModule::drain(boma.object(), 2) {
+        && MeterModule::drain(boma.object(), 4) {
             MotionModule::change_motion(boma, Hash40::new("special_hi_command_ex"), frame, 1.0, false, 0.0, false, false);
             VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
 
         } else if boma.is_motion(Hash40::new("special_air_hi"))
-        && MeterModule::drain(boma.object(), 2) {
+        && MeterModule::drain(boma.object(), 4) {
             MotionModule::change_motion(boma, Hash40::new("special_air_hi_ex"), frame, 1.0, false, 0.0, false, false);
             VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
 
         } else if boma.is_motion(Hash40::new("special_air_hi_command"))
-        && MeterModule::drain(boma.object(), 2) {
+        && MeterModule::drain(boma.object(), 4) {
             MotionModule::change_motion(boma, Hash40::new("special_air_hi_command_ex"), frame, 1.0, false, 0.0, false, false);
             VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
 
