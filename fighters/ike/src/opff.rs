@@ -52,6 +52,9 @@ unsafe fn quickdraw_jump_attack_cancels(boma: &mut BattleObjectModuleAccessor, i
 }
 
 unsafe fn quickdraw_instakill(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     // Glow blue when attack is charged enough
     let cbm_vec1 = Vector4f{ /* Red */ x: 0.85, /* Green */ y: 0.85, /* Blue */ z: 0.85, /* Alpha */ w: 0.2}; // Brightness vector
     let cbm_vec2 = Vector4f{ /* Red */ x: 0.125, /* Green */ y: 0.4, /* Blue */ z: 1.0, /* Alpha */ w: 0.45}; // Diffuse vector

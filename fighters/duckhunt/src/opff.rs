@@ -6,7 +6,7 @@ use globals::*;
  
 unsafe fn duck_jump_cancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_FLY)
-    && fighter.motion_frame() > 21.0
+    && fighter.status_frame() > 20
     && fighter.is_cat_flag(Cat1::SpecialHi) {
         fighter.change_status_req(*FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_END, true);
     }

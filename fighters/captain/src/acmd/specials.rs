@@ -287,6 +287,41 @@ unsafe fn captain_special_air_lw_end_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "captain", script = "game_specialhithrow", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialhithrow(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 13.0, 50, 62, 0, 85, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 8.0, 0, 10, 0, 100, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_THROW);
+        CHECK_FINISH_CAMERA(fighter, 2, 1);
+        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.3);
+        lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), Vector3f{x: 5.0, y: 3.0, z: 0.0});
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        let target = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
+        let target_group = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
+        let target_no = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
+        ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
+    }
+    FT_MOTION_RATE(fighter, 0.75);
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        SA_SET(fighter, *SITUATION_KIND_AIR);
+    }
+    frame(lua_state, 32.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_CAPTAIN_STATUS_SPECIAL_HI_THROW_FLAG_FALL);
+    }
+    frame(lua_state, 45.0);
+    FT_MOTION_RATE(fighter, 0.7);
+    frame(lua_state, 59.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         captain_special_n_game,
@@ -298,6 +333,7 @@ pub fn install() {
         captain_special_air_s_end_game,
         captain_special_air_lw_game,
         captain_special_air_lw_end_game,
+        game_specialhithrow
     );
 }
 

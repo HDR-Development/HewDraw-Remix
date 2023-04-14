@@ -4,6 +4,9 @@ use super::*;
 use globals::*;
 
 unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_AIR, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_DASH_B, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_DASH_F, 
@@ -29,6 +32,9 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind
 }
 
 unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_FLAP, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_TURN, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_WAIT]) {

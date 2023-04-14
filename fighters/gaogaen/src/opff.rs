@@ -100,7 +100,9 @@ unsafe fn catch_lean(boma: &mut BattleObjectModuleAccessor, lean_frame: f32, ret
 }
 
 unsafe fn angled_grab(fighter: &mut L2CFighterCommon) {
-
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
     if fighter.is_status(*FIGHTER_STATUS_KIND_CATCH) {
         catch_lean(fighter.boma(), 8.0, 31.0, 50.0, 30.0);
     } else if fighter.is_status(*FIGHTER_STATUS_KIND_CATCH_TURN) {

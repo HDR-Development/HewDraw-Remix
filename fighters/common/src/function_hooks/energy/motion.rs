@@ -267,6 +267,9 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
 
     if boma.status_frame() == 0 {
         move_speed.x = energy.prev_speed.x;
+        if reset_type.is_air() || reset_type.is_cliff() {
+            move_speed.y = energy.prev_speed.y;
+        }
     }
 
     let speed = match reset_type {

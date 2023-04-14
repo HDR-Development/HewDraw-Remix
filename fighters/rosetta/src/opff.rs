@@ -18,6 +18,9 @@ extern "Rust" {
 
 //Rosalina Teleport
 unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+	if StatusModule::is_changing(boma) {
+        return;
+    }
 				let fighter_kind = smash::app::utility::get_kind(boma);
 				let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 				let frame = MotionModule::frame(boma);

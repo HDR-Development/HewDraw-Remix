@@ -14,6 +14,9 @@ unsafe fn winged_pikmin_cancel(boma: &mut BattleObjectModuleAccessor, status_kin
 }
 
 pub unsafe fn solimar_scaling(boma: &mut BattleObjectModuleAccessor, status_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     let pikmin_count = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
     if pikmin_count == 0 {
         let olimar_hand_scale = Vector3f{x: 1.5, y: 1.35, z: 1.35};

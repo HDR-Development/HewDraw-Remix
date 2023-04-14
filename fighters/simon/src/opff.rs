@@ -5,6 +5,9 @@ use globals::*;
 
  
 unsafe fn holy_water_ac(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
         if frame > 20.0 {
             boma.check_airdodge_cancel();
@@ -27,7 +30,9 @@ unsafe fn axe_ff(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situat
 
 unsafe fn dair_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     //Act out of it much faster on hit so you can actually followup on people with good DI
-    if motion_kind == hash40("attack_air_lw2") {
+    if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR
+    && motion_kind == hash40("attack_air_lw2")
+    {
         if frame > 15.0 {
             CancelModule::enable_cancel(fighter.module_accessor);
         }

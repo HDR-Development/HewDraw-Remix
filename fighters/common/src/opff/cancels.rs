@@ -22,7 +22,7 @@ unsafe fn ditcit(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: 
     }
 
     if status_kind == *FIGHTER_STATUS_KIND_ITEM_THROW_DASH {
-        if MotionModule::frame(boma) > 3.0 && MotionModule::frame(boma) < 7.0
+        if boma.status_frame() > 2 && boma.status_frame() < 6
             && ((boma.is_cat_flag(Cat1::AttackHi4))
              || (boma.is_cat_flag(Cat1::AttackLw4))
              || (boma.is_cat_flag(Cat1::AttackS4))
@@ -73,7 +73,7 @@ unsafe fn footstool_defense(boma: &mut BattleObjectModuleAccessor, status_kind: 
     // Prevent airdodging after a footstool until after F20
     if (status_kind == *FIGHTER_STATUS_KIND_JUMP && prev_status_0 == *FIGHTER_STATUS_KIND_TREAD_JUMP)
         || (status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL && prev_status_0 == *FIGHTER_STATUS_KIND_JUMP && prev_status_1 == *FIGHTER_STATUS_KIND_TREAD_JUMP)
-        && MotionModule::frame(boma) < 21.0 {
+        && boma.status_frame() < 20 {
         VarModule::on_flag(boma.object(), vars::common::instance::FOOTSTOOL_AIRDODGE_LOCKOUT);
     } else if VarModule::is_flag(boma.object(), vars::common::instance::FOOTSTOOL_AIRDODGE_LOCKOUT) {
         VarModule::off_flag(boma.object(), vars::common::instance::FOOTSTOOL_AIRDODGE_LOCKOUT);

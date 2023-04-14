@@ -6,18 +6,11 @@ use smash_script::macros::*;
 
 // Robin, Dark Samus, Mewtwo float
 pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
-    
     let mut motion_value = 0.0;
 
     // Default to float option 0 upon match start/entry status kind
     if status_kind == *FIGHTER_STATUS_KIND_ENTRY {
         VarModule::set_int(boma.object(), vars::common::instance::FLOAT_STYLE, 0);
-    }
-
-
-    // Track double jump frame for float leniency window
-    if status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL {
-        VarModule::set_float(boma.object(), vars::common::instance::DOUBLE_JUMP_FRAME, MotionModule::frame(boma));
     }
 
     // Set the max float duration for the current character
@@ -31,7 +24,8 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         motion_value = 0.0;
     }
     if fighter_kind == *FIGHTER_KIND_MEWTWO {
-        VarModule::set_int(boma.object(), vars::common::instance::FLOAT_DURATION, 60);
+        VarModule::set_int(boma.object(), vars::common::instance::FLOAT_STYLE, 1);
+        VarModule::set_int(boma.object(), vars::common::instance::FLOAT_DURATION, 50);
         motion_value = 1.0;
     }
 
@@ -50,6 +44,7 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
 
     if situation_kind == *SITUATION_KIND_AIR 
     && !boma.is_prev_status(*SITUATION_KIND_GROUND)
+    && !StatusModule::is_changing(boma)
     {
 
         if WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) {
@@ -110,7 +105,7 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
             }
             else {
                 // "superjump" bugfix
-                if WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) && status_kind == *FIGHTER_STATUS_KIND_JUMP && MotionModule::frame(boma) <= 1.0 {
+                if WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) && status_kind == *FIGHTER_STATUS_KIND_JUMP && boma.status_frame() <= 1 {
                     ControlModule::reset_trigger(boma);
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
                 }
@@ -118,7 +113,7 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
 
             // FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME will sometimes erroneously decrement once every 2 frames (effectively allowing for double the max float time); this overrides that
             if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) < VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION) {
-                if (([*FIGHTER_STATUS_KIND_JUMP, *FIGHTER_STATUS_KIND_JUMP_AERIAL, *FIGHTER_STATUS_KIND_CLIFF_JUMP1, *FIGHTER_STATUS_KIND_CLIFF_JUMP2, *FIGHTER_STATUS_KIND_CLIFF_JUMP3].contains(&status_kind) && MotionModule::frame(boma) > 1.0) || [*FIGHTER_STATUS_KIND_FALL, *FIGHTER_STATUS_KIND_FALL_AERIAL, *FIGHTER_STATUS_KIND_ATTACK_AIR].contains(&status_kind)) && !WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) {
+                if ([*FIGHTER_STATUS_KIND_JUMP, *FIGHTER_STATUS_KIND_JUMP_AERIAL, *FIGHTER_STATUS_KIND_CLIFF_JUMP1, *FIGHTER_STATUS_KIND_CLIFF_JUMP2, *FIGHTER_STATUS_KIND_CLIFF_JUMP3].contains(&status_kind) || [*FIGHTER_STATUS_KIND_FALL, *FIGHTER_STATUS_KIND_FALL_AERIAL, *FIGHTER_STATUS_KIND_ATTACK_AIR].contains(&status_kind)) && !WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) {
                     let fall_slowly_frame = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
                     WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY);
                     VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
@@ -128,7 +123,7 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
 
             // Omnidirectional float for Dark Samus and Mewtwo
             if fighter_kind == *FIGHTER_KIND_SAMUSD || fighter_kind == *FIGHTER_KIND_MEWTWO {
-                if ([*FIGHTER_STATUS_KIND_FALL, *FIGHTER_STATUS_KIND_FALL_AERIAL].contains(&status_kind) && MotionModule::frame(boma) > 3.0) // Omnidirection float only after F3 of initiating the float
+                if ([*FIGHTER_STATUS_KIND_FALL, *FIGHTER_STATUS_KIND_FALL_AERIAL].contains(&status_kind) && boma.status_frame() > 2) // Omnidirection float only after F3 of initiating the float
                     || (status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR && (WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) < VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION) && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0)) /* If in aerial attack and float has been initiated and are current floating */ {
                     if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 {
                         if boma.left_stick_y() != 0.0 {
@@ -201,9 +196,9 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                 if fighter_kind == *FIGHTER_KIND_MEWTWO {
                     EffectModule::req_follow(boma, Hash40::new("mewtwo_final_aura"), Hash40::new("hip"), &Vector3f::zero(), &Vector3f::zero(), 1.25, true, 0, 0, 0, 0, 0, false, false);
                     // consume double jump on float activation
-                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
+                    /*if boma.get_num_used_jumps() < boma.get_jump_count_max() {
                         WorkModule::inc_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-                    }
+                    }*/
                 }
             }
         }

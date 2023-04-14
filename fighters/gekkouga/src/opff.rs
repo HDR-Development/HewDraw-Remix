@@ -15,7 +15,7 @@ unsafe fn max_water_shuriken_dc(boma: &mut BattleObjectModuleAccessor, status_ki
 // Greninja Shadow Sneak Smash Attack Cancel
 unsafe fn shadow_sneak_smash_attack_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_S_ATTACK {
-        if frame < 7.0 {
+        if boma.status_frame() < 6 {
             if situation_kind == *SITUATION_KIND_GROUND {
                 if boma.is_cat_flag(Cat1::AttackS4) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START, false);

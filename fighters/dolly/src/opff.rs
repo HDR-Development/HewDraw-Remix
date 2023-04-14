@@ -20,6 +20,10 @@ unsafe fn power_wave_dash_cancel_super_cancels(fighter: &mut L2CFighterCommon, b
     let cat4 = cat[3];
     let prev_situation_kind = StatusModule::prev_situation_kind(boma);
 
+    if StatusModule::is_changing(boma) {
+        return;
+    }
+
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
         // Super Cancel
         if frame > 22.0 {
@@ -140,6 +144,9 @@ unsafe fn power_dunk_break(boma: &mut BattleObjectModuleAccessor) {
 
 // Cancel supers early
 unsafe fn cancel_supers_early(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if [*FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL,
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2].contains(&status_kind) {
         if frame < 26.0 {

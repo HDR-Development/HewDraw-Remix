@@ -5,6 +5,9 @@ use globals::*;
 
 // Up B early fall attack
 unsafe fn super_dedede_jump_quickfall(boma: &mut BattleObjectModuleAccessor, frame: f32){
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if boma.is_status(*FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_JUMP)
     && (frame > 16.0 && frame < 36.0)
     {
