@@ -23,7 +23,7 @@ unsafe fn parse_stprm_normal_camera_min_distance(ctx: &mut skyline::hooks::Inlin
 // Standardizes target_interpolation_rate for all stages
 #[skyline::hook(offset = 0x2620fec, inline)]
 unsafe fn parse_stprm_target_interpolation_rate(ctx: &mut skyline::hooks::InlineCtx) {
-    let target_interpolation_rate: f32 = 1.0;
+    let target_interpolation_rate: f32 = 0.9;
     asm!("fmov s1, w8", in("w8") target_interpolation_rate)
 }
 
