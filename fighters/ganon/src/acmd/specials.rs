@@ -266,6 +266,46 @@ unsafe fn ganon_special_hi(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
+    frame(lua_state, 41.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        );
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        let air_accel_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_mul"), 0);
+        let special_hi_speed_x_mul = WorkModule::get_param_float(
+            fighter.module_accessor,
+            hash40("param_special_hi"),
+            hash40("special_hi_speed_x_mul")
+        );
+        sv_kinetic_energy!(
+            controller_set_accel_x_mul,
+            fighter,
+            air_accel_x_mul * special_hi_speed_x_mul
+        );
+        let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
+        let special_hi_speed_max_x_mul = WorkModule::get_param_float(
+            fighter.module_accessor,
+            hash40("param_special_hi"),
+            hash40("special_hi_speed_max_x_mul")
+        );
+        sv_kinetic_energy!(
+            set_stable_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            air_speed_x_stable * special_hi_speed_max_x_mul,
+            0.0
+        );
+    }
     frame(fighter.lua_state_agent, 46.0);
     if is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_GANON_STATUS_SPECIAL_HI_FLAG_IS_CHECK_DIVE);
