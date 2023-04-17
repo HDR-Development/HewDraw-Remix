@@ -459,6 +459,11 @@ unsafe fn mario_special_hi_game(fighter: &mut L2CAgentBase) {
         if is_excute(fighter) {
             AttackModule::clear_all(boma);
         }
+        frame(lua_state, 23.0);
+        if is_excute(fighter) {
+            WorkModule::off_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
+            WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_CHANGE_KINE);
+        }
     }
     else {
         frame(lua_state, 3.0);
@@ -500,6 +505,11 @@ unsafe fn mario_special_hi_game(fighter: &mut L2CAgentBase) {
         wait(lua_state, 2.0);
         if is_excute(fighter) {
             AttackModule::clear_all(boma);
+        }
+        frame(lua_state, 23.0);
+        if is_excute(fighter) {
+            WorkModule::off_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
+            WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_CHANGE_KINE);
         }
     }
     
