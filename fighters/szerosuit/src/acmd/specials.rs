@@ -261,10 +261,13 @@ unsafe fn szerosuit_special_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 90, 100, 150, 0, 6.0, 0.0, 8.0, 5.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
     frame(lua_state, 10.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        AttackModule::clear_all(boma);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 1.3, 367, 100, 50, 0, 7.0, 0.0, 19.0, 5.5, None, None, None, 0.75, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     frame(lua_state, 15.0);
@@ -320,10 +323,13 @@ unsafe fn szerosuit_special_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 90, 100, 150, 0, 6.0, 0.0, 8.0, 5.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
     frame(lua_state, 10.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        AttackModule::clear_all(boma);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 1.3, 367, 100, 50, 0, 7.0, 0.0, 19.0, 5.5, None, None, None, 0.75, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     frame(lua_state, 15.0);
