@@ -105,7 +105,14 @@ const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 15] = [
 // so they must be ran using vanilla's order of operations
 unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor, status_kind: i32) -> bool {
     if (*boma).is_fighter()
-    && ( [*FIGHTER_STATUS_KIND_AIR_LASSO, *FIGHTER_STATUS_KIND_AIR_LASSO_REACH, *FIGHTER_STATUS_KIND_AIR_LASSO_HANG, *FIGHTER_STATUS_KIND_AIR_LASSO_REWIND].contains(&status_kind)
+    && ( [*FIGHTER_STATUS_KIND_AIR_LASSO,
+        *FIGHTER_STATUS_KIND_AIR_LASSO_REACH,
+        *FIGHTER_STATUS_KIND_AIR_LASSO_HANG,
+        *FIGHTER_STATUS_KIND_AIR_LASSO_REWIND,
+        *FIGHTER_STATUS_KIND_ITEM_THROW,
+        *FIGHTER_STATUS_KIND_ITEM_THROW_DASH,
+        *FIGHTER_STATUS_KIND_ITEM_THROW_HEAVY].contains(&status_kind)
+
         || ((*boma).kind() == *FIGHTER_KIND_RICHTER
             && [*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_SIMON
