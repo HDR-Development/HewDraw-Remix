@@ -88,6 +88,14 @@ unsafe fn ganon_attack_air_f_game(fighter: &mut L2CAgentBase) {
 unsafe fn ganon_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("ganon_engokua_flash"), Hash40::new("haver"), -1, 0, 0.5, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("ganon_engokua_flash"), false, false);
+    }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 12, 6, 180, -180, 100, 1.2, false);
