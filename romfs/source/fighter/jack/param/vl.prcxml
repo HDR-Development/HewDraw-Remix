@@ -69,7 +69,7 @@
     <hash40 index="0">dummy</hash40>
     <struct index="1">
       <float hash="rush_angle">90</float>
-      <float hash="rush_angle_max_f">-90</float>
+      <float hash="rush_angle_max_f">-60</float>
       <float hash="rush_angle_max_b">25</float>
       <float hash="rush_speed">4.0</float>
       <int hash="rush_brake_frame">1</int>
