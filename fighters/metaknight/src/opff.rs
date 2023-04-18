@@ -92,13 +92,23 @@ unsafe fn fspecial_once_per_airtime(fighter: &mut smash::lua2cpp::L2CFighterComm
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+unsafe fn up_special_proper_landing(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_HI_LOOP])
+    && fighter.is_prev_situation(*SITUATION_KIND_AIR)
+    && fighter.is_situation(*SITUATION_KIND_GROUND)
+    && fighter.status_frame() > 20 {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
+    }
+}
+
+pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
 
     dim_cape_early_attack_cancel(boma, status_kind, frame);
     flag_resets(boma, id, status_kind, motion_kind, frame);
     transition_fall(boma, id, status_kind);
     reset_flags(boma, id, status_kind, situation_kind);
     sword_length(boma);
+    up_special_proper_landing(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_METAKNIGHT )]
@@ -112,7 +122,7 @@ pub fn metaknight_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) 
 
 pub unsafe fn metaknight_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
         drill_rush_on_hit_cancel(fighter);
         fspecial_once_per_airtime(fighter);
     }

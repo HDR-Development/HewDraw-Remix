@@ -121,9 +121,10 @@ unsafe fn metaknight_special_hi_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         GroundModule::set_passable_check(boma, false);
     }
-    frame(lua_state, 49.0);
+    frame(lua_state, 30.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_AIR_STOP);
     }
 
 }
@@ -165,10 +166,12 @@ unsafe fn metaknight_special_hi_loop_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         AttackModule::clear_all(boma);
+        GroundModule::set_passable_check(boma, false);
     }
-    frame(lua_state, 41.0);
+    frame(lua_state, 22.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_AIR_STOP);
     }
 
 }
