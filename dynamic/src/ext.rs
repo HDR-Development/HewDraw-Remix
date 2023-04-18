@@ -864,8 +864,13 @@ impl BomaExt for BattleObjectModuleAccessor {
         let mut ground_pos_stage = Vector2f::zero();
         GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, hip_pos_y), &snap_detect_bottom, &Vector2f::zero(), &mut ground_pos_any, true);
         GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, hip_pos_y), &snap_detect_bottom, &Vector2f::zero(), &mut ground_pos_stage, false);
-        let can_snap = ground_pos_any != Vector2f::zero() && (ground_pos_stage == Vector2f::zero()
-            || WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0);
+        let can_snap = !( 
+            ground_pos_any == Vector2f::zero()
+            || (ground_pos_stage != Vector2f::zero()
+                && WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) > 0.0)
+            || (self.is_prev_status(*FIGHTER_STATUS_KIND_PASS)
+                && ground_pos_stage == Vector2f::zero())
+        );
         if can_snap { // pretty sure it returns a pointer, at least it defo returns a non-0 value if success
             crate::VarModule::on_flag(self.object(), crate::consts::vars::common::status::DISABLE_ECB_SHIFT);
             PostureModule::set_pos(self, &Vector3f::new(pos.x, ground_pos_any.y + 0.1, pos.z));
