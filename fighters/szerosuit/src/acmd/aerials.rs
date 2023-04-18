@@ -309,11 +309,56 @@ unsafe fn szerosuit_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     }
 }
 
+
+#[acmd_script( agent = "szerosuit", script = "game_aircatch", category = ACMD_GAME, low_priority )]
+unsafe fn szerosuit_air_catch_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP2, false, -1);
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP2, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK);
+    }
+    wait(lua_state, 5.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP2, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::change_status(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP2, *WEAPON_SZEROSUIT_WHIP2_STATUS_KIND_SHOOT, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ATTACK(fighter, 0, 0, Hash40::new("throw"), 5.0, 60, 30, 0, 60, 3.0, 0.0, 0.0, 0.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_LANDING);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        ArticleModule::change_status_exist(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP2, *WEAPON_SZEROSUIT_WHIP2_STATUS_KIND_REWIND);
+    }
+    frame(lua_state, 35.0);
+    if is_excute(fighter) {
+        ArticleModule::remove_exist(boma, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP2, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+    frame(lua_state, 40.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_LANDING);
+    }
+}
+
+
 #[acmd_script( agent = "szerosuit", script = "game_aircatchlanding" , category = ACMD_GAME , low_priority)]
 unsafe fn szerosuit_landing_air_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-        FT_MOTION_RATE(fighter, 16.0/20.0);
+    FT_MOTION_RATE(fighter, 7.0/25.0);
+    frame(lua_state, 26.0);
+    FT_MOTION_RATE(fighter, 9.0/(33.0-26.0));
 }
 
 pub fn install() {
@@ -329,6 +374,7 @@ pub fn install() {
         szerosuit_landing_air_lw_game,
         szerosuit_landing_air_lw_expression,
         szerosuit_landing_air_lw_effect,
+        szerosuit_landing_air_catch_game,
         szerosuit_landing_air_catch_game,
     );
 }

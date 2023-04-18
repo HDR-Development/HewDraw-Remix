@@ -356,7 +356,7 @@ unsafe fn szerosuit_paralyzer_bullet_shoot_tame_game(fighter: &mut L2CAgentBase)
 }
 
 #[acmd_script( agent = "szerosuit", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+unsafe fn szerosuit_escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
@@ -372,7 +372,7 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "szerosuit", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+unsafe fn szerosuit_escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
@@ -388,8 +388,8 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        escape_air_game,
-        escape_air_slide_game,
+        szerosuit_escape_air_game,
+        szerosuit_escape_air_slide_game,
         szerosuit_catch_game,
         szerosuit_catch_sound,
         szerosuit_catch_effect,
