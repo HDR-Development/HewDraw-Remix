@@ -1002,7 +1002,6 @@ unsafe fn gaogaen_special_hi_start_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(boma.object(), vars::gaogaen::status::IS_HIT_SPECIAL_HI_RISE);
         VarModule::on_flag(boma.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL);
     }
     frame(lua_state, 4.0);
@@ -1083,7 +1082,6 @@ unsafe fn gaogaen_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        VarModule::off_flag(boma.object(), vars::gaogaen::status::IS_HIT_SPECIAL_HI_RISE);
         VarModule::on_flag(boma.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL);
     }
     frame(lua_state, 4.0);
@@ -1198,32 +1196,22 @@ unsafe fn gaogaen_special_air_hi_turn_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL){
-            FT_MOTION_RATE(fighter, 4.0/(3.0 - 1.0));
-        }
+    if VarModule::is_flag(boma.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL){
+        FT_MOTION_RATE(fighter, 5.0/(3.0 - 1.0));
+    }
+    else {
+        FT_MOTION_RATE(fighter, 1.0);
     }
     frame(lua_state, 3.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL){
-            FT_MOTION_RATE(fighter, 6.0/(6.0 - 3.0));
-        }
+    if VarModule::is_flag(boma.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL){
+        FT_MOTION_RATE(fighter, 6.0/(6.0 - 3.0));
+    }
+    else {
+        FT_MOTION_RATE(fighter, 1.0);
     }
     frame(lua_state, 6.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL){
-            FT_MOTION_RATE(fighter, 5.0/(8.0 - 6.0));
-        }
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(boma.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL){
-            FT_MOTION_RATE(fighter, 1.0);
-        }
-    }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
         if VarModule::is_flag(boma.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL){
             VarModule::off_flag(boma.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL);
             VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
