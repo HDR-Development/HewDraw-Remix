@@ -8,8 +8,34 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
         if let Some(mythra_id) = Some(fighter.battle_object_id + 0x10000){
             let mythra = crate::util::get_battle_object_from_id(mythra_id);
             if !mythra.is_null() {
-                VarModule::off_flag(mythra, vars::elight::instance::DISABLE_SPECIAL_HI_JUMP);
+                if VarModule::is_flag(mythra, vars::elight::instance::DISABLE_SPECIAL_HI_JUMP){
+                }
+                EFFECT(fighter, Hash40::new("eflame_promrevolt_firepillar_impact"), Hash40::new("top"), 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.06, 0, 0, 0, 0, 0, 0, true);
+                LAST_EFFECT_SET_COLOR(fighter,0,0,1);
+                VarModule::off_flag(mythra, vars::common::instance::UP_SPECIAL_CANCEL);
             }
+            else{
+                EFFECT(fighter, Hash40::new("eflame_promrevolt_firepillar_impact"), Hash40::new("top"), 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.06, 0, 0, 0, 0, 0, 0, true);
+                LAST_EFFECT_SET_COLOR(fighter,0,1,0);
+            }
+        }
+        else if let Some(mythra_id) = Some(fighter.battle_object_id - 0x10000){
+            let mythra = crate::util::get_battle_object_from_id(mythra_id);
+            if !mythra.is_null() {
+                if VarModule::is_flag(mythra, vars::elight::instance::DISABLE_SPECIAL_HI_JUMP){
+                }
+                EFFECT(fighter, Hash40::new("eflame_promrevolt_firepillar_impact"), Hash40::new("top"), 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.06, 0, 0, 0, 0, 0, 0, true);
+                LAST_EFFECT_SET_COLOR(fighter,0,0,1);
+                VarModule::off_flag(mythra, vars::common::instance::UP_SPECIAL_CANCEL);
+            }
+            else{
+                EFFECT(fighter, Hash40::new("eflame_promrevolt_firepillar_impact"), Hash40::new("top"), 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.06, 0, 0, 0, 0, 0, 0, true);
+                LAST_EFFECT_SET_COLOR(fighter,0,1,0);
+            }
+        }
+        else { 
+            EFFECT(fighter, Hash40::new("eflame_promrevolt_firepillar_impact"), Hash40::new("top"), 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.06, 0, 0, 0, 0, 0, 0, true);
+            LAST_EFFECT_SET_COLOR(fighter,1,0,0);
         }
     }
     true.into()
