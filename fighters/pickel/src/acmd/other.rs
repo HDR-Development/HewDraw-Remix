@@ -305,7 +305,7 @@ pub fn install() {
         damageflylw_sound,
         damageflyn_sound,
         damageflyroll_sound,
-        damageflytop_sound
+        damageflytop_sound,
 
         pickel_fire_attack_lw3_game,
         pickel_fire_attack_lw3_effect,

@@ -13,6 +13,7 @@ pub fn install() {
         attack_air_lw_start_main,
 
     );
+    smashline::install_agent_init_callbacks!(steve_init);
 }
 
 #[status_script(agent = "pickel", status = FIGHTER_PICKEL_STATUS_KIND_ATTACK_AIR_LW_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -41,6 +42,51 @@ pub unsafe extern "C" fn attack_air_lw_main_status_loop(fighter: &mut L2CFighter
     }
     else {
         1.into()
+    }
+}
+
+
+// Prevents sideB from being used again if it has already been used once in the current airtime
+unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::pickel::instance::DISABLE_SPECIAL_S) {
+        false.into()
+    } else {
+        if fighter.is_situation(*SITUATION_KIND_AIR){
+            VarModule::on_flag(fighter.battle_object, vars::pickel::instance::DISABLE_SPECIAL_S);
+        }
+        true.into()
+    }
+}
+
+// Re-enables the ability to use sideB when connecting to ground or cliff
+unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let still_SideSpecial = fighter.is_status_one_of(&[
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_JUMP,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_RIDE,
+        *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_DRIVE
+        ]
+    );
+
+    if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD])
+    || VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_IN_HITSTUN) {
+        if (!still_SideSpecial)
+        {
+            VarModule::off_flag(fighter.battle_object, vars::pickel::instance::DISABLE_SPECIAL_S);
+        }
+    }
+
+    return true.into();
+}
+
+#[smashline::fighter_init]
+fn steve_init(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        // set the callbacks on fighter init
+        if fighter.kind() == *FIGHTER_KIND_PICKEL {
+            fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
+            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
+        }
     }
 }
 
