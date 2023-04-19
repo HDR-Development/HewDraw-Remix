@@ -48,7 +48,14 @@ pub unsafe extern "C" fn attack_air_lw_main_status_loop(fighter: &mut L2CFighter
 
 #[status_script(agent = "pickel", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 pub unsafe fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
-    VarModule::on_flag(fighter.battle_object, vars::pickel::instance::DISABLE_SPECIAL_S);
+
+    let hasIron = WorkModule::get_int(fighter.module_accessor,*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_IRON) > 0;
+    let forgeArticle = ArticleModule::is_exist(fighter.module_accessor,*FIGHTER_PICKEL_GENERATE_ARTICLE_TROLLEY);
+    let canCart = hasIron && !forgeArticle;
+
+    if canCart {
+        VarModule::on_flag(fighter.battle_object, vars::pickel::instance::DISABLE_SPECIAL_S);
+    }
     return original!(fighter);
 }
 
@@ -64,6 +71,7 @@ unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommo
 // Re-enables the ability to use sideB when connecting to ground or cliff
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     let still_SideSpecial = fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_JUMP,
         *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_RIDE,
         *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_DRIVE
