@@ -26,7 +26,8 @@ unsafe extern "C" fn should_use_special_hi_callback(fighter: &mut L2CFighterComm
 
 /// Re-enables the ability to use aerial specials when connecting to ground or cliff
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF) {
+    if (fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF))
+    || WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) > 0.0 {
         VarModule::off_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_HI_JUMP);
         VarModule::off_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_S);
     }
