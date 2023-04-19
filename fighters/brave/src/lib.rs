@@ -34,11 +34,11 @@ use smashline::*;
 
 pub mod acmd;
 
-//pub mod status;
+pub mod status;
 pub mod opff;
+pub use status::hero_rng_hook_impl;
 
 pub fn install(is_runtime: bool) {
     acmd::install();
-    //status::install();
     opff::install(is_runtime);
 }

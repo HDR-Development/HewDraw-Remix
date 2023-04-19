@@ -2,6 +2,25 @@ use super::*;
 
 utils::import_noreturn!(common::opff::fighter_common_opff);
 
+#[smashline::fighter_init]
+fn brave_init(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        // init roll history
+        VarModule::set_int(fighter.battle_object, vars::brave::instance::SPELL_SLOT_USED_1_1, -1);
+        VarModule::set_int(fighter.battle_object, vars::brave::instance::SPELL_SLOT_USED_1_2, -1);
+        VarModule::set_int(fighter.battle_object, vars::brave::instance::SPELL_SLOT_USED_1_3, -1);
+        VarModule::set_int(fighter.battle_object, vars::brave::instance::SPELL_SLOT_USED_1_4, -1);
+        VarModule::set_int(fighter.battle_object, vars::brave::instance::SPELL_SLOT_USED_2_1, -1);
+        VarModule::set_int(fighter.battle_object, vars::brave::instance::SPELL_SLOT_USED_2_2, -1);
+        VarModule::set_int(fighter.battle_object, vars::brave::instance::SPELL_SLOT_USED_2_3, -1);
+        VarModule::set_int(fighter.battle_object, vars::brave::instance::SPELL_SLOT_USED_2_4, -1);
+    
+        // roll to get one set of fresh values
+        let mut vals = vec![];
+        status::roll_spells(fighter, &mut vals);
+    }
+}
+
 unsafe fn nspecial_cancels(fighter: &mut L2CFighterCommon) {
     //PM-like neutral-b canceling
     if fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_N_CANCEL)
@@ -24,6 +43,17 @@ unsafe fn dspecial_cancels(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn persist_rng(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_SELECT) {
+        let index = fighter.get_int(*FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_SELECT_INDEX);
+        VarModule::set_int(fighter.battle_object, vars::brave::instance::CURSOR_SLOT, index);
+    }
+    if fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START)
+    || fighter.is_status(*FIGHTER_STATUS_KIND_DEAD) {
+        VarModule::off_flag(fighter.battle_object, vars::brave::instance::PERSIST_RNG);
+    }
+}
+
 // Hero dash cancel Frizz
 unsafe fn dash_cancel_frizz(fighter: &mut L2CFighterCommon) {
     let mut brave_fighter = app::Fighter{battle_object: *(fighter.battle_object)};
@@ -35,6 +65,7 @@ unsafe fn dash_cancel_frizz(fighter: &mut L2CFighterCommon) {
     {
         if fighter.check_dash_cancel() {
             FighterSpecializer_Brave::add_sp(&mut brave_fighter, -12.0);
+            EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 0, 15, -2, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
         }
     }
 }
@@ -52,8 +83,9 @@ unsafe fn woosh_cancel(fighter: &mut L2CFighterCommon) {
 
 #[utils::macros::opff(FIGHTER_KIND_BRAVE )]
 pub unsafe fn brave_frame_wrapper(fighter: &mut L2CFighterCommon) {
+    smashline::install_agent_init_callbacks!(brave_init);
     common::opff::fighter_common_opff(fighter);
-
+    persist_rng(fighter);
     nspecial_cancels(fighter);
     dspecial_cancels(fighter);
     dash_cancel_frizz(fighter);

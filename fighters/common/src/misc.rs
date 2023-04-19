@@ -11,9 +11,10 @@ use globals::*;
 
 pub fn install() {
     smashline::install_agent_resets!(fighter_reset);
-    //skyline::install_hooks!(
-    //    set_hit_team_hook,
-    //);
+    skyline::install_hooks!(
+       //set_hit_team_hook,
+       hero_rng_hook,
+    );
 }
 
 /*#[skyline::hook(replace=TeamModule::set_hit_team)]
@@ -34,4 +35,19 @@ pub fn fighter_reset(fighter: &mut L2CFighterCommon) {
         }
     }
 
+}
+
+extern "C" {
+    #[link_name = "_ZN3app24FighterSpecializer_Brave23special_lw_open_commandERNS_7FighterE"]
+    fn special_lw_open_command();
+}
+
+extern "C" {
+    #[link_name = "hero_rng_hook_impl"]
+    fn hero_rng_hook_impl(fighter: *mut BattleObject);
+}
+
+#[skyline::hook(replace = special_lw_open_command)]
+pub unsafe fn hero_rng_hook(fighter: *mut BattleObject) {
+    hero_rng_hook_impl(fighter);
 }
