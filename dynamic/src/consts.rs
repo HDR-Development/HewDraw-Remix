@@ -702,6 +702,7 @@ pub mod vars {
             pub const IS_TARGET_COMBO_1:      i32 = 0x0103;
             pub const IS_TARGET_COMBO_2:      i32 = 0x0104;
             pub const IS_CURRENT_HADOKEN_EX:  i32 = 0x0105;
+            pub const DISABLE_SPECIAL_S:      i32 = 0x0106;
 
             // ints
             pub const REPEAT_COUNT_LW:      i32 = 0x0100;
