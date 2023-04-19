@@ -9,7 +9,39 @@ pub fn install() {
         //waza_jumpsquat,
         pre_jump,
         //jump
+
+        attack_air_lw_start_main,
+
     );
+}
+
+#[status_script(agent = "pickel", status = FIGHTER_PICKEL_STATUS_KIND_ATTACK_AIR_LW_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn attack_air_lw_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let hasIron = WorkModule::get_int(fighter.module_accessor,*FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_MATERIAL_NUM_IRON) > 0;
+    let forgeArticle = ArticleModule::is_exist(fighter.module_accessor,*FIGHTER_PICKEL_GENERATE_ARTICLE_FORGE);
+    let canForge = hasIron && !forgeArticle;
+
+    if (canForge)
+    {
+        return original!(fighter);
+    }
+    else{
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_air_lw_fail"), 0.0, 1.0, false, 0.0, false, false);
+        fighter.sub_attack_air_common(false.into());
+        return fighter.main_shift(attack_air_lw_main_status_loop);
+    }
+}
+pub unsafe extern "C" fn attack_air_lw_main_status_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !fighter.status_AttackAir_Main_common().get_bool() {
+        fighter.sub_air_check_superleaf_fall_slowly();
+        if !fighter.global_table[IS_STOPPING].get_bool() {
+            fighter.sub_attack_air_inherit_jump_aerial_motion_uniq_process_exec_fix_pos();
+        }
+        0.into()
+    }
+    else {
+        1.into()
+    }
 }
 
 // FIGHTER_STATUS_KIND_JUMP_SQUAT //
