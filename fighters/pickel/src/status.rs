@@ -11,6 +11,7 @@ pub fn install() {
         //jump
 
         attack_air_lw_start_main,
+        special_s_pre
 
     );
     smashline::install_agent_init_callbacks!(steve_init);
@@ -45,15 +46,17 @@ pub unsafe extern "C" fn attack_air_lw_main_status_loop(fighter: &mut L2CFighter
     }
 }
 
+#[status_script(agent = "pickel", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
+    VarModule::on_flag(fighter.battle_object, vars::pickel::instance::DISABLE_SPECIAL_S);
+    return original!(fighter);
+}
 
 // Prevents sideB from being used again if it has already been used once in the current airtime
 unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::pickel::instance::DISABLE_SPECIAL_S) {
         false.into()
     } else {
-        if fighter.is_situation(*SITUATION_KIND_AIR){
-            VarModule::on_flag(fighter.battle_object, vars::pickel::instance::DISABLE_SPECIAL_S);
-        }
         true.into()
     }
 }
@@ -67,13 +70,11 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
         ]
     );
 
-    if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
+    if (!fighter.is_situation(*SITUATION_KIND_AIR) && !still_SideSpecial) 
+    || fighter.is_situation(*SITUATION_KIND_CLIFF)
     || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD])
     || VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_IN_HITSTUN) {
-        if (!still_SideSpecial)
-        {
-            VarModule::off_flag(fighter.battle_object, vars::pickel::instance::DISABLE_SPECIAL_S);
-        }
+        VarModule::off_flag(fighter.battle_object, vars::pickel::instance::DISABLE_SPECIAL_S);
     }
 
     return true.into();
