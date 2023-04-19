@@ -13,12 +13,7 @@ extern "C" {
   
 unsafe fn set_command_for_slot(fighter: &mut BattleObject, slot: usize, id: i32) {
     let hero_mana = fighter.get_float(0x53);
-    let mana = if id == 10 {
-        hero_mana.max(1.0)
-    }
-    else {
-        get_special_lw_command_sp_cost(fighter.module_accessor, id, false)
-    };
+    let mana = get_special_lw_command_sp_cost(fighter.module_accessor, id, false);
 
     FighterManager::instance().unwrap().send_event(BraveUpdateMenuEvent::new(
         fighter.get_int(0x1000000) as u32, // ENTRY_ID
@@ -43,6 +38,28 @@ unsafe fn set_command_for_slot(fighter: &mut BattleObject, slot: usize, id: i32)
     *(*(fighter as *mut _ as *const u64).add(0xd8 / 8) as *mut u8).add(slot) = id as u8;
 }
 
+// [Command ID List]
+// 0x0 - Heal
+// 0x1 - Sizz
+// 0x2 - Sizzle
+// 0x3 - Bang
+// 0x4 - Kaboom
+// 0x5 - Whack
+// 0x6 - Thwack
+// 0x7 - Magic Burst
+// 0x8 - Kamikazee
+// 0x9 - Kaclang
+// 0xA - Acceleratle
+// 0xB - Oomph
+// 0xC - Bounce
+// 0xD - Snooze
+// 0xE - Hocus Pocus
+// 0xF - Zoom (unused)
+// 0x10 - Flame Slash
+// 0x11 - Kacrackle Slash
+// 0x12 - Metal Slash
+// 0x13 - Hatchet Man
+// 0x14 - Psyche Up
 pub unsafe fn roll_spells(fighter: &mut BattleObject, vals: &mut Vec<i32>) {
     loop {
         // get history of last two rolls
@@ -55,11 +72,36 @@ pub unsafe fn roll_spells(fighter: &mut BattleObject, vals: &mut Vec<i32>) {
         used_vals.push(VarModule::get_int(fighter, vars::brave::instance::SPELL_SLOT_USED_2_2));
         used_vals.push(VarModule::get_int(fighter, vars::brave::instance::SPELL_SLOT_USED_2_3));
         used_vals.push(VarModule::get_int(fighter, vars::brave::instance::SPELL_SLOT_USED_2_4));
-        let val = smash::app::sv_math::rand(smash::hash40("fighter"), 0x15);
+        let roll = smash::app::sv_math::rand(smash::hash40("fighter"), 101);
 
-        if val == 0xF || vals.contains(&val) || used_vals.contains(&val) {  // remove Zoom (0xF)
+        // rarer rolls
+        let mut val = match roll {
+            0..=1 => 0x8,
+            2..=4 => 0x7,
+            5..=9 => 0x5,
+            10..=14 => 0x6,
+            15..=24 => 0x9,
+            _ => 0xF
+        };
+
+        // other spells (and not zoom)
+        if val == 0xF {
+            loop {
+                val = smash::app::sv_math::rand(smash::hash40("fighter"), 0x15);
+                if (val >= 0x5 && val <= 0x9) || val == 0xF || used_vals.contains(&val) {
+                    continue;
+                }
+                else {
+                    break;
+                }
+            }
+        }
+
+        // remove duplicates
+        if vals.contains(&val) || used_vals.contains(&val) {
             continue;
         }
+        
         vals.push(val);
         if vals.len() >= 4 {
             break;
@@ -98,7 +140,7 @@ pub unsafe extern "C" fn hero_rng_hook_impl(fighter: &mut BattleObject) {
         VarModule::on_flag(fighter, vars::brave::instance::PERSIST_RNG);
         index = 0;
         let we_ball = smash::app::sv_math::rand(smash::hash40("fighter"), 100);
-        if we_ball == 1 {
+        if we_ball >= 1 {
             EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_level_up"), Hash40::new("top"), &Vector3f::new(0.0, 10.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.8, false, 0, 0, 0, 0, 0, false, false);
             let mut rand: i32;
             loop {
@@ -111,10 +153,10 @@ pub unsafe extern "C" fn hero_rng_hook_impl(fighter: &mut BattleObject) {
                 }
             }
             
-            set_command_for_slot(fighter, 0, rand);
-            set_command_for_slot(fighter, 1, rand);
-            set_command_for_slot(fighter, 2, rand);
-            set_command_for_slot(fighter, 3, rand);
+            set_command_for_slot(fighter, 0, 0x14);//rand);
+            set_command_for_slot(fighter, 1, 0x14);//rand);
+            set_command_for_slot(fighter, 2, 0x14);//rand);
+            set_command_for_slot(fighter, 3, 0x14);//rand);
         }
         else {
             let mut vals = vec![];

@@ -287,6 +287,7 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const PERSIST_RNG: i32 = 0x0100;
+            pub const PSYCHE_UP_ACTIVE: i32 = 0x0101;
 
             // ints
             pub const SPELL_SLOT_1: i32 = 0x0100;
@@ -302,10 +303,6 @@ pub mod vars {
             pub const SPELL_SLOT_USED_2_3: i32 = 0x0110;
             pub const SPELL_SLOT_USED_2_4: i32 = 0x0111;
             pub const CURSOR_SLOT: i32 = 0x0112;
-        }
-        pub mod status {
-            // flags
-            pub const IS_CRITICAL_HIT: i32 = 0x1100;
         }
     }
 

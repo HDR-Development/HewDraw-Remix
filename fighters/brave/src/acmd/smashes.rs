@@ -5,17 +5,6 @@ use super::*;
 unsafe fn brave_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT);
-        let rng = app::sv_math::rand(hash40("fighter"), 10);
-        if rng > 1 {
-            VarModule::off_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT);
-        }
-        else{
-            VarModule::on_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT);
-        }
-    }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -32,7 +21,7 @@ unsafe fn brave_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 5.0/(21.0-16.5));
         WorkModule::on_flag(boma, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_PLAY_MISS_SE);
-        if VarModule::is_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT){
+        if VarModule::is_flag(fighter.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE){
             WorkModule::on_flag(boma, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_CRITICAL_HIT);
             //ATTACK(fighter, 1, 0, Hash40::new("armr"), 21.0, 361, 76, 0, 62, 3.0, -1.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BRAVE_CRITICALHIT, *ATTACK_REGION_SWORD);
             ATTACK(fighter, 0, 0, Hash40::new("armr"), 21.0, 361, 76, 0, 62, 3.0, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BRAVE_CRITICALHIT, *ATTACK_REGION_SWORD);
@@ -64,17 +53,6 @@ unsafe fn brave_attack_s4_s_game(fighter: &mut L2CAgentBase) {
 unsafe fn brave_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT);
-        let rng = app::sv_math::rand(hash40("fighter"), 10);
-        if rng > 1 {
-            VarModule::off_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT);
-        }
-        else{
-            VarModule::on_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT);
-        }
-    }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -82,7 +60,7 @@ unsafe fn brave_attack_hi4_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_PLAY_MISS_SE);
-        if VarModule::is_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT){
+        if VarModule::is_flag(fighter.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE){
             WorkModule::on_flag(boma, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_CRITICAL_HIT);
             ATTACK(fighter, 0, 0, Hash40::new("top"), 18.0, 87, 76, 0, 50, 4.0, 0.0, 6.0, -5.0, Some(0.0), Some(6.0), Some(5.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BRAVE_CRITICALHIT, *ATTACK_REGION_SWORD);
             ATTACK(fighter, 1, 0, Hash40::new("shoulderr"), 18.0, 87, 76, 0, 50, 2.5, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BRAVE_CRITICALHIT, *ATTACK_REGION_SWORD);
@@ -111,17 +89,6 @@ unsafe fn brave_attack_hi4_game(fighter: &mut L2CAgentBase) {
 unsafe fn brave_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT);
-        let rng = app::sv_math::rand(hash40("fighter"), 10);
-        if rng > 1 {
-            VarModule::off_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT);
-        }
-        else{
-            VarModule::on_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT);
-        }
-    }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -129,7 +96,7 @@ unsafe fn brave_attack_lw4_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_PLAY_MISS_SE);
-        if VarModule::is_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT){
+        if VarModule::is_flag(fighter.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE){
             WorkModule::on_flag(boma, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_CRITICAL_HIT);
             ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 22.0, 56, 113, 0, 25, 2.5, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -11, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BRAVE_CRITICALHIT, *ATTACK_REGION_SWORD);
             ATTACK(fighter, 1, 0, Hash40::new("armr"), 22.0, 56, 113, 0, 25, 3.0, -1.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -11, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BRAVE_CRITICALHIT, *ATTACK_REGION_SWORD);
@@ -151,7 +118,7 @@ unsafe fn brave_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::brave::status::IS_CRITICAL_HIT){
+        if VarModule::is_flag(fighter.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE){
             WorkModule::on_flag(boma, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_CRITICAL_HIT);
             ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 22.0, 46, 113, 0, 25, 2.5, 0.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -11, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BRAVE_CRITICALHIT, *ATTACK_REGION_SWORD);
             ATTACK(fighter, 1, 0, Hash40::new("armr"), 22.0, 46, 113, 0, 25, 3.0, -1.0, 0.0, 0.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -11, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BRAVE_CRITICALHIT, *ATTACK_REGION_SWORD);

@@ -23,7 +23,7 @@
   </struct>
   <list hash="param_critical">
     <struct index="0">
-      <float hash="rate">12.5</float>
+      <float hash="rate">0.0</float>
     </struct>
   </list>
   <list hash="param_metal_critical">
@@ -84,6 +84,9 @@
       <float hash="speed_up_tread_mini_jump_speed_y_mul_mul">1.2</float>
       <float hash="speed_up_passive_wall_jump_y_speed_mul">1.2</float>
       <float hash="speed_up_blown_mul">1.1</float>
+      <float hash="charge_blow_mul">1.0</float>
+      <float hash="charge_attack_power_mul">1.0</float>
+      <float hash="charge_shield_damage_mul">1.0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

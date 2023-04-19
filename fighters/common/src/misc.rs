@@ -14,6 +14,7 @@ pub fn install() {
     skyline::install_hooks!(
        //set_hit_team_hook,
        hero_rng_hook,
+       psych_up_hit,
     );
 }
 
@@ -50,4 +51,9 @@ extern "C" {
 #[skyline::hook(replace = special_lw_open_command)]
 pub unsafe fn hero_rng_hook(fighter: *mut BattleObject) {
     hero_rng_hook_impl(fighter);
+}
+
+#[skyline::hook(offset = 0x853df0)]
+pub unsafe fn psych_up_hit() {
+    // do nothing
 }
