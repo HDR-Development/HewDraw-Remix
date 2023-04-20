@@ -92,4 +92,20 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list size="1" hash="param_crash">
+    <struct index="0">
+      <int hash="life1">90</int>
+      <int hash="life2">30</int>
+      <float hash="0x184f4dbbb2">0.5</float>
+      <float hash="0x16b8334cae">1.0</float>
+      <float hash="0x1faaf1b8a8">100</float>
+    </struct>
+  </list>
+  <struct hash="camera_range_target_crash1">
+    <float hash="up">24</float>
+    <float hash="down">-24</float>
+    <float hash="center_y">0</float>
+    <float hash="front">24</float>
+    <float hash="back">-24</float>
+  </struct>
 </struct>

@@ -153,10 +153,10 @@ pub unsafe extern "C" fn hero_rng_hook_impl(fighter: &mut BattleObject) {
                 }
             }
             
-            set_command_for_slot(fighter, 0, 0x14);//rand);
-            set_command_for_slot(fighter, 1, 0x14);//rand);
-            set_command_for_slot(fighter, 2, 0x14);//rand);
-            set_command_for_slot(fighter, 3, 0x14);//rand);
+            set_command_for_slot(fighter, 0, rand);/*0x14);*/
+            set_command_for_slot(fighter, 1, rand);/*0xB);*/
+            set_command_for_slot(fighter, 2, rand);/*0xA);*/
+            set_command_for_slot(fighter, 3, rand);/*0x7);*/
         }
         else {
             let mut vals = vec![];
