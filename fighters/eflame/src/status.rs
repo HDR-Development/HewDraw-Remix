@@ -3,42 +3,44 @@ use super::*;
 
 /// Re-enables the ability to use aerial specials when connecting to ground or cliff
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let damage_statuses = &[*FIGHTER_STATUS_KIND_DAMAGE,
+    *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+    *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+    *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+    *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+    *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+    *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+    *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+    *FIGHTER_STATUS_KIND_DAMAGE_FALL];
+
     if (fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF))
-    || WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME) > 0.0 {
-        if let Some(mythra_id) = Some(fighter.battle_object_id + 0x10000){
-            let mythra = crate::util::get_battle_object_from_id(mythra_id);
-            if !mythra.is_null() {
-                if VarModule::is_flag(mythra, vars::elight::instance::DISABLE_SPECIAL_HI_JUMP){
+    || fighter.is_status_one_of(damage_statuses) {
+        //This first conditional tree is used if the player selects Pyra first
+        if let Some(object_id) = Some(fighter.battle_object_id + 0x10000){
+            let object = crate::util::get_battle_object_from_id(object_id);
+            if !object.is_null() {
+                let object = unsafe { &mut *object };
+                let kind = object.kind as i32;
+                if kind == *FIGHTER_KIND_ELIGHT {
+                    VarModule::off_flag(object, vars::common::instance::UP_SPECIAL_CANCEL);
+                    return true.into();
                 }
-                EFFECT(fighter, Hash40::new("eflame_promrevolt_firepillar_impact"), Hash40::new("top"), 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.06, 0, 0, 0, 0, 0, 0, true);
-                LAST_EFFECT_SET_COLOR(fighter,0,0,1);
-                VarModule::off_flag(mythra, vars::common::instance::UP_SPECIAL_CANCEL);
-            }
-            else{
-                EFFECT(fighter, Hash40::new("eflame_promrevolt_firepillar_impact"), Hash40::new("top"), 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.06, 0, 0, 0, 0, 0, 0, true);
-                LAST_EFFECT_SET_COLOR(fighter,0,1,0);
             }
         }
-        else if let Some(mythra_id) = Some(fighter.battle_object_id - 0x10000){
-            let mythra = crate::util::get_battle_object_from_id(mythra_id);
-            if !mythra.is_null() {
-                if VarModule::is_flag(mythra, vars::elight::instance::DISABLE_SPECIAL_HI_JUMP){
+        //This is used if the player selects Mythra first
+        if let Some(object_id) = Some(fighter.battle_object_id - 0x10000){
+            let object = crate::util::get_battle_object_from_id(object_id);
+            if !object.is_null() {
+                let object = unsafe { &mut *object };
+                let kind = object.kind as i32;
+                if kind == *FIGHTER_KIND_ELIGHT {
+                    VarModule::off_flag(object, vars::common::instance::UP_SPECIAL_CANCEL);
+                    return true.into();
                 }
-                EFFECT(fighter, Hash40::new("eflame_promrevolt_firepillar_impact"), Hash40::new("top"), 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.06, 0, 0, 0, 0, 0, 0, true);
-                LAST_EFFECT_SET_COLOR(fighter,0,0,1);
-                VarModule::off_flag(mythra, vars::common::instance::UP_SPECIAL_CANCEL);
             }
-            else{
-                EFFECT(fighter, Hash40::new("eflame_promrevolt_firepillar_impact"), Hash40::new("top"), 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.06, 0, 0, 0, 0, 0, 0, true);
-                LAST_EFFECT_SET_COLOR(fighter,0,1,0);
-            }
-        }
-        else { 
-            EFFECT(fighter, Hash40::new("eflame_promrevolt_firepillar_impact"), Hash40::new("top"), 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.06, 0, 0, 0, 0, 0, 0, true);
-            LAST_EFFECT_SET_COLOR(fighter,1,0,0);
         }
     }
-    true.into()
+    return true.into();
 }
 
 #[smashline::fighter_init]
