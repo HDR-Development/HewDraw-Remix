@@ -471,9 +471,9 @@ unsafe fn sound_specials(fighter: &mut L2CAgentBase) {
             }
         }
     }
-    frame(lua_state, 1.0);
+    frame(lua_state, 2.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_elight_attackhard_l01"));
+        PLAY_SE(fighter, Hash40::new("se_elight_special_s02_end"));
     }
 }
 
