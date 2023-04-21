@@ -20,6 +20,32 @@ unsafe fn parse_stprm_normal_camera_min_distance(ctx: &mut skyline::hooks::Inlin
     }
 }
 
+// Standardizes swing_rate_y for all stages
+#[skyline::hook(offset = 0x2620cc8, inline)]
+unsafe fn parse_stprm_swing_rate_y(ctx: &mut skyline::hooks::InlineCtx) {
+    let swing_rate_y: f32 = 0.1;
+    asm!("fmov s0, w8", in("w8") swing_rate_y)
+}
+
+// Standardizes normal_camera_vertical_angle and normal_camera_look_down_vertical_angle for all stages
+#[skyline::hook(offset = 0x2620e54, inline)]
+unsafe fn parse_stprm_normal_camera_angles(ctx: &mut skyline::hooks::InlineCtx) {
+    let hash = *ctx.registers[18].x.as_ref();
+    let mut angle: f32 = 0.0;
+    asm!("fmov w20, s0", out("w20") angle);
+    if hash == hash40("normal_camera_vertical_angle") {
+        if angle == -5.0 {
+            angle = -5.5;
+        }
+    }
+    else if hash == hash40("normal_camera_look_down_vertical_angle") {
+        if angle == -22.0 {
+            angle = -25.0;
+        }
+    }
+    asm!("fmov s0, w8", in("w8") angle)
+}
+
 // Standardizes target_interpolation_rate for all stages
 #[skyline::hook(offset = 0x2620fec, inline)]
 unsafe fn parse_stprm_target_interpolation_rate(ctx: &mut skyline::hooks::InlineCtx) {
@@ -143,6 +169,8 @@ unsafe fn parse_stprm_vr_camera_position_z_max(ctx: &mut skyline::hooks::InlineC
 
 pub fn install() {
     unsafe {
+        // Stubs original swing_rate_y pull
+        skyline::patching::Patch::in_text(0x2620cc8).nop();
         // Stubs original target_interpolation_rate pull
         skyline::patching::Patch::in_text(0x2620fec).nop();
 
@@ -174,6 +202,8 @@ pub fn install() {
     skyline::install_hooks!(
         normal_camera,
         parse_stprm_normal_camera_min_distance,
+        parse_stprm_swing_rate_y,
+        parse_stprm_normal_camera_angles,
         parse_stprm_target_interpolation_rate,
 
         parse_stprm_pause_camera_min_fov,
