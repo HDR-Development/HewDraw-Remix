@@ -40,7 +40,7 @@ unsafe fn psych_up_crit(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START) {
         if fighter.is_flag(0x200000ea) && fighter.status_frame() == 6 {
             VarModule::on_flag(fighter.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE);
-            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 600);
+            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 900);
         }
     }
     if VarModule::is_flag(fighter.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE) {
@@ -65,7 +65,7 @@ unsafe fn psych_up_crit(fighter: &mut L2CFighterCommon) {
             Hash40::new("attack_air_f"),
             Hash40::new("attack_air_b"),
             Hash40::new("attack_air_lw")
-        ]) && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)) {
+        ]) && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)) {
             EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x11be25bbf2), false, false);
             VarModule::off_flag(fighter.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE);
         }

@@ -86,7 +86,7 @@
       <float hash="speed_up_blown_mul">1.1</float>
       <float hash="charge_blow_mul">1.0</float>
       <float hash="charge_attack_power_mul">1.0</float>
-      <float hash="charge_shield_damage_mul">1.0</float>
+      <float hash="charge_shield_damage_mul">1.65</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
