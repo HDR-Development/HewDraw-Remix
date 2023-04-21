@@ -465,6 +465,44 @@ unsafe fn sound_specials(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "elight", scripts = ["effect_specialsend", "effect_specialairsend"] , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_specialsend (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("elight_photon_vanish"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+		EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("elight_photon_body_lihgt"), Hash40::new("hip"), 0, 0, 0, 0, 0, 0, 1, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+		LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(fighter, -0.3);
+	}
+	frame(lua_state, 2.0);
+	if is_excute(fighter) {
+		FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 1.5, 0, 0, 3, 0, 0, 0, false);
+	}
+	frame(lua_state, 4.0);
+	if is_excute(fighter) {
+		EFFECT_OFF_KIND(fighter, Hash40::new("elight_photon_slash5_light"), false, true);
+		EFFECT_OFF_KIND(fighter, Hash40::new("elight_photon_body_lihgt"), false, true);
+	}
+	frame(lua_state, 5.0);
+	if is_excute(fighter) {
+		FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 1.2, 0, 0, 3, 0, 0, 0, false);
+	}
+	frame(lua_state, 8.0);
+	if is_excute(fighter) {
+		FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 0.9, 0, 0, 3, 0, 0, 0, false);
+		LAST_EFFECT_SET_RATE(fighter, 0.85);
+	}
+	frame(lua_state, 19.0);
+	if is_excute(fighter) {
+		EFFECT_OFF_KIND(fighter, Hash40::new("elight_photon_sword"), true, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("elight_sword_close_l"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+		LAST_EFFECT_SET_RATE(fighter, 0.7);
+		LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(fighter, -0.3);
+		EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_sword_close"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+	}
+}
+
 #[acmd_script( agent = "elight_bunshin", scripts = ["game_specialairs5", "game_specials5"], category = ACMD_GAME, low_priority )]
 unsafe fn game_specials5(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -515,10 +553,13 @@ unsafe fn effect_specials5(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
         EFFECT(fighter, Hash40::new("elight_photon_speedline"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(fighter, 0.5);
+        EFFECT_FLW_UNSYNC_VIS(fighter, Hash40::new("elight_photon_slash5"), Hash40::new("top"), 0, 0, -3, 0, 0, -2, 0.9, false);
+        LAST_EFFECT_SET_RATE(fighter, 1.7);
         EFFECT(fighter, Hash40::new("elight_photon_slash5_light"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("elight_photon_slash5"), -1);
         AFTER_IMAGE_OFF(fighter, 3);
     }
     frame(lua_state, 7.0);
@@ -574,6 +615,7 @@ pub fn install() {
         game_specials,
         effect_specials,
         sound_specials,
+        effect_specialsend,
         game_specials5,
         effect_specials5,
 
