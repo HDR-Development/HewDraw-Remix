@@ -108,4 +108,69 @@
     <float hash="front">24</float>
     <float hash="back">-24</float>
   </struct>
+  <list size="21" hash="param_special_lw_command_data">
+    <struct index="0">
+      <float hash="sp">8</float>
+    </struct>
+    <struct index="1">
+      <float hash="sp">10</float>
+    </struct>
+    <struct index="2">
+      <float hash="sp">26</float>
+    </struct>
+    <struct index="3">
+      <float hash="sp">12</float>
+    </struct>
+    <struct index="4">
+      <float hash="sp">48</float>
+    </struct>
+    <struct index="5">
+      <float hash="sp">13</float>
+    </struct>
+    <struct index="6">
+      <float hash="sp">39</float>
+    </struct>
+    <struct index="7">
+      <float hash="sp">1</float>
+    </struct>
+    <struct index="8">
+      <float hash="sp">1</float>
+    </struct>
+    <struct index="9">
+      <float hash="sp">6</float>
+    </struct>
+    <struct index="10">
+      <float hash="sp">17</float>
+    </struct>
+    <struct index="11">
+      <float hash="sp">21</float>
+    </struct>
+    <struct index="12">
+      <float hash="sp">18</float>
+    </struct>
+    <struct index="13">
+      <float hash="sp">21</float>
+    </struct>
+    <struct index="14">
+      <float hash="sp">4</float>
+    </struct>
+    <struct index="15">
+      <float hash="sp">8</float>
+    </struct>
+    <struct index="16">
+      <float hash="sp">16</float>
+    </struct>
+    <struct index="17">
+      <float hash="sp">14</float>
+    </struct>
+    <struct index="18">
+      <float hash="sp">6</float>
+    </struct>
+    <struct index="19">
+      <float hash="sp">20</float>
+    </struct>
+    <struct index="20">
+      <float hash="sp">25</float>
+    </struct>
+  </list>
 </struct>

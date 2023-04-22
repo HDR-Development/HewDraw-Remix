@@ -560,6 +560,33 @@ unsafe fn brave_explosion_explode2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "brave_deathball", script = "game_deathball2", category = ACMD_GAME, low_priority )]
+unsafe fn brave_deathball_deathball2_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::disable_tip(boma);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 361, 150, 0, 0, 16.0, 0.0, 0.0, -5.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -1, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_deathball"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0, 361, 150, 0, 0, 1.0, 0.0, -5.0, -24.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -1, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_deathball"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "brave_deathball", script = "effect_deathball2", category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_deathball_deathball2_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("brave_deathball_hit2"), Hash40::new("top"), 0, 0, -5, 0, 90, 0, 1.65, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -588,5 +615,7 @@ pub fn install() {
         brave_crash_crash1_effect,
         brave_crash_crash_end1_effect,
         brave_explosion_explode2_game,
+        brave_deathball_deathball2_game,
+        brave_deathball_deathball2_effect,
     );
 }

@@ -72,15 +72,16 @@ pub unsafe fn roll_spells(fighter: &mut BattleObject, vals: &mut Vec<i32>) {
         used_vals.push(VarModule::get_int(fighter, vars::brave::instance::SPELL_SLOT_USED_2_2));
         used_vals.push(VarModule::get_int(fighter, vars::brave::instance::SPELL_SLOT_USED_2_3));
         used_vals.push(VarModule::get_int(fighter, vars::brave::instance::SPELL_SLOT_USED_2_4));
-        let roll = smash::app::sv_math::rand(smash::hash40("fighter"), 101);
+        let roll = smash::app::sv_math::rand(smash::hash40("fighter"), 100);
 
         // rarer rolls
         let mut val = match roll {
-            0..=1 => 0x8,
-            2..=4 => 0x7,
-            5..=9 => 0x5,
-            10..=14 => 0x6,
-            15..=24 => 0x9,
+            0 => 0x8,
+            1..=3 => 0x7,
+            4..=6 => 0x5,
+            7..=9 => 0x6,
+            10..=19 => 0x9,
+            20..=29 => 0x12,
             _ => 0xF
         };
 
