@@ -10,8 +10,14 @@ unsafe fn peach_special_s_hit_end_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+            KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        }
     }
-    
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    }
 }
 
 #[acmd_script(agent = "peach", script = "game_specialhistart" , category = ACMD_GAME , low_priority)]

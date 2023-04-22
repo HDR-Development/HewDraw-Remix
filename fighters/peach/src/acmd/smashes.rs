@@ -73,17 +73,17 @@ unsafe fn peach_attack_lw4_effect(fighter: &mut L2CAgentBase) {
         if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 { 
             frame(lua_state, 4.0);
             if is_excute(fighter) {
-                EFFECT_FOLLOW(fighter, Hash40::new("peach_smash_arc"), Hash40::new("top"), 0, 1, 0, 0, -90, 0, 0.85, true);
+                EFFECT_FOLLOW(fighter, Hash40::new("peach_smash_arc"), Hash40::new("top"), 0, 1, 0, 0, -90, 0, 0.95, true);
                 LAST_EFFECT_SET_COLOR(fighter, 1.3, 1.3, 1.3);
             }
             frame(lua_state, 5.0);
             if is_excute(fighter) {
-                EFFECT_FOLLOW(fighter, Hash40::new("peach_smash_arc"), Hash40::new("top"), 0, 1.8, 1, 0, 120, 0, 0.85, true);
+                EFFECT_FOLLOW(fighter, Hash40::new("peach_smash_arc"), Hash40::new("top"), 0, 1.8, 1, 0, 120, 0, 0.95, true);
                 LAST_EFFECT_SET_COLOR(fighter, 1.3, 1.3, 1.3);
             }
             frame(lua_state, 9.0);
             if is_excute(fighter) {
-                EFFECT_FOLLOW(fighter, Hash40::new("peach_smash_arc"), Hash40::new("top"), 0, 1, 0, 0, -90, 0, 0.9, true);
+                EFFECT_FOLLOW(fighter, Hash40::new("peach_smash_arc"), Hash40::new("top"), 0, 1, 0, 0, -90, 0, 1.0, true);
                 LAST_EFFECT_SET_COLOR(fighter, 1.3, 1.3, 1.3);
             }
             frame(lua_state, 13.0);
@@ -96,24 +96,24 @@ unsafe fn peach_attack_lw4_effect(fighter: &mut L2CAgentBase) {
         }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("peach_smash_arc"), Hash40::new("top"), 0, 1, 0, 180, -90, 0, 0.85, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("peach_smash_arc"), Hash40::new("top"), 0, 1, 0, 180, -90, 0, 0.95, true);
         LAST_EFFECT_SET_COLOR(fighter, 1.3, 1.3, 1.3);
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("peach_smash_arc"), Hash40::new("top"), 0, 1.8, -1, 180, 120, 0, 0.85, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("peach_smash_arc"), Hash40::new("top"), 0, 1.8, -1, 180, 120, 0, 0.95, true);
         LAST_EFFECT_SET_COLOR(fighter, 1.3, 1.3, 1.3);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("peach_smash_arc"), Hash40::new("top"), 0, 1, 0, 180, -90, 0, 0.9, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("peach_smash_arc"), Hash40::new("top"), 0, 1, 0, 180, -90, 0, 1.0, true);
         LAST_EFFECT_SET_COLOR(fighter, 1.3, 1.3, 1.3);
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        LANDING_EFFECT(fighter, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.95, 0, 0, 0, 0, 0, 0, false);
+        LANDING_EFFECT(fighter, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.05, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_RATE(fighter, 1.1);
-        EFFECT_FOLLOW(fighter, Hash40::new("peach_smash_arc"), Hash40::new("top"), 0, 1.8, -1, 180, -90, 0, 0.95, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("peach_smash_arc"), Hash40::new("top"), 0, 1.8, -1, 180, -90, 0, 1.05, true);
         LAST_EFFECT_SET_COLOR(fighter, 1.3, 1.3, 1.3);
     }
 }
