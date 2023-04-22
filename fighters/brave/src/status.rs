@@ -10,7 +10,7 @@ extern "C" {
     #[link_name = "_ZN3app24FighterSpecializer_Brave30get_special_lw_command_sp_costERKNS_26BattleObjectModuleAccessorENS_28FighterBraveSpecialLwCommandEb"]
     fn get_special_lw_command_sp_cost(boma: *mut BattleObjectModuleAccessor, command: i32, pass_false: bool) -> f32;
 }
-  
+
 unsafe fn set_command_for_slot(fighter: &mut BattleObject, slot: usize, id: i32) {
     let hero_mana = fighter.get_float(0x53);
     let mana = get_special_lw_command_sp_cost(fighter.module_accessor, id, false);
@@ -188,5 +188,4 @@ pub unsafe extern "C" fn hero_rng_hook_impl(fighter: &mut BattleObject) {
         fighter.get_int(0x1000000) as u32,
         (index as u32) + 1
     ));
-    
 }

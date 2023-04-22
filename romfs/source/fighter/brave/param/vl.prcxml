@@ -57,6 +57,7 @@
       <float hash="jump_max_speed_x_m">1.535</float>
       <float hash="jump_distance_l">85</float>
       <float hash="jump_max_speed_x_l">1.375</float>
+      <int hash="landing_frame_l">26</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -85,6 +86,7 @@
       <float hash="speed_up_tread_mini_jump_speed_y_mul_mul">1.2</float>
       <float hash="speed_up_passive_wall_jump_y_speed_mul">1.2</float>
       <float hash="speed_up_blown_mul">1.1</float>
+      <float hash="attack_up_attack_power_mul">1.5</float>
       <float hash="charge_blow_mul">1.0</float>
       <float hash="charge_attack_power_mul">1.0</float>
       <float hash="charge_shield_damage_mul">1.65</float>
