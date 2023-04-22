@@ -1,5 +1,5 @@
 use super::*;
-use smash2::app::{FighterManager, BraveUpdateMenuEvent, BraveUpdateMenu2Event, BraveUpdateMenu3Event, BraveUpdateMenu4Event};
+use smash2::app::{FighterManager, BraveSetMenuCommand, BraveEnableMenuCommand, BraveShowMenu, BraveSetMenuSelectedCommand};
 
 extern "C" {
     #[link_name = "_ZN3lib9SingletonIN3app21FighterParamAccessor2EE9instance_E"]
@@ -15,13 +15,13 @@ unsafe fn set_command_for_slot(fighter: &mut BattleObject, slot: usize, id: i32)
     let hero_mana = fighter.get_float(0x53);
     let mana = get_special_lw_command_sp_cost(fighter.module_accessor, id, false);
 
-    FighterManager::instance().unwrap().send_event(BraveUpdateMenuEvent::new(
+    FighterManager::instance().unwrap().send_event(BraveSetMenuCommand::new(
         fighter.get_int(0x1000000) as u32, // ENTRY_ID
         (slot + 1) as u32,
         (id + 1) as i32,
         mana
     ));
-    FighterManager::instance().unwrap().send_event(BraveUpdateMenu2Event::new(
+    FighterManager::instance().unwrap().send_event(BraveEnableMenuCommand::new(
         fighter.get_int(0x1000000) as u32,
         (slot + 1) as u32,
         hero_mana >= mana
@@ -181,10 +181,10 @@ pub unsafe extern "C" fn hero_rng_hook_impl(fighter: &mut BattleObject) {
     }
 
     fighter.set_int(index, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_SELECT_INDEX);
-    FighterManager::instance().unwrap().send_event(BraveUpdateMenu3Event::new(
+    FighterManager::instance().unwrap().send_event(BraveShowMenu::new(
         fighter.get_int(0x1000000) as u32
     ));
-    FighterManager::instance().unwrap().send_event(BraveUpdateMenu4Event::new(
+    FighterManager::instance().unwrap().send_event(BraveSetMenuSelectedCommand::new(
         fighter.get_int(0x1000000) as u32,
         (index as u32) + 1
     ));
