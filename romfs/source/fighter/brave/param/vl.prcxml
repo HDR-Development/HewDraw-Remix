@@ -23,12 +23,12 @@
   </struct>
   <list hash="param_critical">
     <struct index="0">
-      <float hash="rate">0.0</float>
+      <float hash="rate">-1.0</float>
     </struct>
   </list>
   <list hash="param_metal_critical">
     <struct index="0">
-      <float hash="rate">12.5</float>
+      <float hash="rate">-1.0</float>
     </struct>
   </list>
   <list hash="param_special_n">
@@ -51,6 +51,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
+      <float hash="offset_y_m">5.0</float>
       <float hash="start_max_speed_y_mul_air">0.2</float>
       <float hash="jump_distance_m">60</float>
       <float hash="jump_max_speed_x_m">1.535</float>

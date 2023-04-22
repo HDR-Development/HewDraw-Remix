@@ -57,6 +57,7 @@ fn brave_init(fighter: &mut L2CFighterCommon) {
         status::roll_spells(fighter, &mut vals);
 
         VarModule::off_flag(fighter.battle_object, vars::brave::instance::PSYCHE_UP_ACTIVE);
+        VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
     }
 }
 
