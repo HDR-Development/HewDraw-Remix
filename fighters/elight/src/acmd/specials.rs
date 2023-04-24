@@ -342,6 +342,49 @@ unsafe fn game_specialsstart (fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "elight", script = "effect_specialsstart" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_specialsstart (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	if is_excute(fighter) {
+		LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+		EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_start"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+	}
+	frame(lua_state, 5.0);
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("elight_sword_open_l"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+		LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(fighter, -0.3);
+	}
+	frame(lua_state, 10.0);
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_flash"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1, true);
+		EFFECT_OFF_KIND(fighter, Hash40::new("elight_sword_open"), true, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+		LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(fighter, -0.3);
+	}
+}
+
+#[acmd_script( agent = "elight", script = "effect_specialairsstart" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_specialairsstart (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_start"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+	}
+	frame(lua_state, 5.0);
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("elight_sword_open_l"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+		LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(fighter, -0.3);
+	}
+	frame(lua_state, 10.0);
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_flash"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1, true);
+		EFFECT_OFF_KIND(fighter, Hash40::new("elight_sword_open"), true, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("elight_photon_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
+		LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(fighter, -0.3);
+	}
+}
+
 #[acmd_script( agent = "elight", scripts = ["game_specials", "game_specialairs"] , category = ACMD_GAME , low_priority)]
 unsafe fn game_specials (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
@@ -675,6 +718,8 @@ pub fn install() {
         expression_specialairhi2,
 
         game_specialsstart,
+        effect_specialsstart,
+        effect_specialairsstart,
         game_specials,
         effect_specials,
         effect_specialairs,
