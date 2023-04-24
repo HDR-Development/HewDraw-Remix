@@ -3,6 +3,7 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
+
  
 unsafe fn hit_cancel_blade_switch(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if (fighter.is_status_one_of(&[
@@ -22,8 +23,16 @@ unsafe fn hit_cancel_blade_switch(fighter: &mut smash::lua2cpp::L2CFighterCommon
         fighter.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_LW, true);
     }
 }
+
+unsafe fn photon_edge_actionability(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_FORWARD) && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) && VarModule::get_int(fighter.object(), vars::common::instance::LAST_ATTACK_HITBOX_ID) == 0 {
+        VarModule::on_flag(fighter.battle_object, vars::elight::instance::ENABLE_SPECIAL_S_ACTIONABILITY);
+    }
+}
+
 #[utils::macros::opff(FIGHTER_KIND_ELIGHT )]
 pub unsafe fn elight_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
     hit_cancel_blade_switch(fighter);
+    photon_edge_actionability(fighter);
 }
