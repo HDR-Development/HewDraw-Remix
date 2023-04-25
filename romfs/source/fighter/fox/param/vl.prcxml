@@ -32,12 +32,12 @@
     <struct index="0">
       <float hash="fire_accel_x">0.01</float>
       <float hash="fire_start_x_mul">0.5</float>
-      <int hash="fire_rush_frame">30</int>
+      <int hash="fire_rush_frame">24</int>
       <float hash="fire_rush_speed">3.8</float>
       <int hash="fire_rush_brake_frame">5</int>
-      <float hash="fire_rush_brake">0.1</float>
+      <float hash="fire_rush_brake">0.08</float>
       <float hash="fire_crush_x_mul">0.8</float>
-      <float hash="fire_fall_x_mul">1</float>
+      <float hash="fire_fall_x_mul">1.25</float>
       <int hash="fire_landing_frame">20</int>
     </struct>
     <hash40 index="1">dummy</hash40>
