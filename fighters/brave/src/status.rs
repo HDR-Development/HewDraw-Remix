@@ -80,8 +80,9 @@ pub unsafe fn roll_spells(fighter: &mut BattleObject, vals: &mut Vec<i32>) {
             1..=3 => 0x7,
             4..=6 => 0x5,
             7..=9 => 0x6,
-            10..=19 => 0x9,
-            20..=29 => 0x12,
+            10..=12 => 0xE,
+            13..=22 => 0x9,
+            23..=32 => 0x12,
             _ => 0xF
         };
 
@@ -89,7 +90,7 @@ pub unsafe fn roll_spells(fighter: &mut BattleObject, vals: &mut Vec<i32>) {
         if val == 0xF {
             loop {
                 val = smash::app::sv_math::rand(smash::hash40("fighter"), 0x15);
-                if (val >= 0x5 && val <= 0x9) || val == 0xF || used_vals.contains(&val) {
+                if (val >= 0x5 && val <= 0x9) || val == 0xE || val == 0xF || val == 0x12 || used_vals.contains(&val) {
                     continue;
                 }
                 else {
