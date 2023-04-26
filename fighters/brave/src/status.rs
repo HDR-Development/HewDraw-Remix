@@ -16,13 +16,13 @@ unsafe fn set_command_for_slot(fighter: &mut BattleObject, slot: usize, id: i32)
     let mana = get_special_lw_command_sp_cost(fighter.module_accessor, id, false);
 
     FighterManager::instance().unwrap().send_event(BraveSetMenuCommand::new(
-        fighter.get_int(0x1000000) as u32, // ENTRY_ID
+        fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, // ENTRY_ID
         (slot + 1) as u32,
         (id + 1) as i32,
         mana
     ));
     FighterManager::instance().unwrap().send_event(BraveEnableMenuCommand::new(
-        fighter.get_int(0x1000000) as u32,
+        fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
         (slot + 1) as u32,
         hero_mana >= mana
     ));
@@ -145,6 +145,7 @@ pub unsafe extern "C" fn hero_rng_hook_impl(fighter: &mut BattleObject) {
         let we_ball = smash::app::sv_math::rand(smash::hash40("fighter"), 100);
         if we_ball == 1 {
             EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_level_up"), Hash40::new("top"), &Vector3f::new(0.0, 10.0, 0.0), &Vector3f::new(0.0, 0.0, 0.0), 0.8, false, 0, 0, 0, 0, 0, false, false);
+            //SoundModule::play_sequence(fighter.module_accessor, Hash40::new("se_specialflag"), false, false);
             let mut rand: i32;
             loop {
                 rand = smash::app::sv_math::rand(smash::hash40("fighter"), 0x15);
@@ -184,10 +185,10 @@ pub unsafe extern "C" fn hero_rng_hook_impl(fighter: &mut BattleObject) {
 
     fighter.set_int(index, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_SELECT_INDEX);
     FighterManager::instance().unwrap().send_event(BraveShowMenu::new(
-        fighter.get_int(0x1000000) as u32
+        fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32
     ));
     FighterManager::instance().unwrap().send_event(BraveSetMenuSelectedCommand::new(
-        fighter.get_int(0x1000000) as u32,
+        fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
         (index as u32) + 1
     ));
 }
