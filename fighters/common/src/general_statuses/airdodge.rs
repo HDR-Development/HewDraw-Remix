@@ -462,20 +462,20 @@ unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, stick_x:
     WorkModule::set_int(fighter.module_accessor, escape_air_slide_back_end_frame + escape_air_add_xlu_start_frame, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_BACK_END_FRAME);
     WorkModule::set_float(fighter.module_accessor, escape_air_slide_stiff_frame, *FIGHTER_STATUS_ESCAPE_AIR_STIFF_FRAME);
     
-    EffectModule::req_on_joint(
-        fighter.module_accessor,
-        Hash40::new("sys_smash_flash_s"),
-        Hash40::new("hip"),
-        &Vector3f{x: 0.0, y: 4.0, z: 8.0},
-        &Vector3f::zero(),
-        1.1,
-        &Vector3f{x: 18.0, y: 12.0, z: 0.0},
-        &Vector3f::zero(),
-        false,
-        0,
-        0,
-        0
-    );
+    // EffectModule::req_on_joint(
+    //     fighter.module_accessor,
+    //     Hash40::new("sys_smash_flash_s"),
+    //     Hash40::new("hip"),
+    //     &Vector3f{x: 0.0, y: 4.0, z: 8.0},
+    //     &Vector3f::zero(),
+    //     1.1,
+    //     &Vector3f{x: 18.0, y: 12.0, z: 0.0},
+    //     &Vector3f::zero(),
+    //     false,
+    //     0,
+    //     0,
+    //     0
+    // );
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_exec_escape_air_slide)]

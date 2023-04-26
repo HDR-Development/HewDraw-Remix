@@ -850,7 +850,12 @@ impl BomaExt for BattleObjectModuleAccessor {
         let ecb_bottom = *GroundModule::get_rhombus(self, true).add(1);
         let pos = *PostureModule::pos(self);
         let mut hip_offset = Vector3f::zero();
-        ModelModule::joint_global_offset_from_top(self, Hash40::new("hip"), &mut hip_offset);
+        let upper_bound_bone = if self.kind() == *FIGHTER_KIND_KOOPAJR && self.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR) {
+            "clownhip"
+        } else {
+            "hip"
+        };
+        ModelModule::joint_global_offset_from_top(self, Hash40::new(upper_bound_bone), &mut hip_offset);
         let hip_pos_y = pos.y + hip_offset.y;
         let snap_leniency = if WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0 {
                 // For a downwards/horizontal airdodge, waveland snap threshold = the distance from your Hip bone to your Top bone
@@ -869,7 +874,8 @@ impl BomaExt for BattleObjectModuleAccessor {
             || (ground_pos_stage != Vector2f::zero()
                 && WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) > 0.0)
             || (self.is_prev_status(*FIGHTER_STATUS_KIND_PASS)
-                && ground_pos_stage == Vector2f::zero())
+                && ground_pos_stage == Vector2f::zero()
+                && WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0)
         );
         if can_snap { // pretty sure it returns a pointer, at least it defo returns a non-0 value if success
             crate::VarModule::on_flag(self.object(), crate::consts::vars::common::status::DISABLE_ECB_SHIFT);
