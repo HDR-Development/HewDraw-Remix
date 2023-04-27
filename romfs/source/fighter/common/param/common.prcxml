@@ -102,8 +102,8 @@
   <float hash="stand_stick_y">0.2</float>
   <float hash="stand_fb_stick_x">0.2</float>
   <float hash="pass_stick_y">-0.71</float>
-  <int hash="passive_trigger_frame">20</int>
-  <int hash="no_rapid_frame_value">40</int>
+  <int hash="passive_trigger_frame">15</int>
+  <int hash="no_rapid_frame_value">30</int>
   <float hash="invalid_passive_speed">999</float>
   <float hash="wall_jump_speed_dec">0.75</float>
   <float hash="wall_jump_x_speed_dec">0.7</float>
