@@ -1243,9 +1243,9 @@ unsafe fn roy_special_air_s4_lw_effect(fighter: &mut L2CAgentBase) {
 unsafe fn roy_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 4.0);
-    if is_excute(fighter) {
-        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 10);
+
+    if is_excute(fighter){
+        boma.select_cliff_hangdata_from_name("special_hi");
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
@@ -1292,6 +1292,11 @@ unsafe fn roy_special_hi_game(fighter: &mut L2CAgentBase) {
 unsafe fn roy_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+   
+    if is_excute(fighter){
+        boma.select_cliff_hangdata_from_name("special_hi");
+    }
+    
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_ROY_STATUS_SPECIAL_HI_FLAG_SPECIAL_HI_SET_LR);

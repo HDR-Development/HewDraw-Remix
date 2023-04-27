@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
-  <list hash="cliff_hang_data">
+   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">27</float>
+      <float hash="p1_x">18</float>
+      <float hash="p1_y">22.8</float>
+      <float hash="p2_x">-10.8</float>
+      <float hash="p2_y">8</float>
     </struct>
   </list>
   <list hash="param_special_s">
@@ -17,8 +20,9 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="air_hi_pass_mul">1.05</float>
+      <float hash="dir_mul_value">30</float>
       <float hash="accel_y">0.05</float>
-      <float hash="fall_x_mul_value">0.66</float>
+      <float hash="fall_x_mul_value">0.45</float>
       <float hash="landing_frame">25</float>
     </struct>
     <hash40 index="1">dummy</hash40>

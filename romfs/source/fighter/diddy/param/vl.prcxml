@@ -27,6 +27,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
+      <float hash="special_hi_charge_ang_max">50</float>
       <float hash="special_hi_charge_gravity_mul">0.05</float>
       <float hash="special_hi_jet_start_spd_y">3.05</float>
       <float hash="special_hi_jet_start_spd_y_mul">0.021</float>
