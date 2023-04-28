@@ -34,19 +34,19 @@ unsafe fn power_wave_dash_cancel_super_cancels(fighter: &mut L2CFighterCommon, b
                 WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2);
 
                 // Buster Wolf
-                if boma.is_cat_flag(Cat4::SuperSpecialCommand){
+                if boma.is_cat_flag(Cat4::SuperSpecialCommand) && boma.is_cat_flag(Cat1::SpecialAny){
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, false);
                 }
 
                 // Power Geyser
-                if boma.is_cat_flag(Cat4::SuperSpecial2Command){
+                if boma.is_cat_flag(Cat4::SuperSpecial2Command) && boma.is_cat_flag(Cat1::SpecialAny){
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, false);
                 }
             }
         }
 
         // Triple Geyser
-        if boma.is_cat_flag( Cat4::SpecialN2Command) {
+        if boma.is_cat_flag( Cat4::SpecialN2Command) && boma.is_cat_flag(Cat1::SpecialAny) {
             if MeterModule::drain(boma.object(), 10) {
                 WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
                 WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
@@ -78,7 +78,7 @@ unsafe fn special_super_cancels_triple_geyser(fighter: &mut L2CFighterCommon, bo
         *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND,
         *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK].contains(&status_kind) {
         // Triple Geyser
-        if boma.is_cat_flag( Cat4::SpecialN2Command) {
+        if boma.is_cat_flag( Cat4::SpecialN2Command) && boma.is_cat_flag(Cat1::SpecialAny) {
             if MeterModule::drain(boma.object(), 10) {
                 WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
                 WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
@@ -93,7 +93,7 @@ unsafe fn special_super_cancels_triple_geyser(fighter: &mut L2CFighterCommon, bo
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2,
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW].contains(&status_kind)
         && motion_kind == 0x13434c5490 as u64 {
-        if boma.is_cat_flag( Cat4::SpecialN2Command) {
+        if boma.is_cat_flag( Cat4::SpecialN2Command) && boma.is_cat_flag(Cat1::SpecialAny) {
             if MeterModule::drain(boma.object(), 6) {
                 WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
                 WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
@@ -166,7 +166,7 @@ unsafe fn super_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
     if status_kind == *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL {
             
         // Power Geyser -> Buster Wolf
-        if boma.is_cat_flag(Cat4::SuperSpecial2Command) {
+        if boma.is_cat_flag(Cat4::SuperSpecial2Command) && boma.is_cat_flag(Cat1::SpecialAny) {
             if !StopModule::is_stop(boma){
                 if MeterModule::drain(boma.object(), 2) {
                     WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2);
@@ -181,7 +181,7 @@ unsafe fn super_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW].contains(&status_kind)
         || motion_kind == 0x13434c5490 as u64 {
         // Buster Wolf -> Power Geyser
-        if boma.is_cat_flag(Cat4::SuperSpecialCommand){
+        if boma.is_cat_flag(Cat4::SuperSpecialCommand) && boma.is_cat_flag(Cat1::SpecialAny){
             if !StopModule::is_stop(boma){
                 if MeterModule::drain(boma.object(), 2) {
                     WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL);
@@ -267,11 +267,11 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
             if WorkModule::is_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL) {
                 WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL);
                 WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2);
-                if boma.is_cat_flag(Cat4::SuperSpecialCommand) {
+                if boma.is_cat_flag(Cat4::SuperSpecialCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
                     is_input_cancel = true;
                     new_status = *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL;
                 }
-                else if boma.is_cat_flag(Cat4::SuperSpecial2Command){
+                else if boma.is_cat_flag(Cat4::SuperSpecial2Command) && boma.is_cat_flag(Cat1::SpecialAny){
                     is_input_cancel = true;
                     new_status = *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2;
                 }
@@ -293,7 +293,7 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
                     is_input_special_special_cancel = true;
                     new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B;
                 }
-                if boma.is_cat_flag( Cat4::SpecialSCommand) {
+                if boma.is_cat_flag( Cat4::SpecialSCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
                     is_input_special_special_cancel = true;
                     new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND;
                 }
@@ -302,7 +302,7 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
                     is_input_special_special_cancel = true;
                     new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI;
                 }
-                if boma.is_cat_flag( Cat4::SpecialHi2Command) {
+                if boma.is_cat_flag( Cat4::SpecialHi2Command) && boma.is_cat_flag(Cat1::SpecialAny) {
                     is_input_special_special_cancel = true;
                     new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_COMMAND;
                 }
@@ -311,7 +311,7 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
                     is_input_special_special_cancel = true;
                     new_status = *FIGHTER_STATUS_KIND_SPECIAL_LW;
                 }
-                if boma.is_cat_flag( Cat4::SpecialHiCommand) {
+                if boma.is_cat_flag( Cat4::SpecialHiCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
                     is_input_special_special_cancel = true;
                     new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND;
                 }
@@ -336,7 +336,7 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
                     is_input_special_special_cancel = true;
                     new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
                 }
-                if boma.is_cat_flag( Cat4::SpecialNCommand) {
+                if boma.is_cat_flag( Cat4::SpecialNCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
                     is_input_special_special_cancel = true;
                     new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND;
                 }
@@ -345,7 +345,7 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
                     is_input_special_special_cancel = true;
                     new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B;
                 }
-                if boma.is_cat_flag( Cat4::SpecialSCommand) {
+                if boma.is_cat_flag( Cat4::SpecialSCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
                     is_input_special_special_cancel = true;
                     new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND;
                 }
@@ -354,7 +354,7 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
                     is_input_special_special_cancel = true;
                     new_status = *FIGHTER_STATUS_KIND_SPECIAL_LW;
                 }
-                if boma.is_cat_flag( Cat4::SpecialHiCommand) {
+                if boma.is_cat_flag( Cat4::SpecialHiCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
                     is_input_cancel = true;
                     new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND;
                 }
@@ -402,7 +402,7 @@ unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
             new_status = *FIGHTER_STATUS_KIND_ATTACK_HI4_START;
         }
         // Power Charge
-        if boma.is_cat_flag(Cat4::SpecialN2Command) {
+        if boma.is_cat_flag(Cat4::SpecialN2Command) && boma.is_cat_flag(Cat1::SpecialAny) {
             is_input_cancel = true;
             ControlModule::clear_command(boma, false);
             WorkModule::off_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
@@ -422,7 +422,7 @@ unsafe fn jab_cancels(boma: &mut BattleObjectModuleAccessor) {
             new_status = *FIGHTER_STATUS_KIND_ATTACK_HI4_START;
         }
         // Power Charge
-        if boma.is_cat_flag(Cat4::SpecialN2Command) {
+        if boma.is_cat_flag(Cat4::SpecialN2Command) && boma.is_cat_flag(Cat1::SpecialAny) {
             is_input_cancel = true;
             ControlModule::clear_command(boma, false);
             WorkModule::off_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
@@ -459,7 +459,7 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
             }
         }
         // Power Charge
-        if boma.is_cat_flag(Cat4::SpecialN2Command) {
+        if boma.is_cat_flag(Cat4::SpecialN2Command) && boma.is_cat_flag(Cat1::SpecialAny) {
             is_input_cancel = true;
             ControlModule::clear_command(boma, false);
             WorkModule::off_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
@@ -484,7 +484,7 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
             }
         }
         // Power Charge
-        if boma.is_cat_flag(Cat4::SpecialN2Command) {
+        if boma.is_cat_flag(Cat4::SpecialN2Command) && boma.is_cat_flag(Cat1::SpecialAny) {
             is_input_cancel = true;
             ControlModule::clear_command(boma, false);
             WorkModule::off_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
@@ -505,7 +505,7 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
             new_status = *FIGHTER_STATUS_KIND_ATTACK_HI4_START;
         }
         // Power Charge
-        if boma.is_cat_flag(Cat4::SpecialN2Command) {
+        if boma.is_cat_flag(Cat4::SpecialN2Command) && boma.is_cat_flag(Cat1::SpecialAny) {
             is_input_cancel = true;
             ControlModule::clear_command(boma, false);
             WorkModule::off_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
@@ -543,11 +543,11 @@ unsafe fn dash_attack_cancels(boma: &mut BattleObjectModuleAccessor) {
     if WorkModule::is_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL);
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2);
-        if boma.is_cat_flag(Cat4::SuperSpecialCommand) {
+        if boma.is_cat_flag(Cat4::SuperSpecialCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
             is_input_cancel = true;
             new_status = *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL;
         }
-        else if boma.is_cat_flag(Cat4::SuperSpecial2Command) {
+        else if boma.is_cat_flag(Cat4::SuperSpecial2Command) && boma.is_cat_flag(Cat1::SpecialAny) {
             is_input_cancel = true;
             new_status = *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2;
         }
@@ -560,12 +560,12 @@ unsafe fn dash_attack_cancels(boma: &mut BattleObjectModuleAccessor) {
             is_input_cancel = true;
             new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI
         }
-        else if boma.is_cat_flag(Cat4::SpecialHi2Command) {
+        else if boma.is_cat_flag(Cat4::SpecialHi2Command) && boma.is_cat_flag(Cat1::SpecialAny) {
             is_input_cancel = true;
             new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_COMMAND;
         }
         // Power Dunk
-        else if boma.is_cat_flag(Cat4::SpecialHiCommand) {
+        else if boma.is_cat_flag(Cat4::SpecialHiCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
             is_input_cancel = true;
             new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND;
         }
@@ -598,7 +598,7 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
             new_status = *FIGHTER_STATUS_KIND_SPECIAL_N;
         }
         // Burn Knuckle
-        else if boma.is_cat_flag(Cat4::SpecialNCommand) {
+        else if boma.is_cat_flag(Cat4::SpecialNCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
             is_input_cancel = true;
             new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND;
         }
@@ -607,7 +607,7 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
             new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
         }
         // Crack Shoot
-        else if boma.is_cat_flag(Cat4::SpecialSCommand) {
+        else if boma.is_cat_flag(Cat4::SpecialSCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
             is_input_cancel = true;   
             new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND;
         }
@@ -620,12 +620,12 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
             is_input_cancel = true;
             new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI
         }
-        else if boma.is_cat_flag(Cat4::SpecialHi2Command) {
+        else if boma.is_cat_flag(Cat4::SpecialHi2Command) && boma.is_cat_flag(Cat1::SpecialAny) {
             is_input_cancel = true;
             new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_COMMAND;
         }
         // Power Dunk
-        else if boma.is_cat_flag(Cat4::SpecialHiCommand) {
+        else if boma.is_cat_flag(Cat4::SpecialHiCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
             is_input_cancel = true;
             new_status = *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND;
         }
@@ -634,7 +634,7 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
             new_status = *FIGHTER_STATUS_KIND_SPECIAL_LW
         }
         // Power Charge
-        if boma.is_cat_flag(Cat4::SpecialN2Command) {
+        if boma.is_cat_flag(Cat4::SpecialN2Command) && boma.is_cat_flag(Cat1::SpecialAny) {
             is_input_cancel = true;
             ControlModule::clear_command(boma, false);
             WorkModule::off_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
