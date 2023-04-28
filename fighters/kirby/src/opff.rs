@@ -116,17 +116,17 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
                 if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == *FIGHTER_KIND_RYU {
                     WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND);
                     WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND);
-                    if boma.is_cat_flag( Cat4::SpecialNCommand) {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N_COMMAND, false);
-                    }
-                    if boma.is_cat_flag( Cat4::SpecialN2Command) {
+                    if boma.is_cat_flag( Cat4::SpecialN2Command) && boma.is_cat_flag(Cat1::SpecialAny) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N2_COMMAND, false);
+                    }
+                    if boma.is_cat_flag( Cat4::SpecialNCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N_COMMAND, false);
                     }
                 }
                 // Ken
                 if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == *FIGHTER_KIND_KEN {
                     WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND);
-                    if boma.is_cat_flag( Cat4::AttackCommand1) {
+                    if boma.is_cat_flag( Cat4::SpecialNCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_KIRBY_STATUS_KIND_KEN_SPECIAL_N_COMMAND, false);
                     }
                 }
@@ -179,17 +179,17 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
                 if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == *FIGHTER_KIND_RYU {
                     WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND);
                     WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND);
-                    if boma.is_cat_flag( Cat4::SpecialNCommand) {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N_COMMAND, false);
-                    }
-                    if boma.is_cat_flag( Cat4::SpecialN2Command) {
+                    if boma.is_cat_flag( Cat4::SpecialN2Command) && boma.is_cat_flag(Cat1::SpecialAny) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N2_COMMAND, false);
+                    }
+                    if boma.is_cat_flag( Cat4::SpecialNCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N_COMMAND, false);
                     }
                 }
                 // Ken
                 if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == *FIGHTER_KIND_KEN {
                     WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND);
-                    if boma.is_cat_flag( Cat4::AttackCommand1) {
+                    if boma.is_cat_flag( Cat4::SpecialNCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_KIRBY_STATUS_KIND_KEN_SPECIAL_N_COMMAND, false);
                     }
                 }
@@ -232,17 +232,17 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
                 if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == *FIGHTER_KIND_RYU {
                     WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND);
                     WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND);
-                    if boma.is_cat_flag( Cat4::SpecialNCommand) {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N_COMMAND, false);
-                    }
-                    if boma.is_cat_flag( Cat4::SpecialN2Command) {
+                    if boma.is_cat_flag( Cat4::SpecialN2Command) && boma.is_cat_flag(Cat1::SpecialAny) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N2_COMMAND, false);
+                    }
+                    if boma.is_cat_flag( Cat4::SpecialNCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N_COMMAND, false);
                     }
                 }
                 // Ken
                 if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == *FIGHTER_KIND_KEN {
                     WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND);
-                    if boma.is_cat_flag( Cat4::AttackCommand1) {
+                    if boma.is_cat_flag( Cat4::SpecialNCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_KIRBY_STATUS_KIND_KEN_SPECIAL_N_COMMAND, false);
                     }
                 }
@@ -278,17 +278,17 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
                 if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == *FIGHTER_KIND_RYU {
                     WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND);
                     WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND);
-                    if boma.is_cat_flag( Cat4::SpecialNCommand) {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N_COMMAND, false);
-                    }
-                    if boma.is_cat_flag( Cat4::SpecialN2Command) {
+                    if boma.is_cat_flag( Cat4::SpecialN2Command) && boma.is_cat_flag(Cat1::SpecialAny) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N2_COMMAND, false);
+                    }
+                    if boma.is_cat_flag( Cat4::SpecialNCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N_COMMAND, false);
                     }
                 }
                 // Ken
                 if WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == *FIGHTER_KIND_KEN {
                     WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND);
-                    if boma.is_cat_flag( Cat4::AttackCommand1) {
+                    if boma.is_cat_flag( Cat4::SpecialNCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_KIRBY_STATUS_KIND_KEN_SPECIAL_N_COMMAND, false);
                     }
                 }

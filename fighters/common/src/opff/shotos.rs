@@ -114,12 +114,14 @@ unsafe fn hadoken_fadc_sfs_cancels(fighter: &mut L2CFighterCommon, boma: &mut Ba
 
 
     if boma.kind() == *FIGHTER_KIND_RYU
+    && boma.is_cat_flag(Cat1::SpecialAny)
     && boma.is_cat_flag(Cat4::SpecialNCommand | Cat4::SpecialN2Command | Cat4::SpecialHiCommand)
     && super_fs_cancel(boma) {
         return;
     }
 
     if boma.kind() == *FIGHTER_KIND_KEN
+    && boma.is_cat_flag(Cat1::SpecialAny)
     && boma.is_cat_flag(Cat4::SpecialSCommand | Cat4::SpecialHiCommand)
     && super_fs_cancel(boma) {
         return;
@@ -239,7 +241,7 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
     if boma.kind() == *FIGHTER_KIND_RYU {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND);
 
-        if boma.is_cat_flag(Cat4::SpecialN2Command) {
+        if boma.is_cat_flag(Cat4::SpecialN2Command) && boma.is_cat_flag(Cat1::SpecialAny) {
             boma.change_status_req(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, false);
             return;
         }
@@ -263,15 +265,15 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
 
     let new_status = if boma.is_cat_flag(Cat1::SpecialN) {
         *FIGHTER_STATUS_KIND_SPECIAL_N
-    } else if boma.is_cat_flag(Cat4::SpecialNCommand) {
+    } else if boma.is_cat_flag(Cat4::SpecialNCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND
     } else if boma.is_cat_flag(Cat1::SpecialS) {
         *FIGHTER_STATUS_KIND_SPECIAL_S
-    } else if boma.is_cat_flag(Cat4::SpecialSCommand) {
+    } else if boma.is_cat_flag(Cat4::SpecialSCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND
     } else if boma.is_cat_flag(Cat1::SpecialHi) {
         *FIGHTER_STATUS_KIND_SPECIAL_HI
-    } else if boma.is_cat_flag(Cat4::SpecialHiCommand) {
+    } else if boma.is_cat_flag(Cat4::SpecialHiCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND
     } else if boma.is_cat_flag(Cat1::SpecialLw) {
         *FIGHTER_STATUS_KIND_SPECIAL_LW
@@ -312,6 +314,7 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
     }
 
     if boma.kind() == *FIGHTER_KIND_RYU
+    && boma.is_cat_flag(Cat1::SpecialAny)
     && boma.is_cat_flag(Cat4::SpecialNCommand | Cat4::SpecialN2Command | Cat4::SpecialHiCommand)
     {
         super_fs_cancel(boma);
@@ -319,6 +322,7 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
     }
 
     if boma.kind() == *FIGHTER_KIND_KEN
+    && boma.is_cat_flag(Cat1::SpecialAny)
     && boma.is_cat_flag(Cat4::SpecialSCommand | Cat4::SpecialHiCommand)
     {
         super_fs_cancel(boma);

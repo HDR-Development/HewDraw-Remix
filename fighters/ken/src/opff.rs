@@ -159,7 +159,7 @@ unsafe fn special_fadc_super_cancels(boma: &mut BattleObjectModuleAccessor) {
                     }
                 }
             }
-            if boma.is_cat_flag(Cat4::SpecialSCommand | Cat4::SpecialHiCommand){
+            if boma.is_cat_flag(Cat4::SpecialSCommand | Cat4::SpecialHiCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
                 if !StopModule::is_stop(boma){
                     if MeterModule::drain(boma.object(), 10) {
                         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
@@ -322,34 +322,34 @@ unsafe fn smash_cancels(boma: &mut BattleObjectModuleAccessor) {
 
     if !boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_S4){
         // Special cancels
-        if boma.is_cat_flag(Cat1::SpecialN) {
+        if boma.is_cat_flag(Cat1::SpecialHi) {
             is_input_cancel = true;
             is_jump_cancel = false;
-            new_status = *FIGHTER_STATUS_KIND_SPECIAL_N;
-        } else if boma.is_cat_flag(Cat4::SpecialNCommand) {
+            new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI;
+        } else if boma.is_cat_flag(Cat4::SpecialHiCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
             is_input_cancel = true;
             is_jump_cancel = false;
-            new_status = *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND;
-        } else if boma.is_cat_flag(Cat4::SpecialN2Command) {
+            new_status = *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND;
+        } else if boma.is_cat_flag(Cat4::SpecialN2Command) && boma.is_cat_flag(Cat1::SpecialAny) {
             is_input_cancel = true;
             is_jump_cancel = false;
             new_status = *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND;
+        } else if boma.is_cat_flag(Cat1::SpecialN) {
+            is_input_cancel = true;
+            is_jump_cancel = false;
+            new_status = *FIGHTER_STATUS_KIND_SPECIAL_N;
+        } else if boma.is_cat_flag(Cat4::SpecialNCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
+            is_input_cancel = true;
+            is_jump_cancel = false;
+            new_status = *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND;
         } else if boma.is_cat_flag(Cat1::SpecialS) {
             is_input_cancel = true;
             is_jump_cancel = false;
             new_status = *FIGHTER_STATUS_KIND_SPECIAL_S;
-        } else if boma.is_cat_flag(Cat4::SpecialSCommand) {
+        } else if boma.is_cat_flag(Cat4::SpecialSCommand) && boma.is_cat_flag(Cat1::SpecialAny) {
             is_input_cancel = true;
             is_jump_cancel = false;
             new_status = *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND;
-        } else if boma.is_cat_flag(Cat1::SpecialHi) {
-            is_input_cancel = true;
-            is_jump_cancel = false;
-            new_status = *FIGHTER_STATUS_KIND_SPECIAL_HI;
-        } else if boma.is_cat_flag(Cat4::SpecialHiCommand) {
-            is_input_cancel = true;
-            is_jump_cancel = false;
-            new_status = *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND;
         } else if boma.is_cat_flag(Cat1::SpecialLw) {
             is_input_cancel = true;
             is_jump_cancel = false;

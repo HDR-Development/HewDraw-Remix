@@ -7,6 +7,59 @@ pub fn install() {
         pre_jump,
         throw_kirby_map_correction
     );
+    smashline::install_agent_init_callbacks!(kirby_init);
+}
+
+#[smashline::fighter_init]
+fn kirby_init(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        if smash::app::utility::get_kind(&mut *fighter.module_accessor) != *FIGHTER_KIND_KIRBY {
+            return;
+        }
+        fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(kirby_check_special_command as *const () as _));
+    }
+}
+
+/// determines the command inputs
+/// NOTE: order is important! early order has higher priority
+pub unsafe extern "C" fn kirby_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let cat1 =  fighter.global_table[CMD_CAT1].get_i32();
+    let cat4 = fighter.global_table[CMD_CAT4].get_i32();
+
+    // Ryu
+    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == *FIGHTER_KIND_RYU {
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0 {
+            // shaku
+            if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N2_COMMAND != 0
+            && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND)
+            && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[USE_SPECIAL_N_CALLBACK].clone()).get_bool() {
+                fighter.change_status(FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N2_COMMAND.into(), true.into());
+                return true.into();
+            }
+    
+            // hado
+            if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N_COMMAND != 0
+            && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND)
+            && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[USE_SPECIAL_N_CALLBACK].clone()).get_bool() {
+                fighter.change_status(FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N_COMMAND.into(), true.into());
+                return true.into();
+            }
+        }
+    }
+    // Ken
+    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == *FIGHTER_KIND_KEN {
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0 {
+            // hado
+            if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N_COMMAND != 0
+            && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND)
+            && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[USE_SPECIAL_N_CALLBACK].clone()).get_bool() {
+                fighter.change_status(FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N_COMMAND.into(), true.into());
+                return true.into();
+            }
+        }
+    }
+
+    false.into()
 }
 
 // FIGHTER_STATUS_KIND_JUMP //
