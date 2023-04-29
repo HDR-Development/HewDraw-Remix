@@ -25,9 +25,25 @@ unsafe fn hit_cancel_blade_switch(fighter: &mut smash::lua2cpp::L2CFighterCommon
 }
 
 unsafe fn photon_edge_actionability(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_FORWARD) && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) && VarModule::get_int(fighter.object(), vars::common::instance::LAST_ATTACK_HITBOX_ID) == 0 {
+    if fighter.is_status(*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_FORWARD) 
+       && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) 
+       && VarModule::get_int(fighter.object(), vars::common::instance::LAST_ATTACK_HITBOX_ID) == 0 {
         VarModule::on_flag(fighter.battle_object, vars::elight::instance::ENABLE_SPECIAL_S_ACTIONABILITY);
     }
+    if fighter.is_status(*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_FORWARD){
+        // Allow canceling before reappearing, but still after teleporting forward
+        // frame 25 (more with hitlag) felt the best both visualy and for semi combo utility
+        // If this cancel check isnt here, the cancel itself wouldnt line up with the visual and would just feel cumbersome
+        if fighter.status_frame() >= 15 && VarModule::is_flag(fighter.battle_object, vars::elight::instance::ENABLE_SPECIAL_S_ACTIONABILITY){
+            CancelModule::enable_cancel(fighter.boma());
+        }
+    }
+    if fighter.is_status(*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END) {
+        // Allow cancel afterwards if ur bad and delay your jump input for the rest of the end animation
+        if VarModule::is_flag(fighter.battle_object, vars::elight::instance::ENABLE_SPECIAL_S_ACTIONABILITY){
+            CancelModule::enable_cancel(fighter.boma());
+        }
+	}
 }
 
 #[utils::macros::opff(FIGHTER_KIND_ELIGHT )]
