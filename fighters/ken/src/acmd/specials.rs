@@ -874,9 +874,12 @@ unsafe fn game_specialairlwturn(fighter: &mut L2CAgentBase) {
 unsafe fn game_speciallwstepf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    FT_MOTION_RATE(fighter, 6.0 / 2.0);
     if is_excute(fighter) {
         GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     }
+    frame(lua_state, 2.0);
+    FT_MOTION_RATE(fighter, 1.0);
 }
 
 #[acmd_script( agent = "ken", script = "effect_speciallwstepf", category = ACMD_EFFECT, low_priority )]
@@ -899,9 +902,12 @@ unsafe fn effect_speciallwstepf(fighter: &mut L2CAgentBase) {
 unsafe fn game_specialairlwstepf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    FT_MOTION_RATE(fighter, 6.0 / 2.0);
     if is_excute(fighter) {
         sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.75);
     }
+    frame(lua_state, 2.0);
+    FT_MOTION_RATE(fighter, 1.0);
 }
 
 #[acmd_script( agent = "ken", script = "effect_specialairlwstepf", category = ACMD_EFFECT, low_priority )]
