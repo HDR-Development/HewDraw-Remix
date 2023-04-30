@@ -767,9 +767,189 @@ unsafe fn game_trail_fire_fly(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "trail", script = "game_specialn2" , category = ACMD_GAME , low_priority)]
+unsafe fn game_specialn2 (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	if is_excute(fighter) {
+		WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
+	}
+	frame(lua_state, 1.0);
+	FT_MOTION_RATE(fighter, 0.5);
+	frame(lua_state, 19.0);
+	FT_MOTION_RATE(fighter, 1);
+	frame(lua_state, 22.0);
+	if is_excute(fighter) {
+		ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 361, 100, 40, 0, 3.2, 0.0, 6.4, 2.2, Some(0.0), Some(6.4), Some(5.2), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 2, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_MAGIC);
+	}
+	frame(lua_state, 24.0);
+	FT_MOTION_RATE(fighter, 1.25);
+	if is_excute(fighter) {
+		AttackModule::clear(fighter.module_accessor, /*ID*/ 0, false);
+        WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLOAT_ANGLE);
+		ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_TRAIL_GENERATE_ARTICLE_ICE, false, 0);
+		WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_CHANGE_MAGIC);
+	}
+	wait(lua_state, 3.0);
+	if is_excute(fighter) {
+        // WorkModule::set_float(fighter.module_accessor, 5.0, *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLOAT_ANGLE);
+		// ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_TRAIL_GENERATE_ARTICLE_ICE, false, 0);
+		// WorkModule::set_float(fighter.module_accessor, -5.0, *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLOAT_ANGLE);
+		// ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_TRAIL_GENERATE_ARTICLE_ICE, false, 0);
+    }
+    wait(lua_state, 3.0);
+	if is_excute(fighter) {
+        // WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLOAT_ANGLE);
+		// ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_TRAIL_GENERATE_ARTICLE_ICE, false, 0);
+    }
+    wait(lua_state, 2.0);
+	FT_MOTION_RATE(fighter, 1);
+	if is_excute(fighter) {
+		ATTACK(fighter, 0, 0, Hash40::new("top"), 1.8, 42, 64, 0, 52, 3.2, 0.0, 6.4, 2.2, Some(0.0), Some(6.4), Some(6.4), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_MAGIC);
+	}
+	wait(lua_state, 2.0);
+	FT_MOTION_RATE(fighter, 0.8);
+	if is_excute(fighter) {
+		AttackModule::clear(fighter.module_accessor, /*ID*/ 0, false);
+		WorkModule::off_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
+	}
+	frame(lua_state, 57.0);
+	FT_START_ADJUST_MOTION_FRAME_arg1(fighter, 1.0);
+}
+
+#[acmd_script( agent = "trail", script = "game_specialairn2" , category = ACMD_GAME , low_priority)]
+unsafe fn game_specialairn2 (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	if is_excute(fighter) {
+		WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
+	}
+	frame(lua_state, 1.0);
+	FT_MOTION_RATE(fighter, 0.5);
+	frame(lua_state, 19.0);
+	FT_MOTION_RATE(fighter, 1);
+	frame(lua_state, 22.0);
+	if is_excute(fighter) {
+		ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 361, 100, 40, 0, 3.2, 0.0, 6.4, 2.2, Some(0.0), Some(6.4), Some(5.2), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 2, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_MAGIC);
+	}
+	frame(lua_state, 24.0);
+	FT_MOTION_RATE(fighter, 1.25);
+	if is_excute(fighter) {
+		AttackModule::clear(fighter.module_accessor, /*ID*/ 0, false);
+        WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLOAT_ANGLE);
+		ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_TRAIL_GENERATE_ARTICLE_ICE, false, 0);
+		WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLAG_CHANGE_MAGIC);
+	}
+	wait(lua_state, 3.0);
+	if is_excute(fighter) {
+        // WorkModule::set_float(fighter.module_accessor, 5.0, *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLOAT_ANGLE);
+		// ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_TRAIL_GENERATE_ARTICLE_ICE, false, 0);
+		// WorkModule::set_float(fighter.module_accessor, -5.0, *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLOAT_ANGLE);
+		// ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_TRAIL_GENERATE_ARTICLE_ICE, false, 0);
+    }
+    wait(lua_state, 3.0);
+	if is_excute(fighter) {
+        // WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_TRAIL_STATUS_SPECIAL_N2_FLOAT_ANGLE);
+		// ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_TRAIL_GENERATE_ARTICLE_ICE, false, 0);
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+    }
+	wait(lua_state, 2.0);
+	FT_MOTION_RATE(fighter, 1);
+	if is_excute(fighter) {
+		ATTACK(fighter, 0, 0, Hash40::new("top"), 1.8, 42, 64, 0, 52, 3.2, 0.0, 6.4, 2.2, Some(0.0), Some(6.4), Some(6.4), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_MAGIC);
+	}
+	wait(lua_state, 2.0);
+	FT_MOTION_RATE(fighter, 0.8);
+	if is_excute(fighter) {
+		AttackModule::clear(fighter.module_accessor, /*ID*/ 0, false);
+		WorkModule::off_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_TRAIL_INSTANCE_WORK_ID_FLAG_MAGIC_SELECT_FORBID);
+	}
+	frame(lua_state, 57.0);
+	FT_START_ADJUST_MOTION_FRAME_arg1(fighter, 1.0);
+}
+
+#[acmd_script( agent = "trail", scripts = ["effect_specialn2", "effect_specialairn2"] , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_specialn2 (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	frame(lua_state, 0.0);
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("trail_ice_hold"), Hash40::new("haver"), 0, 10, -1, -90, 0, 0, 1, true);
+		EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
+		EFFECT_FOLLOW(fighter, Hash40::new("trail_ice_sword_flare"), Hash40::new("haver"), 0, 10, -1, -90, 0, 0, 1, true);
+	}
+	frame(lua_state, 23.0);
+	if is_excute(fighter) {
+		LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -1.5, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+	}
+	frame(lua_state, 24.0);
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("trail_ice_shot"), Hash40::new("haver"), 0, 10, -1, -90, 0, 0, 1.5, true);
+	}
+    frame(lua_state, 28.0);
+	if is_excute(fighter) {
+		EFFECT_OFF_KIND(fighter, Hash40::new("trail_ice_shot"), false, false);
+	}
+	frame(lua_state, 36.0);
+	if is_excute(fighter) {
+		EFFECT_OFF_KIND(fighter, Hash40::new("trail_ice_sword_flare"), false, false);
+	}
+}
+
+#[acmd_script( agent = "trail_ice", script = "game_fly" , category = ACMD_GAME , low_priority)]
+unsafe fn game_trail_ice_fly (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	if is_excute(fighter) {
+		ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 70, 12, 0, 92, 4.0, 0.0, 0.0, 0.0, None, None, None, 0.4, 1.2, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_MAGIC);
+    }
+	wait(lua_state, 1.0);
+	if is_excute(fighter) {
+		ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 70, 12, 0, 86, 4.0, 0.0, 0.0, 0.0, None, None, None, 0.4, 1.2, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_MAGIC);
+        FT_MOTION_RATE(fighter, 8.0);
+    }
+	wait(lua_state, 1.0);
+	if is_excute(fighter) {
+		ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 70, 12, 0, 74, 4.0, 0.0, 0.0, 0.0, None, None, None, 0.4, 1.2, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_ice"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FREEZE, *ATTACK_REGION_MAGIC);
+        FT_MOTION_RATE(fighter, 32.0);
+    }
+	wait(lua_state, 1.0);
+	if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 64.0);
+	}
+    wait(lua_state, 1.0);
+	if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x199c462b5d), true);
+	}
+}
+
+#[acmd_script( agent = "trail_ice", script = "effect_fly" , category = ACMD_EFFECT , low_priority)]
+unsafe fn effect_trail_ice_fly (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+
+    frame(lua_state, 1.0);
+	if is_excute(fighter) {
+        EFFECT_FLW_POS(fighter, Hash40::new("trail_ice_hold"), Hash40::new("top"), 0, 0, 0, -90, 0, 0, 2.0, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.5);
+        EFFECT_FLW_POS(fighter, Hash40::new("trail_ice_hold"), Hash40::new("top"), 0, 0, 0, -90, 0, 0, 1.3, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.2);
+        EFFECT_FOLLOW(fighter, Hash40::new("trail_ice_bullet"), Hash40::new("top"), 0, 0, 0, 0, 0, 0,  4.0, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.2);
+    }
+    wait(lua_state, 3.0);
+    EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
+}
+
 pub fn install() {
     install_acmd_scripts!(
         game_trail_fire_fly,
+        game_trail_ice_fly,
+        effect_trail_ice_fly,
+        game_specialn2,
+        game_specialairn2,
+        effect_specialn2,
         game_specialairn3,
         game_specialn3,
         game_specials1,
