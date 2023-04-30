@@ -30,6 +30,9 @@
 		],
 		"fighter/chrom/cmn": [
 			"fighter/chrom/param/hdr.prc"
+		],
+		"fighter/dolly/cmn": [
+			"fighter/dolly/param/hdr.prc"
 		]
 	}
 }
