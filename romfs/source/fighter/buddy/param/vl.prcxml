@@ -53,9 +53,9 @@
       <float hash="start_speed_y_mul_air">0</float>
       <float hash="start_speed_y_add_air">-10</float>
 	  
-      <float hash="dash_speed_x_air">4.55</float>
+      <float hash="dash_speed_x_air">3.5</float>
       <float hash="dash_accel_x_air">-0.11</float>
-      <float hash="dash_speed_x_limit_air">4.6</float>
+      <float hash="dash_speed_x_limit_air">3.5</float>
       <float hash="dash_speed_x_min_air">2.0</float>
 	  
       <float hash="dash_gravity_mul">0.0</float>
@@ -64,7 +64,7 @@
       <float hash="attack_mul_on_hit_on_ground">1</float>
       <float hash="speed_x_mul_on_hit_on_ground">1.0</float>
       <float hash="attack_mul_on_hit_on_air">1</float>
-      <float hash="speed_x_mul_on_hit_on_air">1.0</float>
+      <float hash="speed_x_mul_on_hit_on_air">0.1</float>
       <int hash="dash_time">36</int>
 	  
       <float hash="dash_end_speed_x_mul_air">1.0</float>

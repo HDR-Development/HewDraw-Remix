@@ -5,4 +5,6 @@ fighter/pikmin/param/hdr.xml
 fighter/lucas/param/hdr.xml
 fighter/lucario/param/hdr.xml
 fighter/pichu/param/hdr.xml
+fighter/ike/param/hdr.xml
+fighter/donkey/param/hdr.xml
 fighter/roy/param/hdr.xml
