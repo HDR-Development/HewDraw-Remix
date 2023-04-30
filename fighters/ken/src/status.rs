@@ -26,7 +26,8 @@ pub fn install() {
         main_attack,
         wait_pre,
         //wait_main,
-        landing_main
+        landing_main,
+        init_special_lw
     );
     smashline::install_agent_init_callbacks!(ken_init);
 }
@@ -37,8 +38,40 @@ fn ken_init(fighter: &mut L2CFighterCommon) {
         if smash::app::utility::get_kind(&mut *fighter.module_accessor) != *FIGHTER_KIND_KEN {
             return;
         }
-        fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(ken_check_special_command as *const () as _));
+        fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
+        fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
+        fighter.global_table[globals::CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(ken_check_special_command as *const () as _));
     }
+}
+
+// Prevents DSpecial from being used again if it has already been used once in the current airtime (resets on hit or landing aerial)
+unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_LW) {
+        false.into()
+    } else {
+        true.into()
+    }
+}
+
+unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // re-enable DSpecial when landing or hit
+    if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
+    || fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_DAMAGE,
+        *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+        *FIGHTER_STATUS_KIND_DAMAGE_FALL])
+    {
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_LW);
+    }
+    true.into()
 }
 
 /// determines the command inputs
@@ -134,6 +167,15 @@ pub unsafe extern "C" fn ken_check_special_command(fighter: &mut L2CFighterCommo
     }
 
     false.into()
+}
+
+// FIGHTER_STATUS_KIND_SPECIAL_LW //
+
+#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+pub unsafe fn init_special_lw(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // once-per-airtime (refreshes on hit)
+    VarModule::on_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_LW);
+    original!(fighter)
 }
 
 // FIGHTER_STATUS_KIND_TURN_DASH //

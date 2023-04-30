@@ -232,11 +232,10 @@ unsafe fn heat_rush(boma: &mut BattleObjectModuleAccessor, frame: f32) {
         boma.change_status_req(*FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, false);
     }
 
-    // can jump cancel at <cancel_fame> - <jump_squat_frame> 
-    // in order to get access to aerials on same frame as grounded options
-    if boma.is_status_one_of(&[*FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F]) && frame >= 16.0 {
-        boma.check_jump_cancel(false);
-    }
+    // resets DISABLE_SPECIAL_LW on hitting a move
+    if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+        VarModule::off_flag(boma.object(), vars::shotos::instance::DISABLE_SPECIAL_LW);
+    } 
 }
 
 /// determines what cancels can be done out of specials
