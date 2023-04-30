@@ -14,10 +14,17 @@ unsafe fn normal_camera(ptr: u64, float: f32) {
 unsafe fn parse_stprm_normal_camera_min_distance(ctx: &mut skyline::hooks::InlineCtx) {
     let normal_camera_min_distance: f32;
     asm!("fmov w20, s0", out("w20") normal_camera_min_distance);
-    if normal_camera_min_distance < 125.0 {
-        let normal_camera_min_distance: f32 = 125.0;
+    if normal_camera_min_distance < 120.0 {
+        let normal_camera_min_distance: f32 = 120.0;
         asm!("fmov s0, w8", in("w8") normal_camera_min_distance);
     }
+}
+
+// Standardizes swing_rate_x for all stages
+#[skyline::hook(offset = 0x2620c04, inline)]
+unsafe fn parse_stprm_swing_rate_x(ctx: &mut skyline::hooks::InlineCtx) {
+    let swing_rate_x: f32 = 0.0;
+    asm!("fmov s0, w8", in("w8") swing_rate_x)
 }
 
 // Standardizes swing_rate_y for all stages
@@ -169,6 +176,8 @@ unsafe fn parse_stprm_vr_camera_position_z_max(ctx: &mut skyline::hooks::InlineC
 
 pub fn install() {
     unsafe {
+        // Stubs original swing_rate_x pull
+        skyline::patching::Patch::in_text(0x2620c04).nop();
         // Stubs original swing_rate_y pull
         skyline::patching::Patch::in_text(0x2620cc8).nop();
         // Stubs original target_interpolation_rate pull
@@ -202,6 +211,7 @@ pub fn install() {
     skyline::install_hooks!(
         normal_camera,
         parse_stprm_normal_camera_min_distance,
+        parse_stprm_swing_rate_x,
         parse_stprm_swing_rate_y,
         parse_stprm_normal_camera_angles,
         parse_stprm_target_interpolation_rate,
