@@ -33,6 +33,9 @@
 		],
 		"fighter/dolly/cmn": [
 			"fighter/dolly/param/hdr.prc"
+		],
+		"fighter/pacman/cmn": [
+			"fighter/pacman/param/hdr.prc"
 		]
 	}
 }

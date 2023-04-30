@@ -10,3 +10,4 @@ fighter/donkey/param/hdr.xml
 fighter/dolly/param/hdr.xml
 fighter/chrom/param/hdr.xml
 fighter/captain/param/hdr.xml
+fighter/pacman/param/hdr.xml
