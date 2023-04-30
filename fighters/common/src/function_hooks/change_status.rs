@@ -122,6 +122,14 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         && boma.get_num_used_jumps() >= boma.get_jump_count_max() {
             return 0;
         }
+        // Prevent jumping out of Splat Roller when out of jumps
+        if boma.kind() == *FIGHTER_KIND_INKLING
+        && boma.is_status_one_of(&[*FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_RUN, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_WALK])
+        && next_status == *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_JUMP_END
+        && boma.get_num_used_jumps() >= boma.get_jump_count_max() {
+            WorkModule::off_flag(boma, *FIGHTER_INKLING_STATUS_SPECIAL_S_FLAG_JUMP_END);
+            return 0;
+        }
     }
     original!()(boma, next_status, clear_buffer)
 }

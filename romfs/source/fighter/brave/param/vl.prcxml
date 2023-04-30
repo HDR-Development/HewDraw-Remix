@@ -65,8 +65,8 @@
     <struct index="0">
       <float hash="start_speed_x_mul_air">0.85</float>
       <float hash="start_control_max_speed_x_mul_air">0.85</float>
-      <float hash="start_accel_y_mul_air">0.5</float>
-      <float hash="start_max_speed_y_mul_air">0.4</float>
+      <!--<float hash="start_accel_y_mul_air">0.5</float>-->
+      <!--<float hash="start_max_speed_y_mul_air">0.4</float>-->
       <int hash="cure_limit_num">3</int>
       <float hash="deathball1_offset_y">15</float>
       <int hash="speed_up_frame">480</int>
