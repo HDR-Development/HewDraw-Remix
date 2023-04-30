@@ -648,6 +648,7 @@ pub mod vars {
             pub const IS_CURRENT_ATTACK_LW3_SOUL_FIRE: i32 = 0x0100;
             pub const TUMBLE_START: i32 = 0x0101;
             pub const IS_IN_TUMBLE: i32 = 0x0102;
+            pub const DISABLE_SPECIAL_S: i32 = 0x0103;
         }
         pub mod status {
             // floats
