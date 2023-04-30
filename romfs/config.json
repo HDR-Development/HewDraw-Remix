@@ -24,6 +24,9 @@
 		],
 		"fighter/donkey/cmn": [
 			"fighter/donkey/param/hdr.prc"
+		],
+		"fighter/roy/cmn": [
+			"fighter/roy/param/hdr.prc"
 		]
 	}
 }
