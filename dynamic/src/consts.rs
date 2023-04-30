@@ -468,6 +468,11 @@ pub mod vars {
     }
 
     pub mod ike {
+        pub mod instance {
+            // flags
+            pub const DISABLE_SPECIAL_S: i32 = 0x0100;
+
+        }
         pub mod status {
             // flags
             pub const IS_QUICK_DRAW_INSTAKILL: i32 = 0x1100;
@@ -655,6 +660,12 @@ pub mod vars {
         }
     }
 
+    pub mod plizardon {
+        pub mod instance {
+            pub const DISABLE_SPECIAL_S: i32 = 0x0100;
+        }
+    }
+
     pub mod pzenigame {
         pub mod instance {
             pub const WITHDRAW_FRAME: i32 = 0x0100;
@@ -691,6 +702,7 @@ pub mod vars {
             pub const IS_TARGET_COMBO_1:      i32 = 0x0103;
             pub const IS_TARGET_COMBO_2:      i32 = 0x0104;
             pub const IS_CURRENT_HADOKEN_EX:  i32 = 0x0105;
+            pub const DISABLE_SPECIAL_S:      i32 = 0x0106;
 
             // ints
             pub const REPEAT_COUNT_LW:      i32 = 0x0100;
@@ -985,6 +997,12 @@ pub mod vars {
         }
     }
 
+    pub mod krool {
+        pub mod instance {
+            //ints
+            pub const SPECIAL_HI_FUEL: i32 = 0x0110;
+        }
+    }
 }
 
 pub mod statuses {
