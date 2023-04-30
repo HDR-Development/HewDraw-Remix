@@ -997,6 +997,12 @@ pub mod vars {
         }
     }
 
+    pub mod krool {
+        pub mod instance {
+            //ints
+            pub const SPECIAL_HI_FUEL: i32 = 0x0110;
+        }
+    }
 }
 
 pub mod statuses {
