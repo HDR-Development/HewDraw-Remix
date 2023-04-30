@@ -7,7 +7,7 @@ use globals::*;
 //TODO: Figure out how to cancel arm recoil with a tilt/aerial, and if it's worth implementing
 unsafe fn recoil_cancel(boma: &mut BattleObjectModuleAccessor,status: i32,situation_kind: i32){
 
-    if !VarModule::is_flag(boma.object(), vars::tantan::status::ARMS_ATTACK_CANCEL){return;}
+    if !VarModule::is_flag(boma.object(), vars::tantan::status::ARMS_ATTACK_CANCEL) {return;}
 
     let mut new_status = 0;
     if boma.is_cat_flag(Cat1::AttackS4) {
@@ -47,6 +47,7 @@ unsafe fn arms_switch_during_normals(boma: &mut BattleObjectModuleAccessor, cat1
         if !boma.is_in_hitlag() {
             if boma.is_cat_flag(Cat1::SpecialLw) {
                 WorkModule::on_flag(boma,*FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_CHANGE_PUNCH_R);
+                boma.clear_commands(Cat1::SpecialLw); 
             }
         }
     }
