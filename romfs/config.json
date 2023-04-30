@@ -33,6 +33,9 @@
 		],
 		"fighter/dolly/cmn": [
 			"fighter/dolly/param/hdr.prc"
+		],
+		"fighter/kamui/cmn": [
+			"fighter/kamui/param/hdr.prc"
 		]
 	}
 }
