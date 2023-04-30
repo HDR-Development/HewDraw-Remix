@@ -27,6 +27,9 @@
 		],
 		"fighter/captain/cmn": [
 			"fighter/captain/param/hdr.prc"
+		],
+		"fighter/chrom/cmn": [
+			"fighter/chrom/param/hdr.prc"
 		]
 	}
 }
