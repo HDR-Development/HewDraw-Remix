@@ -32,6 +32,7 @@
     <struct index="0">
       <float hash="special_hi_start_air_mul_spd_x">1</float>
       <float hash="special_hi_fly_mul_max_acl_x">0.045</float>
+      <int hash="special_hi_landing_frame">24</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

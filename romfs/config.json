@@ -25,6 +25,12 @@
 		"fighter/donkey/cmn": [
 			"fighter/donkey/param/hdr.prc"
 		],
+		"fighter/captain/cmn": [
+			"fighter/captain/param/hdr.prc"
+		],
+		"fighter/chrom/cmn": [
+			"fighter/chrom/param/hdr.prc"
+		],
 		"fighter/dolly/cmn": [
 			"fighter/dolly/param/hdr.prc"
 		]
