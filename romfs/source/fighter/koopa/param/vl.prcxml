@@ -5,6 +5,9 @@
       <float hash="p1_y">26.75</float>
     </struct>
   </list>
+  <struct hash="param_private">
+    <float hash="reaction_value">0</float>
+  </struct>
   <list hash="param_special_n">
     <struct index="0">
       <float hash="limit_up">60</float>
@@ -19,8 +22,13 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="special_hi_ar_ax">0.12</float>
-      <float hash="special_hi_ar_vy0">2.35</float>
+      <float hash="special_hi_ar_ax">0.1</float>
+      <float hash="special_hi_ar_vx_max">1.2</float>
+      <float hash="special_hi_ar_vy0">2.1</float>
+      <float hash="special_hi_jump_restart_start_frame">-1</float>
+      <float hash="special_hi_jump_restart_end_frame">-1</float>
+      <float hash="special_hi_jump_restart_prohibition_frame">5</float>
+      <int hash="special_hi_landing_f">28</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

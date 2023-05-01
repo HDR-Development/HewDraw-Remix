@@ -5,3 +5,10 @@ fighter/pikmin/param/hdr.xml
 fighter/lucas/param/hdr.xml
 fighter/lucario/param/hdr.xml
 fighter/pichu/param/hdr.xml
+fighter/ike/param/hdr.xml
+fighter/donkey/param/hdr.xml
+fighter/dolly/param/hdr.xml
+fighter/chrom/param/hdr.xml
+fighter/captain/param/hdr.xml
+fighter/pacman/param/hdr.xml
+fighter/kamui/param/hdr.xml

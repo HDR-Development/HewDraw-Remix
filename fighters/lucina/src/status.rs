@@ -63,8 +63,8 @@ pub unsafe fn init_specials(fighter: &mut L2CFighterCommon, arg: u64) -> L2CValu
             else{
                 aerial_y_speed = 0.0;
             }
-            let reset_speed_2f = smash::phx::Vector2f { x: aerial_x_speed, y: aerial_y_speed };
-            let reset_speed_gravity_2f = smash::phx::Vector2f { x: 0.0, y: 0.0 };
+            let reset_speed_2f = smash::phx::Vector2f { x: aerial_x_speed, y: 0.0 };
+            let reset_speed_gravity_2f = smash::phx::Vector2f { x: 0.0, y: aerial_y_speed };
             let reset_speed_3f = smash::phx::Vector3f { x: 0.0, y: 0.0, z: 0.0 };
             smash::app::lua_bind::KineticEnergy::reset_energy(stop_energy, *ENERGY_STOP_RESET_TYPE_AIR, &reset_speed_2f, &reset_speed_3f, fighter.module_accessor);
             smash::app::lua_bind::KineticEnergy::reset_energy(gravity_energy, *ENERGY_GRAVITY_RESET_TYPE_GRAVITY, &reset_speed_gravity_2f, &reset_speed_3f, fighter.module_accessor);

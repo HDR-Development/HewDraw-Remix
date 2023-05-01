@@ -189,78 +189,6 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
-/*** METAQUICK ACMD ***/
-#[acmd_script( agent = "metaknight", script = "sound_metaquicksummon", category = ACMD_SOUND, low_priority)]
-unsafe fn metaquick_sound(fighter: &mut L2CAgentBase) {
-    if is_excute(fighter) {
-        // plays the sword slash effect
-        PLAY_SE(fighter, Hash40::new("se_metaknight_final01"));
-
-        if VarModule::is_flag(fighter.battle_object, vars::metaknight::instance::META_QUICK_PLAY_VC) {
-            PLAY_SE(fighter, Hash40::new("vc_metaknight_final02"));
-        }
-    }
-}
-
-#[acmd_script( agent = "metaknight", script = "effect_metaquicksummon", category = ACMD_EFFECT, low_priority)]
-unsafe fn metaquick_effect(fighter: &mut L2CAgentBase) {
-    if is_excute(fighter) {
-        EffectModule::remove_common(fighter.module_accessor, Hash40::new("charge_max"));
-        VarModule::set_int(fighter.battle_object, vars::metaknight::instance::META_QUICK_CHARGE_EFFECT_HANDLE, -1);
-        lua_args! {
-            fighter,
-            Hash40::new("sys_bg_black"),
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            1
-        };
-        smash::app::sv_animcmd::EFFECT_GLOBAL_BACK_GROUND(fighter.lua_state_agent);
-        let handle = EffectModule::req_follow(
-            fighter.boma(),
-            Hash40::new("sys_aura_light"),
-            Hash40::new("head"),
-            &Vector3f::zero(),
-            &Vector3f::zero(),
-            6.0,
-            true,
-            0,
-            0,
-            0,
-            0,
-            0,
-            true,
-            true
-        ) as u32;
-
-        let handle2 = EffectModule::req_follow(
-            fighter.boma(),
-            Hash40::new("sys_aura_light"),
-            Hash40::new("head"),
-            &Vector3f::zero(),
-            &Vector3f::zero(),
-            6.0,
-            true,
-            0,
-            0,
-            0,
-            0,
-            0,
-            true,
-            true
-        ) as u32;
-
-        EffectModule::set_alpha(fighter.module_accessor, handle, 1.0);
-        EffectModule::set_rgb(fighter.module_accessor, handle, 101.0 / 255.0, 32.0 / 255.0, 153.0 / 255.0);
-        EffectModule::set_alpha(fighter.module_accessor, handle2, 1.0);
-        EffectModule::set_rgb(fighter.module_accessor, handle2, 101.0 / 255.0, 32.0 / 255.0, 153.0 / 255.0);
-        VarModule::set_int(fighter.battle_object, vars::metaknight::instance::META_QUICK_EFFECT_HANDLE, handle as i32);
-        VarModule::set_int(fighter.battle_object, vars::metaknight::instance::META_QUICK_EFFECT_HANDLE2, handle2 as i32);
-    }
-}
 
 #[acmd_script( agent = "metaknight", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
 unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
@@ -268,6 +196,10 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
 
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+    }
     frame(lua_state, escape_air_cancel_frame);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
@@ -279,7 +211,7 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
-    frame(lua_state, 30.0);
+    frame(lua_state, 29.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
     }
@@ -297,8 +229,6 @@ pub fn install() {
         dash_game,
         dash_sound,
         turn_dash_game,
-        metaquick_sound,
-        metaquick_effect,
         damageflyhi_sound,
         damageflylw_sound,
         damageflyn_sound,

@@ -10,10 +10,10 @@
     <struct index="0">
       <float hash="special_s_ground_dash_spd_min">3.8</float>
       <float hash="special_s_air_dash_spd_min">3.8</float>
-      <float hash="special_s_ground_dash_spd_mul">0.05</float>
+      <float hash="special_s_ground_dash_spd_mul">0.07</float>
       <float hash="special_s_air_dash_spd_mul">0.03</float>
       <float hash="special_s_ground_dash_brake_x">0.125</float>
-      <float hash="special_s_air_dash_brake_x">0.08</float>
+      <float hash="special_s_air_dash_brake_x">0.1</float>
       <int hash="special_s_dash_frame">18</int>
       <int hash="special_s_charge_dash_spd_up_max">30</int>
       <float hash="special_s_ground_end_spd_x_mul">0.4</float>

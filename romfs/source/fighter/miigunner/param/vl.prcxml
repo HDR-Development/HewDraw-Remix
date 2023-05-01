@@ -56,11 +56,12 @@
       <float hash="hi1_landing_frame">22</float>
     </struct>
     <struct index="1">
+      <float hash="hi2_jump_accel_recover_frame">6</float>
       <float hash="hi2_jump_accel_x_mul">0.8</float>
       <float hash="hi2_jump_stable_speed_x_mul">1.0</float>
     </struct>
     <struct index="2">
-      <float hash="hi3_rush_speed">2</float>
+      <float hash="hi3_rush_speed">1.6</float>
     </struct>
     <hash40 index="3">dummy</hash40>
   </list>

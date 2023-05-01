@@ -29,7 +29,7 @@ macro_rules! lua_settop {
 unsafe extern "C" fn luaL_tolstring(lua_state: u64, index: i32, size: *mut usize) -> *const u8;
 
 unsafe extern "C" fn lua_print_impl(lua_state: u64) -> i32 {
-    let num_args = lua_gettop!(lua_state);
+    let num_args = lua_gettop!(lua_state) - 1;
     for x in 1..=num_args {
         let mut size = 0;
         let c_str = luaL_tolstring(lua_state, x as i32, &mut size);

@@ -35,6 +35,7 @@ jobs:
 
       # wait for any previous versions to be tagged and committed
       - uses: lewagon/wait-on-check-action@v1.2.0
+        continue-on-error: true
         with:
           ref: ${{ steps.last_merge.outputs.short_hash }}
           check-name: 'version_and_changelog'
@@ -220,6 +221,25 @@ jobs:
       with:
         name: version
         
+    # build the lvd files
+    - id: lvd_files
+      uses: robinraju/release-downloader@v1.7
+      with:
+        repository: "techyCoder81/SSBU-LVD-data-dump"
+        tag: release
+        fileName: "lvd_dumper.zip"
+
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.408'
+
+    - name: extract lvd data
+      id: lvd_extract
+      shell: bash
+      run: |
+        . scripts/extract_lvd_data.sh
+
     - name: Display structure of downloaded version
       run: ls -R && cp hdr_version.txt artifacts
 

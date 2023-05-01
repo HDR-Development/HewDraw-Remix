@@ -13,7 +13,12 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     }
 }
 
-// this runs as you leave hitlag
+// This runs at the end of rolls
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_status_end_EscaleFB)]
 pub unsafe fn sub_status_end_EscaleFB_hook(fighter: &mut L2CFighterCommon) {
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.0, 0.0);
+        app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+    }
 }

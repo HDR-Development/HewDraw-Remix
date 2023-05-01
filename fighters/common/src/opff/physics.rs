@@ -64,10 +64,6 @@ unsafe fn extra_traction(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
         let motion_accel = smash::app::sv_kinetic_energy::get_accel(fighter.lua_state_agent);
 
-        // reset flag at beginning of any status
-        if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
-            VarModule::off_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK);
-        }
         // if we detect that the current animation is trans-motion-based (shifts your character's position), disable traction for the entire attack 
         if motion_accel.x != 0.0 && !VarModule::is_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK) {
             VarModule::on_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK);
@@ -119,10 +115,23 @@ unsafe fn plat_cancels(fighter: &mut L2CFighterCommon) {
     }
 }
 
+// Prevents rising platwarps during aerials and tumble
+unsafe fn prevent_rising_platwarps(fighter: &mut L2CFighterCommon) {
+    if !StopModule::is_stop(fighter.module_accessor)
+    && fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_DAMAGE_FLY])
+    && KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0
+    {
+        // Forces character to stay in air, overrides ability to land
+        // for single frame
+        fighter.set_situation(L2CValue::I32(*SITUATION_KIND_AIR));
+    }
+}
+
 pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mut L2CAgent, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     extra_traction(fighter, boma);
     grab_jump_refresh(boma);
     plat_cancels(fighter);
+    prevent_rising_platwarps(fighter);
 
     //WorkModule::unable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_D); //Melee style spike knockdown (courtesey of zabimaru), leaving it commented here just to have it saved somewhere
 }
