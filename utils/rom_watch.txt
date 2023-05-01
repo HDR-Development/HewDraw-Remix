@@ -17,3 +17,5 @@ fighter/simon/param/hdr.xml
 fighter/richter/param/hdr.xml
 fighter/koopajr/param/hdr.xml
 fighter/demon/param/hdr.xml
+fighter/samus/param/hdr.xml
+fighter/samusd/param/hdr.xml

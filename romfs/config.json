@@ -54,6 +54,12 @@
 		],
 		"fighter/demon/cmn": [
 			"fighter/demon/param/hdr.prc"
+		],
+		"fighter/samus/cmn": [
+			"fighter/samus/param/hdr.prc"
+		],
+		"fighter/samusd/cmn": [
+			"fighter/samusd/param/hdr.prc"
 		]
 	}
 }
