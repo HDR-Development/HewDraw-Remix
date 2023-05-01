@@ -51,6 +51,9 @@
 		],
 		"fighter/koopajr/cmn": [
 			"fighter/koopajr/param/hdr.prc"
+		],
+		"fighter/demon/cmn": [
+			"fighter/demon/param/hdr.prc"
 		]
 	}
 }
