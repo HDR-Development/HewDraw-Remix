@@ -11,3 +11,8 @@ fighter/dolly/param/hdr.xml
 fighter/chrom/param/hdr.xml
 fighter/captain/param/hdr.xml
 fighter/kamui/param/hdr.xml
+fighter/mario/param/hdr.xml
+fighter/mariod/param/hdr.xml
+fighter/link/param/hdr.xml
+fighter/simon/param/hdr.xml
+fighter/richter/param/hdr.xml

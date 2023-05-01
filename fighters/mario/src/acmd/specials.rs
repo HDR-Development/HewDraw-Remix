@@ -418,6 +418,9 @@ unsafe fn mario_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if (WorkModule::is_flag(boma, *FIGHTER_MARIO_STATUS_SPECIAL_HI_FLAG_CAPPY)) {
+        if is_excute(fighter) {
+            boma.select_cliff_hangdata_from_name("special_hi");
+        }
         frame(lua_state, 3.0);
         if is_excute(fighter) {
             SA_SET(fighter, *SITUATION_KIND_AIR);
@@ -466,6 +469,9 @@ unsafe fn mario_special_hi_game(fighter: &mut L2CAgentBase) {
         }
     }
     else {
+        if is_excute(fighter) {
+            boma.select_cliff_hangdata_from_name("special_hi");
+        }
         frame(lua_state, 3.0);
         if is_excute(fighter) {
             WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
