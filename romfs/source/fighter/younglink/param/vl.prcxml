@@ -8,10 +8,10 @@
       <float hash="p2_y">8</float>
     </struct>
     <struct index="1">
-      <float hash="p1_x">45</float>
-      <float hash="p1_y">36</float>
-      <float hash="p2_x">5</float>
-      <float hash="p2_y">-26</float>
+      <float hash="p1_x">42</float>
+      <float hash="p1_y">33</float>
+      <float hash="p2_x">0</float>
+      <float hash="p2_y">-23</float>
     </struct>
     <struct index="2">
       <float hash="p1_x">13</float>

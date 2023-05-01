@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
-  <list hash="cliff_hang_data">
+  <list size="3" hash="cliff_hang_data">
     <struct index="0">
       <float hash="p1_x">16</float>
       <float hash="p1_y">22</float>
@@ -8,10 +8,10 @@
       <float hash="p2_y">7</float>
     </struct>
     <struct index="1">
-      <float hash="p1_x">45</float>
-      <float hash="p1_y">36</float>
-      <float hash="p2_x">5</float>
-      <float hash="p2_y">-26</float>
+      <float hash="p1_x">42</float>
+      <float hash="p1_y">33</float>
+      <float hash="p2_x">0</float>
+      <float hash="p2_y">-23</float>
     </struct>
     <struct index="2">
       <float hash="p1_x">13</float>
@@ -19,7 +19,8 @@
       <float hash="p2_x">-3</float>
       <float hash="p2_y">-8</float>
     </struct>
-  </list>  <list hash="param_hookshot">
+  </list>
+  <list hash="param_hookshot">
     <struct index="0">
       <int hash="rewind_frame">18</int>
     </struct>
@@ -46,5 +47,5 @@
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
-  </struct>
- </list>
+  </list>
+</struct>
