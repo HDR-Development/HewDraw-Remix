@@ -10,7 +10,7 @@
     <struct index="1">
       <float hash="p1_x">50</float>
       <float hash="p1_y">30</float>
-      <float hash="p2_x">0</float>
+      <float hash="p2_x">10</float>
       <float hash="p2_y">-10</float>
     </struct>
     <struct index="2">

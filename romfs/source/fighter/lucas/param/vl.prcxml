@@ -5,10 +5,10 @@
       <float hash="p1_y">17</float>
     </struct>
     <struct index="1">
-      <float hash="p1_x">50</float>
-      <float hash="p1_y">40</float>
-      <float hash="p2_x">5</float>
-      <float hash="p2_y">-24</float>
+      <float hash="p1_x">37</float>
+      <float hash="p1_y">32</float>
+      <float hash="p2_x">10</float>
+      <float hash="p2_y">-20</float>
     </struct>
     <hash40 index="2">dummy</hash40>
     <struct index="3">

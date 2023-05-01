@@ -7,37 +7,37 @@
     <struct index="1">
       <float hash="p1_x">50</float>
       <float hash="p1_y">34</float>
-      <float hash="p2_x">0</float>
+      <float hash="p2_x">10</float>
       <float hash="p2_y">0</float>
     </struct>
     <struct index="2">
       <float hash="p1_x">52</float>
       <float hash="p1_y">25</float>
-      <float hash="p2_x">0</float>
+      <float hash="p2_x">10</float>
       <float hash="p2_y">-9</float>
     </struct>
     <struct index="3">
       <float hash="p1_x">50</float>
       <float hash="p1_y">16</float>
-      <float hash="p2_x">0</float>
+      <float hash="p2_x">10</float>
       <float hash="p2_y">-18</float>
     </struct>
     <struct index="4">
       <float hash="p1_x">-50</float>
       <float hash="p1_y">34</float>
-      <float hash="p2_x">0</float>
+      <float hash="p2_x">10</float>
       <float hash="p2_y">0</float>
     </struct>
     <struct index="5">
       <float hash="p1_x">-52</float>
       <float hash="p1_y">25</float>
-      <float hash="p2_x">0</float>
+      <float hash="p2_x">10</float>
       <float hash="p2_y">-9</float>
     </struct>
     <struct index="6">
       <float hash="p1_x">-50</float>
       <float hash="p1_y">16</float>
-      <float hash="p2_x">0</float>
+      <float hash="p2_x">10</float>
       <float hash="p2_y">-18</float>
     </struct>
     <struct index="7">
