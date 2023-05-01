@@ -42,8 +42,7 @@ pub unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> 
         return 1.into();
     }
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
-        || fighter.sub_air_check_fall_common().get_bool() {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
             return 0.into();
         }
     }
