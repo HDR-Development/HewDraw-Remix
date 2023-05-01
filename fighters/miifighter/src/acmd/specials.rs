@@ -5,8 +5,8 @@ unsafe fn miifighter_special_n2_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 0.5);
-    wait(lua_state, 10.0);
+    FT_MOTION_RATE(fighter, 5.0/(11.0-1.0));
+    frame(lua_state, 11.0);
     FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 12.0);
     if is_excute(fighter) {
