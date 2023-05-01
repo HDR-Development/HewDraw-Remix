@@ -15,3 +15,4 @@ fighter/mariod/param/hdr.xml
 fighter/link/param/hdr.xml
 fighter/simon/param/hdr.xml
 fighter/richter/param/hdr.xml
+fighter/koopajr/param/hdr.xml

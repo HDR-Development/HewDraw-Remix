@@ -48,6 +48,9 @@
 		],
 		"fighter/richter/cmn": [
 			"fighter/richter/param/hdr.prc"
+		],
+		"fighter/koopajr/cmn": [
+			"fighter/koopajr/param/hdr.prc"
 		]
 	}
 }
