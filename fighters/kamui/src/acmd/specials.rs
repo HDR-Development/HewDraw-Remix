@@ -303,6 +303,9 @@ unsafe fn game_specialairsattack(fighter: &mut L2CAgentBase) {
 unsafe fn kamui_special_air_hi_game (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
+    if is_excute(fighter) {
+		boma.select_cliff_hangdata_from_name("special_hi");
+	}
 	frame(lua_state, 3.0);
 	if is_excute(fighter) {
 		SA_SET(fighter, *SITUATION_KIND_AIR);
@@ -347,13 +350,10 @@ unsafe fn kamui_special_air_hi_game (fighter: &mut L2CAgentBase) {
 		AttackModule::clear_all(fighter.module_accessor);
 		notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
 	}
-	frame(lua_state, 39.0);
+	frame(lua_state, 38.0);
 	if is_excute(fighter) {
 		WorkModule::off_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_KAMUI_STATUS_SPECIAL_HI_FLAG_TILT_BODY_ON);
-	}
-	frame(lua_state, 45.0);
-	if is_excute(fighter) {
-		WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_KAMUI_STATUS_SPECIAL_HI_FLAG_AIR_CONTROL);
+        WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_KAMUI_STATUS_SPECIAL_HI_FLAG_AIR_CONTROL);
 	}
 	frame(lua_state, 49.0);
 	FT_MOTION_RATE(fighter, 0.8);

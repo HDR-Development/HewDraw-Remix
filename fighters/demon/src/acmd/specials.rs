@@ -675,6 +675,44 @@ unsafe fn kazuya_special_hi_air_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "demon", scripts = ["effect_specialhistart", "effect_specialairhistart"], category = ACMD_EFFECT, low_priority )]
+unsafe fn kazuya_special_hi_start_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("demon_devil_sign_flash"), Hash40::new("head"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        ColorBlendModule::set_disable_camera_depth_influence(boma, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("demon_ragedrive_start"), Hash40::new("hip"), 0, 0, 0, 0, 0, 0, 0.75, false);
+        LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.5, 1.0);
+        //FLASH(fighter, 0.25, 0.08, 0.6, 0);
+        //FLASH_SET_DIRECTION(fighter, -1, 0, 0);
+        //BURN_COLOR(fighter, 8, 3, 36, 0);
+        //FLASH_FRM(fighter, 2, 0.25, 0.08, 0.6, 0.4);
+        //BURN_COLOR_FRAME(fighter, 2, 8, 3, 36, 0.4);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("demon_devil_start"), Hash40::new("top"), 0, 0, 1, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("demon_devil_start_aura"), Hash40::new("bust"), 0, 0, 1, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("demon_devil_start_elec"), Hash40::new("bust"), 0, 0, 1, 0, 0, 0, 1, true);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        //FLASH(fighter, 0.25, 0.08, 0.6, 0.4);
+        //BURN_COLOR(fighter, 8, 3, 36, 0.4);
+        //FLASH_FRM(fighter, 3, 0.25, 0.08, 0.6, 0);
+        //BURN_COLOR_FRAME(fighter, 3, 8, 3, 36, 0);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0.5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         kazuya_wind_god_fist_game,
@@ -686,6 +724,7 @@ pub fn install() {
         kazuya_special_air_s_end_game,
         kazuya_special_hi_game,
         kazuya_special_hi_air_game,
+        kazuya_special_hi_start_effect,
     );
 }
 

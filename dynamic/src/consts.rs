@@ -344,6 +344,7 @@ pub mod vars {
     pub mod dolly {
         pub mod instance {
             pub const SUPER_CANCEL: i32 = 0x0150;
+            pub const DISABLE_SPECIAL_S: i32 = 0x0151;
         }
         pub mod status {
             // flags
@@ -647,6 +648,7 @@ pub mod vars {
             pub const IS_CURRENT_ATTACK_LW3_SOUL_FIRE: i32 = 0x0100;
             pub const TUMBLE_START: i32 = 0x0101;
             pub const IS_IN_TUMBLE: i32 = 0x0102;
+            pub const DISABLE_SPECIAL_S: i32 = 0x0103;
         }
         pub mod status {
             // floats
@@ -997,6 +999,12 @@ pub mod vars {
         }
     }
 
+    pub mod krool {
+        pub mod instance {
+            //ints
+            pub const SPECIAL_HI_FUEL: i32 = 0x0110;
+        }
+    }
 }
 
 pub mod statuses {
