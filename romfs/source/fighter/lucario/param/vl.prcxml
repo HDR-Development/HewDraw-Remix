@@ -28,6 +28,7 @@
       <float hash="rush_speed">4</float>
       <float hash="0x189cd804c5">0.8</float>
       <float hash="angle_speed">2</float>
+      <float hash="end_accel_y">0.3</float>
       <int hash="landing_frame">30</int>
     </struct>
     <hash40 index="1">dummy</hash40>
