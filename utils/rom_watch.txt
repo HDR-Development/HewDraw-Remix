@@ -11,5 +11,6 @@ fighter/dolly/param/hdr.xml
 fighter/chrom/param/hdr.xml
 fighter/captain/param/hdr.xml
 fighter/kamui/param/hdr.xml
+fighter/pacman/param/hdr.xml
 fighter/toonlink/param/hdr.xml
 fighter/younglink/param/hdr.xml
