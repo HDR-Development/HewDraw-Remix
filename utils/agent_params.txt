@@ -17,3 +17,4 @@ koopajr: fighter/koopajr/param/hdr.prc
 demon: fighter/demon/param/hdr.prc
 samus: fighter/samus/param/hdr.prc
 samusd: fighter/samusd/param/hdr.prc
+edge: fighter/edge/param/hdr.prc

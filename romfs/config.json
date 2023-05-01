@@ -60,6 +60,9 @@
 		],
 		"fighter/samusd/cmn": [
 			"fighter/samusd/param/hdr.prc"
+		],
+		"fighter/edge/cmn": [
+			"fighter/edge/param/hdr.prc"
 		]
 	}
 }
