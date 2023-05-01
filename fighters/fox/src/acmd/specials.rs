@@ -2,6 +2,13 @@
 use super::*;
 
 
+#[acmd_script( agent = "fox", scripts = ["game_specialsstart", "game_specialairsstart"] , category = ACMD_GAME , low_priority)]
+unsafe fn game_specialsstart(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    FT_MOTION_RATE(fighter, 20.0/25.0);
+}
+
 #[acmd_script( agent = "fox", script = "game_specialairsend" , category = ACMD_GAME , low_priority)]
 unsafe fn game_specialairsend(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -157,6 +164,7 @@ unsafe fn sound_speciallwstart (fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        game_specialsstart,
         game_specialairsend,
         game_specialhihold,
         game_specialhiholdair,
