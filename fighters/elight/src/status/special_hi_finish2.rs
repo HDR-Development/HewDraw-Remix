@@ -57,7 +57,7 @@ unsafe extern "C" fn special_hi_finish2_main(fighter: &mut L2CFighterCommon) -> 
 unsafe extern "C" fn special_hi_finish2_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     // [h] when the motion is over disable special hi jump and special s
     if MotionModule::is_end(fighter.module_accessor) {
-        VarModule::on_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_HI_JUMP);
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
         VarModule::on_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_S);
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
     }
