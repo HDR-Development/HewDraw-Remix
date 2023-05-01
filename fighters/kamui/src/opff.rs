@@ -34,10 +34,19 @@ unsafe fn bair_boost_detection(boma: &mut BattleObjectModuleAccessor){
     }
 }
 
+unsafe fn up_special_early_landing(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //dragon_fang_shot_dash_cancel(boma, status_kind, situation_kind, cat[0], frame);
     bair_boost_detection(boma);
     pin_drop_waveland(fighter, status_kind, situation_kind, cat[0], frame);
+    up_special_early_landing(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_KAMUI )]

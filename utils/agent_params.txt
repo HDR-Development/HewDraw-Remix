@@ -9,3 +9,4 @@ dolly: fighter/dolly/param/hdr.prc
 chrom: fighter/chrom/param/hdr.prc
 captain: fighter/captain/param/hdr.prc
 pacman: fighter/pacman/param/hdr.prc
+kamui: fighter/kamui/param/hdr.prc
