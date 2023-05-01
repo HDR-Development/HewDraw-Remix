@@ -5,7 +5,6 @@ lucario: fighter/lucario/param/hdr.prc
 pichu: fighter/pichu/param/hdr.prc
 ike: fighter/ike/param/hdr.prc
 donkey: fighter/donkey/param/hdr.prc
-roy: fighter/roy/param/hdr.prc
 dolly: fighter/dolly/param/hdr.prc
 chrom: fighter/chrom/param/hdr.prc
 captain: fighter/captain/param/hdr.prc
