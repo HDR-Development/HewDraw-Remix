@@ -398,7 +398,7 @@ unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor) {
     }
     if is_input_special_special_cancel{
         if !StopModule::is_stop(boma){
-            if MeterModule::drain(boma.object(), 2) {
+            if MeterModule::drain(boma.object(), 1) {
                 boma.change_status_req(new_status, false);
             }
         }
@@ -548,7 +548,7 @@ unsafe fn tilt_cancels(boma: &mut BattleObjectModuleAccessor) {
     }
     if is_input_metered_cancel{
         if !StopModule::is_stop(boma) && !VarModule::is_flag(boma.object(), vars::dolly::status::UNABLE_CANCEL_S3_DASH){
-            if MeterModule::drain(boma.object(), 2) {
+            if MeterModule::drain(boma.object(), 1) {
                 if new_status == *FIGHTER_STATUS_KIND_JUMP_SQUAT {
                     boma.change_status_req(new_status, true);
                 }
