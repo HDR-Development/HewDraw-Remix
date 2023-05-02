@@ -11,15 +11,15 @@ unsafe fn pichu_special_n_game(fighter: &mut L2CAgentBase) {
         VarModule::off_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK);
         if !charged {
             FT_MOTION_RATE(fighter, (12.0/18.0));
-        }else if charged {
+        }
+        else if charged {
             VarModule::on_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK);
-            VarModule::sub_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 60);
-            FT_MOTION_RATE(fighter, (20.0/18.0));
+            VarModule::sub_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 240);
         }
     }
     frame(lua_state, 18.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
         ArticleModule::generate_article(boma, *FIGHTER_PICHU_GENERATE_ARTICLE_DENGEKIDAMA, false, -1);
         if !VarModule::is_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK) {
             MeterModule::add(fighter.battle_object, 3.0);
@@ -40,7 +40,7 @@ unsafe fn pichu_special_s_game(fighter: &mut L2CAgentBase) {
         VarModule::off_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK);
         if charged {
             VarModule::on_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK);
-            VarModule::sub_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 60);
+            VarModule::sub_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 240);
         }
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_NONE);
     }
@@ -146,7 +146,7 @@ unsafe fn pichu_special_hi_1_game(fighter: &mut L2CAgentBase) {
         VarModule::off_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK);
         if charged {
             VarModule::on_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK);
-            VarModule::sub_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 60);
+            VarModule::sub_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 240);
         }
         if VarModule::is_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK) {
             ATTACK(fighter, 0, 0, Hash40::new("neck"), 2.0, 70, 50, 0, 20, 1.6, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
@@ -208,6 +208,7 @@ unsafe fn pichu_special_lw_game(fighter: &mut L2CAgentBase) {
         if is_excute(fighter) {
             WHOLE_HIT(fighter, *HIT_STATUS_XLU);
         }
+        FT_MOTION_RATE(fighter, (18.0/(21.0-7.0)));
         frame(lua_state, 21.0);
         if is_excute(fighter) {
             HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);

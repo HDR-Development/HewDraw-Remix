@@ -9,8 +9,8 @@ unsafe fn disable_qa_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status
     if StatusModule::is_changing(boma) {
         return;
     }
-    if status_kind == *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP {
-        // only allow QAC from QA1
+    if status_kind == *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP && boma.kind() == *FIGHTER_KIND_PIKACHU {
+        // only allow QAC from QA1 (excluded from pichu)
         if WorkModule::get_int(boma, *FIGHTER_PIKACHU_STATUS_WORK_ID_INT_QUICK_ATTACK_COUNT) > 1 {
             VarModule::on_flag(boma.object(), vars::pikachu::instance::DISABLE_QA_JC);
         }
