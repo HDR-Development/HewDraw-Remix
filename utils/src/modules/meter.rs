@@ -43,6 +43,8 @@ macro_rules! require_meter_module {
 pub struct MeterModule {
     owner: *mut BattleObject,
     current_meter: f32,
+    meter_cap: i32,
+    meter_per_level: f32,
     remaining_show_frames: i32,
     damage_gain_mul: f32,
     watch: bool,
@@ -58,6 +60,8 @@ impl MeterModule {
         Self {
             owner,
             current_meter: 0.0,
+            meter_cap: 6,
+            meter_per_level: 50.0,
             remaining_show_frames: -1,
             damage_gain_mul: 1.0,
             watch: false,
@@ -195,10 +199,26 @@ impl MeterModule {
         module.has_hit = module.watch;
     }
 
+    #[export_name = "MeterModule__set_meter_per_level"]
+    pub extern "Rust" fn set_meter_per_level(object: *mut BattleObject, amount: f32) -> f32 {
+        let module = require_meter_module!(object);
+        module.meter_per_level = amount
+    }
+
     #[export_name = "MeterModule__meter_per_level"]
     pub extern "Rust" fn meter_per_level(object: *mut BattleObject) -> f32 {
+        require_meter_module!(object).meter_per_level
+    }
+
+    #[export_name = "MeterModule__set_meter_cap"]
+    pub extern "Rust" fn set_meter_cap(object: *mut BattleObject, amount: i32) -> i32 {
         let module = require_meter_module!(object);
-        ParamModule::get_float(module.owner, ParamType::Common, "meter_max_damage") / ParamModule::get_int(module.owner, ParamType::Common, "meter_level_count") as f32
+        module.meter_cap = amount
+    }
+
+    #[export_name = "MeterModule__meter_cap"]
+    pub extern "Rust" fn meter_cap(object: *mut BattleObject) -> i32 {
+        require_meter_module!(object).meter_cap
     }
 
     #[export_name = "MeterModule__meter"]
@@ -254,7 +274,7 @@ impl MeterModule {
         let module = require_meter_module!(object);
         let count = Self::level(module.owner);
         module.current_meter += amount;
-        module.current_meter = module.current_meter.min(ParamModule::get_float(module.owner, ParamType::Common, "meter_max_damage"));
+        module.current_meter = module.current_meter.min(Self::meter_cap(module.owner) * Self::meter_per_level(module.owner));
         module.last_levels_added += Self::level(module.owner) - count;
     }
 
@@ -286,7 +306,7 @@ impl MeterModule {
             module.watching_motion = Hash40::new("invalid");
             module.watching_frame = 0.0;
             module.damage_gain_mul = 1.0;
-            module.current_meter = module.current_meter.min(ParamModule::get_float(module.owner, ParamType::Common, "meter_max_damage"));
+            module.current_meter = module.current_meter.min(Self::meter_cap(module.owner) * Self::meter_per_level(module.owner));
             Self::level(module.owner) - current
         } else {
             0

@@ -105,14 +105,14 @@ unsafe fn special_fadc_super_cancels(boma: &mut BattleObjectModuleAccessor) {
         if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC){
             if boma.is_cat_flag(Cat1::SpecialLw){
                 if !StopModule::is_stop(boma) {
-                    if MeterModule::drain(boma.object(), 2){
+                    if MeterModule::drain(boma.object(), 1){
                         boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_LW, true);
                     }
                 }
             }
             if boma.is_cat_flag(Cat4::SpecialNCommand | Cat4::SpecialHiCommand){
                 if !StopModule::is_stop(boma){
-                    if MeterModule::drain(boma.object(), 10) {
+                    if MeterModule::drain(boma.object(), MeterModule::meter_cap(boma.object())) {
                         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
                         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
                         boma.change_status_req(*FIGHTER_STATUS_KIND_FINAL, true);
