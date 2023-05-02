@@ -36,6 +36,9 @@
 		],
 		"fighter/kamui/cmn": [
 			"fighter/kamui/param/hdr.prc"
+		],
+		"fighter/pacman/cmn": [
+			"fighter/pacman/param/hdr.prc"
 		]
 	}
 }
