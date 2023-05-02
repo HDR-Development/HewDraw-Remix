@@ -50,7 +50,7 @@ unsafe fn packun_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let stance = StanceInfo::from(VarModule::get_int(boma.object(), vars::packun::instance::CURRENT_STANCE));
     if stance.label == 2 {
-        FT_MOTION_RATE(fighter, (12.0/8.0));
+        FT_MOTION_RATE(fighter, (11.0/8.0));
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {

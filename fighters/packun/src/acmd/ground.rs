@@ -99,6 +99,23 @@ unsafe fn packun_attack_13_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "packun", script = "effect_attack13", category = ACMD_EFFECT, low_priority )]
+unsafe fn packun_attack_13_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        EFFECT_ALPHA(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 11, -3, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true, 0.5);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 13, 9, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
 #[acmd_script( agent = "packun", script = "game_attack100end" , category = ACMD_GAME , low_priority)]
 unsafe fn packun_attack_100_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -172,6 +189,7 @@ pub fn install() {
         packun_attack_11_game,
         packun_attack_12_game,
         packun_attack_13_game,
+        packun_attack_13_effect,
         packun_attack_100_end_game,
         packun_attack_dash_game,
     );
