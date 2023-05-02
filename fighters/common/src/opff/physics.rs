@@ -115,23 +115,10 @@ unsafe fn plat_cancels(fighter: &mut L2CFighterCommon) {
     }
 }
 
-// Prevents rising platwarps during aerials and tumble
-unsafe fn prevent_rising_platwarps(fighter: &mut L2CFighterCommon) {
-    if !StopModule::is_stop(fighter.module_accessor)
-    && fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_DAMAGE_FLY])
-    && KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0
-    {
-        // Forces character to stay in air, overrides ability to land
-        // for single frame
-        fighter.set_situation(L2CValue::I32(*SITUATION_KIND_AIR));
-    }
-}
-
 pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mut L2CAgent, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     extra_traction(fighter, boma);
     grab_jump_refresh(boma);
     plat_cancels(fighter);
-    prevent_rising_platwarps(fighter);
 
     //WorkModule::unable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_D); //Melee style spike knockdown (courtesey of zabimaru), leaving it commented here just to have it saved somewhere
 }

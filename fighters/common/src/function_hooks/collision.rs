@@ -36,6 +36,21 @@ unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *m
         // This check passes after 9 frames of airtime, if not in a grabbed/thrown state
         *param_3 = 0.0;
     }
+
+    // Prevents rising platwarps during aerials and tumble
+    if !StopModule::is_stop(boma) {
+        if (*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_DAMAGE_FLY])
+        && KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0
+        {
+            // Forces character to ignore platforms, overrides ability to land
+            GroundModule::set_passable_check(boma, true);
+        }
+        else if (*boma).is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR)
+        && KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) <= 0.0
+        {
+            GroundModule::set_passable_check(boma, false);
+        }
+    }
 }
 
 
