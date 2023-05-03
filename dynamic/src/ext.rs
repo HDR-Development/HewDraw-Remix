@@ -987,10 +987,10 @@ impl BomaExt for BattleObjectModuleAccessor {
 
         // Can uncomment and test hardcoded values here, while working on a character
         // so you don't have to rebuild hdr.prc every time
-        //let p1_x = 16.0;
-        //let p1_y = 18.0;
-        //let p2_x = -9.6;
-        //let p2_y = 9.0;
+        //let p1_x = 12.0;
+        //let p1_y = 22.0;
+        //let p2_x = -12.0;
+        //let p2_y = 8.0;
 
         self.set_front_cliff_hangdata(p1_x, (p1_y - p2_y));
         self.set_back_cliff_hangdata((p2_x * -1.0), (p1_y - p2_y));
