@@ -832,8 +832,7 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn handle_waveland(&mut self, require_airdodge: bool) -> bool {
         // MotionModule::frame(self) > 5.0 && !WorkModule::is_flag(self, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU);
-        if (require_airdodge && !self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE]))
-        || KineticModule::get_kinetic_type(self) == *FIGHTER_KINETIC_TYPE_FALL {
+        if (require_airdodge && !self.is_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE])) {
             return false;
         }
     
@@ -846,35 +845,29 @@ impl BomaExt for BattleObjectModuleAccessor {
             return false;
         }
     
-        // The distance from your Hip bone to your Top bone is your waveland snap threshold
-        let ecb_bottom = *GroundModule::get_rhombus(self, true).add(1);
+        // The distance from your ECB center to your base position is your waveland snap threshold
         let pos = *PostureModule::pos(self);
-        let mut upper_bound_offset = Vector3f::zero();
-        let upper_bound_bone = if self.kind() == *FIGHTER_KIND_KOOPAJR && self.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR) {
-            "clownhip"
+        let upper_bound_offset_y = if StatusModule::is_changing(self) {
+            crate::VarModule::get_float(self.object(), crate::consts::vars::common::instance::ECB_CENTER_Y_OFFSET)
         } else {
-            "hip"
+            crate::VarModule::get_float(self.object(), crate::consts::vars::common::instance::ECB_BOTTOM_Y_OFFSET)
         };
-        ModelModule::joint_global_offset_from_top(self, Hash40::new(upper_bound_bone), &mut upper_bound_offset);
-        if self.is_prev_status(*FIGHTER_STATUS_KIND_PASS) {
-            upper_bound_offset.y = crate::VarModule::get_float(self.object(), crate::consts::vars::common::instance::ECB_BOTTOM_Y_OFFSET);
-        }
-        let upper_bound_y = pos.y + upper_bound_offset.y;
+        let upper_bound_y = pos.y + upper_bound_offset_y;
         let snap_leniency = if WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0 {
-                // For a downwards/horizontal airdodge, waveland snap threshold = the distance from your Hip bone to your Top bone
-                upper_bound_offset.y
+                // For a downwards/horizontal airdodge, waveland snap threshold = the distance from your ECB center to your base position
+                upper_bound_offset_y
             } else {
-                // For an upwards airdodge, waveland snap threshold = 5 units below Hip bone, if the distance from your Hip Bone to your Top bone is < 5
-                (upper_bound_offset.y).max(crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold"))
+                // For an upwards airdodge, waveland snap threshold = 6 units below ECB center, if the distance from your ECB center to your base position is less than 6 units long
+                (upper_bound_offset_y).max(crate::ParamModule::get_float(self.object(), crate::ParamType::Common, "waveland_distance_threshold"))
             };
-        let lower_bound = Vector2f::new(ecb_bottom.x, upper_bound_y - snap_leniency);
-        let mut ground_pos_any = Vector2f::zero();
-        let mut ground_pos_stage = Vector2f::zero();
-        GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, upper_bound_y), &lower_bound, &Vector2f::zero(), &mut ground_pos_any, true);
-        GroundModule::line_segment_check(self, &Vector2f::new(ecb_bottom.x, upper_bound_y), &lower_bound, &Vector2f::zero(), &mut ground_pos_stage, false);
+        let lower_bound = Vector2f::new(pos.x, upper_bound_y - snap_leniency);
+        let ground_pos_any = &mut Vector2f::zero();
+        let ground_pos_stage = &mut Vector2f::zero();
+        let is_touch_any = GroundModule::line_segment_check(self, &Vector2f::new(pos.x, upper_bound_y), &lower_bound, &Vector2f::zero(), ground_pos_any, true);
+        let is_touch_stage = GroundModule::line_segment_check(self, &Vector2f::new(pos.x, upper_bound_y), &lower_bound, &Vector2f::zero(), ground_pos_stage, false);
         let can_snap = !( 
-            ground_pos_any == Vector2f::zero()
-            || (ground_pos_stage != Vector2f::zero()
+            is_touch_any == 0 as *const *const u64
+            || (is_touch_stage != 0 as *const *const u64
                 && WorkModule::get_float(self, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) > 0.0)
         );
         if can_snap { // pretty sure it returns a pointer, at least it defo returns a non-0 value if success

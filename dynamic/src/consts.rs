@@ -223,6 +223,7 @@ pub mod vars {
             pub const LAST_ATTACK_HIT_LOCATION_X: i32 = 0x0016;
             pub const LAST_ATTACK_HIT_LOCATION_Y: i32 = 0x0017;
             pub const LAST_ATTACK_HIT_LOCATION_Z: i32 = 0x0018;
+            pub const ECB_CENTER_Y_OFFSET: i32 = 0x0019;
         }
         pub mod status {
             // flags
