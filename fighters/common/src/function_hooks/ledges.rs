@@ -507,6 +507,9 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
     }
 
     if fighter_kind == *FIGHTER_KIND_SONIC {
+        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
+            return 0;
+        }
         if status_kind == *FIGHTER_SONIC_STATUS_KIND_SPECIAL_HI_JUMP {
             if frame < 23.0 {
                 return 0;
