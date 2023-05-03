@@ -82,21 +82,21 @@ pub unsafe extern "C" fn ken_check_special_command(fighter: &mut L2CFighterCommo
     let cat1 =  fighter.global_table[CMD_CAT1].get_i32();
     let cat4 = fighter.global_table[CMD_CAT4].get_i32();
 
-    // the tatsu super
-    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0
-    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_R_COMMAND != 0
-    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND) 
-    && MeterModule::drain(fighter.object(), 10) {
-        fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
-        return true.into();
-    }
-
     // the shinryuken
     if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND) 
     && MeterModule::drain(fighter.object(), 8) {
         fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
+        return true.into();
+    }
+
+    // the tatsu super
+    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND) 
+    && MeterModule::drain(fighter.object(), 10) {
+        fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
         return true.into();
     }
 

@@ -271,18 +271,18 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     // super cancels
     let cat1 =  fighter.global_table[CMD_CAT1].get_i32();
     let cat4 = fighter.global_table[CMD_CAT4].get_i32();
-    // the tatsu super
-    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0
-    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_R_COMMAND != 0
-    && MeterModule::drain(fighter.object(), 10) {
-        fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
-        return;
-    }
     // the shinryuken
     if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND != 0
     && MeterModule::drain(fighter.object(), 8) {
         fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
+        return;
+    }
+    // the tatsu super
+    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
+    && MeterModule::drain(fighter.object(), 10) {
+        fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
         return;
     }
 
