@@ -593,7 +593,10 @@ unsafe fn after_collision(object: *mut BattleObject) {
                     if VarModule::has_var_module((*boma).object()) { VarModule::on_flag((*boma).object(), vars::common::instance::CHECK_CHANGE_MOTION_ONLY); }
                     let status_module__run_lua_status: extern "C" fn(*const TempModule) = std::mem::transmute(*(((module_accessor.status_module.vtable as u64) + 0x68) as *const u64));
                     status_module__run_lua_status(module_accessor.status_module);
-                    if VarModule::has_var_module((*boma).object()) { VarModule::off_flag((*boma).object(), vars::common::instance::CHECK_CHANGE_MOTION_ONLY); }
+                    if VarModule::has_var_module((*boma).object()) {
+                        VarModule::off_flag((*boma).object(), vars::common::instance::CHECK_CHANGE_MOTION_ONLY);
+                        VarModule::off_flag((*boma).object(), vars::common::instance::FLUSH_EFFECT_ACMD);
+                    }
                 }
             }
         }
