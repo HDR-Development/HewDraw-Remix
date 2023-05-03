@@ -5,7 +5,7 @@ use globals::*;
 
  
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    metered_cancels(boma, frame);
+    metered_cancels(fighter, boma, frame);
     target_combos(boma);
     rotate_forward_bair(boma);
     turn_run_back_status(fighter, boma, status_kind);
@@ -239,7 +239,7 @@ unsafe fn heat_rush(boma: &mut BattleObjectModuleAccessor, frame: f32) {
 }
 
 /// determines what cancels can be done out of specials
-unsafe fn metered_cancels(boma: &mut BattleObjectModuleAccessor, frame: f32) {
+unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, frame: f32) {
 
     // don't do anything during hitlag
     if boma.is_in_hitlag() {
@@ -269,14 +269,23 @@ unsafe fn metered_cancels(boma: &mut BattleObjectModuleAccessor, frame: f32) {
     // from this point on, the fighter is in a valid spot to try and cancel
     
     // super cancels
-    if boma.is_cat_flag(Cat4::SpecialSCommand | Cat4::SpecialHiCommand) 
-    && MeterModule::drain(boma.object(), 10) {
-        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
-        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
-        WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
-        boma.change_status_req(*FIGHTER_STATUS_KIND_FINAL, false);
+    let cat1 =  fighter.global_table[CMD_CAT1].get_i32();
+    let cat4 = fighter.global_table[CMD_CAT4].get_i32();
+    // the tatsu super
+    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_R_COMMAND != 0
+    && MeterModule::drain(fighter.object(), 10) {
+        fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
         return;
     }
+    // the shinryuken
+    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND != 0
+    && MeterModule::drain(fighter.object(), 8) {
+        fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
+        return;
+    }
+
     // DSpecial cancels
     if boma.is_cat_flag(Cat1::SpecialLw)
     && MeterModule::drain(boma.object(), 2) {
