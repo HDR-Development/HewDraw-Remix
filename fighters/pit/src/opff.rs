@@ -5,8 +5,9 @@ use globals::*;
 
 
 #[no_mangle]
-pub unsafe extern "Rust" fn pits_common(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    power_of_flight_cancel(boma, status_kind)
+pub unsafe extern "Rust" fn pits_common(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    power_of_flight_cancel(boma, status_kind);
+    upperdash_arm_whiff_freefall(fighter);
 }
 
 
@@ -24,17 +25,24 @@ unsafe fn upperdash_arm_jump_and_aerial_cancel(boma: &mut BattleObjectModuleAcce
         return;
     }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S || (status_kind == *FIGHTER_PIT_STATUS_KIND_SPECIAL_S_END && frame > 6.0) {
-        if frame > 28.0 {
+        if boma.is_situation(*SITUATION_KIND_GROUND) && frame > 28.0 {
             boma.check_jump_cancel(true);
         }
     }
 }
 
+unsafe fn upperdash_arm_whiff_freefall(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S)
+    && fighter.is_situation(*SITUATION_KIND_AIR)
+    && MotionModule::frame(fighter.module_accessor) >= MotionModule::end_frame(fighter.module_accessor) - 1.0
+    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_HIT) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+    }
+}
 
-
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     upperdash_arm_jump_and_aerial_cancel(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame, id);
-    pits_common(boma, status_kind);
+    pits_common(fighter, boma, status_kind);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_PIT )]
@@ -47,6 +55,6 @@ pub fn pit_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn pit_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
