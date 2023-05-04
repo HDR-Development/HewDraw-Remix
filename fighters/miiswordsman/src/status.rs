@@ -22,7 +22,8 @@ pub fn install() {
         special_hi3_end,
         //special_lw,
         //miiswordsman_speciallw1hit_main,
-        //special_lw3_end
+        //special_lw3_end,
+        special_hi2_bound_end
     );
 }
 
@@ -1292,4 +1293,13 @@ unsafe extern "C" fn some6(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
     }
     L2CValue::I32(num)
+}
+
+// FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_BOUND
+
+#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_BOUND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+pub unsafe fn special_hi2_bound_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let landing_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("landing_frame"), 0);
+    WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+    0.into()
 }
