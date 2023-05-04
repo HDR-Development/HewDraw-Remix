@@ -3,7 +3,7 @@
     <int hash="attack_up_charge_time">120</int>
     <float hash="mag_pull_x_mult">2.0</float>
     <struct hash="cliff_hang_data">
-        <struct index="special_air_hi_end">
+        <struct hash="special_air_hi_end">
             <float hash="p1_x">12</float>
             <float hash="p1_y">22</float>
             <float hash="p2_x">-12</float>
