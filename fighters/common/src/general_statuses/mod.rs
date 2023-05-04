@@ -373,13 +373,14 @@ unsafe fn sub_transition_group_check_ground(fighter: &mut L2CFighterCommon, to_s
 pub unsafe fn sys_line_status_system_control_hook(fighter: &mut L2CFighterBase) -> L2CValue {
     if VarModule::has_var_module(fighter.battle_object)
     && VarModule::is_flag(fighter.battle_object, vars::common::instance::CHECK_CHANGE_MOTION_ONLY)
-    && fighter.global_table[CURRENT_FRAME].get_i32() != 0
     {
         // When we are calling MAIN status for the sole purpose of changing motion kind upon contact with a surface,
         // there is no need to increment the CURRENT_FRAME counter,
         // or run sub statuses (which are often used to increment various counters used during a status)
         // So we are only updating situation kind, then returning
         // MAIN status will then be called after returning
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::CHECK_CHANGE_MOTION_ONLY);
+        VarModule::on_flag(fighter.battle_object, vars::common::instance::FLUSH_EFFECT_ACMD);
         let situation_kind = StatusModule::situation_kind(fighter.module_accessor);
         fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(situation_kind));
         fighter.global_table[0xD].assign(&L2CValue::Bool(false));
@@ -411,7 +412,7 @@ pub unsafe fn super_jump_punch_main_hook(fighter: &mut L2CFighterCommon) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS) {
             if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_AIR
             && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
-            && KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) <= 0.0
+            && MotionModule::trans_move_speed(fighter.module_accessor).y < 0.0
             {
                 fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
             }
