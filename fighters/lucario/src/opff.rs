@@ -192,11 +192,15 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
     }
 
     // Extreme Speed Cancels
-    if status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END {
+    if status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END 
+    || status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH {
         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
             || (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag())
         {
-            boma.check_jump_cancel(false);
+            if boma.is_cat_flag(Cat1::AttackN) && situation_kind == *SITUATION_KIND_AIR {
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
+                VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
+            }
         }
     }
 }
