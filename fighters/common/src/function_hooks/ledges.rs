@@ -658,12 +658,7 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
             }
         }
         if motion_kind == hash40("special_s_move") || motion_kind == hash40("special_s_dash") {
-            if frame < 10.0 {
-                return 1;
-            }
-            else{
-                return -1;
-            }
+            return 1;
         }
     }
 
