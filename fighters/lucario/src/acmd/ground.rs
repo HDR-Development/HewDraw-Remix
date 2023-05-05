@@ -34,24 +34,25 @@ unsafe fn lucario_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.571);
-    }
+    FT_MOTION_RATE(fighter, 0.5);
+    frame(lua_state, 4.0);
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 2.5, 361, 20, 0, 35, 4.0, 0.0, 9.0, 3.8, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("arml"), 2.5, 361, 20, 0, 25, 4.0, -1.5, 0.0, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 2, 0, Hash40::new("arml"), 2.5, 180, 20, 0, 15, 4.0, 2.0, 0.0, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 3, 0, Hash40::new("arml"), 2.5, 361, 20, 0, 15, 4.0, 2.0, 0.0, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 2.5, 361, 20, 0, 35, 2.0, 0.0, 0.0, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("shoulderl"), 2.5, 361, 20, 0, 35, 2.5, 0.0, 0.0, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 2, 0, Hash40::new("arml"),      2.5, 361, 20, 0, 25, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 3, 0, Hash40::new("handl"),     2.5, 180, 20, 0, 15, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 4, 0, Hash40::new("handl"),     2.5, 361, 20, 0, 15, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_PUNCH);
         AttackModule::set_add_reaction_frame(boma, 0, 6.0, false);
         AttackModule::set_add_reaction_frame(boma, 1, 6.0, false);
         AttackModule::set_add_reaction_frame(boma, 2, 6.0, false);
         AttackModule::set_add_reaction_frame(boma, 3, 6.0, false);
+        AttackModule::set_add_reaction_frame(boma, 4, 6.0, false);
     }
     wait(lua_state, 2.0);
+    FT_MOTION_RATE(fighter, 0.75);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.750);
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 11.0);
@@ -59,10 +60,7 @@ unsafe fn lucario_attack_11_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
     frame(lua_state, 29.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
-    }
-    
+    FT_MOTION_RATE(fighter, 1.0);
 }
 
 #[acmd_script( agent = "lucario", script = "game_attack12" , category = ACMD_GAME , low_priority)]
