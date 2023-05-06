@@ -6,9 +6,11 @@ use super::*;
 unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        JostleModule::set_overlap_rate_mul(fighter.module_accessor, 6.666);
+    }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
         ATTACK(fighter, 0, 0, Hash40::new("footl"), 14.5, 20, 71, 0, 37, 2.5, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEMON_KICK, *ATTACK_REGION_KICK);
         ATTACK(fighter, 1, 0, Hash40::new("footl"), 14.5, 20, 71, 0, 37, 4.25, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEMON_KICK, *ATTACK_REGION_KICK);
         ATTACK(fighter, 2, 0, Hash40::new("kneel"), 14.5, 20, 71, 0, 37, 3.5, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DEMON_KICK, *ATTACK_REGION_KICK);
@@ -19,14 +21,12 @@ unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
         //ATK_SET_SHIELD_SETOFF_MUL(fighter, 2, 0.8);
         //ATK_SET_SHIELD_SETOFF_MUL(fighter, 3, 0.8);
     }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        JostleModule::set_overlap_rate_mul(fighter.module_accessor, 1.0);
+    }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        AttackModule::clear_all(boma);
-    }
-    wait(lua_state, 4.0);
-    if is_excute(fighter) {
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         AttackModule::clear_all(boma);
     }
     
@@ -43,15 +43,6 @@ unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
         if VarModule::is_flag(fighter.battle_object, vars::demon::instance::JAW_BREAKER){
             MotionModule::change_motion(boma, Hash40::new("attack_hi32"), 0.0, 1.0, false, 0.0, false, false);
         }
-    }
-    frame(lua_state, 4.0);
-    if is_excute(fighter) {
-        HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
-        HIT_NODE(fighter, Hash40::new("bust"), *HIT_STATUS_XLU);
-        HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
-        HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
-        HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
-        HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
@@ -70,7 +61,6 @@ unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         AttackModule::clear_all(boma);
         WorkModule::on_flag(boma, *FIGHTER_DEMON_STATUS_ATTACK_HI_3_FLAG_CHECK_STEP);
     }
@@ -87,15 +77,6 @@ unsafe fn game_attackhi32(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.6);
-    }
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
-        HIT_NODE(fighter, Hash40::new("bust"), *HIT_STATUS_XLU);
-        HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
-        HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
-        HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
-        HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
@@ -117,15 +98,8 @@ unsafe fn game_attackhi32(fighter: &mut L2CAgentBase) {
         }
         
     }
-    frame(lua_state, 15.0);
-    if is_excute(fighter) {
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
-        HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
-    }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 25.0);
@@ -147,6 +121,7 @@ unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+        JostleModule::set_overlap_rate_mul(fighter.module_accessor, 6.666);
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
@@ -183,7 +158,11 @@ unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
         AttackModule::set_add_reaction_frame_revised(boma, 4, 17.0, false);
         AttackModule::set_add_reaction_frame_revised(boma, 5, 17.0, false);
     }
-    wait(lua_state, 3.0);
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        JostleModule::set_overlap_rate_mul(fighter.module_accessor, 1.0);
+    }
+    wait(lua_state, 2.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }

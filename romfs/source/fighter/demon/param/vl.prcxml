@@ -6,6 +6,7 @@
     </struct>
   </list>
   <struct hash="param_private">
+    <!-- <float hash="0x19996b81b6">0</float> removes auto turn-->
     <float hash="reaction_value">0</float>
   </struct>
   <struct hash="param_attack_step">
