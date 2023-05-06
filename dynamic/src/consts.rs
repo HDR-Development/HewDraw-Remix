@@ -192,6 +192,8 @@ pub mod vars {
             pub const CLIFF_XLU_FRAME: i32 = 0x000B;
             pub const LAST_ATTACK_HITBOX_ID: i32 = 0x000C;
 
+            pub const FRAME_COUNTER: i32 = 0x000D;
+
             // floats
 
             pub const LAST_ATTACK_DAMAGE_DEALT: i32 = 0x0000;
@@ -249,6 +251,9 @@ pub mod vars {
             pub const SUICIDE_THROW_CAN_CLATTER: i32 = 0x1000;
 
             pub const ENABLE_UCF: i32 = 0x1000;
+
+            pub const FAF_REACHED: i32 = 0x1000;
+            pub const PREV_AUTOCANCEL_FLAG: i32 = 0x1001;
 
             // ints
 
