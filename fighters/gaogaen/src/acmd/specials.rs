@@ -1202,6 +1202,9 @@ unsafe fn gaogaen_special_air_hi_turn_game(fighter: &mut L2CAgentBase) {
     else {
         FT_MOTION_RATE(fighter, 1.0);
     }
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
+    }
     frame(lua_state, 3.0);
     if VarModule::is_flag(boma.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL){
         FT_MOTION_RATE(fighter, 6.0/(6.0 - 3.0));
@@ -1248,7 +1251,7 @@ unsafe fn gaogaen_special_air_hi_turn_effect(fighter: &mut L2CAgentBase) {
         //     LAST_EFFECT_SET_RATE(fighter, 0.25);
         // }
     }
-    frame(lua_state, 3.0);
+    frame(lua_state, 7.0);
     if is_excute(fighter) {
         if !VarModule::is_flag(boma.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL){
             EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 8, 5, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
