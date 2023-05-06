@@ -847,7 +847,7 @@ impl BomaExt for BattleObjectModuleAccessor {
     
         // The distance from your ECB center to your base position is your waveland snap threshold
         let pos = *PostureModule::pos(self);
-        let upper_bound_offset_y = if StatusModule::is_changing(self) {
+        let upper_bound_offset_y = if StatusModule::is_changing(self) && !self.is_prev_status(*FIGHTER_STATUS_KIND_PASS) {
             crate::VarModule::get_float(self.object(), crate::consts::vars::common::instance::ECB_CENTER_Y_OFFSET)
         } else {
             crate::VarModule::get_float(self.object(), crate::consts::vars::common::instance::ECB_BOTTOM_Y_OFFSET)
