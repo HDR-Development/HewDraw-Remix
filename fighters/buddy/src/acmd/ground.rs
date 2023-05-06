@@ -100,12 +100,59 @@ unsafe fn buddy_attack_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "buddy", script = "effect_attackdash", category = ACMD_EFFECT, low_priority )]
+unsafe fn buddy_attack_dash_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        if boma.is_situation(*SITUATION_KIND_GROUND) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 5, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+            LAST_EFFECT_SET_RATE(fighter, 0.85);
+        }
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        if boma.is_situation(*SITUATION_KIND_GROUND) {
+            EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_spin_wind_s"), Hash40::new("top"), 0, 6, 0, 0, 0, -90, 0.9, false, 0.2);
+            LAST_EFFECT_SET_RATE(fighter, 1.6);
+        }
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        if boma.is_situation(*SITUATION_KIND_GROUND) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 9, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+            LAST_EFFECT_SET_RATE(fighter, 0.7);
+        }
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        if boma.is_situation(*SITUATION_KIND_GROUND) {
+            EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_spin_wind_s"), Hash40::new("top"), 0, 5, 0, 0, 0, -90, 0.9, false, 0.5);
+            LAST_EFFECT_SET_RATE(fighter, 1.6);
+        }
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        if boma.is_situation(*SITUATION_KIND_GROUND) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+            LAST_EFFECT_SET_RATE(fighter, 1.6);
+        }
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        if boma.is_situation(*SITUATION_KIND_GROUND) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 0, 0, 2, 0, 0, 0, 0.85, 0, 0, 0, 0, 0, 0, false);
+        }
+    }
+}
 
 pub fn install() {
     install_acmd_scripts!(
         buddy_attack_11_game,
         buddy_attack_12_game,
         buddy_attack_13_game,
-        buddy_attack_dash_game
+        buddy_attack_dash_game,
+        buddy_attack_dash_effect,
     );
 }

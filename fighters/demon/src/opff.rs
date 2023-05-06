@@ -30,7 +30,7 @@ unsafe fn slaughter_high_kick_devastator(boma: &mut BattleObjectModuleAccessor, 
 
 unsafe fn jaw_breaker(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
     if [*FIGHTER_STATUS_KIND_ESCAPE].contains(&status_kind)
-        && frame > 17.0 {
+        && boma.status_frame() > 17 {
         if compare_mask(cat1, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N){
             VarModule::on_flag(boma.object(), vars::demon::instance::JAW_BREAKER);
             boma.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_HI3, false);
@@ -42,7 +42,7 @@ unsafe fn jaw_breaker(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_k
 }
 unsafe fn lightning_screw_uppercut(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
     if motion_kind == hash40("attack_stand_21") {
-        if frame < 18.0{
+        if frame < 19.0{
             if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) && !VarModule::is_flag(boma.object(), vars::demon::instance::SPINNING_DEMON) {
                 VarModule::on_flag(boma.object(), vars::demon::instance::LIGHTNING_SCREW_UPPERCUT);
             }
@@ -53,12 +53,12 @@ unsafe fn lightning_screw_uppercut(boma: &mut BattleObjectModuleAccessor, cat1: 
             }
         }
     }
-    if motion_kind == hash40("attack_stand_22") && frame > 15.0 {
+    if motion_kind == hash40("attack_stand_22") && frame > 16.0 {
         if VarModule::is_flag(boma.object(), vars::demon::instance::LIGHTNING_SCREW_UPPERCUT){
             MotionModule::change_motion_force_inherit_frame(boma, Hash40::new("attack_stand_23"), 0.0, 1.15, 0.0);
         }
     }
-    if motion_kind == hash40("attack_stand_23") && frame > 15.0 {
+    if motion_kind == hash40("attack_stand_23") && frame > 16.0 {
         if VarModule::is_flag(boma.object(), vars::demon::instance::LIGHTNING_SCREW_UPPERCUT){
             boma.change_status_req(*FIGHTER_DEMON_STATUS_KIND_ATTACK_STEP_2L, false);
         }
@@ -69,13 +69,16 @@ unsafe fn lightning_screw_uppercut(boma: &mut BattleObjectModuleAccessor, cat1: 
 }
 
 unsafe fn spinning_demon(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, motion_kind: u64, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if motion_kind == hash40("attack_step_2s") {
-        if frame > 15.0 && frame < 17.0{
+        if frame > 16.0 && frame < 18.0{
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
                 VarModule::on_flag(boma.object(), vars::demon::instance::SPINNING_DEMON);
             }
         }
-        else if frame >= 17.0{
+        else if frame >= 18.0{
             if VarModule::is_flag(boma.object(), vars::demon::instance::SPINNING_DEMON){
                 boma.change_status_req(*FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_2, false);
             }
@@ -157,12 +160,12 @@ unsafe fn forward_bair_rotation(boma: &mut BattleObjectModuleAccessor, start_fra
 unsafe fn rotate_forward_bair(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_motion(Hash40::new("attack_air_b")){
         if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
-            forward_bair_rotation(boma, 5.0, 8.5, 20.0, 40.0);
+            forward_bair_rotation(boma, 6.0, 9.5, 21.0, 41.0);
         }
     }
     else if boma.is_motion(Hash40::new("landing_air_b")){
         if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
-            forward_bair_rotation(boma, 0.0, 0.1, 0.2, 10.0);
+            forward_bair_rotation(boma, 0.0, 0.1, 0.2, 9.0);
         }
     }
 }

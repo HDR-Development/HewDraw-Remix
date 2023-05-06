@@ -139,7 +139,7 @@ pub mod vars {
 
             pub const UP_SPECIAL_INTERRUPT: i32 = 0x0023; // Ness and Lucas use this
             pub const UP_SPECIAL_INTERRUPT_AIRTIME: i32 = 0x0024; // Ness and Lucas use this
-            
+
             pub const SPECIAL_PROJECTILE_SPAWNED: i32 = 0x0025; // Luigi, Ivysaur, and Young Link use this
             pub const IS_TELEPORT_WALL_RIDE: i32 = 0x0026; // Mewtwo, Palutena, Sheik, and Zelda use this
             pub const SPIN_ATTACK_LAND_CANCEL: i32 = 0x003E; // Link and Mii Sword use this
@@ -158,6 +158,14 @@ pub mod vars {
             pub const IS_CC_NON_TUMBLE: i32 = 0x0054;
 
             pub const IS_GETTING_POSITION_FOR_ECB: i32 = 0x0055;
+
+            pub const CHECK_CHANGE_MOTION_ONLY: i32 = 0x0056;
+
+            pub const BEFORE_GROUND_COLLISION: i32 = 0x0057;
+
+            pub const IS_IGNORED_STATUS_FRAME_0: i32 = 0x0058;
+
+            pub const FLUSH_EFFECT_ACMD: i32 = 0x0059;
 
             // ints
 
@@ -182,6 +190,7 @@ pub mod vars {
             pub const AGT_USED_COUNTER: i32 = 0x000A;
 
             pub const CLIFF_XLU_FRAME: i32 = 0x000B;
+            pub const LAST_ATTACK_HITBOX_ID: i32 = 0x000C;
 
             // floats
 
@@ -212,6 +221,10 @@ pub mod vars {
             /// a character's jump speed max for momentum transfer (for meta quick, etc)
             pub const JUMP_SPEED_MAX_MUL: i32 = 0x0014;
             pub const ECB_TOP_Y_OFFSET: i32 = 0x0015;
+            pub const LAST_ATTACK_HIT_LOCATION: i32 = 0x0016;
+            pub const LAST_ATTACK_HIT_LOCATION_X: i32 = 0x0016;
+            pub const LAST_ATTACK_HIT_LOCATION_Y: i32 = 0x0017;
+            pub const LAST_ATTACK_HIT_LOCATION_Z: i32 = 0x0018;
         }
         pub mod status {
             // flags
@@ -248,6 +261,8 @@ pub mod vars {
 
             pub const RESTING_HIP_OFFSET_Y: i32 = 0x1000;
 
+            pub const TELEPORT_INITIAL_SPEED_Y: i32 = 0x1000;
+
         }
     }
 
@@ -282,7 +297,7 @@ pub mod vars {
             // flag
             pub const BEAKBOMB_ACTIVE: i32 = 0x0100;
             pub const BAYONET_ACTIVE: i32 = 0x0101;
-            
+
             // int
             pub const HUD_DISPLAY_TIME: i32 = 0x0100;
             //Current frame of Beakbomb, used to detect mislanding
@@ -361,6 +376,20 @@ pub mod vars {
             pub const GUNMAN_TIMER: i32 = 0x0100;
         }
     }
+    pub mod peach {
+        pub mod instance {
+            // flag
+            // Used to check if sideb wall bounce happens
+            pub const IS_WALLBOUNCE: i32 = 0x0100;
+        }
+    }
+    pub mod daisy {
+        pub mod instance {
+            // flag
+            // Used to check if sideb wall bounce happens
+            pub const IS_WALLBOUNCE: i32 = 0x0100;
+        }
+    }
 
     pub mod rosetta {
         pub mod instance {
@@ -373,7 +402,7 @@ pub mod vars {
             pub const TICO_RAYCAST: i32 = 0x0106;
             pub const TICO_X_DIST: i32 = 0x0107;
             pub const TICO_Y_DIST: i32 = 0x0108;
-			
+
 			// flag
             pub const IS_TICO_DEAD: i32 = 0x0105;
         }
@@ -537,7 +566,7 @@ pub mod vars {
             // flag
             /// This flag stores whether or not Luigi currently has a misfire stored.
             pub const IS_MISFIRE_STORED: i32 = 0x0100;
-            
+
             // int
             /// This int stores the number of remaining green missile's luigi must do before getting a misfire
             pub const REMAINING_SPECIAL_S_UNTIL_MISFIRE: i32 = 0x0100;
@@ -638,8 +667,6 @@ pub mod vars {
         pub mod status {
             // flags
             pub const IS_SPECIAL_N_CHILL_PILL:       i32 = 0x1100;
-
-            pub const IS_SPECIAL_HI_UNABLE_CANCEL:   i32 = 0x1100;
         }
     }
 
@@ -705,14 +732,14 @@ pub mod vars {
             pub const PULSE_HITBOX: i32 = 0x1100;
         }
     }
-    
+
     pub mod snake {
         pub mod instance {
             // ints
             pub const SNAKE_GRENADE_COUNTER: i32 = 0x0100;
         }
     }
-    
+
     pub mod szerosuit {
         pub mod status {
             // flags
@@ -838,49 +865,41 @@ pub mod vars {
     pub mod metaknight {
         pub mod instance {
             // flags
-            pub const COMPLETED_SET_SPEEDS: i32 = 0x0100;
-            pub const META_QUICK_NEED_SET_SPEEDS: i32 = 0x0101;
-            pub const META_QUICK_PLAY_VC: i32 = 0x0102;
             pub const NEUTRAL_SPECIAL_HIT: i32 = 0x0103;
             pub const SIDE_SPECIAL_HIT: i32 = 0x0104;
             pub const UP_SPECIAL_HIT: i32 = 0x0105;
             pub const DOWN_SPECIAL_HIT: i32 = 0x0106;
-
-            // ints
-            /// i32 timer for color flashing when meta quick is ready
-            pub const META_QUICK_READY_FLASH_TIMER: i32 = 0x0100;
-            pub const META_QUICK_STATUS: i32 = 0x0101;
-
-            /// u32 effect handle
-            pub const META_QUICK_EFFECT_HANDLE: i32 = 0x0102;
-            pub const META_QUICK_EFFECT_HANDLE2: i32 = 0x0103;
-
-            /// u32 effect handle for the charge, 0xFFFF_FFFF for invalid
-            pub const META_QUICK_CHARGE_EFFECT_HANDLE: i32 = 0x0104;
         }
     }
-    
+
     // pub mod miifighter {
     //     // floats
     //     pub const CHARGE_ATTACK_LEVEL: i32 = 0x1000;
-        
+
     //     // flags
     //     pub const IS_COUNTER_THROW_PARRIED_ATTACK: i32 = 0x1000;
     //     pub const IS_CURRENT_IRONBALL_HEAVY:       i32 = 0x1001;
 
     // }
-    
+
     pub mod littlemac {
         pub mod status {
             // flags
             pub const IS_DREAMLAND_EXPRESS: i32 = 0x0100;
             pub const IS_LATE_DLE_INPUT: i32 = 0x0101;
-            //pub const IS_STRAIGHT_LUNGE_CANCEL: i32 = 0x1102;
-            //pub const IS_REVERSED: i32 = 0x1103;
 
-            // floats
-            //pub const CANCEL_FRAME: i32 = 0x0100;
+            // ints
+            pub const SPECIAL_N_CANCEL_TYPE: i32 = 0x1100;
         }
+
+        pub const SPECIAL_N_CANCEL_TYPE_NONE: i32 = 0x0;
+        pub const SPECIAL_N_CANCEL_TYPE_GROUND_JUMP: i32 = 0x1;
+        pub const SPECIAL_N_CANCEL_TYPE_JUMP_AERIAL: i32 = 0x2;
+        pub const SPECIAL_N_CANCEL_TYPE_GUARD: i32 = 0x3;
+        pub const SPECIAL_N_CANCEL_TYPE_ESCAPE: i32 = 0x4;
+        pub const SPECIAL_N_CANCEL_TYPE_ESCAPE_AIR: i32 = 0x5;
+        pub const SPECIAL_N_CANCEL_TYPE_ESCAPE_F: i32 = 0x6;
+        pub const SPECIAL_N_CANCEL_TYPE_ESCAPE_B: i32 = 0x7;
     }
 
     pub mod pichu {
@@ -896,6 +915,7 @@ pub mod vars {
             pub const CHARGE_DAMAGE_MUL: i32 = 0x0100;
             pub const CHARGE_RECOIL_MUL: i32 = 0x0101;
             pub const DISCHARGE_POWER_MUL: i32 = 0x0102;
+            pub const DISCHARGE_SIZE_MUL: i32 = 0x0103;
         }
     }
 
@@ -904,6 +924,8 @@ pub mod vars {
             // flags
             pub const DEIN_ACTIVE: i32 = 0x0100;
             pub const PHANTOM_RELEASED: i32 = 0x0101;
+            pub const HIT_CANCEL_PHANTOM: i32 = 0x0102;
+            pub const READY_PHANTOM: i32 = 0x0103;
 
             // ints
             pub const DEIN_OBJECT_ID: i32 = 0x0100;
@@ -912,7 +934,7 @@ pub mod vars {
             pub const PHANTOM_EFF_HANDLER: i32 = 0x0103;
         }
     }
-    
+
     pub mod murabito {
         pub mod instance {
             // flags
@@ -933,7 +955,7 @@ pub mod vars {
             pub const SPECIAL_LW_ENABLE_LANDING: i32 = 0x0102;
             pub const SPECIAL_LW_IS_LANDING: i32 = 0x0103;
             pub const SPECIAL_LW_ENABLE_BOUNCE: i32 = 0x0104;
-            
+
             // floats
             pub const SPECIAL_LW_BOUNCE_PREV_POS: i32 = 0x0100;   //vector, requires two indexes
             pub const SPECIAL_S_FAILURE_CANCEL_FRAME: i32 = 0x0102;
@@ -947,15 +969,29 @@ pub mod vars {
         }
     }
 
+    pub mod iceclimbers {
+        pub mod instance {
+            //flags
+            pub const IS_VOLUNTARY_SOPO: i32 = 0x0100;
+            pub const IS_SEPARATED: i32 = 0x0101;
+
+            //ints
+            pub const SEPARATED_EFFECT: i32 = 0x0110;
+        }
+    }
+
+    pub mod wolf {
+        pub mod status {
+            // flags
+            pub const SPECIAL_S_RESERVE_FALL: i32 = 0x1100;
+        }
+    }
+
 }
 
 pub mod statuses {
     pub mod elight {
         pub const SPECIAL_HI_FINISH2: i32 = 0;
-    }
-
-    pub mod metaknight {
-        pub const METAQUICK_SUMMON: i32 = 0;
     }
 
     pub mod ganon {
@@ -970,4 +1006,13 @@ pub mod statuses {
         pub const BUDDY_BAYONET_END: i32 = 0;
     }
 
+    pub mod littlemac {
+        pub const SPECIAL_N_CANCEL: i32 = 0;
+        pub const SPECIAL_N_CANCEL_JUMP: i32 = 1;
+    }
+
+    pub mod wolf {
+        pub const SPECIAL_S_RUSH: i32 = 0;
+        pub const SPECIAL_S_END: i32 = 1;
+    }
 }

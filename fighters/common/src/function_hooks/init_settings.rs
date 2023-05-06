@@ -116,6 +116,11 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
             cliff_check_kind = app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
         }
 
+        VarModule::off_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK);
+
+        if boma.is_prev_status(*FIGHTER_STATUS_KIND_SWALLOWED_DRINK) {
+            VisibilityModule::set_whole(boma, true);
+        }
     }
 
     // VarModule Status Variable reset checks

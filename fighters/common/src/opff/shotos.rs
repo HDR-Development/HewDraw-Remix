@@ -92,6 +92,9 @@ unsafe fn super_fs_cancel(boma: &mut BattleObjectModuleAccessor) -> bool {
 
 // Shotos Hadoken FADC and Super (FS) cancels
 unsafe fn hadoken_fadc_sfs_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, cat: [i32; 4], frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
 
     let mut agent_base = fighter.fighter_base.agent_base;
     let cat1 = cat[0];
@@ -105,7 +108,7 @@ unsafe fn hadoken_fadc_sfs_cancels(fighter: &mut L2CFighterCommon, boma: &mut Ba
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
     ])
-    || frame <= 5.0 {
+    || frame <= 6.0 {
         return;
     }
 
@@ -122,7 +125,7 @@ unsafe fn hadoken_fadc_sfs_cancels(fighter: &mut L2CFighterCommon, boma: &mut Ba
         return;
     }
 
-    if frame > 15.0
+    if frame > 16.0
     && boma.is_cat_flag(Cat1::SpecialLw)
     && MeterModule::drain(boma.object(), 2)
     {

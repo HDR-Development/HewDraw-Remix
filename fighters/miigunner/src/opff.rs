@@ -42,7 +42,7 @@ unsafe fn absorb_vortex_jc_turnaround_shinejump_cancel(boma: &mut BattleObjectMo
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_END,
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_LOOP].contains(&status_kind) {
         if !boma.is_in_hitlag() {
-            if (status_kind == *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD && frame > 3.0)
+            if (status_kind == *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD && boma.status_frame() > 3)
                 || (status_kind != *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD)
             {
                 boma.check_jump_cancel(false);
@@ -87,11 +87,14 @@ unsafe fn remove_homing_missiles(boma: &mut BattleObjectModuleAccessor, status_k
 }
 
 unsafe fn missile_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if [*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_1_AIR,
         *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_2_AIR].contains(&status_kind) {
         if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
             // Set additional landing lag if the missile has been fired
-            if frame >= 22.0 {
+            if frame >= 23.0 {
                 if status_kind == *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_1_AIR {
                     //let landing_frame = (41.0 - frame).max(30.0);
                     MotionModule::set_frame(boma, 30.0, false);
@@ -109,15 +112,18 @@ unsafe fn missile_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleO
 }
 
 unsafe fn arm_rocket_airdash(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
 	let prev_status_kind = StatusModule::prev_status_kind(boma, 0);
 	if [*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI3_RUSH].contains(&status_kind) {
 		// Transition into rush_end early
-		if frame > 15.0 {
+		if frame > 16.0 {
 			StatusModule::change_status_request_from_script(boma, *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI3_RUSH_END, false);
 		}
 	}
 	if [*FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI3_RUSH_END].contains(&status_kind) {
-		if frame > 10.0 {
+		if frame > 11.0 {
 			VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
 			StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
 		}
@@ -125,10 +131,9 @@ unsafe fn arm_rocket_airdash(boma: &mut BattleObjectModuleAccessor, id: usize, s
 }
 
 /// Allow uncharged or slightly charged Lunar Launch to be actionable
-unsafe fn lunar_launch_actionability(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
-    if [hash40("special_hi1"),
-        hash40("special_air_hi1")].contains(&motion_kind) {
-        if frame >= 34.0 && VarModule::get_float(boma.object(), vars::miigunner::status::CHARGE_ATTACK_LEVEL) <= 10.0 {
+unsafe fn lunar_launch_actionability(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        if fighter.status_frame() >= 35 && VarModule::get_float(boma.object(), vars::miigunner::status::CHARGE_ATTACK_LEVEL) <= 10.0 {
             // if already used once this airtime
             if VarModule::is_flag(boma.object(), vars::miigunner::instance::LUNAR_LAUNCH_AIR_USED) {
                 VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
@@ -179,7 +184,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     remove_homing_missiles(boma, status_kind);
     missile_land_cancel(fighter, boma, id, status_kind, situation_kind, frame);
 	arm_rocket_airdash(boma, id, status_kind, frame);
-    lunar_launch_actionability(fighter, boma, motion_kind, frame);
+    lunar_launch_actionability(fighter, boma, motion_kind);
     lunar_launch_reset(fighter);
     lunar_launch_effect_reset(fighter, boma, status_kind);
     stealth_burst_land_cancel(boma, status_kind, situation_kind);
@@ -214,7 +219,8 @@ pub fn miigunner_missile_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
                 if WorkModule::is_enable_transition_term_group(gunner_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ATTACK)
                     || WorkModule::is_enable_transition_term_group(gunner_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK)
                     || WorkModule::is_enable_transition_term_group(gunner_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL)
-                    || WorkModule::is_enable_transition_term_group(gunner_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL) {
+                    || WorkModule::is_enable_transition_term_group(gunner_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL)
+                    || WorkModule::is_enable_transition_term_group(gunner_boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP) {
                     StatusModule::change_status_request_from_script(boma, *WEAPON_MIIGUNNER_SUPERMISSILE_STATUS_KIND_S_BURST, false);
                     VarModule::on_flag(gunner, vars::miigunner::status::MISSILE_DETONATE);
                     VarModule::off_flag(gunner, vars::miigunner::instance::DETONATE_READY);

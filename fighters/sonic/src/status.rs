@@ -6,7 +6,7 @@ use smashline::*;
 pub fn install() {
   install_status_scripts!(
      pre_dash,
-	 sonic_speciallw_pre
+	 sonic_speciallw_pre,
   );
 }
 

@@ -1,3 +1,4 @@
+use skyline::hooks::InlineCtx;
 use smash::app::{BattleObject, BattleObjectModuleAccessor};
 use smash::app::lua_bind::*;
 use smash::lib::lua_const::*;
@@ -318,6 +319,78 @@ impl MeterModule {
     }
 }
 
+#[skyline::hook(offset = 0x46ae64, inline)]
+unsafe fn hit_module_handle_attack_event(ctx: &InlineCtx)  {
+    let data = *ctx.registers[1].x.as_ref() as *mut u32;
+    let attacker_id = *data;
+
+    let collision_id = *data.add(1);
+    let battle_object = &mut *utils_dyn::util::get_battle_object_from_id(attacker_id);
+    if !battle_object.is_fighter() && !battle_object.is_weapon() {
+        return;
+    }
+
+    let collision_data = *ctx.registers[27].x.as_ref() as *mut f32;
+    let loc_x = *collision_data.add(4);
+    let loc_y = *collision_data.add(5);
+    let loc_z = *collision_data.add(6);
+    VarModule::set_int(battle_object, vars::common::instance::LAST_ATTACK_HITBOX_ID, collision_id as i32);
+    VarModule::set_vec3(battle_object, vars::common::instance::LAST_ATTACK_HIT_LOCATION, Vector3f { x: loc_x, y: loc_y, z: loc_z });
+}
+
+#[skyline::hook(offset = 0x4c7060)]
+unsafe fn shield_module_send_shield_attack_collision_event(shield_module: *mut u64, opp_attack_module: *mut u64, collision: *mut u8, group_index: i32, raw_power: f32, real_power: f32, pos_x: f32, lr: f32) {
+    call_original!(shield_module, opp_attack_module, collision, group_index, raw_power, real_power, pos_x, lr);
+    let attacker_id = *(collision.add(0x24) as *const u32);
+    let battle_object = &mut *utils_dyn::util::get_battle_object_from_id(attacker_id);
+    if !battle_object.is_fighter() && !battle_object.is_weapon() {
+        return;
+    }
+
+    let hitbox_id = *(collision.add(0x33) as *const u8);
+    let loc_x = *(collision.add(0x10) as *const f32);
+    let loc_y = *(collision.add(0x14) as *const f32);
+    let loc_z = *(collision.add(0x18) as *const f32);
+
+    VarModule::set_int(battle_object, vars::common::instance::LAST_ATTACK_HITBOX_ID, hitbox_id as i32);
+    VarModule::set_vec3(battle_object, vars::common::instance::LAST_ATTACK_HIT_LOCATION, Vector3f { x: loc_x, y: loc_y, z: loc_z });
+}
+
+// static mut IS_CALCULATING: Option<(u32, u32)> = None;
+
+// #[skyline::hook(offset = 0x402ee0, inline)]
+// unsafe fn calculate_knockback(ctx: &InlineCtx) {
+//     let damage_module = *ctx.registers[19].x.as_ref();
+//     let our_boma = *((damage_module + 0x8) as *mut *mut smash::app::BattleObjectModuleAccessor);
+//     let ptr = *ctx.registers[20].x.as_ref() as *mut u8;
+//     let id = *(ptr.add(0x24) as *const u32);
+//     IS_CALCULATING = Some(((*our_boma).battle_object_id, id));
+// }
+
+// extern "C" {
+//     #[link_name = "calculate_finishing_hit"]
+//     fn calculate_finishing_hit(defender: u32, attacker: u32, knockback_info: u64);
+// }
+
+// #[skyline::hook(offset = 0x403930, inline)]
+// unsafe fn process_knockback(ctx: &InlineCtx) {
+//     if let Some((defender, attacker)) = IS_CALCULATING {
+//         let boma = *ctx.registers[20].x.as_ref() as *mut smash::app::BattleObjectModuleAccessor;
+//         if (*boma).battle_object_id == defender {
+//             calculate_finishing_hit(defender, attacker, *ctx.registers[19].x.as_ref());
+//         }
+//     }
+// }
+
+// #[skyline::hook(offset = 0x401e30)]
+// unsafe fn knockback_calculator(arg1: u64, arg2: u64, arg3: u64, arg4: u64, arg5: f32, arg6: f32, arg7: f32, arg8: f32) -> f32 {
+//     let knockback = call_original!(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+//     if let Some((defender, attacker, log)) = IS_CALCULATING.take() {
+//         calculate_finishing_hit(defender, attacker, log, knockback);
+//     }
+//     knockback
+// }
+
 #[skyline::hook(offset = offsets::fighter_handle_damage())]
 unsafe fn fighter_handle_damage_hook(fighter: *mut smash::app::BattleObject, arg: *const u8) {
     let module_accessor = (*fighter).module_accessor;
@@ -369,6 +442,10 @@ pub fn init() {
     skyline::install_hooks!(
         fighter_handle_damage_hook,
         dolly_super_special_check,
-        dolly_super_special_check_param
+        dolly_super_special_check_param,
+        hit_module_handle_attack_event,
+        shield_module_send_shield_attack_collision_event,
+        // process_knockback,
+        // calculate_knockback
     );
 }

@@ -49,9 +49,13 @@
   </list>
   <list hash="param_tico">
     <struct index="0">
-      <float hash="hp">60</float>
+      <float hash="hp">50</float>
       <float hash="follow_damage_air_brake">0.075</float>
-      <float hash="free_damage_air_brake">0.07</float>
+      <float hash="free_damage_for_reaction">70</float>
+      <float hash="free_damage_air_brake">0.15</float>
+      <float hash="yellow_rate">0.3</float>
+      <float hash="black_rate">0.3</float>
+      <float hash="pink_rate">0.3</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

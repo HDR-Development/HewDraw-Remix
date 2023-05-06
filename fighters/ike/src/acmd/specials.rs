@@ -270,9 +270,11 @@ unsafe fn ike_special_s_attack_effect(fighter: &mut L2CAgentBase) {
         AFTER_IMAGE_OFF(fighter, 4);
         if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
             EFFECT(fighter, Hash40::new("sys_damage_aura"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
+            /* 
             let cbm_vec1 = Vector4f{ /* Red */ x: 0.85, /* Green */ y: 0.85, /* Blue */ z: 0.85, /* Alpha */ w: 0.2}; // Brightness vector
             let cbm_vec2 = Vector4f{ /* Red */ x: 0.125, /* Green */ y: 0.4, /* Blue */ z: 1.0, /* Alpha */ w: 0.0}; // Diffuse vector
             ColorBlendModule::set_main_color(boma, /* Brightness */ &cbm_vec1, /* Diffuse */ &cbm_vec2, 0.0, 0.0, /*Fadein time*/ 15, /* Display Color */ true);
+            */
         }
     }
     frame(lua_state, 10.0);
@@ -388,6 +390,7 @@ unsafe fn ike_special_s_end_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
             EFFECT_OFF_KIND(fighter, Hash40::new("ike_volcano_hold"), false, false);
+            ColorBlendModule::cancel_main_color(boma, 0);
         }
     }
 }
