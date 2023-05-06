@@ -104,9 +104,9 @@ unsafe fn sora_attack_12_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 3, 0, Hash40::new("haver"), 3.0, 361, 22, 0, 24, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 4, 0, Hash40::new("haver"), 3.0, 361, 22, 0, 24, 3.5, 0.0, 4.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 5, 0, Hash40::new("haver"), 3.0, 361, 22, 0, 24, 3.5, 0.0, 9.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
-        AttackModule::set_add_reaction_frame_revised(boma, 0, 6.0, false);
-        AttackModule::set_add_reaction_frame_revised(boma, 1, 6.0, false);
-        AttackModule::set_add_reaction_frame_revised(boma, 2, 8.0, false);
+        AttackModule::set_add_reaction_frame_revised(boma, 0, 8.0, false);
+        AttackModule::set_add_reaction_frame_revised(boma, 1, 8.0, false);
+        AttackModule::set_add_reaction_frame_revised(boma, 2, 10.0, false);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
