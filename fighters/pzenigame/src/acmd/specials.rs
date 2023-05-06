@@ -19,8 +19,8 @@ unsafe fn pzenigame_special_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
     }
     frame(lua_state, 9.0);
+    FT_MOTION_RATE(fighter, 24.0/(43.0-9.0));
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 24.0/(43.0-9.0));
         ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 367, 100, 40, 0, 9.0, 0.0, 1.0, 9.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 5, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_WATER);
     }
     frame(lua_state, 18.0);
@@ -61,6 +61,7 @@ unsafe fn pzenigame_special_air_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
     }
     frame(lua_state, 9.0);
+    FT_MOTION_RATE(fighter, 24.0/(43.0-9.0));
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 367, 100, 40, 0, 9.0, 0.0, 1.0, 9.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 5, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_WATER);
     }
