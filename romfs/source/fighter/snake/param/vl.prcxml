@@ -27,10 +27,9 @@
       <int hash="stick_frame">3600</int>
       <float hash="gravity_accel">0.088</float>
       <float hash="gravity_speed_limit">2.75</float>
-      <float hash="drop_damage_rate">9999</float>
+      <float hash="drop_damage_rate">101</float>
       <int hash="life_frame">3600</int>
       <float hash="butterfly_rate">10</float>
-      <int "repeat_per_damage_chance">0</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
