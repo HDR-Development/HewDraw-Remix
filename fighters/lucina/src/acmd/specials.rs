@@ -6,7 +6,7 @@ unsafe fn lucina_special_n_end_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        let addSpeed1 = smash::phx::Vector3f { x: 0.5 + (0.05 * WorkModule::get_int(boma, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_CHARGE_COUNT) as f32),y: 0.0,z: 0.0 };
+        let addSpeed1 = smash::phx::Vector3f { x: 0.25 + (0.025 * WorkModule::get_int(boma, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_CHARGE_COUNT) as f32),y: 0.0,z: 0.0 };
         KineticModule::add_speed(boma, &addSpeed1);
     }
     frame(lua_state, 8.0);
@@ -41,7 +41,7 @@ unsafe fn lucina_special_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        let addSpeed1 = smash::phx::Vector3f { x: 0.5 + (0.05 * WorkModule::get_int(boma, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_CHARGE_COUNT) as f32),y: 0.0,z: 0.0 };
+        let addSpeed1 = smash::phx::Vector3f { x: 0.25 + (0.025 * WorkModule::get_int(boma, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_CHARGE_COUNT) as f32),y: 0.0,z: 0.0 };
         KineticModule::add_speed(boma, &addSpeed1);
     }
     frame(lua_state, 8.0);
@@ -74,7 +74,7 @@ unsafe fn lucina_special_n_end_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        let addSpeed1 = smash::phx::Vector3f { x: 0.5 + (0.05 * WorkModule::get_int(boma, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_CHARGE_COUNT) as f32),y: 0.0,z: 0.0 };
+        let addSpeed1 = smash::phx::Vector3f { x: 0.25 + (0.025 * WorkModule::get_int(boma, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_CHARGE_COUNT) as f32),y: 0.0,z: 0.0 };
         KineticModule::add_speed(boma, &addSpeed1);
     }
     frame(lua_state, 8.0);
@@ -109,7 +109,7 @@ unsafe fn lucina_special_n_end_max_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        let addSpeed1 = smash::phx::Vector3f { x: 3.0, y: 0.0, z: 0.0 };
+        let addSpeed1 = smash::phx::Vector3f { x: 1.5, y: 0.0, z: 0.0 };
         KineticModule::add_speed(boma, &addSpeed1);
     }
     frame(lua_state, 8.0);
@@ -144,7 +144,7 @@ unsafe fn lucina_special_n_end_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        let addSpeed1 = smash::phx::Vector3f { x: 3.0, y: 0.0, z: 0.0 };
+        let addSpeed1 = smash::phx::Vector3f { x: 1.5, y: 0.0, z: 0.0 };
         KineticModule::add_speed(boma, &addSpeed1);
     }
     frame(lua_state, 8.0);
@@ -177,7 +177,7 @@ unsafe fn lucina_special_n_end_max_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        let addSpeed1 = smash::phx::Vector3f { x: 3.0, y: 0.0, z: 0.0 };
+        let addSpeed1 = smash::phx::Vector3f { x: 1.5, y: 0.0, z: 0.0 };
         KineticModule::add_speed(boma, &addSpeed1);
     }
     frame(lua_state, 8.0);
@@ -212,7 +212,7 @@ unsafe fn lucina_special_air_n_end_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        let addSpeed1 = smash::phx::Vector3f { x: 0.5 + (0.05 * WorkModule::get_int(boma, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_CHARGE_COUNT) as f32),y: 0.0,z: 0.0 };
+        let addSpeed1 = smash::phx::Vector3f { x: 0.25 + (0.025 * WorkModule::get_int(boma, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_CHARGE_COUNT) as f32),y: 0.0,z: 0.0 };
         KineticModule::add_speed(boma, &addSpeed1);
     }
     frame(lua_state, 8.0);
@@ -247,7 +247,7 @@ unsafe fn lucina_special_air_n_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        let addSpeed1 = smash::phx::Vector3f { x: 0.5 + (0.05 * WorkModule::get_int(boma, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_CHARGE_COUNT) as f32),y: 0.0,z: 0.0 };
+        let addSpeed1 = smash::phx::Vector3f { x: 0.25 + (0.025 * WorkModule::get_int(boma, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_CHARGE_COUNT) as f32),y: 0.0,z: 0.0 };
         KineticModule::add_speed(boma, &addSpeed1);
     }
     frame(lua_state, 8.0);
@@ -280,7 +280,7 @@ unsafe fn lucina_special_air_n_end_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        let addSpeed1 = smash::phx::Vector3f { x: 0.5 + (0.05 * WorkModule::get_int(boma, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_CHARGE_COUNT) as f32),y: 0.0,z: 0.0 };
+        let addSpeed1 = smash::phx::Vector3f { x: 0.25 + (0.025 * WorkModule::get_int(boma, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_CHARGE_COUNT) as f32),y: 0.0,z: 0.0 };
         KineticModule::add_speed(boma, &addSpeed1);
     }
     frame(lua_state, 8.0);
@@ -315,7 +315,7 @@ unsafe fn lucina_special_air_n_end_max_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        let addSpeed1 = smash::phx::Vector3f { x: 3.0, y: 0.0, z: 0.0 };
+        let addSpeed1 = smash::phx::Vector3f { x: 1.5, y: 0.0, z: 0.0 };
         KineticModule::add_speed(boma, &addSpeed1);
     }
     frame(lua_state, 8.0);
@@ -350,7 +350,7 @@ unsafe fn lucina_special_air_n_end_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        let addSpeed1 = smash::phx::Vector3f { x: 3.0, y: 0.0, z: 0.0 };
+        let addSpeed1 = smash::phx::Vector3f { x: 1.5, y: 0.0, z: 0.0 };
         KineticModule::add_speed(boma, &addSpeed1);
     }
     frame(lua_state, 8.0);
@@ -383,7 +383,7 @@ unsafe fn lucina_special_air_n_end_max_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        let addSpeed1 = smash::phx::Vector3f { x: 3.0, y: 0.0, z: 0.0 };
+        let addSpeed1 = smash::phx::Vector3f { x: 1.5, y: 0.0, z: 0.0 };
         KineticModule::add_speed(boma, &addSpeed1);
     }
     frame(lua_state, 8.0);
@@ -1622,6 +1622,10 @@ unsafe fn lucina_special_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+    }
     
 }
 
@@ -1656,7 +1660,10 @@ unsafe fn lucina_special_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+    }
 }
 
 #[acmd_script( agent = "lucina", script = "game_speciallw" , category = ACMD_GAME , low_priority)]

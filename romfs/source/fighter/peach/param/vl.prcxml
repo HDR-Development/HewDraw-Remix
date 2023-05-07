@@ -31,6 +31,15 @@
       <float hash="p1_y">18.75</float>
     </struct>
   </list>
+  <list hash="param_special_s">
+    <struct index="0">
+      <float hash="special_s_jump_speed_x">2.4</float>
+      <float hash="special_s_jump_speed_flick_x">2.8</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="special_hi_start_trans_speed_mul">0.925</float>
