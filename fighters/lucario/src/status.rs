@@ -15,8 +15,107 @@ pub fn install() {
         special_s_throw_main,
         pre_walk,
         pre_dash,
-        pre_run
+        pre_run,
+        lucario_special_lw_pre,
+        lucario_special_lw_main
     );
+    smashline::install_agent_init_callbacks!(lucario_init);
+}
+
+#[smashline::fighter_init]
+fn lucario_init(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        if smash::app::utility::get_kind(&mut *fighter.module_accessor) != *FIGHTER_KIND_LUCARIO {
+            return;
+        }
+        fighter.global_table[globals::CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(lucario_check_special_command as *const () as _));
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_COMMAND);
+    }
+}
+
+/// determines the command inputs
+/// NOTE: order is important! early order has higher priority
+pub unsafe extern "C" fn lucario_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let cat1 =  fighter.global_table[CMD_CAT1].get_i32();
+    let cat4 = fighter.global_table[CMD_CAT4].get_i32();
+
+    // // 21456B
+    // if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0
+    // && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
+    // // && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND)
+    // && MeterModule::drain(fighter.object(), 10) {
+    //     fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
+    //     return true.into();
+    // }
+
+    // // 236A
+    // if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0
+    // && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N_COMMAND != 0
+    // && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N)
+    // && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[USE_SPECIAL_N_CALLBACK].clone()).get_bool() {
+    //     fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_N.into(), true.into());
+    //     return true.into();
+    // }
+
+    false.into()
+}
+
+#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_LW | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK |
+        *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
+        0,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
+        0
+    );
+    0.into()
+}
+
+#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn lucario_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+    // setup
+    let frame = 44.0;
+    let cancel_frame = 55.0;
+    let max_speed = 1.25;
+    let accel = 0.05;
+    let lr = PostureModule::lr(fighter.module_accessor);
+    let mut x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    let mut y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+
+    // ORIGINAL
+    let ret = original!(fighter);
+    if (frame < 5.0) {
+        x = 0.0;
+        y = 0.0;
+    } else if (frame < 45.0) {
+        if (x * lr < max_speed) {
+            x = x + (accel * lr);
+        }
+        y = 0.0;
+    }
+    SET_SPEED_EX(fighter, x, y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+
+    return ret;
 }
 
 // FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW //
