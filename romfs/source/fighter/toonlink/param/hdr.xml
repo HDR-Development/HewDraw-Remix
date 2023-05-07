@@ -8,4 +8,5 @@
             <float hash="p2_y">7</float>
         </struct>
     </struct>
+    <int hash="triple_jump_lockout_frame">25</int>
 </struct>
