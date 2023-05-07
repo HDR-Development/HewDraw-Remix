@@ -342,6 +342,12 @@ pub mod vars {
         }
     }
 
+    pub mod diddy {
+        pub mod instance {
+            pub const DISABLE_SPECIAL_S: i32 = 0x0100;
+        }
+    }
+
     // Note: Terry starts his flags on 0xXX5X instead due to also using the shotos generic flags.
     pub mod dolly {
         pub mod instance {
