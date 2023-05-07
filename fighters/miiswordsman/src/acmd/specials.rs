@@ -1903,9 +1903,6 @@ unsafe fn miiswordsman_special_s2_attack_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairs2dash" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_s2_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    if is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
-    }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         MotionModule::set_rate(fighter.module_accessor, 0.5);
