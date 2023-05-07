@@ -16,7 +16,9 @@ unsafe fn diddy_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "diddy", script = "game_specialsstick", category = ACMD_GAME, low_priority )]
 unsafe fn game_specialsstick(fighter: &mut L2CAgentBase) {
-    wait_loop_clear();
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    //wait_loop_clear();
     if is_excute(fighter) {
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 1, 2.0, 361, 50, 0, 0, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
     }
@@ -40,6 +42,8 @@ unsafe fn game_specialsstick(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "diddy", script = "game_specialairskick", category = ACMD_GAME, low_priority )]
 unsafe fn game_specialairskick(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
     frame(fighter.lua_state_agent, 6.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("legl"), 14.0, 361, 50, 0, 80, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
