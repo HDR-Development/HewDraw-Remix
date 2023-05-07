@@ -40,6 +40,36 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_special_s">
+    <struct index="0">
+      <float hash="reaction_threshold_to_damage">0</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_trolley">
+    <struct index="0">
+      <float hash="reaction_threshold_to_damage_s">0</float>
+      <float hash="reaction_threshold_to_damage_l">0</float>
+      <float hash="reaction_threshold_to_damage_motion_s">0</float>
+      <float hash="reaction_threshold_to_damage_motion_l">0</float>
+    </struct>
+    <struct index="1">
+      <float hash="reaction_threshold_to_damage_s">0</float>
+      <float hash="reaction_threshold_to_damage_l">0</float>
+      <float hash="reaction_threshold_to_damage_motion_s">0</float>
+      <float hash="reaction_threshold_to_damage_motion_l">0</float>
+    </struct>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_hi">
+    <hash40 index="0">dummy</hash40>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <struct hash="param_pickelobject">
     <float hash="hp_grade_1">6</float>
     <float hash="hp_wood">10</float>

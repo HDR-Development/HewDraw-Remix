@@ -3,3 +3,10 @@ pikmin: fighter/pikmin/param/hdr.prc
 lucas: fighter/lucas/param/hdr.prc
 lucario: fighter/lucario/param/hdr.prc
 pichu: fighter/pichu/param/hdr.prc
+ike: fighter/ike/param/hdr.prc
+donkey: fighter/donkey/param/hdr.prc
+dolly: fighter/dolly/param/hdr.prc
+chrom: fighter/chrom/param/hdr.prc
+captain: fighter/captain/param/hdr.prc
+pacman: fighter/pacman/param/hdr.prc
+kamui: fighter/kamui/param/hdr.prc

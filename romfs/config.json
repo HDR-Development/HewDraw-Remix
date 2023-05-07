@@ -18,6 +18,27 @@
 		],
 		"fighter/pichu/cmn": [
 			"fighter/pichu/param/hdr.prc"
+		],
+		"fighter/ike/cmn": [
+			"fighter/ike/param/hdr.prc"
+		],
+		"fighter/donkey/cmn": [
+			"fighter/donkey/param/hdr.prc"
+		],
+		"fighter/captain/cmn": [
+			"fighter/captain/param/hdr.prc"
+		],
+		"fighter/chrom/cmn": [
+			"fighter/chrom/param/hdr.prc"
+		],
+		"fighter/dolly/cmn": [
+			"fighter/dolly/param/hdr.prc"
+		],
+		"fighter/kamui/cmn": [
+			"fighter/kamui/param/hdr.prc"
+		],
+		"fighter/pacman/cmn": [
+			"fighter/pacman/param/hdr.prc"
 		]
 	}
 }

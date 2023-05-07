@@ -17,7 +17,7 @@ unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommo
 
 /// Prevents up b from being used again in air when it has been disabled by up-b fall
 unsafe extern "C" fn should_use_special_hi_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_HI_JUMP) {
+    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL) {
         false.into()
     } else {
         true.into()
@@ -26,8 +26,8 @@ unsafe extern "C" fn should_use_special_hi_callback(fighter: &mut L2CFighterComm
 
 /// Re-enables the ability to use aerial specials when connecting to ground or cliff
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF) {
-        VarModule::off_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_HI_JUMP);
+    if (fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)) {
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
         VarModule::off_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_S);
     }
     true.into()

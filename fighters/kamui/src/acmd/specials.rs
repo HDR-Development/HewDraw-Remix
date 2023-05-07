@@ -299,6 +299,66 @@ unsafe fn game_specialairsattack(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "kamui", scripts = ["game_specialairhi", "game_specialhi"] , category = ACMD_GAME , low_priority)]
+unsafe fn kamui_special_air_hi_game (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+    if is_excute(fighter) {
+		boma.select_cliff_hangdata_from_name("special_hi");
+	}
+	frame(lua_state, 3.0);
+	if is_excute(fighter) {
+		SA_SET(fighter, *SITUATION_KIND_AIR);
+	}
+	wait(lua_state, 1.0);
+	if is_excute(fighter) {
+		WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
+	}
+	frame(lua_state, 18.0);
+	if is_excute(fighter) {
+		ATTACK(fighter, 0, 1, Hash40::new("top"), 4.5, 85, 100, 150, 0, 5.0, 0.0, 4.0, -5.0, Some(0.0), Some(4.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+		//ATTACK(fighter, 1, 0, Hash40::new("top"), 0.0, 0, 70, 32, 0, 5.0, 0.0, 3.5, -14.0, Some(0.0), Some(3.5), Some(11.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+		AttackModule::set_no_damage_fly_smoke_all(fighter.module_accessor, true, false);
+	}
+	wait(lua_state, 1.0);
+	if is_excute(fighter) {
+		WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
+		WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_KAMUI_STATUS_SPECIAL_HI_FLAG_TILT_BODY_ON);
+	}
+	frame(lua_state, 20.0);
+	if is_excute(fighter) {
+		AttackModule::clear_all(fighter.module_accessor);
+		ATTACK(fighter, 0, 1, Hash40::new("rot"), 1.2, 80, 100, 140, 0, 2.0, 0.0, 5.5, 0.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
+		ATTACK(fighter, 1, 1, Hash40::new("rot"), 1.2, 105, 100, 140, 0, 5.5, 0.0, 4.0, 6.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
+		ATTACK(fighter, 2, 1, Hash40::new("rot"), 1.2, 68, 100, 140, 0, 5.5, 0.0, 4.0, -6.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
+		ATTACK(fighter, 3, 1, Hash40::new("rot"), 1.2, 100, 100, 155, 0, 5.0, 0.0, -1.0, 5.5, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
+		ATTACK(fighter, 4, 1, Hash40::new("rot"), 1.2, 73, 100, 155, 0, 5.0, 0.0, -1.0, -5.5, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
+		AttackModule::set_no_damage_fly_smoke_all(fighter.module_accessor, true, false);
+	}
+	frame(lua_state, 23.0);
+	if is_excute(fighter) {
+		notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+	}
+	frame(lua_state, 29.0);
+	if is_excute(fighter) {
+		AttackModule::clear_all(fighter.module_accessor);
+        ATTACK(fighter, 0, 2, Hash40::new("rot"), 3.0, 65, 170, 0, 70, 6.5, 0.0, 3.5, -7.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+		ATTACK(fighter, 1, 2, Hash40::new("rot"), 3.0, 65, 170, 0, 70, 6.5, 0.0, 3.5, 7.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+    }
+	wait(lua_state, 2.0);
+	if is_excute(fighter) {
+		AttackModule::clear_all(fighter.module_accessor);
+		notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+	}
+	frame(lua_state, 38.0);
+	if is_excute(fighter) {
+		WorkModule::off_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_KAMUI_STATUS_SPECIAL_HI_FLAG_TILT_BODY_ON);
+        WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_KAMUI_STATUS_SPECIAL_HI_FLAG_AIR_CONTROL);
+	}
+	frame(lua_state, 49.0);
+	FT_MOTION_RATE(fighter, 0.8);
+}
+
 pub fn install() {
     install_acmd_scripts!(
         kamui_special_n_end_1_game,
@@ -310,7 +370,8 @@ pub fn install() {
         kamui_special_lw_hit_effect,
         kamui_waterdragon_special_lw_hit_game,
         game_specialsattack,
-        game_specialairsattack
+        game_specialairsattack,
+        kamui_special_air_hi_game,
     );
 }
 
