@@ -260,6 +260,22 @@ unsafe fn captain_special_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "captain", script = "effect_specialairlw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn captain_special_air_lw_effect (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	frame(lua_state, 2.0);
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("captain_fk_hold"), Hash40::new("bust"), 0, 0, 0, 0, 0, 0, 0.7, true);
+		EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
+	}
+	frame(lua_state, 12.0);
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("captain_fk_air"), Hash40::new("toel"), 1, 1, 0, 0, 0, 140, 0.45, true);
+		EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
+	}
+}
+
 #[acmd_script( agent = "captain", script = "game_specialairlwend" , category = ACMD_GAME , low_priority)]
 unsafe fn captain_special_air_lw_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -324,6 +340,7 @@ pub fn install() {
         captain_special_s_end_game,
         captain_special_air_s_end_game,
         captain_special_air_lw_game,
+        captain_special_air_lw_effect,
         captain_special_air_lw_end_game,
         game_specialhithrow
     );
