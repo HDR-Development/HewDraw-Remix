@@ -211,8 +211,6 @@ unsafe fn ganon_special_air_lw_end_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.790);
-        let speed_vector = smash::phx::Vector3f { x: 1.65, y: 0.0, z: 0.0 };
-        KineticModule::add_speed(boma, &speed_vector);
     }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
