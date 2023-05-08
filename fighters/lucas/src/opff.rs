@@ -6,43 +6,37 @@ use globals::*;
 
 unsafe fn psi_magnet_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32, frame: f32) {
     if [*FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_HIT, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind) {
-        if frame > 1.0 {
-            if boma.is_input_jump() && !boma.is_in_hitlag() {
-                if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                    }
-                } else if situation_kind == *SITUATION_KIND_GROUND {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                }
+        if boma.status_frame() > 0 {
+            if !boma.is_in_hitlag() {
+                boma.check_jump_cancel(false);
             }
         }
     }
 }
 
 // Lucas PK Thunder cancel
-unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
-   if status_kind == *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_HOLD {
-        if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-            if  !VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT) {
-                VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT);
-            }
-            if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME) {
-                VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL); // Disallow more up specials
-            }
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END, true);
-        }
-    }
+// unsafe fn pk_thunder_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
+//    if status_kind == *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_HOLD {
+//         if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
+//             if  !VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT) {
+//                 VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT);
+//             }
+//             if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME) {
+//                 VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL); // Disallow more up specials
+//             }
+//             StatusModule::change_status_request_from_script(boma, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END, true);
+//         }
+//     }
 
-    if status_kind == *FIGHTER_STATUS_KIND_FALL_SPECIAL
-        && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END
-        && situation_kind == *SITUATION_KIND_AIR {
-        if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT) &&  !VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME) {
-            VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME);
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
-        }
-    }
-}
+//     if status_kind == *FIGHTER_STATUS_KIND_FALL_SPECIAL
+//         && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END
+//         && situation_kind == *SITUATION_KIND_AIR {
+//         if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT) &&  !VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME) {
+//             VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_INTERRUPT_AIRTIME);
+//             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
+//         }
+//     }
+// }
 
 // Lucas DJC and momentum tracker
 unsafe fn djc_momentum_helper(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
@@ -218,7 +212,7 @@ pub unsafe fn offense_charge(fighter: &mut smash::lua2cpp::L2CFighterCommon, bom
         if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_LW4, *FIGHTER_STATUS_KIND_ATTACK_S4, 
             *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE]
         ) {
-            //println!("In swing! Status of release {}", VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF));
+            //println!("In swing! Status of release: {} Reflective: {}", VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF));
             if(AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)) {
                 VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
             }
@@ -232,7 +226,7 @@ pub unsafe fn offense_charge(fighter: &mut smash::lua2cpp::L2CFighterCommon, bom
             VarModule::set_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
             VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
         }
-    }
+    } 
 }
 
 // We run this check on pre-handle to ensure the flag is not improperly edited. //
@@ -254,6 +248,8 @@ unsafe fn offense_effct_handler(fighter: &mut smash::lua2cpp::L2CFighterCommon) 
         VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1, handle as i32);
         let handle2 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("lucas_pkfr_hold"), Hash40::new("handr"), &Vector3f{x: 0.7, y: 0.0, z: 0.0}, &Vector3f::zero(), 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
         VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2, handle2 as i32);
+        let handle3 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_status_defense_up"), Hash40::new("hip"), &Vector3f{x: 0.7, y: 0.0, z: 0.0}, &Vector3f::zero(), 0.7, true, 0, 0, 0, 0, 0, true, true) as u32;
+        VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE3, handle3 as i32);
     }
     else if !VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) 
     && (VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1) != -1 || VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) != -1) {
@@ -262,8 +258,11 @@ unsafe fn offense_effct_handler(fighter: &mut smash::lua2cpp::L2CFighterCommon) 
         EffectModule::kill(fighter.module_accessor, handle, false, false);
         let handle2 = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2) as u32;
         EffectModule::kill(fighter.module_accessor, handle2, false, false);
+        let handle3 = VarModule::get_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE3) as u32;
+        EffectModule::kill(fighter.module_accessor, handle3, false, false);
         VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE1, -1);
         VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE2, -1);
+        VarModule::set_int(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_EFFECT_HANDLE3, -1);
     }
 }
 
@@ -344,26 +343,36 @@ unsafe fn joint_rotator(fighter: &mut L2CFighterCommon, frame: f32, joint: Hash4
 }
 
 unsafe fn smash_s_angle_handler(fighter: &mut L2CFighterCommon, frame: f32) {
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_S4_START]) {
         // Up Tilted Side Smash
         if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_UP) {
-            joint_rotator(fighter, frame, Hash40::new("waist"), Vector3f{x: 0.0, y:-30.0, z:0.0}, 10.0, 14.0, 16.0, 24.0);
-            joint_rotator(fighter, frame, Hash40::new("bust"), Vector3f{x: 0.0, y:-20.0, z:0.0}, 10.0, 14.0, 16.0, 24.0);
+            joint_rotator(fighter, frame, Hash40::new("waist"), Vector3f{x: 0.0, y:-30.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("bust"), Vector3f{x: 0.0, y:-20.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
         }
         // Down Tilted Side Smash
         else if VarModule::is_flag(fighter.object(), vars::lucas::instance::ATTACK_S4_ANGLE_DOWN) {
-            joint_rotator(fighter, frame, Hash40::new("waist"), Vector3f{x: 0.0, y:10.0, z:0.0}, 10.0, 14.0, 16.0, 24.0);
-            joint_rotator(fighter, frame, Hash40::new("bust"), Vector3f{x: 0.0, y:10.0, z:0.0}, 10.0, 14.0, 16.0, 24.0);
-            joint_rotator(fighter, frame, Hash40::new("handl"), Vector3f{x: 0.0, y:20.0, z:0.0}, 10.0, 14.0, 16.0, 24.0);
-            joint_rotator(fighter, frame, Hash40::new("handr"), Vector3f{x: 0.0, y:20.0, z:0.0}, 10.0, 14.0, 16.0, 24.0);
+            joint_rotator(fighter, frame, Hash40::new("waist"), Vector3f{x: 0.0, y:10.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("bust"), Vector3f{x: 0.0, y:10.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("handl"), Vector3f{x: 0.0, y:20.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
+            joint_rotator(fighter, frame, Hash40::new("handr"), Vector3f{x: 0.0, y:20.0, z:0.0}, 11.0, 15.0, 17.0, 25.0);
         }
+    }
+}
+
+unsafe fn dashgrab_position_fix(fighter: &mut L2CFighterCommon, frame: f32) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_CATCH_DASH) {
+        joint_rotator(fighter, frame, Hash40::new("joint1"), Vector3f{x:-10.0, y:0.0, z:0.0}, 5.0, 12.0, 30.0, 45.0);
     }
 }
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     smash_s_angle_handler(fighter, frame);
+    dashgrab_position_fix(fighter, frame);
     psi_magnet_jc(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
-    pk_thunder_cancel(boma, id, status_kind, situation_kind);
+    //pk_thunder_cancel(boma, id, status_kind, situation_kind);
     //pk_thunder_wall_ride_shorten(fighter, boma, id, status_kind, situation_kind);
     //djc_momentum_helper(boma, id, status_kind, frame);
     pk_fire_ff(boma, stick_y);
@@ -383,5 +392,15 @@ pub fn lucas_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub unsafe fn lucas_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+    }
+}
+
+#[smashline::weapon_frame_callback]
+pub fn pkthunder_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    unsafe { 
+        if weapon.kind() != WEAPON_KIND_LUCAS_PK_THUNDER {
+            return
+        }
+        WorkModule::on_flag(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_FLAG_NO_DEAD);
     }
 }

@@ -15,6 +15,9 @@
 		],
 		"fighter/lucario/cmn": [
 			"fighter/lucario/param/hdr.prc"
+		],
+		"fighter/pichu/cmn": [
+			"fighter/pichu/param/hdr.prc"
 		]
 	}
 }

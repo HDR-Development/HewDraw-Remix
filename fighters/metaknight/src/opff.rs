@@ -5,8 +5,11 @@ use globals::*;
 
  
 unsafe fn dim_cape_early_attack_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-        if frame > 10.0 {
+        if frame > 11.0 {
             if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_ATTACK, false);
             }
@@ -95,7 +98,6 @@ pub fn metaknight_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) 
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		metaknight_frame(fighter);
-        meta_quick::run(fighter);
         // println!("motion: {:#x}", MotionModule::motion_kind(fighter.module_accessor));
     }
 }

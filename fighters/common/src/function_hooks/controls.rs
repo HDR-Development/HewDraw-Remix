@@ -1,5 +1,7 @@
 use super::*;
 use utils::ext::*;
+use rand::prelude::SliceRandom;
+use rand::Rng;
 
 #[skyline::hook(offset = 0x16d948c, inline)]
 unsafe fn packed_packet_creation(ctx: &mut skyline::hooks::InlineCtx) {
@@ -463,6 +465,58 @@ unsafe fn handle_incoming_packet(ctx: &mut skyline::hooks::InlineCtx) {
     *ctx.registers[13].x.as_mut() = std::mem::transmute(inputs);
 }
 
+/// fix throws not respecting the cstick, especially dk cargo throw
+#[skyline::hook(replace = L2CFighterCommon_IsThrowStick)]
+unsafe extern "C" fn is_throw_stick(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+    let mut out = fighter.local_func__fighter_status_catch_1();
+    let stick_x = fighter.stick_x() * PostureModule::lr(fighter.boma());
+    let stick_y = fighter.stick_y();
+    if stick_x > fighter.get_param_float("common", "attack_lw3_stick_x") {
+        out["f"] = true.into();
+    } else if stick_x < -fighter.get_param_float("common", "attack_lw3_stick_x") {
+        out["b"] = true.into();
+    }
+    if stick_y > fighter.get_param_float("common", "attack_hi4_stick_y") {
+        out["hi"] = true.into();
+    } else if stick_y < fighter.get_param_float("common", "attack_lw4_stick_y") {
+        out["lw"] = true.into();
+    }
+    out
+}
+
+static mut SHOULD_END_RESULT_SCREEN : bool = false;
+
+// Skip results screen with start button
+#[skyline::hook(offset = 0x3664040)]
+unsafe fn process_inputs_handheld(controller: &mut Controller) {
+    let entry_count = lua_bind::FighterManager::entry_count(utils::singletons::FighterManager());
+    if lua_bind::FighterManager::is_result_mode(utils::singletons::FighterManager()) && entry_count > 0 {
+        if ninput::any::is_press(ninput::Buttons::PLUS) {
+            SHOULD_END_RESULT_SCREEN = true;
+        }
+        if SHOULD_END_RESULT_SCREEN {
+            let mut rng = rand::thread_rng();
+            // Need to space apart A-presses so it does not seem like we are holding the button.
+            let n: u32 = rng.gen_range(0..3);
+            if n == 1 {
+                controller.current_buttons.set_a(true);
+                controller.just_down.set_a(true);
+            }
+        }
+    }
+    if entry_count == 0 {
+        SHOULD_END_RESULT_SCREEN = false;
+    }
+    call_original!(controller);
+}
+
+fn nro_hook(info: &skyline::nro::NroInfo) {
+    if info.name == "common" {
+        skyline::install_hook!(is_throw_stick);
+    }
+}
+
 pub fn install() {
     skyline::install_hooks!(
         map_controls_hook,
@@ -472,6 +526,8 @@ pub fn install() {
         write_packet,
         parse_inputs,
         handle_incoming_packet,
-        after_exec
+        after_exec,
+        process_inputs_handheld
     );
+    skyline::nro::add_hook(nro_hook);
 }

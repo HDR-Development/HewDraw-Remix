@@ -3,11 +3,14 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
-unsafe fn special_s_article_fix(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
-    if [*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_LINK_STATUS_KIND_SPECIAL_S2].contains(&status_kind) {
-        if frame <= 1.0 {
-            VarModule::off_flag(boma.object(), vars::common::instance::SPECIAL_PROJECTILE_SPAWNED);
+
+// Young Link Dash Attack Jump
+unsafe fn da_jump(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
+    if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH {
+        if situation_kind == *SITUATION_KIND_AIR && !boma.is_in_hitlag() {
+            EffectModule::kill_kind(fighter.module_accessor, Hash40::new("sys_spin_wind_s"), true, true);
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP,true);
+            KineticModule::add_speed(boma, &Vector3f::new(0.0, -2.0, 0.0)); //Reduces the jump height from fullhop height
         }
     }
 }
@@ -73,7 +76,7 @@ unsafe fn sword_length(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 unsafe fn holdable_dair(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
     // young link dair hold
     if motion_kind == hash40("attack_air_lw")
-        && frame > 20.0 && frame < 57.0 
+        && frame > 21.0 && frame < 58.0 
         && ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_ATTACK)
     {
         MotionModule::set_frame_sync_anim_cmd(boma, 60.0, true, true, false);
@@ -81,13 +84,13 @@ unsafe fn holdable_dair(boma: &mut BattleObjectModuleAccessor, motion_kind: u64,
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    special_s_article_fix(fighter, boma, id, status_kind, situation_kind, frame);
     fire_arrow_ff(fighter, boma, status_kind, situation_kind, cat[1], stick_y);
     bombchu_timer(fighter, boma, id);
     bombchu_reset(fighter, id, status_kind);
     bombchu_training(fighter, id, status_kind);
 	sword_length(fighter, boma);
     holdable_dair(boma, motion_kind,frame);
+    da_jump(fighter, boma, status_kind, situation_kind);
 }
 
 // symbol-based call for the links' common opff

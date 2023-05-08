@@ -26,19 +26,8 @@ unsafe fn bow_ff_lc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, sit
 // Dark Pit Guardian Orbitar Jump Cancels
 unsafe fn guardian_orbitar_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32, frame: f32) {
     if status_kind == *FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_HOLD {
-        if frame > 1.0 {
-            if boma.is_input_jump() && !boma.is_in_hitlag() {
-                if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                    }
-                } else if situation_kind == *SITUATION_KIND_GROUND {
-                    if facing * stick_x < 0.0 {
-                        PostureModule::reverse_lr(boma);
-                    }
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                }
-            }
+        if boma.status_frame() > 1 && !boma.is_in_hitlag(){
+            boma.check_jump_cancel(false);
         }
     }
 }

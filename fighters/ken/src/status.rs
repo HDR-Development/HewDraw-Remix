@@ -3,7 +3,6 @@ use globals::*;
 // status script import
  
 utils::import_noreturn!(common::shoto_status::{
-    fgc_pre_dashback,
     fgc_end_dashback,
     ryu_idkwhatthisis2
 });
@@ -22,7 +21,6 @@ extern "Rust" {
 pub fn install() {
     install_status_scripts!(
         pre_turndash,
-        pre_dashback,
         main_dashback,
         end_dashback,
         main_attack,
@@ -51,12 +49,6 @@ pub unsafe fn pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 // FIGHTER_RYU_STATUS_KIND_DASH_BACK //
-
-#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    common::shoto_status::fgc_pre_dashback(fighter);
-    original!(fighter)
-}
 
 #[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 pub unsafe fn main_dashback(fighter: &mut L2CFighterCommon) -> L2CValue {

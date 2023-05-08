@@ -18,13 +18,12 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
 
 // Pac-Man Bonus Fruit Toss Airdodge Cancel
 unsafe fn bonus_fruit_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if status_kind == *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_N_SHOOT {
-        if frame > 10.0 {
-            if boma.is_cat_flag(Cat1::AirEscape) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
-                if situation_kind == *SITUATION_KIND_AIR {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
-                }
-            }
+        if frame > 11.0 {
+            boma.check_airdodge_cancel();
         }
     }
 }

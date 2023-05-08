@@ -3,7 +3,7 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
+ /*
 unsafe fn side_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, motion_kind: u64) {
     if status_kind == *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S3 {
         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
@@ -75,20 +75,13 @@ unsafe fn side_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kin
     // Jump cancel 4th hit high
     if status_kind == *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S4 {
         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag()) {
-            if [hash40("special_s4_hi"), hash40("special_air_s4_hi")].contains(&motion_kind) && MotionModule::frame(boma) > 13.0 {
-                if boma.is_input_jump() {
-                    if situation_kind == *SITUATION_KIND_AIR {
-                        if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                        }
-                    } else if situation_kind == *SITUATION_KIND_GROUND {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                    }
-                }
+            if [hash40("special_s4_hi"), hash40("special_air_s4_hi")].contains(&motion_kind) && MotionModule::frame(boma) > 14.0 {
+                boma.check_jump_cancel(false);
             }
         }
     }
 }
+*/
 
 // symbol-based call for the fe characters' common opff
 extern "Rust" {
@@ -97,7 +90,7 @@ extern "Rust" {
 
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     // Magic Series
-    side_special_cancels(boma, status_kind, situation_kind, cat[0], motion_kind);
+    //side_special_cancels(boma, status_kind, situation_kind, cat[0], motion_kind);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_LUCINA )]

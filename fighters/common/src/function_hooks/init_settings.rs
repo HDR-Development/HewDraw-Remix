@@ -5,7 +5,7 @@ use globals::*;
 //== StatusModule::init_settings
 //=================================================================
 #[skyline::hook(replace=StatusModule::init_settings)]
-unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: smash::app::SituationKind, arg3: i32, arg4: u32,
+unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: smash::app::SituationKind, kinetic_type: i32, arg4: u32,
                              ground_cliff_check_kind: smash::app::GroundCliffCheckKind, jostle: bool,
                              keep_flag: i32, keep_int: i32, keep_float: i32, arg10: i32) -> u64 {
     let id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
@@ -13,12 +13,21 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
     let status_kind = StatusModule::status_kind(boma);
     let situation_kind = StatusModule::situation_kind(boma);
     let mut cliff_check_kind = ground_cliff_check_kind;
+    let mut kinetic_type = kinetic_type.clone();
                                 
     // Call edge_slippoffs init_settings
-    let fix = super::edge_slipoffs::init_settings_edges(boma, situation, arg3, arg4, ground_cliff_check_kind, jostle, keep_flag, keep_int, keep_float, arg10);
+    let fix = super::edge_slipoffs::init_settings_edges(boma, situation, kinetic_type, arg4, ground_cliff_check_kind, jostle, keep_flag, keep_int, keep_float, arg10);
 
     if boma.is_fighter() {
-
+        
+        if boma.is_prev_situation(*SITUATION_KIND_AIR)
+        && ( situation.0 == *SITUATION_KIND_GROUND
+            || (boma.is_situation(*SITUATION_KIND_GROUND) && situation.0 == *SITUATION_KIND_NONE) )
+        {
+            if kinetic_type == *FIGHTER_KINETIC_TYPE_MOTION {
+                kinetic_type = *FIGHTER_KINETIC_TYPE_MOTION_IGNORE_NORMAL;
+            }
+        }
         // Resets your airtime counter when leaving the below statuses
         // Prevents ECB from shifting on f1 after an "ignored" status (those defined below)
         if boma.is_prev_status_one_of(&[
@@ -27,7 +36,13 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
             *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
             *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
             *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
-            *FIGHTER_STATUS_KIND_THROWN])
+            *FIGHTER_STATUS_KIND_THROWN,
+            *FIGHTER_STATUS_KIND_CATCHED_GANON,
+            *FIGHTER_STATUS_KIND_CATCHED_AIR_GANON,
+            *FIGHTER_STATUS_KIND_CATCHED_REFLET,
+            *FIGHTER_STATUS_KIND_CATCHED_RIDLEY,
+            *FIGHTER_STATUS_KIND_CAPTURE_JACK_WIRE,
+            *FIGHTER_STATUS_KIND_CAPTURE_MASTER_SWORD])
         && situation.0 == *SITUATION_KIND_AIR
         {
             WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR);
@@ -101,6 +116,11 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
             cliff_check_kind = app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
         }
 
+        VarModule::off_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK);
+
+        if boma.is_prev_status(*FIGHTER_STATUS_KIND_SWALLOWED_DRINK) {
+            VisibilityModule::set_whole(boma, true);
+        }
     }
 
     // VarModule Status Variable reset checks
@@ -110,20 +130,20 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
     let object = boma.object();
     if VarModule::has_var_module(object) {
         let mut mask = 0;
-        if keep_flag == *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG {
+        if keep_flag != *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG {
             mask += VarModule::RESET_STATUS_FLAG;
         }
-        if keep_int == *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT {
+        if keep_int != *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT {
             mask += VarModule::RESET_STATUS_INT;
             mask += VarModule::RESET_STATUS_INT64;
         }
-        if keep_float == *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT {
+        if keep_float != *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT {
             mask += VarModule::RESET_STATUS_FLOAT;
         }
         VarModule::reset(object, mask);
     }
 
-    original!()(boma, situation, arg3, fix, cliff_check_kind, jostle, keep_flag, keep_int, keep_float, arg10)
+    original!()(boma, situation, kinetic_type, fix, cliff_check_kind, jostle, keep_flag, keep_int, keep_float, arg10)
 }
 
 pub fn install() {

@@ -14,14 +14,13 @@
     <int hash="glide_toss_cancel_frame">5</int>
     <float hash="waveland_pass_neutral_sens">-0.66</float>
     <int hash="air_escape_snap_frame">5</int>
-    <float hash="waveland_distance_threshold">5</float>
+    <float hash="waveland_distance_threshold">6</float>
     <struct hash="dacus_enable">
         <int hash="start_frame">3</int>
         <int hash="end_frame">10</int>
     </struct>
     <int hash="dash_perfect_pivot_window">3</int>
     <float hash="perfect_pivot_speed_mul">-0.75</float>
-    <float hash="late_perfect_pivot_speed_mul">-0.5</float>
     <struct hash="suicide_throw">
         <float hash="throw_frame">300.0</float>
         <float hash="damage_frame_mul">0.25</float>
@@ -30,7 +29,13 @@
         <float hash="clatter_frame_max">50.0</float>
         <float hash="clatter_frame_min">6.0</float>
     </struct>
-    <float hash="ucf_escape_stick_y">-0.7957</float>
-    <float hash="ucf_pass_stick_y">-0.653</float>
+    <float hash="ucf_escape_stick_y">-0.8</float>
+    <float hash="ucf_pass_stick_y">-0.675</float>
+    <float hash="moonwalk_disable_dashback_stick_y">-0.5</float>
     <float hash="wavedash_speed_mul">0.8945</float>
+    <float hash="dashback_stick_x">-0.6</float>
+    <float hash="dash_end_speed_mul">0.225</float>
+    <float hash="escape_air_slide_speed_mul">0.9</float>
+    <int hash="escape_air_slide_fall_frame">28</int>
+    <int hash="tether_trump_landing_lag">30</int>
 </struct>

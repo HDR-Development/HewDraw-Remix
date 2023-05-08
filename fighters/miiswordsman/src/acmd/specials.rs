@@ -5,31 +5,37 @@ use super::*;
 unsafe fn miiswordsman_special_n1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let end_frame = MotionModule::end_frame(boma);
-     frame(lua_state, 17.0);
-     if is_excute(fighter) {
-         ArticleModule::generate_article(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_TORNADOSHOT, false, 0);
+    if is_excute(fighter) {
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
     }
-     frame(lua_state, 18.0);
-     if is_excute(fighter) {
-             FT_MOTION_RATE(fighter, 0.85);
-        }  
+
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_TORNADOSHOT, false, 0);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.85);
+    }  
 }
 
 #[acmd_script( agent = "miiswordsman", script = "game_specialairn1" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_n1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let end_frame = MotionModule::end_frame(boma);
-     frame(lua_state, 17.0);
-     if is_excute(fighter) {
-         ArticleModule::generate_article(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_TORNADOSHOT, false, 0);
-     }
-     frame(lua_state, 18.0);
-     if is_excute(fighter) {
-             FT_MOTION_RATE(fighter, 0.8);
-         }  
-     }
+    if is_excute(fighter) {
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+    }
+
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_TORNADOSHOT, false, 0);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.8);
+    }  
+}
 
 //Will need to be looked at in the future when rebalancing tornado
 /*

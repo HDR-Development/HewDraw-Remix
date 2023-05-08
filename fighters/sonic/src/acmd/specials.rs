@@ -74,6 +74,16 @@ unsafe fn sonic_special_lw_dash_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "sonic", script = "game_specialnhomingstart" , category = ACMD_GAME , low_priority)]
+unsafe fn sonic_special_n_homing_start_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+ if is_excute(fighter) {
+        SEARCH(fighter, 0, 0, Hash40::new("top"), 40.0, 0.0, 10.0, 10.0, None, None, None, *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIEB, *COLLISION_PART_MASK_BODY_HEAD, false);
+        }
+
+}
+
 #[acmd_script( agent = "sonic", script = "game_specialnhoming" , category = ACMD_GAME , low_priority)]
 unsafe fn sonic_special_n_homing_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -150,7 +160,9 @@ pub fn install() {
         sonic_special_n_hit_effect,
         sonic_special_n_homing_sound,
         sonic_special_n_landing,
-        sonic_gimmick_jump_game
+        sonic_gimmick_jump_game,
+        sonic_special_n_homing_start_game
+        
     );
 }
 

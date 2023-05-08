@@ -6,7 +6,7 @@ unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let kinetic;
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         motion = Hash40::new("special_air_lw");
-        kinetic = *FIGHTER_KINETIC_TYPE_AIR_STOP;
+        kinetic = *FIGHTER_KINETIC_TYPE_FALL;
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING);
     }
     else {
@@ -34,7 +34,7 @@ unsafe fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe extern "C" fn special_lw_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if fighter.is_situation(*SITUATION_KIND_AIR)
     && param_1.get_bool() {
-        if VarModule::is_flag(fighter.battle_object, vars::donkey::status::SPECIAL_AIR_LW_STOP) {
+        /* if VarModule::is_flag(fighter.battle_object, vars::donkey::status::SPECIAL_AIR_LW_STOP) {
             VarModule::off_flag(fighter.battle_object, vars::donkey::status::SPECIAL_AIR_LW_STOP);
             if !VarModule::is_flag(fighter.battle_object, vars::donkey::instance::SPECIAL_AIR_LW_USED_STALL) {
                 /*sv_kinetic_energy!(
@@ -54,7 +54,7 @@ unsafe extern "C" fn special_lw_substatus(fighter: &mut L2CFighterCommon, param_
                 VarModule::on_flag(fighter.battle_object, vars::donkey::instance::SPECIAL_AIR_LW_USED_STALL);
             }
         }
-
+        */
         // enable fastfall
         if fighter.is_cat_flag(Cat2::FallJump)
             && fighter.stick_y() < -0.66

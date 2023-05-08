@@ -7,6 +7,7 @@ mod special_hi;
 mod special_lw;
 mod link_event;
 mod catch_pull;
+mod cargo_carry;
 
 unsafe extern "C" fn when_shield(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
@@ -58,5 +59,6 @@ pub fn install() {
     special_lw::install();
     link_event::install();
     catch_pull::install();
+    cargo_carry::install();
     smashline::install_agent_init_callbacks!(donkey_init);
 }

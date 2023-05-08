@@ -318,12 +318,12 @@ unsafe fn lucas_attack_hi4_effect(fighter: &mut L2CAgentBase) {
             EFFECT(fighter, Hash40::new("lucas_psi_atk_hi"), Hash40::new("top"), 0, 15, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
         }
     }
-    frame(lua_state, 29.0);
+    frame(lua_state, 30.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("lucas_psi_catch"), false, false);
         if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
             EFFECT_FOLLOW(fighter, Hash40::new("lucas_pkfr_bullet_ed"), Hash40::new("top"), 0, 25, 0, -90, 0, 0, 1.6, true);
-            LAST_EFFECT_SET_RATE(fighter, 0.25);
+            LAST_EFFECT_SET_RATE(fighter, 0.33);
             EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkfr_bomb_max"), Hash40::new("top"), 0, 25, 0, 0, 0, 0, 1.0, true);
             EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkt_hold"), Hash40::new("top"), 0, 25, 0, 0, 0, 0, 2.0, true);
         }
@@ -331,7 +331,7 @@ unsafe fn lucas_attack_hi4_effect(fighter: &mut L2CAgentBase) {
             EFFECT_FOLLOW(fighter, Hash40::new("lucas_psi_atk"), Hash40::new("top"), 0, 15.0, 0, -90, 0, 0, 1.2, true);
         }
     }
-    frame(lua_state, 38.0);
+    frame(lua_state, 36.0);
     if is_excute(fighter) {
         if !VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
             EFFECT_OFF_KIND(fighter, Hash40::new("lucas_pkfr_bullet_ed"), true, true);
@@ -394,27 +394,23 @@ unsafe fn lucas_attack_lw4_game(fighter: &mut L2CAgentBase) {
         }
         frame(lua_state, 20.0);
         if is_excute(fighter) {
-            MotionModule::set_frame(boma, 37.0, false);
             VarModule::on_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 21.0, 361, 80, 0, 50, 8.0, 0.0, 2.0, 9.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -10, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 21.0, 361, 80, 0, 50, 8.0, 0.0, 2.0, 9.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -10, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PSI);
         }
-        wait(lua_state, 1.0);
+        wait(lua_state, 5.0);
         if is_excute(fighter) {
-            MotionModule::set_frame(boma, 37.0, false);
-        }
-        wait(lua_state, 1.0);
+            AttackModule::clear_all(boma);
+            AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+            WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+        } 
+        wait(lua_state, 10.0);
         if is_excute(fighter) {
-            MotionModule::set_frame(boma, 37.0, false);
-        }
-        wait(lua_state, 3.0);
-        if is_excute(fighter) {
+            WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
             if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF) {
                 VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
                 VarModule::set_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
                 VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
             }
-            AttackModule::clear_all(boma);
-            AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
         }
     }
     else {
@@ -424,21 +420,17 @@ unsafe fn lucas_attack_lw4_game(fighter: &mut L2CAgentBase) {
         }
         frame(lua_state, 20.0);
         if is_excute(fighter) {
-            MotionModule::set_frame(boma, 37.0, false);
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 17.0, 361, 85, 0, 46, 6.0, 0.0, 3.5, 9.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -10, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 17.0, 361, 85, 0, 46, 6.0, 0.0, 3.5, 9.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -10, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
         }
-        wait(lua_state, 1.0);
-        if is_excute(fighter) {
-            MotionModule::set_frame(boma, 37.0, false);
-        }
-        wait(lua_state, 1.0);
-        if is_excute(fighter) {
-            MotionModule::set_frame(boma, 37.0, false);
-        }
-        wait(lua_state, 3.0);
+        wait(lua_state, 5.0);
         if is_excute(fighter) {
             AttackModule::clear_all(boma);
             AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+            WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+        }
+        wait(lua_state, 10.0);
+        if is_excute(fighter) {
+            WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
         }
     }
 }
@@ -500,8 +492,7 @@ unsafe fn lucas_attack_lw4_effect(fighter: &mut L2CAgentBase) {
         LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -3, 0, 0, 0, 0, 0, 0.7, 2, 2, 2, 0, 0, 0, false);
         LAST_EFFECT_SET_RATE(fighter, 1.3);
     }
-    // We jump to frame 37 so we can skip the anim a lil //
-    frame(lua_state, 41.0);
+    frame(lua_state, 26.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("lucas_pkt_hold"), false, false);
     }
@@ -528,11 +519,110 @@ unsafe fn lucas_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AREA_WIND_2ND_RAD_arg9(fighter, 1, 0.1, 0.2, 3, 0.2, 9, 4, 18, 80);
     }
-    frame(lua_state, 40.0);
+    frame(lua_state, 39.0);
     if is_excute(fighter) {
         AreaModule::erase_wind(boma, 1);
     }
-    frame(lua_state, 62.0);
+    frame(lua_state, 40.0);
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
+    }
+}
+
+// LW4PT2
+
+#[acmd_script( agent = "lucas", script = "game_attacklw4pt2" , category = ACMD_GAME , low_priority)]
+unsafe fn lucas_attack_lw4_pt2_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+    if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+        frame(lua_state, 4.0);
+        if is_excute(fighter) {
+            VarModule::on_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 17.0, 361, 80, 0, 50, 8.0, 0.0, 2.0, 9.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -10, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
+        }
+        wait(lua_state, 5.0);
+        if is_excute(fighter) {
+            if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF) {
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_RELEASE_AFTER_WHIFF);
+                VarModule::set_float(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_CHARGE_LEVEL, 0.0);
+                VarModule::off_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE);
+            }
+            AttackModule::clear_all(boma);
+            AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        }
+    }
+    else {
+        frame(lua_state, 4.0);
+        if is_excute(fighter) {
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 361, 85, 0, 46, 6.0, 0.0, 3.5, 9.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -10, 0.0, 8, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
+        }
+        wait(lua_state, 5.0);
+        if is_excute(fighter) {
+            AttackModule::clear_all(boma);
+            AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        }
+    }
+}
+
+#[acmd_script( agent = "lucas", script = "sound_attacklw4pt2", category = ACMD_SOUND, low_priority)]
+unsafe fn lucas_attack_lw4_pt2_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_lucas_smash_l03"));
+    }
+}
+
+#[acmd_script( agent = "lucas", script = "effect_attacklw4pt2" , category = ACMD_EFFECT , low_priority)]
+unsafe fn lucas_attack_lw4_pt2_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucas_psi_hold"), false, false);
+        if VarModule::is_flag(fighter.object(), vars::lucas::instance::SPECIAL_N_OFFENSE_UP_ACTIVE) {
+            EFFECT_FOLLOW_FLIP(fighter, Hash40::new("lucas_pkfr_bullet_ed"), Hash40::new("lucas_pkfr_bullet_ed"), Hash40::new("top"), 0, 3.5, 9, 0, 0, 0, 0.85, true, *EF_FLIP_YZ);
+            LAST_EFFECT_SET_RATE(fighter, 0.25);
+            EFFECT_FLW_POS(fighter, Hash40::new("lucas_pkfr_bomb_max"), Hash40::new("top"), 0, 3.5, 9, 0, 0, 0, 0.5, true);
+        } else {
+            EFFECT_FOLLOW_FLIP(fighter, Hash40::new("lucas_psi_atk_lw"), Hash40::new("lucas_psi_atk_lw"), Hash40::new("top"), 0, 2.0, 9, 0, 0, 0, 0.65, true, *EF_FLIP_YZ);
+            LAST_EFFECT_SET_RATE(fighter, 0.5);
+        }
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -3, 0, 0, 0, 0, 0, 1, 2, 2, 2, 0, 0, 0, false);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("lucas_pkt_hold"), false, false);
+    }
+}
+
+#[acmd_script( agent = "lucas", script = "expression_attacklw4pt2" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn lucas_attack_lw4_pt2_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_beamm"), 0, false, 0 as u32);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        AREA_WIND_2ND_RAD_arg9(fighter, 1, 0.1, 0.2, 3, 0.2, 9, 4, 18, 80);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        AreaModule::erase_wind(boma, 1);
+    }
+    frame(lua_state, 30.0);
     if is_excute(fighter) {
         ItemModule::set_have_item_visibility(boma, true, 0);
     }
@@ -550,6 +640,10 @@ pub fn install() {
         lucas_attack_lw4_sound,
         lucas_attack_lw4_effect,
         lucas_attack_lw4_expression,
+        lucas_attack_lw4_pt2_game,
+        lucas_attack_lw4_pt2_sound,
+        lucas_attack_lw4_pt2_effect,
+        lucas_attack_lw4_pt2_expression,
     );
 }
 

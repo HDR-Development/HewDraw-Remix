@@ -15,7 +15,8 @@ unsafe fn charge_state_increase(boma: &mut BattleObjectModuleAccessor) {
     MeterModule::update(boma.object(), false);
     if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 0 {
         if MeterModule::level(boma.object()) >= 2 {
-            VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 900);
+            let charge_state_time = ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time");
+            VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, charge_state_time);
             MeterModule::reset(boma.object());
             VarModule::set_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL, 1);
             //gimmick_flash(boma);
@@ -28,24 +29,25 @@ unsafe fn charge_state_decrease(boma: &mut BattleObjectModuleAccessor) {
     if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 1 {
         if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) > 0 
         && !boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW]) {
+            let charge_state_time = ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time");
             VarModule::dec_int(boma.object(), vars::common::instance::GIMMICK_TIMER);
-            if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == 870 {
+            if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == charge_state_time - 30 {
                 let handle = VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_HANDLER);
                 EffectModule::set_scale(boma, handle as u32, &Vector3f{ x: 0.8, y: 0.8, z: 0.8 });
             }
-            if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == 860 {
+            if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == charge_state_time - 40 {
                 let handle = VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_HANDLER);
                 EffectModule::set_scale(boma, handle as u32, &Vector3f{ x: 0.7, y: 0.7, z: 0.7 });
             }
-            if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == 850 {
+            if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == charge_state_time - 50 {
                 let handle = VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_HANDLER);
                 EffectModule::set_scale(boma, handle as u32, &Vector3f{ x: 0.6, y: 0.6, z: 0.6 });
             }
-            if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == 840 {
+            if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == charge_state_time - 60 {
                 let handle = VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_HANDLER);
                 EffectModule::set_scale(boma, handle as u32, &Vector3f{ x: 0.5, y: 0.5, z: 0.5 });
             }
-            if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == 828 {
+            if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == charge_state_time - 72 {
                 STOP_SE(get_fighter_common_from_accessor(boma), Hash40::new("vc_pichu_final01"));
             }
         }
@@ -76,8 +78,10 @@ unsafe fn charge_state_damage_multipliers(boma: &mut BattleObjectModuleAccessor)
         VarModule::set_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL, 1.0);
     }
     else if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 1 {
-        VarModule::set_float(boma.object(), vars::pichu::instance::CHARGE_DAMAGE_MUL, 1.2);
-        VarModule::set_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL, 1.25);
+        let charge_state_damage_mul = ParamModule::get_float(boma.object(), ParamType::Agent, "charge_state_damage_mul");
+        let charge_state_recoil_mul = ParamModule::get_float(boma.object(), ParamType::Agent, "charge_state_recoil_mul");
+        VarModule::set_float(boma.object(), vars::pichu::instance::CHARGE_DAMAGE_MUL, charge_state_damage_mul);
+        VarModule::set_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL, charge_state_recoil_mul);
     }
 }
 
@@ -136,16 +140,7 @@ unsafe fn discharge_momentum(fighter: &mut L2CFighterCommon) {
 unsafe fn zippy_zap_jump_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32) {
     if [*FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END].contains(&status_kind) && VarModule::is_flag(boma.object(), vars::pichu::instance::IS_CHARGE_ATTACK) {
         if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) && !boma.is_in_hitlag() {
-            if boma.is_input_jump() {
-                if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, true);
-                    }
-                } 
-                else if situation_kind == *SITUATION_KIND_GROUND {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                }
-            }
+            boma.check_jump_cancel(false);
         }
     }
 }

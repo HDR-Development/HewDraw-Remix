@@ -5,14 +5,11 @@ use globals::*;
 
  
 unsafe fn peanut_popgun_ac(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
-    if status_kind != *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_SHOOT || situation_kind != *SITUATION_KIND_AIR {
+    if StatusModule::is_changing(boma) {
         return;
     }
-
-    if boma.is_cat_flag(Cat1::AirEscape) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
-        if frame > 4.0 {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
-        }
+    if status_kind == *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_SHOOT && frame > 5.0 {
+        boma.check_airdodge_cancel();
     }
 }
 
