@@ -1002,6 +1002,10 @@ pub mod statuses {
         pub const AIR_DASH: i32 = 0;
     }
 
+    pub mod ken {
+        pub const ATTACK_COMMAND_4: i32 = 0;
+    }
+
     pub mod buddy {
         pub const BUDDY_BAYONET_END: i32 = 0;
     }
