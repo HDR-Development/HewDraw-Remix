@@ -140,6 +140,11 @@ unsafe fn special_hi_jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_EFFECT, Hash40::new("effect_specialhiinterrupt"), -1);
         MotionAnimcmdModule::enable_skip_delay_update(fighter.module_accessor);
     }
+    
+    //Disable up and side special
+    VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
+    super::Set_Pyra_Up_Special_Cancel(fighter, true);
+    VarModule::on_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_S);
 
     0.into()
 }

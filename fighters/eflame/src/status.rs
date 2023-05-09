@@ -1,5 +1,14 @@
 use super::*;
 
+/// Prevents up b from being used again in air when it has been disabled by up-b fall
+unsafe extern "C" fn should_use_special_hi_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL) {
+        false.into()
+    } else {
+        true.into()
+    }
+}
+
 
 /// Re-enables the ability to use aerial specials when connecting to ground or cliff
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -14,33 +23,51 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     *FIGHTER_STATUS_KIND_DAMAGE_FALL];
 
     if (fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF))
-    || fighter.is_status_one_of(damage_statuses) {
-        //This first conditional tree is used if the player selects Pyra first
-        if let Some(object_id) = Some(fighter.battle_object_id + 0x10000){
-            let object = crate::util::get_battle_object_from_id(object_id);
-            if !object.is_null() {
-                let object = unsafe { &mut *object };
-                let kind = object.kind as i32;
-                if kind == *FIGHTER_KIND_ELIGHT {
-                    VarModule::off_flag(object, vars::common::instance::UP_SPECIAL_CANCEL);
-                    return true.into();
+    || fighter.is_status_one_of(damage_statuses) { 
+        //Re-enable Pyra UpB
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
+
+        //Re-enable Mythra UpB
+        Set_Mythra_Up_Special_Cancel(fighter,false);
+    }
+    return true.into();
+}
+
+unsafe extern "C" fn Set_Mythra_Up_Special_Cancel(fighter: &mut L2CFighterCommon, cancel_state: bool)
+{
+    //This first conditional tree is used if the player selects Pyra first
+    if let Some(object_id) = Some(fighter.battle_object_id + 0x10000){
+        let object = crate::util::get_battle_object_from_id(object_id);
+        if !object.is_null() {
+            let object = unsafe { &mut *object };
+            let kind = object.kind as i32;
+            if kind == *FIGHTER_KIND_ELIGHT {
+                if cancel_state {
+                    VarModule::on_flag(object, vars::common::instance::UP_SPECIAL_CANCEL);
                 }
+                else{
+                    VarModule::off_flag(object, vars::common::instance::UP_SPECIAL_CANCEL);
+                }
+                return;
             }
         }
-        //This is used if the player selects Mythra first
-        if let Some(object_id) = Some(fighter.battle_object_id - 0x10000){
-            let object = crate::util::get_battle_object_from_id(object_id);
-            if !object.is_null() {
-                let object = unsafe { &mut *object };
-                let kind = object.kind as i32;
-                if kind == *FIGHTER_KIND_ELIGHT {
+    }
+    //This is used if the player selects Mythra first
+    if let Some(object_id) = Some(fighter.battle_object_id - 0x10000){
+        let object = crate::util::get_battle_object_from_id(object_id);
+        if !object.is_null() {
+            let object = unsafe { &mut *object };
+            let kind = object.kind as i32;
+            if kind == *FIGHTER_KIND_ELIGHT {
+                if cancel_state {
+                    VarModule::on_flag(object, vars::common::instance::UP_SPECIAL_CANCEL);
+                }
+                else{
                     VarModule::off_flag(object, vars::common::instance::UP_SPECIAL_CANCEL);
-                    return true.into();
                 }
             }
         }
     }
-    return true.into();
 }
 
 #[smashline::fighter_init]
