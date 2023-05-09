@@ -14,7 +14,7 @@ extern "Rust" {
 unsafe fn charge_state_increase(boma: &mut BattleObjectModuleAccessor) {
     MeterModule::update(boma.object(), false);
     MeterModule::set_meter_cap(boma.object(), 2);
-    MeterModule::set_damage_gain_mul(boma.object(), 2.0);
+    MeterModule::set_meter_per_level(boma.object(), 25.0);
     if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 0 {
         if MeterModule::level(boma.object()) == 2 {
             let charge_state_time = ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time");
