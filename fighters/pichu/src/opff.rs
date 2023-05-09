@@ -13,9 +13,10 @@ extern "Rust" {
 // handles pichu's charge increase
 unsafe fn charge_state_increase(boma: &mut BattleObjectModuleAccessor) {
     MeterModule::update(boma.object(), false);
-    MeterModule::set_meter_cap(boma.object(), 1);
+    MeterModule::set_meter_cap(boma.object(), 2);
+    MeterModule::set_damage_gain_mul(boma.object(), 2.0);
     if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 0 {
-        if MeterModule::level(boma.object()) == 1 {
+        if MeterModule::level(boma.object()) == 2 {
             let charge_state_time = ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time");
             VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, charge_state_time);
             MeterModule::reset(boma.object());
@@ -154,7 +155,7 @@ unsafe fn charge_training_taunt(fighter: &mut L2CFighterCommon, boma: &mut Battl
         if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
                 if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 0 { 
-                    let meter_max = (MeterModule::meter_cap(fighter.object()) * int(MeterModule::meter_per_level(fighter.object())));
+                    let meter_max = (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object()));
                     MeterModule::add(boma.object(), meter_max);
                 }
             }

@@ -203,7 +203,7 @@ unsafe fn full_meter_training_taunt(fighter: &mut L2CFighterCommon, boma: &mut B
     if is_training_mode() {
         if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
-                let meter_max = (MeterModule::meter_cap(fighter.object()) * int(MeterModule::meter_per_level(fighter.object())));
+                let meter_max = (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object()));
                 MeterModule::add(boma.object(), meter_max);
             }
         }
@@ -221,17 +221,17 @@ unsafe fn meter_cap_increase(boma: &mut BattleObjectModuleAccessor) {
         MeterModule::reset(boma.object());
     }
 
-    if bome.is_status_one_of(&[
+    if boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_ENTRY,]) || !sv_information::is_ready_go() {
         MeterModule::set_meter_cap(boma.object(), 2);
-        MeterModule::add(boma.object(), MeterModule::meter_per_level(boma.object()))
+        MeterModule::add(boma.object(), MeterModule::meter_per_level(boma.object()) * 2.0)
     }
 
     if boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_DEAD,
         *FIGHTER_STATUS_KIND_REBIRTH]) {
-        MeterModule::set_meter_cap(boma.object(), max(MeterModule::meter_cap(boma.object()), 5));
-        MeterModule::add(boma.object(), MeterModule::meter_per_level(boma.object()))
+        MeterModule::set_meter_cap(boma.object(), std::cmp::min(MeterModule::meter_cap(boma.object()) + 1, 5));
+        MeterModule::add(boma.object(), MeterModule::meter_per_level(boma.object()) * 2.0)
     }
 }
 
@@ -786,7 +786,7 @@ pub fn dolly_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         utils::ui::UiManager::set_ff_meter_info(
             fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
             MeterModule::meter(fighter.object()),
-            (MeterModule::meter_cap(fighter.object()) * int(MeterModule::meter_per_level(fighter.object()))),
+            (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())),
             MeterModule::meter_per_level(fighter.object())
         );
     }

@@ -200,9 +200,9 @@ impl MeterModule {
     }
 
     #[export_name = "MeterModule__set_meter_per_level"]
-    pub extern "Rust" fn set_meter_per_level(object: *mut BattleObject, amount: f32) -> f32 {
+    pub extern "Rust" fn set_meter_per_level(object: *mut BattleObject, amount: f32) {
         let module = require_meter_module!(object);
-        module.meter_per_level = amount
+        module.meter_per_level = amount;
     }
 
     #[export_name = "MeterModule__meter_per_level"]
@@ -211,9 +211,9 @@ impl MeterModule {
     }
 
     #[export_name = "MeterModule__set_meter_cap"]
-    pub extern "Rust" fn set_meter_cap(object: *mut BattleObject, amount: i32) -> i32 {
+    pub extern "Rust" fn set_meter_cap(object: *mut BattleObject, amount: i32) {
         let module = require_meter_module!(object);
-        module.meter_cap = amount
+        module.meter_cap = amount;
     }
 
     #[export_name = "MeterModule__meter_cap"]
@@ -274,7 +274,7 @@ impl MeterModule {
         let module = require_meter_module!(object);
         let count = Self::level(module.owner);
         module.current_meter += amount;
-        module.current_meter = module.current_meter.min(Self::meter_cap(module.owner) * Self::meter_per_level(module.owner));
+        module.current_meter = module.current_meter.min(Self::meter_cap(module.owner) as f32 * Self::meter_per_level(module.owner));
         module.last_levels_added += Self::level(module.owner) - count;
     }
 
@@ -306,7 +306,7 @@ impl MeterModule {
             module.watching_motion = Hash40::new("invalid");
             module.watching_frame = 0.0;
             module.damage_gain_mul = 1.0;
-            module.current_meter = module.current_meter.min(Self::meter_cap(module.owner) * Self::meter_per_level(module.owner));
+            module.current_meter = module.current_meter.min(Self::meter_cap(module.owner) as f32 * Self::meter_per_level(module.owner));
             Self::level(module.owner) - current
         } else {
             0

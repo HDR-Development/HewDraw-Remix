@@ -140,7 +140,7 @@ unsafe fn training_mode_full_meter(fighter: &mut L2CFighterCommon, boma: &mut Ba
     && boma.is_status(*FIGHTER_STATUS_KIND_APPEAL)
     && boma.is_button_on(Buttons::Guard)
     {
-        let meter_max = (MeterModule::meter_cap(fighter.object()) * int(MeterModule::meter_per_level(fighter.object())));
+        let meter_max = (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object()));
         MeterModule::add(boma.object(), meter_max);
     }
 }
@@ -159,7 +159,7 @@ pub unsafe fn shotos_moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
         utils::ui::UiManager::set_ex_meter_info(
             fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
             MeterModule::meter(fighter.object()),
-            (MeterModule::meter_cap(fighter.object()) * int(MeterModule::meter_per_level(fighter.object()))),
+            (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())),
             MeterModule::meter_per_level(fighter.object())
         );
     }
