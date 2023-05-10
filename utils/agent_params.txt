@@ -19,3 +19,5 @@ demon: fighter/demon/param/hdr.prc
 samus: fighter/samus/param/hdr.prc
 samusd: fighter/samusd/param/hdr.prc
 edge: fighter/edge/param/hdr.prc
+pit: fighter/pit/param/hdr.prc
+pitb: fighter/pitb/param/hdr.prc

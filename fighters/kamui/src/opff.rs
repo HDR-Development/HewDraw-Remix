@@ -36,7 +36,8 @@ unsafe fn bair_boost_detection(boma: &mut BattleObjectModuleAccessor){
 
 unsafe fn up_special_early_landing(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
-        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+        if fighter.is_situation(*SITUATION_KIND_GROUND)
+        && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS) {
             fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
         }
     }

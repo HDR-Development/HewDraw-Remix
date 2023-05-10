@@ -165,6 +165,8 @@ pub mod vars {
 
             pub const IS_IGNORED_STATUS_FRAME_0: i32 = 0x0058;
 
+            pub const FLUSH_EFFECT_ACMD: i32 = 0x0059;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -223,6 +225,7 @@ pub mod vars {
             pub const LAST_ATTACK_HIT_LOCATION_X: i32 = 0x0016;
             pub const LAST_ATTACK_HIT_LOCATION_Y: i32 = 0x0017;
             pub const LAST_ATTACK_HIT_LOCATION_Z: i32 = 0x0018;
+            pub const ECB_CENTER_Y_OFFSET: i32 = 0x0019;
         }
         pub mod status {
             // flags
@@ -670,7 +673,7 @@ pub mod vars {
 
     pub mod pzenigame {
         pub mod instance {
-            pub const WITHDRAW_FRAME: i32 = 0x0100;
+            
         }
     }
 

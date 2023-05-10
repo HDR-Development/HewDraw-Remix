@@ -66,6 +66,12 @@
 		],
 		"fighter/edge/cmn": [
 			"fighter/edge/param/hdr.prc"
+		],
+		"fighter/pit/cmn": [
+			"fighter/pit/param/hdr.prc"
+		],
+		"fighter/pitb/cmn": [
+			"fighter/pitb/param/hdr.prc"
 		]
 	}
 }

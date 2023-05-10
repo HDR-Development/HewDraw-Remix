@@ -58,6 +58,37 @@ unsafe fn littlemac_special_n_cancel_expression(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "littlemac", script = "game_specialairncancel" , category = ACMD_GAME , low_priority)]
+unsafe fn littlemac_special_air_n_cancel_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 8.0/(39.0 - 1.0));
+    }
+}
+
+#[acmd_script( agent = "littlemac", script = "effect_specialairncancel" , category = ACMD_EFFECT , low_priority)]
+unsafe fn littlemac_special_air_n_cancel_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+}
+
+#[acmd_script( agent = "littlemac", script = "sound_specialairncancel" , category = ACMD_SOUND , low_priority)]
+unsafe fn littlemac_special_air_n_cancel_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+}
+
+#[acmd_script( agent = "littlemac", script = "expression_specialairncancel" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn littlemac_special_air_n_cancel_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+}
+
 #[acmd_script( agent = "littlemac", script = "game_specialn2" , category = ACMD_GAME , low_priority)]
 unsafe fn littlemac_special_n2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -195,9 +226,6 @@ unsafe fn littlemac_special_air_n2_sound(fighter: &mut L2CAgentBase) {
 unsafe fn littlemac_special_s_jump_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
-    }
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         shield!(fighter, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 5.1, 0.0, 7.4, 3.0, 0.0, 7.4, 3.2, 0.0, 0.0, 1, false, 0.0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
@@ -429,6 +457,10 @@ pub fn install() {
         littlemac_special_n_cancel_effect,
         littlemac_special_n_cancel_sound,
         littlemac_special_n_cancel_expression,
+        littlemac_special_air_n_cancel_game,
+        littlemac_special_air_n_cancel_effect,
+        littlemac_special_air_n_cancel_sound,
+        littlemac_special_air_n_cancel_expression,
         littlemac_special_n2_game,
         littlemac_special_n2_sound,
         littlemac_special_air_n2_game,

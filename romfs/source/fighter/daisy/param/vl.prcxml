@@ -45,6 +45,7 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="special_hi_start_dir_mul">30</float>
+      <float hash="special_hi_start_trans_speed_mul">0.8</float>
       <float hash="special_hi_fall_accel_x_mul">0.8</float>
       <float hash="special_hi_fall_accel_y_mul">-0.01</float>
       <int hash="special_hi_parasol_limit_time">120</int>
