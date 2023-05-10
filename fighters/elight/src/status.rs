@@ -41,10 +41,8 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     || fighter.is_status_one_of(damage_statuses) { 
         //Re-enable Mythra UpB 
         VarModule::off_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
-        //Re-enable Mythra SideB if not damaged
-        //if !fighter.is_status_one_of(damage_statuses) {
-            VarModule::off_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_S);
-        //}
+        //Re-enable Mythra SideB
+        VarModule::off_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_S);
 
         //Re-enable Pyra UpB
         Set_Pyra_Up_Special_Cancel(fighter,false);
