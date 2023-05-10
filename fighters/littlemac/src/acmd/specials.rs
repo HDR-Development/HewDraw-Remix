@@ -195,9 +195,6 @@ unsafe fn littlemac_special_air_n2_sound(fighter: &mut L2CAgentBase) {
 unsafe fn littlemac_special_s_jump_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
-    }
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         shield!(fighter, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 5.1, 0.0, 7.4, 3.0, 0.0, 7.4, 3.2, 0.0, 0.0, 1, false, 0.0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);

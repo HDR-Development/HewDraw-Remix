@@ -165,6 +165,8 @@ pub mod vars {
 
             pub const IS_IGNORED_STATUS_FRAME_0: i32 = 0x0058;
 
+            pub const FLUSH_EFFECT_ACMD: i32 = 0x0059;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -670,7 +672,7 @@ pub mod vars {
 
     pub mod pzenigame {
         pub mod instance {
-            pub const WITHDRAW_FRAME: i32 = 0x0100;
+            
         }
     }
 
