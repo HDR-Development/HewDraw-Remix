@@ -207,8 +207,31 @@ pub unsafe extern "C" fn ken_attack_command_4_main(fighter: &mut L2CFighterCommo
 }
 
 pub unsafe extern "C" fn ken_attack_command_4_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
+            return 1.into();
+        }
+    }
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        return 0.into();
+    }
     if MotionModule::is_end(fighter.module_accessor) {
         fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+        return 0.into();
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_BRANCH) {
+        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+            let mut abnormal_attack_cliff_max = WorkModule::get_param_float(fighter.module_accessor, hash40("param_private"), hash40("abnormal_attack_cliff_max"));
+            if MotionModule::is_flag_start_1_frame_from_motion_kind(fighter.module_accessor, Hash40::new("attack_command3")) {
+                abnormal_attack_cliff_max -= 1.0;
+            }
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_command3"), abnormal_attack_cliff_max, 1.0, false, 0.0, true, false);
+            notify_event_msc_cmd!(fighter, Hash40::new_raw(0x259e752514), *FIGHTER_LOG_ATTACK_KIND_ATTACK_COMMAND3);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_CHANGE_LOG);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK_BRANCH_FRAME_FIRST);
+        }
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_BRANCH);
     }
     0.into()
 }
