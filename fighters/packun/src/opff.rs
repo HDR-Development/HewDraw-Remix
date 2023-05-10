@@ -5,13 +5,6 @@ use globals::*;
 
  
 unsafe fn piranhacopter_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI
-    && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)
-    && boma.status_frame() >= 30
-    {
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_HI_END, false);
-    }
-
     if status_kind == *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_HI_END
     && boma.is_motion(Hash40::new("special_hi"))
     {
@@ -20,14 +13,17 @@ unsafe fn piranhacopter_cancel(boma: &mut BattleObjectModuleAccessor, status_kin
         {
             GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         }
+        
         if boma.is_prev_situation(*SITUATION_KIND_GROUND)
         && boma.is_situation(*SITUATION_KIND_AIR)
         {
             KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
             GroundModule::correct(boma,GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         }
+
         let stop_add_speed_y_frame = WorkModule::get_param_int(boma, hash40("param_special_hi"), hash40("stop_add_speed_y_frame"));
-        if boma.status_frame() >= stop_add_speed_y_frame {
+        if boma.status_frame() >= stop_add_speed_y_frame
+        && boma.is_situation(*SITUATION_KIND_GROUND) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_PACKUN_STATUS_KIND_SPECIAL_HI_LANDING, false);
         }
     }
