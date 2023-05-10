@@ -12,3 +12,5 @@ fighter/chrom/param/hdr.xml
 fighter/captain/param/hdr.xml
 fighter/pacman/param/hdr.xml
 fighter/kamui/param/hdr.xml
+fighter/pit/param/hdr.xml
+fighter/pitb/param/hdr.xml

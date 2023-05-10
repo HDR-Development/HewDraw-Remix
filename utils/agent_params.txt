@@ -10,3 +10,5 @@ chrom: fighter/chrom/param/hdr.prc
 captain: fighter/captain/param/hdr.prc
 pacman: fighter/pacman/param/hdr.prc
 kamui: fighter/kamui/param/hdr.prc
+pit: fighter/pit/param/hdr.prc
+pitb: fighter/pitb/param/hdr.prc
