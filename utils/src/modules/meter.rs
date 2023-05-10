@@ -269,6 +269,17 @@ impl MeterModule {
         }
     }
 
+    #[export_name = "MeterModule__drain_direct"]
+    pub extern "Rust" fn drain_direct(object: *mut BattleObject, amount: f32) {
+        let module = require_meter_module!(object);
+        if Self::meter(module.owner) >= amount {
+            module.current_meter -= amount;
+        }
+        else {
+            module.current_meter = 0.0;
+        }
+    }
+
     #[export_name = "MeterModule__add"]
     pub extern "Rust" fn add(object: *mut BattleObject, amount: f32) {
         let module = require_meter_module!(object);

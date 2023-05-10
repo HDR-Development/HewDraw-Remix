@@ -11,15 +11,21 @@ extern "Rust" {
 }
 
 // handles pichu's charge increase
-unsafe fn charge_state_increase(boma: &mut BattleObjectModuleAccessor) {
+unsafe fn charge_state_increase(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     MeterModule::update(boma.object(), false);
     MeterModule::set_meter_cap(boma.object(), 2);
     MeterModule::set_meter_per_level(boma.object(), 25.0);
+    utils::ui::UiManager::set_ff_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+        utils::ui::UiManager::set_ff_meter_info(
+            fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+            MeterModule::meter(fighter.object()),
+            (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())),
+            MeterModule::meter_per_level(fighter.object())
+        );
     if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 0 {
         if MeterModule::level(boma.object()) == 2 {
             let charge_state_time = ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time");
             VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, charge_state_time);
-            MeterModule::reset(boma.object());
             VarModule::set_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL, 1);
             //gimmick_flash(boma);
         }
@@ -33,6 +39,7 @@ unsafe fn charge_state_decrease(boma: &mut BattleObjectModuleAccessor) {
         && !boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW]) {
             let charge_state_time = ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time");
             VarModule::dec_int(boma.object(), vars::common::instance::GIMMICK_TIMER);
+            MeterModule::drain_direct(boma.object(), 50.0/(charge_state_time as f32));
             if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == charge_state_time - 30 {
                 let handle = VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_HANDLER);
                 EffectModule::set_scale(boma, handle as u32, &Vector3f{ x: 0.8, y: 0.8, z: 0.8 });
@@ -166,7 +173,7 @@ unsafe fn charge_training_taunt(fighter: &mut L2CFighterCommon, boma: &mut Battl
 
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    charge_state_increase(boma);
+    charge_state_increase(fighter, boma);
     charge_state_decrease(boma);
     charge_state_damage_multipliers(boma);
     charge_state_reset(boma);
