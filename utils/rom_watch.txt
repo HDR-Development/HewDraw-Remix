@@ -21,5 +21,6 @@ fighter/demon/param/hdr.xml
 fighter/samus/param/hdr.xml
 fighter/samusd/param/hdr.xml
 fighter/edge/param/hdr.xml
+fighter/szerosuit/param/hdr.xml
 fighter/pit/param/hdr.xml
 fighter/pitb/param/hdr.xml

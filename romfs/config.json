@@ -67,6 +67,9 @@
 		"fighter/edge/cmn": [
 			"fighter/edge/param/hdr.prc"
 		],
+		"fighter/szerosuit/cmn": [
+			"fighter/szerosuit/param/hdr.prc"
+		],
 		"fighter/pit/cmn": [
 			"fighter/pit/param/hdr.prc"
 		],
