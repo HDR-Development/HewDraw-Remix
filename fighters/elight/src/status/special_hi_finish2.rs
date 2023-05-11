@@ -26,6 +26,9 @@ unsafe extern "C" fn special_hi_finish2_pre(fighter: &mut L2CFighterCommon) -> L
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
         0
     );
+    
+    VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
+    super::Set_Pyra_Up_Special_Cancel(fighter, true);
 
     0.into()
 }
