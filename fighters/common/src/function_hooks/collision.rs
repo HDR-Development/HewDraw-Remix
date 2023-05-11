@@ -21,6 +21,8 @@ unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *m
     if (*boma).is_fighter() {
         VarModule::off_flag((*boma).object(), vars::common::instance::IS_GETTING_POSITION_FOR_ECB);
         VarModule::set_float((*boma).object(), vars::common::instance::ECB_BOTTOM_Y_OFFSET, *param_3);
+        let ecb_center_y_offset = ((*param_5 - *param_3) / 2.0) + *param_3;
+        VarModule::set_float((*boma).object(), vars::common::instance::ECB_CENTER_Y_OFFSET, ecb_center_y_offset);
     }
     if !(*boma).is_fighter()
     || VarModule::is_flag((*boma).object(), vars::common::status::DISABLE_ECB_SHIFT)
