@@ -8,7 +8,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="jump_speed_mul">0.83</float>
+      <float hash="jump_speed_mul">0.7</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
