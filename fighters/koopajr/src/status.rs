@@ -69,9 +69,6 @@ unsafe fn sub_escape_air_common(fighter: &mut L2CFighterCommon) {
 
 unsafe extern "C" fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
     if arg.get_bool() {
-        if fighter.handle_waveland(false) {
-            return 1.into();
-        }
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_FRAME);
         // if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO) {
@@ -167,12 +164,9 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
         if sub_escape_air_common_strans_main(fighter).get_bool() {
             return L2CValue::Bool(true);
         }
-        if fighter.handle_waveland(false) {
-            return true.into();
-        }
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
             fighter.change_status(
-                L2CValue::I32(*FIGHTER_STATUS_KIND_LANDING),
+                L2CValue::I32(*FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_LANDING),
                 L2CValue::Bool(false)
             );
             return L2CValue::Bool(true);
