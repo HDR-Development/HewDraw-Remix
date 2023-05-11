@@ -11,7 +11,7 @@ unsafe fn mario_special_n_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
+        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW)) {
             VarModule::on_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND);
             FT_MOTION_RATE(fighter, 3.0/(14.0-12.0));
         } 
@@ -184,7 +184,7 @@ unsafe fn mario_special_air_n_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)){ 
+        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW)){ 
             VarModule::on_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND);
             FT_MOTION_RATE(fighter, 3.0/(14.0-12.0));
         }
