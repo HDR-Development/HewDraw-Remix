@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
+  <list hash="map_coll_data">
+    <hash40 index="0">dummy</hash40>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+    <hash40 index="4">dummy</hash40>
+    <struct index="5">
+      <hash40 hash="node">clownshaft2</hash40>
+    </struct>
+    <struct index="6">
+      <hash40 hash="node">clownshaft2</hash40>
+    </struct>
+  </list>
+  <list hash="jostle_map_coll_data">
+    <hash40 index="0">dummy</hash40>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+    <hash40 index="4">dummy</hash40>
+    <struct index="5">
+      <hash40 hash="node">clownshaft2</hash40>
+    </struct>
+    <struct index="6">
+      <hash40 hash="node">clownshaft2</hash40>
+    </struct>
+  </list>
   <list hash="cliff_hang_data">
     <struct index="0">
       <float hash="p1_y">20.5</float>
