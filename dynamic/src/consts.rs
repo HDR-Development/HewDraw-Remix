@@ -246,6 +246,7 @@ pub mod vars {
 
             pub const IS_JAB_LOCK_ROLL: i32 = 0x1000;
             pub const IS_SPIKE: i32 = 0x1001;
+            pub const DAMAGE_FLY_RESET_TRIGGER: i32 = 0x1002;
 
             pub const SUICIDE_THROW_CAN_CLATTER: i32 = 0x1000;
 
