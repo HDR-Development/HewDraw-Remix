@@ -299,6 +299,7 @@ pub mod vars {
             // flag
             pub const BEAKBOMB_ACTIVE: i32 = 0x0100;
             pub const BAYONET_ACTIVE: i32 = 0x0101;
+            pub const FLUTTER_ENABLED: i32 = 0x0102;
 
             // int
             pub const HUD_DISPLAY_TIME: i32 = 0x0100;

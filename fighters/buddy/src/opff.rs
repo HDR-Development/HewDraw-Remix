@@ -431,7 +431,8 @@ unsafe fn on_rebirth(fighter: &mut L2CFighterCommon,boma: &mut BattleObjectModul
 //Resets Red Feather cooldown in training mode after resetting
 unsafe fn training_reset(fighter: &mut L2CFighterCommon,boma: &mut BattleObjectModuleAccessor)
 {
-    if is_training_mode() {
+    if is_training_mode() 
+    && false {
         if fighter.is_status(*FIGHTER_STATUS_KIND_WAIT) || !smash::app::sv_information::is_ready_go() {
             if (VarModule::get_float(boma.object(), vars::buddy::instance::FEATHERS_RED_COOLDOWN)>0.0)
             {

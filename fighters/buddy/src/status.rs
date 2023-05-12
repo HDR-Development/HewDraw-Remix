@@ -19,12 +19,12 @@ pub unsafe fn buddy_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
         GroundModule::set_attach_ground(fighter.module_accessor, false);
         if (VarModule::get_float(fighter.battle_object, vars::buddy::instance::FEATHERS_RED_COOLDOWN)>0.0)
         {
-            fighter.change_status(
-                L2CValue::I32(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL),
-                L2CValue::Bool(true)
-            );
+            fighter.change_status(FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_FAIL.into(), false.into());
             PLAY_SE(fighter, Hash40::new("se_buddy_special_s04_02"));
-            return false.into();
+            return true.into();
+        }
+        else{
+            VarModule::on_flag(fighter.battle_object, vars::buddy::instance::FLUTTER_ENABLED);
         }
     }
     else if (WorkModule::get_int(fighter.module_accessor,  *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_S_REMAIN) == 0)
@@ -37,6 +37,22 @@ pub unsafe fn buddy_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     }
     return false.into();
 }
+
+
+#[status_script(agent = "buddy", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn buddy_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    //Bypass if transitioning into Air Fail
+    if (VarModule::get_float(fighter.battle_object, vars::buddy::instance::FEATHERS_RED_COOLDOWN)>0.0)
+    && fighter.is_situation(*SITUATION_KIND_AIR)
+    {
+        return 1.into();
+    }
+    else {
+        return original!(fighter);
+    }
+    
+}
+
 
 #[status_script(agent = "buddy", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe extern "C" fn buddy_special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -71,35 +87,21 @@ pub unsafe fn buddy_special_s_dash_pre(fighter: &mut L2CFighterCommon) -> L2CVal
 pub unsafe fn buddy_special_s_fail_pre(fighter: &mut L2CFighterCommon) -> L2CValue{
     if (fighter.is_situation(*SITUATION_KIND_AIR))
     {
-        StatusModule::init_settings(
-            fighter.module_accessor,
-            app::SituationKind(*SITUATION_KIND_AIR),
-            *FIGHTER_KINETIC_TYPE_UNIQ,
-            *GROUND_CORRECT_KIND_KEEP as u32,
-            app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_AIR),
-            true,
-            *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
-            *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
-            *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
-            0
-        );
 
-        FighterStatusModuleImpl::set_fighter_status_data(
-            fighter.module_accessor,
-            false,
-            *FIGHTER_TREADED_KIND_NO_REAC,
-            false,
-            false,
-            false,
-            (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_S) as u64,
-            *FIGHTER_STATUS_ATTR_START_TURN as u32,
-            *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32,
-            0
-        );
-            return false.into();
+        if VarModule::is_flag(fighter.battle_object, vars::buddy::instance::FLUTTER_ENABLED)
+        {
+            sv_kinetic_energy!(
+                clear_speed,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY
+            );
+            VarModule::off_flag(fighter.battle_object, vars::buddy::instance::FLUTTER_ENABLED);
+        }
+
     }
     return original!(fighter);
 }
+
 /// pre status for bayonet
 /// handles initialization
 pub unsafe extern "C" fn bayonet_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -160,13 +162,34 @@ pub unsafe extern "C" fn bayonet_end_end(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
+/// Re-enables the ability to use aerial specials when connecting to ground or cliff
+unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if (fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)){ 
+        VarModule::on_flag(fighter.battle_object, vars::buddy::instance::FLUTTER_ENABLED);
+    }
+    return true.into();
+}
+
+#[smashline::fighter_init]
+fn buddy_init(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        // set the callbacks on fighter init
+        if fighter.kind() == *FIGHTER_KIND_BUDDY {
+            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
+        }
+    }
+}
+
+
 pub fn install() {
+    smashline::install_agent_init_callbacks!(buddy_init);
     install_status_scripts!(
         end_run,
         buddy_special_s_pre,
         buddy_special_s_exec,
         buddy_special_s_dash_pre,
         buddy_special_s_fail_pre,
+        buddy_special_s_main,
     );
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_buddy"),
