@@ -499,7 +499,7 @@ pub mod vars {
     pub mod inkling {
         pub mod status {
             // flags
-            pub const IS_ENABLE_SPECIAL_S_JUMP_EARLY_CANCEL: i32 = 0x1100;
+
         }
     }
 
