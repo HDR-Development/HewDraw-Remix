@@ -92,7 +92,8 @@
     <struct index="0">
       <float hash="start_x_mul_air">1.1</float>
       <float hash="dir_mul">20</float>
-      <float hash="pass_mul_air">1</float>
+      <float hash="pass_mul_ground">0.9</float>
+      <float hash="pass_mul_air">0.9</float>
       <float hash="fall_accel_x_mul">0.03</float>
     </struct>
     <hash40 index="1">dummy</hash40>

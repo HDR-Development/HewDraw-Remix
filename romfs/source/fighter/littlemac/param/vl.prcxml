@@ -30,6 +30,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
+      <float hash="special_hi_pass_mul">1.2675</float>
       <float hash="special_air_hi_pass_mul">1.2675</float>
       <float hash="special_hi_dir_mul">25</float>
     </struct>
