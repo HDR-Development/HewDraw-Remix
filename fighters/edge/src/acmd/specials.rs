@@ -265,6 +265,19 @@ unsafe fn edge_special_hi1_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "edge", script = "game_specialairhi1end", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialairhi1end(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        boma.select_cliff_hangdata_from_name("special_hi");
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_ENABLE_CONTROL);
+    }
+}
+
 #[acmd_script( agent = "edge", script = "game_specialhi2end" , category = ACMD_GAME , low_priority)]
 unsafe fn edge_special_hi2_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -287,6 +300,7 @@ unsafe fn edge_special_air_hi_2_end_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let mut kb_angle = 0;
     if is_excute(fighter) {
+        boma.select_cliff_hangdata_from_name("special_hi");
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.0, 3.0);
     }
     frame(lua_state, 1.0);
@@ -324,6 +338,7 @@ pub fn install() {
         edge_special_hi2_game,
         edge_special_hi2_effect,
         edge_special_hi1_end_game,
+        game_specialairhi1end,
         edge_special_hi2_end_game,
         edge_special_air_hi_2_end_game
     );
