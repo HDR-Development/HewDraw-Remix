@@ -2,7 +2,7 @@ use super::*;
 
 /// Prevents up b from being used again in air when it has been disabled by up-b fall
 unsafe extern "C" fn should_use_special_hi_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL) {
+    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::eflame::instance::DISABLE_SPECIAL_HI) {
         false.into()
     } else {
         true.into()
@@ -25,7 +25,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     if (fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF))
     || fighter.is_status_one_of(damage_statuses) { 
         //Re-enable Pyra UpB
-        VarModule::off_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
+        VarModule::off_flag(fighter.battle_object, vars::eflame::instance::DISABLE_SPECIAL_HI);
 
         //Re-enable Mythra UpB
         Set_Mythra_Up_Special_Cancel(fighter,false);
@@ -43,10 +43,10 @@ unsafe extern "C" fn Set_Mythra_Up_Special_Cancel(fighter: &mut L2CFighterCommon
             let kind = object.kind as i32;
             if kind == *FIGHTER_KIND_ELIGHT {
                 if cancel_state {
-                    VarModule::on_flag(object, vars::common::instance::UP_SPECIAL_CANCEL);
+                    VarModule::on_flag(object, vars::elight::instance::DISABLE_SPECIAL_HI);
                 }
                 else{
-                    VarModule::off_flag(object, vars::common::instance::UP_SPECIAL_CANCEL);
+                    VarModule::off_flag(object, vars::elight::instance::DISABLE_SPECIAL_HI);
                 }
                 return;
             }
@@ -60,10 +60,10 @@ unsafe extern "C" fn Set_Mythra_Up_Special_Cancel(fighter: &mut L2CFighterCommon
             let kind = object.kind as i32;
             if kind == *FIGHTER_KIND_ELIGHT {
                 if cancel_state {
-                    VarModule::on_flag(object, vars::common::instance::UP_SPECIAL_CANCEL);
+                    VarModule::on_flag(object, vars::elight::instance::DISABLE_SPECIAL_HI);
                 }
                 else{
-                    VarModule::off_flag(object, vars::common::instance::UP_SPECIAL_CANCEL);
+                    VarModule::off_flag(object, vars::elight::instance::DISABLE_SPECIAL_HI);
                 }
             }
         }
@@ -76,6 +76,7 @@ fn eflame_init(fighter: &mut L2CFighterCommon) {
         // set the callbacks on fighter init
         if fighter.kind() == *FIGHTER_KIND_EFLAME {
             fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
+            fighter.global_table[globals::USE_SPECIAL_HI_CALLBACK].assign(&L2CValue::Ptr(should_use_special_hi_callback as *const () as _)); 
         }
     }
 }
