@@ -60,10 +60,10 @@ pub unsafe fn throw_kirby_map_correction(fighter: &mut L2CFighterCommon) -> L2CV
     let motion_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_MOTION_KIND);
     let frame = MotionModule::frame(fighter.module_accessor);
     let prev_frame = MotionModule::prev_frame(fighter.module_accessor);
-    let fall_start_frame = if motion_kind == hash40("throw_b") { 28.0 } else { 32.0 };
-    let fall_stop_frame = if motion_kind == hash40("throw_b") { 30.0 } else { 35.0 };
-    let landing_frame = if motion_kind == hash40("throw_b") { 31.0 } else { 36.0 };
-    let return_air_frame = if motion_kind == hash40("throw_b") { 40.0 } else { 44.0 };
+    let fall_start_frame = if motion_kind == hash40("throw_b") { 27.0 } else { 31.0 };
+    let fall_stop_frame = if motion_kind == hash40("throw_b") { 29.0 } else { 34.0 };
+    let landing_frame = if motion_kind == hash40("throw_b") { 30.0 } else { 35.0 };
+    let return_air_frame = if motion_kind == hash40("throw_b") { 39.0 } else { 43.0 };
     
     if (motion_kind != hash40("throw_b") && motion_kind != hash40("throw_f"))
     || frame <= fall_start_frame
@@ -76,6 +76,9 @@ pub unsafe fn throw_kirby_map_correction(fighter: &mut L2CFighterCommon) -> L2CV
     if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
         if prev_frame < fall_stop_frame && frame >= fall_stop_frame {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -10.0);
+            app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
             MotionModule::set_frame(fighter.module_accessor, fall_stop_frame, true);
             MotionModule::set_rate(fighter.module_accessor, 0.0);
             LinkModule::send_event_nodes_throw(fighter.module_accessor, Hash40::new("throw_sync_motion"), Hash40::new("invalid"), true, 0, 0, 0);

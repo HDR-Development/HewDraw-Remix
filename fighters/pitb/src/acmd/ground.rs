@@ -1,7 +1,7 @@
 
 use super::*;
 
-#[acmd_script(agent = "pit", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+#[acmd_script(agent = "pitb", script = "game_attack11" , category = ACMD_GAME , low_priority)]
 unsafe fn pitb_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -32,7 +32,7 @@ unsafe fn pitb_attack_11_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script(agent = "pit", script = "game_attack12" , category = ACMD_GAME , low_priority)]
+#[acmd_script(agent = "pitb", script = "game_attack12" , category = ACMD_GAME , low_priority)]
 unsafe fn pitb_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -67,7 +67,7 @@ unsafe fn pitb_attack_12_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script(agent = "pit", script = "game_attack13" , category = ACMD_GAME , low_priority)]
+#[acmd_script(agent = "pitb", script = "game_attack13" , category = ACMD_GAME , low_priority)]
 unsafe fn pitb_attack_13_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();

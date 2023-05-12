@@ -24,7 +24,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
     let status_kind = StatusModule::status_kind(boma);
     let fighter_kind = boma.kind();
 
-    let rising: f32 = KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY); // Rising while jumping/airdodging
+    let rising: f32 = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN); // Rising while jumping/airdodging
 
     let tether_zair = boma.is_fighter()
                         && [*FIGHTER_KIND_LUCAS, *FIGHTER_KIND_YOUNGLINK, *FIGHTER_KIND_TOONLINK, *FIGHTER_KIND_SAMUS, *FIGHTER_KIND_SAMUSD, *FIGHTER_KIND_SZEROSUIT].contains(&fighter_kind)
@@ -507,6 +507,9 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
     }
 
     if fighter_kind == *FIGHTER_KIND_SONIC {
+        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
+            return 0;
+        }
         if status_kind == *FIGHTER_SONIC_STATUS_KIND_SPECIAL_HI_JUMP {
             if frame < 23.0 {
                 return 0;
@@ -947,6 +950,14 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
         if(status_kind == *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_GLIDING){
             if VarModule::get_float(boma.object(), vars::pickel::status::GLIDE_TIMER) < 40.0 /*40 frames of up b travel time*/ {
                 return 1;
+            }
+        }
+    }
+
+    if fighter_kind == *FIGHTER_KIND_EFLAME {
+        if status_kind == *FIGHTER_EFLAME_STATUS_KIND_SPECIAL_HI_JUMP {
+            if frame < 3.0 {
+                return 0;
             }
         }
     }

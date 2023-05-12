@@ -267,7 +267,37 @@ unsafe fn kamui_waterdragon_special_lw_hit_game(fighter: &mut L2CAgentBase) {
         FT_MOTION_RATE(fighter, 37.0/(66.0 - 31.0));
         AttackModule::clear_all(boma);
     }
-}  
+}
+
+#[acmd_script( agent = "kamui", script = "game_specialsattack", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialsattack(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_SPEARHAND, false, 0);
+        ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_SPEARHAND, Hash40::new("special_s_attack"), false, 0.0);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_KAMUI_STATUS_SPECIAL_S_FLAG_AIR_CONTROL);
+    }
+}
+
+#[acmd_script( agent = "kamui", script = "game_specialairsattack", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialairsattack(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_KAMUI_GENERATE_ARTICLE_SPEARHAND, false, 0);
+        ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_SPEARHAND, Hash40::new("special_air_s_attack"), false, 0.0);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_KAMUI_STATUS_SPECIAL_S_FLAG_AIR_CONTROL);
+    }
+}
 
 pub fn install() {
     install_acmd_scripts!(
@@ -279,6 +309,8 @@ pub fn install() {
         kamui_special_lw_hit_game,
         kamui_special_lw_hit_effect,
         kamui_waterdragon_special_lw_hit_game,
+        game_specialsattack,
+        game_specialairsattack
     );
 }
 

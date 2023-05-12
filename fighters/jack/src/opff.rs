@@ -49,10 +49,10 @@ unsafe fn arsene_grappling_hook(boma: &mut BattleObjectModuleAccessor, situation
 // Joker Aerial Grappling Hook stall
 unsafe fn aerial_grappling_hook_stall(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
     if motion_kind == hash40("special_air_hi_throw") {
-        if frame < 36.0 {
+        if frame < 37.0 {
             KineticModule::unable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         }
-        if frame >= 36.0 {
+        if frame >= 37.0 {
             KineticModule::enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         }
     }

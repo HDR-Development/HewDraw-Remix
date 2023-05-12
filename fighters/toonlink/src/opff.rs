@@ -39,10 +39,10 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK {
         if motion_kind == hash40("attack_11") {
-            if frame < 5.0 {
+            if frame < 6.0 {
                 MotionModule::set_rate(boma, 1.667);
             }
-            if frame >= 5.0 {
+            if frame >= 6.0 {
                 MotionModule::set_rate(boma, 1.0);
             }
         }
