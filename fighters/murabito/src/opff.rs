@@ -77,3 +77,11 @@ fn flowerpot_frame(weapon: &mut L2CFighterBase) {
         }
     }
 }
+
+/// prevents rocket from despawning in the blastzone
+#[weapon_frame( agent = WEAPON_KIND_MURABITO_CLAYROCKET )]
+fn clayrocket_frame(weapon: &mut L2CFighterBase) {
+    unsafe {
+        WorkModule::on_flag(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_FLAG_NO_DEAD);
+    }
+}
