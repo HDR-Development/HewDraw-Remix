@@ -194,6 +194,13 @@ unsafe fn revenge_uthrow_rotation(boma: &mut BattleObjectModuleAccessor, start_f
     }
 }
 
+unsafe fn cross_chop_flip_ledgegrab(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_TURN) {
+        // allows ledgegrab during the flip at Cross Chop's apex
+        fighter.sub_transition_group_check_air_cliff();
+    }
+}
+
 #[utils::macros::opff(FIGHTER_KIND_GAOGAEN )]
 pub fn gaogaen_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
@@ -212,6 +219,7 @@ pub fn gaogaen_opff(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModul
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		cross_chop_techniques(fighter);
+        cross_chop_flip_ledgegrab(fighter);
         fthrow_movement(fighter);
         angled_grab(fighter); 
         alolan_whip_special_grabs(fighter);

@@ -3,14 +3,14 @@
   <list hash="cliff_hang_data">
     <struct index="0">
       <float hash="p1_x">17</float>
-      <float hash="p1_y">23.5</float>
+      <float hash="p1_y">26</float>
       <float hash="p2_x">-10.2</float>
       <float hash="p2_y">11</float>
     </struct>
     <struct index="1">
       <float hash="p1_x">50</float>
       <float hash="p1_y">30</float>
-      <float hash="p2_x">0</float>
+      <float hash="p2_x">10</float>
       <float hash="p2_y">-10</float>
     </struct>
     <struct index="2">
@@ -44,7 +44,7 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="dir_mul">25</float>
-      <float hash="pass_mul">1</float>
+      <float hash="pass_mul">0.975</float>
       <float hash="air_pass_mul">0.975</float>
     </struct>
     <hash40 index="1">dummy</hash40>

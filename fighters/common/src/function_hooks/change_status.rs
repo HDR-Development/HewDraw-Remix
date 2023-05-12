@@ -112,7 +112,7 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         && StatusModule::status_kind(boma) == *FIGHTER_WARIO_STATUS_KIND_SPECIAL_S_ESCAPE_START
         && next_status == *FIGHTER_WARIO_STATUS_KIND_SPECIAL_S_ESCAPE
         && boma.get_num_used_jumps() >= boma.get_jump_count_max() {
-            next_status = *FIGHTER_STATUS_KIND_FALL;
+            next_status = *FIGHTER_STATUS_KIND_DAMAGE_FALL;
             clear_buffer = true;
         }
         // Prevent jumping out of Clown Kart Dash when out of jumps

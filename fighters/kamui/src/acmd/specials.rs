@@ -303,9 +303,6 @@ unsafe fn game_specialairsattack(fighter: &mut L2CAgentBase) {
 unsafe fn kamui_special_air_hi_game (fighter: &mut L2CAgentBase) {
 	let lua_state = fighter.lua_state_agent;
 	let boma = fighter.boma();
-    if is_excute(fighter) {
-		boma.select_cliff_hangdata_from_name("special_hi");
-	}
 	frame(lua_state, 3.0);
 	if is_excute(fighter) {
 		SA_SET(fighter, *SITUATION_KIND_AIR);
