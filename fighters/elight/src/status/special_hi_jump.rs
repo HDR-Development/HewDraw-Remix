@@ -34,7 +34,7 @@ unsafe fn special_hi_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "elight", status = FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_hi_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi_jump"), 0.0, 1.0, false, 0.0, false, false);
-    VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
+    VarModule::on_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_HI);
     
     
 
@@ -140,6 +140,10 @@ unsafe fn special_hi_jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_EFFECT, Hash40::new("effect_specialhiinterrupt"), -1);
         MotionAnimcmdModule::enable_skip_delay_update(fighter.module_accessor);
     }
+    
+    //Disable up special
+    VarModule::on_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_HI);
+    super::Set_Pyra_Up_Special_Cancel(fighter, true);
 
     0.into()
 }
