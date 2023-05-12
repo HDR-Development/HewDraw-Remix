@@ -10,6 +10,7 @@ fighter/donkey/param/hdr.xml
 fighter/dolly/param/hdr.xml
 fighter/chrom/param/hdr.xml
 fighter/captain/param/hdr.xml
+fighter/kamui/param/hdr.xml
 fighter/pacman/param/hdr.xml
 fighter/mario/param/hdr.xml
 fighter/mariod/param/hdr.xml
@@ -24,3 +25,5 @@ fighter/edge/param/hdr.xml
 fighter/szerosuit/param/hdr.xml
 fighter/pit/param/hdr.xml
 fighter/pitb/param/hdr.xml
+fighter/toonlink/param/hdr.xml
+fighter/younglink/param/hdr.xml
