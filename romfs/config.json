@@ -81,6 +81,9 @@
 		],
 		"fighter/younglink/cmn": [
 			"fighter/younglink/param/hdr.prc"
+		],
+		"fighter/daisy/cmn": [
+			"fighter/daisy/param/hdr.prc"
 		]
 	}
 }
