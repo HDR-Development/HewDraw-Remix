@@ -225,6 +225,7 @@ pub mod vars {
             pub const LAST_ATTACK_HIT_LOCATION_X: i32 = 0x0016;
             pub const LAST_ATTACK_HIT_LOCATION_Y: i32 = 0x0017;
             pub const LAST_ATTACK_HIT_LOCATION_Z: i32 = 0x0018;
+            pub const ECB_CENTER_Y_OFFSET: i32 = 0x0019;
         }
         pub mod status {
             // flags
@@ -245,6 +246,7 @@ pub mod vars {
 
             pub const IS_JAB_LOCK_ROLL: i32 = 0x1000;
             pub const IS_SPIKE: i32 = 0x1001;
+            pub const DAMAGE_FLY_RESET_TRIGGER: i32 = 0x1002;
 
             pub const SUICIDE_THROW_CAN_CLATTER: i32 = 0x1000;
 
