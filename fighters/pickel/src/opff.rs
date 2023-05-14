@@ -101,6 +101,16 @@ unsafe fn logging_for_acmd(boma: &mut BattleObjectModuleAccessor, status_kind: i
         // println!("craft_shovel: {}", *FIGHTER_PICKEL_CRAFT_WEAPON_KIND_SHOVEL);
     }
 
+
+}
+unsafe fn minecart_armor_disable(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if [
+    *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_RIDE,
+    *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_DRIVE].contains(&status_kind)
+    {
+        DamageModule::set_no_reaction_mode_status(boma, DamageNoReactionMode{_address: *DAMAGE_NO_REACTION_MODE_REACTION_VALUE as u8}, 0.0, -1.0, -1);
+    }
+
 }
 
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
@@ -109,6 +119,7 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
     buildwalk_crouch_disable(boma, status_kind);
     build_ecb_shift(boma, status_kind);
     //logging_for_acmd(boma, status_kind);
+    minecart_armor_disable(boma,status_kind)
 }
 
 #[utils::macros::opff(FIGHTER_KIND_PICKEL )]
