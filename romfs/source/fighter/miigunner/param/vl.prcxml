@@ -2,7 +2,7 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">20</float>
+      <float hash="p1_y">22</float>
     </struct>
   </list>
   <list hash="param_attackairf_bullet">
@@ -61,7 +61,7 @@
       <float hash="hi2_jump_stable_speed_x_mul">1.0</float>
     </struct>
     <struct index="2">
-      <float hash="hi3_rush_speed">2</float>
+      <float hash="hi3_rush_speed">1.6</float>
     </struct>
     <hash40 index="3">dummy</hash40>
   </list>

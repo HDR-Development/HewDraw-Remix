@@ -5,44 +5,12 @@ use globals::*;
 
  // Handles double jump reset, cancel at the apex, and early activation of the dive
 unsafe fn cross_chop_techniques(fighter: &mut L2CFighterCommon) {
-    
-    if fighter.is_motion_one_of(&[Hash40::new("special_hi"), Hash40::new("special_air_hi_start")]) {
-        // Detect if you've hit the initial portion of the move so we know whether or not to lower the damage of the falling portion
-        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT){
-            VarModule::on_flag(fighter.object(), vars::gaogaen::status::IS_HIT_SPECIAL_HI_RISE);
-        }
-        // Cancel into the dive if holding the special button during the aerial version
-        /*
-        if fighter.is_motion(Hash40::new("special_air_hi_start")){
-            if MotionModule::frame(fighter.module_accessor) > 15.0 && MotionModule::frame(fighter.module_accessor) < 17.0 {
-                if fighter.is_button_on(Buttons::Special) || fighter.is_button_on(Buttons::SpecialRaw) {
-                    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
-                    KineticModule::clear_speed_all(fighter.module_accessor);
-                    fighter.change_status_req(*FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_TURN, false); 
-                    return;
-                }
-            }
-        }
-        */
-        if MotionModule::frame(fighter.module_accessor) > 21.0 && !VarModule::is_flag(fighter.object(), vars::gaogaen::status::SHOULD_CROSS_CHOP_DIVE_EARLY) { // Not checking for the SHOULD_CROSS_CHOP_DIVE_EARLY flag has interesting behavior if holding special and shield, allows him to do a little aerial flip that stalls him in the air a bit
-            if fighter.is_button_on(Buttons::Special) {
-                //DamageModule::add_damage(fighter.module_accessor, 1.0, 0);
-                VarModule::off_flag(fighter.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL);
-            }    
+    if (fighter.is_motion_one_of(&[Hash40::new("special_hi"), Hash40::new("special_air_hi_start")]) && MotionModule::frame(fighter.module_accessor) > 21.0)
+    || (fighter.is_motion(Hash40::new("special_air_hi_turn"))) {
+        if fighter.is_button_on(Buttons::Special) {
+            VarModule::off_flag(fighter.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL);
         }
     }
-    // Cancel out at the apex if the shield input was detected
-    /*
-    if fighter.is_motion(Hash40::new("special_air_hi_turn")) {
-        if MotionModule::frame(fighter.module_accessor) > 8.0 {
-            if VarModule::is_flag(fighter.object(), vars::gaogaen::status::IS_INPUT_CROSS_CHOP_CANCEL){
-                VarModule::on_flag(fighter.object(), vars::common::instance::UP_SPECIAL_CANCEL);
-                fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
-                //return;
-            }
-        }
-    }
-    */
     if fighter.is_status(*FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_FALL) {
         if fighter.get_num_used_jumps() == fighter.get_jump_count_max() {
             WorkModule::set_int(fighter.module_accessor, fighter.get_jump_count_max() - 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
@@ -226,6 +194,13 @@ unsafe fn revenge_uthrow_rotation(boma: &mut BattleObjectModuleAccessor, start_f
     }
 }
 
+unsafe fn cross_chop_flip_ledgegrab(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_HI_TURN) {
+        // allows ledgegrab during the flip at Cross Chop's apex
+        fighter.sub_transition_group_check_air_cliff();
+    }
+}
+
 #[utils::macros::opff(FIGHTER_KIND_GAOGAEN )]
 pub fn gaogaen_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
@@ -244,6 +219,7 @@ pub fn gaogaen_opff(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModul
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		cross_chop_techniques(fighter);
+        cross_chop_flip_ledgegrab(fighter);
         fthrow_movement(fighter);
         angled_grab(fighter); 
         alolan_whip_special_grabs(fighter);
