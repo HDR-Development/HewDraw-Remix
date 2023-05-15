@@ -130,6 +130,12 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
             WorkModule::off_flag(boma, *FIGHTER_INKLING_STATUS_SPECIAL_S_FLAG_JUMP_END);
             return 0;
         }
+        // Prevents Daisy from floating out of upB
+        if boma.kind() == *FIGHTER_KIND_DAISY
+        && StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_HI
+        && next_status == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_FALL {
+            next_status = *FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END;
+        }
     }
     original!()(boma, next_status, clear_buffer)
 }

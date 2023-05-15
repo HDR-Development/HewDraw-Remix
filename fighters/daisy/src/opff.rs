@@ -49,7 +49,7 @@ unsafe fn triple_jump_lockout(fighter: &mut L2CFighterCommon) {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     wall_bounce(boma, status_kind);
-    up_special_freefall_land_cancel(fighter);
+    //up_special_freefall_land_cancel(fighter);
     triple_jump_lockout(fighter);
 }
 #[utils::macros::opff(FIGHTER_KIND_DAISY )]
