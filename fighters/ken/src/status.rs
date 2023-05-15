@@ -90,6 +90,7 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
         *FIGHTER_STATUS_KIND_DAMAGE_FALL])
     {
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_S);
         VarModule::off_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_LW);
     }
 
