@@ -84,6 +84,9 @@
 		],
 		"fighter/daisy/cmn": [
 			"fighter/daisy/param/hdr.prc"
+		],
+		"fighter/miiswordsman/cmn": [
+			"fighter/miiswordsman/param/hdr.prc"
 		]
 	}
 }

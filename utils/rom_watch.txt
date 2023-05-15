@@ -27,3 +27,4 @@ fighter/pitb/param/hdr.xml
 fighter/toonlink/param/hdr.xml
 fighter/younglink/param/hdr.xml
 fighter/daisy/param/hdr.xml
+fighter/miiswordsman/param/hdr.xml
