@@ -36,7 +36,9 @@ pub fn install() {
         //wait_main,
         landing_main,
         init_special_lw,
-        pre_final
+        pre_final,
+        init_special_s,
+        init_special_s_command
     );
     smashline::install_agent_init_callbacks!(ken_init);
 }
@@ -47,9 +49,19 @@ fn ken_init(fighter: &mut L2CFighterCommon) {
         if smash::app::utility::get_kind(&mut *fighter.module_accessor) != *FIGHTER_KIND_KEN {
             return;
         }
+        fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
         fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
         fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
         fighter.global_table[globals::CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(ken_check_special_command as *const () as _));
+    }
+}
+
+// Prevents sideB from being used again if it has already been used once in the current airtime
+unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_S) {
+        false.into()
+    } else {
+        true.into()
     }
 }
 
@@ -415,6 +427,26 @@ pub unsafe fn pre_final(fighter: &mut L2CFighterCommon) -> L2CValue {
 pub unsafe fn init_special_lw(fighter: &mut L2CFighterCommon) -> L2CValue {
     // once-per-airtime (refreshes on hit)
     VarModule::on_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_LW);
+    original!(fighter)
+}
+
+// FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND //
+
+#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+pub unsafe fn init_special_s_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_S);
+    }
+    original!(fighter)
+}
+
+// FIGHTER_STATUS_KIND_SPECIAL_S //
+
+#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+pub unsafe fn init_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_S);
+    }
     original!(fighter)
 }
 
