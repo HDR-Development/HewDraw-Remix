@@ -82,22 +82,22 @@ unsafe fn ken_ex_shoryu(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
         // MeterModule and VarModule calls are repeated so that I know
         // for 100% fact they can only be called if we change motion
         if boma.is_motion(Hash40::new("special_hi"))
-        && MeterModule::drain(boma.object(), 4) {
+        && MeterModule::drain(boma.object(), 3) {
             MotionModule::change_motion(boma, Hash40::new("special_hi_ex"), frame, 1.0, false, 0.0, false, false);
             VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
 
         } else if boma.is_motion(Hash40::new("special_hi_command"))
-        && MeterModule::drain(boma.object(), 4) {
+        && MeterModule::drain(boma.object(), 3) {
             MotionModule::change_motion(boma, Hash40::new("special_hi_command_ex"), frame, 1.0, false, 0.0, false, false);
             VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
 
         } else if boma.is_motion(Hash40::new("special_air_hi"))
-        && MeterModule::drain(boma.object(), 4) {
+        && MeterModule::drain(boma.object(), 3) {
             MotionModule::change_motion(boma, Hash40::new("special_air_hi_ex"), frame, 1.0, false, 0.0, false, false);
             VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
 
         } else if boma.is_motion(Hash40::new("special_air_hi_command"))
-        && MeterModule::drain(boma.object(), 4) {
+        && MeterModule::drain(boma.object(), 3) {
             MotionModule::change_motion(boma, Hash40::new("special_air_hi_command_ex"), frame, 1.0, false, 0.0, false, false);
             VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
 
@@ -120,7 +120,7 @@ unsafe fn air_hado_distinguish(fighter: &mut L2CFighterCommon, boma: &mut Battle
     && boma.is_button_on(Buttons::Attack)
     && boma.is_button_on(Buttons::Special)
     && frame <= 4.0
-    && MeterModule::drain(boma.object(), 1) {
+    && MeterModule::drain(boma.object(), 2) {
         boma.change_status_req(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, true);
     }
 
@@ -284,7 +284,7 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND != 0
     && WorkModule::is_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
-    && MeterModule::drain(fighter.object(), 8) {
+    && MeterModule::drain(fighter.object(), 10) {
         fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
         return;
     }
@@ -292,14 +292,14 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
     && WorkModule::is_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
-    && MeterModule::drain(fighter.object(), 10) {
+    && MeterModule::drain(fighter.object(), 6) {
         fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
         return;
     }
 
     // DSpecial cancels
     if boma.is_cat_flag(Cat1::SpecialLw)
-    && MeterModule::drain(boma.object(), 2) {
+    && MeterModule::drain(boma.object(), 1) {
         WorkModule::enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
         boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_LW, false);
         return;
