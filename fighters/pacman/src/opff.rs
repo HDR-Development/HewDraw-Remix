@@ -31,6 +31,7 @@ unsafe fn bonus_fruit_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind
 unsafe fn side_special_freefall(fighter: &mut L2CFighterCommon) {
     if fighter.is_prev_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_DASH)
     && fighter.is_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN)
+    && !StatusModule::is_changing(fighter.module_accessor)
     && fighter.is_situation(*SITUATION_KIND_AIR)
     && CancelModule::is_enable_cancel(fighter.module_accessor) {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
