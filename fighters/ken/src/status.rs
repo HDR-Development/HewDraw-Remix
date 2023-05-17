@@ -37,6 +37,7 @@ pub fn install() {
         landing_main,
         init_special_lw,
         pre_final,
+        pre_final2,
         init_special_s,
         init_special_s_command
     );
@@ -241,7 +242,7 @@ pub unsafe extern "C" fn ken_check_special_command(fighter: &mut L2CFighterCommo
     if is_special
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND) 
-    && MeterModule::drain(fighter.object(), 10) {
+    && MeterModule::level(fighter.object()) >= 10 {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
         fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
@@ -252,7 +253,7 @@ pub unsafe extern "C" fn ken_check_special_command(fighter: &mut L2CFighterCommo
     if is_special
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND) 
-    && MeterModule::drain(fighter.object(), 6) {
+    && MeterModule::level(fighter.object()) >= 6 {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
         fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
@@ -419,7 +420,17 @@ pub unsafe fn pre_final(fighter: &mut L2CFighterCommon) -> L2CValue {
         *FIGHTER_POWER_UP_ATTACK_BIT_FINAL as u32,
         0
     );
+    MeterModule::drain(fighter.object(), 6);
     return 0.into();
+}
+
+// FIGHTER_RYU_STATUS_KIND_FINAL2 //
+
+#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_FINAL2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn pre_final2(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = original!(fighter);
+    MeterModule::drain(fighter.object(), 10);
+    ret
 }
 
 // FIGHTER_STATUS_KIND_SPECIAL_LW //

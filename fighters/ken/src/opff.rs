@@ -284,7 +284,7 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND != 0
     && WorkModule::is_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
-    && MeterModule::drain(fighter.object(), 10) {
+    && MeterModule::level(fighter.object()) >= 10 {
         fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
         return;
     }
@@ -292,7 +292,7 @@ unsafe fn metered_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
     && WorkModule::is_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
-    && MeterModule::drain(fighter.object(), 6) {
+    && MeterModule::level(fighter.object()) >= 6 {
         fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
         return;
     }
