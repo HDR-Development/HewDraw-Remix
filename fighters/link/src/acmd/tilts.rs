@@ -54,7 +54,7 @@ unsafe fn attack_lw3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 8.0/(11.0-1.0));
+    FT_MOTION_RATE(fighter, 7.69/(11.0-1.0));
     frame(lua_state, 11.0);
     FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 12.0);

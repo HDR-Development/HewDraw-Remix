@@ -235,7 +235,7 @@ unsafe fn effect_attackairlw (fighter: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 14.0);
 	if is_excute(fighter) {
-		EFFECT_FOLLOW(fighter, Hash40::new("link_sword_flare"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 0.3, true);
+		EFFECT_FOLLOW(fighter, Hash40::new("link_sword_flare"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1.0, true);
 		EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("sword1"), 13.5, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
 		LAST_EFFECT_SET_RATE(fighter, 1.5);
 	}
