@@ -369,6 +369,16 @@ pub mod vars {
             // flags
             pub const SOARING_SLASH_HIT: i32 = 0x1100;
             pub const SOARING_SLASH_CANCEL: i32 = 0x1101;
+            pub const SPECIAL_S_DASH_START_RUSH: i32 = 0x1102;
+            pub const SPECIAL_S_DASH_END_RUSH: i32 = 0x1103;
+            pub const SPECIAL_HI_IS_DUST_LEAP: i32 = 0x1104;
+            pub const SPECIAL_LW_STANCE_ATTACK: i32 = 0x1105;
+            pub const SPECIAL_LW_STANCE_DASH: i32 = 0x1106;
+            pub const SPECIAL_LW_DASH_START_RUSH: i32 = 0x1107;
+            pub const SPECIAL_LW_DASH_END_RUSH: i32 = 0x1108;
+
+            // floats
+            pub const SPECIAL_HI_DUST_LEAP_ANGLE: i32 = 0x1100;
         }
     }
     pub mod dedede{
