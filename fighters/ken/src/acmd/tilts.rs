@@ -125,16 +125,16 @@ unsafe fn ken_attack_hi3_w_game(fighter: &mut L2CAgentBase) {
 unsafe fn ken_attack_lw3_w_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    FT_MOTION_RATE(fighter, 4.0 / 2.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK);
-        FT_MOTION_RATE(fighter, 4.0/(2.0));
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 3.0, 5.0);
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
     }
     frame(lua_state, 2.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
         MeterModule::watch_damage(fighter.battle_object, true);
         ATTACK(fighter, 0, 0, Hash40::new("legl"), 1.7, 65, 65, 0, 20, 4.0, 2.0, 0.0, 0.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
         ATTACK(fighter, 1, 0, Hash40::new("kneel"), 1.7, 65, 65, 0, 20, 3.5, 1.0, 0.0, 0.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);

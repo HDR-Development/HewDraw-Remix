@@ -16,9 +16,9 @@ unsafe fn game_throwf(fighter: &mut L2CAgentBase) {
         CHECK_FINISH_CAMERA(fighter, 15, 7);
     }
     frame(lua_state, 16.0);
+    FT_MOTION_RATE(fighter, 0.9);
     if is_excute(fighter) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
-        FT_MOTION_RATE(fighter, 0.9);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
@@ -41,9 +41,9 @@ unsafe fn game_throwb(fighter: &mut L2CAgentBase) {
         CHECK_FINISH_CAMERA(fighter, 14, 7);
     }
     frame(lua_state, 41.0);
+    FT_MOTION_RATE(fighter, 0.8);
     if is_excute(fighter) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
-        FT_MOTION_RATE(fighter, 0.8);
     }
     frame(lua_state, 42.0);
     if is_excute(fighter) {

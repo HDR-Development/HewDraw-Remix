@@ -195,12 +195,12 @@ unsafe fn ken_special_n_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
     }
     frame(lua_state, 14.0);
+    FT_MOTION_RATE(fighter, 36.0 / (58.0 - 14.0));
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         if !fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
             MeterModule::add(fighter.battle_object, 2.0);
         }
-        FT_MOTION_RATE(fighter, 36.0 / (58.0 - 14.0));
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
@@ -211,18 +211,14 @@ unsafe fn ken_special_n_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
     }
     frame(lua_state, 58.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-    }
+    FT_MOTION_RATE(fighter, 1.0);
 }
 
 #[acmd_script( agent = "ken", script = "game_specialairn" , category = ACMD_GAME , low_priority)]
 unsafe fn ken_special_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-    }
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
@@ -232,12 +228,12 @@ unsafe fn ken_special_air_n_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SHOOT);
     }
     frame(lua_state, 15.0);
+    FT_MOTION_RATE(fighter, 36.0 / (70.0 - 15.0));
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         if !fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND) {
             MeterModule::add(fighter.battle_object, 2.0);
         }
-        FT_MOTION_RATE(fighter, 36.0 / (70.0 - 15.0));
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
@@ -248,9 +244,7 @@ unsafe fn ken_special_air_n_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
     }
     frame(lua_state, 70.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-    }
+    FT_MOTION_RATE(fighter, 1.0);
 }
 
 #[acmd_script( agent = "ken", scripts = ["sound_specialn", "sound_specialairn"], category = ACMD_SOUND, low_priority )]
@@ -480,13 +474,13 @@ unsafe fn ken_special_s_game(fighter: &mut L2CAgentBase) {
         }
     }
     wait(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 0.6);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_LOOP_COUNT) > 2 {
             WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         }
         MeterModule::watch_damage(fighter.battle_object, true);
-        FT_MOTION_RATE(fighter, 0.6);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         // Weak
         if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
@@ -890,17 +884,17 @@ unsafe fn game_specialhiex(fighter: &mut L2CAgentBase) {
         AttackModule::set_vec_target_pos(boma, 0, Hash40::new("top"), &hit1, 11, false);
     }
     frame(lua_state, 9.0);
+    FT_MOTION_RATE(fighter, 8.0 / (30.0 - 9.0));
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE(fighter, 8.0 / (30.0 - 9.0));
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
     frame(lua_state, 30.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 2.2, 100, 100, 100, 0, 5.0, 0.0, 10.0, 7.6, None, None, None, 2.1, 0.35, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 31.0);
@@ -938,17 +932,17 @@ unsafe fn game_specialairhiex(fighter: &mut L2CAgentBase) {
         AttackModule::set_vec_target_pos(boma, 0, Hash40::new("top"), &hit1, 11, false);
     }
     frame(lua_state, 9.0);
+    FT_MOTION_RATE(fighter, 8.0 / (30.0 - 9.0));
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        FT_MOTION_RATE(fighter, 8.0 / (30.0 - 9.0));
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
     frame(lua_state, 30.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 2.2, 90, 100, 90, 0, 5.0, 0.0, 10.0, 7.6, None, None, None, 2.1, 0.35, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 31.0);
