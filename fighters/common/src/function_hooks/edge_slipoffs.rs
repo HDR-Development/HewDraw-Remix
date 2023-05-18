@@ -16,7 +16,8 @@ pub unsafe fn init_settings_edges(boma: &mut BattleObjectModuleAccessor, situati
     let fighter_kind = boma.kind();
     let status_kind = StatusModule::status_kind(boma);
 
-    if boma.is_fighter() {
+    if boma.is_fighter()
+    && boma.is_situation(*SITUATION_KIND_GROUND) {
 
         if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
             fix = *GROUND_CORRECT_KIND_GROUND as u32; /* GROUND_CORRECT_KIND_GROUND is i32 */
@@ -63,7 +64,8 @@ pub unsafe fn init_settings_edges(boma: &mut BattleObjectModuleAccessor, situati
                                                        *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_LANDING].contains(&status_kind)) 
            || (boma.kind() == *FIGHTER_KIND_KOOPAJR && boma.is_status(*FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_LANDING))
            || (boma.kind() == *FIGHTER_KIND_SHEIK && [*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_ATTACK,
-                                                       *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_LANDING].contains(&status_kind)) {
+                                                       *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_LANDING].contains(&status_kind))
+           || (boma.kind() == *FIGHTER_KIND_LUIGI && boma.is_status(*FIGHTER_LUIGI_STATUS_KIND_SPECIAL_HI_LANDING_FALL)) {
             fix = *GROUND_CORRECT_KIND_GROUND as u32;
         }
     }
@@ -81,7 +83,8 @@ unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, kind: GroundCorrec
     let fighter_kind = boma.kind();
 
     // It seems like everything gets caught as "landing"
-    if boma.is_fighter() {
+    if boma.is_fighter()
+    && boma.is_situation(*SITUATION_KIND_GROUND) {
         if [
             *FIGHTER_STATUS_KIND_LANDING,
             *FIGHTER_STATUS_KIND_TURN_DASH,
