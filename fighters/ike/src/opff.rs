@@ -389,7 +389,7 @@ unsafe fn quickdraw_attack_whiff_freefall(fighter: &mut L2CFighterCommon) {
     && fighter.is_situation(*SITUATION_KIND_AIR)
     && !StatusModule::is_changing(fighter.module_accessor)
     && CancelModule::is_enable_cancel(fighter.module_accessor)
-    && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+    && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
         let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
         *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
