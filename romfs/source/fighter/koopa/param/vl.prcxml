@@ -2,7 +2,7 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">26.75</float>
+      <float hash="p1_y">21.75</float>
     </struct>
   </list>
   <struct hash="param_private">
@@ -22,11 +22,12 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="special_hi_ar_ax">0.1</float>
-      <float hash="special_hi_ar_vx_max">1.2</float>
-      <float hash="special_hi_ar_vy0">2.1</float>
-      <float hash="special_hi_jump_restart_start_frame">-1</float>
-      <float hash="special_hi_jump_restart_end_frame">-1</float>
+      <float hash="special_hi_ar_ax">0.07</float>
+      <float hash="special_hi_ar_vx_max">0.8</float>
+      <float hash="special_hi_ar_vy0">1.8</float>
+      <float hash="special_hi_jump_speed_y">0.9</float>
+      <float hash="special_hi_jump_restart_start_frame">1</float>
+      <float hash="special_hi_jump_restart_end_frame">50</float>
       <float hash="special_hi_jump_restart_prohibition_frame">5</float>
       <int hash="special_hi_landing_f">28</int>
     </struct>

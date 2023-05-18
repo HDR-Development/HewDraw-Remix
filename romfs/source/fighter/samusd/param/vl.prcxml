@@ -4,7 +4,12 @@
     <struct index="0">
       <float hash="p1_y">23.5</float>
     </struct>
-    <hash40 index="1">dummy</hash40>
+    <struct index="1">
+      <float hash="p1_x">49</float>
+      <float hash="p1_y">44</float>
+      <float hash="p2_x">10</float>
+      <float hash="p2_y">-24</float>
+    </struct>
     <hash40 index="2">dummy</hash40>
   </list>
   <list hash="param_gbeam">

@@ -16,6 +16,7 @@ pub fn install() {
         pre_walk,
         pre_dash,
         pre_run,
+        special_hi_bound_end,
         lucario_special_lw_pre,
         lucario_special_lw_main
     );
@@ -324,4 +325,12 @@ pub unsafe fn pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_RUN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 pub unsafe fn pre_run(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Run()
+}
+
+// FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND
+
+#[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_BOUND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+pub unsafe fn special_hi_bound_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_CANCEL);
+    0.into()
 }

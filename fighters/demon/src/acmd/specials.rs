@@ -439,11 +439,64 @@ unsafe fn kazuya_special_s_end_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "demon", script = "game_specialairs", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialairs(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        boma.select_cliff_hangdata_from_name("special_s");
+    }
+    FighterSpecializer_Demon::set_devil(boma, true, 10.0);
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 1.5);
+    frame(lua_state, 4.0);
+    frame(lua_state, 5.0);
+    FighterSpecializer_Demon::set_devil(boma, true, 5.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        JostleModule::set_status(boma, false);
+    }
+    FighterSpecializer_Demon::set_devil(boma, true, 4.0);
+    frame(lua_state, 14.0);
+    FighterSpecializer_Demon::set_devil(boma, true, 3.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 11.0, 60, 50, 0, 80, 4.0, 0.0, 8.0, 3.0, Some(0.0), Some(8.0), Some(10.0), 0.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x184c223f47), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 11.0, 60, 50, 0, 80, 4.0, 0.0, 8.0, 3.0, Some(0.0), Some(8.0), Some(10.0), 0.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x184c223f47), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
+        AttackModule::set_no_finish_camera(boma, 0, true, false);
+        AttackModule::set_attack_camera_quake_forced(boma, 0, *CAMERA_QUAKE_KIND_L, false);
+        AttackModule::set_attack_camera_quake_forced(boma, 1, *CAMERA_QUAKE_KIND_L, false);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        WorkModule::on_flag(boma, *FIGHTER_DEMON_STATUS_SPECIAL_S_FLAG_CHANGE_HIT);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+    }
+    frame(lua_state, 16.0);
+    FighterSpecializer_Demon::set_devil(boma, true, 1.0);
+    frame(lua_state, 19.0);
+    FighterSpecializer_Demon::set_devil(boma, true, 2.0);
+    frame(lua_state, 24.0);
+    FighterSpecializer_Demon::set_devil(boma, true, 3.0);
+    frame(lua_state, 41.0);
+    FighterSpecializer_Demon::set_devil(boma, true, 5.0);
+    frame(lua_state, 58.0);
+    FighterSpecializer_Demon::set_devil(boma, true, 6.0);
+    frame(lua_state, 60.0);
+    FighterSpecializer_Demon::set_devil(boma, true, 7.0);
+    frame(lua_state, 61.0);
+    FighterSpecializer_Demon::set_devil(boma, true, 8.0);
+    frame(lua_state, 62.0);
+    FighterSpecializer_Demon::set_devil(boma, false, 0.0);
+}
+
 #[acmd_script( agent = "demon", script = "game_specialairsend" , category = ACMD_GAME , low_priority)]
 unsafe fn kazuya_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
+        boma.select_cliff_hangdata_from_name("special_s");
         smash::app::FighterSpecializer_Demon::set_devil(boma, true, 1.0);
     }
     frame(lua_state, 1.0);
@@ -721,6 +774,7 @@ pub fn install() {
         kazuya_lightning_uppercut_game,
         kazuya_special_s_game,
         kazuya_special_s_end_game,
+        game_specialairs,
         kazuya_special_air_s_end_game,
         kazuya_special_hi_game,
         kazuya_special_hi_air_game,
