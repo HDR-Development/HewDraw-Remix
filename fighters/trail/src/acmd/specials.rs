@@ -616,6 +616,7 @@ unsafe fn game_specialhi(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 48.0);
     if is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
         if VarModule::is_flag(boma.object(), vars::trail::status::UP_SPECIAL_HIT){
             WorkModule::on_flag(boma, *FIGHTER_TRAIL_STATUS_SPECIAL_HI_FLAG_COMMAND_ACCEPT);
         }
