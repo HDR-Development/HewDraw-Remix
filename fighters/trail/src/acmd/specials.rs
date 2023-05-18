@@ -66,27 +66,12 @@ unsafe fn game_specialairn3(fighter: &mut L2CAgentBase) {
 unsafe fn effect_specialn2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 0.0);
-    if is_excute(fighter) {
-        //EFFECT_FOLLOW(fighter, Hash40::new("trail_ice_hold"), Hash40::new("top"), 0, 10, -1, -90, 0, 0, 1, true);
-        //EffectModule::enable_sync_init_pos_last(boma);
-        //EFFECT_FOLLOW(fighter, Hash40::new("trail_ice_sword_flare"), Hash40::new("haver"), 0, 10, -1, -90, 0, 0, 1, true);
-    }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("trail_ice_bullet"), Hash40::new("top"), 0, 8, -12, 0, 0, 0, 3.0, true);
         EFFECT_FOLLOW(fighter, Hash40::new("trail_ice_bullet"), Hash40::new("top"), 0, 8, 12, 0, 0, 0, 3.0, true);
         EFFECT_FOLLOW(fighter, Hash40::new("trail_ice_bullet"), Hash40::new("top"), 7 * (PostureModule::lr(boma) as i32), 8, 0, 0, 0, 0, 5.5, true);
     }
-    // frame(lua_state, 21.0);
-    // if is_excute(fighter) {
-    //     EFFECT_FOLLOW(fighter, Hash40::new("trail_ice_shot"), Hash40::new("top"), -7 * (PostureModule::lr(boma) as i32), 8, 0, 90, 0, -270, 1.3, true);
-    //     EffectModule::set_scale_last(boma, &Vector3f::new(1.0, 0.1, 1.0));
-    // }
-    // frame(lua_state, 36.0);
-    // if is_excute(fighter) {
-    //     EFFECT_OFF_KIND(fighter, Hash40::new("trail_ice_shot"), false, false);
-    // }
 }
 
 #[acmd_script( agent = "trail", scripts = ["game_specialn2", "game_specialairn2"]  , category = ACMD_GAME , low_priority)]
