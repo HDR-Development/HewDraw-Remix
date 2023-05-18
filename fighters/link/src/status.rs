@@ -26,7 +26,7 @@ pub unsafe fn pre_specialhi(fighter: &mut L2CFighterCommon, arg: u64) -> L2CValu
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
         *FIGHTER_KINETIC_TYPE_UNIQ,
-        *GROUND_CORRECT_KIND_KEEP as u32,
+        *GROUND_CORRECT_KIND_GROUND as u32,
         app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
         true,
         0,
@@ -64,7 +64,7 @@ unsafe extern "C" fn specialhi_Main(fighter: &mut L2CFighterCommon) -> L2CValue 
 
     MotionModule::set_rate(fighter.module_accessor, rslash_charge_spd);
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
-        return 1.into()
+        return 1.into();
     }
     if !StatusModule::is_changing(fighter.module_accessor) {
         if MotionModule::is_end(fighter.module_accessor) && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_FLAG_GROUND) {
@@ -72,54 +72,43 @@ unsafe extern "C" fn specialhi_Main(fighter: &mut L2CFighterCommon) -> L2CValue 
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_TRANSITION_TERM_ID_HOLD);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_TRANSITION_TERM_ID_END);
             GroundModule::set_cliff_check(fighter.module_accessor, app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES));
-            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_LINK_SPECIAL_AIR_HI);
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
             GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
             fighter.set_situation(L2CValue::I32(*SITUATION_KIND_AIR));
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi"), 0.0, 1.0, false, 0.0, false, false);
-            fighter.fastshift(L2CValue::Ptr(sub_specialhi_Main as *const () as _))
+            return fighter.fastshift(L2CValue::Ptr(sub_specialhi_Main as *const () as _));
         }
-        else if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_TRANSITION_TERM_ID_HOLD) {
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_TRANSITION_TERM_ID_HOLD) {
             if MotionModule::is_end(fighter.module_accessor) && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
                 fighter.change_status(
                     L2CValue::I32(*FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_HOLD),
                     L2CValue::Bool(true)
                 );
-                return 1.into()
-            }
-            else {
-                return 0.into()
+                return 1.into();
             }
         }
-        else if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_TRANSITION_TERM_ID_END) {
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_TRANSITION_TERM_ID_END) {
             if MotionModule::is_end(fighter.module_accessor) {
                 fighter.change_status(
                     L2CValue::I32(*FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END),
                     L2CValue::Bool(false)
                 );
-                return 1.into()
+                return 1.into();
             }
-            else {
-                return 0.into()
-            }
-        }
-        else {
-            return 0.into()
         }
     }
-    else if !link_situation_helper(fighter).get_bool() || (link_situation_helper(fighter).get_bool() && fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND) {
+    else if !link_situation_helper(fighter).get_bool() || fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
         if !link_situation_helper(fighter).get_bool() {
             if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_AIR {
-                return 0.into()
+                return 0.into();
             }
-            return 0.into()
         }
         else if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
             if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_AIR {
-                return 0.into()
+                return 0.into();
             }
-            return 0.into()
         }
-        else if StatusModule::is_changing(fighter.module_accessor) {
+        if StatusModule::is_changing(fighter.module_accessor) {
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_TRANSITION_TERM_ID_HOLD);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_TRANSITION_TERM_ID_END);
             GroundModule::set_cliff_check(fighter.module_accessor, app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES));
@@ -132,77 +121,75 @@ unsafe extern "C" fn specialhi_Main(fighter: &mut L2CFighterCommon) -> L2CValue 
             else {
                 MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi"), 0.0, 1.0, false, 0.0, false, false);
             }
-            fighter.fastshift(L2CValue::Ptr(sub_specialhi_Main as *const () as _))
-        }
-        else {
-            return 0.into()
+            return fighter.fastshift(L2CValue::Ptr(sub_specialhi_Main as *const () as _));
         }
     }
     else {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-        GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
+        GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         fighter.set_situation(L2CValue::I32(*SITUATION_KIND_GROUND));
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_start"), 0.0, 1.0, false, 0.0, false, false);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_FLAG_GROUND);
-        return 0.into()
     }
+    0.into()
 }
 
 unsafe extern "C" fn sub_specialhi_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !fighter.sub_transition_group_check_air_cliff().get_bool() {
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_TRANSITION_TERM_ID_HOLD) {
-            if MotionModule::is_end(fighter.module_accessor) && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-                fighter.change_status(
-                    L2CValue::I32(*FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_HOLD),
-                    L2CValue::Bool(true)
-                );
-            }
-        }
-        else {
-            if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_TRANSITION_TERM_ID_END) {
-                if MotionModule::is_end(fighter.module_accessor) {
-                    fighter.change_status(
-                        L2CValue::I32(*FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END),
-                        L2CValue::Bool(false)
-                    );
-                    return 1.into()
-                }
-            }
-            if MotionModule::is_end(fighter.module_accessor) {
-                fighter.change_status(
-                    L2CValue::I32(*FIGHTER_STATUS_KIND_FALL_SPECIAL),
-                    L2CValue::Bool(false)
-                );
-            }
-            else {
-                if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
-                    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_FLAG_RESET_SPEED_MAX_X) {
-                        if KineticModule::get_kinetic_type(fighter.module_accessor) == *FIGHTER_KINETIC_TYPE_LINK_SPECIAL_AIR_HI {
-                            let rslash_end_air_accel_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("rslash_end_air_accel_x_mul"));
-                            fighter.clear_lua_stack();
-                            lua_args!(fighter, FIGHTER_KINETIC_TYPE_LINK_SPECIAL_AIR_HI, rslash_end_air_accel_x_mul);
-                            app::sv_kinetic_energy::set_accel_x_mul(fighter.lua_state_agent);
-                            let rslash_air_max_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("rslash_air_max_x_mul"));
-                            let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
-                            let rslash_end_air_max_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("rslash_end_air_max_x"));
-                            let mul_x_speed_max = ((rslash_end_air_max_x / air_speed_x_stable) / rslash_air_max_x_mul);
-                            fighter.clear_lua_stack();
-                            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, mul_x_speed_max);
-                            app::sv_kinetic_energy::mul_x_speed_max(fighter.lua_state_agent);
-                            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_FLAG_RESET_SPEED_MAX_X);
-                            return 0.into()
-                        }
-                    }
-                    return 0.into()
-                }
-                fighter.change_status(
-                    L2CValue::I32(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL),
-                    L2CValue::Bool(false)
-                );
-            }
+    if fighter.sub_transition_group_check_air_cliff().get_bool() {
+        return 1.into();
+    }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_TRANSITION_TERM_ID_HOLD) {
+        if MotionModule::is_end(fighter.module_accessor) && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+            fighter.change_status(
+                L2CValue::I32(*FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_HOLD),
+                L2CValue::Bool(true)
+            );
         }
     }
-    return 1.into()
+    else {
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_TRANSITION_TERM_ID_END) {
+            if MotionModule::is_end(fighter.module_accessor) {
+                fighter.change_status(
+                    L2CValue::I32(*FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END),
+                    L2CValue::Bool(false)
+                );
+                return 1.into()
+            }
+        }
+        if MotionModule::is_end(fighter.module_accessor) {
+            fighter.change_status(
+                L2CValue::I32(*FIGHTER_STATUS_KIND_FALL_SPECIAL),
+                L2CValue::Bool(false)
+            );
+        }
+        else {
+            if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
+                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_FLAG_RESET_SPEED_MAX_X) {
+                    if KineticModule::get_kinetic_type(fighter.module_accessor) == *FIGHTER_KINETIC_TYPE_LINK_SPECIAL_AIR_HI {
+                        let rslash_end_air_accel_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("rslash_end_air_accel_x_mul"));
+                        fighter.clear_lua_stack();
+                        lua_args!(fighter, FIGHTER_KINETIC_TYPE_LINK_SPECIAL_AIR_HI, rslash_end_air_accel_x_mul);
+                        app::sv_kinetic_energy::set_accel_x_mul(fighter.lua_state_agent);
+                        let rslash_air_max_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("rslash_air_max_x_mul"));
+                        let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
+                        let rslash_end_air_max_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("rslash_end_air_max_x"));
+                        let mul_x_speed_max = ((rslash_end_air_max_x / air_speed_x_stable) / rslash_air_max_x_mul);
+                        fighter.clear_lua_stack();
+                        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, mul_x_speed_max);
+                        app::sv_kinetic_energy::mul_x_speed_max(fighter.lua_state_agent);
+                        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_FLAG_RESET_SPEED_MAX_X);
+                        return 0.into()
+                    }
+                }
+                return 0.into()
+            }
+            fighter.change_status(
+                L2CValue::I32(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL),
+                L2CValue::Bool(false)
+            );
+        }
+    }
+    0.into()
 }
 
 unsafe extern "C" fn link_situation_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -231,7 +218,7 @@ pub unsafe fn pre_specialhi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         fighter.module_accessor,
         app::SituationKind(*SITUATION_KIND_NONE),
         *FIGHTER_KINETIC_TYPE_UNIQ,
-        *GROUND_CORRECT_KIND_KEEP as u32,
+        *GROUND_CORRECT_KIND_GROUND as u32,
         app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
         true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_LINK_SPECIAL_HI_END_FLAG,
@@ -308,11 +295,6 @@ unsafe extern "C" fn specialhi_end_Main(fighter: &mut L2CFighterCommon) -> L2CVa
                 WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
                 fighter.shift(L2CValue::Ptr(sub_specialhi_end_Main as *const () as _));
                 return 0.into()
-            }
-        }
-        if frame < 46.0 {
-            if stick_x != 0.0 {
-                KineticModule::add_speed_outside(fighter.module_accessor, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &Vector3f { x: (motion_value * stick_x.signum()), y: 0.0, z: 0.0});
             }
         }
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL) {
