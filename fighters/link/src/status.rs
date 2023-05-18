@@ -5,7 +5,8 @@ use globals::*;
 pub fn install() {
     install_status_scripts!(
         pre_specialhi,
-        //specialhi,
+        specialhi,
+        special_hi_hold_main,
         pre_specialhi_end,
         specialhi_end,
         //special_n
@@ -205,6 +206,50 @@ unsafe extern "C" fn link_situation_helper(fighter: &mut L2CFighterCommon) -> L2
         }
     }
     return 0.into()
+}
+
+
+// FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_HOLD
+
+
+#[status_script(agent = "link", status = FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn special_hi_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_hi_hold"), 0.0, 1.0, false, 0.0, false, false);
+    if !StopModule::is_stop(fighter.module_accessor) {
+        sub_special_hi_hold(fighter, L2CValue::Bool(false));
+    }
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(sub_special_hi_hold as *const () as _));
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_hi_hold_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn sub_special_hi_hold(fighter: &mut L2CFighterCommon, arg2: L2CValue) -> L2CValue {
+    if !arg2.get_bool() {
+        return 0.into();
+    }
+    let rslash_charge_spd_div = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("rslash_charge_spd_div"));
+    WorkModule::add_float(fighter.module_accessor, 1.0 / rslash_charge_spd_div, *FIGHTER_LINK_STATUS_RSLASH_WORK_HOLD_FRAME);
+    let rslash_hold_frame_max = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("rslash_hold_frame"));
+    if !MotionModule::is_end(fighter.module_accessor) {
+        if !ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+            let frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_WORK_HOLD_FRAME);
+            if frame < rslash_hold_frame_max as f32 {
+                return 0.into();
+            }
+        }
+    }
+    fighter.change_status_req(*FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, true);
+    1.into()
+}
+
+unsafe extern "C" fn special_hi_hold_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.sub_transition_group_check_air_cliff().get_bool() {
+        return 1.into();
+    }
+    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+        fighter.change_status_req(*FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, false);
+        return 1.into();
+    }
+    0.into()
 }
 
 
