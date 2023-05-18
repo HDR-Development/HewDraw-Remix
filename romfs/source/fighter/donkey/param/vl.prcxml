@@ -25,7 +25,7 @@
   </list>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">28.25</float>
+      <float hash="p1_y">23.5</float>
     </struct>
   </list>
   <list hash="param_special_n">
@@ -38,7 +38,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="y_spd_air">1.1</float>
+      <float hash="y_spd_air">0.7</float>
       <float hash="x_acl_ground">0.05</float>
       <float hash="x_dcl_ground">0.04</float>
       <float hash="x_spd_max_ground">1.15</float>

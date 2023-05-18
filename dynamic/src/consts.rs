@@ -225,6 +225,7 @@ pub mod vars {
             pub const LAST_ATTACK_HIT_LOCATION_X: i32 = 0x0016;
             pub const LAST_ATTACK_HIT_LOCATION_Y: i32 = 0x0017;
             pub const LAST_ATTACK_HIT_LOCATION_Z: i32 = 0x0018;
+            pub const ECB_CENTER_Y_OFFSET: i32 = 0x0019;
         }
         pub mod status {
             // flags
@@ -245,6 +246,7 @@ pub mod vars {
 
             pub const IS_JAB_LOCK_ROLL: i32 = 0x1000;
             pub const IS_SPIKE: i32 = 0x1001;
+            pub const DAMAGE_FLY_RESET_TRIGGER: i32 = 0x1002;
 
             pub const SUICIDE_THROW_CAN_CLATTER: i32 = 0x1000;
 
@@ -297,6 +299,7 @@ pub mod vars {
             // flag
             pub const BEAKBOMB_ACTIVE: i32 = 0x0100;
             pub const BAYONET_ACTIVE: i32 = 0x0101;
+            pub const FLUTTER_ENABLED: i32 = 0x0102;
 
             // int
             pub const HUD_DISPLAY_TIME: i32 = 0x0100;
@@ -342,10 +345,17 @@ pub mod vars {
         }
     }
 
+    pub mod diddy {
+        pub mod instance {
+            pub const DISABLE_SPECIAL_S: i32 = 0x0100;
+        }
+    }
+
     // Note: Terry starts his flags on 0xXX5X instead due to also using the shotos generic flags.
     pub mod dolly {
         pub mod instance {
             pub const SUPER_CANCEL: i32 = 0x0150;
+            pub const DISABLE_SPECIAL_S: i32 = 0x0151;
         }
         pub mod status {
             // flags
@@ -413,10 +423,17 @@ pub mod vars {
         }
     }
 
+    pub mod eflame {
+        pub mod instance {
+            // flags
+            pub const DISABLE_SPECIAL_HI: i32 = 0x0100;
+        }
+    }
+
     pub mod elight {
         pub mod instance {
             // flags
-            pub const DISABLE_SPECIAL_HI_JUMP: i32 = 0x0100;
+            pub const DISABLE_SPECIAL_HI: i32 = 0x0100;
             pub const DISABLE_SPECIAL_S:       i32 = 0x0101;
         }
         pub mod status {
@@ -470,6 +487,11 @@ pub mod vars {
     }
 
     pub mod ike {
+        pub mod instance {
+            // flags
+            pub const DISABLE_SPECIAL_S: i32 = 0x0100;
+
+        }
         pub mod status {
             // flags
             pub const IS_QUICK_DRAW_INSTAKILL: i32 = 0x1100;
@@ -479,7 +501,7 @@ pub mod vars {
     pub mod inkling {
         pub mod status {
             // flags
-            pub const IS_ENABLE_SPECIAL_S_JUMP_EARLY_CANCEL: i32 = 0x1100;
+
         }
     }
 
@@ -644,6 +666,7 @@ pub mod vars {
             pub const IS_CURRENT_ATTACK_LW3_SOUL_FIRE: i32 = 0x0100;
             pub const TUMBLE_START: i32 = 0x0101;
             pub const IS_IN_TUMBLE: i32 = 0x0102;
+            pub const DISABLE_SPECIAL_S: i32 = 0x0103;
         }
         pub mod status {
             // floats
@@ -657,9 +680,15 @@ pub mod vars {
         }
     }
 
+    pub mod plizardon {
+        pub mod instance {
+            pub const DISABLE_SPECIAL_S: i32 = 0x0100;
+        }
+    }
+
     pub mod pzenigame {
         pub mod instance {
-            pub const WITHDRAW_FRAME: i32 = 0x0100;
+            
         }
     }
 
@@ -693,6 +722,7 @@ pub mod vars {
             pub const IS_TARGET_COMBO_1:      i32 = 0x0103;
             pub const IS_TARGET_COMBO_2:      i32 = 0x0104;
             pub const IS_CURRENT_HADOKEN_EX:  i32 = 0x0105;
+            pub const DISABLE_SPECIAL_S:      i32 = 0x0106;
 
             // ints
             pub const REPEAT_COUNT_LW:      i32 = 0x0100;
@@ -987,6 +1017,12 @@ pub mod vars {
         }
     }
 
+    pub mod krool {
+        pub mod instance {
+            //ints
+            pub const SPECIAL_HI_FUEL: i32 = 0x0110;
+        }
+    }
 }
 
 pub mod statuses {

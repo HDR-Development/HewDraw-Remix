@@ -26,8 +26,60 @@ pub fn install() {
         main_attack,
         wait_pre,
         //wait_main,
-        landing_main
+        landing_main,
+        init_special_s,
+        init_special_s_command
     );
+    smashline::install_agent_init_callbacks!(ken_init);
+}
+
+// Prevents sideB from being used again if it has already been used once in the current airtime
+unsafe extern "C" fn should_use_special_s_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_S) {
+        false.into()
+    } else {
+        true.into()
+    }
+}
+
+// Re-enables the ability to use sideB when connecting to ground or cliff
+unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD]) {
+        VarModule::off_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_S);
+    }
+    true.into()
+}
+
+#[smashline::fighter_init]
+fn ken_init(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        // set the callbacks on fighter init
+        if fighter.kind() == *FIGHTER_KIND_KEN {
+            fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
+            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
+        }
+    }
+}
+
+// FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND //
+
+#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+pub unsafe fn init_special_s_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_S);
+    }
+    original!(fighter)
+}
+
+// FIGHTER_STATUS_KIND_SPECIAL_S //
+
+#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+pub unsafe fn init_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
+        VarModule::on_flag(fighter.battle_object, vars::shotos::instance::DISABLE_SPECIAL_S);
+    }
+    original!(fighter)
 }
 
 // FIGHTER_STATUS_KIND_TURN_DASH //

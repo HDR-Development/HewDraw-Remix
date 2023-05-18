@@ -119,6 +119,7 @@ unsafe fn daisy_special_hi_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 28.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_AIR_STOP);
     }
     frame(lua_state, 31.0);
     if is_excute(fighter) {
@@ -187,6 +188,7 @@ unsafe fn daisy_special_air_hi_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 28.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_AIR_STOP);
     }
     frame(lua_state, 31.0);
     if is_excute(fighter) {

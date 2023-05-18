@@ -21,7 +21,14 @@ extern "Rust" {
 #[fighter_frame( agent = FIGHTER_KIND_KEN )]
 pub fn ken_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        shotos_common(fighter);
+        MeterModule::update(fighter.battle_object, false);
+        utils::ui::UiManager::set_ex_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+        utils::ui::UiManager::set_ex_meter_info(
+            fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+            MeterModule::meter(fighter.object()),
+            ParamModule::get_float(fighter.object(), ParamType::Common, "meter_max_damage"),
+            MeterModule::meter_per_level(fighter.object())
+        );
     }
 }
 
@@ -29,6 +36,7 @@ pub fn ken_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub fn ken_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
+        shotos_common(fighter);
 		ken_frame(fighter);
     }
 }

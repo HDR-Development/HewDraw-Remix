@@ -155,11 +155,7 @@ unsafe extern "C" fn sub_specialhi_end_Main(fighter: &mut L2CFighterCommon) -> L
                 }
             }
             else {
-                if GroundModule::can_entry_cliff(fighter.module_accessor) == 1 && fighter.global_table[STICK_Y].get_f32() > -0.66 {
-                    fighter.change_status(
-                        L2CValue::I32(*FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE),
-                        L2CValue::Bool(false)
-                    );
+                if fighter.sub_transition_group_check_air_cliff().get_bool() {
                     return 1.into()
                 }
             }
