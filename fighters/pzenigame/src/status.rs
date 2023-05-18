@@ -9,8 +9,16 @@ pub unsafe fn end_run(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
+#[status_script(agent = "pzenigame", status = FIGHTER_PZENIGAME_STATUS_KIND_SPECIAL_S_LOOP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn pzenigame_special_s_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = original!(fighter);
+    DamageModule::set_damage_lock(fighter.module_accessor, false);
+    ret
+}
+
 pub fn install() {
     install_status_scripts!(
-        end_run
+        end_run,
+        pzenigame_special_s_loop_main
     );
 }
