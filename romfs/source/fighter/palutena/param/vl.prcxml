@@ -8,10 +8,18 @@
   <list hash="param_special_n">
     <struct index="0">
       <int hash="special_n_discharge_frame">24</int>
+      <int hash="special_n_shootspan_frame">999</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_autoaimbullet">
+    <struct index="0">
+      <float hash="speed">3.0</float>
+      <int hash="life">30</int>
+      <int hash="is_penetration">0</int>
+    </struct>
   </list>
   <list hash="param_special_hi">
     <struct index="0">

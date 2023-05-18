@@ -2,6 +2,39 @@
 use super::*;
 
 
+#[acmd_script( agent = "palutena", script = "game_specialn", category = ACMD_GAME, low_priority )]
+unsafe fn palutena_special_n_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        SEARCH(fighter, 0, 0, Hash40::new("bust"), 80.0, 0.0, 0.0, 0.0, None, None, None, *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIEB, *COLLISION_PART_MASK_BODY_HEAD, false);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        if WorkModule::is_flag(boma, *FIGHTER_PALUTENA_STATUS_SPECIAL_N_FLAG_TARGET_EXIST){
+            FT_MOTION_RATE(fighter, 0.75);
+        }
+        search!(fighter, *MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR_ALL);
+    }
+}
+
+#[acmd_script( agent = "palutena", script = "game_specialairn", category = ACMD_GAME, low_priority )]
+unsafe fn palutena_special_air_n_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        SEARCH(fighter, 0, 0, Hash40::new("bust"), 80.0, 0.0, 0.0, 0.0, None, None, None, *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIEB, *COLLISION_PART_MASK_BODY_HEAD, false);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        if WorkModule::is_flag(boma, *FIGHTER_PALUTENA_STATUS_SPECIAL_N_FLAG_TARGET_EXIST){
+            FT_MOTION_RATE(fighter, 0.75);
+        }
+        search!(fighter, *MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR_ALL);
+    }
+}
 
 
 #[acmd_script( agent = "palutena", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
@@ -238,6 +271,8 @@ unsafe fn palutena_special_air_lw_reflect_effect(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        palutena_special_n_game,
+        palutena_special_air_n_game,
         palutena_special_lw_game,
         palutena_special_air_lw_game,
         palutena_special_lw_reflect_game,
