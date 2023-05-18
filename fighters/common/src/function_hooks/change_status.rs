@@ -136,6 +136,12 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         && next_status == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_FALL {
             next_status = *FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END;
         }
+        // Prevent jumping out of Minecart when out of jumps
+        if boma.kind() == *FIGHTER_KIND_PICKEL
+        && next_status == *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_JUMP
+        && boma.get_num_used_jumps() >= boma.get_jump_count_max() {
+            return 0;
+        }
     }
     original!()(boma, next_status, clear_buffer)
 }
