@@ -124,12 +124,32 @@ unsafe fn ken_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ken", script = "effect_attacklw4", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attacklw4(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("toer"), 0, 0, -2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("ken_attack_arc2"), Hash40::new("ken_attack_arc2"), Hash40::new("top"), 1, 1.5, 0, 180, 180, -5, 1, true, *EF_FLIP_YZ, 0.5);
+        LAST_EFFECT_SET_RATE(fighter, 2);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT_FLIP(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("sys_whirlwind_r"), Hash40::new("top"), -1, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_NONE);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         ken_attack_s4_s_game,
         game_attackhi4,
         effect_attackhi4,
         ken_attack_lw4_game,
+        effect_attacklw4
     );
 }
 
