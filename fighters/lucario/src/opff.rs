@@ -38,12 +38,43 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     extreme_speed_cancel(boma, status_kind);
     nspecial_cancels(boma, status_kind, situation_kind, cat[1]);
+    special_s(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
 
     // Magic Series
     magic_series(boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
+}
+
+unsafe fn special_s(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+    if ![
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+    ].contains(&status_kind) {
+        return;
+    }
+    if situation_kind == *SITUATION_KIND_AIR {
+        let mut ground_brake = WorkModule::get_param_float(boma, hash40("ground_brake"), 0);
+        let speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) * PostureModule::lr(boma);
+        let speed_y = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        if speed_y > 0.0 {
+            KineticModule::add_speed(boma, &Vector3f::new(0.0, -ground_brake / 2.0, 0.0));
+        }
+        if speed_x > 0.0 {
+            let mut new_brake = ground_brake;
+            if speed_x < ground_brake {
+                new_brake = speed_x;
+            }
+            KineticModule::add_speed(boma, &Vector3f::new(-new_brake, 0.0, 0.0));
+        }
+        if speed_x < 0.0 {
+            let mut new_brake = ground_brake;
+            if speed_x > -ground_brake {
+                new_brake = -speed_x;
+            }
+            KineticModule::add_speed(boma, &Vector3f::new(ground_brake, 0.0, 0.0));
+        }
+    }
 }
 
 unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
@@ -215,6 +246,6 @@ pub fn lucario_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn lucario_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }
