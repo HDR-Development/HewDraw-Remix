@@ -31,6 +31,14 @@ fn lucario_init(fighter: &mut L2CFighterCommon) {
         }
         fighter.global_table[globals::CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(lucario_check_special_command as *const () as _));
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_COMMAND);
+        if fighter.kind() == *FIGHTER_KIND_LUCARIO {
+            MeterModule::reset(fighter.battle_object);
+            let meter_max = ParamModule::get_float(fighter.battle_object, ParamType::Common, "meter_max_damage");
+            MeterModule::add(fighter.battle_object, meter_max);
+            VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+            VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 0);
+            VarModule::set_float(fighter.battle_object, vars::lucario::instance::METER_PASSIVE_RATE, 10.0/60.0);
+        }
     }
 }
 

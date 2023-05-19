@@ -16,6 +16,7 @@ unsafe fn lucario_special_s_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, true);
         CATCH(fighter, 0, Hash40::new("top"), 4.5, 0.0, 6.0, 8.0, Some(0.0), Some(6.0), Some(1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
         CATCH(fighter, 1, Hash40::new("top"), 4.5, 0.0, 6.0, 8.0, Some(0.0), Some(6.0), Some(1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
     }
@@ -23,6 +24,7 @@ unsafe fn lucario_special_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         GrabModule::set_rebound(boma, false);
+        MeterModule::watch_damage(fighter.battle_object, false);
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
@@ -47,6 +49,7 @@ unsafe fn lucario_special_air_s_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, true);
         CATCH(fighter, 0, Hash40::new("top"), 4.5, 0.0, 6.0, 8.0, Some(0.0), Some(6.0), Some(1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
         CATCH(fighter, 1, Hash40::new("top"), 4.5, 0.0, 6.0, 8.0, Some(0.0), Some(6.0), Some(1.0), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
     }
@@ -54,6 +57,7 @@ unsafe fn lucario_special_air_s_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         GrabModule::set_rebound(boma, false);
+        MeterModule::watch_damage(fighter.battle_object, false);
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
@@ -95,6 +99,7 @@ unsafe fn lucario_special_air_s_throw_game(fighter: &mut L2CAgentBase) {
         let rot = 270 - kb_angle;
         VarModule::set_int(fighter.battle_object, vars::lucario::status::FORCE_PALM_ROT_ANGLE, rot as i32);
         
+        MeterModule::watch_damage(fighter.battle_object, true);
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 13.0, kb_angle, 66, 0, 10, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_THROW);
     }
     frame(lua_state, 23.0);
@@ -111,6 +116,7 @@ unsafe fn lucario_special_air_s_throw_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 25.0);
     if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, false);
         AttackModule::clear_all(fighter.module_accessor);
     }
     frame(lua_state, 55.0);
@@ -245,6 +251,8 @@ unsafe fn lucario_special_hi_move_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 3.0);
     if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, false);
+        MeterModule::watch_damage(fighter.battle_object, true);
         ATTACK(fighter, 0, 0, Hash40::new("hip"), 0.5, 367, 100, 0, 35, 6.0, 0.0, 0.0, 0.0, None, None, None, 0.75, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
     }
     frame(lua_state, 16.0);
@@ -260,10 +268,12 @@ unsafe fn lucario_special_hi_end_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     wait(lua_state, 1.0);
     if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, true);
         ATTACK(fighter, 0, 0, Hash40::new("hip"), 6.0, 70, 10, 0, 96, 8.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, false);
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 6.0);
@@ -279,10 +289,12 @@ unsafe fn lucario_special_air_hi_end_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     wait(lua_state, 1.0);
     if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, true);
         ATTACK(fighter, 0, 0, Hash40::new("hip"), 6.0, 70, 10, 0, 96, 8.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13313725f6), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, false);
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 24.0);

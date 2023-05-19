@@ -529,6 +529,16 @@ pub mod vars {
     // }
 
     pub mod lucario {
+        pub mod instance {
+            // flags
+            pub const METER_IS_BURNOUT: i32 = 0x0100;
+
+            // ints
+            pub const METER_PAUSE_REGEN_FRAME: i32 = 0x0100;
+
+            // float
+            pub const METER_PASSIVE_RATE: i32 = 0x0100;
+        }
         pub mod status {
             // ints
             pub const FORCE_PALM_ROT_ANGLE: i32 = 0x1100;
