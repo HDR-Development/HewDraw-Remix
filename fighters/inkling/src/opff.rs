@@ -95,31 +95,11 @@ unsafe fn roller_jump_cancel(boma: &mut BattleObjectModuleAccessor) {
     {
         boma.check_jump_cancel(true);
     }
-    if boma.is_motion(Hash40::new("special_s_jump_end")) {
-        VarModule::on_flag(
-            boma.object(),
-            vars::inkling::status::IS_ENABLE_SPECIAL_S_JUMP_EARLY_CANCEL,
-        )
-    } else if boma.is_motion(Hash40::new("special_air_s_jump_end")) {
-        if VarModule::is_flag(
-            boma.object(),
-            vars::inkling::status::IS_ENABLE_SPECIAL_S_JUMP_EARLY_CANCEL,
-        ) && MotionModule::frame(boma) > 6.0
-        {
+    if boma.is_motion(Hash40::new("special_air_s_jump_end")){
+        if MotionModule::frame(boma) > 6.0 {
             CancelModule::enable_cancel(boma);
         }
-    } else {
-        VarModule::off_flag(
-            boma.object(),
-            vars::inkling::status::IS_ENABLE_SPECIAL_S_JUMP_EARLY_CANCEL,
-        )
     }
-    /*
-    if WorkModule::is_flag(boma, *FIGHTER_INKLING_STATUS_SPECIAL_S_FLAG_JUMP) {
-        DamageModule::add_damage(boma, 1.0, 0);
-        WorkModule::unable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH)
-    }
-    */
 }
 
 unsafe fn special_cancel(boma: &mut BattleObjectModuleAccessor) {
@@ -154,7 +134,7 @@ pub unsafe fn moveset(
 pub fn inkling_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-        inkling_frame(fighter)
+		inkling_frame(fighter);
     }
 }
 

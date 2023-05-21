@@ -12,4 +12,5 @@ unsafe fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub fn install() {
     smashline::install_status_scripts!(guard_on, guard);
+    special_s::install();
 }

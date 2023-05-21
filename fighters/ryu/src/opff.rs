@@ -20,7 +20,14 @@ extern "Rust" {
 #[fighter_frame( agent = FIGHTER_KIND_RYU )]
 pub fn ryu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        shotos_common(fighter);
+        MeterModule::update(fighter.battle_object, false);
+        utils::ui::UiManager::set_ex_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+        utils::ui::UiManager::set_ex_meter_info(
+            fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+            MeterModule::meter(fighter.object()),
+            ParamModule::get_float(fighter.object(), ParamType::Common, "meter_max_damage"),
+            MeterModule::meter_per_level(fighter.object())
+        );
     }
 }
 
@@ -28,6 +35,7 @@ pub fn ryu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub fn ryu_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
+        shotos_common(fighter);
 		ryu_frame(fighter);
     }
 }
