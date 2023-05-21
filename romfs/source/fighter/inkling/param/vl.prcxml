@@ -36,6 +36,56 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+    <list size="4" hash="param_special_s">
+    <struct index="0">
+      <float hash="start_y_mul_on_air">0.7</float>
+      <int hash="min_run_frame">10</int>
+      <float hash="deccel_x_on_ground">0.016</float>
+      <float hash="deccel_x_on_air">0.012</float>
+      <float hash="max_run_speed_x_on_ground">2</float>
+      <float hash="max_run_speed_x_on_air">1.75</float>
+      <float hash="min_walk_speed_x_on_ground">0.68</float>
+      <float hash="min_walk_speed_x_on_air">0.55</float>
+      <float hash="min_no_ink_walk_speed_x_on_ground">0.35</float>
+      <float hash="min_no_ink_walk_speed_x_on_air">0.25</float>
+      <float hash="max_speed_y_mul">1.2</float>
+      <float hash="accel_y_mul">1.2</float>
+      <float hash="change_walk_speed">1</float>
+      <float hash="change_rate_weight">1</float>
+      <float hash="change_walk_speed_no_ink">1</float>
+      <float hash="change_rate_weight_no_ink">0.75</float>
+      <float hash="enable_attack_speed_x">0.8</float>
+      <float hash="attack_mul_on_max_speed_x">2</float>
+      <float hash="speed_x_mul_on_hit">0.8</float>
+      <float hash="turn_deccel_x">0.1</float>
+      <int hash="unable_turn_frame">20</int>
+      <float hash="stick_deccel_on_air">0.01</float>
+      <float hash="max_ground_angle">50</float>
+      <float hash="max_ground_angle_jump">30</float>
+      <float hash="0x1559e8634c">1.2</float>
+      <float hash="0x1772d23163">0.8</float>
+      <float hash="0x18bc6e99ef">0.8</float>
+      <float hash="0x1aaa9020cd">1.2</float>
+      <float hash="speed_x_on_wall">0.5</float>
+      <float hash="speed_y_on_wall">1.75</float>
+      <int hash="interrupt_frame_on_wall">50</int>
+      <int hash="enable_finish_frame">15</int>
+      <int hash="enable_no_ink_finish_frame">30</int>
+      <float hash="end_deccel_x_on_ground">0.06</float>
+      <float hash="end_deccel_x_on_air">0.02</float>
+      <float hash="end_jump_speed_y">2.2</float>
+      <float hash="end_jump_deccel_x">0.02</float>
+      <float hash="end_jump_accel_x">0.03</float>
+      <float hash="end_jump_max_speed_x">1</float>
+      <float hash="end_jump_accel_y">0.1</float>
+      <float hash="end_jump_max_speed_y">1.2</float>
+      <int hash="interrupt_frame">480</int>
+      <float hash="create_rollerink_distance">7.5</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="height_mul_on_ground">0.95</float>
