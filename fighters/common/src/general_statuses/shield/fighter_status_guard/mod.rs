@@ -119,7 +119,7 @@ pub unsafe fn is_continue_just_shield_count(fighter: &mut L2CFighterCommon) -> L
         hash40("common"),
         hash40("continue_just_shield_count"),
     );
-    L2CValue::Bool(dbg!(just_shield_count) <= max_count)
+    L2CValue::Bool(just_shield_count <= max_count)
 }
 
 #[skyline::hook(replace = L2CFighterCommon_FighterStatusGuard__landing_effect_control)]

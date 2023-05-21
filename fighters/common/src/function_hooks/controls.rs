@@ -657,13 +657,13 @@ unsafe fn map_controls_hook(
         let analog_setting = (*mappings.add(player_idx as usize))._34.last_mut().unwrap();
 
         if *analog_setting & 6 == 2 {
-            if controller.left_trigger > 0.1 {
+            if controller.left_trigger > 0.33 {
                 *analog_setting = 2;
             } else {
                 *analog_setting = 0;
             }
         } else if *analog_setting & 6 == 4 {
-            if controller.right_trigger > 0.1 {
+            if controller.right_trigger > 0.33 {
                 *analog_setting = 4;
             } else {
                 *analog_setting = 0;
@@ -671,11 +671,11 @@ unsafe fn map_controls_hook(
         }
 
         if *analog_setting & 6 == 0 {
-            if (controller.left_trigger > 0.1 || controller.current_buttons.real_digital_l())
+            if (controller.left_trigger > 0.33 || controller.current_buttons.real_digital_l())
                 && (*mappings.add(player_idx as usize)).gc_l == InputKind::Guard
             {
                 *analog_setting = 2;
-            } else if (controller.right_trigger > 0.1
+            } else if (controller.right_trigger > 0.33
                 || controller.current_buttons.real_digital_r())
                 && (*mappings.add(player_idx as usize)).gc_r == InputKind::Guard
             {
@@ -686,7 +686,7 @@ unsafe fn map_controls_hook(
         let analog_value = match *analog_setting & 6 {
             2 => {
                 (*out).buttons |= Buttons::Guard;
-                if controller.current_buttons.real_digital_r() || controller.right_trigger > 0.1 {
+                if controller.current_buttons.real_digital_r() || controller.right_trigger > 0.33 {
                     (*out).buttons |= Buttons::GuardHold;
                 }
 
@@ -698,7 +698,7 @@ unsafe fn map_controls_hook(
             }
             4 => {
                 (*out).buttons |= Buttons::Guard;
-                if controller.current_buttons.real_digital_l() || controller.left_trigger > 0.1 {
+                if controller.current_buttons.real_digital_l() || controller.left_trigger > 0.33 {
                     (*out).buttons |= Buttons::GuardHold;
                 }
 
@@ -711,12 +711,12 @@ unsafe fn map_controls_hook(
             _ => 0.0,
         };
 
-        let analog_value = if analog_value <= 0.1 {
+        let analog_value = if analog_value <= 0.33 {
             0.0
         } else if analog_value >= 0.8 {
             1.0
         } else {
-            (analog_value - 0.1) / 0.7
+            (analog_value - 0.33) / 0.53
         };
 
         let bits = (analog_value * 1023.0) as u16;

@@ -45,12 +45,9 @@ pub fn install() {
         wait_pre,
         //wait_main,
         landing_main,
-<<<<<<< HEAD
-        guard
-=======
+        guard,
         init_special_s,
         init_special_s_command
->>>>>>> dev
     );
     smashline::install_agent_init_callbacks!(ryu_init);
 }

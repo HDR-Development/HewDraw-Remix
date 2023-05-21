@@ -172,11 +172,12 @@ pub unsafe fn check_guard_attack_special_hi(
             hash40("common"),
             hash40("jump_flick_y"),
         );
+        let flick_y = fighter.global_table[FLICK_Y].get_i32();
         let stick_y = fighter.global_table[STICK_Y].get_f32();
         if WorkModule::is_flag(
             fighter.module_accessor,
             *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_SPECIAL_HI,
-        ) || (special_stick_y <= stick_y && stick_y < jump_flick_y as f32)
+        ) || (special_stick_y <= stick_y && flick_y < jump_flick_y)
         {
             if WorkModule::is_enable_transition_term(
                 fighter.module_accessor,
@@ -382,18 +383,19 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
             fighter.change_status(FIGHTER_STATUS_KIND_JUMP_SQUAT.into(), true.into());
             return true.into();
         }
+        
+
+        if fighter.is_button_trigger(Buttons::Parry) {
+            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
+            VarModule::on_flag(
+                fighter.object(),
+                vars::common::instance::IS_PARRY_FOR_GUARD_OFF,
+            );
+            return true.into();
+        }
     }
 
-    if fighter.is_button_trigger(Buttons::Parry) {
-        fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
-        VarModule::on_flag(
-            fighter.object(),
-            vars::common::instance::IS_PARRY_FOR_GUARD_OFF,
-        );
-        true.into()
-    } else {
-        false.into()
-    }
+    false.into()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_guard_main_common)]

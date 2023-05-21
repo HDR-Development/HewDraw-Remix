@@ -363,16 +363,6 @@ unsafe fn status_GuardDamage_common(fighter: &mut L2CFighterCommon, arg: L2CValu
             false,
             app::enSEType(0),
         );
-        CancelModule::enable_cancel(fighter.module_accessor);
-        WorkModule::unable_transition_term_group(
-            fighter.module_accessor,
-            *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ESCAPE,
-        );
-        WorkModule::unable_transition_term_group(
-            fighter.module_accessor,
-            *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD,
-        );
-        ControlModule::clear_command(fighter.module_accessor, false);
     }
     if !StopModule::is_stop(fighter.module_accessor) {
         sub_GuardDamageUniq(fighter, false.into());
