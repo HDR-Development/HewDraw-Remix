@@ -72,12 +72,8 @@ unsafe extern "C" fn specialhi_Main(fighter: &mut L2CFighterCommon) -> L2CValue 
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_FLAG_GROUND);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_TRANSITION_TERM_ID_HOLD);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_TRANSITION_TERM_ID_END);
-            GroundModule::set_cliff_check(fighter.module_accessor, app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES));
-            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-            GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-            fighter.set_situation(L2CValue::I32(*SITUATION_KIND_AIR));
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi"), 0.0, 1.0, false, 0.0, false, false);
-            return fighter.fastshift(L2CValue::Ptr(sub_specialhi_Main as *const () as _));
+            fighter.change_status_req(*FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, false);
+            return 1.into();
         }
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_TRANSITION_TERM_ID_HOLD) {
             if MotionModule::is_end(fighter.module_accessor) && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
