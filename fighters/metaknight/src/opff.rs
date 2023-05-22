@@ -84,7 +84,7 @@ unsafe fn drill_rush_on_hit_cancel(fighter: &mut smash::lua2cpp::L2CFighterCommo
 
 // Lengthen sword
 unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
-	let long_sword_scale = Vector3f{x: 1.0, y: 1.0, z: 1.0};
+	let long_sword_scale = Vector3f{x: 1.0, y: 0.85, z: 1.0};
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("havel"), &long_sword_scale);
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("haver"), &long_sword_scale);
 }				 
