@@ -6,24 +6,20 @@ unsafe fn younglink_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.385);
-    }
+    FT_MOTION_RATE(fighter, 1.54/(5.0-1.0));
     frame(lua_state, 5.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
         ArticleModule::generate_article(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_BOOMERANG, false, 0);
     }
     frame(lua_state, 27.0);
+    FT_MOTION_RATE(fighter, 2.0);
     if is_excute(fighter) {
         ArticleModule::shoot(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_BOOMERANG, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
-        FT_MOTION_RATE(fighter, 2.0);
     }
     frame(lua_state, 31.0);
-    if is_excute (fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-    }
-    
+    FT_MOTION_RATE(fighter, 1.0);
+
 }
 
 #[acmd_script( agent = "younglink", script = "game_specialairs1" , category = ACMD_GAME , low_priority)]
@@ -31,21 +27,19 @@ unsafe fn younglink_special_air_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.385);
-    }
+    FT_MOTION_RATE(fighter, 1.54/(5.0-1.0));
     frame(lua_state, 5.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
         if !ArticleModule::is_exist(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_BOOMERANG) {
             ArticleModule::generate_article(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_BOOMERANG, false, 0);
         }
-    }
+    }   
     frame(lua_state, 27.0);
     if is_excute(fighter) {
         ArticleModule::shoot(boma, *FIGHTER_YOUNGLINK_GENERATE_ARTICLE_BOOMERANG, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
     }
-    
+
 }
 
 #[acmd_script( agent = "younglink", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
@@ -72,14 +66,12 @@ unsafe fn younglink_special_hi_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 66.0);
+    FT_MOTION_RATE(fighter, 9.0/(70.0-66.0));
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LINK_STATUS_RSLASH_FLAG_RESET_SPEED_MAX_X);
-        FT_MOTION_RATE(fighter, 9.0/(70.0-66.0))
     }
     frame(lua_state, 70.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-    }
+    FT_MOTION_RATE(fighter, 1.0);
 
 }
 
