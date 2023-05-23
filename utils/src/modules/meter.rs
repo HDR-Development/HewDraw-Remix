@@ -293,6 +293,8 @@ impl MeterModule {
     pub extern "Rust" fn reset(object: *mut BattleObject) {
         let module = require_meter_module!(object);
         module.current_meter = 0.0;
+        module.meter_cap = 6;
+        module.meter_per_level = 50.0;
         module.damage_gain_mul = 1.0;
         module.has_hit = false;
         module.last_levels_added = 0;

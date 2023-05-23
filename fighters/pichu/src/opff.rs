@@ -16,12 +16,12 @@ unsafe fn charge_state_increase(fighter: &mut smash::lua2cpp::L2CFighterCommon, 
     MeterModule::set_meter_cap(boma.object(), 2);
     MeterModule::set_meter_per_level(boma.object(), 25.0);
     utils::ui::UiManager::set_ff_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
-        utils::ui::UiManager::set_ff_meter_info(
-            fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
-            MeterModule::meter(fighter.object()),
-            (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())),
-            MeterModule::meter_per_level(fighter.object())
-        );
+    utils::ui::UiManager::set_ff_meter_info(
+        fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+        MeterModule::meter(fighter.object()),
+        (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())),
+        MeterModule::meter_per_level(fighter.object())
+    );
     if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 0 {
         if MeterModule::level(boma.object()) == 2 {
             let charge_state_time = ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time");
@@ -117,6 +117,9 @@ unsafe fn charge_state_reset(boma: &mut BattleObjectModuleAccessor) {
         *FIGHTER_STATUS_KIND_DEAD,
         *FIGHTER_STATUS_KIND_REBIRTH]) {
             VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, 0);
+            if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 1 {
+                MeterModule::drain_direct(boma.object(), 999.0);
+            }
         }
 }
 

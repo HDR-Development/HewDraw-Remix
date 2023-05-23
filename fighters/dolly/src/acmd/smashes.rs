@@ -19,7 +19,6 @@ unsafe fn dolly_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
-        MeterModule::watch_damage(fighter.battle_object, true);
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
             if MeterModule::drain(fighter.battle_object, 2) {
                 VarModule::on_flag(fighter.battle_object, vars::dolly::status::IS_SHATTER_STRIKE);
@@ -43,6 +42,7 @@ unsafe fn dolly_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, true);
         if VarModule::is_flag(fighter.battle_object, vars::dolly::status::IS_SHATTER_STRIKE) {
             // Air-only    
             ATTACK(fighter, 0, 0, Hash40::new("legl"), 11.0, 361, 10, 0, 10, 4.5, 0.0, -3.0, 0.0, None, None, None, 1.25, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
@@ -199,7 +199,6 @@ unsafe fn dolly_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        MeterModule::watch_damage(fighter.battle_object, true);
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
         VarModule::off_flag(fighter.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE);
@@ -230,6 +229,7 @@ unsafe fn dolly_attack_hi4_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.000);
+        MeterModule::watch_damage(fighter.battle_object, true);
          if VarModule::is_flag(fighter.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE) {
             ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 11.0, 60, 40, 0, 50, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
             ATTACK(fighter, 1, 0, Hash40::new("armr"), 11.0, 60, 40, 0, 50, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.85, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
@@ -277,7 +277,6 @@ unsafe fn dolly_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let mut fire_kick_speed = 0.85;
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        MeterModule::watch_damage(fighter.battle_object, true);
         VarModule::off_flag(fighter.battle_object, vars::dolly::status::IS_USE_FIRE_KICK);
         VarModule::off_flag(fighter.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE);
      }
@@ -299,7 +298,7 @@ unsafe fn dolly_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        
+        MeterModule::watch_damage(fighter.battle_object, true);
         FT_MOTION_RATE(fighter, 1.000);
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);

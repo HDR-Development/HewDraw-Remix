@@ -7,7 +7,6 @@ unsafe fn ryu_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        MeterModule::watch_damage(fighter.battle_object, true);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
         VarModule::off_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
         VarModule::off_flag(fighter.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE);
@@ -55,6 +54,7 @@ unsafe fn ryu_attack_s4_s_game(fighter: &mut L2CAgentBase) {
             }
         }
         else{
+            MeterModule::watch_damage(fighter.battle_object, true);
             if VarModule::is_flag(fighter.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE) {
                 ATTACK(fighter, 0, 0, Hash40::new("kneel"), 10.0, 361, 45, 0, 60, 4.0, -1.5, -2.0, -1.5, Some(-1.5), Some(1.5), Some(-1.5), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);
                 ATTACK(fighter, 1, 0, Hash40::new("kneel"), 10.0, 361, 45, 0, 60, 4.0, -6.2, -2.0, -1.5, Some(-6.2), Some(1.5), Some(-1.5), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);
@@ -219,7 +219,6 @@ unsafe fn ryu_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        MeterModule::watch_damage(fighter.battle_object, true);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
         VarModule::off_flag(fighter.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE);
         if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
@@ -236,7 +235,8 @@ unsafe fn ryu_attack_hi4_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-         if VarModule::is_flag(fighter.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE) {
+        MeterModule::watch_damage(fighter.battle_object, true);
+        if VarModule::is_flag(fighter.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE) {
             ATTACK(fighter, 0, 0, Hash40::new("armr"), 6.0, 77, 80, 0, 80, 4.5, 3.0, 0.0, 0.0, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
             ATTACK(fighter, 1, 0, Hash40::new("armr"), 6.0, 77, 80, 0, 80, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
             ATTACK(fighter, 2, 0, Hash40::new("shoulderr"), 6.0, 77, 80, 0, 80, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
@@ -261,6 +261,7 @@ unsafe fn ryu_attack_hi4_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         AttackModule::clear(boma, 3, false);
+        MeterModule::watch_damage(fighter.battle_object, true);
         if VarModule::is_flag(fighter.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE) {
             ATTACK(fighter, 0, 0, Hash40::new("armr"), 5.0, 77, 80, 0, 80, 4.5, 3.0, 0.0, 0.0, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
             ATTACK(fighter, 1, 0, Hash40::new("armr"), 5.0, 77, 80, 0, 80, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, -4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
@@ -300,7 +301,6 @@ unsafe fn ryu_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        MeterModule::watch_damage(fighter.battle_object, true);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
         VarModule::off_flag(fighter.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE);
         if VarModule::is_flag(fighter.battle_object, vars::shotos::instance::IS_MAGIC_SERIES_CANCEL) {
@@ -314,6 +314,7 @@ unsafe fn ryu_attack_lw4_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, true);
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         if VarModule::is_flag(fighter.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE) {
             VarModule::off_flag(fighter.battle_object, vars::shotos::status::SHOULD_COMBOS_SCALE);
