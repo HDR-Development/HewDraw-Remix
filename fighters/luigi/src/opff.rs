@@ -4,12 +4,12 @@ use super::*;
 use globals::*;
 
  
-//unsafe fn luigi_missle_ledgegrab(fighter: &mut L2CFighterCommon) {
-//    if fighter.is_status_one_of(&[*FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_RAM, *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END]) {
-//        // allows ledgegrab during Luigi Missile
-//        fighter.sub_transition_group_check_air_cliff();
-//    }
-//}
+unsafe fn luigi_missle_ledgegrab(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END) {
+       // allows ledgegrab during Luigi Missile
+       fighter.sub_transition_group_check_air_cliff();
+    }
+}
 
 unsafe fn special_hi_proper_landing(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_LUIGI_STATUS_KIND_SPECIAL_HI_DROP) {
@@ -20,7 +20,7 @@ unsafe fn special_hi_proper_landing(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    //luigi_missle_ledgegrab(fighter);
+    luigi_missle_ledgegrab(fighter);
     special_s_charge_init(fighter, status_kind);
     special_hi_proper_landing(fighter);
 }

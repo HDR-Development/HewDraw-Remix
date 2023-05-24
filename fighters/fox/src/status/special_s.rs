@@ -93,7 +93,7 @@ pub unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> 
             }
             else if step == *FIGHTER_FOX_ILLUSION_STEP_END {
                 if situation == *SITUATION_KIND_AIR {
-                    fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), true.into());
+                    fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), true.into());
                     return 0.into();
                 }
                 if is_end
