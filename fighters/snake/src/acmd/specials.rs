@@ -263,6 +263,189 @@ unsafe fn game_cypher_detach(fighter: &mut L2CAgentBase) {
     }
 }
 
+//new self-stick scripts
+#[acmd_script( agent = "snake", script = "game_speciallwselfstick", category = ACMD_GAME, low_priority )]
+unsafe fn snake_down_special_floor(fighter : &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 8.0);
+    if is_excute(fighter) {
+        ArticleModule::change_status(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4, *WEAPON_SNAKE_C4_STATUS_KIND_STICK_TARGET, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+#[acmd_script( agent = "snake", script = "game_speciallwsquatselfstick", category = ACMD_GAME, low_priority )]
+unsafe fn snake_down_special_crouch_floor(fighter : &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 7.0);
+    if is_excute(fighter) {
+        ArticleModule::change_status(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4, *WEAPON_SNAKE_C4_STATUS_KIND_STICK_TARGET, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+#[acmd_script( agent = "snake", script = "game_specialairlwselfstick", category = ACMD_GAME, low_priority )]
+unsafe fn snake_down_special_air_floor(fighter : &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 8.0);
+    if is_excute(fighter) {
+        ArticleModule::change_status(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4, *WEAPON_SNAKE_C4_STATUS_KIND_STICK_TARGET, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+
+#[acmd_script( agent = "snake", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
+unsafe fn snake_side_special_game(fighter : &mut L2CAgentBase) {
+    if is_excute(fighter) {
+        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
+    }
+    frame(fighter.lua_state_agent, 1.0);
+    if is_excute(fighter) {
+        CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK);
+    }
+    frame(fighter.lua_state_agent, 3.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_NIKITA, false, 0);
+    }
+    // frame(lua_state_agent, 25.0);
+    // if is_excute(fighter) {
+    //     FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 8, 4);
+    // }
+    // frame(lua_state_agent, 27.0);
+    // if is_excute(fighter) {
+    //     ArticleModule::set_flag(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_NIKITA, true, *WEAPON_SNAKE_NIKITA_INSTANCE_WORK_ID_FLAG_LIGHT_ON);
+    // }
+    frame(fighter.lua_state_agent, 24.0);
+    if is_excute(fighter) {
+        ArticleModule::set_flag(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_NIKITA, true, *WEAPON_SNAKE_NIKITA_INSTANCE_WORK_ID_FLAG_SHOOT);
+    }
+    frame(fighter.lua_state_agent, 83.0);
+    if is_excute(fighter) {
+        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_NIKITA, ArticleOperationTarget(0));
+    }
+}
+#[acmd_script( agent = "snake", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
+unsafe fn snake_side_special_air_game(fighter : &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 3.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_NIKITA, false, 0);
+    }
+    // frame(fighter.lua_state_agent, 10.0);
+    // if is_excute(fighter) {
+    //     GroundModule::set_rhombus_offset(fighter.module_accessor, &Vector2f{x:0.0, y:3.0});
+    // }
+    frame(fighter.lua_state_agent, 24.0);
+    if is_excute(fighter) {
+        ArticleModule::set_flag(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_NIKITA, true, *WEAPON_SNAKE_NIKITA_INSTANCE_WORK_ID_FLAG_SHOOT);
+    }
+    // frame(fighter.lua_state_agent, 70.0);
+    // if is_excute(fighter) {
+    //     GroundModule::set_rhombus_offset(fighter.module_accessor, &Vector2f{x:0.0, y:0.0});
+    // }
+    frame(fighter.lua_state_agent, 83.0);
+    if is_excute(fighter) {
+        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_NIKITA, ArticleOperationTarget(0));
+    }
+}
+#[acmd_script( agent = "snake", script = "expression_specialsstart", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn snake_side_special_expr(fighter : &mut L2CAgentBase) {
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
+    }
+    frame(fighter.lua_state_agent, 21.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_explosion"), 0, false, 0);
+    }
+}
+#[acmd_script( agent = "snake", script = "expression_specialairsstart", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn snake_side_special_air_expr(fighter : &mut L2CAgentBase) {
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
+    }
+    // frame(lua_state_agent, 25.0);
+    // if is_excute(fighter) {
+    //     ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_walk_hv"), 0, false);
+    // }
+    frame(fighter.lua_state_agent, 21.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_explosion"), 0, false, 0);
+    }
+}
+#[acmd_script( agent = "snake", script = "sound_specialsstart", category = ACMD_SOUND, low_priority )]
+unsafe fn snake_side_special_snd(fighter : &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_snake_special_s07"))
+    }
+    frame(fighter.lua_state_agent, 24.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_snake_special_s01"));
+    }
+    frame(fighter.lua_state_agent, 41.0);
+    if macros::is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_snake_special_s02"));
+    }
+    wait(fighter.lua_state_agent, 11.0);
+    if macros::is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_snake_special_s03"));
+    }
+    frame(fighter.lua_state_agent, 80.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_snake_special_s07"))
+    }
+}#[acmd_script( agent = "snake", script = "sound_specialairsstart", category = ACMD_SOUND, low_priority )]
+unsafe fn snake_side_special_air_snd(fighter : &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_snake_special_s07"))
+    }
+    frame(fighter.lua_state_agent, 24.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_snake_special_s01"));
+    }
+    frame(fighter.lua_state_agent, 41.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_snake_special_s02"));
+    }
+    wait(fighter.lua_state_agent, 11.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_snake_special_s03"));
+    }
+    frame(fighter.lua_state_agent, 80.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_snake_special_s07"))
+    }
+}
+#[acmd_script( agent = "snake", script = "effect_specialsstart", category = ACMD_EFFECT, low_priority )]
+unsafe fn snake_side_special_eff(fighter : &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 3.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), -3, 10, 0, 0, 0, 0, 0.4, true);
+    }
+    frame(fighter.lua_state_agent, 24.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        // EFFECT(fighter, Hash40::new("sys_bananagun_shot"), Hash40::new("haver"), 3, 1, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_bananagun_shot"), Hash40::new("haver"), 0, 0.5, 3, 0, 0, 0, 0.4, true);
+    }
+    wait(fighter.lua_state_agent, 1.0);
+    if is_excute(fighter) {
+        // EFFECT(fighter, Hash40::new("sys_erace_smoke"), Hash40::new("haver"), 4.5, 1, 0, 0, 0, 0, 0.2, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_erace_smoke"), Hash40::new("haver"), 0, 1, 4.5, 0, 0, 0, 0.2, true);
+    }
+}
+#[acmd_script( agent = "snake", script = "effect_specialairsstart", category = ACMD_EFFECT, low_priority )]
+unsafe fn snake_side_special_air_eff(fighter : &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 3.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), -3, 11, -2, 0, 0, 0, 0.4, true);
+    }
+    frame(fighter.lua_state_agent, 24.0);
+    if is_excute(fighter) {
+        // EFFECT(fighter, Hash40::new("sys_bananagun_shot"), Hash40::new("haver"), 3, 1, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_bananagun_shot"), Hash40::new("haver"), 0, 0.5, 3, 0, 0, 0, 0.4, true);
+    }
+    wait(fighter.lua_state_agent, 3.0);
+    if is_excute(fighter) {
+        // EFFECT(fighter, Hash40::new("sys_erace_smoke"), Hash40::new("haver"), 4.5, 1, 0, 0, 0, 0, 0.2, 0, 0, 0, 0, 0, 0, false);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_erace_smoke"), Hash40::new("haver"), 0, 1, 4.5, 0, 0, 0, 0.2, true);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         game_cypher_detach,
@@ -274,6 +457,17 @@ pub fn install() {
         snake_special_air_lw_blast_game,
         snake_special_n_start_game,
         snake_special_air_n_start_game,
+        snake_down_special_floor,
+        snake_down_special_crouch_floor,
+        snake_down_special_air_floor,
+        snake_side_special_game,
+        snake_side_special_air_game,
+        snake_side_special_expr,
+        snake_side_special_air_expr,
+        snake_side_special_snd,
+        snake_side_special_air_snd,
+        snake_side_special_eff,
+        snake_side_special_air_eff,
     );
 }
 

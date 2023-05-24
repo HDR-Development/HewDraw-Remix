@@ -4,7 +4,7 @@ use super::*;
 use globals::*;
 
  
-unsafe fn grab_walk(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat2: i32) {
+/*unsafe fn grab_walk(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat2: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_CATCH_WAIT {
         let motion_value = 0.65;
         let mut motion_vec = Vector3f{x: 0.0, y: 0.0, z: 0.0};
@@ -16,7 +16,7 @@ unsafe fn grab_walk(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat
         }
         KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
     }
-}
+}*/
 
 // Snake Grenade Counter reset
 unsafe fn grenade_counter_reset(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32) {
@@ -27,10 +27,52 @@ unsafe fn grenade_counter_reset(boma: &mut BattleObjectModuleAccessor, id: usize
     }
 }
 
+// handles fsmash transitioning into the second/third hits (reimpl of AParticularUser's snake_frame)
+unsafe fn fsmash_combo(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    if [*FIGHTER_STATUS_KIND_ATTACK_S4].contains(&status_kind) {
+        if !VarModule::is_flag(boma.object(), vars::snake::instance::KNIFE_COMBO_IS_BUFFERED) {
+            if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK)
+            || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SMASH) {
+                VarModule::on_flag(boma.object(), vars::snake::instance::KNIFE_COMBO_IS_BUFFERED);
+            }
+        }
+        if VarModule::is_flag(boma.object(), vars::snake::instance::KNIFE_COMBO_ENABLE)
+        && VarModule::is_flag(boma.object(), vars::snake::instance::KNIFE_COMBO_IS_BUFFERED) {
+            VarModule::off_flag(boma.object(), vars::snake::instance::KNIFE_COMBO_ENABLE);
+            VarModule::off_flag(boma.object(), vars::snake::instance::KNIFE_COMBO_IS_BUFFERED);
+            if VarModule::get_int(boma.object(), vars::snake::instance::KNIFE_COMBO_COUNT) == 0 {
+                VarModule::set_int(boma.object(), vars::snake::instance::KNIFE_COMBO_COUNT, 1);
+                ControlModule::reset_trigger(boma);
+                MotionModule::change_motion(boma, Hash40::new("attack_s4_s2"), 0.0, 1.0, false, 0.0, false, false);
+            }
+            else {
+                MotionModule::change_motion(boma, Hash40::new("attack_s4_s3"), 0.0, 1.0, false, 0.0, false, false);
+            }
+        }
+    }
+}
+
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
 
-    grab_walk(boma, status_kind, cat[1]);
+    //grab_walk(boma, status_kind, cat[1]);
+    fsmash_combo(boma, status_kind);
     grenade_counter_reset(boma, id, status_kind);
+
+}
+
+#[weapon_frame( agent = WEAPON_KIND_SNAKE_C4 )]
+fn snake_c4_frame(weapon: &mut L2CFighterBase) {
+    unsafe {
+        if StatusModule::status_kind(weapon.module_accessor) == *WEAPON_SNAKE_C4_STATUS_KIND_ESTABLISH_TARGET{
+            if GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_ALL as u32)
+            || GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
+                StatusModule::change_status_request_from_script(weapon.module_accessor, *WEAPON_SNAKE_C4_STATUS_KIND_DROP_FALL, false);
+            }
+        }
+        else if StatusModule::status_kind(weapon.module_accessor) == *WEAPON_SNAKE_C4_STATUS_KIND_DROP_FALL {
+            StatusModule::change_status_request_from_script(weapon.module_accessor, *WEAPON_SNAKE_C4_STATUS_KIND_ESTABLISH_TARGET, false);
+        }
+    }
 }
 
 #[utils::macros::opff(FIGHTER_KIND_SNAKE )]
