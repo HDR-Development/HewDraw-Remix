@@ -138,7 +138,7 @@ impl ExMeter {
         let bar_total = per_level * 2.0;
 
         let number = current / bar_total;
-        let number = number.clamp(0.0, max) as usize;
+        let number = number.clamp(0.0, 5.0) as usize;
 
         let percent = if number == 5 {
             1.0
