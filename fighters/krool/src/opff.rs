@@ -32,7 +32,7 @@ unsafe fn fuel_reset(boma: &mut BattleObjectModuleAccessor) {
         *FIGHTER_STATUS_KIND_ENTRY,
         *FIGHTER_STATUS_KIND_DEAD,
         *FIGHTER_STATUS_KIND_REBIRTH]) {
-        VarModule::set_int(boma.object(), vars::krool::instance::SPECIAL_HI_FUEL, 540);
+        VarModule::set_int(boma.object(), vars::krool::instance::SPECIAL_HI_FUEL, 180);
     }
 }
 
