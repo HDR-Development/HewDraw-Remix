@@ -19,22 +19,6 @@ unsafe fn flame_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
 
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     flame_cancel(boma, status_kind, situation_kind, frame);
-
-    // Frame Data
-    //frame_data(boma, status_kind, motion_kind, frame);
-}
-
-unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-        if motion_kind == hash40("attack_air_n") {
-            if frame < 8.0 {
-                MotionModule::set_rate(boma, 1.75);
-            }
-            if frame >= 8.0 {
-                MotionModule::set_rate(boma, 1.0);
-            }
-        }
-    }
 }
 
 #[utils::macros::opff(FIGHTER_KIND_PLIZARDON )]
