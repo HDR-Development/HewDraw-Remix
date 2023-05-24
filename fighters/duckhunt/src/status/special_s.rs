@@ -1,0 +1,91 @@
+use super::*;
+use globals::*;
+
+
+// FIGHTER_STATUS_KIND_SPECIAL_S
+
+#[status_script(agent = "duckhunt", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
+        GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new("special_air_s"),
+            0.0,
+            1.0,
+            false,
+            0.0,
+            false,
+            false
+        );
+    }
+    else {
+        GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new("special_s"),
+            0.0,
+            1.0,
+            false,
+            0.0,
+            false,
+            false
+        );
+    }
+    WorkModule::set_int(fighter.module_accessor, -1, *FIGHTER_DUCKHUNT_INSTANCE_WORK_ID_INT_SPECIAL_S_SHOOT_TIMER);
+    let disable_shoot_can_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_s"), hash40("disable_shoot_can_frame"));
+    WorkModule::set_int(fighter.module_accessor, disable_shoot_can_frame, *FIGHTER_DUCKHUNT_INSTANCE_WORK_ID_INT_SPECIAL_S_DISABLE_SHOOT_CAN_FRAME);
+    WorkModule::enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S);
+    WorkModule::enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N);
+    WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_DUCKHUNT_INSTANCE_WORK_ID_INT_SPECIAL_S_FRAME);
+    ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_DUCKHUNT_GENERATE_ARTICLE_RETICLE, Hash40::new("special_s"), true, -1.0);
+    // if !ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DUCKHUNT_GENERATE_ARTICLE_CLAY) {
+    //     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DUCKHUNT_INSTANCE_WORK_ID_FLAG_RELEASE_CLAY);
+    //     ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_DUCKHUNT_GENERATE_ARTICLE_CLAY, false, -1);
+    // }
+    fighter.main_shift(special_s_main_loop)
+}
+
+unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.sub_transition_group_check_air_cliff().get_bool() {
+        return 1.into();
+    }
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
+        }
+    }
+    if MotionModule::is_end(fighter.module_accessor) {
+        if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_GROUND {
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
+        }
+        else {
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_WAIT, false);
+        }
+        return 0.into();
+    }
+    if !StatusModule::is_changing(fighter.module_accessor) {
+        if StatusModule::is_situation_changed(fighter.module_accessor) {
+            if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+                GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_s"), -1.0, 1.0, 0.0, false, false);
+            }
+            else {
+                GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_s"), -1.0, 1.0, 0.0, false, false);
+            }
+        }
+    }
+    0.into()
+}
+
+pub fn install() {
+    install_status_scripts!(
+        special_s_main
+    );
+}

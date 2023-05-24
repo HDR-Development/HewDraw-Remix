@@ -46,11 +46,56 @@ unsafe fn duckhunt_special_n_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
 }
 
+#[acmd_script( agent = "duckhunt", script = "game_specials", category = ACMD_GAME, low_priority )]
+unsafe fn game_specials(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 1.2);
+    frame(lua_state, 5.833);
+    if is_excute(fighter) {
+        if !ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DUCKHUNT_GENERATE_ARTICLE_CLAY) {
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DUCKHUNT_INSTANCE_WORK_ID_FLAG_RELEASE_CLAY);
+            ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_DUCKHUNT_GENERATE_ARTICLE_CLAY, false, -1);
+        }
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_DUCKHUNT_INSTANCE_WORK_ID_FLAG_RELEASE_CLAY);
+    }
+    FT_MOTION_RATE(fighter, 1.06);
+}
+
+#[acmd_script( agent = "duckhunt", script = "game_specialairs", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialairs(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 1.2);
+    frame(lua_state, 5.833);
+    if is_excute(fighter) {
+        if !ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DUCKHUNT_GENERATE_ARTICLE_CLAY) {
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DUCKHUNT_INSTANCE_WORK_ID_FLAG_RELEASE_CLAY);
+            ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_DUCKHUNT_GENERATE_ARTICLE_CLAY, false, -1);
+        }
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_DUCKHUNT_INSTANCE_WORK_ID_FLAG_RELEASE_CLAY);
+    }
+    frame(lua_state, 40.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         duckhunt_special_hi_game,
         duckhunt_special_n_game,
         duckhunt_special_lw_game,
+        game_specials,
+        game_specialairs
     );
 }
 
