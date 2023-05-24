@@ -105,6 +105,16 @@ unsafe fn up_special_proper_landing(fighter: &mut smash::lua2cpp::L2CFighterComm
     }
 }
 
+unsafe fn attack_100_end_early(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
+    if motion_kind != hash40("attack_100") {
+        return;
+    }
+    if frame >= 19.0 
+    || (frame >= 4.0 && !fighter.is_button_on(Buttons::AttackRaw)) {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_100_end"), 0.0, 1.0, false, 0.0, false, false);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
 
     dim_cape_early_attack_cancel(boma, status_kind, frame);
@@ -113,6 +123,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     reset_flags(boma, id, status_kind, situation_kind);
     sword_length(boma);
     up_special_proper_landing(fighter);
+    attack_100_end_early(fighter, boma, motion_kind, frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_METAKNIGHT )]

@@ -33,6 +33,7 @@ unsafe fn metaknight_attack_dash_game(fighter: &mut L2CAgentBase) {
 unsafe fn game_attack100end(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    AttackModule::clear_all(boma);
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 361, 100, 0, 40, 5.0, 0.0, 8.0, 11.0, None, None, None, 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -66,11 +67,22 @@ unsafe fn effect_attack100end(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "metaknight", script = "sound_attack100start", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_attack100start(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        // PLAY_STATUS(fighter, Hash40::new("vc_metaknight_attack100"));
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         metaknight_attack_dash_game,
         game_attack100end,
-        effect_attack100end
+        effect_attack100end,
+        sound_attack100start
     );
 }
 

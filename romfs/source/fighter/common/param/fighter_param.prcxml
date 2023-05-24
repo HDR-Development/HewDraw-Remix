@@ -926,7 +926,7 @@
       <float hash="run_accel_mul">0.08</float>
       <float hash="run_accel_add">0.02</float>
       <float hash="run_speed_max">2.1</float>
-      <int hash="jump_squat_frame">3</int>
+      <int hash="jump_squat_frame">5</int>
       <float hash="jump_speed_x_max">1.415</float>
       <float hash="jump_initial_y">11.44</float>
       <float hash="mini_jump_y">14.32</float>
