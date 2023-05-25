@@ -678,6 +678,12 @@ pub mod vars {
         }
     }
 
+    pub mod pikmin {
+        pub mod instance {
+            pub const SPECIAL_HI_CANCEL_ESCAPE_AIR: i32 = 0x0100;
+        }
+    }
+
     pub mod plizardon {
         pub mod instance {
             pub const DISABLE_SPECIAL_S: i32 = 0x0100;

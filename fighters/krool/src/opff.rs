@@ -25,6 +25,17 @@ unsafe fn jetpack_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32
     }
 }
 
+unsafe fn fuel_reset(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_WIN,
+        *FIGHTER_STATUS_KIND_LOSE,
+        *FIGHTER_STATUS_KIND_ENTRY,
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_REBIRTH]) {
+        VarModule::set_int(boma.object(), vars::krool::instance::SPECIAL_HI_FUEL, 180);
+    }
+}
+
 // K. Rool Side B Crown Item Grab
 unsafe fn crownerang_item_grab(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
     if [
@@ -64,6 +75,7 @@ pub unsafe fn moveset(
     frame: f32,
 ) {
     jetpack_cancel(boma, status_kind, cat[0]);
+    fuel_reset(boma);
     //crownerang_item_grab(boma, status_kind, cat[0]);
 }
 

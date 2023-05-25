@@ -95,7 +95,8 @@ unsafe fn roller_jump_cancel(boma: &mut BattleObjectModuleAccessor) {
     {
         boma.check_jump_cancel(true);
     }
-    if boma.is_motion(Hash40::new("special_air_s_jump_end")){
+    if boma.is_motion(Hash40::new("special_air_s_jump_end"))
+    && !StatusModule::is_changing(boma) {
         if MotionModule::frame(boma) > 6.0 {
             CancelModule::enable_cancel(boma);
         }

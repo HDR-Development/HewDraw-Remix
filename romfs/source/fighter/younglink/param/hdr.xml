@@ -8,4 +8,7 @@
             <float hash="p2_y">8</float>
         </struct>
     </struct>
+    <struct hash="param_special_hi">
+        <float hash="start_x_mul">0.5</float>
+    </struct>
 </struct>
