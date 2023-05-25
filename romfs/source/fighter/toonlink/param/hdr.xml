@@ -9,4 +9,7 @@
         </struct>
     </struct>
     <int hash="triple_jump_lockout_frame">25</int>
+    <struct hash="param_special_hi">
+        <float hash="start_x_mul">0.5</float>
+    </struct>
 </struct>
