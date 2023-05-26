@@ -69,14 +69,8 @@ unsafe fn ganon_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.579);
-    frame(lua_state, 2.0);
-    FT_MOTION_RATE(fighter, 0.579);
-    frame(lua_state, 3.0);
-    FT_MOTION_RATE(fighter, 0.579);
-    frame(lua_state, 4.0);
-    FT_MOTION_RATE(fighter, 0.579);
     frame(lua_state, 19.0);
-    FT_MOTION_RATE(fighter, 1.000);
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 20.0);
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_XLU);
@@ -93,11 +87,14 @@ unsafe fn ganon_attack_hi3_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear(boma, 3, false);
         AttackModule::clear(boma, 4, false);
     }
-    wait(lua_state, 5.0);
+    frame(lua_state, 27.0);
+    FT_DESIRED_RATE2(fighter, 27.0, 47.0, 16.0);
     if is_excute(fighter) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         AttackModule::clear_all(boma);
     }
+    frame(lua_state, 47.0);
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 54.0);
     if is_excute(fighter) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
