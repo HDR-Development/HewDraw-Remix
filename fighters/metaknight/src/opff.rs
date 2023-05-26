@@ -28,20 +28,22 @@ unsafe fn flag_resets(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
             VarModule::on_flag(boma.object(), vars::metaknight::instance::UP_SPECIAL_HIT);
         } else if status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_ATTACK {
             VarModule::on_flag(boma.object(), vars::metaknight::instance::DOWN_SPECIAL_HIT);
-        }
-    }
-    if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-        if status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_RUSH || status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END {
+        } else if status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_RUSH || status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END {
             VarModule::on_flag(boma.object(), vars::metaknight::instance::SIDE_SPECIAL_HIT);
         }
     }
+    // if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+    //     if status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_RUSH || status_kind == *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END {
+    //         VarModule::on_flag(boma.object(), vars::metaknight::instance::SIDE_SPECIAL_HIT);
+    //     }
+    // }
 }
 
 // Transition to fall after side special rebound on hit/shield
 unsafe fn transition_fall(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_FALL_SPECIAL {
         if (boma.is_prev_status(*FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END) && VarModule::is_flag(boma.object(), vars::metaknight::instance::SIDE_SPECIAL_HIT))
-            || (boma.is_prev_status_one_of(&[*FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_END, *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_ATTACK]) && VarModule::is_flag(boma.object(), vars::metaknight::instance::DOWN_SPECIAL_HIT)) {
+        || (boma.is_prev_status_one_of(&[*FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_END, *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_ATTACK]) && VarModule::is_flag(boma.object(), vars::metaknight::instance::DOWN_SPECIAL_HIT)) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
         }
     }
@@ -110,7 +112,7 @@ unsafe fn attack_100_end_early(fighter: &mut smash::lua2cpp::L2CFighterCommon, b
         return;
     }
     if frame >= 19.0 
-    || (frame >= 4.0 && !fighter.is_button_on(Buttons::AttackRaw)) {
+    || (frame >= 10.0 && !fighter.is_button_on(Buttons::AttackRaw)) {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_100_end"), 0.0, 1.0, false, 0.0, false, false);
     }
 }
