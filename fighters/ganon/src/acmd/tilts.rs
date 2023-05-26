@@ -88,7 +88,7 @@ unsafe fn ganon_attack_hi3_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear(boma, 4, false);
     }
     frame(lua_state, 27.0);
-    FT_DESIRED_RATE2(fighter, 27.0, 47.0, 16.0);
+    FT_MOTION_RATE_RANGE(fighter, 27.0, 47.0, 16.0);
     if is_excute(fighter) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         AttackModule::clear_all(boma);
