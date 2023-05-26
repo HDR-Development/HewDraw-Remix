@@ -130,6 +130,18 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
             WorkModule::off_flag(boma, *FIGHTER_INKLING_STATUS_SPECIAL_S_FLAG_JUMP_END);
             return 0;
         }
+        // Prevents Daisy from floating out of upB
+        if boma.kind() == *FIGHTER_KIND_DAISY
+        && StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_HI
+        && next_status == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_FALL {
+            next_status = *FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END;
+        }
+        // Prevent jumping out of Minecart when out of jumps
+        if boma.kind() == *FIGHTER_KIND_PICKEL
+        && next_status == *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_JUMP
+        && boma.get_num_used_jumps() >= boma.get_jump_count_max() {
+            return 0;
+        }
     }
     original!()(boma, next_status, clear_buffer)
 }

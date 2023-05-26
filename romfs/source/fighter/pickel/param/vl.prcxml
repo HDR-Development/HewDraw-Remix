@@ -50,14 +50,10 @@
   </list>
   <list hash="param_trolley">
     <struct index="0">
-      <float hash="reaction_threshold_to_damage_s">0</float>
-      <float hash="reaction_threshold_to_damage_l">0</float>
       <float hash="reaction_threshold_to_damage_motion_s">0</float>
       <float hash="reaction_threshold_to_damage_motion_l">0</float>
     </struct>
     <struct index="1">
-      <float hash="reaction_threshold_to_damage_s">0</float>
-      <float hash="reaction_threshold_to_damage_l">0</float>
       <float hash="reaction_threshold_to_damage_motion_s">0</float>
       <float hash="reaction_threshold_to_damage_motion_l">0</float>
     </struct>
