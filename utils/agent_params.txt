@@ -24,3 +24,5 @@ pit: fighter/pit/param/hdr.prc
 pitb: fighter/pitb/param/hdr.prc
 toonlink: fighter/toonlink/param/hdr.prc
 younglink: fighter/younglink/param/hdr.prc
+daisy: fighter/daisy/param/hdr.prc
+miiswordsman: fighter/miiswordsman/param/hdr.prc
