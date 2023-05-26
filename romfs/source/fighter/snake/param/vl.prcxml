@@ -42,7 +42,7 @@
   </list>
   <list hash="param_c4">
     <struct index="0">
-      <int hash="stick_frame">9999</int>
+      <int hash="stick_frame">1200</int>
       <float hash="gravity_accel">0.088</float>
       <float hash="gravity_speed_limit">2.75</float>
       <float hash="drop_damage_rate">9999</float>
@@ -54,6 +54,6 @@
     <hash40 index="3">dummy</hash40>
   </list>
   <struct hash="param_private">
-    <int hash="appeal_wait_frame">9000</int>
+    <int hash="appeal_wait_frame">1200</int>
   </struct>
 </struct>

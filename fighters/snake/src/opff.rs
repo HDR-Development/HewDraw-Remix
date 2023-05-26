@@ -60,7 +60,7 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
 
 }
 
-#[weapon_frame( agent = WEAPON_KIND_SNAKE_C4 )]
+/*#[weapon_frame( agent = WEAPON_KIND_SNAKE_C4 )]
 fn snake_c4_frame(weapon: &mut L2CFighterBase) {
     unsafe {
         if StatusModule::status_kind(weapon.module_accessor) == *WEAPON_SNAKE_C4_STATUS_KIND_ESTABLISH_TARGET{
@@ -73,7 +73,7 @@ fn snake_c4_frame(weapon: &mut L2CFighterBase) {
             StatusModule::change_status_request_from_script(weapon.module_accessor, *WEAPON_SNAKE_C4_STATUS_KIND_ESTABLISH_TARGET, false);
         }
     }
-}
+}*/
 
 #[utils::macros::opff(FIGHTER_KIND_SNAKE )]
 pub fn snake_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

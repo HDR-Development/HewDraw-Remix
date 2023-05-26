@@ -5,16 +5,16 @@ use smashline::*;
 
 pub fn install() {
     install_status_scripts!(
-        snake_c4_status_pre,
+        // snake_c4_status_pre,
         // snake_c4_fall_status_main,
-        snake_down_special_start_status_main,
-        snake_down_special_start_status_end,
-        snake_down_special_ground_status_main,
-        snake_down_special_air_ground_status_main,
-        snake_down_special_ground_status_end,
-        snake_down_special_air_ground_status_end,
-        snake_down_special_status_main,
-        snake_landing_attack_status_main,
+        // snake_down_special_start_status_main,
+        // snake_down_special_start_status_end,
+        // snake_down_special_ground_status_main,
+        // snake_down_special_air_ground_status_main,
+        // snake_down_special_ground_status_end,
+        // snake_down_special_air_ground_status_end,
+        // snake_down_special_status_main,
+        // snake_landing_attack_status_main,
         snake_side_smash_status_main,
         snake_side_smash_status_end,
         snake_side_special_status_main,
@@ -83,6 +83,7 @@ unsafe fn snake_down_special_start_status_main(fighter: &mut L2CFighterCommon) -
     fighter.sub_shift_status_main(L2CValue::Ptr(special_lw_produce_main_loop as *const () as _))
 }
 pub unsafe fn special_lw_produce_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    //println!("prev status is {}, {}", StatusModule::prev_status_kind(fighter.module_accessor, 0), StatusModule::prev_status_kind(fighter.module_accessor, 1));
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_FLAG_SQUAT)
     && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_FLAG_SQUAT);
@@ -621,24 +622,28 @@ pub unsafe fn snake_down_taunt_wait_main_loop(fighter: &mut L2CFighterCommon) ->
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         return true.into()
-    }else if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+    }
+    else if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
     || ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
     || WorkModule::get_int(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_APPEAL_WORK_INT_WAIT_COUNTER) <= 0 {
         fighter.change_status(FIGHTER_SNAKE_STATUS_KIND_APPEAL_END.into(), false.into());
         return true.into()
     //place c4
-    }else if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) == *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW
+    }
+    else if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) == *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW
     && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
         if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4) {
             VarModule::on_flag(fighter.object(), vars::snake::instance::DTAUNT_C4_EXLPODE);
             fighter.change_status(FIGHTER_SNAKE_STATUS_KIND_APPEAL_END.into(), false.into());
-        }else {
+        }
+        else {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4, false, 0);
             ArticleModule::have(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4, Hash40::new("havel"), ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), 0, false);
             ArticleModule::shoot(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
         }
     //spawn grenade
-    }else if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) == *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N
+    }
+    else if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) == *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N
     && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
     && ArticleModule::is_generatable(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_GRENADE)
     && VarModule::get_int(fighter.object(), vars::snake::instance::DTAUNT_GRENADE_WAIT_COUNT) <= 0
@@ -667,7 +672,8 @@ pub unsafe fn snake_down_taunt_wait_main_loop(fighter: &mut L2CFighterCommon) ->
         // let article_id = LinkModule::get_node_object_id(fighter.module_accessor, *LINK_NO_CONSTRAINT);
         // let article_boma = sv_battle_object::module_accessor(article_id as u32);
         // LinkModule::set_model_constraint_target_joint(article_boma, Hash40::new("kneer"));
-    }else {
+    }
+    else {
         let velocity_x :f32 = PostureModule::lr(fighter.module_accessor) * ControlModule::get_stick_x(fighter.module_accessor);
         SET_SPEED_EX(fighter, velocity_x*0.6, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
@@ -692,7 +698,8 @@ unsafe fn snake_down_taunt_end_status_main(fighter: &mut L2CFighterCommon) -> L2
     if VarModule::is_flag(fighter.object(), vars::snake::instance::DTAUNT_C4_EXLPODE) {
         VarModule::off_flag(fighter.object(), vars::snake::instance::DTAUNT_C4_EXLPODE);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_end_explode"), 0.0, 1.0, false, 0.0, false, false);
-    }else {
+    }
+    else {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_end"), 0.0, 1.0, false, 0.0, false, false);
     }
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_APPEAL_FLAG_EXIT);
@@ -703,10 +710,12 @@ pub unsafe fn snake_down_taunt_end_main_loop(fighter: &mut L2CFighterCommon) -> 
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         return true.into()
-    }else if MotionModule::is_end(fighter.module_accessor) {
+    }
+    else if MotionModule::is_end(fighter.module_accessor) {
         fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         return true.into()
-    }else if CancelModule::is_enable_cancel(fighter.module_accessor) {
+    }
+    else if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
             return true.into()
         }

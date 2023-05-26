@@ -43,8 +43,8 @@ pub fn install(is_runtime: bool) {
     status::install();
     opff::install(is_runtime);
     use opff::*;
-    smashline::install_agent_frames!(
+    /*smashline::install_agent_frames!(
         snake_c4_frame
-    );
+    );*/
     smashline::install_agent_frame_callback!(c4_callback);
 }
