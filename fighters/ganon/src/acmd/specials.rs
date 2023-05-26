@@ -327,6 +327,7 @@ unsafe fn ganon_special_hi_effect(fighter: &mut L2CAgentBase) {
         EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 31.0);
+    /* vanilla electric effects
     for _ in 0..4 {
         if is_excute(fighter) {
             EFFECT(fighter, Hash40::new("ganon_attack_elec"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
@@ -334,6 +335,7 @@ unsafe fn ganon_special_hi_effect(fighter: &mut L2CAgentBase) {
         wait(fighter.lua_state_agent, 2.0);
     }
     frame(fighter.lua_state_agent, 42.0);
+    */
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("ganon_raijin_hold"), false, true);
     }
