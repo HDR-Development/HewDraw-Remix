@@ -1,11 +1,12 @@
 use super::*;
 use globals::*;
 // status script import
- 
+
+
 pub fn install() {
     install_status_scripts!(
         pre_specialhi,
-        //specialhi,
+        specialhi,
         pre_specialhi_end,
         specialhi_end,
         //special_n
@@ -14,9 +15,15 @@ pub fn install() {
 
 // FIGHTER_STATUS_KIND_SPECIAL_HI //
 
-
 #[status_script(agent = "link", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 pub unsafe fn pre_specialhi(fighter: &mut L2CFighterCommon, arg: u64) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+        let start_speed = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        let start_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi.start_x_mul");
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, start_speed * start_x_mul);
+        app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+    }
     let mask_flag = if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
         (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64
     } else {
