@@ -195,6 +195,67 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+
+#[acmd_script( agent = "tantan", script = "game_catch" , category = ACMD_GAME , low_priority)]
+unsafe fn catch_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE(fighter, 6.0/(15.0-1.0));
+    if is_excute(fighter) {
+        FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 3.5, 3.5);
+    }
+    frame(lua_state, 15.0);
+    FT_MOTION_RATE(fighter, 1.0);
+
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        GrabModule::set_rebound(boma, true);
+    }
+    wait(fighter.lua_state_agent, 1.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("top"), 4.0, 0.0, 7.5, 8.0, Some(0.0), Some(7.5), Some(10.5), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+    }
+    game_CaptureCutCommon(fighter);
+    wait(fighter.lua_state_agent, 2.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.250);
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(boma, false);
+    }
+}
+
+
+#[acmd_script( agent = "tantan", script = "sound_catch" , category = ACMD_SOUND , low_priority)]
+unsafe fn catch_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new_raw(0x1281c86397));
+    }
+    wait(lua_state, 7.0);
+    if is_excute(fighter) {
+        STOP_SE(fighter, Hash40::new_raw(0x1281c86397));
+    }
+    
+}
+
+#[acmd_script( agent = "tantan", script = "expression_catch" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn catch_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+	    ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, 0 as u32);
+    }
+}
+
+
 //Ram Ram attacks//
 #[acmd_script( agent = "tantan_punch3", script = "game_attackshort", category = ACMD_GAME, low_priority )]
 unsafe fn ramram_game_attackshort(fighter: &mut L2CAgentBase) {
@@ -691,6 +752,9 @@ pub fn install() {
         damageflyn_sound,
         damageflyroll_sound,
         damageflytop_sound,
+        catch_game,
+        catch_sound,
+        catch_expression,
 
         ramram_game_attackshort,
         ramram_game_attacklong,

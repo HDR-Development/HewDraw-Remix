@@ -5,12 +5,14 @@ use globals::*;
 pub fn install() {
     install_status_scripts!(
         pre_jump,
+        pre_jump_squat,
         
         tantan_attack_pre,
         tantan_attack_main,
 
         tantan_attack_s3_pre,
         tantan_attack_s3_main,
+        tantan_attack_s3_exec,
         
         /*
         tantan_attack_s4_start_pre,
@@ -22,6 +24,10 @@ pub fn install() {
         tantan_attack_air_pre,
         tantan_attack_air_end,
         tantan_attack_landing_exec,
+
+        tantan_catch_pre,
+        tantan_catch_main,
+        tantan_catch_pull_main,
         
         tantan_special_n_pre,
         tantan_special_n_main,
@@ -47,13 +53,14 @@ pub unsafe fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
         return 1.into()
     }
     else {
+
         if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_TANTAN_STATUS_KIND_ATTACK_JUMP {
             fighter.status_pre_Jump_sub_param(
                 L2CValue::I32(-1),
                 L2CValue::I32(-1),
                 L2CValue::I32(-1),
-                L2CValue::I32(*KINETIC_TYPE_NONE),
-                L2CValue::I32(*FS_SUCCEEDS_KEEP_EFFECT | *FS_SUCCEEDS_KEEP_SOUND | *FS_SUCCEEDS_KEEP_TRANSITION | *FS_SUCCEEDS_KEEP_CANCEL)
+                L2CValue::I32(*FIGHTER_KINETIC_TYPE_JUMP),
+                L2CValue::I32(*FS_SUCCEEDS_KEEP_EFFECT | *FS_SUCCEEDS_KEEP_SOUND | *FS_SUCCEEDS_KEEP_TRANSITION)
             );
         }
         else {
@@ -68,6 +75,17 @@ pub unsafe fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
         return 0.into()
     }
 }
+
+//Fixes bug related to pressing Jump and Catch at the same time results in an in-place wavedash
+#[status_script(agent = "tantan", status = FIGHTER_STATUS_KIND_JUMP_SQUAT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn pre_jump_squat(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_button_on(Buttons::Catch) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_CATCH, false);
+        return 1.into();
+    }
+    return original!(fighter);
+}
+
 
 //ARMS land, prevents ARMDashing
 #[status_script(agent = "tantan", status = FIGHTER_TANTAN_STATUS_KIND_ATTACK_LANDING_LIGHT, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
@@ -104,6 +122,12 @@ unsafe fn tantan_attack_s3_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe fn tantan_attack_s3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     return fighter.status_AttackS3_Main();
 }
+#[status_script(agent = "tantan", status = FIGHTER_STATUS_KIND_ATTACK_S3, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+unsafe fn tantan_attack_s3_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
+    WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
+    return 0.into();
+}
 
 //Fsmash//
 #[status_script(agent = "tantan", status = FIGHTER_STATUS_KIND_ATTACK_S4_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
@@ -133,6 +157,27 @@ unsafe fn tantan_attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "tantan", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn tantan_attack_air_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     return fighter.status_end_AttackAir();
+}
+
+
+//Grab//
+#[status_script(agent = "tantan", status = FIGHTER_STATUS_KIND_CATCH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn tantan_catch_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    return fighter.status_pre_Catch();
+}
+#[status_script(agent = "tantan", status = FIGHTER_STATUS_KIND_CATCH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn tantan_catch_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    return fighter.status_Catch();
+}
+#[status_script(agent = "tantan", status = FIGHTER_STATUS_KIND_CATCH_PULL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn tantan_catch_pull_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_STATUS_KIND_CATCH {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("catch_pull2"), 10.0, 1.0, false, 0.0, false, false);
+        return fighter.status_CatchPull();
+    }
+    else {
+        return original!(fighter);
+    }
 }
 
 // Neutral Special (Air)

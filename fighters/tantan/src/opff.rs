@@ -25,14 +25,9 @@ unsafe fn recoil_cancel(boma: &mut BattleObjectModuleAccessor,status: i32,situat
     } else if boma.is_cat_flag(Cat1::AttackN) {
         new_status = *FIGHTER_STATUS_KIND_ATTACK;
     }
-    if boma.is_pad_flag(PadFlag::JumpTrigger)
-    && situation_kind == *SITUATION_KIND_GROUND {
-        new_status = *FIGHTER_STATUS_KIND_JUMP_SQUAT;
-    } 
     if (new_status>0){
-        if (situation_kind!=*SITUATION_KIND_AIR)
-        {
-            StatusModule::change_status_force(boma, new_status, false);
+        if (situation_kind!=*SITUATION_KIND_AIR) {
+            StatusModule::change_status_request_from_script(boma, new_status, false);
         }
         else{
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
