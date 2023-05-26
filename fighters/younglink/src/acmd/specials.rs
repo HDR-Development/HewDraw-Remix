@@ -87,6 +87,9 @@ unsafe fn younglink_special_hi_game(fighter: &mut L2CAgentBase) {
 unsafe fn younglink_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        boma.select_cliff_hangdata_from_name("special_hi");
+    }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 367, 100, 107, 0, 7.0, 0.0, 7.5, 10.5, Some(0.0), Some(7.5), Some(8.5), 0.75, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
