@@ -18,6 +18,75 @@
 		],
 		"fighter/pichu/cmn": [
 			"fighter/pichu/param/hdr.prc"
+		],
+		"fighter/ike/cmn": [
+			"fighter/ike/param/hdr.prc"
+		],
+		"fighter/donkey/cmn": [
+			"fighter/donkey/param/hdr.prc"
+		],
+		"fighter/captain/cmn": [
+			"fighter/captain/param/hdr.prc"
+		],
+		"fighter/chrom/cmn": [
+			"fighter/chrom/param/hdr.prc"
+		],
+		"fighter/dolly/cmn": [
+			"fighter/dolly/param/hdr.prc"
+		],
+		"fighter/pacman/cmn": [
+			"fighter/pacman/param/hdr.prc"
+		],
+		"fighter/mario/cmn": [
+			"fighter/mario/param/hdr.prc"
+		],
+		"fighter/mariod/cmn": [
+			"fighter/mariod/param/hdr.prc"
+		],
+		"fighter/link/cmn": [
+			"fighter/link/param/hdr.prc"
+		],
+		"fighter/simon/cmn": [
+			"fighter/simon/param/hdr.prc"
+		],
+		"fighter/richter/cmn": [
+			"fighter/richter/param/hdr.prc"
+		],
+		"fighter/koopajr/cmn": [
+			"fighter/koopajr/param/hdr.prc"
+		],
+		"fighter/demon/cmn": [
+			"fighter/demon/param/hdr.prc"
+		],
+		"fighter/samus/cmn": [
+			"fighter/samus/param/hdr.prc"
+		],
+		"fighter/samusd/cmn": [
+			"fighter/samusd/param/hdr.prc"
+		],
+		"fighter/edge/cmn": [
+			"fighter/edge/param/hdr.prc"
+		],
+		"fighter/szerosuit/cmn": [
+			"fighter/szerosuit/param/hdr.prc"
+		],
+		"fighter/pit/cmn": [
+			"fighter/pit/param/hdr.prc"
+		],
+		"fighter/pitb/cmn": [
+			"fighter/pitb/param/hdr.prc"
+		],
+		"fighter/toonlink/cmn": [
+			"fighter/toonlink/param/hdr.prc"
+		],
+		"fighter/younglink/cmn": [
+			"fighter/younglink/param/hdr.prc"
+		],
+		"fighter/daisy/cmn": [
+			"fighter/daisy/param/hdr.prc"
+		],
+		"fighter/miiswordsman/cmn": [
+			"fighter/miiswordsman/param/hdr.prc"
 		]
 	}
 }

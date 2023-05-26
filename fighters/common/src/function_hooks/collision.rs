@@ -21,6 +21,8 @@ unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *m
     if (*boma).is_fighter() {
         VarModule::off_flag((*boma).object(), vars::common::instance::IS_GETTING_POSITION_FOR_ECB);
         VarModule::set_float((*boma).object(), vars::common::instance::ECB_BOTTOM_Y_OFFSET, *param_3);
+        let ecb_center_y_offset = ((*param_5 - *param_3) / 2.0) + *param_3;
+        VarModule::set_float((*boma).object(), vars::common::instance::ECB_CENTER_Y_OFFSET, ecb_center_y_offset);
     }
     if !(*boma).is_fighter()
     || VarModule::is_flag((*boma).object(), vars::common::status::DISABLE_ECB_SHIFT)
@@ -35,6 +37,21 @@ unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *m
     || WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) < ParamModule::get_int((*boma).object(), ParamType::Common, "ecb_shift_air_trans_frame") {
         // This check passes after 9 frames of airtime, if not in a grabbed/thrown state
         *param_3 = 0.0;
+    }
+
+    // Prevents rising platwarps during aerials and tumble
+    if !StopModule::is_stop(boma) {
+        if (*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_DAMAGE_FLY])
+        && KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0
+        {
+            // Forces character to ignore platforms, overrides ability to land
+            GroundModule::set_passable_check(boma, true);
+        }
+        else if (*boma).is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR)
+        && KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) <= 0.0
+        {
+            GroundModule::set_passable_check(boma, false);
+        }
     }
 }
 
