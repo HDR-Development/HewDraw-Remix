@@ -314,7 +314,7 @@ unsafe fn game_finalhit(fighter: &mut L2CAgentBase) {
     }
     if is_excute(fighter) {
         SlowModule::set_whole(boma, 2, 0);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 65, 59, 0, 85, 10.0, 0.0, 17.0, 10.0, Some(0.0), Some(17.0), Some(15.0), 5.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_FINAL03, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 85, 50, 0, 120, 10.0, 0.0, 17.0, 10.0, Some(0.0), Some(17.0), Some(15.0), 5.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_FINAL03, *ATTACK_REGION_KICK);
         AttackModule::set_force_reaction(boma, 0, true, false);
         WorkModule::set_int(boma, *FIGHTER_RYU_FINAL_CAMERA_OFFSET_7, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_INT_CAMERA_OFFSET_TYPE);
         WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_FINAL_FLAG_CAMERA_OFFSET);

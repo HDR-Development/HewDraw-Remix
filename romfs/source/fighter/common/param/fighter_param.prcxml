@@ -3085,6 +3085,7 @@
       <int hash="attack_hi4_hold_keep_frame">1</int>
       <int hash="attack_s4_hold_keep_frame">1</int>
       <int hash="attack_lw4_hold_keep_frame">1</int>
+      <int hash="attack_combo_max">2</int>
     </struct>
     <!-- RICHTER -->
     <struct index="89">
