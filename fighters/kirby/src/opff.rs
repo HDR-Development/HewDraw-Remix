@@ -38,9 +38,28 @@ unsafe fn final_cutter_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, 
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_KIRBY )]
-pub fn hammer_fastfall_landcancel(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    unsafe {
+unsafe fn horizontal_cutter(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        if (((fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.status_frame() == 15)
+            || (fighter.is_situation(*SITUATION_KIND_AIR) && fighter.status_frame() == 17))
+            && ControlModule::get_stick_x(fighter.module_accessor).abs() >= 0.85) {
+            if ControlModule::get_stick_x(fighter.module_accessor) * PostureModule::lr(fighter.module_accessor) < 0.0 {
+                REVERSE_LR(fighter);
+            }
+            let hcutter_status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, statuses::kirby::SPECIAL_HI_H);
+            StatusModule::change_status_request_from_script(fighter.module_accessor, hcutter_status, false);
+        }
+    }
+}
+
+// unsafe fn disable_dash_attack_slideoff(fighter: &mut L2CFighterCommon) {
+//     if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_DASH) && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+//         VarModule::off_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_FALL);
+//         VarModule::off_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_CONTINUE);
+//     }
+// }
+
+unsafe fn hammer_fastfall_landcancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
             MotionModule::change_motion_force_inherit_frame(fighter.module_accessor, Hash40::new("special_s"), 43.0, 1.0, 1.0); // 55 FAF - F43 = 12F landing lag
@@ -51,7 +70,6 @@ pub fn hammer_fastfall_landcancel(fighter: &mut smash::lua2cpp::L2CFighterCommon
             }
         }
     }
-}
 }
 
 // Magic Series
@@ -302,7 +320,9 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     final_cutter_cancel(boma, id, status_kind, cat[0], frame);
-
+    hammer_fastfall_landcancel(fighter);
+    horizontal_cutter(fighter);
+    //disable_dash_attack_slideoff(fighter);
 
     // Frame Data
     frame_data(boma, status_kind, motion_kind, frame);
