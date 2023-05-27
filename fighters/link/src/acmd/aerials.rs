@@ -6,14 +6,13 @@ unsafe fn attack_air_n(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 2.0/(5.0-1.0));
+    FT_MOTION_RATE(fighter, 2.574/(7.0-1.0));
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 7.0);
     FT_MOTION_RATE(fighter, 1.0);
-
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("kneer"), 10.0, 361, 100, 0, 15, 5.0, -2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -207,7 +206,7 @@ unsafe fn attack_air_lw(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LINK_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_LW_SET_ATTACK);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 16.0, 270, 42, 0, 30, 2.5, 1.5, -2.5, 0.0, Some(1.5), Some(9.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 16.0, 65, 85, 0, 45, 2.5, 1.5, -2.5, 0.0, Some(1.5), Some(9.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 16.0, 65, 108, 0, 44, 2.5, 1.5, -2.5, 0.0, Some(1.5), Some(9.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 20.0);
     FT_MOTION_RATE(fighter, 34.0/(65.0-20.0));
