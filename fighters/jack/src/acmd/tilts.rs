@@ -125,11 +125,9 @@ unsafe fn jack_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if !WorkModule::is_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
-        FT_MOTION_RATE(fighter, 5.0/(9.0-1.0));
-    }
+    FT_MOTION_RATE(fighter, 5.0/(9.0-1.0));
     frame(lua_state, 9.0);
-        FT_MOTION_RATE(fighter, 1.0);
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("armr"),2.0, 115, 100, 80, 0, 2.5, -1.0, 0.0, 0.0, Some(1.0), Some(0.0), Some(0.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -145,15 +143,47 @@ unsafe fn jack_attack_hi3_game(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 22.0);
-    if WorkModule::is_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE){
-        FT_MOTION_RATE(fighter, 10.0/(30.0-22.0));
-    }
+    FT_MOTION_RATE_RANGE(fighter, 22.0, 27.0, 8.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
 
 }
 
+#[acmd_script( agent = "jack", script = "effect_attackhi3" , category = ACMD_EFFECT , low_priority)]
+unsafe fn jack_attack_hi3_effect (fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_jack_sword1"), Hash40::new("tex_jack_sword2"), 4, Hash40::new("knife"), 0.0, 0.25, 0.15, Hash40::new("knife"), 0.0, 5.8, 0.0, true, Hash40::new("jack_knife"), Hash40::new("knife"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0 as u64, *EFFECT_AXIS_X, 0.0 as u64, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("jack_knife_front"), Hash40::new("knife"), 0, 0, 0, 0, 180, 0, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 2);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        AFTER_IMAGE_OFF(fighter, 0);
+        EFFECT_OFF_KIND(fighter, Hash40::new("jack_knife_front"), false, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("jack_knife_spin"), Hash40::new("knife"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    if WorkModule::is_flag(boma, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
+        if is_excute(fighter) {
+            EFFECT(fighter, Hash40::new("jack_doyle_lightning"), Hash40::new("top"), 0, 25, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        }
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("jack_knife_spin"), false, true);
+    }
+
+}
 
 #[acmd_script( agent = "jack", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn jack_attack_lw3_game(fighter: &mut L2CAgentBase) {
@@ -208,6 +238,7 @@ pub fn install() {
         jack_attack_s3_s_game,
         jack_attack_s3_lw_game,
         jack_attack_hi3_game,
+        jack_attack_hi3_effect,
         jack_attack_lw3_game,
     );
 }
