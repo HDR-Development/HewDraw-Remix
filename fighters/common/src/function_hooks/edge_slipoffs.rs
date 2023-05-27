@@ -16,7 +16,8 @@ pub unsafe fn init_settings_edges(boma: &mut BattleObjectModuleAccessor, situati
     let fighter_kind = boma.kind();
     let status_kind = StatusModule::status_kind(boma);
 
-    if boma.is_fighter() {
+    if boma.is_fighter()
+    && boma.is_situation(*SITUATION_KIND_GROUND) {
 
         if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
             fix = *GROUND_CORRECT_KIND_GROUND as u32; /* GROUND_CORRECT_KIND_GROUND is i32 */
@@ -63,10 +64,26 @@ pub unsafe fn init_settings_edges(boma: &mut BattleObjectModuleAccessor, situati
            || (fighter_kind == *FIGHTER_KIND_BAYONETTA && [*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D,
                                                            *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D_LANDING].contains(&status_kind))
            || (fighter_kind == *FIGHTER_KIND_DOLLY && [*FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK,
-                                                       *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_LANDING].contains(&status_kind)) 
+                                                       *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_LANDING,
+                                                       *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_LANDING,
+                                                       *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_LANDING].contains(&status_kind)) 
            || (boma.kind() == *FIGHTER_KIND_KOOPAJR && boma.is_status(*FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_LANDING))
            || (boma.kind() == *FIGHTER_KIND_SHEIK && [*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_ATTACK,
-                                                       *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_LANDING].contains(&status_kind)) {
+                                                       *FIGHTER_SHEIK_STATUS_KIND_SPECIAL_LW_LANDING].contains(&status_kind))
+           || (boma.kind() == *FIGHTER_KIND_LUIGI && boma.is_status(*FIGHTER_LUIGI_STATUS_KIND_SPECIAL_HI_LANDING_FALL))
+           || (boma.kind() == *FIGHTER_KIND_PIT && boma.is_status(*FIGHTER_PIT_STATUS_KIND_SPECIAL_S_LANDING))
+           || (boma.kind() == *FIGHTER_KIND_PITB && boma.is_status(*FIGHTER_PIT_STATUS_KIND_SPECIAL_S_LANDING))
+           || (boma.kind() == *FIGHTER_KIND_SIMON && boma.is_status(*FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32_LANDING))
+           || (boma.kind() == *FIGHTER_KIND_RICHTER && boma.is_status(*FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32_LANDING))
+           || (boma.kind() == *FIGHTER_KIND_DEMON && boma.is_status(*FIGHTER_DEMON_STATUS_KIND_SPECIAL_S_LANDING))
+           || (boma.kind() == *FIGHTER_KIND_RYU && boma.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_LANDING))
+           || (boma.kind() == *FIGHTER_KIND_KEN && boma.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_LANDING))
+           || (boma.kind() == *FIGHTER_KIND_PACKUN && boma.is_status(*FIGHTER_PACKUN_STATUS_KIND_SPECIAL_HI_LANDING))
+           || (boma.kind() == *FIGHTER_KIND_KROOL && boma.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_LANDING))
+           || (boma.kind() == *FIGHTER_KIND_PIKMIN && boma.is_status(*FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_LANDING))
+           || (boma.kind() == *FIGHTER_KIND_FALCO && boma.is_status(*FIGHTER_FALCO_STATUS_KIND_SPECIAL_S_FALL_LANDING))
+           || (boma.kind() == *FIGHTER_KIND_MURABITO && boma.is_status(*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_LANDING))
+        {
             fix = *GROUND_CORRECT_KIND_GROUND as u32;
         }
     }
@@ -84,7 +101,8 @@ unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, kind: GroundCorrec
     let fighter_kind = boma.kind();
 
     // It seems like everything gets caught as "landing"
-    if boma.is_fighter() {
+    if boma.is_fighter()
+    && boma.is_situation(*SITUATION_KIND_GROUND) {
         if [
             *FIGHTER_STATUS_KIND_LANDING,
             *FIGHTER_STATUS_KIND_TURN_DASH,
@@ -101,9 +119,11 @@ unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, kind: GroundCorrec
             || (fighter_kind == *FIGHTER_KIND_GANON && status_kind == *FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_END)
             || (fighter_kind == *FIGHTER_KIND_MIISWORDSMAN && [*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END].contains(&status_kind))
             || (fighter_kind == *FIGHTER_KIND_KOOPA && status_kind == *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_G)
-            || (fighter_kind == *FIGHTER_KIND_DONKEY && situation_kind == *SITUATION_KIND_GROUND && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI)
-            || (fighter_kind == *FIGHTER_KIND_GAOGAEN && situation_kind == *SITUATION_KIND_GROUND && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N)
-            || (fighter_kind == *FIGHTER_KIND_LUIGI && situation_kind == *SITUATION_KIND_GROUND && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N) {
+            || (fighter_kind == *FIGHTER_KIND_DONKEY && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI)
+            || (fighter_kind == *FIGHTER_KIND_GAOGAEN && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N)
+            || (fighter_kind == *FIGHTER_KIND_LUIGI && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N)
+            || (fighter_kind == *FIGHTER_KIND_PEACH && status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_AWAY_END)
+            || (fighter_kind == *FIGHTER_KIND_DAISY && status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_AWAY_END) {
             return original!()(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         }
     }
