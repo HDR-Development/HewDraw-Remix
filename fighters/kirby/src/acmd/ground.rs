@@ -1,18 +1,14 @@
-
 use super::*;
 
-
 #[acmd_script( agent = "kirby", script = "game_attack11" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attack11(fighter: &mut L2CAgentBase) {
+unsafe fn kirby_attack_11_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.500);
-    }
+    FT_MOTION_RATE(fighter, 0.5);
     frame(lua_state, 3.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 361, 25, 0, 20, 3.0, 0.0, 5.5, 6.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 361, 25, 0, 20, 3.0, 0.0, 5.5, 10.4, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 2, 0, Hash40::new("top"), 2.0, 361, 20, 0, 20, 3.0, 0.0, 5.5, 13.8, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -30,7 +26,7 @@ unsafe fn game_attack11(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kirby", script = "game_attack12" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attack12(fighter: &mut L2CAgentBase) {
+unsafe fn kirby_attack_12_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 3.0);
@@ -51,7 +47,7 @@ unsafe fn game_attack12(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kirby", script = "game_attackdash" , category = ACMD_GAME , low_priority)]
-unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
+unsafe fn kirby_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.8);
@@ -76,15 +72,21 @@ unsafe fn game_attackdash(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        KineticModule::add_speed(boma, &Vector3f::new(-0.6, 0.0, 0.0));
+        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+            KineticModule::add_speed(boma, &Vector3f::new(-0.6, 0.0, 0.0));
+        }
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        KineticModule::add_speed(boma, &Vector3f::new(-0.4, 0.0, 0.0));
+        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+            KineticModule::add_speed(boma, &Vector3f::new(-0.4, 0.0, 0.0));
+        }
     }
     frame(lua_state, 30.0);
     if is_excute(fighter) {
-        KineticModule::add_speed(boma, &Vector3f::new(-0.1, 0.0, 0.0));
+        if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+            KineticModule::add_speed(boma, &Vector3f::new(-0.1, 0.0, 0.0));
+        }
     }
     frame(lua_state, 31.0);
     FT_MOTION_RATE_RANGE(fighter, 31.0, 65.0, 25.0);
@@ -133,9 +135,9 @@ unsafe fn kirby_attack_dash_effect(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        game_attack11,
-        game_attack12,
-        game_attackdash,
+        kirby_attack_11_game,
+        kirby_attack_12_game,
+        kirby_attack_dash_game,
         kirby_attack_dash_effect,
     );
 }

@@ -42,7 +42,8 @@ unsafe fn horizontal_cutter(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
         if (((fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.status_frame() == 15)
             || (fighter.is_situation(*SITUATION_KIND_AIR) && fighter.status_frame() == 17))
-            && ControlModule::get_stick_x(fighter.module_accessor).abs() >= 0.85) {
+            && ControlModule::get_stick_x(fighter.module_accessor).abs() >= 0.85)
+            && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
             if ControlModule::get_stick_x(fighter.module_accessor) * PostureModule::lr(fighter.module_accessor) < 0.0 {
                 REVERSE_LR(fighter);
             }
@@ -59,10 +60,21 @@ unsafe fn horizontal_cutter(fighter: &mut L2CFighterCommon) {
 //     }
 // }
 
+// unsafe fn stone_control(fighter: &mut L2CFighterCommon) {
+//     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.status_frame() <= 30 {
+//         fighter.clear_lua_stack();
+//         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 1.0, 0.0);
+//         app::sv_kinetic_energy::set_limit_speed(fighter.lua_state_agent);
+//         fighter.clear_lua_stack();
+//     }
+// }
+
 unsafe fn hammer_fastfall_landcancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK) {
         if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
-            MotionModule::change_motion_force_inherit_frame(fighter.module_accessor, Hash40::new("special_s"), 43.0, 1.0, 1.0); // 55 FAF - F43 = 12F landing lag
+            AttackModule::clear_all(fighter.module_accessor);
+            MotionModule::change_motion_force_inherit_frame(fighter.module_accessor, Hash40::new("special_s"), 33.0, 1.0, 1.0);
+            MotionModule::set_rate(fighter.module_accessor, (55.0 - 33.0)/25.0);    // equates to 17F landing lag
         }
         if fighter.is_situation(*SITUATION_KIND_AIR) {
             if fighter.is_cat_flag(Cat2::FallJump) && fighter.stick_y() < -0.66 && KineticModule::get_sum_speed_y(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
@@ -323,29 +335,10 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     hammer_fastfall_landcancel(fighter);
     horizontal_cutter(fighter);
     //disable_dash_attack_slideoff(fighter);
-
-    // Frame Data
-    frame_data(boma, status_kind, motion_kind, frame);
+    //stone_control(fighter);
 
     // Magic Series
     magic_series(boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
-}
-
-unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
-    if motion_kind == hash40("special_air_s_start") {
-        MotionModule::set_rate(boma, 1.75);
-    }
-    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK {
-        if frame <= 11.0 {
-            MotionModule::set_rate(boma, 2.5);
-        }
-        if frame > 11.0 {
-            MotionModule::set_rate(boma, 1.0);
-        }
-    }
 }
 
 #[utils::macros::opff(FIGHTER_KIND_KIRBY )]
