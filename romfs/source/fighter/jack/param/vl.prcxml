@@ -35,6 +35,9 @@
       <float hash="air_start_speed_mul_y">0.5</float>
       <float hash="air_accel_y">0.05</float>
       <float hash="air_speed_y_stable">1.2</float>
+      <int hash="jump_barrage_landing_frame">14</int>
+      <int hash="air_barrage_lw_landing_frame">10</int>
+      <int hash="barrage_landing_frame">10</int>
       <int hash="landing_frame">4</int>
       <float hash="escape_f_penalty_motion_rate">1.0</float>
       <int hash="escape_f_penalty_hit_xlu_frame">3</int>
