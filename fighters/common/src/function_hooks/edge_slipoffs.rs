@@ -39,7 +39,8 @@ pub unsafe fn init_settings_edges(boma: &mut BattleObjectModuleAccessor, situati
             *FIGHTER_STATUS_KIND_GUARD_DAMAGE,
             // *FIGHTER_STATUS_KIND_ESCAPE_AIR,
             // *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE,
-            *FIGHTER_STATUS_KIND_DAMAGE].contains(&status_kind) {
+            *FIGHTER_STATUS_KIND_DAMAGE,
+            *FIGHTER_STATUS_KIND_AIR_LASSO_LANDING].contains(&status_kind) {
             fix = *GROUND_CORRECT_KIND_GROUND as u32;
         }
 
