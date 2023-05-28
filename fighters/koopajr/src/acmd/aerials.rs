@@ -7,7 +7,7 @@ unsafe fn koopajr_attack_air_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE(fighter, 3.0/(6.0-1.0));
+    FT_MOTION_RATE(fighter, 2.5/(6.0-1.0));
     frame(lua_state, 6.0);
     FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 7.0);
@@ -114,7 +114,7 @@ unsafe fn koopajr_attack_air_b_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 34.0);
+    frame(lua_state, 38.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
