@@ -32,6 +32,7 @@ unsafe fn dair_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     //Act out of it much faster on hit so you can actually followup on people with good DI
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR
     && motion_kind == hash40("attack_air_lw2")
+    && !StatusModule::is_changing(fighter.module_accessor)
     {
         if frame > 15.0 {
             CancelModule::enable_cancel(fighter.module_accessor);
