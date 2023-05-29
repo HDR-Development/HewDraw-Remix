@@ -49,6 +49,7 @@ pub unsafe fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N);
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
