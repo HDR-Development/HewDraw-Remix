@@ -330,10 +330,9 @@ unsafe fn kirby_special_hi_h_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 23.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_kirby_special_h02"));
-        match smash::app::sv_math::rand(smash::hash40("fighter"), 3) {
+        match smash::app::sv_math::rand(smash::hash40("fighter"), 2) {
             0 => PLAY_SE(fighter, Hash40::new("vc_kirby_002")),
-            1 => PLAY_SE(fighter, Hash40::new("vc_kirby_attack05")),
-            2 => PLAY_SE(fighter, Hash40::new("vc_kirby_attack07")),
+            1 => PLAY_SE(fighter, Hash40::new("vc_kirby_attack07")),
             _ => PLAY_SE(fighter, Hash40::new("vc_kirby_attack07")),
         };
     }
@@ -418,10 +417,9 @@ unsafe fn kirby_special_air_hi_h_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 18.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_kirby_special_h02"));
-        match smash::app::sv_math::rand(smash::hash40("fighter"), 3) {
+        match smash::app::sv_math::rand(smash::hash40("fighter"), 2) {
             0 => PLAY_SE(fighter, Hash40::new("vc_kirby_002")),
-            1 => PLAY_SE(fighter, Hash40::new("vc_kirby_attack05")),
-            2 => PLAY_SE(fighter, Hash40::new("vc_kirby_attack07")),
+            1 => PLAY_SE(fighter, Hash40::new("vc_kirby_attack07")),
             _ => PLAY_SE(fighter, Hash40::new("vc_kirby_attack07")),
         };
     }
