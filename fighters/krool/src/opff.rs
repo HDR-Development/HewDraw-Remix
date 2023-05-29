@@ -40,19 +40,6 @@ unsafe fn fuel_reset(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-unsafe fn jetpack_fuel_indicator(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if fighter.is_status_one_of(&[*FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_START, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL])
-    && ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_KROOL_GENERATE_ARTICLE_BACKPACK) {
-        let fuel_max = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_hi.fuel_max") as f32;
-        if VarModule::get_int(fighter.battle_object, vars::krool::instance::SPECIAL_HI_FUEL) as f32 <= fuel_max * 0.33 {
-            let handle = VarModule::get_int(fighter.battle_object, vars::krool::instance::FUEL_EFFECT_HANDLER) as u32;
-            EffectModule::kill(fighter.module_accessor, handle, false, false);
-            let handle = EffectModule::req_follow(fighter.module_accessor, Hash40::new("krool_buckpack"), Hash40::new("backpack"), &Vector3f{x: -12.0, y: -1.5, z: -6.0}, &Vector3f::zero(), 1.0, true, 0, 0, 0, 0, 0, false, false) as u32;
-            EffectModule::set_rgb(fighter.module_accessor, handle, 0.15, 0.15, 0.15);
-        }
-    }
-}
-
 // K. Rool Side B Crown Item Grab
 unsafe fn crownerang_item_grab(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
     if [
@@ -93,7 +80,6 @@ pub unsafe fn moveset(
 ) {
     jetpack_cancel(fighter, boma, status_kind, cat[0]);
     fuel_reset(fighter);
-    //jetpack_fuel_indicator(fighter);
     //crownerang_item_grab(boma, status_kind, cat[0]);
 }
 
