@@ -66,7 +66,7 @@ unsafe fn kirby_attack_dash_game(fighter: &mut L2CAgentBase) {
         KineticModule::add_speed(boma, &Vector3f::new(0.8, 0.0, 0.0));
     }
     frame(lua_state, 14.0);
-    FT_MOTION_RATE_RANGE(fighter, 14.0, 31.0, 9.0);
+    FT_MOTION_RATE_RANGE(fighter, 14.0, 31.0, 12.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 70, 50, 0, 80, 4.0, 0.0, 5.0, 4.0, Some(0.0), Some(5.0), Some(-0.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BODY);
     }
@@ -89,7 +89,7 @@ unsafe fn kirby_attack_dash_game(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 31.0);
-    FT_MOTION_RATE_RANGE(fighter, 31.0, 65.0, 25.0);
+    FT_MOTION_RATE_RANGE(fighter, 31.0, 65.0, 22.0);
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_FALL);
         VarModule::off_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_CONTINUE);

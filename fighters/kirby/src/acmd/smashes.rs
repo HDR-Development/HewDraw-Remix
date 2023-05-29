@@ -73,8 +73,10 @@ unsafe fn kirby_attack_s4_lw_game(fighter: &mut L2CAgentBase) {
 unsafe fn kirby_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 9.0, 7.0);
     frame(lua_state, 9.0);
-    FT_MOTION_RATE(fighter, 0.6);
+    FT_MOTION_RATE_RANGE(fighter, 9.0, 14.0, 3.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }

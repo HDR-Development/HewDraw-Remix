@@ -42,6 +42,12 @@ pub fn install(is_runtime: bool) {
     acmd::install();
     status::install();
     opff::install(is_runtime);
+    use opff::*;
+    if !is_runtime {
+        smashline::install_agent_frames!(
+            hammer_fastfall_landcancel
+        );
+    }
 
     if !is_runtime || is_hdr_available() {
         status::add_statuses();

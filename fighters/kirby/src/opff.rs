@@ -69,16 +69,19 @@ unsafe fn horizontal_cutter(fighter: &mut L2CFighterCommon) {
 //     }
 // }
 
-unsafe fn hammer_fastfall_landcancel(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK) {
-        if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
-            AttackModule::clear_all(fighter.module_accessor);
-            MotionModule::change_motion_force_inherit_frame(fighter.module_accessor, Hash40::new("special_s"), 33.0, 1.0, 1.0);
-            MotionModule::set_rate(fighter.module_accessor, (55.0 - 33.0)/25.0);    // equates to 17F landing lag
-        }
-        if fighter.is_situation(*SITUATION_KIND_AIR) {
-            if fighter.is_cat_flag(Cat2::FallJump) && fighter.stick_y() < -0.66 && KineticModule::get_sum_speed_y(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                WorkModule::set_flag(fighter.module_accessor, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+#[fighter_frame( agent = FIGHTER_KIND_KIRBY )]
+pub fn hammer_fastfall_landcancel(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    unsafe {
+        if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_ATTACK) {
+            if fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.is_prev_situation(*SITUATION_KIND_AIR) {
+                AttackModule::clear_all(fighter.module_accessor);
+                MotionModule::change_motion_force_inherit_frame(fighter.module_accessor, Hash40::new("special_s"), 33.0, 1.0, 1.0);
+                MotionModule::set_rate(fighter.module_accessor, (55.0 - 33.0)/25.0);    // equates to 17F landing lag
+            }
+            if fighter.is_situation(*SITUATION_KIND_AIR) {
+                if fighter.is_cat_flag(Cat2::FallJump) && fighter.stick_y() < -0.66 && KineticModule::get_sum_speed_y(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
+                    WorkModule::set_flag(fighter.module_accessor, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+                }
             }
         }
     }
@@ -332,7 +335,6 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     final_cutter_cancel(boma, id, status_kind, cat[0], frame);
-    hammer_fastfall_landcancel(fighter);
     horizontal_cutter(fighter);
     //disable_dash_attack_slideoff(fighter);
     //stone_control(fighter);
