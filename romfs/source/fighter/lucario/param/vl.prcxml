@@ -29,4 +29,10 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_aurascale">
+    <struct index="0">
+      <float hash="min_aura_power">0.8</float>
+      <float hash="max_aura_power">1.4</float>
+    </struct>
+  </list>
 </struct>

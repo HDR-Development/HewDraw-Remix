@@ -85,6 +85,7 @@ unsafe extern "C" fn get_aura(object: *mut BattleObject) -> f32 {
 
     let diff = max_aurapower - min_aurapower;
     let aura_power = min_aurapower + (diff * charge.clamp(0.0, max_charge) / max_charge);
+    // println!("aurapower: {}", aura_power);
     return aura_power;
 }
 
