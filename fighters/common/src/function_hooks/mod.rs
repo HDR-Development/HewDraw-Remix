@@ -83,7 +83,7 @@ pub struct ModuleAccessor {
 }
 
 // Articles that should bypass running their MAIN status before KineticModule::UpdateEnergy and GroundCollision::process
-const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 14] = [
+const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 15] = [
     WEAPON_KIND_PICKEL_PLATE,
     WEAPON_KIND_MASTER_SWORD,
     WEAPON_KIND_LUCAS_HIMOHEBI,
@@ -97,20 +97,28 @@ const EXCEPTION_WEAPON_KINDS: [smash::lib::LuaConst ; 14] = [
     WEAPON_KIND_JACK_DOYLE,
     WEAPON_KIND_PICKEL_FORGE,
     WEAPON_KIND_PICKEL_TROLLEY,
-    WEAPON_KIND_MARIO_FIREBALL
+    WEAPON_KIND_MARIO_FIREBALL,
+    WEAPON_KIND_SHIZUE_CLAYROCKET
 ];
 
 // For one reason or another, the below statuses/kinds do not play well with running before energy update/ground collision
 // so they must be ran using vanilla's order of operations
 unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor, status_kind: i32) -> bool {
     if (*boma).is_fighter()
-    && ( [*FIGHTER_STATUS_KIND_AIR_LASSO, *FIGHTER_STATUS_KIND_AIR_LASSO_REACH, *FIGHTER_STATUS_KIND_AIR_LASSO_HANG, *FIGHTER_STATUS_KIND_AIR_LASSO_REWIND].contains(&status_kind)
+    && ( [*FIGHTER_STATUS_KIND_AIR_LASSO,
+        *FIGHTER_STATUS_KIND_AIR_LASSO_REACH,
+        *FIGHTER_STATUS_KIND_AIR_LASSO_HANG,
+        *FIGHTER_STATUS_KIND_AIR_LASSO_REWIND,
+        *FIGHTER_STATUS_KIND_ITEM_THROW,
+        *FIGHTER_STATUS_KIND_ITEM_THROW_DASH,
+        *FIGHTER_STATUS_KIND_ITEM_THROW_HEAVY].contains(&status_kind)
+
         || ((*boma).kind() == *FIGHTER_KIND_RICHTER
             && [*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_SIMON
             && [*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_MASTER
-            && [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_MAX_SHOOT].contains(&status_kind))
+            && [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_MAX_SHOOT, *FIGHTER_STATUS_KIND_SPECIAL_HI].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_KIRBY
             && [*FIGHTER_KIRBY_STATUS_KIND_MASTER_SPECIAL_N_MAX_SHOOT].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_JACK
@@ -122,7 +130,7 @@ unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor, status_k
         || ((*boma).kind() == *FIGHTER_KIND_INKLING
             && [*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_DASH, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_RUN, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_RUN_TURN, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_WALK, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_WALK_TURN, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_END].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_DOLLY
-            && [*FIGHTER_STATUS_KIND_FINAL, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL].contains(&status_kind))
+            && [*FIGHTER_STATUS_KIND_FINAL, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_ATTACK].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_PICKEL
             && [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING_LIGHT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_RIDE].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_MIIGUNNER
@@ -585,7 +593,10 @@ unsafe fn after_collision(object: *mut BattleObject) {
                     if VarModule::has_var_module((*boma).object()) { VarModule::on_flag((*boma).object(), vars::common::instance::CHECK_CHANGE_MOTION_ONLY); }
                     let status_module__run_lua_status: extern "C" fn(*const TempModule) = std::mem::transmute(*(((module_accessor.status_module.vtable as u64) + 0x68) as *const u64));
                     status_module__run_lua_status(module_accessor.status_module);
-                    if VarModule::has_var_module((*boma).object()) { VarModule::off_flag((*boma).object(), vars::common::instance::CHECK_CHANGE_MOTION_ONLY); }
+                    if VarModule::has_var_module((*boma).object()) {
+                        VarModule::off_flag((*boma).object(), vars::common::instance::CHECK_CHANGE_MOTION_ONLY);
+                        VarModule::off_flag((*boma).object(), vars::common::instance::FLUSH_EFFECT_ACMD);
+                    }
                 }
             }
         }
