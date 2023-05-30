@@ -1002,7 +1002,6 @@ pub mod vars {
             pub const SKEWER_STICK_Y: i32 = 0x1100;
         }
     }
-
     pub mod iceclimbers {
         pub mod instance {
             //flags
@@ -1011,6 +1010,20 @@ pub mod vars {
 
             //ints
             pub const SEPARATED_EFFECT: i32 = 0x0110;
+        }
+    }
+    pub mod packun {
+        pub mod instance {
+            // flags
+            pub const STANCE_NEED_SET_SPEEDS: i32 = 0x0100;
+            pub const STANCE_INIT: i32 = 0x0101;
+
+            // floats
+            pub const PTOOIE_SCALE: i32 = 0x0100;
+
+            // ints
+            pub const CURRENT_STANCE: i32 = 0x0100; // 0 = Normal, 1 = Putrid, 2 = Prickly
+            pub const STANCE_STATUS: i32 = 0x0101;
         }
     }
 
