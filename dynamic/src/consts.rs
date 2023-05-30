@@ -290,9 +290,25 @@ pub mod vars {
     }
 
     pub mod brave {
-        pub mod status {
+        pub mod instance {
             // flags
-            pub const IS_CRITICAL_HIT: i32 = 0x1100;
+            pub const PERSIST_RNG: i32 = 0x0100;
+            pub const PSYCHE_UP_ACTIVE: i32 = 0x0101;
+
+            // ints
+            pub const SPELL_SLOT_1: i32 = 0x0100;
+            pub const SPELL_SLOT_2: i32 = 0x0101;
+            pub const SPELL_SLOT_3: i32 = 0x0102;
+            pub const SPELL_SLOT_4: i32 = 0x0103;
+            pub const SPELL_SLOT_USED_1_1: i32 = 0x0104;
+            pub const SPELL_SLOT_USED_1_2: i32 = 0x0105;
+            pub const SPELL_SLOT_USED_1_3: i32 = 0x0106;
+            pub const SPELL_SLOT_USED_1_4: i32 = 0x0107;
+            pub const SPELL_SLOT_USED_2_1: i32 = 0x0108;
+            pub const SPELL_SLOT_USED_2_2: i32 = 0x0109;
+            pub const SPELL_SLOT_USED_2_3: i32 = 0x0110;
+            pub const SPELL_SLOT_USED_2_4: i32 = 0x0111;
+            pub const CURSOR_SLOT: i32 = 0x0112;
         }
     }
 
