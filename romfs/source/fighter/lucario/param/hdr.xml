@@ -8,4 +8,9 @@
         <float hash="rot_end_interpolate_start_frame">42.0</float>
         <float hash="rot_end_interpolate_end_frame">55.0</float>
     </struct>
+    <struct hash="aura">
+        <float hash="penalty_aurapower">0.8</float>
+        <float hash="min_aurapower">1.0</float>
+        <float hash="max_aurapower">1.3</float>
+    </struct>
 </struct>

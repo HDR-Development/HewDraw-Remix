@@ -18,7 +18,6 @@ pub fn install() {
         pre_run,
         special_hi_bound_end,
         lucario_special_lw_pre,
-        lucario_special_lw_main
     );
     smashline::install_agent_init_callbacks!(lucario_init);
 }
@@ -34,9 +33,9 @@ fn lucario_init(fighter: &mut L2CFighterCommon) {
         if fighter.kind() == *FIGHTER_KIND_LUCARIO {
             MeterModule::reset(fighter.battle_object);
             let meter_max = ParamModule::get_float(fighter.battle_object, ParamType::Common, "meter_max_damage");
-            MeterModule::add(fighter.battle_object, meter_max);
+            MeterModule::add(fighter.battle_object, meter_max / 2.0);
             VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
-            VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 0);
+            VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 10 * 60);
             VarModule::set_float(fighter.battle_object, vars::lucario::instance::METER_PASSIVE_RATE, 10.0/60.0);
         }
     }
@@ -71,60 +70,8 @@ pub unsafe extern "C" fn lucario_check_special_command(fighter: &mut L2CFighterC
 
 #[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    StatusModule::init_settings(
-        fighter.module_accessor,
-        SituationKind(*SITUATION_KIND_NONE),
-        *FIGHTER_KINETIC_TYPE_UNIQ,
-        *GROUND_CORRECT_KIND_KEEP as u32,
-        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
-        true,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
-        0
-    );
-    FighterStatusModuleImpl::set_fighter_status_data(
-        fighter.module_accessor,
-        false,
-        *FIGHTER_TREADED_KIND_NO_REAC,
-        false,
-        false,
-        false,
-        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_LW | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK |
-        *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
-        0,
-        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
-        0
-    );
+    fighter.change_status(FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_SPLIT.into(), false.into());
     0.into()
-}
-
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn lucario_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-
-    // setup
-    let frame = 44.0;
-    let cancel_frame = 55.0;
-    let max_speed = 1.25;
-    let accel = 0.05;
-    let lr = PostureModule::lr(fighter.module_accessor);
-    let mut x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-    let mut y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-
-    // ORIGINAL
-    let ret = original!(fighter);
-    if (frame < 5.0) {
-        x = 0.0;
-        y = 0.0;
-    } else if (frame < 45.0) {
-        if (x * lr < max_speed) {
-            x = x + (accel * lr);
-        }
-        y = 0.0;
-    }
-    SET_SPEED_EX(fighter, x, y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-
-    return ret;
 }
 
 // FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW //

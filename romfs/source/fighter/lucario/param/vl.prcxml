@@ -9,20 +9,13 @@
       <float hash="p1_y">20</float>
     </struct>
   </list>
-  <list hash="param_aurapower">
+  <list hash="param_special_s">
     <struct index="0">
-      <float hash="min_aurapower">1</float>
-      <float hash="max_aurapower">1.1</float>
-      <float hash="max_damage">125</float>
+      <float hash="critical_aura_power">1.25</float>
     </struct>
-  </list>
-  <list hash="param_aurapower_hp_mode">
-    <struct index="0">
-      <float hash="min_aurapower">1</float>
-      <float hash="max_aurapower">1.1</float>
-      <float hash="bottom">1</float>
-      <float hash="cap">1.1</float>
-    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
   </list>
   <list hash="param_special_hi">
     <struct index="0">
@@ -31,16 +24,6 @@
       <float hash="angle_speed">2</float>
       <float hash="end_accel_y">0.3</float>
       <int hash="landing_frame">30</int>
-    </struct>
-    <hash40 index="1">dummy</hash40>
-    <hash40 index="2">dummy</hash40>
-    <hash40 index="3">dummy</hash40>
-  </list>
-  <list hash="param_special_lw">
-    <struct index="0">
-      <float hash="start_x_spd_mul">1.0</float>
-      <float hash="fall_acc_y">0.0</float>
-      <float hash="fall_spd_max">0.0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

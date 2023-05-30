@@ -308,22 +308,6 @@ unsafe fn lucario_special_air_hi_end_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "lucario", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
-unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 5.0);
-    FT_MOTION_RATE(fighter, 25.0 / (55.0 - 5.0));
-    if is_excute(fighter) {
-        shield!(fighter, *MA_MSC_CMD_REFLECTOR, *COLLISION_KIND_REFLECTOR, 0, hash40("top"), 11.0, 0.0, 9.0, 0.0, 0.0, 9.0, 0.0, 0.0, 0.0, 1, false, 0.0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
-    }
-    frame(lua_state, 45.0);
-    if is_excute(fighter) {
-        shield!(fighter, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_REFLECTOR_GROUP_HOMERUNBAT);
-    }
-    frame(lua_state, 55.0);
-    FT_MOTION_RATE(fighter, 10.0 / (80.0 - 55.0));
-}
 
 pub fn install() {
     install_acmd_scripts!(
@@ -340,6 +324,5 @@ pub fn install() {
         lucario_special_hi_move_game,
         lucario_special_hi_end_game,
         lucario_special_air_hi_end_game,
-        game_speciallw
     );
 }
