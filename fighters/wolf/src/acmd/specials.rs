@@ -58,6 +58,9 @@ unsafe fn wolf_special_hi_game(fighter: &mut L2CAgentBase) {
 unsafe fn wolf_special_hi_fall_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        GroundModule::select_cliff_hangdata(boma, *FIGHTER_FOX_CLIFF_HANG_DATA_SPECIAL_HI as u32);
+    }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("kneer"), 6.0, 361, 120, 0, 55, 6.0, 4.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
