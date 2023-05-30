@@ -133,12 +133,30 @@ unsafe fn kirby_attack_dash_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "kirby", script = "sound_attackdash", category = ACMD_SOUND, low_priority )]
+unsafe fn kirby_attack_dash_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_kirby_rnd_attack"));
+        PLAY_SE(fighter, Hash40::new("se_kirby_attackdash"));
+    }
+    frame(lua_state, 44.0);
+    if is_excute(fighter) {
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            PLAY_LANDING_SE(fighter, Hash40::new("se_kirby_landing02"));
+        }
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         kirby_attack_11_game,
         kirby_attack_12_game,
         kirby_attack_dash_game,
         kirby_attack_dash_effect,
+        kirby_attack_dash_sound,
     );
 }
 

@@ -38,6 +38,13 @@ unsafe fn final_cutter_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, 
     }
 }
 
+unsafe fn final_cutter_landing_bugfix(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_HI2)
+    && MotionModule::frame(fighter.module_accessor) <= 2.0 {
+        fighter.set_situation(L2CValue::I32(*SITUATION_KIND_AIR));
+    }
+}
+
 unsafe fn horizontal_cutter(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
         if (((fighter.is_situation(*SITUATION_KIND_GROUND) && fighter.status_frame() == 15)
@@ -335,6 +342,7 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     final_cutter_cancel(boma, id, status_kind, cat[0], frame);
+    final_cutter_landing_bugfix(fighter);
     horizontal_cutter(fighter);
     //disable_dash_attack_slideoff(fighter);
     //stone_control(fighter);
