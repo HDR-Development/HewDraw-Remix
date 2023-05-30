@@ -534,6 +534,7 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const METER_IS_BURNOUT: i32 = 0x0100;
+            pub const IS_SPECIAL_LW_AIR: i32 = 0x0101;
 
             // ints
             pub const METER_PAUSE_REGEN_FRAME: i32 = 0x0100;

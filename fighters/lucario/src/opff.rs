@@ -64,14 +64,56 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     extreme_speed_cancel(boma, status_kind);
     nspecial_cancels(boma, status_kind, situation_kind, cat[1]);
-    meter_module(fighter, boma);
+    meter_module(fighter, boma, status_kind);
     // Magic Series
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
     training_mode_deplete_meter(fighter, boma, status_kind);
 }
 
-unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     MeterModule::set_damage_gain_mul(fighter.object(), 0.5);
+    if [ // list of statuses that should pause passive meter regen
+        *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
+        *FIGHTER_STATUS_KIND_CAPTURE_PULLED_FISHINGROD,
+        *FIGHTER_STATUS_KIND_CAPTURE_PULLED_OCTOPUS,
+        *FIGHTER_STATUS_KIND_CAPTURE_PULLED_PICKEL,
+        *FIGHTER_STATUS_KIND_CAPTURE_PULLED_YOSHI,
+        *FIGHTER_STATUS_KIND_CLIFF_ATTACK,
+        *FIGHTER_STATUS_KIND_CLIFF_CATCH,
+        *FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE,
+        *FIGHTER_STATUS_KIND_CLIFF_CLIMB,
+        *FIGHTER_STATUS_KIND_CLIFF_ESCAPE,
+        *FIGHTER_STATUS_KIND_CLIFF_JUMP1,
+        *FIGHTER_STATUS_KIND_CLIFF_JUMP2,
+        *FIGHTER_STATUS_KIND_CLIFF_JUMP3,
+        *FIGHTER_STATUS_KIND_CLIFF_ROBBED,
+        *FIGHTER_STATUS_KIND_CLIFF_WAIT,
+        *FIGHTER_STATUS_KIND_DAMAGE,
+        *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+        *FIGHTER_STATUS_KIND_DAMAGE_FALL,
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_ESCAPE,
+        *FIGHTER_STATUS_KIND_ESCAPE_F,
+        *FIGHTER_STATUS_KIND_ESCAPE_B,
+        *FIGHTER_STATUS_KIND_GUARD, 
+        *FIGHTER_STATUS_KIND_GUARD_DAMAGE, 
+        *FIGHTER_STATUS_KIND_GUARD_OFF, 
+        *FIGHTER_STATUS_KIND_GUARD_ON,
+        *FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_SHIELD_BREAK_DOWN,
+        *FIGHTER_STATUS_KIND_SHIELD_BREAK_FALL,
+        *FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY
+    ].contains(&status_kind) {
+        let lockout_frame = 90.max(VarModule::get_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+        VarModule::set_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, lockout_frame);
+    }
+
     let level = MeterModule::level(fighter.object()) as f32;
     let meter_per_level = MeterModule::meter_per_level(fighter.object());
     let meter_max = ParamModule::get_float(fighter.object(), ParamType::Common, "meter_max_damage");
@@ -80,12 +122,16 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
     }
 
     if !boma.is_in_hitlag() {
-        let mut lockout_frame = VarModule::get_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME);
+        let is_burnout = VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+        let passive_rate = VarModule::get_float(fighter.battle_object, vars::lucario::instance::METER_PASSIVE_RATE);
+        let lockout_frame = VarModule::get_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME);
         if lockout_frame > 0 {
-            lockout_frame = (lockout_frame - 1).max(0);
-            VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, lockout_frame);
+            VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, (lockout_frame - 1).max(0));
+            if is_burnout {
+                MeterModule::add(boma.object(), passive_rate / 2.0);
+            }
         } else {
-            MeterModule::add(boma.object(), VarModule::get_float(fighter.battle_object, vars::lucario::instance::METER_PASSIVE_RATE));
+            MeterModule::add(boma.object(), passive_rate);
         }
     }
 }
@@ -111,19 +157,22 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
             if boma.is_cat_flag(Cat1::AttackS4)
             && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) 
             && MeterModule::drain(boma.object(), 2) {
-                VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 120);
+                let frames = 90.max(VarModule::get_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+                VarModule::set_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S4_START,true);
             }
             if boma.is_cat_flag(Cat1::AttackHi4)
             && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) 
             && MeterModule::drain(boma.object(), 2) {
-                VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 120);
+                let frames = 90.max(VarModule::get_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+                VarModule::set_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_HI4_START,true);
             }
             if boma.is_cat_flag(Cat1::AttackLw4)
             && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) 
             && MeterModule::drain(boma.object(), 2) {
-                VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 120);
+                let frames = 90.max(VarModule::get_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+                VarModule::set_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_LW4_START,true);
             }
 
@@ -131,25 +180,29 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
             if boma.is_cat_flag(Cat1::SpecialN)
             && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) 
             && MeterModule::drain(boma.object(), 2) {
-                VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 120);
+                let frames = 90.max(VarModule::get_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+                VarModule::set_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_N,false);
             }
             if boma.is_cat_flag(Cat1::SpecialS)
             && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) 
             && MeterModule::drain(boma.object(), 2) {
-                VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 120);
+                let frames = 90.max(VarModule::get_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+                VarModule::set_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_S,false);
             }
             if boma.is_cat_flag(Cat1::SpecialHi)
             && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) 
             && MeterModule::drain(boma.object(), 2) {
-                VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 120);
+                let frames = 90.max(VarModule::get_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+                VarModule::set_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI,false);
             }
             if boma.is_cat_flag(Cat1::SpecialLw)
             && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) 
             && MeterModule::drain(boma.object(), 2) {
-                VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 120);
+                let frames = 90.max(VarModule::get_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+                VarModule::set_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
             }
 
@@ -161,7 +214,8 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
             && MeterModule::level(boma.object()) >= 1
             && boma.check_jump_cancel(false) {
                 MeterModule::drain(boma.object(), 1);
-                VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 120);
+                let frames = 90.max(VarModule::get_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+                VarModule::set_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
             }
         }
     }
@@ -187,25 +241,29 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
             if boma.is_cat_flag(Cat1::SpecialN)
             && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) 
             && MeterModule::drain(boma.object(), 2) {
-                VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 120);
+                let frames = 90.max(VarModule::get_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+                VarModule::set_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_N,false);
             }
             if boma.is_cat_flag(Cat1::SpecialS)
             && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) 
             && MeterModule::drain(boma.object(), 2) {
-                VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 120);
+                let frames = 90.max(VarModule::get_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+                VarModule::set_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_S,false);
             }
             if boma.is_cat_flag(Cat1::SpecialHi)
             && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) 
             && MeterModule::drain(boma.object(), 2) {
-                VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 120);
+                let frames = 90.max(VarModule::get_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+                VarModule::set_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_HI,false);
             }
             if boma.is_cat_flag(Cat1::SpecialLw)
             && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) 
             && MeterModule::drain(boma.object(), 2) {
-                VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 120);
+                let frames = 90.max(VarModule::get_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+                VarModule::set_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW,false);
             }
 
@@ -217,7 +275,8 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
             && MeterModule::level(boma.object()) >= 1
             && boma.check_jump_cancel(false) {
                 MeterModule::drain(boma.object(), 1);
-                VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 120);
+                let frames = 90.max(VarModule::get_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+                VarModule::set_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
             }
         }
     }
@@ -251,7 +310,8 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
             && MeterModule::level(boma.object()) >= 1
             && boma.check_jump_cancel(false) {
                 MeterModule::drain(boma.object(), 1);
-                VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 120);
+                let frames = 90.max(VarModule::get_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+                VarModule::set_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
             }
         }
     }
@@ -267,7 +327,8 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
             && MeterModule::level(boma.object()) >= 1
             && boma.check_jump_cancel(false) {
                 MeterModule::drain(boma.object(), 1);
-                VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 120);
+                let frames = 90.max(VarModule::get_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+                VarModule::set_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
             }
             // Check for special attack inputs
             if boma.is_cat_flag(Cat1::SpecialN) {
@@ -293,7 +354,8 @@ unsafe fn magic_series(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         {
             if !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) 
             && MeterModule::drain(boma.object(), 2) {
-                VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 120);
+                let frames = 90.max(VarModule::get_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+                VarModule::set_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_AIR,false);
                 VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
             }

@@ -29,6 +29,14 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <int hash="blank_frame">6</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_aurascale">
     <struct index="0">
       <float hash="min_aura_power">0.8</float>

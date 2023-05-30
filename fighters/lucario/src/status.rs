@@ -71,8 +71,12 @@ pub unsafe extern "C" fn lucario_check_special_command(fighter: &mut L2CFighterC
 
 #[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.change_status(FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_SPLIT.into(), false.into());
-    0.into()
+    VarModule::off_flag(fighter.object(), vars::lucario::instance::IS_SPECIAL_LW_AIR);
+    if fighter.is_situation(*SITUATION_KIND_AIR) {
+        VarModule::on_flag(fighter.object(), vars::lucario::instance::IS_SPECIAL_LW_AIR);
+    }
+    StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_SPLIT);
+    1.into()
 }
 
 #[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_APPEAR, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
@@ -88,7 +92,6 @@ unsafe fn lucario_special_lw_appear_init(fighter: &mut L2CFighterCommon) -> L2CV
         let max_stick_diff = 1.0 - walk_stick_x;
         stick_factor = (stick_diff / max_stick_diff).clamp(0.0, 1.0);
 
-        let mut new_lr = lr;
         if stick_x < 0.0 {
             new_lr = -1.0;
         } else {
@@ -100,8 +103,8 @@ unsafe fn lucario_special_lw_appear_init(fighter: &mut L2CFighterCommon) -> L2CV
     PostureModule::set_lr(fighter.module_accessor, new_lr);
     PostureModule::update_rot_y_lr(fighter.module_accessor);
 
-    let offset_dist_min = 28.0;
-    let offset_dist_max = 45.0;
+    let offset_dist_min = 18.0;
+    let offset_dist_max = 24.0;
     let diff = offset_dist_max - offset_dist_min;
     let offset = offset_dist_min + (diff * stick_factor);
     WorkModule::set_float(fighter.module_accessor, offset, *FIGHTER_LUCARIO_STATUS_WORK_ID_FLOAT_SPLIT_APPEAR_OFFSET);
@@ -119,14 +122,14 @@ unsafe fn lucario_special_lw_appear_init(fighter: &mut L2CFighterCommon) -> L2CV
         vec2.x = (split_offset / (move_time as f32)) * split_lr;
     }
 
-    // if fighter.is_situation(*SITUATION_KIND_AIR) {
-    //     vec2.x = vec2.x * 0.5;
-    //     vec2.y = vec2.x * -0.866 * lr;
-    // }
+    if VarModule::is_flag(fighter.object(), vars::lucario::instance::IS_SPECIAL_LW_AIR) {
+        vec2.y = vec2.x * -0.866 * new_lr;
+        vec2.x = vec2.x * 0.5;
+    }
 
-    app::lua_bind::KineticEnergyNormal::set_limit_speed(stopEnergy, &vec2); //TODO: figure out the vec2
-    app::lua_bind::KineticEnergyNormal::set_speed(stopEnergy, &vec2); //TODO: figure out the vec2
-    app::lua_bind::KineticEnergyNormal::set_brake(stopEnergy, &Vector2f{x: 0.0, y: 0.0}); //TODO: figure out the vec2
+    app::lua_bind::KineticEnergyNormal::set_limit_speed(stopEnergy, &vec2);
+    app::lua_bind::KineticEnergyNormal::set_speed(stopEnergy, &vec2);
+    app::lua_bind::KineticEnergyNormal::set_brake(stopEnergy, &Vector2f{x: 0.0, y: 0.0});
     app::KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, fighter.module_accessor);
     app::KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
     app::FighterSpecializer_Lucario::effect_resume(fighter.module_accessor);
