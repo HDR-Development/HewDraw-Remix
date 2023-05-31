@@ -18,7 +18,7 @@
     <struct index="0">
       <float hash="special_s_tame_time_">60</float>
       <float hash="special_s_move_spd_x_">1.4</float>
-      <float hash="special_s_tame_spd_x_">2.5</float>
+      <float hash="special_s_tame_spd_x_">2.25</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

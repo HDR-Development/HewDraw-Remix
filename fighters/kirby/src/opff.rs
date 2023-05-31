@@ -29,12 +29,19 @@ unsafe fn final_cutter_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, 
                 if VarModule::is_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_HIT) {
                     VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
                     ControlModule::reset_trigger(boma);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
+                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
                 } else {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
                 }
             }
         }
+    }
+}
+
+unsafe fn final_cutter_landing_bugfix(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_HI2)
+    && MotionModule::frame(fighter.module_accessor) <= 2.0 {
+        fighter.set_situation(L2CValue::I32(*SITUATION_KIND_AIR));
     }
 }
 
@@ -302,7 +309,7 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     final_cutter_cancel(boma, id, status_kind, cat[0], frame);
-
+    final_cutter_landing_bugfix(fighter);
 
     // Frame Data
     frame_data(boma, status_kind, motion_kind, frame);

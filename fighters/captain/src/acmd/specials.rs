@@ -330,8 +330,55 @@ unsafe fn game_specialhithrow(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "captain", scripts = ["game_specialairhi", "game_specialhi"], category = ACMD_GAME, low_priority )]
+unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        boma.select_cliff_hangdata_from_name("special_hi");
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
+        CATCH(fighter, 0, Hash40::new("top"), 6.0, 0.0, 13.0, 7.0, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 1, Hash40::new("top"), 4.0, 0.0, 8.8, 11.7, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN, *COLLISION_SITUATION_MASK_G);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 0, 50, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_THROW);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("top"), 5.0, 0.0, 15.0, 6.0, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 1, Hash40::new("top"), 5.0, 0.0, 11.0, 6.0, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        AttackModule::clear(boma, 0, false);
+    }
+    frame(lua_state, 31.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 36.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+    frame(lua_state, 50.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_CAPTAIN_STATUS_SPECIAL_HI_FLAG_IS_CHECK_DIVE);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
+        game_specialairhi,
         captain_special_n_game,
         captain_special_n_turn_game,
         captain_special_air_n_game,
