@@ -90,7 +90,7 @@ unsafe fn duckhunt_attack_13_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter,  1,  0,  Hash40::new("top"),  5.0,  361,  125,  0,  50,  4.0,  0.0,  4.5,  9.0,  None, None, None,  1.0,  1.0,  *ATTACK_SETOFF_KIND_ON,  *ATTACK_LR_CHECK_F,  false,  0,  0.0,  0,  false,  false,  false,  false,  true,  *COLLISION_SITUATION_MASK_GA,  *COLLISION_CATEGORY_MASK_ALL,  *COLLISION_PART_MASK_ALL,  false,  Hash40::new("collision_attr_normal"),  *ATTACK_SOUND_LEVEL_M,  *COLLISION_SOUND_ATTR_KICK,  *ATTACK_REGION_KICK);
     }
     wait(lua_state, 2.0);
-    FT_MOTION_RATE(fighter, 18.0/(28.0-7.0));
+    FT_MOTION_RATE_RANGE(fighter, 6.0, 28.0, 18.3);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
@@ -130,7 +130,7 @@ unsafe fn duckhunt_attack_100_end_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter,  2,  0,  Hash40::new("top"),  3.0,  80,  140,  0,  70,  5.5,  0.0,  6.5,  17.0,  None,  None,  None,  2.0,  1.0,  *ATTACK_SETOFF_KIND_OFF,  *ATTACK_LR_CHECK_F,  false,  0,  0.0,  0,  false,  false,  false,  false,  true,  *COLLISION_SITUATION_MASK_GA,  *COLLISION_CATEGORY_MASK_ALL,  *COLLISION_PART_MASK_ALL,  false,  Hash40::new("collision_attr_normal"),  *ATTACK_SOUND_LEVEL_L,  *COLLISION_SOUND_ATTR_PUNCH,  *ATTACK_REGION_HEAD);
     }
     frame(lua_state, 6.0);
-    FT_MOTION_RATE(fighter,  36.0/(39.0-6.0));
+    FT_MOTION_RATE(fighter,  36.3/(39.0-6.0));
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
