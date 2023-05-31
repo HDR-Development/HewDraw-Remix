@@ -1,6 +1,7 @@
 // status imports
 use super::*;
 use globals::*;
+use smash_script::macros::{EFFECT_FOLLOW, EFFECT_FOLLOW_FLIP};
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_guard_off_main_common_cancel)]
 unsafe fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -149,44 +150,60 @@ unsafe fn status_GuardOff_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = L2CFighterCommon_sub_guard_off_uniq)]
 unsafe fn sub_guard_off_uniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
     if arg.get_bool() {
-        let just_frame = WorkModule::get_int(
-            fighter.module_accessor,
-            *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME,
-        );
-        if 0 < just_frame {
-            WorkModule::dec_int(
+        if VarModule::is_flag(
+            fighter.object(),
+            vars::common::instance::IS_PARRY_FOR_GUARD_OFF,
+        ) {
+            let just_frame = WorkModule::get_int(
                 fighter.module_accessor,
                 *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME,
             );
-            if (just_frame - 1) == 0 {
-                ShieldModule::set_status(
+            if 0 < just_frame {
+                WorkModule::dec_int(
                     fighter.module_accessor,
-                    *FIGHTER_SHIELD_KIND_GUARD,
-                    app::ShieldStatus(*SHIELD_STATUS_NONE),
-                    0,
+                    *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME,
                 );
-                let type_of_guard =
-                    app::FighterUtil::get_shield_type_of_guard(fighter.global_table[0x2].get_i32())
-                        as i32;
-                ShieldModule::set_shield_type(
-                    fighter.module_accessor,
-                    app::ShieldType(type_of_guard),
-                    *FIGHTER_SHIELD_KIND_GUARD,
-                    0,
-                );
-                ReflectorModule::set_status(
-                    fighter.module_accessor,
-                    0,
-                    app::ShieldStatus(*SHIELD_STATUS_NONE),
-                    *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD,
-                );
+                if (just_frame - 1) == 0 {
+                    ShieldModule::set_status(
+                        fighter.module_accessor,
+                        *FIGHTER_SHIELD_KIND_GUARD,
+                        app::ShieldStatus(*SHIELD_STATUS_NONE),
+                        0,
+                    );
+                    let type_of_guard =
+                        app::FighterUtil::get_shield_type_of_guard(fighter.global_table[0x2].get_i32())
+                            as i32;
+                    ShieldModule::set_shield_type(
+                        fighter.module_accessor,
+                        app::ShieldType(type_of_guard),
+                        *FIGHTER_SHIELD_KIND_GUARD,
+                        0,
+                    );
+                    ReflectorModule::set_status(
+                        fighter.module_accessor,
+                        0,
+                        app::ShieldStatus(*SHIELD_STATUS_NONE),
+                        *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD,
+                    );
 
-                ModelModule::disable_gold_eye(fighter.module_accessor);
-                MotionModule::set_rate(
-                    fighter.module_accessor,
-                    MotionModule::end_frame(fighter.module_accessor)
-                        / (30.0 - fighter.status_frame() as f32),
-                );
+                    // ModelModule::disable_gold_eye(fighter.module_accessor);
+                    // EffectModule::remove_common(fighter.module_accessor, Hash40::new("just_shield"));
+                    let end_frame = MotionModule::end_frame_from_hash(
+                        fighter.module_accessor,
+                        Hash40::new("guard_off"),
+                    );
+                    let rate = (end_frame * 0.75) / (30.0 - fighter.status_frame() as f32);
+                    MotionModule::change_motion(
+                        fighter.module_accessor,
+                        Hash40::new("guard_off"),
+                        (end_frame * 0.25),
+                        rate,
+                        false,
+                        0.0,
+                        false,
+                        false,
+                    );
+                }
             }
         }
         let cancel_frame = WorkModule::get_int(
@@ -255,7 +272,7 @@ unsafe fn status_GuardOff_Common(fighter: &mut L2CFighterCommon) -> L2CValue {
         true,
     );
     let ret_val = if 0.0 < fighter_guard_off_cancel_frame && 0 < guard_off_cancel_frame {
-        fighter_guard_off_cancel_frame / (guard_off_cancel_frame as f32)
+        (fighter_guard_off_cancel_frame + 3.0) / (guard_off_cancel_frame as f32)
     } else {
         1.0
     };
@@ -294,39 +311,45 @@ unsafe fn status_GuardOff(fighter: &mut L2CFighterCommon) -> L2CValue {
     ) {
         MotionModule::change_motion(
             fighter.module_accessor,
-            Hash40::new("just_shield_off"),
-            0.0,
+            Hash40::new("guard_damage"),
+            2.0,
             0.0,
             false,
             0.0,
             false,
             false,
         );
-        app::FighterUtil::flash_eye_info(fighter.module_accessor);
-        if !WorkModule::is_flag(
+        // app::FighterUtil::flash_eye_info(fighter.module_accessor);
+        // if !WorkModule::is_flag(
+        //     fighter.module_accessor,
+        //     *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL,
+        // ) {
+        //     ModelModule::enable_gold_eye(fighter.module_accessor);
+        //     WorkModule::on_flag(
+        //         fighter.module_accessor,
+        //         *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE,
+        //     );
+        // }
+        let shield_radius = WorkModule::get_param_float(fighter.module_accessor, hash40("shield_radius"), 0);
+        let lr = PostureModule::lr(fighter.module_accessor);
+        EffectModule::req_follow(
             fighter.module_accessor,
-            *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL,
-        ) {
-            ModelModule::enable_gold_eye(fighter.module_accessor);
-            WorkModule::on_flag(
-                fighter.module_accessor,
-                *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE,
-            );
-        }
-        EffectModule::req_on_joint(
-            fighter.module_accessor,
-            Hash40::new_raw(0xff4f9200f),
+            Hash40::new("sys_genesis_end"),
             Hash40::new("throw"),
             &Vector3f::zero(),
             &Vector3f::zero(),
-            0.5,
-            &Vector3f::zero(),
-            &Vector3f::zero(),
-            false,
+            shield_radius * 0.06,
+            true,
             *EFFECT_SUB_ATTRIBUTE_NONE as u32,
+            0,
+            0,
             *EFFECT_FLIP_NONE,
-            1,
+            0,
+            false,
+            false,
         );
+        EffectModule::set_rate_last(fighter.module_accessor, 1.2);
+        // EffectModule::set_alpha_last(fighter.module_accessor, 0.4);
         EffectModule::req_common(fighter.module_accessor, Hash40::new("just_shield"), 0.0);
         // let shield_se = app::FighterUtil::get_just_shield_se(fighter.global_table[0x2].get_i32());
         SoundModule::play_se(
@@ -338,11 +361,12 @@ unsafe fn status_GuardOff(fighter: &mut L2CFighterCommon) -> L2CValue {
             false,
             app::enSEType(0),
         );
+        SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_common_guardon"), 0);
     } else {
         MotionModule::change_motion(
             fighter.module_accessor,
             Hash40::new("guard_off"),
-            0.0,
+            3.0,
             rate,
             false,
             0.0,
