@@ -1049,6 +1049,13 @@ pub mod vars {
             pub const SPECIAL_S_RESERVE_FALL: i32 = 0x1100;
         }
     }
+    
+    pub mod tantan {
+        pub mod status {
+            // flags
+            pub const ARMS_ATTACK_CANCEL: i32 = 0x1100;
+        }
+    }
 
     pub mod krool {
         pub mod instance {
