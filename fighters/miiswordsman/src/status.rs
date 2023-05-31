@@ -22,6 +22,7 @@ pub fn install() {
         special_hi3_end,
         //special_lw,
         //miiswordsman_speciallw1hit_main,
+        special_lw3_end_main,
         //special_lw3_end,
         special_hi2_bound_end
     );
@@ -1182,6 +1183,21 @@ unsafe fn miiswordsman_speciallw1hit_main(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 //FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END
+
+#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn special_lw3_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let x_speed = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+
+    let ret = original!(fighter);
+
+    let start_situation = WorkModule::get_int(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_WORK_ID_INT_JET_STUB_START_SITUATION);
+    if start_situation == *SITUATION_KIND_AIR
+    && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+        KineticModule::add_speed(fighter.module_accessor, &Vector3f{x: x_speed.abs(), y: 0.0, z: 0.0});
+    }
+
+    ret
+}
 
 #[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
