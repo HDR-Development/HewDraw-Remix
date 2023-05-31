@@ -144,6 +144,33 @@ unsafe fn koopajr_cannonball_hop_game(weapon: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "koopajr", script = "game_specialhijrrise", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialhijrrise(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        boma.select_cliff_hangdata_from_name("special_hi");
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_KOOPAJR_STATUS_SPECIAL_HI_SHOOT_FLAG_ACTION);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+
+#[acmd_script( agent = "koopajr", script = "game_specialhijrfall", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialhijrfall(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        boma.select_cliff_hangdata_from_name("special_hi");
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         koopajr_special_lw_game,
@@ -153,6 +180,8 @@ pub fn install() {
         koopajr_special_air_s_game,
         koopajr_special_air_s_spin_game,
         koopajr_cannonball_hop_game,
+        game_specialhijrrise,
+        game_specialhijrfall
     );
 }
 
