@@ -41,7 +41,7 @@ unsafe fn gordo_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i3
 
 // Training Mode Gordo Timer taunt reset
 unsafe fn gordo_training(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
-    if status_kind == *FIGHTER_STATUS_KIND_APPEAL {
+    if !smash::app::sv_information::is_ready_go() {
         VarModule::set_int(fighter.battle_object, vars::dedede::instance::GORDO_TIMER, 0);
     }
 }

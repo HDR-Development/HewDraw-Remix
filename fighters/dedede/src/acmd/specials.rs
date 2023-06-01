@@ -93,27 +93,83 @@ unsafe fn dedede_special_s_start_game(fighter: &mut L2CAgentBase) {
 unsafe fn dedede_special_s_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 13.0);
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
-        //LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        if (PostureModule::lr(boma) == -1.0){
+            EFFECT_FOLLOW(fighter, Hash40::new("dedede_hammer_arc_wind"), Hash40::new("throw"), 2.0, -2.0, -2.0, 90.0, 0.0, 0.0 , 0.6, true);
+        }
+        else{
+            EFFECT_FOLLOW(fighter, Hash40::new("dedede_hammer_arc_wind"), Hash40::new("throw"), -2.0, -2.0, -2.0, 90.0, 180.0, 0.0 , 0.6, true);
+        }
+        LAST_EFFECT_SET_COLOR(fighter, 0.96, 0.6, 0.26); 
+        
     }
     frame(lua_state, 18.0);
-    if is_excute(fighter){
+    if is_excute(fighter){     
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD){
             FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
         }
+        else{
+            FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.4, 0, 0, 0, 0, 0, 0, false);
+        }
     }
+    frame(lua_state,21.0);
+    if is_excute(fighter){
+        EFFECT_OFF_KIND(fighter, Hash40::new("dedede_hammer_arc_wind"), true, true);
+    }
+}
 
+#[acmd_script( agent = "dedede", script = "sound_specialsstart", category = ACMD_SOUND, low_priority )]
+unsafe fn dedede_special_s_start_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_dedede_wad_throw"));
+    }
+}
+
+#[acmd_script( agent = "dedede", script = "expression_specialsstart", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn dedede_special_s_start_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_attackl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
 }
 
 #[acmd_script( agent = "dedede", script = "effect_specialairsstart" , category = ACMD_EFFECT , low_priority)]
 unsafe fn dedede_special_air_s_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 7.0);
-    frame(lua_state, 13.0);
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
-        //LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        if (PostureModule::lr(boma) == -1.0){
+            EFFECT_FOLLOW(fighter, Hash40::new("dedede_hammer_arc_wind"), Hash40::new("throw"), 2.0, -2.0, -2.0, 90.0, 0.0, 0.0 , 0.6, true);
+        }
+        else{
+            EFFECT_FOLLOW(fighter, Hash40::new("dedede_hammer_arc_wind"), Hash40::new("throw"), -2.0, -2.0, -2.0, 90.0, 180.0, 0.0 , 0.6, true);
+        }
+        LAST_EFFECT_SET_COLOR(fighter, 0.96, 0.6, 0.26);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter){     
+        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD){
+            FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+        }
+        else{
+            FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.4, 0, 0, 0, 0, 0, 0, false);
+        }
+    }
+    frame(lua_state,21.0);
+    if is_excute(fighter){
+        EFFECT_OFF_KIND(fighter, Hash40::new("dedede_hammer_arc_wind"), true, true);
     }
 
 }
@@ -136,6 +192,31 @@ unsafe fn dedede_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 25.0);
     FT_MOTION_RATE(fighter, 29.0 / (65.0-26.0));
+}
+
+#[acmd_script( agent = "dedede", script = "sound_specialairsstart", category = ACMD_SOUND, low_priority )]
+unsafe fn dedede_special_air_s_start_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_dedede_wad_throw"));
+    }
+}
+
+#[acmd_script( agent = "dedede", script = "expression_specialairsstart", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_specialsstart(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_attackl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
 }
 
 #[acmd_script( agent = "dedede", script = "game_specialsmiss", category = ACMD_GAME, low_priority )]
@@ -392,8 +473,10 @@ pub fn install() {
         dedede_special_air_n_end_game,
         dedede_special_s_start_game,
         dedede_special_s_start_effect,
+        dedede_special_s_start_sound,
         dedede_special_air_s_start_effect,
         dedede_special_air_s_start_game,
+        dedede_special_air_s_start_sound,
         dedede_special_s_miss_game,
         dedede_special_air_s_miss_game,
         dedede_special_s_get_game,

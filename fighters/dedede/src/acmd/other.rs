@@ -232,7 +232,7 @@ unsafe fn dedede_gordo_special_s_throw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        EFFECT(fighter, Hash40::new("dedede_gordo_impact"), Hash40::new("top"), -5, 4, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        //EFFECT(fighter, Hash40::new("dedede_gordo_impact"), Hash40::new("top"), -5, 4, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
         EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 2.0, true);
         LAST_EFFECT_SET_RATE(fighter, 2.0);
         LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.8, 0.1);
@@ -309,9 +309,6 @@ unsafe fn dedede_gordo_special_s_start_game(fighter: &mut L2CAgentBase){
     if is_excute(fighter){
         WorkModule::on_flag(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_FLAG_VISIBILITY_ON);
     }
-    frame(lua_state, 8.0);
-    
-
 }
 
 #[acmd_script( agent = "dedede_gordo", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
@@ -322,9 +319,6 @@ unsafe fn dedede_gordo_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *WEAPON_DEDEDE_GORDO_STATUS_WORK_FLAG_VISIBILITY_ON);
     }
-    FT_MOTION_RATE(fighter, 1.0);
-    frame(lua_state, 8.0);
-    
 }
 
 #[acmd_script( agent = "dedede", script = "game_escapeair" , category = ACMD_GAME , low_priority)]

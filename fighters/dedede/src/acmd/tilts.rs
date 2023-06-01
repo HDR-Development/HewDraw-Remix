@@ -94,36 +94,38 @@ unsafe fn dedede_attack_lw3_game(fighter: &mut L2CAgentBase) {
 unsafe fn dedede_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    /* 
-    frame(lua_state, 4.0);
+    frame(lua_state, 7.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 8, 0, 0, 0, -90, 1.2, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("dedede_air_n"), Hash40::new("top"), 0, 4.0, 18.0, 0, 0, 0, 0.6, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.1);
     }
-    frame(lua_state, 6.0);
-    if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1.4, 0, 0, 0, 0, 0, 0, false);
-    }
-    frame(lua_state, 13.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("sys_spin_wind_s"), Hash40::new("top"), 0, 8, 0, 0, 0, -90, 1.4, false, 0.15);
-    }
-    frame(lua_state, 16.0);
-    if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -3, 0, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, false);
-    }
-    frame(lua_state, 24.0);
-    if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -3, 0, 0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
-    }
-    */
+
 }
 
+#[acmd_script( agent = "dedede", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn dedede_attack_lw3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
 pub fn install() {
     install_acmd_scripts!(
         dedede_attack_s3_s_game,
         dedede_attack_hi3_game,
         dedede_attack_lw3_game,
         dedede_attack_lw3_effect,
+        dedede_attack_lw3_expression,
     );
 }
 
