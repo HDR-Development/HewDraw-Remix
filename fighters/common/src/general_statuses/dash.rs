@@ -355,7 +355,7 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
         fighter,
         FIGHTER_STATUS_KIND_ATTACK_DASH,
         true,
-        WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH) &&
+        fighter.left_stick_x() * PostureModule::lr(fighter.module_accessor) > 0.0 &&
         fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
     );
 
