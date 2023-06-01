@@ -8,6 +8,7 @@ I am fixing rumble for various characters, starting with my own (as I am most fa
   - Down throw
   - First hit of down air
   - Down air whiff effect
+  - Early dash attack
 
 - Wolf
   - Early up air
