@@ -62,7 +62,7 @@ unsafe fn set_fighter_status_data_hook(boma: &mut BattleObjectModuleAccessor, ar
         || (boma.kind() == *FIGHTER_KIND_DEDEDE
             && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S]))
         || (boma.kind() == *FIGHTER_KIND_MIIFIGHTER
-            && boma.is_status_one_of(&[*FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW1_AIR, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW1_GROUND]))
+            && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_STATUS_KIND_SPECIAL_LW]))
         {
             // if b-reverse flag does not already exist in status_attr bitmask
             if status_attr & *FIGHTER_STATUS_ATTR_START_TURN as u32 == 0 {

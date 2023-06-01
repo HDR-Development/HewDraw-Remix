@@ -65,8 +65,8 @@ unsafe fn earthquake_punch(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         let is_hold = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL);
         let charge = VarModule::get_int(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE);
         let charge_distance = VarModule::get_float(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE_DISTANCE) as f32;
-        let max_charge_frames = 15.0;
-        let max_charge_distance = 25.0;
+        let max_charge_frames = 20.0;
+        let max_charge_distance = 35.0;
         let lr = PostureModule::lr(fighter.module_accessor);
         let is_ground = GroundModule::ray_check(
             fighter.module_accessor, 
@@ -81,8 +81,8 @@ unsafe fn earthquake_punch(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
         }
         //println!("is_hold: {}, charge: {}, charge_distance: {}, is_ground: {}", is_hold, charge, charge_distance, is_ground);
-        if (6..8).contains(&(frame as i32)) && charge < max_charge_frames as i32 && is_hold && is_ground{
-            MotionModule::set_rate(fighter.module_accessor, 0.0);
+        if (4..8).contains(&(frame as i32)) && charge < max_charge_frames as i32 && is_hold && is_ground{
+            MotionModule::set_rate(fighter.module_accessor, charge as f32/max_charge_frames);
             VarModule::set_int(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE, (charge+1) as i32);
             VarModule::set_float(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE_DISTANCE, charge_distance+(max_charge_distance/max_charge_frames));
         } else {
