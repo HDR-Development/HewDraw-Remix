@@ -451,7 +451,7 @@ unsafe fn master_special_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 2.0, 6.0);
         ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, false, 0);
-        ArticleModule::change_motion(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, Hash40::new("special_airhi"), false, 0.0);
+        ArticleModule::change_motion(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, Hash40::new("special_air_hi_start"), false, -1.0);
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
@@ -528,10 +528,12 @@ unsafe fn master_special_air_hi_overtake_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        /*VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+		/*
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)){
             VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-        }*/
+        }
+		*/
         VarModule::on_flag(fighter.battle_object, vars::master::instance::SPECIAL_AIR_HI_CATCH);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_NONE);
         ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, false, 0);

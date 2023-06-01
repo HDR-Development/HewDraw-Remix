@@ -18,12 +18,26 @@ extern "Rust" {
     fn shotos_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
 
+#[fighter_frame( agent = FIGHTER_KIND_KEN )]
+pub fn ken_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    unsafe {
+        MeterModule::update(fighter.battle_object, false);
+        utils::ui::UiManager::set_ex_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+        utils::ui::UiManager::set_ex_meter_info(
+            fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+            MeterModule::meter(fighter.object()),
+            ParamModule::get_float(fighter.object(), ParamType::Common, "meter_max_damage"),
+            MeterModule::meter_per_level(fighter.object())
+        );
+    }
+}
+
 #[utils::macros::opff(FIGHTER_KIND_KEN)]
 pub fn ken_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
-		ken_frame(fighter);
         shotos_common(fighter);
+		ken_frame(fighter);
     }
 }
 
@@ -76,12 +90,12 @@ unsafe fn forward_bair_rotation(boma: &mut BattleObjectModuleAccessor, start_fra
 unsafe fn rotate_forward_bair(boma: &mut BattleObjectModuleAccessor) {
     if boma.is_motion(Hash40::new("attack_air_b")){
         if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
-            forward_bair_rotation(boma, 5.0, 7.5, 10.0, 30.0);
+            forward_bair_rotation(boma, 6.0, 8.5, 11.0, 31.0);
         }
     }
     else if boma.is_motion(Hash40::new("landing_air_b")){
         if VarModule::is_flag(boma.object(), vars::common::instance::IS_HEAVY_ATTACK) {
-            forward_bair_rotation(boma, 0.0, 0.1, 0.2, 10.0);
+            forward_bair_rotation(boma, 0.0, 0.1, 0.2, 11.0);
         }
     }
 }
@@ -124,7 +138,7 @@ unsafe fn fsmash_leg_rotate(boma: &mut BattleObjectModuleAccessor, start_frame: 
 unsafe fn kamabaraigeri(boma: &mut BattleObjectModuleAccessor, frame: f32) {
     if boma.is_motion(Hash40::new("attack_s4_s")){
         if VarModule::is_flag(boma.object(), vars::shotos::status::SHOULD_COMBOS_SCALE) {
-            fsmash_leg_rotate(boma, 9.0, 12.0, 14.0, 16.0);
+            fsmash_leg_rotate(boma, 10.0, 13.0, 15.0, 17.0);
         }
         if frame >= (MotionModule::end_frame(boma) - 1.0) {
             // Fix getting stuck in the anim due to not setting the charge flag

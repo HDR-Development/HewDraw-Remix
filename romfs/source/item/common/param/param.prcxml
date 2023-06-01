@@ -150,13 +150,15 @@
     </struct>
     <hash40 index="129">dummy</hash40>
     <struct index="130">
+      <float hash="hp">999</float>
       <float hash="scale">2.3</float>
-      <float hash="hitsize">1</float>
+      <float hash="hitsize">0</float>
       <float hash="throw_speed_mul">0.75</float>
       <float hash="throw_power_speed_mul">0.95</float>
       <float hash="gravity_accel">0.075</float>
       <float hash="air_brake_x">0.005</float>
       <float hash="ground_brake_x">0.04</float>
+      <bool hash="enemy_can_attack">false</bool>
     </struct>
     <hash40 index="131">dummy</hash40>
     <hash40 index="132">dummy</hash40>

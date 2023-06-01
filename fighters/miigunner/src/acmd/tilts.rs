@@ -2,7 +2,7 @@
 use super::*;
 
 #[acmd_script( agent = "miigunner", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_s3_game(fighter: &mut L2CAgentBase) {
+unsafe fn miigunner_attack_s3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 2.0);
@@ -13,7 +13,7 @@ unsafe fn attack_s3_game(fighter: &mut L2CAgentBase) {
 	frame(lua_state, 10.0);
 	if is_excute(fighter) {
 		FT_MOTION_RATE(fighter, 1.0);
-		ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 7.5, 361, 56, 0, 56, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_ENERGY);
+		ATTACK(fighter, 0, 0, Hash40::new("armr"), 9.0, 361, 56, 0, 56, 3.0, 1.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_ENERGY);
 		ATTACK(fighter, 1, 0, Hash40::new("top"), 13.0, 361, 56, 0, 56, 2.5, 0.0, 8.0, 8.0, Some(0.0), Some(8.0), Some(20.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MIIGUNNER_BLASTER, *ATTACK_REGION_ENERGY);
 		// Cannon "splash" hitboxes
 		ATTACK(fighter, 2, 0, Hash40::new("top"), 13.0, 361, 56, 0, 56, 2.5, 0.0, 8.0, 8.0, Some(0.0), Some(8.0), Some(20.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MIIGUNNER_BLASTER, *ATTACK_REGION_ENERGY);
@@ -60,7 +60,7 @@ unsafe fn attack_s3_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "miigunner", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_hi3_game(fighter: &mut L2CAgentBase) {
+unsafe fn miigunner_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 5.0);
@@ -87,7 +87,7 @@ unsafe fn attack_hi3_game(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "miigunner", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
-unsafe fn attack_lw3_game(fighter: &mut L2CAgentBase) {
+unsafe fn miigunner_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	frame(lua_state, 8.0);
@@ -100,14 +100,15 @@ unsafe fn attack_lw3_game(fighter: &mut L2CAgentBase) {
 	wait(lua_state, 7.0);
 	if is_excute(fighter) {
 		AttackModule::clear_all(boma);
+		FT_MOTION_RATE(fighter, 20.0/(41.0 - 15.0));
 	}
 }
 
 pub fn install() {
     install_acmd_scripts!(
-		attack_s3_game,
-		attack_hi3_game,
-		attack_lw3_game,
+		miigunner_attack_s3_game,
+		miigunner_attack_hi3_game,
+		miigunner_attack_lw3_game,
 	);
 }
 

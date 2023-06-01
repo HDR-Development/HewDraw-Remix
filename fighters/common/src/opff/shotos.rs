@@ -92,6 +92,9 @@ unsafe fn super_fs_cancel(boma: &mut BattleObjectModuleAccessor) -> bool {
 
 // Shotos Hadoken FADC and Super (FS) cancels
 unsafe fn hadoken_fadc_sfs_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, cat: [i32; 4], frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
 
     let mut agent_base = fighter.fighter_base.agent_base;
     let cat1 = cat[0];
@@ -105,7 +108,7 @@ unsafe fn hadoken_fadc_sfs_cancels(fighter: &mut L2CFighterCommon, boma: &mut Ba
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
     ])
-    || frame <= 5.0 {
+    || frame <= 6.0 {
         return;
     }
 
@@ -122,7 +125,7 @@ unsafe fn hadoken_fadc_sfs_cancels(fighter: &mut L2CFighterCommon, boma: &mut Ba
         return;
     }
 
-    if frame > 15.0
+    if frame > 16.0
     && boma.is_cat_flag(Cat1::SpecialLw)
     && MeterModule::drain(boma.object(), 2)
     {
@@ -142,6 +145,13 @@ unsafe fn training_mode_full_meter(fighter: &mut L2CFighterCommon, boma: &mut Ba
     }
 }
 
+unsafe fn up_special_early_landing(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP) 
+    && fighter.is_situation(*SITUATION_KIND_GROUND) {
+        fighter.change_status_req(*FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_LANDING, false);
+    }
+}
+
 #[no_mangle]
 pub unsafe extern "Rust" fn shotos_common(fighter: &mut L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
@@ -150,21 +160,12 @@ pub unsafe extern "Rust" fn shotos_common(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn shotos_moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    MeterModule::update(fighter.battle_object, false);
-    if boma.kind() != *FIGHTER_KIND_DOLLY {
-        utils::ui::UiManager::set_ex_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
-        utils::ui::UiManager::set_ex_meter_info(
-            fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
-            MeterModule::meter(fighter.object()),
-            ParamModule::get_float(fighter.object(), ParamType::Common, "meter_max_damage"),
-            MeterModule::meter_per_level(fighter.object())
-        );
-    }
     //dtilt_utilt_repeat_increment(boma, id, motion_kind); // UNUSED
     tatsumaki_ex_land_cancel_hover(boma, status_kind, situation_kind);
 	//ex_shoryuken(boma, status_kind, situation_kind, motion_kind);
     hadoken_fadc_sfs_cancels(fighter, boma, id, status_kind, cat, frame);
     training_mode_full_meter(fighter, boma, status_kind);
+    up_special_early_landing(fighter);
 
     // Magic Series
     //magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);

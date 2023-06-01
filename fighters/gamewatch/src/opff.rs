@@ -10,13 +10,12 @@ unsafe fn ff_chef_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
         }
         if situation_kind == *SITUATION_KIND_AIR {
-            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
             if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66
                 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
                 WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
             }
         }
-        if MotionModule::frame(boma) <= 1.0 {
+        if StatusModule::is_changing(boma) {
             let nspec_halt = Vector3f{x: 0.9, y: 1.0, z: 1.0};
             KineticModule::mul_speed(boma, &nspec_halt, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         }
@@ -34,7 +33,7 @@ unsafe fn parachute_dj(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
 // Game & Watch Fair cake box position readjustment
 unsafe fn fair_repositioning(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR && motion_kind == hash40("attack_air_f") {
-        if frame < 9.0 || (frame >= 9.0 && frame < 10.0 && boma.is_in_hitlag()) {
+        if frame < 10.0 {
             ModelModule::set_joint_translate(boma, Hash40::new("havel"), &Vector3f{ x: -3.5, y: 6.5, z: 0.0 }, false, false);
             ModelModule::set_joint_rotate(boma, Hash40::new("havel"), &Vector3f{ x: -15.0, y: 0.0, z: 0.0 }, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
             ModelModule::set_joint_rotate(boma, Hash40::new("shoulderl"), &Vector3f{ x: 0.0, y: 0.0, z: -40.0 }, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
@@ -62,11 +61,14 @@ pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i3
 }
 
 unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if frame <= 18.0 {
+        if frame <= 19.0 {
             MotionModule::set_rate(boma, 2.0);
         }
-        if frame > 18.0 {
+        if frame > 19.0 {
             MotionModule::set_rate(boma, 1.0);
         }
     }
@@ -118,7 +120,7 @@ unsafe fn dthrow_reverse(boma: & mut BattleObjectModuleAccessor, motion_kind: u6
 //     }
 // }
 
-#[smashline::weapon_frame_callback]
+#[smashline::weapon_frame_callback(main)]
 pub fn box_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
     unsafe { 
         if weapon.kind() != WEAPON_KIND_GAMEWATCH_BOMB {
@@ -130,7 +132,7 @@ pub fn box_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
         if gnw_boma.is_motion(Hash40::new("attack_air_f")) {
             let gnw_fighter = utils::util::get_fighter_common_from_accessor(gnw_boma);
             if let Some(info) = FrameInfo::update_and_get(gnw_fighter) {
-                if info.frame < 10.0 {
+                if info.frame < 11.0 {
                     ModelModule::set_scale(weapon.module_accessor, 0.75);
                 }
                 else {

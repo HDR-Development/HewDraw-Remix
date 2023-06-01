@@ -2,7 +2,7 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">27</float>
+      <float hash="p1_y">25</float>
     </struct>
   </list>
   <struct hash="param_private">
@@ -25,8 +25,8 @@
   </struct>
   <list hash="param_special_n">
     <struct index="0">
-      <int hash="charge_frame_max">180</int>
-      <int hash="cancel_frame">15</int>
+      <int hash="charge_frame_max">150</int>
+      <int hash="cancel_frame">18</int>
       <float hash="air_start_speed_mul_x">0.3</float>
       <float hash="air_start_max_speed_y">1.4</float>
       <float hash="air_fire_max_speed_y">1.4</float>
@@ -82,7 +82,7 @@
       <int hash="act_landing_frame">18</int>
       <int hash="landing_frame_2nd">20</int>
       <int hash="act_landing_frame_2nd">27</int>
-      <float hash="jump_count_reset_frame">5</float>
+      <float hash="jump_count_reset_frame">0</float>
 	</struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -90,12 +90,12 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
-      <int hash="success_cancel_frame">12</int>
-      <float hash="base_slow_frame_max">85</float>
-      <int hash="slow_frame_max">160</int>
+      <int hash="success_cancel_frame">16</int>
+      <float hash="base_slow_frame_max">75</float>
+      <float hash="damage_slow_rate_frame">0.5</float>
       <float hash="batwithin_slow_frame_mul">1.0</float>
       <int hash="0x1f3421e7d7">15</int>
-      <float hash="recover_slow_frame">0.06</float>		
+      <float hash="recover_slow_frame">0.08</float>		
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

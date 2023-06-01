@@ -47,20 +47,6 @@ pub unsafe fn ecb_visualizer(boma: &mut BattleObjectModuleAccessor) {
     EffectModule::req_2d(boma, Hash40::new("sys_ripstick_bullet"), &pos_bottom, &Vector3f::zero(), 0.25, 0);
 }
 
-pub unsafe fn sliding_smash_disable(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, fighter_kind: i32) {
-    if status_kind == *FIGHTER_STATUS_KIND_ATTACK_S4_START && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_TURN_DASH && MotionModule::frame(boma) <= 1.0 {
-        if fighter_kind != *FIGHTER_KIND_ROCKMAN {
-            let mut f_agent = fighter.agent;
-
-            f_agent.clear_lua_stack();
-            f_agent.push_lua_stack(&mut L2CValue::new_int(*FIGHTER_KINETIC_ENERGY_ID_MOTION as u64));
-            f_agent.push_lua_stack(&mut L2CValue::new_num(0.0));
-            sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-            f_agent.clear_lua_stack();
-        }
-    }
-}
-
 pub unsafe fn airdodge_refresh_on_hit_disable(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     
     if [*FIGHTER_STATUS_KIND_DAMAGE, *FIGHTER_STATUS_KIND_DAMAGE_AIR, *FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR].contains(&status_kind) && VarModule::is_flag(boma.object(), vars::common::instance::PREV_FLAG_DISABLE_ESCAPE_AIR) {
@@ -147,6 +133,36 @@ pub unsafe fn ecb_shift_disabled_motions(fighter: &mut L2CFighterCommon) {
     && !VarModule::is_flag(fighter.battle_object, vars::common::status::DISABLE_ECB_SHIFT)
     {
         VarModule::on_flag(fighter.battle_object, vars::common::status::DISABLE_ECB_SHIFT);
+    }
+}
+
+#[smashline::fighter_frame_callback()]
+pub fn decrease_knockdown_bounce_heights(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        if smash::app::utility::get_category(&mut *fighter.module_accessor) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+            if fighter.is_status(*FIGHTER_STATUS_KIND_DOWN) {
+                let mut hip_offset = Vector3f::zero();
+                ModelModule::joint_global_offset_from_top(fighter.module_accessor, Hash40::new("hip"), &mut hip_offset);
+                if fighter.motion_frame() <= 1.0 {
+                    VarModule::set_float(fighter.battle_object, vars::common::status::RESTING_HIP_OFFSET_Y, hip_offset.y);
+                }
+
+                // Checks if our hip bone position is above our "resting" position (hip position when laying on the floor)
+                // which determines whether we are bouncing or not
+                let lower_limit = VarModule::get_float(fighter.battle_object, vars::common::status::RESTING_HIP_OFFSET_Y);
+                if hip_offset.y > lower_limit {
+                    // Halves hip bone's vertical movement and applies offset to rot bone
+                    // Cannot apply offset to hip as it is already offset from rot, while rot is directly offset from top bone
+                    let mut rot_translate = Vector3f::zero();
+                    MotionModule::joint_local_tra(fighter.module_accessor, Hash40::new("rot"), false, &mut rot_translate);
+                    let bounce_height_mul = 0.5;
+                    let bounce_height = hip_offset.y - lower_limit;
+                    
+                    rot_translate.y += bounce_height * -bounce_height_mul;
+                    ModelModule::set_joint_translate(fighter.module_accessor, Hash40::new("rot"), &Vector3f{ x: 0.0, y: rot_translate.y, z: 0.0 }, false, false);
+                }
+            }
+        }
     }
 }
 

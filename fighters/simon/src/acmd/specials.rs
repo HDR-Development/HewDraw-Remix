@@ -6,6 +6,9 @@ use super::*;
 unsafe fn simon_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        boma.select_cliff_hangdata_from_name("special_hi");
+    }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
@@ -39,9 +42,11 @@ unsafe fn simon_special_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 32.0);
+    frame(lua_state, 27.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_SIMON_STATUS_SPECIAL_HI_FLAG_MOVE);
+        WorkModule::off_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_CHANGE_KINE);
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
     
 }
@@ -50,6 +55,9 @@ unsafe fn simon_special_hi_game(fighter: &mut L2CAgentBase) {
 unsafe fn simon_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        boma.select_cliff_hangdata_from_name("special_hi");
+    }
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
@@ -83,17 +91,34 @@ unsafe fn simon_special_air_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 32.0);
+    frame(lua_state, 27.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_SIMON_STATUS_SPECIAL_HI_FLAG_MOVE);
+        WorkModule::off_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_CHANGE_KINE);
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
     }
     
+}
+
+#[acmd_script( agent = "simon", scripts = [ "game_specialn" , "game_specialairn" ] , category = ACMD_GAME , low_priority)]
+unsafe fn simon_special_n_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    FT_MOTION_RATE(fighter, 0.8);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, false, 0);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter){
+        ArticleModule::shoot(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE,  app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
+    }
 }
 
 pub fn install() {
     install_acmd_scripts!(
         simon_special_hi_game,
         simon_special_air_hi_game,
+        simon_special_n_game,
     );
 }
 
