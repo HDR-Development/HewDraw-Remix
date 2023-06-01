@@ -1,8 +1,5 @@
-# HewDraw Remix
 
-## If you are here to install the latest stable release, please download from https://github.com/HDR-Development/HDR-Releases/.
-
-I am fixxing rumble for various characters, starting with my own (as I am most familiar with them). Changelog below
+I am fixing rumble for various characters, starting with my own (as I am most familiar with them). Changelog below
 
 ## CHANGED CHARACTERS
 
