@@ -81,10 +81,16 @@ unsafe fn earthquake_punch(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
         }
         //println!("is_hold: {}, charge: {}, charge_distance: {}, is_ground: {}", is_hold, charge, charge_distance, is_ground);
-        if (4..8).contains(&(frame as i32)) && charge < max_charge_frames as i32 && is_hold && is_ground{
+        if (4..8).contains(&(frame as i32)) && charge < max_charge_frames as i32 && is_hold {
             MotionModule::set_rate(fighter.module_accessor, charge as f32/max_charge_frames);
+            let eff_handle = VarModule::get_int64(fighter.battle_object, vars::miifighter::instance::QUAKE_EFFECT_HANDLER);
+            let pos_offset = charge_distance+(max_charge_distance/max_charge_frames);
+            if is_ground {
+                VarModule::set_float(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE_DISTANCE, pos_offset);
+            }
+            EffectModule::set_pos(boma, eff_handle as u32, &Vector3f::new(0.0, 0.0, 10.0 + max_charge_distance*(charge_distance/max_charge_distance)));
+            VarModule::set_int64(fighter.battle_object, vars::miifighter::instance::QUAKE_EFFECT_HANDLER, eff_handle as u64);
             VarModule::set_int(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE, (charge+1) as i32);
-            VarModule::set_float(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE_DISTANCE, charge_distance+(max_charge_distance/max_charge_frames));
         } else {
             MotionModule::set_rate(fighter.module_accessor, 1.0);
         }
