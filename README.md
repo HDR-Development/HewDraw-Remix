@@ -3,9 +3,18 @@ I am fixing rumble for various characters, starting with my own (as I am most fa
 
 ## CHANGED CHARACTERS
 
+- Fox
+  - Up tilt
+  - Up smash
+
+- Marth
+  - Up tilt
+  - Jab ?
+  - Down air ?
+
 - Toon Link
-  - Back air
-  - Forward air
+  - Back air ? 
+  - Forward air ?
 
 - Lucas
   - Up air
@@ -19,9 +28,16 @@ I am fixing rumble for various characters, starting with my own (as I am most fa
   - Up air
   - Can't figure out side special unfortunately
 
-- Fox
-  - Up tilt
-  - Up smash
+- Cloud
+  - Forward tilt ?
+  - Up tilt ?
+  - Up smash (this is double fixed from vanilla btw lmao) ?
+  - Back air ?
+  - Up air ?
+
+- Inkling
+  - Up tilt ?
+  - Up air ?
 
 ## CHARACTERS THAT HAVENT NEEDED CHANGES
 
