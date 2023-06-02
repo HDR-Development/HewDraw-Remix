@@ -21,7 +21,7 @@ I am fixing rumble for various characters, starting with my own (as I am most fa
 
 ## CHARACTERS THAT HAVENT NEEDED CHANGES
 
-Keep in mind this list is from very quick tests per character and may not be comprehensive to thinks such as late hits and some special moves.
+Keep in mind this list is from very quick tests per character and may not be comprehensive to things such as late hits and some special moves.
 
 - Mario
 - Toon Link
