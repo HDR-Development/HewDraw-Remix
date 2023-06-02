@@ -274,20 +274,16 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const IS_HIT: i32 = 0x0100;
-            pub const IS_SPECIAL_S_CANCELED_INTO: i32 = 0x0101;
-            pub const IS_SPECIAL_HI_CANCELED_INTO: i32 = 0x0102;
-            pub const IS_HEEL_SLIDE: i32 = 0x0103;
 
             // ints
             pub const NUM_RECOVERY_RESOURCE_USED: i32 = 0x0100;
-            pub const NUM_SPECIAL_S_CANCEL_THIS_AIRTIME: i32 = 0x0101;
-            pub const NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME: i32 = 0x0102;
-            pub const ABK_ANGLE_ROUNDED: i32 = 0x0103;
-            pub const IS_JUMP_KEEP: i32 = 0x0104;
+            pub const NUM_CANCEL_THIS_AIRTIME: i32 = 0x0101;
+            pub const ABK_ANGLE_ROUNDED: i32 = 0x0102;
         }
         pub mod status {
             // flags
             pub const IS_ACTIVATE: i32 = 0x1100;
+            pub const DIRECT_HIT: i32 = 0x1101;
         }
     }
 
