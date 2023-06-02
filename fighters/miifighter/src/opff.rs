@@ -3,6 +3,23 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
+// #[repr(simd)]
+// #[derive(Debug)]
+// struct Vec3 {
+//     x: f32,
+//     y: f32,
+//     z: f32,
+// }
+
+// extern "C" {
+//     #[link_name = "\u{1}_ZN3app8lua_bind35ModelModule__joint_global_axis_implEPNS_26BattleObjectModuleAccessorEN3phx6Hash40Eib"]
+//     fn joint_global_axis(
+//         module_accessor: *mut BattleObjectModuleAccessor,
+//         arg2: Hash40,
+//         arg3: i32,
+//         arg4: bool,
+//     ) -> Vec3;
+// }
  
 // unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
 //     if status_kind == *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_HI1_2 {
@@ -44,6 +61,22 @@ unsafe fn wild_throw(boma: &mut BattleObjectModuleAccessor, status_kind: i32, fr
             StatusModule::set_keep_situation_air(boma, false);
         }
     }
+    // if status_kind == *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW3_THROW {
+    //     let axis_1 = joint_global_axis(boma, Hash40::new("throw"), 0, false);
+    //     let axis_2 = joint_global_axis(boma, Hash40::new("throw"), 1, false);
+    //     let axis_3 = joint_global_axis(boma, Hash40::new("throw"), 2, false);
+    //     println!("axis_1: {axis_1:?}");
+    //     println!("axis_2: {axis_2:?}");
+    //     println!("axis_3: {axis_3:?}");
+    //     let world_translate_vec = glam::f32::mat3(
+    //         glam::Vec3::new(axis_1.x, axis_1.y, axis_1.z),
+    //         glam::Vec3::new(axis_2.x, axis_2.y, axis_2.z),
+    //         glam::Vec3::new(axis_3.x, axis_3.y, axis_3.z)
+    //     ) * glam::Vec3::new(0.0, 0.0, -2.0);
+    //     println!("vec: {world_translate_vec:?}");
+    //     let world_vec = Vector3f::new(world_translate_vec.x, world_translate_vec.y, world_translate_vec.z);
+    //     ModelModule::set_joint_translate(boma, Hash40::new("throw"), &world_vec, false, false);
+    // }
 }
 //Onslaught Shield Activation + No Freefall on hit
 unsafe fn onslaught(boma: &mut BattleObjectModuleAccessor, frame: f32) {

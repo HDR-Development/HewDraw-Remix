@@ -1,5 +1,5 @@
-
 use super::*;
+
 #[acmd_script( agent = "miifighter", scripts = ["game_specialn2start", "game_specialairn2start"], category = ACMD_GAME , low_priority)]
 unsafe fn miifighter_special_n2_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
