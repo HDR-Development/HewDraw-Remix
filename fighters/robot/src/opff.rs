@@ -19,26 +19,27 @@ unsafe fn gyro_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i
 }
 
 unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
-    if WorkModule::is_flag(boma, *FIGHTER_ROBOT_STATUS_BURNER_FLAG_PUSH_B_BUTTON)
+    if WorkModule::is_flag(boma, *FIGHTER_ROBOT_STATUS_BURNER_FLAG_PUSH_B_BUTTON) || WorkModule::is_flag(boma, *FIGHTER_ROBOT_STATUS_BURNER_FLAG_CONTINUE_HI)
     && situation_kind == *SITUATION_KIND_AIR {
-        if frame > 14.0 {
-            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
+        if frame > 13.0 {
+            if boma.is_button_on(Buttons::Attack) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_ATTACK, false);
             }
         }
-        
-        if frame > 19.0 {
+    }
+}
+
+unsafe fn uspecial_cancels2(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
+    if StatusModule::status_kind(boma) == *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP
+    && situation_kind == *SITUATION_KIND_AIR {
+            
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
                 WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
                 ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
-                //let vec = Vector3f{x: 0.0, y: -0.2, z: 0.0};
-                //KineticModule::add_speed(boma, &vec);
-            } else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_ATTACK, false);
-            }
-        }
-    }   
+            } 
+
+    }
 }
 
 // JC grounded sideb on hit
@@ -221,6 +222,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     //jc_sideb(boma, cat[0], status_kind, situation_kind, motion_kind);
     dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
     uspecial_cancels(boma, situation_kind, frame);
+    uspecial_cancels2(boma, situation_kind, frame);
     dair_boost_reset(boma, status_kind, situation_kind);
     bair_boost_reset(boma, status_kind, situation_kind);
     bair_boost_detection(boma);
