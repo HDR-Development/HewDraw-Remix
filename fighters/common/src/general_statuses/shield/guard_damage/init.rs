@@ -184,8 +184,8 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter: &mut L2CF
             Hash40::new_raw(0x1a29f56bfb),
             -1,
         );
-        EffectModule::kill_kind(fighter.module_accessor, Hash40::new("sys_guard_mark"), true, true);
-        SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_item_deathscythe_swing_m"), 0);
+        EffectModule::kill_kind(fighter.module_accessor, Hash40::new("sys_genesis_end"), true, true);
+        SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_item_backshield_guard01"), 0);
     }
 
     if WorkModule::is_flag(
