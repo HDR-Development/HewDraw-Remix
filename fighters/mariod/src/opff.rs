@@ -5,6 +5,9 @@ use globals::*;
 
 // Super Sheet Stall
 unsafe fn super_sheet_stall(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S {
         let motion_vec = Vector3f{x: 0.0, y: 2.5, z: 0.0};
         let motion_vec_2 = Vector3f{x: 0.75, y: 0.0, z: 0.0};

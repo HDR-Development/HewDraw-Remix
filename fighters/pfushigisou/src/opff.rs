@@ -6,6 +6,9 @@ use globals::*;
 
 // Ivysaur Razor Leaf Airdodge Cancel
 unsafe fn razorleaf_adc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S && frame > 24.0 {
         boma.check_airdodge_cancel();
     }

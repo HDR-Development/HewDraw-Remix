@@ -155,6 +155,9 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn special_cancels(fighter: &mut L2CFighterCommon) {
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
     // Special Cancels
     if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U)
     && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
@@ -227,6 +230,9 @@ unsafe fn clear_proration(fighter: &mut L2CFighterCommon, boma: *mut BattleObjec
 }
 
 unsafe fn abk_flight_drift(fighter: &mut L2CFighterCommon) {
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
     if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U) && fighter.motion_frame() < 26.0 && !StopModule::is_stop(fighter.module_accessor){
         let stick_y =  ControlModule::get_stick_y(fighter.module_accessor);
         if stick_y != 0.0 && !fighter.is_in_hitlag(){

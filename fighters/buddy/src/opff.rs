@@ -4,12 +4,16 @@ use globals::*;
 const HUD_DISPLAY_TIME_MAX: i32 = 90;
 const FEATHERS_RED_COOLDOWN_GROUND_RATE: f32 = 1.25;
 const FEATHERS_RED_COOLDOWN_MAX: f32 = 450.0;
+const BEAKBOMB_END_FRAME: i32 = 25; //Dash timer is shared between ground and air in vl.prc
 
 static mut BAYONET_EGGS:[i32;8] = [0; 8]; //I have no idea why varmod doesn't work with this, so this will have to do
  
 utils::import_noreturn!(common::opff::fighter_common_opff);
 
 unsafe fn blue_eggs_land_cancels(fighter: &mut L2CFighterCommon) {
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N)
     && fighter.is_situation(*SITUATION_KIND_GROUND)
     && fighter.is_prev_situation(*SITUATION_KIND_AIR)
@@ -28,6 +32,9 @@ unsafe fn blue_eggs_land_cancels(fighter: &mut L2CFighterCommon) {
 
 // Banjo Grenade Airdodge Cancel
 unsafe fn grenade_ac(fighter: &mut L2CFighterCommon) {
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
     if fighter.is_status_one_of(&[*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_LW_SHOOT, *FIGHTER_STATUS_KIND_SPECIAL_LW])
     && fighter.motion_frame() > 16.0
     {
@@ -48,6 +55,9 @@ unsafe fn dair_bounce(fighter: &mut L2CFighterCommon){
 
 // Banjo Wondering Fail on command
 unsafe fn wonderwing_fail(fighter: &mut L2CFighterCommon){
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
     if ((fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) && fighter.motion_frame() > 17.0)
     || (fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_END) && fighter.motion_frame() < 4.0))
     && fighter.is_button_on(Buttons::Guard)
@@ -57,6 +67,9 @@ unsafe fn wonderwing_fail(fighter: &mut L2CFighterCommon){
 }
 
 unsafe fn dash_attack_jump_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH
     && situation_kind == *SITUATION_KIND_AIR
     && MotionModule::frame(boma) >= 27.0 {
@@ -65,6 +78,9 @@ unsafe fn dash_attack_jump_cancels(fighter: &mut L2CFighterCommon, boma: &mut Ba
 }
 
 unsafe fn indicator_breegull_fatigue(fighter: &mut L2CFighterCommon){
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
 	let eggs_shot = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BUDDY_INSTANCE_WORK_ID_INT_SPECIAL_N_BAKYUN_BULLET_SHOOT_COUNT);
     let eggs_Weakest = WorkModule::get_param_int(fighter.module_accessor,hash40("param_special_n"),hash40("bakyun_power_down_2_num"));
     let eggs_Weak = WorkModule::get_param_int(fighter.module_accessor,hash40("param_special_n"),hash40("bakyun_power_down_1_num"));
@@ -83,6 +99,9 @@ unsafe fn indicator_breegull_fatigue(fighter: &mut L2CFighterCommon){
 
 //Banjo can airdodge cancel a bonk only after frame 15 if he did not hit a shield
 unsafe fn bonk_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){ 
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     let side_special_wall = fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_WALL);
     if (!side_special_wall) {return;}
     let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD);
@@ -99,8 +118,14 @@ unsafe fn bonk_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
 
 unsafe fn beakbomb_checkForCancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     let side_special = fighter.is_status(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH);
     if !side_special {return;}
+
+    let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD);
+    if (has_hit_shield) {return;}
 
     let in_Air = fighter.is_situation(*SITUATION_KIND_AIR);
     if (!in_Air) {return;}
@@ -116,6 +141,13 @@ unsafe fn beakbomb_checkForCancel(fighter: &mut L2CFighterCommon, boma: &mut Bat
 }
 
 unsafe fn beakbomb_control(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
+    //If past the end frame, transition into end
+    if (VarModule::get_int(boma.object(), vars::buddy::instance::BEAKBOMB_FRAME) >= BEAKBOMB_END_FRAME)
+    {
+        fighter.change_status_req(*FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_END, true);
+        return;
+    }
+
     //Do not update flight during hitstop
     if boma.is_in_hitlag() {return;}
 
@@ -142,8 +174,8 @@ unsafe fn beakbomb_update(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
         if (VarModule::is_flag(boma.object(), vars::buddy::instance::BEAKBOMB_ACTIVE))
         {
             beakbomb_control(fighter,boma);
-            beakbomb_checkForHit(fighter,boma);
-            beakbomb_checkForFail(fighter,boma);
+            //beakbomb_checkForHit(fighter,boma);
+            beakbomb_checkForGround(fighter,boma);
             beakbomb_checkForCancel(fighter,boma);
 
             GroundModule::set_attach_ground(fighter.module_accessor, false);
@@ -166,8 +198,11 @@ unsafe fn beakbomb_update(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
 
 }
 
-//Check to see if Banjo hit the ground or a shield during beakbomb.
+//Check to see if Banjo hit a shield during beakbomb.
 unsafe fn beakbomb_checkForHit(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     let has_hit_shield = AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD);
     if (!has_hit_shield) {return;}
     
@@ -201,7 +236,8 @@ unsafe fn beakbomb_wall(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
     }
 }
 
-unsafe fn beakbomb_checkForFail(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
+//Check if landed on the ground
+unsafe fn beakbomb_checkForGround(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor){
     let is_grounded = fighter.is_situation(*SITUATION_KIND_GROUND);
     let fail_safeFrames = 5;
     let fail_cutoff = 25;
@@ -227,6 +263,9 @@ unsafe fn beakbomb_checkForFail(fighter: &mut L2CFighterCommon, boma: &mut Battl
 }
 
 unsafe fn breegull_bayonet(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor,status: i32){
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     let entry = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 
     if (VarModule::is_flag(boma.object(), vars::buddy::instance::BAYONET_ACTIVE))
@@ -300,6 +339,9 @@ unsafe fn buddy_meter_update_HUD(fighter: &mut L2CFighterCommon, boma: &mut Batt
 
 //Control meter HUD display based on HUD_DISPLAY_TIME and current status
 unsafe fn buddy_meter_display(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor,RedFeather: bool){
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     let status = StatusModule::status_kind(fighter.module_accessor);
     let side_special = [
         *FIGHTER_STATUS_KIND_SPECIAL_S,
@@ -324,6 +366,9 @@ unsafe fn buddy_meter_display(fighter: &mut L2CFighterCommon, boma: &mut BattleO
 }
 //This causes vectoring?
 unsafe fn buddy_meter_controller(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor,status: i32){
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if (status == *FIGHTER_STATUS_KIND_WIN) { 
 		EffectModule::kill_kind(boma, Hash40::new("buddy_special_s_count"), false, true);
         return;

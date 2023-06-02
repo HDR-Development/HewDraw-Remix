@@ -118,6 +118,9 @@ unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor) {
 
 // Actionability after hitting aerial sweep
 unsafe fn aerial_sweep_hit_actionability(boma: &mut BattleObjectModuleAccessor) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI){
         if MotionModule::frame(boma) > 38.0 {
             if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {

@@ -4,7 +4,7 @@
     <float hash="meter_max_damage">300</float>
     <int hash="meter_level_count">10</int>
     <int hash="meter_flash_frame_count">120</int>
-    <int hash="ecb_shift_air_trans_frame">10</int>
+    <int hash="ecb_shift_air_trans_frame">9</int>
     <float hash="general_flick_y_sens">-0.66</float>
     <struct hash="drift_di">
         <float hash="speed_mul_base">0.005</float>

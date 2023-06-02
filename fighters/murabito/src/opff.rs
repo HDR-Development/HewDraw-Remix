@@ -4,6 +4,9 @@ use super::*;
 use globals::*;
 
 unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_AIR, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_DASH_B, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_DASH_F, 
@@ -29,6 +32,9 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind
 }
 
 unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_FLAP, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_TURN, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_WAIT]) {
@@ -69,5 +75,13 @@ fn flowerpot_frame(weapon: &mut L2CFighterBase) {
         if weapon.is_status( *WEAPON_MURABITO_FLOWERPOT_STATUS_KIND_THROWED ) && AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT) {
             weapon.change_status(WEAPON_MURABITO_FLOWERPOT_STATUS_KIND_BURST.into(), false.into());
         }
+    }
+}
+
+/// prevents rocket from despawning in the blastzone
+#[weapon_frame( agent = WEAPON_KIND_MURABITO_CLAYROCKET )]
+fn clayrocket_frame(weapon: &mut L2CFighterBase) {
+    unsafe {
+        WorkModule::on_flag(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_FLAG_NO_DEAD);
     }
 }

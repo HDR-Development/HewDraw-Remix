@@ -5,8 +5,11 @@ use globals::*;
 
  
 unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI
-    && boma.motion_frame() <= 1.0 {
+    && boma.status_frame() == 1 {
         VarModule::off_flag(boma.object(), vars::mewtwo::instance::GROUNDED_TELEPORT);
         if situation_kind == *SITUATION_KIND_GROUND {
             VarModule::on_flag(boma.object(), vars::mewtwo::instance::GROUNDED_TELEPORT);
@@ -35,7 +38,7 @@ unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut Bat
 unsafe fn dj_upB_jump_refresh(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_JUMP_AERIAL) {
         // If first 3 frames of dj
-        if fighter.motion_frame() <= 3.0 {
+        if fighter.status_frame() <= 3 {
             VarModule::on_flag(fighter.battle_object, vars::mewtwo::instance::UP_SPECIAL_JUMP_REFRESH);
         }
         else {
@@ -73,10 +76,11 @@ pub unsafe fn mewtwo_teleport_wall_ride(fighter: &mut smash::lua2cpp::L2CFighter
     let touch_left = GroundModule::is_wall_touch_line(boma, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
 
     if boma.is_status(*FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_2) {
-        if touch_right || touch_left || VarModule::is_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE) {
-            if !VarModule::is_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE) {
-                VarModule::on_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE);
-            }
+        let touch_normal_y_left = GroundModule::get_touch_normal_y(fighter.module_accessor, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32);
+        let touch_normal_y_right = GroundModule::get_touch_normal_y(fighter.module_accessor, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32);
+        if (touch_right && touch_normal_y_right != 0.0)
+        || (touch_left && touch_normal_y_left != 0.0)
+        {
             let init_speed_y = VarModule::get_float(boma.object(), vars::common::status::TELEPORT_INITIAL_SPEED_Y);
 
             if init_speed_y > 0.0 {
@@ -94,11 +98,6 @@ pub unsafe fn mewtwo_teleport_wall_ride(fighter: &mut smash::lua2cpp::L2CFighter
             }
         }
     }
-    else {
-        if VarModule::is_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE) {
-            VarModule::off_flag(boma.object(), vars::common::instance::IS_TELEPORT_WALL_RIDE);
-        }
-    }
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
@@ -107,6 +106,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     mewtwo_teleport_wall_ride(fighter, boma, status_kind, id);
     dj_upB_jump_refresh(fighter);
 }
+
 #[utils::macros::opff(FIGHTER_KIND_MEWTWO )]
 pub fn mewtwo_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
