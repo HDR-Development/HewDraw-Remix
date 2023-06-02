@@ -785,7 +785,10 @@ pub mod vars {
         }
         pub mod status {
             // flags
-            pub const BOOST_ATTACK: i32 = 0x1100;
+            pub const IS_CHARGE_STARTED: i32 = 0x1100;
+            pub const IS_CHARGE_FINISHED: i32 = 0x1101;
+            pub const IS_CHARGE_MAX: i32 = 0x1102;
+            pub const CHARGE_ATTACK_LEVEL: i32 = 0x1103;
         }
     }
 

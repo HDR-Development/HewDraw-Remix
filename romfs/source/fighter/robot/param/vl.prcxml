@@ -26,7 +26,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="blow_accel_y">0.14</float>
+      <float hash="blow_accel_y">0.08</float>
       <float hash="air_start_speed_y">0.3</float>
       <float hash="up_speed_limit">1.15</float>
       <float hash="up_power_limit_power">0.0025</float>
