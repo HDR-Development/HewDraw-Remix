@@ -1,4 +1,3 @@
-
 I am fixing rumble for various characters, starting with my own (as I am most familiar with them). Changelog below
 
 ## CHANGED CHARACTERS
@@ -29,14 +28,14 @@ I am fixing rumble for various characters, starting with my own (as I am most fa
   - Up air ?
 
 - Ness ?
-  - Up smash (is this a vanilla fix? im not sure, it just felt inconsistent)
+  - Up smash (is this a vanilla fix? im not sure, it just felt inconsistent) ?
  
  - Falcon ?
-  - Side b
-  - Up air
+  - Side b ?
+  - Up air ?
 
 - Jigglypuff ?
-  - Back throw
+  - Back throw ?
 
 - Fox
   - Up tilt
@@ -93,7 +92,7 @@ I am fixing rumble for various characters, starting with my own (as I am most fa
 
 ## CHARACTERS THAT HAVENT NEEDED CHANGES
 
-Keep in mind this list is from very quick tests per character and may not be comprehensive to things such as late hits and some special moves.
+Keep in mind this list is from very quick tests per character and may not be comprehensive to things such as late hits and some special moves. 48 expression scripts already exist in hdr, idk how many im adding so i might update this but i guess some stuff is already covered.
 
 - Mario
 - Kirby
