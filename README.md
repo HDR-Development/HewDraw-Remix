@@ -42,15 +42,16 @@ I am fixing rumble for various characters, starting with my own (as I am most fa
   - Up smash
 
 - Peach ?
-  - Forward tilt
+  - Forward tilt ?
+  - Up air 2 ?
 
 - Daisy ?
-  - Forward tilt
-  - Up air
+  - Forward tilt ?
+  - Up air ?
 
 - Bowser ?
-  - Down tilt 2
-  - Up air
+  - Down tilt 2 ?
+  - Up air ?
 
 - Sheik ?
   - Down air
@@ -60,9 +61,9 @@ I am fixing rumble for various characters, starting with my own (as I am most fa
   - Up tilt
 
 - Pichu ?
-  - Down tilt
-  - Up smash
-  - Make fair match hitbox
+  - Down tilt ?
+  - Up smash ?
+  - Make fair match hitbox ?
 
 - Marth
   - Up tilt
