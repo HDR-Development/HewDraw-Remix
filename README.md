@@ -5,39 +5,39 @@ I am fixing rumble for various characters, starting with my own (as I am most fa
 
 - Pikachu
   - Up air ?
-  - Rewrite back air ?
+  - Rewrite back air 
 
 - Fox
   - Up tilt
   - Up smash
 
 - Marth
-  - Up tilt ?
+  - Up tilt
   - Jab 
   - Down air 
 
 - Roy
-  - Forward air ?
-  - Up tilt ?
-  - Forward tilt ?
+  - Forward air 
+  - Up tilt 
+  - Forward tilt 
   - Forward smash ?
 
 - Chrom
-  - Forward air ?
-  - Up tilt ?
-  - Forward tilt ?
-  - Forward smash ?
+  - Forward air 
+  - Up tilt 
+  - Forward tilt 
+  - Forward smash 
 
 - Toon Link
-  - Back air ? 
-  - Forward air ?
+  - Back air
+  - Forward air
 
 - Lucas
   - Up air
   - Down throw
   - First hit of down air
   - Down air whiff effect
-  - Dash attack ?
+  - Dash attack 
   - Back air
 
 - Wolf
@@ -45,19 +45,20 @@ I am fixing rumble for various characters, starting with my own (as I am most fa
   - Can't figure out side special unfortunately
 
 - Greninja
-  - Up tilt ?
+  - Up tilt
   - F throw ?
 
 - Cloud
-  - Forward tilt ?
-  - Up tilt ?
-  - Up smash (this is double fixed from vanilla btw lmao) ?
+  - Forward tilt
+  - Up tilt
+  - Up smash (this is double fixed from vanilla btw lmao)
   - Back air
   - Up air
+  - Forward air ?
 
 - Inkling
-  - Up tilt ?
-  - Up air ?
+  - Up tilt
+  - Up air
 
 ## CHARACTERS THAT HAVENT NEEDED CHANGES
 
