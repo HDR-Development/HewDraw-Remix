@@ -142,6 +142,20 @@ unsafe fn game_landingairb(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "pikachu", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attackairb(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 7, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackss"), 6);
+    }
+}
+
 #[acmd_script( agent = "pikachu", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -174,6 +188,20 @@ unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 
+}
+
+#[acmd_script( agent = "pikachu", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attackairhi(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
 }
 
 #[acmd_script( agent = "pikachu", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
@@ -210,10 +238,12 @@ pub fn install() {
         game_attackairn,
         game_attackairf,
         game_attackairb,
+        expression_attackairb,
         effect_attackairb,
         sound_attackairb,
         game_landingairb,
         game_attackairhi,
+        expression_attackairhi,
         game_attackairlw,
     );
 }
