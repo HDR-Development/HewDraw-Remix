@@ -57,9 +57,24 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "gekkouga", script = "expression_throwf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_throwf(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         game_throwf,
+        expression_throwf,
         game_throwlw,
     );
 }
