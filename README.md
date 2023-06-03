@@ -3,9 +3,41 @@ I am fixing rumble for various characters, starting with my own (as I am most fa
 
 ## CHANGED CHARACTERS
 
+- Donkey kong ?
+  - Forward tilt
+  - Up air
+  - Neutral air
+  - First hit of up special
+
+- Link ?
+  - Down tilt
+  - Forward air
+  - Dash attack
+
+- Dark samus ?
+  - Forward air
+  - Up air
+
 - Pikachu
-  - Up air ?
+  - Up air
   - Rewrite back air 
+
+- Yoshi ?
+  - Up tilt
+
+- Luigi ?
+  - Up air
+
+- Ness ?
+  - Up smash
+ 
+ - Falcon
+  - Side b
+  - Up air
+
+- Jigglypuff
+  - Back throw
+  - 
 
 - Fox
   - Up tilt
@@ -68,4 +100,5 @@ Keep in mind this list is from very quick tests per character and may not be com
 - Kirby
 - Dr Mario
 - Meta Knight
+- Samus(?) this is dubious i feel like shes playable with rumble but up smash and forward air may appreciate some tuning down the line
 
