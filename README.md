@@ -65,4 +65,7 @@ I am fixing rumble for various characters, starting with my own (as I am most fa
 Keep in mind this list is from very quick tests per character and may not be comprehensive to things such as late hits and some special moves.
 
 - Mario
+- Kirby
+- Dr Mario
+- Meta Knight
 
