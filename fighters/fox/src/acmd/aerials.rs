@@ -389,6 +389,7 @@ pub fn install() {
         game_landingairf,
         game_attackairb,
         effect_attackairb,
+        expression_attackairb,
         sound_attackairb,
         game_attackairhi,
         game_attackairlw,
