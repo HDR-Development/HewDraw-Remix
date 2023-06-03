@@ -217,11 +217,16 @@ pub unsafe fn faf_ac_debug(fighter: &mut L2CFighterCommon) {
             if !VarModule::is_flag(fighter.battle_object, vars::common::status::FAF_REACHED) {
                 //println!("Status frame: {}", fighter.status_frame());
                 if CancelModule::is_enable_cancel(fighter.module_accessor) {
-                    let str = if fighter.is_status_one_of(&[
+                    if fighter.is_status_one_of(&[
                         *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
-                        *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL]) { "landing lag" } else { "faf" };
-                    println!();
-                    println!("{str}: {}", VarModule::get_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER));
+                        *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL]) {
+                        println!();
+                        println!("landing lag: {}", VarModule::get_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER) - 1);
+                    }
+                    else {
+                        println!();
+                        println!("faf: {}", VarModule::get_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER));
+                    }
                     VarModule::on_flag(fighter.battle_object, vars::common::status::FAF_REACHED);
                 }
                 else {
