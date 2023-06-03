@@ -212,6 +212,37 @@ unsafe fn turn_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "brave", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
+
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+    }
+    frame(lua_state, escape_air_cancel_frame);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+
+#[acmd_script( agent = "brave", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
+unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
+    }
+    frame(lua_state, 39.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+
 #[acmd_script( agent = "brave_spark", script = "game_specials1" , category = ACMD_GAME , low_priority)]
 unsafe fn brave_spark_special_s1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -331,34 +362,228 @@ unsafe fn brave_tornado_special_hi3_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "brave", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "effect_speciallw8", category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_special_lw8_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
-
-    frame(lua_state, 29.0);
     if is_excute(fighter) {
-        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+        EFFECT_FOLLOW(fighter, Hash40::new("brave_chant_finish"), Hash40::new("top"), 0, 9, 0, 0, -60, 0, 1, false);
     }
-    frame(lua_state, escape_air_cancel_frame);
+    frame(lua_state, 3.0);
     if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        EFFECT_FOLLOW(fighter, Hash40::new("brave_fullburst_start"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 0.4, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.6);
+        FLASH(fighter, 0.8, 0.8, 2, 0.1);
+        BURN_COLOR(fighter, 4, 1.6, 8, 0.8);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 32.0);
+    if is_excute(fighter) {
+        FLASH_FRM(fighter, 4, 1, 1, 1, 0);
+        BURN_COLOR_FRAME(fighter, 4, 1, 1, 1, 0);
+    }
+    frame(lua_state, 36.0);
+    if is_excute(fighter) {
+        COL_NORMAL(fighter);
+        BURN_COLOR_NORMAL(fighter);
     }
 }
 
-#[acmd_script( agent = "brave", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
-unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "brave", script = "effect_specialairlw8", category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_special_air_lw8_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("brave_chant_finish"), Hash40::new("top"), 0, 9, 0, 0, -60, 0, 1, false);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("brave_fullburst_start"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 0.4, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.6);
+        FLASH(fighter, 0.8, 0.8, 2, 0.1);
+        BURN_COLOR(fighter, 4, 1.6, 8, 0.8);
+    }
+    frame(lua_state, 32.0);
+    if is_excute(fighter) {
+        FLASH_FRM(fighter, 4, 1, 1, 1, 0);
+        BURN_COLOR_FRAME(fighter, 4, 1, 1, 1, 0);
+    }
+    frame(lua_state, 36.0);
+    if is_excute(fighter) {
+        COL_NORMAL(fighter);
+        BURN_COLOR_NORMAL(fighter);
+    }
+}
+
+#[acmd_script( agent = "brave_crash", script = "game_crash1", category = ACMD_GAME, low_priority )]
+unsafe fn brave_crash_crash1_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::disable_tip(boma);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.4, 366, 5, 0, 10, 10.0, 0.0, 0.0, 0.0, None, None, None, 0.8, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, true, -2, 0.0, 9, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_MAGIC);
+        AttackModule::set_add_reaction_frame(boma, 0, 2.0, false);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.2, 115, 5, 0, 10, 12.0, 0.0, 0.0, 0.0, None, None, None, 0.8, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, true, -2, 0.0, 9, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_MAGIC);
+        AttackModule::set_add_reaction_frame(boma, 0, 2.0, false);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.2, 105, 5, 0, 10, 14.0, 0.0, 0.0, 0.0, None, None, None, 0.8, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, true, -2, 0.0, 9, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_MAGIC);
+        AttackModule::set_add_reaction_frame(boma, 0, 2.0, false);
+    }
+    frame(lua_state, 33.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.2, 100, 5, 0, 10, 16.0, 0.0, 0.0, 0.0, None, None, None, 0.8, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, true, -2, 0.0, 9, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_MAGIC);
+        AttackModule::set_add_reaction_frame(boma, 0, 2.0, false);
+    }
+    frame(lua_state, 43.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.2, 95, 5, 0, 10, 18.0, 0.0, 0.0, 0.0, None, None, None, 0.8, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, true, -1, 0.0, 9, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_MAGIC);
+        AttackModule::set_add_reaction_frame(boma, 0, 2.0, false);
+    }
+    frame(lua_state, 53.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.2, 95, 5, 0, 10, 20.0, 0.0, 0.0, 0.0, None, None, None, 0.8, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, true, -1, 0.0, 9, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_MAGIC);
+        AttackModule::set_add_reaction_frame(boma, 0, 2.0, false);
+    }
+    frame(lua_state, 63.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.2, 95, 5, 0, 10, 22.0, 0.0, 0.0, 0.0, None, None, None, 0.8, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, true, -1, 0.0, 9, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_MAGIC);
+        AttackModule::set_add_reaction_frame(boma, 0, 2.0, false);
+    }
+    frame(lua_state, 73.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.2, 95, 5, 0, 10, 24.0, 0.0, 0.0, 0.0, None, None, None, 0.8, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, true, -1, 0.0, 9, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_MAGIC);
+        AttackModule::set_add_reaction_frame(boma, 0, 2.0, false);
+    }
+    frame(lua_state, 81.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 11.0, 63, 135, 0, 80, 26.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, -1, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_MAGIC);
+    }
+    frame(lua_state, 93.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "brave_crash", script = "effect_crash1", category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_crash_crash1_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("brave_fullburst"), Hash40::new("top"), 0, 0, 0, 0, 90, 0, 0.6, true);
+        }
+    }
+    else {
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("brave_fullburst"), Hash40::new("top"), 0, 0, 0, 0, -90, 0, 0.6, true);
+        }
+    }
+    frame(lua_state, 80.0);
+    if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("brave_fullburst_finish"), Hash40::new("top"), 0, 0, 0, 0, 90, 0, 0.5, true);
+        }
+    }
+    else {
+        if is_excute(fighter) {
+            EFFECT_FOLLOW(fighter, Hash40::new("brave_fullburst_finish"), Hash40::new("top"), 0, 0, 0, 0, -90, 0, 0.5, true);
+        }
+    }
+    frame(lua_state, 82.0);
+    if is_excute(fighter) {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("brave_fullburst_finish"), -1);
+    }
+}
+
+#[acmd_script( agent = "brave_crash", script = "effect_crashend1", category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_crash_crash_end1_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("brave_fullburst_end"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.4, false);
+    }
     frame(lua_state, 29.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
+        EFFECT_DETACH_KIND(fighter, Hash40::new("brave_fullburst_end"), -1);
     }
-    frame(lua_state, 39.0);
+}
+
+#[acmd_script( agent = "brave_explosion", script = "game_explode2", category = ACMD_GAME, low_priority )]
+unsafe fn brave_explosion_explode2_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
     if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        AttackModule::disable_tip(boma);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 0.0, 366, 100, 100, 0, 25.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.5), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        ATTACK(fighter, 3, 0, Hash40::new("top"), 0.0, 366, 100, 50, 0, 25.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.5), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        AREA_WIND_2ND_RAD(fighter, 0, 0.5, 0.01, 1000, 1, 0, 0, 40);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_elecattacks"), 14, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        AttackModule::clear(boma, 2, false);
+        AttackModule::clear(boma, 3, false);
+        QUAKE(fighter, *CAMERA_QUAKE_KIND_L);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 26.0, 65, 50, 0, 80, 13.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.5), 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -13, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_MAGIC);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 21.0, 60, 50, 0, 80, 18.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.5), 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -10, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_MAGIC);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_explosionl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        AttackModule::set_size(boma, 0, 18.0);
+        AttackModule::set_size(boma, 1, 23.0);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(fighter) {
+        AttackModule::set_size(boma, 0, 23.0);
+        AttackModule::set_size(boma, 1, 28.0);
+        AREA_WIND_2ND_RAD(fighter, 0, 1, 0.1, 1000, 1, 0, 0, 40);
+    }
+    frame(lua_state, 40.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "brave_deathball", script = "game_deathball2", category = ACMD_GAME, low_priority )]
+unsafe fn brave_deathball_deathball2_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::disable_tip(boma);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 361, 150, 0, 0, 16.0, 0.0, 0.0, -5.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -1, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_deathball"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0, 361, 150, 0, 0, 1.0, 0.0, -5.0, -24.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -1, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_deathball"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "brave_deathball", script = "effect_deathball2", category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_deathball_deathball2_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("brave_deathball_hit2"), Hash40::new("top"), 0, 0, -5, 0, 90, 0, 1.65, 0, 0, 0, 0, 0, 0, true);
     }
 }
 
@@ -371,6 +596,11 @@ pub fn install() {
         dash_game,
         dash_sound,
         turn_dash_game,
+        damageflyhi_sound,
+        damageflylw_sound,
+        damageflyn_sound,
+        damageflyroll_sound,
+        damageflytop_sound,
         brave_spark_special_s1_game,
         brave_fireball_burst_l_game,
         brave_tornado_special_hi1_game,
@@ -379,11 +609,13 @@ pub fn install() {
         brave_tornado_special_hi2_effect,
         brave_tornado_special_hi3_game,
         brave_tornado_special_hi3_effect,
-        damageflyhi_sound,
-        damageflylw_sound,
-        damageflyn_sound,
-        damageflyroll_sound,
-        damageflytop_sound
+        brave_special_lw8_effect,
+        brave_special_air_lw8_effect,
+        brave_crash_crash1_game,
+        brave_crash_crash1_effect,
+        brave_crash_crash_end1_effect,
+        brave_explosion_explode2_game,
+        brave_deathball_deathball2_game,
+        brave_deathball_deathball2_effect,
     );
 }
-
