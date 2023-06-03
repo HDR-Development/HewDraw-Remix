@@ -3,14 +3,30 @@ I am fixing rumble for various characters, starting with my own (as I am most fa
 
 ## CHANGED CHARACTERS
 
+- Pikachu
+  - Up air ?
+  - Rewrite back air ?
+
 - Fox
   - Up tilt
   - Up smash
 
 - Marth
-  - Up tilt
-  - Jab ?
-  - Down air ?
+  - Up tilt ?
+  - Jab 
+  - Down air 
+
+- Roy
+  - Forward air ?
+  - Up tilt ?
+  - Forward tilt ?
+  - Forward smash ?
+
+- Chrom
+  - Forward air ?
+  - Up tilt ?
+  - Forward tilt ?
+  - Forward smash ?
 
 - Toon Link
   - Back air ? 
@@ -28,12 +44,16 @@ I am fixing rumble for various characters, starting with my own (as I am most fa
   - Up air
   - Can't figure out side special unfortunately
 
+- Greninja
+  - Up tilt ?
+  - F throw ?
+
 - Cloud
   - Forward tilt ?
   - Up tilt ?
   - Up smash (this is double fixed from vanilla btw lmao) ?
-  - Back air ?
-  - Up air ?
+  - Back air
+  - Up air
 
 - Inkling
   - Up tilt ?
