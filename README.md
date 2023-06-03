@@ -4,40 +4,39 @@ I am fixing rumble for various characters, starting with my own (as I am most fa
 ## CHANGED CHARACTERS
 
 - Donkey kong ?
-  - Forward tilt
-  - Up air
-  - Neutral air
-  - First hit of up special
+  - Forward tilt ?
+  - Up air  ?
+  - Neutral air ?
+  - First hit of up special ?
 
 - Link ?
-  - Down tilt
-  - Forward air
-  - Dash attack
+  - Down tilt ?
+  - Forward air ?
+  - Dash attack ?
 
 - Dark samus ?
-  - Forward air
-  - Up air
+  - Forward air ?
+  - Up air ?
 
 - Pikachu
   - Up air
   - Rewrite back air 
 
 - Yoshi ?
-  - Up tilt
+  - Up tilt ?
 
 - Luigi ?
-  - Up air
+  - Up air ?
 
 - Ness ?
-  - Up smash
+  - Up smash (is this a vanilla fix? im not sure, it just felt inconsistent)
  
- - Falcon
+ - Falcon ?
   - Side b
   - Up air
 
-- Jigglypuff
+- Jigglypuff ?
   - Back throw
-  - 
 
 - Fox
   - Up tilt
