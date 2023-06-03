@@ -30,7 +30,7 @@ I am fixing rumble for various characters, starting with my own (as I am most fa
 - Ness ?
   - Up smash (is this a vanilla fix? im not sure, it just felt inconsistent) ?
  
- - Falcon ?
+- Falcon ?
   - Side b ?
   - Up air ?
 
