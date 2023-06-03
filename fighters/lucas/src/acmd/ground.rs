@@ -203,7 +203,8 @@ unsafe fn lucas_attack_dash_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 4, true);
     }
-    frame(lua_state, 7.0);
+
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
@@ -225,6 +226,7 @@ pub fn install() {
         lucas_attack_dash_game,
         lucas_attack_dash_effect,
         lucas_attack_dash_sound,
+        lucas_attack_dash_expression,
     );
 }
 
