@@ -64,7 +64,7 @@ unsafe fn expression_throwf(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 15.0);
     if is_excute(fighter) {
         QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
