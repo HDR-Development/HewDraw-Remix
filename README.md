@@ -13,68 +13,71 @@ I am fixing rumble for various characters, starting with my own (as I am most fa
   - Forward air
   - Dash attack
 
-- Dark samus ?
-  - Forward air ?
-  - Up air ?
+- Dark samus
+  - Forward air
+  - Up air
 
 - Pikachu
   - Up air
-  - Rewrite back air ?
+  - Rewrite back air
 
 - Yoshi
   - Up tilt
 
 - Luigi
   - Up air
-
-- Ness ?
-  - Up smash (is this a vanilla fix? im not sure, it just felt inconsistent) ?
  
 - Falcon
   - Side b
   - Up air
 
-- Jigglypuff ?
-  - Back throw ?
-
 - Fox
   - Up tilt
   - Up smash
 
-- Peach ?
-  - Forward tilt ?
-  - Up air 2 ?
+- Peach
+  - Forward tilt
+  - Up air 2
 
-- Daisy ?
-  - Forward tilt ?
-  - Up air ?
+- Daisy
+  - Forward tilt
+  - Up air
 
-- Bowser ?
-  - Down tilt 2 ?
-  - Up air ?
+- Bowser
+  - Down tilt 2
+  - Up air
 
-- Sheik ?
+- Sheik
   - Down air
  
-- Zelda ?
+- Zelda
   - Forward tilt
   - Up tilt
 
-- Pichu ?
-  - Down tilt ?
-  - Up smash ?
-  - Make fair match hitbox ?
+- Pichu
+  - Down tilt
+  - Up smash
+  - Make fair match hitbox
 
 - Marth
   - Up tilt
   - Jab 
   - Down air 
 
+- Lucina
+  - Forward air
+
+- Falco
+  - Neutral air (this was purely a fix, expression code already existed however its strength on whiff was way too high) 
+  - Forward smash 
+  - Back air 
+  - Shine 
+
 - Roy
   - Forward air 
   - Up tilt 
   - Forward tilt 
-  - Forward smash ?
+  - Forward smash
 
 - Chrom
   - Forward air 
@@ -100,7 +103,6 @@ I am fixing rumble for various characters, starting with my own (as I am most fa
 
 - Greninja
   - Up tilt
-  - F throw ?
 
 - Cloud
   - Forward tilt
@@ -123,4 +125,17 @@ Keep in mind this list is from very quick tests per character and may not be com
 - Dr Mario
 - Meta Knight
 - Samus(?) this is dubious i feel like shes playable with rumble but up smash and forward air may appreciate some tuning down the line
+- Snake (this was a surprise to me but his rumble works perfect lol)
 
+## COULDNT FIX
+
+Mainly throws, I'm probably missing something but ive left the expression code there as it at least fixes screenshake time and itll make it easier for whoever wants to change it themselves
+
+- Jigglypuff
+  - Back throw
+
+- Greninja
+  - F throw
+
+- Ness
+  - I was unable to fix up smash (is this a vanilla fix? im not sure, it just felt inconsistent despite not having hdr changes) ?
