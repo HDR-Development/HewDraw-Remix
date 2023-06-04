@@ -590,6 +590,15 @@ unsafe fn miifighter_special_lw1_expression(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
     }
 }
+#[acmd_script( agent = "miifighter", script = "effect_specialairlw1", category = ACMD_EFFECT, low_priority )]
+unsafe fn miifighter_special_air_lw1_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 12.0, 5.0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
+    }
+}
 #[acmd_script( agent = "miifighter", script = "sound_specialairlw1" , category = ACMD_SOUND , low_priority)]
 unsafe fn miifighter_special_air_lw1_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1089,6 +1098,7 @@ pub fn install() {
         miifighter_special_lw1_effect,
         miifighter_special_lw1_expression,
         miifighter_special_lw1_sound,
+        miifighter_special_air_lw1_effect,
         miifighter_special_air_lw1_sound,
         miifighter_special_lw1_loop_game,
         miifighter_special_lw1_loop_effect,
