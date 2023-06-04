@@ -93,11 +93,36 @@ unsafe fn attack_lw3(fighter: &mut L2CAgentBase) {
     
 }
 
+
+#[acmd_script( agent = "link", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attacklw3(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("sword1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y));
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         attack_s3_s,
         attack_hi3,
         attack_lw3,
+        expression_attacklw3,
     );
 }
 

@@ -236,11 +236,29 @@ unsafe fn sheik_landing_air_lw_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
     }
+
     frame(lua_state, 21.0);
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 6);
     }
 }
+
+#[acmd_script( agent = "sheik", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn sheik_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 11.0);
+    if is_excute(fighter){
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    
+    frame(lua_state, 12.0);
+    if is_excute(fighter){
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
+
 
 pub fn install() {
     install_acmd_scripts!(
@@ -251,6 +269,7 @@ pub fn install() {
         sheik_attack_air_hi_game,
         sheik_attack_air_lw_game,
         sheik_attack_air_lw_effect,
+        sheik_attack_air_lw_expression,
         sheik_landing_air_lw_sound,
         sheik_landing_air_lw_expression,
     );

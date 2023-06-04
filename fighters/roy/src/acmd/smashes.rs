@@ -84,11 +84,9 @@ unsafe fn roy_attack_s4_s_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 11.0);
+    frame(lua_state, 10.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashll"), 0);
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 1);
-        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 2);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
     }
     frame(lua_state, 56.0);
     if is_excute(fighter) {

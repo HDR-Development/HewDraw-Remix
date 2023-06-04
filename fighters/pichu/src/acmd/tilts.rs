@@ -73,11 +73,29 @@ unsafe fn pichu_attack_lw3_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "pichu", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn pichu_attack_lw3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         pichu_attack_s3_s_game,
         pichu_attack_hi3_game,
         pichu_attack_lw3_game,
+        pichu_attack_lw3_expression
     );
 }
 
