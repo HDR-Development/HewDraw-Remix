@@ -126,6 +126,34 @@ unsafe fn metaknight_special_hi_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_AIR_STOP);
     }
+    frame(lua_state, 42.0);
+    if is_excute(fighter) {
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        );
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        let air_speed_x_stable = WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0);
+        let fall_x_mul = WorkModule::get_param_float(
+            boma,
+            hash40("param_special_hi"),
+            hash40("fall_x_mul")
+        );
+        sv_kinetic_energy!(
+            set_stable_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            air_speed_x_stable * fall_x_mul,
+            0.0
+        );
+    }
 
 }
 
@@ -173,7 +201,34 @@ unsafe fn metaknight_special_hi_loop_game(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_AIR_STOP);
     }
-
+    frame(lua_state, 34.0);
+    if is_excute(fighter) {
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        );
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        let air_speed_x_stable = WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0);
+        let fall_x_mul = WorkModule::get_param_float(
+            boma,
+            hash40("param_special_hi"),
+            hash40("fall_x_mul")
+        );
+        sv_kinetic_energy!(
+            set_stable_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            air_speed_x_stable * fall_x_mul,
+            0.0
+        );
+    }
 }
 
 #[acmd_script( agent = "metaknight", script = "effect_specialhiloop" , category = ACMD_EFFECT , low_priority)]
