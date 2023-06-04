@@ -67,7 +67,7 @@ pub unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) ->
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PACKUN_STATUS_SPECIAL_HI_FLAG_START_RISE);
         }
     }
-
+  
     let start_no_landing_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("start_no_landing_frame"));
     if current_frame >= start_no_landing_frame {
         if fighter.global_table[PREV_SITUATION_KIND] == SITUATION_KIND_AIR

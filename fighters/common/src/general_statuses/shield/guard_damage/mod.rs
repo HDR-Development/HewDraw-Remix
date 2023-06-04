@@ -1,18 +1,18 @@
 use super::*;
-mod pre;
-mod main;
 mod end;
+mod main;
+mod pre;
 
-mod init;
 mod exec;
 mod exit;
+mod init;
 
 pub fn install() {
-    //pre::install();
+    pre::install();
     main::install();
-    //end::install();
-    
+    end::install();
+
     init::install();
-    //exec::install();
+    exec::install();
     exit::install();
 }
