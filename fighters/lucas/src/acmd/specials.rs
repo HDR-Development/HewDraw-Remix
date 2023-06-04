@@ -31,6 +31,8 @@ unsafe fn lucas_special_air_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+// test
+
 #[acmd_script( agent = "lucas", scripts = ["effect_specialairs", "effect_specials"] , category = ACMD_EFFECT , low_priority)]
 unsafe fn lucas_special_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
