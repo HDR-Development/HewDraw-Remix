@@ -99,7 +99,6 @@ I am fixing rumble for various characters, starting with my own (as I am most fa
 
 - Wolf
   - Up air
-  - Can't figure out side special unfortunately
 
 - Greninja
   - Up tilt
@@ -133,6 +132,9 @@ Mainly throws, I'm probably missing something but ive left the expression code t
 
 - Jigglypuff
   - Back throw
+
+- Wolf
+  - Side special
 
 - Greninja
   - F throw
