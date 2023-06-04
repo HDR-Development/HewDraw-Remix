@@ -117,7 +117,7 @@ I am fixing rumble for various characters, starting with my own (as I am most fa
 
 ## CHARACTERS THAT HAVENT NEEDED CHANGES
 
-Keep in mind this list is from very quick tests per character and may not be comprehensive to things such as late hits and some special moves. 48 expression scripts already exist in hdr, idk how many im adding so i might update this but i guess some stuff is already covered.
+Keep in mind this list is from very quick tests per character and may not be comprehensive to things such as late hits and some special moves.
 
 - Mario
 - Kirby
