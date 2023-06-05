@@ -7,6 +7,7 @@
   </list>
   <list hash="param_special_n">
     <struct index="0">
+      <float hash="shoot_x">10.0</float>
       <float hash="speed_x_mul">1.0</float>
       <float hash="air_speed_x_mul">1.0</float>
       <float hash="air_speed_y_mul">0.5</float>
