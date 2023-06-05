@@ -364,7 +364,7 @@ unsafe fn status_GuardOff(fighter: &mut L2CFighterCommon) -> L2CValue {
             false,
             app::enSEType(0),
         );
-        SoundModule::set_se_vol(fighter.module_accessor, sfx_handle as i32, 0.85, 0);
+        SoundModule::set_se_vol(fighter.module_accessor, sfx_handle as i32, 0.9, 0);
         SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_common_guardon"), 0);
     } else {
         MotionModule::change_motion(
