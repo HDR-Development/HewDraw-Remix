@@ -31,7 +31,6 @@ unsafe fn lucas_special_air_s_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-// test
 
 #[acmd_script( agent = "lucas", scripts = ["effect_specialairs", "effect_specials"] , category = ACMD_EFFECT , low_priority)]
 unsafe fn lucas_special_s_effect(fighter: &mut L2CAgentBase) {
@@ -51,6 +50,9 @@ unsafe fn lucas_special_s_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_lucas_smash_h01"));
         PLAY_SE(fighter, Hash40::new("se_lucas_special_s03"));
+    }
+    frame(lua_state, 25.0);
+    if is_excute(fighter) {
         let rand = sv_math::rand(hash40("fighter"), 7) as i32;
         if rand == 0 {
             PLAY_SE_REMAIN(fighter, Hash40::new("vc_lucas_attack01"));
@@ -65,6 +67,7 @@ unsafe fn lucas_special_s_sound(fighter: &mut L2CAgentBase) {
             PLAY_SE_REMAIN(fighter, Hash40::new("vc_lucas_cliffcatch"));
         }
     }
+    
 }
 
 #[acmd_script( agent = "lucas", script = "game_specialairhi" , category = ACMD_GAME , low_priority)]
