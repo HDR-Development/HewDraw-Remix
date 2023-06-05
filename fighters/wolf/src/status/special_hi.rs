@@ -22,7 +22,18 @@ pub unsafe fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 pub unsafe fn special_hi_rush_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = original!(fighter);
     if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        );
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
         let fall_x_mul = WorkModule::get_param_float(
             fighter.module_accessor,
