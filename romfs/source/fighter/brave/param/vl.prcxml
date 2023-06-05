@@ -55,6 +55,8 @@
       <float hash="start_max_speed_y_mul_air">0.2</float>
       <float hash="jump_distance_m">60</float>
       <float hash="jump_max_speed_x_m">1.535</float>
+      <float hash="wait_jump_accel_y_mul">0.5</float>
+      <float hash="wait_jump_max_speed_y_mul">0.2</float>
       <float hash="jump_distance_l">85</float>
       <float hash="jump_max_speed_x_l">1.375</float>
       <int hash="landing_frame_l">26</int>
