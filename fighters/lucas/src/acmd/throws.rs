@@ -232,28 +232,64 @@ unsafe fn game_throwhi(fighter: &mut L2CAgentBase) {
 unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.500);
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 7.0, 105, 50, 0, 85, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        FT_MOTION_RATE(fighter, 0.6);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 7.0, 105, 50, 0, 85, 0.5, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 7.0, 361, 100, 0, 60, 0.5, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_THROW);
     }
-    frame(lua_state, 40.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
+
+    frame(lua_state, 34.0);
+    if is_excute(fighter){
+        FT_MOTION_RATE(fighter, 0.8);
         CHECK_FINISH_CAMERA(fighter, 9.0, 0.0);
     }
+
     frame(lua_state, 41.0);
     if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 1.0);
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
     }
     
+}
+
+#[acmd_script( agent = "lucas", script = "effect_throwlw", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_throwlw(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("lucas_psi_atk"), Hash40::new("throw"), 0, 5, 0, 0, 0, 0, 0.8, true);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_v_smoke_b"), Hash40::new("top"), 6, 0, 9, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false);
+        LANDING_EFFECT(fighter, Hash40::new("lucas_psi_atk"), Hash40::new("top"), 6, 0, 9, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+    }
+
+    frame(lua_state, 41.0);
+    if is_excute(fighter) {
+        macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("lucas_psi_atk_lw"), Hash40::new("lucas_psi_atk_lw"), Hash40::new("top"), 0, 0.2, 8.5, 0, 0, 0, 1.1, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(fighter, 0.75);
+       // EFFECT_FOLLOW(fighter, Hash40::new("lucas_psi_atk"), Hash40::new("throw"), 0, 10, 0, 0, 0, 0, 0.8, true);
+    }
 }
 
 #[acmd_script( agent = "lucas", script = "expression_throwlw" , category = ACMD_EXPRESSION , low_priority)]
 unsafe fn expression_throwlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    
+
+    frame(fighter.lua_state_agent, 3.0);
+    if macros::is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_elecattack"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+
+    frame(fighter.lua_state_agent, 10.0);
+    if macros::is_excute(fighter) {
+        macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_attackm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
 }
 
 pub fn install() {
@@ -266,6 +302,7 @@ pub fn install() {
         game_throwb,
         game_throwhi,
         game_throwlw,
+        effect_throwlw,
         expression_throwlw,
     );
 }
