@@ -142,6 +142,11 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         && boma.get_num_used_jumps() >= boma.get_jump_count_max() {
             return 0;
         }
+        if boma.kind() == *FIGHTER_KIND_DIDDY
+        && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_CHARGE])
+        && [*FIGHTER_STATUS_KIND_WAIT, *FIGHTER_STATUS_KIND_FALL].contains(&next_status) {
+            return 0;
+        }
     }
     original!()(boma, next_status, clear_buffer)
 }
