@@ -256,15 +256,16 @@ pub unsafe fn guard(fighter: &mut L2CFighterCommon) -> L2CValue {
         // EffectModule::set_alpha_last(fighter.module_accessor, 0.4);
         EffectModule::req_common(fighter.module_accessor, Hash40::new("just_shield"), 0.0);
         // let shield_se = app::FighterUtil::get_just_shield_se(fighter.global_table[0x2].get_i32());
-        SoundModule::play_se(
+        let sfx_handle = SoundModule::play_se(
             fighter.module_accessor,
-            smash::phx::Hash40::new("se_item_deathscythe_swing_m"),
+            smash::phx::Hash40::new("se_item_backshield_guard01"),
             true,
             false,
             false,
             false,
             app::enSEType(0),
         );
+        SoundModule::set_se_vol(fighter.module_accessor, sfx_handle as i32, 0.9, 0);
         SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_common_guardon"), 0);
     } else {
         MotionModule::change_motion(
