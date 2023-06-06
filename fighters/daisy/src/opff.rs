@@ -25,8 +25,32 @@ unsafe fn wall_bounce(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     }
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+unsafe fn up_special_freefall_land_cancel(fighter: &mut L2CFighterCommon) {
+    if fighter.is_prev_status(*FIGHTER_STATUS_KIND_FALL_SPECIAL)
+    && fighter.is_status(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING, false);
+    }
+}
+
+// Prevents Daisy from being able to use both aerial jumps immediately after one another
+unsafe fn triple_jump_lockout(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_JUMP_AERIAL) {
+        let triple_jump_lockout_frame = ParamModule::get_int(fighter.object(), ParamType::Agent, "triple_jump_lockout_frame");
+        if fighter.global_table[CURRENT_FRAME].get_i32() < triple_jump_lockout_frame {
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+        }
+        else {
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+        }
+    }
+}
+
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     wall_bounce(boma, status_kind);
+    //up_special_freefall_land_cancel(fighter);
+    triple_jump_lockout(fighter);
 }
 #[utils::macros::opff(FIGHTER_KIND_DAISY )]
 pub unsafe fn daisy_frame_wrapper(fighter: &mut L2CFighterCommon) {
@@ -35,6 +59,6 @@ pub unsafe fn daisy_frame_wrapper(fighter: &mut L2CFighterCommon) {
 }
 pub unsafe fn daisy_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

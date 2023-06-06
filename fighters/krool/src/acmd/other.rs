@@ -226,6 +226,22 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "krool_backpack", script = "effect_fly", category = ACMD_EFFECT, low_priority )]
+unsafe fn krool_backpack_effect_fly(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    let owner_boma = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+    if is_excute(fighter) {
+        let fuel_max = ParamModule::get_int(owner_boma.object(), ParamType::Agent, "param_special_hi.fuel_max") as f32;
+        EFFECT_FOLLOW(fighter, Hash40::new("krool_propeller"), Hash40::new("propeller"), 1, 0, 0, 0, 0, 0, 1, true);
+        if VarModule::get_int(owner_boma.object(), vars::krool::instance::SPECIAL_HI_FUEL) as f32 > fuel_max * 0.33 {
+            EFFECT_FOLLOW(fighter, Hash40::new("krool_buckpack"), Hash40::new("backpack"), -12, -1.5, -6, 0, 0, 0, 1, true);
+            EffectModule::enable_sync_init_pos_last(boma);
+        }
+        VarModule::set_int(owner_boma.object(), vars::krool::instance::FUEL_EFFECT_HANDLER, -1);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -239,7 +255,8 @@ pub fn install() {
         damageflylw_sound,
         damageflyn_sound,
         damageflyroll_sound,
-        damageflytop_sound
+        damageflytop_sound,
+        krool_backpack_effect_fly
     );
 }
 
