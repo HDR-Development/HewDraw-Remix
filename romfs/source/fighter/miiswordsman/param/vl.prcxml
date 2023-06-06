@@ -63,7 +63,7 @@
     </struct>
     <hash40 index="1">dummy</hash40>
     <struct index="2">
-      <float hash="lw3_end_air_to_ground_brake">0.077</float>
+      <float hash="lw3_end_air_to_ground_brake">0.154</float>
     </struct>
     <hash40 index="3">dummy</hash40>
   </list>
