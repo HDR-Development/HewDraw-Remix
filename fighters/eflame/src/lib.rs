@@ -44,6 +44,6 @@ pub fn install(is_runtime: bool) {
     opff::install(is_runtime);
     unsafe {
         // Disables the sword catch animation unless you are completely idle.
-        skyline::patching::Patch::in_text(0xa0cb94).data(0x7100001F);
+        skyline::patching::Patch::in_text(0xa0cad4).data(0x7100001F);
     }
 }
