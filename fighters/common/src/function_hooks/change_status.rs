@@ -107,6 +107,41 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         && VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL) {
             next_status = *FIGHTER_STATUS_KIND_FALL;
         }
+        // Transition into regular fall when attempting to jump off of Wario bike when out of jumps
+        if boma.kind() == *FIGHTER_KIND_WARIO
+        && StatusModule::status_kind(boma) == *FIGHTER_WARIO_STATUS_KIND_SPECIAL_S_ESCAPE_START
+        && next_status == *FIGHTER_WARIO_STATUS_KIND_SPECIAL_S_ESCAPE
+        && boma.get_num_used_jumps() >= boma.get_jump_count_max() {
+            next_status = *FIGHTER_STATUS_KIND_DAMAGE_FALL;
+            clear_buffer = true;
+        }
+        // Prevent jumping out of Clown Kart Dash when out of jumps
+        if boma.kind() == *FIGHTER_KIND_KOOPAJR
+        && boma.is_status_one_of(&[*FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_DASH, *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_SPIN_TURN])
+        && next_status == *FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_JUMP
+        && boma.get_num_used_jumps() >= boma.get_jump_count_max() {
+            return 0;
+        }
+        // Prevent jumping out of Splat Roller when out of jumps
+        if boma.kind() == *FIGHTER_KIND_INKLING
+        && boma.is_status_one_of(&[*FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_RUN, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_WALK])
+        && next_status == *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_JUMP_END
+        && boma.get_num_used_jumps() >= boma.get_jump_count_max() {
+            WorkModule::off_flag(boma, *FIGHTER_INKLING_STATUS_SPECIAL_S_FLAG_JUMP_END);
+            return 0;
+        }
+        // Prevents Daisy from floating out of upB
+        if boma.kind() == *FIGHTER_KIND_DAISY
+        && StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_HI
+        && next_status == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_FALL {
+            next_status = *FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_AIR_END;
+        }
+        // Prevent jumping out of Minecart when out of jumps
+        if boma.kind() == *FIGHTER_KIND_PICKEL
+        && next_status == *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_JUMP
+        && boma.get_num_used_jumps() >= boma.get_jump_count_max() {
+            return 0;
+        }
     }
     original!()(boma, next_status, clear_buffer)
 }

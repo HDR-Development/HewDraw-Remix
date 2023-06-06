@@ -13,7 +13,7 @@ unsafe fn set_fighter_status_data_hook(boma: &mut BattleObjectModuleAccessor, ar
 
         // this handles turnaround special/b-reversible moves
         if (boma.kind() == *FIGHTER_KIND_BRAVE
-            && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, *FIGHTER_STATUS_KIND_SPECIAL_HI]))
+            && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, *FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_FAILURE]))
         || (boma.kind() == *FIGHTER_KIND_CAPTAIN
             && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_STATUS_KIND_SPECIAL_LW]))
         || (boma.kind() == *FIGHTER_KIND_CLOUD
@@ -61,6 +61,8 @@ unsafe fn set_fighter_status_data_hook(boma: &mut BattleObjectModuleAccessor, ar
             && boma.is_situation(*SITUATION_KIND_AIR))
         || (boma.kind() == *FIGHTER_KIND_DEDEDE
             && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_S]))
+        || (boma.kind() == *FIGHTER_KIND_MIIFIGHTER
+            && boma.is_status_one_of(&[*FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW1_AIR, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW1_GROUND]))
         {
             // if b-reverse flag does not already exist in status_attr bitmask
             if status_attr & *FIGHTER_STATUS_ATTR_START_TURN as u32 == 0 {

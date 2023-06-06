@@ -250,6 +250,9 @@ unsafe fn szerosuit_special_hi_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 5.0/(8.0-1.0));
+    if is_excute(fighter) {
+        boma.select_cliff_hangdata_from_name("special_hi");
+    }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         SA_SET(fighter, *SITUATION_KIND_AIR);
@@ -312,6 +315,9 @@ unsafe fn szerosuit_special_air_hi_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 5.0/(8.0-1.0));
+    if is_excute(fighter) {
+        boma.select_cliff_hangdata_from_name("special_hi");
+    }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         SA_SET(fighter, *SITUATION_KIND_AIR);
