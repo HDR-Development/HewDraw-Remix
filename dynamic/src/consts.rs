@@ -453,8 +453,9 @@ pub mod vars {
     pub mod elight {
         pub mod instance {
             // flags
-            pub const DISABLE_SPECIAL_HI: i32 = 0x0100;
-            pub const DISABLE_SPECIAL_S:       i32 = 0x0101;
+            pub const DISABLE_SPECIAL_HI:             i32 = 0x0100;
+            pub const DISABLE_SPECIAL_S:              i32 = 0x0101;
+            pub const ENABLE_SPECIAL_S_ACTIONABILITY: i32 = 0x0102;
         }
         pub mod status {
             // ints
