@@ -140,7 +140,7 @@ unsafe fn training_mode_full_meter(fighter: &mut L2CFighterCommon, boma: &mut Ba
     && boma.is_status(*FIGHTER_STATUS_KIND_APPEAL)
     && boma.is_button_on(Buttons::Guard)
     {
-        let meter_max = ParamModule::get_float(boma.object(), ParamType::Common, "meter_max_damage");
+        let meter_max = (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object()));
         MeterModule::add(boma.object(), meter_max);
     }
 }
@@ -160,6 +160,16 @@ pub unsafe extern "Rust" fn shotos_common(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn shotos_moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+    //MeterModule::update(fighter.battle_object, false);
+    //if boma.kind() != *FIGHTER_KIND_DOLLY {
+        //utils::ui::UiManager::set_ex_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+        //utils::ui::UiManager::set_ex_meter_info(
+            //fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+            //MeterModule::meter(fighter.object()),
+            //(MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())),
+            //MeterModule::meter_per_level(fighter.object())
+        //);
+    //}
     //dtilt_utilt_repeat_increment(boma, id, motion_kind); // UNUSED
     tatsumaki_ex_land_cancel_hover(boma, status_kind, situation_kind);
 	//ex_shoryuken(boma, status_kind, situation_kind, motion_kind);

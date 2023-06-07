@@ -39,7 +39,7 @@
   <float hash="shield_rebound_ground_brake">1.15</float>
   <int hash="guard_off_cancel_frame">14</int>
   <int hash="guard_off_disable_shield_recovery">14</int>
-  <int hash="shield_just_frame">2</int>
+  <int hash="shield_just_frame">4</int>
   <float hash="0x2cacbf2a63">12</float>
   <float hash="just_shield_speed_rate">0.01</float>
   <int hash="shield_setoff_escape">999</int>
