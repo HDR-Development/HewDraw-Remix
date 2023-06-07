@@ -890,11 +890,22 @@ pub(crate) fn init() {
         agent_param_callback::install(arcropolis_api::Hash40(file.hash), *size);
     }
     
-    // install the callback for selectively displaying stages
-    // max_size is technically unknown, but since we aren't adding new data to the prc, and the
-    // hdr file is presently 16kb, this should be sufficient.
-    ui_stage_db_prc_callback::install(STAGE_DB_PRC, /* 20kb */ 20480);
-    stage_select_layout_callback::install(STAGE_SELECT_LAYOUT, /* 10mb */ 10485760);
-    stage_select_layout_callback::install(STAGE_SELECT_PATCH_LAYOUT, /* 10mb */ 10485760);
-    stage_select_actor_callback::install(STAGE_SELECT_ACTOR_LUA, /* 10mb */ hdr_macros::size_of_rom_file!("ui/script_patch/common/stage_select_actor3.lc"));
+
+
+    // if TourneyConfig isn't valid, then don't bother installing callbacks
+    match TourneyConfig::load() {
+        Some(config) => match config.is_valid() {
+            true => {
+                // install the callback for selectively displaying stages
+                // max_size is technically unknown, but since we aren't adding new data to the prc, and the
+                // hdr file is presently 16kb, this should be sufficient.
+                ui_stage_db_prc_callback::install(STAGE_DB_PRC, /* 20kb */ 20480);
+                stage_select_layout_callback::install(STAGE_SELECT_LAYOUT, /* 10mb */ 10485760);
+                stage_select_layout_callback::install(STAGE_SELECT_PATCH_LAYOUT, /* 10mb */ 10485760);
+                stage_select_actor_callback::install(STAGE_SELECT_ACTOR_LUA, /* 10mb */ hdr_macros::size_of_rom_file!("ui/script_patch/common/stage_select_actor3.lc"));
+            },
+            false => {}
+        },
+        None => {}
+    }
 }

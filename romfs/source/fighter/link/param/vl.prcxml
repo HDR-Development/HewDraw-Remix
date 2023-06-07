@@ -30,8 +30,10 @@
     <struct index="0">
       <float hash="rslash_air_start_spd_y">2.345</float>
       <float hash="rslash_air_gravity_y_mul">0.535</float>
-      <float hash="rslash_air_accel_x_mul">0</float>
-      <float hash="rslash_air_max_x_mul">0.45</float>
+      <float hash="rslash_air_accel_x_mul">0.01</float>
+      <float hash="rslash_air_max_x_mul">0.5</float>
+      <float hash="rslash_end_air_accel_x_mul">0.01</float>
+      <float hash="rslash_end_air_max_x">0.5</float>
       <float hash="rslash_air_spd_x_mul">0.4</float>
       <float hash="rslash_air_init_spd_mul">1.0</float>
 
