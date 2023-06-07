@@ -7,11 +7,13 @@ use globals::*;
 pub fn lucario_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         MeterModule::update(fighter.object(), false);
-        utils::ui::UiManager::set_ff_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
-        utils::ui::UiManager::set_ff_meter_info(
+        MeterModule::set_meter_cap(fighter.object(), 6);
+        MeterModule::set_meter_per_level(fighter.object(), 50.0);
+        utils::ui::UiManager::set_aura_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+        utils::ui::UiManager::set_aura_meter_info(
             fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
             MeterModule::meter(fighter.object()),
-            ParamModule::get_float(fighter.object(), ParamType::Common, "meter_max_damage"),
+            (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())),
             MeterModule::meter_per_level(fighter.object())
         );
     }
@@ -149,7 +151,7 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 
     let level = MeterModule::level(fighter.object()) as f32;
     let meter_per_level = MeterModule::meter_per_level(fighter.object());
-    let meter_max = ParamModule::get_float(fighter.object(), ParamType::Common, "meter_max_damage");
+    let meter_max = (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object()));
     if (level * meter_per_level >= meter_max) {
         VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
     }

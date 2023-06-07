@@ -81,7 +81,7 @@ unsafe extern "C" fn get_aura(object: *mut BattleObject) -> f32 {
     let max_aurapower = ParamModule::get_float(object, ParamType::Agent, "aura.max_aurapower");
 
     let charge = MeterModule::level(object) as f32;
-    let max_charge = (ParamModule::get_float(object, ParamType::Common, "meter_max_damage") / MeterModule::meter_per_level(object)) as f32;
+    let max_charge = MeterModule::meter_cap(object) as f32;
 
     let diff = max_aurapower - min_aurapower;
     let aura_power = min_aurapower + (diff * charge.clamp(0.0, max_charge) / max_charge);

@@ -33,7 +33,7 @@ fn lucario_init(fighter: &mut L2CFighterCommon) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_COMMAND);
         if fighter.kind() == *FIGHTER_KIND_LUCARIO {
             MeterModule::reset(fighter.battle_object);
-            let meter_max = ParamModule::get_float(fighter.battle_object, ParamType::Common, "meter_max_damage");
+            let meter_max = (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object()));
             MeterModule::add(fighter.battle_object, meter_max / 2.0);
             VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
             VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 10 * 60);
