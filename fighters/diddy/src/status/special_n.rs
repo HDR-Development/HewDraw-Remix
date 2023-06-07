@@ -114,6 +114,7 @@ unsafe extern "C" fn special_n_cancel_main_loop_electric_boogaloo(fighter: &mut 
 }
 
 unsafe extern "C" fn special_n_cancel_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, ArticleOperationTarget(0));
     return 0.into()
 }
 
@@ -178,6 +179,7 @@ unsafe extern "C" fn special_n_jump_cancel_main_loop(fighter: &mut L2CFighterCom
 }
 
 unsafe extern "C" fn special_n_jump_cancel_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, ArticleOperationTarget(0));
     return 0.into()
 }
 

@@ -78,7 +78,12 @@ unsafe fn diddy_special_n_cancel_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, false, -1);
         FT_MOTION_RATE(fighter, 8.0/(31.0 - 1.0));
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
 
@@ -109,7 +114,12 @@ unsafe fn diddy_special_air_n_cancel_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, false, -1);
         FT_MOTION_RATE(fighter, 8.0/(35.0 - 1.0));
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
 
