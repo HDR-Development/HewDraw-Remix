@@ -12,10 +12,10 @@
     </struct>
     <hash40 index="2">dummy</hash40>
     <struct index="3">
-      <float hash="p1_x">60</float>
+      <float hash="p1_x">30</float>
       <float hash="p1_y">70</float>
       <float hash="p2_x">-5</float>
-      <float hash="p2_y">-30</float>
+      <float hash="p2_y">20</float>
     </struct>
   </list>
   <list hash="param_special_n">

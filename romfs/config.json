@@ -81,6 +81,18 @@
 		],
 		"fighter/younglink/cmn": [
 			"fighter/younglink/param/hdr.prc"
+		],
+		"fighter/daisy/cmn": [
+			"fighter/daisy/param/hdr.prc"
+		],
+		"fighter/miiswordsman/cmn": [
+			"fighter/miiswordsman/param/hdr.prc"
+		],
+		"fighter/duckhunt/cmn": [
+			"fighter/duckhunt/param/hdr.prc"
+		],
+		"fighter/krool/cmn": [
+			"fighter/krool/param/hdr.prc"
 		]
 	}
 }

@@ -67,6 +67,30 @@ pub unsafe fn get_param_int_hook(x0: u64, x1: u64, x2 :u64) -> i32 {
                 return 999;
             }
         }
+
+    }
+
+    else if boma_reference.is_weapon() {
+
+        // For articles
+        let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+
+        if fighter_kind == *WEAPON_KIND_PACKUN_SPIKEBALL {
+            if VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
+                if x1 == hash40("param_spikeball") { 
+                    if x2 == hash40("hop_life") {
+                        return 45;
+                    }
+                }
+            }
+            // else if VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
+            //     if x1 == hash40("param_spikeball") { 
+            //         if x2 == hash40("out_range_y") {
+            //             return 45;
+            //         }
+            //     }
+            // }
+        }
     }
 
     original!()(x0, x1, x2)
@@ -262,6 +286,35 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
             }
         }
     
+
+        else if fighter_kind == *WEAPON_KIND_PACKUN_SPIKEBALL {
+            if VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
+                if x1 == hash40("param_spikeball") {
+                    if x2 == hash40("hop_speed_x") {
+                        return 0.0;
+                    }
+                    else if x2 == hash40("hop_speed_y") {
+                        return 0.0;
+                    }
+                }
+            }
+            else if VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
+                if x1 == hash40("param_spikeball") {
+                    if x2 == hash40("shoot_speed_x_max") {
+                        return 1.5;
+                    }
+                    else if x2 == hash40("shoot_speed_y_max") {
+                        return 1.3;
+                    }
+                    else if x2 == hash40("shoot_speed_x_min") {
+                        return 0.5;
+                    }
+                    else if x2 == hash40("shoot_speed_y_min") {
+                        return 0.4;
+                    }
+                }
+            }
+        }
     }
 
     original!()(x0, x1, x2)
