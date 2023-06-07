@@ -336,28 +336,6 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
         VarModule::on_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL);
         return L2CValue::I32(1);
     }
-    
-    interrupt_if!(
-        fighter,
-        FIGHTER_STATUS_KIND_ITEM_SWING_DASH,
-        true,
-        WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_DASH) &&
-        {
-            fighter.clear_lua_stack();
-            lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_SWING);
-            app::sv_module_access::item(fighter.lua_state_agent);
-            fighter.pop_lua_stack(1).get_bool()
-        } &&
-        fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
-    );
-
-    interrupt_if!(
-        fighter,
-        FIGHTER_STATUS_KIND_ATTACK_DASH,
-        true,
-        WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH) &&
-        fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
-    );
 
     if (WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U)
         && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0)
@@ -383,6 +361,44 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     {
         interrupt!(fighter, *FIGHTER_STATUS_KIND_PASS, true);
     }
+
+    let is_dash_input: bool = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0;
+    let is_backdash_input: bool = fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor) <= ParamModule::get_float(fighter.object(), ParamType::Common, "dashback_stick_x")
+                                && fighter.global_table[FLICK_X].get_i32() <= WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("dash_flick_x"));
+
+    if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_AFTER_DASH_TO_RUN_FRAME)  // if after dash-to-run transition frame
+    && WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("run_stick_x")) <= fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor)  // AND stick_x is >= run threshold
+    && !is_dash_input {  // AND you haven't input another dash
+        interrupt!(fighter, FIGHTER_STATUS_KIND_RUN, true);
+    }
+    if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_DASH_TO_RUN_FRAME) {
+        VarModule::off_flag(fighter.battle_object, vars::common::status::IS_DASH_TO_RUN_FRAME);
+        VarModule::on_flag(fighter.battle_object, vars::common::status::IS_AFTER_DASH_TO_RUN_FRAME);
+    }
+
+    interrupt_if!(fighter.sub_transition_group_check_ground_jump().get_bool());
+
+    interrupt_if!(
+        fighter,
+        FIGHTER_STATUS_KIND_ITEM_SWING_DASH,
+        true,
+        WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_DASH) &&
+        {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_SWING);
+            app::sv_module_access::item(fighter.lua_state_agent);
+            fighter.pop_lua_stack(1).get_bool()
+        } &&
+        fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
+    );
+
+    interrupt_if!(
+        fighter,
+        FIGHTER_STATUS_KIND_ATTACK_DASH,
+        true,
+        WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH) &&
+        fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
+    );
 
     if fighter.sub_transition_group_check_ground_attack().get_bool() {
         VarModule::on_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL);
@@ -421,22 +437,6 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
             }
         }
     }
-
-    let is_dash_input: bool = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0;
-    let is_backdash_input: bool = fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor) <= ParamModule::get_float(fighter.object(), ParamType::Common, "dashback_stick_x")
-                                && fighter.global_table[FLICK_X].get_i32() <= WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("dash_flick_x"));
-
-    if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_AFTER_DASH_TO_RUN_FRAME)  // if after dash-to-run transition frame
-    && WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("run_stick_x")) <= fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor)  // AND stick_x is >= run threshold
-    && !is_dash_input {  // AND you haven't input another dash
-        interrupt!(fighter, FIGHTER_STATUS_KIND_RUN, true);
-    }
-    if VarModule::is_flag(fighter.battle_object, vars::common::status::IS_DASH_TO_RUN_FRAME) {
-        VarModule::off_flag(fighter.battle_object, vars::common::status::IS_DASH_TO_RUN_FRAME);
-        VarModule::on_flag(fighter.battle_object, vars::common::status::IS_AFTER_DASH_TO_RUN_FRAME);
-    }
-
-    interrupt_if!(fighter.sub_transition_group_check_ground_jump().get_bool());
     
     // Disables dashbacks when stick falls below threshold
     // For ease of moonwalking
