@@ -129,15 +129,7 @@ unsafe fn reset_flags_resources(fighter: &mut L2CFighterCommon, boma: &mut Battl
         VarModule::off_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
         VarModule::off_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
         if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) > 0 {
-            if fighter.is_prev_status_one_of(&[*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U, *FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_HI_JUMP]) {
-                VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED, 1); //2 specials
-            } else { //not interrupted
-                if fighter.is_status(*FIGHTER_STATUS_KIND_DAMAGE_AIR) {
-                    VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED, 0);
-                } else {
-                VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED, 0); //1 special
-                }
-            }
+            VarModule::set_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED, 1); //1 special back on-hit given at least 1 resource burned up
         }
     } 
     //resource limit
@@ -153,19 +145,17 @@ unsafe fn reset_flags_resources(fighter: &mut L2CFighterCommon, boma: &mut Battl
         if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) && VarModule::get_int(fighter.battle_object, vars::common::instance::LAST_ATTACK_HITBOX_ID) < 6 {
             VarModule::on_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT); 
         }
-        if boma.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D_HIT) && VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) {
-            VarModule::dec_int(boma.object(), vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED);
-            VarModule::off_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT);
-        }
+    } else { //effect showing partial or complete depletion of resources, easier to know if you have 2 specials or not
+        if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) > 0 {
+            let effect = EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_falling_smoke"), Hash40::new("bust"), &Vector3f{x: 0.0, y: 0.0, z: 0.0}, &Vector3f::zero(), 0.5, true, 0, 0, 0, 0, 0, false, false) as u32;
+            LAST_EFFECT_SET_ALPHA(fighter, 0.45);
+            LAST_EFFECT_SET_RATE(fighter, 2.0);
+            EffectModule::set_rgb(boma, effect, 2.0, 0.5, 2.0);
+        } 
     }
-    if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) > 0 {
-        let effect = EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_falling_smoke"), Hash40::new("bust"), &Vector3f{x: 0.0, y: 0.0, z: 0.0}, &Vector3f::zero(), 0.5, true, 0, 0, 0, 0, 0, false, false) as u32;
-        LAST_EFFECT_SET_ALPHA(fighter, 0.45);
-        //LAST_EFFECT_SET_RATE(fighter, 5.0);
-        EffectModule::set_rgb(boma, effect, 2.0, 0.5, 2.0);
-    } else {
+    if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) == 0 || !fighter.is_situation(*SITUATION_KIND_AIR) {
         EffectModule::kill_kind(boma, Hash40::new("sys_falling_smoke"), false, true);
-    }
+    } //clear effect
 }
 
 unsafe fn fair_momentum_handling(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
@@ -180,7 +170,7 @@ unsafe fn fair_momentum_handling(fighter: &mut smash::lua2cpp::L2CFighterCommon,
     let stick_threshold = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("walk_stick_x"));
     if boma.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F){
         if boma.is_motion(Hash40::new("attack_air_f")) || boma.is_motion(Hash40::new("attack_air_f2")) {
-            if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) && VarModule::get_int(fighter.battle_object, vars::common::instance::LAST_ATTACK_HITBOX_ID) < 6 {
+            if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) && VarModule::get_int(fighter.battle_object, vars::common::instance::LAST_ATTACK_HITBOX_ID) < 6 {
                 if boma.is_motion(Hash40::new("attack_air_f")) {
                     smash::app::lua_bind::KineticEnergy::mul_speed(control_energy, &Vector3f::new(0.5, 1.0, 1.0)); //.5x speed total
                 } else if boma.is_motion(Hash40::new("attack_air_f2")) {
@@ -273,7 +263,7 @@ unsafe fn branching_ftilt_jab(fighter: &mut L2CFighterCommon) {
     }
     if MotionModule::motion_kind(boma) == hash40("attack_s3_s2") {
         if WorkModule::is_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_DISABLE_ROOT_ATTACK) {
-            AttackModule::clear_all(boma);
+            AttackModule::clear_all(boma); //quickfix for ba not clearing hitbox
         }
         if stick_y > 0.66 { //hold up kick
             VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);

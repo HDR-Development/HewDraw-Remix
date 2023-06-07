@@ -235,7 +235,7 @@ unsafe fn zelda_dein_tame_effect(fighter: &mut L2CAgentBase) {
 				if [50, 80, 112, 146].contains(&h) {
 					//println!("aha! h is {}", h);
 					let tame_size = fighter.get_float(*WEAPON_ZELDA_DEIN_STATUS_WORK_FLOAT_COUNT);
-					let flash_size = if h == 50 { 1.0 + 0.002 * tame_size } else if h == 80 { 1.0 + 0.005 * tame_size } else if h == 112 { 1.0 + 0.007 * tame_size } else { 1.0 + 0.009 * tame_size };
+					let flash_size = if h == 50 { 1.0 + 0.002 * tame_size } else if h == 80 { 1.0 + 0.009 * tame_size } else if h == 112 { 1.0 + 0.011 * tame_size } else { 1.0 + 0.014 * tame_size };
 					let fire_size = if h == 146 { 0.8 + 0.0025 * tame_size } else { 0.8 + 0.016 * tame_size };
 					let flash_handle = EffectModule::req_follow(boma, Hash40::new("sys_flash"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), flash_size, false, 0, 0, 0, 0, 0, false, false);
 					let fire_handle = EffectModule::req_follow(boma, Hash40::new("zelda_appeal_s_fire"), Hash40::new("top"), &Vector3f::new(2.0, 0.0, 0.0), &Vector3f::zero(), fire_size, false, 0, 0, 0, 0, 0, false, false);
