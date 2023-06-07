@@ -290,9 +290,25 @@ pub mod vars {
     }
 
     pub mod brave {
-        pub mod status {
+        pub mod instance {
             // flags
-            pub const IS_CRITICAL_HIT: i32 = 0x1100;
+            pub const PERSIST_RNG: i32 = 0x0100;
+            pub const PSYCHE_UP_ACTIVE: i32 = 0x0101;
+
+            // ints
+            pub const SPELL_SLOT_1: i32 = 0x0100;
+            pub const SPELL_SLOT_2: i32 = 0x0101;
+            pub const SPELL_SLOT_3: i32 = 0x0102;
+            pub const SPELL_SLOT_4: i32 = 0x0103;
+            pub const SPELL_SLOT_USED_1_1: i32 = 0x0104;
+            pub const SPELL_SLOT_USED_1_2: i32 = 0x0105;
+            pub const SPELL_SLOT_USED_1_3: i32 = 0x0106;
+            pub const SPELL_SLOT_USED_1_4: i32 = 0x0107;
+            pub const SPELL_SLOT_USED_2_1: i32 = 0x0108;
+            pub const SPELL_SLOT_USED_2_2: i32 = 0x0109;
+            pub const SPELL_SLOT_USED_2_3: i32 = 0x0110;
+            pub const SPELL_SLOT_USED_2_4: i32 = 0x0111;
+            pub const CURSOR_SLOT: i32 = 0x0112;
         }
     }
 
@@ -356,8 +372,15 @@ pub mod vars {
     // Note: Terry starts his flags on 0xXX5X instead due to also using the shotos generic flags.
     pub mod dolly {
         pub mod instance {
+            // ints 
+            pub const METER_STOCKS: i32 = 0x0150;
+            pub const CURRENT_STOCKS: i32 = 0x0151;
+            
+            // flags
             pub const SUPER_CANCEL: i32 = 0x0150;
             pub const DISABLE_SPECIAL_S: i32 = 0x0151;
+            pub const IS_INIT_METER: i32 = 0x0152;
+            pub const INCREASE_METER_STOCKS: i32 = 0x0153;
         }
         pub mod status {
             // flags
@@ -437,8 +460,9 @@ pub mod vars {
     pub mod elight {
         pub mod instance {
             // flags
-            pub const DISABLE_SPECIAL_HI: i32 = 0x0100;
-            pub const DISABLE_SPECIAL_S:       i32 = 0x0101;
+            pub const DISABLE_SPECIAL_HI:             i32 = 0x0100;
+            pub const DISABLE_SPECIAL_S:              i32 = 0x0101;
+            pub const ENABLE_SPECIAL_S_ACTIONABILITY: i32 = 0x0102;
         }
         pub mod status {
             // ints
@@ -917,15 +941,15 @@ pub mod vars {
         }
     }
 
-    // pub mod miifighter {
-    //     // floats
-    //     pub const CHARGE_ATTACK_LEVEL: i32 = 0x1000;
+    pub mod miifighter {
+        pub mod status {
+            // ints
+            pub const SPECIAL_LW1_CHARGE: i32 = 0x1100;
 
-    //     // flags
-    //     pub const IS_COUNTER_THROW_PARRIED_ATTACK: i32 = 0x1000;
-    //     pub const IS_CURRENT_IRONBALL_HEAVY:       i32 = 0x1001;
-
-    // }
+            // floats
+            pub const SPECIAL_LW1_CHARGE_DISTANCE: i32 = 0x1101;
+        }
+    }
 
     pub mod littlemac {
         pub mod status {
@@ -1042,6 +1066,13 @@ pub mod vars {
         pub mod status {
             // flags
             pub const SPECIAL_S_RESERVE_FALL: i32 = 0x1100;
+        }
+    }
+    
+    pub mod tantan {
+        pub mod status {
+            // flags
+            pub const ARMS_ATTACK_CANCEL: i32 = 0x1100;
         }
     }
 

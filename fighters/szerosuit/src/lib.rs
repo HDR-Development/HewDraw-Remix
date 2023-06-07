@@ -17,6 +17,7 @@ use smash::{
         self,
         sv_animcmd::{
             frame,
+            execute,
             wait
         },
         lua_bind::*
