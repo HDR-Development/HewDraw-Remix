@@ -160,10 +160,10 @@ impl UiManager {
     }
 
     #[export_name = "UiManager__set_aura_meter_info"]
-    pub extern "C" fn set_aura_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
+    pub extern "C" fn set_aura_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32, burnout: bool) {
         let mut manager = UI_MANAGER.write();
         unsafe {
-            manager.aura_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_meter_info(current, max, per_level);
+            manager.aura_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_meter_info(current, max, per_level, burnout);
         }
     }
 }

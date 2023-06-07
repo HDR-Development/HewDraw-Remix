@@ -3,8 +3,8 @@ use super::*;
 const BACKGROUND_WHITE: [f32; 4] = [236.0 / 255.0, 236.0 / 255.0, 236.0 / 255.0, 1.0];
 const BACKGROUND_BLACK: [f32; 4] = [92.0 / 255.0, 92.0 / 255.0, 92.0 / 255.0, 1.0];
 
-const FOREGROUND_CHARGE_WHITE: [f32; 4] = [9.0 / 255.0, 98.0 / 255.0, 255.0 / 255.0, 1.0];
-const FOREGROUND_CHARGE_BLACK: [f32; 4] = [5.0 / 255.0, 57.0 / 255.0, 155.0 / 255.0, 1.0];
+const FOREGROUND_CHARGE_WHITE: [f32; 4] = [7.0 / 255.0, 82.0 / 255.0, 220.0 / 255.0, 1.0];
+const FOREGROUND_CHARGE_BLACK: [f32; 4] = [4.0 / 255.0, 47.0 / 255.0, 130.0 / 255.0, 1.0];
 
 const FULL_TEXCOORDS: [f32; 8] = [
     0.0, 0.0,
@@ -41,6 +41,7 @@ pub struct AuraMeter {
 
     // Number tracking
     pub current_number: usize,
+    pub burnout: bool,
 
     enabled: bool,
 }
@@ -82,6 +83,7 @@ impl AuraMeter {
             visual_percentage: -1.0,
 
             current_number: 0,
+            burnout: false,
 
             enabled: false,
         }
@@ -104,6 +106,7 @@ impl AuraMeter {
         }
 
         self.current_number = 0;
+        self.burnout = false;
         self.actual_percentage = 0.0;
         self.visual_percentage = 0.0;
     }
@@ -125,7 +128,7 @@ impl AuraMeter {
         );
     }
 
-    pub fn set_meter_info(&mut self, current: f32, max: f32, per_level: f32) {
+    pub fn set_meter_info(&mut self, current: f32, max: f32, per_level: f32, burnout: bool) {
         let bar_total = per_level * 2.0;
 
         let number = current / bar_total;
@@ -145,6 +148,7 @@ impl AuraMeter {
         }
 
         self.current_number = number;
+        self.burnout = burnout;
     }
 
     pub fn set_tex_coords(&mut self) {
@@ -253,6 +257,10 @@ impl UiObject for AuraMeter {
         self.update_number();
         self.set_tex_coords();
         self.update_percentages();
+        if self.burnout {
+            set_pane_visible(self.bars[0], false);
+            set_pane_visible(self.bars[1], false);
+        }
     }
 
     fn is_valid(&self) -> bool {

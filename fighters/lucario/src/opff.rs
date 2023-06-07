@@ -14,7 +14,8 @@ pub fn lucario_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
             fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
             MeterModule::meter(fighter.object()),
             (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())),
-            MeterModule::meter_per_level(fighter.object())
+            MeterModule::meter_per_level(fighter.object()),
+            VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_IS_BURNOUT)
         );
     }
 }
@@ -41,6 +42,11 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
     jump_cancels(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
     training_mode_deplete_meter(fighter, boma, status_kind);
+}
+
+unsafe fn pause_meter_regen(fighter: &mut L2CFighterCommon, frames: i32) {
+    let frames = frames.max(VarModule::get_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+    VarModule::set_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
 }
 
 unsafe fn training_mode_deplete_meter(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
@@ -80,12 +86,11 @@ unsafe fn uspecial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
     ]) 
     && !CancelModule::is_enable_cancel(boma)
     && fighter.is_button_on(Buttons::AttackRaw) 
-    && MeterModule::drain(fighter.object(), 2) {
+    && !VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_IS_BURNOUT) {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
-        let motion_vec = Vector3f{x: 0.5, y: 0.5, z: 0.5};
-        KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-        let frames = 90.max(VarModule::get_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
-        VarModule::set_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
+        KineticModule::mul_speed(boma, &Vector3f{x: 0.5, y: 0.5, z: 0.5}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+        MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()) * 2.0);
+        pause_meter_regen(fighter, 120);
     }
 }
 
@@ -95,13 +100,12 @@ unsafe fn dspecial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_END
     ]) 
     && !CancelModule::is_enable_cancel(boma)
-    && fighter.is_button_on(Buttons::AttackRaw) 
-    && MeterModule::drain(fighter.object(), 2) {
+    && fighter.is_button_on(Buttons::AttackRaw)
+    && !VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_IS_BURNOUT) {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
-        let motion_vec = Vector3f{x: 0.5, y: 0.5, z: 0.5};
-        KineticModule::mul_speed(boma, &motion_vec, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-        let frames = 90.max(VarModule::get_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
-        VarModule::set_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
+        KineticModule::mul_speed(boma, &Vector3f{x: 0.5, y: 0.5, z: 0.5}, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+        MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()) * 2.0);
+        pause_meter_regen(fighter, 120);
     }
 }
 
@@ -145,27 +149,34 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         *FIGHTER_STATUS_KIND_SHIELD_BREAK_FALL,
         *FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY
     ].contains(&status_kind) {
-        let lockout_frame = 90.max(VarModule::get_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
-        VarModule::set_int(boma.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, lockout_frame);
+        pause_meter_regen(fighter, 90);
     }
 
-    let level = MeterModule::level(fighter.object()) as f32;
+    let meter = MeterModule::meter(fighter.object());
     let meter_per_level = MeterModule::meter_per_level(fighter.object());
-    let meter_max = (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object()));
-    if (level * meter_per_level >= meter_max) {
+    let meter_max = (MeterModule::meter_cap(fighter.object()) as f32) * meter_per_level;
+    if (meter <= 0.0) {
+        VarModule::on_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+    } else if (meter >= meter_max) {
         VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
     }
 
     if !boma.is_in_hitlag() {
+        // Set faster passive regeneration rate in burnout
         let is_burnout = VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
+        if is_burnout {
+            VarModule::set_float(fighter.battle_object, vars::lucario::instance::METER_PASSIVE_RATE, 12.0/60.0);
+        } else {
+            VarModule::set_float(fighter.battle_object, vars::lucario::instance::METER_PASSIVE_RATE, 15.0/60.0);
+        }
+
         let passive_rate = VarModule::get_float(fighter.battle_object, vars::lucario::instance::METER_PASSIVE_RATE);
         let lockout_frame = VarModule::get_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME);
         if lockout_frame > 0 {
+            // decrement passive regen lockout frame
             VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, (lockout_frame - 1).max(0));
-            if is_burnout {
-                MeterModule::add(boma.object(), passive_rate / 2.0);
-            }
         } else {
+            // add passive regen
             MeterModule::add(boma.object(), passive_rate);
         }
     }

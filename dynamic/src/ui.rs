@@ -27,7 +27,7 @@ extern "C" {
     fn ui_manager_set_aura_meter_enable(entry_id: u32, enable: bool);
 
     #[link_name = "UiManager__set_aura_meter_info"]
-    fn ui_manager_set_aura_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32);
+    fn ui_manager_set_aura_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32, burnout: bool);
 }
 
 pub mod UiManager {
@@ -85,9 +85,9 @@ pub mod UiManager {
         }
     }
 
-    pub fn set_aura_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
+    pub fn set_aura_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32, burnout: bool) {
         unsafe {
-            super::ui_manager_set_aura_meter_info(entry_id, current, max, per_level)
+            super::ui_manager_set_aura_meter_info(entry_id, current, max, per_level, burnout)
         }
     }
 }

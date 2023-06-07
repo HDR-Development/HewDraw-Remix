@@ -34,10 +34,9 @@ fn lucario_init(fighter: &mut L2CFighterCommon) {
         if fighter.kind() == *FIGHTER_KIND_LUCARIO {
             MeterModule::reset(fighter.battle_object);
             let meter_max = (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object()));
-            MeterModule::add(fighter.battle_object, meter_max / 2.0);
+            MeterModule::add(fighter.battle_object, meter_max / 3.0);
             VarModule::off_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
             VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 10 * 60);
-            VarModule::set_float(fighter.battle_object, vars::lucario::instance::METER_PASSIVE_RATE, 10.0/60.0);
         }
     }
 }
