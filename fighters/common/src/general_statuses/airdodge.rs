@@ -337,7 +337,9 @@ unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterC
     let stick_x = fighter.global_table[STICK_X].get_f32();
     let passive_fb_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("passive_fb_cont_value"));
     // lazy eval gaurantees that we don't call handle_waveland if we are on the ground
-    if situation_kind == *SITUATION_KIND_GROUND || fighter.handle_waveland(false) {
+    // or if you have begun falling (after frame 30)
+    if situation_kind == *SITUATION_KIND_GROUND
+    || (!WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_KINE_FALL) && fighter.handle_waveland(false)) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_GROUND) 
         && WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y) <= 0.0 {
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB)
@@ -462,20 +464,20 @@ unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, stick_x:
     WorkModule::set_int(fighter.module_accessor, escape_air_slide_back_end_frame + escape_air_add_xlu_start_frame, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_BACK_END_FRAME);
     WorkModule::set_float(fighter.module_accessor, escape_air_slide_stiff_frame, *FIGHTER_STATUS_ESCAPE_AIR_STIFF_FRAME);
     
-    EffectModule::req_on_joint(
-        fighter.module_accessor,
-        Hash40::new("sys_smash_flash_s"),
-        Hash40::new("hip"),
-        &Vector3f{x: 0.0, y: 4.0, z: 8.0},
-        &Vector3f::zero(),
-        1.1,
-        &Vector3f{x: 18.0, y: 12.0, z: 0.0},
-        &Vector3f::zero(),
-        false,
-        0,
-        0,
-        0
-    );
+    // EffectModule::req_on_joint(
+    //     fighter.module_accessor,
+    //     Hash40::new("sys_smash_flash_s"),
+    //     Hash40::new("hip"),
+    //     &Vector3f{x: 0.0, y: 4.0, z: 8.0},
+    //     &Vector3f::zero(),
+    //     1.1,
+    //     &Vector3f{x: 18.0, y: 12.0, z: 0.0},
+    //     &Vector3f::zero(),
+    //     false,
+    //     0,
+    //     0,
+    //     0
+    // );
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_exec_escape_air_slide)]

@@ -140,14 +140,20 @@ pub fn get_active_battle_object_id_from_entry_id(entry_id: u32) -> Option<u32> {
         Some(object.battle_object_id + 0x10000)
     } else if kind == *FIGHTER_KIND_PZENIGAME || kind == *FIGHTER_KIND_PFUSHIGISOU || kind == *FIGHTER_KIND_PLIZARDON {
         let next_id = object.battle_object_id + 0x10000;
-        let next_object = unsafe { &mut *get_battle_object_from_id(next_id) };
-        let next_status = unsafe {
-            StatusModule::status_kind(next_object.module_accessor)
-        };
-        if next_status != *FIGHTER_STATUS_KIND_NONE && next_status != *FIGHTER_STATUS_KIND_STANDBY {
-            Some(next_id)
-        } else {
-            Some(next_id + 0x10000)
+        let next_object = unsafe { get_battle_object_from_id(next_id) };
+        if !next_object.is_null() {
+            let next_object = unsafe { &mut *next_object };
+            let next_status = unsafe {
+                StatusModule::status_kind(next_object.module_accessor)
+            };
+            if next_status != *FIGHTER_STATUS_KIND_NONE && next_status != *FIGHTER_STATUS_KIND_STANDBY {
+                Some(next_id)
+            } else {
+                Some(next_id + 0x10000)
+            }
+        }
+        else {
+            Some(object.battle_object_id)
         }
     } else {
         Some(object.battle_object_id)
