@@ -20,7 +20,14 @@ extern "Rust" {
 #[fighter_frame( agent = FIGHTER_KIND_RYU )]
 pub fn ryu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
-        shotos_common(fighter);
+        MeterModule::update(fighter.battle_object, false);
+        utils::ui::UiManager::set_ex_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+        utils::ui::UiManager::set_ex_meter_info(
+            fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+            MeterModule::meter(fighter.object()),
+            (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())),
+            MeterModule::meter_per_level(fighter.object())
+        );
     }
 }
 
@@ -28,6 +35,7 @@ pub fn ryu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub fn ryu_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
+        shotos_common(fighter);
 		ryu_frame(fighter);
     }
 }
@@ -105,14 +113,14 @@ unsafe fn special_fadc_super_cancels(boma: &mut BattleObjectModuleAccessor) {
         if VarModule::is_flag(boma.object(), vars::shotos::instance::IS_ENABLE_FADC){
             if boma.is_cat_flag(Cat1::SpecialLw){
                 if !StopModule::is_stop(boma) {
-                    if MeterModule::drain(boma.object(), 2){
+                    if MeterModule::drain(boma.object(), 1){
                         boma.change_status_req(*FIGHTER_STATUS_KIND_SPECIAL_LW, true);
                     }
                 }
             }
             if boma.is_cat_flag(Cat4::SpecialNCommand | Cat4::SpecialHiCommand){
                 if !StopModule::is_stop(boma){
-                    if MeterModule::drain(boma.object(), 10) {
+                    if MeterModule::drain(boma.object(), MeterModule::meter_cap(boma.object())) {
                         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
                         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
                         boma.change_status_req(*FIGHTER_STATUS_KIND_FINAL, true);

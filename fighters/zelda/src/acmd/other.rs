@@ -215,15 +215,15 @@ unsafe fn zelda_dein_tame_effect(fighter: &mut L2CAgentBase) {
 			VarModule::set_int64(zelda, vars::zelda::instance::DEIN_EFF_HANDLER_FIRE, fire_handle);
 		}
 	}
-	for h in 21..=97 {
+	for h in 21..=146 {
 		if is_excute(fighter) {
 			let start_color = Vector3f { x: 1.0, y: 1.0, z: 1.0 };
 			let end_color = Vector3f { x: 0.885, y: 0.051, z: 0.051 };
 			// Smoothly interpolate from starting to ending color
 			let blend_vector = Vector3f {
-				x: start_color.x + ((end_color.x - start_color.x) * ((h as f32) / 97.0)),
-				y: start_color.y + ((end_color.y - start_color.y) * ((h as f32) / 97.0)),
-				z: start_color.z + ((end_color.z - start_color.z) * ((h as f32) / 97.0))
+				x: start_color.x + ((end_color.x - start_color.x) * ((h as f32) / 146.0)),
+				y: start_color.y + ((end_color.y - start_color.y) * ((h as f32) / 146.0)),
+				z: start_color.z + ((end_color.z - start_color.z) * ((h as f32) / 146.0))
 			};
 			//println!("blend: {}, {}, {}", blend_vector.x, blend_vector.y, blend_vector.z);
 			let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
@@ -232,10 +232,11 @@ unsafe fn zelda_dein_tame_effect(fighter: &mut L2CAgentBase) {
 				let flash_handle = VarModule::get_int64(zelda, vars::zelda::instance::DEIN_EFF_HANDLER_FLASH);
 				let fire_handle = VarModule::get_int64(zelda, vars::zelda::instance::DEIN_EFF_HANDLER_FIRE);
 				// Spawn (and store) new effects at certain frame intervals
-				if [45, 70, 97].contains(&h) {
+				if [50, 80, 112, 146].contains(&h) {
 					//println!("aha! h is {}", h);
-					let flash_size = if h == 45 { 0.8 } else if h == 70 { 1.0 } else { 1.2 };
-					let fire_size = if h == 97 { 1.15 } else { 1.0 };
+					let tame_size = fighter.get_float(*WEAPON_ZELDA_DEIN_STATUS_WORK_FLOAT_COUNT);
+					let flash_size = if h == 50 { 1.0 + 0.002 * tame_size } else if h == 80 { 1.0 + 0.009 * tame_size } else if h == 112 { 1.0 + 0.011 * tame_size } else { 1.0 + 0.014 * tame_size };
+					let fire_size = if h == 146 { 0.8 + 0.0025 * tame_size } else { 0.8 + 0.016 * tame_size };
 					let flash_handle = EffectModule::req_follow(boma, Hash40::new("sys_flash"), Hash40::new("top"), &Vector3f::zero(), &Vector3f::zero(), flash_size, false, 0, 0, 0, 0, 0, false, false);
 					let fire_handle = EffectModule::req_follow(boma, Hash40::new("zelda_appeal_s_fire"), Hash40::new("top"), &Vector3f::new(2.0, 0.0, 0.0), &Vector3f::zero(), fire_size, false, 0, 0, 0, 0, 0, false, false);
 					// Apply color blend
@@ -261,6 +262,15 @@ unsafe fn zelda_phantom_build_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
 	frame(lua_state, 0.0);
 	if is_excute(fighter) {
+		let owner_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+        let zelda = utils::util::get_battle_object_from_id(owner_id);
+		if VarModule::is_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM) {
+			let pos_x = PostureModule::pos_x(boma);
+			let pos_y = PostureModule::pos_y(boma);
+			let pos = smash::phx::Vector3f { x: pos_x + 35.0 * (1.0*PostureModule::lr(boma)) , y: pos_y, z: 0.0 };
+			PostureModule::set_pos(boma, &pos);
+			VarModule::off_flag(zelda, vars::zelda::instance::HIT_CANCEL_PHANTOM);
+		}
 		WorkModule::inc_int(boma, *WEAPON_ZELDA_PHANTOM_INSTANCE_WORK_ID_INT_BUILD_NEXT);
 	}
 	frame(lua_state, 2.0);
@@ -356,7 +366,7 @@ unsafe fn zelda_phantom_build_effect(fighter: &mut L2CAgentBase) {
 unsafe fn zelda_phantom_attack_kick_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-	let rush_speed = 4.0;
+	let rush_speed = 4.5;
 	frame(lua_state, 0.0);
 	if is_excute(fighter) {
 		KineticModule::unable_energy(boma, *WEAPON_ZELDA_PHANTOM_KINETIC_ENERGY_ID_NORMAL);
@@ -420,7 +430,7 @@ unsafe fn zelda_phantom_attack_kick_effect(fighter: &mut L2CAgentBase) {
 unsafe fn zelda_phantom_attack_punch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-	let rush_speed = 4.5;
+	let rush_speed = 5.0;
 	frame(lua_state, 0.0);
 	if is_excute(fighter) {
 		ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 361, 100, 60, 0, 4.0, 0.0, 7.0, 11.0, Some(0.0), Some(7.0), Some(7.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 3, true, false, true, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
@@ -486,7 +496,7 @@ unsafe fn zelda_phantom_attack_punch_effect(fighter: &mut L2CAgentBase) {
 unsafe fn zelda_phantom_attack_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-	let rush_speed = 5.0;
+	let rush_speed = 5.5;
 	frame(lua_state, 0.0);
 	if is_excute(fighter) {
 		//FT_MOTION_RATE(fighter, 5.0/(3.0-0.0));
@@ -522,10 +532,10 @@ unsafe fn zelda_phantom_attack_s_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
-		EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 1.0, 20.0, -10.0, 0, 0, 0, 1.25, 0, 0, 0, 0, 0, 0, true);
+		EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 1.0, 20.0, -10.0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
 		LAST_EFFECT_SET_COLOR(fighter, 0.885, 0.051, 0.051);
 		LAST_EFFECT_SET_RATE(fighter, 0.50);
-		EFFECT(fighter, Hash40::new("zelda_appeal_s_fire"), Hash40::new("top"), 1.0, 20.0, -10.0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
+		EFFECT(fighter, Hash40::new("zelda_appeal_s_fire"), Hash40::new("top"), 1.0, 20.0, -10.0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
 		LAST_EFFECT_SET_RATE(fighter, 0.75);
 		if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
 			EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
@@ -584,7 +594,7 @@ unsafe fn zelda_phantom_attack_s_effect(fighter: &mut L2CAgentBase) {
 unsafe fn zelda_phantom_attack_l_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-	let rush_speed = 5.5;
+	let rush_speed = 6.0;
 	frame(lua_state, 0.0);
 	if is_excute(fighter) {
 		//FT_MOTION_RATE(fighter, 20.0/3.0);
@@ -605,14 +615,14 @@ unsafe fn zelda_phantom_attack_l_game(fighter: &mut L2CAgentBase) {
 	if is_excute(fighter) {
 		AttackModule::clear_all(boma);
 		// Air-only
-		ATTACK(fighter, 0, 0, Hash40::new("handr"), 8.0, 361, 40, 0, 60, 5.0, 2.0, 0.0, 1.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
-		ATTACK(fighter, 1, 0, Hash40::new("handr"), 8.0, 361, 40, 0, 60, 5.6, 2.0, 0.0, 8.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
-		ATTACK(fighter, 2, 0, Hash40::new("handr"), 8.0, 361, 40, 0, 60, 5.6, 2.0, 0.0, 16.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+		ATTACK(fighter, 0, 0, Hash40::new("handr"), 8.0, 361, 60, 0, 60, 5.0, 2.0, 0.0, 1.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+		ATTACK(fighter, 1, 0, Hash40::new("handr"), 8.0, 361, 60, 0, 60, 5.6, 2.0, 0.0, 8.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+		ATTACK(fighter, 2, 0, Hash40::new("handr"), 8.0, 361, 60, 0, 60, 5.6, 2.0, 0.0, 16.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
 		//ATTACK(fighter, 3, 0, Hash40::new("top"), 5.0, 361, 57, 0, 60, 5.0, 0.0, 8.5, 11.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
 		// Ground-only
-		ATTACK(fighter, 3, 0, Hash40::new("handr"), 8.0, 262, 40, 0, 90, 5.0, 2.0, 0.0, 1.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
-		ATTACK(fighter, 4, 0, Hash40::new("handr"), 8.0, 262, 40, 0, 90, 5.6, 2.0, 0.0, 8.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
-		ATTACK(fighter, 5, 0, Hash40::new("handr"), 8.0, 262, 40, 0, 90, 5.6, 2.0, 0.0, 16.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+		ATTACK(fighter, 3, 0, Hash40::new("handr"), 8.0, 262, 60, 0, 90, 5.0, 2.0, 0.0, 1.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+		ATTACK(fighter, 4, 0, Hash40::new("handr"), 8.0, 262, 60, 0, 90, 5.6, 2.0, 0.0, 8.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+		ATTACK(fighter, 5, 0, Hash40::new("handr"), 8.0, 262, 60, 0, 90, 5.6, 2.0, 0.0, 16.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
 		//ATTACK(fighter, 3, 0, Hash40::new("top"), 5.0, 270, 40, 0, 120, 5.0, 0.0, 8.5, 11.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2.5, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
 		AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_HIGH), false);
 	}
@@ -627,10 +637,10 @@ unsafe fn zelda_phantom_attack_l_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
-		EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 1.0, 20.0, -10.0, 0, 0, 0, 1.25, 0, 0, 0, 0, 0, 0, true);
+		EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 1.0, 20.0, -10.0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
 		LAST_EFFECT_SET_COLOR(fighter, 0.4, 0.0, 1.0);
 		LAST_EFFECT_SET_RATE(fighter, 0.50);
-		EFFECT(fighter, Hash40::new("zelda_appeal_s_fire"), Hash40::new("top"), 1.0, 20.0, -10.0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
+		EFFECT(fighter, Hash40::new("zelda_appeal_s_fire"), Hash40::new("top"), 1.0, 20.0, -10.0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
 		LAST_EFFECT_SET_RATE(fighter, 0.75);
 		LAST_EFFECT_SET_COLOR(fighter, 0.4, 0.0, 50.0);
 		if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
@@ -731,7 +741,7 @@ unsafe fn zelda_phantom_attack_l_effect(fighter: &mut L2CAgentBase) {
 unsafe fn zelda_phantom_attack_max_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-	let rush_speed = 6.5;
+	let rush_speed = 7.0;
 	frame(lua_state, 0.0);
 	if is_excute(fighter) {
 		FT_MOTION_RATE(fighter, 11.0/(3.0-0.0));
@@ -751,10 +761,10 @@ unsafe fn zelda_phantom_attack_max_game(fighter: &mut L2CAgentBase) {
 	frame(lua_state, 11.0);
 	if is_excute(fighter) {
 		AttackModule::clear_all(boma);
-		ATTACK(fighter, 0, 0, Hash40::new("handr"), 11.0, 46, 80, 0, 60, 6.0, 2.0, 0.0, 1.5, None, None, None, 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 7, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
-		ATTACK(fighter, 1, 0, Hash40::new("handr"), 11.0, 46, 80, 0, 60, 6.0, 2.0, 1.0, 9.0, None, None, None, 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 7, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
-		ATTACK(fighter, 2, 0, Hash40::new("handr"), 11.0, 46, 80, 0, 60, 6.0, 2.0, 2.0, 16.5, None, None, None, 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 7, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
-		ATTACK(fighter, 3, 0, Hash40::new("shoulderr"), 11.0, 46, 80, 0, 60, 6.0, 0.0, 0.0, 0.0, None, None, None, 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 7, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
+		ATTACK(fighter, 0, 0, Hash40::new("handr"), 11.0, 46, 90, 0, 60, 6.0, 2.0, 0.0, 1.5, None, None, None, 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 7, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
+		ATTACK(fighter, 1, 0, Hash40::new("handr"), 11.0, 46, 90, 0, 60, 6.0, 2.0, 1.0, 9.0, None, None, None, 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 7, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
+		ATTACK(fighter, 2, 0, Hash40::new("handr"), 11.0, 46, 90, 0, 60, 6.0, 2.0, 2.0, 16.5, None, None, None, 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 7, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
+		ATTACK(fighter, 3, 0, Hash40::new("shoulderr"), 11.0, 46, 90, 0, 60, 6.0, 0.0, 0.0, 0.0, None, None, None, 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 7, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
 	}
 	frame(lua_state, 17.0);
 	if is_excute(fighter) {
@@ -767,7 +777,7 @@ unsafe fn zelda_phantom_attack_max_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 	if is_excute(fighter) {
-		EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 1.0, 20.0, -10.0, 0, 0, 0, 1.25, 0, 0, 0, 0, 0, 0, true);
+		EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 1.0, 20.0, -10.0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
 		LAST_EFFECT_SET_RATE(fighter, 0.50);
 		EFFECT(fighter, Hash40::new("zelda_atk_flash"), Hash40::new("top"), 1.0, 20.0, -10.0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, true);
 		if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {

@@ -108,7 +108,6 @@ pub unsafe fn dk_bair_rotation(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 /// this sets the ledgegrab box for the backside of up special, which 
 /// enables DK to more consistently grab ledge with slipoff uspecial
 pub unsafe fn special_hi_slipoff_grab(fighter: &mut L2CFighterCommon) {
@@ -147,7 +146,6 @@ pub fn donkey_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         common::opff::fighter_common_opff(fighter);
 		donkey_frame(fighter);
         dk_bair_rotation(fighter);
-        special_hi_slipoff_grab(fighter);
         flatten_uspecial(fighter);
     }
 }

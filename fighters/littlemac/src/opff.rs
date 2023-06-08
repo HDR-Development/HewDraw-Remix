@@ -76,10 +76,21 @@ unsafe fn nspecial_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma:
     }
 }
 
+// Fixes weird vanilla behavior where touching ground during upB puts you into special fall for 1f before landing
+unsafe fn up_special_proper_landing(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_LITTLEMAC_STATUS_KIND_SPECIAL_HI_JUMP)
+    && fighter.is_situation(*SITUATION_KIND_GROUND)
+    && MotionModule::frame(fighter.module_accessor) >= 28.0 {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
+        KineticModule::clear_speed_energy_id(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     normal_side_special(boma, status_kind);
     tech_roll_help(boma, motion_kind, facing, frame);
     nspecial_cancels(fighter, boma, status_kind, situation_kind, cat[0], frame);
+    up_special_proper_landing(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_LITTLEMAC )]

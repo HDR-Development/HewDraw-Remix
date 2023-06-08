@@ -83,14 +83,25 @@ unsafe fn side_special_cancels(boma: &mut BattleObjectModuleAccessor, status_kin
 }
 */
 
+// Fixes weird vanilla behavior where touching ground during upB puts you into special fall for 1f before landing
+unsafe fn up_special_proper_landing(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
+    && fighter.is_situation(*SITUATION_KIND_GROUND)
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_HI_FLAG_TRANS_MOVE) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_HI_FLAG_TRANS_MOVE);
+    }
+}
+
 // symbol-based call for the fe characters' common opff
 extern "Rust" {
     fn fe_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     // Magic Series
     //side_special_cancels(boma, status_kind, situation_kind, cat[0], motion_kind);
+    up_special_proper_landing(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_LUCINA )]
@@ -104,6 +115,6 @@ pub fn lucina_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn lucina_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

@@ -4,12 +4,23 @@ use super::*;
 use globals::*;
 
  
-unsafe fn winged_pikmin_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
+unsafe fn winged_pikmin_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_WAIT].contains(&status_kind) {
         if boma.is_cat_flag(Cat1::SpecialN) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_END, false);
         }
-        boma.check_airdodge_cancel();
+        if boma.check_airdodge_cancel() {
+            VarModule::on_flag(boma.object(), vars::pikmin::instance::SPECIAL_HI_CANCEL_ESCAPE_AIR);
+        }
+    }
+    if fighter.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR)
+    && fighter.is_situation(*SITUATION_KIND_AIR)
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && CancelModule::is_enable_cancel(fighter.module_accessor)
+    && VarModule::is_flag(boma.object(), vars::pikmin::instance::SPECIAL_HI_CANCEL_ESCAPE_AIR) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+        let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
+        *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
     }
 }
 
@@ -126,7 +137,7 @@ unsafe fn pikmin_antenna_indicator(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    winged_pikmin_cancel(boma, status_kind, cat[0]);
+    winged_pikmin_cancel(fighter, boma, status_kind, cat[0]);
     solimar_scaling(boma, status_kind, frame);
     pikmin_antenna_indicator(fighter);
 }

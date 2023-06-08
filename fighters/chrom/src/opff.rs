@@ -156,9 +156,9 @@ pub unsafe fn chrom_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon
     common::opff::fighter_common_opff(fighter);
     fe_common(fighter);
     soaring_slash_drift(fighter);
-    soaring_slash_cancel(fighter);
+    //soaring_slash_cancel(fighter);
     side_special_cancels(fighter);
-    soaring_slash(fighter);
+    //soaring_slash(fighter);
     double_edge_dance_vertical_momentum(fighter);
     
     // Sword remains the same size throughout jab and utilt
