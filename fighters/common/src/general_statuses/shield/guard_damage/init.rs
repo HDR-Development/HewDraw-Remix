@@ -6,6 +6,18 @@ use super::super::fighter_status_guard;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardDamage_initStatus_Inner)]
 unsafe fn sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter: &mut L2CFighterCommon) {
+
+    if fighter.kind() == *FIGHTER_KIND_LUCARIO {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+            MeterModule::add(fighter.object(), WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_DAMAGE));
+            VarModule::set_int(fighter.battle_object, vars::lucario::instance::METER_PAUSE_REGEN_FRAME, 0);
+        } else {
+            MeterModule::drain_direct(fighter.object(), WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_DAMAGE));
+            let frames = 90.max(VarModule::get_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+            VarModule::set_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
+        }
+    }
+
     let shield_power = WorkModule::get_float(
         fighter.module_accessor,
         *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_POWER,

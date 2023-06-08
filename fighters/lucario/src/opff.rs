@@ -141,7 +141,6 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         *FIGHTER_STATUS_KIND_ESCAPE_F,
         *FIGHTER_STATUS_KIND_ESCAPE_B,
         *FIGHTER_STATUS_KIND_GUARD, 
-        *FIGHTER_STATUS_KIND_GUARD_DAMAGE, 
         *FIGHTER_STATUS_KIND_GUARD_OFF, 
         *FIGHTER_STATUS_KIND_GUARD_ON,
         *FIGHTER_STATUS_KIND_REBIRTH,
