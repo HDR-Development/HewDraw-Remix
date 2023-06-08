@@ -12,5 +12,10 @@
         <float hash="penalty_aurapower">0.75</float>
         <float hash="min_aurapower">0.8</float>
         <float hash="max_aurapower">1.4</float>
+        <float hash="regen_rate">0.1333</float>
+        <float hash="regen_rate_burnout">0.2</float>
+        <float hash="shield_damage_meter_drain_mul">2.5</float>
+        <float hash="parry_meter_gain_mul">3.5</float>
+        <float hash="damage_meter_gain_mul">0.5</float>
     </struct>
 </struct>

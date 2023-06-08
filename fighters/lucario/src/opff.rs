@@ -110,7 +110,8 @@ unsafe fn dspecial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
 }
 
 unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    MeterModule::set_damage_gain_mul(fighter.object(), 0.5);
+    let damage_gain_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.damage_meter_gain_mul");
+    MeterModule::set_damage_gain_mul(fighter.object(), damage_gain_mul);
     if [ // list of statuses that should pause passive meter regen
         *FIGHTER_STATUS_KIND_CAPTURE_PULLED,
         *FIGHTER_STATUS_KIND_CAPTURE_PULLED_FISHINGROD,
@@ -164,9 +165,11 @@ unsafe fn meter_module(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         // Set faster passive regeneration rate in burnout
         let is_burnout = VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT);
         if is_burnout {
-            VarModule::set_float(fighter.battle_object, vars::lucario::instance::METER_PASSIVE_RATE, 12.0/60.0);
+            let rate = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.regen_rate");
+            VarModule::set_float(fighter.battle_object, vars::lucario::instance::METER_PASSIVE_RATE, rate);
         } else {
-            VarModule::set_float(fighter.battle_object, vars::lucario::instance::METER_PASSIVE_RATE, 15.0/60.0);
+            let rate = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.regen_rate_burnout");
+            VarModule::set_float(fighter.battle_object, vars::lucario::instance::METER_PASSIVE_RATE, rate);
         }
 
         let passive_rate = VarModule::get_float(fighter.battle_object, vars::lucario::instance::METER_PASSIVE_RATE);
@@ -261,6 +264,7 @@ unsafe fn jump_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         *FIGHTER_STATUS_KIND_ATTACK_AIR
     ])
     && fighter.check_jump_cancel(false) {
-        // it worked
+        MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()));
+        pause_meter_regen(fighter, 90);
     }
 }
