@@ -57,12 +57,12 @@ unsafe fn inkling_attack_hi3_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
-    frame(lua_state, 4.0);
+    frame(lua_state, 7.0);
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 3);
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 5.0);
+    frame(lua_state, 8.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }

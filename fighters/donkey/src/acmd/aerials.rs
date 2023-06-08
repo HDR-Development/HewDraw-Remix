@@ -48,15 +48,15 @@ unsafe fn attack_air_n(fighter: &mut L2CAgentBase) {
 unsafe fn attack_air_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 6.0);
+    frame(lua_state, 8.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 9, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 9.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
-    frame(lua_state, 14.0);
+    frame(lua_state, 13.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
@@ -195,11 +195,11 @@ unsafe fn attack_air_hi(fighter: &mut L2CAgentBase) {
 unsafe fn attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 2.0);
+    frame(lua_state, 4.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 3.0);
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }

@@ -47,7 +47,7 @@ unsafe fn cloud_attack_s3_s_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 8.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
@@ -89,11 +89,11 @@ unsafe fn cloud_attack_hi3_expression(fighter: &mut L2CAgentBase) {
         AttackModule::set_attack_reference_joint_id(boma, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
     }
-    frame(lua_state, 3.0);
+    frame(lua_state, 4.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 4.0);
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }

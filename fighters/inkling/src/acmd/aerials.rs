@@ -155,15 +155,15 @@ unsafe fn inkling_attack_air_hi_game(fighter: &mut L2CAgentBase) {
 unsafe fn inkling_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 4.0);
+    frame(lua_state, 9.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 11.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
     }
-    frame(lua_state, 11.0);
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }

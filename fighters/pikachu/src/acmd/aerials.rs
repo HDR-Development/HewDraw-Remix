@@ -146,7 +146,7 @@ unsafe fn game_landingairb(fighter: &mut L2CAgentBase) {
 unsafe fn expression_attackairb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 5.0);
+    frame(lua_state, 6.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 7, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }

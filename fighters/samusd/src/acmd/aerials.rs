@@ -254,12 +254,12 @@ unsafe fn sound_attackairf(fighter: &mut L2CAgentBase) {
 unsafe fn expression_attackairf(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 4.0);
+    frame(lua_state, 6.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 
-    frame(lua_state, 5.0);
+    frame(lua_state, 7.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
@@ -379,11 +379,11 @@ unsafe fn sound_attackairhi(fighter: &mut L2CAgentBase) {
 unsafe fn expression_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 3.0);
+    frame(lua_state, 4.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 4.0);
+    frame(lua_state, 6.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }

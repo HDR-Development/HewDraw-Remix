@@ -82,11 +82,11 @@ unsafe fn toonlink_attack_air_f_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::set_attack_reference_joint_id(boma, Hash40::new("sword1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y));
     }
-    frame(lua_state, 3.0);
+    frame(lua_state, 12.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 4.0);
+    frame(lua_state, 13.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
@@ -130,11 +130,11 @@ unsafe fn toonlink_attack_air_b_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::set_attack_reference_joint_id(boma, Hash40::new("sword1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y));
     }
-    frame(lua_state, 2.0);
+    frame(lua_state,4.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 3.0);
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
     }
