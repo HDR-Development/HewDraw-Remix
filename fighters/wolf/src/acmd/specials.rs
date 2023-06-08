@@ -73,9 +73,6 @@ unsafe fn wolf_special_hi_fall_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_FOX_FIRE_STATUS_WORK_ID_FLAG_WOLF_KICK);
-    }
-    frame(lua_state, 29.0);
-    if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_FOX_FIRE_STATUS_WORK_ID_FLAG_WOLF_ENABLE_CONTROL);
     }
 }
