@@ -2,13 +2,10 @@ use super::*;
 use globals::*;
 // status script import
 
-mod cargo_carry;
-mod catch_pull;
 mod item_throw_heavy;
 mod link_event;
 mod special_hi;
 mod special_lw;
-mod link_event;
 mod catch_pull;
 mod shoulder;
 mod super_lift;
