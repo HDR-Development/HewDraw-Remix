@@ -3,41 +3,6 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
- 
-unsafe fn final_cutter_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, cat1: i32, frame: f32) {
-    if StatusModule::is_changing(boma) {
-        return;
-    }
-    if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_HI2].contains(&status_kind){
-        if(AttackModule::is_infliction(boma, 2)){
-            VarModule::on_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_HIT);
-        }
-    }
-    else{
-        VarModule::off_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_HIT);
-    }
-
-    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_HI2 {
-        if frame < 6.0 { // earliest point to buffer dive
-            VarModule::on_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_CANCEL);
-        } else if frame < 15.0 { // latest point to buffer dive
-            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-                VarModule::off_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_CANCEL);
-            }
-        } else { // actual dive (frame after previous block)
-            if VarModule::is_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_CANCEL) {
-                if VarModule::is_flag(boma.object(), vars::kirby::status::FINAL_CUTTER_HIT) {
-                    VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
-                    ControlModule::reset_trigger(boma);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
-                } else {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
-                }
-            }
-        }
-    }
-}
-
 unsafe fn final_cutter_landing_bugfix(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_SPECIAL_HI2)
     && MotionModule::frame(fighter.module_accessor) <= 2.0 {
@@ -341,7 +306,6 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    final_cutter_cancel(boma, id, status_kind, cat[0], frame);
     final_cutter_landing_bugfix(fighter);
     horizontal_cutter(fighter);
     //disable_dash_attack_slideoff(fighter);

@@ -152,7 +152,7 @@ unsafe fn kirby_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    FT_MOTION_RATE_RANGE(fighter, 1.0, 17.0, 11.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 17.0, 12.0);
     frame(lua_state, 17.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
