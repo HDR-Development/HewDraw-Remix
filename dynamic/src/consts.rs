@@ -372,8 +372,15 @@ pub mod vars {
     // Note: Terry starts his flags on 0xXX5X instead due to also using the shotos generic flags.
     pub mod dolly {
         pub mod instance {
+            // ints 
+            pub const METER_STOCKS: i32 = 0x0150;
+            pub const CURRENT_STOCKS: i32 = 0x0151;
+            
+            // flags
             pub const SUPER_CANCEL: i32 = 0x0150;
             pub const DISABLE_SPECIAL_S: i32 = 0x0151;
+            pub const IS_INIT_METER: i32 = 0x0152;
+            pub const INCREASE_METER_STOCKS: i32 = 0x0153;
         }
         pub mod status {
             // flags
