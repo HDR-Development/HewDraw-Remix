@@ -126,6 +126,42 @@ unsafe fn lucario_special_air_s_throw_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "lucario", script = "game_specialsthrow", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialsthrow(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, true);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 13.0, 52, 86, 0, 66, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        ATTACK_IGNORE_THROW(fighter, 0, 0, Hash40::new("top"), 10.0, 52, 90, 0, 60, 5.0, 0.0, 8.5, 14.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
+        ATTACK_IGNORE_THROW(fighter, 1, 0, Hash40::new("top"), 10.0, 52, 90, 0, 60, 4.0, 0.0, 8.5, 19.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        MeterModule::watch_damage(fighter.battle_object, false);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_FLAG_REQUEST_THROW);
+        CHECK_FINISH_CAMERA(fighter, 15, 0);
+        WorkModule::on_flag(boma, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_FLAG_CRITICAL_HIT);
+    }
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, true);
+        let target = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
+        let target_group = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
+        let target_no = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
+        ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
+        MeterModule::watch_damage(fighter.battle_object, false);
+    }
+}
+
 #[acmd_script(agent = "lucario", script = "effect_specialairsthrow", category = ACMD_EFFECT)]
 unsafe fn lucario_special_air_s_throw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -338,6 +374,7 @@ unsafe fn game_specialairappear(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         lucario_special_s_game,
+        game_specialsthrow,
         lucario_special_air_s_game,
         lucario_special_air_s_throw_game,
         lucario_special_air_s_throw_effect,

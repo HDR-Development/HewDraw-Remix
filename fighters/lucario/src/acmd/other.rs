@@ -219,6 +219,126 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "lucario", script = "game_cliffattack", category = ACMD_GAME, low_priority )]
+unsafe fn game_cliffattack(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, true);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 45, 20, 0, 90, 5.0, 0.0, 5.0, 5.2, Some(0.0), Some(5.0), Some(-8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_PUNCH);
+    }
+    wait(lua_state, 3.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        MeterModule::watch_damage(fighter.battle_object, false);
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "game_catchattack", category = ACMD_GAME, low_priority )]
+unsafe fn game_catchattack(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, true);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.3, 361, 100, 40, 0, 5.5, 0.0, 8.0, 9.0, None, None, None, 2.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        AttackModule::set_catch_only_all(boma, true, false);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        MeterModule::watch_damage(fighter.battle_object, false);
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "game_slipattack", category = ACMD_GAME, low_priority )]
+unsafe fn game_slipattack(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_FORCE_AURAPOWER_ATTACK_POWER_MUL);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, true);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 361, 50, 0, 60, 5.0, 0.0, 5.0, 8.5, Some(0.0), Some(5.0), Some(4.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        MeterModule::watch_damage(fighter.battle_object, false);
+    }
+    frame(lua_state, 28.0);
+    if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, true);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 361, 50, 0, 60, 5.0, 0.0, 5.0, -5.5, Some(0.0), Some(5.0), Some(-3.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        MeterModule::watch_damage(fighter.battle_object, false);
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "game_downattackd", category = ACMD_GAME, low_priority )]
+unsafe fn game_downattackd(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_FORCE_AURAPOWER_ATTACK_POWER_MUL);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, true);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 48, 48, 0, 80, 5.0, 0.0, 5.0, 11.0, Some(0.0), Some(5.0), Some(5.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        MeterModule::watch_damage(fighter.battle_object, false);
+    }
+    frame(lua_state, 23.0);
+    if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, true);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 48, 48, 0, 80, 5.0, 0.0, 5.0, -11.0, Some(0.0), Some(5.0), Some(-5.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        MeterModule::watch_damage(fighter.battle_object, false);
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "game_downattacku", category = ACMD_GAME, low_priority )]
+unsafe fn game_downattacku(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_FORCE_AURAPOWER_ATTACK_POWER_MUL);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, true);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 48, 48, 0, 80, 5.0, 0.0, 5.0, -11.0, Some(0.0), Some(5.0), Some(-4.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        MeterModule::watch_damage(fighter.battle_object, false);
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        MeterModule::watch_damage(fighter.battle_object, true);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 48, 48, 0, 80, 5.0, 0.0, 5.0, 11.0, Some(0.0), Some(5.0), Some(5.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        MeterModule::watch_damage(fighter.battle_object, false);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -231,7 +351,12 @@ pub fn install() {
         damageflylw_sound,
         damageflyn_sound,
         damageflyroll_sound,
-        damageflytop_sound
+        damageflytop_sound,
+        game_cliffattack,
+        game_catchattack,
+        game_slipattack,
+        game_downattackd,
+        game_downattacku
     );
 }
 
