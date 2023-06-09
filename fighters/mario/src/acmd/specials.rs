@@ -627,7 +627,13 @@ unsafe fn mario_special_lw_light(fighter: &mut L2CAgentBase) {
 unsafe fn effect_special_lw_light(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-        
+}
+
+#[acmd_script( agent = "mario", script = "sound_speciallwlight", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_special_lw_light(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
     frame(lua_state, 6.0);
 	if is_excute(fighter) {
 		PLAY_SE(fighter, Hash40::new("se_common_punch_kick_swing_m"));
@@ -635,13 +641,6 @@ unsafe fn effect_special_lw_light(fighter: &mut L2CAgentBase) {
 		PLAY_SE(fighter, Hash40::new("se_mario_special_s01"));
 		PLAY_SE(fighter, Hash40::new("se_mario_attackair_l01"));
 	}
-
-}
-
-#[acmd_script( agent = "mario", script = "sound_speciallwlight", category = ACMD_SOUND, low_priority )]
-unsafe fn sound_special_lw_light(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
 }
 
 
