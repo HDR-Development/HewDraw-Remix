@@ -212,7 +212,7 @@ unsafe fn dedede_gordo_special_s_throw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     /* Checks every frame the gordo is active, set equal to the gordo life param */
-    for _ in 0..180{
+    for _ in 0..181{
         if is_excute(fighter) {
             if !boma.is_status(*WEAPON_DEDEDE_GORDO_STATUS_KIND_HOP) {
                 /* Reduces damage on every bounce, by 10% of its last damage in this case */
@@ -247,7 +247,7 @@ unsafe fn dedede_gordo_special_s_throw_effect(fighter: &mut L2CAgentBase) {
 unsafe fn dedede_gordo_special_s_shot_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    for _ in 0..180{
+    for _ in 0..181{
         if is_excute(fighter) {
             if !boma.is_status(*WEAPON_DEDEDE_GORDO_STATUS_KIND_HOP) {
                 /* Reduces damage on every bounce, by 12.5% of its last damage in this case */

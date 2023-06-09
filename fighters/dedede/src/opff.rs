@@ -25,10 +25,29 @@ unsafe fn gordo_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     let timer = VarModule::get_int(fighter.object(), vars::dedede::instance::GORDO_TIMER);
     if timer != 0 && !ArticleModule::is_exist(boma, *FIGHTER_DEDEDE_GENERATE_ARTICLE_GORDO){
         VarModule::set_int(fighter.object(), vars::dedede::instance::GORDO_TIMER, (timer - 1));
-
     }
     if timer == 1 {
         gimmick_flash(boma);
+        VarModule::set_int(fighter.battle_object, vars::dedede::instance::GORDO_COUNTER, 0);
+        for x in 0..3{
+            let star_count = x as f32;
+            EFFECT_FOLLOW(fighter, Hash40::new("dedede_superjump_star"), Hash40::new("top"), 0.0, 25.0,6.0 - (star_count * 6.0), 0.0, 0.0, 0.0, 0.5, false);
+            LAST_EFFECT_SET_RATE(fighter, 0.5);
+        }
+    }
+}
+
+unsafe fn gordo_count_check(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32){
+    if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_APPEAL {
+        if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_SPECIAL){
+            
+            for x in 0..( 3-VarModule::get_int(fighter.battle_object, vars::dedede::instance::GORDO_COUNTER) ){
+                let star_count = x as f32;
+                EFFECT_FOLLOW(fighter, Hash40::new("dedede_superjump_star"), Hash40::new("top"), 0.0, 25.0, 6.0 - (star_count * 6.0), 0.0, 0.0, 0.0, 0.5, true);
+                LAST_EFFECT_SET_RATE(fighter, 0.5);
+            }
+
+        }
     }
 }
 
@@ -36,6 +55,7 @@ unsafe fn gordo_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 unsafe fn gordo_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
     if [*FIGHTER_STATUS_KIND_ENTRY, *FIGHTER_STATUS_KIND_DEAD, *FIGHTER_STATUS_KIND_REBIRTH].contains(&status_kind) {
         VarModule::set_int(fighter.battle_object, vars::dedede::instance::GORDO_TIMER, 0);
+        VarModule::set_int(fighter.battle_object, vars::dedede::instance::GORDO_COUNTER, 0);
     }
 }
 
@@ -43,6 +63,7 @@ unsafe fn gordo_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i3
 unsafe fn gordo_training(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
     if !smash::app::sv_information::is_ready_go() {
         VarModule::set_int(fighter.battle_object, vars::dedede::instance::GORDO_TIMER, 0);
+        VarModule::set_int(fighter.battle_object, vars::dedede::instance::GORDO_COUNTER, 0);
     }
 }
 
@@ -123,6 +144,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     gordo_timer(fighter, boma, id);
     gordo_reset(fighter, id, status_kind);
     gordo_training(fighter, id, status_kind);
+    gordo_count_check(fighter, boma, status_kind);
 }
 #[utils::macros::opff(FIGHTER_KIND_DEDEDE )]
 pub fn dedede_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
