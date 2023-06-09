@@ -3,10 +3,10 @@
   <list hash="cliff_hang_data">
     <hash40 index="0">dummy</hash40>
     <struct index="1">
-      <float hash="p1_y">20</float>
+      <float hash="p1_y">19</float>
     </struct>
     <struct index="2">
-      <float hash="p1_y">20</float>
+      <float hash="p1_y">17</float>
     </struct>
   </list>
   <list hash="param_special_n">

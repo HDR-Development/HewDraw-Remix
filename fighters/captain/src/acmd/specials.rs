@@ -238,12 +238,12 @@ unsafe fn captain_special_air_lw_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     FT_MOTION_RATE(fighter, 0.867);
+    frame(lua_state, 15.0);
+    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.82);
     frame(lua_state, 16.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_CAPTAIN_STATUS_WORK_ID_FLAG_FALCON_KICK_WALL_CHECK);
-        let speed_vector = smash::phx::Vector3f { x: 0.0, y: 1.25, z: 0.0 };
-        KineticModule::add_speed(boma, &speed_vector);
         ATTACK(fighter, 0, 0, Hash40::new("kneel"), 15.0, 361, 57, 0, 80, 5.76, 4.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     frame(lua_state, 21.0);
@@ -258,12 +258,22 @@ unsafe fn captain_special_air_lw_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    for _ in 0.. 20 {
-        if is_excute(fighter) {
-            KineticModule::add_speed(boma, &Vector3f::new(-1.0 * (1.25/20.0), 0.0, 0.0));
-        }
-        wait(lua_state, 1.0);
-    }
+}
+
+#[acmd_script( agent = "captain", script = "effect_specialairlw" , category = ACMD_EFFECT , low_priority)]
+unsafe fn captain_special_air_lw_effect (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	frame(lua_state, 2.0);
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("captain_fk_hold"), Hash40::new("bust"), 0, 0, 0, 0, 0, 0, 0.7, true);
+		EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
+	}
+	frame(lua_state, 12.0);
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("captain_fk_air"), Hash40::new("toel"), 1, 1, 0, 0, 0, 140, 0.45, true);
+		EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
+	}
 }
 
 #[acmd_script( agent = "captain", script = "game_specialairlwend" , category = ACMD_GAME , low_priority)]
@@ -273,8 +283,6 @@ unsafe fn captain_special_air_lw_end_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.790);
-        let speed_vector = smash::phx::Vector3f { x: 1.3, y: 0.0, z: 0.0 };
-        KineticModule::add_speed(boma, &speed_vector);
     }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
@@ -322,8 +330,55 @@ unsafe fn game_specialhithrow(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "captain", scripts = ["game_specialairhi", "game_specialhi"], category = ACMD_GAME, low_priority )]
+unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        boma.select_cliff_hangdata_from_name("special_hi");
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
+        CATCH(fighter, 0, Hash40::new("top"), 6.0, 0.0, 13.0, 7.0, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 1, Hash40::new("top"), 4.0, 0.0, 8.8, 11.7, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN, *COLLISION_SITUATION_MASK_G);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 0, 50, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_THROW);
+    }
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        CATCH(fighter, 0, Hash40::new("top"), 5.0, 0.0, 15.0, 6.0, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN, *COLLISION_SITUATION_MASK_GA);
+        CATCH(fighter, 1, Hash40::new("top"), 5.0, 0.0, 11.0, 6.0, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN, *COLLISION_SITUATION_MASK_GA);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        AttackModule::clear(boma, 0, false);
+    }
+    frame(lua_state, 31.0);
+    if is_excute(fighter) {
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 36.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+    frame(lua_state, 50.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_CAPTAIN_STATUS_SPECIAL_HI_FLAG_IS_CHECK_DIVE);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
+        game_specialairhi,
         captain_special_n_game,
         captain_special_n_turn_game,
         captain_special_air_n_game,
@@ -332,6 +387,7 @@ pub fn install() {
         captain_special_s_end_game,
         captain_special_air_s_end_game,
         captain_special_air_lw_game,
+        captain_special_air_lw_effect,
         captain_special_air_lw_end_game,
         game_specialhithrow
     );
