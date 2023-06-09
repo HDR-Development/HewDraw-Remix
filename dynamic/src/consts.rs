@@ -1043,7 +1043,12 @@ pub mod vars {
             pub const STANCE_STATUS: i32 = 0x0101;
         }
     }
-
+    pub mod pacman {
+        pub mod instance{
+            // flags
+            pub const DISABLE_SPECIAL_LW: i32 = 0x0100;
+        }
+    }
     pub mod wolf {
         pub mod status {
             // flags
