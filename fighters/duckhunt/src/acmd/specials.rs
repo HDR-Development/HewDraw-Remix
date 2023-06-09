@@ -30,7 +30,6 @@ unsafe fn duckhunt_special_lw_game(fighter: &mut L2CAgentBase) {
 unsafe fn duckhunt_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state: u64 = fighter.lua_state_agent;
     let boma = fighter.boma();
-    FT_MOTION_RATE(fighter, 12.0/(16.0-0.0));
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         if !ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DUCKHUNT_GENERATE_ARTICLE_CAN) {
@@ -42,8 +41,7 @@ unsafe fn duckhunt_special_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_DUCKHUNT_INSTANCE_WORK_ID_FLAG_RELEASE_CAN);
     }
-    frame(lua_state, 17.0);
-    FT_MOTION_RATE(fighter, 1.0);
+
 }
 
 #[acmd_script( agent = "duckhunt", script = "game_specials", category = ACMD_GAME, low_priority )]

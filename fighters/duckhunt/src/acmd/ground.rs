@@ -16,9 +16,9 @@ unsafe fn duckhunt_attackdash_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 50, 40, 0, 60, 3.5, 0.0, 7.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_HEAD);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 7.0, 50, 40, 0, 60, 3.5, 0.0, 7.0, 4.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_HEAD);
-        ATTACK(fighter, 2, 0, Hash40::new("top"), 7.0, 50, 40, 0, 60, 3.5, 0.0, 7.0, 9.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_HEAD);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 105, 40, 0, 90, 3.5, 0.0, 7.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_HEAD);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 7.0, 105, 40, 0, 90, 3.5, 0.0, 7.0, 4.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_HEAD);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 7.0, 105, 40, 0, 90, 3.5, 0.0, 7.0, 9.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_HEAD);
     }
     frame(lua_state, 23.0);
     if is_excute(fighter) {
@@ -45,7 +45,7 @@ unsafe fn duckhunt_attack_11_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 5, 0, Hash40::new("top"), 2.0, 361, 20, 0, 15, 3.0,  0.0,  4.0,  11.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
 
     }
-    frame(lua_state, 5.0);
+    frame(lua_state, 6.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
@@ -68,7 +68,7 @@ unsafe fn duckhunt_attack_12_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, 2, 0, Hash40::new("top"), 2.0, 361, 30, 0, 20, 3.0,  0.0,  3.5,  2.0,  None,  None,  None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         ATTACK(fighter, 3, 0, Hash40::new("top"), 2.0, 361, 20, 0, 15, 5.0,  0.0,  7.5,  5.5,  None,  None,  None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 8.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100);
@@ -89,7 +89,7 @@ unsafe fn duckhunt_attack_13_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter,  0,  0,  Hash40::new("top"),  5.0,  361,  125,  0,  50,  4.0,  0.0,  4.5,  4.5,  None, None, None,  1.0,  1.0,  *ATTACK_SETOFF_KIND_ON,  *ATTACK_LR_CHECK_F,  false,  0,  0.0,  0,  false,  false,  false,  false,  true,  *COLLISION_SITUATION_MASK_GA,  *COLLISION_CATEGORY_MASK_ALL,  *COLLISION_PART_MASK_ALL,  false,  Hash40::new("collision_attr_normal"),  *ATTACK_SOUND_LEVEL_M,  *COLLISION_SOUND_ATTR_KICK,  *ATTACK_REGION_KICK);
         ATTACK(fighter,  1,  0,  Hash40::new("top"),  5.0,  361,  125,  0,  50,  4.0,  0.0,  4.5,  9.0,  None, None, None,  1.0,  1.0,  *ATTACK_SETOFF_KIND_ON,  *ATTACK_LR_CHECK_F,  false,  0,  0.0,  0,  false,  false,  false,  false,  true,  *COLLISION_SITUATION_MASK_GA,  *COLLISION_CATEGORY_MASK_ALL,  *COLLISION_PART_MASK_ALL,  false,  Hash40::new("collision_attr_normal"),  *ATTACK_SOUND_LEVEL_M,  *COLLISION_SOUND_ATTR_KICK,  *ATTACK_REGION_KICK);
     }
-    wait(lua_state, 2.0);
+    wait(lua_state, 3.0);
     FT_MOTION_RATE_RANGE(fighter, 6.0, 28.0, 18.3);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
