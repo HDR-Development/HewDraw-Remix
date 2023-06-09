@@ -100,14 +100,6 @@ unsafe fn down_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut Battle
     }
 }
 
-pub unsafe fn dk_bair_rotation(fighter: &mut L2CFighterCommon) {
-    if fighter.is_motion(Hash40::new("attack_air_b")) {
-        // angle bair down slightly
-        fighter.set_joint_rotate("legl", Vector3f::new(0.0, 0.0, -20.0));
-        ModelModule::set_joint_scale(fighter.boma(), Hash40::new("legl"), &Vector3f::new(1.0, 1.5, 1.5));
-    }
-}
-
 /// this sets the ledgegrab box for the backside of up special, which 
 /// enables DK to more consistently grab ledge with slipoff uspecial
 pub unsafe fn special_hi_slipoff_grab(fighter: &mut L2CFighterCommon) {
@@ -145,7 +137,6 @@ pub fn donkey_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
         common::opff::fighter_common_opff(fighter);
 		donkey_frame(fighter);
-        dk_bair_rotation(fighter);
         flatten_uspecial(fighter);
     }
 }
