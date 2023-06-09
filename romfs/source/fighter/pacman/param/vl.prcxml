@@ -116,7 +116,7 @@
   </list>
   <list hash="param_firehydrant">
     <struct index="0">
-      <int hash="hp">7.5</int>
+      <int hash="hp">7</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
