@@ -230,7 +230,7 @@ unsafe fn pichu_dengekidama_effect_regular(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("pichu_dengeki"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.1, true);
         if VarModule::is_flag(owner_module_accessor.object(), vars::pichu::instance::IS_CHARGE_ATTACK) {
-            LAST_EFFECT_SET_COLOR(fighter, 1.0,1.0,0.2)
+            LAST_EFFECT_SET_COLOR(fighter, 0.8,1.0,0.2)
         }
     }
 }

@@ -7,15 +7,15 @@ unsafe fn pichu_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
-    let charge_state_time = 3600;
+    let charge_state_time = ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time");
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK);
         if !charged {
-            FT_MOTION_RATE(fighter, (12.0/18.0));
+            FT_MOTION_RATE(fighter, (14.0/18.0));
         }else if charged {
             VarModule::on_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK);
-            VarModule::sub_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 300);
-            MeterModule::drain_direct(boma.object(), (50.0/(charge_state_time as f32)) * 300.0);
+            VarModule::sub_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 180);
+            MeterModule::drain_direct(boma.object(), (50.0/(charge_state_time as f32)) * 180.0);
         }
     }
     frame(lua_state, 18.0);
@@ -23,7 +23,7 @@ unsafe fn pichu_special_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_PICHU_GENERATE_ARTICLE_DENGEKIDAMA, false, -1);
         if !VarModule::is_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK) {
-            MeterModule::add(fighter.battle_object, 3.0);
+            MeterModule::add(fighter.battle_object, 2.0);
             FT_ADD_DAMAGE(fighter, 1.0);
         }
         else {
@@ -36,14 +36,14 @@ unsafe fn pichu_special_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
-    let charge_state_time = 3600;
+    let charge_state_time = ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time");
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK);
         if charged {
             VarModule::on_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK);
-            VarModule::sub_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 180);
-            MeterModule::drain_direct(boma.object(), (50.0/(charge_state_time as f32)) * 180.0);
+            VarModule::sub_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 120);
+            MeterModule::drain_direct(boma.object(), (50.0/(charge_state_time as f32)) * 120.0);
         }
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_NONE);
     }
@@ -145,13 +145,13 @@ unsafe fn pichu_special_hi_1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
-    let charge_state_time = 3600;
+    let charge_state_time = ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time");
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK);
         if charged {
             VarModule::on_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK);
-            VarModule::sub_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 180);
-            MeterModule::drain_direct(boma.object(), (50.0/(charge_state_time as f32)) * 180.0);
+            VarModule::sub_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 120);
+            MeterModule::drain_direct(boma.object(), (50.0/(charge_state_time as f32)) * 120.0);
         }
         if VarModule::is_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK) {
             ATTACK(fighter, 0, 0, Hash40::new("neck"), 2.0, 70, 50, 0, 20, 1.6, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
@@ -192,10 +192,10 @@ unsafe fn pichu_special_lw_game(fighter: &mut L2CAgentBase) {
             WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_PIKACHU_STATUS_WORK_ID_FLAG_KAMINARI_GENERATE);
         }
         else {
-            let charge_state_time = 3600.0;
+            let charge_state_time = ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time") as f32;
             let charge_state_remaining = VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) as f32;
-            // 10 seconds to use full strength Discharge before it starts decreasing in power
-            let discharge_decrease_power_frame = charge_state_time - 600.0;
+            // 5 seconds to use full strength Discharge before it starts decreasing in power
+            let discharge_decrease_power_frame = charge_state_time - 300.0;
             // 50% damage at minimum
             let discharge_min_power_mul = 0.5;
             let discharge_power_mul = 1.0 - ((1.0 - (charge_state_remaining.min(discharge_decrease_power_frame)/discharge_decrease_power_frame)) * (1.0 - discharge_min_power_mul));

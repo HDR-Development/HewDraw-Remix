@@ -139,11 +139,11 @@ unsafe fn pichu_throw_lw_game(fighter: &mut L2CAgentBase) {
     let recoil_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL);
     let damage_mul = VarModule::get_float(boma.object(), vars::pichu::instance::CHARGE_DAMAGE_MUL);
     let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
-    let charge_state_time = 3600;
+    let charge_state_time = ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time");
     if is_excute(fighter) {
         if charged{
-            VarModule::sub_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 240);
-            MeterModule::drain_direct(boma.object(), (50.0/(charge_state_time as f32)) * 240.0);
+            VarModule::sub_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 180);
+            MeterModule::drain_direct(boma.object(), (50.0/(charge_state_time as f32)) * 180.0);
             ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 5.0, 60, 50, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_THROW);
         }
         else{ 
