@@ -997,6 +997,7 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const IS_TILT_LW_SAPLING_PULL: i32 = 0x0100;
+            pub const DISABLE_SPECIAL_S: i32 = 0x0101;
 
             // floats
             pub const SAPLING_PULL_SAPLING_POS_X: i32 = 0x0101;
