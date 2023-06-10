@@ -24,6 +24,16 @@ unsafe fn nspecial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
     }
 }
 
+// Removes "variable landing lag" from Vanish reappearance
+// always lands with flat special fall landing lag
+unsafe fn vanish_landing_lag(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_SHEIK_STATUS_KIND_SPECIAL_HI_END)
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_prev_situation(*SITUATION_KIND_AIR)
+    && fighter.is_situation(*SITUATION_KIND_GROUND) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, true);
+    }
+}
 
 extern "Rust" {
     fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
@@ -47,6 +57,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     bouncing_fish_return_cancel(fighter, boma, status_kind, situation_kind, cat[0], frame);
     nspecial_cancels(fighter, boma, status_kind, situation_kind);
     //hitfall_aerials(fighter, frame);
+    vanish_landing_lag(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_SHEIK )]
