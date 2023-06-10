@@ -62,7 +62,9 @@
       <float hash="lw1_attack_mul">1</float>
     </struct>
     <hash40 index="1">dummy</hash40>
-    <hash40 index="2">dummy</hash40>
+    <struct index="2">
+      <float hash="lw3_end_air_to_ground_brake">0.154</float>
+    </struct>
     <hash40 index="3">dummy</hash40>
   </list>
 </struct>
