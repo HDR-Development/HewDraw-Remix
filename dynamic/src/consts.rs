@@ -1002,6 +1002,10 @@ pub mod vars {
             pub const SAPLING_PULL_SAPLING_POS_X: i32 = 0x0101;
             pub const SAPLING_PULL_SAPLING_POS_Y: i32 = 0x0102;
             pub const SAPLING_PULL_SAPLING_POS_Z: i32 = 0x0103;
+
+            // ints
+            pub const TURNIP_NUM_HI: i32 = 0x0104;
+            pub const TURNIP_NUM_LW: i32 = 0x0105;
         }
     }
 
