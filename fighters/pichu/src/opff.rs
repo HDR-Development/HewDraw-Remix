@@ -14,7 +14,7 @@ extern "Rust" {
 unsafe fn charge_state_increase(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
     if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 0 {
         if MeterModule::level(boma.object()) == 2 {
-            let charge_state_time = ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time");
+            let charge_state_time = 3600;
             VarModule::set_int(boma.object(), vars::common::instance::GIMMICK_TIMER, charge_state_time);
             VarModule::set_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL, 1);
             //gimmick_flash(boma);
@@ -27,7 +27,7 @@ unsafe fn charge_state_decrease(boma: &mut BattleObjectModuleAccessor) {
     if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 1 {
         if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) > 0 
         && !boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_LW]) {
-            let charge_state_time = ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time");
+            let charge_state_time = 3600;
             VarModule::dec_int(boma.object(), vars::common::instance::GIMMICK_TIMER);
             MeterModule::drain_direct(boma.object(), 50.0/(charge_state_time as f32));
             if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == charge_state_time - 30 {
@@ -77,10 +77,8 @@ unsafe fn charge_state_damage_multipliers(boma: &mut BattleObjectModuleAccessor)
         VarModule::set_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL, 1.0);
     }
     else if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 1 {
-        let charge_state_damage_mul = ParamModule::get_float(boma.object(), ParamType::Agent, "charge_state_damage_mul");
-        let charge_state_recoil_mul = ParamModule::get_float(boma.object(), ParamType::Agent, "charge_state_recoil_mul");
-        VarModule::set_float(boma.object(), vars::pichu::instance::CHARGE_DAMAGE_MUL, charge_state_damage_mul);
-        VarModule::set_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL, charge_state_recoil_mul);
+        VarModule::set_float(boma.object(), vars::pichu::instance::CHARGE_DAMAGE_MUL, 1.2);
+        VarModule::set_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL, 1.25);
     }
 }
 
