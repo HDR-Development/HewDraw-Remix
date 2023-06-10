@@ -1026,6 +1026,7 @@ pub mod vars {
             pub const SKEWER_STICK_Y: i32 = 0x1100;
         }
     }
+
     pub mod iceclimbers {
         pub mod instance {
             //flags
@@ -1036,6 +1037,7 @@ pub mod vars {
             pub const SEPARATED_EFFECT: i32 = 0x0110;
         }
     }
+
     pub mod packun {
         pub mod instance {
             // flags
@@ -1070,6 +1072,18 @@ pub mod vars {
             //ints
             pub const SPECIAL_HI_FUEL: i32 = 0x0100;
             pub const FUEL_EFFECT_HANDLER: i32 = 0x0101;
+            pub const BELLY_HEALTH: i32 = 0x0102;
+
+            // floats
+            pub const STORED_DAMAGE: i32 = 0x0100;
+        }
+        pub mod status {
+            // ints
+            pub const CURRENT_CHARGE: i32 = 0x1100;
+
+            // flags
+            pub const BELLY_ACTIVE: i32 = 0x1100;
+            pub const GUT_CHECK_CHARGED: i32 = 0x1101;
         }
     }
 }

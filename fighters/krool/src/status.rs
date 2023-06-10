@@ -75,3 +75,20 @@ pub unsafe fn attack_lw4_map_correction(fighter: &mut L2CFighterCommon) -> L2CVa
     }
     0.into()
 }
+
+// handle damage to belly
+#[no_mangle]
+pub unsafe extern "C" fn krool_belly_damage_hook(fighter: *mut BattleObject, unk: bool, damage: f32) {
+    // set and change belly health
+    // get attacker damage and store in 
+
+    // briefly disable belly when damaged (call workmodule)
+    // set gimmick timer to 60
+}
+
+// handle toggling belly on/off
+// #[no_mangle]
+// pub unsafe extern "C" fn krool_belly_toggle_hook(ctx: &mut skyline::hooks::InlineCtx) {
+//     *ctx.registers[0].x.as_mut() = 0;    // bool for toggle (make varconst to handle)
+//     // ...as_mut() &= logic
+// }

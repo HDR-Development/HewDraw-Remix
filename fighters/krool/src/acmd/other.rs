@@ -242,6 +242,20 @@ unsafe fn krool_backpack_effect_fly(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "krool", scripts = ["game_appeallwr", "game_appeallwl"] , category = ACMD_GAME , low_priority)]
+unsafe fn krool_appeal_lw_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 361, 43, 30, 0, 3.5, 0.0, 3.5, -8.5, Some(0.0), Some(3.5), Some(16.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -256,7 +270,8 @@ pub fn install() {
         damageflyn_sound,
         damageflyroll_sound,
         damageflytop_sound,
-        krool_backpack_effect_fly
+        krool_backpack_effect_fly,
+        krool_appeal_lw_game,
     );
 }
 

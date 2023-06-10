@@ -126,6 +126,10 @@ pub fn fighter_reset(fighter: &mut L2CFighterCommon) {
 extern "C" {
     #[link_name = "_ZN3app24FighterSpecializer_Brave23special_lw_open_commandERNS_7FighterE"]
     fn special_lw_open_command();
+    //#[link_name = "krool_belly_toggle_hook_impl"]
+    //fn krool_belly_toggle_hook_impl(ctx: &mut skyline::hooks::InlineCtx);
+    #[link_name = "krool_belly_damage_hook_impl"]
+    fn krool_belly_damage_hook_impl(fighter: *mut BattleObject, unk: bool, damage: f32);
 }
 
 extern "C" {
@@ -141,4 +145,14 @@ pub unsafe fn hero_rng_hook(fighter: *mut BattleObject) {
 #[skyline::hook(offset = 0x853df0)]
 pub unsafe fn psych_up_hit() {
     // do nothing
+}
+
+// #[skyline::hook(offset = 0xc050d8, inline)]
+// pub unsafe fn krool_belly_toggle_hook(ctx: &mut skyline::hooks::InlineCtx) {
+//     krool_belly_toggle_hook_impl(ctx);
+// }
+
+#[skyline::hook(offset = 0xc055d0)]
+pub unsafe fn krool_belly_damage_hook(fighter: *mut BattleObject, unk: bool, damage: f32) {
+    krool_belly_damage_hook_impl(fighter, unk, damage);
 }

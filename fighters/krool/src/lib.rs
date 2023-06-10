@@ -43,7 +43,10 @@ pub fn install(is_runtime: bool) {
     status::install();
     opff::install(is_runtime);
     use opff::*;
-    smashline::install_agent_frames!(
-        krool_backpack_frame
-    );
+    // smashline::install_agent_frames!(
+    //     krool_backpack_frame
+    // );
+    
+    // prevents shield break on belly
+    skyline::patching::Patch::in_text(0xc04ee0).data(0x1400001Eu32);
 }
