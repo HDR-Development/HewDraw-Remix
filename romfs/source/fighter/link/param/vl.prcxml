@@ -18,8 +18,8 @@
     <struct index="0">
       <float hash="speed_min">2.3</float>
       <float hash="speed_max">11</float>
-      <float hash="power_max">20</float>
-      <float hash="charge_attack_mul">1.1</float>
+      <float hash="power_max">15</float>
+      <float hash="charge_attack_mul">1.0</float>
       <int hash="item_life">60</int>
     </struct>
     <hash40 index="1">dummy</hash40>
