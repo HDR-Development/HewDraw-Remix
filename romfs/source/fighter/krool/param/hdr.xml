@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <struct hash="param_special_hi">
+        <int hash="fuel_max">540</int>
+        <int hash="fuel_burn_rate">3</int>
+        <int hash="fuel_recharge_rate">1</int>
+    </struct>
+</struct>

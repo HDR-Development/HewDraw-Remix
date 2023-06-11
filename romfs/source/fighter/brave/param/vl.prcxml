@@ -23,12 +23,12 @@
   </struct>
   <list hash="param_critical">
     <struct index="0">
-      <float hash="rate">12.5</float>
+      <float hash="rate">-1.0</float>
     </struct>
   </list>
   <list hash="param_metal_critical">
     <struct index="0">
-      <float hash="rate">12.5</float>
+      <float hash="rate">-1.0</float>
     </struct>
   </list>
   <list hash="param_special_n">
@@ -86,9 +86,94 @@
       <float hash="speed_up_tread_mini_jump_speed_y_mul_mul">1.2</float>
       <float hash="speed_up_passive_wall_jump_y_speed_mul">1.2</float>
       <float hash="speed_up_blown_mul">1.1</float>
+      <float hash="attack_up_attack_power_mul">1.5</float>
+      <float hash="charge_blow_mul">1.0</float>
+      <float hash="charge_attack_power_mul">1.0</float>
+      <float hash="charge_shield_damage_mul">1.65</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
+  </list>
+  <list size="1" hash="param_crash">
+    <struct index="0">
+      <int hash="life1">90</int>
+      <int hash="life2">30</int>
+      <float hash="0x184f4dbbb2">0.5</float>
+      <float hash="0x16b8334cae">1.0</float>
+      <float hash="0x1faaf1b8a8">100</float>
+    </struct>
+  </list>
+  <struct hash="camera_range_target_crash1">
+    <float hash="up">24</float>
+    <float hash="down">-24</float>
+    <float hash="center_y">0</float>
+    <float hash="front">24</float>
+    <float hash="back">-24</float>
+  </struct>
+  <list size="21" hash="param_special_lw_command_data">
+    <struct index="0">
+      <float hash="sp">8</float>
+    </struct>
+    <struct index="1">
+      <float hash="sp">10</float>
+    </struct>
+    <struct index="2">
+      <float hash="sp">26</float>
+    </struct>
+    <struct index="3">
+      <float hash="sp">12</float>
+    </struct>
+    <struct index="4">
+      <float hash="sp">48</float>
+    </struct>
+    <struct index="5">
+      <float hash="sp">13</float>
+    </struct>
+    <struct index="6">
+      <float hash="sp">39</float>
+    </struct>
+    <struct index="7">
+      <float hash="sp">1</float>
+    </struct>
+    <struct index="8">
+      <float hash="sp">1</float>
+    </struct>
+    <struct index="9">
+      <float hash="sp">6</float>
+    </struct>
+    <struct index="10">
+      <float hash="sp">17</float>
+    </struct>
+    <struct index="11">
+      <float hash="sp">21</float>
+    </struct>
+    <struct index="12">
+      <float hash="sp">18</float>
+    </struct>
+    <struct index="13">
+      <float hash="sp">21</float>
+    </struct>
+    <struct index="14">
+      <float hash="sp">4</float>
+    </struct>
+    <struct index="15">
+      <float hash="sp">8</float>
+    </struct>
+    <struct index="16">
+      <float hash="sp">16</float>
+    </struct>
+    <struct index="17">
+      <float hash="sp">14</float>
+    </struct>
+    <struct index="18">
+      <float hash="sp">6</float>
+    </struct>
+    <struct index="19">
+      <float hash="sp">20</float>
+    </struct>
+    <struct index="20">
+      <float hash="sp">25</float>
+    </struct>
   </list>
 </struct>
