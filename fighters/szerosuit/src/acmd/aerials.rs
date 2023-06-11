@@ -60,6 +60,21 @@ unsafe fn szerosuit_whip_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+
+#[acmd_script( agent = "szerosuit", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn szerosuit_attack_air_n_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 #[acmd_script( agent = "szerosuit", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn szerosuit_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -313,6 +328,7 @@ pub fn install() {
     install_acmd_scripts!(
         szerosuit_attack_air_n_game,
         szerosuit_whip_attack_air_n_game,
+        szerosuit_attack_air_n_expression,
         szerosuit_attack_air_f_game,
         szerosuit_attack_air_b_game,
         szerosuit_attack_air_hi_game,
