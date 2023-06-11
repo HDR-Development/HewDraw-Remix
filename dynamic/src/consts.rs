@@ -410,6 +410,10 @@ pub mod vars {
             pub const SPECIAL_HI_FUEL: i32 = 0x0101;
             pub const FUEL_EFFECT_HANDLER: i32 = 0x0102;
         }
+        pub mod status {
+            // flag
+            pub const CLAY_SMASH_INPUT: i32 = 0x1100;
+        }
     }
     pub mod peach {
         pub mod instance {

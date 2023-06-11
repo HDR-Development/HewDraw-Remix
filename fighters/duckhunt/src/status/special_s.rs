@@ -43,6 +43,11 @@ pub unsafe fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DUCKHUNT_INSTANCE_WORK_ID_FLAG_RELEASE_CLAY);
         //ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_DUCKHUNT_GENERATE_ARTICLE_CLAY, false, -1);
     }
+    // <HDR>
+    if fighter.global_table[CMD_CAT3].get_i32() & *FIGHTER_PAD_CMD_CAT3_FLAG_SPECIAL_S_SMASH_DASH != 0 {
+        VarModule::on_flag(fighter.battle_object, vars::duckhunt::status::CLAY_SMASH_INPUT);
+    }
+    // </HDR>
     fighter.main_shift(special_s_main_loop)
 }
 
@@ -50,6 +55,15 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
+    // <HDR>
+    if fighter.global_table[CURRENT_FRAME].get_i32() == 6 {
+        WorkModule::enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S);
+        WorkModule::enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N);
+        if !ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DUCKHUNT_GENERATE_ARTICLE_CLAY) {
+            ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_DUCKHUNT_GENERATE_ARTICLE_CLAY, false, -1);
+        }
+    }
+    // </HDR>
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
@@ -82,8 +96,19 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
+#[status_script(agent = "duckhunt_clay", status = WEAPON_DUCKHUNT_CLAY_STATUS_KIND_FLY, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+pub unsafe fn clay_fly_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
+    let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+    let duckhunt = utils::util::get_battle_object_from_id(owner_id);
+    if VarModule::is_flag(duckhunt, vars::duckhunt::status::CLAY_SMASH_INPUT) {
+        WorkModule::on_flag(weapon.module_accessor, *WEAPON_DUCKHUNT_CLAY_INSTANCE_WORK_ID_FLAG_BY_SMASH);
+    }
+    original!(weapon)
+}
+
 pub fn install() {
     install_status_scripts!(
-        special_s_main
+        special_s_main,
+        clay_fly_init
     );
 }
