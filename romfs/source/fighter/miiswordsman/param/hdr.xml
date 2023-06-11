@@ -1,0 +1,6 @@
+ <?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <struct hash="param_special_hi3">
+        <float hash="start_x_mul">0.5</float>
+    </struct>
+</struct>
