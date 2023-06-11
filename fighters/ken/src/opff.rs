@@ -29,7 +29,7 @@ pub fn ken_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         utils::ui::UiManager::set_ex_meter_info(
             fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
             MeterModule::meter(fighter.object()),
-            ParamModule::get_float(fighter.object(), ParamType::Common, "meter_max_damage"),
+            (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())),
             MeterModule::meter_per_level(fighter.object())
         );
     }
