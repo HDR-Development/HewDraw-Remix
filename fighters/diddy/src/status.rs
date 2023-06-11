@@ -3,6 +3,7 @@ use globals::*;
 
 mod special_s;
 mod special_n;
+mod special_hi;
 
 
 pub fn install() {
@@ -12,6 +13,7 @@ pub fn install() {
     smashline::install_agent_init_callbacks!(diddy_init);
     special_s::install();
     special_n::install();
+    special_hi::install();
 }
 
 pub fn add_statuses() {

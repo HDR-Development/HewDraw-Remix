@@ -52,9 +52,29 @@ unsafe fn nspecial_cancels(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma:
     }
 }
 
+// Allows Diddy to be actionable once hitstun is over, after being knocked out of upB
+// rather than having to wait until the end of the knockback animation
+unsafe fn up_special_knockback_canceling(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if fighter.is_status_one_of(&[*FIGHTER_DIDDY_STATUS_KIND_SPECIAL_HI_CHARGE_DAMAGE, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_HI_UPPER_DAMAGE]) {
+        if !StatusModule::is_changing(fighter.module_accessor) {
+            if MotionModule::frame(fighter.module_accessor) >= (MotionModule::end_frame(fighter.module_accessor) - 1.0) && MotionModule::rate(fighter.module_accessor) != 0.0 {
+                MotionModule::set_rate(fighter.module_accessor, 0.0);
+            }
+            let hitstun = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
+            if hitstun <= 0.0 {
+                fighter.change_status_req(*FIGHTER_STATUS_KIND_DAMAGE_FALL, false);
+            }
+            else if !FighterStopModuleImpl::is_damage_stop(fighter.module_accessor) {
+                fighter.FighterStatusDamage__check_smoke_effect();
+            }
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     peanut_popgun_ac(boma, status_kind, situation_kind, cat[0], frame);
     nspecial_cancels(fighter, boma, status_kind);
+    up_special_knockback_canceling(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_DIDDY )]
