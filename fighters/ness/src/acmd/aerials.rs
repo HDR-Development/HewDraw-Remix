@@ -91,25 +91,27 @@ unsafe fn game_attackairb(fighter: &mut L2CAgentBase) {
 unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        MotionModule::set_rate(fighter.module_accessor, 8.5 - 7.0 / 1.0);
-    }
+    frame(lua_state, 1.0);
+    MotionModule::set_rate(boma, 7.5 / 7.0);
+    frame(lua_state, 7.5);
+    MotionModule::set_rate(boma, 1.0);
     frame(lua_state, 8.5);
     if is_excute(fighter) {
-        MotionModule::set_rate(fighter.module_accessor, 10.0 - 8.5 / 1.0);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        ATTACK(fighter, 0, 0, Hash40::new("head"), 13.0, 85, 118, 0, 13, 5.9, 3.4, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
+        ATTACK(fighter, 0, 0, Hash40::new("handr"), 13.0, 85, 118, 0, 13, 5.9, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
     }
-    frame(lua_state, 10.0);
+    MotionModule::set_rate(boma, (14.0 - 8.5) / 2.0);
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
-        MotionModule::set_rate(fighter.module_accessor, 1.0);
+        ATTACK(fighter, 0, 0, Hash40::new("handr"), 13.0, 85, 118, 0, 13, 5.9, 0.0, 0.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
     }
-    frame(lua_state, 13.0);
+    MotionModule::set_rate(boma, 1.0);
+    frame(lua_state, 16.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 28.0);
+    MotionModule::set_rate(boma, (37.0 - 16.0) / 30.0);
+    frame(lua_state, 26.5);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -121,7 +123,24 @@ unsafe fn effect_attackairhi(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 8.5);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 2.0, 4.0, 1.5, 180, -90, 90, 0.9, true, *EF_FLIP_YZ);
+        fighter.clear_lua_stack();
+        lua_args!(fighter, Hash40::new("ness_psi_atk"), Hash40::new("haver"), -0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 1.4, true);
+        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(fighter.lua_state_agent);
+        fighter.pop_lua_stack(1);
+    }
+    frame(lua_state, 11.25);
+    if is_excute(fighter) {
+        fighter.clear_lua_stack();
+        lua_args!(fighter, Hash40::new("ness_psi_atk"), Hash40::new("haver"), -0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 1.4, true);
+        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(fighter.lua_state_agent);
+        fighter.pop_lua_stack(1);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        fighter.clear_lua_stack();
+        lua_args!(fighter, Hash40::new("ness_psi_atk"), Hash40::new("haver"), -0.5, 3.0, 0.0, 0.0, 0.0, 0.0, 1.4, true);
+        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(fighter.lua_state_agent);
+        fighter.pop_lua_stack(1);
     }
 }
 
@@ -133,7 +152,7 @@ unsafe fn sound_attackairhi(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_SEQUENCE(fighter, Hash40::new("seq_ness_rnd_attack"));
         PLAY_SE(fighter, Hash40::new("se_ness_attackair_h01"));
-        //PLAY_SE(fighter, Hash40::new("se_ness_pk_l"));
+        PLAY_SE(fighter, Hash40::new("se_ness_pk_l"));
     }
 }
 
