@@ -500,7 +500,7 @@ unsafe fn tatsumaki_ex_land_cancel_hover(boma: &mut BattleObjectModuleAccessor, 
 
 // The actual super fs cancel code since it's used on both ryu and ken w/ separate inputs
 unsafe fn super_fs_cancel(boma: &mut BattleObjectModuleAccessor) -> bool {
-    if MeterModule::drain(boma.object(), 10) {
+    if MeterModule::drain(boma.object(), MeterModule::meter_cap(boma.object())) {
         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FINAL, true);
@@ -545,7 +545,7 @@ unsafe fn hadoken_fadc_sfs_cancels(fighter: &mut L2CFighterCommon, boma: &mut Ba
 
     if frame > 15.0
     && boma.is_cat_flag(Cat1::SpecialLw)
-    && MeterModule::drain(boma.object(), 2)
+    && MeterModule::drain(boma.object(), 1)
     {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
     }
