@@ -6,6 +6,9 @@ use globals::*;
  
 unsafe fn luigi_missle_ledgegrab(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END) {
+        if StatusModule::is_changing(fighter.module_accessor) {
+            fighter.select_cliff_hangdata_from_name("special_s");
+        }
        // allows ledgegrab during Luigi Missile
        fighter.sub_transition_group_check_air_cliff();
     }
