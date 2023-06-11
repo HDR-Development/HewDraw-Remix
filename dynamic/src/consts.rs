@@ -538,6 +538,10 @@ pub mod vars {
     }
 
     pub mod kirby {
+        pub mod instance {
+            // flags
+            pub const DISABLE_SPECIAL_HI: i32 = 0x0100;
+        }
         pub mod status {
             // flags
             pub const FINAL_CUTTER_HIT: i32 = 0x1100;
@@ -1097,5 +1101,9 @@ pub mod statuses {
     pub mod wolf {
         pub const SPECIAL_S_RUSH: i32 = 0;
         pub const SPECIAL_S_END: i32 = 1;
+    }
+    
+    pub mod kirby {
+        pub const SPECIAL_HI_H: i32 = 0;
     }
 }
