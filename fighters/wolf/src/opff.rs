@@ -9,7 +9,7 @@ unsafe fn airdodge_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i3
         return;
     }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if frame > 17.0 {
+        if frame > 15.0 {
             FighterStatusModuleImpl::set_fighter_status_data(
                 boma,
                 false,
