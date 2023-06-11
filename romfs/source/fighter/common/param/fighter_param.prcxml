@@ -1521,6 +1521,7 @@
       <float hash="scale">1</float>
       <float hash="shield_radius">9.7</float>
       <int hash="jump_count_max">3</int>
+      <bool hash="wall_jump_type">false</bool>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>

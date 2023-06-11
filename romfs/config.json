@@ -93,6 +93,9 @@
 		],
 		"fighter/krool/cmn": [
 			"fighter/krool/param/hdr.prc"
+		],
+		"fighter/ganon/cmn": [
+			"fighter/ganon/param/hdr.prc"
 		]
 	}
 }
