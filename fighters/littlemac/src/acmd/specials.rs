@@ -366,7 +366,23 @@ unsafe fn littlemac_special_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        let air_speed_x_stable = WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0);
+        let fall_x_mul = WorkModule::get_param_float(
+            boma,
+            hash40("param_special_hi"),
+            hash40("special_hi_fall_x_mul")
+        );
+        sv_kinetic_energy!(
+            set_stable_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            air_speed_x_stable * fall_x_mul,
+            0.0
+        );
+    }
 }
 
 #[acmd_script( agent = "littlemac", script = "game_speciallwhit" , category = ACMD_GAME , low_priority)]
