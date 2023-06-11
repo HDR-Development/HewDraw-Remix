@@ -216,8 +216,10 @@ unsafe fn lucas_special_lw_end_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("lucas_psimagnet_end"), Hash40::new("trans"), 0, 6.5, 9.25, 0, 0, 0, 0.25, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("lucas_psimagnet_hit"), Hash40::new("trans"), 0, 6.5, 9.25, 0, 0, 0, 0.25, true);
         FLASH(fighter, 0.5, 1, 1, 0.4);
         EFFECT_DETACH_KIND(fighter, Hash40::new("lucas_psimagnet_end"), -1);
+        EFFECT_DETACH_KIND(fighter, Hash40::new("lucas_psimagnet_hit"), -1);
     }
     wait(lua_state, 5.0);
     if is_excute(fighter) {
@@ -228,6 +230,28 @@ unsafe fn lucas_special_lw_end_effect(fighter: &mut L2CAgentBase) {
         COL_NORMAL(fighter);
     }
     
+}
+
+#[acmd_script( agent = "lucas", scripts = ["effect_speciallwhit", "effect_specialairlwhit"] , category = ACMD_EFFECT , low_priority)]
+unsafe fn lucas_special_lw_hit_effect (fighter: &mut L2CAgentBase) {
+	let lua_state = fighter.lua_state_agent;
+	let boma = fighter.boma();
+	if is_excute(fighter) {
+		EFFECT_FOLLOW(fighter, Hash40::new("lucas_psimagnet_hit"), Hash40::new("trans"), 0, 6.5, 9.5, 0, 0, 0, 0.4, false);
+		FLASH(fighter, 0.5, 1, 1, 0.4);
+	}
+	wait(lua_state, 1.0);
+	if is_excute(fighter) {
+		FLASH_FRM(fighter, 4, 0, 1, 1, 0.1);
+	}
+	wait(lua_state, 4.0);
+	if is_excute(fighter) {
+		FLASH_FRM(fighter, 6, 0, 0, 1, 0);
+	}
+	wait(lua_state, 6.0);
+	if is_excute(fighter) {
+		COL_NORMAL(fighter);
+	}
 }
 
 // SPECIAL N START //
@@ -437,6 +461,7 @@ pub fn install() {
         lucas_special_lw_hold_game,
         lucas_special_lw_end_game,
         lucas_special_lw_end_effect,
+        lucas_special_lw_hit_effect,
         lucas_special_air_hi_game,
         game_specialhiend,
         game_fallspecial,

@@ -1181,7 +1181,7 @@ unsafe fn miiswordsman_speciallw1hit_main(fighter: &mut L2CFighterCommon) -> L2C
     return L2CValue::I32(0)
 }
 
-//FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END
+// FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END
 
 #[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {

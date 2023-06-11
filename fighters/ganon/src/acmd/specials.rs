@@ -17,12 +17,9 @@ unsafe fn ganon_float_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
     }
-    frame(lua_state, 30.0);
+    frame(lua_state, 28.0);
     if is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, vars::ganon::status::FLOAT_GROUND_CHANGE_KINETIC);
-    }
-    frame(lua_state, 30.0);
-    if is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, vars::ganon::status::FLOAT_ENABLE_ACTIONS);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
@@ -143,9 +140,9 @@ unsafe fn ganon_special_lw_game(fighter: &mut L2CAgentBase) {
         HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_INVINCIBLE);
         HIT_NODE(fighter, Hash40::new("footr"), *HIT_STATUS_INVINCIBLE);
         HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_INVINCIBLE);
-        ATTACK(fighter, 0, 0, Hash40::new("legr"), 14.0, 42, 72, 0, 65, 4.0, 0.0, 0.0, 0.0, Some(-2.7), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        ATTACK(fighter, 1, 0, Hash40::new("kneer"), 14.0, 42, 72, 0, 65, 4.0, 1.0, 0.0, 0.0, Some(-2.7), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        ATTACK(fighter, 2, 0, Hash40::new("kneer"), 16.0, 42, 72, 0, 65, 4.5, 7.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 0, 0, Hash40::new("legr"), 14.0, 42, 70, 0, 65, 4.0, 0.0, 0.0, 0.0, Some(-2.7), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 1, 0, Hash40::new("kneer"), 14.0, 42, 70, 0, 65, 4.0, 1.0, 0.0, 0.0, Some(-2.7), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 2, 0, Hash40::new("kneer"), 16.0, 42, 70, 0, 65, 4.5, 7.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         JostleModule::set_status(boma, false);
     }
     wait(lua_state, 1.0);
@@ -154,12 +151,12 @@ unsafe fn ganon_special_lw_game(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 9.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("legr"), 14.0, 42, 72, 0, 65, 4.0, 0.0, 0.0, 0.0, Some(-2.7), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        ATTACK(fighter, 1, 0, Hash40::new("kneer"), 14.0, 42, 72, 0, 65, 4.0, 1.0, 0.0, 0.0, Some(-2.7), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        ATTACK(fighter, 2, 0, Hash40::new("kneer"), 16.0, 42, 72, 0, 65, 4.5, 7.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 0, 0, Hash40::new("legr"), 12.0, 42, 70, 0, 65, 4.0, 0.0, 0.0, 0.0, Some(-2.7), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 1, 0, Hash40::new("kneer"), 12.0, 42, 70, 0, 65, 4.0, 1.0, 0.0, 0.0, Some(-2.7), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        ATTACK(fighter, 2, 0, Hash40::new("kneer"), 14.0, 42, 70, 0, 65, 4.5, 7.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 4, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_NORMAL);
     }
-    wait(lua_state, 5.0);
+    wait(lua_state, 14.0);
     if is_excute(fighter) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
@@ -168,6 +165,7 @@ unsafe fn ganon_special_lw_game(fighter: &mut L2CAgentBase) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(boma, 8.0, 8.0, 8.0, 4.0);
     }
     frame(lua_state, 36.0);
+    FT_MOTION_RATE(fighter, 30.0/(61.0 - 36.0));
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         JostleModule::set_status(boma, true);
@@ -211,8 +209,6 @@ unsafe fn ganon_special_air_lw_end_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.790);
-        let speed_vector = smash::phx::Vector3f { x: 1.65, y: 0.0, z: 0.0 };
-        KineticModule::add_speed(boma, &speed_vector);
     }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
@@ -327,6 +323,7 @@ unsafe fn ganon_special_hi_effect(fighter: &mut L2CAgentBase) {
         EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 31.0);
+    /* vanilla electric effects
     for _ in 0..4 {
         if is_excute(fighter) {
             EFFECT(fighter, Hash40::new("ganon_attack_elec"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
@@ -334,6 +331,7 @@ unsafe fn ganon_special_hi_effect(fighter: &mut L2CAgentBase) {
         wait(fighter.lua_state_agent, 2.0);
     }
     frame(fighter.lua_state_agent, 42.0);
+    */
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("ganon_raijin_hold"), false, true);
     }
