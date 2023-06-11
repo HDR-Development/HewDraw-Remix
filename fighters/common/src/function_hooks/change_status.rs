@@ -156,6 +156,11 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         && boma.get_num_used_jumps() >= boma.get_jump_count_max() {
             return 0;
         }
+        // Allows Clay Pigeon smash input to work properly
+        if boma.kind() == *FIGHTER_KIND_DUCKHUNT
+        && next_status == *FIGHTER_STATUS_KIND_SPECIAL_S {
+            clear_buffer = false;
+        }
     }
     original!()(boma, next_status, clear_buffer)
 }

@@ -5,7 +5,9 @@ use globals::*;
 
 //Launch Star Cancel
 unsafe fn launch_star_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if status_kind == *FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_HI_JUMP {
+    if status_kind == *FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_HI_JUMP
+	&& !StatusModule::is_changing(boma)
+	&& MotionModule::frame(boma) > 2.0 {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_HI_END, false);
         }
