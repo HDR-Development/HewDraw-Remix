@@ -8,11 +8,14 @@
       <float hash="p1_x">46</float>
       <float hash="p1_y">85</float>
       <float hash="p2_x">-5</float>
+      <float hash="p2_y">-25</float>
     </struct>
     <hash40 index="2">dummy</hash40>
     <struct index="3">
-      <float hash="p1_x">46</float>
-      <float hash="p2_x">-46</float>
+      <float hash="p1_x">20</float>
+      <float hash="p1_y">85</float>
+      <float hash="p2_x">-5</float>
+      <float hash="p2_y">18</float>
     </struct>
   </list>
   <struct hash="param_private">
@@ -35,6 +38,9 @@
       <float hash="air_start_speed_mul_y">0.5</float>
       <float hash="air_accel_y">0.05</float>
       <float hash="air_speed_y_stable">1.2</float>
+      <int hash="jump_barrage_landing_frame">14</int>
+      <int hash="air_barrage_lw_landing_frame">10</int>
+      <int hash="barrage_landing_frame">10</int>
       <int hash="landing_frame">4</int>
       <float hash="escape_f_penalty_motion_rate">1.0</float>
       <int hash="escape_f_penalty_hit_xlu_frame">3</int>
