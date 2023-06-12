@@ -42,7 +42,7 @@
   <list hash="param_clayrocket">
     <struct index="0">
       <int hash="erase_time">1800</int>
-      <float hash="life_1">15</float>
+      <float hash="life_1">5</float>
       <float hash="life_2">15</float>
     </struct>
     <hash40 index="1">dummy</hash40>
