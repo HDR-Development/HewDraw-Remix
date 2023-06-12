@@ -272,6 +272,8 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
         }
     }
 
+    //println!("{}", move_speed.x);
+
     let speed = match reset_type {
         // It appears that when grounded and your animation is controlling your kinetic energy,
         // there is no grounded speed limit.
