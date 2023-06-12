@@ -444,13 +444,16 @@ pub mod vars {
             pub const TICO_X_DIST: i32 = 0x0107;
             pub const TICO_Y_DIST: i32 = 0x0108;
 
-            // flag
-            pub const IS_TICO_DEAD: i32 = 0x0105;
+            // flags
+            pub const IS_TICO_UNAVAILABLE: i32 = 0x0100;
         }
         pub mod status {
-            // int
+            // ints
             /// Used for determining what luma does
-            pub const INVIS_FRAMES: i32 = 0x1100;
+            pub const LUMA_STATE: i32 = 0x1100;
+
+            // flags
+            pub const IS_INVALID_TELEPORT: i32 = 0x1101;
         }
     }
 
