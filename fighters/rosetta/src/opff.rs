@@ -21,6 +21,7 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 	if StatusModule::is_changing(boma) {
         return;
     }
+	let frame = MotionModule::frame(boma);
 	if !smash::app::sv_information::is_ready_go(){
 		VarModule::set_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN, 0);
 		VarModule::off_flag(boma.object(), vars::rosetta::instance::IS_TICO_UNAVAILABLE);
@@ -28,7 +29,6 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 	}
 	//Teleport!
 	if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW && !VarModule::is_flag(fighter.battle_object, vars::rosetta::instance::IS_TICO_UNAVAILABLE) && VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) == 0 {
-		let frame = MotionModule::frame(boma);
 		let rosa_x = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::ROSA_X) as f32;
 		let rosa_y = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::ROSA_Y) as f32;
 		let tico_x = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_X) as f32;
