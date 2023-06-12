@@ -447,7 +447,7 @@ pub mod vars {
         pub mod status {
             // ints
             /// Used for determining what luma does
-            pub const INVIS_FRAMES: i32 = 0x1100;
+            pub const LUMA_STATE: i32 = 0x1100;
 
             // flags
             pub const IS_INVALID_TELEPORT: i32 = 0x1101;
