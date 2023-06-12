@@ -942,6 +942,9 @@ pub mod vars {
     }
 
     pub mod miifighter {
+        pub mod instance {
+            pub const QUAKE_EFFECT_HANDLER: i32 = 0x0100;
+        }
         pub mod status {
             // ints
             pub const SPECIAL_LW1_CHARGE: i32 = 0x1100;
