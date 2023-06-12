@@ -441,8 +441,7 @@ pub mod vars {
             pub const TICO_Y_DIST: i32 = 0x0108;
 
             // flags
-            pub const IS_TICO_DEAD: i32 = 0x0100;
-            pub const IS_TICO_IN_HITSTUN: i32 = 0x0101;
+            pub const IS_TICO_UNAVAILABLE: i32 = 0x0100;
         }
         pub mod status {
             // ints
