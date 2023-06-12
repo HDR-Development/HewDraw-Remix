@@ -135,13 +135,13 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter: &mut L2CF
     } else {
         let mut cancel_frame = FighterMotionModuleImpl::get_cancel_frame(
             fighter.module_accessor,
-            Hash40::new_raw(0xfefe225e5),
+            Hash40::new("just_shield_off"),
             true,
         );
         if cancel_frame == 0.0 {
             cancel_frame = MotionModule::end_frame_from_hash(
                 fighter.module_accessor,
-                Hash40::new_raw(0xfefe225e5),
+                Hash40::new("just_shield_off"),
             );
         }
 
@@ -154,7 +154,7 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter: &mut L2CF
         {
             MotionModule::change_motion(
                 fighter.module_accessor,
-                Hash40::new_raw(0xfefe225e5),
+                Hash40::new("just_shield_off"),
                 0.0,
                 adjusted.max(1.0),
                 false,
@@ -165,11 +165,11 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter: &mut L2CF
         } else {
             let end_frame = MotionModule::end_frame_from_hash(
                 fighter.module_accessor,
-                Hash40::new_raw(0xfefe225e5),
+                Hash40::new("just_shield_off"),
             );
             MotionModule::change_motion(
                 fighter.module_accessor,
-                Hash40::new_raw(0xfefe225e5),
+                Hash40::new("just_shield_off"),
                 end_frame,
                 adjusted.max(1.0),
                 false,
@@ -184,6 +184,8 @@ unsafe fn sub_ftStatusUniqProcessGuardDamage_initStatus_Inner(fighter: &mut L2CF
             Hash40::new_raw(0x1a29f56bfb),
             -1,
         );
+        EffectModule::kill_kind(fighter.module_accessor, Hash40::new("sys_genesis_end"), true, true);
+        SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_item_backshield_guard01"), 0);
     }
 
     if WorkModule::is_flag(
