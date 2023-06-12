@@ -86,7 +86,7 @@ unsafe fn dash_cancel_frizz(fighter: &mut L2CFighterCommon) {
     {
         if fighter.check_dash_cancel() {
             let mut brave_fighter = app::Fighter{battle_object: *(fighter.battle_object)};
-            FighterSpecializer_Brave::add_sp(&mut brave_fighter, -12.0);
+            FighterSpecializer_Brave::add_sp(&mut brave_fighter, -10.0);
             EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 0, 15, -2, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
         }
     }
