@@ -116,11 +116,11 @@ pub unsafe fn rosetta_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 #[weapon_frame( agent = WEAPON_KIND_ROSETTA_TICO )]
 fn tico_frame(weapon: &mut L2CFighterBase) {
     unsafe {
-		if StatusModule::is_changing(boma) {
-			VarModule::off_flag(fighter.battle_object, vars::rosetta::instance::IS_TICO_IN_HITSTUN);
-		}
 		let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
 		let rosetta = utils::util::get_battle_object_from_id(owner_id);
+		if StatusModule::is_changing(weapon.module_accessor) {
+			VarModule::off_flag(rosetta, vars::rosetta::instance::IS_TICO_UNAVAILABLE);
+		}
 		if weapon.is_status_one_of(&[
 			*WEAPON_ROSETTA_TICO_STATUS_KIND_DEAD,
 			*WEAPON_ROSETTA_TICO_STATUS_KIND_NONE,
