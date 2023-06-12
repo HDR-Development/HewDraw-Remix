@@ -246,6 +246,16 @@ unsafe fn game_itemheavythrowlw(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "donkey", scripts = ["effect_itemheavythrowlw", "effect_itemheavythrowlw4"], category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_heavyitemthrowlw(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("donkey_attack_arc"), Hash40::new("donkey_attack_arc"), Hash40::new("top"), -2, 16, -3, -5, -33, -102, 1.0, true, *EF_FLIP_YZ);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         catch,
@@ -258,6 +268,7 @@ pub fn install() {
         heavy_item_throw_f,
         heavy_item_throw_b,
         game_itemheavythrowlw,
+        effect_heavyitemthrowlw,
     );
 }
 
