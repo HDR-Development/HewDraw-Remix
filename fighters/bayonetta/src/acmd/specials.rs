@@ -301,7 +301,6 @@ unsafe fn bayonetta_special_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) {
             WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_HI_FLAG_NO_SHOOTING_ENABLE_CANCEL);
-            VarModule::dec_int(boma.object(), vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED);
         }
     }
     frame(lua_state, 42.0); //frame 37
@@ -381,7 +380,6 @@ unsafe fn bayonetta_special_air_hi_game(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2bfb02b69a), true);
         if VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) {
             WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_HI_FLAG_NO_SHOOTING_ENABLE_CANCEL);
-            VarModule::dec_int(boma.object(), vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED);
         }
     }
     frame(lua_state, 42.0); // frame 35
