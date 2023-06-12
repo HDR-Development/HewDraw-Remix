@@ -98,8 +98,8 @@ unsafe fn earthquake_punch(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         let is_hold = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL);
         let charge = VarModule::get_int(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE);
         let charge_distance = VarModule::get_float(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE_DISTANCE) as f32;
-        let max_charge_frames = ParamModule::get_float(boma.object(), ParamType::Agent, "max_charge_frames");
-        let max_charge_distance = ParamModule::get_float(boma.object(), ParamType::Agent, "max_charge_distance");
+        let max_charge_frames = ParamModule::get_float(boma.object(), ParamType::Agent, "earthquake_fist_ground.max_charge_frames");
+        let max_charge_distance = ParamModule::get_float(boma.object(), ParamType::Agent, "earthquake_fist_ground.max_charge_distance");
         let lr = PostureModule::lr(fighter.module_accessor);
         let is_ground = GroundModule::ray_check(
             fighter.module_accessor, 
