@@ -71,12 +71,7 @@ unsafe fn dedede_special_s_start_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_GENERATE);
-        VarModule::add_int(fighter.battle_object, vars::dedede::instance::GORDO_COUNTER, 1);
-
-        if VarModule::get_int(fighter.battle_object, vars::dedede::instance::GORDO_COUNTER) >= 3{
-            VarModule::set_int(fighter.battle_object, vars::dedede::instance::GORDO_TIMER, 600);
-        }
-        
+        VarModule::set_int(fighter.battle_object, vars::dedede::instance::GORDO_TIMER, 150);   
     }
     frame(lua_state, 7.0);
     if is_excute(fighter){
@@ -98,14 +93,6 @@ unsafe fn dedede_special_s_start_game(fighter: &mut L2CAgentBase) {
 unsafe fn dedede_special_s_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter){
-        for x in 0..( 3-VarModule::get_int(fighter.battle_object, vars::dedede::instance::GORDO_COUNTER) ){
-            let star_count = x as f32;
-            EFFECT_FOLLOW(fighter, Hash40::new("dedede_superjump_star"), Hash40::new("top"), 0.0, 25.0, 6.0 - (star_count * 6.0), 0.0, 0.0, 0.0, 0.5, true);
-            LAST_EFFECT_SET_RATE(fighter, 0.5);
-        }
-
-    }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         if (PostureModule::lr(boma) == -1.0){
@@ -161,13 +148,6 @@ unsafe fn dedede_special_s_start_expression(fighter: &mut L2CAgentBase) {
 unsafe fn dedede_special_air_s_start_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if is_excute(fighter){
-        for x in 0..( 3-VarModule::get_int(fighter.battle_object, vars::dedede::instance::GORDO_COUNTER) ){
-            let star_count = x as f32;
-            EFFECT_FOLLOW(fighter, Hash40::new("dedede_superjump_star"), Hash40::new("top"), 0.0, 25.0, 6.0 - (star_count * 6.0), 0.0, 0.0, 0.0, 0.5, true);
-            LAST_EFFECT_SET_RATE(fighter, 0.5);
-        }
-    }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         if (PostureModule::lr(boma) == -1.0){
@@ -200,10 +180,7 @@ unsafe fn dedede_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_GENERATE);
-        VarModule::add_int(fighter.battle_object, vars::dedede::instance::GORDO_COUNTER, 1);
-        if VarModule::get_int(fighter.battle_object, vars::dedede::instance::GORDO_COUNTER) >= 3{
-            VarModule::set_int(fighter.battle_object, vars::dedede::instance::GORDO_TIMER, 600);
-        }
+        VarModule::set_int(fighter.battle_object, vars::dedede::instance::GORDO_TIMER, 150);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter){
