@@ -143,14 +143,6 @@ unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_PACMAN_GENERATE_ARTICLE_FIREHYDRANT, false, -1);
     }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE_RANGE(fighter, 10.0, 48.0, 30.0);
-    }
-    frame(lua_state, 48.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-    }
 }
 
 #[acmd_script( agent = "pacman", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
