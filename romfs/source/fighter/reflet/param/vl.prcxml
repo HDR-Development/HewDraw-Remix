@@ -6,7 +6,7 @@
     </struct>
   </list>
   <struct hash="param_private">
-    <int hash="0x20682d7c6b">18</int>
+    <int hash="0x20682d7c6b">8</int>
     <int hash="0x2203952c8f">5</int>
     <int hash="0x223d7cc6af">20</int>
     <int hash="0x1f3fcc7e7d">3</int>
@@ -16,6 +16,25 @@
     <int hash="grimoire_rizaia_revival_time">780</int>
     <int hash="thunder_sword_smash_attack_revival_time">0</int>
   </struct>
+  <list hash="param_special_n">
+    <struct index="0">
+      <int hash="special_n_thunder_consume point">1</int>
+      <int hash="special_n_el_thunder_consume point">2</int>
+      <int hash="special_n_giga_thunder_consume point">4</int>
+      <int hash="special_n_tron_consume point">8</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_thunder">
+    <struct index="0">
+      <int hash="special_n_thunder_life">20</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_gigafire">
     <struct index="0">
       <int hash="pillar_frame_life">15</int>
