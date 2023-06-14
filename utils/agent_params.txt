@@ -29,3 +29,4 @@ miiswordsman: fighter/miiswordsman/param/hdr.prc
 duckhunt: fighter/duckhunt/param/hdr.prc
 krool: fighter/krool/param/hdr.prc
 ganon: fighter/ganon/param/hdr.prc
+miifighter: fighter/miifighter/param/hdr.prc

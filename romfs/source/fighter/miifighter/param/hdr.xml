@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <struct hash="earthquake_fist_ground">
+        <float hash="max_charge_frames">20.0</float>
+        <float hash="max_charge_distance">35.0</float>
+    </struct>
+</struct>
