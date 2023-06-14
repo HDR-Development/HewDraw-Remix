@@ -44,7 +44,7 @@ unsafe fn pichu_throw_b_game(fighter: &mut L2CAgentBase) {
     let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
     if is_excute(fighter) {
         if charged {
-            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 9.0 * damage_mul, 85, 50, 0, 75, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 9.0 * damage_mul, 85, 30, 0, 85, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         }
         else {
             ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 9.0, 135, 50, 0, 75, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -54,7 +54,7 @@ unsafe fn pichu_throw_b_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         if charged {
-            FT_MOTION_RATE(fighter, 0.5);
+            FT_DESIRED_RATE(fighter, 14.0, 9.0);
             FT_ADD_DAMAGE(fighter, 1.0);
         }
     }
@@ -63,6 +63,7 @@ unsafe fn pichu_throw_b_game(fighter: &mut L2CAgentBase) {
         CHECK_FINISH_CAMERA(fighter, -6, 4);
     }
     frame(lua_state, 26.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
     }
@@ -72,6 +73,12 @@ unsafe fn pichu_throw_b_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
+    if is_excute(fighter) {
+        if charged {
+            EFFECT(fighter, Hash40::new("sys_level_up"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
+            LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.35, 0.95);
+        }
+    }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 0.95, 0, 0, 0, 0, 0, 0, false);
@@ -99,6 +106,9 @@ unsafe fn pichu_throw_b_effect(fighter: &mut L2CAgentBase) {
         EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, true);
         if charged {
             EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+            //EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pichu_elec_shock_finish"), Hash40::new("top"), 0, 5.5, 13, 0, 0, 0, 0.85, true);
+            EFFECT(fighter, Hash40::new("sys_damage_fire"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.8, 0, 0, 0, 0, 0, 0, true);
+            LAST_EFFECT_SET_COLOR(fighter, 0.01, 0.2, 0.95);
         }
     }
 }
@@ -144,7 +154,7 @@ unsafe fn pichu_throw_lw_game(fighter: &mut L2CAgentBase) {
         if charged{
             VarModule::sub_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 180);
             MeterModule::drain_direct(boma.object(), (50.0/(charge_state_time as f32)) * 180.0);
-            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 5.0, 60, 50, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_THROW);
+            ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 5.0, 60, 5, 0, 135, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_THROW);
         }
         else{ 
             ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 4.0, 80, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -187,6 +197,13 @@ unsafe fn pichu_throw_lw_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        if charged {
+            EFFECT(fighter, Hash40::new("sys_level_up"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
+            LAST_EFFECT_SET_COLOR(fighter, 0.15, 0.35, 0.95);
+        }
+    }
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
