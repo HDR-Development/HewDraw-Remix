@@ -1,6 +1,8 @@
 #![deny(deprecated)]
 #![allow(unused)]
 #![allow(non_snake_case)]
+#![feature(repr_simd)]
+#![feature(simd_ffi)]
 
 pub mod acmd;
 

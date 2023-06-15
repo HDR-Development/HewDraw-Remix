@@ -3,8 +3,7 @@
 #![allow(non_snake_case)]
 
 pub mod acmd;
-
-//pub mod status;
+pub mod status;
 pub mod opff;
 
 use smash::{
@@ -66,6 +65,6 @@ pub fn install(is_runtime: bool) {
     smashline::install_agent_resets!(reflet_reset);
     smashline::install_agent_init_callbacks!(reflet_init);
     acmd::install();
-    //status::install();
+    status::install();
     opff::install(is_runtime);
 }
