@@ -47,7 +47,9 @@ pub fn install() {
         landing_main,
         guard,
         init_special_s,
-        init_special_s_command
+        init_special_s_command,
+        pre_final,
+        pre_final2
     );
     smashline::install_agent_init_callbacks!(ryu_init);
 }
@@ -193,6 +195,92 @@ unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
+/// determines the command inputs
+/// I have divided these inputs into command normals (A) and command specials (B)
+/// NOTE: order is important! early order has higher priority
+pub unsafe extern "C" fn ryu_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let cat1 =  fighter.global_table[CMD_CAT1].get_i32();
+    let cat4 = fighter.global_table[CMD_CAT4].get_i32();
+    let is_special = fighter.is_cat_flag(Cat1::SpecialAny);
+    let is_normal = fighter.is_cat_flag(
+        Cat1::AttackN | 
+        Cat1::AttackHi3 | 
+        Cat1::AttackS3 | 
+        Cat1::AttackLw3 | 
+        Cat1::AttackHi4 | 
+        Cat1::AttackS4 | 
+        Cat1::AttackLw4
+    );
+
+    // shin hado
+    if is_special
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND != 0
+    && MeterModule::level(fighter.object()) >= 2 {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+        fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
+        return true.into();
+    }
+
+    // shin shoryu
+    if is_special
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
+    && MeterModule::level(fighter.object()) >= 6 {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IS_DISCRETION_FINAL_USED);
+        fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
+        return true.into();
+    }
+
+    // shoryu
+    if is_special
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_HI_COMMAND != 0
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND)
+    && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[USE_SPECIAL_HI_CALLBACK].clone()).get_bool() {
+        fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND.into(), true.into());
+        return true.into();
+    }
+
+    // shaku
+    if is_special
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N2_COMMAND != 0
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND)
+    && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[USE_SPECIAL_N_CALLBACK].clone()).get_bool() {
+        fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND.into(), true.into());
+        return true.into();
+    }
+
+    // hado
+    if is_special
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N_COMMAND != 0
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND)
+    && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[USE_SPECIAL_N_CALLBACK].clone()).get_bool() {
+        fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND.into(), true.into());
+        return true.into();
+    }
+
+    // tatsu
+    if is_special
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_S_COMMAND != 0
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND)
+    && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[USE_SPECIAL_S_CALLBACK].clone()).get_bool()
+    && FighterSpecializer_Ryu::check_special_air_s_command(fighter.module_accessor) {
+        fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND.into(), true.into());
+        return true.into();
+    }
+
+    // donkey kick
+    if is_normal
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N2_COMMAND != 0
+    && fighter.is_situation(*SITUATION_KIND_GROUND)
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND) {
+        fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_S4.into(), true.into());
+        return true.into();
+    }
+
+    false.into()
+}
+
 #[smashline::fighter_init]
 fn ryu_init(fighter: &mut L2CFighterCommon) {
     unsafe {
@@ -200,6 +288,7 @@ fn ryu_init(fighter: &mut L2CFighterCommon) {
         if fighter.kind() == *FIGHTER_KIND_RYU {
             fighter.global_table[globals::USE_SPECIAL_S_CALLBACK].assign(&L2CValue::Ptr(should_use_special_s_callback as *const () as _));
             fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
+            fighter.global_table[globals::CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(ryu_check_special_command as *const () as _));
         }
     }
 }
@@ -1042,4 +1131,44 @@ pub unsafe extern "C" fn fgc_wait_main_loop(fighter: &mut L2CFighterCommon) -> L
 #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 pub unsafe fn landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_landing_main(fighter)
+}
+
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_FINAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn pre_final(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.sub_status_pre_FinalCommon();
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        app::SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        false,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_FINAL | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
+        (*FIGHTER_STATUS_ATTR_DISABLE_ITEM_INTERRUPT | *FIGHTER_STATUS_ATTR_DISABLE_TURN_DAMAGE | *FIGHTER_STATUS_ATTR_FINAL) as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_FINAL as u32,
+        0
+    );
+    MeterModule::drain(fighter.object(), 6);
+    return 0.into();
+}
+
+// FIGHTER_RYU_STATUS_KIND_FINAL2 //
+
+#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_FINAL2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn pre_final2(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = original!(fighter);
+    MeterModule::drain(fighter.object(), 2);
+    ret
 }

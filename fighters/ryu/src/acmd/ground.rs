@@ -136,6 +136,7 @@ unsafe fn game_attack13(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        WorkModule::on_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
     }
     frame(lua_state, 8.0);
     if is_excute(fighter) {
@@ -147,7 +148,11 @@ unsafe fn game_attack13(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         MeterModule::watch_damage(fighter.battle_object, false);
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        WorkModule::off_flag(boma, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
     }
 }
 
