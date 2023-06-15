@@ -131,13 +131,15 @@ unsafe fn double_fireball(fighter: &mut L2CFighterCommon, boma: &mut BattleObjec
     }
 }
 
+// Once down special is called, imediately uses special low shoot and circumvent the charge mechanic of the og down-b
 unsafe fn galaxy_spin_poc(fighter: &mut L2CFighterCommon ,boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, true);
     }
 }
 
-pub unsafe fn galaxy_spin_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, situation_kind: i32, frame: f32, stick_x: f32, stick_y: f32) {
+// Aerial SMG spin rise
+pub unsafe fn galaxy_spin_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, situation_kind: i32, frame: f32) {
     if motion_kind == hash40("special_air_lw_light") {
         let fighter_gravity = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut FighterKineticEnergyGravity;
         let air_fri = Vector3f{x: 0.85, y: 1.0, z: 0.0};
@@ -176,6 +178,7 @@ pub unsafe fn galaxy_spin_rise(fighter: &mut L2CFighterCommon, boma: &mut Battle
     }
 }
 
+// Grounded SMG spin movement
 unsafe fn galaxy_spin_move(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, situation_kind: i32, frame: f32, stick_x: f32, facing: f32) {
     if motion_kind == hash40("special_lw_light") {
         let current_speed =  KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -264,7 +267,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
     //double_fireball(fighter, boma);
     galaxy_spin_poc(fighter, boma, status_kind);
-    galaxy_spin_rise(fighter, boma, status_kind, motion_kind, situation_kind, frame, stick_x, stick_y);
+    galaxy_spin_rise(fighter, boma, status_kind, motion_kind, situation_kind, frame);
     galaxy_spin_move(fighter, boma, status_kind, motion_kind, situation_kind, frame, stick_x, facing);
     noknok_timer(fighter, boma, id);
     noknok_reset(fighter, id, status_kind);

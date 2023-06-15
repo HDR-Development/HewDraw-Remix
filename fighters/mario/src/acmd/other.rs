@@ -248,6 +248,7 @@ unsafe fn mario_fireball_regular_game(fighter: &mut L2CAgentBase) {
     
 }
 
+// Removing flood projectile, properties, and sounds
 
 #[acmd_script( agent = "mario_pump", script = "effect_light", category = ACMD_EFFECT, low_priority )]
 unsafe fn effect_light(fighter: &mut L2CAgentBase) {
@@ -311,8 +312,6 @@ unsafe fn sound_regular(fighter: &mut L2CAgentBase) {
     }
     */
 }
-
-
 
 pub fn install() {
     install_acmd_scripts!(
