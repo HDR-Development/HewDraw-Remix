@@ -6,8 +6,17 @@ extern "Rust" {
     #[link_name = "MeterModule__stop_show"]
     fn MeterModule__stop_show(object: *mut BattleObject);
 
+    #[link_name = "MeterModule__set_meter_per_level"]
+    fn MeterModule__set_meter_per_level(object: *mut BattleObject, amount: f32);
+
     #[link_name = "MeterModule__meter_per_level"]
     fn MeterModule__meter_per_level(object: *mut BattleObject) -> f32;
+
+    #[link_name = "MeterModule__set_meter_cap"]
+    fn MeterModule__set_meter_cap(object: *mut BattleObject, amount: i32);
+
+    #[link_name = "MeterModule__meter_cap"]
+    fn MeterModule__meter_cap(object: *mut BattleObject) -> i32;
 
     #[link_name = "MeterModule__meter"]
     fn MeterModule__meter(object: *mut BattleObject) -> f32;
@@ -26,6 +35,9 @@ extern "Rust" {
 
     #[link_name = "MeterModule__drain"]
     fn MeterModule__drain(object: *mut BattleObject, count: i32) -> bool;
+
+    #[link_name = "MeterModule__drain_direct"]
+    fn MeterModule__drain_direct(object: *mut BattleObject, amount: f32);
 
     #[link_name = "MeterModule__add"]
     fn MeterModule__add(object: *mut BattleObject, amount: f32);
@@ -51,9 +63,24 @@ pub mod MeterModule {
             MeterModule__stop_show(object)
         }
     }
+    pub fn set_meter_per_level(object: *mut BattleObject, amount: f32) {
+        unsafe {
+            MeterModule__set_meter_per_level(object, amount)
+        }
+    }
     pub fn meter_per_level(object: *mut BattleObject) -> f32 {
         unsafe {
             MeterModule__meter_per_level(object)
+        }
+    }
+    pub fn set_meter_cap(object: *mut BattleObject, amount: i32) {
+        unsafe {
+            MeterModule__set_meter_cap(object, amount)
+        }
+    }
+    pub fn meter_cap(object: *mut BattleObject) -> i32 {
+        unsafe {
+            MeterModule__meter_cap(object)
         }
     }
     pub fn meter(object: *mut BattleObject) -> f32 {
@@ -84,6 +111,11 @@ pub mod MeterModule {
     pub fn drain(object: *mut BattleObject, count: i32) -> bool {
         unsafe {
             MeterModule__drain(object, count)
+        }
+    }
+    pub fn drain_direct(object: *mut BattleObject, amount: f32) {
+        unsafe {
+            MeterModule__drain_direct(object, amount)
         }
     }
     pub fn add(object: *mut BattleObject, amount: f32) {

@@ -5,13 +5,16 @@ use globals::*;
 
  
 unsafe fn bite_early_throw_turnaround(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if status_kind == *FIGHTER_WARIO_STATUS_KIND_SPECIAL_N_BITE {
         if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
             boma.change_status_req(*FIGHTER_WARIO_STATUS_KIND_SPECIAL_N_BITE_END, false);
         }
     }
     if status_kind == *FIGHTER_WARIO_STATUS_KIND_SPECIAL_N_BITE_END {
-        if frame < 6.0 {
+        if frame < 7.0 {
             if facing * stick_x < 0.0 {
                 PostureModule::reverse_lr(boma);
                 PostureModule::update_rot_y_lr(boma);

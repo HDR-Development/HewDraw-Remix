@@ -1,3 +1,4 @@
+#![feature(seek_stream_len)]
 #[macro_use]
 extern crate lazy_static;
 

@@ -300,6 +300,46 @@ unsafe fn gamewatch_special_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "gamewatch_rescue", script = "game_specialhi", category = ACMD_GAME, low_priority )]
+unsafe fn gamewatch_rescue_special_hi_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("up") as i64, hash40("off") as i64);
+        VisibilityModule::set_int64(boma, hash40("down") as i64, hash40("off") as i64);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 11.0/(8.0 - 1.0));
+        VisibilityModule::set_int64(boma, hash40("down") as i64, hash40("on") as i64);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("up") as i64, hash40("on") as i64);
+        VisibilityModule::set_int64(boma, hash40("down") as i64, hash40("off") as i64);
+    }
+}
+
+#[acmd_script( agent = "gamewatch_rescue", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
+unsafe fn gamewatch_rescue_special_air_hi_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("up") as i64, hash40("off") as i64);
+        VisibilityModule::set_int64(boma, hash40("down") as i64, hash40("off") as i64);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 9.0/(8.0 - 1.0));
+        VisibilityModule::set_int64(boma, hash40("down") as i64, hash40("on") as i64);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        VisibilityModule::set_int64(boma, hash40("up") as i64, hash40("on") as i64);
+        VisibilityModule::set_int64(boma, hash40("down") as i64, hash40("off") as i64);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         gamewatch_special_n_game,
@@ -313,6 +353,8 @@ pub fn install() {
         gamewatch_special_s9_game,
         gamewatch_special_hi_game,
         gamewatch_special_air_hi_game,
+        gamewatch_rescue_special_hi_game,
+        gamewatch_rescue_special_air_hi_game,
     );
 }
 

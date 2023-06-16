@@ -6,7 +6,7 @@ use globals::*;
  
 unsafe fn paralyzer_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_SZEROSUIT_STATUS_KIND_SPECIAL_N_SHOOT {
-        if frame > 7.0 {
+        if frame > 8.0 {
             boma.check_dash_cancel();
         }
     }
@@ -14,10 +14,13 @@ unsafe fn paralyzer_dash_cancel(boma: &mut BattleObjectModuleAccessor, status_ki
 
 // ZSS Flip Jump - Jump Cancel and Flipstool Handilng
 unsafe fn flip_jump_jc_flipstool(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, cat1: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW
         || motion_kind == hash40("special_lw_start")
         || motion_kind == hash40("special_air_lw_start") {
-        if frame > 20.0 {
+        if frame > 21.0 {
             if !boma.is_in_hitlag() {
                 boma.check_jump_cancel(false);
             }

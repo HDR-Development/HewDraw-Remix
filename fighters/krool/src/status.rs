@@ -38,9 +38,9 @@ pub unsafe fn attack_lw4_map_correction(fighter: &mut L2CFighterCommon) -> L2CVa
     let frame = MotionModule::frame(fighter.module_accessor);
     let prev_frame = MotionModule::prev_frame(fighter.module_accessor);
     let start_air_frame = 2.0;
-    let fall_start_frame = 20.0;
-    let fall_stop_frame = 21.0;
-    let landing_frame = 22.0;
+    let fall_start_frame = 19.0;
+    let fall_stop_frame = 20.0;
+    let landing_frame = 21.0;
 
     if frame <= fall_start_frame {
         return 0.into()

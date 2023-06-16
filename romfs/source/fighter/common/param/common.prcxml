@@ -39,7 +39,7 @@
   <float hash="shield_rebound_ground_brake">1.15</float>
   <int hash="guard_off_cancel_frame">14</int>
   <int hash="guard_off_disable_shield_recovery">14</int>
-  <int hash="shield_just_frame">2</int>
+  <int hash="shield_just_frame">4</int>
   <float hash="0x2cacbf2a63">12</float>
   <float hash="just_shield_speed_rate">0.01</float>
   <int hash="shield_setoff_escape">999</int>
@@ -93,7 +93,7 @@
   <int hash="cliff_wait_xlu_min_frame">29</int>
   <float hash="cliff_robbed_speed_x">-0.5</float>
   <float hash="cliff_robbed_speed_y">17.5</float>
-  <int hash="cliff_robbed_no_control_frame">40</int>
+  <int hash="cliff_robbed_no_control_frame">50</int>
   <int hash="air_lasso_catch_num">999</int>
   <int hash="cliff_max_count">999</int>
   <int hash="0x189f0b0c96">999</int>
@@ -119,7 +119,7 @@
   <float hash="damage_fly_length_mul_min">1</float>
   <int hash="damage_fly_attack_frame">999</int>
   <int hash="damage_fly_escape_frame">999</int>
-  <float hash="damage_fly_reflect_d_speed">1</float>
+  <float hash="damage_fly_reflect_d_speed">2.5</float>
   <float hash="damage_fly_reflect_d_speed_mul">0.7</float>
   <float hash="damage_fly_reflect_reaction_frame_mul">0.8</float>
   <int hash="damage_fly_reflect_disable_escape_frame">999</int>
@@ -140,10 +140,10 @@
   <!-- dk cargo carry: -->
   <!-- flat amount of clatter added when you enter cargo carry -->
   <float hash="shouldered_frame_add">30</float>
-  <!-- additional clatter added when entering cargo = shouldered_frame_mul * percent -->
+  <!-- additional clatter added when entering cargo (formula unknown?) -->
   <float hash="shouldered_frame_mul">1.25</float>
-  <!-- clatter removal due to mashing -->
+  <!-- possibly the length of time you are inactionable when breaking out of cargo -->
   <float hash="shouldered_cratter_frame">10</float>
-  <!-- clatter removal due to mashing in the air -->
+  <!-- possibly the length of time you are inactionable when breaking out of cargo in the air -->
   <float hash="shouldered_cratter_frame_air">13</float>
 </struct>

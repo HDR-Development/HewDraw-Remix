@@ -64,10 +64,6 @@ unsafe fn extra_traction(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
         let motion_accel = smash::app::sv_kinetic_energy::get_accel(fighter.lua_state_agent);
 
-        // reset flag at beginning of any status
-        if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
-            VarModule::off_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK);
-        }
         // if we detect that the current animation is trans-motion-based (shifts your character's position), disable traction for the entire attack 
         if motion_accel.x != 0.0 && !VarModule::is_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK) {
             VarModule::on_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK);
@@ -98,7 +94,22 @@ unsafe fn grab_jump_refresh(boma: &mut BattleObjectModuleAccessor) {
         *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
         *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
         *FIGHTER_STATUS_KIND_CAPTURE_CUT,
-        *FIGHTER_STATUS_KIND_CAPTURE_JUMP
+        *FIGHTER_STATUS_KIND_CAPTURE_JUMP,
+        *FIGHTER_STATUS_KIND_SHOULDERED_DONKEY,
+        *FIGHTER_STATUS_KIND_SWALLOWED,
+        *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN,
+        *FIGHTER_STATUS_KIND_KOOPA_DIVED,
+        *FIGHTER_STATUS_KIND_CLUNG_GANON,
+        *FIGHTER_STATUS_KIND_MEWTWO_THROWN,
+        *FIGHTER_STATUS_KIND_BITTEN_WARIO_START,
+        *FIGHTER_STATUS_KIND_CLUNG_DIDDY,
+        *FIGHTER_STATUS_KIND_MIIFIGHTER_COUNTER_THROWN,
+        *FIGHTER_STATUS_KIND_CATCHED_REFLET,
+        *FIGHTER_STATUS_KIND_CATCHED_RIDLEY,
+        *FIGHTER_STATUS_KIND_CAPTURE_PULLED_FISHINGROD,
+        *FIGHTER_STATUS_KIND_SWING_GAOGAEN_CATCHED,
+        *FIGHTER_STATUS_KIND_CAPTURE_JACK_WIRE,
+        *FIGHTER_STATUS_KIND_DEMON_DIVED
     ]) && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) == WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX)
     {
         WorkModule::dec_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
