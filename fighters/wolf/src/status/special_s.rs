@@ -302,7 +302,7 @@ unsafe extern "C" fn special_s_end_main_loop(fighter: &mut L2CFighterCommon) -> 
         return 1.into();
     }
 
-    if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) && VarModule::get_int(fighter.object(), vars::common::instance::LAST_ATTACK_HITBOX_ID) == 0 {
+    if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) && VarModule::get_int(fighter.object(), vars::common::instance::LAST_ATTACK_HITBOX_ID) == 0 {
         VarModule::on_flag(fighter.object(), SPECIAL_S_RESERVE_FALL);
     }
 

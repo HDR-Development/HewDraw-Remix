@@ -4,7 +4,7 @@
 
 pub mod acmd;
 
-//pub mod status;
+pub mod status;
 pub mod opff;
 
 use smash::{
@@ -50,7 +50,7 @@ fn duckhunt_reset(fighter: &mut L2CFighterCommon) {
 
 pub fn install(is_runtime: bool) {
     acmd::install();
-    //status::install();
+    status::install();
     opff::install(is_runtime);
     use opff::*;
     smashline::install_agent_resets!(duckhunt_reset);
