@@ -21,6 +21,7 @@ pub mod set_fighter_status_data;
 pub mod attack;
 pub mod collision;
 pub mod camera;
+pub mod shotos;
 
 #[repr(C)]
 pub struct TempModule {
@@ -676,6 +677,7 @@ pub fn install() {
     attack::install();
     collision::install();
     camera::install();
+    shotos::install();
 
     unsafe {
         // Handles getting rid of the kill zoom
@@ -691,6 +693,14 @@ pub fn install() {
         // Resets projectile lifetime on parry, rather than using remaining lifetime
         skyline::patching::Patch::in_text(0x33bd358).nop();
         skyline::patching::Patch::in_text(0x33bd35c).data(0x2a0a03e1);
+
+        // The following handles disabling the "Weapon Catch" animation for those who have it.
+        // You will only enter the weapon catch animation if you are completely idle.
+        // Link, Young Link, Toon Link
+        skyline::patching::Patch::in_text(0xc297f8).data(0x7100011F);
+        // Simon and Richter
+        skyline::patching::Patch::in_text(0x1195204).data(0x7100001F);
+        // Krool and Pyra are in their respective modules.
     }
     skyline::install_hooks!(
         before_collision,
