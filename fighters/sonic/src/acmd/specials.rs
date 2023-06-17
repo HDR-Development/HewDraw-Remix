@@ -14,6 +14,14 @@ unsafe fn sonic_specialsbooststart_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "sonic", script = "expression_specialsbooststart", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn sonic_specialsbooststart_exp(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_dash"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "sonic", script = "game_specialsboost", category = ACMD_GAME, low_priority )]
 unsafe fn sonic_specialsboost(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
@@ -44,7 +52,18 @@ unsafe fn sonic_specialsboost_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "sonic", script = "sound_specialsboost", category = ACMD_SOUND )]
+#[acmd_script( agent = "sonic", script = "expression_specialsboost", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn sonic_specialsboost_exp(fighter: &mut L2CAgentBase) {
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(fighter.lua_state_agent, 7.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
+}
+
+#[acmd_script( agent = "sonic", script = "sound_specialsboost", category = ACMD_SOUND, low_priority )]
 unsafe fn sonic_specialsboost_snd(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_sonic_special_s01"));
@@ -80,10 +99,17 @@ unsafe fn sonic_specialsboostend_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "sonic", script = "sound_specialsboostend", category = ACMD_SOUND )]
+#[acmd_script( agent = "sonic", script = "sound_specialsboostend", category = ACMD_SOUND, low_priority )]
 unsafe fn sonic_specialsboostend_snd(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_sonic_dash_stop"));
+    }
+}
+
+#[acmd_script( agent = "sonic", script = "expression_specialsboostend", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn sonic_specialsboostend_exp(fighter: &mut L2CAgentBase) {
+    if is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_dash"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -257,9 +283,9 @@ unsafe fn sonic_special_n_landing(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        sonic_specialsbooststart, sonic_specialsbooststart_snd,
-        sonic_specialsboost, sonic_specialsboost_eff, sonic_specialsboost_snd,
-        sonic_specialsboostend, sonic_specialsboostend_eff, sonic_specialsboostend_snd,
+        sonic_specialsbooststart, sonic_specialsbooststart_snd, sonic_specialsbooststart_exp,
+        sonic_specialsboost, sonic_specialsboost_eff, sonic_specialsboost_snd, sonic_specialsboost_exp,
+        sonic_specialsboostend, sonic_specialsboostend_eff, sonic_specialsboostend_snd, sonic_specialsboostend_exp,
         sonic_specialairsboostend, sonic_specialairsboostend_eff,
         sonic_special_hi_game,
         sonic_special_lw_hold_game,
