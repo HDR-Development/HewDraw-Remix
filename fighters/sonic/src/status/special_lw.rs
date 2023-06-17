@@ -10,6 +10,12 @@ pub fn install() {
 
 #[status_script(agent = "sonic", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn sonic_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let stick_x = fighter.global_table[STICK_X].get_f32();
+    let lr = PostureModule::lr(fighter.module_accessor);
+    if stick_x * lr <= -0.35 {
+        PostureModule::reverse_lr(fighter.module_accessor);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    }
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
