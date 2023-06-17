@@ -439,7 +439,7 @@ pub unsafe fn snake_grab_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
                 return true.into()
             }
         }
-        else if PostureModule::lr(fighter.module_accessor)*ControlModule::get_stick_x(fighter.module_accessor) < -0.7 {
+        else if PostureModule::lr(fighter.module_accessor) * ControlModule::get_stick_x(fighter.module_accessor) < -0.7 {
             if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
                 fighter.set_int(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_B, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
                 fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), false.into());
