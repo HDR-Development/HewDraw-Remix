@@ -4,12 +4,12 @@ use smashline::*;
 
 pub fn install() {
     install_status_scripts!(
-        sonic_speciallw_pre
+        sonic_speciallwhold_pre
     );
 }
 
-#[status_script(agent = "sonic", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn sonic_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status_script(agent = "sonic", status = FIGHTER_SONIC_STATUS_KIND_SPECIAL_LW_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn sonic_speciallwhold_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let stick_x = fighter.global_table[STICK_X].get_f32();
     let lr = PostureModule::lr(fighter.module_accessor);
     if stick_x * lr <= -0.35 {
