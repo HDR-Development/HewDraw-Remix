@@ -23,14 +23,15 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 	if StatusModule::is_changing(boma) {
         return;
     }
-	let frame = MotionModule::frame(boma);
 	if !smash::app::sv_information::is_ready_go(){
 		VarModule::set_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN, 0);
+		VarModule::set_int(fighter.battle_object, vars::rosetta::status::LUMA_STATE, 0);
 		VarModule::off_flag(boma.object(), vars::rosetta::instance::IS_TICO_UNAVAILABLE);
 		VarModule::off_flag(fighter.battle_object, vars::rosetta::status::IS_INVALID_TELEPORT);
 	}
 	//Teleport!
 	if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW && !VarModule::is_flag(fighter.battle_object, vars::rosetta::instance::IS_TICO_UNAVAILABLE) && VarModule::get_int(fighter.battle_object, vars::rosetta::instance::COOLDOWN) == 0 {
+		let frame = MotionModule::frame(boma);
 		let rosa_x = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::ROSA_X) as f32;
 		let rosa_y = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::ROSA_Y) as f32;
 		let tico_x = VarModule::get_int(fighter.battle_object, vars::rosetta::instance::TICO_X) as f32;
@@ -69,7 +70,7 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 			}
 		}
 	}
-	else if VarModule::get_int(fighter.battle_object, vars::rosetta::status::LUMA_STATE) > 0 {
+	else if MotionModule::frame(boma) > 13.0 && MotionModule::frame(boma) <= 17.0 && VarModule::get_int(fighter.battle_object, vars::rosetta::status::LUMA_STATE) > 0 {
 		// prevent the successful teleport logic if Luma is put into hitstun or killed during startup
 		VarModule::set_int(fighter.battle_object, vars::rosetta::status::LUMA_STATE, 0);
 		VarModule::on_flag(fighter.battle_object, vars::rosetta::status::IS_INVALID_TELEPORT);
@@ -81,7 +82,8 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 			HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
 			JostleModule::set_status(boma, true);	
 			VisibilityModule::set_whole(boma, true);
-			if frame > 38.0 {
+			if MotionModule::frame(boma) > 38.0 {
+				VarModule::off_flag(fighter.battle_object, vars::rosetta::instance::IS_TICO_UNAVAILABLE);
 				CancelModule::enable_cancel(boma);
 			}
 		}
@@ -120,11 +122,12 @@ fn tico_frame(weapon: &mut L2CFighterBase) {
     unsafe {
 		let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
 		let rosetta = utils::util::get_battle_object_from_id(owner_id);
-		if StatusModule::is_changing(weapon.module_accessor) {
+		if StatusModule::is_changing(weapon.module_accessor) || weapon.is_status(*WEAPON_ROSETTA_TICO_STATUS_KIND_REBIRTH) {
 			VarModule::off_flag(rosetta, vars::rosetta::instance::IS_TICO_UNAVAILABLE);
 		}
 		if weapon.is_status_one_of(&[
 			*WEAPON_ROSETTA_TICO_STATUS_KIND_DEAD,
+			*WEAPON_ROSETTA_TICO_STATUS_KIND_STANDBY,
 			*WEAPON_ROSETTA_TICO_STATUS_KIND_NONE,
 			*WEAPON_ROSETTA_TICO_STATUS_KIND_DAMAGE,
 			*WEAPON_ROSETTA_TICO_STATUS_KIND_DAMAGE_AIR,
