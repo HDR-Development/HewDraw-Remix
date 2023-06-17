@@ -88,6 +88,7 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     let situation = fighter.global_table[SITUATION_KIND].get_i32();
 
     if situation == *SITUATION_KIND_GROUND
+    && VarModule::is_flag(fighter.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_JUMP)
     && !StatusModule::is_changing(fighter.module_accessor) {
         fighter.check_jump_cancel(false);
     }
