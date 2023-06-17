@@ -25,17 +25,15 @@ unsafe fn sonic_specialsbooststart_exp(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "sonic", script = "game_specialsboost", category = ACMD_GAME, low_priority )]
 unsafe fn sonic_specialsboost(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 361, 100, 0, 45, 3.0, 0.0, 4.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 361, 100, 0, 45, 4.0, 0.0, 5.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
     frame(fighter.lua_state_agent, 7.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 25, 120, 0, 50, 5.5, 0.0, 7.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        VarModule::on_flag(fighter.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_JUMP);
     }
     frame(fighter.lua_state_agent, 14.0);
     FT_MOTION_RATE(fighter, 0.25);
-    if is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_JUMP);
-    }
 }
 
 #[acmd_script( agent = "sonic", script = "effect_specialsboost", category = ACMD_EFFECT, low_priority )]
@@ -52,6 +50,13 @@ unsafe fn sonic_specialsboost_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "sonic", script = "sound_specialsboost", category = ACMD_SOUND, low_priority )]
+unsafe fn sonic_specialsboost_snd(fighter: &mut L2CAgentBase) {
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_sonic_special_s01"));
+    }
+}
+
 #[acmd_script( agent = "sonic", script = "expression_specialsboost", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn sonic_specialsboost_exp(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
@@ -60,13 +65,6 @@ unsafe fn sonic_specialsboost_exp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if is_excute(fighter) {
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
-    }
-}
-
-#[acmd_script( agent = "sonic", script = "sound_specialsboost", category = ACMD_SOUND, low_priority )]
-unsafe fn sonic_specialsboost_snd(fighter: &mut L2CAgentBase) {
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_sonic_special_s01"));
     }
 }
 
