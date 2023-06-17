@@ -142,38 +142,41 @@ unsafe fn galaxy_spin_poc(fighter: &mut L2CFighterCommon ,boma: &mut BattleObjec
 pub unsafe fn galaxy_spin_rise(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, situation_kind: i32, frame: f32) {
     if motion_kind == hash40("special_air_lw_light") {
         let fighter_gravity = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut FighterKineticEnergyGravity;
-        let air_fri = Vector3f{x: 0.85, y: 1.0, z: 0.0};
-        if fighter.is_status(*FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT) && fighter.is_situation(*SITUATION_KIND_AIR) {
-            if VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) {
-                if frame >= 6.0 && frame < 35.0 { 
-                    if VarModule::is_flag(boma.object(), vars::common::instance::IS_IN_HITSTUN) {
-                        VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
-                    }
-                    smash::app::lua_bind::FighterKineticEnergyGravity::set_speed(fighter_gravity, 1.25);
-                    KineticModule::mul_speed(boma, &air_fri, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                    smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.06);
-                    smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -0.2);
-                }
-                if frame >= 35.0 && frame < 45.0 {
-                    if VarModule::is_flag(boma.object(), vars::common::instance::IS_IN_HITSTUN) {
-                        VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
-                    }
-                    smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.07);
-                    smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -0.2);
-                    KineticModule::mul_speed(boma, &air_fri, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                }
-                if frame >= 45.0 {
-                    smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.075);
-                    smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -0.2);
-                    KineticModule::mul_speed(boma, &air_fri, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                }
-                if frame >= 50.0 {
+        let air_fri = Vector3f{x: 0.85, y: 1.0, z: 0.0}; // air friction
+        if fighter.is_status(*FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT) 
+        && fighter.is_situation(*SITUATION_KIND_AIR) 
+        && VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) {
+            if frame >= 6.0 && frame < 35.0 { 
+                if VarModule::is_flag(boma.object(), vars::common::instance::IS_IN_HITSTUN) {
                     VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
                 }
-            } 
+                smash::app::lua_bind::FighterKineticEnergyGravity::set_speed(fighter_gravity, 1.25);
+                KineticModule::mul_speed(boma, &air_fri, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.06);
+                smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -0.2);
+            }
+            if frame >= 35.0 && frame < 45.0 {
+                if VarModule::is_flag(boma.object(), vars::common::instance::IS_IN_HITSTUN) {
+                    VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
+                }
+                smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.07);
+                smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -0.2);
+                KineticModule::mul_speed(boma, &air_fri, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            }
+            if frame >= 45.0 {
+                smash::app::lua_bind::FighterKineticEnergyGravity::set_accel(fighter_gravity, -0.075);
+                smash::app::lua_bind::FighterKineticEnergyGravity::set_stable_speed(fighter_gravity, -0.2);
+                KineticModule::mul_speed(boma, &air_fri, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            }
+            if frame >= 50.0 {
+                VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
+            }
         }
     }
-    if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF) || fighter.is_status(*FIGHTER_STATUS_KIND_REBIRTH) || fighter.is_situation(*SITUATION_KIND_LADDER) {
+    if fighter.is_situation(*SITUATION_KIND_GROUND) 
+    || fighter.is_situation(*SITUATION_KIND_CLIFF) 
+    || fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD])
+    || fighter.is_situation(*SITUATION_KIND_LADDER) {
             VarModule::on_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
     }
 }
@@ -204,7 +207,6 @@ unsafe fn galaxy_spin_move(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
             }
             else if frame >= 40.0 && frame < 50.0 {
                 if stick_x != 0.0 {
-               
                     let motion_vec = x_motion_vec(0.5, stick_x);
                     KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
                 }

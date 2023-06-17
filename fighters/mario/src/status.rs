@@ -15,5 +15,4 @@ pub unsafe fn mario_special_lw_shoot_main(fighter: &mut L2CFighterCommon) -> L2C
     let boma = fighter.boma();
 
     return 0.into();
-
 }
