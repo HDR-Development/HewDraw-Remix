@@ -24,22 +24,29 @@ unsafe fn sonic_specialsboost(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "sonic", script = "effect_specialsboost", category = ACMD_EFFECT, low_priority )]
 unsafe fn sonic_specialsboost_eff(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         let eff = if VarModule::is_flag(fighter.battle_object, 0x1100) {
             Hash40::new("sonic_spintrace_max")
         }
         else {
             Hash40::new("sonic_spintrace")
         };
-        macros::EFFECT_FOLLOW_NO_STOP(fighter, eff, Hash40::new("top"), 0, 6, 0, 0, 0, 0, 1.25, true);
+        EFFECT_FOLLOW_NO_STOP(fighter, eff, Hash40::new("top"), 0, 6, 0, 0, 0, 0, 1.25, true);
         EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
+    }
+    for _ in 0..4 {
+        if is_excute(fighter) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_sliding_smoke"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 0.6, 0, 0, 3, 0, 0, 0, false);
+        }
+        wait(fighter.lua_state_agent, 4.0);
     }
 }
 
-#[acmd_script( agent = "sonic", scripts = [ "game_specialsboostend", "game_specialairsboostend" ], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "sonic", script = "game_specialsboostend", category = ACMD_GAME, low_priority )]
 unsafe fn sonic_specialsboostend(fighter: &mut L2CAgentBase) {
+    FT_MOTION_RATE(fighter, 0.5);
+    frame(fighter.lua_state_agent, 8.0);
     FT_MOTION_RATE(fighter, 0.8);
-    frame(fighter.lua_state_agent, 10.0);
     if is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
@@ -47,27 +54,36 @@ unsafe fn sonic_specialsboostend(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "sonic", script = "effect_specialsboostend", category = ACMD_EFFECT, low_priority )]
 unsafe fn sonic_specialsboostend_eff(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         let eff = if VarModule::is_flag(fighter.battle_object, 0x1100) {
             Hash40::new("sonic_spintrace_max")
         }
         else {
             Hash40::new("sonic_spintrace")
         };
-        macros::EFFECT_OFF_KIND(fighter, eff, false, false);
+        EFFECT_OFF_KIND(fighter, eff, false, false);
+    }
+}
+
+#[acmd_script( agent = "sonic", script = "game_specialairsboostend" , category = ACMD_GAME, low_priority )]
+unsafe fn sonic_specialairsboostend(fighter: &mut L2CAgentBase) {
+    FT_MOTION_RATE(fighter, 0.8);
+    frame(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
     }
 }
 
 #[acmd_script( agent = "sonic", script = "effect_specialairsboostend", category = ACMD_EFFECT, low_priority )]
 unsafe fn sonic_specialairsboostend_eff(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
+    if is_excute(fighter) {
         let eff = if VarModule::is_flag(fighter.battle_object, 0x1100) {
             Hash40::new("sonic_spintrace_max")
         }
         else {
             Hash40::new("sonic_spintrace")
         };
-        macros::EFFECT_OFF_KIND(fighter, eff, false, false);
+        EFFECT_OFF_KIND(fighter, eff, false, false);
     }
 }
 
@@ -221,9 +237,8 @@ pub fn install() {
     install_acmd_scripts!(
         sonic_specialsbooststart,
         sonic_specialsboost, sonic_specialsboost_eff,
-        sonic_specialsboostend,
-        sonic_specialsboostend_eff,
-        sonic_specialairsboostend_eff,
+        sonic_specialsboostend, sonic_specialsboostend_eff,
+        sonic_specialairsboostend, sonic_specialairsboostend_eff,
         sonic_special_hi_game,
         sonic_special_lw_hold_game,
         sonic_special_lw_start_game,
