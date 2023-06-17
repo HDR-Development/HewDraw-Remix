@@ -85,21 +85,44 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     }
 
     let step = VarModule::get_int(fighter.battle_object, vars::sonic::status::SPECIAL_S_STEP);
+    let situation = fighter.global_table[SITUATION_KIND].get_i32();
 
-    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
+    if situation == *SITUATION_KIND_GROUND
     && !StatusModule::is_changing(fighter.module_accessor) {
         fighter.check_jump_cancel(false);
     }
-    if step != vars::sonic::SPECIAL_S_STEP_START
-    && StatusModule::is_situation_changed(fighter.module_accessor) {
-        let status = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-            FIGHTER_STATUS_KIND_LANDING
+    if StatusModule::is_situation_changed(fighter.module_accessor) {
+        if step == vars::sonic::SPECIAL_S_STEP_END {
+            let status = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+                FIGHTER_STATUS_KIND_LANDING
+            }
+            else {
+                FIGHTER_STATUS_KIND_FALL
+            };
+            fighter.change_status(status.into(), false.into());
+            return 1.into();
+        }
+        if step == vars::sonic::SPECIAL_S_STEP_DASH {
+            if situation == *SITUATION_KIND_AIR {
+                fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+                return 1.into();
+            }
+        }
+        if situation == *SITUATION_KIND_GROUND {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         }
         else {
-            FIGHTER_STATUS_KIND_FALL
-        };
-        fighter.change_status(status.into(), false.into());
-        return 1.into();
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        }
+        sv_kinetic_energy!(
+            set_brake,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_STOP,
+            0.1,
+            0.0
+        );
     }
     if MotionModule::is_end(fighter.module_accessor) {
         if step == vars::sonic::SPECIAL_S_STEP_START {
@@ -114,7 +137,6 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
                 false
             );
             let lr = PostureModule::lr(fighter.module_accessor);
-            let brake = 0.1;
             let x_speed = 3.5;
             let y_speed = if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
                 if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
@@ -173,7 +195,7 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
                 set_brake,
                 fighter,
                 FIGHTER_KINETIC_ENERGY_ID_STOP,
-                brake,
+                0.1,
                 0.0
             );
             sv_kinetic_energy!(
