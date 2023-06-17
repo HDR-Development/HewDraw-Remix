@@ -6,6 +6,14 @@ unsafe fn sonic_specialsbooststart(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.75);
 }
 
+#[acmd_script( agent = "sonic", script = "sound_specialsbooststart", category = ACMD_SOUND, low_priority )]
+unsafe fn sonic_specialsbooststart_snd(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 6.0);
+    if is_excute(fighter) {
+        PLAY_SEQUENCE(fighter, Hash40::new("seq_sonic_rnd_attack"));
+    }
+}
+
 #[acmd_script( agent = "sonic", script = "game_specialsboost", category = ACMD_GAME, low_priority )]
 unsafe fn sonic_specialsboost(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
@@ -25,7 +33,7 @@ unsafe fn sonic_specialsboost(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "sonic", script = "effect_specialsboost", category = ACMD_EFFECT, low_priority )]
 unsafe fn sonic_specialsboost_eff(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
-        let eff = if VarModule::is_flag(fighter.battle_object, 0x1100) {
+        let eff = if VarModule::is_flag(fighter.battle_object, vars::sonic::status::SPECIAL_S_HOP) {
             Hash40::new("sonic_spintrace_max")
         }
         else {
@@ -34,11 +42,12 @@ unsafe fn sonic_specialsboost_eff(fighter: &mut L2CAgentBase) {
         EFFECT_FOLLOW_NO_STOP(fighter, eff, Hash40::new("top"), 0, 6, 0, 0, 0, 0, 1.25, true);
         EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
     }
-    for _ in 0..4 {
-        if is_excute(fighter) {
-            LANDING_EFFECT(fighter, Hash40::new("sys_sliding_smoke"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 0.6, 0, 0, 3, 0, 0, 0, false);
-        }
-        wait(fighter.lua_state_agent, 4.0);
+}
+
+#[acmd_script( agent = "sonic", script = "sound_specialsboost", category = ACMD_SOUND )]
+unsafe fn sonic_specialsboost_snd(fighter: &mut L2CAgentBase) {
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_sonic_special_s01"));
     }
 }
 
@@ -55,13 +64,26 @@ unsafe fn sonic_specialsboostend(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "sonic", script = "effect_specialsboostend", category = ACMD_EFFECT, low_priority )]
 unsafe fn sonic_specialsboostend_eff(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
-        let eff = if VarModule::is_flag(fighter.battle_object, 0x1100) {
+        let eff = if VarModule::is_flag(fighter.battle_object, vars::sonic::status::SPECIAL_S_HOP) {
             Hash40::new("sonic_spintrace_max")
         }
         else {
             Hash40::new("sonic_spintrace")
         };
         EFFECT_OFF_KIND(fighter, eff, false, false);
+    }
+    for _ in 0..4 {
+        if is_excute(fighter) {
+            LANDING_EFFECT(fighter, Hash40::new("sys_sliding_smoke"), Hash40::new("top"), 4, 0, 0, 0, 0, 0, 0.6, 0, 0, 3, 0, 0, 0, false);
+        }
+        wait(fighter.lua_state_agent, 4.0);
+    }
+}
+
+#[acmd_script( agent = "sonic", script = "sound_specialsboostend", category = ACMD_SOUND )]
+unsafe fn sonic_specialsboostend_snd(fighter: &mut L2CAgentBase) {
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_sonic_dash_stop"));
     }
 }
 
@@ -77,7 +99,7 @@ unsafe fn sonic_specialairsboostend(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "sonic", script = "effect_specialairsboostend", category = ACMD_EFFECT, low_priority )]
 unsafe fn sonic_specialairsboostend_eff(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
-        let eff = if VarModule::is_flag(fighter.battle_object, 0x1100) {
+        let eff = if VarModule::is_flag(fighter.battle_object, vars::sonic::status::SPECIAL_S_HOP) {
             Hash40::new("sonic_spintrace_max")
         }
         else {
@@ -235,9 +257,9 @@ unsafe fn sonic_special_n_landing(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        sonic_specialsbooststart,
-        sonic_specialsboost, sonic_specialsboost_eff,
-        sonic_specialsboostend, sonic_specialsboostend_eff,
+        sonic_specialsbooststart, sonic_specialsbooststart_snd,
+        sonic_specialsboost, sonic_specialsboost_eff, sonic_specialsboost_snd,
+        sonic_specialsboostend, sonic_specialsboostend_eff, sonic_specialsboostend_snd,
         sonic_specialairsboostend, sonic_specialairsboostend_eff,
         sonic_special_hi_game,
         sonic_special_lw_hold_game,
