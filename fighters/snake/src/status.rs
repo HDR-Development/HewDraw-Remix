@@ -64,33 +64,33 @@ unsafe fn snake_c4_status_pre(weapon: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "snake", status = FIGHTER_SNAKE_STATUS_KIND_SPECIAL_LW_PRODUCE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn snake_down_special_start_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_FLAG_SQUAT) {
-        WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_squat_start") as i64, *FIGHTER_SNAKE_STATUS_WORK_INT_MOT_KIND);
+    if fighter.is_flag(*FIGHTER_SNAKE_STATUS_SPECIAL_LW_FLAG_SQUAT) {
+        fighter.set_int64(hash40("special_lw_squat_start") as i64, *FIGHTER_SNAKE_STATUS_WORK_INT_MOT_KIND);
     }
     else {
-        WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_start") as i64, *FIGHTER_SNAKE_STATUS_WORK_INT_MOT_KIND);
+        fighter.set_int64(hash40("special_lw_start") as i64, *FIGHTER_SNAKE_STATUS_WORK_INT_MOT_KIND);
     }
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_start") as i64, *FIGHTER_SNAKE_STATUS_WORK_INT_MOT_AIR_KIND);
+    fighter.set_int64(hash40("special_air_lw_start") as i64, *FIGHTER_SNAKE_STATUS_WORK_INT_MOT_AIR_KIND);
 
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-        let motion = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_WORK_INT_MOT_KIND);
+        let motion = fighter.get_int64(*FIGHTER_SNAKE_STATUS_WORK_INT_MOT_KIND);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(motion), 0.0, 1.0, false, 0.0, false, false);
     }
     else {
-        let motion = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_WORK_INT_MOT_AIR_KIND);
+        let motion = fighter.get_int64(*FIGHTER_SNAKE_STATUS_WORK_INT_MOT_AIR_KIND);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(motion), 0.0, 1.0, false, 0.0, false, false);
     }
     fighter.sub_shift_status_main(L2CValue::Ptr(special_lw_produce_main_loop as *const () as _))
 }
 pub unsafe fn special_lw_produce_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     //println!("prev status is {}, {}", StatusModule::prev_status_kind(fighter.module_accessor, 0), StatusModule::prev_status_kind(fighter.module_accessor, 1));
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_FLAG_SQUAT)
+    if fighter.is_flag(*FIGHTER_SNAKE_STATUS_SPECIAL_LW_FLAG_SQUAT)
     && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_FLAG_SQUAT);
-        WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_start") as i64, *FIGHTER_SNAKE_STATUS_WORK_INT_MOT_KIND);
+        fighter.off_flag(*FIGHTER_SNAKE_STATUS_SPECIAL_LW_FLAG_SQUAT);
+        fighter.set_int64(hash40("special_lw_start") as i64, *FIGHTER_SNAKE_STATUS_WORK_INT_MOT_KIND);
     }
     if MotionModule::is_end(fighter.module_accessor) {
-        let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+        let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
         if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CATCH)
         || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
             if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
@@ -108,38 +108,38 @@ pub unsafe fn special_lw_produce_main_loop(fighter: &mut L2CFighterCommon) -> L2
         false.into()
     }
     else {
-        fun_7100018800(fighter, false);
+        change_motion_by_situation(fighter, false);
         true.into()
     }
 }
-pub unsafe fn fun_7100018800(fighter: &mut L2CFighterCommon, skip_check: bool) {
+pub unsafe fn change_motion_by_situation(fighter: &mut L2CFighterCommon, skip_check: bool) {
     if skip_check == false {
         if StatusModule::situation_kind(fighter.module_accessor) == StatusModule::prev_situation_kind(fighter.module_accessor) {
             return
         }
     }
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-        GroundModule::set_rhombus_offset(fighter.module_accessor, &Vector2f{x:0.0, y:0.0});
+        GroundModule::set_rhombus_offset(fighter.module_accessor, &Vector2f::zero());
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         fighter.set_situation(SITUATION_KIND_GROUND.into());
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-        let motion = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_WORK_INT_MOT_KIND);
+        let motion = fighter.get_int64(*FIGHTER_SNAKE_STATUS_WORK_INT_MOT_KIND);
         MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new_raw(motion), -1.0, 1.0, 0.0, false, false);
     }
     else {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         fighter.set_situation(SITUATION_KIND_AIR.into());
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        let motion = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_WORK_INT_MOT_AIR_KIND);
+        let motion = fighter.get_int64(*FIGHTER_SNAKE_STATUS_WORK_INT_MOT_AIR_KIND);
         MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new_raw(motion), -1.0, 1.0, 0.0, false, false);
     }
 }
 
 #[status_script(agent = "snake", status = FIGHTER_SNAKE_STATUS_KIND_SPECIAL_LW_PRODUCE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn snake_down_special_start_status_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[0xb].get_i32() != *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_LW_ESTABLISH_GROUND
-    && fighter.global_table[0xb].get_i32() != *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_LW_DROP
-    && fighter.global_table[0xb].get_i32() != *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_LW_ESTABLISH_JUDGE {
+    if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_LW_ESTABLISH_GROUND
+    && fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_LW_DROP
+    && fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_LW_ESTABLISH_JUDGE {
         ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4, ArticleOperationTarget(0));
     }
     0.into()
@@ -148,9 +148,9 @@ unsafe fn snake_down_special_start_status_end(fighter: &mut L2CFighterCommon) ->
 #[status_script(agent = "snake", status = FIGHTER_SNAKE_STATUS_KIND_SPECIAL_LW_ESTABLISH_GROUND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn snake_down_special_ground_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = original!(fighter);
-    let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     if VarModule::is_flag(fighter.object(), vars::snake::instance::SELF_STICK) {
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_FLAG_SQUAT) {
+        if fighter.is_flag(*FIGHTER_SNAKE_STATUS_SPECIAL_LW_FLAG_SQUAT) {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw_squat_self_stick"), 0.0, 1.0, false, 0.0, false, false);
         }
         else {
@@ -163,7 +163,7 @@ unsafe fn snake_down_special_ground_status_main(fighter: &mut L2CFighterCommon) 
 #[status_script(agent = "snake", status = FIGHTER_SNAKE_STATUS_KIND_SPECIAL_LW_DROP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn snake_down_special_air_ground_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = original!(fighter);
-    let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     if VarModule::is_flag(fighter.object(), vars::snake::instance::SELF_STICK) {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_lw_self_stick"), 0.0, 1.0, false, 0.0, false, false);
         ArticleModule::change_status(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4, *WEAPON_SNAKE_C4_STATUS_KIND_START, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -198,11 +198,11 @@ unsafe fn snake_down_special_air_ground_status_end(fighter: &mut L2CFighterCommo
 // landing back-air ends in squat position
 #[status_script(agent = "snake", status = FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn snake_landing_attack_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_SNAKE_INSTANCE_WORK_FLAG_CYPHER_FALL);
-    let motion = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
+    fighter.off_flag(*FIGHTER_SNAKE_INSTANCE_WORK_FLAG_CYPHER_FALL);
+    let motion = fighter.get_int64(*FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
     if motion == hash40("attack_air_b") {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("landing_air_b"), 0.0, 1.0, false, 0.0, false, false);
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_FLAG_SQUAT);
+        fighter.on_flag(*FIGHTER_SNAKE_STATUS_SPECIAL_LW_FLAG_SQUAT);
     }
     else if motion == hash40("attack_air_f") {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("landing_air_f"), 0.0, 1.0, false, 0.0, false, false);
@@ -223,12 +223,12 @@ unsafe fn snake_landing_attack_status_main(fighter: &mut L2CFighterCommon) -> L2
     // 0.into()
 }
 pub unsafe fn snake_landing_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_FLAG_SQUAT) { // added check for back air
+    if fighter.is_flag(*FIGHTER_SNAKE_STATUS_SPECIAL_LW_FLAG_SQUAT) { // added check for back air
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT);
     }
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
         if MotionModule::is_end(fighter.module_accessor) {
-            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_FLAG_SQUAT) { // added check for back air
+            if fighter.is_flag(*FIGHTER_SNAKE_STATUS_SPECIAL_LW_FLAG_SQUAT) { // added check for back air
                 fighter.change_status(FIGHTER_STATUS_KIND_SQUAT_WAIT.into(), false.into());
             }
             else {
@@ -255,19 +255,19 @@ pub unsafe fn snake_landing_attack_main_loop(fighter: &mut L2CFighterCommon) -> 
 // added self-stick-squat and back-air to down-special check
 #[status_script(agent = "snake", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn snake_down_special_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[10].get_i32() == *FIGHTER_STATUS_KIND_SQUAT_WAIT
-    || fighter.global_table[10].get_i32() == *FIGHTER_STATUS_KIND_SQUAT_F
-    || fighter.global_table[10].get_i32() == *FIGHTER_STATUS_KIND_SQUAT_B
-    || fighter.global_table[10].get_i32() == *FIGHTER_STATUS_KIND_ATTACK_DASH
-    || fighter.global_table[10].get_i32() == *FIGHTER_STATUS_KIND_ATTACK_LW3
+    if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_SQUAT_WAIT
+    || fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_SQUAT_F
+    || fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_SQUAT_B
+    || fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ATTACK_DASH
+    || fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ATTACK_LW3
     || MotionModule::motion_kind(fighter.module_accessor) ==  hash40("special_lw_squat_ground")
     || MotionModule::motion_kind(fighter.module_accessor) ==  hash40("special_lw_squat_blast")
     || MotionModule::motion_kind(fighter.module_accessor) ==  hash40("special_lw_squat_self_stick") // added exception for sticking yourself
     || MotionModule::motion_kind(fighter.module_accessor) ==  hash40("landing_air_b") { // added exception for landing back air
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_FLAG_SQUAT);
+        fighter.on_flag(*FIGHTER_SNAKE_STATUS_SPECIAL_LW_FLAG_SQUAT);
     }
     else {
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_FLAG_SQUAT);
+        fighter.off_flag(*FIGHTER_SNAKE_STATUS_SPECIAL_LW_FLAG_SQUAT);
     }
     fighter.sub_shift_status_main(L2CValue::Ptr(snake_down_special_main_loop as *const () as _))
     // 0.into()
@@ -290,7 +290,7 @@ unsafe fn snake_side_smash_status_main(fighter: &mut L2CFighterCommon) -> L2CVal
 }
 #[status_script(agent = "snake", status = FIGHTER_STATUS_KIND_ATTACK_S4, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn snake_side_smash_status_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     VarModule::off_flag(fighter.object(), vars::snake::instance::KNIFE_COMBO_ENABLE); 
     VarModule::off_flag(fighter.object(), vars::snake::instance::KNIFE_COMBO_IS_BUFFERED); 
     VarModule::set_int(fighter.object(), vars::snake::instance::KNIFE_COMBO_COUNT, 0); 
@@ -302,8 +302,8 @@ unsafe fn snake_side_smash_status_end(fighter: &mut L2CFighterCommon) -> L2CValu
 unsafe fn snake_side_special_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
     PostureModule::update_rot_y_lr(fighter.module_accessor);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_s_start") as i64, *FIGHTER_SNAKE_STATUS_WORK_INT_MOT_KIND);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_s_start") as i64, *FIGHTER_SNAKE_STATUS_WORK_INT_MOT_AIR_KIND);
+    fighter.set_int64(hash40("special_s_start") as i64, *FIGHTER_SNAKE_STATUS_WORK_INT_MOT_KIND);
+    fighter.set_int64(hash40("special_air_s_start") as i64, *FIGHTER_SNAKE_STATUS_WORK_INT_MOT_AIR_KIND);
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s_start"), 0.0, 1.0, false, 0.0, false, false);
@@ -326,7 +326,7 @@ pub unsafe fn special_side_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue
         return true.into()
     }
     else {
-        fun_7100018800(fighter, false);
+        change_motion_by_situation(fighter, false);
         if CancelModule::is_enable_cancel(fighter.module_accessor) {
             if fighter.sub_wait_ground_check_common(false.into()).get_bool()
             || fighter.sub_air_check_fall_common().get_bool() {
@@ -353,7 +353,7 @@ unsafe fn snake_grab_dash_pull_status_main(fighter: &mut L2CFighterCommon) -> L2
     // 0.into()
 }
 pub unsafe fn snake_grab_pull_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
         fighter.change_status(FIGHTER_STATUS_KIND_CATCH_CUT.into(), false.into());
         return true.into()
@@ -367,27 +367,27 @@ pub unsafe fn snake_grab_pull_main_loop(fighter: &mut L2CFighterCommon) -> L2CVa
         return true.into()
     }
     else if MotionModule::frame(fighter.module_accessor) >= 1.0 {
-        if fighter.global_table[0x21].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_THROW_LW != 0 {
-            WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_LW, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
+        if fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_THROW_LW != 0 {
+            fighter.set_int(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_LW, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
             fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), false.into());
             return true.into()
         }
-        else if fighter.global_table[0x21].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_THROW_HI != 0 {
-            WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_HI, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
+        else if fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_THROW_HI != 0 {
+            fighter.set_int(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_HI, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
             fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), false.into());
             return true.into()
         //check stick directly for easier instant f-throw
         }
         else if PostureModule::lr(fighter.module_accessor)*ControlModule::get_stick_x(fighter.module_accessor) > 0.7 {
             if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-                WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_F, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
+                fighter.set_int(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_F, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
                 fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), false.into());
                 return true.into()
             }
         }
-        else if fighter.global_table[0x21].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_THROW_B != 0 {
+        else if fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_THROW_B != 0 {
             if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-                WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_B, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
+                fighter.set_int(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_B, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
                 fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), false.into());
                 return true.into()
             }
@@ -415,25 +415,25 @@ pub unsafe fn snake_grab_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         return true.into()
     }
     else if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+        let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
         if ControlModule::get_stick_y(fighter.module_accessor) < -0.7 {
-            WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_LW, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
+            fighter.set_int(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_LW, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
             fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), false.into());
             return true.into()
         }
         else if ControlModule::get_stick_y(fighter.module_accessor) > 0.7 {
-            WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_HI, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
+            fighter.set_int(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_HI, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
             fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), false.into());
             return true.into()
 
         }
-        else if PostureModule::lr(fighter.module_accessor)*ControlModule::get_stick_x(fighter.module_accessor) > 0.7 {
+        else if PostureModule::lr(fighter.module_accessor) * ControlModule::get_stick_x(fighter.module_accessor) > 0.7 {
             if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-                WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_F, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
+                fighter.set_int(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_F, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
                 fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), false.into());
                 return true.into()
             }
-            else{
+            else {
                 VarModule::on_flag(fighter.object(), vars::snake::instance::IS_GRAB_WALK);
                 fighter.change_status(FIGHTER_STATUS_KIND_CATCH_WAIT.into(), false.into());
                 return true.into()
@@ -441,7 +441,7 @@ pub unsafe fn snake_grab_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         }
         else if PostureModule::lr(fighter.module_accessor)*ControlModule::get_stick_x(fighter.module_accessor) < -0.7 {
             if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-                WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_B, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
+                fighter.set_int(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_B, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
                 fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), false.into());
                 return true.into()
             }
@@ -461,7 +461,7 @@ pub unsafe fn snake_grab_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 ////added grab walk
 #[status_script(agent = "snake", status = FIGHTER_STATUS_KIND_CATCH_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn snake_grab_wait_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     ControlModule::reset_trigger(fighter.module_accessor);
     if VarModule::is_flag(fighter.object(), vars::snake::instance::IS_GRAB_WALK) {
         if PostureModule::lr(fighter.module_accessor)*ControlModule::get_stick_x(fighter.module_accessor) > 0.1 {
@@ -482,29 +482,29 @@ unsafe fn snake_grab_wait_status_main(fighter: &mut L2CFighterCommon) -> L2CValu
     // 0.into()
 }
 pub unsafe fn snake_grab_wait_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
         fighter.change_status(FIGHTER_STATUS_KIND_CATCH_CUT.into(), false.into());
         return true.into()
     }
-    else if fighter.global_table[0x21].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_THROW_LW != 0 {
-        WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_LW, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
+    else if fighter.is_cat_flag(Cat2::ThrowLw) {
+        fighter.set_int(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_LW, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
         fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), false.into());
         return true.into()
     }
-    else if fighter.global_table[0x21].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_THROW_HI != 0 {
-        WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_HI, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
+    else if fighter.is_cat_flag(Cat2::ThrowHi) {
+        fighter.set_int(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_HI, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
         fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), false.into());
         return true.into()
     }
     else if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
         if PostureModule::lr(fighter.module_accessor)*ControlModule::get_stick_x(fighter.module_accessor) > 0.7 {
-            WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_F, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
+            fighter.set_int(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_F, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
             fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), false.into());
             return true.into()
         }
         else if PostureModule::lr(fighter.module_accessor)*ControlModule::get_stick_x(fighter.module_accessor) < -0.7 {
-            WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_B, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
+            fighter.set_int(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_B, *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_LAST_STRANS);
             fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), false.into());
             return true.into()
         }
@@ -537,7 +537,7 @@ pub unsafe fn snake_grab_wait_main_loop(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 #[status_script(agent = "snake", status = FIGHTER_STATUS_KIND_CATCH_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn snake_grab_wait_status_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     VarModule::off_flag(fighter.object(), vars::snake::instance::IS_GRAB_WALK);
     original!(fighter)
 }
@@ -592,7 +592,7 @@ unsafe fn snake_taunt_status_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         let object = sv_system::battle_object(fighter.lua_state_agent);
         let fighta : *mut Fighter = std::mem::transmute(object);
         if is_constraint_article(fighta, *FIGHTER_SNAKE_GENERATE_ARTICLE_CBOX, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL)) {
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_APPEAL_FLAG_EXIT);
+            fighter.on_flag(*FIGHTER_SNAKE_STATUS_APPEAL_FLAG_EXIT);
             ArticleModule::shoot(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_CBOX, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
         }
     }
@@ -604,17 +604,17 @@ unsafe fn snake_taunt_status_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe fn snake_down_taunt_wait_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_trigger(fighter.module_accessor);
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_wait"), 0.0, 1.0, false, 0.0, false, false);
-    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_APPEAL_FLAG_EXIT);
+    fighter.off_flag(*FIGHTER_SNAKE_STATUS_APPEAL_FLAG_EXIT);
     let appeal_wait_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_private"), hash40("appeal_wait_frame"));
-    WorkModule::set_int(fighter.module_accessor, appeal_wait_frame, *FIGHTER_SNAKE_STATUS_APPEAL_WORK_INT_WAIT_COUNTER);
-    let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    fighter.set_int(appeal_wait_frame, *FIGHTER_SNAKE_STATUS_APPEAL_WORK_INT_WAIT_COUNTER);
+    let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     VarModule::off_flag(fighter.object(), vars::snake::instance::DTAUNT_C4_EXLPODE);
     VarModule::set_int(fighter.object(), vars::snake::instance::DTAUNT_GRENADE_WAIT_COUNT, 0);
     fighter.sub_shift_status_main(L2CValue::Ptr(snake_down_taunt_wait_main_loop as *const () as _))
     // 0.into()
 }
 pub unsafe fn snake_down_taunt_wait_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     if VarModule::get_int(fighter.object(), vars::snake::instance::DTAUNT_GRENADE_WAIT_COUNT) > 0 {
         VarModule::dec_int(fighter.object(), vars::snake::instance::DTAUNT_GRENADE_WAIT_COUNT);
     }
@@ -625,7 +625,7 @@ pub unsafe fn snake_down_taunt_wait_main_loop(fighter: &mut L2CFighterCommon) ->
     }
     else if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
     || ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
-    || WorkModule::get_int(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_APPEAL_WORK_INT_WAIT_COUNTER) <= 0 {
+    || fighter.get_int(*FIGHTER_SNAKE_STATUS_APPEAL_WORK_INT_WAIT_COUNTER) <= 0 {
         fighter.change_status(FIGHTER_SNAKE_STATUS_KIND_APPEAL_END.into(), false.into());
         return true.into()
     //place c4
@@ -686,7 +686,7 @@ unsafe fn snake_down_taunt_wait_status_end(fighter: &mut L2CFighterCommon) -> L2
         let object = sv_system::battle_object(fighter.lua_state_agent);
         let fighta : *mut Fighter = std::mem::transmute(object);
         if is_constraint_article(fighta, *FIGHTER_SNAKE_GENERATE_ARTICLE_CBOX, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL)) {
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_APPEAL_FLAG_EXIT);
+            fighter.on_flag(*FIGHTER_SNAKE_STATUS_APPEAL_FLAG_EXIT);
             ArticleModule::shoot(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_CBOX, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
         }
     }
@@ -694,7 +694,7 @@ unsafe fn snake_down_taunt_wait_status_end(fighter: &mut L2CFighterCommon) -> L2
 }
 #[status_script(agent = "snake", status = FIGHTER_SNAKE_STATUS_KIND_APPEAL_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn snake_down_taunt_end_status_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    let entry_id = fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     if VarModule::is_flag(fighter.object(), vars::snake::instance::DTAUNT_C4_EXLPODE) {
         VarModule::off_flag(fighter.object(), vars::snake::instance::DTAUNT_C4_EXLPODE);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_end_explode"), 0.0, 1.0, false, 0.0, false, false);
@@ -702,7 +702,7 @@ unsafe fn snake_down_taunt_end_status_main(fighter: &mut L2CFighterCommon) -> L2
     else {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_end"), 0.0, 1.0, false, 0.0, false, false);
     }
-    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_APPEAL_FLAG_EXIT);
+    fighter.off_flag(*FIGHTER_SNAKE_STATUS_APPEAL_FLAG_EXIT);
     fighter.sub_shift_status_main(L2CValue::Ptr(snake_down_taunt_end_main_loop as *const () as _))
     // 0.into()
 }
@@ -728,7 +728,7 @@ unsafe fn snake_down_taunt_end_status_end(fighter: &mut L2CFighterCommon) -> L2C
     let object = sv_system::battle_object(fighter.lua_state_agent);
     let fighta : *mut Fighter = std::mem::transmute(object);
     if is_constraint_article(fighta, *FIGHTER_SNAKE_GENERATE_ARTICLE_CBOX, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL)) {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SNAKE_STATUS_APPEAL_FLAG_EXIT);
+        fighter.on_flag(*FIGHTER_SNAKE_STATUS_APPEAL_FLAG_EXIT);
         ArticleModule::shoot(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_CBOX, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
     }
     ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4_SWITCH, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
