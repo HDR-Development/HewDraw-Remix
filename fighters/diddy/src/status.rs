@@ -2,6 +2,7 @@ use super::*;
 use globals::*;
 
 mod special_s;
+mod special_hi;
 
 
 pub fn install() {
@@ -10,6 +11,7 @@ pub fn install() {
     );
     smashline::install_agent_init_callbacks!(diddy_init);
     special_s::install();
+    special_hi::install();
 }
 
 // FIGHTER_STATUS_KIND_JUMP_SQUAT

@@ -56,14 +56,14 @@ unsafe fn up_special_drift(boma: &mut BattleObjectModuleAccessor, fighter_kind: 
         motion_value = value_toon;
     }
 
-    if status_kind == *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_HOLD {
-        if situation_kind == *SITUATION_KIND_GROUND {
-            if stick_x != 0.0 {
-                let motion_vec = x_motion_vec(value_walk, stick_x);
-                KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-            }
-        }
-    }
+   //if status_kind == *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_HOLD {
+   //    if situation_kind == *SITUATION_KIND_GROUND {
+   //        if stick_x != 0.0 {
+   //            let motion_vec = x_motion_vec(value_walk, stick_x);
+   //            KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
+   //        }
+   //    }
+   //}
 }
 
 // Spin attack land cancel

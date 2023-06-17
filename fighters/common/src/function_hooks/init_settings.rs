@@ -112,6 +112,8 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
             && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI))
         || (boma.kind() == *FIGHTER_KIND_REFLET
             && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI))
+        || (boma.kind() == *FIGHTER_KIND_WOLF
+            && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI))
         {
             cliff_check_kind = app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
         }
