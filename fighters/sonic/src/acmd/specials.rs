@@ -219,7 +219,7 @@ unsafe fn sonic_special_n_landing(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        sonic_specialsbooststart, sonic_specialsbooststart_eff,
+        sonic_specialsbooststart,
         sonic_specialsboost, sonic_specialsboost_eff,
         sonic_specialsboostend,
         sonic_specialsboostend_eff,
