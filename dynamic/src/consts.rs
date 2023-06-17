@@ -805,7 +805,8 @@ pub mod vars {
             // flags
             pub const PULSE_HITBOX: i32 = 0x1100;
 
-            pub const SPECIAL_S_ENABLE_JUMP: i32 = 0x1100;
+            pub const SPECIAL_S_HOP: i32 = 0x1100;
+            pub const SPECIAL_S_ENABLE_JUMP: i32 = 0x1101;
 
             // ints
             pub const SPECIAL_S_STEP: i32 = 0x1100;
