@@ -798,10 +798,21 @@ pub mod vars {
     }
 
     pub mod sonic {
+        pub mod instance {
+            pub const USED_BOOST: i32 = 0x0100;
+        }
         pub mod status {
             // flags
             pub const PULSE_HITBOX: i32 = 0x1100;
+
+            pub const SPECIAL_S_ENABLE_JUMP: i32 = 0x1100;
+
+            // ints
+            pub const SPECIAL_S_STEP: i32 = 0x1100;
         }
+        pub const SPECIAL_S_STEP_START: i32 = 0x0;
+        pub const SPECIAL_S_STEP_DASH: i32 = 0x1;
+        pub const SPECIAL_S_STEP_END: i32 = 0x2;
     }
 
     pub mod snake {

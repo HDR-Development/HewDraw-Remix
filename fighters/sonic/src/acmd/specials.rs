@@ -1,6 +1,24 @@
 
 use super::*;
 
+#[acmd_script( agent = "sonic", script = "game_specialsbooststart", category = ACMD_GAME, low_priority )]
+unsafe fn sonic_specialsbooststart(fighter: &mut L2CAgentBase) {
+    macros::FT_MOTION_RATE(fighter, 0.75);
+}
+
+#[acmd_script( agent = "sonic", script = "game_specialsboost", category = ACMD_GAME, low_priority )]
+unsafe fn sonic_specialsboost(fighter: &mut L2CAgentBase) {
+    macros::FT_MOTION_RATE(fighter, 0.5);
+    frame(fighter.lua_state_agent, 14.0);
+    if is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_JUMP);
+    }
+}
+
+#[acmd_script( agent = "sonic", scripts = [ "game_specialsboostend", "game_specialairsboostend" ], category = ACMD_GAME, low_priority )]
+unsafe fn sonic_specialsboostend(fighter: &mut L2CAgentBase) {
+    macros::FT_MOTION_RATE(fighter, 0.8);
+}
 
 #[acmd_script( agent = "sonic", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn sonic_special_hi_game(fighter: &mut L2CAgentBase) {
@@ -18,8 +36,8 @@ unsafe fn sonic_special_hi_game(fighter: &mut L2CAgentBase) {
 unsafe fn sonic_gimmick_jump_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-if is_excute(fighter) {
-    ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 90, 90, 0, 30, 6.0, 0.0, 6.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 90, 90, 0, 30, 6.0, 0.0, 6.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
     }
 }
 
@@ -150,6 +168,9 @@ unsafe fn sonic_special_n_landing(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        sonic_specialsbooststart,
+        sonic_specialsboost,
+        sonic_specialsboostend,
         sonic_special_hi_game,
         sonic_special_lw_hold_game,
         sonic_special_lw_start_game,

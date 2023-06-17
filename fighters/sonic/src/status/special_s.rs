@@ -35,7 +35,10 @@ pub unsafe fn pre_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
             *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK |
             *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON
         ) as u64,
-        *FIGHTER_STATUS_ATTR_START_TURN as u32,
+        (
+            *FIGHTER_STATUS_ATTR_START_TURN |
+            *FIGHTER_STATUS_ATTR_DISABLE_GROUND_FRICTION
+        ) as u32,
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32,
         0
     );
@@ -45,9 +48,10 @@ pub unsafe fn pre_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "sonic", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 pub unsafe fn main_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
     // fighter.sub_change_motion_by_situation(L2CValue::Hash40s("special_s"), L2CValue::Hash40s("special_air_s"), false.into());
+    VarModule::set_int(fighter.battle_object, vars::sonic::status::SPECIAL_S_STEP, vars::sonic::SPECIAL_S_STEP_START);
     MotionModule::change_motion(
         fighter.module_accessor,
-        Hash40::new("jump_squat"),
+        Hash40::new("special_s_boost_start"),
         0.0,
         1.0,
         false,
@@ -56,10 +60,13 @@ pub unsafe fn main_special_s(fighter: &mut L2CFighterCommon) -> L2CValue {
         false
     );
     if fighter.global_table[globals::SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        VarModule::on_flag(fighter.battle_object, vars::sonic::instance::USED_BOOST);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
     }
     else {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     }
     fighter.main_shift(special_s_main_loop)
 }
@@ -77,70 +84,70 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
         }
     }
 
+    let step = VarModule::get_int(fighter.battle_object, vars::sonic::status::SPECIAL_S_STEP);
+
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
-    && fighter.global_table[CURRENT_FRAME].get_f32() >= 5.0
     && !StatusModule::is_changing(fighter.module_accessor) {
         fighter.check_jump_cancel(false);
     }
-    // temporary
-    // if MotionModule::motion_kind(fighter.module_accessor) == hash40("dash") {
-    //     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-    //         fighter.clear_lua_stack();
-    //         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
-    //         let speed_y = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-    //         if speed_y < 0.2 {
-    //             sv_kinetic_energy!(
-    //                 set_brake,
-    //                 fighter,
-    //                 FIGHTER_KINETIC_ENERGY_ID_STOP,
-    //                 0.0,
-    //                 0.0
-    //             );
-    //         }
-    //     }
-    //     else {
-    //         sv_kinetic_energy!(
-    //             set_brake,
-    //             fighter,
-    //             FIGHTER_KINETIC_ENERGY_ID_STOP,
-    //             0.08,
-    //             0.0
-    //         );
-    //     }
-    // }
+    if step == vars::sonic::SPECIAL_S_STEP_END
+    && StatusModule::is_situation_changed(fighter.module_accessor) {
+        let status = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+            FIGHTER_STATUS_KIND_LANDING
+        }
+        else {
+            FIGHTER_STATUS_KIND_FALL
+        };
+        fighter.change_status(status.into(), false.into());
+        return 1.into();
+    }
     if MotionModule::is_end(fighter.module_accessor) {
-        // temporary
-        if MotionModule::motion_kind(fighter.module_accessor) == hash40("jump_squat") {
+        if step == vars::sonic::SPECIAL_S_STEP_START {
             MotionModule::change_motion(
                 fighter.module_accessor,
-                Hash40::new("dash"),
+                Hash40::new("special_s_boost"),
                 0.0,
-                0.75,
+                1.0,
                 false,
                 0.0,
                 false,
                 false
             );
             let lr = PostureModule::lr(fighter.module_accessor);
-            let brake;
+            let brake = 0.065;
+            let mut x_speed = 2.5;
             let y_speed = if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-                brake = 0.05;
                 if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-                    1.1
+                    // x_speed = 3.0;
+                    1.3
                 }
                 else {
-                    -0.1
+                    KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN)
                 }
             }
             else {
-                brake = 0.08;
-                0.0
+                if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+                    // x_speed = 3.0;
+                    fighter.set_situation(SITUATION_KIND_AIR.into());
+                    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+                    1.3
+                }
+                else {
+                    0.0
+                }
             };
+            sv_kinetic_energy!(
+                set_limit_speed,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_STOP,
+                x_speed,
+                0.0
+            );
             sv_kinetic_energy!(
                 set_speed,
                 fighter,
                 FIGHTER_KINETIC_ENERGY_ID_STOP,
-                4.0 * lr,
+                x_speed * lr,
                 0.0
             );
             sv_kinetic_energy!(
@@ -171,6 +178,26 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
                 air_speed_y_stable * 0.7
             );
             KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            VarModule::set_int(fighter.battle_object, vars::sonic::status::SPECIAL_S_STEP, vars::sonic::SPECIAL_S_STEP_DASH);
+        }
+        else if step == vars::sonic::SPECIAL_S_STEP_DASH {
+            let mot = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+                hash40("special_s_boost_end")
+            }
+            else {
+                hash40("special_air_s_boost_end")
+            };
+            MotionModule::change_motion(
+                fighter.module_accessor,
+                Hash40::new_raw(mot),
+                0.0,
+                1.0,
+                false,
+                0.0,
+                false,
+                false
+            );
+            VarModule::set_int(fighter.battle_object, vars::sonic::status::SPECIAL_S_STEP, vars::sonic::SPECIAL_S_STEP_END);
         }
         else {
             if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
