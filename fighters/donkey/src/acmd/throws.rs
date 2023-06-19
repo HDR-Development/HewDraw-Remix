@@ -215,11 +215,14 @@ unsafe fn game_itemheavythrowlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 8.0);
-    FT_MOTION_RATE_RANGE(fighter, 8.0, 14.0, 9.0);
-    frame(lua_state, 14.0);
+    FT_MOTION_RATE_RANGE(fighter, 8.0, 13.0, 9.0);
+    frame(lua_state, 13.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         ItemModule::throw_item(boma, 270.0, 4.0, 1.0, 0, true, 0.0);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
         let main_speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         let stick_add_x = fighter.stick_x();
         
@@ -252,9 +255,9 @@ unsafe fn game_itemheavythrowlw(fighter: &mut L2CAgentBase) {
 unsafe fn effect_heavyitemthrowlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 10.0);
+    frame(lua_state, 11.0);
     if is_excute(fighter) {
-        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("donkey_attack_arc"), Hash40::new("donkey_attack_arc"), Hash40::new("top"), -2, 16, -3, -5, -33, -102, 1.0, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("donkey_attack_arc"), Hash40::new("donkey_attack_arc"), Hash40::new("top"), -2, 16, -1, -5, -33, -102, 1.2, true, *EF_FLIP_YZ);
     }
 }
 
