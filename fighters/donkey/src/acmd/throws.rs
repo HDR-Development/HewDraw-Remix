@@ -214,12 +214,14 @@ unsafe fn heavy_item_throw_b(fighter: &mut L2CAgentBase) {
 unsafe fn game_itemheavythrowlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 8.0);
+    FT_MOTION_RATE_RANGE(fighter, 8.0, 14.0, 9.0);
     frame(lua_state, 14.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         ItemModule::throw_item(boma, 270.0, 4.0, 1.0, 0, true, 0.0);
-        
-        let main_speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) * PostureModule::lr(fighter.module_accessor);
-        let stick_add_x = fighter.stick_x() * 1.5;
+        let main_speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        let stick_add_x = fighter.stick_x();
         
         // change to kinetic type fall and change to air situation
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
@@ -231,7 +233,7 @@ unsafe fn game_itemheavythrowlw(fighter: &mut L2CAgentBase) {
         KineticModule::change_kinetic(fighter.module_accessor, kinetic);
 
         // pop up into the air
-        SET_SPEED_EX(fighter, main_speed_x + stick_add_x, 2.25, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        SET_SPEED_EX(fighter, (main_speed_x + stick_add_x) * PostureModule::lr(fighter.module_accessor), 2.25, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
 
     // when we reach the cancel frame, transition into fall instead
