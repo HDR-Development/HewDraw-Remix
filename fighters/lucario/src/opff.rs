@@ -60,6 +60,21 @@ unsafe fn training_mode_deplete_meter(fighter: &mut L2CFighterCommon, boma: &mut
 }
 
 unsafe fn nspecial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
+
+    // aura bomb activation
+    // meter is drained in ACMD so that it only happens when projectile is shot
+    if status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT 
+    && frame == 8.0
+    && fighter.is_flag(*FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLAG_CHARGE_MAX)
+    && fighter.is_button_on(Buttons::SpecialRaw)
+    && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) {
+        if situation_kind == *SITUATION_KIND_GROUND {
+            MotionModule::change_motion_inherit_frame(boma, Hash40::new("special_n_bomb"), -1.0, 1.0, 0.0, false, false);
+        } else {
+            MotionModule::change_motion_inherit_frame(boma, Hash40::new("special_air_n_bomb"), -1.0, 1.0, 0.0, false, false);
+        }
+    }
+
     //PM-like neutral-b canceling
     if situation_kind == *SITUATION_KIND_AIR {
         // if status_kind == FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD
@@ -96,6 +111,8 @@ unsafe fn uspecial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
 
 unsafe fn dspecial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
     if fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_SPLIT,
         *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_APPEAR,
         *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_END
     ]) 
@@ -263,6 +280,7 @@ unsafe fn jump_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
         *FIGHTER_STATUS_KIND_ATTACK_HI4,
         *FIGHTER_STATUS_KIND_ATTACK_AIR
     ])
+    && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT)
     && fighter.check_jump_cancel(false) {
         MeterModule::drain_direct(fighter.object(), MeterModule::meter_per_level(fighter.object()));
         pause_meter_regen(fighter, 90);

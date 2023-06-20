@@ -370,6 +370,122 @@ unsafe fn game_specialairappear(fighter: &mut L2CAgentBase) {
     // }
 }
 
+#[acmd_script( agent = "lucario", script = "game_specialnbomb", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialnbomb(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 37.0);
+    if is_excute(fighter) {
+        ArticleModule::shoot(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
+        MeterModule::drain_direct(fighter.battle_object, 2.0 * MeterModule::meter_per_level(fighter.battle_object));
+        let frames = 120.max(VarModule::get_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+        VarModule::set_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "effect_specialnbomb", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_specialnbomb(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 35.0);
+    if is_excute(fighter) {
+        LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "sound_specialnbomb", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_specialnbomb(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 37.0);
+    if is_excute(fighter) {
+        let charge = WorkModule::get_float(boma, *FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLOAT_CHARGE_RATE);
+        if charge < 0.45 {
+            PLAY_SE_REMAIN(fighter, Hash40::new("vc_lucario_001"));
+        } 
+        else if charge < 0.9 {
+            PLAY_SE_REMAIN(fighter, Hash40::new("vc_lucario_002"));
+        } 
+        else{
+            PLAY_SE_REMAIN(fighter, Hash40::new("vc_lucario_013"));
+        }
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "expression_specialnbomb", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_specialnbomb(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 35.0);
+    if is_excute(fighter) {
+        if WorkModule::is_flag(boma, *FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLAG_CHARGE_MAX) {
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_beaml"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        }
+        else{
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_beamm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        }
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "game_specialairnbomb", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialairnbomb(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 37.0);
+    if is_excute(fighter) {
+        ArticleModule::shoot(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
+        MeterModule::drain_direct(fighter.battle_object, 2.0 * MeterModule::meter_per_level(fighter.battle_object));
+        let frames = 120.max(VarModule::get_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME));
+        VarModule::set_int(fighter.object(), vars::lucario::instance::METER_PAUSE_REGEN_FRAME, frames);
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "effect_specialairnbomb", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_specialairnbomb(fighter: &mut L2CAgentBase) {
+
+}
+
+#[acmd_script( agent = "lucario", script = "sound_specialairnbomb", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_specialairnbomb(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 37.0);
+    if is_excute(fighter) {
+        let charge = WorkModule::get_float(boma, *FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLOAT_CHARGE_RATE);
+        if charge < 0.45 {
+            PLAY_SE_REMAIN(fighter, Hash40::new("vc_lucario_001"));
+        } 
+        else if charge < 0.9 {
+            PLAY_SE_REMAIN(fighter, Hash40::new("vc_lucario_002"));
+        } 
+        else{
+            PLAY_SE_REMAIN(fighter, Hash40::new("vc_lucario_013"));
+        }
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "expression_specialairnbomb", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_specialairnbomb(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 35.0);
+    if is_excute(fighter) {
+        if WorkModule::is_flag(boma, *FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLAG_CHARGE_MAX) {
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_beaml"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        }
+        else{
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_beamm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        }
+    }
+}
 
 pub fn install() {
     install_acmd_scripts!(
@@ -389,5 +505,13 @@ pub fn install() {
         lucario_special_air_hi_end_game,
         game_speciallwsplit,
         game_specialairappear,
+        game_specialnbomb,
+        effect_specialnbomb,
+        sound_specialnbomb,
+        expression_specialnbomb,
+        game_specialairnbomb,
+        effect_specialairnbomb,
+        sound_specialairnbomb,
+        expression_specialairnbomb,
     );
 }
