@@ -4,12 +4,8 @@
     <hash40 index="0">dummy</hash40>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
-    <struct index="3">
-      <hash40 hash="status">hit_status_xlu</hash40>
-    </struct>
-    <struct index="4">
-      <hash40 hash="status">hit_status_xlu</hash40>
-    </struct>
+    <hash40 index="3">dummy</hash40>
+    <hash40 index="4">dummy</hash40>
     <hash40 index="5">dummy</hash40>
     <hash40 index="6">dummy</hash40>
     <hash40 index="7">dummy</hash40>
