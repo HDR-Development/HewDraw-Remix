@@ -18,10 +18,10 @@
   </struct>
   <list hash="param_special_n">
     <struct index="0">
-      <int hash="special_n_thunder_consume point">1</int>
-      <int hash="special_n_el_thunder_consume point">2</int>
-      <int hash="special_n_giga_thunder_consume point">4</int>
-      <int hash="special_n_tron_consume point">8</int>
+      <int hash="special_n_thunder_consume_point">1</int>
+      <int hash="special_n_el_thunder_consume_point">2</int>
+      <int hash="special_n_giga_thunder_consume_point">4</int>
+      <int hash="special_n_tron_consume_point">8</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
