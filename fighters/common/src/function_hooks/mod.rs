@@ -21,6 +21,7 @@ pub mod set_fighter_status_data;
 pub mod attack;
 pub mod collision;
 pub mod camera;
+pub mod shotos;
 pub mod aura;
 
 #[repr(C)]
@@ -677,6 +678,7 @@ pub fn install() {
     attack::install();
     collision::install();
     camera::install();
+    shotos::install();
     aura::install();
 
     unsafe {
