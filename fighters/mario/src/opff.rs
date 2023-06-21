@@ -217,6 +217,11 @@ unsafe fn galaxy_spin_move(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
                     KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
                 }
             }
+            if frame >= 50.0 && frame < 55.0  {
+                if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+                    boma.check_jump_cancel(true);
+                }
+            }
         }
     }
 }
