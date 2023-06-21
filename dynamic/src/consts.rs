@@ -810,8 +810,17 @@ pub mod vars {
 
     pub mod snake {
         pub mod instance {
+            // flags
+            pub const SELF_STICK : i32 = 0x0100;
+            pub const KNIFE_COMBO_ENABLE : i32 = 0x0101;
+            pub const KNIFE_COMBO_IS_BUFFERED : i32 = 0x0102;
+            pub const DTAUNT_C4_EXLPODE : i32 = 0x0103;
+            pub const DTAUNT_GRENADE_WAIT_COUNT : i32 = 0x0104;
+            pub const IS_GRAB_WALK : i32 = 0x0105;
+            
             // ints
             pub const SNAKE_GRENADE_COUNTER: i32 = 0x0100;
+            pub const KNIFE_COMBO_COUNT : i32 = 0x0101;
         }
     }
 
