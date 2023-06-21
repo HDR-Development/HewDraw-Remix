@@ -33,31 +33,6 @@ unsafe fn fuel_reset(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-// K. Rool Side B Crown Item Grab
-unsafe fn crownerang_item_grab(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
-    if [
-        *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_S_THROW,
-    ]
-    .contains(&status_kind)
-    {
-        //println!("K. Rool side B");
-        if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-            //println!("K. Rool crown grab");
-            if !ItemModule::is_have_item(boma, 0) {
-                ItemModule::have_item(
-                    boma,
-                    app::ItemKind(*ITEM_KIND_KROOLCROWN),
-                    0,
-                    0,
-                    false,
-                    false,
-                );
-            }
-        }
-    }
-}
-
 pub unsafe fn armored_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
     if fighter.is_motion_one_of(&[
         Hash40::new("attack_s3_s"),
@@ -106,10 +81,10 @@ pub unsafe fn armored_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
 
         if (charge_start_frame..charge_end_frame).contains(&fighter.motion_frame()) && charge < (max_charge_frames as i32) && is_hold {
             if [hash40("special_lw"), hash40("special_air_lw")].contains(&motion_kind) {
-                if fighter.motion_frame() == 0.2 {
-                    EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_level_up"), Hash40::new("hip"), &eff_offset, &Vector3f::new(0.0, 0.0, 0.0), 0.55, true, 0, 0, 0, 0, 0, false, false);
-                }
-                else if fighter.motion_frame() >= 1.18 {
+                // if fighter.motion_frame() == 0.2 {
+                //     EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_level_up"), Hash40::new("hip"), &eff_offset, &Vector3f::new(0.0, 0.0, 0.0), 0.55, true, 0, 0, 0, 0, 0, false, false);
+                // }
+                if fighter.motion_frame() >= 1.18 {
                     VarModule::on_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED);
                 }
                 MotionModule::set_rate(fighter.module_accessor, 0.01);
@@ -117,7 +92,12 @@ pub unsafe fn armored_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
             }
             else {
                 if fighter.motion_frame() == charge_start_frame {
-                    EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_level_up"), Hash40::new("hip"), &eff_offset, &Vector3f::new(0.0, 0.0, 0.0), 0.55, true, 0, 0, 0, 0, 0, false, false);
+                    if WorkModule::get_float(fighter.module_accessor, 0x4d) >= 1.0 {
+                        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
+                    }
+                    let facing = eff_offset.z * PostureModule::lr(fighter.module_accessor);
+                    smash_script::macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_level_up"), Hash40::new("hip"), eff_offset.x, eff_offset.y, facing, 0, 0, 0, 0.55, true);
+                    smash_script::macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_krool_rnd_attack"));
                 }
                 let motion_rate = (charge_end_frame - charge_start_frame)/max_charge_frames;
                 MotionModule::set_rate(fighter.module_accessor, motion_rate);
@@ -130,11 +110,11 @@ pub unsafe fn armored_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
 }
 
 pub unsafe fn restore_armor(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_KROOL_STATUS_KIND_SPECIAL_LW_HIT) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
         if VarModule::is_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED)
             && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
             && !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::set_int(fighter.battle_object, vars::krool::instance::BELLY_HEALTH, 4);
+            WorkModule::set_float(fighter.module_accessor, 4.0, 0x4d);
             VarModule::set_float(fighter.battle_object, vars::krool::instance::STORED_DAMAGE, 0.0);
         }
     }
@@ -157,7 +137,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     gut_shine(fighter);
     jetpack_cancel(fighter, boma, status_kind, cat[0]);
     fuel_reset(fighter);
-    //crownerang_item_grab(boma, status_kind, cat[0]);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_KROOL)]

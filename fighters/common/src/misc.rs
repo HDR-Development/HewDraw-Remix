@@ -92,6 +92,9 @@ pub fn install() {
        hero_rng_hook,
        psych_up_hit,
     );
+    skyline::install_hooks!(
+        krool_belly_damage_hook,
+    );
 }
 
 /*#[skyline::hook(replace=TeamModule::set_hit_team)]
@@ -126,15 +129,16 @@ pub fn fighter_reset(fighter: &mut L2CFighterCommon) {
 extern "C" {
     #[link_name = "_ZN3app24FighterSpecializer_Brave23special_lw_open_commandERNS_7FighterE"]
     fn special_lw_open_command();
-    //#[link_name = "krool_belly_toggle_hook_impl"]
-    //fn krool_belly_toggle_hook_impl(ctx: &mut skyline::hooks::InlineCtx);
-    #[link_name = "krool_belly_damage_hook_impl"]
-    fn krool_belly_damage_hook_impl(fighter: *mut BattleObject, unk: bool, damage: f32);
 }
 
 extern "C" {
     #[link_name = "hero_rng_hook_impl"]
     fn hero_rng_hook_impl(fighter: *mut BattleObject);
+}
+
+extern "C" {
+    #[link_name = "krool_belly_damage_hook_impl"]
+    fn krool_belly_damage_hook_impl(damage: f32, fighter: *mut Fighter, unk: bool);
 }
 
 #[skyline::hook(replace = special_lw_open_command)]
@@ -153,6 +157,6 @@ pub unsafe fn psych_up_hit() {
 // }
 
 #[skyline::hook(offset = 0xc055d0)]
-pub unsafe fn krool_belly_damage_hook(fighter: *mut BattleObject, unk: bool, damage: f32) {
-    krool_belly_damage_hook_impl(fighter, unk, damage);
+pub unsafe fn krool_belly_damage_hook(damage: f32, fighter: *mut Fighter, unk: bool) {
+    krool_belly_damage_hook_impl(damage, fighter, unk);
 }

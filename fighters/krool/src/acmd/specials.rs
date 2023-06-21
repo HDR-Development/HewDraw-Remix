@@ -171,7 +171,7 @@ unsafe fn krool_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED) {
-            let damage = VarModule::get_float(fighter.battle_object, vars::krool::instance::STORED_DAMAGE);
+            let damage = VarModule::get_float(fighter.battle_object, vars::krool::instance::STORED_DAMAGE) / 9.0;
             ATTACK(fighter, 0, 0, Hash40::new("top"), 16.0 + damage, 50, 85, 0, 50, 10.5, 0.0, 10.75, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_BODY);
         }
     }
@@ -239,6 +239,13 @@ unsafe fn krool_special_lw_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_krool_special_l01"));
         PLAY_SE(fighter, Hash40::new("vc_krool_special_l01"));
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_krool_smash_h01"));
+        if VarModule::is_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED) {
+            PLAY_SE(fighter, Hash40::new("se_krool_special_l05"));
+        }
     }
     frame(lua_state, 29.0);
     if is_excute(fighter) {

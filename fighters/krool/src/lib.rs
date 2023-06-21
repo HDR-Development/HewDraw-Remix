@@ -2,12 +2,6 @@
 #![allow(unused)]
 #![allow(non_snake_case)]
 
-pub mod acmd;
-
-pub mod status;
-pub mod opff;
-pub mod vtable_hook;
-
 use smash::{
     lib::{
         L2CValue,
@@ -38,6 +32,13 @@ use utils::{
     consts::*,
 };
 use smashline::*;
+
+pub mod acmd;
+
+pub mod status;
+pub mod opff;
+pub mod vtable_hook;
+pub use status::krool_belly_damage_hook_impl;
 
 pub fn install(is_runtime: bool) {
     acmd::install();

@@ -11,8 +11,11 @@
     </struct>
   </list>
   <struct hash="param_waist">
-    <float hash="life">14.51</float>
-    <float hash="life_recover">0.09</float>
+    <float hash="life">4.0</float>
+    <float hash="damage_mul">1.0</float>
+    <float hash="life_recover">0.0</float>
+    <float hash="crack_life_1">3.0</float>
+    <float hash="crack_life_2">1.0</float>
     <float hash="special_lw_shield_offset_y">8.6</float>
     <float hash="special_lw_shield_offset_z">6</float>
     <float hash="special_lw_shield_offset_y2">8.6</float>
