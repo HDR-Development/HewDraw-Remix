@@ -11,6 +11,11 @@
       <int hash="life_max">40</int>
     </struct>
   </list>
+    <list hash="param_rockbuster">
+    <struct index="0">
+      <int hash="life">34</int>
+    </struct>
+  </list>
   <list hash="param_airshooter">
     <struct index="0">
       <int hash="life">55</int>
