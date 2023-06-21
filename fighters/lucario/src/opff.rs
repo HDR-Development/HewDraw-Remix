@@ -35,9 +35,10 @@ pub unsafe fn lucario_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    nspecial_cancels(fighter, boma, status_kind, situation_kind, cat[1], frame);
-    uspecial_cancels(fighter, boma, status_kind, situation_kind, cat[1], frame);
-    dspecial_cancels(fighter, boma, status_kind, situation_kind, cat[1], frame);
+    nspecial(fighter, boma, status_kind, situation_kind, cat[1], frame);
+    sspecial(fighter, boma, status_kind, situation_kind, cat[1], frame);
+    uspecial(fighter, boma, status_kind, situation_kind, cat[1], frame);
+    dspecial(fighter, boma, status_kind, situation_kind, cat[1], frame);
     meter_module(fighter, boma, status_kind);
     magic_series(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
     jump_cancels(fighter, boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
@@ -59,7 +60,7 @@ unsafe fn training_mode_deplete_meter(fighter: &mut L2CFighterCommon, boma: &mut
     }
 }
 
-unsafe fn nspecial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
+unsafe fn nspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
 
     // aura bomb activation
     // meter is drained in ACMD so that it only happens when projectile is shot
@@ -73,6 +74,16 @@ unsafe fn nspecial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         } else {
             MotionModule::change_motion_inherit_frame(boma, Hash40::new("special_air_n_bomb"), -1.0, 1.0, 0.0, false, false);
         }
+        VarModule::on_flag(fighter.battle_object, vars::lucario::instance::IS_POWERED_UP);
+        let bonus_aurapower = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.bonus_aurapower");
+        VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, bonus_aurapower);
+    }
+
+    // float during air aura bomb
+    if status_kind == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT 
+    && MotionModule::motion_kind(boma) == hash40("special_air_n_bomb")
+    && frame < 37.0 {
+        KineticModule::mul_speed(boma, &Vector3f::new(0.0, 0.0, 1.0), *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
 
     //PM-like neutral-b canceling
@@ -90,7 +101,20 @@ unsafe fn nspecial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
     }
 }
 
-unsafe fn uspecial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
+unsafe fn sspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
+    // critical hit activation
+    if ((MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_s_throw") && frame == 22.0)
+    || (MotionModule::motion_kind(fighter.module_accessor) == hash40("special_s_throw") && frame == 27.0))
+    && fighter.is_button_on(Buttons::SpecialRaw)
+    && !VarModule::is_flag(fighter.battle_object, vars::lucario::instance::METER_IS_BURNOUT) {
+        let bonus_aurapower = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "aura.bonus_aurapower");
+        VarModule::set_float(fighter.battle_object, vars::lucario::status::AURA_OVERRIDE, bonus_aurapower);
+        MeterModule::drain_direct(fighter.battle_object, 2.0 * MeterModule::meter_per_level(fighter.battle_object));
+        pause_meter_regen(fighter, 120);
+    }
+}
+
+unsafe fn uspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
     if fighter.is_status(*FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH)
     && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
         fighter.change_status_req(*FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, false);
@@ -109,15 +133,11 @@ unsafe fn uspecial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
     }
 }
 
-unsafe fn dspecial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
-    if fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_LW,
-        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_SPLIT,
-        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_APPEAR,
-        *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_END
-    ]) 
-    && !CancelModule::is_enable_cancel(boma)
-    && fighter.is_button_on(Buttons::AttackRaw)
+unsafe fn dspecial(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, frame: f32) {
+    if (fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) 
+        || (fighter.is_status(*FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR) && fighter.is_prev_status(*FIGHTER_STATUS_KIND_SPECIAL_LW))
+    ) && !CancelModule::is_enable_cancel(boma)
+    && fighter.is_button_on(Buttons::Attack)
     && !VarModule::is_flag(fighter.object(), vars::lucario::instance::METER_IS_BURNOUT) {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_ATTACK_AIR, false);
         KineticModule::mul_speed(boma, &Vector3f{x: 0.5, y: 0.5, z: 0.5}, *FIGHTER_KINETIC_ENERGY_ID_STOP);

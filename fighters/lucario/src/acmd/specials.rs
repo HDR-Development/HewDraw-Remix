@@ -344,32 +344,6 @@ unsafe fn lucario_special_air_hi_end_game(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "lucario", script = "game_speciallwsplit", category = ACMD_GAME, low_priority )]
-unsafe fn game_speciallwsplit(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        SET_SPEED_EX(fighter, 0, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-    }
-}
-
-#[acmd_script( agent = "lucario", script = "game_specialairappear", category = ACMD_GAME, low_priority )]
-unsafe fn game_specialairappear(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    // if is_excute(fighter) {
-    //     ATTACK(fighter, 0, 0, Hash40::new("legl"), 8.0, 72, 30, 0, 95, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
-    //     ATTACK(fighter, 1, 0, Hash40::new("kneel"), 8.0, 72, 30, 0, 95, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
-    //     ATTACK(fighter, 2, 0, Hash40::new("toel"), 8.0, 72, 30, 0, 95, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
-    // }
-    // frame(lua_state, 6.0);
-    // if is_excute(fighter) {
-    //     ATTACK(fighter, 0, 0, Hash40::new("legl"), 7.0, 78, 30, 0, 90, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
-    //     ATTACK(fighter, 1, 0, Hash40::new("kneel"), 7.0, 78, 30, 0, 90, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
-    //     ATTACK(fighter, 2, 0, Hash40::new("toel"), 7.0, 78, 30, 0, 90, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
-    // }
-}
-
 #[acmd_script( agent = "lucario", script = "game_specialnbomb", category = ACMD_GAME, low_priority )]
 unsafe fn game_specialnbomb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -399,16 +373,7 @@ unsafe fn sound_specialnbomb(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 37.0);
     if is_excute(fighter) {
-        let charge = WorkModule::get_float(boma, *FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLOAT_CHARGE_RATE);
-        if charge < 0.45 {
-            PLAY_SE_REMAIN(fighter, Hash40::new("vc_lucario_001"));
-        } 
-        else if charge < 0.9 {
-            PLAY_SE_REMAIN(fighter, Hash40::new("vc_lucario_002"));
-        } 
-        else{
-            PLAY_SE_REMAIN(fighter, Hash40::new("vc_lucario_013"));
-        }
+        PLAY_SE_REMAIN(fighter, Hash40::new("vc_lucario_013"));
     }
 }
 
@@ -422,12 +387,7 @@ unsafe fn expression_specialnbomb(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 35.0);
     if is_excute(fighter) {
-        if WorkModule::is_flag(boma, *FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLAG_CHARGE_MAX) {
-            ControlModule::set_rumble(boma, Hash40::new("rbkind_beaml"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-        }
-        else{
-            ControlModule::set_rumble(boma, Hash40::new("rbkind_beamm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-        }
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_beaml"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -455,16 +415,7 @@ unsafe fn sound_specialairnbomb(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 37.0);
     if is_excute(fighter) {
-        let charge = WorkModule::get_float(boma, *FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLOAT_CHARGE_RATE);
-        if charge < 0.45 {
-            PLAY_SE_REMAIN(fighter, Hash40::new("vc_lucario_001"));
-        } 
-        else if charge < 0.9 {
-            PLAY_SE_REMAIN(fighter, Hash40::new("vc_lucario_002"));
-        } 
-        else{
-            PLAY_SE_REMAIN(fighter, Hash40::new("vc_lucario_013"));
-        }
+        PLAY_SE_REMAIN(fighter, Hash40::new("vc_lucario_013"));
     }
 }
 
@@ -478,12 +429,127 @@ unsafe fn expression_specialairnbomb(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 35.0);
     if is_excute(fighter) {
-        if WorkModule::is_flag(boma, *FIGHTER_LUCARIO_SPECIAL_N_STATUS_WORK_ID_FLAG_CHARGE_MAX) {
-            ControlModule::set_rumble(boma, Hash40::new("rbkind_beaml"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_beaml"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "game_speciallw", category = ACMD_GAME, low_priority )]
+unsafe fn game_speciallw(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+}
+
+#[acmd_script( agent = "lucario", script = "effect_speciallw", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_speciallw(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("lucario_kagebunshin_flash"), Hash40::new("top"), 0, 15, 8, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        COL_PRI(fighter, 200);
+        FLASH(fighter, 0.67, 0, 0.78, 0.31);
+        FLASH(fighter, 1, 1, 1, 0.75);
+    }
+    wait(lua_state, 1.0);
+    for _ in 0..4 {
+        if is_excute(fighter) {
+            FLASH(fighter, 0.7, 0.7, 0.7, 0.5);
         }
-        else{
-            ControlModule::set_rumble(boma, Hash40::new("rbkind_beamm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        wait(lua_state, 2.0);
+        if is_excute(fighter) {
+            FLASH(fighter, 0.67, 0, 0.78, 0.31);
         }
+        wait(lua_state, 2.0);
+        if is_excute(fighter) {
+            COL_NORMAL(fighter);
+        }
+        wait(lua_state, 2.0);
+    }
+    if is_excute(fighter) {
+        FLASH(fighter, 0.7, 0.7, 0.7, 0.5);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        FLASH(fighter, 0.67, 0, 0.78, 0.31);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        FLASH(fighter, 0.7, 0.7, 0.7, 0.5);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        COL_NORMAL(fighter);
+    }
+}
+
+#[acmd_script( agent = "lucario", scripts = ["sound_speciallw", "sound_specialairlw"], category = ACMD_SOUND, low_priority )]
+unsafe fn sound_speciallw(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        PLAY_SE_REMAIN(fighter, Hash40::new("se_lucario_special_l02"));
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        PLAY_SE(fighter, Hash40::new("se_lucario_special_l03_s"));
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialairlw(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+}
+
+#[acmd_script( agent = "lucario", script = "effect_specialairlw", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_specialairlw(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("lucario_kagebunshin_flash"), Hash40::new("top"), 0, 15, 8, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        COL_PRI(fighter, 200);
+        FLASH(fighter, 0.67, 0, 0.78, 0.31);
+        FLASH(fighter, 1, 1, 1, 0.75);
+    }
+    wait(lua_state, 1.0);
+    for _ in 0..4 {
+        if is_excute(fighter) {
+            FLASH(fighter, 0.7, 0.7, 0.7, 0.5);
+        }
+        wait(lua_state, 2.0);
+        if is_excute(fighter) {
+            FLASH(fighter, 0.67, 0, 0.78, 0.31);
+        }
+        wait(lua_state, 2.0);
+        if is_excute(fighter) {
+            COL_NORMAL(fighter);
+        }
+        wait(lua_state, 2.0);
+    }
+    if is_excute(fighter) {
+        FLASH(fighter, 0.7, 0.7, 0.7, 0.5);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        FLASH(fighter, 0.67, 0, 0.78, 0.31);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        FLASH(fighter, 0.7, 0.7, 0.7, 0.5);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        COL_NORMAL(fighter);
     }
 }
 
@@ -503,8 +569,6 @@ pub fn install() {
         lucario_special_hi_move_game,
         lucario_special_hi_end_game,
         lucario_special_air_hi_end_game,
-        game_speciallwsplit,
-        game_specialairappear,
         game_specialnbomb,
         effect_specialnbomb,
         sound_specialnbomb,
@@ -513,5 +577,10 @@ pub fn install() {
         effect_specialairnbomb,
         sound_specialairnbomb,
         expression_specialairnbomb,
+        game_speciallw,
+        effect_speciallw,
+        sound_speciallw,
+        game_specialairlw,
+        effect_specialairlw,
     );
 }

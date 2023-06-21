@@ -20,7 +20,8 @@ pub fn install() {
         lucario_special_lw_pre,
         lucario_special_lw_init,
         lucario_special_lw_main,
-        // lucario_special_lw_appear_init
+        lucario_special_n_shoot_pre,
+        auraball_shoot_pre,
     );
     smashline::install_agent_init_callbacks!(lucario_init);
 }
@@ -31,8 +32,8 @@ fn lucario_init(fighter: &mut L2CFighterCommon) {
         if smash::app::utility::get_kind(&mut *fighter.module_accessor) != *FIGHTER_KIND_LUCARIO {
             return;
         }
-        fighter.global_table[globals::CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(lucario_check_special_command as *const () as _));
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_COMMAND);
+        fighter.global_table[globals::USE_SPECIAL_LW_CALLBACK].assign(&L2CValue::Ptr(should_use_special_lw_callback as *const () as _));
+        fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));
         if fighter.kind() == *FIGHTER_KIND_LUCARIO {
             MeterModule::reset(fighter.battle_object);
             let meter_max = (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object()));
@@ -43,31 +44,35 @@ fn lucario_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-/// determines the command inputs
-/// NOTE: order is important! early order has higher priority
-pub unsafe extern "C" fn lucario_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let cat1 =  fighter.global_table[CMD_CAT1].get_i32();
-    let cat4 = fighter.global_table[CMD_CAT4].get_i32();
+unsafe extern "C" fn should_use_special_lw_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.is_situation(*SITUATION_KIND_AIR) && VarModule::is_flag(fighter.battle_object, vars::lucario::instance::DISABLE_SPECIAL_LW) {
+        false.into()
+    } else {
+        true.into()
+    }
+}
 
-    // // 21456B
-    // if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0
-    // && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0
-    // // && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND)
-    // && MeterModule::drain(fighter.object(), 10) {
-    //     fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
-    //     return true.into();
-    // }
+unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
 
-    // // 236A
-    // if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0
-    // && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N_COMMAND != 0
-    // && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N)
-    // && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[USE_SPECIAL_N_CALLBACK].clone()).get_bool() {
-    //     fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_N.into(), true.into());
-    //     return true.into();
-    // }
+    // re-enable DSpecial when landing or hit
+    if fighter.is_situation(*SITUATION_KIND_GROUND) || fighter.is_situation(*SITUATION_KIND_CLIFF)
+    || fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_DAMAGE,
+        *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+        *FIGHTER_STATUS_KIND_DAMAGE_FALL])
+    {
+        VarModule::off_flag(fighter.battle_object, vars::lucario::instance::DISABLE_SPECIAL_LW);
+    }
 
-    false.into()
+    0.into()
 }
 
 #[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
@@ -141,82 +146,25 @@ unsafe extern "C" fn lucario_special_lw_main_loop(fighter: &mut L2CFighterCommon
         if fighter.is_situation(*SITUATION_KIND_GROUND) {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
             if fighter.is_prev_situation(*SITUATION_KIND_AIR) {
-                // let frame = MotionModule::frame(fighter.module_accessor);
-                // if CancelModule::is_enable_cancel(fighter.module_accessor)
-                // || frame > 25.0 {
-                //     // WorkModule::set_float(boma, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-                //     fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
-                // } else {
-                //     fighter.set_float(10.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-                //     fighter.change_status(FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR.into(), false.into());
-                // }
-                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_lw"), -1.0, 1.0, 0.0, false, false);
+                let frame = MotionModule::frame(fighter.module_accessor);
+                if CancelModule::is_enable_cancel(fighter.module_accessor)
+                || frame > 25.0 {
+                    // WorkModule::set_float(boma, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+                    fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
+                } else {
+                    fighter.set_float(10.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+                    fighter.change_status(FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR.into(), false.into());
+                }
+                // MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_lw"), -1.0, 1.0, 0.0, false, false);
             }
         } else {
+            VarModule::on_flag(fighter.battle_object, vars::lucario::instance::DISABLE_SPECIAL_LW);
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
             if fighter.is_prev_situation(*SITUATION_KIND_GROUND) {
                 MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_lw"), -1.0, 1.0, 0.0, false, false);
             }
         }
     }
-    0.into()
-}
-
-#[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_LW_APPEAR, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn lucario_special_lw_appear_init(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let stick_x = ControlModule::get_stick_x(fighter.module_accessor);
-    let walk_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("walk_stick_x"));
-    let lr = PostureModule::lr(fighter.module_accessor);
-
-    let mut new_lr = lr;
-    let mut stick_factor = 0.0;
-    if stick_x.abs() > walk_stick_x {
-        let stick_diff = stick_x.abs() - walk_stick_x;
-        let max_stick_diff = 1.0 - walk_stick_x;
-        stick_factor = (stick_diff / max_stick_diff).clamp(0.0, 1.0);
-
-        if stick_x < 0.0 {
-            new_lr = -1.0;
-        } else {
-            new_lr = 1.0;
-        }
-    }
-
-    WorkModule::set_float(fighter.module_accessor, new_lr, *FIGHTER_LUCARIO_STATUS_WORK_ID_FLOAT_SPLIT_APPEAR_LR);
-    PostureModule::set_lr(fighter.module_accessor, new_lr);
-    PostureModule::update_rot_y_lr(fighter.module_accessor);
-
-    let offset_dist_min = 18.0;
-    let offset_dist_max = 24.0;
-    let diff = offset_dist_max - offset_dist_min;
-    let offset = offset_dist_min + (diff * stick_factor);
-    WorkModule::set_float(fighter.module_accessor, offset, *FIGHTER_LUCARIO_STATUS_WORK_ID_FLOAT_SPLIT_APPEAR_OFFSET);
-
-    // a function used to be here which set a positional offset
-
-    let stopEnergy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP) as *mut app::KineticEnergyNormal;
-
-    let move_time = 8;
-    let mut vec2 = Vector2f{x: 0.0, y: 0.0};
-
-    if move_time != 0 {
-        let split_offset = WorkModule::get_float(fighter.module_accessor, *FIGHTER_LUCARIO_STATUS_WORK_ID_FLOAT_SPLIT_APPEAR_OFFSET);
-        let split_lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_LUCARIO_STATUS_WORK_ID_FLOAT_SPLIT_APPEAR_LR);
-        vec2.x = (split_offset / (move_time as f32)) * split_lr;
-    }
-
-    if VarModule::is_flag(fighter.object(), vars::lucario::instance::IS_SPECIAL_LW_AIR) {
-        vec2.y = vec2.x * -0.866 * new_lr;
-        vec2.x = vec2.x * 0.5;
-    }
-
-    app::lua_bind::KineticEnergyNormal::set_limit_speed(stopEnergy, &vec2);
-    app::lua_bind::KineticEnergyNormal::set_speed(stopEnergy, &vec2);
-    app::lua_bind::KineticEnergyNormal::set_brake(stopEnergy, &Vector2f{x: 0.0, y: 0.0});
-    app::KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, fighter.module_accessor);
-    app::KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
-    app::FighterSpecializer_Lucario::effect_resume(fighter.module_accessor);
-
     0.into()
 }
 
@@ -435,3 +383,36 @@ pub unsafe fn special_hi_bound_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_CANCEL);
     0.into()
 }
+
+#[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn lucario_special_n_shoot_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::off_flag(fighter.battle_object, vars::lucario::instance::IS_POWERED_UP);
+    original!(fighter)
+}
+
+#[status_script(agent = "lucario_auraball", status = WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn auraball_shoot_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(fighter.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+    VarModule::set_flag(fighter.battle_object, vars::lucario::instance::IS_POWERED_UP, VarModule::is_flag(owner_module_accessor.object(), vars::lucario::instance::IS_POWERED_UP));
+    println!("lucario_auraball is_powered_up: {}", VarModule::is_flag(fighter.battle_object, vars::lucario::instance::IS_POWERED_UP));
+    original!(fighter)
+}
+
+// #[status_script(agent = "lucario_auraball", status = WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+// pub unsafe fn auraball_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+
+//     let is_bomb = false; // TODD: figure this out
+
+//     let life = if is_bomb {60} else {120}; // TODO: use params
+//     fighter.set_int(life, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE); 
+//     fighter.set_int(life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
+
+
+//     let motion = if is_bomb {"bomb"} else {"shoot"};
+//     MotionModule::change_motion(fighter.module_accessor, Hash40::new(motion), 0.0, 1.0, false, 0.0, false, false);
+
+//     let max_charge_frame = fighter.get_int(*WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_INT_PARAM_MAX_CHARGE_FRAME);
+//     let charge_frame = fighter.get_int(*WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_INT_CHARGE_FRAME);
+
+//     0.into()
+// }

@@ -73,6 +73,12 @@ unsafe extern "C" fn get_aura(object: *mut BattleObject) -> f32 {
     if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
         return 1.0;
     }
+
+    let aura_override = VarModule::get_float(object, vars::lucario::status::AURA_OVERRIDE);
+    if aura_override > 0.0 {
+        return aura_override;
+    }
+
     if VarModule::is_flag(object, vars::lucario::instance::METER_IS_BURNOUT) {
         return ParamModule::get_float(object, ParamType::Agent, "aura.penalty_aurapower");
     }

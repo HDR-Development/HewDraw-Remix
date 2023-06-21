@@ -339,6 +339,16 @@ unsafe fn game_downattacku(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "lucario", scripts = ["game_appealhil", "game_appealhir"], category = ACMD_GAME, low_priority )]
+unsafe fn game_appealhi(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 50.0);
+    if is_excute(fighter) {
+        MeterModule::add(fighter.battle_object, 0.2 * MeterModule::meter_per_level(fighter.battle_object));
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -356,7 +366,8 @@ pub fn install() {
         game_catchattack,
         game_slipattack,
         game_downattackd,
-        game_downattacku
+        game_downattacku,
+        game_appealhi
     );
 }
 

@@ -11,7 +11,7 @@
   </list>
   <list hash="param_special_s">
     <struct index="0">
-      <float hash="critical_aura_power">1.35</float>
+      <float hash="critical_aura_power">1.45</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
