@@ -210,6 +210,30 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "yoshi", script = "sound_guardoff", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_guardoff(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        if !VarModule::is_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF) {
+            PLAY_SE(fighter, Hash40::new("se_yoshi_guardoff"));
+        }
+    }
+}
+
+#[acmd_script( agent = "yoshi", script = "expression_justshieldoff", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_justshieldoff(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        if !boma.is_status(*FIGHTER_STATUS_KIND_GUARD_OFF) {
+            QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        }
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -222,7 +246,9 @@ pub fn install() {
         damageflylw_sound,
         damageflyn_sound,
         damageflyroll_sound,
-        damageflytop_sound
+        damageflytop_sound,
+        sound_guardoff,
+        expression_justshieldoff
     );
 }
 
