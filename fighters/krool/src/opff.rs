@@ -53,27 +53,28 @@ pub unsafe fn armored_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
         let mut charge_start_frame = 0.0;
         let mut charge_end_frame = 0.0;
         let mut eff_offset = Vector3f::zero();
-        let max_charge_frames = 20.0;   // due to what I presume is internal rounding error, this equates to 18 frames
+        // due to what I presume is internal rounding error, the current amount of 20.0 equates to 18 frames
+        let max_charge_frames = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_waist.max_charge_frames");   
 
         match MotionModule::motion_kind(fighter.module_accessor) {
             _ if [hash40("attack_s3_s"), hash40("attack_s3_hi"), hash40("attack_s3_lw")].contains(&motion_kind) => {
-                charge_start_frame = 8.0;
-                charge_end_frame = 10.0;
+                charge_start_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_waist.attack_s3_charge_start");
+                charge_end_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_waist.attack_s3_charge_end");
                 eff_offset = Vector3f::new(3.0, 0.0, 5.0);
             },
             _ if motion_kind == hash40("attack_hi3") => {
-                charge_start_frame = 2.0;
-                charge_end_frame = 3.0;
+                charge_start_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_waist.attack_hi3_charge_start");
+                charge_end_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_waist.attack_hi3_charge_end");
                 eff_offset = Vector3f::new(3.0, 0.0, 3.0);
             },
             _ if motion_kind == hash40("attack_lw3") => {
-                charge_start_frame = 9.0;
-                charge_end_frame = 11.0;
+                charge_start_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_waist.attack_lw3_charge_start");
+                charge_end_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_waist.attack_lw3_charge_end");
                 eff_offset = Vector3f::new(3.0, 0.0, 0.0);
             },
             _ if [hash40("special_lw"), hash40("special_air_lw")].contains(&motion_kind) => {
-                charge_start_frame = 1.0;
-                charge_end_frame = 2.0;
+                charge_start_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_waist.special_lw_charge_start");
+                charge_end_frame = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_waist.special_lw_charge_end");
                 eff_offset = Vector3f::new(3.0, 0.0, 3.0);
             },
             _ => {}
@@ -81,9 +82,6 @@ pub unsafe fn armored_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
 
         if (charge_start_frame..charge_end_frame).contains(&fighter.motion_frame()) && charge < (max_charge_frames as i32) && is_hold {
             if [hash40("special_lw"), hash40("special_air_lw")].contains(&motion_kind) {
-                // if fighter.motion_frame() == 0.2 {
-                //     EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_level_up"), Hash40::new("hip"), &eff_offset, &Vector3f::new(0.0, 0.0, 0.0), 0.55, true, 0, 0, 0, 0, 0, false, false);
-                // }
                 if fighter.motion_frame() >= 1.18 {
                     VarModule::on_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED);
                 }
@@ -153,21 +151,21 @@ pub unsafe fn krool_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-// #[smashline::weapon_frame( agent = WEAPON_KIND_KROOL_BACKPACK, main)]
-// pub fn krool_backpack_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
-//     unsafe {
-//         let boma = weapon.boma();
-//         let owner_boma = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+#[smashline::weapon_frame( agent = WEAPON_KIND_KROOL_BACKPACK, main)]
+pub fn krool_backpack_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    unsafe {
+        let boma = weapon.boma();
+        let owner_boma = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
         
-//         // upB low fuel indicator
-//         let fuel_max = ParamModule::get_int(owner_boma.object(), ParamType::Agent, "param_special_hi.fuel_max") as f32;
-//         let low_fuel_threshold = fuel_max * 0.33;
-//         if VarModule::get_int(owner_boma.object(), vars::krool::instance::SPECIAL_HI_FUEL) as f32 <= low_fuel_threshold
-//         && VarModule::get_int(owner_boma.object(), vars::krool::instance::FUEL_EFFECT_HANDLER) == -1 {
-//             let handle = EffectModule::req_follow(weapon.module_accessor, Hash40::new("krool_buckpack"), Hash40::new("backpack"), &Vector3f{x: -12.0, y: -1.5, z: -6.0}, &Vector3f::zero(), 1.5, true, 0, 0, 0, 0, 0, false, false) as u32;
-//             EffectModule::set_rgb(weapon.module_accessor, handle, 0.15, 0.15, 0.15);
-//             EffectModule::enable_sync_init_pos_last(weapon.module_accessor);
-//             VarModule::set_int(owner_boma.object(), vars::krool::instance::FUEL_EFFECT_HANDLER, handle as i32);
-//         }
-//     }
-// }
+        // upB low fuel indicator
+        let fuel_max = ParamModule::get_int(owner_boma.object(), ParamType::Agent, "param_special_hi.fuel_max") as f32;
+        let low_fuel_threshold = fuel_max * 0.33;
+        if VarModule::get_int(owner_boma.object(), vars::krool::instance::SPECIAL_HI_FUEL) as f32 <= low_fuel_threshold
+        && VarModule::get_int(owner_boma.object(), vars::krool::instance::FUEL_EFFECT_HANDLER) == -1 {
+            let handle = EffectModule::req_follow(weapon.module_accessor, Hash40::new("krool_buckpack"), Hash40::new("backpack"), &Vector3f{x: -12.0, y: -1.5, z: -6.0}, &Vector3f::zero(), 1.5, true, 0, 0, 0, 0, 0, false, false) as u32;
+            EffectModule::set_rgb(weapon.module_accessor, handle, 0.15, 0.15, 0.15);
+            EffectModule::enable_sync_init_pos_last(weapon.module_accessor);
+            VarModule::set_int(owner_boma.object(), vars::krool::instance::FUEL_EFFECT_HANDLER, handle as i32);
+        }
+    }
+}

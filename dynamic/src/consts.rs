@@ -1080,7 +1080,6 @@ pub mod vars {
             //ints
             pub const SPECIAL_HI_FUEL: i32 = 0x0100;
             pub const FUEL_EFFECT_HANDLER: i32 = 0x0101;
-            pub const BELLY_HEALTH: i32 = 0x0102;
 
             // floats
             pub const STORED_DAMAGE: i32 = 0x0100;
@@ -1090,8 +1089,7 @@ pub mod vars {
             pub const CURRENT_CHARGE: i32 = 0x1100;
 
             // flags
-            pub const BELLY_ACTIVE: i32 = 0x1100;
-            pub const GUT_CHECK_CHARGED: i32 = 0x1101;
+            pub const GUT_CHECK_CHARGED: i32 = 0x1100;
         }
     }
 }

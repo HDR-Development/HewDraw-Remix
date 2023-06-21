@@ -1,21 +1,14 @@
-
-use std::convert::TryInto;
-
 use super::*;
-
+use std::convert::TryInto;
 
 #[acmd_script( agent = "krool", script = "game_specialnfire" , category = ACMD_GAME , low_priority)]
 unsafe fn krool_special_n_fire_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.800);
-    }
+    FT_MOTION_RATE(fighter, 0.8);
     frame(lua_state, 26.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
-    }
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_IRONBALL);
@@ -38,13 +31,9 @@ unsafe fn krool_special_air_n_fire_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.800);
-    }
+    FT_MOTION_RATE(fighter, 0.8);
     frame(lua_state, 26.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
-    }
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_IRONBALL);
@@ -112,7 +101,7 @@ unsafe fn krool_special_special_s_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 6.0);
     if is_excute(fighter) {
-        damage!(fighter, MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_REACTION_VALUE, 80);
+        damage!(fighter, MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_REACTION_VALUE, 180);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -171,7 +160,7 @@ unsafe fn krool_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED) {
-            let damage = VarModule::get_float(fighter.battle_object, vars::krool::instance::STORED_DAMAGE) / 9.0;
+            let damage = VarModule::get_float(fighter.battle_object, vars::krool::instance::STORED_DAMAGE) / 5.0;
             ATTACK(fighter, 0, 0, Hash40::new("top"), 16.0 + damage, 50, 85, 0, 50, 10.5, 0.0, 10.75, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_BODY);
         }
     }

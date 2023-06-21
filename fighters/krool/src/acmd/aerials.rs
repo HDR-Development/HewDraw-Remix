@@ -1,6 +1,4 @@
-
 use super::*;
-
 
 #[acmd_script( agent = "krool", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
 unsafe fn krool_attack_air_n_game(fighter: &mut L2CAgentBase) {
@@ -14,7 +12,9 @@ unsafe fn krool_attack_air_n_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
+        if WorkModule::get_float(fighter.module_accessor, 0x4d) >= 1.0 {
+            WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
+        }
         ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 361, 93, 0, 40, 9.5, 0.0, 9.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
     wait(lua_state, 3.0);
@@ -72,17 +72,13 @@ unsafe fn krool_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.867);
-    }
+    FT_MOTION_RATE(fighter, 0.867);
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 15.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
-    }
+    FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 16.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("shoulderr"), 16.0, 361, 87, 0, 45, 5.0, 3.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);

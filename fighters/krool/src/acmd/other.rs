@@ -242,6 +242,22 @@ unsafe fn krool_backpack_effect_fly(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "krool", scripts = ["game_appealsl", "game_appealsr"], category = ACMD_GAME, low_priority )]
+unsafe fn krool_appeal_s_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        if WorkModule::get_float(fighter.module_accessor, 0x4d) >= 1.0 {
+            WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
+        }
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_OFF);
+    }
+}
+
 #[acmd_script( agent = "krool", scripts = ["game_appeallwr", "game_appeallwl"] , category = ACMD_GAME , low_priority)]
 unsafe fn krool_appeal_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -271,6 +287,7 @@ pub fn install() {
         damageflyroll_sound,
         damageflytop_sound,
         krool_backpack_effect_fly,
+        krool_appeal_s_game,
         krool_appeal_lw_game,
     );
 }

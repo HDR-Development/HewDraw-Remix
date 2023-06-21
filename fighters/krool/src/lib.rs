@@ -31,10 +31,9 @@ use utils::{
     ext::*,
     consts::*,
 };
+
 use smashline::*;
-
 pub mod acmd;
-
 pub mod status;
 pub mod opff;
 pub mod vtable_hook;
@@ -46,9 +45,9 @@ pub fn install(is_runtime: bool) {
     opff::install(is_runtime);
     vtable_hook::install();
     use opff::*;
-    // smashline::install_agent_frames!(
-    //     krool_backpack_frame
-    // );
+    smashline::install_agent_frames!(
+        krool_backpack_frame
+    );
     
     // prevents shield break on belly
     skyline::patching::Patch::in_text(0xc04ee0).data(0x1400001Eu32);

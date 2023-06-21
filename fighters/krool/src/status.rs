@@ -80,67 +80,33 @@ pub unsafe fn attack_lw4_map_correction(fighter: &mut L2CFighterCommon) -> L2CVa
 // handle damage to belly
 #[no_mangle]
 pub unsafe extern "C" fn krool_belly_damage_hook_impl(damage: f32, fighter: *mut Fighter, unk: bool) {
-    // set and change belly health
-    // store incoming damage in varconst (clamp to 15.0)
-    // disable belly for the rest of the move (call WAIST_OFF)
-    let mut fighter_obj = &mut (*fighter).battle_object;
-    let boma = fighter_obj.module_accessor;
-    //let crack_count = WorkModule::get_int(boma, 0x100000c3);    // WAIST_CRACK_COUNT
-    let mut waist = WorkModule::get_float(boma, 0x4d);   // WAIST_LIFE
-    //let waist_d = WorkModule::get_float(boma, 0x1000007);   // WAIST_DAMAGE
-    //let crack_life_1 = WorkModule::get_param_float(boma, hash40("param_waist"), hash40("crack_life_1"));
-    //let crack_life_2 = WorkModule::get_param_float(boma, hash40("param_waist"), hash40("crack_life_2"));
-    //let mut crack_frame = WorkModule::get_param_int(boma, hash40("param_waist"), hash40("crack_frame"));
-    //println!("crack_count: {}", crack_count);
-    //println!("damage: {}", damage);
-    //println!("waist: {}", waist);
-    //println!("waist_D: {}", waist_d);
-    //println!("crack_life_1: {}", crack_life_1);
-    //println!("crack_life_2: {}", crack_life_2);
-    //println!("crack_frame: {}", crack_frame);
+    let mut battle_object = &mut (*fighter).battle_object;
+    let boma = battle_object.module_accessor;
+    let mut waist = WorkModule::get_float(boma, 0x4d);  // WAIST_LIFE
 
     // play belly flash
-    WorkModule::on_flag(boma, 0x200000e3);   // *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_WAIST_HIT_FLASH
-    WorkModule::set_int(boma, 0x1e, 0x100000c1); // *FIGHTER_KROOL_INSTANCE_WORK_ID_INT_WAIST_HIT_FLASH_COUNT
+    WorkModule::on_flag(boma, 0x200000e3);              // *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_WAIST_HIT_FLASH
+    WorkModule::set_int(boma, 0x1e, 0x100000c1);        // *FIGHTER_KROOL_INSTANCE_WORK_ID_INT_WAIST_HIT_FLASH_COUNT
 
-    // store incoming damage
-    let stored_damage = VarModule::get_float(fighter_obj, vars::krool::instance::STORED_DAMAGE);
-    VarModule::set_float(fighter_obj, vars::krool::instance::STORED_DAMAGE, stored_damage + f32::min(damage, 15.0));
+    if damage > ParamModule::get_float(battle_object, ParamType::Agent, "param_waist.deplete_damage_min") {
+        // store incoming damage
+        let stored_damage = VarModule::get_float(battle_object, vars::krool::instance::STORED_DAMAGE);
+        VarModule::set_float(battle_object, vars::krool::instance::STORED_DAMAGE, stored_damage + f32::min(damage, 15.0));
 
-    // decrease belly health
-    waist -= 1.0;
-    WorkModule::set_float(boma, waist, 0x4d);
-    //WorkModule::set_int(boma, crack_frame, 0x100000c3); // crack_count
-    //crack_frame = crack_count;
-    //println!("new waist: {}", waist);
-    //println!("new crack_frame: {}", crack_frame);
+        // decrease belly health
+        waist -= 1.0;
+        WorkModule::set_float(boma, waist, 0x4d);
 
-    // critical zoom if out of health
-    if WorkModule::get_float(boma, 0x4d) <= 0.0 {
-        println!("no life remaining");
-        MotionAnimcmdModule::call_script_single(boma, 2, Hash40::new_raw(0x10412c2da3), -1);
+        // critical zoom if out of health
+        if WorkModule::get_float(boma, 0x4d) <= 0.0 {
+            VarModule::set_float(battle_object, vars::krool::instance::STORED_DAMAGE, 0.0);
+            MotionAnimcmdModule::call_script_single(boma, 2, Hash40::new_raw(0x10412c2da3), -1);
+        }
     }
 
-    // only sets the crack visibility for the remainder of the current move
-    // if waist <= 12.0 {
-    //     VisibilityModule::set(boma, Hash40::new("belly"), Hash40::new("belly_crack3"));
-    // }
-
+    // disable belly for the rest of the move
     WorkModule::on_flag(boma, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_OFF);
 }
-
-// let fighter_obj = utils::util::get_fighter_common_from_accessor(&mut *(*fighter).module_accessor);
-// let damage = VarModule::get_float(fighter, vars::common::instance::LAST_ATTACK_DAMAGE_DEALT);
-// let life = WorkModule::get_int(fighter_obj.module_accessor, 0x100000c2);
-// let waist = WorkModule::get_float(fighter_obj.module_accessor, 0x4d);   // WAIST_LIFE
-// let waist_d = WorkModule::get_float(fighter_obj.module_accessor, 0x1000007);   // WAIST_DAMAGE
-// println!("current health: {}", life);
-// println!("damage: {}", damage);
-// println!("waist: {}", waist);
-// println!("waist_D: {}", waist_d);
-// WorkModule::dec_int(fighter_obj.module_accessor, 0x100000c2);   // WAIST_LIFE_COUNT
-// WorkModule::dec_int(fighter_obj.module_accessor, 0x100000c3);   // WAIST_CRACK_COUNT
-// WorkModule::set_float(fighter_obj.module_accessor, waist - 1.0, 0x1000007);   // WAIST_DAMAGE
 
 // handle toggling belly on/off
 // #[no_mangle]
