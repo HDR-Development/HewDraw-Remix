@@ -108,6 +108,26 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
                 }
             }
         }
+        //disable airdodge&float out of aerial tele, disable jump after float
+        if fighter_kind == *FIGHTER_KIND_MEWTWO {
+            if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL) 
+            && !VarModule::is_flag(boma.object(), vars::mewtwo::instance::GROUNDED_TELEPORT) {
+                if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) == VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION) {
+                    WorkModule::set_int(boma, -2, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
+                } //disables float and airdodge
+                if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR { 
+                    return false;
+                }
+            }
+            else if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) == -2 { 
+                WorkModule::set_int(boma, VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION), *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
+            } //enables float
+            if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) < (VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION) - 5)
+            && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) >= 0
+            && (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON || flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL) {
+                return false;
+            } //disables jump if float used and renables only jump en ledge
+        }
         /*
         // Marth & Lucina - special fair FAF
         if fighter_kind == FIGHTER_KIND_MARTH || fighter_kind == *FIGHTER_KIND_LUCINA {

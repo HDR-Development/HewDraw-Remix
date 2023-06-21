@@ -33,6 +33,16 @@ unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut Bat
             }
         }
     }
+     //takes away float after 5 frame window in jump or dj aerial
+    if (status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL || (status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR && boma.get_num_used_jumps() == 2))
+    && boma.status_frame() > 5
+    && fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) == VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION) {
+        fighter.set_int(0, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
+        fighter.on_flag(*FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
+    }
+    if !boma.is_situation(*SITUATION_KIND_AIR) && !boma.is_situation(*SITUATION_KIND_GROUND) && fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) == 0 {
+        fighter.set_int(-1, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME); //re-enable jump but not float upon leaving air but not landing
+    }
 }
 
 unsafe fn dj_upB_jump_refresh(fighter: &mut L2CFighterCommon) {
