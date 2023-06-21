@@ -7,7 +7,7 @@ pub unsafe extern "C" fn krool_func(_vtable: u64, fighter: &mut Fighter) -> u64 
     let module_accessor = (fighter.battle_object).module_accessor;
     let status = StatusModule::status_kind(module_accessor);
     let kind = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND);
-    if status == 0x1e2 || status == 0x319
+    if (status == 0x1e2 || status == 0x319)
     && WorkModule::is_flag(module_accessor, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_SPECIAL_N_SUCTION_IRONBALL) {
         let status = if kind == *FIGHTER_KIND_KIRBY {
             0x31b

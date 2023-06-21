@@ -1083,6 +1083,9 @@ pub mod vars {
 
             // floats
             pub const STORED_DAMAGE: i32 = 0x0100;
+
+            // flags
+            pub const BLUNDERBUSS_GRAB: i32 = 0x0100;
         }
         pub mod status {
             // ints

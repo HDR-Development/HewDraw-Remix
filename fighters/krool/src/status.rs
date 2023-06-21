@@ -102,6 +102,14 @@ pub unsafe extern "C" fn krool_belly_damage_hook_impl(damage: f32, fighter: *mut
             VarModule::set_float(battle_object, vars::krool::instance::STORED_DAMAGE, 0.0);
             MotionAnimcmdModule::call_script_single(boma, 2, Hash40::new_raw(0x10412c2da3), -1);
         }
+        else {
+            let krool = utils::util::get_fighter_common_from_accessor(&mut (*boma));
+            PLAY_SE(krool, Hash40::new("se_krool_damage_clack"));
+        }
+    }
+    else {
+        let krool = utils::util::get_fighter_common_from_accessor(&mut (*boma));
+        PLAY_SE(krool, Hash40::new("se_krool_special_n11"));    //s07 l01, l02 l05
     }
 
     // disable belly for the rest of the move
