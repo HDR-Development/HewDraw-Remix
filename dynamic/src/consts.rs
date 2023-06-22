@@ -1004,4 +1004,13 @@ pub mod statuses {
         pub const SPECIAL_N_CANCEL_JUMP: i32 = 1;
     }
 
+    pub mod wolf {
+        pub const SPECIAL_S_RUSH: i32 = 0;
+        pub const SPECIAL_S_END: i32 = 1;
+    }
+    
+    pub mod kirby {
+        pub const SPECIAL_HI_H: i32 = 0;
+    }
+
 }
