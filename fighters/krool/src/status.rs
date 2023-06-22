@@ -88,18 +88,17 @@ pub unsafe extern "C" fn krool_belly_damage_hook_impl(damage: f32, fighter: *mut
     WorkModule::on_flag(boma, 0x200000e3);              // *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_WAIST_HIT_FLASH
     WorkModule::set_int(boma, 0x1e, 0x100000c1);        // *FIGHTER_KROOL_INSTANCE_WORK_ID_INT_WAIST_HIT_FLASH_COUNT
 
-    if damage > ParamModule::get_float(battle_object, ParamType::Agent, "param_waist.deplete_damage_min") {
-        // store incoming damage
-        let stored_damage = VarModule::get_float(battle_object, vars::krool::instance::STORED_DAMAGE);
-        VarModule::set_float(battle_object, vars::krool::instance::STORED_DAMAGE, stored_damage + f32::min(damage, 15.0));
+    // store incoming damage
+    let stored_damage = VarModule::get_float(battle_object, vars::krool::instance::STORED_DAMAGE);
+    VarModule::set_float(battle_object, vars::krool::instance::STORED_DAMAGE, f32::min(stored_damage + damage, 45.0));
 
+    if damage > ParamModule::get_float(battle_object, ParamType::Agent, "param_waist.deplete_damage_min") {
         // decrease belly health
         waist -= 1.0;
         WorkModule::set_float(boma, waist, 0x4d);
 
         // critical zoom if out of health
         if WorkModule::get_float(boma, 0x4d) <= 0.0 {
-            VarModule::set_float(battle_object, vars::krool::instance::STORED_DAMAGE, 0.0);
             MotionAnimcmdModule::call_script_single(boma, 2, Hash40::new_raw(0x10412c2da3), -1);
         }
         else {

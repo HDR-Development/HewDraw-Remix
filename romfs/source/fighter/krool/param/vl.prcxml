@@ -22,6 +22,23 @@
     <float hash="special_lw_shield_offset_z2">6</float>
     <float hash="special_lw_shield_size">6</float>
   </struct>
+  <list hash="param_special_n">
+    <struct index="0">
+      <float hash="special_n_start_air_mul_spd_x">0.85</float>
+      <float hash="special_n_start_air_mul_spd_y">1.0</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_ironball">
+    <struct index="0">
+      <int hash="life">150</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_special_s">
     <struct index="0">
       <float hash="special_s_armor_life">10</float>

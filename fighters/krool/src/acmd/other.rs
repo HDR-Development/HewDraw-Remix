@@ -226,6 +226,26 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "krool_ironball", script = "game_shoot", category = ACMD_GAME, low_priority )]
+unsafe fn krool_ironball_shoot_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 60, 92, 0, 18, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, -2, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+        AttackModule::enable_safe_pos(boma);
+    }
+}
+
+#[acmd_script( agent = "krool_ironball", script = "game_spitshoot", category = ACMD_GAME, low_priority )]
+unsafe fn krool_ironball_spit_shoot_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 17.0, 60, 87, 0, 55, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, -2, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+        AttackModule::enable_safe_pos(boma);
+    }
+}
+
 #[acmd_script( agent = "krool_backpack", script = "effect_fly", category = ACMD_EFFECT, low_priority )]
 unsafe fn krool_backpack_effect_fly(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -286,6 +306,8 @@ pub fn install() {
         damageflyn_sound,
         damageflyroll_sound,
         damageflytop_sound,
+        krool_ironball_shoot_game,
+        krool_ironball_spit_shoot_game,
         krool_backpack_effect_fly,
         krool_appeal_s_game,
         krool_appeal_lw_game,

@@ -86,6 +86,7 @@ unsafe fn krool_special_n_spit_f_game(fighter: &mut L2CAgentBase) {
         CHECK_FINISH_CAMERA(fighter, 0, 0);
     }
     frame(lua_state, 17.0);
+    FT_MOTION_RATE_RANGE(fighter, 17.0, 38.0, 16.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SPIT);
         let target = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
@@ -128,6 +129,7 @@ unsafe fn krool_special_n_spit_b_game(fighter: &mut L2CAgentBase) {
         CHECK_FINISH_CAMERA(fighter, 0, 0);
     }
     frame(lua_state, 22.0);
+    FT_MOTION_RATE_RANGE(fighter, 22.0, 50.0, 23.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SPIT);
         let target = WorkModule::get_int64(boma, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);

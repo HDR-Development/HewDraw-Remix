@@ -33,10 +33,12 @@ unsafe fn krool_special_n_fire_game(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 37.0);
+    FT_MOTION_RATE_RANGE(fighter, 37.0, 70.0, 30.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_CANCEL);
     }
     frame(lua_state, 70.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_CANCEL);
         WorkModule::off_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_NO_SHOOT_CANCEL);
@@ -228,7 +230,7 @@ unsafe fn krool_special_lw_hit_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, vars::krool::status::GUT_CHECK_CHARGED) {
             let damage = VarModule::get_float(fighter.battle_object, vars::krool::instance::STORED_DAMAGE) / 5.0;
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 16.0 + damage, 50, 85, 0, 50, 10.5, 0.0, 10.75, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_BODY);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 16.0 + damage, 50, 90, 0, 50, 10.5, 0.0, 10.75, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_BODY);
         }
     }
     frame(lua_state, 9.0);
