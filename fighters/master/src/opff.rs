@@ -5,6 +5,9 @@ use globals::*;
 
  
 unsafe fn areadbhar_autocancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_FRONT,
         *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind) {
         if situation_kind == *SITUATION_KIND_AIR {
@@ -52,6 +55,9 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
 }
 
 unsafe fn aymr_slowdown(boma: &mut BattleObjectModuleAccessor) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if boma.is_status(*FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_HIT)  {
         if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) && MotionModule::frame(boma) < 11.0 {
             SlowModule::set_whole(boma, 7, 100);

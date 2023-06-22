@@ -13,7 +13,7 @@ unsafe fn psi_magnet_jump_cancel_turnaround(fighter: &mut L2CFighterCommon) {
             PostureModule::update_rot_y_lr(fighter.module_accessor);
         }
     }
-    if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.motion_frame() > 8.0)  // Allows for jump cancel on frame 5 in game
+    if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.status_frame() > 5)  // Allows for jump cancel on frame 7 in game
     || fighter.is_status_one_of(&[
         *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HIT,
         *FIGHTER_NESS_STATUS_KIND_SPECIAL_LW_HOLD,

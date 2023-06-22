@@ -108,7 +108,7 @@ jobs:
         name: version
         path: plugin/hdr_version.txt
 
-    - uses: dev-drprasad/delete-tag-and-release@v0.2.0
+    - uses: dev-drprasad/delete-tag-and-release@master
       with:
         delete_release: true # default: false
         tag_name: ${{ steps.trimmed_tag.outputs.tag }} # tag name to delete
@@ -163,7 +163,6 @@ jobs:
       run: |
         python3 scripts/full_package.py ${{ needs.plugin_build.outputs.trimmed_tag }} ${{ steps.romfs_latest.outputs.release }}
 
-
     # get the most recent latest full release
     - id: package_latest
       uses: pozetroninc/github-action-get-latest-release@master
@@ -216,9 +215,27 @@ jobs:
       with:
         name: version
         
+    # build the lvd files
+    - id: lvd_files
+      uses: robinraju/release-downloader@v1.7
+      with:
+        repository: "techyCoder81/SSBU-LVD-data-dump"
+        tag: release
+        fileName: "lvd_dumper.zip"
+
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.408'
+
+    - name: extract lvd data
+      id: lvd_extract
+      shell: bash
+      run: |
+        . scripts/extract_lvd_data.sh
+
     - name: Display structure of downloaded version
       run: ls -R && cp hdr_version.txt artifacts
-
 
     - name: Upload full package to betas
       uses: svenstaro/upload-release-action@v2

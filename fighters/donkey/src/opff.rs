@@ -4,6 +4,9 @@ use super::*;
 use globals::*;
 
 unsafe fn dash_attack_jump_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     //PM-like neutral-b canceling
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH
     && situation_kind == *SITUATION_KIND_AIR
@@ -71,6 +74,9 @@ unsafe fn barrel_pull(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
 // DK Headbutt aerial stall
 unsafe fn headbutt_aerial_stall(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S {
         let motion_value = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
         let motion_vec = Vector3f{x: 1.0, y: 0.0, z: 1.0};
@@ -96,6 +102,9 @@ unsafe fn headbutt_aerial_stall(fighter: &mut L2CFighterCommon, boma: &mut Battl
 
 // Down Special Cancels
 unsafe fn down_special_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if [*FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_DONKEY_STATUS_KIND_SPECIAL_LW_LOOP,
         *FIGHTER_DONKEY_STATUS_KIND_SPECIAL_LW_END].contains(&status_kind) {
@@ -114,15 +123,6 @@ pub unsafe fn dk_bair_rotation(fighter: &mut L2CFighterCommon) {
     if fighter.is_motion(Hash40::new("attack_air_b")) {
         // angle bair down slightly
         fighter.set_joint_rotate("legl", Vector3f::new(0.0, 0.0, -20.0))
-    }
-}
-
-/// this sets the ledgegrab box for the backside of up special, which 
-/// enables DK to more consistently grab ledge with slipoff uspecial
-pub unsafe fn special_hi_slipoff_grab(fighter: &mut L2CFighterCommon) {
-    if fighter.is_situation(*SITUATION_KIND_AIR) && fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
-        fighter.set_back_cliff_hangdata(20.0, 10.0);
-        fighter.set_front_cliff_hangdata(20.0, 10.0);
     }
 }
 
@@ -165,7 +165,6 @@ pub fn donkey_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         common::opff::fighter_common_opff(fighter);
 		donkey_frame(fighter);
         dk_bair_rotation(fighter);
-        special_hi_slipoff_grab(fighter);
         flatten_uspecial(fighter);
     }
 }

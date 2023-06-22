@@ -16,6 +16,9 @@ unsafe fn air_falcon_kick_jump_reset(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn repeated_falcon_punch_turnaround(fighter: &mut L2CFighterCommon) {
+    if StatusModule::is_changing(fighter.module_accessor) {
+        return;
+    }
     let frame = fighter.motion_frame();
     if fighter.is_status(*FIGHTER_CAPTAIN_STATUS_KIND_SPECIAL_N_TURN)
     && 22.0 < frame && frame < 41.0

@@ -58,6 +58,37 @@ unsafe fn littlemac_special_n_cancel_expression(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "littlemac", script = "game_specialairncancel" , category = ACMD_GAME , low_priority)]
+unsafe fn littlemac_special_air_n_cancel_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 8.0/(39.0 - 1.0));
+    }
+}
+
+#[acmd_script( agent = "littlemac", script = "effect_specialairncancel" , category = ACMD_EFFECT , low_priority)]
+unsafe fn littlemac_special_air_n_cancel_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+}
+
+#[acmd_script( agent = "littlemac", script = "sound_specialairncancel" , category = ACMD_SOUND , low_priority)]
+unsafe fn littlemac_special_air_n_cancel_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+}
+
+#[acmd_script( agent = "littlemac", script = "expression_specialairncancel" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn littlemac_special_air_n_cancel_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+}
+
 #[acmd_script( agent = "littlemac", script = "game_specialn2" , category = ACMD_GAME , low_priority)]
 unsafe fn littlemac_special_n2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -79,7 +110,6 @@ unsafe fn littlemac_special_n2_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear(boma, 1, false);
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
         SA_SET(fighter, *SITUATION_KIND_AIR);
-        StatusModule::set_situation_kind(boma, app::SituationKind(*SITUATION_KIND_AIR), false);
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
@@ -146,7 +176,9 @@ unsafe fn littlemac_special_air_n2_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear(boma, 1, false);
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
     }
-    wait(lua_state, 4.0);
+    frame(lua_state, 11.0);
+    SA_SET(fighter, *SITUATION_KIND_AIR);
+    wait(lua_state, 3.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
@@ -334,7 +366,23 @@ unsafe fn littlemac_special_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        let air_speed_x_stable = WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0);
+        let fall_x_mul = WorkModule::get_param_float(
+            boma,
+            hash40("param_special_hi"),
+            hash40("special_hi_fall_x_mul")
+        );
+        sv_kinetic_energy!(
+            set_stable_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            air_speed_x_stable * fall_x_mul,
+            0.0
+        );
+    }
 }
 
 #[acmd_script( agent = "littlemac", script = "game_speciallwhit" , category = ACMD_GAME , low_priority)]
@@ -425,6 +473,10 @@ pub fn install() {
         littlemac_special_n_cancel_effect,
         littlemac_special_n_cancel_sound,
         littlemac_special_n_cancel_expression,
+        littlemac_special_air_n_cancel_game,
+        littlemac_special_air_n_cancel_effect,
+        littlemac_special_air_n_cancel_sound,
+        littlemac_special_air_n_cancel_expression,
         littlemac_special_n2_game,
         littlemac_special_n2_sound,
         littlemac_special_air_n2_game,

@@ -35,7 +35,6 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 unsafe fn status_pre_Jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     let interrupted = fighter.status_pre_Jump_Common_param(L2CValue::Bool(true)).get_bool();
     if !interrupted {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
         fighter.status_pre_Jump_sub();
     }
     L2CValue::Bool(interrupted)
@@ -85,7 +84,7 @@ unsafe extern "C" fn status_pre_Jump_sub(fighter: &mut L2CFighterCommon) {
 
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon25status_pre_Jump_sub_paramEN3lib8L2CValueES2_S2_S2_S2_")]
 unsafe extern "C" fn status_pre_Jump_sub_param(fighter: &mut L2CFighterCommon, flag_keep: L2CValue, int_keep: L2CValue, float_keep: L2CValue, kinetic_type: L2CValue, arg: L2CValue) {
-    //println!("status_pre_Jump_sub_param");
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
     let flag_keep = flag_keep.get_i32();
     let int_keep = int_keep.get_i32();
     let float_keep = float_keep.get_i32();

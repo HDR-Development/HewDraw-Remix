@@ -15,7 +15,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_DamageFly_Main_hook,
             calc_damage_motion_rate_hook,
             sub_DamageFlyCommon_hook,
-            exec_damage_elec_hit_stop_hook
+            exec_damage_elec_hit_stop_hook,
+            FighterStatusDamage__is_enable_damage_fly_effect_hook
         );
     }
 }
@@ -417,9 +418,14 @@ unsafe fn sub_DamageFlyCommon_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     else {
         if !fighter.global_table[IS_STOPPING].get_bool()
-        && fighter.sub_DamageFlyChkUniq().get_bool()
         {
-            return true.into();
+            if fighter.sub_DamageFlyChkUniq().get_bool() {
+                return true.into();
+            }
+            if fighter.global_table[CURRENT_FRAME].get_i32() > 1 && !VarModule::is_flag(fighter.battle_object, vars::common::status::DAMAGE_FLY_RESET_TRIGGER) {
+                ControlModule::reset_trigger(fighter.module_accessor);
+                VarModule::on_flag(fighter.battle_object, vars::common::status::DAMAGE_FLY_RESET_TRIGGER);
+            }
         }
         return false.into();
     }
@@ -516,4 +522,14 @@ pub unsafe fn exec_damage_elec_hit_stop_hook(fighter: &mut L2CFighterCommon) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_PARALYZE_STOP);
         check_asdi(fighter);
     }
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_FighterStatusDamage__is_enable_damage_fly_effect)]
+pub unsafe fn FighterStatusDamage__is_enable_damage_fly_effect_hook(fighter: &mut L2CFighterCommon, arg2: L2CValue, arg3: L2CValue, arg4: L2CValue, arg5: L2CValue) -> L2CValue {
+    let ret = call_original!(fighter, arg2, arg3, arg4, arg5);
+    let hit_stop_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_HIT_STOP_FRAME);
+    if ret.get_bool() && WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_FLY_DIST) < 3.0 {
+        return L2CValue::Bool(false);
+    }
+    ret
 }
