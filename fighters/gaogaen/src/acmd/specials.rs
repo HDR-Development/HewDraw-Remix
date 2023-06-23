@@ -211,11 +211,8 @@ unsafe fn gaogaen_special_s_start_game(fighter: &mut L2CAgentBase) {
             // Anti-air grab
             else if VarModule::is_flag(boma.object(), vars::gaogaen::instance::IS_SPECIAL_S_AIR_GRAB) {
                 ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 350, 100, 80, 0, 5.0, 0.0, 7.0, 2.0, Some(0.0), Some(7.0), Some(5.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-                HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_INVINCIBLE);
-                HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
-                HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
+                HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_XLU);
                 HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
-                HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
             }
         }
         // Otherwise produce the normal windbox
