@@ -119,6 +119,7 @@ pub fn fighter_reset(fighter: &mut L2CFighterCommon) {
         {
             MeterModule::reset(fighter.battle_object);
         }
+        GroundModule::set_no_cliff_stop_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_NONE);
     }
 
 }
