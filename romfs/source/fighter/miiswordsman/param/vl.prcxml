@@ -39,7 +39,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="hi1_air_start_mul_y">0.65</float>
+      <float hash="hi1_air_start_mul_y">0.7</float>
     </struct>
     <struct index="1">
       <float hash="hi2_rush_speed">2.4</float>
