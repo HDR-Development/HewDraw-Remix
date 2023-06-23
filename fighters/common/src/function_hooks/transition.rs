@@ -177,14 +177,6 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
             }
         }
 
-        //Disables Dedede Side Special on a timer
-        if boma.kind() == *FIGHTER_KIND_DEDEDE {
-            if VarModule::get_int(boma.object(), vars::dedede::instance::GORDO_TIMER) != 0
-            && flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S {
-                return false;
-            }
-        }
-
         if fighter_kind == *FIGHTER_KIND_NANA {
             if ([*FIGHTER_STATUS_KIND_WAIT, 
                 *FIGHTER_STATUS_KIND_TURN, 

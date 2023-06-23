@@ -17,11 +17,6 @@ unsafe fn super_dedede_jump_quickfall(boma: &mut BattleObjectModuleAccessor, fra
     }
 }
 
-extern "Rust" {
-    fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
-}
-
-
 unsafe fn bair_foot_rotation_scaling(boma: &mut BattleObjectModuleAccessor) {
     // Rotation keyframes
     let start_frame = 0.0;
