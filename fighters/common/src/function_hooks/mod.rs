@@ -338,13 +338,16 @@ unsafe fn before_collision(object: *mut BattleObject) {
                 battle_object__update_movement(object as *mut app::Fighter, !is_receiver_in_hitlag);
 
                 if (*boma).is_situation(*SITUATION_KIND_GROUND)
+                && !(*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_DOWN, *FIGHTER_STATUS_KIND_DOWN_WAIT, *FIGHTER_STATUS_KIND_DOWN_DAMAGE])
                 && GroundModule::get_correct(boma) == *GROUND_CORRECT_KIND_GROUND
                 && KineticModule::is_enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_JOSTLE) {
                     let main_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+                    let damage_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_DAMAGE);
                     let mut jostle_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_JOSTLE) as *mut app::KineticEnergy;
                     let jostle_energy_x = app::lua_bind::KineticEnergy::get_speed_x(jostle_energy);
             
                     if main_speed_x == 0.0
+                    && damage_speed_x == 0.0
                     && jostle_energy_x != 0.0 {
                         GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
                     }
