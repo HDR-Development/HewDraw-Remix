@@ -350,12 +350,6 @@ pub mod vars {
         }
     }
 
-    pub mod dedede {
-        pub mod instance {
-            pub const GORDO_TIMER: i32 = 0x0100;
-        }
-    }
-
     pub mod demon {
         pub mod instance {
             // flags
