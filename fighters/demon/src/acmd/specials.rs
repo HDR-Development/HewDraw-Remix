@@ -771,6 +771,13 @@ unsafe fn kazuya_special_hi_start_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "demon", script = "game_attackstep2fhitshield", category = ACMD_GAME, low_priority )]
+unsafe fn game_attackstep2fhitshield(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        //macros::ATTACK_FP(fighter, 6, 1, Hash40::new("top"), 0, 361, 100, 65, 0, 12, 0, 10, 10, Hash40::new("collision_attr_normal"), 0, 0, 0, false, false, 0, *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *COLLISION_SITUATION_MASK_G, true, *ATTACK_REGION_NONE, *COLLISION_CATEGORY_MASK_FIGHTER, false, *COLLISION_PART_MASK_ALL, false, false, false, false, 0, false, false, *ATTACK_LR_CHECK_POS, false, false, true, true, false, *COLLISION_SHAPE_TYPE_SPHERE);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         kazuya_wind_god_fist_game,
@@ -784,6 +791,7 @@ pub fn install() {
         kazuya_special_hi_game,
         kazuya_special_hi_air_game,
         kazuya_special_hi_start_effect,
+        game_attackstep2fhitshield,
     );
 }
 
