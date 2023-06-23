@@ -337,6 +337,22 @@ unsafe fn before_collision(object: *mut BattleObject) {
                 let battle_object__update_movement: extern "C" fn(*mut app::Fighter, bool) = std::mem::transmute(func_addr);
                 battle_object__update_movement(object as *mut app::Fighter, !is_receiver_in_hitlag);
 
+                if (*boma).is_situation(*SITUATION_KIND_GROUND)
+                && GroundModule::get_correct(boma) == *GROUND_CORRECT_KIND_GROUND
+                && KineticModule::is_enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_JOSTLE) {
+                    let main_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+                    let mut jostle_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_JOSTLE) as *mut app::KineticEnergy;
+                    let jostle_energy_x = app::lua_bind::KineticEnergy::get_speed_x(jostle_energy);
+            
+                    if main_speed_x == 0.0
+                    && jostle_energy_x != 0.0 {
+                        GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+                    }
+                    else {
+                        GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+                    }
+                }
+
             }
             else if (*boma).is_weapon() {
                 let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33a54c0);
