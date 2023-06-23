@@ -80,12 +80,12 @@ unsafe fn shield_pushback_analog(ctx: &skyline::hooks::InlineCtx) {
 
 pub fn install() {
     smashline::install_agent_resets!(fighter_reset);
-    // skyline::patching::Patch::in_text(0x6417f4).nop();
-    // skyline::patching::Patch::in_text(0x6285d0).nop();
+    skyline::patching::Patch::in_text(0x6417f4).nop();
+    skyline::patching::Patch::in_text(0x6285d0).nop();
     skyline::install_hooks!(
         steve_parry_stuff_fix,
-        // shield_damage_analog,
-        // shield_pushback_analog
+        shield_damage_analog,
+        shield_pushback_analog
     );
     skyline::install_hooks!(
        //set_hit_team_hook,
