@@ -273,19 +273,17 @@ pub mod vars {
     pub mod bayonetta {
         pub mod instance {
             // flags
-            pub const IS_NONSPECIAL_CANCEL: i32 = 0x0100;
-            pub const SHOULD_PRORATE_DAMAGE: i32 = 0x0101;
-            pub const IS_SPECIAL_S_CANCELED_INTO: i32 = 0x0102;
-            pub const IS_SPECIAL_HI_CANCELED_INTO: i32 = 0x0103;
+            pub const IS_HIT: i32 = 0x0100;
 
             // ints
             pub const NUM_RECOVERY_RESOURCE_USED: i32 = 0x0100;
-            pub const NUM_SPECIAL_S_CANCEL_THIS_AIRTIME: i32 = 0x0101;
-            pub const NUM_SPECIAL_HI_CANCEL_THIS_AIRTIME: i32 = 0x0102;
+            pub const NUM_CANCEL_THIS_AIRTIME: i32 = 0x0101;
+            pub const ABK_ANGLE_ROUNDED: i32 = 0x0102;
         }
         pub mod status {
             // flags
-            pub const IS_BULLET_ARTS: i32 = 0x1100;
+            pub const IS_ACTIVATE: i32 = 0x1100;
+            pub const DIRECT_HIT: i32 = 0x1101;
         }
     }
 
@@ -412,6 +410,10 @@ pub mod vars {
             pub const SPECIAL_HI_FUEL: i32 = 0x0101;
             pub const FUEL_EFFECT_HANDLER: i32 = 0x0102;
         }
+        pub mod status {
+            // flag
+            pub const CLAY_SMASH_INPUT: i32 = 0x1100;
+        }
     }
     pub mod peach {
         pub mod instance {
@@ -440,13 +442,16 @@ pub mod vars {
             pub const TICO_X_DIST: i32 = 0x0107;
             pub const TICO_Y_DIST: i32 = 0x0108;
 
-            // flag
-            pub const IS_TICO_DEAD: i32 = 0x0105;
+            // flags
+            pub const IS_TICO_UNAVAILABLE: i32 = 0x0100;
         }
         pub mod status {
-            // int
+            // ints
             /// Used for determining what luma does
-            pub const INVIS_FRAMES: i32 = 0x1100;
+            pub const LUMA_STATE: i32 = 0x1100;
+
+            // flags
+            pub const IS_INVALID_TELEPORT: i32 = 0x1101;
         }
     }
 
@@ -540,6 +545,10 @@ pub mod vars {
     }
 
     pub mod kirby {
+        pub mod instance {
+            // flags
+            pub const DISABLE_SPECIAL_HI: i32 = 0x0100;
+        }
         pub mod status {
             // flags
             pub const FINAL_CUTTER_HIT: i32 = 0x1100;
@@ -753,6 +762,8 @@ pub mod vars {
             pub const IS_TARGET_COMBO_2:      i32 = 0x0104;
             pub const IS_CURRENT_HADOKEN_EX:  i32 = 0x0105;
             pub const DISABLE_SPECIAL_S:      i32 = 0x0106;
+            pub const IS_CURRENT_HADOKEN_AIR: i32 = 0x0107;
+            pub const DISABLE_SPECIAL_LW:     i32 = 0x0108;
 
             // ints
             pub const REPEAT_COUNT_LW: i32 = 0x0100;
@@ -795,8 +806,17 @@ pub mod vars {
 
     pub mod snake {
         pub mod instance {
+            // flags
+            pub const SELF_STICK : i32 = 0x0100;
+            pub const KNIFE_COMBO_ENABLE : i32 = 0x0101;
+            pub const KNIFE_COMBO_IS_BUFFERED : i32 = 0x0102;
+            pub const DTAUNT_C4_EXLPODE : i32 = 0x0103;
+            pub const DTAUNT_GRENADE_WAIT_COUNT : i32 = 0x0104;
+            pub const IS_GRAB_WALK : i32 = 0x0105;
+            
             // ints
             pub const SNAKE_GRENADE_COUNTER: i32 = 0x0100;
+            pub const KNIFE_COMBO_COUNT : i32 = 0x0101;
         }
     }
 
@@ -931,6 +951,9 @@ pub mod vars {
     }
 
     pub mod miifighter {
+        pub mod instance {
+            pub const QUAKE_EFFECT_HANDLER: i32 = 0x0100;
+        }
         pub mod status {
             // ints
             pub const SPECIAL_LW1_CHARGE: i32 = 0x1100;
@@ -1092,6 +1115,10 @@ pub mod statuses {
         pub const AIR_DASH: i32 = 0;
     }
 
+    pub mod ken {
+        pub const ATTACK_COMMAND_4: i32 = 0;
+    }
+
     pub mod buddy {
         pub const BUDDY_BAYONET_END: i32 = 0;
     }
@@ -1104,5 +1131,9 @@ pub mod statuses {
     pub mod wolf {
         pub const SPECIAL_S_RUSH: i32 = 0;
         pub const SPECIAL_S_END: i32 = 1;
+    }
+    
+    pub mod kirby {
+        pub const SPECIAL_HI_H: i32 = 0;
     }
 }

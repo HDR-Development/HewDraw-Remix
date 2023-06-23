@@ -126,6 +126,19 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         if x1 == hash40("landing_frame") {
             return original!()(x0, hash40("landing_frame"), 0) + 1.0;
         }
+
+        // Ken aerial hadouken modified offsets for aerial version
+        else if fighter_kind == *FIGHTER_KIND_KEN {
+            if VarModule::is_flag(boma_reference.object(), vars::shotos::instance::IS_CURRENT_HADOKEN_AIR) {
+                if x1 == hash40("param_special_n") {
+                    if x2 == hash40("shoot_x") {
+                        return 11.0;
+                    } else if x2 == hash40("shoot_y") {
+                        return 6.0;
+                    }
+                }
+            }
+        }
         
         else if fighter_kind == *FIGHTER_KIND_MIISWORDSMAN {
             //if MotionModule::motion_kind(&mut *boma) == hash40("special_hi1") || MotionModule::motion_kind(&mut *boma) == hash40("special_hi1_start"){
