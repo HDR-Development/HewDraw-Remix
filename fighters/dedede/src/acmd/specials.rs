@@ -71,7 +71,6 @@ unsafe fn dedede_special_s_start_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_GENERATE);
-        VarModule::set_int(fighter.battle_object, vars::dedede::instance::GORDO_TIMER, 150);   
     }
     frame(lua_state, 7.0);
     if is_excute(fighter){
@@ -180,7 +179,6 @@ unsafe fn dedede_special_air_s_start_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_DEDEDE_STATUS_GORDO_THROW_FLAG_GENERATE);
-        VarModule::set_int(fighter.battle_object, vars::dedede::instance::GORDO_TIMER, 150);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter){
