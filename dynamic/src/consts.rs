@@ -799,7 +799,7 @@ pub mod vars {
 
     pub mod sonic {
         pub mod instance {
-            pub const USED_BOOST: i32 = 0x0100;
+            pub const USED_AIR_ACTION: i32 = 0x0100;
         }
         pub mod status {
             // flags
