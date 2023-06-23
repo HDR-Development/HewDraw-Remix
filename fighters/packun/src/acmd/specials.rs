@@ -52,7 +52,7 @@ unsafe fn packun_special_s_shoot_game(fighter: &mut L2CAgentBase) {
         }
     }
     else if stance == 1 {
-        FT_DESIRED_RATE(fighter, 5.0, 9.0);
+        FT_DESIRED_RATE(fighter, 5.0, 8.0);
         frame(lua_state, 5.0);
         FT_MOTION_RATE(fighter, 1.0);
         if is_excute(fighter) {
