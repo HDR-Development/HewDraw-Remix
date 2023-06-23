@@ -90,9 +90,9 @@ unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
             *FIGHTER_STATUS_KIND_PASSIVE_FB]) {
                 apply_status_speed_mul(fighter, 1.0);
         } else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 1 {
-            apply_status_speed_mul(fighter, 0.88);
+            apply_status_speed_mul(fighter, 0.84);
         } else if VarModule::get_int(fighter.object(), vars::packun::instance::CURRENT_STANCE) == 2 {
-            apply_status_speed_mul(fighter, 0.75);
+            apply_status_speed_mul(fighter, 0.77);
         }
         VarModule::off_flag(fighter.object(), vars::packun::instance::STANCE_NEED_SET_SPEEDS);
     }
@@ -134,13 +134,12 @@ unsafe fn check_apply_speeds(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-/// checks if stance should be reset due to death or match end
+/// checks if stance should be reset due to match end
 unsafe fn check_reset(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_WIN,
         *FIGHTER_STATUS_KIND_LOSE,
-        *FIGHTER_STATUS_KIND_ENTRY,
-        *FIGHTER_STATUS_KIND_DEAD]) {
+        *FIGHTER_STATUS_KIND_ENTRY]) {
             VarModule::set_int(fighter.object(), vars::packun::instance::CURRENT_STANCE, 0);
     }
 }

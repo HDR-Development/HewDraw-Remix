@@ -96,6 +96,9 @@
 		],
 		"fighter/ganon/cmn": [
 			"fighter/ganon/param/hdr.prc"
+		],
+		"fighter/miifighter/cmn": [
+			"fighter/miifighter/param/hdr.prc"
 		]
 	}
 }
