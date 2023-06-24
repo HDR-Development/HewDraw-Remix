@@ -187,33 +187,17 @@ unsafe fn galaxy_spin_move(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         let current_speed =  KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         if fighter.is_status(*FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT) && fighter.is_situation(*SITUATION_KIND_GROUND){
             if frame >= 6.0 && frame < 20.0 { 
-                VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
+            VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
                 if stick_x != 0.0 {
                     let motion_vec = x_motion_vec(1.2, stick_x);
                     KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
                 }
             }
-            else if frame >= 20.0 && frame < 30.0 {
+            if frame >= 20.0 && frame < 55.0 { 
+                VarModule::off_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL);
                 if stick_x != 0.0 {
-                    let motion_vec = x_motion_vec(1.0, stick_x);
-                    KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-                }
-            }
-            else if frame >= 30.0 && frame < 40.0 {
-                if stick_x != 0.0 {
-                    let motion_vec = x_motion_vec(0.8, stick_x);
-                    KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-                }
-            }
-            else if frame >= 40.0 && frame < 50.0 {
-                if stick_x != 0.0 {
-                    let motion_vec = x_motion_vec(0.5, stick_x);
-                    KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
-                }
-            }
-            else if frame >= 50.0 && frame < 55.0 {
-                if stick_x != 0.0 {
-                    let motion_vec = x_motion_vec(0.2, stick_x);
+                    let motion_value = 1.2 + (frame - 20.0) * ((0.15 - 1.2)/(55.0 - 20.0));
+                    let motion_vec = x_motion_vec(motion_value, stick_x);
                     KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
                 }
             }
