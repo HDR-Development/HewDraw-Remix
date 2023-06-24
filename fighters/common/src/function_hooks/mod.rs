@@ -337,10 +337,14 @@ unsafe fn before_collision(object: *mut BattleObject) {
                 let battle_object__update_movement: extern "C" fn(*mut app::Fighter, bool) = std::mem::transmute(func_addr);
                 battle_object__update_movement(object as *mut app::Fighter, !is_receiver_in_hitlag);
 
+                // Prevents jostle from pushing you off of edges
+                // except if you are in knockdown (to allow for pratfall combos)
                 if (*boma).is_situation(*SITUATION_KIND_GROUND)
                 && !(*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_DOWN, *FIGHTER_STATUS_KIND_DOWN_WAIT, *FIGHTER_STATUS_KIND_DOWN_DAMAGE])
-                && GroundModule::get_correct(boma) == *GROUND_CORRECT_KIND_GROUND
+                && (GroundModule::get_correct(boma) == *GROUND_CORRECT_KIND_GROUND || VarModule::is_flag(object, vars::common::status::EDGE_SLIP_STATUS))
                 && KineticModule::is_enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_JOSTLE) {
+                    VarModule::on_flag(object, vars::common::status::EDGE_SLIP_STATUS);
+
                     let main_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
                     let damage_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_DAMAGE);
                     let mut jostle_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_JOSTLE) as *mut app::KineticEnergy;
@@ -349,6 +353,9 @@ unsafe fn before_collision(object: *mut BattleObject) {
                     if main_speed_x == 0.0
                     && damage_speed_x == 0.0
                     && jostle_energy_x != 0.0 {
+                        // This check passes if jostle is the ONLY energy acting on you
+                        // AKA your character is not dashing, running, walking, etc
+                        // nor sliding due to knockback/shield pushback
                         GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
                     }
                     else {

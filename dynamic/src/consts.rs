@@ -232,6 +232,7 @@ pub mod vars {
         }
         pub mod status {
             // flags
+            pub const EDGE_SLIP_STATUS: i32 = 0x10FE;
             pub const DISABLE_ECB_SHIFT: i32 = 0x10FF;
 
             pub const IS_DASH_TO_RUN_FRAME: i32 = 0x1000;
