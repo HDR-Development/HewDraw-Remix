@@ -169,6 +169,8 @@ pub mod vars {
 
             pub const IS_PARRY_FOR_GUARD_OFF: i32 = 0x0060;
 
+            pub const EDGE_SLIPPABLE_STATUS: i32 = 0x0061;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -232,7 +234,6 @@ pub mod vars {
         }
         pub mod status {
             // flags
-            pub const EDGE_SLIP_STATUS: i32 = 0x10FE;
             pub const DISABLE_ECB_SHIFT: i32 = 0x10FF;
 
             pub const IS_DASH_TO_RUN_FRAME: i32 = 0x1000;

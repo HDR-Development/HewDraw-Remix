@@ -123,6 +123,8 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
         if boma.is_prev_status(*FIGHTER_STATUS_KIND_SWALLOWED_DRINK) {
             VisibilityModule::set_whole(boma, true);
         }
+
+        VarModule::off_flag(boma.object(), vars::common::instance::EDGE_SLIPPABLE_STATUS);
     }
 
     // VarModule Status Variable reset checks
