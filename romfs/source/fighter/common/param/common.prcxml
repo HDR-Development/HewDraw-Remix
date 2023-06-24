@@ -112,6 +112,7 @@
   <int hash="attach_wall_disable_frame">999</int>
   <float hash="damage_ground_mul">1</float>
   <float hash="damage_air_brake">0.051</float>
+  <float hash="damage_speed_no_cliff_stop">999</float>
   <float hash="damage_fly_speed_y_mul_base_accel">0</float>
   <float hash="damage_fly_speed_y_mul">0</float>
   <float hash="damage_fly_correction_max">18</float>
