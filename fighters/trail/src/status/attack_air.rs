@@ -64,9 +64,11 @@ pub unsafe fn init_attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
         if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION_2ND);
         } else {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT);
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
         }
     } else {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
     }
     let _ = fighter.sub_attack_air_uniq_process_init();
@@ -124,6 +126,7 @@ unsafe extern "C" fn sub_attack_air_n(fighter: &mut L2CFighterCommon) {
     fighter.sub_attack_air_kind();
     if motion_kind != 0xd0b71815b as u64 {
         if motion_kind != 0xd0c1c4542 as u64 {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT);
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
             fighter.sub_attack_air_uniq_process_init();
             return;
@@ -139,6 +142,7 @@ unsafe extern "C" fn sub_attack_air_n(fighter: &mut L2CFighterCommon) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION_2ND);
     }
     else {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
     }
     fighter.sub_attack_air_uniq_process_init();
@@ -210,6 +214,7 @@ unsafe extern "C" fn sub_attack_air_f(fighter: &mut L2CFighterCommon) {
     fighter.sub_attack_air_kind();
     if motion_kind != 0xd0b71815b as u64 {
         if motion_kind != 0xd0c1c4542 as u64 {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT);
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
             fighter.sub_attack_air_uniq_process_init();
             return;
@@ -225,6 +230,7 @@ unsafe extern "C" fn sub_attack_air_f(fighter: &mut L2CFighterCommon) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP_AERIAL_MOTION_2ND);
     }
     else {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
     }
     fighter.sub_attack_air_uniq_process_init();
