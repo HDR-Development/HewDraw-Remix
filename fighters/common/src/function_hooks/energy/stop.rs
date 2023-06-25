@@ -85,6 +85,43 @@ pub enum EnergyStopResetType {
     DamageAirOrbit,
 }
 
+#[skyline::hook(offset = 0x6d6630)]
+unsafe fn update_stop(energy: &mut FighterKineticEnergyStop, boma: &mut BattleObjectModuleAccessor) {
+    use EnergyStopResetType::*;
+
+    let backup_brake = energy.speed_brake;
+
+    // <HDR>
+
+    // Double traction while above max walk speed
+    if boma.is_situation(*SITUATION_KIND_GROUND)
+    && boma.status_frame() > 0 {
+        let mut damage_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_DAMAGE) as *mut app::KineticEnergy;
+        let damage_speed_x = app::lua_bind::KineticEnergy::get_speed_x(damage_energy);
+        // If our speed is being influenced by knockback, we handle double traction elsewhere
+        if damage_speed_x == 0.0 {
+            let walk_speed_max =  WorkModule::get_param_float(boma, smash::hash40("walk_speed_max"), 0);
+            if matches!(energy.reset_type, Ground | CatchDash | DamageGround | GuardDamage | DamageGroundOrbit | ShieldRebound) {
+                let speed = energy.get_speed();
+                let adjusted_speed = energy::KineticEnergy::adjust_speed_for_ground_normal(speed, boma);
+
+                let magnitude = (adjusted_speed.x.powi(2) + adjusted_speed.y.powi(2)).sqrt();
+
+                if magnitude >= walk_speed_max {
+                    energy.speed_brake.x *= 2.0;
+                }
+            }
+        }
+        
+    }
+
+    // </HDR>
+
+    call_original!(energy, boma);
+    
+    energy.speed_brake = backup_brake;
+}
+
 #[skyline::hook(offset = 0x6d8540)]
 pub unsafe extern "Rust" fn setup_stop(energy: &mut FighterKineticEnergyStop, reset_type: EnergyStopResetType, initial_speed: &PaddedVec2, unk: u64, boma: &mut BattleObjectModuleAccessor) {
     if ( boma.is_fighter()
@@ -100,6 +137,7 @@ pub unsafe extern "Rust" fn setup_stop(energy: &mut FighterKineticEnergyStop, re
 
 pub fn install() {
     skyline::install_hooks!(
+        update_stop,
         setup_stop
     );
 }

@@ -3,6 +3,7 @@
   <int hash="precede">5</int>
   <int hash="precede_extension">0</int>
   <float hash="ground_speed_limit">4</float>
+  <float hash="stop_over_speed_brake_mul">1</float>
   <float hash="turn_stick_x">-0.2</float>
   <float hash="dash_stick_x">0.8</float>
   <float hash="dash_s4_frame">4</float>
