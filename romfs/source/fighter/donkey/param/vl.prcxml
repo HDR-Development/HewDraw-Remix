@@ -38,10 +38,11 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="y_spd_air">0.7</float>
+      <float hash="y_spd_air">0.77</float>
       <float hash="x_acl_ground">0.05</float>
       <float hash="x_dcl_ground">0.04</float>
       <float hash="x_spd_max_ground">1.15</float>
+      <float hash="x_acl_air">0.06</float>
       <float hash="x_spd_max_air">1.67</float>
       <float hash="landing_frame">18</float>
     </struct>

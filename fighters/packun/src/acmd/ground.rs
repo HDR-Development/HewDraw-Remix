@@ -81,7 +81,7 @@ unsafe fn packun_attack_13_game(fighter: &mut L2CAgentBase) {
     let sound_level = if stance.label != 2 { *ATTACK_SOUND_LEVEL_M } else { *ATTACK_SOUND_LEVEL_S };
     let sound = if stance.label != 2 { *COLLISION_SOUND_ATTR_PUNCH } else { *COLLISION_SOUND_ATTR_HEAVY };
     if stance.label == 2 {
-        FT_MOTION_RATE(fighter, (10.0/7.0));
+        FT_DESIRED_RATE(fighter, 7.0, 9.0);
     }
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 5.0, 4.0);

@@ -454,6 +454,7 @@ pub trait BomaExt {
     // INSTANCE
     unsafe fn is_fighter(&mut self) -> bool;
     unsafe fn is_weapon(&mut self) -> bool;
+    unsafe fn is_item(&mut self) -> bool;
     unsafe fn kind(&mut self) -> i32;
     // gets the boma of the player who you are grabbing
     unsafe fn get_grabbed_opponent_boma(&mut self) -> &mut BattleObjectModuleAccessor;
@@ -495,7 +496,8 @@ pub trait BomaExt {
     // ENERGY
     unsafe fn get_motion_energy(&mut self) -> &mut FighterKineticEnergyMotion;
     unsafe fn get_controller_energy(&mut self) -> &mut FighterKineticEnergyController;
-    // tech/general subroutine
+
+    // tech/general subroutines
     unsafe fn handle_waveland(&mut self, require_airdodge: bool) -> bool;
     unsafe fn set_front_cliff_hangdata(&mut self, x: f32, y: f32);
     unsafe fn set_back_cliff_hangdata(&mut self, x: f32, y: f32);
@@ -511,6 +513,9 @@ pub trait BomaExt {
 
     /// check for hitfall (should be called once per frame)
     unsafe fn check_hitfall(&mut self);
+
+    /// try to pickup an item nearby
+    unsafe fn try_pickup_item(&mut self, range: f32, bone: Option<Hash40>, offset: Option<&Vector2f>) -> Option<&mut BattleObjectModuleAccessor> ;
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -733,6 +738,10 @@ impl BomaExt for BattleObjectModuleAccessor {
 
     unsafe fn is_weapon(&mut self) -> bool {
         return smash::app::utility::get_category(self) == *BATTLE_OBJECT_CATEGORY_WEAPON;
+    }
+
+    unsafe fn is_item(&mut self) -> bool {
+        return smash::app::utility::get_category(self) == *BATTLE_OBJECT_CATEGORY_ITEM;
     }
 
     unsafe fn kind(&mut self) -> i32 {
@@ -1135,6 +1144,63 @@ impl BomaExt for BattleObjectModuleAccessor {
                 WorkModule::on_flag(self, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
             }
         }
+    }
+
+    unsafe fn try_pickup_item(&mut self, range: f32, bone: Option<Hash40>, offset: Option<&Vector2f>) -> Option<&mut BattleObjectModuleAccessor> {
+        use smash2::app::ItemManager;
+
+        // non fighters cant pickup items
+        if !self.is_fighter() {
+            return None;
+        }
+
+        // item manager singleton instance
+        let item_manager = ItemManager::instance().unwrap();
+
+        // if you already have an item, return that item instead
+        if ItemModule::is_have_item(self, 0) {
+            let have_id = ItemModule::get_have_item_id(self, 0);
+            let item = item_manager.find_active_item_from_id(have_id as u32) as *mut smash::app::Item;
+            let item_module_accessor = smash::app::lua_bind::Item::item_module_accessor(item) as *mut ItemModuleAccessor;
+            let item_boma = &mut (*item_module_accessor).battle_object_module_accessor;
+            return Some(item_boma);
+        }
+        
+        // get the global position of the bone, defaulting to "top"
+        let fighter_pos = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
+        let bone_hash = bone.unwrap_or(Hash40::new("top"));
+        ModelModule::joint_global_position(self, bone_hash, fighter_pos, false);
+        // zero out the z axis
+        fighter_pos.z = 0.0;
+        match offset {
+            Some(offset) => {
+                fighter_pos.x += offset.x * PostureModule::lr(self);
+                fighter_pos.y += offset.y;
+            },
+            None => {}
+        }
+        
+        let total = item_manager.get_num_of_active_item_all();
+        for id in 0..total {
+            // pointer to the item
+            let item_ptr = item_manager.get_active_item(id as u64);
+            if item_ptr.is_null() {
+                continue;
+            }
+
+            // if this item is close to us, grab it
+            let item = item_ptr as *mut smash::app::Item;
+            let item_module_accessor = smash::app::lua_bind::Item::item_module_accessor(item) as *mut ItemModuleAccessor;
+            let item_boma = &mut (*item_module_accessor).battle_object_module_accessor;
+            let item_pos = PostureModule::pos(item_boma);
+
+            if ((*item_pos).x - (*fighter_pos).x).abs() < range
+                && ((*item_pos).y - (*fighter_pos).y).abs() < range {
+                ItemModule::have_item_instance(self, item, 0, false, false, false, false);
+                return Some(item_boma);
+            }
+        }
+        return None;
     }
 }
 

@@ -72,7 +72,77 @@ unsafe fn game_specialairskick(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "diddy", script = "game_specialncancel" , category = ACMD_GAME , low_priority)]
+unsafe fn diddy_special_n_cancel_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, false, -1);
+        FT_MOTION_RATE(fighter, 8.0/(31.0 - 1.0));
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
 
+#[acmd_script( agent = "diddy", script = "effect_specialncancel" , category = ACMD_EFFECT , low_priority)]
+unsafe fn diddy_special_n_cancel_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+}
+
+#[acmd_script( agent = "diddy", script = "sound_specialncancel" , category = ACMD_SOUND , low_priority)]
+unsafe fn diddy_special_n_cancel_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+}
+
+#[acmd_script( agent = "diddy", script = "expression_specialncancel" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn diddy_special_n_cancel_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+}
+
+#[acmd_script( agent = "diddy", script = "game_specialairncancel" , category = ACMD_GAME , low_priority)]
+unsafe fn diddy_special_air_n_cancel_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, false, -1);
+        FT_MOTION_RATE(fighter, 8.0/(35.0 - 1.0));
+    }
+    frame(lua_state, 21.0);
+    if is_excute(fighter) {
+        ArticleModule::set_visibility_whole(boma, *FIGHTER_DIDDY_GENERATE_ARTICLE_GUN, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+
+#[acmd_script( agent = "diddy", script = "effect_specialairncancel" , category = ACMD_EFFECT , low_priority)]
+unsafe fn diddy_special_air_n_cancel_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+}
+
+#[acmd_script( agent = "diddy", script = "sound_specialairncancel" , category = ACMD_SOUND , low_priority)]
+unsafe fn diddy_special_air_n_cancel_sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+}
+
+#[acmd_script( agent = "diddy", script = "expression_specialairncancel" , category = ACMD_EXPRESSION , low_priority)]
+unsafe fn diddy_special_air_n_cancel_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+}
 
 pub fn install() {
     install_acmd_scripts!(
@@ -80,6 +150,14 @@ pub fn install() {
         game_specialsstick,
         game_specialairsjump,
         game_specialairskick,
+        diddy_special_n_cancel_game,
+        diddy_special_n_cancel_effect,
+        diddy_special_n_cancel_sound,
+        diddy_special_n_cancel_expression,
+        diddy_special_air_n_cancel_game,
+        diddy_special_air_n_cancel_effect,
+        diddy_special_air_n_cancel_sound,
+        diddy_special_air_n_cancel_expression,
     );
 }
 
