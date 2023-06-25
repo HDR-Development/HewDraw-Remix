@@ -207,9 +207,14 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                 if fighter_kind == *FIGHTER_KIND_MEWTWO {
                     EffectModule::req_follow(boma, Hash40::new("mewtwo_final_aura"), Hash40::new("hip"), &Vector3f::zero(), &Vector3f::zero(), 1.25, true, 0, 0, 0, 0, 0, false, false);
                 }
-            } else if fighter_kind == *FIGHTER_KIND_MEWTWO && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) == 50  {
+            } else if fighter_kind == *FIGHTER_KIND_MEWTWO {
+                if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) == 50  {
                 // consume double jump on f10 of float
-                fighter.set_int(2, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+                    fighter.set_int(2, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+                }
+                if boma.is_cat_flag(Cat1::SpecialS) {
+                    fighter.set_int(-1, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
+                }
             }
         }
     }

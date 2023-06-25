@@ -27,19 +27,15 @@ unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut Bat
         if boma.get_num_used_jumps() < boma.get_jump_count_max() {
             VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
             CancelModule::enable_cancel(boma);
-            // Consume double jump + float, except when Teleport is initiated on ground
+            // Consume double jump, except when Teleport is initiated on ground
             if !VarModule::is_flag(boma.object(), vars::mewtwo::instance::GROUNDED_TELEPORT) {
                 fighter.set_int(2, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-                fighter.set_int(0, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
             }
         }
     }
      //takes away float after 5 frames of jump
-    if boma.get_num_used_jumps() == 2 {
-        if status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL && boma.status_frame() > 5 {
-            fighter.set_int(0, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
-        }
-        else {
+    if boma.get_num_used_jumps() == 2 && (fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) == VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION)) {
+        if !(status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL && boma.status_frame() <= 5) {
             fighter.set_int(0, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
         }
     }
