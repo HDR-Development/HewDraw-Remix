@@ -103,8 +103,8 @@ extern "Rust" {
 // Aegis Reflector Timer Count
 unsafe fn aegis_reflector_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
     let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
-    if gimmick_timerr > 0 && gimmick_timerr < 901 {
-        if gimmick_timerr > 899 {
+    if gimmick_timerr > 0 && gimmick_timerr < 721 {
+        if gimmick_timerr > 719 {
             VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
             gimmick_flash(boma);
         } else {
