@@ -26,6 +26,20 @@ unsafe fn change_status_request_hook(boma: &mut BattleObjectModuleAccessor, stat
                 }
             }
         }
+    } else if boma.is_item() {
+        // handle barrel item not breaking when it hits someone
+        if boma.kind() == *ITEM_KIND_BARREL {
+            //println!("Barrel is requesting change into: {:x}", next_status);
+            if next_status == *ITEM_STATUS_KIND_BORN || next_status == *ITEM_STATUS_KIND_LOST {
+                let bounce_mul = Vector3f { x: -0.25, y: -0.25, z: -0.25 };
+                KineticModule::mul_speed(boma, &bounce_mul, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                PostureModule::reverse_lr(boma);
+                AttackModule::clear_all(boma);
+
+                // instead change into fall
+                next_status = *ITEM_STATUS_KIND_FALL;
+            }
+        }
     }
     original!()(boma, next_status, arg3)
 }
@@ -140,6 +154,12 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
         if boma.kind() == *FIGHTER_KIND_PICKEL
         && next_status == *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_JUMP
         && boma.get_num_used_jumps() >= boma.get_jump_count_max() {
+            return 0;
+        }
+        // Stubs vanilla Popgun cancel behavior
+        if boma.kind() == *FIGHTER_KIND_DIDDY
+        && boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_N_CHARGE])
+        && [*FIGHTER_STATUS_KIND_WAIT, *FIGHTER_STATUS_KIND_FALL].contains(&next_status) {
             return 0;
         }
         // Allows Clay Pigeon smash input to work properly
