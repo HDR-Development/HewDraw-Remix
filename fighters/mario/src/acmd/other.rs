@@ -311,7 +311,7 @@ unsafe fn sound_regular(fighter: &mut L2CAgentBase) {
     */
 }
 
-=======
+
 #[acmd_script( agent = "mario", script = "game_appealsl", category = ACMD_GAME, low_priority )]
 unsafe fn game_appealsl(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
