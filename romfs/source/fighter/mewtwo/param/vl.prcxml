@@ -40,8 +40,9 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="wrap_speed_add">2.0</float>
-      <float hash="wrap_speed_multi">2.0</float>
+      <float hash="wrap_speed_multi">3.0</float>
       <float hash="wrap_xy_speed_air">1.0</float>
+      <float hash="wrap_x_max">0.5</float>
       <int hash="move_time">10</int>
       <float hash="landing_frame">25</float>
     </struct>
