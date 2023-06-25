@@ -84,6 +84,11 @@ pub fn install() {
     // skyline::patching::Patch::in_text(0x6285d0).nop();
     skyline::install_hooks!(
         steve_parry_stuff_fix,
+        set_hit_team_hook,
+        set_hit_team_second_hook,
+        set_team_second_hook,
+        set_team_hook,
+        set_team_owner_id_hook,
         // shield_damage_analog,
         // shield_pushback_analog
     );
@@ -94,13 +99,54 @@ pub fn install() {
     );
 }
 
-/*#[skyline::hook(replace=TeamModule::set_hit_team)]
+#[skyline::hook(replace=TeamModule::set_hit_team)]
 unsafe fn set_hit_team_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
     original!()(boma, arg2);
     if (boma.kind() == *ITEM_KIND_BARREL) {
+        //println!("set hit team called for barrel: {:x}", arg2);
         return;
     }
-}*/
+}
+
+#[skyline::hook(replace=TeamModule::set_hit_team_second)]
+unsafe fn set_hit_team_second_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
+    original!()(boma, arg2);
+    if (boma.kind() == *ITEM_KIND_BARREL) {
+        //println!("set hit team second called for barrel: {:x}", arg2);
+        return;
+    }
+}
+/// used to ignore setting the team for barrel. This resolves an issue
+/// where, when someone throws barrel upwards or forwards, they are
+/// able to be hit by their own barrel for 1 frame. This is here
+/// because editing item statuses is not possible
+#[skyline::hook(replace=TeamModule::set_team)]
+unsafe fn set_team_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32, arg3: bool) {
+    if (smash::app::utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_ITEM 
+      && boma.kind() == *ITEM_KIND_BARREL) {
+        //println!("set team ignored for barrel: {:x}", arg2);
+    } else {
+        original!()(boma, arg2, arg3);
+    }
+}
+
+#[skyline::hook(replace=TeamModule::set_team_second)]
+unsafe fn set_team_second_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
+    original!()(boma, arg2);
+    if (boma.kind() == *ITEM_KIND_BARREL) {
+        //println!("set team second called for barrel: {:x}", arg2);
+        return;
+    }
+}
+
+#[skyline::hook(replace=TeamModule::set_team_owner_id)]
+unsafe fn set_team_owner_id_hook(boma: &mut BattleObjectModuleAccessor, arg2: i32) {
+    original!()(boma, arg2);
+    if (boma.kind() == *ITEM_KIND_BARREL) {
+        //println!("set team owner id called for barrel: {:x}", arg2);
+        return;
+    }
+}
 
 #[smashline::fighter_reset]
 pub fn fighter_reset(fighter: &mut L2CFighterCommon) {

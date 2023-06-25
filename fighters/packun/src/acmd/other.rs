@@ -126,6 +126,12 @@ unsafe fn appeal_hi_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, 0);
     VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
+    }
 }
 
 #[acmd_script( agent = "packun", scripts = ["sound_appealhil", "sound_appealhir"], category = ACMD_SOUND, low_priority )]
@@ -148,6 +154,12 @@ unsafe fn appeal_s_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, 2);
     VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
+    }
 }
 
 #[acmd_script( agent = "packun", scripts = ["sound_appealsl", "sound_appealsr"], category = ACMD_SOUND, low_priority )]
@@ -179,6 +191,12 @@ unsafe fn appeal_lw_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     VarModule::set_int(boma.object(), vars::packun::instance::CURRENT_STANCE, 1);
     VarModule::on_flag(fighter.object(), vars::packun::instance::STANCE_INIT);
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
+    }
 }
 
 #[acmd_script( agent = "packun", scripts = ["sound_appeallwl", "sound_appeallwr"], category = ACMD_SOUND, low_priority )]
