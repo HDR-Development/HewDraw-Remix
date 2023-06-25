@@ -578,7 +578,6 @@ unsafe fn mario_special_air_hi_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-// fixing gitub issue
 #[acmd_script( agent = "mario", script = "game_speciallwlight" , category = ACMD_GAME , low_priority)]
 unsafe fn mario_special_lw_light(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
