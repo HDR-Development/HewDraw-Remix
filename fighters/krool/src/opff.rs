@@ -30,6 +30,7 @@ unsafe fn fuel_reset(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         let fuel_max = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_hi.fuel_max");
         VarModule::set_int(fighter.battle_object, vars::krool::instance::SPECIAL_HI_FUEL, fuel_max);
         VarModule::set_float(fighter.battle_object, vars::krool::instance::STORED_DAMAGE, 0.0);
+        VarModule::off_flag(fighter.battle_object, vars::krool::instance::BLUNDERBUSS_GRAB);
     }
 }
 

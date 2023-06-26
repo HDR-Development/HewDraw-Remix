@@ -5,15 +5,16 @@ use std::convert::TryInto;
 unsafe fn krool_special_n_fire_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    FT_MOTION_RATE_RANGE(fighter, 1.0, 25.0, 16.0);
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::krool::instance::BLUNDERBUSS_GRAB);
     }
-    frame(lua_state, 1.0);
-    FT_MOTION_RATE_RANGE(fighter, 1.0, 25.0, 16.0);
     frame(lua_state, 25.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
+        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW))
+        && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
             VarModule::on_flag(fighter.battle_object, vars::krool::instance::BLUNDERBUSS_GRAB);
         }
     }
@@ -36,6 +37,7 @@ unsafe fn krool_special_n_fire_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(fighter, 37.0, 70.0, 30.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_SHOOT_CANCEL);
+        WorkModule::on_flag(boma, *FIGHTER_KROOL_STATUS_SPECIAL_N_FLAG_NO_SHOOT_CANCEL);
     }
     frame(lua_state, 70.0);
     FT_MOTION_RATE(fighter, 1.0);
