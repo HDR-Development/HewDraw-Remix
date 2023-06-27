@@ -30,3 +30,4 @@ duckhunt: fighter/duckhunt/param/hdr.prc
 krool: fighter/krool/param/hdr.prc
 ganon: fighter/ganon/param/hdr.prc
 miifighter: fighter/miifighter/param/hdr.prc
+sheik: fighter/sheik/param/hdr.prc
