@@ -1,7 +1,6 @@
 
 use super::*;
 
-
 #[acmd_script( agent = "wario", script = "game_catchattack" , category = ACMD_GAME , low_priority)]
 unsafe fn wario_catch_attack_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -9,7 +8,7 @@ unsafe fn wario_catch_attack_game(fighter: &mut L2CAgentBase) {
     
     frame(lua_state, 2.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"),  1.3, 361, 100, 30, 0, 5.0, 0.0, 10.0, 7.0, None, None, None, 0.95, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, true, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_coin"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_COIN, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("top"),  1.3, 361, 100, 30, 0, 5.0, 0.0, 10.0, 7.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, true, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_coin"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_COIN, *ATTACK_REGION_PUNCH);
         AttackModule::set_catch_only_all(boma, true, false);
         AttackModule::set_damage_shake_scale(boma, 0.0);
         AttackModule::set_attack_camera_quake_forced(boma, 0, *CAMERA_QUAKE_KIND_NONE, false);
@@ -71,7 +70,7 @@ unsafe fn wario_throw_hi_game(fighter: &mut L2CAgentBase) {
         CameraModule::set_enable_update_pos(boma,*CAMERA_UPDATE_POS_Y as u8,0);
         FT_LEAVE_NEAR_OTTOTTO(fighter, -2, 3);
 
-        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 11.0, 80, 95, 0, 80, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 11.0, 80, 70, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
     //Affect hitbox size based on scale
@@ -111,9 +110,10 @@ unsafe fn wario_throw_hi_game(fighter: &mut L2CAgentBase) {
     if leadHead {addRate += 0.375};
     
     let factorRate = (if extraLarge || extraHeavy {1.375} else {1.0})+addRate;
+    let rise_speedUp = 0.75;
 
     frame(lua_state, 8.0);
-    FT_MOTION_RATE(fighter, factorRate);
+    FT_MOTION_RATE(fighter, factorRate*rise_speedUp);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_THROW_FLAG_START_AIR);
     }
@@ -129,7 +129,7 @@ unsafe fn wario_throw_hi_game(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     wait(lua_state, 2.0);
-    FT_MOTION_RATE(fighter, 1.0);
+    FT_MOTION_RATE(fighter, 0.75);
 
     frame(lua_state, THROWHI_FRAME_FALL);
     if is_excute(fighter) {
@@ -144,8 +144,8 @@ unsafe fn wario_throw_hi_game(fighter: &mut L2CAgentBase) {
     }
     
     frame(lua_state, THROWHI_FRAME_LAND+1.0);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        //WorkModule::on_flag(boma, *FIGHTER_STATUS_THROW_FLAG_STOP);
         AttackModule::clear_all(boma);
         
         ATTACK_IGNORE_THROW(fighter, 0, 0, Hash40::new("top"), 10.0*factorPower, 270, 90, 0, 15, 2.5*factorSize, 0.0, 0.0, -3.5, Some(0.0), Some(0.0), Some(3.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_THROW);
@@ -179,9 +179,9 @@ unsafe fn wario_throw_hi_effect(fighter: &mut L2CAgentBase) {
     let opponent = boma.get_grabbed_opponent_boma();
     let opponentScale = PostureModule::scale(opponent);
 
-    frame(lua_state, 10.0);
+    frame(lua_state, 9.0);
     if is_excute(fighter) {
-        LANDING_EFFECT_FLIP(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
+        LANDING_EFFECT_FLIP(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, -0.4, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
         LAST_EFFECT_SET_RATE(fighter, 0.8);
     }
     frame(lua_state, 22.0);
@@ -238,7 +238,7 @@ unsafe fn wario_throw_hi_sound(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, THROWHI_FRAME_LAND);
     if is_excute(fighter) {
-        PLAY_LANDING_SE(fighter, Hash40::new("se_wario_landing02"));
+        PLAY_SE(fighter, Hash40::new("se_common_heavy_hit_l"));
     }
 }
 

@@ -134,12 +134,12 @@ unsafe fn wario_throwk_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
             let boma = fighter.boma();
             let opponent = boma.get_grabbed_opponent_boma();
             let opponentScale = PostureModule::scale(opponent);
-
-           // EFFECT_FOLLOW(fighter, Hash40::new("sys_merikomi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, (opponentScale+0.4), true);
+            //Bury effect
+            //EFFECT_FOLLOW(fighter, Hash40::new("sys_merikomi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, (opponentScale+0.4), true);
             
-            LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-            LAST_EFFECT_SET_RATE(fighter, 0.8);
-            EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+            LANDING_EFFECT(fighter, Hash40::new("sys_v_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+            EFFECT(fighter, Hash40::new("sys_quake"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
+            EFFECT(fighter, Hash40::new("sys_crown_collision"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
         }
     }
 
