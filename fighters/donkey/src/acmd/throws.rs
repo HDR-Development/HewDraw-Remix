@@ -175,12 +175,14 @@ unsafe fn heavy_item_throw_f(fighter: &mut L2CAgentBase) {
   if is_excute(fighter) {
     FT_MOTION_RATE(fighter, 2.0);
   }
-  frame(lua_state, 17.0);
+
+  let toss_frame = match is_neutral_toss {
+    true => 16,
+    false => 17
+  };
+  frame(lua_state, toss_frame);
   if is_excute(fighter) {
-    match is_neutral_toss {
-        true => ItemModule::throw_item(boma, 75.0, 3.0, 1.0, 0, true, 0.0),
-        false => ItemModule::throw_item(boma, 55.0, 3.0, 1.0, 0, true, 0.0)
-    };
+    ItemModule::throw_item(boma, 45.0, 3.0, 1.0, 0, true, 0.0);
     FT_MOTION_RATE(fighter, 1.0);
   }
 }
