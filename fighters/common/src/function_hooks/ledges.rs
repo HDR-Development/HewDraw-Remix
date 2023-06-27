@@ -140,7 +140,7 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
     }
 
     if fighter_kind == *FIGHTER_KIND_LINK {
-        if status_kind == *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END {
+        if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END]) {
             if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
                 if frame < 42.0 {
                     return 0;
@@ -507,6 +507,9 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
     }
 
     if fighter_kind == *FIGHTER_KIND_SONIC {
+        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
+            return 0;
+        }
         if status_kind == *FIGHTER_SONIC_STATUS_KIND_SPECIAL_HI_JUMP {
             if frame < 23.0 {
                 return 0;
@@ -655,12 +658,7 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
             }
         }
         if motion_kind == hash40("special_s_move") || motion_kind == hash40("special_s_dash") {
-            if frame < 10.0 {
-                return 1;
-            }
-            else{
-                return -1;
-            }
+            return 1;
         }
     }
 
@@ -721,7 +719,7 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
                 return 0;
             }
             */
-            return -1;
+            return 1;
         }
     }
 

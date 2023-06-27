@@ -1,8 +1,12 @@
 use super::*;
 use globals::*;
- 
+
+mod special_s;
+mod special_hi;
 
 pub fn install() {
+    special_s::install();
+    special_hi::install();
     smashline::install_agent_init_callbacks!(
         wario_init
     );

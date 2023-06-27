@@ -28,9 +28,39 @@ unsafe fn bonus_fruit_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind
     }
 }
 
+unsafe fn side_special_freefall(fighter: &mut L2CFighterCommon) {
+    if fighter.is_prev_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_DASH)
+    && fighter.is_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN)
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_situation(*SITUATION_KIND_AIR)
+    && CancelModule::is_enable_cancel(fighter.module_accessor)
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_S_WORK_FLAG_EAT_POWER_ESA) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+        let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
+        *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
+    }
+
+    if fighter.is_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN)
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_prev_situation(*SITUATION_KIND_AIR)
+    && fighter.is_situation(*SITUATION_KIND_GROUND) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, true);
+    }
+}
+
+// Allows you to land out of upB before reaching end of animation (weird vanilla behavior)
+unsafe fn up_special_proper_landing(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_HI_END)
+    && fighter.is_situation(*SITUATION_KIND_GROUND) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     nspecial_cancels(boma, status_kind, situation_kind);
     bonus_fruit_toss_ac(boma, status_kind, situation_kind, cat[0], frame);
+    side_special_freefall(fighter);
+    up_special_proper_landing(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_PACMAN )]

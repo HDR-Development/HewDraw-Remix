@@ -188,6 +188,11 @@ unsafe fn ridley_special_air_n_explode_expression(fighter: &mut L2CAgentBase) {
 unsafe fn ridley_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        if fighter.is_situation(*SITUATION_KIND_AIR) {
+            VarModule::on_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT);
+        }
+    }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(boma, 8.0, 6.0, 7.5, 7.5);
@@ -242,6 +247,37 @@ unsafe fn ridley_special_s_start_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ridley", script = "game_specialairhichargef", category = ACMD_GAME, low_priority )]
+unsafe fn ridley_special_air_hi_charge_f_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        HIT_NODE(fighter, Hash40::new("wingr2"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("wingl2"), *HIT_STATUS_XLU);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 16.0, 40, 66, 0, 75, 6.5, 0.0, 5.5, 12.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "ridley", script = "game_specialairhichargeb", category = ACMD_GAME, low_priority )]
+unsafe fn ridley_special_air_hi_charge_b_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        HIT_NODE(fighter, Hash40::new("wingr2"), *HIT_STATUS_XLU);
+        HIT_NODE(fighter, Hash40::new("wingl2"), *HIT_STATUS_XLU);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 16.0, 78, 60, 0, 80, 4.0, 0.0, 16.3, -14.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 16.0, 78, 60, 0, 80, 6.0, 0.0, 13.5, -5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+    }
+    frame(lua_state, 24.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
 #[acmd_script( agent = "ridley", script = "game_specialairhichargehi" , category = ACMD_GAME , low_priority)]
 unsafe fn ridley_special_air_hi_charge_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -249,12 +285,11 @@ unsafe fn ridley_special_air_hi_charge_hi_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         HIT_NODE(fighter, Hash40::new("wingr2"), *HIT_STATUS_XLU);
         HIT_NODE(fighter, Hash40::new("wingl2"), *HIT_STATUS_XLU);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 18.0, 64, 46, 0, 85, 6.5, 0.0, 25.0, 0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 18.0, 64, 46, 0, 85, 8.0, 0.0, 15.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 18.0, 64, 46, 0, 85, 4.0, 0.0, 25.0, 0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 18.0, 64, 46, 0, 85, 6.0, 0.0, 15.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
     frame(lua_state, 25.0);
     if is_excute(fighter) {
-        HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
         AttackModule::clear_all(boma);
     }
 }
@@ -561,6 +596,8 @@ pub fn install() {
         ridley_special_air_n_explode_sound,
         ridley_special_air_n_explode_expression,
         ridley_special_s_start_game,
+        ridley_special_air_hi_charge_f_game,
+        ridley_special_air_hi_charge_b_game,
         ridley_special_air_hi_charge_hi_game,
         ridley_special_air_hi_charge_lw_game,
         ridley_special_lw_stab_game,

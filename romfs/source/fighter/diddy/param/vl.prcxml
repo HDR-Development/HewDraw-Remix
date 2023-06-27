@@ -2,11 +2,11 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">22</float>
-      <float hash="p2_y">5.5</float>
+      <float hash="p1_y">20</float>
+      <float hash="p2_y">10</float>
     </struct>
     <struct index="1">
-      <float hash="p1_y">23.5</float>
+      <float hash="p1_y">19.5</float>
     </struct>
   </list>
   <list hash="param_special_n">
@@ -27,7 +27,11 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
+      <int hash="special_hi_charge_frame_max">43</int>
+      <float hash="special_hi_charge_ang_f_max">1</float>
+      <float hash="special_hi_charge_ang_max">45</float>
       <float hash="special_hi_charge_gravity_mul">0.05</float>
+      <float hash="special_hi_jet_ang_f_max">0.75</float>
       <float hash="special_hi_jet_start_spd_y">3.05</float>
       <float hash="special_hi_jet_start_spd_y_mul">0.021</float>
       <float hash="special_hi_ground_hit_explosion_gap">50</float>
