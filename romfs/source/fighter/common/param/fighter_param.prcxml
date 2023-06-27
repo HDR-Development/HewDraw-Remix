@@ -2317,7 +2317,7 @@
       <int hash="landing_heavy_frame">5</int>
       <float hash="scale">1</float>
       <float hash="shield_radius">12.3</float>
-      <bool hash="wall_jump_type">false</bool>
+      <bool hash="wall_jump_type">true</bool>
       <float hash="tread_jump_speed_y_mul">0.805</float>
       <float hash="tread_mini_jump_speed_y_mul">0.805</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
