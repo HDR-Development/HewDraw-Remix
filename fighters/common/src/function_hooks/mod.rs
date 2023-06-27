@@ -350,12 +350,11 @@ unsafe fn before_collision(object: *mut BattleObject) {
                     let mut jostle_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_JOSTLE) as *mut app::KineticEnergy;
                     let jostle_energy_x = app::lua_bind::KineticEnergy::get_speed_x(jostle_energy);
             
-                    if main_speed_x == 0.0
-                    && damage_speed_x == 0.0
-                    && jostle_energy_x != 0.0 {
-                        // This check passes if jostle is the ONLY energy acting on you
-                        // AKA your character is not dashing, running, walking, etc
-                        // nor sliding due to knockback/shield pushback
+                    if jostle_energy_x != 0.0
+                    && (main_speed_x + damage_speed_x).abs() < jostle_energy_x.abs() {
+                        // This check passes if the speed at which your character is moving due to general movement
+                        // (dashing, running, walking, grounded knockback, shield pushback, etc.)
+                        // is LESS than the speed at which jostle is pushing your character
                         GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
                     }
                     else {
