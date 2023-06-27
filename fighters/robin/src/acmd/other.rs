@@ -279,10 +279,8 @@ unsafe fn robin_arcthunder_spark_game(fighter: &mut L2CAgentBase) {
 unsafe fn robin_thoron_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let charge= VarModule::get_int(fighter.battle_object, vars::robin::instance::THUNDER_BAR);
-    let chargedmg:f32 = (1 + (charge-1)*4/7) as f32;
     if is_excute(fighter) {
-    ATTACK(fighter, 0, 0, Hash40::new("top"), chargedmg, 45, 125, 0, 75, 3.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_MAGIC);
+    ATTACK(fighter, 0, 0, Hash40::new("top"), 6, 45, 145, 0, 70, 3.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_MAGIC);
     AttackModule::set_no_finish_camera(boma, 0, true, false);
     }
 }
