@@ -89,25 +89,22 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
 
     if situation == *SITUATION_KIND_GROUND
     && VarModule::is_flag(fighter.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_JUMP)
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    && !fighter.global_table[IS_STOPPING].get_bool()
     && !StatusModule::is_changing(fighter.module_accessor) {
         fighter.check_jump_cancel(false);
     }
     if StatusModule::is_situation_changed(fighter.module_accessor) {
-        if step == vars::sonic::SPECIAL_S_STEP_END {
+        if step != vars::sonic::SPECIAL_S_STEP_START {
             let status = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-                FIGHTER_STATUS_KIND_LANDING
+                WorkModule::set_float(fighter.module_accessor, 15.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+                FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL
             }
             else {
                 FIGHTER_STATUS_KIND_FALL
             };
             fighter.change_status(status.into(), false.into());
             return 1.into();
-        }
-        if step == vars::sonic::SPECIAL_S_STEP_DASH {
-            if situation == *SITUATION_KIND_AIR {
-                fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
-                return 1.into();
-            }
         }
         if situation == *SITUATION_KIND_GROUND {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
