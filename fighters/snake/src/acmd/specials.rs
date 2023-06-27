@@ -385,7 +385,7 @@ unsafe fn snake_side_special_snd(fighter : &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_snake_special_s07"))
+        PLAY_SE(fighter, Hash40::new("se_snake_special_l05"))
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
@@ -409,7 +409,7 @@ unsafe fn snake_side_special_air_snd(fighter : &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_snake_special_s07"))
+        PLAY_SE(fighter, Hash40::new("se_snake_special_l05"))
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
