@@ -177,8 +177,8 @@ unsafe fn heavy_item_throw_f(fighter: &mut L2CAgentBase) {
   }
 
   let toss_frame = match is_neutral_toss {
-    true => 16,
-    false => 17
+    true => 16.0,
+    false => 17.0
   };
   frame(lua_state, toss_frame);
   if is_excute(fighter) {

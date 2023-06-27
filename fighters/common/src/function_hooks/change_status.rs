@@ -40,7 +40,7 @@ unsafe fn change_status_request_hook(boma: &mut BattleObjectModuleAccessor, stat
                 next_status = *ITEM_STATUS_KIND_FALL;
 
                 // set hit team to none for now?
-                ItemModule::set_hit_team(boma, *TEAM_NONE);
+                TeamModule::set_hit_team(boma, *TEAM_NONE);
             }
         }
     }
