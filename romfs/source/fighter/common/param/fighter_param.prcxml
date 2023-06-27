@@ -339,6 +339,7 @@
       <float hash="weight">94</float>
       <float hash="landing_attack_air_frame_n">7</float>
       <float hash="landing_attack_air_frame_f">8</float>
+      <float hash="landing_attack_air_frame_hi">9</float>
       <float hash="landing_attack_air_frame_lw">10</float>
       <int hash="landing_heavy_frame">4</int>
       <float hash="scale">1.055</float>
@@ -1596,7 +1597,7 @@
       <int hash="landing_heavy_frame">4</int>
       <float hash="scale">1.037</float>
       <float hash="shield_radius">9.6</float>
-      <bool hash="wall_jump_type">false</bool>
+      <bool hash="wall_jump_type">true</bool>
       <float hash="tread_jump_speed_y_mul">0.8</float>
       <float hash="tread_mini_jump_speed_y_mul">0.8</float>
       <int hash="attack_hi4_hold_keep_frame">1</int>
