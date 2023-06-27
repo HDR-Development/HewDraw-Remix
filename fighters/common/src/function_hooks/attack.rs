@@ -36,7 +36,6 @@ unsafe fn attack_module_set_attack(module: u64, id: i32, group: i32, data: &mut 
         data.r_eff = 50;
         data.r_add = 70;
         data.sub_shield = 0;
-        data.lr_check = smash2::app::AttackLRCheck::Pos;
     }
     
     call_original!(module, id, group, data)
