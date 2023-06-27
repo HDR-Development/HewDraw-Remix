@@ -409,6 +409,8 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const SPECIAL_AIR_LW_USED_STALL: i32 = 0x0100;
+            /// used to indicate that a new barrel was spawned
+            pub const DID_SPAWN_BARREL: i32 = 0x0101;
         }
         pub mod status {
             // flags
