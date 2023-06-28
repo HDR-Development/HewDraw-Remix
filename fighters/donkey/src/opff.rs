@@ -125,19 +125,11 @@ pub unsafe fn flatten_uspecial(fighter: &mut L2CFighterCommon) {
     }
 }
 
-/// scales down the leg during bair to reduce its range
-pub unsafe fn dk_bair_scale(fighter: &mut L2CFighterCommon) {
-    if fighter.is_motion(Hash40::new("attack_air_b")) {
-        ModelModule::set_joint_scale(fighter.boma(), Hash40::new("legl"), &Vector3f::new(1.0, 1.5, 1.5));
-    }
-}
-
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     dash_attack_jump_cancels(fighter, boma, status_kind, situation_kind);
     nspecial_cancels(fighter, boma, status_kind, situation_kind);
     barrel_pull(fighter, boma, status_kind, situation_kind);
     headbutt_aerial_stall(fighter, boma, id, status_kind, situation_kind, frame);
-    dk_bair_scale(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_DONKEY )]
