@@ -436,14 +436,24 @@ pub extern "C" fn main() {
 pub fn setup_hid_hdr() {
     let status = hid_hdr::get_hid_hdr_status().unwrap();
     match status {
-        hid_hdr::Status::Ok => {
-            // This function takes a boolean for whether to enable or disable
-            // stick gate changes, they are disabled by default so you shouldn't have to do this
+        hid_hdr::Status::NotConnected => {
             if !hid_hdr::connect_to_hid_hdr() {
                 hid_hdr::warn_unable_to_connect("troubleshooting", "HDR", "discord.gg/hdr");
-            } else {
-                hid_hdr::configure_stick_gate_changes(true).unwrap();
+                return;
             }
+
+            let status = hid_hdr::get_hid_hdr_status().unwrap();
+            match status {
+                hid_hdr::Status::Ok => {
+                    hid_hdr::configure_stick_gate_changes(true).unwrap();
+                }
+                other => {
+                    hid_hdr::warn_status(other, "troubleshooting", "HDR", "discord.gg/hdr");
+                }
+            }
+        }
+        hid_hdr::Status::Ok => {
+            panic!("Should not be possible yet");
         }
         other => {
             hid_hdr::warn_status(other, "troubleshooting", "HDR", "discord.gg/hdr");
