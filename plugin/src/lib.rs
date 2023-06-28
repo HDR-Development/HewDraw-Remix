@@ -388,16 +388,20 @@ pub extern "C" fn main() {
             //game_end,
             //game_exit
         );
-
-        if !is_on_ryujinx() {
-            setup_hid_hdr();
-        }
     }
 
     #[cfg(not(feature = "runtime"))]
     {
         utils::init();
     }
+
+    #[cfg(feature = "main_nro")]
+    {
+        if !is_on_ryujinx() {
+            setup_hid_hdr();
+        }
+    }
+
     fighters::install();
     #[cfg(all(not(feature = "add_status"), feature = "main_nro"))]
     {
