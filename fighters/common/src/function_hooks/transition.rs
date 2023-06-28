@@ -108,15 +108,6 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
                 }
             }
         }
-        //disable airdodge out of aerial tele
-        if fighter_kind == *FIGHTER_KIND_MEWTWO {
-            if VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL) 
-            && !VarModule::is_flag(boma.object(), vars::mewtwo::instance::GROUNDED_TELEPORT) {
-                if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR { 
-                    return false;
-                }
-            }
-        }
         /*
         // Marth & Lucina - special fair FAF
         if fighter_kind == FIGHTER_KIND_MARTH || fighter_kind == *FIGHTER_KIND_LUCINA {

@@ -23,7 +23,7 @@ unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut Bat
         }
     }
     // Actionability when double jump isn't burned
-    if status_kind == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3 && situation_kind == *SITUATION_KIND_AIR && frame > 6.0 {
+    if status_kind == *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3 && situation_kind == *SITUATION_KIND_AIR && frame > 9.0 {
         if boma.get_num_used_jumps() < boma.get_jump_count_max() {
             VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
             CancelModule::enable_cancel(boma);
