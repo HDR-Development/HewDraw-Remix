@@ -389,7 +389,9 @@ pub extern "C" fn main() {
             //game_exit
         );
 
-        setup_hid_hdr();
+        if !is_on_ryujinx() {
+            setup_hid_hdr();
+        }
     }
 
     #[cfg(not(feature = "runtime"))]
