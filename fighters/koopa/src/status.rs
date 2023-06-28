@@ -4,13 +4,11 @@ use globals::*;
  
 // AGENT INIT AND CALLBACKS
 unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_REBIRTH, *FIGHTER_STATUS_KIND_DEAD]) {
-        let charged_effect =  VarModule::get_int(fighter.battle_object, vars::koopa::instance::FIREBALL_EFFECT_ID);
-        if (charged_effect <= 0
-        || EffectModule::is_exist_effect(fighter.module_accessor, charged_effect as u32)){
-            EffectModule::kill(fighter.module_accessor, charged_effect as u32, false,false);
-            VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_EFFECT_ID,0);
-        }
+    //Remove fireball ready effect
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY,*FIGHTER_STATUS_KIND_DEAD,*FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_WIN,*FIGHTER_STATUS_KIND_LOSE]) || !sv_information::is_ready_go() {
+        EFFECT_OFF_KIND(fighter,Hash40::new("koopa_breath_m_fire"),false,false);
+        VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_EFFECT_ID,0);
         VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,MAX_COOLDOWN);
     }
     true.into()
@@ -191,10 +189,7 @@ unsafe fn breath_move_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
             0.0,
             0.0
         );
-
         
-        EFFECT_FOLLOW(weapon, Hash40::new("koopa_breath_m_fire"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, true);
-
         weapon.global_table[SUB_STATUS].assign(&L2CValue::Ptr(breath_move_max_substatus as *const () as _));
         weapon.fastshift(L2CValue::Ptr(breath_move_max_main_loop as *const () as _));
     }
@@ -217,29 +212,20 @@ unsafe extern "C" fn breath_move_max_main_loop(weapon: &mut L2CWeaponCommon) -> 
     if life <= 0 {
         EFFECT_OFF_KIND(weapon,Hash40::new("koopa_breath_m_fire"),false,false);
         EFFECT_OFF_KIND(weapon,Hash40::new("sys_damage_fire_fly"),false,false);
-        let lr = PostureModule::lr(weapon.module_accessor);
-        let pos = *PostureModule::pos(weapon.module_accessor);
-        EffectModule::req(
+        AttackModule::clear_all(weapon.module_accessor);
+
+        MotionModule::change_motion(
             weapon.module_accessor,
-            Hash40::new("sys_damage_fire"),
-            &Vector3f{x: pos.x + 4.0, y: pos.y, z:pos.z},
-            &Vector3f::zero(),
-            2.0,
-            0,
-            -1,
+            Hash40::new("end"),
+            0.0,
+            1.0,
             false,
-            0
+            0.0,
+            false,
+            false
         );
-        notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
+        StatusModule::change_status_force(weapon.module_accessor, WEAPON_KOOPA_BREATH_STATUS_KIND_NONE.into(), false.into());
         return 0.into();
-    }
-    
-    //Create secondary fireball effect
-    let rate=15;
-    let modulo = life % rate;
-    if (modulo<1)
-    {
-        EFFECT_FOLLOW(weapon, Hash40::new("sys_damage_fire_fly"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, true);
     }
     
     0.into()
@@ -253,6 +239,7 @@ pub fn install() {
         special_n_main,
         special_n_exec,
         special_n_execstop,
+
         breath_move_main,
     );
 }

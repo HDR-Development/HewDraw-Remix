@@ -87,8 +87,11 @@ unsafe fn fireball_cooldown(boma: &mut BattleObjectModuleAccessor, status_kind: 
     //Ignore cooldown during respawn,death,entry and nspecial
     if (&[
         *FIGHTER_STATUS_KIND_ENTRY,*FIGHTER_STATUS_KIND_DEAD,*FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_WIN,*FIGHTER_STATUS_KIND_LOSE,
         *FIGHTER_STATUS_KIND_SPECIAL_N
-    ]).contains(&status_kind) {return;}
+    ]).contains(&status_kind) {
+        return;
+    }
 
     let cooleddown = VarModule::countdown_int(boma.object(), vars::koopa::instance::FIREBALL_COOLDOWN_FRAME, 0);
     let charged_effect =  VarModule::get_int(boma.object(), vars::koopa::instance::FIREBALL_EFFECT_ID);

@@ -27,8 +27,8 @@
     <hash40 index="0">dummy</hash40>
     <struct index="1">
       <float hash="ground_offset">-3.6</float>
-      <float hash="life">30</float>
-      <float hash="hit_frames">30</float>
+      <float hash="life">60</float>
+      <float hash="hit_frames">60</float>
       <float hash="min_speed">4</float>
       <float hash="max_speed">4</float>
     </struct>
