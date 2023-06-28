@@ -50,7 +50,7 @@ unsafe fn game_attack100(fighter: &mut L2CAgentBase) {
         ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 4);
     }
     frame(lua_state, 20.0);
-    FT_MOTION_RATE_RANGE(fighter, 20.0, 26.0, 7.0);
+    FT_MOTION_RATE_RANGE(fighter, 20.0, 26.0, 13.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
