@@ -162,7 +162,11 @@ unsafe fn game_throwflw(fighter: &mut L2CAgentBase) {
 unsafe fn heavy_item_throw_f(fighter: &mut L2CAgentBase) {
   let lua_state = fighter.lua_state_agent;
   let boma = fighter.boma();
-  let is_neutral_toss = boma.stick_x().abs() < 0.33;
+  
+  frame(lua_state, 1.0);
+  if is_excute(fighter) {
+    VarModule::set_flag(fighter.object(), consts::vars::donkey::status::IS_NEUTRAL_TOSS, boma.stick_x().abs() < 0.33); 
+  }
   frame(lua_state, 2.0);
   if is_excute(fighter) {
     FT_MOTION_RATE(fighter, 0.5);
@@ -176,6 +180,7 @@ unsafe fn heavy_item_throw_f(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 2.0);
   }
 
+  let is_neutral_toss = VarModule::is_flag(fighter.object(), consts::vars::donkey::status::IS_NEUTRAL_TOSS); 
   let toss_frame = match is_neutral_toss {
     true => 16.0,
     false => 17.0
