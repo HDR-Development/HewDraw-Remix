@@ -259,10 +259,9 @@ unsafe fn push_hash(game_state: u64, hash: u64) {
 unsafe fn game_end(game_state: u64) {
     let one =
         *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c31b2);
-    let mode =
-        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0) as *const u64;
-    if one == 0 
-    && *mode != 0x4040000 {
+    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0)
+        as *const u64;
+    if one == 0 && *mode != 0x4040000 {
         push_something(game_state, 2);
         // push_hash(game_state, smash::hash40("statewaitforruletofinish"));
         // push_hash(game_state, smash::hash40("statewaitendproduction"));
@@ -279,10 +278,9 @@ unsafe fn game_end(game_state: u64) {
 unsafe fn game_exit(game_state: u64, arg: u64) {
     let one =
         *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c31b2);
-    let mode =
-        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0) as *const u64;
-    if one == 0
-    && *mode != 0x4040000 { 
+    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0)
+        as *const u64;
+    if one == 0 && *mode != 0x4040000 {
         push_something(game_state, 2);
         // push_hash(game_state, smash::hash40("statewaitforruletofinish"));
         // push_hash(game_state, smash::hash40("statewaitendproduction"));
@@ -290,7 +288,7 @@ unsafe fn game_exit(game_state: u64, arg: u64) {
         // push_hash(game_state, smash::hash40("statewaitforsyncwhenending"));
         push_hash(game_state, smash::hash40("statefadeoutwhenending"));
         push_hash(game_state, smash::hash40("stateexit"));
-        return
+        return;
     }
 
     call_original!(game_state, arg);
@@ -334,7 +332,8 @@ static mut IS_LOADING: bool = false;
 
 #[skyline::hook(offset = 0x1785348)]
 unsafe fn load_ingame_call_sequence_scene(arg: u64) {
-    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0) as *const u64;
+    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0)
+        as *const u64;
     IS_LOADING = *mode != 0x4040000;
     call_original!(arg)
 }
@@ -389,6 +388,8 @@ pub extern "C" fn main() {
             //game_end,
             //game_exit
         );
+
+        setup_hid_hdr();
     }
 
     #[cfg(not(feature = "runtime"))]
@@ -422,6 +423,25 @@ pub extern "C" fn main() {
             })
             .unwrap()
             .join();
+    }
+}
+
+#[cfg(feature = "main_nro")]
+pub fn setup_hid_hdr() {
+    let status = hid_hdr::get_hid_hdr_status().unwrap();
+    match status {
+        hid_hdr::Status::Ok => {
+            // This function takes a boolean for whether to enable or disable
+            // stick gate changes, they are disabled by default so you shouldn't have to do this
+            if !hid_hdr::connect_to_hid_hdr() {
+                hid_hdr::warn_unable_to_connect("troubleshooting", "HDR", "discord.gg/hdr");
+            } else {
+                hid_hdr::configure_stick_gate_changes(true).unwrap();
+            }
+        }
+        other => {
+            hid_hdr::warn_status(other, "troubleshooting", "HDR", "discord.gg/hdr");
+        }
     }
 }
 
