@@ -278,12 +278,13 @@ pub mod vars {
             // ints
             pub const NUM_RECOVERY_RESOURCE_USED: i32 = 0x0100;
             pub const NUM_CANCEL_THIS_AIRTIME: i32 = 0x0101;
-            pub const ABK_ANGLE_ROUNDED: i32 = 0x0102;
         }
         pub mod status {
             // flags
             pub const IS_ACTIVATE: i32 = 0x1100;
             pub const DIRECT_HIT: i32 = 0x1101;
+            // floats
+            pub const ABK_ANGLE: i32 = 0x1102;
         }
     }
 
