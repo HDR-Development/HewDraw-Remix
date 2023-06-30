@@ -589,14 +589,16 @@ unsafe fn mario_special_lw_light(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 62, 52, 0, 85, 3.2, 0.0, 9.0, 6.0, Some(0.0), Some(9.0), Some(-6.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0, 62, 52, 0, 85, 3.0, 0.0, 9.0, 0.0, Some(0.0), Some(5.0), Some(-0.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 70, 50, 0, 90, 3.2, 0.0, 9.0, 6.0, Some(0.0), Some(9.0), Some(-6.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0, 70, 50, 0, 90, 3.0, 0.0, 9.0, 0.0, Some(0.0), Some(5.0), Some(-0.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
     }
-    FT_MOTION_RATE_RANGE(fighter, 10.0, 45.0, 17.0);
-    frame(lua_state, 45.0);
+    FT_MOTION_RATE_RANGE(fighter, 10.0, 40.0, 17.0);
+    frame(lua_state, 40.0);
     if is_excute(fighter){
         AttackModule::clear_all(boma);
     }
+    FT_MOTION_RATE_RANGE(fighter, 40.0, 45.0, 7.0);
+        frame(lua_state, 45.0);
     FT_MOTION_RATE_RANGE(fighter, 45.0, 48.0, 3.0);
     frame(lua_state, 48.0);
     FT_MOTION_RATE_RANGE(fighter, 48.0, 52.0, 7.0); 
@@ -669,15 +671,17 @@ unsafe fn mario_special_air_lw_light(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE_RANGE(fighter, 0.0, 10.0, 5.0);
     if VarModule::is_flag(fighter.battle_object, vars::mario::instance::DISABLE_DSPECIAL_STALL) {
         frame(lua_state, 10.0);
-        if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 62, 52, 0, 85, 3.2, 0.0, 9.0, 6.0, Some(0.0), Some(9.0), Some(-6.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0, 62, 52, 0, 85, 3.0, 0.0, 9.0, 0.0, Some(0.0), Some(5.0), Some(-0.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
+        if is_excute(fighter) { 
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 70, 50, 0, 90, 3.2, 0.0, 9.0, 6.0, Some(0.0), Some(9.0), Some(-6.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0, 70, 50, 0, 90, 3.0, 0.0, 9.0, 0.0, Some(0.0), Some(5.0), Some(-0.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
         }
-        FT_MOTION_RATE_RANGE(fighter, 10.0, 45.0, 17.0);
-        frame(lua_state, 45.0);
+        FT_MOTION_RATE_RANGE(fighter, 10.0, 40.0, 17.0);
+        frame(lua_state, 40.0);
         if is_excute(fighter){
             AttackModule::clear_all(boma);
         }
+        FT_MOTION_RATE_RANGE(fighter, 40.0, 45.0, 7.0);
+        frame(lua_state, 45.0);
         FT_MOTION_RATE_RANGE(fighter, 45.0, 48.0, 3.0);
         frame(lua_state, 48.0);
         FT_MOTION_RATE_RANGE(fighter, 48.0, 52.0, 7.0); 
@@ -687,20 +691,22 @@ unsafe fn mario_special_air_lw_light(fighter: &mut L2CAgentBase) {
     else {
         frame(lua_state, 10.0);
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 62, 45, 0, 70, 2.7, 0.0, 9.0, 6.0, Some(0.0), Some(9.0), Some(-6.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 62, 45, 0, 70, 3.0, 0.0, 9.0, 0.0, Some(0.0), Some(5.0), Some(-0.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 70, 45, 0, 70, 2.7, 0.0, 9.0, 6.0, Some(0.0), Some(9.0), Some(-6.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 70, 45, 0, 70, 3.0, 0.0, 9.0, 0.0, Some(0.0), Some(5.0), Some(-0.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
         }
-        FT_MOTION_RATE_RANGE(fighter, 10.0, 45.0, 17.0);
-        frame(lua_state, 45.0);
+        FT_MOTION_RATE_RANGE(fighter, 10.0, 40.0, 16.0);
+        frame(lua_state, 40.0);
         if is_excute(fighter){
             AttackModule::clear_all(boma);
         }
+        FT_MOTION_RATE_RANGE(fighter, 40.0, 45.0, 7.0);
+        frame(lua_state, 45.0);
         FT_MOTION_RATE_RANGE(fighter, 45.0, 48.0, 3.0);
         frame(lua_state, 48.0);
         FT_MOTION_RATE_RANGE(fighter, 48.0, 52.0, 7.0); 
         frame(lua_state, 52.0);
         FT_MOTION_RATE_RANGE(fighter, 52.0, 95.0, 35.0);
-
+        
     }
 }
 
