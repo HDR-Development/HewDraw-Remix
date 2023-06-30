@@ -123,6 +123,28 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             0.0
         );
     }
+    if VarModule::is_flag(fighter.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_CONTROL) {
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        );
+        sv_kinetic_energy!(
+            set_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            0.0,
+            0.0
+        );
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        VarModule::off_flag(fighter.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_CONTROL);
+    }
     if MotionModule::is_end(fighter.module_accessor) {
         if step == vars::sonic::SPECIAL_S_STEP_START {
             MotionModule::change_motion(
@@ -140,7 +162,7 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             let y_speed = if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
                 if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
                     VarModule::on_flag(fighter.battle_object, vars::sonic::status::SPECIAL_S_HOP);
-                    1.3
+                    1.85
                 }
                 else {
                     KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN)
@@ -171,7 +193,7 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
                     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                     VarModule::on_flag(fighter.battle_object, vars::sonic::status::SPECIAL_S_HOP);
                     VarModule::on_flag(fighter.battle_object, vars::sonic::instance::USED_AIR_ACTION);
-                    1.3
+                    1.85
                 }
                 else {
                     0.0
@@ -204,6 +226,7 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
                 FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
                 y_speed
             );
+            fighter.sub_fighter_cliff_check(GROUND_CLIFF_CHECK_KIND_ON_DROP.into());
             VarModule::set_int(fighter.battle_object, vars::sonic::status::SPECIAL_S_STEP, vars::sonic::SPECIAL_S_STEP_DASH);
         }
         else if step == vars::sonic::SPECIAL_S_STEP_DASH {
