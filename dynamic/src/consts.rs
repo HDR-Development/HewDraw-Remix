@@ -366,6 +366,19 @@ pub mod vars {
         pub mod instance {
             pub const DISABLE_SPECIAL_S: i32 = 0x0100;
         }
+        pub mod status {
+            // ints
+            pub const SPECIAL_N_CANCEL_TYPE: i32 = 0x1100;
+        }
+
+        pub const SPECIAL_N_CANCEL_TYPE_NONE: i32 = 0x0;
+        pub const SPECIAL_N_CANCEL_TYPE_GROUND_JUMP: i32 = 0x1;
+        pub const SPECIAL_N_CANCEL_TYPE_JUMP_AERIAL: i32 = 0x2;
+        pub const SPECIAL_N_CANCEL_TYPE_GUARD: i32 = 0x3;
+        pub const SPECIAL_N_CANCEL_TYPE_ESCAPE: i32 = 0x4;
+        pub const SPECIAL_N_CANCEL_TYPE_ESCAPE_AIR: i32 = 0x5;
+        pub const SPECIAL_N_CANCEL_TYPE_ESCAPE_F: i32 = 0x6;
+        pub const SPECIAL_N_CANCEL_TYPE_ESCAPE_B: i32 = 0x7;
     }
 
     // Note: Terry starts his flags on 0xXX5X instead due to also using the shotos generic flags.
@@ -395,6 +408,8 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const SPECIAL_AIR_LW_USED_STALL: i32 = 0x0100;
+            /// used to indicate that a new barrel was spawned
+            pub const DID_SPAWN_BARREL: i32 = 0x0101;
         }
         pub mod status {
             // flags
@@ -443,13 +458,16 @@ pub mod vars {
             pub const TICO_X_DIST: i32 = 0x0107;
             pub const TICO_Y_DIST: i32 = 0x0108;
 
-            // flag
-            pub const IS_TICO_DEAD: i32 = 0x0105;
+            // flags
+            pub const IS_TICO_UNAVAILABLE: i32 = 0x0100;
         }
         pub mod status {
-            // int
+            // ints
             /// Used for determining what luma does
-            pub const INVIS_FRAMES: i32 = 0x1100;
+            pub const LUMA_STATE: i32 = 0x1100;
+
+            // flags
+            pub const IS_INVALID_TELEPORT: i32 = 0x1101;
         }
     }
 
@@ -796,16 +814,37 @@ pub mod vars {
     }
 
     pub mod sonic {
+        pub mod instance {
+            pub const USED_AIR_ACTION: i32 = 0x0100;
+        }
         pub mod status {
             // flags
             pub const PULSE_HITBOX: i32 = 0x1100;
+
+            pub const SPECIAL_S_HOP: i32 = 0x1100;
+            pub const SPECIAL_S_ENABLE_JUMP: i32 = 0x1101;
+
+            // ints
+            pub const SPECIAL_S_STEP: i32 = 0x1100;
         }
+        pub const SPECIAL_S_STEP_START: i32 = 0x0;
+        pub const SPECIAL_S_STEP_DASH: i32 = 0x1;
+        pub const SPECIAL_S_STEP_END: i32 = 0x2;
     }
 
     pub mod snake {
         pub mod instance {
+            // flags
+            pub const SELF_STICK : i32 = 0x0100;
+            pub const KNIFE_COMBO_ENABLE : i32 = 0x0101;
+            pub const KNIFE_COMBO_IS_BUFFERED : i32 = 0x0102;
+            pub const DTAUNT_C4_EXLPODE : i32 = 0x0103;
+            pub const DTAUNT_GRENADE_WAIT_COUNT : i32 = 0x0104;
+            pub const IS_GRAB_WALK : i32 = 0x0105;
+            
             // ints
             pub const SNAKE_GRENADE_COUNTER: i32 = 0x0100;
+            pub const KNIFE_COMBO_COUNT : i32 = 0x0101;
         }
     }
 
@@ -940,6 +979,9 @@ pub mod vars {
     }
 
     pub mod miifighter {
+        pub mod instance {
+            pub const QUAKE_EFFECT_HANDLER: i32 = 0x0100;
+        }
         pub mod status {
             // ints
             pub const SPECIAL_LW1_CHARGE: i32 = 0x1100;
@@ -1006,11 +1048,16 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const IS_TILT_LW_SAPLING_PULL: i32 = 0x0100;
+            pub const DISABLE_SPECIAL_S: i32 = 0x0101;
 
             // floats
             pub const SAPLING_PULL_SAPLING_POS_X: i32 = 0x0101;
             pub const SAPLING_PULL_SAPLING_POS_Y: i32 = 0x0102;
             pub const SAPLING_PULL_SAPLING_POS_Z: i32 = 0x0103;
+
+            // ints
+            pub const TURNIP_NUM_HI: i32 = 0x0104;
+            pub const TURNIP_NUM_LW: i32 = 0x0105;
         }
     }
 
@@ -1112,6 +1159,11 @@ pub mod statuses {
     pub mod wolf {
         pub const SPECIAL_S_RUSH: i32 = 0;
         pub const SPECIAL_S_END: i32 = 1;
+    }
+
+    pub mod diddy {
+        pub const SPECIAL_N_CANCEL: i32 = 0;
+        pub const SPECIAL_N_CANCEL_JUMP: i32 = 1;
     }
     
     pub mod kirby {
