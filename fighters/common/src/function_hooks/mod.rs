@@ -659,6 +659,15 @@ unsafe fn status_module__change_status(status_module: *const u64, status_kind_ne
     call_original!(status_module, status_kind_next);
 }
 
+// Only extra elec hitlag for hit character
+#[skyline::hook(offset = 0x406804, inline)]
+unsafe fn change_elec_hitlag_for_attacker(ctx: &mut skyline::hooks::InlineCtx) {
+  let is_attacker = *ctx.registers[2].w.as_ref() & 1 != 0;
+  if *ctx.registers[8].x.as_ref() == smash::hash40("collision_attr_elec") && is_attacker {
+    *ctx.registers[8].x.as_mut() = smash::hash40("collision_attr_normal");
+  }
+}
+
 pub fn install() {
     energy::install();
     effect::install();
@@ -704,10 +713,13 @@ pub fn install() {
         // Simon and Richter
         skyline::patching::Patch::in_text(0x1195204).data(0x7100001F);
         // Krool and Pyra are in their respective modules.
+        // Gives attacker less clank hitlag than defender
+        skyline::patching::Patch::in_text(0x3e0b28).data(0x1E204160);
     }
     skyline::install_hooks!(
         before_collision,
         after_collision,
-        status_module__change_status
+        status_module__change_status,
+        change_elec_hitlag_for_attacker
     );
 }
