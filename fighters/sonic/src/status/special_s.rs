@@ -123,6 +123,28 @@ unsafe extern "C" fn special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             0.0
         );
     }
+    if VarModule::is_flag(fighter.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_CONTROL) {
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        );
+        sv_kinetic_energy!(
+            set_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            0.0,
+            0.0
+        );
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        VarModule::off_flag(fighter.battle_object, vars::sonic::status::SPECIAL_S_ENABLE_CONTROL);
+    }
     if MotionModule::is_end(fighter.module_accessor) {
         if step == vars::sonic::SPECIAL_S_STEP_START {
             MotionModule::change_motion(
