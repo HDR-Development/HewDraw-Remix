@@ -55,8 +55,10 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="rslash_air_start_spd_y">2.3</float>
-      <float hash="rslash_air_accel_x_mul">0</float>
-      <float hash="rslash_air_max_x_mul">0.7</float>
+      <float hash="rslash_air_accel_x_mul">0.01</float>
+      <float hash="rslash_air_max_x_mul">0.8</float>
+      <float hash="rslash_end_air_accel_x_mul">0.01</float>
+      <float hash="rslash_end_air_max_x">0.8</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

@@ -6,7 +6,7 @@
       <float hash="p2_y">7</float>
     </struct>
     <struct index="1">
-      <float hash="p1_x">40</float>
+      <float hash="p1_x">60</float>
       <float hash="p1_y">36</float>
       <float hash="p2_x">5</float>
       <float hash="p2_y">-18</float>
@@ -42,7 +42,7 @@
   <list hash="param_clayrocket">
     <struct index="0">
       <int hash="erase_time">1800</int>
-      <float hash="life_1">15</float>
+      <float hash="life_1">8</float>
       <float hash="life_2">15</float>
     </struct>
     <hash40 index="1">dummy</hash40>

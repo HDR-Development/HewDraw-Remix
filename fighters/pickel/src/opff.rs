@@ -103,23 +103,13 @@ unsafe fn logging_for_acmd(boma: &mut BattleObjectModuleAccessor, status_kind: i
 
 
 }
-unsafe fn minecart_armor_disable(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    if [
-    *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_RIDE,
-    *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_DRIVE].contains(&status_kind)
-    {
-        DamageModule::set_no_reaction_mode_status(boma, DamageNoReactionMode{_address: *DAMAGE_NO_REACTION_MODE_REACTION_VALUE as u8}, 0.0, -1.0, -1);
-    }
-
-}
 
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     elytra_cancel(boma, id, status_kind, situation_kind, cat[0], frame);
     hitstun_tumble_glow(boma, id, status_kind);
-    buildwalk_crouch_disable(boma, status_kind);
+    //buildwalk_crouch_disable(boma, status_kind);
     build_ecb_shift(boma, status_kind);
     //logging_for_acmd(boma, status_kind);
-    minecart_armor_disable(boma,status_kind)
 }
 
 #[utils::macros::opff(FIGHTER_KIND_PICKEL )]
@@ -133,5 +123,33 @@ pub fn pickel_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub unsafe fn pickel_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+    }
+}
+
+#[smashline::weapon_frame(agent = WEAPON_KIND_PICKEL_TROLLEY, main)]
+pub fn pickel_trolley_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    unsafe {
+        let boma = weapon.boma();
+        let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+        // Ensure the boma's owner is Steve
+        if sv_battle_object::kind(owner_id) == *FIGHTER_KIND_PICKEL {
+            let pickel = utils::util::get_battle_object_from_id(owner_id);
+            let pickel_boma = &mut *(*pickel).module_accessor;
+            // Burn double jump when jumping out of Minecart
+            if boma.is_situation(*SITUATION_KIND_AIR)
+            && pickel_boma.is_status(*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_JUMP) {
+                if MotionModule::frame(pickel_boma) <= 1.0
+                && pickel_boma.get_num_used_jumps() < pickel_boma.get_jump_count_max() {
+                    WorkModule::inc_int(pickel_boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+                }
+            }
+            // Restore double jump when landing with Minecart
+            if boma.is_situation(*SITUATION_KIND_GROUND)
+            && pickel_boma.is_status(*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_DRIVE) {
+                if pickel_boma.get_num_used_jumps() >= pickel_boma.get_jump_count_max() {
+                    WorkModule::dec_int(pickel_boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+                }
+            }
+        }
     }
 }

@@ -2,18 +2,26 @@ use skyline::hooks::InlineCtx;
 use std::fmt::Display;
 
 #[skyline::from_offset(0x37a1270)]
-unsafe fn set_text_string(pane: u64, string: *const u8);
+pub unsafe fn set_text_string(pane: u64, string: *const u8);
 
-unsafe fn get_pane_by_name(arg: u64, arg2: *const u8) -> [u64; 4] {
-    let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x37752e0);
+pub unsafe fn get_pane_by_name(arg: u64, arg2: *const u8) -> [u64; 4] {
+    let func_addr =
+        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x37752e0);
     let callable: extern "C" fn(u64, *const u8, ...) -> [u64; 4] = std::mem::transmute(func_addr);
     callable(arg, arg2)
 }
 
 unsafe fn set_room_text(arg: u64, string: String) {
-    let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3778c50);
-    let callable: extern "C" fn(u64, *const u8, usize, *const u16, ...) = std::mem::transmute(func_addr);
-    callable(arg, b"mnu_online_room_inside_room_id\0".as_ptr(), 1, string.encode_utf16().collect::<Vec<u16>>().as_ptr())
+    let func_addr =
+        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x3778c50);
+    let callable: extern "C" fn(u64, *const u8, usize, *const u16, ...) =
+        std::mem::transmute(func_addr);
+    callable(
+        arg,
+        b"mnu_online_room_inside_room_id\0".as_ptr(),
+        1,
+        string.encode_utf16().collect::<Vec<u16>>().as_ptr(),
+    )
 }
 
 static mut CURRENT_PANE_HANDLE: usize = 0;
@@ -24,20 +32,29 @@ static mut MOST_RECENT_AUTO: isize = -1;
 const MAX_INPUT_BUFFER: isize = 25;
 const MIN_INPUT_BUFFER: isize = -1;
 
-unsafe fn set_info<S>(latency: S) where S: Display {
+unsafe fn set_info<S>(latency: S)
+where
+    S: Display,
+{
     let modes = utils::get_custom_mode();
     // for every mode in the list, we need to add leading newlines.
     let mut modes_newlines = "".to_string();
     let modes_string = match modes {
-        Some(mode_set) => {
-            mode_set.into_iter().map(|entry| {modes_newlines += "\n";format!("{} is ON", entry)}).collect::<Vec<String>>().join("\n")
-        },
-        None => "No Custom Modes".to_string()
+        Some(mode_set) => mode_set
+            .into_iter()
+            .map(|entry| {
+                modes_newlines += "\n";
+                format!("{} is ON", entry)
+            })
+            .collect::<Vec<String>>()
+            .join("\n"),
+        None => "No Custom Modes".to_string(),
     };
 
     set_text_string(
         CURRENT_PANE_HANDLE as u64,
-        format!("\n\n\n\n\n\n{}
+        format!(
+            "\n\n\n\n\n\n{}
             Arena ID: {}
             Input Delay: {}
             {}
@@ -48,12 +65,13 @@ unsafe fn set_info<S>(latency: S) where S: Display {
             {}
             Assets {}\0",
             modes_newlines,
-            CURRENT_ARENA_ID, 
+            CURRENT_ARENA_ID,
             latency,
             modes_string,
             crate::get_plugin_version(),
             crate::get_romfs_version()
-        ).as_ptr(),
+        )
+        .as_ptr(),
     );
 }
 
@@ -74,7 +92,9 @@ unsafe fn update_room_hook(_: &skyline::hooks::InlineCtx) {
         if CURRENT_COUNTER == 0 {
             // open session
             utils::open_modes_session();
-            skyline_web::DialogOk::ok("Please ensure that all players have the same custom modes enabled!");
+            skyline_web::DialogOk::ok(
+                "Please ensure that all players have the same custom modes enabled!",
+            );
         }
         CURRENT_COUNTER = (CURRENT_COUNTER + 1) % 60;
     } else {
@@ -97,7 +117,11 @@ unsafe fn update_room_hook(_: &skyline::hooks::InlineCtx) {
 unsafe fn set_room_id(ctx: &skyline::hooks::InlineCtx) {
     let panel = *((*((*ctx.registers[0].x.as_ref() + 8) as *const u64) + 0x10) as *const u64);
     CURRENT_PANE_HANDLE = panel as usize;
-    CURRENT_ARENA_ID = dbg!(String::from_utf16(std::slice::from_raw_parts(*ctx.registers[3].x.as_ref() as *const u16, 5)).unwrap());
+    CURRENT_ARENA_ID = dbg!(String::from_utf16(std::slice::from_raw_parts(
+        *ctx.registers[3].x.as_ref() as *const u16,
+        5
+    ))
+    .unwrap());
 }
 
 static mut PANE: u64 = 0;
@@ -120,8 +144,14 @@ unsafe fn update_css2(arg: u64) {
     }
 
     CURRENT_INPUT_BUFFER = CURRENT_INPUT_BUFFER.clamp(MIN_INPUT_BUFFER, MAX_INPUT_BUFFER);
-    set_text_string(*((*((arg + 0xe58) as *const u64) + 0x10) as *const u64), format!("Input Latency: {}\0", CURRENT_INPUT_BUFFER).as_ptr());
-    set_text_string(*((*((arg + 0xe68) as *const u64) + 0x10) as *const u64), format!("Input Latency: {}\0", CURRENT_INPUT_BUFFER).as_ptr());
+    set_text_string(
+        *((*((arg + 0xe58) as *const u64) + 0x10) as *const u64),
+        format!("Input Latency: {}\0", CURRENT_INPUT_BUFFER).as_ptr(),
+    );
+    set_text_string(
+        *((*((arg + 0xe68) as *const u64) + 0x10) as *const u64),
+        format!("Input Latency: {}\0", CURRENT_INPUT_BUFFER).as_ptr(),
+    );
     call_original!(arg)
 }
 

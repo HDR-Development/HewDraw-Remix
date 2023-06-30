@@ -300,7 +300,7 @@ unsafe fn edge_special_air_hi_2_end_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let mut kb_angle = 0;
     if is_excute(fighter) {
-        boma.select_cliff_hangdata_from_name("special_hi");
+        boma.select_cliff_hangdata_from_name("charged_special_hi");
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.0, 3.0);
     }
     frame(lua_state, 1.0);
@@ -325,7 +325,7 @@ unsafe fn edge_special_air_hi_2_end_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_USE_LANDING_SPEED_MUL);
+        WorkModule::on_flag(boma, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_ENABLE_CONTROL);
     }
 }
 

@@ -3,13 +3,14 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
-unsafe fn jetpack_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
+unsafe fn jetpack_cancel(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
     if status_kind == *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI {
-        let fuel = VarModule::get_int(boma.object(), vars::krool::instance::SPECIAL_HI_FUEL);
+        let fuel_burn_rate = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_hi.fuel_burn_rate");
+        let fuel = VarModule::get_int(fighter.battle_object, vars::krool::instance::SPECIAL_HI_FUEL);
         VarModule::set_int(
-            boma.object(),
+            fighter.battle_object,
             vars::krool::instance::SPECIAL_HI_FUEL,
-            fuel - 3,
+            fuel - fuel_burn_rate,
         );
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) || fuel <= 0 {
             StatusModule::change_status_request_from_script(
@@ -18,10 +19,24 @@ unsafe fn jetpack_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32
                 true,
             );
         }
-    } else if VarModule::get_int(boma.object(), vars::krool::instance::SPECIAL_HI_FUEL) < 540
-        && boma.is_situation(*SITUATION_KIND_GROUND)
-    {
-        VarModule::inc_int(boma.object(), vars::krool::instance::SPECIAL_HI_FUEL);
+    } else if fighter.is_situation(*SITUATION_KIND_GROUND) {
+        let fuel_max = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_hi.fuel_max");
+        if VarModule::get_int(fighter.battle_object, vars::krool::instance::SPECIAL_HI_FUEL) < fuel_max {
+            let fuel_recharge_rate = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_hi.fuel_recharge_rate");
+            VarModule::add_int(fighter.battle_object, vars::krool::instance::SPECIAL_HI_FUEL, fuel_recharge_rate);
+        }
+    }
+}
+
+unsafe fn fuel_reset(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    if fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_WIN,
+        *FIGHTER_STATUS_KIND_LOSE,
+        *FIGHTER_STATUS_KIND_ENTRY,
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_REBIRTH]) {
+        let fuel_max = ParamModule::get_int(fighter.battle_object, ParamType::Agent, "param_special_hi.fuel_max");
+        VarModule::set_int(fighter.battle_object, vars::krool::instance::SPECIAL_HI_FUEL, fuel_max);
     }
 }
 
@@ -63,7 +78,8 @@ pub unsafe fn moveset(
     facing: f32,
     frame: f32,
 ) {
-    jetpack_cancel(boma, status_kind, cat[0]);
+    jetpack_cancel(fighter, boma, status_kind, cat[0]);
+    fuel_reset(fighter);
     //crownerang_item_grab(boma, status_kind, cat[0]);
 }
 
@@ -90,5 +106,24 @@ pub unsafe fn krool_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
             info.facing,
             info.frame,
         );
+    }
+}
+
+#[smashline::weapon_frame( agent = WEAPON_KIND_KROOL_BACKPACK, main)]
+pub fn krool_backpack_frame(weapon: &mut smash::lua2cpp::L2CFighterBase) {
+    unsafe {
+        let boma = weapon.boma();
+        let owner_boma = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+        
+        // upB low fuel indicator
+        let fuel_max = ParamModule::get_int(owner_boma.object(), ParamType::Agent, "param_special_hi.fuel_max") as f32;
+        let low_fuel_threshold = fuel_max * 0.33;
+        if VarModule::get_int(owner_boma.object(), vars::krool::instance::SPECIAL_HI_FUEL) as f32 <= low_fuel_threshold
+        && VarModule::get_int(owner_boma.object(), vars::krool::instance::FUEL_EFFECT_HANDLER) == -1 {
+            let handle = EffectModule::req_follow(weapon.module_accessor, Hash40::new("krool_buckpack"), Hash40::new("backpack"), &Vector3f{x: -12.0, y: -1.5, z: -6.0}, &Vector3f::zero(), 1.5, true, 0, 0, 0, 0, 0, false, false) as u32;
+            EffectModule::set_rgb(weapon.module_accessor, handle, 0.15, 0.15, 0.15);
+            EffectModule::enable_sync_init_pos_last(weapon.module_accessor);
+            VarModule::set_int(owner_boma.object(), vars::krool::instance::FUEL_EFFECT_HANDLER, handle as i32);
+        }
     }
 }

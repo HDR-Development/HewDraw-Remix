@@ -5,25 +5,134 @@
       <float hash="p1_y">26</float>
     </struct>
     <struct index="1">
-      <float hash="p2_x">-5</float>
-    </struct>
-    <hash40 index="2">dummy</hash40>
-    <struct index="3">
       <float hash="p1_x">67</float>
       <float hash="p1_y">70</float>
       <float hash="p2_x">-5</float>
       <float hash="p2_y">-25</float>
     </struct>
+    <hash40 index="2">dummy</hash40>
+    <struct index="3">
+      <float hash="p1_x">31</float>
+      <float hash="p1_y">70</float>
+      <float hash="p2_x">-5</float>
+      <float hash="p2_y">18</float>
+    </struct>
   </list>
   <list hash="param_spiral">
     <struct index="0">
       <int hash="rewind_frame">18</int>
+
+      <float hash="punch_length">3.0</float>
+      <float hash="shift_punch_length">3.0</float>
+      <float hash="long_punch_length">3.5</float>
+      <float hash="long_shift_punch_length">3.5</float>
+      
+      <int hash="punch_back_frame">13</int>
+      <int hash="long_punch_back_frame">15</int>
+
+      <float hash="shift_control_angle_up_max">7.5</float>
+      <float hash="shift_control_angle_down_max">5</float>
+      <float hash="shift_control_angle_up_add">0.5</float>
+      <float hash="shift_control_angle_down_add">0.5</float>
+      <float hash="long_shift_control_angle_up_max">10</float>
+      <float hash="long_shift_control_angle_down_max">5</float>
+      <float hash="long_shift_control_angle_up_add">0.5</float>
+      <float hash="long_shift_control_angle_down_add">0.5</float>
+
     </struct>
-    <hash40 index="1">dummy</hash40>
-    <hash40 index="2">dummy</hash40>
-    <hash40 index="3">dummy</hash40>
-    <hash40 index="4">dummy</hash40>
-    <hash40 index="5">dummy</hash40>
+    <struct index="1">
+      <int hash="punch_frame">16</int>
+      <int hash="long_punch_frame">20</int>
+
+      <int hash="punch_back_frame">16</int>
+      <int hash="punch_back_brake_frame">15</int>
+
+      <int hash="long_punch_back_frame">16</int>
+      <int hash="long_punch_back_brake_frame">15</int>
+
+      <float hash="shift_control_angle_up_max">7</float>
+      <float hash="shift_control_angle_down_max">4</float>
+      <float hash="shift_control_angle_up_add">1</float>
+      <float hash="shift_control_angle_down_add">0.6</float>
+      <float hash="long_shift_control_angle_up_max">12</float>
+      <float hash="long_shift_control_angle_down_max">6</float>
+      <float hash="long_shift_control_angle_up_add">0.75</float>
+      <float hash="long_shift_control_angle_down_add">0.5</float>
+    </struct>
+    <struct index="2">
+      <float hash="punch_length">2.25</float>
+      <float hash="shift_punch_length">2.25</float>
+      <float hash="long_punch_length">3.0</float>
+      <float hash="long_shift_punch_length">2.75</float>
+
+      <int hash="punch_frame">8</int>
+      <int hash="long_punch_frame">10</int>
+
+      <float hash="shift_control_angle_up_max">30</float>
+      <float hash="shift_control_angle_down_max">12</float>
+      <float hash="shift_control_angle_up_add">8</float>
+      <float hash="shift_control_angle_down_add">6</float>
+      <float hash="long_shift_control_angle_up_max">20</float>
+      <float hash="long_shift_control_angle_down_max">10</float>
+      <float hash="long_shift_control_angle_up_add">7</float>
+      <float hash="long_shift_control_angle_down_add">5</float>
+
+      <int hash="punch_curve_frame">8</int>
+      <int hash="long_punch_curve_frame">10</int>
+      <float hash="punch_shoot_angle">40</float>
+    </struct>
+    <struct index="3">
+      <float hash="punch_length">2.0</float>
+      <float hash="shift_punch_length">2.0</float>
+      <float hash="long_punch_length">3.4</float>
+      <float hash="long_shift_punch_length">3.4</float>
+
+      <int hash="punch_back_frame">11</int>
+      <int hash="long_punch_back_frame">14</int>
+
+      <float hash="shift_control_angle_up_max">10</float>
+      <float hash="shift_control_angle_down_max">5</float>
+      <float hash="shift_control_angle_up_add">1.0</float>
+      <float hash="shift_control_angle_down_add">0.5</float>
+      <float hash="long_shift_control_angle_up_max">10</float>
+      <float hash="long_shift_control_angle_down_max">5</float>
+      <float hash="long_shift_control_angle_up_add">1.0</float>
+      <float hash="long_shift_control_angle_down_add">0.5</float>
+
+      <float hash="punch_back_speed_hit">1.5</float>
+    </struct>
+    <struct index="4">
+      <int hash="punch_frame">15</int>
+      <int hash="long_punch_frame">20</int>
+
+      <int hash="punch_back_frame">15</int>
+      <int hash="punch_back_brake_frame">14</int>
+      <int hash="long_punch_back_frame">15</int>
+      <int hash="long_punch_back_brake_frame">14</int>
+      
+    </struct>
+    <struct index="5">
+      <float hash="punch_length">1.625</float>
+      <float hash="shift_punch_length">1.625</float>
+      <float hash="long_punch_length">2.75</float>
+      <float hash="long_shift_punch_length">2.75</float>
+
+      <int hash="punch_frame">6</int>
+      <int hash="long_punch_frame">9</int>
+
+      <float hash="shift_control_angle_up_max">25</float>
+      <float hash="shift_control_angle_down_max">15</float>
+      <float hash="shift_control_angle_up_add">8</float>
+      <float hash="shift_control_angle_down_add">6</float>
+      <float hash="long_shift_control_angle_up_max">20</float>
+      <float hash="long_shift_control_angle_down_max">11</float>
+      <float hash="long_shift_control_angle_up_add">13</float>
+      <float hash="long_shift_control_angle_down_add">12</float>
+
+      <int hash="punch_curve_frame">6</int>
+      <int hash="long_punch_curve_frame">9</int>
+      <float hash="punch_shoot_angle">20</float>
+    </struct>
   </list>
   <list hash="air_lasso_data">
     <struct index="0">
@@ -34,6 +143,11 @@
     <float hash="walk_speed_max_mul">0.825</float>
     <float hash="walk_accel_mul_mul">0.75</float>
     <float hash="walk_accel_add_mul">0.55</float>
+    <int hash="start_both_frame">16000</int>
+  </struct>
+  <struct hash="param_ring">
+    <float hash="range">10.0</float>
+    <float hash="range_hold">8.0</float>
   </struct>
   <list hash="param_special_n">
     <struct index="0">

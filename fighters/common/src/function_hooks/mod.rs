@@ -21,6 +21,7 @@ pub mod set_fighter_status_data;
 pub mod attack;
 pub mod collision;
 pub mod camera;
+pub mod shotos;
 
 #[repr(C)]
 pub struct TempModule {
@@ -118,7 +119,7 @@ unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor, status_k
         || ((*boma).kind() == *FIGHTER_KIND_SIMON
             && [*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_MASTER
-            && [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_MAX_SHOOT].contains(&status_kind))
+            && [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_MAX_SHOOT, *FIGHTER_STATUS_KIND_SPECIAL_HI].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_KIRBY
             && [*FIGHTER_KIRBY_STATUS_KIND_MASTER_SPECIAL_N_MAX_SHOOT].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_JACK
@@ -135,6 +136,8 @@ unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor, status_k
             && [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING_LIGHT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_RIDE].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_MIIGUNNER
             && [*FIGHTER_STATUS_KIND_SPECIAL_HI].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_MIIFIGHTER
+            && [*FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S2_END, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S2_WEAK, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S2_ATTACK, *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_GEKKOUGA
             && [*FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_S_ATTACK].contains(&status_kind)) )
     {
@@ -643,6 +646,9 @@ unsafe fn after_collision(object: *mut BattleObject) {
 #[skyline::hook(offset = 0x4debc0)]
 unsafe fn status_module__change_status(status_module: *const u64, status_kind_next: i32) {
     let boma = *(status_module as *mut *mut BattleObjectModuleAccessor).add(1);
+
+    JostleModule::set_overlap_rate_mul(boma, 1.0);
+
     if (*boma).is_fighter()
     && skip_early_main_status(boma, status_kind_next)
     && VarModule::is_flag((*boma).object(), vars::common::instance::BEFORE_GROUND_COLLISION) {
@@ -674,6 +680,7 @@ pub fn install() {
     attack::install();
     collision::install();
     camera::install();
+    shotos::install();
 
     unsafe {
         // Handles getting rid of the kill zoom
@@ -689,6 +696,14 @@ pub fn install() {
         // Resets projectile lifetime on parry, rather than using remaining lifetime
         skyline::patching::Patch::in_text(0x33bd358).nop();
         skyline::patching::Patch::in_text(0x33bd35c).data(0x2a0a03e1);
+
+        // The following handles disabling the "Weapon Catch" animation for those who have it.
+        // You will only enter the weapon catch animation if you are completely idle.
+        // Link, Young Link, Toon Link
+        skyline::patching::Patch::in_text(0xc297f8).data(0x7100011F);
+        // Simon and Richter
+        skyline::patching::Patch::in_text(0x1195204).data(0x7100001F);
+        // Krool and Pyra are in their respective modules.
     }
     skyline::install_hooks!(
         before_collision,

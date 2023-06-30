@@ -31,7 +31,7 @@ unsafe extern "C" fn special_hi_jump_main_loop(fighter: &mut L2CFighterCommon) -
         }
         else {
             if MotionModule::is_end(fighter.module_accessor) {
-                fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
+                fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
                 return 0.into();
             }
         }
@@ -40,9 +40,18 @@ unsafe extern "C" fn special_hi_jump_main_loop(fighter: &mut L2CFighterCommon) -
     1.into()
 }
 
+#[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_FALL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+pub unsafe fn fall_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_WARIO_STATUS_KIND_SPECIAL_HI_JUMP {
+        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL_SPECIAL);
+        return 1.into();
+    }
+    fighter.status_pre_Fall()
+}
 
 pub fn install() {
     install_status_scripts!(
-        special_hi_jump_main
+        special_hi_jump_main,
+        fall_pre
     );
 }
