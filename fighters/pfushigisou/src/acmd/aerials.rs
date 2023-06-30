@@ -135,10 +135,10 @@ unsafe fn pfushigisou_attack_air_hi_game(fighter: &mut L2CAgentBase) {
         SET_SPEED_EX(fighter, 0, -2.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         HIT_NODE(fighter, Hash40::new("flower"), *HIT_STATUS_XLU);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 90, 72, 0, 64, 10.0, 0.0, 20.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 15.0, 90, 72, 0, 64, 10.0, 0.0, 20.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
-        AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 270, 80, 0, 25, 2.5, 0.0, 5.5, -3.5, Some(0.0), Some(5.5), Some(3.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
         ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 270, 52, 0, 31, 2.5, 0.0, 5.5, -3.5, Some(0.0), Some(5.5), Some(3.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
