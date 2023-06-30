@@ -383,10 +383,10 @@ pub mod vars {
     // Note: Terry starts his flags on 0xXX5X instead due to also using the shotos generic flags.
     pub mod dolly {
         pub mod instance {
-            // ints 
+            // ints
             pub const METER_STOCKS: i32 = 0x0150;
             pub const CURRENT_STOCKS: i32 = 0x0151;
-            
+
             // flags
             pub const SUPER_CANCEL: i32 = 0x0150;
             pub const DISABLE_SPECIAL_S: i32 = 0x0151;
@@ -480,8 +480,8 @@ pub mod vars {
     pub mod elight {
         pub mod instance {
             // flags
-            pub const DISABLE_SPECIAL_HI:             i32 = 0x0100;
-            pub const DISABLE_SPECIAL_S:              i32 = 0x0101;
+            pub const DISABLE_SPECIAL_HI: i32 = 0x0100;
+            pub const DISABLE_SPECIAL_S: i32 = 0x0101;
             pub const ENABLE_SPECIAL_S_ACTIONABILITY: i32 = 0x0102;
         }
         pub mod status {
@@ -536,7 +536,6 @@ pub mod vars {
         pub mod instance {
             // flags
             pub const DISABLE_SPECIAL_S: i32 = 0x0100;
-
         }
         pub mod status {
             // flags
@@ -547,7 +546,6 @@ pub mod vars {
     pub mod inkling {
         pub mod status {
             // flags
-
         }
     }
 
@@ -734,6 +732,12 @@ pub mod vars {
         }
     }
 
+    pub mod ptrainer {
+        pub mod instance {
+            pub const IS_SWITCH_BACKWARDS: i32 = 0x0100;
+        }
+    }
+
     pub mod plizardon {
         pub mod instance {
             pub const DISABLE_SPECIAL_S: i32 = 0x0100;
@@ -741,9 +745,7 @@ pub mod vars {
     }
 
     pub mod pzenigame {
-        pub mod instance {
-            
-        }
+        pub mod instance {}
     }
 
     pub mod mariod {
@@ -772,13 +774,13 @@ pub mod vars {
             // flags
             pub const IS_USE_EX_SPECIAL: i32 = 0x0100;
             pub const IS_MAGIC_SERIES_CANCEL: i32 = 0x0101;
-            pub const IS_ENABLE_FADC:         i32 = 0x0102;
-            pub const IS_TARGET_COMBO_1:      i32 = 0x0103;
-            pub const IS_TARGET_COMBO_2:      i32 = 0x0104;
-            pub const IS_CURRENT_HADOKEN_EX:  i32 = 0x0105;
-            pub const DISABLE_SPECIAL_S:      i32 = 0x0106;
+            pub const IS_ENABLE_FADC: i32 = 0x0102;
+            pub const IS_TARGET_COMBO_1: i32 = 0x0103;
+            pub const IS_TARGET_COMBO_2: i32 = 0x0104;
+            pub const IS_CURRENT_HADOKEN_EX: i32 = 0x0105;
+            pub const DISABLE_SPECIAL_S: i32 = 0x0106;
             pub const IS_CURRENT_HADOKEN_AIR: i32 = 0x0107;
-            pub const DISABLE_SPECIAL_LW:     i32 = 0x0108;
+            pub const DISABLE_SPECIAL_LW: i32 = 0x0108;
 
             // ints
             pub const REPEAT_COUNT_LW: i32 = 0x0100;
@@ -835,16 +837,16 @@ pub mod vars {
     pub mod snake {
         pub mod instance {
             // flags
-            pub const SELF_STICK : i32 = 0x0100;
-            pub const KNIFE_COMBO_ENABLE : i32 = 0x0101;
-            pub const KNIFE_COMBO_IS_BUFFERED : i32 = 0x0102;
-            pub const DTAUNT_C4_EXLPODE : i32 = 0x0103;
-            pub const DTAUNT_GRENADE_WAIT_COUNT : i32 = 0x0104;
-            pub const IS_GRAB_WALK : i32 = 0x0105;
-            
+            pub const SELF_STICK: i32 = 0x0100;
+            pub const KNIFE_COMBO_ENABLE: i32 = 0x0101;
+            pub const KNIFE_COMBO_IS_BUFFERED: i32 = 0x0102;
+            pub const DTAUNT_C4_EXLPODE: i32 = 0x0103;
+            pub const DTAUNT_GRENADE_WAIT_COUNT: i32 = 0x0104;
+            pub const IS_GRAB_WALK: i32 = 0x0105;
+
             // ints
             pub const SNAKE_GRENADE_COUNTER: i32 = 0x0100;
-            pub const KNIFE_COMBO_COUNT : i32 = 0x0101;
+            pub const KNIFE_COMBO_COUNT: i32 = 0x0101;
         }
     }
 
@@ -1113,7 +1115,7 @@ pub mod vars {
             pub const SPECIAL_S_RESERVE_FALL: i32 = 0x1100;
         }
     }
-    
+
     pub mod tantan {
         pub mod status {
             // flags
@@ -1165,7 +1167,7 @@ pub mod statuses {
         pub const SPECIAL_N_CANCEL: i32 = 0;
         pub const SPECIAL_N_CANCEL_JUMP: i32 = 1;
     }
-    
+
     pub mod kirby {
         pub const SPECIAL_HI_H: i32 = 0;
     }
