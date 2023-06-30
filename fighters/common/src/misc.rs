@@ -89,6 +89,7 @@ pub fn install() {
         set_team_second_hook,
         set_team_hook,
         set_team_owner_id_hook,
+        ptrainer_swap_backwards_hook,
         // shield_damage_analog,
         // shield_pushback_analog
     );
@@ -182,6 +183,21 @@ extern "C" {
 #[skyline::hook(replace = special_lw_open_command)]
 pub unsafe fn hero_rng_hook(fighter: *mut BattleObject) {
     hero_rng_hook_impl(fighter);
+}
+
+#[skyline::hook(offset = 0x34cdc64, inline)]
+unsafe fn ptrainer_swap_backwards_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    let object = *ctx.registers[20].x.as_ref() as *mut BattleObject;
+    if VarModule::is_flag(object, vars::ptrainer::instance::IS_SWITCH_BACKWARDS) {
+        let new = match *ctx.registers[8].x.as_ref() {
+            0 => 1,
+            1 => 2,
+            2 => 0,
+            _ => unreachable!()
+        };
+
+        *ctx.registers[8].x.as_mut() = new;
+    }
 }
 
 #[skyline::hook(offset = 0x853df0)]

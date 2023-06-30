@@ -47,10 +47,20 @@ unsafe fn withdraw_jc(boma: &mut BattleObjectModuleAccessor, id: usize, status_k
     }
 }
 
+unsafe fn special_lw_track(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
+        let parent_id = LinkModule::get_parent_id(boma, *FIGHTER_POKEMON_LINK_NO_PTRAINER, true) as u32;
+        let object = utils::util::get_battle_object_from_id(parent_id);
+        VarModule::set_flag(object, vars::ptrainer::instance::IS_SWITCH_BACKWARDS, boma.is_button_on(Buttons::SpecialAll));
+    }
+}
+
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     withdraw_jc(boma, id, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     nspecial_cancels(boma, status_kind, situation_kind, cat[0]);
+    special_lw_track(boma);
 }
+
 #[utils::macros::opff(FIGHTER_KIND_PZENIGAME )]
 pub fn pzenigame_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     unsafe {
