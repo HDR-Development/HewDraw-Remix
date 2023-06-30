@@ -115,12 +115,12 @@ unsafe fn waveland_plat_drop(boma: &mut BattleObjectModuleAccessor, cat2: i32, s
     let pass_thresh = ParamModule::get_float(
         boma.object(),
         ParamType::Common,
-        "waveland_pass_neutral_sens",
+        "wavedrop_stick_y_threshold",
     );
     if boma.is_status(*FIGHTER_STATUS_KIND_LANDING)
     && VarModule::is_flag(boma.object(), vars::common::instance::ENABLE_WAVELAND_PLATDROP)
     && GroundModule::is_passable_ground(boma)
-    && ControlModule::get_flick_y(boma) <= 2
+    && ControlModule::get_flick_y(boma) < 2
     && boma.left_stick_y() < pass_thresh
     // && boma.prev_stick_y() > -0.3 && boma.left_stick_y() < pass_thresh
     && boma.is_prev_status_one_of(&[
