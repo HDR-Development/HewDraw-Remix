@@ -235,7 +235,7 @@ unsafe fn game_itemheavythrowlw(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         let main_speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        let stick_add_x = fighter.stick_x();
+        let stick_add_x = fighter.stick_x() * 0.5;
         
         // change to kinetic type fall and change to air situation
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
