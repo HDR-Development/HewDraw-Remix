@@ -55,7 +55,7 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
             if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
                 if VarModule::is_flag(boma.object(), vars::common::instance::FLOAT_PAUSE_AERIAL) {
                     VarModule::on_flag(boma.object(), vars::common::instance::AERIAL_NO_FLOAT);
-                    WorkModule::set_int(boma, -1, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
+                    WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
                 }
             } else {
                 if VarModule::is_flag(boma.object(), vars::common::instance::AERIAL_NO_FLOAT) {
@@ -211,9 +211,6 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                 if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) == 50  {
                 // consume double jump on f10 of float
                     fighter.set_int(2, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-                }
-                if boma.is_cat_flag(Cat1::SpecialS) {
-                    fighter.set_int(-1, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
                 }
             }
         }
