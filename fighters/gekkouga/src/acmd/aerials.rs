@@ -105,7 +105,6 @@ unsafe fn gekkouga_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 
 }
-
 #[acmd_script( agent = "gekkouga", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn gekkouga_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;

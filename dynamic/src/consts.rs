@@ -415,6 +415,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const SPECIAL_CHECKS: i32 = 0x1100;
+            pub const IS_NEUTRAL_TOSS: i32 = 0x1101;
 
             // pub const SPECIAL_AIR_LW_STOP: i32 = 0x1100;
         }

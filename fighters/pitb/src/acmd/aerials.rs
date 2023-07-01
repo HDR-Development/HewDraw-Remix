@@ -1,6 +1,40 @@
 
 use super::*;
 
+#[acmd_script( agent = "pitb", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
+unsafe fn pitb_attack_air_n_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+    frame(lua_state, 5.0);
+    FT_MOTION_RATE_RANGE(fighter, 5.0, 24.0, 12.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 363, 100, 45, 0, 9.0, 1.0, 9.0, 5.5, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 80, 100, 45, 0, 9.0, 1.0, 9.0, 5.5, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 24.0);
+    FT_MOTION_RATE(fighter, 1.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 1, Hash40::new("top"), 7.0, 361, 85, 0, 50, 10.5, 1.0, 10.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
+    }
+    wait(lua_state, 2.0);
+    if is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    frame(lua_state, 26.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+    
+}
+
 #[acmd_script( agent = "pitb", script = "effect_attackairn", category = ACMD_EFFECT, low_priority )]
 unsafe fn pitb_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -85,40 +119,6 @@ unsafe fn expression_attackairn(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         ItemModule::set_have_item_visibility(boma, true, 0);
     }
-}
-
-#[acmd_script( agent = "pitb", script = "game_attackairn" , category = ACMD_GAME , low_priority)]
-unsafe fn pitb_attack_air_n_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 3.0);
-    if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    }
-    frame(lua_state, 5.0);
-    FT_MOTION_RATE_RANGE(fighter, 5.0, 24.0, 12.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 363, 100, 45, 0, 9.0, 1.0, 9.0, 5.5, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 80, 100, 45, 0, 9.0, 1.0, 9.0, 5.5, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
-    }
-    frame(lua_state, 16.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-    frame(lua_state, 24.0);
-    FT_MOTION_RATE(fighter, 1.0);
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 1, Hash40::new("top"), 7.0, 361, 85, 0, 50, 10.5, 1.0, 10.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
-    }
-    wait(lua_state, 2.0);
-    if is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-    frame(lua_state, 26.0);
-    if is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    }
-    
 }
 
 #[acmd_script( agent = "pitb", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
@@ -279,16 +279,35 @@ unsafe fn pitb_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "pitb", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn pitb_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+}
+
+
 pub fn install() {
     install_acmd_scripts!(
         pitb_attack_air_n_game,
+        pitb_attack_air_n_effect,
+        pitb_attack_air_n_sound,
+        expression_attackairn,
         pitb_attack_air_f_game,
         pitb_attack_air_b_game,
         pitb_attack_air_hi_game,
         pitb_attack_air_lw_game,
-        pitb_attack_air_n_effect,
-        pitb_attack_air_n_sound,
-        expression_attackairn
+        pitb_attack_air_lw_expression
     );
 }
 

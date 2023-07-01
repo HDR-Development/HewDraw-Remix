@@ -37,6 +37,30 @@ unsafe fn falco_attack_s4_s_game(fighter: &mut L2CAgentBase) {
     
 }
 
+
+#[acmd_script( agent = "falco", script = "expression_attacks4", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn falco_attack_s4_s_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("top"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
+    }
+    frame(lua_state, 15.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+}
+
+
 #[acmd_script( agent = "falco", script = "game_attackhi4" , category = ACMD_GAME , low_priority)]
 unsafe fn falco_attack_hi4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -88,6 +112,7 @@ unsafe fn falco_attack_hi4_game(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         falco_attack_s4_s_game,
+        falco_attack_s4_s_expression,
         falco_attack_hi4_game,
     );
 }
