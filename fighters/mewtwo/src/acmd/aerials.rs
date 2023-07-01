@@ -49,7 +49,7 @@ unsafe fn mewtwo_attack_air_f_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 84, 96, 0, 43, 4.5, 0.0, 8.2, 7.0, Some(0.0), Some(8.2), Some(8.75), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0, 84, 96, 0, 43, 5.5, 0.0, 8.2, 15.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0, 84, 96, 0, 43, 5.5, 0.0, 8.2, 13.7, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
     }
     frame(lua_state, 9.0);
     if is_excute(fighter) {
@@ -58,8 +58,25 @@ unsafe fn mewtwo_attack_air_f_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 35.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    } 
+}
+
+#[acmd_script( agent = "mewtwo", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
+unsafe fn mewtwo_attack_air_f_effect(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 3.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_pk_hand"), Hash40::new("mewtwo_pk_hand"), Hash40::new("haver"), 1.2, 0, 1.8, 0, 0, 0, 0.55, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(fighter, 1.2);
     }
-    
+    frame(fighter.lua_state_agent, 4.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_FLIP(fighter, Hash40::new("mewtwo_pk_attack_g"), Hash40::new("mewtwo_pk_attack_g"), Hash40::new("top"), 0, 7.7, 5.0, 0, 0, 40, 1.13, true, *EF_FLIP_YZ);
+        LAST_EFFECT_SET_RATE(fighter, 1.4);
+    }
+    frame(fighter.lua_state_agent, 7.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("mewtwo_pk_hand"), false, false);
+    }
 }
 
 #[acmd_script( agent = "mewtwo", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
@@ -67,7 +84,7 @@ unsafe fn mewtwo_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
-    MotionModule::set_rate(boma, (13.0 - 1.0) / 7.0);
+    MotionModule::set_rate(boma, (12.0 - 1.0) / 6.4);
     frame(lua_state, 3.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -78,11 +95,12 @@ unsafe fn mewtwo_attack_air_b_game(fighter: &mut L2CAgentBase) {
     MotionModule::set_rate(boma, 1.0);
     frame(lua_state, 13.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("s_tail1"), 13.0, 361, 98, 0, 22, 5.5, 3.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
-        ATTACK(fighter, 1, 0, Hash40::new("s_tail5"), 11.0, 361, 92, 0, 22, 5.0, 0.0, 0.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
-        ATTACK(fighter, 2, 0, Hash40::new("s_tail7"), 11.0, 361, 92, 0, 22, 4.5, -0.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
+        ATTACK(fighter, 0, 0, Hash40::new("s_tail1"), 13.0, 361, 94, 0, 22, 5.5, 3.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
+        ATTACK(fighter, 1, 0, Hash40::new("s_tail5"), 11.0, 361, 90, 0, 22, 5.0, 0.0, 0.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
+        ATTACK(fighter, 2, 0, Hash40::new("s_tail7"), 11.0, 361, 90, 0, 22, 4.5, -0.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
     }
     frame(lua_state, 17.0);
+    MotionModule::set_rate(boma, (31.0 - 17.0) / 16.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         HIT_NO(fighter, 12, *HIT_STATUS_OFF);
@@ -174,6 +192,7 @@ pub fn install() {
     install_acmd_scripts!(
         mewtwo_attack_air_n_game,
         mewtwo_attack_air_f_game,
+        mewtwo_attack_air_f_effect,
         mewtwo_attack_air_b_game,
         mewtwo_attack_air_hi_game,
         mewtwo_attack_air_hi_expression,

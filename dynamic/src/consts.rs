@@ -169,6 +169,8 @@ pub mod vars {
 
             pub const IS_PARRY_FOR_GUARD_OFF: i32 = 0x0060;
 
+            pub const EDGE_SLIPPABLE_STATUS: i32 = 0x0061;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;

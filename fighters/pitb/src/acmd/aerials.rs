@@ -9,19 +9,20 @@ unsafe fn pitb_attack_air_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    frame(lua_state, 4.0);
-    FT_MOTION_RATE(fighter, 15.0 / (24.0 - 4.0));
+    frame(lua_state, 5.0);
+    FT_MOTION_RATE_RANGE(fighter, 5.0, 24.0, 12.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 65, 45, 0, 50, 9.0, 1.0, 9.0, 5.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 363, 100, 45, 0, 9.0, 1.0, 9.0, 5.5, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 80, 100, 45, 0, 9.0, 1.0, 9.0, 5.5, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
     }
-    frame(lua_state, 11.0);
+    frame(lua_state, 16.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
     frame(lua_state, 24.0);
-    FT_MOTION_RATE(fighter, 1.000);
+    FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 1, 1, Hash40::new("top"), 7.0, 361, 85, 0, 50, 10.5, 1.0, 10.0, 3.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
+        ATTACK(fighter, 0, 1, Hash40::new("top"), 7.0, 361, 85, 0, 50, 10.5, 1.0, 10.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
@@ -38,13 +39,13 @@ unsafe fn pitb_attack_air_n_game(fighter: &mut L2CAgentBase) {
 unsafe fn pitb_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 4.0);
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("pitb_atk_air_n"), Hash40::new("bowr"), 0, 0, 0, -90, 90, 0, 0.9, true);
         EFFECT_FOLLOW(fighter, Hash40::new("pitb_sword"), Hash40::new("bowr"), 0, 0.87, 0, 0, 90, 0, 1, true);
         EFFECT_FOLLOW(fighter, Hash40::new("pitb_sword"), Hash40::new("bowr"), 0, -0.87, 0, 180, -90, 0, 0.9, true);
     }
-    frame(lua_state, 10.0);
+    frame(lua_state, 16.0);
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("pitb_atk_air_n"), true, true);
         EFFECT_OFF_KIND(fighter, Hash40::new("pitb_sword"), false, false);
@@ -73,7 +74,7 @@ unsafe fn pitb_attack_air_n_effect(fighter: &mut L2CAgentBase) {
 unsafe fn pitb_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 4.0);
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
         PLAY_STATUS(fighter, Hash40::new("se_pitb_attackair_n01"));
     }
@@ -85,6 +86,38 @@ unsafe fn pitb_attack_air_n_sound(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         PLAY_SEQUENCE(fighter, Hash40::new("seq_pitb_rnd_attack"));
         PLAY_SE(fighter, Hash40::new("se_pitb_swing_m"));
+    }
+}
+
+#[acmd_script( agent = "pitb", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attackairn(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        VisibilityModule::set_status_default_int64(boma, Hash40::new("weapon").hash as i64, 0x11242751f5 as i64);
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("swordr1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 10, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_slashss"), 0);
+    }
+    frame(lua_state, 14.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 10, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 25.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_slashm"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 56.0);
+    if is_excute(agent) {
+        ItemModule::set_have_item_visibility(boma, true, 0);
     }
 }
 
@@ -269,11 +302,12 @@ pub fn install() {
         pitb_attack_air_n_game,
         pitb_attack_air_n_effect,
         pitb_attack_air_n_sound,
+        expression_attackairn,
         pitb_attack_air_f_game,
         pitb_attack_air_b_game,
         pitb_attack_air_hi_game,
         pitb_attack_air_lw_game,
-        pitb_attack_air_lw_expression,
+        pitb_attack_air_lw_expression
     );
 }
 
