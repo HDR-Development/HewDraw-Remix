@@ -546,7 +546,7 @@ unsafe fn miifighter_special_lw1_effect(fighter: &mut L2CAgentBase) {
 unsafe fn miifighter_special_lw1_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    frame(lua_state, 7.0);
+    frame(lua_state, 9.0);
     if is_excute(fighter) {
         PLAY_SEQUENCE(fighter, Hash40::new("seq_miifighter_rnd_attack03"));
     }
