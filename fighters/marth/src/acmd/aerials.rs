@@ -208,6 +208,23 @@ unsafe fn marth_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "marth", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn marth_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         marth_attack_air_n_game,
@@ -217,6 +234,7 @@ pub fn install() {
         marth_attack_air_hi_effect,
         marth_attack_air_lw_game,
         marth_attack_air_lw_effect,
+        marth_attack_air_lw_expression
     );
 }
 

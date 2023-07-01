@@ -156,6 +156,24 @@ unsafe fn peach_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "peach", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn peach_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 4, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_beams"), 0);
+    }
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script(agent = "peach", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn peach_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -196,6 +214,7 @@ pub fn install() {
         peach_attack_air_f_game,
         peach_attack_air_b_game,
         peach_attack_air_hi_game,
+        peach_attack_air_hi_expression,
         peach_attack_air_lw_game,
     );
 }
