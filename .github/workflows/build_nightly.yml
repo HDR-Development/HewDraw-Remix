@@ -87,7 +87,12 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.9' # Version range or exact version of a Python version to use, using SemVer's version range syntax
-    
+
+    - name: install yamlist
+      shell: bash
+      run: |
+        cargo install --git "https://github.com/ultimate-research/motion_lib"
+
     - name: checkout version
       uses: actions/checkout@v2
 
