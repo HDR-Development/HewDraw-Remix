@@ -24,6 +24,9 @@ fn koopa_init(fighter: &mut L2CFighterCommon) {
             if is_training_mode() {
                 VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,0);
             }
+            else{
+                VarModule::set_int(fighter.battle_object, vars::koopa::instance::FIREBALL_COOLDOWN_FRAME,MAX_COOLDOWN);
+            }
         }
     }
 }
