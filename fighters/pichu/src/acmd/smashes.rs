@@ -163,6 +163,25 @@ unsafe fn pichu_attack_hi4_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+
+#[acmd_script( agent = "pichu", script = "expression_attackhi4", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn pichu_attack_hi4_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 3);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 3);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "pichu", script = "game_attacklw4" , category = ACMD_GAME , low_priority)]
 unsafe fn pichu_attack_lw4_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -207,6 +226,7 @@ pub fn install() {
         pichu_attack_s4_s_effect,
         pichu_attack_hi4_game,
         pichu_attack_hi4_effect,
+        pichu_attack_hi4_expression,
         pichu_attack_lw4_game,
     );
 }

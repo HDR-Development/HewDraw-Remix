@@ -27,7 +27,8 @@ unsafe fn tumble_exit(boma: &mut BattleObjectModuleAccessor) {
         if !(WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR) || WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND))
         && boma.is_cat_flag(Cat1::Dash | Cat1::TurnDash)
         {
-            boma.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
+            ControlModule::reset_trigger(boma);
+            boma.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
         }
     }
 }

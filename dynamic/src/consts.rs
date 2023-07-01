@@ -169,6 +169,8 @@ pub mod vars {
 
             pub const IS_PARRY_FOR_GUARD_OFF: i32 = 0x0060;
 
+            pub const EDGE_SLIPPABLE_STATUS: i32 = 0x0061;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -414,6 +416,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const SPECIAL_CHECKS: i32 = 0x1100;
+            pub const IS_NEUTRAL_TOSS: i32 = 0x1101;
 
             // pub const SPECIAL_AIR_LW_STOP: i32 = 0x1100;
         }
@@ -823,6 +826,7 @@ pub mod vars {
 
             pub const SPECIAL_S_HOP: i32 = 0x1100;
             pub const SPECIAL_S_ENABLE_JUMP: i32 = 0x1101;
+            pub const SPECIAL_S_ENABLE_CONTROL: i32 = 0x1102;
 
             // ints
             pub const SPECIAL_S_STEP: i32 = 0x1100;

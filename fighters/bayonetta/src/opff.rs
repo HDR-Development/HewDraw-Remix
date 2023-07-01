@@ -186,11 +186,6 @@ unsafe fn abk(fighter: &mut smash::lua2cpp::L2CFighterCommon, frame: f32) {
         if StatusModule::is_changing(boma) {ControlModule::reset_trigger(boma); }
         let anglestick = VarModule::get_float(fighter.battle_object, vars::bayonetta::status::ABK_ANGLE) as f32;
         joint_rotator(fighter, frame, Hash40::new("top"), Vector3f{x: -19.5*anglestick, y:90.0*pos, z:0.0}, 10.0, 13.0, 28.0, 32.0);
-        if boma.status_frame() <= 5 { 
-            if fighter.is_button_on(Buttons::AttackRaw | Buttons::Catch) {
-                VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-            }
-        }
         if boma.status_frame() <= 7 { 
             VarModule::set_float(fighter.battle_object, vars::bayonetta::status::ABK_ANGLE, boma.left_stick_y());
         }
@@ -210,15 +205,6 @@ unsafe fn abk(fighter: &mut smash::lua2cpp::L2CFighterCommon, frame: f32) {
                 app::sv_kinetic_energy::set_angle(fighter.lua_state_agent);
             }
         }
-    } //standardize dabk startup to 9 frames total, make up for movement in animation skipped so that both dabk inputs are comparable 
-    if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D) && !StatusModule::is_changing(boma) { 
-        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
-            MotionModule::set_frame_sync_anim_cmd(boma, 6.0, true, false, false);
-            VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
-            let pos = smash::phx::Vector3f { x: PostureModule::pos_x(boma) - 0.5 * pos, y: PostureModule::pos_y(boma) + 7.0, z: 0.0 };
-            PostureModule::set_pos(boma, &pos);
-            VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
-        }
     }
 }
 
@@ -228,7 +214,7 @@ unsafe fn heel_slide_off(fighter: &mut L2CFighterCommon, boma: *mut BattleObject
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) 
     && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) 
     && fighter.is_situation(*SITUATION_KIND_GROUND) {
-        if boma.status_frame() <= 40 && boma.status_frame() >= 15 && ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
+        if boma.status_frame() <= 40 && boma.status_frame() >= 15 && fighter.is_button_off(Buttons::Special) {
             GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         } else {
             GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
