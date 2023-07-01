@@ -3,6 +3,12 @@ utils::import!(common::djc::attack_air_main_status);
 
 // FIGHTER_STATUS_KIND_ATTACK_AIR //
 
+#[status_script(agent = "trail", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
+    original!(fighter)
+}
+
 #[status_script(agent = "trail", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 pub unsafe fn init_attack_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
@@ -258,6 +264,7 @@ pub unsafe fn init_attack_air_f(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub fn install() {
     install_status_scripts!(
+        attack_air_pre,
         init_attack_air,
         attack_air,
         init_attack_air_n,
