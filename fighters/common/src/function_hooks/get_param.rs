@@ -18,6 +18,7 @@ pub fn install() {
 static INT_OFFSET: usize = 0x4e5380; // 12.0.0
 static FLOAT_OFFSET: usize = 0x4e53C0; // 12.0.0
 
+
 #[skyline::hook(offset=0x720540)]
 unsafe fn get_offset(arg0: u64, arg1: u64) {
     static mut ONCE: bool = true;
@@ -121,6 +122,19 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
         }
         */
 
+        // handle reduction of the tumble threshold for DK when in barrel carry
+        if x2 == hash40("damage_level3") 
+        && boma_reference.kind() == *FIGHTER_KIND_DONKEY
+         {
+            let status = boma_reference.status();
+
+            // if you are in any of the FIGHTER_DONKEY_STATUS_KIND_SUPER_LIFT_* statuses,
+            // reduce the dumble threshold.
+            if status >= 481 && status <= 489 {
+                return original!()(x0, x1, x2) * 0.5;
+            }
+        }
+
         // Coupled with "landing_heavy" change in change_motion hook
         // Because we start heavy landing anims on f2 rather than f1, we need to push back the heavy landing FAF by 1 frame so it is accurate to the defined per-character param
         if x1 == hash40("landing_frame") {
@@ -199,7 +213,6 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
                 }
             }
         }
-
         // else if fighter_kind == *FIGHTER_KIND_PICKEL {
         //     if [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL].contains(&StatusModule::status_kind(boma)) {
         //         if ControlModule::get_stick_x(boma) * PostureModule::lr(boma) > 0.5 {

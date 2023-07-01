@@ -337,6 +337,31 @@ unsafe fn before_collision(object: *mut BattleObject) {
                 let battle_object__update_movement: extern "C" fn(*mut app::Fighter, bool) = std::mem::transmute(func_addr);
                 battle_object__update_movement(object as *mut app::Fighter, !is_receiver_in_hitlag);
 
+                // Prevents jostle from pushing you off of edges
+                // except if you are in knockdown (to allow for pratfall combos)
+                if (*boma).is_situation(*SITUATION_KIND_GROUND)
+                && !(*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_DOWN, *FIGHTER_STATUS_KIND_DOWN_WAIT, *FIGHTER_STATUS_KIND_DOWN_DAMAGE])
+                && (GroundModule::get_correct(boma) == *GROUND_CORRECT_KIND_GROUND || VarModule::is_flag(object, vars::common::instance::EDGE_SLIPPABLE_STATUS))
+                && KineticModule::is_enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_JOSTLE) {
+                    VarModule::on_flag(object, vars::common::instance::EDGE_SLIPPABLE_STATUS);
+
+                    let main_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+                    let damage_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_DAMAGE);
+                    let mut jostle_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_JOSTLE) as *mut app::KineticEnergy;
+                    let jostle_energy_x = app::lua_bind::KineticEnergy::get_speed_x(jostle_energy);
+            
+                    if jostle_energy_x != 0.0
+                    && (main_speed_x + damage_speed_x).abs() < jostle_energy_x.abs() {
+                        // This check passes if the speed at which your character is moving due to general movement
+                        // (dashing, running, walking, grounded knockback, shield pushback, etc.)
+                        // is LESS than the speed at which jostle is pushing your character
+                        GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+                    }
+                    else {
+                        GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+                    }
+                }
+
             }
             else if (*boma).is_weapon() {
                 let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x33a54c0);
@@ -646,6 +671,9 @@ unsafe fn after_collision(object: *mut BattleObject) {
 #[skyline::hook(offset = 0x4debc0)]
 unsafe fn status_module__change_status(status_module: *const u64, status_kind_next: i32) {
     let boma = *(status_module as *mut *mut BattleObjectModuleAccessor).add(1);
+
+    JostleModule::set_overlap_rate_mul(boma, 1.0);
+
     if (*boma).is_fighter()
     && skip_early_main_status(boma, status_kind_next)
     && VarModule::is_flag((*boma).object(), vars::common::instance::BEFORE_GROUND_COLLISION) {
