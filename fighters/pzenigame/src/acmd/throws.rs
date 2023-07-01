@@ -62,9 +62,7 @@ unsafe fn throw_hi_game (fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
     wait(lua_state, 6.0);
-    if is_excute(fighter){
-        FT_MOTION_RATE(fighter, 0.8);
-    }
+    FT_MOTION_RATE(fighter, 0.8);
 
 }
 
