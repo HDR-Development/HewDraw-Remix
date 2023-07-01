@@ -907,7 +907,7 @@ unsafe extern "C" fn sub_special_hi3_end_Main(fighter: &mut L2CFighterCommon) ->
             }
             if miisword_situation_helper(fighter).get_bool() && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
                 fighter.change_status(
-                    L2CValue::I32(*FIGHTER_STATUS_KIND_LANDING),
+                    L2CValue::I32(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL),
                     L2CValue::Bool(true)
                 );
                 return 1.into()
@@ -1181,7 +1181,7 @@ unsafe fn miiswordsman_speciallw1hit_main(fighter: &mut L2CFighterCommon) -> L2C
     return L2CValue::I32(0)
 }
 
-//FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END
+// FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END
 
 #[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {

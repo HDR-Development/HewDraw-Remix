@@ -21,6 +21,7 @@ pub mod set_fighter_status_data;
 pub mod attack;
 pub mod collision;
 pub mod camera;
+pub mod shotos;
 
 #[repr(C)]
 pub struct TempModule {
@@ -645,6 +646,9 @@ unsafe fn after_collision(object: *mut BattleObject) {
 #[skyline::hook(offset = 0x4debc0)]
 unsafe fn status_module__change_status(status_module: *const u64, status_kind_next: i32) {
     let boma = *(status_module as *mut *mut BattleObjectModuleAccessor).add(1);
+
+    JostleModule::set_overlap_rate_mul(boma, 1.0);
+
     if (*boma).is_fighter()
     && skip_early_main_status(boma, status_kind_next)
     && VarModule::is_flag((*boma).object(), vars::common::instance::BEFORE_GROUND_COLLISION) {
@@ -676,6 +680,7 @@ pub fn install() {
     attack::install();
     collision::install();
     camera::install();
+    shotos::install();
 
     unsafe {
         // Handles getting rid of the kill zoom
@@ -691,6 +696,14 @@ pub fn install() {
         // Resets projectile lifetime on parry, rather than using remaining lifetime
         skyline::patching::Patch::in_text(0x33bd358).nop();
         skyline::patching::Patch::in_text(0x33bd35c).data(0x2a0a03e1);
+
+        // The following handles disabling the "Weapon Catch" animation for those who have it.
+        // You will only enter the weapon catch animation if you are completely idle.
+        // Link, Young Link, Toon Link
+        skyline::patching::Patch::in_text(0xc297f8).data(0x7100011F);
+        // Simon and Richter
+        skyline::patching::Patch::in_text(0x1195204).data(0x7100001F);
+        // Krool and Pyra are in their respective modules.
     }
     skyline::install_hooks!(
         before_collision,

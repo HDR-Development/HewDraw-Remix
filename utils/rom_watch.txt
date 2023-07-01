@@ -30,3 +30,6 @@ fighter/daisy/param/hdr.xml
 fighter/miiswordsman/param/hdr.xml
 fighter/duckhunt/param/hdr.xml
 fighter/krool/param/hdr.xml
+fighter/ganon/param/hdr.xml
+fighter/miifighter/param/hdr.xml
+fighter/sheik/param/hdr.xml

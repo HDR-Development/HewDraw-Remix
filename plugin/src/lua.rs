@@ -350,6 +350,10 @@ unsafe fn exit_gc(ctx: &mut skyline::hooks::InlineCtx) {
     *ptr |= (CURRENT_UI_PARRY_TOGGLE as u8) << 1;
     *ptr |= (CURRENT_UI_RIVALS_JUMP as u8) << 2;
     IS_IN_UI = false;
+    SHARED_PTR1[0] = 0;
+    SHARED_PTR1[1] = 0;
+    SHARED_PTR2[0] = 0;
+    SHARED_PTR2[1] = 0;
 }
 
 #[skyline::hook(offset = 0x1d2e8b0, inline)]
@@ -358,6 +362,10 @@ unsafe fn exit_fk(ctx: &mut skyline::hooks::InlineCtx) {
     *ptr |= (CURRENT_UI_PARRY_TOGGLE as u8) << 1;
     *ptr |= (CURRENT_UI_RIVALS_JUMP as u8) << 2;
     IS_IN_UI = false;
+    SHARED_PTR1[0] = 0;
+    SHARED_PTR1[1] = 0;
+    SHARED_PTR2[0] = 0;
+    SHARED_PTR2[1] = 0;
 }
 
 #[skyline::hook(offset = 0x1d2e864, inline)]
@@ -366,6 +374,10 @@ unsafe fn exit_jc(ctx: &mut skyline::hooks::InlineCtx) {
     *ptr |= (CURRENT_UI_PARRY_TOGGLE as u8) << 1;
     *ptr |= (CURRENT_UI_RIVALS_JUMP as u8) << 2;
     IS_IN_UI = false;
+    SHARED_PTR1[0] = 0;
+    SHARED_PTR1[1] = 0;
+    SHARED_PTR2[0] = 0;
+    SHARED_PTR2[1] = 0;
 }
 
 unsafe fn get_parts(arg: u64, arg2: *const u8) -> [u64; 4] {
