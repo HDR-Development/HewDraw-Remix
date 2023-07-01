@@ -204,6 +204,23 @@ unsafe fn gekkouga_attack_hi3_effect(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "gekkouga", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn gekkouga_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 #[acmd_script( agent = "gekkouga", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn gekkouga_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -255,6 +272,7 @@ pub fn install() {
         gekkouga_attack_s3_lw_effect,
         gekkouga_attack_hi3_game,
         gekkouga_attack_hi3_effect,
+        gekkouga_attack_hi3_expression,
         gekkouga_attack_lw3_game,
         gekkouga_attack_lw3_effect,
     );

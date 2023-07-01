@@ -1,7 +1,9 @@
 use super::*;
 use globals::*;
-// status script import
  
+
+// FIGHTER_STATUS_KIND_WALK
+
 #[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_WALK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 pub unsafe fn pre_walk(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ground_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("ground_brake"), 0);

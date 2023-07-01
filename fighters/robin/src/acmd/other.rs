@@ -177,12 +177,16 @@ unsafe fn reflet_catch_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "robin", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "reflet", script = "game_escapeair" , category = ACMD_GAME , low_priority)]
 unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
 
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+    }
     frame(lua_state, escape_air_cancel_frame);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
@@ -190,16 +194,16 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
 }
 
 
-#[acmd_script( agent = "robin", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "reflet", script = "game_escapeairslide" , category = ACMD_GAME , low_priority)]
 unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
-    frame(lua_state, 30.0);
+    frame(lua_state, 29.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
     }
-    frame(lua_state, 34.0);
+    frame(lua_state, 39.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
@@ -281,6 +285,46 @@ unsafe fn robin_thoron_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "reflet_gigafire", script = "game_burn", category = ACMD_GAME, low_priority )]
+unsafe fn robin_arcfire_burn_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AREA_WIND_2ND_RAD_arg9(fighter, 0, 1, 0.05, 200, 0.8, 0, 9, 15, 60);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.3, 120, 100, 15, 0, 3.8, 0.0, 8.0, 0.0, Some(0.0), Some(1.0), Some(0.0), 0.5, 0.8, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -0.5, 0.0, 8, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+    }
+    wait(lua_state, 10.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.3, 115, 100, 15, 0, 4.0, 0.0, 9.0, 0.0, Some(0.0), Some(1.0), Some(0.0), 0.5, 0.8, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -0.5, 0.0, 8, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+    }
+    wait(lua_state, 10.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.3, 110, 100, 15, 0, 4.0, 0.0, 9.0, 0.0, Some(0.0), Some(1.0), Some(0.0), 0.5, 0.8, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -0.5, 0.0, 8, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+    }
+}
+
+#[acmd_script( agent = "reflet_gigafire", script = "game_rise", category = ACMD_GAME, low_priority )]
+unsafe fn robin_arcfire_rise_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        AREA_WIND_2ND_RAD_arg9(fighter, 0, 1, 0.05, 200, 1, 0, 5, 12, 60);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.3, 96, 100, 15, 0, 3.4, 0.0, 7.0, 0.0, Some(0.0), Some(1.0), Some(0.0), 0.5, 0.8, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -0.5, 0.0, 4, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+    }
+    wait(lua_state, 10.0);
+    if is_excute(fighter) {
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 1.3, 96, 100, 15, 0, 3.6, 0.0, 7.0, 0.0, Some(0.0), Some(1.0), Some(0.0), 0.5, 0.8, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -0.5, 0.0, 4, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+    }
+}
+
+#[acmd_script( agent = "reflet_gigafire", script = "effect_rise", category = ACMD_EFFECT, low_priority )]
+unsafe fn robin_arcfire_rise_effect(fighter: &mut L2CAgentBase) {
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("reflet_gigafire_firepillar"), Hash40::new("top"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_RATE(fighter, 1.45);
+    }
+}
 
 pub fn install() {
     install_acmd_scripts!(
@@ -299,6 +343,9 @@ pub fn install() {
         robin_arcthunder_shoot2_game,
         robin_arcthunder_spark_game,
         robin_thoron_game,
+        robin_arcfire_burn_game,
+        robin_arcfire_rise_game,
+        robin_arcfire_rise_effect
     );
 }
 

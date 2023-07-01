@@ -5,8 +5,11 @@ use globals::*;
 
 // Up B early fall attack
 unsafe fn super_dedede_jump_quickfall(boma: &mut BattleObjectModuleAccessor, frame: f32){
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if boma.is_status(*FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_JUMP)
-    && (frame > 15.0 && frame < 35.0)
+    && (frame > 16.0 && frame < 36.0)
     {
         if ControlModule::get_stick_y(boma) < -0.5 {
             MotionModule::set_frame_sync_anim_cmd(boma, 35.0, true, true, false);
@@ -17,15 +20,15 @@ unsafe fn super_dedede_jump_quickfall(boma: &mut BattleObjectModuleAccessor, fra
 unsafe fn bair_foot_rotation_scaling(boma: &mut BattleObjectModuleAccessor) {
     // Rotation keyframes
     let start_frame = 0.0;
-    let bend_frame = 2.0;
-    let return_frame = 20.0;
-    let straight_frame = 25.0;
+    let bend_frame = 3.0;
+    let return_frame = 21.0;
+    let straight_frame = 26.0;
 
     // Expansion keyframes
-    let start_expand_frame = 4.0;
-    let finish_expand_frame = 6.0;
-    let return_expand_frame = 7.0;
-    let normal_expand_frame = 9.0;
+    let start_expand_frame = 5.0;
+    let finish_expand_frame = 7.0;
+    let return_expand_frame = 8.0;
+    let normal_expand_frame = 10.0;
 
     let frame = MotionModule::frame(boma);
     let end_frame = MotionModule::end_frame(boma);
@@ -85,7 +88,7 @@ unsafe fn bair_foot_rotation_scaling(boma: &mut BattleObjectModuleAccessor) {
     }
 }
  
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //bair_foot_rotation_scaling(boma);
     super_dedede_jump_quickfall(boma, frame);
 }
@@ -99,6 +102,6 @@ pub fn dedede_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn dedede_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

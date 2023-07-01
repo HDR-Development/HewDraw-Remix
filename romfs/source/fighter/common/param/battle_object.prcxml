@@ -19,6 +19,7 @@
   <int hash="just_shield_hitstop_frame_max">23</int>
   <float hash="just_shield_reflect_attack_mul">0.5</float>
   <float hash="just_shield_reflect_speed_mul">1.0</float>
+  <float hash="just_shield_reflect_life_mul">1</float>
   <int hash="just_shield_reflect_count_max">7</int>
   <float hash="rebound_reaction_mul">0.3</float>
   <float hash="rebound_reaction_add">2.0</float>

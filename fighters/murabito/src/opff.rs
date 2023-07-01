@@ -4,6 +4,9 @@ use super::*;
 use globals::*;
 
 unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_AIR, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_DASH_B, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_DASH_F, 
@@ -15,7 +18,7 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_WALK_BRAKE_B,
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_WALK_BRAKE_F,
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_WALK_F])
-    && frame > 11.0
+    && frame > 12.0
     && boma.is_button_on(Buttons::Guard) {
         if situation_kind == *SITUATION_KIND_AIR {
             WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
@@ -29,6 +32,9 @@ unsafe fn dspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind
 }
 
 unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_FLAP, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_TURN, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_WAIT]) {
@@ -37,10 +43,9 @@ unsafe fn uspecial_cancels(boma: &mut BattleObjectModuleAccessor, situation_kind
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH, true);
             }
     } else if boma.is_status_one_of(&[*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_DETACH, 
-        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_END]) && frame > 6.0 {
+        *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_END]) && frame > 7.0 {
             VarModule::on_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL);
-            WorkModule::unable_transition_term_group(boma, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
-            ControlModule::clear_command_one(boma, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+            ControlModule::reset_trigger(boma);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
     }
 }
@@ -70,5 +75,13 @@ fn flowerpot_frame(weapon: &mut L2CFighterBase) {
         if weapon.is_status( *WEAPON_MURABITO_FLOWERPOT_STATUS_KIND_THROWED ) && AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT) {
             weapon.change_status(WEAPON_MURABITO_FLOWERPOT_STATUS_KIND_BURST.into(), false.into());
         }
+    }
+}
+
+/// prevents rocket from despawning in the blastzone
+#[weapon_frame( agent = WEAPON_KIND_MURABITO_CLAYROCKET )]
+fn clayrocket_frame(weapon: &mut L2CFighterBase) {
+    unsafe {
+        WorkModule::on_flag(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_FLAG_NO_DEAD);
     }
 }
