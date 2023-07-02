@@ -87,12 +87,10 @@ pub unsafe fn pre_jump_squat(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "tantan", status = FIGHTER_TANTAN_STATUS_KIND_ATTACK_JUMP_AERIAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn tantan_attack_jump_aerial_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !StatusModule::is_changing(fighter.module_accessor)
-    {
-        macros::EFFECT_OFF_KIND(fighter, Hash40::new("tantan_jump_line_s"), false, true);
-        macros::EFFECT_OFF_KIND(fighter, Hash40::new("tantan_jump_line_l"), false, true);
-        macros::EFFECT(fighter, Hash40::new("sys_jump_aerial"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-    }
+    macros::EFFECT_OFF_KIND(fighter, Hash40::new("tantan_jump_line_s"), false, true);
+    macros::EFFECT_OFF_KIND(fighter, Hash40::new("tantan_jump_line_l"), false, true);
+    macros::EFFECT(fighter, Hash40::new("sys_jump_aerial"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    
     return original!(fighter);
 }
 
