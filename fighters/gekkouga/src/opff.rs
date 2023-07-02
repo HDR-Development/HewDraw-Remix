@@ -72,6 +72,7 @@ unsafe fn shadow_sneak_fastfall(fighter: &mut L2CFighterCommon) {
         WorkModule::set_flag(boma, false, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
     }
     //Epic comment
+    //Epic comment 2
 }
 
 //Down special creates a visual blocking cloud and spawns a substitute doll with a hop backwards
