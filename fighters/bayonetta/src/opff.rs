@@ -60,22 +60,22 @@ unsafe fn aerial_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
 }
 
 unsafe fn jump_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) { //jump cancel fx/logic
-    if fighter.is_status(*FIGHTER_STATUS_KIND_JUMP_AERIAL) && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) == 2 { 
-        if boma.status_frame() <= 5 {
-            if (fighter.is_cat_flag(Cat1::SpecialS) && !VarModule::is_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL)) 
-            || (fighter.is_cat_flag(Cat1::SpecialHi) && !fighter.is_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_HI) &&!VarModule::is_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL)) 
-            && VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) < 2 {
-                let pos = smash::phx::Vector3f { x: PostureModule::pos_x(boma), y: PostureModule::pos_y(boma) - 6.3, z: 0.0 };
+    if fighter.is_status(*FIGHTER_STATUS_KIND_JUMP_AERIAL) {
+        if StatusModule::is_changing(boma) {VarModule::set_int(fighter.battle_object, vars::common::instance::DOUBLE_JUMP_FRAME, 0);}
+        else {VarModule::inc_int(fighter.battle_object, vars::common::instance::DOUBLE_JUMP_FRAME);}
+    } else if boma.is_prev_status(*FIGHTER_STATUS_KIND_JUMP_AERIAL) 
+    && fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) == 2
+    && StatusModule::is_changing(boma) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        if VarModule::get_int(fighter.battle_object, vars::common::instance::DOUBLE_JUMP_FRAME) <= 5 {
+            if fighter.is_status_one_of(&[*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D, *FIGHTER_STATUS_KIND_SPECIAL_HI]) {
+                let pos = smash::phx::Vector3f { x: PostureModule::pos_x(boma), y: PostureModule::pos_y(boma) - 6.0, z: 0.0 };
                 PostureModule::set_pos(boma, &pos);
                 EFFECT(fighter, Hash40::new("bayonetta_witchtime_flash"), Hash40::new("waist"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
                 fighter.set_int(1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
             }
-        } else if fighter.is_cat_flag(Cat1::SpecialAny) {
-            if (fighter.is_cat_flag(Cat1::SpecialS) && VarModule::is_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL)) 
-            || (fighter.is_cat_flag(Cat1::SpecialHi) && (fighter.is_flag(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_HI) || VarModule::is_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL)))
-            {
-                return;
-            }
+            else {EffectModule::req_follow(fighter.module_accessor, Hash40::new("bayonetta_feather_twinkle"), Hash40::new("waist"), &Vector3f{x: 0.0, y: 0.0, z: 0.0}, &Vector3f::zero(), 0.8, true, 0, 0, 0, 0, 0, false, false);}
+        } else {
             EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
             EffectModule::req_follow(fighter.module_accessor, Hash40::new("bayonetta_feather_twinkle"), Hash40::new("waist"), &Vector3f{x: 0.0, y: 0.0, z: 0.0}, &Vector3f::zero(), 0.8, true, 0, 0, 0, 0, 0, false, false);
             PLAY_SE(fighter, Hash40::new("vc_bayonetta_ottotto"));
@@ -143,9 +143,6 @@ unsafe fn reset_flags_resources(fighter: &mut L2CFighterCommon, boma: &mut Battl
         if !fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
         && !VarModule::is_flag(fighter.battle_object, vars::bayonetta::status::IS_ACTIVATE) 
         && VarModule::is_flag(fighter.battle_object, vars::bayonetta::instance::IS_HIT) {
-            if boma.is_status_one_of(&[*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D]) && fighter.get_int(*FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_AIR_S_USED_COUNT) < 2 {
-                VarModule::off_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
-            }
             VarModule::dec_int(boma.object(), vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED);
             VarModule::on_flag(fighter.battle_object, vars::bayonetta::status::IS_ACTIVATE)
         }
