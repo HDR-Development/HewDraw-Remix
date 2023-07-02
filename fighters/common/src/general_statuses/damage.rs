@@ -418,9 +418,14 @@ unsafe fn sub_DamageFlyCommon_hook(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     else {
         if !fighter.global_table[IS_STOPPING].get_bool()
-        && fighter.sub_DamageFlyChkUniq().get_bool()
         {
-            return true.into();
+            if fighter.sub_DamageFlyChkUniq().get_bool() {
+                return true.into();
+            }
+            if fighter.global_table[CURRENT_FRAME].get_i32() > 1 && !VarModule::is_flag(fighter.battle_object, vars::common::status::DAMAGE_FLY_RESET_TRIGGER) {
+                ControlModule::reset_trigger(fighter.module_accessor);
+                VarModule::on_flag(fighter.battle_object, vars::common::status::DAMAGE_FLY_RESET_TRIGGER);
+            }
         }
         return false.into();
     }

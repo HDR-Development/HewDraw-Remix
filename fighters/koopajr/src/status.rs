@@ -6,7 +6,8 @@ pub fn install() {
     install_status_scripts!(
         //pre_special_hi_escape,
         special_hi_escape,
-        end_special_hi_escape
+        end_special_hi_escape,
+        special_s_jump_init
     );
 }
 
@@ -69,9 +70,6 @@ unsafe fn sub_escape_air_common(fighter: &mut L2CFighterCommon) {
 
 unsafe extern "C" fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
     if arg.get_bool() {
-        if fighter.handle_waveland(false) {
-            return 1.into();
-        }
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_FRAME);
         // if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO) {
@@ -167,12 +165,9 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
         if sub_escape_air_common_strans_main(fighter).get_bool() {
             return L2CValue::Bool(true);
         }
-        if fighter.handle_waveland(false) {
-            return true.into();
-        }
         if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
             fighter.change_status(
-                L2CValue::I32(*FIGHTER_STATUS_KIND_LANDING),
+                L2CValue::I32(*FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_LANDING),
                 L2CValue::Bool(false)
             );
             return L2CValue::Bool(true);
@@ -285,4 +280,16 @@ unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterC
 #[status_script(agent = "koopajr", status = FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_HI_ESCAPE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 pub unsafe fn end_special_hi_escape(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_end_EscapeAir()
+}
+
+// FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_JUMP
+
+#[status_script(agent = "koopajr", status = FIGHTER_KOOPAJR_STATUS_KIND_SPECIAL_S_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+pub unsafe fn special_s_jump_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // Burn double jump when jumping out of Clown Kart Dash
+    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR
+    && fighter.get_num_used_jumps() < fighter.get_jump_count_max() {
+        WorkModule::inc_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+    }
+    0.into()
 }

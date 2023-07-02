@@ -9,7 +9,7 @@ unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut Bat
         return;
     }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI
-    && StatusModule::is_changing(boma) {
+    && boma.status_frame() == 1 {
         VarModule::off_flag(boma.object(), vars::mewtwo::instance::GROUNDED_TELEPORT);
         if situation_kind == *SITUATION_KIND_GROUND {
             VarModule::on_flag(boma.object(), vars::mewtwo::instance::GROUNDED_TELEPORT);
@@ -29,8 +29,14 @@ unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut Bat
             CancelModule::enable_cancel(boma);
             // Consume double jump, except when Teleport is initiated on ground
             if !VarModule::is_flag(boma.object(), vars::mewtwo::instance::GROUNDED_TELEPORT) {
-                WorkModule::inc_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+                fighter.set_int(2, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
             }
+        }
+    }
+     //takes away float after 5 frames of jump
+    if boma.get_num_used_jumps() == 2 && (fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) == VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION)) {
+        if !(status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL && boma.status_frame() <= 5) {
+            fighter.set_int(0, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
         }
     }
 }
@@ -38,7 +44,7 @@ unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut Bat
 unsafe fn dj_upB_jump_refresh(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_JUMP_AERIAL) {
         // If first 3 frames of dj
-        if fighter.status_frame() <= 2 {
+        if fighter.status_frame() <= 3 {
             VarModule::on_flag(fighter.battle_object, vars::mewtwo::instance::UP_SPECIAL_JUMP_REFRESH);
         }
         else {
@@ -67,6 +73,15 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_AERIAL, false);
             }
         }
+    }
+}
+
+unsafe fn unfloat_confusion(fighter: &mut smash::lua2cpp::L2CFighterCommon, status_kind: i32) {
+    if status_kind == FIGHTER_STATUS_KIND_SPECIAL_S
+    && StatusModule::is_changing(fighter.module_accessor)
+    && fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0
+    && fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) < VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_DURATION) {
+        fighter.on_flag(*FIGHTER_MEWTWO_INSTANCE_WORK_ID_FLAG_SPECIAL_S_BUOYANCY);
     }
 }
 
@@ -103,6 +118,7 @@ pub unsafe fn mewtwo_teleport_wall_ride(fighter: &mut smash::lua2cpp::L2CFighter
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     actionable_teleport_air(fighter, boma, id, status_kind, situation_kind, frame);
     nspecial_cancels(boma, status_kind, situation_kind);
+    unfloat_confusion(fighter, status_kind);
     mewtwo_teleport_wall_ride(fighter, boma, status_kind, id);
     dj_upB_jump_refresh(fighter);
 }

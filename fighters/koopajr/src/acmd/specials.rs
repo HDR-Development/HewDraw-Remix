@@ -69,7 +69,7 @@ unsafe fn koopajr_special_s_spin_game(fighter: &mut L2CAgentBase) {
         JostleModule::set_status(boma, false);
         WorkModule::on_flag(boma, /*Flag*/ *FIGHTER_KOOPAJR_STATUS_SPECIAL_S_FLAG_SPIN_TURN_JUMP);
     }
-    frame(lua_state, 3.0);
+    frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, /*Flag*/ *FIGHTER_KOOPAJR_STATUS_SPECIAL_S_FLAG_SPIN_TURN_JUMP);
         ATTACK(fighter, 0, 0, Hash40::new("throw"), 10.0, 361, 65, 0, 60, 5.2, 0.0, 6.0, 6.0, Some(0.0), Some(6.0), Some(0.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
@@ -144,6 +144,33 @@ unsafe fn koopajr_cannonball_hop_game(weapon: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "koopajr", script = "game_specialhijrrise", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialhijrrise(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        boma.select_cliff_hangdata_from_name("special_hi");
+    }
+    frame(lua_state, 11.0);
+    if is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_KOOPAJR_STATUS_SPECIAL_HI_SHOOT_FLAG_ACTION);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+
+#[acmd_script( agent = "koopajr", script = "game_specialhijrfall", category = ACMD_GAME, low_priority )]
+unsafe fn game_specialhijrfall(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        boma.select_cliff_hangdata_from_name("special_hi");
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         koopajr_special_lw_game,
@@ -153,6 +180,8 @@ pub fn install() {
         koopajr_special_air_s_game,
         koopajr_special_air_s_spin_game,
         koopajr_cannonball_hop_game,
+        game_specialhijrrise,
+        game_specialhijrfall
     );
 }
 

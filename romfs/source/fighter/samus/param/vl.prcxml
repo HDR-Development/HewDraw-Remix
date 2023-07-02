@@ -4,12 +4,20 @@
     <struct index="0">
       <float hash="p1_y">23.5</float>
     </struct>
-    <hash40 index="1">dummy</hash40>
+    <struct index="1">
+      <float hash="p1_x">50</float>
+      <float hash="p1_y">44</float>
+      <float hash="p2_x">10</float>
+      <float hash="p2_y">-24</float>
+    </struct>
     <hash40 index="2">dummy</hash40>
   </list>
   <list hash="param_gbeam">
     <struct index="0">
       <int hash="rewind_frame">18</int>
+	    <float hash="shoot_length_max">27</float>
+      <float hash="air_lasso_length_max">27</float>
+      <float hash="reach_length_max">37.5</float>
     </struct>
   </list>
   <list hash="air_lasso_data">
@@ -58,7 +66,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="sjump_ar_vy0">3.05</float>
+      <float hash="sjump_ar_vy0">2.85</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

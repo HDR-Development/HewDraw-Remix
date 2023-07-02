@@ -2,7 +2,7 @@
 use super::*;
 use globals::*;
 
-#[common_status_script(status = FIGHTER_STATUS_KIND_GUARD_OFF, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[skyline::hook(replace = L2CFighterCommon_status_pre_GuardOff)]
 unsafe fn status_pre_GuardOff(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -32,7 +32,7 @@ unsafe fn status_pre_GuardOff(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install() {
-    install_status_scripts!(
+    skyline::install_hook!(
         status_pre_GuardOff
     );
 }

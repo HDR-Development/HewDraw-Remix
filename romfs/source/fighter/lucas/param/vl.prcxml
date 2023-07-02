@@ -3,12 +3,13 @@
   <list hash="cliff_hang_data">
     <struct index="0">
       <float hash="p1_y">17</float>
+      <float hash="p2_y">5</float>
     </struct>
     <struct index="1">
-      <float hash="p1_x">50</float>
-      <float hash="p1_y">40</float>
-      <float hash="p2_x">5</float>
-      <float hash="p2_y">-24</float>
+      <float hash="p1_x">37</float>
+      <float hash="p1_y">32</float>
+      <float hash="p2_x">10</float>
+      <float hash="p2_y">-20</float>
     </struct>
     <hash40 index="2">dummy</hash40>
     <struct index="3">
@@ -61,12 +62,27 @@
       <float hash="attack_brake">0.08</float>
       <float hash="attack_end_brake">0</float>
       <float hash="attack_wall_speed_xmul">1.0</float>
+      <float hash="attack_ground_end_speed_xmul">1.0</float>
+      <float hash="attack_ground_speed_xmul">1.0</float>
       <float hash="reflect_speed_y">0</float>
       <float hash="bound_angle">100</float>
       <int hash="critical_frame">0</int>
       <int hash="critical_slow_rate">1</int>
       <float hash="critical_zoom_rate">1</float>
       <int hash="critical_zoom_in_frame">0</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_pkthunder">
+    <struct index="0">
+      <float hash="speed">1.5</float>
+      <float hash="angle">90</float>
+      <float hash="life">120</float>
+      <float hash="stick_min">0.5</float>
+      <float hash="add_angle">10</float>
+      <int hash="penetration_frame">120</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

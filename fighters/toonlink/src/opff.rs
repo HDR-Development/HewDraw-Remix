@@ -22,6 +22,21 @@ unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("sword2"), &long_sword_scale);
 }
 
+// Prevents Toon Link from being able to use both aerial jumps immediately after one another
+unsafe fn triple_jump_lockout(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_JUMP_AERIAL) {
+        let triple_jump_lockout_frame = ParamModule::get_int(fighter.object(), ParamType::Agent, "triple_jump_lockout_frame");
+        if fighter.global_table[CURRENT_FRAME].get_i32() < triple_jump_lockout_frame {
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+        }
+        else {
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+        }
+    }
+}
+
 // symbol-based call for the links' common opff
 extern "Rust" {
     fn links_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
@@ -30,6 +45,7 @@ extern "Rust" {
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     heros_bow_ff(boma, status_kind, situation_kind, cat[1], stick_y);
 	sword_length(boma);
+    triple_jump_lockout(fighter);
     
 
     // Frame Data
