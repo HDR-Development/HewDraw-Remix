@@ -70,9 +70,8 @@ unsafe fn koopa_attack_dash_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         AttackModule::clear(fighter.module_accessor,2,false);
     }
-    wait(lua_state, 3.0);
+    wait(lua_state, 2.0);
     if is_excute(fighter) {
-        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
         AttackModule::clear_all(fighter.module_accessor);
     }
 
@@ -121,12 +120,16 @@ unsafe fn koopa_attack_dash_sound(fighter: &mut L2CAgentBase) {
 
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        PLAY_VC(fighter, Hash40::new("vc_koopa_attack07"),0.2);
+        let play_vc = app::sv_math::rand(hash40("fighter"), 3) == 0;
+        if play_vc {
+            PLAY_SE(fighter, Hash40::new("vc_koopa_attack07"));
+        }
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_koopa_smash_l02"));
     }
+
 }
 
 #[acmd_script( agent = "koopa", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
@@ -135,11 +138,11 @@ unsafe fn koopa_attack_dash_expression(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
 
     if is_excute(fighter) {
-        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        RUMBLE_HIT(agent, Hash40::new("rbkind_slashl"), 0);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
     }
 }
 
