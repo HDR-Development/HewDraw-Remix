@@ -27,7 +27,8 @@ unsafe fn tumble_exit(boma: &mut BattleObjectModuleAccessor) {
         if !(WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR) || WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND))
         && boma.is_cat_flag(Cat1::Dash | Cat1::TurnDash)
         {
-            boma.change_status_req(*FIGHTER_STATUS_KIND_FALL, false);
+            ControlModule::reset_trigger(boma);
+            boma.change_status_req(*FIGHTER_STATUS_KIND_FALL, true);
         }
     }
 }
@@ -167,6 +168,7 @@ unsafe fn drift_di(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
     && boma.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_DAMAGE_FLY,
         *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
@@ -176,22 +178,29 @@ unsafe fn drift_di(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
         let damage_speed_x = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
         let damage_speed_y = fighter.get_speed_y(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
 
-        if fighter.global_table[CURRENT_FRAME].get_i32() == 0 {
+        let mut initial_speed_x = VarModule::get_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_X);
+        let mut initial_speed_y = VarModule::get_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_Y);
+
+        // if these floats are both exactly zero, its because
+        // status change reset them to zero. Thus, we should set them.
+        if initial_speed_x == 0.0 && initial_speed_y == 0.0 {
             VarModule::set_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_X, damage_speed_x);
             VarModule::set_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_Y, damage_speed_y);
+            
+            initial_speed_x = VarModule::get_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_X);
+            initial_speed_y = VarModule::get_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_Y);
         }
-        let speed_x = VarModule::get_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_X);
-        let speed_y = VarModule::get_float(fighter.battle_object, vars::common::status::INITIAL_KNOCKBACK_VEL_Y);
-
+        
         let mut speed_mul = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_mul_base");
         let speed_mul_add_max = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_mul_add_max");
 
         let lerp_max_speed = ParamModule::get_float(fighter.battle_object, ParamType::Common, "drift_di.speed_lerp_max");
 
-        let ratio = 1.0 - (speed_x.abs() / lerp_max_speed).clamp(0.0, 1.0);
+        let ratio = 1.0 - (initial_speed_x.abs() / lerp_max_speed).clamp(0.0, 1.0);
         speed_mul = (speed_mul + speed_mul_add_max) * ratio;
 
         let drift_value = boma.left_stick_x() * speed_mul;
+        
         fighter.set_speed(Vector2f::new(damage_speed_x + drift_value, damage_speed_y), *FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
     }
 }

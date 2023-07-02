@@ -12,20 +12,20 @@
     <hash40 index="8">dummy</hash40>
     <hash40 index="9">dummy</hash40>
     <hash40 index="10">dummy</hash40>
-    <struct index="11">
-      <hash40 hash="status">hit_status_xlu</hash40>
-    </struct>
+    <hash40 index="11">dummy</hash40>
     <struct index="12">
-      <hash40 hash="status">hit_status_xlu</hash40>
+      <hash40 hash="status">hit_status_off</hash40>
     </struct>
-    <hash40 index="13">dummy</hash40>
+    <struct index="13">
+      <hash40 hash="status">hit_status_off</hash40>
+    </struct>
   </list>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">24.12</float>
+      <float hash="p1_y">24</float>
     </struct>
     <struct index="1">
-      <float hash="p1_y">22</float>
+      <float hash="p1_y">24</float>
     </struct>
   </list>
   <list hash="param_special_s">
@@ -39,8 +39,10 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="wrap_speed_add">3</float>
-      <float hash="wrap_speed_multi">2</float>
+      <float hash="wrap_speed_add">2.0</float>
+      <float hash="wrap_speed_multi">2.0</float>
+      <float hash="wrap_xy_speed_air">1.0</float>
+      <int hash="move_time">10</int>
       <float hash="landing_frame">25</float>
     </struct>
     <hash40 index="1">dummy</hash40>

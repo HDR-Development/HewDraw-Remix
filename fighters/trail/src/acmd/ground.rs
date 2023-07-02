@@ -196,6 +196,7 @@ unsafe fn sora_attack_13_effect(fighter: &mut L2CAgentBase) {
 unsafe fn sora_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.9);
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 4.0/(4.0-1.0));

@@ -47,7 +47,7 @@ unsafe fn dolly_special_f_start_game(fighter: &mut L2CAgentBase) {
             FT_MOTION_RATE(fighter, 1.000);
         }
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if MeterModule::drain(fighter.battle_object, 2) {
+            if MeterModule::drain(fighter.battle_object, 1) {
                 FT_MOTION_RATE(fighter, 8.0/(7.0-6.0));
                 VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
@@ -123,7 +123,7 @@ unsafe fn dolly_special_air_f_start_game(fighter: &mut L2CAgentBase) {
             FT_MOTION_RATE(fighter, 1.000);
         }
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if MeterModule::drain(fighter.battle_object, 2) {
+            if MeterModule::drain(fighter.battle_object, 1) {
                 FT_MOTION_RATE(fighter, 8.0/(7.0-6.0));
                 VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
@@ -436,7 +436,7 @@ unsafe fn dolly_special_b_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if MeterModule::drain(fighter.battle_object, 2) {
+            if MeterModule::drain(fighter.battle_object, 1) {
                 VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
@@ -499,7 +499,7 @@ unsafe fn dolly_special_air_b_start_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if MeterModule::drain(fighter.battle_object, 2) {
+            if MeterModule::drain(fighter.battle_object, 1) {
                 VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
@@ -1241,7 +1241,7 @@ unsafe fn dolly_special_hi_command_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_HI_WORK_FLAG_REVERSE_LR);
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if MeterModule::drain(fighter.battle_object, 3) {
+            if MeterModule::drain(fighter.battle_object, 1) {
                  VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
@@ -1792,7 +1792,7 @@ unsafe fn dolly_special_air_hi_command_game(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_HI_WORK_FLAG_REVERSE_LR);
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if MeterModule::drain(fighter.battle_object, 3) {
+            if MeterModule::drain(fighter.battle_object, 1) {
                 VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
@@ -2242,13 +2242,13 @@ unsafe fn dolly_special_lw_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if MeterModule::drain(fighter.battle_object, 3) {
+            if MeterModule::drain(fighter.battle_object, 1) {
                 VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
                 
             }
         }
         else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_CATCH) {
-            if MeterModule::drain(fighter.battle_object, 2) {
+            if MeterModule::drain(fighter.battle_object, 1) {
                 VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_TARGET_COMBO_1);
             }
         }
@@ -2269,7 +2269,7 @@ unsafe fn dolly_special_air_lw_start_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if MeterModule::drain(fighter.battle_object, 3) {
+            if MeterModule::drain(fighter.battle_object, 1) {
                 VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
             }
         }
@@ -2812,7 +2812,7 @@ unsafe fn dolly_special_lw_landing_game(fighter: &mut L2CAgentBase) {
             
             // Star Dunk Volcano
             if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-                if MeterModule::drain(fighter.battle_object, 2) {
+                if MeterModule::drain(fighter.battle_object, 3) {
                     VarModule::on_flag(boma.object(), vars::shotos::instance::IS_TARGET_COMBO_2);
                 }
             }

@@ -3,6 +3,16 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
+
+// Ice Climbers Cheer Cancel (Techy)
+unsafe fn cheer_cancel(fighter: &mut L2CFighterCommon) {
+    if fighter.kind() == *FIGHTER_KIND_NANA {
+        if fighter.is_status(*FIGHTER_POPO_STATUS_KIND_THROW_NANA) {
+            MotionModule::set_frame(fighter.module_accessor, MotionModule::end_frame(fighter.module_accessor), true);
+            StatusModule::change_status_force(fighter.module_accessor, *FIGHTER_STATUS_KIND_WAIT, true);
+        }
+    }
+}
  
 // symbol-based call for the shotos' common opff
 extern "Rust" {
@@ -12,6 +22,13 @@ extern "Rust" {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     // nothing lol
+}
+
+#[fighter_frame( agent = FIGHTER_KIND_NANA )]
+pub fn cheer_cancel_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    unsafe {
+        cheer_cancel(fighter);
+    }
 }
 
 #[utils::macros::opff(FIGHTER_KIND_NANA )]

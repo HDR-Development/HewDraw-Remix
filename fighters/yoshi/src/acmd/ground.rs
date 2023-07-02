@@ -66,10 +66,9 @@ unsafe fn yoshi_attack_12_effect(fighter: &mut L2CAgentBase) {
 unsafe fn yoshi_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let attack_speed_reduction = -0.4;
+    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.79);
     frame(lua_state, 10.0);
     if is_excute(fighter) {
-        KineticModule::add_speed(boma, &Vector3f::new(attack_speed_reduction, 0.0, 0.0));
         ATTACK(fighter, 0, 0, Hash40::new("legl"), 11.0, 65, 45, 0, 90, 5.0, 6.1, 0.0, -0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATTACK(fighter, 1, 0, Hash40::new("legl"), 11.0, 65, 45, 0, 90, 3.5, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         ATTACK(fighter, 2, 0, Hash40::new("hip"), 11.0, 65, 45, 0, 90, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -83,7 +82,6 @@ unsafe fn yoshi_attack_dash_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 21.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        KineticModule::add_speed(boma, &Vector3f::new(-attack_speed_reduction, 0.0, 0.0));
         FT_MOTION_RATE(fighter, 0.800);
     }
     

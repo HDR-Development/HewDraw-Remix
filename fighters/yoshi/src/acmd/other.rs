@@ -185,6 +185,10 @@ unsafe fn escape_air_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let escape_air_cancel_frame = WorkModule::get_param_float(boma, hash40("param_motion"), hash40("escape_air_cancel_frame"));
 
+    frame(lua_state, 29.0);
+    if is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+    }
     frame(lua_state, escape_air_cancel_frame);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
@@ -196,13 +200,37 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     
-    frame(lua_state, 30.0);
+    frame(lua_state, 29.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL);
     }
-    frame(lua_state, 34.0);
+    frame(lua_state, 39.0);
     if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+
+#[acmd_script( agent = "yoshi", script = "sound_guardoff", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_guardoff(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        if !VarModule::is_flag(fighter.object(), vars::common::instance::IS_PARRY_FOR_GUARD_OFF) {
+            PLAY_SE(fighter, Hash40::new("se_yoshi_guardoff"));
+        }
+    }
+}
+
+#[acmd_script( agent = "yoshi", script = "expression_justshieldoff", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_justshieldoff(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        if !boma.is_status(*FIGHTER_STATUS_KIND_GUARD_OFF) {
+            QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        }
     }
 }
 
@@ -218,7 +246,9 @@ pub fn install() {
         damageflylw_sound,
         damageflyn_sound,
         damageflyroll_sound,
-        damageflytop_sound
+        damageflytop_sound,
+        sound_guardoff,
+        expression_justshieldoff
     );
 }
 

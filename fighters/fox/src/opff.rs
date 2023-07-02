@@ -9,7 +9,6 @@ unsafe fn laser_fastfall_landcancel(boma: &mut BattleObjectModuleAccessor, statu
         if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
         } else if situation_kind == *SITUATION_KIND_AIR {
-            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
             if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
                 WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
             }
@@ -22,7 +21,7 @@ unsafe fn shine_jump_cancel(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) && WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_FRAME_IN_AIR) <= 1 {
         GroundModule::correct(fighter.module_accessor, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     }
-    if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.motion_frame() > 4.0)  // Allows for jump cancel on frame 5 in game
+    if ((fighter.is_status (*FIGHTER_STATUS_KIND_SPECIAL_LW) && fighter.status_frame() > 2)  // Allows for jump cancel on frame 4 in game
     || fighter.is_status_one_of(&[
         *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_HIT,
         *FIGHTER_FOX_STATUS_KIND_SPECIAL_LW_LOOP,
@@ -36,7 +35,7 @@ unsafe fn shine_jump_cancel(fighter: &mut L2CFighterCommon) {
 // Utaunt cancel into Fire Fox
 unsafe fn utaunt_cancel_fire_fox(boma: &mut BattleObjectModuleAccessor, motion_kind: u64, frame: f32) {
     if motion_kind == hash40("appeal_hi_r") || motion_kind == hash40("appeal_hi_l") {
-        if frame > 40.0 && frame < 43.0 {
+        if frame > 41.0 && frame < 44.0 {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_FOX_STATUS_KIND_SPECIAL_HI_RUSH, false);
             }
@@ -64,7 +63,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
 unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
     if motion_kind == hash40("throw_hi") {
-        if frame >= 9.0 {
+        if frame >= 10.0 {
             MotionModule::set_rate(boma, 1.8);
         }
     }

@@ -48,9 +48,37 @@ unsafe fn game_attacks4(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "ness", script = "expression_attackhi4", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attackhi4(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 6);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 11.0);
+    if WorkModule::is_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK) {
+        if is_excute(fighter) {
+            slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
+            ItemModule::set_have_item_visibility(boma, false, 0);
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+            RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+        }
+    }
+    frame(lua_state, 33.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+    frame(lua_state, 48.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 8);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         game_attacks4,
+        expression_attackhi4
     );
 }
 

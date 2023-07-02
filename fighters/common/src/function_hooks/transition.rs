@@ -45,8 +45,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
     
         // Disallow airdodge out of tumble until you reach your stable fall speed
         if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR
-            && ([*FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR].contains(&status_kind)
-            || (status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FALL && get_fighter_common_from_accessor(boma).global_table[CURRENT_FRAME].get_i32() <= 20))  {
+        && [*FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR].contains(&status_kind) {
             return false;
         }
     
@@ -76,8 +75,16 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
         if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI && VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL) {
             return false;
         }
+
+        if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND && VarModule::is_flag(boma.object(), vars::common::instance::UP_SPECIAL_CANCEL) {
+            return false;
+        }
     
         if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S && (VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL) || VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT)) {
+            return false;
+        }
+    
+        if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND && (VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL) || VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL_NO_HIT)) {
             return false;
         }
     
@@ -144,6 +151,14 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
             }
         }
 
+        // disable palutena projectiles during aegis reflector
+        if fighter_kind == *FIGHTER_KIND_PALUTENA 
+            && ArticleModule::is_exist(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD)
+            && (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S
+            || flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N) {
+                return false;
+        }
+
         if fighter_kind == *FIGHTER_KIND_TRAIL {
             if flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S {
                 if (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI && !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT))
@@ -166,6 +181,29 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
             if VarModule::get_int(boma.object(), vars::duckhunt::instance::GUNMAN_TIMER) != 0 
             && flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
                     return false
+            }
+        }
+
+        if fighter_kind == *FIGHTER_KIND_NANA {
+            if ([*FIGHTER_STATUS_KIND_WAIT, 
+                *FIGHTER_STATUS_KIND_TURN, 
+                *FIGHTER_STATUS_KIND_WALK, 
+                *FIGHTER_STATUS_KIND_WALK_BRAKE, 
+                *FIGHTER_STATUS_KIND_RUN_BRAKE, 
+                *FIGHTER_STATUS_KIND_JUMP_SQUAT,
+                *FIGHTER_STATUS_KIND_SQUAT,
+                *FIGHTER_STATUS_KIND_SQUAT_WAIT,
+                *FIGHTER_STATUS_KIND_SQUAT_RV].contains(&status_kind)
+            && flag == FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH) || 
+            ([*FIGHTER_STATUS_KIND_DASH, 
+                *FIGHTER_STATUS_KIND_TURN_DASH, 
+                *FIGHTER_STATUS_KIND_RUN].contains(&status_kind)
+            && flag == FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH) || 
+            ([*FIGHTER_STATUS_KIND_DASH,
+                *FIGHTER_STATUS_KIND_TURN_DASH, 
+                *FIGHTER_STATUS_KIND_RUN].contains(&status_kind)
+            && flag == FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN) {
+                return true;
             }
         }
     }   
