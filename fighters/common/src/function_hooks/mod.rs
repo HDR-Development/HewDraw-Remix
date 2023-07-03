@@ -340,11 +340,14 @@ unsafe fn before_collision(object: *mut BattleObject) {
                 // Prevents jostle from pushing you off of edges
                 // except if you are in knockdown (to allow for pratfall combos)
                 if (*boma).is_situation(*SITUATION_KIND_GROUND)
-                && !(*boma).is_status_one_of(&[*FIGHTER_STATUS_KIND_DOWN, *FIGHTER_STATUS_KIND_DOWN_WAIT, *FIGHTER_STATUS_KIND_DOWN_DAMAGE])
-                && (GroundModule::get_correct(boma) == *GROUND_CORRECT_KIND_GROUND || VarModule::is_flag(object, vars::common::instance::EDGE_SLIPPABLE_STATUS))
+                && !(*boma).is_status_one_of(&[
+                    *FIGHTER_STATUS_KIND_DOWN,
+                    *FIGHTER_STATUS_KIND_DOWN_CONTINUE,
+                    *FIGHTER_STATUS_KIND_DOWN_WAIT,
+                    *FIGHTER_STATUS_KIND_DOWN_WAIT_CONTINUE,
+                    *FIGHTER_STATUS_KIND_DOWN_DAMAGE])
+                && GroundModule::get_correct(boma) == *GROUND_CORRECT_KIND_GROUND
                 && KineticModule::is_enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_JOSTLE) {
-                    VarModule::on_flag(object, vars::common::instance::EDGE_SLIPPABLE_STATUS);
-
                     let main_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
                     let damage_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_DAMAGE);
                     let mut jostle_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_JOSTLE) as *mut app::KineticEnergy;
@@ -356,9 +359,7 @@ unsafe fn before_collision(object: *mut BattleObject) {
                         // (dashing, running, walking, grounded knockback, shield pushback, etc.)
                         // is LESS than the speed at which jostle is pushing your character
                         GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
-                    }
-                    else {
-                        GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+                        VarModule::on_flag(object, vars::common::instance::TEMPORARY_CLIFF_STOP);
                     }
                 }
 
@@ -543,6 +544,13 @@ unsafe fn after_collision(object: *mut BattleObject) {
 
     if skip_early_main_status(boma, StatusModule::status_kind(boma)) {
         return call_original!(object);
+    }
+
+    // Resets flag which prevents jostle edge slipoffs for next frame
+    if (*boma).is_fighter()
+    && VarModule::is_flag(object, vars::common::instance::TEMPORARY_CLIFF_STOP) {
+        GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+        VarModule::off_flag(object, vars::common::instance::TEMPORARY_CLIFF_STOP);
     }
 
     let stop_module__is_stop: extern "C" fn(*const TempModule) -> bool = std::mem::transmute(*(((module_accessor.stop_module.vtable as u64) + 0x88) as *const u64));

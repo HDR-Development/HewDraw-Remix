@@ -169,7 +169,7 @@ pub mod vars {
 
             pub const IS_PARRY_FOR_GUARD_OFF: i32 = 0x0060;
 
-            pub const EDGE_SLIPPABLE_STATUS: i32 = 0x0061;
+            pub const TEMPORARY_CLIFF_STOP: i32 = 0x0061;
 
             // ints
 
