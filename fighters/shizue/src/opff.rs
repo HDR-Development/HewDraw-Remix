@@ -57,7 +57,35 @@ unsafe fn fuel_indicators(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     }
 }
 
-//Cancel normals on hit into Balloon Trip
+//Lloid explode on hit
+#[smashline::weapon_frame_callback(main)]
+pub fn lloid_callback(weapon : &mut L2CFighterBase) {
+    unsafe {
+        let object_id = (*weapon.battle_object).battle_object_id;
+        let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER);
+        let shizue = utils::util::get_battle_object_from_id(owner_id as u32);
+        let shizue_boma = &mut *(*shizue).module_accessor;
+        let activate_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID);
+        let serial_id = WorkModule::get_int(weapon.module_accessor, 0x10000002);
+        let kind = utility::get_kind(&mut (*weapon.module_accessor));
+        if kind == *WEAPON_KIND_SHIZUE_CLAYROCKET {
+            let status = StatusModule::status_kind(weapon.module_accessor);
+            if status == *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_READY {
+                VarModule::on_flag(shizue_boma.object(), vars::shizue::status::IS_LLOID_READY);
+            } else {
+                VarModule::off_flag(shizue_boma.object(), vars::shizue::status::IS_LLOID_READY);
+            }
+            if status == *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_FLY
+            && (AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT)
+            || AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_SHIELD))
+            {
+                StatusModule::change_status_request_from_script(weapon.boma(), *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_BURST, true);
+            }
+        }
+    }
+}
+
+//Cancel aerials on hit into Balloon Trip
 unsafe fn balloon_special_cancel(fighter: &mut L2CFighterCommon) {
     let boma = fighter.boma();
     if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR)
@@ -70,7 +98,19 @@ unsafe fn balloon_special_cancel(fighter: &mut L2CFighterCommon) {
     }
 }
 
-// Reel in
+//Cancel anything on hit into Lloid Call
+unsafe fn lloid_special_cancel(fighter: &mut L2CFighterCommon) {
+    let boma = fighter.boma();
+    if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
+    && !fighter.is_in_hitlag()  
+    && VarModule::is_flag(fighter.battle_object, vars::shizue::status::IS_LLOID_READY) {
+        if fighter.is_cat_flag(Cat1::SpecialLw) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_LW_FIRE, false);
+        }
+    }
+}
+
+//Reel in
 unsafe fn reel_in(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, frame: f32) {
     if StatusModule::is_changing(boma) {
         return;
@@ -104,7 +144,7 @@ pub fn fishingrod_callback(weapon : &mut L2CFighterBase) {
     }
 }
 
-// Lloid Trap Fire Jump Cancel
+//Lloid Trap Fire Jump Cancel
 unsafe fn lloid_trap_fire_jc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32, frame: f32) {
     if status_kind == *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_LW_FIRE {
         if boma.status_frame() > 5 && !boma.is_in_hitlag() {
@@ -113,7 +153,7 @@ unsafe fn lloid_trap_fire_jc(boma: &mut BattleObjectModuleAccessor, status_kind:
     }
 }
 
-// Balloon Trip Cancel
+//Balloon Trip Cancel
 unsafe fn balloon_cancel(fighter: &mut L2CFighterCommon) {
     if StatusModule::is_changing(fighter.module_accessor) {
         return;
