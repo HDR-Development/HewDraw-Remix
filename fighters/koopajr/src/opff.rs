@@ -10,7 +10,6 @@ unsafe fn clown_cannon_shield_cancel(boma: &mut BattleObjectModuleAccessor, stat
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
                 if situation_kind == *SITUATION_KIND_GROUND {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_GUARD_ON, true);
-                    ControlModule::reset_trigger(boma);
                 }
             }
         }
