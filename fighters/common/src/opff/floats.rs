@@ -89,6 +89,12 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
             if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF) {
                 WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
             }
+            if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF) 
+            && !WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY)
+            && !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP)
+            {
+                WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
+            }
             // Immediately transition to fall/double jump fall when activating float
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) && boma.left_stick_y() < -0.66 && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 {
                 if [*FIGHTER_STATUS_KIND_CLIFF_JUMP1, *FIGHTER_STATUS_KIND_CLIFF_JUMP2, *FIGHTER_STATUS_KIND_CLIFF_JUMP3, *FIGHTER_STATUS_KIND_DAMAGE_FALL, *FIGHTER_STATUS_KIND_PASS].contains(&status_kind) {
@@ -131,7 +137,7 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
             // Omnidirectional float for Dark Samus and Mewtwo
             if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 
             && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) < VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION) 
-            && (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) || boma.left_stick_y() > 0.66) {
+            && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
                 if boma.left_stick_y() != 0.0 && VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_TIMER) > 2 {
                     let mut motion_vec = Vector3f{x: 0.0, y: 0.0, z: 0.0};
                     if boma.left_stick_y() > 0.0 {
@@ -154,7 +160,7 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
             *FIGHTER_STATUS_KIND_ATTACK_AIR,
             *FIGHTER_STATUS_KIND_DAMAGE_FALL].contains(&status_kind) 
         || !WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) 
-        || (boma.is_button_off(Buttons::Jump) && boma.left_stick_y() <= 0.66))
+        || boma.is_button_off(Buttons::Jump))
         && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) < VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION) 
         && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) >= 0 
         && !StatusModule::is_changing(boma)
