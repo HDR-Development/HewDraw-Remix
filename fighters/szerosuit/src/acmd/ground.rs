@@ -107,12 +107,38 @@ unsafe fn szerosuit_attack_dash_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "szerosuit", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn szerosuit_attack_dash_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl_l"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 30.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_dash"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         szerosuit_attack_11_game,
         szerosuit_attack_12_game,
         szerosuit_attack_13_game,
         szerosuit_attack_dash_game,
+        szerosuit_attack_dash_expression,
     );
 }
 

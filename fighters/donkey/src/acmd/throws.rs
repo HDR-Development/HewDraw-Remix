@@ -162,6 +162,11 @@ unsafe fn game_throwflw(fighter: &mut L2CAgentBase) {
 unsafe fn heavy_item_throw_f(fighter: &mut L2CAgentBase) {
   let lua_state = fighter.lua_state_agent;
   let boma = fighter.boma();
+  
+  frame(lua_state, 1.0);
+  if is_excute(fighter) {
+    VarModule::set_flag(fighter.object(), consts::vars::donkey::status::IS_NEUTRAL_TOSS, boma.stick_x().abs() < 0.33); 
+  }
   frame(lua_state, 2.0);
   if is_excute(fighter) {
     FT_MOTION_RATE(fighter, 0.5);
@@ -174,9 +179,15 @@ unsafe fn heavy_item_throw_f(fighter: &mut L2CAgentBase) {
   if is_excute(fighter) {
     FT_MOTION_RATE(fighter, 2.0);
   }
-  frame(lua_state, 17.0);
+
+  let is_neutral_toss = VarModule::is_flag(fighter.object(), consts::vars::donkey::status::IS_NEUTRAL_TOSS); 
+  let toss_frame = match is_neutral_toss {
+    true => 16.0,
+    false => 17.0
+  };
+  frame(lua_state, toss_frame);
   if is_excute(fighter) {
-    ItemModule::throw_item(boma, 55.0, 3.0, 1.0, 0, true, 0.0);
+    ItemModule::throw_item(boma, 45.0, 3.0, 1.0, 0, true, 0.0);
     FT_MOTION_RATE(fighter, 1.0);
   }
 }
@@ -224,7 +235,7 @@ unsafe fn game_itemheavythrowlw(fighter: &mut L2CAgentBase) {
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         let main_speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        let stick_add_x = fighter.stick_x();
+        let stick_add_x = fighter.stick_x() * 0.5;
         
         // change to kinetic type fall and change to air situation
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);

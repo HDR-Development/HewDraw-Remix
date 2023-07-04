@@ -25,7 +25,7 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
     }
     if fighter_kind == *FIGHTER_KIND_MEWTWO {
         VarModule::set_int(boma.object(), vars::common::instance::FLOAT_STYLE, 1);
-        VarModule::set_int(boma.object(), vars::common::instance::FLOAT_DURATION, 50);
+        VarModule::set_int(boma.object(), vars::common::instance::FLOAT_DURATION, 60);
         motion_value = 1.0;
     }
 
@@ -91,6 +91,12 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
             }
             // Immediately transition to fall/double jump fall when activating float
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) && boma.left_stick_y() < -0.66 && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 {
+                if status_kind == *FIGHTER_STATUS_KIND_JUMP && boma.status_frame() == 1 { //add height on ground-level float like peach
+                    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) == VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION) {
+                        let pos = smash::phx::Vector3f { x: PostureModule::pos_x(boma), y: PostureModule::pos_y(boma) + 1.5, z: 0.0 };
+                        PostureModule::set_pos(boma, &pos);
+                    }
+                }
                 if [*FIGHTER_STATUS_KIND_JUMP, *FIGHTER_STATUS_KIND_CLIFF_JUMP1, *FIGHTER_STATUS_KIND_CLIFF_JUMP2, *FIGHTER_STATUS_KIND_CLIFF_JUMP3, *FIGHTER_STATUS_KIND_DAMAGE_FALL, *FIGHTER_STATUS_KIND_PASS].contains(&status_kind) {
                     VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
                     ControlModule::reset_trigger(boma);
@@ -122,12 +128,12 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
             }
 
             // Omnidirectional float for Dark Samus and Mewtwo
-            if fighter_kind == *FIGHTER_KIND_SAMUSD || fighter_kind == *FIGHTER_KIND_MEWTWO {
-                if ([*FIGHTER_STATUS_KIND_FALL, *FIGHTER_STATUS_KIND_FALL_AERIAL].contains(&status_kind) && boma.status_frame() > 2) // Omnidirection float only after F3 of initiating the float
-                    || (status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR && (WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) < VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION) && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0)) /* If in aerial attack and float has been initiated and are current floating */ {
-                    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 {
+            if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) > 0 
+            && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) < VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION) {
+                if !VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT) { VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT); }
+                if (fighter_kind == *FIGHTER_KIND_SAMUSD || fighter_kind == *FIGHTER_KIND_MEWTWO) && VarModule::get_int(boma.object(), vars::common::instance::FLOAT_STYLE) == 1 {
+                    if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) || boma.left_stick_y() >= 0.5) && VarModule::get_int(fighter.battle_object, vars::common::instance::FLOAT_TIMER) > 1 {
                         if boma.left_stick_y() != 0.0 {
-                            if !VarModule::is_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT) { VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT); }
                             let mut motion_vec = Vector3f{x: 0.0, y: 0.0, z: 0.0};
                             if boma.left_stick_y() > 0.0 {
                                 motion_vec.y = motion_value;
@@ -137,10 +143,12 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
                             KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
                         }
                     }
+                //} else if VarModule::get_int(boma.object(), vars::common::instance::FLOAT_STYLE) == 0 {
+                //    let mut motion_vec = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+                //    KineticModule::add_speed_outside(boma, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &motion_vec);
                 }
             }
-        }
-
+        }   
         // One float per airtime
         if (![*FIGHTER_STATUS_KIND_FALL,
             *FIGHTER_STATUS_KIND_FALL_AERIAL,
@@ -150,11 +158,15 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
             *FIGHTER_STATUS_KIND_CLIFF_JUMP2,
             *FIGHTER_STATUS_KIND_CLIFF_JUMP3,
             *FIGHTER_STATUS_KIND_ATTACK_AIR,
-            *FIGHTER_STATUS_KIND_DAMAGE_FALL].contains(&status_kind) || !WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) || !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP)) && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) < VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION) {
+            *FIGHTER_STATUS_KIND_DAMAGE_FALL].contains(&status_kind) 
+        || !WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY) 
+        || (boma.is_button_off(Buttons::Jump) && boma.left_stick_y() < 0.5))
+        && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) < VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION) 
+        && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) >= 0 
+        {
             WorkModule::set_int(boma, 0, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
             WorkModule::off_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_FALL_SLOWLY);
         }
-
     }
 
     // Reset Float Time
@@ -167,7 +179,6 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
         WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUPERLEAF);
         WorkModule::set_int(boma, VarModule::get_int(boma.object(), vars::common::instance::FLOAT_DURATION), *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME);
     }
-    
 }
 
 pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: i32, situation_kind: i32, fighter_kind: i32) {
@@ -195,10 +206,11 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                 }
                 if fighter_kind == *FIGHTER_KIND_MEWTWO {
                     EffectModule::req_follow(boma, Hash40::new("mewtwo_final_aura"), Hash40::new("hip"), &Vector3f::zero(), &Vector3f::zero(), 1.25, true, 0, 0, 0, 0, 0, false, false);
-                    // consume double jump on float activation
-                    /*if boma.get_num_used_jumps() < boma.get_jump_count_max() {
-                        WorkModule::inc_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
-                    }*/
+                }
+            } else if fighter_kind == *FIGHTER_KIND_MEWTWO {
+                if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_SUPERLEAF_FALL_SLOWLY_FRAME) == 50  {
+                // consume double jump on f10 of float
+                    fighter.set_int(2, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
                 }
             }
         }

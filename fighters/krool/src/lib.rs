@@ -43,7 +43,6 @@ pub fn install(is_runtime: bool) {
     acmd::install();
     status::install();
     opff::install(is_runtime);
-    vtable_hook::install();
     use opff::*;
     smashline::install_agent_frames!(
         krool_backpack_frame
