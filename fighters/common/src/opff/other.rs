@@ -140,7 +140,12 @@ pub unsafe fn taunt_parry_forgiveness(fighter: &mut L2CFighterCommon) {
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_APPEAL, *FIGHTER_STATUS_KIND_SPECIAL_N])
     && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
     && fighter.global_table[CURRENT_FRAME].get_i32() <= 1
-    && fighter.is_button_trigger(Buttons::Parry) {
+    && {let is_taunt_buffered = ControlModule::get_trigger_count(fighter.module_accessor, (*CONTROL_PAD_BUTTON_APPEAL_HI + *CONTROL_PAD_BUTTON_APPEAL_LW + *CONTROL_PAD_BUTTON_APPEAL_S_L + *CONTROL_PAD_BUTTON_APPEAL_S_R) as u8) < ControlModule::get_command_life_count_max(fighter.module_accessor) as i32;  // checks if Taunt input was pressed within max tap buffer window
+        let is_special_buffered = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL as u8) < ControlModule::get_command_life_count_max(fighter.module_accessor) as i32;  // checks if Special input was pressed within max tap buffer window
+
+        (fighter.is_button_on(Buttons::TauntParry) && is_taunt_buffered)
+        || (fighter.is_button_on(Buttons::SpecialParry) && is_special_buffered) }
+    {
         EffectModule::kill_all(fighter.module_accessor, *EFFECT_SUB_ATTRIBUTE_NONE as u32, true, false);
         fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
     }
