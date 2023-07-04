@@ -34,7 +34,7 @@ unsafe fn duckhunt_special_n_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_DUCKHUNT_INSTANCE_WORK_ID_FLAG_RELEASE_CAN);
     }
-    FT_MOTION_RATE(fighter, 0.85);
+    FT_MOTION_RATE(fighter, 0.65);
 
 }
 

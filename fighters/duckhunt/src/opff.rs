@@ -81,7 +81,7 @@ pub fn gunman_callback(weapon: &mut smash::lua2cpp::L2CFighterBase) {
                 }
                 WorkModule::set_int(weapon.module_accessor, 25, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
             }
-            VarModule::set_int(duckhunt, vars::duckhunt::instance::GUNMAN_TIMER, 240);
+            VarModule::set_int(duckhunt, vars::duckhunt::instance::GUNMAN_TIMER, 300);
         }
     }
 }
