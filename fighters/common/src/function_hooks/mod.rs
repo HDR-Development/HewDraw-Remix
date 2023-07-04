@@ -341,6 +341,7 @@ unsafe fn before_collision(object: *mut BattleObject) {
                 let damage_speed_x = app::lua_bind::KineticEnergy::get_speed_x(damage_energy);
                 let damage_speed_y = app::lua_bind::KineticEnergy::get_speed_y(damage_energy);
                 if damage_speed_x != 0.0
+                && StatusModule::status_kind(boma) <= 0x1DB  // only affects common statuses
                 && (*boma).is_situation(*SITUATION_KIND_GROUND) {
                     let speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
                     let max_walk = WorkModule::get_param_float(boma, hash40("walk_speed_max"), 0);
