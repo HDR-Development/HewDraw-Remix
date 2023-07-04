@@ -109,7 +109,7 @@ pub unsafe fn extra_floats(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
                     MotionModule::change_motion(boma, Hash40::new("fall"), 0.0, 1.0, false, 0.0, false, false);
                 } else if status_kind == *FIGHTER_STATUS_KIND_JUMP {
                     if StatusModule::is_changing(boma) { //peach ground-float mechanic
-                        let pos = smash::phx::Vector3f { x: PostureModule::pos_x(boma), y: PostureModule::pos_y(boma) + 3.5, z: 0.0 };
+                        let pos = smash::phx::Vector3f { x: PostureModule::pos_x(boma), y: PostureModule::pos_y(boma) + 3.5, z: PostureModule::pos_z(boma) };
                         PostureModule::set_pos(boma, &pos);
                     }
                     VarModule::on_flag(fighter.battle_object, vars::common::instance::OMNI_FLOAT);
@@ -242,6 +242,10 @@ pub unsafe fn float_effects(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
                 else if timer % 15 == 0 {  // every 15 frames
                     // drain 1 bar of Elwind
                     WorkModule::dec_int(boma, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT);
+                } 
+                if timer % 30 == 0 {
+                    let mut reflet_fighter = app::Fighter{battle_object: *(fighter.battle_object)};
+                    app::FighterSpecializer_Reflet::change_hud_kind(&mut reflet_fighter, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND);
                 }
             }
         }
