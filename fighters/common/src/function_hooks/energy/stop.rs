@@ -94,7 +94,8 @@ unsafe fn update_stop(energy: &mut FighterKineticEnergyStop, boma: &mut BattleOb
     // <HDR>
 
     // Double traction while above max walk speed
-    if boma.is_situation(*SITUATION_KIND_GROUND)
+    if StatusModule::status_kind(boma) <= 0x1DB  // only affects common statuses
+    && boma.is_situation(*SITUATION_KIND_GROUND)
     && boma.status_frame() > 0 {
         let mut damage_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_DAMAGE) as *mut app::KineticEnergy;
         let damage_speed_x = app::lua_bind::KineticEnergy::get_speed_x(damage_energy);
