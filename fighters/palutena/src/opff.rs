@@ -8,9 +8,11 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     palutena_teleport_wall_ride(fighter, boma, id, status_kind, situation_kind, cat[0]);
     actionable_teleport_air(fighter, boma, id, status_kind, situation_kind, frame);
     aegis_reflector_timer(fighter, boma, id);
-    aegis_reflector_reset(fighter, id, status_kind);
+    var_reset(fighter, id, status_kind);
     aegis_reflector_training(fighter, id, status_kind);
     dj_upB_jump_refresh(fighter);
+    power_board(fighter, boma, status_kind);
+    color_charge(fighter);
 }
 
 unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {
@@ -103,8 +105,8 @@ extern "Rust" {
 // Aegis Reflector Timer Count
 unsafe fn aegis_reflector_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
     let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
-    if gimmick_timerr > 0 && gimmick_timerr < 901 {
-        if gimmick_timerr > 899 {
+    if gimmick_timerr > 0 && gimmick_timerr < 721 {
+        if gimmick_timerr > 719 {
             VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
             gimmick_flash(boma);
         } else {
@@ -113,14 +115,21 @@ unsafe fn aegis_reflector_timer(fighter: &mut L2CFighterCommon, boma: &mut Battl
     }
 }
 
-// Aegis Reflector Timer Death Reset
-unsafe fn aegis_reflector_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
+// Aegis Reflector Timer & Power Board Death Reset
+unsafe fn var_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
     if [*FIGHTER_STATUS_KIND_DEAD,
-        *FIGHTER_STATUS_KIND_REBIRTH,
-        *FIGHTER_STATUS_KIND_WIN,
-        *FIGHTER_STATUS_KIND_LOSE,
-        *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) {
+        *FIGHTER_STATUS_KIND_REBIRTH].contains(&status_kind) {
         VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
+        MeterModule::drain_direct(fighter.object(), 999.0);
+        VarModule::on_flag(fighter.object(), vars::palutena::instance::FLUSH);
+    }
+
+    if [*FIGHTER_STATUS_KIND_WIN,
+        *FIGHTER_STATUS_KIND_LOSE,
+        *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) || !sv_information::is_ready_go() {
+        VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
+        VarModule::on_flag(fighter.object(), vars::palutena::instance::FLUSH);
+        MeterModule::reset(fighter.object());
     }
 }
 
@@ -130,6 +139,160 @@ unsafe fn aegis_reflector_training(fighter: &mut L2CFighterCommon, id: usize, st
         if status_kind == *FIGHTER_STATUS_KIND_APPEAL || !smash::app::sv_information::is_ready_go() {
             VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
         }
+    }
+}
+
+// sets set_color var, controlling when a color is charged
+unsafe fn color_charge(fighter: &mut L2CFighterCommon) {
+    // frame listed is the frame before the desired hitbox appears, and ignores motion rates
+    // red moves: neutral/side
+    if fighter.is_motion(Hash40::new("attack_100_end"))
+    && fighter.motion_frame() >= 2.0 && fighter.motion_frame() < 6.0
+    {
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
+        }
+    }
+    if fighter.is_motion(Hash40::new("attack_dash"))
+    && fighter.motion_frame() >= 5.0 && fighter.motion_frame() < 10.0
+    {
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
+        }
+    }
+    if fighter.is_motion(Hash40::new("attack_s3_s"))
+    && fighter.motion_frame() >= 28.0 && fighter.motion_frame() < 44.0
+    {
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
+        }
+    }
+    if fighter.is_motion(Hash40::new("attack_s4_s"))
+    && fighter.motion_frame() >= 17.0 && fighter.motion_frame() < 21.0
+    {
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
+        }
+    }
+    if fighter.is_motion(Hash40::new("attack_air_n"))
+    && fighter.motion_frame() >= 28.0 && fighter.motion_frame() < 32.0
+    {
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
+        }
+    }
+    if fighter.is_motion(Hash40::new("attack_air_f"))
+    && fighter.motion_frame() >= 8.0 && fighter.motion_frame() < 12.0
+    {
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
+        }
+    }
+    if fighter.is_motion(Hash40::new("attack_air_b"))
+    && fighter.motion_frame() >= 7.0 && fighter.motion_frame() < 11.0
+    {
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
+        }
+    }
+
+    // blue moves: up
+    if fighter.is_motion(Hash40::new("attack_hi3"))
+    && fighter.motion_frame() >= 30.0 && fighter.motion_frame() < 34.0
+    {
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 2);
+        }
+    }
+    if fighter.is_motion(Hash40::new("attack_hi4"))
+    && fighter.motion_frame() >= 17.0 && fighter.motion_frame() < 30.0
+    {
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 2);
+        }
+    }
+    if fighter.is_motion(Hash40::new("attack_air_hi"))
+    && fighter.motion_frame() >= 23.0 && fighter.motion_frame() < 27.0
+    {
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 2);
+        }
+    }
+
+    // yellow moves: down
+    if fighter.is_motion(Hash40::new("attack_lw3"))
+    && fighter.motion_frame() >= 12.0 && fighter.motion_frame() < 25.0
+    {
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 3);
+        }
+    }
+    if fighter.is_motion(Hash40::new("attack_lw4"))
+    && fighter.motion_frame() >= 16.0 && fighter.motion_frame() < 20.0
+    {
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 3);
+        }
+    }
+    if fighter.is_motion(Hash40::new("attack_air_lw"))
+    && fighter.motion_frame() >= 8.0 && fighter.motion_frame() < 13.0
+    {
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 3);
+        }
+    }
+}
+
+// handles the color charges
+unsafe fn power_board(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    // check if we should gain a color
+    if VarModule::get_int(fighter.object(), vars::palutena::instance::SET_COLOR) != 0 {
+        // set slot 2 to old slot 1, slot 1 becomes new color; fill up 1 stock if possible
+        VarModule::set_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2, VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_1));
+        VarModule::set_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_1, VarModule::get_int(fighter.object(), vars::palutena::instance::SET_COLOR));
+        MeterModule::add(fighter.object(), 50.0);
+        VarModule::set_int(boma.object(), vars::palutena::instance::SET_COLOR, 0);
+        utils::ui::UiManager::change_power_board_color(
+            fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+            VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_1),
+            VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2)
+        );
+    }
+
+    // check if we should flush our power board
+    if VarModule::is_flag(fighter.object(), vars::palutena::instance::FLUSH) {
+        // set each slot to 0
+        VarModule::set_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2, 0);
+        VarModule::set_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_1, 0);
+        VarModule::off_flag(fighter.object(), vars::palutena::instance::FLUSH);
+        utils::ui::UiManager::change_power_board_color(
+            fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+            VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_1),
+            VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2)
+        );
+    }
+    utils::ui::UiManager::change_power_board_color(
+        fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+        VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_1),
+        VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2)
+    );
+    
+}
+
+#[fighter_frame( agent = FIGHTER_KIND_PALUTENA )]
+pub fn palu_power_board(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
+    unsafe {
+        MeterModule::update(fighter.object(), false);
+        MeterModule::set_meter_cap(fighter.object(), 2);
+        utils::ui::UiManager::set_power_board_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+        utils::ui::UiManager::set_power_board_info(
+            fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
+            MeterModule::meter(fighter.object()),
+            (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())),
+            MeterModule::meter_per_level(fighter.object()),
+            VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_1),
+            VarModule::get_int(fighter.object(), vars::palutena::instance::POWER_BOARD_SLOT_2)
+        );
     }
 }
 

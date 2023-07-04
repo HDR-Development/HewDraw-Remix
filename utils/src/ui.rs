@@ -3,9 +3,11 @@ use parking_lot::RwLock;
 
 use self::ex_meter::ExMeter;
 use self::ff_meter::FfMeter;
+use self::power_board::PowerBoard;
 
 mod ex_meter;
 mod ff_meter;
+mod power_board;
 
 trait UiObject {
     fn update(&mut self);
@@ -17,11 +19,13 @@ trait UiObject {
 static UI_MANAGER: Lazy<RwLock<UiManager>> = Lazy::new(|| RwLock::new(UiManager { 
     ex_meter: [ExMeter::default(); 8],
     ff_meter: [FfMeter::default(); 8],
+    power_board: [PowerBoard::default(); 8]
 }));
 
 pub struct UiManager {
     ex_meter: [ExMeter; 8],
-    ff_meter: [FfMeter; 8]
+    ff_meter: [FfMeter; 8],
+    power_board: [PowerBoard; 8]
 }
 
 impl UiManager {
@@ -146,6 +150,30 @@ impl UiManager {
             manager.ff_meter[Self::get_ui_index_from_entry_id(entry_id) as usize].set_meter_info(current, max, per_level);
         }
     }
+
+    #[export_name = "UiManager__set_power_board_enable"]
+    pub extern "C" fn set_power_board_enable(entry_id: u32, enable: bool) {
+        let mut manager = UI_MANAGER.write();
+        unsafe {
+            manager.power_board[Self::get_ui_index_from_entry_id(entry_id) as usize].set_enable(enable);
+        }
+    }
+
+    #[export_name = "UiManager__set_power_board_info"]
+    pub extern "C" fn set_power_board_info(entry_id: u32, current: f32, max: f32, per_level: f32, color_1: i32, color_2: i32) {
+        let mut manager = UI_MANAGER.write();
+        unsafe {
+            manager.power_board[Self::get_ui_index_from_entry_id(entry_id) as usize].set_meter_info(current, max, per_level, color_1, color_2);
+        }
+    }
+
+    #[export_name = "UiManager__change_power_board_color"]
+    pub extern "C" fn change_power_board_color(entry_id: u32, color_1: i32, color_2: i32) {
+        let mut manager = UI_MANAGER.write();
+        unsafe {
+            manager.power_board[Self::get_ui_index_from_entry_id(entry_id) as usize].change_color(color_1, color_2);
+        }
+    }
 }
 
 fn set_pane_visible(pane: u64, visible: bool) {
@@ -268,6 +296,7 @@ unsafe fn get_set_info_alpha(ctx: &skyline::hooks::InlineCtx) {
 
     manager.ex_meter[index] = ExMeter::new(layout_udata);
     manager.ff_meter[index] = FfMeter::new(layout_udata);
+    manager.power_board[index] = PowerBoard::new(layout_udata);
 }
 
 #[skyline::hook(offset = 0x138a6f0, inline)]
@@ -289,6 +318,11 @@ fn hud_update(_: &skyline::hooks::InlineCtx) {
     for ff_meter in mgr.ff_meter.iter_mut() {
         if ff_meter.is_valid() && ff_meter.is_enabled() {
             ff_meter.update();
+        }
+    }
+    for power_board in mgr.power_board.iter_mut() {
+        if power_board.is_valid() && power_board.is_enabled() {
+            power_board.update();
         }
     }
 }
