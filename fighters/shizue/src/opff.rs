@@ -65,23 +65,19 @@ pub fn lloid_callback(weapon : &mut L2CFighterBase) {
         if weapon.kind() != *WEAPON_KIND_SHIZUE_CLAYROCKET {
             return
         }
-        println!("LLOID");
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER);
         let shizue = utils::util::get_battle_object_from_id(owner_id as u32);
         let shizue_boma = &mut *(*shizue).module_accessor;
         let status = StatusModule::status_kind(weapon.module_accessor);
         if status == *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_READY {
             VarModule::on_flag(shizue, vars::shizue::status::IS_LLOID_READY);
-            println!("READY");
         } else {
             VarModule::off_flag(shizue, vars::shizue::status::IS_LLOID_READY);
-            println!("NOT");
         }
         if status == *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_FLY
         && (AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT)
         || AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_SHIELD))
         {
-            println!("CHANGING");
             StatusModule::change_status_request_from_script(weapon.boma(), *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_BURST, true);
         }
     }
