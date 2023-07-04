@@ -61,26 +61,28 @@ unsafe fn fuel_indicators(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 #[smashline::weapon_frame_callback(main)]
 pub fn lloid_callback(weapon : &mut L2CFighterBase) {
     unsafe {
-        let object_id = (*weapon.battle_object).battle_object_id;
+        println!("{}", weapon.kind());
+        if weapon.kind() != *WEAPON_KIND_SHIZUE_CLAYROCKET {
+            return
+        }
+        println!("LLOID");
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER);
         let shizue = utils::util::get_battle_object_from_id(owner_id as u32);
         let shizue_boma = &mut *(*shizue).module_accessor;
-        let activate_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID);
-        let serial_id = WorkModule::get_int(weapon.module_accessor, 0x10000002);
-        let kind = utility::get_kind(&mut (*weapon.module_accessor));
-        if kind == *WEAPON_KIND_SHIZUE_CLAYROCKET {
-            let status = StatusModule::status_kind(weapon.module_accessor);
-            if status == *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_READY {
-                VarModule::on_flag(shizue_boma.object(), vars::shizue::status::IS_LLOID_READY);
-            } else {
-                VarModule::off_flag(shizue_boma.object(), vars::shizue::status::IS_LLOID_READY);
-            }
-            if status == *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_FLY
-            && (AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT)
-            || AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_SHIELD))
-            {
-                StatusModule::change_status_request_from_script(weapon.boma(), *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_BURST, true);
-            }
+        let status = StatusModule::status_kind(weapon.module_accessor);
+        if status == *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_READY {
+            VarModule::on_flag(shizue, vars::shizue::status::IS_LLOID_READY);
+            println!("READY");
+        } else {
+            VarModule::off_flag(shizue, vars::shizue::status::IS_LLOID_READY);
+            println!("NOT");
+        }
+        if status == *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_FLY
+        && (AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT)
+        || AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_SHIELD))
+        {
+            println!("CHANGING");
+            StatusModule::change_status_request_from_script(weapon.boma(), *WEAPON_SHIZUE_CLAYROCKET_STATUS_KIND_BURST, true);
         }
     }
 }
@@ -224,6 +226,7 @@ pub fn shizue_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         balloon_special_cancel(fighter);
         fuel_indicators(fighter);
         fair_scale(fighter);
+        lloid_special_cancel(fighter);
     }
 }
 
