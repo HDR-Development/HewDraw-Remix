@@ -202,7 +202,12 @@ pub unsafe fn substitute_doll(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     } else if doll_kind != *ITEM_KIND_DOLL {
         return;
     }
-    
+
+    //Check which Greninja owns it
+    if LinkModule::get_parent_id(doll_boma, *ITEM_LINK_NO_CREATEOWNER, true) as u32 != fighter.battle_object_id {
+        return
+    }
+
     let doll_x = PostureModule::pos_x(doll_boma);
     let doll_y = PostureModule::pos_y(doll_boma);
 
