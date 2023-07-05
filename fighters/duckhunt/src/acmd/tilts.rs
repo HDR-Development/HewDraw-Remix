@@ -57,6 +57,7 @@ unsafe fn duckhunt_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
 unsafe fn duckhunt_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    FT_MOTION_RATE(fighter, 1.15);
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 7.5, 96, 75, 0, 75, 3.5, 0.0, 3.0, -3.5, Some(0.0), Some(3.0), Some(3.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
