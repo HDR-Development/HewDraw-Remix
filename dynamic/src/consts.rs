@@ -844,6 +844,8 @@ pub mod vars {
             pub const DTAUNT_C4_EXLPODE : i32 = 0x0103;
             pub const DTAUNT_GRENADE_WAIT_COUNT : i32 = 0x0104;
             pub const IS_GRAB_WALK : i32 = 0x0105;
+            pub const TRANQ_RELOAD_VULNERABLE: i32 = 0x0106;
+            pub const TRANQ_NEED_RELEOAD: i32 = 0x0107;
             
             // ints
             pub const SNAKE_GRENADE_COUNTER: i32 = 0x0100;
