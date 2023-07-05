@@ -281,10 +281,10 @@ unsafe fn jack_attack_air_hi_game(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 23.0);
-    FT_MOTION_RATE(fighter, 21.0/(40.0-23.0));
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
+            FT_MOTION_RATE(fighter, 21.0/(40.0-23.0));
         }
     }
     frame(lua_state, 30.0);
