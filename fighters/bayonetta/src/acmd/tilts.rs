@@ -92,7 +92,7 @@ unsafe fn bayonetta_attack_s3_s3_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 22.0);
     FT_MOTION_RATE(fighter, 1.0);
     frame(lua_state, 25.0);
-    FT_MOTION_RATE_RANGE(fighter, 25.0, 47.0, 20.0);
+    //FT_MOTION_RATE_RANGE(fighter, 25.0, 47.0, 22.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
         WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION);
