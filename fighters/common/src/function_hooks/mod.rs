@@ -333,6 +333,30 @@ unsafe fn before_collision(object: *mut BattleObject) {
             kinetic_module__update_energy(module_accessor.kinetic_module, unk3);
 
             if (*boma).is_fighter() {
+                // <HDR>
+
+                // Handles double traction while your grounded speed is influenced by knockback
+                // if above max walk speed
+                let mut damage_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_DAMAGE) as *mut app::KineticEnergy;
+                let damage_speed_x = app::lua_bind::KineticEnergy::get_speed_x(damage_energy);
+                let damage_speed_y = app::lua_bind::KineticEnergy::get_speed_y(damage_energy);
+                if damage_speed_x != 0.0
+                && StatusModule::status_kind(boma) <= 0x1DB  // only affects common statuses
+                && (*boma).is_situation(*SITUATION_KIND_GROUND) {
+                    let speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
+                    let max_walk = WorkModule::get_param_float(boma, hash40("walk_speed_max"), 0);
+                    let ground_brake = WorkModule::get_param_float(boma, hash40("ground_brake"), 0);
+
+                    if speed_x.abs() >= max_walk {
+                        let mut damage_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_DAMAGE) as *mut app::KineticEnergyNormal;
+                        let extra_traction = -1.0 * ground_brake * damage_speed_x.signum();
+                        let vec2 = Vector2f{x: damage_speed_x + extra_traction, y: damage_speed_y};
+                        app::lua_bind::KineticEnergyNormal::set_speed(damage_energy, &vec2);
+                    }
+                }
+                
+                // </HDR>
+
                 let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x6212d0);
                 let battle_object__update_movement: extern "C" fn(*mut app::Fighter, bool) = std::mem::transmute(func_addr);
                 battle_object__update_movement(object as *mut app::Fighter, !is_receiver_in_hitlag);
