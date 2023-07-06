@@ -96,7 +96,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
 #[skyline::hook(replace=GroundModule::leave_cliff)]
 unsafe fn leave_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    VarModule::set_vec3(fighter.object(), vars::common::instance::LEDGE_POS, Vector3f {x: std::f32::NAN, y: std::f32::NAN, z: std::f32::NAN});
+    VarModule::set_vec3(boma.object(), vars::common::instance::LEDGE_POS, Vector3f {x: std::f32::NAN, y: std::f32::NAN, z: std::f32::NAN});
     original!()(boma)
 }
 
