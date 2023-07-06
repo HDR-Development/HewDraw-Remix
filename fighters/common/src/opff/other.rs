@@ -180,80 +180,91 @@ pub fn decrease_knockdown_bounce_heights(fighter: &mut L2CFighterCommon) {
 pub unsafe fn faf_ac_debug(fighter: &mut L2CFighterCommon) {
     if app::smashball::is_training_mode() {
         let boma = fighter.boma();
-        if !fighter.is_status_one_of(&[
-            *FIGHTER_STATUS_KIND_WAIT,
-            *FIGHTER_STATUS_KIND_DASH,
-            *FIGHTER_STATUS_KIND_TURN_DASH,
-            *FIGHTER_STATUS_KIND_RUN,
-            *FIGHTER_STATUS_KIND_RUN_BRAKE,
-            *FIGHTER_STATUS_KIND_WALK,
-            *FIGHTER_STATUS_KIND_WALK_BRAKE,
-            *FIGHTER_STATUS_KIND_TURN,
-            *FIGHTER_STATUS_KIND_TURN_DASH,
-            *FIGHTER_STATUS_KIND_TURN_RUN,
-            *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE,
-            *FIGHTER_STATUS_KIND_FALL,
-            *FIGHTER_STATUS_KIND_FALL_AERIAL,
-            *FIGHTER_STATUS_KIND_FALL_SPECIAL,
-            *FIGHTER_STATUS_KIND_JUMP,
-            *FIGHTER_STATUS_KIND_JUMP_SQUAT,
-            *FIGHTER_STATUS_KIND_JUMP_AERIAL,
-            *FIGHTER_STATUS_KIND_SQUAT,
-            *FIGHTER_STATUS_KIND_SQUAT_WAIT,
-            *FIGHTER_STATUS_KIND_SQUAT_RV,
-            *FIGHTER_STATUS_KIND_LANDING,
-            *FIGHTER_STATUS_KIND_LANDING_LIGHT,
-            *FIGHTER_STATUS_KIND_GUARD,
-            *FIGHTER_STATUS_KIND_GUARD_ON,
-            *FIGHTER_STATUS_KIND_GUARD_OFF]) {
-            if fighter.status_frame() == 0 {
-                if (!fighter.is_prev_status_one_of(&[
-                    *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
-                    *FIGHTER_STATUS_KIND_ATTACK_S4_START,
-                    *FIGHTER_STATUS_KIND_ATTACK_HI4_START,
-                    *FIGHTER_STATUS_KIND_ATTACK_LW4_START])) {
-                    //println!();
-                    //println!("Starting status");
-                    if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) {
-                        VarModule::on_flag(fighter.battle_object, vars::common::status::PREV_AUTOCANCEL_FLAG);
-                    }
-                    VarModule::set_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER, 1);
-                    VarModule::off_flag(fighter.battle_object, vars::common::status::FAF_REACHED);
-                }
-                else {
-                    //println!("Smash attack/landing lag transition");
-                    VarModule::dec_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER);
-                }
+        if fighter.is_status(*FIGHTER_STATUS_KIND_APPEAL) && fighter.status_frame() == 10 {
+            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
+                println!("toggling debug");
+                let prev = VarModule::is_flag(fighter.battle_object, vars::common::instance::ENABLE_FRAME_DATA_DEBUG);
+                VarModule::set_flag(fighter.battle_object, vars::common::instance::ENABLE_FRAME_DATA_DEBUG, !prev);
+                VarModule::set_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER, 1);
+                VarModule::off_flag(fighter.battle_object, vars::common::status::FAF_REACHED);
             }
-            if !VarModule::is_flag(fighter.battle_object, vars::common::status::FAF_REACHED) {
-                //println!("Status frame: {}", fighter.status_frame());
-                if CancelModule::is_enable_cancel(fighter.module_accessor) {
-                    if fighter.is_status_one_of(&[
+        }
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::ENABLE_FRAME_DATA_DEBUG) {
+            if !fighter.is_status_one_of(&[
+                *FIGHTER_STATUS_KIND_WAIT,
+                *FIGHTER_STATUS_KIND_DASH,
+                *FIGHTER_STATUS_KIND_TURN_DASH,
+                *FIGHTER_STATUS_KIND_RUN,
+                *FIGHTER_STATUS_KIND_RUN_BRAKE,
+                *FIGHTER_STATUS_KIND_WALK,
+                *FIGHTER_STATUS_KIND_WALK_BRAKE,
+                *FIGHTER_STATUS_KIND_TURN,
+                *FIGHTER_STATUS_KIND_TURN_DASH,
+                *FIGHTER_STATUS_KIND_TURN_RUN,
+                *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE,
+                *FIGHTER_STATUS_KIND_FALL,
+                *FIGHTER_STATUS_KIND_FALL_AERIAL,
+                *FIGHTER_STATUS_KIND_FALL_SPECIAL,
+                *FIGHTER_STATUS_KIND_JUMP,
+                *FIGHTER_STATUS_KIND_JUMP_SQUAT,
+                *FIGHTER_STATUS_KIND_JUMP_AERIAL,
+                *FIGHTER_STATUS_KIND_SQUAT,
+                *FIGHTER_STATUS_KIND_SQUAT_WAIT,
+                *FIGHTER_STATUS_KIND_SQUAT_RV,
+                *FIGHTER_STATUS_KIND_LANDING,
+                *FIGHTER_STATUS_KIND_LANDING_LIGHT,
+                *FIGHTER_STATUS_KIND_GUARD,
+                *FIGHTER_STATUS_KIND_GUARD_ON,
+                *FIGHTER_STATUS_KIND_GUARD_OFF]) {
+                if fighter.status_frame() == 0 {
+                    if (!fighter.is_prev_status_one_of(&[
                         *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
-                        *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL]) {
-                        println!();
-                        println!("landing lag: {}", VarModule::get_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER) - 1);
+                        *FIGHTER_STATUS_KIND_ATTACK_S4_START,
+                        *FIGHTER_STATUS_KIND_ATTACK_HI4_START,
+                        *FIGHTER_STATUS_KIND_ATTACK_LW4_START])) {
+                        //println!();
+                        //println!("Starting status");
+                        if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) {
+                            VarModule::on_flag(fighter.battle_object, vars::common::status::PREV_AUTOCANCEL_FLAG);
+                        }
+                        VarModule::set_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER, 1);
+                        VarModule::off_flag(fighter.battle_object, vars::common::status::FAF_REACHED);
                     }
                     else {
-                        println!();
-                        println!("faf: {}", VarModule::get_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER));
+                        //println!("Smash attack/landing lag transition");
+                        VarModule::dec_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER);
                     }
-                    VarModule::on_flag(fighter.battle_object, vars::common::status::FAF_REACHED);
                 }
-                else {
-                    if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) {
-                        let disable_autocancel = WorkModule::is_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-                        //println!("prev flag is {} and current flag is {disable_autocancel}", VarModule::is_flag(fighter.battle_object, vars::common::status::PREV_AUTOCANCEL_FLAG));
-                        if disable_autocancel && !VarModule::is_flag(fighter.battle_object, vars::common::status::PREV_AUTOCANCEL_FLAG) {
-                            println!("ac OFF after frame: {}", VarModule::get_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER) - 1);
-                            VarModule::set_flag(fighter.battle_object, vars::common::status::PREV_AUTOCANCEL_FLAG, disable_autocancel);
+                if !VarModule::is_flag(fighter.battle_object, vars::common::status::FAF_REACHED) {
+                    //println!("Status frame: {}", fighter.status_frame());
+                    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+                        if fighter.is_status_one_of(&[
+                            *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
+                            *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL]) {
+                            println!();
+                            println!("landing lag: {}", VarModule::get_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER) - 1);
                         }
-                        else if !disable_autocancel && VarModule::is_flag(fighter.battle_object, vars::common::status::PREV_AUTOCANCEL_FLAG) {
-                            println!("ac ON at frame: {}", VarModule::get_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER));
-                            VarModule::set_flag(fighter.battle_object, vars::common::status::PREV_AUTOCANCEL_FLAG, disable_autocancel);
+                        else {
+                            println!();
+                            println!("faf: {}", VarModule::get_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER));
                         }
+                        VarModule::on_flag(fighter.battle_object, vars::common::status::FAF_REACHED);
                     }
-                    VarModule::inc_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER);
+                    else {
+                        if fighter.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) {
+                            let disable_autocancel = WorkModule::is_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+                            //println!("prev flag is {} and current flag is {disable_autocancel}", VarModule::is_flag(fighter.battle_object, vars::common::status::PREV_AUTOCANCEL_FLAG));
+                            if disable_autocancel && !VarModule::is_flag(fighter.battle_object, vars::common::status::PREV_AUTOCANCEL_FLAG) {
+                                println!("ac OFF after frame: {}", VarModule::get_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER) - 1);
+                                VarModule::set_flag(fighter.battle_object, vars::common::status::PREV_AUTOCANCEL_FLAG, disable_autocancel);
+                            }
+                            else if !disable_autocancel && VarModule::is_flag(fighter.battle_object, vars::common::status::PREV_AUTOCANCEL_FLAG) {
+                                println!("ac ON at frame: {}", VarModule::get_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER));
+                                VarModule::set_flag(fighter.battle_object, vars::common::status::PREV_AUTOCANCEL_FLAG, disable_autocancel);
+                            }
+                        }
+                        VarModule::inc_int(fighter.battle_object, vars::common::instance::FRAME_COUNTER);
+                    }
                 }
             }
         }

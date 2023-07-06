@@ -171,6 +171,8 @@ pub mod vars {
 
             pub const TEMPORARY_CLIFF_STOP: i32 = 0x0061;
 
+            pub const ENABLE_FRAME_DATA_DEBUG: i32 = 0x0062;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
