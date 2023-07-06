@@ -307,7 +307,8 @@ bitflags! {
         // would get mapped to TiltAttack (issue #776)
         const TiltAttack  = 0x80000;
         const CStickOverride = 0x100000;
-        const Parry = 0x200000;
+        const SpecialParry = 0x200000;
+        const TauntParry = 0x400000;
 
         const SpecialAll  = 0x20802;
         const AttackAll   = 0x201;
@@ -516,6 +517,8 @@ pub trait BomaExt {
 
     /// try to pickup an item nearby
     unsafe fn try_pickup_item(&mut self, range: f32, bone: Option<Hash40>, offset: Option<&Vector2f>) -> Option<&mut BattleObjectModuleAccessor> ;
+
+    unsafe fn get_player_idx_from_boma(&mut self) -> i32;
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -1201,6 +1204,14 @@ impl BomaExt for BattleObjectModuleAccessor {
             }
         }
         return None;
+    }
+
+    unsafe fn get_player_idx_from_boma(&mut self) -> i32 {
+        let control_module = *(self as *mut BattleObjectModuleAccessor as *const u64).add(0x48 / 8);
+        let next = *((control_module + 0x118) as *const u64);
+        let next = *((next + 0x58) as *const u64);
+        let next = *((next + 0x8) as *const u64);
+        *((next + 0x8) as *const i32)
     }
 }
 

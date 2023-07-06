@@ -383,9 +383,12 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
             fighter.change_status(FIGHTER_STATUS_KIND_JUMP_SQUAT.into(), true.into());
             return true.into();
         }
-        
 
-        if fighter.is_button_trigger(Buttons::Parry) {
+        let is_taunt_buffered = ControlModule::get_trigger_count(fighter.module_accessor, (*CONTROL_PAD_BUTTON_APPEAL_HI + *CONTROL_PAD_BUTTON_APPEAL_LW + *CONTROL_PAD_BUTTON_APPEAL_S_L + *CONTROL_PAD_BUTTON_APPEAL_S_R) as u8) < ControlModule::get_command_life_count_max(fighter.module_accessor) as i32;  // checks if Taunt input was pressed within max tap buffer window
+        let is_special_buffered = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL as u8) < ControlModule::get_command_life_count_max(fighter.module_accessor) as i32;  // checks if Special input was pressed within max tap buffer window
+
+        if (fighter.is_button_on(Buttons::TauntParry) && is_taunt_buffered)
+        || (fighter.is_button_on(Buttons::SpecialParry) && is_special_buffered) {
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
             VarModule::on_flag(
                 fighter.object(),
