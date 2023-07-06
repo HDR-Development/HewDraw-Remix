@@ -12,12 +12,42 @@ pub fn install() {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
+            status_pre_attackhi4start_common,
             status_AttackHi4Start_Main
         );
     }
 }
 
 // FIGHTER_STATUS_KIND_ATTACK_HI4_START
+
+#[skyline::hook(replace = L2CFighterCommon_status_pre_AttackHi4Start_common)]
+unsafe fn status_pre_attackhi4start_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_MOTION_RUN_STOP,
+        *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_KEEP as u64,
+        0,
+        param_1.get_i32() as u32,
+        0
+    );
+    0.into()
+}
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_AttackHi4Start_Main)]
 unsafe fn status_AttackHi4Start_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
