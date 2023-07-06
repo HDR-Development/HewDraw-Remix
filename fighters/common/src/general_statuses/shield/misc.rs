@@ -385,6 +385,7 @@ pub unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
 
         if fighter.is_parry_input() {
+            SoundModule::stop_all_sound(fighter.module_accessor);
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
             VarModule::on_flag(
                 fighter.object(),
