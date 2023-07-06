@@ -374,7 +374,7 @@ unsafe fn shizue_clayrocket_ready_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 20.0);
     if is_excute(fighter) {
         //Should never automatically activate
-        SEARCH(fighter, 0, 0, Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_ALL, 0, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false);
+        //SEARCH(fighter, 0, 0, Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_ALL, 0, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false);
     }
     FT_MOTION_RATE(fighter, 0.1);
 }
