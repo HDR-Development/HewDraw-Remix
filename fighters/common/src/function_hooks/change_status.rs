@@ -16,7 +16,7 @@ unsafe fn change_status_request_hook(boma: &mut BattleObjectModuleAccessor, stat
                 let object = ::utils::util::get_battle_object_from_id(object_id);
                 if !object.is_null() {
                     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) == WorkModule::get_int(&mut *(*object).module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID)
-                    || VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) == 0.0 {
+                    || VarModule::get_float(object, vars::common::instance::LEDGE_POS_X).is_nan() {
                         continue;
                     }
     
@@ -77,7 +77,7 @@ unsafe fn change_status_request_from_script_hook(boma: &mut BattleObjectModuleAc
                 let object = ::utils::util::get_battle_object_from_id(object_id);
                 if !object.is_null() {
                     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) == WorkModule::get_int(&mut *(*object).module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID)
-                    || VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) == 0.0 {
+                    || VarModule::get_float(object, vars::common::instance::LEDGE_POS_X).is_nan() {
                         continue;
                     }
     

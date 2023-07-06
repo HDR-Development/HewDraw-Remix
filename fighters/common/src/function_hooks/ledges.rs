@@ -51,7 +51,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
         let object = ::utils::util::get_battle_object_from_id(object_id);
         if !object.is_null() {
             if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) == WorkModule::get_int(&mut *(*object).module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID)
-            || VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) == 0.0 {
+            || VarModule::get_float(object, vars::common::instance::LEDGE_POS_X).is_nan() {
                 continue;
             }
 
@@ -96,7 +96,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
 #[skyline::hook(replace=GroundModule::leave_cliff)]
 unsafe fn leave_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    VarModule::set_vec3(boma.object(), vars::common::instance::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
+    VarModule::set_vec3(fighter.object(), vars::common::instance::LEDGE_POS, Vector3f {x: std::f32::NAN, y: std::f32::NAN, z: std::f32::NAN});
     original!()(boma)
 }
 
