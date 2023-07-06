@@ -519,6 +519,8 @@ pub trait BomaExt {
     unsafe fn try_pickup_item(&mut self, range: f32, bone: Option<Hash40>, offset: Option<&Vector2f>) -> Option<&mut BattleObjectModuleAccessor> ;
 
     unsafe fn get_player_idx_from_boma(&mut self) -> i32;
+
+    unsafe fn is_parry_input(&mut self) -> bool;
 }
 
 impl BomaExt for BattleObjectModuleAccessor {
@@ -1212,6 +1214,19 @@ impl BomaExt for BattleObjectModuleAccessor {
         let next = *((next + 0x58) as *const u64);
         let next = *((next + 0x8) as *const u64);
         *((next + 0x8) as *const i32)
+    }
+
+    unsafe fn is_parry_input(&mut self) -> bool {
+        let max_tap_buffer_window = ControlModule::get_command_life_count_max(self) as i32;
+
+        let is_taunt_buffered = ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_HI as u8) < max_tap_buffer_window  // checks if Taunt input was pressed within max tap buffer window
+                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_S_L as u8) < max_tap_buffer_window
+                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_S_R as u8) < max_tap_buffer_window
+                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_LW as u8) < max_tap_buffer_window;
+        let is_special_buffered = ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_SPECIAL as u8) < max_tap_buffer_window;  // checks if Special input was pressed within max tap buffer window
+
+        (self.is_button_on(Buttons::TauntParry) && is_taunt_buffered)
+        || (self.is_button_on(Buttons::SpecialParry) && is_special_buffered)
     }
 }
 
