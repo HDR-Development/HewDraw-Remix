@@ -12,6 +12,9 @@
     <struct index="0">
       <float hash="throw_angle_max">75</float>
       <float hash="throw_angle_min">310</float>
+      <float hash="search_radius">1</float>
+      <float hash="search_offset_x">-8</float>
+      <float hash="search_offset_2x">-5</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -23,6 +26,8 @@
       <float hash="0x1f6c5eefa5">5</float>
       <float hash="turn_speed_min">4</float>
       <int hash="remove_turn_num">4</int>
+      <int hash="hop_life">45</int>
+      <float hash="speed_y_mul">1.05</float>
       <int hash="wall_stop">100</int>
       <int hash="wall_stop_life">200</int>
     </struct>

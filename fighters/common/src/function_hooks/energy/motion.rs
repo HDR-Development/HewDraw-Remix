@@ -191,6 +191,8 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
 
     energy.active_flag = true;
     if !FighterKineticEnergyMotion::is_motion_updating_energy(boma, reset_type) {
+        let backup_brake = energy.speed_brake;
+        
         if reset_type == LadderMove {
             // If we are on a ladder, we need to **immediately** stop moving if the MotionModule is no longer updating our position
             // By setting the acceleration to negative of our speed, we are immediately stopping our movement. This should not be applied
@@ -216,6 +218,30 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
             );
         }
 
+        // <HDR>
+
+        // Double traction while above max walk speed
+        if StatusModule::status_kind(boma) <= 0x1DB  // only affects common statuses
+        && boma.is_situation(*SITUATION_KIND_GROUND)
+        && boma.status_frame() > 0 {
+            let mut damage_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_DAMAGE) as *mut app::KineticEnergy;
+            let damage_speed_x = app::lua_bind::KineticEnergy::get_speed_x(damage_energy);
+            // If our speed is being influenced by knockback, we handle double traction elsewhere
+            if damage_speed_x == 0.0 {
+                let walk_speed_max =  WorkModule::get_param_float(boma, smash::hash40("walk_speed_max"), 0);
+                let speed = &mut energy.speed;
+                let adjusted_speed = energy::KineticEnergy::adjust_speed_for_ground_normal(speed, boma);
+
+                let magnitude = (adjusted_speed.x.powi(2) + adjusted_speed.y.powi(2)).sqrt();
+                
+                if magnitude >= walk_speed_max {
+                    energy.speed_brake.x *= 2.0;
+                }
+            }
+        }
+
+        // </HDR>
+
         // Basically we are setting our maximum speed to 0.0, which means that we are going to start slowing down to that speed with the use of only
         // our brake value
         // For ground, this is `ground_brake`, for example. That's the only thing applied here.
@@ -227,6 +253,8 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
             PaddedVec2::zeros(),
             boma
         );
+
+        energy.speed_brake = backup_brake;
 
         return;
     }

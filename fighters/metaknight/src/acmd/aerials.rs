@@ -36,6 +36,27 @@ unsafe fn metaknight_attack_air_n_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "metaknight", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn metaknight_attack_air_n_expression(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+    }
+    frame(lua_state, 3.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 8, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_slashm"), 0);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "metaknight", script = "game_attackairf" , category = ACMD_GAME , low_priority)]
 unsafe fn metaknight_attack_air_f_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -266,6 +287,7 @@ unsafe fn effect_attackairlw(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         metaknight_attack_air_n_game,
+        metaknight_attack_air_n_expression,
         metaknight_attack_air_f_game,
         metaknight_attack_air_f_effect,
         metaknight_attack_air_f_sound,

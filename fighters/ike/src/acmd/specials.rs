@@ -203,10 +203,10 @@ unsafe fn ike_special_s_attack_game(fighter: &mut L2CAgentBase) {
         frame(lua_state, 8.0);
         if is_excute(fighter) {
             WorkModule::on_flag(boma, *FIGHTER_IKE_STATUS_SPECIAL_S_FLAG_ATTACK_END);
+            notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
         }
         frame(lua_state, 12.0);
         if is_excute(fighter) {
-            notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
             if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 FT_MOTION_RATE(fighter, 2.0);
             }
@@ -244,9 +244,6 @@ unsafe fn ike_special_s_attack_game(fighter: &mut L2CAgentBase) {
         frame(lua_state, 8.0);
         if is_excute(fighter) {
             WorkModule::on_flag(boma, *FIGHTER_IKE_STATUS_SPECIAL_S_FLAG_ATTACK_END);
-        }
-        frame(lua_state, 12.0);
-        if is_excute(fighter) {
             notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
         }
         frame(lua_state, 15.0);
@@ -341,9 +338,6 @@ unsafe fn ike_special_air_s_attack_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_IKE_STATUS_SPECIAL_S_FLAG_ATTACK_END);
-    }
-    frame(lua_state, 12.0);
-    if is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
     frame(lua_state, 15.0);

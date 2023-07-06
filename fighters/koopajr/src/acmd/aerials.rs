@@ -99,27 +99,28 @@ unsafe fn koopajr_attack_air_b_game(fighter: &mut L2CAgentBase) {
     FT_MOTION_RATE(fighter, 7.0/(11.0-1.0));
     frame(lua_state, 11.0);
     FT_MOTION_RATE(fighter, 1.0);
-    frame(lua_state, 12.0);
+    frame(lua_state, 12.0);  // f9 ingame
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         ATTACK(fighter, 0, 0, Hash40::new_raw(0x0a184be2fa), 13.0, 361, 96, 0, 30, 6.0, 7.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
         ATTACK(fighter, 1, 0, Hash40::new_raw(0x0a184be2fa), 10.0, 361, 91, 0, 20, 2.2, 0.0, 0.0, 0.0, Some(-6.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         ATTACK(fighter, 2, 0, Hash40::new_raw(0x0a184be2fa), 10.0, 361, 91, 0, 20, 5.0, -4.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
     }
-    wait(lua_state, 3.0);
+    wait(lua_state, 3.0);  // f12 ingame
+    FT_MOTION_RATE(fighter, 10.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new_raw(0x0a184be2fa), 10.0, 361, 101, 0, 20, 5.2, 7.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
     }
-    wait(lua_state, 5.0);
-    FT_MOTION_RATE(fighter, 21.0/(30.0-20.0));
+    frame(lua_state, 15.6);  // f18 ingame
+    FT_MOTION_RATE(fighter, 20.0/(29.0-15.6));
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    frame(lua_state, 30.0);
+    frame(lua_state, 29.0);  // f38 ingame
+    FT_MOTION_RATE(fighter, 0.833);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
 }
 
 #[acmd_script( agent = "koopajr", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
