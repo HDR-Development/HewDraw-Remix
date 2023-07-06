@@ -1217,11 +1217,13 @@ impl BomaExt for BattleObjectModuleAccessor {
     }
 
     unsafe fn is_parry_input(&mut self) -> bool {
-        let is_taunt_buffered = ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_HI as u8) < ControlModule::get_command_life_count_max(self) as i32  // checks if Taunt input was pressed within max tap buffer window
-                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_S_L as u8) < ControlModule::get_command_life_count_max(self) as i32
-                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_S_R as u8) < ControlModule::get_command_life_count_max(self) as i32
-                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_LW as u8) < ControlModule::get_command_life_count_max(self) as i32;
-        let is_special_buffered = ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_SPECIAL as u8) < ControlModule::get_command_life_count_max(self) as i32;  // checks if Special input was pressed within max tap buffer window
+        let max_tap_buffer_window = ControlModule::get_command_life_count_max(self) as i32;
+
+        let is_taunt_buffered = ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_HI as u8) < max_tap_buffer_window  // checks if Taunt input was pressed within max tap buffer window
+                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_S_L as u8) < max_tap_buffer_window
+                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_S_R as u8) < max_tap_buffer_window
+                                    || ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_APPEAL_LW as u8) < max_tap_buffer_window;
+        let is_special_buffered = ControlModule::get_trigger_count(self, *CONTROL_PAD_BUTTON_SPECIAL as u8) < max_tap_buffer_window;  // checks if Special input was pressed within max tap buffer window
 
         (self.is_button_on(Buttons::TauntParry) && is_taunt_buffered)
         || (self.is_button_on(Buttons::SpecialParry) && is_special_buffered)
