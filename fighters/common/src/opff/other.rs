@@ -140,8 +140,10 @@ pub unsafe fn taunt_parry_forgiveness(fighter: &mut L2CFighterCommon) {
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_APPEAL, *FIGHTER_STATUS_KIND_SPECIAL_N])
     && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
     && fighter.global_table[CURRENT_FRAME].get_i32() <= 1
-    && fighter.is_button_trigger(Buttons::Parry) {
+    && fighter.is_parry_input()
+    {
         EffectModule::kill_all(fighter.module_accessor, *EFFECT_SUB_ATTRIBUTE_NONE as u32, true, false);
+        SoundModule::stop_all_sound(fighter.module_accessor);
         fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
     }
 }
