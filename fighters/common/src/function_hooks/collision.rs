@@ -44,8 +44,8 @@ unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *m
     if (*boma).is_fighter()
     && !StopModule::is_stop(boma) {
         let total_y_speed = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND);
-        if (*boma).is_status_one_of(&[
-            *FIGHTER_STATUS_KIND_ATTACK_AIR,
+        if (*boma).is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR)
+        || ( (*boma).is_status_one_of(&[
             *FIGHTER_STATUS_KIND_DAMAGE_FLY,
             *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
             *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_JUMP_BOARD,
@@ -53,7 +53,7 @@ unsafe fn ground_module_ecb_point_calc_hook(ground_module: u64, param_1: *mut *m
             *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
             *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
             *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR])
-        && (*boma).status_frame() > 1
+            && (*boma).status_frame() > 1 )
         {
             if total_y_speed > 0.0 {
                 // Forces character to ignore platforms, overrides ability to land
