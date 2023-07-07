@@ -6,8 +6,8 @@ pub fn install() {
   install_status_scripts!(
       pre_special_hi,
 
-      pre_special_hi_jump,
       exec_special_hi_jump,
+      exit_special_hi_jump,
   );
 }
 
@@ -44,44 +44,28 @@ pub unsafe fn pre_special_hi(fighter: &mut L2CFighterCommon) -> L2CValue {
     );
     0.into()
 }
-#[status_script(agent = "sonic", status = FIGHTER_SONIC_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn pre_special_hi_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
-	StatusModule::init_settings(
-        fighter.module_accessor,
-        SituationKind(*SITUATION_KIND_AIR),
-        *FIGHTER_KINETIC_TYPE_SONIC_SPECIAL_HI_JUMP,
-        *GROUND_CORRECT_KIND_AIR as u32,
-        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
-        true,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_SONIC_SPECIAL_HI_FLAG,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_SONIC_SPECIAL_HI_INT,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_SONIC_SPECIAL_HI_FLOAT,
-        0
-    );
-    FighterStatusModuleImpl::set_fighter_status_data(
-        fighter.module_accessor,
-        false,
-        *FIGHTER_TREADED_KIND_NO_REAC,
-        false,
-        false,
-        false,
-        0,
-        0,
-        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
-        0
-    );
-    GroundModule::set_attach_ground(fighter.module_accessor, false);
-    0.into()
-}
-
-#[status_script(agent = "sonic", status =  FIGHTER_SONIC_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+#[status_script(agent = "sonic", status = FIGHTER_SONIC_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 pub unsafe fn exec_special_hi_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     let boma = fighter.boma();
-    if fighter.motion_frame() > 2.0 {
-        GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+    let min_speed_y = 1.0;
+    let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+
+    if GroundModule::is_touch(boma, *GROUND_TOUCH_FLAG_DOWN as u32) 
+    && speed_y <= min_speed_y {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
     }
-    else{
-        StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), false);
+    return 0.into();
+}
+
+#[status_script(agent = "sonic", status = FIGHTER_SONIC_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
+unsafe fn exit_special_hi_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let boma = fighter.boma();
+
+    let landing_lag = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_landing_frame")) as f32;
+    WorkModule::set_float(fighter.module_accessor, landing_lag, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+
+    if fighter.is_situation(*SITUATION_KIND_GROUND) {
+        WorkModule::off_flag(boma, *FIGHTER_SONIC_INSTANCE_WORK_FLAG_SPECIAL_HI_FALL);
     }
-    return 0.into()
+    0.into()
 }
