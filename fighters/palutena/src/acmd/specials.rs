@@ -109,12 +109,12 @@ unsafe fn palutena_special_n_r_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 18.0);
     if power {
         if is_excute(agent) {
-            EFFECT_FOLLOW(agent, Hash40::new("sys_bomb_d"), Hash40::new("top"), 0.0, 12.0, 10.0, 0, 0, 0, 0.6, true);
+            EFFECT(agent, Hash40::new("sys_bomb_d"), Hash40::new("top"), 0.0, 12.0, 10.0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
         }
     }
     else {
         if is_excute(agent) {
-            EFFECT_FOLLOW(agent, Hash40::new("sys_bomb_a"), Hash40::new("top"), 0.0, 12.0, 10.0, 0, 0, 0, 0.6, true);
+            EFFECT(agent, Hash40::new("sys_bomb_a"), Hash40::new("top"), 0.0, 12.0, 10.0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
         }
     }
     frame(lua_state, 30.0);
