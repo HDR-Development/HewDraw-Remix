@@ -31,7 +31,7 @@ unsafe fn fair_scale(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 //Determine if fuel is past threshold
 unsafe fn boost_ready(boma: &mut BattleObjectModuleAccessor) {
-    if WorkModule::get_float(boma, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME) >= 180.0 {
+    if WorkModule::get_float(boma, *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME) >= 100.0 {
         VarModule::on_flag(boma.object(), vars::shizue::status::IS_DETACH_BOOST);
     }
 }
@@ -43,7 +43,7 @@ extern "Rust" {
 //Use handy effects to show when Isabelle reaches below or above 50% fuel
 unsafe fn fuel_indicators(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     let fuel = WorkModule::get_float(fighter.boma(), *FIGHTER_MURABITO_INSTANCE_WORK_ID_FLOAT_SPECIAL_HI_FRAME);
-    if fuel >= 179.4 && fuel <= 180.0 && !fighter.is_status_one_of(&[
+    if fuel >= 99.4 && fuel <= 100.0 && !fighter.is_status_one_of(&[
         *FIGHTER_STATUS_KIND_SPECIAL_HI, 
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_WAIT,
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_TURN,
@@ -52,7 +52,7 @@ unsafe fn fuel_indicators(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_HI_LANDING,
         ]) {
         gimmick_flash(fighter);
-    } else if fuel >= 179.4 && fuel <= 180.0 {
+    } else if fuel >= 99.4 && fuel <= 100.0 {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0.0, 6.0, 0.0, 0.0, 0.0, 0.0, 0.7, true);
     }
 }
