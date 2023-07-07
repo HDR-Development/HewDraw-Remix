@@ -108,6 +108,7 @@ unsafe fn younglink_attack_hi4_game (fighter: &mut L2CAgentBase) {
 	wait(lua_state, 5.0);
 	if is_excute(fighter) {
 		AttackModule::clear_all(fighter.module_accessor);
+        FT_MOTION_RATE(fighter, 0.1/(29.0-14.0));
 	}
 	frame(lua_state, 24.0);
 	if is_excute(fighter) {
@@ -120,6 +121,7 @@ unsafe fn younglink_attack_hi4_game (fighter: &mut L2CAgentBase) {
 	wait(lua_state, 5.0);
 	if is_excute(fighter) {
 		AttackModule::clear_all(fighter.module_accessor);
+        FT_MOTION_RATE(fighter, 1.0)
 	}
 	frame(lua_state, 40.0);
 	if is_excute(fighter) {
