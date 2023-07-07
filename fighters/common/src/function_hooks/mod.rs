@@ -704,7 +704,9 @@ unsafe fn after_collision(object: *mut BattleObject) {
 unsafe fn status_module__change_status(status_module: *const u64, status_kind_next: i32) {
     let boma = *(status_module as *mut *mut BattleObjectModuleAccessor).add(1);
 
-    JostleModule::set_overlap_rate_mul(boma, 1.0);
+    if (*boma).is_fighter() {
+        JostleModule::set_overlap_rate_mul(boma, 1.0);
+    }
 
     if (*boma).is_fighter()
     && skip_early_main_status(boma, status_kind_next)
