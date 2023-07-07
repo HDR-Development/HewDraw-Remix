@@ -96,10 +96,21 @@ unsafe fn ganon_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT_OFF_KIND(fighter, Hash40::new("ganon_engokua_flash"), false, false);
     }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        for _ in 0..10 {
+            EFFECT_FOLLOW(fighter, Hash40::new("ganon_entry_aura"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1.15, true);
+        }
+    }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 12, 6, 180, -180, 100, 1.2, false);
         LAST_EFFECT_SET_RATE(fighter, 1.5);
+        
+    }
+    frame(lua_state, 20.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("ganon_entry_aura"), false, false);
     }
 }
 
