@@ -62,7 +62,9 @@ unsafe fn palutena_attack_100_end_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_finish"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_finish"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 0.75, true);
         LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.0);
+        LAST_EFFECT_SET_ALPHA(agent, 0.75);
         EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light1"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_COLOR(agent, 2.0, 0.03, 0.0);
     }
@@ -142,9 +144,10 @@ unsafe fn palutena_attack_dash_effect(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_shield_flash"), Hash40::new("shield"), 0, 0, 0, 0, 0, 0, 1, true);
         LAST_EFFECT_SET_RATE(agent, 0.5);
-        LAST_EFFECT_SET_COLOR(agent, 0.95, 0.03, 0.01);
         EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0, 11, 16, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 11, 16, 0, 0, 0, 0.5, true);
         LAST_EFFECT_SET_COLOR(agent, 0.95, 0.03, 0.01);
+        LAST_EFFECT_SET_ALPHA(agent, 0.5);
     }
     frame(lua_state, 4.0);
     if is_excute(agent) {
@@ -154,7 +157,6 @@ unsafe fn palutena_attack_dash_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 4.0);
     if is_excute(agent) {
         EFFECT_DETACH_KIND(agent, Hash40::new("sys_flash"), -1);
-        LAST_EFFECT_SET_COLOR(agent, 0.95, 0.03, 0.01);
     }
 }
 

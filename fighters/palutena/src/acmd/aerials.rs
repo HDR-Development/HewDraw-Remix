@@ -64,49 +64,41 @@ unsafe fn palutena_attack_air_n_effect(fighter: &mut L2CAgentBase) {
     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 0 {
         if is_excute(fighter) {
             EFFECT_FOLLOW(fighter, Hash40::new("palutena_wand_trace_01"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(fighter, 0.95, 0.1, 0.01);
         }
     }
     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 1 {
         if is_excute(fighter) {
             EFFECT_FOLLOW(fighter, Hash40::new("palutena_wand_trace_02"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(fighter, 0.95, 0.1, 0.01);
         }
     }
     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 2 {
         if is_excute(fighter) {
             EFFECT_FOLLOW(fighter, Hash40::new("palutena_wand_trace_03"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(fighter, 0.95, 0.1, 0.01);
         }
     }
     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 3 {
         if is_excute(fighter) {
             EFFECT_FOLLOW(fighter, Hash40::new("palutena_wand_trace_04"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(fighter, 0.95, 0.1, 0.01);
         }
     }
     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 4 {
         if is_excute(fighter) {
             EFFECT_FOLLOW(fighter, Hash40::new("palutena_wand_trace_05"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(fighter, 0.95, 0.1, 0.01);
         }
     }
     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 5 {
         if is_excute(fighter) {
             EFFECT_FOLLOW(fighter, Hash40::new("palutena_wand_trace_06"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(fighter, 0.95, 0.1, 0.01);
         }
     }
     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6 {
         if is_excute(fighter) {
             EFFECT_FOLLOW(fighter, Hash40::new("palutena_wand_trace_07"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(fighter, 0.95, 0.1, 0.01);
         }
     }
     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 7 {
         if is_excute(fighter) {
             EFFECT_FOLLOW(fighter, Hash40::new("palutena_wand_trace_08"), Hash40::new("stick"), 0, 0, 0, 0, 0, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(fighter, 0.95, 0.1, 0.01);
         }
     }
     frame(lua_state, 29.0);
@@ -204,19 +196,22 @@ unsafe fn palutena_attack_air_f_effect(agent: &mut L2CAgentBase) {
         if is_excute(agent) {
             EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_flash"), Hash40::new("top"), -4, 7.5, 17, 0, 0, 0, 1, true);
             LAST_EFFECT_SET_RATE(agent, 1.3);
+            EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), -4, 7.5, 17, 0, 0, 0, 0.75, true);
             LAST_EFFECT_SET_COLOR(agent, 0.95, 0.03, 0.01);
+            LAST_EFFECT_SET_ALPHA(agent, 0.75);
         }
     }
     else{
         if is_excute(agent) {
             EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_flash"), Hash40::new("top"), 4, 7.5, 17, 0, 0, 0, 1, true);
             LAST_EFFECT_SET_RATE(agent, 1.3);
+            EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 4, 7.5, 17, 0, 0, 0, 0.75, true);
             LAST_EFFECT_SET_COLOR(agent, 0.95, 0.03, 0.01);
+            LAST_EFFECT_SET_ALPHA(agent, 0.75);
         }
     }
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 8, 4, 0, 0, 0, 0.9, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.95, 0.1, 0.01);
     }
 }
 
@@ -258,14 +253,14 @@ unsafe fn palutena_attack_air_b_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 7.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_shield_flash"), Hash40::new("shield"), 0, 0, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.95, 0.03, 0.01);
         EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("palutena_guard"), Hash40::new("top"), -4, 11, -14, 0, 0, 0, 1, true);
+        EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), -4, 11, -14, 0, 0, 0, 0.5, true);
         LAST_EFFECT_SET_COLOR(agent, 0.95, 0.03, 0.01);
+        LAST_EFFECT_SET_ALPHA(agent, 0.5);
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
         EFFECT_DETACH_KIND(agent, Hash40::new("sys_flash"), -1);
-        LAST_EFFECT_SET_COLOR(agent, 0.95, 0.03, 0.01);
     }
 }
 
@@ -314,7 +309,7 @@ unsafe fn palutena_attack_air_hi_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 7.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_backlight2"), Hash40::new("top"), 0, 23, 0, 0, -90, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.05, 0.05, 0.90);
+        LAST_EFFECT_SET_COLOR(agent, 0.35, 0.35, 0.90);
     }
 }
 
@@ -385,16 +380,15 @@ unsafe fn palutena_attack_air_lw_effect(agent: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_atk_lw_arc"), Hash40::new("top"), -2, 6, 0, -60, 40, -120, 0.95, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.30, 0.01);
     }
     frame(lua_state, 9.0);
     if is_excute(agent) {
         EFFECT_FOLLOW(agent, Hash40::new("palutena_twinkle"), Hash40::new("footl"), 1, -1, 0, 0, 0, 0, 1, true);
-        LAST_EFFECT_SET_COLOR(agent, 0.85, 0.30, 0.01);
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
         EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0.5, -6, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0.5, -6, 0, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_COLOR(agent, 0.85, 0.40, 0.01);
     }
 }

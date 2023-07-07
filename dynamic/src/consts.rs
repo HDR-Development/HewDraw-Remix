@@ -1178,4 +1178,14 @@ pub mod statuses {
     pub mod kirby {
         pub const SPECIAL_HI_H: i32 = 0;
     }
+
+    pub mod palutena {
+        pub const SPECIAL_N_R: i32 = 0;
+        pub const SPECIAL_N_B: i32 = 1;
+        pub const SPECIAL_N_Y: i32 = 2;
+        pub const SPECIAL_N_P: i32 = 3;
+        pub const SPECIAL_N_O: i32 = 4;
+        pub const SPECIAL_N_G: i32 = 5;
+    }
+    
 }

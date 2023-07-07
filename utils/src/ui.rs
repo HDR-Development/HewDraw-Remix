@@ -4,6 +4,7 @@ use parking_lot::RwLock;
 use self::ex_meter::ExMeter;
 use self::ff_meter::FfMeter;
 use self::power_board::PowerBoard;
+use self::pichu_meter::PichuMeter;
 
 mod ex_meter;
 mod ff_meter;
@@ -20,14 +21,14 @@ trait UiObject {
 static UI_MANAGER: Lazy<RwLock<UiManager>> = Lazy::new(|| RwLock::new(UiManager { 
     ex_meter: [ExMeter::default(); 8],
     ff_meter: [FfMeter::default(); 8],
-    power_board: [PowerBoard::default(); 8]
-    pichu_meter: [PichuMeter::default(); 8],
+    power_board: [PowerBoard::default(); 8],
+    pichu_meter: [PichuMeter::default(); 8]
 }));
 
 pub struct UiManager {
     ex_meter: [ExMeter; 8],
     ff_meter: [FfMeter; 8],
-    power_board: [PowerBoard; 8]
+    power_board: [PowerBoard; 8],
     pichu_meter: [PichuMeter; 8]
 }
 

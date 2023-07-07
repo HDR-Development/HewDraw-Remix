@@ -154,8 +154,7 @@ unsafe fn is_enable_transition_term_hook(boma: &mut BattleObjectModuleAccessor, 
         // disable palutena projectiles during aegis reflector
         if fighter_kind == *FIGHTER_KIND_PALUTENA 
             && ArticleModule::is_exist(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD)
-            && (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S
-            || flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N) {
+            && (flag == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S) {
                 return false;
         }
 
