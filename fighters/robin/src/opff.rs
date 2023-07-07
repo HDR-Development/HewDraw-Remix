@@ -33,22 +33,20 @@ unsafe fn elwind1_burn(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn levin_leniency(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
-    let levin = *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT;
     if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) 
     && boma.status_frame() <= 5 
     && !fighter.is_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) 
     && boma.is_button_on(Buttons::Smash | Buttons::SpecialRaw) 
-    && !StatusModule::is_changing(boma)
-    && WorkModule::get_int(boma, levin) > 0 {
-        VisibilityModule::set_int64(boma, Hash40::new("sword").hash as i64, Hash40::new("sword_thunder").hash as i64);
-        fighter.on_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
-        VisibilityModule::set_int64(boma, Hash40::new("sword").hash as i64, Hash40::new("sword_thunder").hash as i64);
-        if WorkModule::get_int(boma, levin) == 1 {
-            app::FighterSpecializer_Reflet::set_flag_to_table(fighter.module_accessor as *mut app::FighterModuleAccessor, *FIGHTER_REFLET_MAGIC_KIND_SWORD, true, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THROWAWAY_TABLE);
+    && !StatusModule::is_changing(boma) {
+        let levin = *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT;
+        if WorkModule::get_int(boma, levin) > 0 {
+            if WorkModule::get_int(boma, levin) == 1 {
+                app::FighterSpecializer_Reflet::set_flag_to_table(fighter.module_accessor as *mut app::FighterModuleAccessor, *FIGHTER_REFLET_MAGIC_KIND_SWORD, true, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THROWAWAY_TABLE);
+            }
+            fighter.on_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
+            VisibilityModule::set_int64(boma, Hash40::new("sword").hash as i64, Hash40::new("sword_thunder").hash as i64);
             WorkModule::dec_int(boma, levin);
-        } else {
-            WorkModule::dec_int(boma, levin);
-        } 
+        }
     }
 }
 
