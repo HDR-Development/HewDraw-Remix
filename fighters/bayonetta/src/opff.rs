@@ -179,26 +179,27 @@ unsafe fn abk(fighter: &mut smash::lua2cpp::L2CFighterCommon, frame: f32) {
     let pos = PostureModule::lr(boma);
     if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U) {
         if StatusModule::is_changing(boma) {ControlModule::reset_trigger(boma); }
-        let anglestick = VarModule::get_float(fighter.battle_object, vars::bayonetta::status::ABK_ANGLE) as f32;
+        let anglestick = VarModule::get_float(fighter.battle_object, vars::bayonetta::status::ABK_ANGLE);
         joint_rotator(fighter, frame, Hash40::new("top"), Vector3f{x: -19.5*anglestick, y:90.0*pos, z:0.0}, 10.0, 13.0, 28.0, 32.0);
         if boma.status_frame() <= 7 { 
             VarModule::set_float(fighter.battle_object, vars::bayonetta::status::ABK_ANGLE, boma.left_stick_y());
         }
         //trajectory change
-        if boma.status_frame() > 7 && boma.status_frame() <= 25 {
-            if !fighter.is_in_hitlag() && anglestick != 0.0 {
-                let angle = if pos < 0.0 {
-                    25.0 - anglestick *14.0
-                } else {
-                    -25.0 + anglestick *14.0
-                };
-                let angle = angle.to_radians();
-                sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.81 - anglestick, 1.0);
-                //lua_bind::FighterKineticEnergyMotion::set_speed_mul(fighter.get_motion_energy(), 0.81 - anglestick*0.11);
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, angle);
-                app::sv_kinetic_energy::set_angle(fighter.lua_state_agent);
-            }
+        if boma.status_frame() > 7 && boma.status_frame() <= 25 && !fighter.is_in_hitlag() {
+            KineticModule::add_speed_outside(fighter.module_accessor, *KINETIC_OUTSIDE_ENERGY_TYPE_WIND_NO_ADDITION, &Vector3f::new( -0.42 * anglestick * pos, anglestick*0.667, 0.0));
+            //if !fighter.is_in_hitlag() && anglestick != 0.0 {
+            //    let angle = if pos < 0.0 {
+            //        25.0 - anglestick *14.0
+            //    } else {
+            //        -25.0 + anglestick *14.0
+            //    };
+            //    let angle = angle.to_radians();
+            //    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.81 - anglestick, 1.0);
+            //    //lua_bind::FighterKineticEnergyMotion::set_speed_mul(fighter.get_motion_energy(), 0.81 - anglestick*0.11);
+            //    fighter.clear_lua_stack();
+            //    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, angle);
+            //    app::sv_kinetic_energy::set_angle(fighter.lua_state_agent);
+            //}
         }
     }
 }
