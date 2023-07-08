@@ -318,6 +318,7 @@ unsafe extern "C" fn special_n_p_main_loop(fighter: &mut L2CFighterCommon) -> L2
 }
 
 unsafe extern "C" fn special_n_p_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ArticleModule::remove_exist(fighter.boma(), *FIGHTER_PALUTENA_GENERATE_ARTICLE_GODWING, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     return 0.into()
 }
 
