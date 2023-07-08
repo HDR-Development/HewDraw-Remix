@@ -144,7 +144,7 @@ unsafe fn setup_buttons(ctx: &skyline::hooks::InlineCtx) {
 
 #[skyline::hook(offset = 0x1d3339c, inline)]
 unsafe fn hijack_animation_get(ctx: &skyline::hooks::InlineCtx) {
-    // this memleaks but I DON'T GIVE A FUCK
+    // this memleaks but I DON'T GIVE A FUCK (Askew: doesn't actually memleak you schmuck)
     let ptr = *ctx.registers[0].x.as_ref();
     let our_ptr = SHARED_PTR1[0];
     layout_get(ptr, our_ptr, 0);
@@ -264,8 +264,12 @@ unsafe fn get_on_value_for_custom(ctx: &mut skyline::hooks::InlineCtx) {
 #[skyline::hook(offset = 0x1d2ff34, inline)]
 unsafe fn get_shared_ptr_for_custom(ctx: &mut skyline::hooks::InlineCtx) {
     if *ctx.registers[8].x.as_ref() == 4 {
+        SHARED_PTR1[0] = 0;
+        SHARED_PTR1[1] = 0;
         *ctx.registers[20].x.as_mut() = SHARED_PTR1.as_ptr() as u64;
     } else if *ctx.registers[8].x.as_ref() == 6 {
+        SHARED_PTR2[0] = 0;
+        SHARED_PTR2[1] = 0;
         *ctx.registers[20].x.as_mut() = SHARED_PTR2.as_ptr() as u64;
     }
 }
@@ -350,10 +354,6 @@ unsafe fn exit_gc(ctx: &mut skyline::hooks::InlineCtx) {
     *ptr |= (CURRENT_UI_PARRY_TOGGLE as u8) << 1;
     *ptr |= (CURRENT_UI_RIVALS_JUMP as u8) << 2;
     IS_IN_UI = false;
-    SHARED_PTR1[0] = 0;
-    SHARED_PTR1[1] = 0;
-    SHARED_PTR2[0] = 0;
-    SHARED_PTR2[1] = 0;
 }
 
 #[skyline::hook(offset = 0x1d2e8b0, inline)]
@@ -362,10 +362,6 @@ unsafe fn exit_fk(ctx: &mut skyline::hooks::InlineCtx) {
     *ptr |= (CURRENT_UI_PARRY_TOGGLE as u8) << 1;
     *ptr |= (CURRENT_UI_RIVALS_JUMP as u8) << 2;
     IS_IN_UI = false;
-    SHARED_PTR1[0] = 0;
-    SHARED_PTR1[1] = 0;
-    SHARED_PTR2[0] = 0;
-    SHARED_PTR2[1] = 0;
 }
 
 #[skyline::hook(offset = 0x1d2e864, inline)]
@@ -374,10 +370,6 @@ unsafe fn exit_jc(ctx: &mut skyline::hooks::InlineCtx) {
     *ptr |= (CURRENT_UI_PARRY_TOGGLE as u8) << 1;
     *ptr |= (CURRENT_UI_RIVALS_JUMP as u8) << 2;
     IS_IN_UI = false;
-    SHARED_PTR1[0] = 0;
-    SHARED_PTR1[1] = 0;
-    SHARED_PTR2[0] = 0;
-    SHARED_PTR2[1] = 0;
 }
 
 unsafe fn get_parts(arg: u64, arg2: *const u8) -> [u64; 4] {
