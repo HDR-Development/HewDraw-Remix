@@ -241,10 +241,14 @@ static mut SHARED_PTR2: [u64; 2] = [0, 0];
 #[skyline::hook(offset = 0x1d32de4, inline)]
 unsafe fn frank_talk_think_tankk(ctx: &mut skyline::hooks::InlineCtx) {
     if *ctx.registers[22].x.as_ref() == 4 {
+        SHARED_PTR1[0] = 0;
+        SHARED_PTR1[1] = 0;
         *ctx.registers[19].x.as_mut() = SHARED_PTR1.as_ptr() as u64;
     }
 
     if *ctx.registers[22].x.as_ref() == 5 {
+        SHARED_PTR2[0] = 0;
+        SHARED_PTR2[1] = 0;
         *ctx.registers[19].x.as_mut() = SHARED_PTR2.as_ptr() as u64;
     }
 }
@@ -264,12 +268,8 @@ unsafe fn get_on_value_for_custom(ctx: &mut skyline::hooks::InlineCtx) {
 #[skyline::hook(offset = 0x1d2ff34, inline)]
 unsafe fn get_shared_ptr_for_custom(ctx: &mut skyline::hooks::InlineCtx) {
     if *ctx.registers[8].x.as_ref() == 4 {
-        SHARED_PTR1[0] = 0;
-        SHARED_PTR1[1] = 0;
         *ctx.registers[20].x.as_mut() = SHARED_PTR1.as_ptr() as u64;
     } else if *ctx.registers[8].x.as_ref() == 6 {
-        SHARED_PTR2[0] = 0;
-        SHARED_PTR2[1] = 0;
         *ctx.registers[20].x.as_mut() = SHARED_PTR2.as_ptr() as u64;
     }
 }
