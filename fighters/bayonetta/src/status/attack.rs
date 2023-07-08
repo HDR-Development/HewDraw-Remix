@@ -1,13 +1,10 @@
 use super::*;
 use globals::*;
-// status script import
+
  
 pub fn install() {
     install_status_scripts!(
         main_attack,
-        escape_f_end,
-        escape_b_end,
-        batwithin_end
     );
 }
 
@@ -159,48 +156,6 @@ unsafe extern "C" fn bayonetta_attack_main_loop(fighter: &mut L2CFighterCommon) 
     }
     else {
         fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
-    }
-    0.into()
-}
-
-// FIGHTER_STATUS_KIND_ESCAPE_F //
-
-#[status_script(agent = "bayonetta", status = FIGHTER_STATUS_KIND_ESCAPE_F, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn escape_f_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[STATUS_KIND] != FIGHTER_BAYONETTA_STATUS_KIND_BATWITHIN {
-        fighter.sub_status_end_EscaleFB();
-    }
-    0.into()
-}
-
-// FIGHTER_STATUS_KIND_ESCAPE_B //
-
-#[status_script(agent = "bayonetta", status = FIGHTER_STATUS_KIND_ESCAPE_B, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn escape_b_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[STATUS_KIND] != FIGHTER_BAYONETTA_STATUS_KIND_BATWITHIN {
-        fighter.sub_status_end_EscaleFB();
-    }
-    0.into()
-}
-
-// FIGHTER_BAYONETTA_STATUS_KIND_BATWITHIN //
-
-#[status_script(agent = "bayonetta", status = FIGHTER_BAYONETTA_STATUS_KIND_BATWITHIN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn batwithin_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let batwithin_status_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BAYONETTA_STATUS_WORK_ID_BATWITHIN_INT_STATUS_KIND);
-    if [*FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B].contains(&batwithin_status_kind) {
-        fighter.sub_status_end_EscaleFB();
-    }
-    if batwithin_status_kind == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-        fighter.status_end_EscapeAir();
-    }
-    HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-    VisibilityModule::set_whole(fighter.module_accessor, true);
-    ItemModule::set_have_item_visibility(fighter.module_accessor, true, 0);
-    ItemModule::set_attach_item_visibility(fighter.module_accessor, true, 255);
-    ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_BAYONETTA_GENERATE_ARTICLE_BAT, ArticleOperationTarget(0));
-    if fighter.global_table[STATUS_KIND] == FIGHTER_STATUS_KIND_FINAL_VISUAL_ATTACK_OTHER {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("fall"), 0.0, 1.0, false, 0.0, false, false);
     }
     0.into()
 }

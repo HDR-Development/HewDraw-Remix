@@ -30,7 +30,7 @@ mod damage;
 mod escape;
 mod dead;
 mod damageflyreflect;
-mod downstand;
+mod down;
 // [LUA-REPLACE-REBASE]
 // [SHOULD-CHANGE]
 // Reimplement the whole status script (already done) instead of doing this.
@@ -549,7 +549,7 @@ pub fn install() {
     escape::install();
     dead::install();
     damageflyreflect::install();
-    downstand::install();
+    down::install();
 
     skyline::nro::add_hook(nro_hook);
 }
