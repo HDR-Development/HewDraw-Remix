@@ -21,6 +21,9 @@ jobs:
     - name: checkout version
       uses: actions/checkout@v2
 
+    - name: Rust Cache
+      uses: Swatinem/rust-cache@v2.5.1
+
     # build the project
     - run: |
         cd scripts && python3 make_dist.py build version=1.69.420-pr name=hdr-pr && cd ..
