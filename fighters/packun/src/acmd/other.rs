@@ -240,8 +240,8 @@ unsafe fn packun_spikeball_game_start_air(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    let stance = VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE);
-    let scale = VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE);
+    let stance = if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {0} else {VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE)};
+    let scale = if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {1.0} else {VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE)};
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         ModelModule::set_scale(boma, scale);
