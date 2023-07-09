@@ -18,11 +18,8 @@ unsafe fn holy_water_ac(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectM
 unsafe fn axe_ff(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_AIR {
-            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-            if boma.is_cat_flag(Cat2::FallJump)
-                && stick_y < -0.66
-                && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
             }
         }
     }

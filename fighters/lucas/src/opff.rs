@@ -382,7 +382,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     //pk_thunder_cancel(boma, id, status_kind, situation_kind);
     //pk_thunder_wall_ride_shorten(fighter, boma, id, status_kind, situation_kind);
     //djc_momentum_helper(boma, id, status_kind, frame);
-    pk_fire_ff(boma, stick_y);
+    //pk_fire_ff(boma, stick_y);
     offense_charge(fighter, boma, situation_kind);
     offense_effct_handler(fighter);
     reset_flags(fighter, status_kind, situation_kind);

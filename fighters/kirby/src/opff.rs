@@ -50,11 +50,6 @@ pub fn hammer_fastfall_landcancel(fighter: &mut smash::lua2cpp::L2CFighterCommon
                 MotionModule::change_motion_force_inherit_frame(fighter.module_accessor, Hash40::new("special_s"), 33.0, 1.0, 1.0);
                 MotionModule::set_rate(fighter.module_accessor, (55.0 - 33.0)/25.0);    // equates to 17F landing lag
             }
-            if fighter.is_situation(*SITUATION_KIND_AIR) {
-                if fighter.is_cat_flag(Cat2::FallJump) && fighter.stick_y() < -0.66 && KineticModule::get_sum_speed_y(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                    WorkModule::set_flag(fighter.module_accessor, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
-                }
-            }
         }
     }
 }

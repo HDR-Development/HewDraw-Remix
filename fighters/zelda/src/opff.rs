@@ -95,9 +95,8 @@ unsafe fn nayru_fastfall_land_cancel(boma: &mut BattleObjectModuleAccessor, stat
         }
         else if situation_kind == *SITUATION_KIND_AIR {
             if frame >= 31.0 {
-                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-                if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                    WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+                if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+                    KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
                 }
             }
         }

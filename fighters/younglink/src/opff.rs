@@ -84,7 +84,7 @@ unsafe fn holdable_dair(boma: &mut BattleObjectModuleAccessor, motion_kind: u64,
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    fire_arrow_ff(fighter, boma, status_kind, situation_kind, cat[1], stick_y);
+    //fire_arrow_ff(fighter, boma, status_kind, situation_kind, cat[1], stick_y);
     bombchu_timer(fighter, boma, id);
     bombchu_reset(fighter, id, status_kind);
     bombchu_training(fighter, id, status_kind);

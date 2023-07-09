@@ -61,9 +61,22 @@ unsafe fn plat_cancels(fighter: &mut L2CFighterCommon) {
     }
 }
 
+// Allows all special moves to be able to fastfall
+// with fastfall conditions being:
+//   1. Must be descending (y velocity < 0.0)
+//   2. Must be able to drift horizontally (FIGHTER_KINETIC_ENERGY_ID_CONTROL enabled)
+unsafe fn global_specials_fastfall(fighter: &mut L2CFighterCommon) {
+    if StatusModule::status_kind(fighter.module_accessor) > 0x1DB  // only applies to special moves
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        // sub_air_check_dive checks for y velocity and air drift
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn run(fighter: &mut L2CFighterCommon, lua_state: u64, l2c_agent: &mut L2CAgent, boma: &mut BattleObjectModuleAccessor, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, fighter_kind: i32, stick_x: f32, stick_y: f32, facing: f32) {
     grab_jump_refresh(boma);
     plat_cancels(fighter);
+    global_specials_fastfall(fighter);
 
     //WorkModule::unable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_D); //Melee style spike knockdown (courtesey of zabimaru), leaving it commented here just to have it saved somewhere
 }

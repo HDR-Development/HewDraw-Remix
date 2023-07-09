@@ -88,20 +88,20 @@ pub unsafe fn super_lift_turn(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 /// callback run during SUPER_LIFT_FALL
 pub unsafe fn super_lift_fall(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     
-    super_lift_fastfall(fighter);
+    //super_lift_fastfall(fighter);
 }
 
 /// callback run during SUPER_LIFT_JUMP
 pub unsafe fn super_lift_jump(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     
-    super_lift_fastfall(fighter);
+    //super_lift_fastfall(fighter);
 }
 
 /// callback run during SUPER_LIFT_PASS
 pub unsafe fn super_lift_pass(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     
     if fighter.status_frame() > 5 {
-        super_lift_fastfall(fighter);
+        //super_lift_fastfall(fighter);
     }
 }
 

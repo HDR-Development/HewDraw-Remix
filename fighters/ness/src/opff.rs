@@ -116,7 +116,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     psi_magnet_jump_cancel_turnaround(fighter);
     pk_thunder_cancel(boma, id, status_kind, situation_kind);
     pk_thunder_wall_ride(boma, id, status_kind, situation_kind);
-    pk_fire_ff(boma, stick_y);
+    //pk_fire_ff(boma, stick_y);
     uair_scaling(boma);
 }
 

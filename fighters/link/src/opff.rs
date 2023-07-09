@@ -93,7 +93,7 @@ pub unsafe extern "Rust" fn links_common(fighter: &mut smash::lua2cpp::L2CFighte
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    bow_fastfall(boma, status_kind, situation_kind, cat[1], stick_y);
+    //bow_fastfall(boma, status_kind, situation_kind, cat[1], stick_y);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_LINK )]
