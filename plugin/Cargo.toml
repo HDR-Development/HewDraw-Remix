@@ -228,11 +228,6 @@ dedede = ["fighters/include-dedede"]
 snake = ["fighters/include-snake"]
 demon = ["fighters/include-demon"]
 
-[build-dependencies]
-hdr-macros = { path = "../hdr-macros" }
-prc-rs = { git = "https://github.com/ultimate-research/prc-rs", features = ["indexmap-std", "xml-feat"] }
-walkdir = "2.3.2"
-
 [profile.dev]
 panic = "abort"
 
