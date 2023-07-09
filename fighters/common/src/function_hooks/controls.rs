@@ -33,14 +33,6 @@ struct SomeControllerStruct {
     controller: &'static mut Controller,
 }
 
-unsafe fn get_player_idx_from_boma(boma: u64) -> i32 {
-    let control_module = *((boma + 0x48) as *const u64);
-    let next = *((control_module + 0x118) as *const u64);
-    let next = *((next + 0x58) as *const u64);
-    let next = *((next + 0x8) as *const u64);
-    *((next + 0x8) as *const i32)
-}
-
 macro_rules! apply_button_mappings {
     ($controller:ident, $mappings:ident, $(($button:ident, $mapped:ident, $kind:ident, $output:expr))*) => {{
         let mut buttons = Buttons::empty();
@@ -741,7 +733,12 @@ unsafe fn map_controls_hook(
 
     if (*out).buttons.intersects(Buttons::Guard) {
         if (*out).buttons.intersects(parry) {
-            (*out).buttons |= Buttons::Parry;
+            if is_parry_taunt {
+                (*out).buttons |= Buttons::TauntParry;
+            }
+            else {
+                (*out).buttons |= Buttons::SpecialParry;
+            }
         } else if (*out).buttons.intersects(hold) {
             (*out).buttons |= Buttons::GuardHold;
         }
@@ -788,12 +785,6 @@ struct ControlModuleInternal {
     clamped_rstick_y: f32,
 }
 
-unsafe fn get_mapped_controller_inputs(player: usize) -> &'static MappedInputs {
-    let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
-        .add(0x52c30f0) as *const u64);
-    &*((base + 0x2b8 + 0x8 * (player as u64)) as *const MappedInputs)
-}
-
 static mut LAST_ALT_STICK: [f32; 2] = [0.0, 0.0];
 static mut LAST_ANALOG: f32 = 0.0;
 
@@ -811,7 +802,7 @@ unsafe fn parse_inputs(this: &mut ControlModuleInternal) {
     //println!("this.controller_index: {}", this.controller_index);
     // assert!(this.controller_index <= 7);
 
-    let inputs = get_mapped_controller_inputs(this.controller_index as usize);
+    let inputs = util::get_mapped_controller_inputs_from_id(this.controller_index as usize);
 
     let clamp_mul = 1.0 / CLAMP_MAX;
 

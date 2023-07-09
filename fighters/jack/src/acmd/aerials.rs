@@ -281,17 +281,17 @@ unsafe fn jack_attack_air_hi_game(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 23.0);
-    FT_MOTION_RATE(fighter, 21.0/(40.0-23.0));
+    if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
+        FT_MOTION_RATE(fighter, 21.0/(40.0-23.0));
+    }
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
-        }
     }
     frame(lua_state, 30.0);
     if is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    
+
 }
 
 #[acmd_script( agent = "jack", script = "game_landingairhi" , category = ACMD_GAME , low_priority)]
@@ -366,15 +366,15 @@ unsafe fn jack_attack_air_lw_game(fighter: &mut L2CAgentBase) {
         }
     }
     frame(lua_state, 20.0);
-    FT_MOTION_RATE(fighter, 47.0/(47.0-9.0));
+    if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
+        FT_MOTION_RATE(fighter, 47.0/(47.0-9.0));
+    }
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        if WorkModule::is_flag(boma,  *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
-        }
-        frame(lua_state, 27.0);
-        if is_excute(fighter) {
-            WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        }
+    }
+    frame(lua_state, 27.0);
+    if is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(lua_state, 29.0);
     if is_excute(fighter) {
@@ -396,8 +396,6 @@ unsafe fn jack_landing_air_lw_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-
-
 
 pub fn install() {
     install_acmd_scripts!(

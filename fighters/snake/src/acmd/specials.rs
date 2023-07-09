@@ -60,19 +60,16 @@ unsafe fn snake_special_lw_blast_game(fighter: &mut L2CAgentBase) {
         ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4_SWITCH, false, 0);
     }
     frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.500);
-    }
-    frame(lua_state, 22.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.500);
-    }
+    FT_MOTION_RATE(fighter, 0.5);
     frame(lua_state, 27.0);
+    FT_MOTION_RATE_RANGE(fighter, 27.0, 40.0, 13.0);
     if is_excute(fighter) {
         if !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)) {
             WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_EXPLODING_FLAG_C4_STARTUP);
         }
     }
+    frame(lua_state, 40.0);
+    FT_MOTION_RATE(fighter, 1.0);
     
 }
 
@@ -91,17 +88,17 @@ unsafe fn snake_special_lw_squat_blast_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4_SWITCH, false, 0);
     }
-    frame(lua_state, 16.0);
+    frame(lua_state, 8.0);
+    FT_MOTION_RATE(fighter, 0.5);
+    frame(lua_state, 27.0);
+    FT_MOTION_RATE_RANGE(fighter, 27.0, 40.0, 13.0);
     if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.500);
-    }
-    frame(lua_state, 24.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.000);
         if !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)) {
             WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_EXPLODING_FLAG_C4_STARTUP);
         }
     }
+    frame(lua_state, 40.0);
+    FT_MOTION_RATE(fighter, 1.0);
     
 }
 
@@ -114,19 +111,16 @@ unsafe fn snake_special_air_lw_blast_game(fighter: &mut L2CAgentBase) {
         ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4_SWITCH, false, 0);
     }
     frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.500);
-    }
-    frame(lua_state, 22.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.500);
-    }
+    FT_MOTION_RATE(fighter, 0.5);
     frame(lua_state, 27.0);
+    FT_MOTION_RATE_RANGE(fighter, 27.0, 40.0, 13.0);
     if is_excute(fighter) {
         if !(ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)) {
             WorkModule::on_flag(boma, *FIGHTER_SNAKE_STATUS_SPECIAL_LW_EXPLODING_FLAG_C4_STARTUP);
         }
     }
+    frame(lua_state, 40.0);
+    FT_MOTION_RATE(fighter, 1.0);
     
 }
 
@@ -273,6 +267,7 @@ unsafe fn snake_down_special_floor(fighter : &mut L2CAgentBase) {
         ArticleModule::change_status(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4, *WEAPON_SNAKE_C4_STATUS_KIND_STICK_TARGET, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
+
 #[acmd_script( agent = "snake", script = "game_speciallwsquatselfstick", category = ACMD_GAME, low_priority )]
 unsafe fn snake_down_special_crouch_floor(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -282,6 +277,7 @@ unsafe fn snake_down_special_crouch_floor(fighter : &mut L2CAgentBase) {
         ArticleModule::change_status(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_C4, *WEAPON_SNAKE_C4_STATUS_KIND_STICK_TARGET, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
+
 #[acmd_script( agent = "snake", script = "game_specialairlwselfstick", category = ACMD_GAME, low_priority )]
 unsafe fn snake_down_special_air_floor(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -292,14 +288,18 @@ unsafe fn snake_down_special_air_floor(fighter : &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "snake", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "snake", scripts = ["game_specialsstart", "game_specialairsstart"], category = ACMD_GAME, low_priority )]
 unsafe fn snake_side_special_game(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
+        VarModule::off_flag(fighter.battle_object, vars::snake::instance::TRANQ_RELOAD_VULNERABLE);
         CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
     }
     frame(lua_state, 1.0);
+    if VarModule::is_flag(fighter.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
+        FT_MOTION_RATE_RANGE(fighter, 1.0, 16.0, 12.0);
+    }
     if is_excute(fighter) {
         CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK);
     }
@@ -307,49 +307,34 @@ unsafe fn snake_side_special_game(fighter : &mut L2CAgentBase) {
     if is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_NIKITA, false, 0);
     }
-    // frame(lua_state_agent, 25.0);
-    // if is_excute(fighter) {
-    //     FighterAreaModuleImpl::enable_fix_jostle_area(boma, 8, 4);
-    // }
-    // frame(lua_state_agent, 27.0);
-    // if is_excute(fighter) {
-    //     ArticleModule::set_flag(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_NIKITA, true, *WEAPON_SNAKE_NIKITA_INSTANCE_WORK_ID_FLAG_LIGHT_ON);
-    // }
+    frame(lua_state, 16.0);
+    if VarModule::is_flag(fighter.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
+        FT_MOTION_RATE_RANGE(fighter, 16.0, 38.0, 1.0);
+    }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
-        ArticleModule::set_flag(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_NIKITA, true, *WEAPON_SNAKE_NIKITA_INSTANCE_WORK_ID_FLAG_SHOOT);
+        VarModule::on_flag(fighter.battle_object, vars::snake::instance::TRANQ_RELOAD_VULNERABLE);
+        if !VarModule::is_flag(fighter.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
+            ArticleModule::set_flag(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_NIKITA, true, *WEAPON_SNAKE_NIKITA_INSTANCE_WORK_ID_FLAG_SHOOT);
+        }
+    }
+    frame(lua_state, 38.0);
+    if VarModule::is_flag(fighter.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
+        FT_MOTION_RATE(fighter, 1.0);
+    }
+    frame(lua_state, 79.0);
+    if is_excute(fighter) {
+        if VarModule::is_flag(fighter.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
+            VarModule::off_flag(fighter.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD);
+        }
     }
     frame(lua_state, 83.0);
     if is_excute(fighter) {
         ArticleModule::remove_exist(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_NIKITA, ArticleOperationTarget(0));
     }
 }
-#[acmd_script( agent = "snake", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
-unsafe fn snake_side_special_air_game(fighter : &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 3.0);
-    if is_excute(fighter) {
-        ArticleModule::generate_article(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_NIKITA, false, 0);
-    }
-    // frame(lua_state, 10.0);
-    // if is_excute(fighter) {
-    //     GroundModule::set_rhombus_offset(boma, &Vector2f{x:0.0, y:3.0});
-    // }
-    frame(lua_state, 24.0);
-    if is_excute(fighter) {
-        ArticleModule::set_flag(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_NIKITA, true, *WEAPON_SNAKE_NIKITA_INSTANCE_WORK_ID_FLAG_SHOOT);
-    }
-    // frame(lua_state, 70.0);
-    // if is_excute(fighter) {
-    //     GroundModule::set_rhombus_offset(boma, &Vector2f{x:0.0, y:0.0});
-    // }
-    frame(lua_state, 83.0);
-    if is_excute(fighter) {
-        ArticleModule::remove_exist(boma, *FIGHTER_SNAKE_GENERATE_ARTICLE_NIKITA, ArticleOperationTarget(0));
-    }
-}
-#[acmd_script( agent = "snake", script = "expression_specialsstart", category = ACMD_EXPRESSION, low_priority )]
+
+#[acmd_script( agent = "snake", scripts = ["expression_specialsstart", "expression_specialairsstart"], category = ACMD_EXPRESSION, low_priority )]
 unsafe fn snake_side_special_expr(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -359,27 +344,13 @@ unsafe fn snake_side_special_expr(fighter : &mut L2CAgentBase) {
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, 0);
+        if !VarModule::is_flag(fighter.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
+            ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, 0);
+        }
     }
 }
-#[acmd_script( agent = "snake", script = "expression_specialairsstart", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn snake_side_special_air_expr(fighter : &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        ItemModule::set_have_item_visibility(boma, false, 0);
-    }
-    // frame(lua_state_agent, 25.0);
-    // if is_excute(fighter) {
-    //     ControlModule::set_rumble(boma, Hash40::new("rbkind_walk_hv"), 0, false);
-    // }
-    frame(lua_state, 21.0);
-    if is_excute(fighter) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_explosion"), 0, false, 0);
-    }
-}
-#[acmd_script( agent = "snake", script = "sound_specialsstart", category = ACMD_SOUND, low_priority )]
+
+#[acmd_script( agent = "snake", scripts = ["sound_specialsstart", "sound_specialairsstart"], category = ACMD_SOUND, low_priority )]
 unsafe fn snake_side_special_snd(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -389,7 +360,9 @@ unsafe fn snake_side_special_snd(fighter : &mut L2CAgentBase) {
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_snake_special_s01"));
+        if !VarModule::is_flag(fighter.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
+            PLAY_SE(fighter, Hash40::new("se_snake_special_s01"));
+        }
     }
     frame(lua_state, 41.0);
     if macros::is_excute(fighter) {
@@ -397,30 +370,6 @@ unsafe fn snake_side_special_snd(fighter : &mut L2CAgentBase) {
     }
     wait(lua_state, 11.0);
     if macros::is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_snake_special_s03"));
-    }
-    frame(lua_state, 80.0);
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_snake_special_s07"))
-    }
-}#[acmd_script( agent = "snake", script = "sound_specialairsstart", category = ACMD_SOUND, low_priority )]
-unsafe fn snake_side_special_air_snd(fighter : &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_snake_special_l05"))
-    }
-    frame(lua_state, 24.0);
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_snake_special_s01"));
-    }
-    frame(lua_state, 41.0);
-    if is_excute(fighter) {
-        PLAY_SE(fighter, Hash40::new("se_snake_special_s02"));
-    }
-    wait(lua_state, 11.0);
-    if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_snake_special_s03"));
     }
     frame(lua_state, 80.0);
@@ -428,7 +377,8 @@ unsafe fn snake_side_special_air_snd(fighter : &mut L2CAgentBase) {
         PLAY_SE(fighter, Hash40::new("se_snake_special_s07"))
     }
 }
-#[acmd_script( agent = "snake", script = "effect_specialsstart", category = ACMD_EFFECT, low_priority )]
+
+#[acmd_script( agent = "snake", scripts = ["effect_specialsstart", "effect_specialairsstart"], category = ACMD_EFFECT, low_priority )]
 unsafe fn snake_side_special_eff(fighter : &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -438,33 +388,18 @@ unsafe fn snake_side_special_eff(fighter : &mut L2CAgentBase) {
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
-        FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        // EFFECT(fighter, Hash40::new("sys_bananagun_shot"), Hash40::new("haver"), 3, 1, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_bananagun_shot"), Hash40::new("haver"), 0, 0.5, 3, 0, 0, 0, 0.4, true);
+        if !VarModule::is_flag(fighter.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
+            FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+            // EFFECT(fighter, Hash40::new("sys_bananagun_shot"), Hash40::new("haver"), 3, 1, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_bananagun_shot"), Hash40::new("haver"), 0, 0.5, 3, 0, 0, 0, 0.4, true);
+        }
     }
-    wait(lua_state, 1.0);
+    frame(lua_state, 25.0);
     if is_excute(fighter) {
-        // EFFECT(fighter, Hash40::new("sys_erace_smoke"), Hash40::new("haver"), 4.5, 1, 0, 0, 0, 0, 0.2, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_erace_smoke"), Hash40::new("haver"), 0, 1, 4.5, 0, 0, 0, 0.2, true);
-    }
-}
-#[acmd_script( agent = "snake", script = "effect_specialairsstart", category = ACMD_EFFECT, low_priority )]
-unsafe fn snake_side_special_air_eff(fighter : &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 3.0);
-    if is_excute(fighter) {
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), -3, 11, -2, 0, 0, 0, 0.4, true);
-    }
-    frame(lua_state, 24.0);
-    if is_excute(fighter) {
-        // EFFECT(fighter, Hash40::new("sys_bananagun_shot"), Hash40::new("haver"), 3, 1, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_bananagun_shot"), Hash40::new("haver"), 0, 0.5, 3, 0, 0, 0, 0.4, true);
-    }
-    wait(lua_state, 3.0);
-    if is_excute(fighter) {
-        // EFFECT(fighter, Hash40::new("sys_erace_smoke"), Hash40::new("haver"), 4.5, 1, 0, 0, 0, 0, 0.2, 0, 0, 0, 0, 0, 0, false);
-        EFFECT_FOLLOW(fighter, Hash40::new("sys_erace_smoke"), Hash40::new("haver"), 0, 1, 4.5, 0, 0, 0, 0.2, true);
+        if !VarModule::is_flag(fighter.battle_object, vars::snake::instance::TRANQ_NEED_RELEOAD) {
+            // EFFECT(fighter, Hash40::new("sys_erace_smoke"), Hash40::new("haver"), 4.5, 1, 0, 0, 0, 0, 0.2, 0, 0, 0, 0, 0, 0, false);
+            EFFECT_FOLLOW(fighter, Hash40::new("sys_erace_smoke"), Hash40::new("haver"), 0, 1, 4.5, 0, 0, 0, 0.2, true);
+        }
     }
 }
 
@@ -483,13 +418,9 @@ pub fn install() {
         snake_down_special_crouch_floor,
         snake_down_special_air_floor,
         snake_side_special_game,
-        snake_side_special_air_game,
         snake_side_special_expr,
-        snake_side_special_air_expr,
         snake_side_special_snd,
-        snake_side_special_air_snd,
         snake_side_special_eff,
-        snake_side_special_air_eff,
     );
 }
 

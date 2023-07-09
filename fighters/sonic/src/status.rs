@@ -4,6 +4,7 @@ mod dash;
 mod special_s;
 mod special_s_dash;
 mod special_lw_hold;
+mod special_hi;
 
 /// Prevents side b from being used again in air
 unsafe extern "C" fn should_use_special_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -41,4 +42,5 @@ pub fn install() {
     special_s::install();
     special_s_dash::install();
     special_lw_hold::install();
+    special_hi::install();
 }
