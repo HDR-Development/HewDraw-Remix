@@ -69,9 +69,15 @@ unsafe fn fix_hazards_for_online(ctx: &skyline::hooks::InlineCtx) {
   }
 }
 
+#[skyline::hook(offset = 0x298123C, inline)]
+unsafe fn lylat_no_rot(ctx: &mut skyline::hooks::InlineCtx) {
+    if *ctx.registers[8].x.as_ref() == 3 {
+        *ctx.registers[8].x.as_mut() = 5;
+    }
+}
+
 pub fn install() {
     skyline::patching::Patch::in_text(0x298236c).data(0x52800008u32);
-    skyline::patching::Patch::in_text(0x2981238).data(0x52800008u32);
 
     skyline::install_hooks!(
         stub,
@@ -79,5 +85,6 @@ pub fn install() {
         init_stage,
         handle_movement_grav_update,
         fix_hazards_for_online,
+        lylat_no_rot,
     );
 }
