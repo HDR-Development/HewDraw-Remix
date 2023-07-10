@@ -779,7 +779,7 @@
       <float hash="run_speed_max">1.6</float>
       <int hash="jump_squat_frame">4</int>
       <float hash="jump_speed_x">1</float>
-      <float hash="jump_speed_x_max">1.4</float>
+      <float hash="jump_speed_x_max">1.2</float>
       <float hash="jump_initial_y">12.03345</float>
       <float hash="mini_jump_y">12.6</float>
       <float hash="air_speed_x_stable">1</float>
