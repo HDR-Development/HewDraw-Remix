@@ -30,8 +30,8 @@ attack_s4_s:
 appeal_hi_r:
   extra:
     cancel_frame: 40
-'0x0c0577a55e':
-  game_script: '0x0f1a4fb882'
+attack_s4_s3:
+  game_script: game_attacks4s3
   flags:
     turn: false
     loop: false
@@ -49,11 +49,11 @@ appeal_hi_r:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x1441040363'
+  - name: c03attacks4s3.nuanmb
   scripts:
-  - '0x1519950ba3'
-  - '0x104171a88a'
-  - '0x1124e4ece9'
+  - expression_attacks4s3
+  - sound_attacks4s3
+  - effect_attacks4s3
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
@@ -97,7 +97,7 @@ attack_s4_s2:
     intangible_end_frame: 0
     cancel_frame: 40
     freeze_during_hitstop: false
-'0x0ce004c5ad':
+catch_walk_b:
   game_script: game_walkslow
   flags:
     turn: false
@@ -116,7 +116,7 @@ attack_s4_s2:
     unk_2000: false
   blend_frames: 6
   animations:
-  - name: '0x1455c9f58e'
+  - name: e01catchwalkb.nuanmb
   scripts:
   - expression_walkslow
   - sound_walkslow
@@ -126,7 +126,7 @@ attack_s4_s2:
     intangible_end_frame: 0
     cancel_frame: 0
     freeze_during_hitstop: false
-'0x0ce76901b4':
+catch_walk_f:
   game_script: game_walkslow
   flags:
     turn: false
@@ -145,7 +145,7 @@ attack_s4_s2:
     unk_2000: false
   blend_frames: 6
   animations:
-  - name: '0x14d183fb74'
+  - name: e01catchwalkf.nuanmb
   scripts:
   - expression_walkslow
   - sound_walkslow
@@ -167,8 +167,8 @@ special_s_start:
 item_light_throw_f:
   flags:
     move: false
-'0x12c4a633f1':
-  game_script: '0x156d847cd3'
+appeal_end_explode:
+  game_script: game_appealendexplode
   flags:
     turn: false
     loop: false
@@ -186,11 +186,11 @@ item_light_throw_f:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x1a07995de5'
+  - name: j01appealendexplode.nuanmb
   scripts:
-  - '0x1ade6f472f'
-  - '0x16912a27ff'
-  - '0x1776bbbcdf'
+  - expression_appealendexplode
+  - sound_appealendexplode
+  - effect_appealendexplode
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
@@ -211,8 +211,8 @@ special_air_lw_enemy:
 special_air_lw_ground:
   extra:
     cancel_frame: 16
-'0x1549444b02':
-  game_script: '0x170b878db3'
+special_lw_self_stick:
+  game_script: game_speciallwselfstick
   flags:
     turn: false
     loop: false
@@ -230,18 +230,18 @@ special_air_lw_ground:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x1c10c1da90'
+  - name: d03speciallwselfstick.nuanmb
   scripts:
-  - '0x1ddbc3ffdf'
-  - '0x18ce0f92cf'
-  - '0x193c561b30'
+  - expression_speciallwselfstick
+  - sound_speciallwselfstick
+  - effect_speciallwselfstick
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
     cancel_frame: 17
     freeze_during_hitstop: false
-'0x19458020d7':
-  game_script: '0x1a41dd44af'
+special_air_lw_self_stick:
+  game_script: game_specialairlwselfstick
   flags:
     turn: false
     loop: false
@@ -259,18 +259,18 @@ special_air_lw_ground:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x1fd5801a37'
+  - name: d03speciallwselfstick.nuanmb
   scripts:
-  - '0x206ca8e8c6'
-  - '0x1b320fd0d2'
-  - '0x1c74612e9f'
+  - expression_specialairlwselfstick
+  - sound_specialairlwselfstick
+  - effect_specialairlwselfstick
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
     cancel_frame: 25
     freeze_during_hitstop: false
-'0x1beee6b187':
-  game_script: '0x1c5791ec54'
+special_lw_squat_self_stick:
+  game_script: game_speciallwsquatselfstick
   flags:
     turn: false
     loop: false
@@ -288,11 +288,11 @@ special_air_lw_ground:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x21bb665190'
+  - name: d03speciallwsquatselfstick.nuanmb
   scripts:
-  - '0x21ca315c2d'
-  - '0x1d3a62cf60'
-  - '0x1e25b0675d'
+  - expression_speciallwsquatselfstick
+  - sound_speciallwsquatselfstick
+  - effect_speciallwsquatselfstick
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0

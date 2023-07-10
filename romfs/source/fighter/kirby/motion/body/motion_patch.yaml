@@ -28,8 +28,8 @@ attack_s4_hi:
 attack_air_f:
   extra:
     cancel_frame: 40
-'0x0c64cd5985':
-  game_script: '0x0f891541ba'
+special_hi_h:
+  game_script: game_specialhih
   flags:
     turn: false
     loop: false
@@ -47,11 +47,11 @@ attack_air_f:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x143b5529d5'
+  - name: d02specialhih.nuanmb
   scripts:
-  - '0x158acff29b'
-  - '0x10d22b51b2'
-  - '0x11b7be15d1'
+  - expression_specialhih
+  - sound_specialhih
+  - effect_specialhih
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
@@ -69,7 +69,7 @@ attack_air_lw:
 attack_air_hi:
   extra:
     cancel_frame: 35
-'0x0fbd87216d':
+demon_special_n:
   extra:
     cancel_frame: 134
 special_air_lw2:
@@ -78,8 +78,8 @@ special_air_lw2:
 elight_special_n:
   extra:
     cancel_frame: 71
-'0x10dc876e8f':
-  game_script: '0x121a0e7ddd'
+special_air_hi_h:
+  game_script: game_specialairhih
   flags:
     turn: false
     loop: false
@@ -97,11 +97,11 @@ elight_special_n:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x1731333998'
+  - name: d02specialairhih.nuanmb
   scripts:
-  - '0x188a6f97b8'
-  - '0x139fbe23c4'
-  - '0x14c15fbb12'
+  - expression_specialairhih
+  - sound_specialairhih
+  - effect_specialairhih
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
@@ -110,10 +110,10 @@ elight_special_n:
 elight_special_n2:
   extra:
     cancel_frame: 71
-'0x12bea7d362':
+demon_special_n_hi:
   extra:
     cancel_frame: 134
-'0x1314b7830a':
+demon_special_air_n:
   extra:
     cancel_frame: 110
 elight_special_air_n:
@@ -125,7 +125,7 @@ tantan_special_n_end:
 elight_special_air_n2:
   extra:
     cancel_frame: 71
-'0x1649d7e0a9':
+demon_special_air_n_hi:
   extra:
     cancel_frame: 110
 mewtwo_special_n_shoot:

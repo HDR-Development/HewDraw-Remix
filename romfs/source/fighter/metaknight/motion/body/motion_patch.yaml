@@ -57,8 +57,8 @@ fall_special_b:
   blend_frames: 5
 fall_special_f:
   blend_frames: 5
-'0x123d54f3d5':
-  game_script: '0x14a2e633c3'
+metaquick_summon_l:
+  game_script: game_metaquicksummon
   flags:
     turn: false
     loop: false
@@ -78,16 +78,16 @@ fall_special_f:
   animations:
   - name: d04finalstartl.nuanmb
   scripts:
-  - '0x1afab33726'
-  - '0x15b5356398'
-  - '0x169c834496'
+  - expression_metaquicksummon
+  - sound_metaquicksummon
+  - effect_metaquicksummon
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
     cancel_frame: 0
     freeze_during_hitstop: false
-'0x12c75bceb6':
-  game_script: '0x14a2e633c3'
+metaquick_summon_r:
+  game_script: game_metaquicksummon
   flags:
     turn: false
     loop: false
@@ -107,9 +107,9 @@ fall_special_f:
   animations:
   - name: d04finalstartr.nuanmb
   scripts:
-  - '0x1afab33726'
-  - '0x15b5356398'
-  - '0x169c834496'
+  - expression_metaquicksummon
+  - sound_metaquicksummon
+  - effect_metaquicksummon
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0

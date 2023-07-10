@@ -61,8 +61,8 @@ attack_s3_hi:
     move: false
   extra:
     cancel_frame: 33
-'0x0ff57e230a':
-  game_script: '0x1220d0d00f'
+special_s_boost:
+  game_script: game_specialsboost
   flags:
     turn: false
     loop: false
@@ -80,18 +80,18 @@ attack_s3_hi:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x177aa072da'
+  - name: d01specialsboost.nuanmb
   scripts:
-  - '0x18b0b13a6a'
-  - '0x13a5608e16'
-  - '0x14fb8116c0'
+  - expression_specialsboost
+  - sound_specialsboost
+  - effect_specialsboost
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
     cancel_frame: 0
     freeze_during_hitstop: false
-'0x13644a607d':
-  game_script: '0x150c4b6367'
+special_s_boost_end:
+  game_script: game_specialsboostend
   flags:
     turn: false
     loop: false
@@ -109,18 +109,18 @@ attack_s3_hi:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x1aa30b9979'
+  - name: d01specialsboostend.nuanmb
   scripts:
-  - '0x1bdc732094'
-  - '0x16f0e5384b'
-  - '0x171774a36b'
+  - expression_specialsboostend
+  - sound_specialsboostend
+  - effect_specialsboostend
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
     cancel_frame: 20
     freeze_during_hitstop: false
-'0x150a54a935':
-  game_script: '0x1723706a55'
+special_s_boost_start:
+  game_script: game_specialsbooststart
   flags:
     turn: false
     loop: false
@@ -138,18 +138,18 @@ attack_s3_hi:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x1cf1282274'
+  - name: d01specialsbooststart.nuanmb
   scripts:
-  - '0x1df3341839'
-  - '0x18e6f87529'
-  - '0x1914a1fcd6'
+  - expression_specialsbooststart
+  - sound_specialsbooststart
+  - effect_specialsbooststart
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
     cancel_frame: 0
     freeze_during_hitstop: false
-'0x1713c02ebb':
-  game_script: '0x180526df35'
+special_air_s_boost_end:
+  game_script: game_specialairsboostend
   flags:
     turn: false
     loop: false
@@ -167,11 +167,11 @@ attack_s3_hi:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x1d887dbeab'
+  - name: d01specialairsboostend.nuanmb
   scripts:
-  - '0x1e41f2b634'
-  - '0x195c506a3d'
-  - '0x1a71a0dc39'
+  - expression_specialairsboostend
+  - sound_specialairsboostend
+  - effect_specialairsboostend
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0

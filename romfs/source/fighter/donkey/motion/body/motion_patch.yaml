@@ -61,8 +61,8 @@ special_air_lw:
 special_lw_end:
   extra:
     cancel_frame: 22
-'0x0f1f594901':
-  game_script: '0x12f20a847a'
+attack_air_dash:
+  game_script: game_attackairdash
   flags:
     turn: false
     loop: false
@@ -80,11 +80,11 @@ special_lw_end:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x17f594ca6d'
+  - name: c00attackairdash.nuanmb
   scripts:
-  - '0x18626b6e1f'
-  - '0x1377bada63'
-  - '0x14295b42b5'
+  - expression_attackairdash
+  - sound_attackairdash
+  - effect_attackairdash
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0

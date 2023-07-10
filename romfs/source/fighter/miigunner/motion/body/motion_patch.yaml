@@ -27,9 +27,9 @@ attack_air_n:
 attack_s4_hold:
   flags:
     move: false
-'0x11676d5b78':
+special_n1_cancel:
   extra:
     cancel_frame: 9
-'0x151130af67':
+special_air_n1_cancel:
   extra:
     cancel_frame: 9

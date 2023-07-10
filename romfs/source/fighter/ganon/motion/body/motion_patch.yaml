@@ -17,9 +17,9 @@ float:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x0f4303321d'
+  - name: d00float.nuanmb
   scripts:
-  - '0x104c23c7ee'
+  - expression_float
   - sound_float
   - effect_float
   extra:
@@ -70,8 +70,8 @@ attack_hi3:
 appeal_lw_r:
   extra:
     cancel_frame: 90
-'0x0b3b020bb1':
-  game_script: '0x0f861ab11f'
+float_start:
+  game_script: game_floatstart
   flags:
     turn: false
     loop: false
@@ -89,11 +89,11 @@ appeal_lw_r:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x14e4b32001'
+  - name: d00floatstart.nuanmb
   scripts:
-  - '0x1585c0023e'
-  - '0x10dd24a117'
-  - '0x11b8b1e574'
+  - expression_floatstart
+  - sound_floatstart
+  - effect_floatstart
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
@@ -199,8 +199,8 @@ fall_special_b:
   blend_frames: 6
 fall_special_f:
   blend_frames: 6
-'0x0fd667a88f':
-  game_script: '0x126b46c6c1'
+float_air_start:
+  game_script: game_floatairstart
   flags:
     turn: false
     loop: false
@@ -218,11 +218,11 @@ fall_special_f:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x17be84f998'
+  - name: d00floatairstart.nuanmb
   scripts:
-  - '0x18fb272ca4'
-  - '0x13eef698d8'
-  - '0x14b017000e'
+  - expression_floatairstart
+  - sound_floatairstart
+  - effect_floatairstart
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0

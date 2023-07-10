@@ -51,8 +51,8 @@ attack_s3_hi:
 special_n_end:
   extra:
     cancel_frame: 20
-'0x0d2a893015':
-  game_script: '0x11979ee57f'
+attack_lw4_2:
+  game_script: game_attacklw42
   flags:
     turn: false
     loop: false
@@ -70,11 +70,11 @@ special_n_end:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x163b52edbe'
+  - name: c04attacklw42.nuanmb
   scripts:
-  - '0x1749691170'
-  - '0x1242f0242d'
-  - '0x137d91fc55'
+  - expression_attacklw42
+  - sound_attacklw42
+  - effect_attacklw42
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0

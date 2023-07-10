@@ -93,8 +93,8 @@ special_n_shoot:
 special_n_failure:
   extra:
     cancel_frame: 30
-'0x11595ae78d':
-  game_script: '0x14baa8e41c'
+special_n_explode:
+  game_script: game_specialnexplode
   flags:
     turn: false
     loop: false
@@ -112,11 +112,11 @@ special_n_failure:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x19762e0f16'
+  - name: d00specialnexplode.nuanmb
   scripts:
-  - '0x1ae2fde0f9'
-  - '0x15ad7bb447'
-  - '0x1684cd9349'
+  - expression_specialnexplode
+  - sound_specialnexplode
+  - effect_specialnexplode
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
@@ -125,8 +125,8 @@ special_n_failure:
 item_light_throw_f:
   flags:
     move: false
-'0x13718ee0e5':
-  game_script: '0x1562ef4ce6'
+special_air_lw_pogo:
+  game_script: game_specialairlwpogo
   flags:
     turn: false
     loop: false
@@ -144,11 +144,11 @@ item_light_throw_f:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x1afcf5bab5'
+  - name: d03specialairlwpogo.nuanmb
   scripts:
-  - '0x1bb2d70f15'
-  - '0x169e4117ca'
-  - '0x1779d08cea'
+  - expression_specialairlwpogo
+  - sound_specialairlwpogo
+  - effect_specialairlwpogo
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
@@ -157,8 +157,8 @@ item_light_throw_f:
 special_air_n_shoot:
   extra:
     cancel_frame: 37
-'0x14069d2cca':
-  game_script: '0x16aabb267d'
+special_s_drag_slide:
+  game_script: game_specialsdragslide
   flags:
     turn: false
     loop: false
@@ -176,18 +176,18 @@ special_air_n_shoot:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x1bf02526f8'
+  - name: d01specialsdragslide.nuanmb
   scripts:
-  - '0x1c8edfbd98'
-  - '0x17989fe4c5'
-  - '0x18a3165596'
+  - expression_specialsdragslide
+  - sound_specialsdragslide
+  - effect_specialsdragslide
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
     cancel_frame: 43
     freeze_during_hitstop: false
-'0x152f071392':
-  game_script: '0x1761589d10'
+special_air_n_explode:
+  game_script: game_specialairnexplode
   flags:
     turn: false
     loop: false
@@ -205,11 +205,11 @@ special_air_n_shoot:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x1cc83d03ef'
+  - name: d00specialairnexplode.nuanmb
   scripts:
-  - '0x1db11cef7c'
-  - '0x18a4d0826c'
-  - '0x1956890b93'
+  - expression_specialairnexplode
+  - sound_specialairnexplode
+  - effect_specialairnexplode
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
@@ -218,8 +218,8 @@ special_air_n_shoot:
 special_air_n_failure:
   extra:
     cancel_frame: 30
-'0x1795c59be3':
-  game_script: '0x19c8b495ba'
+special_lw_pogo_landing:
+  game_script: game_speciallwpogolanding
   flags:
     turn: false
     loop: false
@@ -237,11 +237,11 @@ special_air_n_failure:
     unk_2000: false
   blend_frames: 0
   animations:
-  - name: '0x1e548fde00'
+  - name: d03speciallwpogolanding.nuanmb
   scripts:
-  - '0x1fbff77145'
-  - '0x1ac6366b3d'
-  - '0x1bc1765f92'
+  - expression_speciallwpogolanding
+  - sound_speciallwpogolanding
+  - effect_speciallwpogolanding
   extra:
     intangible_start_frame: 0
     intangible_end_frame: 0
