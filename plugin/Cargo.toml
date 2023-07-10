@@ -27,6 +27,7 @@ once_cell = "1"
 hid-hdr = { git = "https://github.com/HDR-Development/hid-hdr", features = [
     "warnings",
 ] }
+runtime-motion-patcher.git = "https://github.com/blu-dev/runtime-motion-patcher"
 
 [patch.crates-io]
 ring = { git = "https://github.com/skyline-rs/ring", branch = "0.16.20" }
