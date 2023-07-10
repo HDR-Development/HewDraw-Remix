@@ -10,20 +10,10 @@ if status_kind == *FIGHTER_SONIC_STATUS_KIND_SPECIAL_S_TURN && boma.is_input_jum
   }
 }
 
-// Allows Sonic to land during upB before he completes the spin at the top
-unsafe fn up_special_early_landing(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_SONIC_STATUS_KIND_SPECIAL_HI_JUMP) {
-        if GroundModule::is_touch(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
-        }
-    }
-}
-
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     sonic_spindash_jump_waveland(boma, status_kind, situation_kind, cat[0]);
     //sonic_moveset(boma, situation_kind, status_kind, motion_kind, frame, cat[0], id);
     //sonic_lightspeed_dash(boma, status_kind, motion_kind, situation_kind, cat[0], id);
-    up_special_early_landing(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_SONIC )]

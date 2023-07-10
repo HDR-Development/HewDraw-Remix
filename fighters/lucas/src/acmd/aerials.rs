@@ -295,7 +295,7 @@ unsafe fn lucas_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        MotionModule::set_rate(boma, (37.0-11.0)/17.0); //shifts FAF to (28)
+        MotionModule::set_rate(boma, (37.0-11.0)/18.0); //shifts FAF to (28)
     }
     frame(lua_state, 37.0);
     if is_excute(fighter) {
