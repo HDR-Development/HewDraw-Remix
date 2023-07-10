@@ -222,8 +222,7 @@ unsafe fn motion_update(energy: &mut FighterKineticEnergyMotion, boma: &mut Batt
 
         // Double traction while above max walk speed
         if StatusModule::status_kind(boma) <= 0x1DB  // only affects common statuses
-        && boma.is_situation(*SITUATION_KIND_GROUND)
-        && boma.status_frame() > 0 {
+        && boma.is_situation(*SITUATION_KIND_GROUND) {
             let mut damage_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_DAMAGE) as *mut app::KineticEnergy;
             let damage_speed_x = app::lua_bind::KineticEnergy::get_speed_x(damage_energy);
             // If our speed is being influenced by knockback, we handle double traction elsewhere
