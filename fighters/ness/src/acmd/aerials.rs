@@ -9,7 +9,7 @@ unsafe fn game_attackairn(fighter: &mut L2CAgentBase) {
     frame(lua_state, 5.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        ATTACK(fighter, 0, 0, Hash40::new("handr"), 11.0, 361, 100, 0, 25, 4.0, 2.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
+        ATTACK(fighter, 0, 0, Hash40::new("handr"), 11.0, 361, 100, 0, 25, 4.0, 2.4, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
         ATTACK(fighter, 1, 0, Hash40::new("handl"), 11.0, 361, 100, 0, 25, 4.0, 2.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
         ATTACK(fighter, 2, 0, Hash40::new("hip"), 11.0, 361, 100, 0, 25, 5.4, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
     }
@@ -115,33 +115,6 @@ unsafe fn game_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ness", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
-unsafe fn effect_attackairhi(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 8.5);
-    if is_excute(fighter) {
-        fighter.clear_lua_stack();
-        lua_args!(fighter, Hash40::new("ness_psi_rush"), Hash40::new("haver"), -0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 1.4, true);
-        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(fighter.lua_state_agent);
-        fighter.pop_lua_stack(1);
-    }
-    frame(lua_state, 11.25);
-    if is_excute(fighter) {
-        fighter.clear_lua_stack();
-        lua_args!(fighter, Hash40::new("ness_psi_rush"), Hash40::new("haver"), -0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 1.4, true);
-        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(fighter.lua_state_agent);
-        fighter.pop_lua_stack(1);
-    }
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        fighter.clear_lua_stack();
-        lua_args!(fighter, Hash40::new("ness_psi_rush"), Hash40::new("haver"), -0.5, 3.0, 0.0, 0.0, 0.0, 0.0, 1.4, true);
-        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(fighter.lua_state_agent);
-        fighter.pop_lua_stack(1);
-    }
-}
-
 #[acmd_script( agent = "ness", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackairlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -187,7 +160,45 @@ unsafe fn effect_attackairb(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 10.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW_FLIP(agent, Hash40::new("ness_psi_atk"), Hash40::new("ness_psi_atk"), Hash40::new("top"), -3, 4, -8.5, 0, 180, 0, 1.25, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("ness_psi_atk"), Hash40::new("ness_psi_atk"), Hash40::new("top"), -3.0, 4, -8.45, 0, 180, 0, 1.24, true, *EF_FLIP_YZ);
+    }
+}
+
+#[acmd_script( agent = "ness", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attackairhi(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 8, 0, 0, 285, 275, 0.5, true);
+    }
+    frame(lua_state, 8.2);
+    if is_excute(fighter) {
+        fighter.clear_lua_stack();
+        lua_args!(fighter, Hash40::new("ness_psi_rush"), Hash40::new("top"), 0.0, 10.2, -5.5, 0.0, 0.0, 0.0, 0.82, true);
+        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(fighter.lua_state_agent);
+        fighter.pop_lua_stack(1);
+    }
+    frame(lua_state, 8.5);
+    if is_excute(fighter) {
+        fighter.clear_lua_stack();
+        lua_args!(fighter, Hash40::new("ness_psi_rush"), Hash40::new("top"), 0.0, 13.2, -1.0, 0.0, 0.0, 0.0, 0.9, true);
+        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(fighter.lua_state_agent);
+        fighter.pop_lua_stack(1);
+    }
+    frame(lua_state, 9.75);
+    if is_excute(fighter) {
+        fighter.clear_lua_stack();
+        lua_args!(fighter, Hash40::new("ness_psi_rush"), Hash40::new("top"), 0.0, 10, 4.8, 0.0, 0.0, 0.0, 0.82, true);
+        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(fighter.lua_state_agent);
+        fighter.pop_lua_stack(1);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        fighter.clear_lua_stack();
+        lua_args!(fighter, Hash40::new("ness_psi_rush"), Hash40::new("top"), 0.0, 5.0, 5.4, 0.0, 0.0, 0.0, 0.78, true);
+        smash::app::sv_animcmd::EFFECT_FOLLOW_NO_SCALE(fighter.lua_state_agent);
+        fighter.pop_lua_stack(1);
     }
 }
 
@@ -197,14 +208,15 @@ unsafe fn effect_attackairlw(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 3.0);
     if is_excute(agent) {
-        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, -4.2, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, true);
+        EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, -4.0, 0, 0, 0, 0, 0.25, 0, 0, 0, 0, 0, 0, true);
         LAST_EFFECT_SET_RATE(agent, 1.3);
     }
     frame(lua_state, 20.0);
     if is_excute(agent) {
-        EFFECT_FOLLOW_FLIP(agent, Hash40::new("ness_psi_atk"), Hash40::new("ness_psi_atk"), Hash40::new("top"), 0.5, -0.1, 0, 0, 0, 0, 1.5, true, *EF_FLIP_YZ);
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("ness_psi_atk"), Hash40::new("ness_psi_atk"), Hash40::new("top"), 0.5, -0.25, 0, 0, 0, 0, 1.5, true, *EF_FLIP_YZ);
     }
 }
+
 
 #[acmd_script( agent = "ness", script = "sound_attackairhi", category = ACMD_SOUND, low_priority )]
 unsafe fn sound_attackairhi(fighter: &mut L2CAgentBase) {

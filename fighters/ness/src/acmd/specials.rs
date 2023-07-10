@@ -79,7 +79,6 @@ unsafe fn sound_specialairs(fighter: &mut L2CAgentBase) {
 unsafe fn special_lw_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    //wait_loop_clear(lua_state);
     for _ in 0..999 {
         if is_excute(fighter) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 5.5, 361, 100, 70, 0, 8.5, 0.0, 6.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 20, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_ENERGY);
@@ -87,12 +86,11 @@ unsafe fn special_lw_hold_game(fighter: &mut L2CAgentBase) {
     }
 
 }
-//We need to change magnet graphic/hitbox to center it at 4.5 instead of 6.5. This is where the center of ness's body is. Currently it is slightly offset vertically upwards
+
 #[acmd_script( agent = "ness", script = "game_specialairlwhold" , category = ACMD_GAME , low_priority)]
 unsafe fn special_air_lw_hold_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    //wait_loop_clear(lua_state);
     for _ in 0..999 {
         if is_excute(fighter) {
             ATTACK(fighter, 0, 0, Hash40::new("top"), 5.5, 361, 100, 70, 0, 8.5, 0.0, 6.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 20, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PSI);
@@ -148,9 +146,9 @@ unsafe fn effect_speciallwend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
         LAST_EFFECT_SET_RATE(agent, 1.3);
-        EFFECT_FOLLOW(agent, Hash40::new("ness_psimagnet_end"), Hash40::new("trans"), 0, 6.5, 0, 0, 0, 0, 0.6, false);
+        EFFECT_FOLLOW(agent, Hash40::new("ness_psimagnet_end"), Hash40::new("trans"), 0, 6.5, 0, 0, 0, 0, 0.7, false);
         FLASH(agent, 0.5, 1, 1, 0.4);
     }
     wait(lua_state, 5.0);
@@ -168,7 +166,7 @@ unsafe fn effect_specialairlwend(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
     if is_excute(agent) {
-        EFFECT_FOLLOW(agent, Hash40::new("ness_psimagnet_end"), Hash40::new("trans"), 0, 6.5, 0, 0, 0, 0, 0.6, false);
+        EFFECT_FOLLOW(agent, Hash40::new("ness_psimagnet_end"), Hash40::new("trans"), 0, 6.5, 0, 0, 0, 0, 0.7, false);
         FLASH(agent, 0.5, 1, 1, 0.4);
     }
     wait(lua_state, 5.0);
