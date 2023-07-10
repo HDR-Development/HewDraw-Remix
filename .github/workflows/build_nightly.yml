@@ -91,6 +91,12 @@ jobs:
     - name: checkout version
       uses: actions/checkout@v2
 
+    - name: Rust Cache
+      uses: Swatinem/rust-cache@v2.5.1
+      with:
+        workspaces: "plugin"
+        cache-directories: "~/.cargo"
+
     # build the project
     - run: |
         cd scripts && python3 make_dist.py build version=${{ needs.version_and_changelog.outputs.version }}-nightly name=hdr && cd ..
