@@ -59,35 +59,6 @@ attack_hi3_s:
 attack_lw3_s:
   extra:
     cancel_frame: 25
-'0x0cfb2dde24':
-  game_script: '0x0f28645243'
-  flags:
-    turn: false
-    loop: false
-    move: true
-    fix_trans: false
-    fix_rot: false
-    fix_scale: false
-    unk_40: false
-    unk_80: true
-    unk_100: false
-    unk_200: false
-    unk_400: false
-    unk_800: false
-    unk_1000: false
-    unk_2000: false
-  blend_frames: 0
-  animations:
-  - name: d04finalhit.nuanmb
-  scripts:
-  - '0x152bbee162'
-  - '0x10735a424b'
-  - '0x1116cf0628'
-  extra:
-    intangible_start_frame: 0
-    intangible_end_frame: 0
-    cancel_frame: 0
-    freeze_during_hitstop: true
 special_air_n:
   extra:
     cancel_frame: 70
