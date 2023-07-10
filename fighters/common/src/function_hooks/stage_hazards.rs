@@ -35,7 +35,6 @@ unsafe fn stub() {}
 static HAZARDLESS_STAGE_IDS: &[u32] = &[
     0x3b, // venom
     0x3e, // brinstar
-    0x59, // lylat    
     0x62, // skyworld
     0x68, // wario ware,
     0x6e, // halberd
@@ -71,6 +70,9 @@ unsafe fn fix_hazards_for_online(ctx: &skyline::hooks::InlineCtx) {
 }
 
 pub fn install() {
+    skyline::patching::Patch::in_text(0x298236c).data(0x52800008u32);
+    skyline::patching::Patch::in_text(0x2981238).data(0x52800008u32);
+
     skyline::install_hooks!(
         stub,
         area_manager_process,
