@@ -1,0 +1,35 @@
+escape:
+  flags:
+    move: false
+attack_12:
+  extra:
+    cancel_frame: 20
+attack_13:
+  extra:
+    cancel_frame: 35
+attack_11:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 17
+attack_hi3:
+  extra:
+    cancel_frame: 35
+attack_s4_s:
+  flags:
+    move: false
+attack_air_b:
+  extra:
+    cancel_frame: 42
+attack_air_n:
+  extra:
+    cancel_frame: 39
+attack_s4_hold:
+  flags:
+    move: false
+'0x11676d5b78':
+  extra:
+    cancel_frame: 9
+'0x151130af67':
+  extra:
+    cancel_frame: 9
