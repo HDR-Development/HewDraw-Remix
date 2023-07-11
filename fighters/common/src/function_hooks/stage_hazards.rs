@@ -78,6 +78,10 @@ unsafe fn lylat_no_rot(ctx: &mut skyline::hooks::InlineCtx) {
 
 pub fn install() {
     skyline::patching::Patch::in_text(0x298236c).data(0x52800008u32);
+    skyline::patching::Patch::in_text(0x28444cc).data(0x52800009u32);
+    skyline::patching::Patch::in_text(0x28440f4).data(0x52800009u32);
+    skyline::patching::Patch::in_text(0x2844500).nop();
+    skyline::patching::Patch::in_text(0x2844128).nop();
 
     skyline::install_hooks!(
         stub,
