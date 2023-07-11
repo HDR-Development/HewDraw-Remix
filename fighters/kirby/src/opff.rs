@@ -350,16 +350,13 @@ unsafe fn max_water_shuriken_dc(boma: &mut BattleObjectModuleAccessor, status_ki
 }
 
 // Frizz Dash Cancel
-unsafe fn dash_cancel_frizz(boma: &mut BattleObjectModuleAccessor, fighter: &mut L2CFighterCommon, status_kind: i32, situation_kind: i32, motion_kind: u64, cat1: i32, frame: f32) {
+unsafe fn dash_cancel_frizz(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, motion_kind: u64, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_BRAVE_SPECIAL_N_SHOOT {
         if motion_kind == hash40("brave_special_n1") {
             if frame > 20.0 {
                 boma.check_dash_cancel();
            }
        }
-    }
-    if boma.check_dash_cancel() {
-        EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 0, 15, -2, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
@@ -473,7 +470,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     max_water_shuriken_dc(boma, status_kind, situation_kind, cat[0], frame);
 
     // Frizz Dash Cancel
-    dash_cancel_frizz(boma, fighter, status_kind, situation_kind, motion_kind, cat[0], frame);
+    dash_cancel_frizz(boma, status_kind, situation_kind, motion_kind, cat[0], frame);
 
     // Firaga and Thundaga Cancels
     magic_cancels(boma, status_kind, situation_kind, cat[0], frame);
