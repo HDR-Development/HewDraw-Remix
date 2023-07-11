@@ -66,10 +66,10 @@ unsafe fn falco_attack_air_n_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "falco", script = "expression_attackairn" , category = ACMD_EXPRESSION , low_priority)]
 unsafe fn falco_attack_air_n_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
-        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_attacks"), 0, false, 0 as u32);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
@@ -287,6 +287,20 @@ unsafe fn falco_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "falco", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn falco_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 #[acmd_script( agent = "falco", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn falco_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -388,6 +402,7 @@ pub fn install() {
         falco_attack_air_b_sound,
         falco_attack_air_b_game,
         falco_attack_air_b_effect,
+        falco_attack_air_b_expression,
         falco_attack_air_hi_game,
         falco_attack_air_lw_game,
     );
