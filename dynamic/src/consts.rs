@@ -758,6 +758,10 @@ pub mod vars {
             // flags
             pub const ELWIND1_CANCEL: i32 = 0x1100;
         }
+        pub mod instance {
+            //flags
+            pub const THUNDER_CHARGE: i32 = 0x0100;
+        }
     }
 
     pub mod roy {
