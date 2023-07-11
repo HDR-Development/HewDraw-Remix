@@ -305,6 +305,155 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
     }
 }
 
+// Fox Laser Land Cancel
+unsafe fn fox_laser_fastfall_landcancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_FOX_SPECIAL_N {
+        if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+        } else if situation_kind == *SITUATION_KIND_AIR {
+            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
+                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            }
+        }
+    }
+}
+
+// Falco Laser Land Cancel
+unsafe fn falco_laser_fastfall_landcancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_FALCO_SPECIAL_N {
+        if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+        } else if situation_kind == *SITUATION_KIND_AIR {
+            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
+                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            }
+        }
+    }
+}
+
+// Laser Airdodge Cancel
+unsafe fn airdodge_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_WOLF_SPECIAL_N {
+        if frame > 17.0 {
+            boma.check_airdodge_cancel();
+        }
+    }
+}
+
+// Water Shuriken Max Dash Cancel
+unsafe fn max_water_shuriken_dc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_GEKKOUGA_SPECIAL_N_MAX_SHOT {
+        if frame > 12.0 {
+            boma.check_dash_cancel();
+        }
+    }
+}
+
+// Frizz Dash Cancel
+unsafe fn dash_cancel_frizz(boma: &mut BattleObjectModuleAccessor, fighter: &mut L2CFighterCommon, status_kind: i32, situation_kind: i32, motion_kind: u64, cat1: i32, frame: f32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_BRAVE_SPECIAL_N_SHOOT {
+        if motion_kind == hash40("brave_special_n1") {
+            if frame > 20.0 {
+                boma.check_dash_cancel();
+           }
+       }
+    }
+    if boma.check_dash_cancel() {
+        EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 0, 15, -2, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+// Firaga Airdodge Cancel
+unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N1_SHOOT {
+        if frame > 2.0 {
+            boma.check_airdodge_cancel();
+        }
+    }
+    // Thundaga Land Cancel
+    if boma.is_status(*FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N3)
+    && boma.is_situation(*SITUATION_KIND_GROUND)
+    && boma.is_prev_situation(*SITUATION_KIND_AIR)
+    {
+        let special_n_fire_cancel_frame_ground = 69.0;
+        let landing_lag = 12.0;
+        if MotionModule::frame(boma) < (special_n_fire_cancel_frame_ground - landing_lag) {
+            MotionModule::set_frame_sync_anim_cmd(boma, special_n_fire_cancel_frame_ground - landing_lag, true, true, true);
+        }
+    }
+}
+
+
+// Bite Early Throw and Turnaround
+unsafe fn bite_early_throw_turnaround(boma: &mut BattleObjectModuleAccessor, status_kind: i32, stick_x: f32, facing: f32, frame: f32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_WARIO_SPECIAL_N_BITE {
+        if compare_mask(ControlModule::get_pad_flag(boma), *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER) {
+            boma.change_status_req(*FIGHTER_KIRBY_STATUS_KIND_WARIO_SPECIAL_N_BITE_END, false);
+        }
+    }
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_WARIO_SPECIAL_N_BITE_END {
+        if frame < 7.0 {
+            if facing * stick_x < 0.0 {
+                PostureModule::reverse_lr(boma);
+                PostureModule::update_rot_y_lr(boma);
+            }
+        }
+    }
+}
+
+// Chef Land Cancel
+unsafe fn ff_chef_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_GAMEWATCH_SPECIAL_N {
+        if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+        }
+        if situation_kind == *SITUATION_KIND_AIR {
+            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66
+                && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
+                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            }
+        }
+        if MotionModule::frame(boma) <= 1.0 {
+            let nspec_halt = Vector3f{x: 0.9, y: 1.0, z: 1.0};
+            KineticModule::mul_speed(boma, &nspec_halt, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        }
+    }
+}
+
+unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_GAMEWATCH_SPECIAL_N {
+        if frame <= 19.0 {
+            MotionModule::set_rate(boma, 2.0);
+        }
+        if frame > 19.0 {
+            MotionModule::set_rate(boma, 1.0);
+        }
+    }
+}
+
+// Nayru's Love Land Cancel and Fast Fall
+unsafe fn nayru_fastfall_land_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32, frame: f32) {
+    if status_kind == *FIGHTER_KIRBY_STATUS_KIND_ZELDA_SPECIAL_N {
+        if situation_kind == *SITUATION_KIND_GROUND {
+            if StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR && frame < 55.0 {
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
+                MotionModule::set_frame_sync_anim_cmd(boma, 56.0, true, true, false);
+            }
+        }
+        else if situation_kind == *SITUATION_KIND_AIR {
+            if frame >= 31.0 {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+                if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
+                    WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+                }
+            }
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     final_cutter_landing_bugfix(fighter);
     horizontal_cutter(fighter);
@@ -313,6 +462,34 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
     // Magic Series
     magic_series(boma, id, cat, status_kind, situation_kind, motion_kind, stick_x, stick_y, facing, frame);
+
+    // Fox Laser Land Cancel and Fast Fall
+    fox_laser_fastfall_landcancel(boma, status_kind, situation_kind, cat[1], stick_y);
+
+    // Falco Laser Land Cancel and Fast Fall
+    falco_laser_fastfall_landcancel(boma, status_kind, situation_kind, cat[1], stick_y);
+
+    // Water Shuriken Max Dash Cancel
+    max_water_shuriken_dc(boma, status_kind, situation_kind, cat[0], frame);
+
+    // Frizz Dash Cancel
+    dash_cancel_frizz(boma, fighter, status_kind, situation_kind, motion_kind, cat[0], frame);
+
+    // Firaga and Thundaga Cancels
+    magic_cancels(boma, status_kind, situation_kind, cat[0], frame);
+
+    // Bite Early Throw and Turnaround
+    bite_early_throw_turnaround(boma, status_kind, stick_x, facing, frame);
+
+    // Chef Land Cancel
+    ff_chef_land_cancel(boma, status_kind, situation_kind, cat[1], stick_y);
+    frame_data(boma, status_kind, motion_kind, frame);
+
+    // Nayru's Love Land Cancel and Fast Fall
+    nayru_fastfall_land_cancel(boma, status_kind, situation_kind, cat[2], stick_y, frame);
+
+    // Laser Airdodge Cancel
+    airdodge_cancel(boma, status_kind, situation_kind, cat[0], frame);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_KIRBY )]

@@ -46,6 +46,16 @@ unsafe fn kirby_special_n_large_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "kirby", scripts = ["effect_shizuespecialnfailure", "effect_shizuespecialairnfailure"] , category = ACMD_EFFECT , low_priority)]
+unsafe fn shizue_special_n_failure_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        EFFECT(fighter, Hash40::new("shizue_cracker"), Hash40::new("handl"), 0.0, 0.0, 0.0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+
 #[acmd_script( agent = "kirby", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
 unsafe fn kirby_special_s_start_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -547,6 +557,9 @@ pub fn install() {
         kirby_special_air_hi_h_sound,
         kirby_special_air_lw_game,
         kirby_special_air_lw_effect,
+
+        // Copy Ability
+        shizue_special_n_failure_effect,
     );
 }
 
