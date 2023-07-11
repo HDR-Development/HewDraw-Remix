@@ -30,28 +30,10 @@ unsafe fn parachute_dj(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
     }
 }
 
-// Game & Watch Fair cake box position readjustment
-unsafe fn fair_repositioning(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
-    if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR && motion_kind == hash40("attack_air_f") {
-        if frame < 10.0 {
-            ModelModule::set_joint_translate(boma, Hash40::new("havel"), &Vector3f{ x: -3.5, y: 6.5, z: 0.0 }, false, false);
-            ModelModule::set_joint_rotate(boma, Hash40::new("havel"), &Vector3f{ x: -15.0, y: 0.0, z: 0.0 }, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
-            ModelModule::set_joint_rotate(boma, Hash40::new("shoulderl"), &Vector3f{ x: 0.0, y: 0.0, z: -40.0 }, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
-            ModelModule::set_joint_rotate(boma, Hash40::new("shoulderr"), &Vector3f{ x: 0.0, y: 0.0, z: 40.0 }, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
-        }
-        else {
-            // -2.0/9.0/0.0; in relation to the havel bone, x is down right, y is down left
-            ModelModule::set_joint_translate(boma, Hash40::new("havel"), &Vector3f{x:-2.5, y: 9.0, z: 0.0 }, false, false);
-            ModelModule::set_joint_rotate(boma, Hash40::new("havel"), &Vector3f{ x: 5.0, y: 0.0, z: 0.0 }, MotionNodeRotateCompose{_address: *MOTION_NODE_ROTATE_COMPOSE_AFTER as u8}, MotionNodeRotateOrder{_address: *MOTION_NODE_ROTATE_ORDER_XYZ as u8});
-        }
-    }
-}
-
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
 
     ff_chef_land_cancel(boma, status_kind, situation_kind, cat[1], stick_y);
     parachute_dj(boma, status_kind, situation_kind, cat[0]);
-    fair_repositioning(boma, status_kind, motion_kind, frame);
     //jc_oil_panic_reflect(boma, status_kind, situation_kind); 
     jc_judge_four(boma, motion_kind, situation_kind);
     dthrow_reverse(boma, motion_kind);

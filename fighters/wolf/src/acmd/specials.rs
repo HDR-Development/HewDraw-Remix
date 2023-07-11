@@ -29,6 +29,8 @@ unsafe fn wolf_special_s_end_game(fighter: &mut L2CAgentBase) {
     
 }
 
+
+
 #[acmd_script( agent = "wolf", script = "game_specialhi" , category = ACMD_GAME , low_priority)]
 unsafe fn wolf_special_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
