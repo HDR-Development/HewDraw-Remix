@@ -88,7 +88,7 @@ unsafe fn nspecial_mechanics(fighter: &mut L2CFighterCommon, boma: &mut BattleOb
         if fighter.is_situation(*SITUATION_KIND_AIR) {
             if fighter.is_cat_flag(Cat1::AirEscape)  {
                 ControlModule::reset_trigger(boma);
-                StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_FALL_AERIAL, true);
+                StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_FALL, true);
                 ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
             }//drift
             KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
