@@ -928,6 +928,7 @@ pub mod vars {
 
             // floats
             pub const SPECIAL_LW_LR: i32 = 0x1100;
+            pub const ADD_DAMAGE: i32 = 0x1101;
         }
         pub mod instance {
             // flags

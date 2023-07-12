@@ -9,7 +9,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     actionable_teleport_air(fighter, boma, id, status_kind, situation_kind, frame);
     aegis_reflector_timer(fighter, boma, id);
     var_reset(fighter, id, status_kind);
-    aegis_reflector_training(fighter, id, status_kind);
+    training_mode_taunts(fighter, id, status_kind);
     dj_upB_jump_refresh(fighter);
     power_board(fighter, boma, status_kind);
     color_charge(fighter);
@@ -134,11 +134,23 @@ unsafe fn var_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32)
     }
 }
 
-// Training Mode Aegis Reflector timer taunt reset
-unsafe fn aegis_reflector_training(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
+// Training Mode Aegis Reflector timer taunt reset & color charging
+unsafe fn training_mode_taunts(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
     if is_training_mode() {
         if status_kind == *FIGHTER_STATUS_KIND_APPEAL || !smash::app::sv_information::is_ready_go() {
             VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
+        }
+        if (fighter.is_motion(Hash40::new("appeal_s_r")) || fighter.is_motion(Hash40::new("appeal_s_l")))
+        && fighter.motion_frame() == 2.0 {
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
+        }
+        if (fighter.is_motion(Hash40::new("appeal_hi_r")) || fighter.is_motion(Hash40::new("appeal_hi_l")))
+        && fighter.motion_frame() == 2.0 {
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 2);
+        }
+        if (fighter.is_motion(Hash40::new("appeal_lw_r")) || fighter.is_motion(Hash40::new("appeal_lw_l")))
+        && fighter.motion_frame() == 2.0 {
+            VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 3);
         }
     }
 }
