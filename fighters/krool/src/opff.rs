@@ -91,9 +91,9 @@ pub unsafe fn armored_charge(fighter: &mut L2CFighterCommon, motion_kind: u64) {
             }
             else {
                 if fighter.motion_frame() == charge_start_frame {
-                    if WorkModule::get_float(fighter.module_accessor, 0x4d) >= 1.0 {
-                        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
-                    }
+                    // if WorkModule::get_float(fighter.module_accessor, 0x4d) >= 1.0 {
+                    //     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_KROOL_INSTANCE_WORK_ID_FLAG_REQUEST_WAIST_SHIELD_ON);
+                    // }
                     let facing = eff_offset.z * PostureModule::lr(fighter.module_accessor);
                     smash_script::macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_level_up"), Hash40::new("hip"), eff_offset.x, eff_offset.y, facing, 0, 0, 0, 0.55, true);
                     smash_script::macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_krool_rnd_attack"));

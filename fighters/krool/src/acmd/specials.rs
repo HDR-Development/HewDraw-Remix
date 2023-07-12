@@ -13,8 +13,7 @@ unsafe fn krool_special_n_fire_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 25.0);
     FT_MOTION_RATE(fighter, 1.0);
     if is_excute(fighter) {
-        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW))
-        && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
+        if boma.is_button_on(Buttons::AttackRaw) || boma.is_button_on(Buttons::Guard) {
             VarModule::on_flag(fighter.battle_object, vars::krool::instance::BLUNDERBUSS_GRAB);
         }
     }
