@@ -45,6 +45,10 @@ unsafe fn special_lw_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     && end_situation == *FIGHTER_GANON_KICK_END_SITUATION_AG {
         KineticModule::add_speed(fighter.module_accessor, &Vector3f{x: x_speed.abs(), y: 0.0, z: 0.0});
     }
+    else if start_situation == *SITUATION_KIND_AIR
+    && end_situation == *FIGHTER_GANON_KICK_END_SITUATION_AA {
+        WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_GANON_STATUS_WORK_ID_INT_GANON_KICK_START_SITUATION);
+    }
 
     ret
 }
