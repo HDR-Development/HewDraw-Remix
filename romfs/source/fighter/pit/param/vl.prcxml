@@ -21,12 +21,12 @@
   </list>
   <list hash="param_bowarrow">
     <struct index="0">
-      <float hash="speed">3.75</float>
+      <float hash="speed">6</float>
       <float hash="speed_up">3.75</float>
-      <float hash="control_angle">8</float>
-      <float hash="power">4.5</float>
+      <float hash="control_angle">20</float>
+      <float hash="power">2</float>
       <float hash="power_add">0.11</float>
-      <int hash="life">120</int>
+      <int hash="life">25</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
