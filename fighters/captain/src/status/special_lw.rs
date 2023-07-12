@@ -19,6 +19,7 @@ unsafe fn special_lw_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let start_situation = WorkModule::get_int(fighter.module_accessor, *FIGHTER_CAPTAIN_STATUS_WORK_ID_INT_FALCON_KICK_START_SITUATION);
     if start_situation == *SITUATION_KIND_AIR
     && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
+        // Allows you to slide when landing late into Falcon Kick's animation
         WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_CAPTAIN_STATUS_WORK_ID_INT_FALCON_KICK_START_SITUATION);
     }
 
