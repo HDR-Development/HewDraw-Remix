@@ -63,9 +63,11 @@
       <int hash="ab_d_fall_landing_frame">14</int>
       <int hash="ab_d_fall_landing_frame_2nd">22</int>
       <int hash="0x17a1daf6ee">600</int>
-      <int hash="ab_d_enable_frame">12</int>
+      <int hash="ab_d_enable_frame">10</int>
       <int hash="ab_d_change_frame">0</int>
+      <int hash="disable_jump_after_frame">0</int>
       <float hash="guard_speed_mul_x">0.6</float>
+      <float hash="hs_air_end_speed_x">1.2</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

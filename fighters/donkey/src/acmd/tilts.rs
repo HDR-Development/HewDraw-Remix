@@ -27,6 +27,24 @@ unsafe fn attack_s3_hi(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "donkey", script = "expression_attacks3hi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn attack_s3_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
+
 #[acmd_script( agent = "donkey", script = "game_attacks3" , category = ACMD_GAME , low_priority)]
 unsafe fn attack_s3_s(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -49,6 +67,23 @@ unsafe fn attack_s3_s(fighter: &mut L2CAgentBase) {
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
     
+}
+
+#[acmd_script( agent = "donkey", script = "expression_attacks3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn attack_s3_s_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
 }
 
 #[acmd_script( agent = "donkey", script = "game_attacks3lw" , category = ACMD_GAME , low_priority)]
@@ -75,6 +110,24 @@ unsafe fn attack_s3_lw(fighter: &mut L2CAgentBase) {
     }
     
 }
+
+#[acmd_script( agent = "donkey", script = "expression_attacks3lw", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn attack_s3_lw_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 
 #[acmd_script( agent = "donkey", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn attack_hi3(fighter: &mut L2CAgentBase) {
@@ -142,8 +195,11 @@ unsafe fn attack_lw3(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         attack_s3_hi,
+        attack_s3_hi_expression,
         attack_s3_s,
+        attack_s3_s_expression,
         attack_s3_lw,
+        attack_s3_lw_expression,
         attack_hi3,
         attack_lw3,
         attack_hi3_effect,

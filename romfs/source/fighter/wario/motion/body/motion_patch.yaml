@@ -1,0 +1,38 @@
+throw_hi:
+  extra:
+    cancel_frame: 43
+attack_12:
+  extra:
+    cancel_frame: 26
+attack_11:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 22
+attack_hi4:
+  flags:
+    move: false
+attack_lw4:
+  flags:
+    move: false
+attack_hi3:
+  extra:
+    cancel_frame: 32
+attack_s4_s:
+  flags:
+    move: false
+attack_air_b:
+  extra:
+    cancel_frame: 42
+attack_air_f:
+  extra:
+    cancel_frame: 31
+attack_air_hi:
+  extra:
+    cancel_frame: 42
+attack_s4_hold:
+  flags:
+    move: false
+attack_hi4_hold:
+  flags:
+    move: false

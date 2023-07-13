@@ -195,6 +195,9 @@ unsafe fn escape_air_slide_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "tantan", scripts = ["effect_attacklegsjumpaerialf","effect_attacklegsjumpaerialb"], category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attacklegsjumpaerial(fighter: &mut L2CAgentBase) {
+}
 
 #[acmd_script( agent = "tantan", script = "game_catch" , category = ACMD_GAME , low_priority)]
 unsafe fn catch_game(fighter: &mut L2CAgentBase) {
@@ -755,6 +758,7 @@ pub fn install() {
         catch_game,
         catch_sound,
         catch_expression,
+        effect_attacklegsjumpaerial,
 
         ramram_game_attackshort,
         ramram_game_attacklong,
@@ -775,7 +779,7 @@ pub fn install() {
         dragonbeam_game_shoot,
         dragonbeam_game_bigshoot,
 
-        arm_attack_end
+        arm_attack_end,
     );
 }
 

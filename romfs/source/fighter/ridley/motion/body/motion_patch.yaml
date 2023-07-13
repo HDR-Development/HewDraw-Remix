@@ -1,0 +1,249 @@
+fall:
+  blend_frames: 5
+fall_f:
+  blend_frames: 5
+fall_b:
+  blend_frames: 5
+throw_f:
+  extra:
+    cancel_frame: 36
+attack_12:
+  extra:
+    cancel_frame: 20
+guard_off:
+  blend_frames: 4
+attack_11:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 18
+attack_hi4:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 53
+attack_lw4:
+  extra:
+    cancel_frame: 62
+fall_aerial:
+  blend_frames: 5
+attack_s4_s:
+  flags:
+    move: false
+attack_s3_s:
+  flags:
+    move: false
+fall_special:
+  blend_frames: 5
+attack_s3_lw:
+  flags:
+    move: false
+attack_air_b:
+  extra:
+    cancel_frame: 43
+attack_air_f:
+  extra:
+    cancel_frame: 38
+attack_s3_hi:
+  flags:
+    move: false
+attack_air_lw:
+  extra:
+    cancel_frame: 80
+fall_aerial_f:
+  blend_frames: 5
+fall_aerial_b:
+  blend_frames: 5
+jump_aerial_f3:
+  game_script: game_jumpaerialf2
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: a03jumpaerialf3.nuanmb
+  scripts:
+  - expression_jumpaerialf2
+  - sound_jumpaerialf2
+  - effect_jumpaerialf2
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 0
+    freeze_during_hitstop: false
+fall_special_b:
+  blend_frames: 5
+fall_special_f:
+  blend_frames: 5
+special_n_shoot:
+  extra:
+    cancel_frame: 37
+special_n_failure:
+  extra:
+    cancel_frame: 30
+special_n_explode:
+  game_script: game_specialnexplode
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d00specialnexplode.nuanmb
+  scripts:
+  - expression_specialnexplode
+  - sound_specialnexplode
+  - effect_specialnexplode
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 60
+    freeze_during_hitstop: false
+item_light_throw_f:
+  flags:
+    move: false
+special_air_lw_pogo:
+  game_script: game_specialairlwpogo
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d03specialairlwpogo.nuanmb
+  scripts:
+  - expression_specialairlwpogo
+  - sound_specialairlwpogo
+  - effect_specialairlwpogo
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 70
+    freeze_during_hitstop: false
+special_air_n_shoot:
+  extra:
+    cancel_frame: 37
+special_s_drag_slide:
+  game_script: game_specialsdragslide
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d01specialsdragslide.nuanmb
+  scripts:
+  - expression_specialsdragslide
+  - sound_specialsdragslide
+  - effect_specialsdragslide
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 43
+    freeze_during_hitstop: false
+special_air_n_explode:
+  game_script: game_specialairnexplode
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d00specialairnexplode.nuanmb
+  scripts:
+  - expression_specialairnexplode
+  - sound_specialairnexplode
+  - effect_specialairnexplode
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 60
+    freeze_during_hitstop: false
+special_air_n_failure:
+  extra:
+    cancel_frame: 30
+special_lw_pogo_landing:
+  game_script: game_speciallwpogolanding
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d03speciallwpogolanding.nuanmb
+  scripts:
+  - expression_speciallwpogolanding
+  - sound_speciallwpogolanding
+  - effect_speciallwpogolanding
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 35
+    freeze_during_hitstop: false

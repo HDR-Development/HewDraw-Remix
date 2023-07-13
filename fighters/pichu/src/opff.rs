@@ -167,12 +167,13 @@ pub fn pichu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         MeterModule::update(fighter.object(), false);
         MeterModule::set_meter_cap(fighter.object(), 2);
         MeterModule::set_meter_per_level(fighter.object(), 25.0);
-        utils::ui::UiManager::set_ff_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
-        utils::ui::UiManager::set_ff_meter_info(
+        utils::ui::UiManager::set_pichu_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+        utils::ui::UiManager::set_pichu_meter_info(
             fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
             MeterModule::meter(fighter.object()),
             (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())),
-            MeterModule::meter_per_level(fighter.object())
+            MeterModule::meter_per_level(fighter.object()),
+            VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1
         );
     }
 }
