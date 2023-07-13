@@ -249,11 +249,22 @@ unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "lucas", script = "expression_throwlw" , category = ACMD_EXPRESSION , low_priority)]
+#[acmd_script( agent = "lucas", script = "expression_throwlw", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn expression_throwlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    
+
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_elecattack"), 10, true, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        QUAKE(fighter, *CAMERA_QUAKE_KIND_L);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_attackm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+
 }
 
 pub fn install() {

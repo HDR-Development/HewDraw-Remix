@@ -194,6 +194,17 @@ unsafe fn koopa_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "koopa", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn koopa_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 #[acmd_script( agent = "koopa", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn koopa_attack_air_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -247,6 +258,7 @@ pub fn install() {
         koopa_attack_air_f_game,
         koopa_attack_air_b_game,
         koopa_attack_air_hi_game,
+        koopa_attack_air_hi_expression,
         koopa_attack_air_lw_game,
     );
 }

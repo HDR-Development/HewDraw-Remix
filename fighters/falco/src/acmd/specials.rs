@@ -226,6 +226,22 @@ unsafe fn falco_special_lw_effect (fighter: &mut L2CAgentBase) {
 	}
 }
 
+
+#[acmd_script( agent = "falco", scripts = ["expression_speciallw", "expression_specialairlw"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn falco_special_lw_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_shield_on"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
+}
+
 #[acmd_script( agent = "falco", script = "sound_speciallw" , category = ACMD_SOUND , low_priority)]
 unsafe fn falco_special_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -306,6 +322,7 @@ pub fn install() {
         falco_special_air_lw_game,
         falco_special_lw_game,
         falco_special_lw_effect,
+        falco_special_lw_expression,
         falco_special_air_lw_sound,
         falco_special_n_start_sound,
         falco_special_air_n_start_sound,
