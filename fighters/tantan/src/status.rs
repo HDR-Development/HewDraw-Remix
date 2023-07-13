@@ -2,7 +2,33 @@ use super::*;
 use globals::*;
 // status script import
  
+
+/// Re-enables the ability to use aerial specials when connecting to ground or cliff
+unsafe extern "C" fn change_status_callback(fighter: &mut L2CFighterCommon) -> L2CValue {
+    //remove double dragon effect
+    if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ENTRY,*FIGHTER_STATUS_KIND_DEAD,*FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_WIN,*FIGHTER_STATUS_KIND_LOSE]) || !sv_information::is_ready_go() {
+        let dragonEffect = VarModule::get_int(fighter.object(),vars::tantan::instance::DRAGONIZE_R_EFFECT_HANDLE) as u32;
+        if EffectModule::is_exist_effect(fighter.module_accessor, dragonEffect){
+            EffectModule::kill(fighter.module_accessor, dragonEffect, false,false);
+        }
+        VarModule::set_int(fighter.object(),vars::tantan::instance::DRAGONIZE_R_EFFECT_HANDLE,0);
+    }
+    true.into()
+}
+
+#[smashline::fighter_init]
+fn tantan_init(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        // set the callbacks on fighter init
+        if fighter.kind() == *FIGHTER_KIND_TANTAN {                
+            fighter.global_table[globals::STATUS_CHANGE_CALLBACK].assign(&L2CValue::Ptr(change_status_callback as *const () as _));   
+        }
+    }
+}
+
 pub fn install() {
+    install_agent_init_callbacks!(tantan_init);
     install_status_scripts!(
         pre_jump,
         pre_jump_squat,
