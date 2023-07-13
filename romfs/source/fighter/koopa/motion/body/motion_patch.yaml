@@ -35,7 +35,7 @@ appeal_hi_l:
     cancel_frame: 70
 attack_dash:
   extra:
-    cancel_frame: 47
+    cancel_frame: 44
 attack_s3_s:
   flags:
     move: false
@@ -50,10 +50,64 @@ attack_air_f:
     cancel_frame: 38
 attack_air_n:
   extra:
-    cancel_frame: 44
+    cancel_frame: 38
 attack_s3_hi:
   flags:
     move: false
 attack_air_lw:
   extra:
     cancel_frame: 72
+special_n_max:
+  game_script: game_specialnmax
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+  blend_frames: 0
+  animations:
+    - name: d00specialnmax.nuanmb
+      unk: 0
+  scripts:
+    - expression_specialnmax
+    - sound_specialnmax
+    - effect_specialnmax
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 60
+    no_stop_intp: false
+special_air_n_max:
+  game_script: game_specialairnmax
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+  blend_frames: 0
+  animations:
+    - name: d00specialairnmax.nuanmb
+      unk: 0
+  scripts:
+    - expression_specialairnmax
+    - sound_specialairnmax
+    - effect_specialairnmax
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 60
+    no_stop_intp: false
