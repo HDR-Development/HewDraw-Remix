@@ -278,6 +278,15 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
         return L2CValue::I32(1);
     }
 
+    // dash startup -> ftilt leniency window for tilt attack button, just like fsmash
+    if fighter.is_button_trigger(Buttons::TiltAttack)
+    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4)
+    {
+        fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_S3.into(), true.into());
+        VarModule::on_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL);
+        return L2CValue::I32(1);
+    }
+
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_4)
     && {
         fighter.clear_lua_stack();
@@ -324,15 +333,6 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, arg
     && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4)
     {
         fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_S4_START.into(), true.into());
-        VarModule::on_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL);
-        return L2CValue::I32(1);
-    }
-
-    // dash startup -> ftilt leniency window for tilt attack button, just like fsmash
-    if fighter.is_cat_flag(CatHdr::TiltAttack)
-    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4)
-    {
-        fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_S3.into(), true.into());
         VarModule::on_flag(fighter.battle_object, vars::common::status::APPLY_DASH_END_SPEED_MUL);
         return L2CValue::I32(1);
     }

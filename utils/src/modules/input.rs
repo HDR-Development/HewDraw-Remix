@@ -491,21 +491,12 @@ fn exec_internal(input_module: &mut InputModule, control_module: u64, call_origi
         }
     }
 
-    // TiltAttack cat flag
-    let tilt_attack_offset = CatHdr::TiltAttack.bits().trailing_zeros() as usize;
+    // Prevents TiltAttack button from triggering Smash attacks
     if triggered_buttons.intersects(Buttons::TiltAttack) {
-        if input_module.hdr_cat.valid_frames[tilt_attack_offset] == 0 {
-            input_module.hdr_cat.valid_frames[tilt_attack_offset] = unsafe {
-                ControlModule::get_command_life_count_max((*input_module.owner).module_accessor)
-                    as u8
-            };
+        unsafe {
+            ControlModule::reset_flick_x((*input_module.owner).module_accessor);
+            ControlModule::reset_flick_y((*input_module.owner).module_accessor);
         }
-    }
-    if input_module.hdr_cat.valid_frames[tilt_attack_offset] != 0
-        && !(input_module.hdr_cat.valid_frames[tilt_attack_offset] == 1
-            && buttons.intersects(Buttons::TiltAttack))
-    {
-        input_module.hdr_cat.valid_frames[tilt_attack_offset] -= 1;
     }
 
     // Wavedash cat flag
