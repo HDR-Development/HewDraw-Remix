@@ -5,6 +5,7 @@ utils::import!(common::djc::attack_air_main_status);
 
 pub fn install() {
     install_status_scripts!(
+        guard_on,
         init_guard_damage,
         guard_damage,
         exit_guard_damage,
@@ -16,6 +17,49 @@ pub fn install() {
         exec_attack_air,
         exit_attack_air
     );
+}
+
+// FIGHTER_STATUS_KIND_GUARD_ON
+
+#[status_script(agent = "yoshi", status = FIGHTER_STATUS_KIND_GUARD_ON, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn guard_on(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IGNORE_2ND_MOTION);
+    fighter.sub_status_guard_on_common();
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IGNORE_2ND_MOTION);
+    init_guard_damage_uniq(fighter);
+    fighter.main_shift(guard_on_main)
+}
+
+unsafe extern "C" fn guard_on_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.sub_status_guard_on_main_air_common().get_bool() {
+        return 0.into();
+    }
+
+    fighter.sub_guard_cont();
+
+    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND
+    && MotionModule::is_end(fighter.module_accessor) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_GUARD, false);
+        return 1.into();
+    }
+    else {
+        let guard_shield = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
+        let min_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_MIN_FRAME);
+
+        if guard_shield > 0.0
+        && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
+        && min_frame <= 0
+        && fighter.global_table[SITUATION_KIND] == SITUATION_KIND_GROUND {
+            VarModule::off_flag(
+                fighter.object(),
+                vars::common::instance::IS_PARRY_FOR_GUARD_OFF,
+            );
+            fighter.change_status_req(*FIGHTER_STATUS_KIND_GUARD_OFF, true);
+            return 1.into();
+        }
+    }
+
+    0.into()
 }
 
 // FIGHTER_STATUS_KIND_GUARD_DAMAGE //
@@ -123,7 +167,7 @@ pub unsafe fn guard_off(fighter: &mut L2CFighterCommon) -> L2CValue {
     } else {
         MotionModule::change_motion(
             fighter.module_accessor,
-            Hash40::new_raw(0x97ab1c684),
+            Hash40::new("guard_off"),
             0.0,
             rate,
             false,

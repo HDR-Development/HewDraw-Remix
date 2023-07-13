@@ -35,7 +35,6 @@ unsafe fn stub() {}
 static HAZARDLESS_STAGE_IDS: &[u32] = &[
     0x3b, // venom
     0x3e, // brinstar
-    0x59, // lylat    
     0x62, // skyworld
     0x68, // wario ware,
     0x6e, // halberd
@@ -61,7 +60,7 @@ unsafe fn handle_movement_grav_update(ctx: &mut skyline::hooks::InlineCtx) {
     *(battle_object_world as *mut u8).add(0x59) = 0x1;
 }
 
-#[skyline::hook(offset = 0x16ad60, inline)]
+#[skyline::hook(offset = 0x25fb9a4, inline)]
 unsafe fn fix_hazards_for_online(ctx: &skyline::hooks::InlineCtx) {
   let ptr = *ctx.registers[1].x.as_ref();
   let stage_id = *(ptr as *const u16) as u32;
@@ -70,12 +69,26 @@ unsafe fn fix_hazards_for_online(ctx: &skyline::hooks::InlineCtx) {
   }
 }
 
+#[skyline::hook(offset = 0x298123C, inline)]
+unsafe fn lylat_no_rot(ctx: &mut skyline::hooks::InlineCtx) {
+    if *ctx.registers[8].x.as_ref() == 3 {
+        *ctx.registers[8].x.as_mut() = 5;
+    }
+}
+
 pub fn install() {
+    skyline::patching::Patch::in_text(0x298236c).data(0x52800008u32);
+    skyline::patching::Patch::in_text(0x28444cc).data(0x52800009u32);
+    skyline::patching::Patch::in_text(0x28440f4).data(0x52800009u32);
+    skyline::patching::Patch::in_text(0x2844500).nop();
+    skyline::patching::Patch::in_text(0x2844128).nop();
+
     skyline::install_hooks!(
         stub,
         area_manager_process,
         init_stage,
         handle_movement_grav_update,
         fix_hazards_for_online,
+        lylat_no_rot,
     );
 }

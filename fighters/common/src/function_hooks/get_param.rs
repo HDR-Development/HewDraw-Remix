@@ -213,7 +213,6 @@ pub unsafe fn get_param_float_hook(x0 /*boma*/: u64, x1 /*param_type*/: u64, x2 
                 }
             }
         }
-
         // else if fighter_kind == *FIGHTER_KIND_PICKEL {
         //     if [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL].contains(&StatusModule::status_kind(boma)) {
         //         if ControlModule::get_stick_x(boma) * PostureModule::lr(boma) > 0.5 {

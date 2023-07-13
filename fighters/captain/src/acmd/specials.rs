@@ -198,6 +198,24 @@ unsafe fn captain_special_s_end_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "captain", script = "expression_specialsend", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn captain_special_s_end_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 6);
+    }
+}
+
 #[acmd_script( agent = "captain", script = "game_specialairsend" , category = ACMD_GAME , low_priority)]
 unsafe fn captain_special_air_s_end_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -382,6 +400,7 @@ pub fn install() {
         captain_special_air_n_turn_game,
         captain_special_s_start_game,
         captain_special_s_end_game,
+        captain_special_s_end_expression,
         captain_special_air_s_end_game,
         captain_special_air_lw_game,
         captain_special_air_lw_effect,

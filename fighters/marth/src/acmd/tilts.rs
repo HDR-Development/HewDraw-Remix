@@ -48,6 +48,24 @@ unsafe fn marth_attack_hi3_game(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "marth", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn marth_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 1.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 3.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+}
+
 #[acmd_script( agent = "marth", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
 unsafe fn marth_attack_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -71,6 +89,7 @@ pub fn install() {
     install_acmd_scripts!(
         marth_attack_s3_s_game,
         marth_attack_hi3_game,
+        marth_attack_hi3_expression,
         marth_attack_lw3_game
     );
 }

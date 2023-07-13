@@ -1,0 +1,74 @@
+throw_b:
+  extra:
+    cancel_frame: 30
+throw_lw:
+  extra:
+    cancel_frame: 40
+attack_12:
+  extra:
+    cancel_frame: 18
+attack_11:
+  flags:
+    move: false
+attack_lw3:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 25
+attack_hi4:
+  flags:
+    move: false
+attack_lw4:
+  flags:
+    move: false
+attack_s4_s:
+  extra:
+    cancel_frame: 55
+attack_s3_s:
+  flags:
+    move: false
+special_lw1:
+  extra:
+    cancel_frame: 42
+attack_s3_lw:
+  flags:
+    move: false
+attack_s4_hi:
+  extra:
+    cancel_frame: 55
+attack_air_b:
+  extra:
+    cancel_frame: 35
+attack_air_f:
+  extra:
+    cancel_frame: 37
+attack_air_n:
+  extra:
+    cancel_frame: 43
+attack_s4_lw:
+  extra:
+    cancel_frame: 55
+attack_s3_hi:
+  flags:
+    move: false
+attack_air_lw:
+  extra:
+    cancel_frame: 46
+attack_air_hi:
+  extra:
+    cancel_frame: 30
+attack_100_end:
+  extra:
+    cancel_frame: 37
+attack_lw4_hold:
+  flags:
+    move: false
+special_lw2_landing:
+  extra:
+    cancel_frame: 16
+special_lw1_landing:
+  extra:
+    cancel_frame: 31
+special_lw2_kick_landing:
+  extra:
+    cancel_frame: 32
