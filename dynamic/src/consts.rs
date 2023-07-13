@@ -570,8 +570,9 @@ pub mod vars {
         }
         pub mod status {
             // flags
-            pub const FINAL_CUTTER_HIT: i32 = 0x1100;
-            pub const FINAL_CUTTER_CANCEL: i32 = 0x1101;
+            // copy ability
+            pub use super::super::mario::status::IS_SPECIAL_N_FIREBRAND;
+            pub use super::super::mariod::status::IS_SPECIAL_N_CHILL_PILL;
         }
     }
 

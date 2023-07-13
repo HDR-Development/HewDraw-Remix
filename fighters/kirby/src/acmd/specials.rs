@@ -67,7 +67,7 @@ unsafe fn mario_special_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             EFFECT_FOLLOW(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, true);
             LAST_EFFECT_SET_COLOR(fighter, 0.2, 0.2, 0.2);
         }
@@ -84,7 +84,7 @@ unsafe fn mario_special_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             EFFECT_FOLLOW(fighter, Hash40::new("sys_flame"), Hash40::new("handl"), 1.0, 0, 0, 0, 0, 0, 0.3, true);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_bomb_a"), Hash40::new("havel"), 1.0, 0, 0, 0, 0, 0, 0.23, true);
             LAST_EFFECT_SET_RATE(fighter, 1.2);
@@ -93,7 +93,7 @@ unsafe fn mario_special_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             FLASH(fighter, 1, 0, 0, 0.35);
         }
         else{
@@ -106,26 +106,26 @@ unsafe fn mario_special_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             FLASH(fighter, 1, 0, 0, 0.75);
             EFFECT_OFF_KIND(fighter, Hash40::new("sys_bomb_a"), false, false);
         }
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             FLASH(fighter, 1, 0, 0, 0.35);
         }
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             COL_NORMAL(fighter);
         }
     }
     frame(lua_state, 27.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.35);
         }
         else{
@@ -134,26 +134,26 @@ unsafe fn mario_special_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 30.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.75);  
         }
     }
     frame(lua_state, 33.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.35);
             EFFECT_OFF_KIND(fighter, Hash40::new("sys_flame"), false, false);
         }
     }
     frame(lua_state, 36.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             COL_NORMAL(fighter);
         }
     }
     frame(lua_state, 39.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             FLASH(fighter, 1, 0, 0, 0.35);
         }
     }
@@ -163,7 +163,7 @@ unsafe fn mario_special_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 42.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             COL_NORMAL(fighter);
         }
     }
@@ -176,7 +176,7 @@ unsafe fn mario_special_n_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_mario_special_n01"));
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             PLAY_SE(fighter, Hash40::new("se_mario_smash_s01"));
             PLAY_SE(fighter, Hash40::new("vc_kirby_attack02"));
         }
@@ -189,7 +189,7 @@ unsafe fn mario_special_air_n_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             EFFECT_FOLLOW(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, true);
             LAST_EFFECT_SET_COLOR(fighter, 0.2, 0.2, 0.2);
         }
@@ -205,7 +205,7 @@ unsafe fn mario_special_air_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             EFFECT_FOLLOW(fighter, Hash40::new("sys_flame"), Hash40::new("havel"), 1.0, 0, 0, 0, 0, 0, 0.3, true);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_bomb_a"), Hash40::new("handl"), 1.0, 0, 0, 0, 0, 0, 0.23, true);
             LAST_EFFECT_SET_RATE(fighter, 1.2);
@@ -214,7 +214,7 @@ unsafe fn mario_special_air_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             FLASH(fighter, 1, 0, 0, 0.5);
         }
         else{
@@ -227,26 +227,26 @@ unsafe fn mario_special_air_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             FLASH(fighter, 1, 0, 0, 1.0);
             EFFECT_OFF_KIND(fighter, Hash40::new("sys_bomb_a"), false, false);
         }
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             FLASH(fighter, 1, 0, 0, 0.5);
         }
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             COL_NORMAL(fighter);
         }
     }
     frame(lua_state, 27.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.5);
         }
         else{
@@ -255,26 +255,26 @@ unsafe fn mario_special_air_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 30.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             FLASH(fighter, 0.95, 0.522, 0.051, 1.0);
         }
     }
     frame(lua_state, 33.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             FLASH(fighter, 0.95, 0.522, 0.051, 0.5);
             EFFECT_OFF_KIND(fighter, Hash40::new("sys_flame"), false, false);
         }
     }
     frame(lua_state, 36.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             COL_NORMAL(fighter);
         }
     }
     frame(lua_state, 39.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             FLASH(fighter, 1, 0, 0, 0.5);
         }
     }
@@ -284,7 +284,7 @@ unsafe fn mario_special_air_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 42.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             COL_NORMAL(fighter);
         }
     }
@@ -297,7 +297,7 @@ unsafe fn mario_special_air_n_sound(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     if is_excute(fighter) {
         PLAY_SE(fighter, Hash40::new("se_mario_special_n01"));
-        if VarModule::is_flag(fighter.battle_object, vars::mario::status::IS_SPECIAL_N_FIREBRAND) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND) {
             PLAY_SE(fighter, Hash40::new("se_mario_smash_s01"));
             PLAY_SE(fighter, Hash40::new("vc_kirby_attack02"));
         }
@@ -314,7 +314,7 @@ unsafe fn mariod_special_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             EFFECT_FOLLOW(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.4, true);
             LAST_EFFECT_SET_COLOR(fighter, 0.75, 0.6, 1.0);
         }
@@ -327,7 +327,7 @@ unsafe fn mariod_special_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_ice"), Hash40::new("arml"), 7.5, 0, 0, 0, 0, 0, 0.35, true);
             LAST_EFFECT_SET_RATE(fighter, 1.5);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_ice_landing"), Hash40::new("arml"), 7.5, 0, 0, 0, 0, 0, 0.75, true);
@@ -337,7 +337,7 @@ unsafe fn mariod_special_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             FLASH(fighter, 0.5, 0.25, 1, 0.35);
         }
         else{
@@ -346,7 +346,7 @@ unsafe fn mariod_special_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
 
         }
         else{
@@ -355,31 +355,31 @@ unsafe fn mariod_special_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             FLASH(fighter, 0.5, 0.25, 1, 0.75);
         }
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             
         }
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             FLASH(fighter, 0.5, 0.25, 1, 0.35);
         }
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             COL_NORMAL(fighter);
         }
     }
     frame(lua_state, 27.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             FLASH(fighter, 0.75, 0.75, 1.0, 0.35);
         }
         else{
@@ -388,19 +388,19 @@ unsafe fn mariod_special_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 30.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             FLASH(fighter, 0.75, 0.75, 1.0, 0.75);
         }
     }
     frame(lua_state, 33.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             FLASH(fighter, 0.75, 0.75, 1.0, 0.35);
         }
     }
     frame(lua_state, 36.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             COL_NORMAL(fighter);
             EFFECT_OFF_KIND(fighter, Hash40::new("sys_hit_ice"), false, true);
             EFFECT_OFF_KIND(fighter, Hash40::new("sys_ice_landing"), false, true);
@@ -408,7 +408,7 @@ unsafe fn mariod_special_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 39.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             FLASH(fighter, 0.75, 0.75, 1.0, 0.35);
         }
     }
@@ -418,7 +418,7 @@ unsafe fn mariod_special_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 42.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             COL_NORMAL(fighter);
         }
     }
@@ -430,7 +430,7 @@ unsafe fn mariod_special_air_n_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 11.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             EFFECT_FOLLOW(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.4, true);
             LAST_EFFECT_SET_COLOR(fighter, 0.75, 0.6, 1.0);
         }
@@ -442,7 +442,7 @@ unsafe fn mariod_special_air_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_ice"), Hash40::new("arml"), 7.5, 0, 0, 0, 0, 0, 0.35, true);
             LAST_EFFECT_SET_RATE(fighter, 1.5);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_ice_landing"), Hash40::new("arml"), 7.5, 0, 0, 0, 0, 0, 0.75, true);
@@ -452,7 +452,7 @@ unsafe fn mariod_special_air_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             FLASH(fighter, 0.5, 0.25, 1, 0.35);
         }
         else{
@@ -461,7 +461,7 @@ unsafe fn mariod_special_air_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
 
         }
         else{
@@ -470,31 +470,31 @@ unsafe fn mariod_special_air_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             FLASH(fighter, 0.5, 0.25, 1, 0.75);
         }
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             
         }
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             FLASH(fighter, 0.5, 0.25, 1, 0.35);
         }
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             COL_NORMAL(fighter);
         }
     }
     frame(lua_state, 27.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             FLASH(fighter, 0.75, 0.75, 1.0, 0.35);
         }
         else{
@@ -503,19 +503,19 @@ unsafe fn mariod_special_air_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 30.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             FLASH(fighter, 0.75, 0.75, 1.0, 0.75);
         }
     }
     frame(lua_state, 33.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             FLASH(fighter, 0.75, 0.75, 1.0, 0.35);
         }
     }
     frame(lua_state, 36.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             COL_NORMAL(fighter);
             EFFECT_OFF_KIND(fighter, Hash40::new("sys_hit_ice"), false, true);
             EFFECT_OFF_KIND(fighter, Hash40::new("sys_ice_landing"), false, true);
@@ -523,7 +523,7 @@ unsafe fn mariod_special_air_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 39.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             FLASH(fighter, 0.75, 0.75, 1.0, 0.35);
         }
     }
@@ -533,7 +533,7 @@ unsafe fn mariod_special_air_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 42.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::mariod::status::IS_SPECIAL_N_CHILL_PILL) {
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_CHILL_PILL) {
             COL_NORMAL(fighter);
         }
     }
@@ -548,7 +548,7 @@ unsafe fn luigi_special_n_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND){
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND){
             EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_elec_s"), Hash40::new("havel"), 3.0, 0.0, 0.0, 0, 90, 90, 0.5, true);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder"), Hash40::new("havel"), 0.0, 0.0, 0.0, 0, 90, 90, 0.8, true);
             LAST_EFFECT_SET_RATE(fighter, 1.25);
@@ -583,13 +583,13 @@ unsafe fn luigi_special_n_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND){
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND){
             PLAY_SE(fighter, Hash40::new("se_common_elec_s_damage"));
         }
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND){
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND){
             PLAY_SE(fighter, Hash40::new("vc_kirby_attack02"));
             PLAY_SE(fighter, Hash40::new("se_common_elec_m_damage"));
         }
@@ -605,7 +605,7 @@ unsafe fn luigi_special_air_n_effect(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND){
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND){
             EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_elec_s"), Hash40::new("havel"), 3.0, 0.0, 0.0, 0, 90, 90, 0.5, true);
             EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder"), Hash40::new("havel"), 0.0, 0.0, 0.0, 0, 90, 90, 0.8, true);
             LAST_EFFECT_SET_RATE(fighter, 1.25);
@@ -640,13 +640,13 @@ unsafe fn luigi_special_air_n_sound(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND){
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND){
             PLAY_SE(fighter, Hash40::new("se_common_elec_s_damage"));
         }
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::luigi::status::IS_SPECIAL_N_FIREBRAND){
+        if VarModule::is_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND){
             PLAY_SE(fighter, Hash40::new("vc_kirby_attack02"));
             PLAY_SE(fighter, Hash40::new("se_common_elec_m_damage"));
         }
