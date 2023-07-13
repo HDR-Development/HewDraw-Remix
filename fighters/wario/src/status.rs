@@ -32,7 +32,6 @@ fn wario_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.kind() == *FIGHTER_KIND_WARIO {
             fighter.global_table[THROW_HI_STATUS_KIND].assign(&FIGHTER_STATUS_KIND_THROW_KIRBY.into());
-            println!("Wario throw replaced");
         }
     }
 }
