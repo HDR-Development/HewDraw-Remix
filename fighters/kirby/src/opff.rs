@@ -349,22 +349,6 @@ unsafe fn max_water_shuriken_dc(boma: &mut BattleObjectModuleAccessor, status_ki
     }
 }
 
-// Frizz Dash Cancel
-unsafe fn dash_cancel_frizz(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_BRAVE_SPECIAL_N_SHOOT)
-    && fighter.is_situation(*SITUATION_KIND_GROUND)
-    && fighter.is_motion(Hash40::new("brave_special_n1"))
-    && fighter.motion_frame() > 20.0 && fighter.motion_frame() < 44.0 // after F20 and before the FAF
-    && (WorkModule::get_float(fighter.module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLOAT_SP) > 12.0)
-    {
-        if fighter.check_dash_cancel() {
-            let mut kirby_fighter = app::Fighter{battle_object: *(fighter.battle_object)};
-            FighterSpecializer_Brave::add_sp(&mut kirby_fighter, -10.0);
-            EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 0, 15, -2, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
-        }
-    }
-}
-
 // Firaga Airdodge Cancel
 unsafe fn magic_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
     if status_kind == *FIGHTER_KIRBY_STATUS_KIND_TRAIL_SPECIAL_N1_SHOOT {
@@ -473,9 +457,6 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 
     // Water Shuriken Max Dash Cancel
     max_water_shuriken_dc(boma, status_kind, situation_kind, cat[0], frame);
-
-    // Frizz Dash Cancel
-    dash_cancel_frizz(fighter);
 
     // Firaga and Thundaga Cancels
     magic_cancels(boma, status_kind, situation_kind, cat[0], frame);
