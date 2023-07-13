@@ -99,6 +99,9 @@
 		],
 		"fighter/miifighter/cmn": [
 			"fighter/miifighter/param/hdr.prc"
+		],
+		"fighter/sheik/cmn": [
+			"fighter/sheik/param/hdr.prc"
 		]
 	}
 }

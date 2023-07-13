@@ -44,6 +44,8 @@ fn ike_init(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    smashline::install_agent_init_callbacks!(ike_init);
+    smashline::install_agent_init_callbacks!(
+        // ike_init
+    );
     special_s::install();
 }

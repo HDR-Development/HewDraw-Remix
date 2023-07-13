@@ -97,6 +97,25 @@ unsafe fn cloud_attack_air_f_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "cloud", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn cloud_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 12.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+}
+
+
 #[acmd_script( agent = "cloud", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_attack_air_b_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -129,6 +148,20 @@ unsafe fn cloud_attack_air_b_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "cloud", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn cloud_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+}
+
 #[acmd_script( agent = "cloud", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -159,6 +192,24 @@ unsafe fn cloud_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     }
     
 }
+
+#[acmd_script( agent = "cloud", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn cloud_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+}
+
 
 #[acmd_script( agent = "cloud", script = "game_attackairlw" , category = ACMD_GAME , low_priority)]
 unsafe fn cloud_attack_air_lw_game(fighter: &mut L2CAgentBase) {
@@ -208,8 +259,11 @@ pub fn install() {
     install_acmd_scripts!(
         cloud_attack_air_n_game,
         cloud_attack_air_f_game,
+        cloud_attack_air_f_expression,
         cloud_attack_air_b_game,
+        cloud_attack_air_b_expression,
         cloud_attack_air_hi_game,
+        cloud_attack_air_hi_expression,
         cloud_attack_air_lw_game,
     );
 }

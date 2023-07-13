@@ -1,0 +1,61 @@
+throw_b:
+  extra:
+    cancel_frame: 33
+throw_lw:
+  extra:
+    cancel_frame: 53
+throw_hi:
+  extra:
+    cancel_frame: 41
+attack_12:
+  extra:
+    cancel_frame: 19
+attack_11:
+  animations:
+  - name: c00attack13.nuanmb
+  extra:
+    cancel_frame: 36
+attack_lw3:
+  extra:
+    cancel_frame: 42
+attack_hi4:
+  extra:
+    cancel_frame: 70
+attack_lw4:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 58
+attack_hi3:
+  extra:
+    cancel_frame: 45
+attack_dash:
+  extra:
+    cancel_frame: 48
+attack_s3_s:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 42
+attack_s3_lw:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 42
+attack_air_b:
+  extra:
+    cancel_frame: 44
+attack_air_n:
+  extra:
+    cancel_frame: 45
+attack_s3_hi:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 42
+attack_air_hi:
+  extra:
+    cancel_frame: 51
+item_light_throw_f:
+  flags:
+    move: false

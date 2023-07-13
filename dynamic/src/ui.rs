@@ -22,6 +22,12 @@ extern "C" {
 
     #[link_name = "UiManager__set_ff_meter_info"]
     fn ui_manager_set_ff_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32);
+
+    #[link_name = "UiManager__set_pichu_meter_enable"]
+    fn ui_manager_set_pichu_meter_enable(entry_id: u32, enable: bool);
+
+    #[link_name = "UiManager__set_pichu_meter_info"]
+    fn ui_manager_set_pichu_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32, charged: bool);
 }
 
 pub mod UiManager {
@@ -70,6 +76,18 @@ pub mod UiManager {
     pub fn set_ff_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32) {
         unsafe {
             super::ui_manager_set_ff_meter_info(entry_id, current, max, per_level)
+        }
+    }
+
+    pub fn set_pichu_meter_enable(entry_id: u32, enable: bool) {
+        unsafe {
+            super::ui_manager_set_pichu_meter_enable(entry_id, enable)
+        }
+    }
+
+    pub fn set_pichu_meter_info(entry_id: u32, current: f32, max: f32, per_level: f32, charged: bool) {
+        unsafe {
+            super::ui_manager_set_pichu_meter_info(entry_id, current, max, per_level, charged)
         }
     }
 }

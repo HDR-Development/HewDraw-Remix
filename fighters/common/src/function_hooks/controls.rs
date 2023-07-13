@@ -33,14 +33,6 @@ struct SomeControllerStruct {
     controller: &'static mut Controller,
 }
 
-unsafe fn get_player_idx_from_boma(boma: u64) -> i32 {
-    let control_module = *((boma + 0x48) as *const u64);
-    let next = *((control_module + 0x118) as *const u64);
-    let next = *((next + 0x58) as *const u64);
-    let next = *((next + 0x8) as *const u64);
-    *((next + 0x8) as *const i32)
-}
-
 macro_rules! apply_button_mappings {
     ($controller:ident, $mappings:ident, $(($button:ident, $mapped:ident, $kind:ident, $output:expr))*) => {{
         let mut buttons = Buttons::empty();
@@ -63,34 +55,35 @@ unsafe fn map_controls_hook(
 ) {
     let entry_count = (*mappings.add(player_idx as usize))._34[0];
     let ret = if controller_struct.controller.style == ControllerStyle::GCController {
-        let is_r_press = if (*mappings.add(player_idx as usize)).gc_r == InputKind::Guard {
-            let press = Some(controller_struct.controller.current_buttons.r());
-            controller_struct.controller.current_buttons.set_r(false);
-            press
-        } else {
-            None
-        };
+        // Used for analog shields
+        // let is_r_press = if (*mappings.add(player_idx as usize)).gc_r == InputKind::Guard {
+        //     let press = Some(controller_struct.controller.current_buttons.r());
+        //     controller_struct.controller.current_buttons.set_r(false);
+        //     press
+        // } else {
+        //     None
+        // };
 
-        let is_l_press = if (*mappings.add(player_idx as usize)).gc_l == InputKind::Guard {
-            let press = Some(controller_struct.controller.current_buttons.l());
-            controller_struct.controller.current_buttons.set_l(false);
-            press
-        } else {
-            None
-        };
+        // let is_l_press = if (*mappings.add(player_idx as usize)).gc_l == InputKind::Guard {
+        //     let press = Some(controller_struct.controller.current_buttons.l());
+        //     controller_struct.controller.current_buttons.set_l(false);
+        //     press
+        // } else {
+        //     None
+        // };
 
         let ab_smash = (*mappings.add(player_idx as usize)).gc_absmash;
         (*mappings.add(player_idx as usize)).gc_absmash &= 1;
         let ret = original!()(mappings, player_idx, out, controller_struct, arg);
         (*mappings.add(player_idx as usize)).gc_absmash = ab_smash;
 
-        if let Some(press) = is_r_press {
-            controller_struct.controller.current_buttons.set_r(press);
-        }
+        // if let Some(press) = is_r_press {
+        //     controller_struct.controller.current_buttons.set_r(press);
+        // }
 
-        if let Some(press) = is_l_press {
-            controller_struct.controller.current_buttons.set_l(press);
-        }
+        // if let Some(press) = is_l_press {
+        //     controller_struct.controller.current_buttons.set_l(press);
+        // }
     } else {
         if controller_struct.controller.style == ControllerStyle::LeftJoycon
             || controller_struct.controller.style == ControllerStyle::RightJoycon
@@ -224,17 +217,17 @@ unsafe fn map_controls_hook(
                 Buttons::TiltAttack | Buttons::AttackAll
             )
         );
-        if (*mappings.add(player_idx as usize)).gc_absmash & 1 != 0 {
+        if (*mappings).gc_absmash & 1 != 0 {
             if (*out).buttons.contains(Buttons::Attack | Buttons::Special) {
                 (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
                 (*out).buttons |= Buttons::Smash;
-                (*mappings.add(player_idx as usize)).is_absmash = true;
+                (*mappings).is_absmash = true;
             } else if !(*out)
                 .buttons
                 .intersects(Buttons::Attack | Buttons::Special)
             {
-                (*mappings.add(player_idx as usize)).is_absmash = false;
-            } else if (*mappings.add(player_idx as usize)).is_absmash {
+                (*mappings).is_absmash = false;
+            } else if (*mappings).is_absmash {
                 (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
             }
         }
@@ -520,17 +513,17 @@ unsafe fn map_controls_hook(
                 )
             );
         }
-        if (*mappings.add(player_idx as usize)).joy_absmash & 1 != 0 {
+        if (*mappings).joy_absmash & 1 != 0 {
             if (*out).buttons.contains(Buttons::Attack | Buttons::Special) {
                 (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
                 (*out).buttons |= Buttons::Smash;
-                (*mappings.add(player_idx as usize)).is_absmash = true;
+                (*mappings).is_absmash = true;
             } else if !(*out)
                 .buttons
                 .intersects(Buttons::Attack | Buttons::Special)
             {
-                (*mappings.add(player_idx as usize)).is_absmash = false;
-            } else if (*mappings.add(player_idx as usize)).is_absmash {
+                (*mappings).is_absmash = false;
+            } else if (*mappings).is_absmash {
                 (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
             }
         }
@@ -637,99 +630,99 @@ unsafe fn map_controls_hook(
             )
         );
 
-        if (*mappings.add(player_idx as usize)).pro_absmash & 1 != 0 {
+        if (*mappings).pro_absmash & 1 != 0 {
             if (*out).buttons.contains(Buttons::Attack | Buttons::Special) {
                 (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
                 (*out).buttons |= Buttons::Smash;
-                (*mappings.add(player_idx as usize)).is_absmash = true;
+                (*mappings).is_absmash = true;
             } else if !(*out)
                 .buttons
                 .intersects(Buttons::Attack | Buttons::Special)
             {
-                (*mappings.add(player_idx as usize)).is_absmash = false;
-            } else if (*mappings.add(player_idx as usize)).is_absmash {
+                (*mappings).is_absmash = false;
+            } else if (*mappings).is_absmash {
                 (*out).buttons &= !(Buttons::Special | Buttons::TiltAttack);
             }
         }
     }
 
-    if controller.style == ControllerStyle::GCController {
-        let analog_setting = (*mappings.add(player_idx as usize))._34.last_mut().unwrap();
+    // if controller.style == ControllerStyle::GCController {
+    //     let analog_setting = (*mappings.add(player_idx as usize))._34.last_mut().unwrap();
 
-        if *analog_setting & 6 == 2 {
-            if controller.left_trigger > 0.33 {
-                *analog_setting = 2;
-            } else {
-                *analog_setting = 0;
-            }
-        } else if *analog_setting & 6 == 4 {
-            if controller.right_trigger > 0.33 {
-                *analog_setting = 4;
-            } else {
-                *analog_setting = 0;
-            }
-        }
+    //     if *analog_setting & 6 == 2 {
+    //         if controller.left_trigger > 0.33 {
+    //             *analog_setting = 2;
+    //         } else {
+    //             *analog_setting = 0;
+    //         }
+    //     } else if *analog_setting & 6 == 4 {
+    //         if controller.right_trigger > 0.33 {
+    //             *analog_setting = 4;
+    //         } else {
+    //             *analog_setting = 0;
+    //         }
+    //     }
 
-        if *analog_setting & 6 == 0 {
-            if (controller.left_trigger > 0.33 || controller.current_buttons.real_digital_l())
-                && (*mappings.add(player_idx as usize)).gc_l == InputKind::Guard
-            {
-                *analog_setting = 2;
-            } else if (controller.right_trigger > 0.33
-                || controller.current_buttons.real_digital_r())
-                && (*mappings.add(player_idx as usize)).gc_r == InputKind::Guard
-            {
-                *analog_setting = 4;
-            }
-        }
+    //     if *analog_setting & 6 == 0 {
+    //         if (controller.left_trigger > 0.33 || controller.current_buttons.real_digital_l())
+    //             && (*mappings.add(player_idx as usize)).gc_l == InputKind::Guard
+    //         {
+    //             *analog_setting = 2;
+    //         } else if (controller.right_trigger > 0.33
+    //             || controller.current_buttons.real_digital_r())
+    //             && (*mappings.add(player_idx as usize)).gc_r == InputKind::Guard
+    //         {
+    //             *analog_setting = 4;
+    //         }
+    //     }
 
-        let analog_value = match *analog_setting & 6 {
-            2 => {
-                (*out).buttons |= Buttons::Guard;
-                if controller.current_buttons.real_digital_r() || controller.right_trigger > 0.33 {
-                    (*out).buttons |= Buttons::GuardHold;
-                }
+    //     let analog_value = match *analog_setting & 6 {
+    //         2 => {
+    //             (*out).buttons |= Buttons::Guard;
+    //             if controller.current_buttons.real_digital_r() || controller.right_trigger > 0.33 {
+    //                 (*out).buttons |= Buttons::GuardHold;
+    //             }
 
-                if controller.current_buttons.real_digital_l() {
-                    1.0
-                } else {
-                    controller.left_trigger
-                }
-            }
-            4 => {
-                (*out).buttons |= Buttons::Guard;
-                if controller.current_buttons.real_digital_l() || controller.left_trigger > 0.33 {
-                    (*out).buttons |= Buttons::GuardHold;
-                }
+    //             if controller.current_buttons.real_digital_l() {
+    //                 1.0
+    //             } else {
+    //                 controller.left_trigger
+    //             }
+    //         }
+    //         4 => {
+    //             (*out).buttons |= Buttons::Guard;
+    //             if controller.current_buttons.real_digital_l() || controller.left_trigger > 0.33 {
+    //                 (*out).buttons |= Buttons::GuardHold;
+    //             }
 
-                if controller.current_buttons.real_digital_r() {
-                    1.0
-                } else {
-                    controller.right_trigger
-                }
-            }
-            _ => 0.0,
-        };
+    //             if controller.current_buttons.real_digital_r() {
+    //                 1.0
+    //             } else {
+    //                 controller.right_trigger
+    //             }
+    //         }
+    //         _ => 0.0,
+    //     };
 
-        let analog_value = if analog_value <= 0.33 {
-            0.0
-        } else if analog_value >= 0.8 {
-            1.0
-        } else {
-            (analog_value - 0.33) / 0.53
-        };
+    //     let analog_value = if analog_value <= 0.33 {
+    //         0.0
+    //     } else if analog_value >= 0.8 {
+    //         1.0
+    //     } else {
+    //         (analog_value - 0.33) / 0.53
+    //     };
 
-        let bits = (analog_value * 1023.0) as u16;
-        (*out).buttons =
-            Buttons::from_bits_unchecked((*out).buttons.bits() | ((bits as i32) << 22));
-    }
+    //     let bits = (analog_value * 1023.0) as u16;
+    //     (*out).buttons =
+    //         Buttons::from_bits_unchecked((*out).buttons.bits() | ((bits as i32) << 22));
+    // }
 
     let is_parry_taunt = match controller.style {
-        ControllerStyle::GCController => (*mappings.add(player_idx as usize)).gc_absmash & 2 != 0,
+        ControllerStyle::GCController => (*mappings).gc_absmash & 2 != 0,
         ControllerStyle::LeftJoycon | ControllerStyle::RightJoycon => {
-            (*mappings.add(player_idx as usize)).joy_absmash & 2 != 0
+            (*mappings).joy_absmash & 2 != 0
         }
-        _ => (*mappings.add(player_idx as usize)).pro_absmash & 2 != 0,
+        _ => (*mappings).pro_absmash & 2 != 0,
     };
 
     let (parry, hold) = if is_parry_taunt {
@@ -740,7 +733,12 @@ unsafe fn map_controls_hook(
 
     if (*out).buttons.intersects(Buttons::Guard) {
         if (*out).buttons.intersects(parry) {
-            (*out).buttons |= Buttons::Parry;
+            if is_parry_taunt {
+                (*out).buttons |= Buttons::TauntParry;
+            }
+            else {
+                (*out).buttons |= Buttons::SpecialParry;
+            }
         } else if (*out).buttons.intersects(hold) {
             (*out).buttons |= Buttons::GuardHold;
         }
@@ -787,12 +785,6 @@ struct ControlModuleInternal {
     clamped_rstick_y: f32,
 }
 
-unsafe fn get_mapped_controller_inputs(player: usize) -> &'static MappedInputs {
-    let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
-        .add(0x52c30f0) as *const u64);
-    &*((base + 0x2b8 + 0x8 * (player as u64)) as *const MappedInputs)
-}
-
 static mut LAST_ALT_STICK: [f32; 2] = [0.0, 0.0];
 static mut LAST_ANALOG: f32 = 0.0;
 
@@ -810,7 +802,7 @@ unsafe fn parse_inputs(this: &mut ControlModuleInternal) {
     //println!("this.controller_index: {}", this.controller_index);
     // assert!(this.controller_index <= 7);
 
-    let inputs = get_mapped_controller_inputs(this.controller_index as usize);
+    let inputs = util::get_mapped_controller_inputs_from_id(this.controller_index as usize);
 
     let clamp_mul = 1.0 / CLAMP_MAX;
 

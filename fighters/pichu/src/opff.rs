@@ -30,19 +30,19 @@ unsafe fn charge_state_decrease(boma: &mut BattleObjectModuleAccessor) {
             let charge_state_time = ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time");
             VarModule::dec_int(boma.object(), vars::common::instance::GIMMICK_TIMER);
             MeterModule::drain_direct(boma.object(), 50.0/(charge_state_time as f32));
-            if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == charge_state_time - 30 {
+            if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == charge_state_time - 45 {
                 let handle = VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_HANDLER);
                 EffectModule::set_scale(boma, handle as u32, &Vector3f{ x: 0.8, y: 0.8, z: 0.8 });
             }
-            if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == charge_state_time - 40 {
+            if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == charge_state_time - 60 {
                 let handle = VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_HANDLER);
                 EffectModule::set_scale(boma, handle as u32, &Vector3f{ x: 0.7, y: 0.7, z: 0.7 });
             }
-            if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == charge_state_time - 50 {
+            if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == charge_state_time - 75 {
                 let handle = VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_HANDLER);
                 EffectModule::set_scale(boma, handle as u32, &Vector3f{ x: 0.6, y: 0.6, z: 0.6 });
             }
-            if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == charge_state_time - 60 {
+            if VarModule::get_int(boma.object(), vars::common::instance::GIMMICK_TIMER) == charge_state_time - 90 {
                 let handle = VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_EFFECT_HANDLER);
                 EffectModule::set_scale(boma, handle as u32, &Vector3f{ x: 0.5, y: 0.5, z: 0.5 });
             }
@@ -77,10 +77,8 @@ unsafe fn charge_state_damage_multipliers(boma: &mut BattleObjectModuleAccessor)
         VarModule::set_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL, 1.0);
     }
     else if VarModule::get_int(boma.object(), vars::pichu::instance::CHARGE_LEVEL) == 1 {
-        let charge_state_damage_mul = ParamModule::get_float(boma.object(), ParamType::Agent, "charge_state_damage_mul");
-        let charge_state_recoil_mul = ParamModule::get_float(boma.object(), ParamType::Agent, "charge_state_recoil_mul");
-        VarModule::set_float(boma.object(), vars::pichu::instance::CHARGE_DAMAGE_MUL, charge_state_damage_mul);
-        VarModule::set_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL, charge_state_recoil_mul);
+        VarModule::set_float(boma.object(), vars::pichu::instance::CHARGE_DAMAGE_MUL, 1.2);
+        VarModule::set_float(boma.object(), vars::pichu::instance::CHARGE_RECOIL_MUL, 1.25);
     }
 }
 
@@ -169,12 +167,13 @@ pub fn pichu_meter(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         MeterModule::update(fighter.object(), false);
         MeterModule::set_meter_cap(fighter.object(), 2);
         MeterModule::set_meter_per_level(fighter.object(), 25.0);
-        utils::ui::UiManager::set_ff_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
-        utils::ui::UiManager::set_ff_meter_info(
+        utils::ui::UiManager::set_pichu_meter_enable(fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, true);
+        utils::ui::UiManager::set_pichu_meter_info(
             fighter.get_int(*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32,
             MeterModule::meter(fighter.object()),
             (MeterModule::meter_cap(fighter.object()) as f32 * MeterModule::meter_per_level(fighter.object())),
-            MeterModule::meter_per_level(fighter.object())
+            MeterModule::meter_per_level(fighter.object()),
+            VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1
         );
     }
 }
