@@ -12,7 +12,9 @@ crate-type = ["cdylib"]
 
 [dependencies]
 skyline = "0.2.1"
-skyline_smash = { git = "https://github.com/blu-dev/skyline-smash", features = ["weak_l2cvalue"]}
+skyline_smash = { git = "https://github.com/blu-dev/skyline-smash", features = [
+    "weak_l2cvalue",
+] }
 smashline = { git = "https://github.com/blu-dev/smashline", branch = "development" }
 utils = { path = "../utils" }
 fighters = { path = "../fighters" }
@@ -21,8 +23,11 @@ gh-updater = { git = "https://github.com/blu-dev/gh-updater", optional = true }
 skyline-web = { git = "https://github.com/skyline-rs/skyline-web", optional = true }
 rand = { git = "https://github.com/skyline-rs/rand" }
 ninput = { git = "https://github.com/blu-dev/ninput" }
-smash-arc = { version = "0.5", features = ["smash-runtime", "rust-zstd"]}
 once_cell = "1"
+hid-hdr = { git = "https://github.com/HDR-Development/hid-hdr", features = [
+    "warnings",
+] }
+runtime-motion-patcher.git = "https://github.com/blu-dev/runtime-motion-patcher"
 
 [patch.crates-io]
 ring = { git = "https://github.com/skyline-rs/ring", branch = "0.16.20" }
@@ -34,7 +39,100 @@ getrandom = { git = "https://github.com/skyline-rs/getrandom" }
 # skyline-web = { git = "https://github.com/blu-dev/skyline-web", branch = "less-panics" }
 
 [features]
-default = ["skyline-web", "pitb","eflame","pfushigisou","purin","younglink","plizardon","shulk","chrom","miifighter","gamewatch","krool","samusd","ryu","rosetta","yoshi","lucas","link","lucario","zelda","kamui","wolf","nana","tantan","koopag","ridley","gekkouga","ike","roy","rockman","peach","elight","gaogaen","falco","ness","kirby","pikachu","daisy","sheik","mariod","luigi","captain","mario","jack","palutena","dolly","pickel","wiifit","pzenigame","pichu","pit","ken","brave","richter","miiswordsman","robin","master","robot","szerosuit","ganon","wario","diddy","shizue","littlemac","pacman","edge","marth","trail","mewtwo","metaknight","toonlink","koopajr","sonic","donkey","inkling","packun","miigunner","buddy","pikmin","cloud","fox","duckhunt","lucina","murabito","bayonetta","samus","koopa","simon","popo","dedede","snake","demon"]
+default = [
+    "skyline-web",
+    "pitb",
+    "eflame",
+    "pfushigisou",
+    "purin",
+    "younglink",
+    "plizardon",
+    "shulk",
+    "chrom",
+    "miifighter",
+    "gamewatch",
+    "krool",
+    "samusd",
+    "ryu",
+    "rosetta",
+    "yoshi",
+    "lucas",
+    "link",
+    "lucario",
+    "zelda",
+    "kamui",
+    "wolf",
+    "nana",
+    "tantan",
+    "koopag",
+    "ridley",
+    "gekkouga",
+    "ike",
+    "roy",
+    "rockman",
+    "peach",
+    "elight",
+    "gaogaen",
+    "falco",
+    "ness",
+    "kirby",
+    "pikachu",
+    "daisy",
+    "sheik",
+    "mariod",
+    "luigi",
+    "captain",
+    "mario",
+    "jack",
+    "palutena",
+    "dolly",
+    "pickel",
+    "wiifit",
+    "pzenigame",
+    "pichu",
+    "pit",
+    "ken",
+    "brave",
+    "richter",
+    "miiswordsman",
+    "robin",
+    "master",
+    "robot",
+    "szerosuit",
+    "ganon",
+    "wario",
+    "diddy",
+    "shizue",
+    "littlemac",
+    "pacman",
+    "edge",
+    "marth",
+    "trail",
+    "mewtwo",
+    "metaknight",
+    "toonlink",
+    "koopajr",
+    "sonic",
+    "donkey",
+    "inkling",
+    "packun",
+    "miigunner",
+    "buddy",
+    "pikmin",
+    "cloud",
+    "fox",
+    "duckhunt",
+    "lucina",
+    "murabito",
+    "bayonetta",
+    "samus",
+    "koopa",
+    "simon",
+    "popo",
+    "dedede",
+    "snake",
+    "demon",
+]
 dev = ["utils/no-offset-search"]
 main_nro = ["skyline-web"]
 add_status = []

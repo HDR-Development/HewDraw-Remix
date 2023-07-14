@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <float hash="smokescreen_smoke_life">300</float>
+  <float hash="smokescreen_sucker_area">0.001</float>
+  <float hash="smokescreen_sucker_persent">1</float>
+  <float hash="smokescreen_sucker_life">1</float>
+</struct>

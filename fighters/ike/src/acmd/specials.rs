@@ -178,6 +178,7 @@ unsafe fn ike_special_s_attack_game(fighter: &mut L2CAgentBase) {
     if VarModule::is_flag(boma.object(), vars::ike::status::IS_QUICK_DRAW_INSTAKILL){
         frame(lua_state, 1.0);
         if is_excute(fighter) {
+            fighter.select_cliff_hangdata_from_name("special_s");
             AttackModule::clear_all(boma);
             ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 70, 100, 400, 1, 6.0, 0.0, 8.0, 13.0, Some(0.0), Some(8.0), Some(-8.0), 10.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, -5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_LL, *COLLISION_SOUND_ATTR_IKE, *ATTACK_REGION_SWORD);
             //ATTACK(fighter, 1, 1, Hash40::new("top"), 0.0, 361, 0, 0, 0, 6.0, 0.0, 7.0, 10.0, Some(0.0), Some(5.0), Some(-10.0), 5.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_SWORD);
@@ -202,10 +203,10 @@ unsafe fn ike_special_s_attack_game(fighter: &mut L2CAgentBase) {
         frame(lua_state, 8.0);
         if is_excute(fighter) {
             WorkModule::on_flag(boma, *FIGHTER_IKE_STATUS_SPECIAL_S_FLAG_ATTACK_END);
+            notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
         }
         frame(lua_state, 12.0);
         if is_excute(fighter) {
-            notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c070), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
             if !AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT){
                 FT_MOTION_RATE(fighter, 2.0);
             }
@@ -215,6 +216,7 @@ unsafe fn ike_special_s_attack_game(fighter: &mut L2CAgentBase) {
     else {
         frame(lua_state, 1.0);
         if is_excute(fighter) {
+            fighter.select_cliff_hangdata_from_name("special_s");
             AttackModule::clear_all(boma);
             FT_MOTION_RATE(fighter, 3.0/(1.1-1.0));
         }
@@ -242,10 +244,7 @@ unsafe fn ike_special_s_attack_game(fighter: &mut L2CAgentBase) {
         frame(lua_state, 8.0);
         if is_excute(fighter) {
             WorkModule::on_flag(boma, *FIGHTER_IKE_STATUS_SPECIAL_S_FLAG_ATTACK_END);
-        }
-        frame(lua_state, 12.0);
-        if is_excute(fighter) {
-            notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c070), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+            notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
         }
         frame(lua_state, 15.0);
         if is_excute(fighter) {
@@ -312,6 +311,7 @@ unsafe fn ike_special_air_s_attack_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
+        fighter.select_cliff_hangdata_from_name("special_s");
         FT_MOTION_RATE(fighter, 3.0/(1.1-1.0));
     }
     frame(lua_state, 1.1);
@@ -338,10 +338,7 @@ unsafe fn ike_special_air_s_attack_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 8.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_IKE_STATUS_SPECIAL_S_FLAG_ATTACK_END);
-    }
-    frame(lua_state, 12.0);
-    if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c070), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
@@ -459,7 +456,7 @@ unsafe fn ike_special_hi2_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 44.0);
     if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c070), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
     frame(lua_state, 47.0);
     if is_excute(fighter) {
@@ -530,7 +527,7 @@ unsafe fn ike_special_air_hi2_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 44.0);
     if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c070), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
     frame(lua_state, 47.0);
     if is_excute(fighter) {

@@ -96,6 +96,7 @@ extern "C" {
 #[cfg(feature = "main_nro")]
 #[skyline::hook(replace = change_version_string)]
 fn change_version_string_hook(arg: u64, string: *const c_char) {
+    runtime_motion_patcher::run(true);
     let original_str = unsafe { skyline::from_c_str(string) };
     if original_str.contains("Ver.") {
         let romfs_version = get_romfs_version();
@@ -259,10 +260,9 @@ unsafe fn push_hash(game_state: u64, hash: u64) {
 unsafe fn game_end(game_state: u64) {
     let one =
         *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c31b2);
-    let mode =
-        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0) as *const u64;
-    if one == 0 
-    && *mode != 0x4040000 {
+    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0)
+        as *const u64;
+    if one == 0 && *mode != 0x4040000 {
         push_something(game_state, 2);
         // push_hash(game_state, smash::hash40("statewaitforruletofinish"));
         // push_hash(game_state, smash::hash40("statewaitendproduction"));
@@ -279,10 +279,9 @@ unsafe fn game_end(game_state: u64) {
 unsafe fn game_exit(game_state: u64, arg: u64) {
     let one =
         *(skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x52c31b2);
-    let mode =
-        (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0) as *const u64;
-    if one == 0
-    && *mode != 0x4040000 { 
+    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0)
+        as *const u64;
+    if one == 0 && *mode != 0x4040000 {
         push_something(game_state, 2);
         // push_hash(game_state, smash::hash40("statewaitforruletofinish"));
         // push_hash(game_state, smash::hash40("statewaitendproduction"));
@@ -290,7 +289,7 @@ unsafe fn game_exit(game_state: u64, arg: u64) {
         // push_hash(game_state, smash::hash40("statewaitforsyncwhenending"));
         push_hash(game_state, smash::hash40("statefadeoutwhenending"));
         push_hash(game_state, smash::hash40("stateexit"));
-        return
+        return;
     }
 
     call_original!(game_state, arg);
@@ -334,7 +333,8 @@ static mut IS_LOADING: bool = false;
 
 #[skyline::hook(offset = 0x1785348)]
 unsafe fn load_ingame_call_sequence_scene(arg: u64) {
-    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0) as *const u64;
+    let mode = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x53030f0)
+        as *const u64;
     IS_LOADING = *mode != 0x4040000;
     call_original!(arg)
 }
@@ -389,12 +389,21 @@ pub extern "C" fn main() {
             //game_end,
             //game_exit
         );
+        runtime_motion_patcher::install(true);
     }
 
     #[cfg(not(feature = "runtime"))]
     {
         utils::init();
     }
+
+    #[cfg(feature = "main_nro")]
+    {
+        if !is_on_ryujinx() {
+            setup_hid_hdr();
+        }
+    }
+
     fighters::install();
     #[cfg(all(not(feature = "add_status"), feature = "main_nro"))]
     {
@@ -422,6 +431,35 @@ pub extern "C" fn main() {
             })
             .unwrap()
             .join();
+    }
+}
+
+#[cfg(feature = "main_nro")]
+pub fn setup_hid_hdr() {
+    let status = hid_hdr::get_hid_hdr_status().unwrap();
+    match status {
+        hid_hdr::Status::NotConnected => {
+            if !hid_hdr::connect_to_hid_hdr() {
+                hid_hdr::warn_unable_to_connect("troubleshooting", "HDR", "discord.gg/hdr");
+                return;
+            }
+
+            let status = hid_hdr::get_hid_hdr_status().unwrap();
+            match status {
+                hid_hdr::Status::Ok => {
+                    hid_hdr::configure_stick_gate_changes(true).unwrap();
+                }
+                other => {
+                    hid_hdr::warn_status(other, "troubleshooting", "HDR", "discord.gg/hdr");
+                }
+            }
+        }
+        hid_hdr::Status::Ok => {
+            panic!("Should not be possible yet");
+        }
+        other => {
+            hid_hdr::warn_status(other, "troubleshooting", "HDR", "discord.gg/hdr");
+        }
     }
 }
 
