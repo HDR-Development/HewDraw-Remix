@@ -91,12 +91,12 @@ jobs:
     - name: checkout version
       uses: actions/checkout@v2
 
-    - name: Rust Cache
-      uses: Swatinem/rust-cache@v2.5.1
-      with:
-        workspaces: "plugin"
-        cache-targets: true
-        cache-all-crates: true
+    #- name: Rust Cache
+    #  uses: Swatinem/rust-cache@v2.5.1
+    #  with:
+    #    workspaces: "plugin"
+    #    cache-targets: true
+    #    cache-all-crates: true
 
     # build the project
     - run: |
