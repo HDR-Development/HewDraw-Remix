@@ -395,7 +395,6 @@ pub extern "C" fn main() {
             //game_end,
             //game_exit
         );
-        runtime_motion_patcher::install(true);
     }
 
     #[cfg(not(feature = "runtime"))]
