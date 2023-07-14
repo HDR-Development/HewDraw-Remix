@@ -10,18 +10,12 @@ special_s:
   extra:
     cancel_frame: 51
 attack_11:
-  flags:
-    move: false
   extra:
     cancel_frame: 16
 attack_lw3:
-  flags:
-    move: false
   extra:
     cancel_frame: 37
 attack_hi4:
-  flags:
-    move: false
   extra:
     cancel_frame: 62
 attack_lw4:
@@ -31,8 +25,6 @@ special_lw:
   extra:
     cancel_frame: 47
 attack_hi3:
-  flags:
-    move: false
   extra:
     cancel_frame: 41
 special_n_c:
@@ -45,16 +37,12 @@ attack_s4_s:
   extra:
     cancel_frame: 54
 attack_s3_s:
-  flags:
-    move: false
   extra:
     cancel_frame: 33
 special_air:
   extra:
     cancel_frame: 40
 attack_s3_lw:
-  flags:
-    move: false
   extra:
     cancel_frame: 33
 attack_s4_hi:
@@ -70,8 +58,6 @@ attack_s4_lw:
   extra:
     cancel_frame: 54
 attack_s3_hi:
-  flags:
-    move: false
   extra:
     cancel_frame: 33
 special_air_s:

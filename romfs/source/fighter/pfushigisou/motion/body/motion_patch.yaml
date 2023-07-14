@@ -24,8 +24,6 @@ attack_s4_s:
   extra:
     cancel_frame: 65
 attack_s3_s:
-  flags:
-    move: false
 fall_special:
   blend_frames: 5
 attack_s4_hi:

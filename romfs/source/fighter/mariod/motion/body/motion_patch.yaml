@@ -14,8 +14,6 @@ attack_lw3:
   extra:
     cancel_frame: 25
 attack_hi4:
-  flags:
-    move: false
   extra:
     cancel_frame: 44
 attack_lw4:
@@ -25,11 +23,7 @@ attack_s4_s:
   extra:
     cancel_frame: 50
 attack_s3_s:
-  flags:
-    move: false
 attack_s3_lw:
-  flags:
-    move: false
 attack_s4_hi:
   extra:
     cancel_frame: 50
@@ -43,8 +37,6 @@ attack_s4_lw:
   extra:
     cancel_frame: 50
 attack_s3_hi:
-  flags:
-    move: false
 special_air_s:
   extra:
     cancel_frame: 46

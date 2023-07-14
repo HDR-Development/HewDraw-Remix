@@ -10,8 +10,6 @@ attack_13:
   extra:
     cancel_frame: 26
 attack_11:
-  flags:
-    move: false
   extra:
     cancel_frame: 17
 attack_hi4:
@@ -26,13 +24,9 @@ attack_s4_s:
   extra:
     cancel_frame: 56
 attack_s3_s:
-  flags:
-    move: false
 fall_special:
   blend_frames: 5
 attack_s3_lw:
-  flags:
-    move: false
 attack_air_f:
   extra:
     cancel_frame: 40
@@ -40,8 +34,6 @@ attack_air_n:
   extra:
     cancel_frame: 41
 attack_s3_hi:
-  flags:
-    move: false
 special_n_cancel:
   game_script: game_specialncancel
   flags:

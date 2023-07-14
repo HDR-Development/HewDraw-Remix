@@ -17,13 +17,9 @@ attack_dash:
   extra:
     cancel_frame: 40
 attack_s4_s:
-  flags:
-    move: false
   extra:
     cancel_frame: 56
 attack_s3_s:
-  flags:
-    move: false
 attack_s4_hi:
   extra:
     cancel_frame: 56

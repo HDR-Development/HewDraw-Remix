@@ -34,26 +34,18 @@ attack_hi3:
   extra:
     cancel_frame: 36
 attack_s4_s:
-  flags:
-    move: false
   extra:
     cancel_frame: 60
 attack_s3_s:
-  flags:
-    move: false
   extra:
     cancel_frame: 35
 attack_s3_lw:
-  flags:
-    move: false
   extra:
     cancel_frame: 35
 attack_air_f:
   extra:
     cancel_frame: 49
 attack_s3_hi:
-  flags:
-    move: false
   extra:
     cancel_frame: 35
 special_air_lw:
