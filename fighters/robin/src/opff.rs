@@ -56,11 +56,32 @@ unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
     ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("haver"), &long_sword_scale);
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_REFLET_STATUS_KIND_SPECIAL_N_HOLD,
+        *FIGHTER_REFLET_STATUS_KIND_SPECIAL_N_SHOOT,
+        *FIGHTER_REFLET_STATUS_KIND_SPECIAL_N_CANCEL,
+        *FIGHTER_REFLET_STATUS_KIND_SPECIAL_HI_2,
+        *FIGHTER_REFLET_STATUS_KIND_SPECIAL_HI_FAIL,
+        *FIGHTER_REFLET_STATUS_KIND_SPECIAL_LW_END
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     nspecial_cancels(boma, status_kind, situation_kind);
     elwind1_burn(fighter);
     levin_leniency(fighter, boma);
     sword_length(boma);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_REFLET )]

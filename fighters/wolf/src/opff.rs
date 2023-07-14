@@ -50,10 +50,29 @@ unsafe fn firefox_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_WOLF_STATUS_KIND_SPECIAL_HI_RUSH_END,
+        *FIGHTER_WOLF_STATUS_KIND_SPECIAL_HI_BOUND,
+        *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_LOOP,
+        *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_HIT,
+        *FIGHTER_WOLF_STATUS_KIND_SPECIAL_LW_END
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     airdodge_cancel(boma, status_kind, situation_kind, cat[0], frame);
     shine_jump_cancel(fighter);
     firefox_startup_ledgegrab(fighter);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_WOLF )]

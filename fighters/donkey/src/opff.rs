@@ -48,7 +48,9 @@ unsafe fn barrel_pull(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     } else {
         if status_kind == *FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP {
             KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
+            }
         }
     }
 }
@@ -125,11 +127,30 @@ pub unsafe fn flatten_uspecial(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_DONKEY_STATUS_KIND_SPECIAL_N_LOOP,
+        *FIGHTER_DONKEY_STATUS_KIND_SPECIAL_N_ATTACK,
+        *FIGHTER_DONKEY_STATUS_KIND_SPECIAL_N_END,
+        *FIGHTER_DONKEY_STATUS_KIND_SPECIAL_N_CANCEL,
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     dash_attack_jump_cancels(fighter, boma, status_kind, situation_kind);
     nspecial_cancels(fighter, boma, status_kind, situation_kind);
     barrel_pull(fighter, boma, status_kind, situation_kind);
     headbutt_aerial_stall(fighter, boma, id, status_kind, situation_kind, frame);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_DONKEY )]

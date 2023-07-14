@@ -124,7 +124,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_FallSub_hook,
             super_jump_punch_main_hook,
             sub_cliff_uniq_process_exec_fix_pos,
-            end_pass_ground
+            end_pass_ground,
+            sub_fighter_pre_end_status
         );
     }
 }
@@ -523,6 +524,11 @@ pub unsafe fn end_pass_ground(fighter: &mut L2CFighterCommon) -> L2CValue {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
     }
     call_original!(fighter)
+}
+
+// Disables aerials canceling fast fall
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_fighter_pre_end_status)]
+pub unsafe fn sub_fighter_pre_end_status(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {

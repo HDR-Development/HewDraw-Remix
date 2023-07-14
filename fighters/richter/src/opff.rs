@@ -4,7 +4,23 @@ use super::*;
 use globals::*;
 
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_SIMON_STATUS_KIND_SPECIAL_S2
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon) {
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_RICHTER )]

@@ -57,7 +57,7 @@ unsafe fn absorb_vortex_jc_turnaround_shinejump_cancel(boma: &mut BattleObjectMo
     }
 }
 
-unsafe fn laser_blaze_ff_land_cancel(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, motion_kind: u64, cat2: i32, stick_y: f32) {
+unsafe fn laser_blaze_drift_land_cancel(boma: &mut BattleObjectModuleAccessor, situation_kind: i32, motion_kind: u64, cat2: i32, stick_y: f32) {
     if [hash40("special_air_n2_start"),
         hash40("special_air_n2_loop"),
         hash40("special_air_n2_end"),
@@ -68,10 +68,8 @@ unsafe fn laser_blaze_ff_land_cancel(boma: &mut BattleObjectModuleAccessor, situ
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
         }
         if situation_kind == *SITUATION_KIND_AIR {
-            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
-            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66
-                && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
             }
         }
     }
@@ -176,11 +174,56 @@ unsafe fn stealth_burst_land_cancel(boma: &mut BattleObjectModuleAccessor, statu
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && (WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO) == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_1
+        && fighter.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            *FIGHTER_STATUS_KIND_SPECIAL_HI,
+            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_N1_FIRE,
+            *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_N1_HOLD,
+            *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_N1_START,
+            *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_N1_CANCEL,
+            *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_END,
+            *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_HIT,
+            *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW1_LOOP
+            ])
+        )
+    || (WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO) == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_2
+        && fighter.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S2_END,
+            *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI2_JUMP,
+            ])
+        )
+    || (WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO) == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_3
+        && fighter.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_N3_LOOP,
+            *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_N3_END,
+            *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_1_AIR,
+            *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_S3_2_AIR,
+            *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_HI3_RUSH_END,
+            *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_END,
+            *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HIT,
+            *FIGHTER_MIIGUNNER_STATUS_KIND_SPECIAL_LW3_HOLD
+            ])
+        )
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     boosted_aerials(boma);
     nspecial_cancels(boma, status_kind, situation_kind, cat[0], cat[1]);
     absorb_vortex_jc_turnaround_shinejump_cancel(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
-    laser_blaze_ff_land_cancel(boma, situation_kind, motion_kind, cat[1], stick_y);
+    laser_blaze_drift_land_cancel(boma, situation_kind, motion_kind, cat[1], stick_y);
     remove_homing_missiles(boma, status_kind);
     missile_land_cancel(fighter, boma, id, status_kind, situation_kind, frame);
 	arm_rocket_airdash(boma, id, status_kind, frame);
@@ -188,6 +231,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     lunar_launch_reset(fighter);
     lunar_launch_effect_reset(fighter, boma, status_kind);
     stealth_burst_land_cancel(boma, status_kind, situation_kind);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MIIGUNNER )]

@@ -196,6 +196,42 @@ unsafe fn sword_length(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMo
 
 
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && (WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO) == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_1
+        && fighter.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW1_HIT
+            ])
+        )
+    || (WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO) == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_2
+        && fighter.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_END,
+            *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK,
+            *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH_END,
+            *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_BOUND
+            ])
+        )
+    || (WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO) == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_3
+        && fighter.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            *FIGHTER_STATUS_KIND_SPECIAL_HI,
+            *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_N3_END,
+            *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_N3_LOOP,
+            *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_N3_END_MAX,
+            *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI3_END,
+            ])
+        )
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //gale_stab_jc_attack(fighter, boma, id, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     //aerial_power_thrust_jump_reset(fighter, boma, status_kind, situation_kind, motion_kind);
@@ -206,7 +242,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     skyward_slash_dash_act(fighter, boma, id, status_kind, situation_kind, frame);
     //kinesis_blade(fighter, boma, status_kind, motion_kind);
     //hitgrab_transition(fighter, boma, status_kind, motion_kind);
-    airborne_assault_lag(fighter)
+    airborne_assault_lag(fighter);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MIISWORDSMAN )]

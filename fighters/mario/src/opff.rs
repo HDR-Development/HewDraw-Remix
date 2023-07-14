@@ -174,6 +174,22 @@ unsafe fn noknok_training(fighter: &mut L2CFighterCommon, id: usize, status_kind
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_CHARGE,
+        *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //dair_mash_rise(fighter, boma, id, motion_kind, situation_kind, frame);
     up_b_wall_jump(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
@@ -182,6 +198,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     noknok_timer(fighter, boma, id);
     noknok_reset(fighter, id, status_kind);
     noknok_training(fighter, id, status_kind);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MARIO )]

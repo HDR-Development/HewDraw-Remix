@@ -146,6 +146,26 @@ pub unsafe fn double_edge_dance_vertical_momentum(fighter: &mut L2CFighterCommon
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_N_END,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_N_END2,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_N_END3,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_N_LOOP,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_N_TURN,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_N_END_MAX,
+        *FIGHTER_ROY_STATUS_KIND_SPECIAL_LW_HIT
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 // symbol-based call for the fe characters' common opff
 extern "Rust" {
     fn fe_common(fighter: &mut smash::lua2cpp::L2CFighterCommon);
@@ -160,6 +180,7 @@ pub unsafe fn chrom_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon
     side_special_cancels(fighter);
     //soaring_slash(fighter);
     double_edge_dance_vertical_momentum(fighter);
+    fastfall_specials(fighter);
     
     // Sword remains the same size throughout jab and utilt
     if fighter.is_status_one_of(&[*FIGHTER_STATUS_KIND_ATTACK_HI3,

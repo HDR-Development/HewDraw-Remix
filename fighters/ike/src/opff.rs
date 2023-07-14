@@ -396,6 +396,27 @@ unsafe fn quickdraw_attack_whiff_freefall(fighter: &mut L2CFighterCommon) {
 }
 
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_LOOP,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END_MDL,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END_MAX,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_HOLD,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_ATTACK,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_END,
+        *FIGHTER_IKE_STATUS_KIND_SPECIAL_LW_HIT
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     aether_drift(boma, status_kind, situation_kind, stick_x, facing);
     quickdraw_jump_attack_cancels(boma, id, status_kind, situation_kind, cat[0], stick_x, facing);
@@ -405,6 +426,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     grab_lean(boma);
     fair_wrist_bend(boma);
     quickdraw_attack_whiff_freefall(fighter);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_IKE )]

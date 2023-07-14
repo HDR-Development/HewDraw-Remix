@@ -4,7 +4,7 @@ use super::*;
 use globals::*;
 
  
-unsafe fn bow_ff_lc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+unsafe fn bow_lc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
     if [*FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT,
         *FIGHTER_PIT_STATUS_KIND_SPECIAL_N_CHARGE,
         *FIGHTER_PIT_STATUS_KIND_SPECIAL_N_DIR,
@@ -12,12 +12,6 @@ unsafe fn bow_ff_lc(boma: &mut BattleObjectModuleAccessor, status_kind: i32, sit
         if status_kind == *FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT {
             if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
-            }
-        }
-        if situation_kind == *SITUATION_KIND_AIR {
-            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66
-                && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
             }
         }
     }
@@ -38,8 +32,22 @@ extern "Rust" {
     fn pits_common(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32);
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    bow_ff_lc(boma, status_kind, situation_kind, cat[1], stick_y);
+    bow_lc(boma, status_kind, situation_kind, cat[1], stick_y);
     guardian_orbitar_jc(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
     pits_common(fighter, boma, status_kind);
 }

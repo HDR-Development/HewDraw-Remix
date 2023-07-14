@@ -194,13 +194,12 @@ unsafe fn pk_thunder_wall_ride_shorten(fighter: &mut smash::lua2cpp::L2CFighterC
 
 }
 
-// Lucas PK Fire Fast Fall
-unsafe fn pk_fire_ff(boma: &mut BattleObjectModuleAccessor, stick_y: f32) {
+// Lucas PK Fire drift
+unsafe fn pk_fire_drift(boma: &mut BattleObjectModuleAccessor, stick_y: f32) {
     if boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S) {
         if boma.is_situation(*SITUATION_KIND_AIR) {
-            if boma.is_cat_flag(Cat2::FallJump) && stick_y < -0.66
-                && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
-                WorkModule::set_flag(boma, true, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
             }
         }
     }
@@ -375,6 +374,26 @@ unsafe fn upspecialend(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_HOLD,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_END,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_N_FIRE,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_END,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_HOLD,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_HIT,
+        *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_LW_END
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     smash_s_angle_handler(fighter, frame);
     dashgrab_position_fix(fighter, frame);
@@ -382,11 +401,12 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     //pk_thunder_cancel(boma, id, status_kind, situation_kind);
     //pk_thunder_wall_ride_shorten(fighter, boma, id, status_kind, situation_kind);
     //djc_momentum_helper(boma, id, status_kind, frame);
-    pk_fire_ff(boma, stick_y);
+    pk_fire_drift(boma, stick_y);
     offense_charge(fighter, boma, situation_kind);
     offense_effct_handler(fighter);
     reset_flags(fighter, status_kind, situation_kind);
     upspecialend(fighter);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_LUCAS)]

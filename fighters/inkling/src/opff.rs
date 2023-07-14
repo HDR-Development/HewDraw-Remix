@@ -114,7 +114,30 @@ unsafe fn special_cancel(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_INKLING_STATUS_KIND_SPECIAL_N_END,
+        *FIGHTER_INKLING_STATUS_KIND_SPECIAL_N_SHOOT,
+        *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_JUMP_END,
+        *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_END,
+        *FIGHTER_INKLING_STATUS_KIND_SPECIAL_S_STOP_WALL,
+        *FIGHTER_INKLING_STATUS_KIND_SPECIAL_HI_JUMP,
+        *FIGHTER_INKLING_STATUS_KIND_SPECIAL_HI_FALL,
+        *FIGHTER_INKLING_STATUS_KIND_SPECIAL_HI_STOP_CEIL,
+        *FIGHTER_INKLING_STATUS_KIND_SPECIAL_LW_EMPTY,
+        *FIGHTER_INKLING_STATUS_KIND_SPECIAL_LW_THROW
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(
+    fighter: &mut L2CFighterCommon,
     boma: &mut BattleObjectModuleAccessor,
     id: usize,
     cat: [i32; 4],
@@ -129,6 +152,7 @@ pub unsafe fn moveset(
     dair_splatter(boma, motion_kind, id);
     roller_jump_cancel(boma);
     special_cancel(boma);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_INKLING)]
@@ -142,6 +166,7 @@ pub fn inkling_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub unsafe fn inkling_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(
+            fighter,
             &mut *info.boma,
             info.id,
             info.cat,

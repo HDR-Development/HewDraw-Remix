@@ -111,6 +111,31 @@ unsafe fn kaclang_jc(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_N_HOLD,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_N_SHOOT,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_N_CANCEL,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_S_HOLD,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_S_ATTACK1,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_S_ATTACK2,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_S_ATTACK3,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_S_ATTACK3_APPEND,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_HI_HOLD,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_HI_JUMP,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_CANCEL,
+        *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_FAILURE
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 #[utils::macros::opff(FIGHTER_KIND_BRAVE )]
 pub unsafe fn brave_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
@@ -121,6 +146,7 @@ pub unsafe fn brave_frame_wrapper(fighter: &mut L2CFighterCommon) {
     dash_cancel_frizz(fighter);
     woosh_cancel(fighter);
     kaclang_jc(fighter);
+    fastfall_specials(fighter);
 
     // Extend sword length
     ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("sword1"), &Vector3f::new(1.1, 1.05, 1.045));

@@ -99,9 +99,26 @@ unsafe fn teleport(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModule
 	}
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+		*FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_N_SHOOT,
+		*FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_N_CHARGE,
+		*FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_N_RETURN,
+		*FIGHTER_ROSETTA_STATUS_KIND_SPECIAL_HI_END,
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     launch_star_cancel(boma, status_kind);
 	teleport(fighter, boma, status_kind);
+	fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_ROSETTA )]

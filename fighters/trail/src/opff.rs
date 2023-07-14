@@ -198,6 +198,28 @@ unsafe fn side_special_hit_check(fighter: &mut smash::lua2cpp::L2CFighterCommon,
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1,
+        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N2,
+        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N3,
+        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1_END,
+        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_N1_SHOOT,
+        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END,
+        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_LW_TURN,
+        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_LW_ATTACK,
+        *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_LW_REBOUND
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     jab_2_ftilt_cancel(boma, cat[0], status_kind, situation_kind, motion_kind);
     //fair_cancels(boma, cat[0], status_kind, situation_kind, motion_kind);
@@ -205,6 +227,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     nair_fair_momentum_handling(fighter, boma);
     magic_cancels(boma);
     aerial_sweep_hit_actionability(boma);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_TRAIL)]

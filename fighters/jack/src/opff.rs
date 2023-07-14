@@ -71,6 +71,28 @@ unsafe fn knife_length(boma: &mut BattleObjectModuleAccessor) {
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("knife"), &long_sword_scale);
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_JACK_STATUS_KIND_SPECIAL_HI_THROW,
+        *FIGHTER_JACK_STATUS_KIND_SPECIAL_HI2_END,
+        *FIGHTER_JACK_STATUS_KIND_SPECIAL_LW_HOLD,
+        *FIGHTER_JACK_STATUS_KIND_SPECIAL_LW_END,
+        *FIGHTER_JACK_STATUS_KIND_SPECIAL_LW_ATTACK,
+        *FIGHTER_JACK_STATUS_KIND_SPECIAL_LW_ENDURE,
+        *FIGHTER_JACK_STATUS_KIND_SPECIAL_LW2_COUNTER,
+        *FIGHTER_JACK_STATUS_KIND_SPECIAL_LW2_REFLECTOR
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     wings_of_rebellion_cancel(boma, status_kind);
     //arsene_grappling_hook(boma, situation_kind, motion_kind);
@@ -78,6 +100,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     grappling_hook_spike_cancel(fighter, boma);
 	knife_length(boma);
     //arsene_summon_desmummon(boma);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_JACK )]

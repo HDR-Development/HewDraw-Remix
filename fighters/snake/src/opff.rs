@@ -72,11 +72,33 @@ unsafe fn tranq_reload(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_N_HOLD_AIR,
+        *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_N_HOLD_JUMP,
+        *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_N_HOLD_JUMP_AERIAL,
+        *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_N_THROW,
+        *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_HI_CUT,
+        *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_LW_DROP,
+        *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_LW_PRODUCE,
+        *FIGHTER_SNAKE_STATUS_KIND_SPECIAL_LW_EXPLODING
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //grab_walk(boma, status_kind, cat[1]);
     fsmash_combo(boma, status_kind);
     grenade_counter_reset(boma, id, status_kind);
     tranq_reload(fighter);
+    fastfall_specials(fighter);
 }
 
 /*#[weapon_frame( agent = WEAPON_KIND_SNAKE_C4 )]

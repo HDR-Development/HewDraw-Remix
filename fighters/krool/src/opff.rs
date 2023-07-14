@@ -65,6 +65,32 @@ unsafe fn crownerang_item_grab(boma: &mut BattleObjectModuleAccessor, status_kin
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_N_LOOP,
+        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_N_END,
+        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_N_SUCTION,
+        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_N_SPIT,
+        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_N_SWALLOW,
+        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_S_GET,
+        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_S_CATCH,
+        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_S_THROW,
+        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_S_FAILURE,
+        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_FALL,
+        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END,
+        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_LW_TURN,
+        *FIGHTER_KROOL_STATUS_KIND_SPECIAL_LW_HIT
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(
     fighter: &mut L2CFighterCommon,
     boma: &mut BattleObjectModuleAccessor,
@@ -81,6 +107,7 @@ pub unsafe fn moveset(
     jetpack_cancel(fighter, boma, status_kind, cat[0]);
     fuel_reset(fighter);
     //crownerang_item_grab(boma, status_kind, cat[0]);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_KROOL)]

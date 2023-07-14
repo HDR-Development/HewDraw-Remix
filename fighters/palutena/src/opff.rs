@@ -4,6 +4,22 @@ use super::*;
 use globals::*;
 
  
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_HI_3,
+        *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_LW_ATTACK,
+        *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_LW_REFLECT
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     palutena_teleport_wall_ride(fighter, boma, id, status_kind, situation_kind, cat[0]);
     actionable_teleport_air(fighter, boma, id, status_kind, situation_kind, frame);
@@ -11,6 +27,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     aegis_reflector_reset(fighter, id, status_kind);
     aegis_reflector_training(fighter, id, status_kind);
     dj_upB_jump_refresh(fighter);
+    fastfall_specials(fighter);
 }
 
 unsafe fn actionable_teleport_air(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, frame: f32) {

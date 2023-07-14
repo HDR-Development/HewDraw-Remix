@@ -62,6 +62,20 @@ unsafe fn duck_jump_fuel_indicator(fighter: &mut smash::lua2cpp::L2CFighterCommo
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_DUCKHUNT_STATUS_KIND_SPECIAL_HI_END
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 extern "Rust" {
     fn gimmick_flash(boma: &mut BattleObjectModuleAccessor);
 }
@@ -84,6 +98,7 @@ pub fn duckhunt_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         fuel_reset(fighter);
         duck_jump_fuel_indicator(fighter);
         gunman_timer(fighter);
+        fastfall_specials(fighter);
     }
 }
 

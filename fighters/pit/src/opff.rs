@@ -8,6 +8,7 @@ use globals::*;
 pub unsafe extern "Rust" fn pits_common(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     power_of_flight_cancel(boma, status_kind);
     upperdash_arm_whiff_freefall(fighter);
+    fastfall_specials(fighter);
 }
 
 
@@ -36,9 +37,27 @@ unsafe fn upperdash_arm_whiff_freefall(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S)
     && fighter.is_situation(*SITUATION_KIND_AIR)
     && !StatusModule::is_changing(fighter.module_accessor)
-    && MotionModule::frame(fighter.module_accessor) >= MotionModule::end_frame(fighter.module_accessor) - 1.0
+    && (MotionModule::frame(fighter.module_accessor) >= MotionModule::end_frame(fighter.module_accessor) - 1.0
+        || CancelModule::is_enable_cancel(fighter.module_accessor))
     && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_HIT) {
         fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+    }
+}
+
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_PIT_STATUS_KIND_SPECIAL_N_CHARGE,
+        *FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT,
+        *FIGHTER_PIT_STATUS_KIND_SPECIAL_S_END,
+        *FIGHTER_PIT_STATUS_KIND_SPECIAL_HI_RUSH_END,
+        *FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_HOLD,
+        *FIGHTER_PIT_STATUS_KIND_SPECIAL_LW_END
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
     }
 }
 

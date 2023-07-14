@@ -42,10 +42,27 @@ unsafe fn aerial_wiz_foot_jump_reset_bounce(boma: &mut BattleObjectModuleAccesso
 //     }
 // }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_GANON_STATUS_KIND_SPECIAL_N_TURN,
+        *FIGHTER_GANON_STATUS_KIND_SPECIAL_HI_THROW,
+        *FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_WALL_END
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     aerial_wiz_foot_jump_reset_bounce(boma, status_kind, situation_kind);
     // dtaunt_counter(boma, motion_kind, frame);
     // repeated_warlock_punch_turnaround(boma, status_kind, stick_x, facing, frame);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_GANON )]

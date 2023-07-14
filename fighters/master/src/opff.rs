@@ -65,11 +65,37 @@ unsafe fn aymr_slowdown(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_HOLD,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_TURN,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_SHOOT,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_CANCEL,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_MAX_SHOOT,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_FRONT,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_S_FRONT_DASH,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_HI_WALL_JUMP,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_TURN,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_HIT,
+        *FIGHTER_MASTER_STATUS_KIND_SPECIAL_LW_CANCEL
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //areadbhar_autocancel(boma, id, status_kind, situation_kind, frame);
     nspecial_cancels(boma, status_kind, situation_kind);
     aymr_slowdown(boma);
     specialhi_reset(fighter);
+    fastfall_specials(fighter);
 
     // Magic Series
     //areadbhar_dash_cancel(boma, status_kind, situation_kind, cat[0]);

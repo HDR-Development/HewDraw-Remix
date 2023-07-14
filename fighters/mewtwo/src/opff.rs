@@ -115,12 +115,32 @@ pub unsafe fn mewtwo_teleport_wall_ride(fighter: &mut smash::lua2cpp::L2CFighter
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_MAX,
+        *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_SHOOT,
+        *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_HOLD,
+        *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_N_CANCEL,
+        *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_S_THROW,
+        *FIGHTER_MEWTWO_STATUS_KIND_SPECIAL_HI_3
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     actionable_teleport_air(fighter, boma, id, status_kind, situation_kind, frame);
     nspecial_cancels(boma, status_kind, situation_kind);
     unfloat_confusion(fighter, status_kind);
     mewtwo_teleport_wall_ride(fighter, boma, status_kind, id);
     dj_upB_jump_refresh(fighter);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MEWTWO )]

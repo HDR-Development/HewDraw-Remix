@@ -141,12 +141,44 @@ unsafe fn earthquake_punch(fighter: &mut L2CFighterCommon, boma: &mut BattleObje
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && (WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO) == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_1
+        && fighter.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S1_END
+            ])
+        )
+    || (WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO) == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_2
+        && fighter.is_status_one_of(&[
+            *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_N2_MISS,
+            *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_N2_FINISH,
+            *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_N2_FINISH_MISS,
+            *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_HI2_END
+            ])
+        )
+    || (WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO) == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_3
+        && fighter.is_status_one_of(&[
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_HI,
+            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_N3_TURN,
+            *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S3_THROW,
+            ])
+        )
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //special_cancels(boma, id, status_kind, frame);
     feint_jump_jc(boma);
     wild_throw(boma, status_kind, frame);
     earthquake_punch(fighter, boma, status_kind);
     onslaught(boma, frame);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_MIIFIGHTER )]

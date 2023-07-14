@@ -142,6 +142,22 @@ unsafe fn voluntary_sopo(fighter: &mut L2CFighterCommon, boma: &mut BattleObject
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_FAIL,
+        *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_JUMP,
+        *FIGHTER_POPO_STATUS_KIND_SPECIAL_HI_JUMP_PARTNER
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     // nothing lol
 }
@@ -161,6 +177,7 @@ pub unsafe fn ice_climbers_moveset(fighter: &mut L2CFighterCommon, boma: &mut Ba
     dair_bounce(fighter, boma, motion_kind, frame);
     voluntary_sopo(fighter, boma, id, status_kind, frame);
     nana_couple_indicator(fighter, boma, id, status_kind, situation_kind, motion_kind, frame);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_POPO )]

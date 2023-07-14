@@ -123,6 +123,21 @@ unsafe fn special_lw_landing_lag(fighter: &mut smash::lua2cpp::L2CFighterCommon,
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_S_END,
+        *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_HI_LOOP,
+        *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_END,
+        *FIGHTER_METAKNIGHT_STATUS_KIND_SPECIAL_LW_ATTACK
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
 
     dim_cape_early_attack_cancel(boma, status_kind, frame);
@@ -132,6 +147,7 @@ pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut
     sword_length(boma);
     up_special_proper_landing(fighter);
     //attack_100_end_early(fighter, boma, motion_kind, frame);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_METAKNIGHT )]

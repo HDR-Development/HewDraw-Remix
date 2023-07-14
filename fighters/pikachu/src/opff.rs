@@ -44,17 +44,34 @@ unsafe fn jc_qa_agility(boma: &mut BattleObjectModuleAccessor, id: usize, status
     }
 }
 
-pub unsafe fn electric_rats_moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+pub unsafe fn electric_rats_moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     disable_qa_jc(boma, id, status_kind, situation_kind, frame);
     reset_jc_disable_flag(boma, id, status_kind, situation_kind);
     jc_qa_agility(boma, id, status_kind, situation_kind, cat[0], stick_x, facing, frame);
+    fastfall_specials(fighter);
 }
 
 
 #[no_mangle]
 pub unsafe extern "Rust" fn electric_rats_common(fighter: &mut L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        electric_rats_moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        electric_rats_moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+    }
+}
+
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_S_HOLD,
+        *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_S_END,
+        *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END,
+        *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_LW_HIT
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
     }
 }
 

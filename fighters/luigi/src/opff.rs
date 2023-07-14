@@ -22,10 +22,28 @@ unsafe fn special_hi_proper_landing(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE,
+        *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END,
+        *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_HI_DROP,
+        *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_HI_FALL,
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     luigi_missle_ledgegrab(fighter);
     special_s_charge_init(fighter, status_kind);
     special_hi_proper_landing(fighter);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_LUIGI )]

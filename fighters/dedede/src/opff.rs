@@ -88,9 +88,41 @@ unsafe fn bair_foot_rotation_scaling(boma: &mut BattleObjectModuleAccessor) {
     }
 }
  
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_END,
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_LOOP,
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_SPIT,
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_SWALLOW,
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_EAT_FALL,
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_EAT_JUMP1,
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_EAT_JUMP2,
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_EAT_TURN_AIR,
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_EAT_WAIT_FALL,
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_EAT_WAIT_JUMP,
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_N_EAT_PASS,
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_S_GET,
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_S_MISS,
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_FAILURE,
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_HI_TURN,
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_JUMP,
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_FALL,
+        *FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_PASS
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //bair_foot_rotation_scaling(boma);
     super_dedede_jump_quickfall(boma, frame);
+    fastfall_specials(fighter);
 }
 #[utils::macros::opff(FIGHTER_KIND_DEDEDE )]
 pub fn dedede_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {

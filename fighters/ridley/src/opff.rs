@@ -102,11 +102,35 @@ unsafe fn angled_skewer(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_N_SHOOT,
+        *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_N_CHARGE,
+        *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_N_FAILURE,
+        *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_S_FAILURE,
+        *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_S_DRAG_JUMP,
+        *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_S_DRAG_WALL,
+        *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_S_FALL_JUMP,
+        *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_END,
+        *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_STOP_CEIL,
+        *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_STOP_WALL
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     //space_pirate_rush_flight(boma, status_kind, situation_kind, stick_x);
     wing_blitz_drift(boma, status_kind, situation_kind, stick_x, stick_y);
     //stab_footstool(fighter);
     angled_skewer(fighter);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_RIDLEY )]

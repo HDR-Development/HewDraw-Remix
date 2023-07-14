@@ -170,6 +170,22 @@ unsafe fn rotate_forward_bair(boma: &mut BattleObjectModuleAccessor) {
     }
 }
 
+unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
+    if !fighter.is_in_hitlag()
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_status_one_of(&[
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_DEMON_STATUS_KIND_SPECIAL_N_AIR_START,
+        *FIGHTER_DEMON_STATUS_KIND_SPECIAL_N_AIR_SHOOT,
+        *FIGHTER_DEMON_STATUS_KIND_SPECIAL_S_AIR_END,
+        *FIGHTER_DEMON_STATUS_KIND_SPECIAL_HI_FALL,
+        ]) 
+    && fighter.is_situation(*SITUATION_KIND_AIR) {
+        fighter.sub_air_check_dive();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     slaughter_high_kick_devastator(boma, cat[0], status_kind, situation_kind, motion_kind);
     jaw_breaker(boma, cat[0], status_kind, situation_kind, motion_kind, frame);
@@ -178,6 +194,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     spinning_demon(boma, cat[0], status_kind, situation_kind, motion_kind, frame);
     //enable_both_recovery_specials(boma);
     rotate_forward_bair(boma);
+    fastfall_specials(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_DEMON )]
