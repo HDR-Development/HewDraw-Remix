@@ -96,7 +96,13 @@ extern "C" {
 #[cfg(feature = "main_nro")]
 #[skyline::hook(replace = change_version_string)]
 fn change_version_string_hook(arg: u64, string: *const c_char) {
-    runtime_motion_patcher::run(true);
+    unsafe {
+        static mut did_init: bool = false;
+        if !did_init {
+            did_init = true;
+            runtime_motion_patcher::run(true);
+        }
+    }
     let original_str = unsafe { skyline::from_c_str(string) };
     if original_str.contains("Ver.") {
         let romfs_version = get_romfs_version();
