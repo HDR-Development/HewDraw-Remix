@@ -25,7 +25,7 @@ jobs:
       uses: Swatinem/rust-cache@v2.5.1
       with:
         workspaces: "plugin"
-        cache-directories: "~/.cargo"
+        cache-targets: true
 
     # build the project
     - run: |
