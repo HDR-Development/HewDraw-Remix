@@ -1,0 +1,18 @@
+[package]
+name = "engine"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+skyline.workspace = true
+skyline_smash.workspace = true
+smash_script.workspace = true
+smashline.workspace = true
+utils.workspace = true
+ninput.workspace = true
+smash-rs.workspace = true
+rand.workspace = true
+
+interpolation = "0.2.0" # for f32::lerp

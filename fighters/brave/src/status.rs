@@ -1,5 +1,5 @@
 use super::*;
-use smash2::app::{FighterManager, BraveSetMenuCommand, BraveEnableMenuCommand, BraveShowMenu, BraveSetMenuSelectedCommand};
+use smash_rs::app::{FighterManager, BraveSetMenuCommand, BraveEnableMenuCommand, BraveShowMenu, BraveSetMenuSelectedCommand};
 
 extern "C" {
     #[link_name = "_ZN3lib9SingletonIN3app21FighterParamAccessor2EE9instance_E"]

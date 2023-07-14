@@ -1,6 +1,5 @@
 
 use super::*;
-use smash2;
 
 #[acmd_script( agent = "demon", script = "expression_throwhi" , category = ACMD_EXPRESSION , low_priority)]
 unsafe fn demon_throw_hi_expression(fighter: &mut L2CAgentBase) {
@@ -30,8 +29,8 @@ unsafe fn demon_throw_hi_expression(fighter: &mut L2CAgentBase) {
 unsafe fn game_throwlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    if !smash2::app::FighterCutInManager::is_vr_mode() {
-        if smash2::app::FighterCutInManager::is_one_on_one_including_thrown(&*(fighter.module_accessor as *const smash2::app::BattleObjectModuleAccessor)) {
+    if !smash_rs::app::FighterCutInManager::is_vr_mode() {
+        if smash_rs::app::FighterCutInManager::is_one_on_one_including_thrown(&*(fighter.module_accessor as *const smash_rs::app::BattleObjectModuleAccessor)) {
             if is_excute(fighter) {
                 FighterSpecializer_Demon::check_disabled_motion_camera_of_scale(boma);
                 FighterSpecializer_Demon::check_disabled_motion_camera_of_stage(boma);
