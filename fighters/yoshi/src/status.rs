@@ -167,7 +167,7 @@ pub unsafe fn guard_off(fighter: &mut L2CFighterCommon) -> L2CValue {
     } else {
         MotionModule::change_motion(
             fighter.module_accessor,
-            Hash40::new_raw(0x97ab1c684),
+            Hash40::new("guard_off"),
             0.0,
             rate,
             false,

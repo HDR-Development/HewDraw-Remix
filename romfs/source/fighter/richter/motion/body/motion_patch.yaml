@@ -1,0 +1,35 @@
+attack_12:
+  extra:
+    cancel_frame: 20
+attack_11:
+  extra:
+    cancel_frame: 17
+attack_lw3:
+  extra:
+    cancel_frame: 38
+attack_hi4:
+  flags:
+    move: false
+attack_hi3:
+  extra:
+    cancel_frame: 37
+attack_dash:
+  extra:
+    cancel_frame: 49
+attack_s3_s:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 36
+fall_leaning_c:
+  extra:
+    cancel_frame: 22
+attack_100_end:
+  extra:
+    cancel_frame: 43
+item_light_throw_f:
+  flags:
+    move: false
+attack_lw32_landing:
+  extra:
+    cancel_frame: 18

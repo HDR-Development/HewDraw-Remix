@@ -171,6 +171,8 @@ pub mod vars {
 
             pub const TEMPORARY_CLIFF_STOP: i32 = 0x0061;
 
+            pub const ENABLE_FRAME_DATA_DEBUG: i32 = 0x0062;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -196,6 +198,8 @@ pub mod vars {
             pub const CLIFF_XLU_FRAME: i32 = 0x000B;
             pub const LAST_ATTACK_HITBOX_ID: i32 = 0x000C;
             pub const SHIELD_EFFECT_HANDLE: i32 = 0x000D;
+
+            pub const FRAME_COUNTER: i32 = 0x000D;
 
             // floats
 
@@ -257,6 +261,9 @@ pub mod vars {
 
             pub const ENABLE_UCF: i32 = 0x1000;
 
+            pub const FAF_REACHED: i32 = 0x1000;
+            pub const PREV_AUTOCANCEL_FLAG: i32 = 0x1001;
+
             // ints
 
             pub const DOWN_STAND_FB_KIND: i32 = 0x1000;
@@ -280,12 +287,13 @@ pub mod vars {
             // ints
             pub const NUM_RECOVERY_RESOURCE_USED: i32 = 0x0100;
             pub const NUM_CANCEL_THIS_AIRTIME: i32 = 0x0101;
-            pub const ABK_ANGLE_ROUNDED: i32 = 0x0102;
         }
         pub mod status {
             // flags
             pub const IS_ACTIVATE: i32 = 0x1100;
             pub const DIRECT_HIT: i32 = 0x1101;
+            // floats
+            pub const ABK_ANGLE: i32 = 0x1102;
         }
     }
 
