@@ -110,11 +110,10 @@ fn dragon_frame(weapon: &mut L2CFighterBase) {
         if !WorkModule::is_flag(boma, *WEAPON_TANTAN_PUNCH1_INSTANCE_WORK_ID_FLAG_IS_LEFT)
         && !WorkModule::is_flag(boma, *WEAPON_TANTAN_PUNCH1_INSTANCE_WORK_ID_FLAG_IS_KIRBY)
         {
-            let minmin_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
+            let minmin_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
             if sv_battle_object::is_active(minmin_id) {
                 let minmin = utils::util::get_battle_object_from_id(minmin_id);
                 let minmin_boma = &mut *(*minmin).module_accessor;
-                let mut is_dragon = WorkModule::is_flag(boma, *WEAPON_TANTAN_PUNCH1_INSTANCE_WORK_ID_FLAG_IS_DRAGONIZE);
                 let bigScale = WorkModule::get_param_float(minmin_boma,hash40("param_private"),hash40("arm_l_big_scale"));
 
                 //Only update if previously was not dragonized
@@ -127,10 +126,7 @@ fn dragon_frame(weapon: &mut L2CFighterBase) {
                     }
                 }
                 if is_dragon {
-                    println!("Dragon scale: {bigScale}");
                     PostureModule::set_scale(boma, bigScale, false);
-                    //ModelModule::set_joint_scale(boma, Hash40::new("root"), &Vector3f::new(bigScale, bigScale, bigScale));
-
                 }
             }
         }

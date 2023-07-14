@@ -723,24 +723,60 @@ unsafe fn dragon_special_hi_attack_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan_beam", script = "game_shoot", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "tantan_punch1", script = "sound_attackbeamloop", category = ACMD_SOUND, low_priority )]
+unsafe fn dragon_sound_attackbeamloop(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        STOP_SE(agent, Hash40::new("se_tantan_attack01_short"));
+        STOP_SE(agent, Hash40::new("se_tantan_attack01_long"));
+    }
+    frame(lua_state, 2.0);
+    if is_excute(agent) {
+        let sfx = if WorkModule::is_flag(boma, *WEAPON_TANTAN_PUNCH1_INSTANCE_WORK_ID_FLAG_IS_DRAGONIZE) {Hash40::new("se_tantan_attack01_beam_max")} else {Hash40::new("se_tantan_attack01_beam")};
+        PLAY_SE(agent, sfx);
+    }
+}
+
+#[acmd_script( agent = "tantan_beam", scripts = ["game_shoot","game_bigshoot"], category = ACMD_GAME, low_priority )]
 unsafe fn dragonbeam_game_shoot(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 361, 75, 0, 70, 1.3, 0.0, 0.0, 2.0, Some(0.0), Some(0.0), Some(25.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
+        let mut is_dragon = false;
+        let minmin_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
+        if sv_battle_object::is_active(minmin_id) {
+            let minmin = utils::util::get_battle_object_from_id(minmin_id);
+            let minmin_boma = &mut *(*minmin).module_accessor;
+            is_dragon = WorkModule::get_int(minmin_boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_ARM_L_BIG_FRAME) > 0;
+        }
+        let damage = if is_dragon {9.0} else {6.0};
+        let sfx_level = if is_dragon {*ATTACK_SOUND_LEVEL_L} else {*ATTACK_SOUND_LEVEL_M};
+        let range = if is_dragon {30.0} else {25.0};
+        let size = if is_dragon {2.8} else {1.3};
+
+        ATTACK(fighter, 0, 0, Hash40::new("top"), damage, 361, 75, 0, 70, size, 0.0, 0.0, 2.0, Some(0.0), Some(0.0), Some(range), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
         AttackModule::disable_tip(boma);
     }
 }
-#[acmd_script( agent = "tantan_beam", script = "game_bigshoot", category = ACMD_GAME, low_priority )]
-unsafe fn dragonbeam_game_bigshoot(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 361, 75, 0, 65, 2.8, 0.0, 0.0, 4.0, Some(0.0), Some(0.0), Some(30.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
-        AttackModule::disable_tip(boma);
+#[acmd_script( agent = "tantan_beam", scripts = ["effect_beam","effect_bigbeam"], category = ACMD_EFFECT, low_priority )]
+unsafe fn dragonbeam_effect_beam(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        let mut is_dragon = false;
+        let minmin_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
+        if sv_battle_object::is_active(minmin_id) {
+            let minmin = utils::util::get_battle_object_from_id(minmin_id);
+            let minmin_boma = &mut *(*minmin).module_accessor;
+            is_dragon = WorkModule::get_int(minmin_boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_ARM_L_BIG_FRAME) > 0;
+        }
+        let effect = if is_dragon {Hash40::new("tantan_dragon_beam2_body")} else {Hash40::new("tantan_dragon_beam1_body")};
+        let offset = if is_dragon {-1.0} else {-2.5};
+        EFFECT_FOLLOW(agent, effect, Hash40::new("top"), 0, 0, offset, 0, 90, 180, 1, true);
     }
 }
+
 pub fn install() {
     install_acmd_scripts!(
         escape_air_game,
@@ -773,9 +809,10 @@ pub fn install() {
         dragon_game_attackdragonshootlong,
         dragon_effect_attackdragonshootlong,
         dragon_special_hi_attack_game,
+        dragon_sound_attackbeamloop,
 
         dragonbeam_game_shoot,
-        dragonbeam_game_bigshoot,
+        dragonbeam_effect_beam,
 
         arm_attack_end,
     );
