@@ -1,0 +1,98 @@
+catch:
+  extra:
+    cancel_frame: 52
+catch_l:
+  extra:
+    cancel_frame: 52
+special_n:
+  extra:
+    cancel_frame: 41
+attack_13:
+  extra:
+    cancel_frame: 23
+special_s:
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+attack_11:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 15
+attack_lw3:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 17
+attack_hi4:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 47
+catch_turn:
+  extra:
+    cancel_frame: 54
+attack_lw4:
+  extra:
+    cancel_frame: 40
+attack_hi3:
+  extra:
+    cancel_frame: 30
+catch_dash:
+  extra:
+    cancel_frame: 56
+attack_s4_s:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 50
+attack_s3_s:
+  flags:
+    move: false
+attack_s3_lw:
+  flags:
+    move: false
+attack_s4_hi:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 50
+attack_air_b:
+  extra:
+    cancel_frame: 30
+attack_air_f:
+  extra:
+    cancel_frame: 33
+catch_dash_l:
+  extra:
+    cancel_frame: 56
+catch_turn_l:
+  extra:
+    cancel_frame: 54
+attack_s4_lw:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 50
+attack_s3_hi:
+  flags:
+    move: false
+attack_air_lw:
+  extra:
+    cancel_frame: 32
+special_air_n:
+  extra:
+    cancel_frame: 41
+attack_air_hi:
+  extra:
+    cancel_frame: 30
+attack_hi4_hold:
+  flags:
+    move: false
+special_air_s_end:
+  extra:
+    cancel_frame: 36
+special_s_discharge:
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0

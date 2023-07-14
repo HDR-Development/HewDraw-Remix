@@ -96,6 +96,7 @@ extern "C" {
 #[cfg(feature = "main_nro")]
 #[skyline::hook(replace = change_version_string)]
 fn change_version_string_hook(arg: u64, string: *const c_char) {
+    runtime_motion_patcher::run(true);
     let original_str = unsafe { skyline::from_c_str(string) };
     if original_str.contains("Ver.") {
         let romfs_version = get_romfs_version();
@@ -388,6 +389,7 @@ pub extern "C" fn main() {
             //game_end,
             //game_exit
         );
+        runtime_motion_patcher::install(true);
     }
 
     #[cfg(not(feature = "runtime"))]
