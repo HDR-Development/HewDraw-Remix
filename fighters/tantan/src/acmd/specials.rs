@@ -15,6 +15,9 @@ unsafe fn tantan_special_n_air_game(fighter: &mut L2CAgentBase) {
     {
         FT_MOTION_RATE(fighter, 0.75);
     }
+    else if WorkModule::is_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_DRAGONIZE_L) {
+        AttackModule::set_power_mul(boma, 1.1);
+    }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -32,8 +35,14 @@ unsafe fn tantan_special_n_air_game(fighter: &mut L2CAgentBase) {
             ATTACK(fighter, 1, 0, Hash40::new("handr"), 8.5, 361, 85, 0, 45, 3.5, 3.5, 0.0, 0.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
         }
         else {
-            ATTACK(fighter, 0, 0, Hash40::new("armr5"), 10.25, 45, 95, 0, 45, 2.5, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-            ATTACK(fighter, 1, 0, Hash40::new("handr"), 10.25, 45, 95, 0, 45, 4.5, 3.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+            let is_dragon = WorkModule::is_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_DRAGONIZE_L);
+            let bigScale = WorkModule::get_param_float(boma,hash40("param_private"),hash40("arm_l_big_scale"));
+            let sizeFactor = if is_dragon {bigScale} else {1.0};
+            let powerFactor = if is_dragon {1.15} else {1.0};
+            let sfx_level = if is_dragon {*ATTACK_SOUND_LEVEL_L} else {*ATTACK_SOUND_LEVEL_M};
+
+            ATTACK(fighter, 0, 0, Hash40::new("armr5"), 10.25*powerFactor, 45, 100, 0, 45, 2.5*sizeFactor, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), sfx_level, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+            ATTACK(fighter, 1, 0, Hash40::new("handr"), 10.25*powerFactor, 45, 100, 0, 45, 4.5*sizeFactor, 3.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), sfx_level, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         }
     }
     frame(lua_state, 24.0);
@@ -65,7 +74,16 @@ unsafe fn tantan_special_n_air_effect(fighter: &mut L2CAgentBase) {
         }
         else{
             EFFECT_FOLLOW(fighter, Hash40::new("tantan_atk_air_n1"), Hash40::new("top"), 0, 10, 4, 0, 0, 0, 1.2, true);
+            if WorkModule::is_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_DRAGONIZE_L) {
+                LAST_EFFECT_SET_COLOR(fighter,1.0,0.5,0.5);
+                EFFECT_FOLLOW(fighter, Hash40::new("sys_damage_fire_fly"), Hash40::new("pr1_gimmickc"), 0, 0, 0, 0, 0, 0, 0.3, true);
+                LAST_EFFECT_SET_RATE(fighter,1.5);
+            }
         }
+    }
+    frame(lua_state, 22.0);
+    {
+        EFFECT_DETACH_KIND(fighter, Hash40::new("sys_damage_fire_fly"), -1);
     }
 }
 #[acmd_script( agent = "tantan", script = "sound_specialairn", category = ACMD_SOUND, low_priority)]
