@@ -26,6 +26,7 @@ jobs:
       with:
         workspaces: "plugin"
         cache-targets: true
+        cache-all-crates: true
 
     # build the project
     - run: |
