@@ -2,7 +2,7 @@
 name = "hdr"
 version = "0.0.0-dev"
 authors = ["hdr-dev-team"]
-edition = "2018"
+edition = "2021"
 
 [package.metadata.skyline]
 titleid = "01006A800016E000"
