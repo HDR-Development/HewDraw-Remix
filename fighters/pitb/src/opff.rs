@@ -32,20 +32,6 @@ extern "Rust" {
     fn pits_common(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32);
 }
 
-unsafe fn fastfall_specials(fighter: &mut L2CFighterCommon) {
-    if !fighter.is_in_hitlag()
-    && !StatusModule::is_changing(fighter.module_accessor)
-    && fighter.is_status_one_of(&[
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_STATUS_KIND_SPECIAL_HI,
-        *FIGHTER_STATUS_KIND_SPECIAL_LW,
-        ]) 
-    && fighter.is_situation(*SITUATION_KIND_AIR) {
-        fighter.sub_air_check_dive();
-    }
-}
-
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     bow_lc(boma, status_kind, situation_kind, cat[1], stick_y);
     guardian_orbitar_jc(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame);
