@@ -219,8 +219,8 @@ unsafe fn packun_spikeball_game_start(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    let stance = VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE);
-    let scale = VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE);
+    let stance = if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {0} else {VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE)};
+    let scale = if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {1.0} else {VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE)};
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         ModelModule::set_scale(boma, scale);
@@ -240,8 +240,8 @@ unsafe fn packun_spikeball_game_start_air(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    let stance = VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE);
-    let scale = VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE);
+    let stance = if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {0} else {VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE)};
+    let scale = if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {1.0} else {VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE)};
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         ModelModule::set_scale(boma, scale);
@@ -261,8 +261,8 @@ unsafe fn packun_spikeball_game_loop(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    let stance = VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE);
-    let scale = VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE);
+    let stance = if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {0} else {VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE)};
+    let scale = if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {1.0} else {VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE)};
     if is_excute(fighter) {
         if stance == 1 {
             ATTACK(fighter, 0, 0, Hash40::new("trans"), 10.0, 55, 80, 0, 50, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
@@ -279,7 +279,7 @@ unsafe fn packun_spikeball_loop_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    let stance = VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE);
+    let stance = if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {0} else {VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE)};
     if stance == 1 {    
         if is_excute(fighter) {
             //EFFECT_BRANCH_SITUATION(fighter, Hash40::new("null"), Hash40::new("sys_bound_smoke"), Hash40::new("top"), 0, -4, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -293,8 +293,8 @@ unsafe fn packun_spikeball_game_shoot(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    let stance = VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE);
-    let scale = VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE);
+    let stance = if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {0} else {VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE)};
+    let scale = if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {1.0} else {VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE)};
     if WorkModule::is_flag(boma, *WEAPON_PACKUN_SPIKEBALL_INSTANCE_WORK_ID_FLAG_REACTIVE) {
         if is_excute(fighter) {
             if stance == 1 {
@@ -334,7 +334,7 @@ unsafe fn packun_spikeball_shoot_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    let stance = VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE);
+    let stance = if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {0} else {VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE)};
     if stance == 1 {
         for _ in 0..999 {
             if is_excute(fighter) {
@@ -352,8 +352,8 @@ unsafe fn packun_spikeball_game_fall(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    let stance = VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE);
-    let scale = VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE);
+    let stance = if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {0} else {VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE)};
+    let scale = if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {1.0} else {VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE)};
     if is_excute(fighter) {
         if stance == 1 {
             ATTACK(fighter, 0, 0, Hash40::new("trans"), 10.0, 55, 80, 0, 50, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
@@ -370,7 +370,7 @@ unsafe fn packun_spikeball_fall_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    let stance = VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE);
+    let stance = if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {0} else {VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE)};
     if stance == 1 {
         if is_excute(fighter) {
             //EFFECT_BRANCH_SITUATION(fighter, Hash40::new("null"), Hash40::new("sys_bound_smoke"), Hash40::new("top"), 0, -4, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -384,8 +384,8 @@ unsafe fn packun_spikeball_game_wait(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    let stance = VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE);
-    let scale = VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE);
+    let stance = if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {0} else {VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE)};
+    let scale = if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {1.0} else {VarModule::get_float(owner_module_accessor.object(), vars::packun::instance::PTOOIE_SCALE)};
     if is_excute(fighter) {
         if stance == 1 {
             ATTACK(fighter, 0, 0, Hash40::new("trans"), 10.0, 55, 80, 0, 50, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_curse_poison"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
@@ -410,7 +410,7 @@ unsafe fn packun_spikeball_wait_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    let stance = VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE);
+    let stance = if owner_module_accessor.kind() == *FIGHTER_KIND_KIRBY {0} else {VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::CURRENT_STANCE)};
     if stance == 1 {
         if is_excute(fighter) {
             //EFFECT_BRANCH_SITUATION(fighter, Hash40::new("null"), Hash40::new("sys_bound_smoke"), Hash40::new("top"), 0, -4, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);

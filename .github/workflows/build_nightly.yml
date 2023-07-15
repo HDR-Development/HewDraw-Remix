@@ -100,7 +100,7 @@ jobs:
 
     # build the project
     - run: |
-        cd scripts && python3 make_dist.py build version=${{ needs.version_and_changelog.outputs.version }}-nightly name=hdr && cd ..
+        cargo skyline update-std && cd scripts && python3 make_dist.py build version=${{ needs.version_and_changelog.outputs.version }}-nightly name=hdr && cd ..
       env:
         HOME: /root
 
