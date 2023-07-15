@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">18</float>
+      <float hash="p2_y">6</float>
+    </struct>
+  </list>
+  <list hash="fly_speed_y">
+    <float index="0">2.45</float>
+    <float index="1">2.4</float>
+    <float index="2">2.325</float>
+    <float index="3">2.25</float>
+    <float index="4">2.1</float>
+  </list>
+  <list hash="fly_data">
+    <struct index="0">
+      <list hash="speed_y_table">
+        <float index="0">2.5</float>
+        <float index="1">2.45</float>
+        <float index="2">2.4</float>
+        <float index="3">2.35</float>
+        <float index="4">2.3</float>
+      </list>
+    </struct>
+  </list>
+  <list hash="param_special_n">
+    <struct index="0">
+      <float hash="ground_stable_speed_x">0.95</float>
+      <float hash="air_stable_speed_x">0.95</float>
+      <float hash="add_speed_stick">0.25</float>
+      <float hash="start_stick_speed">0.5</float>
+      <float hash="button_hop_speed_y">1.50</float>
+      <float hash="button_hop_limit_y">1.50</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_s">
+    <struct index="0">
+      <float hash="rush_speed_mul">0.75</float>
+      <float hash="end_air_speed_x">1.5</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="dir_mul">18</float>
+      <float hash="pass_mul">0.8</float>
+      <float hash="air_pass_mul">0.8</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+</struct>

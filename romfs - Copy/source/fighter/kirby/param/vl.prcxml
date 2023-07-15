@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">17.5</float>
+      <float hash="p2_y">7</float>
+    </struct>
+  </list>
+  <list hash="fly_speed_y">
+    <float index="0">1.75</float>
+    <float index="1">1.6</float>
+    <float index="2">1.5</float>
+    <float index="3">1.45</float>
+    <float index="4">1.4</float>
+  </list>
+  <list hash="fly_data">
+    <struct index="0">
+      <list hash="speed_y_table">
+        <float index="0">2.154</float>
+        <float index="1">1.972</float>
+        <float index="2">1.85</float>
+        <float index="3">1.789</float>
+        <float index="4">1.74</float>
+      </list>
+    </struct>
+  </list>
+  <list hash="param_special_n">
+    <struct index="0">
+      <int hash="special_n_hold_count">17</int>
+      <float hash="special_n_damage_drop_prob">1</float>
+      <int hash="special_n_no_cancel_frame">600</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_finalcuttershot">
+    <struct index="0">
+      <float hash="speed">4.5</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <int hash="special_lw_enable_cancel_frame">10</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+</struct>

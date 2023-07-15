@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <float hash="max_speed">1.25</float>
+  <int hash="bomb_frame">180</int>
+  <int hash="flash_frame">15900</int>
+</struct>

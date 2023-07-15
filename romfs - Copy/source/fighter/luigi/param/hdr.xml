@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+    <struct hash="misfire">
+        <int hash="remaining_missile_min">0</int>
+        <int hash="remaining_missile_max">7</int>
+        <float hash="storage_diminish_mul">0.95</float>
+        <float hash="storage_diminish_min">0.8</float>
+    </struct>
+    <struct hash="cliff_hang_data">
+        <struct hash="special_s">
+            <float hash="p1_x">15</float>
+            <float hash="p1_y">12</float>
+            <float hash="p2_x">-9</float>
+            <float hash="p2_y">4</float>
+        </struct>
+    </struct>
+</struct>

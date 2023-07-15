@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">22</float>
+    </struct>
+  </list>
+  <list hash="param_special_s">
+    <struct index="0">
+      <int hash="no_bang">4</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_dein">
+    <struct index="0">
+      <float hash="speed">1.75</float>
+      <float hash="speed_max">2.75</float>
+      <float hash="angle_add">5.0</float>
+      <float hash="angle_max">85</float>
+      <float hash="life">60</float>
+      <float hash="count">60</float>
+      <float hash="size_max">4</float>
+      <float hash="bang_time">180</float>
+      <float hash="size_min">2</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_dein_s">
+    <struct index="0">
+      <float hash="attack_mul_max">2</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_n">
+    <struct index="0">
+      <float hash="start_x_mul">1</float>
+      <float hash="limit_speed_x">1</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="wrap_speed_multi">2</float>
+      <float hash="wrap_speed_add">1.2</float>
+      <float hash="wrap_xy_speed">0.45</float>
+      <float hash="landing_frame">35</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <float hash="pos_offset_x">1.6</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_phantom">
+    <struct index="0">
+      <float hash="speed">3</float>
+      <float hash="hp_add_charge">1</float>
+      <float hash="speed_charge">0</float>
+      <float hash="attack_add_charge">0</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list size="1" hash="shield_data_phantom">
+    <struct index="0">
+      <hash40 hash="node">handl</hash40>
+      <float hash="offset1_x">4</float>
+      <float hash="offset1_y">-0.5</float>
+      <float hash="offset1_z">3</float>
+      <float hash="offset2_x">1.5</float>
+      <float hash="offset2_y">-2.5</float>
+      <float hash="offset2_z">-2.5</float>
+      <float hash="size">1.5</float>
+    </struct>
+  </list>
+</struct>

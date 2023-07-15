@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">17</float>
+      <float hash="p2_y">8</float>
+    </struct>
+  </list>
+  <list hash="param_special_n">
+    <struct index="0">
+      <int hash="special_n_start_enable_attack_frame">18</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="special_hi_jump_air_speed_y_mul">0.9</float>
+      <float hash="special_hi_jump_accel_x_mul">1.05</float>
+      <float hash="special_hi_jump_stable_speed_x_mul">0.7</float>
+      <int hash="special_hi_landing_frame">14</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+ <list hash="param_special_lw">
+    <struct index="0">
+  <float hash="special_lw_start_rot_speed">15</float>
+  <float hash="special_lw_start_rot_speed">15</float>
+  <float hash="special_lw_trigger_rot_add">15</float>
+  <float hash="special_lw_motion_rate_min_mul">0.3</float>       
+  <float hash="special_lw_dash_attack_power_min">3.0</float>
+  <float hash="special_lw_dash_attack_power_max">6.0</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+</struct>

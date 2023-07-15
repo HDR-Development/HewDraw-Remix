@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">24</float>
+    </struct>
+  </list>
+  <list hash="param_special_n">
+    <struct index="0">
+      <float hash="miss_shoot_energy">140</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_s">
+    <struct index="0">
+      <float hash="attack_speed_x">2</float>
+      <float hash="attack_speed_y">0</float>
+      <int hash="push_b_max">1</int>
+      <float hash="0x164fbe4f35">0</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="blow_accel_y">0.14</float>
+      <float hash="up_speed_limit">1.15</float>
+      <float hash="up_power_limit_power">0.0025</float>
+      <float hash="speed_max_y">1.15</float>
+      <float hash="hovering_speed_max_x">0.9</float>
+      <float hash="energy_max_frame">100</float>
+      <float hash="recovery_energy">0.2</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <float hash="start_speed_x">1.3</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+</struct>

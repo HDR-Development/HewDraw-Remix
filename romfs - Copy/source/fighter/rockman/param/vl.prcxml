@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">19</float>
+    </struct>
+  </list>
+  <list hash="param_chargeshot">
+    <struct index="0">
+      <int hash="life_min">30</int>
+      <int hash="life_max">40</int>
+    </struct>
+  </list>
+    <list hash="param_rockbuster">
+    <struct index="0">
+      <int hash="life">34</int>
+    </struct>
+  </list>
+  <list hash="param_airshooter">
+    <struct index="0">
+      <int hash="life">55</int>
+      <float hash="limit_speed">0.75</float>
+    </struct>
+  </list>
+  <list hash="param_metalblade_other">
+    <struct index="0">
+      <float hash="stick_percent">100</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="jump_air_speed_y_mul">0.98</float>
+      <float hash="jump_accel_x_mul">0.85</float>
+      <float hash="jump_stable_speed_x_mul">0.85</float>
+      <int hash="jump_accel_recover_frame">5</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+</struct>

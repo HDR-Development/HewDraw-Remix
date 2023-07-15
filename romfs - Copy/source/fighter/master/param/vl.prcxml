@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">26</float>
+    </struct>
+    <struct index="1">
+      <float hash="p1_x">60</float>
+      <float hash="p1_y">70</float>
+      <float hash="p2_x">-5</float>
+      <float hash="p2_y">-30</float>
+    </struct>
+    <hash40 index="2">dummy</hash40>
+    <struct index="3">
+      <float hash="p1_x">30</float>
+      <float hash="p1_y">70</float>
+      <float hash="p2_x">-5</float>
+      <float hash="p2_y">20</float>
+    </struct>
+  </list>
+  <list hash="param_special_n">
+    <struct index="0">
+      <int hash="cancel_start_frame">10</int>
+      <int hash="cancel_end_frame">20</int>
+      <int hash="turn_disable_frame">4</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_arrow1">
+    <struct index="0">
+      <float hash="speed_x">4</float>
+      <int hash="life">32</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_s">
+    <struct index="0">
+      <float hash="start_speed_x_mul_ground">0.8</float>
+      <float hash="start_speed_x_mul_air">1</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="jump_speed_y">2.1</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_sword">
+    <struct index="0">
+      <int hash="rewind_frame">18</int>
+    </struct>
+  </list>
+  <list hash="air_lasso_data">
+    <struct index="0">
+      <float hash="rewind_frame">18</float>
+    </struct>
+  </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <float hash="super_armor_damage_max">16</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+</struct>

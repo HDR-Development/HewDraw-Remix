@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<struct>
+  <list hash="cliff_hang_data">
+    <struct index="0">
+      <float hash="p1_y">25.5</float>
+    </struct>
+  </list>
+  <list hash="param_special_n">
+    <struct index="0">
+      <int hash="special_n_discharge_frame">24</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="special_hi_wrap_speed_multi">3.25</float>
+      <float hash="special_hi_wrap_x_max">0.75</float>
+      <float hash="special_hi_landing_frame">28</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_reflectionboard">
+    <struct index="0">
+      <float hash="life">112</float>
+      <int hash="durability">100</int>
+      <int hash="move_frame">240</int>
+      <float hash="move_speed">0.3</float>
+      <float hash="effect_rate">5.333</float>
+    </struct>
+  </list>
+  <list hash="param_reflector">
+    <struct index="0">
+      <float hash="life_mul">0</float>
+      <float hash="offset_y_start">11.5</float>
+      <float hash="offset_y_end">-7.5</float>
+      <float hash="offset_z_start">4.0</float>
+      <float hash="offset_z_end">4.0</float>
+    </struct>
+  </list>
+</struct>
