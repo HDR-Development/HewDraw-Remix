@@ -141,6 +141,8 @@ unsafe fn check_reset(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_LOSE,
         *FIGHTER_STATUS_KIND_ENTRY]) {
             VarModule::set_int(fighter.object(), vars::packun::instance::CURRENT_STANCE, 0);
+            VarModule::set_int(fighter.battle_object, vars::packun::instance::PTOOIE_STANCE, 0);
+            VarModule::set_int(fighter.battle_object, vars::packun::instance::POISON_STANCE, 0);
     }
 }
 
@@ -215,5 +217,37 @@ pub fn packun_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 pub unsafe fn packun_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
         moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+    }
+}
+
+#[weapon_frame( agent = WEAPON_KIND_PACKUN_POISONBREATH )]
+unsafe fn poisonbreath_frame(weapon: &mut L2CFighterBase) {
+    let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+    let boma = owner_module_accessor.boma();
+    let should_explode = VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::POISON_STANCE) == 1;
+    let status_kind = StatusModule::status_kind(weapon.module_accessor);
+    let motion_kind = MotionModule::motion_kind(weapon.module_accessor);
+    if owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN {
+        if weapon.is_status(*WEAPON_PACKUN_SPIKEBALL_STATUS_KIND_WAIT) {
+            if should_explode && weapon.status_frame() == 60 && motion_kind != hash40("explode") {
+                MotionModule::change_motion(weapon.module_accessor, Hash40::new("explode"), 0.0, 1.0, false, 0.0, false, false);
+            }
+        }
+    }
+}
+
+#[weapon_frame( agent = WEAPON_KIND_PACKUN_SPIKEBALL )]
+unsafe fn spikeball_frame(weapon: &mut L2CFighterBase) {
+    let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+    let boma = owner_module_accessor.boma();
+    let should_explode = VarModule::get_int(owner_module_accessor.object(), vars::packun::instance::PTOOIE_STANCE) == 1;
+    let status_kind = StatusModule::status_kind(weapon.module_accessor);
+    let motion_kind = MotionModule::motion_kind(weapon.module_accessor);
+    if owner_module_accessor.kind() == *FIGHTER_KIND_PACKUN {
+        if weapon.is_status(*WEAPON_PACKUN_SPIKEBALL_STATUS_KIND_WAIT) {
+            if should_explode && weapon.status_frame() == 60 && motion_kind != hash40("explode") {
+                MotionModule::change_motion(weapon.module_accessor, Hash40::new("explode"), 0.0, 1.0, false, 0.0, false, false);
+            }
+        }
     }
 }
