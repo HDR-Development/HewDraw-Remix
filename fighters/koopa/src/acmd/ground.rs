@@ -26,7 +26,7 @@ unsafe fn koopa_attack_11_game(fighter: &mut L2CAgentBase) {
     }
     wait(lua_state, 8.0);
     if is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART);
+        //WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART);
     }
     
 }
@@ -54,6 +54,7 @@ unsafe fn koopa_attack_12_game(fighter: &mut L2CAgentBase) {
 unsafe fn koopa_attack_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    sv_kinetic_energy!(set_speed_mul, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.8);
     if is_excute(fighter) {
         //FT_MOTION_RATE(fighter, 0.637);
     }

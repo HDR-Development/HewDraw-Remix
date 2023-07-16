@@ -2,15 +2,28 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">14.25</float>
+      <float hash="p1_y">21</float>
     </struct>
+  </list>
+  <list hash="param_fireball">
+    <struct index="0">
+      <float hash= "speed">1.5</float>
+      <float hash= "gravity_accel">0.07</float>
+      <float hash= "angle">-10</float>
+      <float hash= "bound_ref_speed_mul">0.90</float>
+      <float hash="bounded_speed_y_min">1.5</float>
+      <float hash="bounded_speed_y_max">3.0</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
   </list>
   <list hash="param_special_s">
     <struct index="0">
-      <float hash="special_s_attack_spd_y">0.5</float>
-      <float hash="special_s_attack_acl_y">0.011</float>
-      <float hash="special_s_attack_max_y">0.8</float>
-      <float hash="special_s_start_mul_spd_x">2</float>
+      <float hash="special_s_attack_spd_y">0.8</float>
+      <float hash="special_s_attack_acl_y">0.029</float>
+      <float hash="special_s_attack_max_y">0.9</float>
+      <float hash="special_s_start_mul_spd_x">1.5</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -18,7 +31,10 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="special_air_hi_pass_mul">0.97</float>
+      <float hash="special_hi_pass_mul">0.94</float>
+      <float hash="special_air_hi_pass_mul">0.94</float>
+      <float hash="special_hi_fall_x_mul">1</float>
+      <float hash="special_hi_dir_mul">18</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

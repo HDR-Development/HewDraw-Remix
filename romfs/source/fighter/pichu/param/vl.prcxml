@@ -2,15 +2,56 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">12.75</float>
+      <float hash="p1_y">17</float>
     </struct>
     <struct index="1">
-      <float hash="p1_y">9.75</float>
+      <float hash="p1_y">14</float>
     </struct>
+  </list>
+  <list hash="param_special_n">
+    <struct index="0">
+      <float hash="special_n_offset_ground_y_">6</float>
+      <float hash="special_n_offset_air_y_">4.5</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_dengekidama">
+    <struct index="0">
+      <float hash="life_">75</float>
+      <float hash="speed_">1.2</float>
+      <float hash="angle_">0</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_dengeki">
+    <struct index="0">
+      <float hash="move_life_">1</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
   </list>
   <list hash="param_special_s">
     <struct index="0">
-      <float hash="special_s_move_spd_x_">1.5</float>
+      <float hash="special_s_accel_x_">0</float>
+      <float hash="special_s_accel_y_">0</float>
+      <float hash="special_s_tame_time_">1</float>
+      <float hash="special_s_tame_">0</float>
+      <float hash="special_s_power_min_">8</float>
+      <float hash="special_s_power_tame_">8</float>
+      <float hash="special_s_move_spd_x_">1.7</float>
+      <float hash="special_s_tame_spd_x_">1.7</float>
+      <float hash="special_s_move_spd_y_min_">0.2</float>
+      <float hash="special_s_move_spd_y_max_">0.2</float>
+      <float hash="special_s_slope_start_degree">0.05</float>
+      <float hash="special_s_slope_degree_mul">0</float>
+      <float hash="0x1b0bc7c1ca">1.4</float>
+      <float hash="0x1b12dcf08b">0.6</float>
+      <float hash="special_s_end_acl_x_max_">0.0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

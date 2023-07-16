@@ -2,12 +2,30 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">20.62</float>
+      <float hash="p1_y">24</float>
     </struct>
   </list>
   <list hash="param_snakegrenade">
     <struct index="0">
-      <int hash="life">120</int>
+      <int hash="life">150</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  
+  <list hash="param_nikitamissile">
+    <struct index="0">
+      <float hash="gravity_accel">0.1</float>
+      <float hash="init_speed">6</float>
+      <float hash="stable_speed">3</float>
+      <float hash="rot_limit_speed">9999</float>
+      <int hash="start_brake_frame">10</int>
+      <float hash="brake_speed">0.1</float>
+      <float hash="fall_brake_speed">0.1</float>
+      <float hash="fall_rot_x_speed">2</float>
+      <int hash="hp">1</int>
+      <float hash="control_distance">80</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -24,13 +42,19 @@
   </list>
   <list hash="param_c4">
     <struct index="0">
+      <int hash="stick_frame">1200</int>
       <float hash="gravity_accel">0.088</float>
       <float hash="gravity_speed_limit">2.75</float>
-      <int hash="life_frame">7200</int>
+      <float hash="drop_damage_rate">9999</float>
+      <int hash="life_frame">3600</int>
       <float hash="butterfly_rate">10</float>
+      <int hash="repeat_per_damage_chance">0</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <struct hash="param_private">
+    <int hash="appeal_wait_frame">1200</int>
+  </struct>
 </struct>

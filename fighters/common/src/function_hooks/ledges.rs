@@ -24,20 +24,19 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
     let status_kind = StatusModule::status_kind(boma);
     let fighter_kind = boma.kind();
 
-    let rising: f32 = KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY); // Rising while jumping/airdodging
-
-    let tether_only = boma.is_fighter()
-                        && [*FIGHTER_KIND_JACK, *FIGHTER_KIND_PFUSHIGISOU].contains(&fighter_kind)
-                        && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI;
+    let rising: f32 = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN); // Rising while jumping/airdodging
 
     let tether_zair = boma.is_fighter()
                         && [*FIGHTER_KIND_LUCAS, *FIGHTER_KIND_YOUNGLINK, *FIGHTER_KIND_TOONLINK, *FIGHTER_KIND_SAMUS, *FIGHTER_KIND_SAMUSD, *FIGHTER_KIND_SZEROSUIT].contains(&fighter_kind)
                         && [*FIGHTER_STATUS_KIND_AIR_LASSO, *FIGHTER_STATUS_KIND_AIR_LASSO_REACH, *FIGHTER_STATUS_KIND_AIR_LASSO_HANG, *FIGHTER_STATUS_KIND_AIR_LASSO_REWIND].contains(&status_kind);
 
     let tether_special = boma.is_fighter()
-                        && ( (fighter_kind == *FIGHTER_KIND_SZEROSUIT && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S)
-                          || (fighter_kind == *FIGHTER_KIND_SHIZUE    && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S)
-                          || (fighter_kind == *FIGHTER_KIND_TANTAN    && (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI || status_kind == *FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_AIR)) );
+                        && ( (fighter_kind == *FIGHTER_KIND_SZEROSUIT   && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S)
+                          || (fighter_kind == *FIGHTER_KIND_SHIZUE      && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S)
+                          || (fighter_kind == *FIGHTER_KIND_TANTAN      && (status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI || status_kind == *FIGHTER_TANTAN_STATUS_KIND_SPECIAL_HI_AIR))
+                          || (fighter_kind == *FIGHTER_KIND_MASTER      && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI)
+                          || (fighter_kind == *FIGHTER_KIND_JACK        && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI)
+                          || (fighter_kind == *FIGHTER_KIND_PFUSHIGISOU && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI) );
 
     let tether_aerial = boma.is_fighter()
                         && ( (fighter_kind == *FIGHTER_KIND_SIMON   && status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR)
@@ -48,33 +47,17 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
     // Ledgehog code
     let pos = GroundModule::hang_cliff_pos_3f(boma);
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32;
-    for i in 0..8 {
-        if let Some(object_id) = ::utils::util::get_active_battle_object_id_from_entry_id(i) {
-            let object = ::utils::util::get_battle_object_from_id(object_id);
-            if !object.is_null() {
-                if i == entry_id || VarModule::get_float(object, vars::common::LEDGE_POS_X) == 0.0 {
-                    continue;
-                }
+    for object_id in util::get_all_active_battle_object_ids() {
+        let object = ::utils::util::get_battle_object_from_id(object_id);
+        if !object.is_null() {
+            if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) == WorkModule::get_int(&mut *(*object).module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID)
+            || VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) == 0.0 {
+                continue;
+            }
 
-                if pos.x == VarModule::get_float(object, vars::common::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::LEDGE_POS_Y) {
-                    if !(tether_only || tether_zair || tether_special || tether_aerial) {
-                        return 0;
-                    }
-                }
-
-                let module_accessor = &mut *(*object).module_accessor;
-                if module_accessor.is_fighter()
-                && module_accessor.kind() == *FIGHTER_KIND_POPO {
-                    let nana_object_id = WorkModule::get_int(module_accessor, *FIGHTER_POPO_INSTANCE_WORK_ID_INT_PARTNER_OBJECT_ID) as u32;
-                    let object = ::utils::util::get_battle_object_from_id(nana_object_id);
-                    if !object.is_null() {
-        
-                        if pos.x == VarModule::get_float(object, vars::common::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::LEDGE_POS_Y) {
-                            if !(tether_only || tether_zair || tether_special || tether_aerial) {
-                                return 0;
-                            }
-                        }
-                    }
+            if pos.x == VarModule::get_float(object, vars::common::instance::LEDGE_POS_X) && pos.y == VarModule::get_float(object, vars::common::instance::LEDGE_POS_Y) {
+                if !((tether_zair || tether_special || tether_aerial) && WorkModule::is_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK)) {
+                    return 0;
                 }
             }
         }
@@ -91,13 +74,16 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
         else if check_cliff_entry_specializer(boma) == 1 {
             // Disable grabbing ledge while rising during an airborne state (not specials)
             if situation_kind == *SITUATION_KIND_AIR {
-                if rising >= 0.0 && !(tether_only || tether_zair || tether_special || tether_aerial) {
+                if rising >= 0.0 && !((tether_zair || tether_special || tether_aerial) && WorkModule::is_flag(boma, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK)) {
                     return 0;
                 }
             }
         }
 
-
+        // Unable to grab ledge during runfall/walkfall (the first few frames after you run off an edge)
+        if boma.is_motion_one_of(&[Hash40::new("run_fall_l"), Hash40::new("run_fall_r"), Hash40::new("walk_fall_l"), Hash40::new("walk_fall_r")]) {
+            return 0;
+        }
     }
 
     original!()(boma)
@@ -110,7 +96,7 @@ unsafe fn can_entry_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
 #[skyline::hook(replace=GroundModule::leave_cliff)]
 unsafe fn leave_cliff_hook(boma: &mut BattleObjectModuleAccessor) -> u64 {
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    VarModule::set_vec3(boma.object(), vars::common::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
+    VarModule::set_vec3(boma.object(), vars::common::instance::LEDGE_POS, Vector3f {x: 0.0, y: 0.0, z: 0.0});
     original!()(boma)
 }
 
@@ -154,7 +140,7 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
     }
 
     if fighter_kind == *FIGHTER_KIND_LINK {
-        if status_kind == *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END {
+        if boma.is_status_one_of(&[*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END]) {
             if KineticModule::get_kinetic_type(boma) != *FIGHTER_KINETIC_TYPE_FALL {
                 if frame < 42.0 {
                     return 0;
@@ -179,7 +165,15 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
     // Kirby: Unchanged
 
     if fighter_kind == *FIGHTER_KIND_FOX {
-        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI || status_kind == *FIGHTER_FOX_STATUS_KIND_SPECIAL_HI_RUSH {
+        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
+            if frame < 5.0 {
+                return 0;
+            }
+            else {
+                return 1;
+            }
+        }
+        if status_kind == *FIGHTER_FOX_STATUS_KIND_SPECIAL_HI_RUSH {
             return 1;
         }
 
@@ -219,12 +213,15 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
 
     if fighter_kind == *FIGHTER_KIND_NESS {
         if status_kind == *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_ATTACK {
+            /*
             if frame > 5.0 && frame < 15.0 {
                 return 1;
             }
             else{
                 return -1;
             }
+            */
+            return 1;
         }
     }
 
@@ -331,7 +328,15 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
     }
 
     if fighter_kind == *FIGHTER_KIND_FALCO {
-        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI || status_kind == *FIGHTER_FALCO_STATUS_KIND_SPECIAL_HI_RUSH {
+        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
+            if frame < 5.0 {
+                return 0;
+            }
+            else {
+                return 1;
+            }
+        }
+        if status_kind == *FIGHTER_FALCO_STATUS_KIND_SPECIAL_HI_RUSH {
             return 1;
         }
 
@@ -478,25 +483,33 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
     }
 
     if fighter_kind == *FIGHTER_KIND_DIDDY {
+        /*
         if status_kind == *FIGHTER_DIDDY_STATUS_KIND_SPECIAL_HI_UPPER {
             if frame < 28.0 {
                 return 0;
             }
         }
+        */
     }
 
     if fighter_kind == *FIGHTER_KIND_LUCAS {
         if status_kind == *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_ATTACK {
+            /*
             if frame > 5.0 && frame < 15.0 {
                 return 1;
             }
             else{
                 return -1;
             }
+            */
+            return 1;
         }
     }
 
     if fighter_kind == *FIGHTER_KIND_SONIC {
+        if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
+            return 0;
+        }
         if status_kind == *FIGHTER_SONIC_STATUS_KIND_SPECIAL_HI_JUMP {
             if frame < 23.0 {
                 return 0;
@@ -645,18 +658,16 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
             }
         }
         if motion_kind == hash40("special_s_move") || motion_kind == hash40("special_s_dash") {
-            if frame < 10.0 {
-                return 1;
-            }
-            else{
-                return -1;
-            }
+            return 1;
         }
     }
 
     if fighter_kind == *FIGHTER_KIND_REFLET {
         if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI {
-            if frame < 17.0 {
+            if frame < 9.0 {
+                return 0;
+            }
+            else {
                 return 1;
             }
         }
@@ -708,7 +719,7 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
                 return 0;
             }
             */
-            return -1;
+            return 1;
         }
     }
 
@@ -932,8 +943,16 @@ unsafe fn check_cliff_entry_specializer(boma: &mut BattleObjectModuleAccessor) -
 
     if(fighter_kind == *FIGHTER_KIND_PICKEL){
         if(status_kind == *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_GLIDING){
-            if VarModule::get_float(boma.object(), vars::common::GLIDE_TIMER) < 40.0 /*40 frames of up b travel time*/ {
+            if VarModule::get_float(boma.object(), vars::pickel::status::GLIDE_TIMER) < 40.0 /*40 frames of up b travel time*/ {
                 return 1;
+            }
+        }
+    }
+
+    if fighter_kind == *FIGHTER_KIND_EFLAME {
+        if status_kind == *FIGHTER_EFLAME_STATUS_KIND_SPECIAL_HI_JUMP {
+            if frame < 3.0 {
+                return 0;
             }
         }
     }

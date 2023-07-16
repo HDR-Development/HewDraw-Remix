@@ -98,8 +98,8 @@ impl TagInfo {
         self.target_id = id;
         unsafe {
             let new_target = util::get_battle_object_from_id(self.target_id);
-            self.last_damage_dealt = VarModule::get_float(new_target, vars::common::LAST_ATTACK_DAMAGE_DEALT);
-            self.last_damage_receiver_id = VarModule::get_int(new_target, vars::common::LAST_ATTACK_RECEIVER_ENTRY_ID) as u32;
+            self.last_damage_dealt = VarModule::get_float(new_target, vars::common::instance::LAST_ATTACK_DAMAGE_DEALT);
+            self.last_damage_receiver_id = VarModule::get_int(new_target, vars::common::instance::LAST_ATTACK_RECEIVER_ENTRY_ID) as u32;
             self.aura_effect_handle = EffectModule::req_follow(
                 (*new_target).module_accessor,
                 Hash40::new("sys_final_aura"),
@@ -121,8 +121,8 @@ impl TagInfo {
 
     pub fn handle_hit(&mut self) {
         if let Some(target) = self.get_target() {
-            let damage = VarModule::get_float(target, vars::common::LAST_ATTACK_DAMAGE_DEALT);
-            let receiver = VarModule::get_int(target, vars::common::LAST_ATTACK_RECEIVER_ENTRY_ID) as u32;
+            let damage = VarModule::get_float(target, vars::common::instance::LAST_ATTACK_DAMAGE_DEALT);
+            let receiver = VarModule::get_int(target, vars::common::instance::LAST_ATTACK_RECEIVER_ENTRY_ID) as u32;
             if damage != self.last_damage_dealt || receiver != self.last_damage_receiver_id {
                 self.switch_to_id(receiver);
             }

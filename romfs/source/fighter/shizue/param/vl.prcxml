@@ -2,9 +2,15 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">17</float>
+      <float hash="p1_y">18.5</float>
+      <float hash="p2_y">7</float>
     </struct>
-    <hash40 index="1">dummy</hash40>
+    <struct index="1">
+      <float hash="p1_x">60</float>
+      <float hash="p1_y">36</float>
+      <float hash="p2_x">5</float>
+      <float hash="p2_y">-18</float>
+    </struct>
     <struct index="2">
       <float hash="p1_x">14</float>
       <float hash="p1_y">10</float>
@@ -26,6 +32,8 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="flap_cost_frame">15</float>
+      <float hash="detach_speed_x_mul">1.0</float>
+      <float hash="limit_frame">200</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -34,7 +42,7 @@
   <list hash="param_clayrocket">
     <struct index="0">
       <int hash="erase_time">1800</int>
-      <float hash="life_1">15</float>
+      <float hash="life_1">8</float>
       <float hash="life_2">15</float>
     </struct>
     <hash40 index="1">dummy</hash40>

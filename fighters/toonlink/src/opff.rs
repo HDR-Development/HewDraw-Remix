@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
@@ -16,17 +16,25 @@ unsafe fn heros_bow_ff(boma: &mut BattleObjectModuleAccessor, status_kind: i32, 
     }
 }
 
-// Toon Link Bomb pull B-Reverse
-unsafe fn bomb_pull_b_reverse(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-        common::opff::check_b_reverse(fighter);
-    }
-}
-
 // Lengthen sword
 unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
 	let long_sword_scale = Vector3f{x: 1.2, y: 1.0, z: 1.0};
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("sword2"), &long_sword_scale);
+}
+
+// Prevents Toon Link from being able to use both aerial jumps immediately after one another
+unsafe fn triple_jump_lockout(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_JUMP_AERIAL) {
+        let triple_jump_lockout_frame = ParamModule::get_int(fighter.object(), ParamType::Agent, "triple_jump_lockout_frame");
+        if fighter.global_table[CURRENT_FRAME].get_i32() < triple_jump_lockout_frame {
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+        }
+        else {
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON);
+        }
+    }
 }
 
 // symbol-based call for the links' common opff
@@ -36,8 +44,8 @@ extern "Rust" {
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     heros_bow_ff(boma, status_kind, situation_kind, cat[1], stick_y);
-    bomb_pull_b_reverse(fighter);
 	sword_length(boma);
+    triple_jump_lockout(fighter);
     
 
     // Frame Data
@@ -47,10 +55,10 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
 unsafe fn frame_data(boma: &mut BattleObjectModuleAccessor, status_kind: i32, motion_kind: u64, frame: f32) {
     if status_kind == *FIGHTER_STATUS_KIND_ATTACK {
         if motion_kind == hash40("attack_11") {
-            if frame < 5.0 {
+            if frame < 6.0 {
                 MotionModule::set_rate(boma, 1.667);
             }
-            if frame >= 5.0 {
+            if frame >= 6.0 {
                 MotionModule::set_rate(boma, 1.0);
             }
         }

@@ -1,50 +1,55 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
  
-unsafe fn winged_pikmin_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
+unsafe fn winged_pikmin_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, cat1: i32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_WAIT].contains(&status_kind) {
         if boma.is_cat_flag(Cat1::SpecialN) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_PIKMIN_STATUS_KIND_SPECIAL_HI_END, false);
         }
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
+        if boma.check_airdodge_cancel() {
+            VarModule::on_flag(boma.object(), vars::pikmin::instance::SPECIAL_HI_CANCEL_ESCAPE_AIR);
         }
     }
-}
-
-// Olimar Pikmin Order B-Reverse
-unsafe fn pikmin_order_b_reverse(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-        common::opff::check_b_reverse(fighter);
+    if fighter.is_status(*FIGHTER_STATUS_KIND_ESCAPE_AIR)
+    && fighter.is_situation(*SITUATION_KIND_AIR)
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && CancelModule::is_enable_cancel(fighter.module_accessor)
+    && VarModule::is_flag(boma.object(), vars::pikmin::instance::SPECIAL_HI_CANCEL_ESCAPE_AIR) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+        let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
+        *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
     }
 }
 
 pub unsafe fn solimar_scaling(boma: &mut BattleObjectModuleAccessor, status_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     let pikmin_count = WorkModule::get_int(boma, *FIGHTER_PIKMIN_INSTANCE_WORK_INT_PIKMIN_HOLD_PIKMIN_NUM);
     if pikmin_count == 0 {
         let olimar_hand_scale = Vector3f{x: 1.5, y: 1.35, z: 1.35};
         let olimar_hand_midpoint_scale = Vector3f{x: 1.2, y: 1.17, z: 1.17};
         if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-            if frame > 4.0 && frame < 15.0 {
+            if frame > 5.0 && frame < 16.0 {
                 ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handr"), &olimar_hand_scale);
-            } else if frame >= 15.0 && frame < 17.0 {
+            } else if frame >= 16.0 && frame < 18.0 {
                 ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handr"), &olimar_hand_midpoint_scale);
             }
         }/* else if status_kind == *FIGHTER_STATUS_KIND_ATTACK_LW4 {
-            if frame > 9.0 && frame < 13.0 {
+            if frame > 10.0 && frame < 14.0 {
                 ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handr"), &olimar_hand_scale);
                 ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handl"), &olimar_hand_scale);
-            } else if frame >= 13.0 && frame < 15.0 {
+            } else if frame >= 14.0 && frame < 16.0 {
                 ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handl"), &olimar_hand_midpoint_scale);
                 ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handl"), &olimar_hand_midpoint_scale);
             }
         } else if (status_kind == *FIGHTER_STATUS_KIND_ATTACK_S4 || status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI4) {
-            if frame > 10.0 && frame < 13.0 {
+            if frame > 11.0 && frame < 14.0 {
                 ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handl"), &olimar_hand_scale);
-            } else if frame >= 13.0 && frame < 15.0 {
+            } else if frame >= 14.0 && frame < 16.0 {
                 ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("handl"), &olimar_hand_midpoint_scale);
             }
         }*/
@@ -132,8 +137,7 @@ unsafe fn pikmin_antenna_indicator(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    winged_pikmin_cancel(boma, status_kind, cat[0]);
-    pikmin_order_b_reverse(fighter);
+    winged_pikmin_cancel(fighter, boma, status_kind, cat[0]);
     solimar_scaling(boma, status_kind, frame);
     pikmin_antenna_indicator(fighter);
 }

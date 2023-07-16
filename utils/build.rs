@@ -12,7 +12,7 @@ fn rebuild_xml_to_prc(root_src_path: &Path, root_dst_path: &Path) {
 
 fn rebuild_romfs(root_src_path: &Path, root_dst_path: &Path) {
     for entry in WalkDir::new(root_src_path) {
-        if let Ok(entry) = entry {
+        if let Ok(entry) = entry { 
             if entry.file_type().is_file() {
                 let path = entry.path();
                 let local_path = path.strip_prefix(root_src_path).expect("Path in root was not in root! Possible symlink?");
@@ -21,6 +21,8 @@ fn rebuild_romfs(root_src_path: &Path, root_dst_path: &Path) {
                     if let Some(extension) = local_path.extension() {
                         if extension == "xml" {
                             rebuild_xml_to_prc(path, &root_dst_path.join(local_path).with_extension("prc"));
+                        } else if extension == "lua" {
+                            std::fs::copy(path, &root_dst_path.join(local_path).with_extension("lc"));
                         } else {
                             std::fs::copy(path, &root_dst_path.join(local_path));
                         }
@@ -36,8 +38,6 @@ fn main() {
     let rom_src_path = Path::new(hdr_macros::rom_source_path!());
     rebuild_romfs(rom_src_path, rom_dst_path);
     let rom_path = hdr_macros::rom_source_path!();
-    for file in ROM_WATCH.lines() {
-        println!("cargo:rerun-if-changed={}{}", rom_path, file);
-    }
     println!("cargo:rerun-if-changed=agent_params.txt");
+    println!("cargo:rerun-if-changed={}", rom_path);
 }

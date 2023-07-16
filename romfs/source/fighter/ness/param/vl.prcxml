@@ -2,10 +2,11 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">15</float>
+      <float hash="p1_y">17</float>
+      <float hash="p2_y">5</float>
     </struct>
     <struct index="1">
-      <float hash="p1_y">12.5</float>
+      <float hash="p1_y">14.5</float>
     </struct>
   </list>
   <list hash="param_pkflash">

@@ -1,27 +1,24 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
  
-unsafe fn holy_water_ac_b_rev(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+unsafe fn holy_water_ac(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-        if frame > 19.0 {
-            if boma.is_cat_flag(Cat1::AirEscape) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
-                if situation_kind == *SITUATION_KIND_AIR {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
-                }
-            }
+        if frame > 20.0 {
+            boma.check_airdodge_cancel();
         }
-        common::opff::check_b_reverse(fighter);
     }
 }
 
-// Simon Cross Fast Fall/Land Cancel
-unsafe fn cross_ff_land_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
-    if [*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_SIMON_STATUS_KIND_SPECIAL_S2].contains(&status_kind) {
+unsafe fn axe_ff(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat2: i32, stick_y: f32) {
+    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
         if situation_kind == *SITUATION_KIND_AIR {
-            VarModule::on_flag(boma.object(), vars::common::AIR_CROSS);
+            KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_FALL);
             if boma.is_cat_flag(Cat2::FallJump)
                 && stick_y < -0.66
                 && KineticModule::get_sum_speed_y(boma, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) <= 0.0 {
@@ -31,30 +28,23 @@ unsafe fn cross_ff_land_cancel(boma: &mut BattleObjectModuleAccessor, id: usize,
     }
 }
 
-// Turn off air_cross flag if not in Cross in the air
-unsafe fn air_cross_air_off(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
-    if situation_kind == *SITUATION_KIND_AIR {
-        if ![*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_SIMON_STATUS_KIND_SPECIAL_S2].contains(&status_kind) {
-            if VarModule::is_flag(boma.object(), vars::common::AIR_CROSS) {
-                VarModule::off_flag(boma.object(), vars::common::AIR_CROSS);
-            }
+unsafe fn dair_cancels(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, motion_kind: u64, id: usize, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    //Act out of it much faster on hit so you can actually followup on people with good DI
+    if status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR
+    && motion_kind == hash40("attack_air_lw2")
+    && !StatusModule::is_changing(fighter.module_accessor)
+    {
+        if frame > 15.0 {
+            CancelModule::enable_cancel(fighter.module_accessor);
         }
     }
 }
 
-// Land cancel Cross if used in the air and fallen to the ground
-unsafe fn land_cancel_cross(boma: &mut BattleObjectModuleAccessor, id: usize, situation_kind: i32) {
-    if situation_kind == *SITUATION_KIND_GROUND && VarModule::is_flag(boma.object(), vars::common::AIR_CROSS) {
-        VarModule::off_flag(boma.object(), vars::common::AIR_CROSS);
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
-    }
-}
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    holy_water_ac_b_rev(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
-    cross_ff_land_cancel(boma, id, status_kind, situation_kind, cat[1], stick_y);
-    air_cross_air_off(boma, id, status_kind, situation_kind);
-    land_cancel_cross(boma, id, situation_kind);
+    holy_water_ac(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
+    dair_cancels(fighter, boma, motion_kind, id, status_kind, situation_kind, cat[0], frame);
+    axe_ff(boma, status_kind, situation_kind, cat[1], stick_y);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_SIMON )]

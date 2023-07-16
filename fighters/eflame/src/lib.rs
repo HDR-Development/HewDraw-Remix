@@ -1,11 +1,10 @@
-#![feature(asm)]
 #![deny(deprecated)]
 #![allow(unused)]
 #![allow(non_snake_case)]
 
 pub mod acmd;
 
-//pub mod status;
+pub mod status;
 pub mod opff;
 
 use smash::{
@@ -41,6 +40,10 @@ use smashline::*;
 
 pub fn install(is_runtime: bool) {
     acmd::install();
-    //status::install();
+    status::install();
     opff::install(is_runtime);
+    unsafe {
+        // Disables the sword catch animation unless you are completely idle.
+        skyline::patching::Patch::in_text(0xa0cad4).data(0x7100001F);
+    }
 }

@@ -1,7 +1,7 @@
-#![feature(asm)]
 #![deny(deprecated)]
 #![allow(unused)]
 #![allow(non_snake_case)]
+#![feature(repr_simd)]
 use smash::app::lua_bind::*;
 use smash::lua2cpp::*;
 use smash::lib::{*, lua_const::*};
@@ -35,4 +35,5 @@ pub fn install() {
     // tag::install();
     general_statuses::install();
     function_hooks::install();
+    opff::install();
 }

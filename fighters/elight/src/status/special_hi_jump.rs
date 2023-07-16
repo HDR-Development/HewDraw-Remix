@@ -34,6 +34,9 @@ unsafe fn special_hi_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "elight", status = FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn special_hi_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi_jump"), 0.0, 1.0, false, 0.0, false, false);
+    VarModule::on_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_HI);
+    
+    
 
     // [v] get the current position of the stick to be used for angle calculations
     let stick = Vector2f::new(
@@ -108,16 +111,16 @@ unsafe extern "C" fn special_hi_jump_main_loop(fighter: &mut L2CFighterCommon) -
     }
 
     if fighter.is_button_on(Buttons::Special) {
-        VarModule::set_int(fighter.battle_object, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK1);
+        VarModule::set_int(fighter.battle_object, vars::elight::status::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK1);
     } else if fighter.is_button_on(Buttons::Attack) {
-        VarModule::set_int(fighter.battle_object, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK2);
+        VarModule::set_int(fighter.battle_object, vars::elight::status::SPECIAL_HI_JUMP_RESERVE_ACTION, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK2);
     }
 
     // [v] if we are using spreadbullet then switch to Attack2 and not Attack1
     // [h] instead of using the spreadbullet flag, we use a custom VarModule int to
     //      determine what kind of action we are going into here. it is initialized
     //      in the SpecialHi script and then changed depending on the inputs
-    match dbg!(VarModule::get_int(fighter.battle_object, vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION)) {
+    match VarModule::get_int(fighter.battle_object, vars::elight::status::SPECIAL_HI_JUMP_RESERVE_ACTION) {
         vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK1 => fighter.change_status(FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK1.into(), false.into()),
         vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_ATTACK2 => fighter.change_status(FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_HI_ATTACK2.into(), false.into()),
         vars::elight::SPECIAL_HI_JUMP_RESERVE_ACTION_FALL    => fighter.change_to_custom_status(statuses::elight::SPECIAL_HI_FINISH2, false, false),
@@ -137,6 +140,10 @@ unsafe fn special_hi_jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_EFFECT, Hash40::new("effect_specialhiinterrupt"), -1);
         MotionAnimcmdModule::enable_skip_delay_update(fighter.module_accessor);
     }
+    
+    //Disable up special
+    VarModule::on_flag(fighter.battle_object, vars::elight::instance::DISABLE_SPECIAL_HI);
+    super::Set_Pyra_Up_Special_Cancel(fighter, true);
 
     0.into()
 }

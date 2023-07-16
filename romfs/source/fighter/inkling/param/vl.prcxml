@@ -2,16 +2,21 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">17.6</float>
+      <float hash="p1_y">19.5</float>
     </struct>
   </list>
   <struct hash="param_private">
     <float hash="charge_ink">1.55</float>
-    <float hash="sub_ink_throw_f">8</float>
+    <float hash="sub_ink_attack_s4">15</float>
+    <float hash="sub_ink_attack_hi4">30</float>
+    <float hash="sub_ink_attack_lw4">25</float>
+    <float hash="sub_ink_throw_f">12</float>
+    <float hash="sub_ink_special_n">2</float>
     <float hash="sub_ink_special_s">5</float>
   </struct>
   <list hash="param_special_n">
     <struct index="0">
+      <int hash="min_bullet_num">3</int>
       <float hash="max_accel_x_on_air">0.05</float>
       <float hash="max_speed_x_on_air">1</float>
       <float hash="max_shoot_angle_up">60</float>
@@ -33,7 +38,9 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="height_mul_on_air">1.15</float>
+      <float hash="height_mul_on_ground">0.95</float>
+      <float hash="height_mul_on_air">1</float>
+      <int hash="landing_frame">20</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -41,10 +48,13 @@
   </list>
   <list hash="param_splashbomb">
     <struct index="0">
-      <float hash="min_speed_x_mul">0.5</float>
-      <float hash="min_charge_angle">10</float>
-      <float hash="max_charge_angle">49</float>
+      <float hash="min_speed_x_mul">0.6</float>
+      <float hash="min_charge_angle">89</float>
+      <float hash="max_charge_angle">40</float>
       <float hash="min_attack">10</float>
+      <float hash="max_attack">16</float>
+      <float hash="explosion_speed">1</float>
+      <float hash="explosion_relative_speed">1</float>
       <float hash="max_attack">16</float>
       <float hash="hp">12</float>
     </struct>

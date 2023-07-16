@@ -2,13 +2,15 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">13</float>
+      <float hash="p1_y">14</float>
     </struct>
   </list>
   <struct hash="param_breath">
     <int hash="life">5</int>
+    <float hash="pos_offset_x">0.0</float>
+    <float hash="pos_offset_y">18.5</float>
     <float hash="speed_y">5</float>
-    <float hash="scale_mul">1.5</float>
+    <float hash="scale_mul">1.1</float>
     <int hash="move_interval">6</int>
   </struct>
   <list hash="param_special_n">
@@ -21,6 +23,7 @@
   </list>
   <list hash="param_food">
     <struct index="0">
+      <int hash="life">70</int>
       <float hash="speed_x_1">0.45</float>
       <float hash="speed_y_1">0.75</float>
       <float hash="accel_y_1">0.045</float>
@@ -43,9 +46,26 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_special_s">
+    <struct index="0">
+      <int hash="panel_7_tabemono_count_hit">1</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="pass_speed_mul">0.75</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_reflector">
+    <struct index="0">
+      <float hash="speed_mul">1.0</float>
+      <float hash="life_mul">1.0</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

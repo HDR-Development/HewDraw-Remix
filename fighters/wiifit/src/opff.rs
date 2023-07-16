@@ -9,9 +9,10 @@ unsafe fn header_cancel(boma: &mut BattleObjectModuleAccessor, id: usize, status
     if status_kind == *FIGHTER_STATUS_KIND_FALL_SPECIAL
         && [*FIGHTER_STATUS_KIND_SPECIAL_S,*FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_JUMP, *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_S_HEADING].contains(&status_kind_prev)
         && situation_kind == *SITUATION_KIND_AIR {
-        if  !VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL) {
-            VarModule::on_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL);
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, false);
+        if  !VarModule::is_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL) {
+            VarModule::on_flag(boma.object(), vars::common::instance::SIDE_SPECIAL_CANCEL);
+            ControlModule::reset_trigger(boma);
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
         }
     }
 }

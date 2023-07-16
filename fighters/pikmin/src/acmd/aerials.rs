@@ -1,4 +1,6 @@
 
+use std::ops::Index;
+
 use super::*;
 
 use super::PikminInfo;
@@ -83,13 +85,18 @@ unsafe fn pikmin_attack_air_lw_common(fighter: &mut L2CAgentBase) {
     frame(lua_state, 9.0);
     if is_excute(fighter) {
         let damage = 12.6;
-        ATTACK(fighter, 0, 0, Hash40::new("head1"), damage * pikmin.damage, 270, 79, 0, 30, 3.5, 0.0, 3.0, 0.0, Some(0.0), Some(-1.5), Some(0.0), pikmin.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * pikmin.shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(pikmin.attr), *ATTACK_SOUND_LEVEL_L, pikmin.sound, *ATTACK_REGION_PIKMIN);
+        let knockback = [50, 59, 59, 68, 62];
+        /* Ground-only */
+        ATTACK(fighter, 0, 0, Hash40::new("head1"), damage * pikmin.damage, 270, 79, 0, 30, 3.5, 0.0, 3.0, 0.0, Some(0.0), Some(-1.5), Some(0.0), pikmin.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * pikmin.shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(pikmin.attr), *ATTACK_SOUND_LEVEL_L, pikmin.sound, *ATTACK_REGION_PIKMIN);
+        /* Air-only */
+        ATTACK(fighter, 1, 0, Hash40::new("head1"), damage * pikmin.damage, 270, knockback[variation as usize], 0, 30, 3.5, 0.0, 3.0, 0.0, Some(0.0), Some(-1.5), Some(0.0), pikmin.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * pikmin.shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(pikmin.attr), *ATTACK_SOUND_LEVEL_L, pikmin.sound, *ATTACK_REGION_PIKMIN);
         HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_XLU), 0);
     }
     wait(lua_state, 4.0);
     if is_excute(fighter) {
         let damage = 8.0;
         ATTACK(fighter, 0, 0, Hash40::new("head1"), damage * pikmin.damage, 50, 60, 0, 40, 2.5, 0.0, 3.0, 0.0, Some(0.0), Some(-1.5), Some(0.0), pikmin.hitlag, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, damage * pikmin.shield_damage, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(pikmin.attr), *ATTACK_SOUND_LEVEL_S, pikmin.sound, *ATTACK_REGION_PIKMIN);
+        AttackModule::clear(boma, 1, false);
     }
     wait(lua_state, 11.0);
     if is_excute(fighter) {
@@ -238,10 +245,10 @@ unsafe fn olimar_attack_air_n_game(fighter: &mut L2CAgentBase) {
     }
     for _ in 0..4 {
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("trans"), 2.0, 367, 100, 0, 45, 4.0, 0.0, 3.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13135c5462), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-            ATTACK(fighter, 1, 0, Hash40::new("trans"), 2.0, 367, 100, 0, 45, 3.0, 0.0, 6.5, -4.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13135c5462), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-            ATTACK(fighter, 2, 0, Hash40::new("trans"), 2.0, 367, 100, 0, 45, 3.0, 0.0, 6.5, 4.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13135c5462), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-            ATTACK(fighter, 3, 0, Hash40::new("trans"), 2.0, 367, 100, 0, 45, 4.0, 0.0, 9.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13135c5462), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+            ATTACK(fighter, 0, 0, Hash40::new("trans"), 2.0, 367, 100, 0, 45, 4.0, 0.0, 3.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13135c5462), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+            ATTACK(fighter, 1, 0, Hash40::new("trans"), 2.0, 367, 100, 0, 45, 3.0, 0.0, 6.5, -4.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13135c5462), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+            ATTACK(fighter, 2, 0, Hash40::new("trans"), 2.0, 367, 100, 0, 45, 3.0, 0.0, 6.5, 4.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13135c5462), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+            ATTACK(fighter, 3, 0, Hash40::new("trans"), 2.0, 367, 100, 0, 45, 4.0, 0.0, 9.5, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(0x13135c5462), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
@@ -250,10 +257,10 @@ unsafe fn olimar_attack_air_n_game(fighter: &mut L2CAgentBase) {
         wait(lua_state, 2.0);
     }
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("trans"), 3.5, 70, 140, 0, 50, 5.5, 0.0, 3.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-        ATTACK(fighter, 1, 0, Hash40::new("trans"), 3.5, 70, 140, 0, 50, 4.5, 0.0, 6.5, -4.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-        ATTACK(fighter, 2, 0, Hash40::new("trans"), 3.5, 70, 140, 0, 50, 4.5, 0.0, 6.5, 4.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-        ATTACK(fighter, 3, 0, Hash40::new("trans"), 3.5, 70, 140, 0, 50, 6.5, 0.0, 9.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 0, 0, Hash40::new("trans"), 3.5, 70, 140, 0, 50, 5.5, 0.0, 3.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 1, 0, Hash40::new("trans"), 3.5, 70, 140, 0, 50, 4.5, 0.0, 6.5, -4.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 2, 0, Hash40::new("trans"), 3.5, 70, 140, 0, 50, 4.5, 0.0, 6.5, 4.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        ATTACK(fighter, 3, 0, Hash40::new("trans"), 3.5, 70, 140, 0, 50, 6.5, 0.0, 9.5, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {

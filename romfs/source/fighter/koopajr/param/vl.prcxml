@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
+  <list hash="map_coll_data">
+    <hash40 index="0">dummy</hash40>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+    <hash40 index="4">dummy</hash40>
+    <struct index="5">
+      <hash40 hash="node">clownshaft2</hash40>
+    </struct>
+    <struct index="6">
+      <hash40 hash="node">clownshaft2</hash40>
+    </struct>
+  </list>
+  <list hash="jostle_map_coll_data">
+    <hash40 index="0">dummy</hash40>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+    <hash40 index="4">dummy</hash40>
+    <struct index="5">
+      <hash40 hash="node">clownshaft2</hash40>
+    </struct>
+    <struct index="6">
+      <hash40 hash="node">clownshaft2</hash40>
+    </struct>
+  </list>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">18.5</float>
-      <float hash="p2_y">5.5</float>
+      <float hash="p1_y">25</float>
     </struct>
   </list>
   <list hash="param_cannonball">
@@ -21,7 +46,7 @@
       <int hash="back_frame_ground">15</int>
       <float hash="back_speed_ground">0.65</float>
       <float hash="back_speed_x_air">0.65</float>
-      <float hash="dash_no_damage_power">8</float>
+      <float hash="dash_no_damage_power">0</float>
       <float hash="dash_speed_ground">2.2</float>
       <float hash="dash_speed_x_air">2.2</float>
       <float hash="dash_limit_speed_down_ground">3</float>
@@ -32,10 +57,19 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
+      <float hash="shoot_speed_y">2.7</float>
       <float hash="shoot_accel_mul">0.8</float>
       <float hash="shoot_limit_x_mul">1</float>
       <float hash="fall_air_accel_y_mul">0.65</float>
       <float hash="fall_air_speed_y_stable_mul">0.75</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_lw">
+    <struct index="0">
+      <float hash="offset_x">3.8</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -51,7 +85,7 @@
   </list>
   <list hash="param_mechakoopa">
     <struct index="0">
-      <int hash="burst_frame">360</int>
+      <int hash="burst_frame">180</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

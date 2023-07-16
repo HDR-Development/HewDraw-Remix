@@ -6,4 +6,12 @@
       <float hash="p2_y">6.5</float>
     </struct>
   </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="jump_speed_mul">0.75</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
 </struct>

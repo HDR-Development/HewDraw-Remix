@@ -3,14 +3,16 @@
   <list hash="cliff_hang_data">
     <hash40 index="0">dummy</hash40>
     <struct index="1">
-      <float hash="p1_y">16</float>
+      <float hash="p1_y">19</float>
     </struct>
     <struct index="2">
-      <float hash="p1_y">16</float>
+      <float hash="p1_y">17</float>
     </struct>
   </list>
   <list hash="param_special_n">
     <struct index="0">
+      <float hash="blaster_shoot_x">0</float>
+      <float hash="blaster_air_shoot_x">0</float>
       <float hash="blaster_air_shoot_y">0.9</float>
     </struct>
     <hash40 index="1">dummy</hash40>
@@ -20,7 +22,7 @@
   <list hash="param_special_s">
     <struct index="0">
       <float hash="min_stick_y">0.3</float>
-      <float hash="max_rush_degree">30</float>
+      <float hash="max_rush_degree">20</float>
       <float hash="illusion_end_speed_x">2.3</float>
       <float hash="illusion_end_air_speed_x">2.2</float>
     </struct>
@@ -30,10 +32,14 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
+      <int hash="fire_stop_y_frame">14</int>
+      <float hash="fire_accel_y">0.0175</float>
       <int hash="fire_rush_frame">20</int>
-      <float hash="fire_rush_speed">3.95</float>
+      <float hash="fire_rush_speed">3.8</float>
       <int hash="fire_rush_brake_frame">5</int>
-      <float hash="fire_rush_brake">0.17</float>
+      <float hash="fire_rush_brake">0.16</float>
+      <float hash="fire_crush_x_mul">0.8</float>
+      <float hash="fire_fall_x_mul">0.65</float>
       <int hash="fire_landing_frame">25</int>
     </struct>
     <hash40 index="1">dummy</hash40>
@@ -44,7 +50,7 @@
     <struct index="0">
       <float hash="reflector_air_start_x_mul">0.8</float>
       <int hash="reflector_air_stop_y_frame">3</int>
-      <float hash="reflector_air_accel_y">0.1</float>
+      <float hash="reflector_air_accel_y">0.04</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

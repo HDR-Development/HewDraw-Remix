@@ -16,6 +16,16 @@ mod offsets_impl {
         0x9337e0
     }
 
+    #[export_name = "offsets_dolly_super_special_check"]
+    pub const fn dolly_super_special_check() -> usize {
+        0x970fd0
+    }
+
+    #[export_name = "offsets_dolly_super_special_check_param"]
+    pub const fn dolly_super_special_check_param() -> usize {
+        0x971230
+    }
+
     #[export_name = "offsets_force_linear_histun"]
     pub const fn force_linear_histun() -> usize {
         0x62ba54

@@ -2,14 +2,22 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">17.5</float>
+      <float hash="p1_y">23.5</float>
     </struct>
-    <hash40 index="1">dummy</hash40>
+    <struct index="1">
+      <float hash="p1_x">49</float>
+      <float hash="p1_y">44</float>
+      <float hash="p2_x">10</float>
+      <float hash="p2_y">-24</float>
+    </struct>
     <hash40 index="2">dummy</hash40>
   </list>
   <list hash="param_gbeam">
     <struct index="0">
       <int hash="rewind_frame">18</int>
+      <float hash="shoot_length_max">26</float>
+      <float hash="air_lasso_length_max">26</float>
+      <float hash="reach_length_max">30</float>
     </struct>
   </list>
   <list hash="air_lasso_data">
@@ -29,7 +37,7 @@
   <list hash="param_cshot">
     <struct index="0">
       <int hash="life">180</int>
-      <float hash="min_speed">3</float>
+      <float hash="min_speed">2.6</float>
       <float hash="max_speed">0.6</float>
       <float hash="min_scale">0.4</float>
     </struct>
@@ -37,9 +45,35 @@
     <hash40 index="2">dummy</hash40>
     <hash40 index="3">dummy</hash40>
   </list>
+  <list hash="param_special_s">
+    <struct index="0">
+      <int hash="missile_max_req">1</int>
+      <int hash="supermissile_max_req">1</int>
+      <float hash="sp_s_spd_x_div">1.25</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
   <list hash="param_missile">
     <struct index="0">
-      <float hash="h_angle">3</float>
+      <int hash="h_life">60</int>
+      <float hash="h_anglemax">70</float>
+      <float hash="h_angle">2.0</float>
+      <float hash="h_spd">0.5</float>
+      <int hash="h_homingf">30</int>
+      <float hash="h_spdmul">1.1</float>
+      <float hash="h_spdmin">0.4</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_supermissile">
+    <struct index="0">
+      <int hash="s_life">35</int>
+      <float hash="s_spd_x0">0.18</float>
+      <int hash="s_acc_f">26</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -47,7 +81,7 @@
   </list>
   <list hash="param_special_hi">
     <struct index="0">
-      <float hash="sjump_ar_vy0">2.65</float>
+      <float hash="sjump_ar_vy0">2.5</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -57,6 +91,15 @@
     <struct index="0">
       <float hash="sp_lw_ar_vy0">1</float>
       <float hash="sp_lw_bj_spd0">2</float>
+      <int hash="bomb_max_req">1</int>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_bomb">
+    <struct index="0">
+      <int hash="life">240</int>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>

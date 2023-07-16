@@ -50,28 +50,27 @@ download_and_extract("HDR-Development", "HewDraw-Remix", hdr_version, "hdr-switc
 download_and_extract("HDR-Development", "romfs-release", romfs_version, "romfs.zip")
 download_and_extract("Raytwo", "ARCropolis", "latest", "release.zip")
 download_and_extract("skyline-dev", "skyline", "beta", "skyline.zip", "/atmosphere/contents/01006A800016E000/")
+download_and_extract("HDR-Development", "exlaunch", "latest", "HID-HDR.zip", "/atmosphere/contents/0100000000000013/exefs")
 
 print("getting libnro_hook.nro")
-urllib.request.urlretrieve("https://github.com/ultimate-research/nro-hook-plugin/releases/download/beta/libnro_hook.nro", "libnro_hook.nro")
+urllib.request.urlretrieve("https://github.com/ultimate-research/nro-hook-plugin/releases/latest/download/libnro_hook.nro", "libnro_hook.nro")
 shutil.move("libnro_hook.nro", "switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
 
 print("getting libsmashline_hook.nro")
-urllib.request.urlretrieve("https://github.com/blu-dev/smashline_hook/releases/download/1.2.0/libsmashline_hook.nro", "libsmashline_hook.nro")
+urllib.request.urlretrieve("https://github.com/blu-dev/smashline_hook/releases/download/2.0.0/libsmashline_hook.nro", "libsmashline_hook.nro")
 shutil.move("libsmashline_hook.nro", "switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
 
-#print("getting libsmashline_hook_development.nro")
-#urllib.request.urlretrieve("https://github.com/blu-dev/smashline_hook/releases/download/1.1.1/libsmashline_hook_development.nro", "libsmashline_hook_development.nro")
-#shutil.move("libsmashline_hook_development.nro", "switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
-
 print("getting hdr-launcher.nro")
-urllib.request.urlretrieve("https://github.com/HDR-Development/hdr-launcher/releases/latest/download/hdr-launcher.nro", "hdr-launcher.nro")
+urllib.request.urlretrieve("https://github.com/techyCoder81/hdr-launcher-react/releases/latest/download/hdr-launcher.nro", "hdr-launcher.nro")
 shutil.move("hdr-launcher.nro", "switch-package/atmosphere/contents/01006A800016E000/romfs/skyline/plugins/")
 
 
 print("making switch-package.zip")
 shutil.make_archive("switch-package", 'zip', 'switch-package')
 
+print("creating hash files")
 hash_package.hash_folder("switch-package", "content_hashes.txt")
+hash_package.hash_folder_json("switch-package", "content_hashes.json")
 
 
 # make a ryujinx package too
@@ -90,3 +89,4 @@ os.mkdir("artifacts")
 shutil.move("switch-package.zip", "artifacts")
 shutil.move("ryujinx-package.zip", "artifacts")
 shutil.move("content_hashes.txt", "artifacts")
+shutil.move("content_hashes.json", "artifacts")

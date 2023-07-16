@@ -1,6 +1,7 @@
 // status imports
 use super::*;
 use globals::*;
+
 // This file contains code for wavelanding
 
 pub fn install() {
@@ -83,15 +84,12 @@ unsafe extern "C" fn status_pre_Jump_sub(fighter: &mut L2CFighterCommon) {
 
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon25status_pre_Jump_sub_paramEN3lib8L2CValueES2_S2_S2_S2_")]
 unsafe extern "C" fn status_pre_Jump_sub_param(fighter: &mut L2CFighterCommon, flag_keep: L2CValue, int_keep: L2CValue, float_keep: L2CValue, kinetic_type: L2CValue, arg: L2CValue) {
-    //println!("status_pre_Jump_sub_param");
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
     let flag_keep = flag_keep.get_i32();
     let int_keep = int_keep.get_i32();
     let float_keep = float_keep.get_i32();
     let mut kinetic_type = kinetic_type.get_i32();
     let arg = arg.get_i32();
-    if KineticModule::get_kinetic_type(fighter.module_accessor) == *FIGHTER_KINETIC_TYPE_JUMP {
-        kinetic_type = *FIGHTER_KINETIC_TYPE_UNIQ;
-    }
     let status_kind = StatusModule::status_kind(fighter.module_accessor);
     let ground_correct_kind = app::FighterUtil::get_ground_correct_kind_air_trans(fighter.module_accessor, status_kind);
     StatusModule::init_settings(
@@ -131,8 +129,8 @@ unsafe fn status_Jump(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_Jump_Main)]
 unsafe extern "C" fn status_Jump_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // println!("jump main");
-    VarModule::set_float(fighter.battle_object, vars::common::CURRENT_MOMENTUM, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
-    VarModule::set_float(fighter.battle_object, vars::common::CURRENT_MOMENTUM_SPECIALS, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
+    VarModule::set_float(fighter.battle_object, vars::common::instance::CURRENT_MOMENTUM, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
+    VarModule::set_float(fighter.battle_object, vars::common::instance::CURRENT_MOMENTUM_SPECIALS, KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN));
     let ret = if fighter.sub_transition_group_check_air_cliff().get_bool() {
         1.into()
     }
@@ -153,7 +151,7 @@ unsafe extern "C" fn status_Jump_Main(fighter: &mut L2CFighterCommon) -> L2CValu
     };
     
     // CAT1, FLAG_ATTACK_N
-    BufferModule::clear_persist_one(fighter.battle_object, 0, 0);
+    InputModule::clear_persist_one(fighter.battle_object, 0, 0);
     ret
 }
 
@@ -210,10 +208,6 @@ unsafe extern "C" fn status_Jump_sub(fighter: &mut L2CFighterCommon, arg1: L2CVa
 }
 
 unsafe extern "C" fn bind_call_sub_fall_common_uniq(fighter: &mut L2CFighterCommon, arg: L2CValue) -> L2CValue {
-    if !VarModule::is_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_MAGNET)
-            && VarModule::countdown_int(fighter.battle_object, vars::common::AIR_ESCAPE_MAGNET_FRAME, 0) {
-            VarModule::on_flag(fighter.battle_object, vars::common::ENABLE_AIR_ESCAPE_MAGNET);
-        }
     fighter.sub_fall_common_uniq(arg)
 }
 
@@ -231,8 +225,8 @@ unsafe fn status_end_Jump(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 
-#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon25status_pre_JumpAerial_subEv")]
-unsafe extern "C" fn status_pre_JumpAerial_sub(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, vars::common::UP_SPECIAL_JUMP_REFRESH_WINDOW);
-    call_original!(fighter)
-}
+// #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon25status_pre_JumpAerial_subEv")]
+// unsafe extern "C" fn status_pre_JumpAerial_sub(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     VarModule::off_flag(fighter.battle_object, vars::common::UP_SPECIAL_JUMP_REFRESH_WINDOW);
+//     call_original!(fighter)
+// }

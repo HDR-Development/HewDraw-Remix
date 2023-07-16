@@ -5,8 +5,9 @@ use globals::*;
 
 
 #[no_mangle]
-pub unsafe extern "Rust" fn pits_common(boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
-    power_of_flight_cancel(boma, status_kind)
+pub unsafe extern "Rust" fn pits_common(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
+    power_of_flight_cancel(boma, status_kind);
+    upperdash_arm_whiff_freefall(fighter);
 }
 
 
@@ -20,31 +21,30 @@ unsafe fn power_of_flight_cancel(boma: &mut BattleObjectModuleAccessor, status_k
 }
  
 unsafe fn upperdash_arm_jump_and_aerial_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, stick_x: f32, facing: f32, frame: f32, id: usize) {
-    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S || (status_kind == *FIGHTER_PIT_STATUS_KIND_SPECIAL_S_END && frame > 5.0) {
-        if frame > 27.0 {
-            if boma.is_input_jump() {
-                if situation_kind == *SITUATION_KIND_AIR {
-                    if boma.get_num_used_jumps() < boma.get_jump_count_max() - 1 &&  !VarModule::is_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL) {
-                        VarModule::on_flag(boma.object(), vars::common::SIDE_SPECIAL_CANCEL);
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_AERIAL, false);
-                    }
-                } else if situation_kind == *SITUATION_KIND_GROUND {
-                    if facing * stick_x < 0.0 {
-                        PostureModule::reverse_lr(boma);
-                        // Does this need PostureModule::update_rot_y_lr(boma)?
-                    }
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                }
-            }
+    if StatusModule::is_changing(boma) {
+        return;
+    }
+    if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S || (status_kind == *FIGHTER_PIT_STATUS_KIND_SPECIAL_S_END && frame > 6.0) {
+        if (boma.is_situation(*SITUATION_KIND_GROUND) || WorkModule::is_flag(boma, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_CLIFF_FALL_ONOFF))
+        && frame > 28.0 {
+            boma.check_jump_cancel(true);
         }
     }
 }
 
+unsafe fn upperdash_arm_whiff_freefall(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_S)
+    && fighter.is_situation(*SITUATION_KIND_AIR)
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && MotionModule::frame(fighter.module_accessor) >= MotionModule::end_frame(fighter.module_accessor) - 1.0
+    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_S_WORK_ID_FLAG_HIT) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+    }
+}
 
-
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     upperdash_arm_jump_and_aerial_cancel(boma, status_kind, situation_kind, cat[0], stick_x, facing, frame, id);
-    pits_common(boma, status_kind);
+    pits_common(fighter, boma, status_kind);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_PIT )]
@@ -57,6 +57,6 @@ pub fn pit_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn pit_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

@@ -1,5 +1,5 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
@@ -18,28 +18,49 @@ unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kind: i
 
 // Pac-Man Bonus Fruit Toss Airdodge Cancel
 unsafe fn bonus_fruit_toss_ac(boma: &mut BattleObjectModuleAccessor, status_kind: i32, situation_kind: i32, cat1: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if status_kind == *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_N_SHOOT {
-        if frame > 10.0 {
-            if boma.is_cat_flag(Cat1::AirEscape) && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
-                if situation_kind == *SITUATION_KIND_AIR {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ESCAPE_AIR, true);
-                }
-            }
+        if frame > 11.0 {
+            boma.check_airdodge_cancel();
         }
     }
 }
 
-// Pac-Man Bonus Fruit charge B-Reverse
-unsafe fn bonus_fruit_charge_b_rev(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_N) {
-        common::opff::check_b_reverse(fighter);
+unsafe fn side_special_freefall(fighter: &mut L2CFighterCommon) {
+    if fighter.is_prev_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_DASH)
+    && fighter.is_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN)
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_situation(*SITUATION_KIND_AIR)
+    && CancelModule::is_enable_cancel(fighter.module_accessor)
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PACMAN_STATUS_SPECIAL_S_WORK_FLAG_EAT_POWER_ESA) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_FALL_SPECIAL, true);
+        let cancel_module = *(fighter.module_accessor as *mut BattleObjectModuleAccessor as *mut u64).add(0x128 / 8) as *const u64;
+        *(((cancel_module as u64) + 0x1c) as *mut bool) = false;  // CancelModule::is_enable_cancel = false
+    }
+
+    if fighter.is_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN)
+    && !StatusModule::is_changing(fighter.module_accessor)
+    && fighter.is_prev_situation(*SITUATION_KIND_AIR)
+    && fighter.is_situation(*SITUATION_KIND_GROUND) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, true);
+    }
+}
+
+// Allows you to land out of upB before reaching end of animation (weird vanilla behavior)
+unsafe fn up_special_proper_landing(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_PACMAN_STATUS_KIND_SPECIAL_HI_END)
+    && fighter.is_situation(*SITUATION_KIND_GROUND) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
     }
 }
 
 pub unsafe fn moveset(fighter: &mut smash::lua2cpp::L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     nspecial_cancels(boma, status_kind, situation_kind);
     bonus_fruit_toss_ac(boma, status_kind, situation_kind, cat[0], frame);
-    bonus_fruit_charge_b_rev(fighter);
+    side_special_freefall(fighter);
+    up_special_proper_landing(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_PACMAN )]

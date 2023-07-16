@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <struct>
-  <float hash="damage_frame_mul">0.45</float>
+  <float hash="damage_frame_mul">0.42</float>
   <float hash="damage_level1">16.875</float>
   <float hash="damage_level2">23.625</float>
-  <float hash="damage_level3">40.5</float>
+  <float hash="damage_level3">33.6</float>
   <float hash="damage_speed_mul">0.03</float>
   <float hash="damage_angle_ground_max">44</float>
-  <float hash="down_damage_s_reaction">999</float>
   <float hash="damage_fly_quake_l">90</float>
   <int hash="damage_fly_speed_up_reaction_frame_min">998</int>
   <int hash="damage_fly_speed_up_reaction_frame_max">999</int>
@@ -18,10 +17,13 @@
   <float hash="hitstop_elec_mul">1.25</float>
   <int hash="just_shield_hitstop_frame_add">22</int>
   <int hash="just_shield_hitstop_frame_max">23</int>
-  <float hash="damage_shake_mul_value">1</float>
   <float hash="just_shield_reflect_attack_mul">0.5</float>
-  <float hash="just_shield_reflect_speed_mul">0.9</float>
+  <float hash="just_shield_reflect_speed_mul">1.0</float>
+  <float hash="just_shield_reflect_life_mul">1</float>
   <int hash="just_shield_reflect_count_max">7</int>
+  <float hash="rebound_reaction_mul">0.3</float>
+  <float hash="rebound_reaction_add">2.0</float>
+  <float hash="rebound_power_diff">6.0</float>
   <float hash="0x117e9b3582">0.025</float>
   <float hash="0x112a8367c4">0.32</float>
   <float hash="0x1176e209f3">0.3</float>
@@ -30,10 +32,10 @@
   <float hash="0x16f170b6e2">0.37</float>
   <float hash="0x16ad11d8d5">0.4</float>
   <float hash="0x16911ce78c">0.875</float>
-  <float hash="jostle_team_overlap_rate">0.66</float>
+  <float hash="jostle_team_overlap_rate">0.3</float>
   <float hash="damage_angle_air">0.785398</float>
-  <float hash="fly_top_angle_lw">0.785398</float>
-  <float hash="fly_top_angle_hi">2.35619</float>
+  <float hash="fly_top_angle_lw">0.802851</float>
+  <float hash="fly_top_angle_hi">2.338741</float>
   <list hash="0x192e58d48b">
     <hash40 index="0">dummy</hash40>
     <float index="1">1</float>

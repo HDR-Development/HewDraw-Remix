@@ -1,7 +1,7 @@
 use super::*;
 use globals::*;
 
-utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
+utils::import_noreturn!(common::opff::fighter_common_opff);
 
 unsafe fn dspecial_cancels(fighter: &mut L2CFighterCommon) {
     if fighter.is_status(*FIGHTER_CLOUD_STATUS_KIND_SPECIAL_LW_END)
@@ -12,10 +12,13 @@ unsafe fn dspecial_cancels(fighter: &mut L2CFighterCommon) {
     }
 }
 
-// Cloud Limit Charge start and release B-Reverse
-unsafe fn limit_charge_start_b_rev(fighter: &mut L2CFighterCommon) {
-    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-        common::opff::check_b_reverse(fighter);
+// Fixes bug where touching ground during upB puts you into special fall for 1f before landing
+unsafe fn up_special_proper_landing(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI)
+    && fighter.is_situation(*SITUATION_KIND_GROUND)
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_CLOUD_STATUS_SPECIAL_HI_FLAG_FALL) {
+        fighter.change_status_req(*FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, false);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_CLOUD_STATUS_SPECIAL_HI_FLAG_FALL);
     }
 }
 
@@ -24,5 +27,5 @@ pub unsafe fn cloud_frame_wrapper(fighter: &mut L2CFighterCommon) {
     common::opff::fighter_common_opff(fighter);
 
     dspecial_cancels(fighter);
-    limit_charge_start_b_rev(fighter);
+    up_special_proper_landing(fighter);
 }

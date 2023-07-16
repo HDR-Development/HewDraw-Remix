@@ -5,15 +5,44 @@ on:
       - dev
 
 jobs:
+  # bump the version and build the changelog
   version_and_changelog:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
       GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
     outputs: 
       version: ${{ steps.push_tag.outputs.version }}
       changelog: ${{ steps.github_changelog.outputs.changelog }}
     steps:
-  
+      # fail out if this is not a merge commit
+      - name: ensure merge
+        if: ${{ !startsWith(github.event.head_commit.message, 'Merge') }}
+        run: exit 1
+
+      - name: checkout version
+        uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
+
+      - name: get last merge
+        id: last_merge
+        shell: bash
+        run: |
+          echo "short_hash=$(echo $(git log --oneline --merges -n 10 | grep -m2 "pull request" | tail -n1 | cut -d' ' -f1))" >> $GITHUB_OUTPUT
+
+      - run: |
+          echo "Last Merge: ${{ steps.last_merge.outputs.short_hash }}"
+
+      # wait for any previous versions to be tagged and committed
+      - uses: lewagon/wait-on-check-action@v1.2.0
+        continue-on-error: true
+        with:
+          ref: ${{ steps.last_merge.outputs.short_hash }}
+          check-name: 'version_and_changelog'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 30
+          allowed-conclusions: success,skipped,cancelled,failure
+
       # tag push
       - uses: jefflinse/pr-semver-bump@v1
         name: Bump and Tag Version
@@ -25,11 +54,6 @@ jobs:
           patch-label: semver:patch
           with-v: true
 
-      - name: checkout version
-        uses: actions/checkout@v2
-        with: 
-          fetch-depth: 0
-  
       # github changelog
       - name: "Generate release changelog"
         id: github_changelog
@@ -39,6 +63,10 @@ jobs:
           stripHeaders: true
           verbose: false
           issuesWoLabels: false
+          maxIssues: 300
+          stripGeneratorNotice: true
+          compareLink: false
+          simpleList: true
           token: ${{ secrets.RELEASE_TOKEN }}
 
       - name: Upload changelog
@@ -50,10 +78,10 @@ jobs:
   plugin_build:
     env:
       PLUGIN_NAME: hdr
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: version_and_changelog
     container: 
-      image: jugeeya/cargo-skyline:2.1.0-dkp
+      image: jugeeya/cargo-skyline:3.2.0-no-dkp
     steps:
     - name: setup python
       uses: actions/setup-python@v2
@@ -65,8 +93,7 @@ jobs:
 
     # build the project
     - run: |
-        export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin \
-        && cd scripts && python3 make_dist.py build version=${{ needs.version_and_changelog.outputs.version }}-nightly name=hdr && cd ..
+        cargo skyline update-std && cd scripts && python3 make_dist.py build version=${{ needs.version_and_changelog.outputs.version }}-nightly name=hdr && cd ..
       env:
         HOME: /root
 
@@ -76,18 +103,32 @@ jobs:
     #    echo lol > distributions/hdr-switch.zip
     #    echo lol > distributions/hdr-ryujinx.zip
 
-    - name: Upload version
+    - name: Upload version artifact
       uses: actions/upload-artifact@v3
       with:
         name: version
         path: plugin/hdr_version.txt
 
+    - name: Upload distributions artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: distributions
+        path: distributions
+
+  ##############  handle uploading the files to the release  ##############
+  upload_to_release:
+    runs-on: ubuntu-20.04
+    needs: [plugin_build, version_and_changelog]
+    steps:
+    - uses: actions/download-artifact@v3
+      with:
+        name: distributions
+
     # upload asset
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: distributions/*
+        file: '*.zip'
         prerelease: true
         file_glob: true
         asset_name: the_asset
@@ -95,11 +136,26 @@ jobs:
         tag: ${{ needs.version_and_changelog.outputs.version }}
         overwrite: true
         body: ${{ needs.version_and_changelog.outputs.changelog }}
-    
+  
+  # wait for any previous nightlies to complete, since we dont want to step on any 
+  # full package uploads prior to this one.
+  wait_for_previous_builds:
+    runs-on: ubuntu-20.04
+    needs: upload_to_release
+    steps:
+      - name: checkout version
+        uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
+      - uses: ahmadnassri/action-workflow-queue@v1
+        with:
+          delay: 30000 # 30 seconds between retries
+          timeout: 5400000 # 1.5 hour total timeout
+
   ##############  handle the creasion of the full package installation  ##############
   full_package:
-    runs-on: ubuntu-latest
-    needs: [version_and_changelog, plugin_build]
+    runs-on: ubuntu-20.04
+    needs: [version_and_changelog, wait_for_previous_builds]
     steps:
     - name: checkout version
       uses: actions/checkout@v2
@@ -119,7 +175,7 @@ jobs:
       with:
         repository: HDR-Development/HDR-Nightlies
 
-    # build the upgrade.zip and upgrade_deletions.txt
+    # build the upgrade.zip and deletions.json
     - name: make upgrade artifacts
       run: |
         python3 scripts/make_diff.py nightly
@@ -141,6 +197,18 @@ jobs:
         tag: ${{ steps.package_latest.outputs.release }}
         overwrite: true
 
+    # upload the upgrade data to the previous release for auto updater
+    - name: Upload upgrade deletions to previous release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.RELEASE_TOKEN }}
+        file: upgrade_artifacts/deletions.json
+        prerelease: false
+        file_glob: true
+        asset_name: deletions
+        repo_name: HDR-Development/HDR-Nightlies
+        tag: ${{ steps.package_latest.outputs.release }}
+        overwrite: true
 
     - uses: actions/download-artifact@v3
       with:
@@ -153,6 +221,25 @@ jobs:
       with:
         name: version
         
+    # build the lvd files
+    - id: lvd_files
+      uses: robinraju/release-downloader@v1.7
+      with:
+        repository: "techyCoder81/SSBU-LVD-data-dump"
+        tag: release
+        fileName: "lvd_dumper.zip"
+
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.408'
+
+    - name: extract lvd data
+      id: lvd_extract
+      shell: bash
+      run: |
+        . scripts/extract_lvd_data.sh
+
     - name: Display structure of downloaded version
       run: ls -R && cp hdr_version.txt artifacts
 
@@ -172,7 +259,7 @@ jobs:
 
   ################  handle the creation of to-nightly.zip  ################
   to_nightly:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [full_package, version_and_changelog]
     steps:
     - name: checkout version
@@ -180,7 +267,7 @@ jobs:
 
     # get the nightly
     - id: latest_nightly
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       with:
         repository: "HDR-Development/HDR-Nightlies"
         tag: ${{ needs.version_and_changelog.outputs.version }}
@@ -199,6 +286,8 @@ jobs:
         ls && stat * && echo && ls upgrade_artifacts && stat upgrade_artifacts/*
 
     - run: mv upgrade_artifacts/upgrade.zip to-nightly.zip
+
+    - run: mv upgrade_artifacts/deletions.json to_nightly_deletions.json
 
     # get the most recent latest beta
     - id: latest_beta
@@ -219,10 +308,23 @@ jobs:
         tag: ${{ steps.latest_beta.outputs.release }}
         overwrite: true
 
+    # upload the to_nightly_deletions.json to the beta for the launcher
+    - name: Upload to_nightly_deletions.json to beta
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.RELEASE_TOKEN }}
+        file: to_nightly_deletions.json
+        prerelease: false
+        file_glob: false
+        asset_name: to_nightly_deletions.json
+        repo_name: HDR-Development/HDR-Releases
+        tag: ${{ steps.latest_beta.outputs.release }}
+        overwrite: true
+
 
   ################  handle the creation of to-beta.zip  ################
   to_beta:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [full_package, version_and_changelog]
     steps:
     - name: checkout version
@@ -230,7 +332,7 @@ jobs:
 
     # get the beta
     - id: latest_beta
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       with:
         repository: "HDR-Development/HDR-Releases"
         latest: true
@@ -250,6 +352,8 @@ jobs:
 
     - run: mv upgrade_artifacts/upgrade.zip to-beta.zip
 
+    - run: mv upgrade_artifacts/deletions.json to_beta_deletions.json
+
     # upload the to-beta.zip to the beta for the launcher
     - name: Upload to-beta.zip to nightly
       uses: svenstaro/upload-release-action@v2
@@ -259,6 +363,19 @@ jobs:
         prerelease: false
         file_glob: false
         asset_name: to-beta.zip
+        repo_name: HDR-Development/HDR-Nightlies
+        tag: ${{ needs.version_and_changelog.outputs.version }}
+        overwrite: true
+    
+    # upload the to_beta_deletions.json to the beta for the launcher
+    - name: Upload to_beta_deletions.json to nightly
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.RELEASE_TOKEN }}
+        file: to_beta_deletions.json
+        prerelease: false
+        file_glob: false
+        asset_name: to_beta_deletions.json
         repo_name: HDR-Development/HDR-Nightlies
         tag: ${{ needs.version_and_changelog.outputs.version }}
         overwrite: true

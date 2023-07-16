@@ -1,16 +1,40 @@
 name: validate pr labels
 on:
-  pull_request:
-    types: [labeled, unlabeled, opened, edited, reopened, synchronize, ready_for_review]
+  pull_request_target:
+    types: [labeled, unlabeled, opened, reopened, synchronize, ready_for_review]
 jobs:
   check-pr:
-    name: Validate Release Label and Notes
-    runs-on: ubuntu-latest
+    name: Validate Release Labels
+    runs-on: ubuntu-20.04
     steps:
-      - uses: jefflinse/pr-semver-bump@v1
-        name: Validate Pull Request Metadata
+      # ensure that a semantic version label is present
+      - name: check_semver_labels
+        if: >
+            !(contains(github.event.pull_request.labels.*.name, 'semver:feature') 
+              || contains(github.event.pull_request.labels.*.name, 'semver:patch'))
+        uses: actions/github-script@v3
         with:
-          mode: validate
-          repo-token: ${{ secrets.RELEASE_TOKEN }}
-          minor-label: semver:feature
-          patch-label: semver:patch
+          script: |
+              core.setFailed('No semver label was found on this PR!')
+
+      # ensure that the 'for next beta' label is not present
+      - name: check_for_next_beta_labels
+        if: >
+            contains(github.event.pull_request.labels.*.name, 'for next beta')
+        uses: actions/github-script@v3
+        with:
+          script: |
+              core.setFailed('This PR is labeled to wait until next beta cycle for release.')
+
+      # ensure that this is not a character change waiting for backroom approval
+      - name: check_backroom_labels
+        if: >
+            contains(github.event.pull_request.labels.*.name, 'character change')
+            && !contains(github.event.pull_request.labels.*.name, 'backroom approved')
+        uses: actions/github-script@v3
+        with:
+          script: |
+              core.setFailed('This character change has not been approved by balance backroom yet.')
+      
+      - name: all_is_well
+        run: echo "This PR is in an appropriately labeled state."

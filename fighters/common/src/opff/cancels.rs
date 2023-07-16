@@ -18,11 +18,11 @@ unsafe fn ditcit(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: 
     let mut motion_vec = Vector3f {x: 0.0, y: 0.0, z: 0.0};
 
     if status_kind != *FIGHTER_STATUS_KIND_ITEM_THROW {
-        VarModule::off_flag(boma.object(), vars::common::DITCIT_SLIDING);
+        VarModule::off_flag(boma.object(), vars::common::instance::DITCIT_SLIDING);
     }
 
     if status_kind == *FIGHTER_STATUS_KIND_ITEM_THROW_DASH {
-        if MotionModule::frame(boma) > 2.0 && MotionModule::frame(boma) < 6.0
+        if boma.status_frame() > 2 && boma.status_frame() < 6
             && ((boma.is_cat_flag(Cat1::AttackHi4))
              || (boma.is_cat_flag(Cat1::AttackLw4))
              || (boma.is_cat_flag(Cat1::AttackS4))
@@ -30,10 +30,10 @@ unsafe fn ditcit(boma: &mut BattleObjectModuleAccessor, cat1: i32, status_kind: 
              || (boma.is_cat_flag(Cat1::AttackLw3))
              || (boma.is_cat_flag(Cat1::AttackS3))) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ITEM_THROW, false);
-            VarModule::on_flag(boma.object(), vars::common::DITCIT_SLIDING);
+            VarModule::on_flag(boma.object(), vars::common::instance::DITCIT_SLIDING);
         }
     } else {
-        if VarModule::is_flag(boma.object(), vars::common::DITCIT_SLIDING) {  // status_kind == ITEM_THROWN, coming from THROW_DASH
+        if VarModule::is_flag(boma.object(), vars::common::instance::DITCIT_SLIDING) {  // status_kind == ITEM_THROWN, coming from THROW_DASH
             motion_value = 2.8 * (MotionModule::end_frame(boma) - MotionModule::frame(boma)) / MotionModule::end_frame(boma);
             motion_vec.x = motion_value * facing;
             motion_vec.y = 0.0;
@@ -73,10 +73,10 @@ unsafe fn footstool_defense(boma: &mut BattleObjectModuleAccessor, status_kind: 
     // Prevent airdodging after a footstool until after F20
     if (status_kind == *FIGHTER_STATUS_KIND_JUMP && prev_status_0 == *FIGHTER_STATUS_KIND_TREAD_JUMP)
         || (status_kind == *FIGHTER_STATUS_KIND_JUMP_AERIAL && prev_status_0 == *FIGHTER_STATUS_KIND_JUMP && prev_status_1 == *FIGHTER_STATUS_KIND_TREAD_JUMP)
-        && MotionModule::frame(boma) < 20.0 {
-        VarModule::on_flag(boma.object(), vars::common::FOOTSTOOL_AIRDODGE_LOCKOUT);
-    } else if VarModule::is_flag(boma.object(), vars::common::FOOTSTOOL_AIRDODGE_LOCKOUT) {
-        VarModule::off_flag(boma.object(), vars::common::FOOTSTOOL_AIRDODGE_LOCKOUT);
+        && boma.status_frame() < 20 {
+        VarModule::on_flag(boma.object(), vars::common::instance::FOOTSTOOL_AIRDODGE_LOCKOUT);
+    } else if VarModule::is_flag(boma.object(), vars::common::instance::FOOTSTOOL_AIRDODGE_LOCKOUT) {
+        VarModule::off_flag(boma.object(), vars::common::instance::FOOTSTOOL_AIRDODGE_LOCKOUT);
     }
 }
 

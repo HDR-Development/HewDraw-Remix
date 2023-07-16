@@ -4,7 +4,7 @@ import shutil, os, sys, pathlib, zipfile
 def create_diff(zip1: str, zip2: str, output_name: str):
     deleted_files = set()
     changed_files = set()
-    deletions_text = ""
+    deletions_text = "["
     with zipfile.ZipFile(zip1, 'r') as zip1:
         with zipfile.ZipFile(zip2, 'r') as zip2:
             # get the files from zip1 that are changed or deleted
@@ -28,7 +28,9 @@ def create_diff(zip1: str, zip2: str, output_name: str):
 
             for file in deleted_files:
                 print("deleted file: " + file)
-                deletions_text += file + "\n"
+                deletions_text += "\"" + file + "\","
+            deletions_text = deletions_text.strip(",")
+            deletions_text += "]"
 
             # removing old diffs
             shutil.rmtree('diff', True)
@@ -42,7 +44,7 @@ def create_diff(zip1: str, zip2: str, output_name: str):
     shutil.make_archive(output_name, 'zip', 'diff')
 
     
-    with open('upgrade_deletions.txt', "w") as deletions_file:
+    with open('deletions.json', "w") as deletions_file:
         deletions_file.write(deletions_text)
 
 

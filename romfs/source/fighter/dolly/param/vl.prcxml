@@ -2,7 +2,7 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">22.5</float>
+      <float hash="p1_y">26</float>
     </struct>
   </list>
   <struct hash="param_private">
@@ -23,14 +23,14 @@
       <int hash="stick_down_hold_frame">16</int>
       <float hash="stick_x_speed_mul_max">6</float>
       <float hash="command_landing_frame_mul">1</float>
-      <float hash="speed_y_mul">0.365</float>
+      <float hash="speed_y_mul">0.29</float>
       <float hash="speed_y_mul_command">0.405</float>
-      <int hash="landing_frame">13</int>
+      <int hash="landing_frame">12</int>
       <float hash="fall_brake_y_mul">0.8</float>
     </struct>
     <struct index="1">
       <float hash="stick_x_speed_mul_max">6</float>
-      <float hash="speed_y_mul">0.67</float>
+      <float hash="speed_y_mul">0.45</float>
       <float hash="air_speed_y_mul">0.67</float>
       <float hash="speed_y_mul_command">0.71</float>
       <float hash="air_speed_y_mul_command">0.71</float>
@@ -64,6 +64,6 @@
     <float hash="start_speed_y_mul_air">0</float>
   </struct>
   <struct hash="param_super_special2">
-    <int hash="hit_stop_frame_fighter">22</int>
+    <int hash="hit_stop_frame_fighter">25</int>
   </struct>
 </struct>

@@ -25,18 +25,18 @@
   </list>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">19.5</float>
+      <float hash="p1_y">23</float>
     </struct>
     <struct index="1">
-      <float hash="p1_y">14.75</float>
+      <float hash="p1_y">19</float>
     </struct>
   </list>
   <list hash="param_special_s">
     <struct index="0">
-      <float hash="special_s_jump_speed_x">3.1</float>
-      <float hash="special_s_jump_speed_flick_x">3.5</float>
-      <float hash="special_s_hit_speed_x">-0.45</float>
-      <float hash="special_s_hit_speed_y">1.35</float>
+      <float hash="special_s_jump_speed_x">2.9</float>
+      <float hash="special_s_jump_speed_flick_x">3</float>
+      <float hash="special_s_hit_speed_x">-0.5</float>
+      <float hash="special_s_hit_speed_y">1.45</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <hash40 index="2">dummy</hash40>
@@ -45,9 +45,8 @@
   <list hash="param_special_hi">
     <struct index="0">
       <float hash="special_hi_start_dir_mul">30</float>
-      <float hash="special_hi_fall_accel_x_mul">1.05</float>
-      <float hash="special_hi_fall_accel_y_mul">-0.01775</float>
-      <int hash="special_hi_parasol_limit_time">135</int>
+      <float hash="special_hi_start_trans_speed_mul">0.8</float>
+      <int hash="special_hi_parasol_limit_time">0</int>
       <int hash="special_hi_landing_mot_frame">30</int>
     </struct>
     <hash40 index="1">dummy</hash40>
@@ -78,6 +77,6 @@
     <hash40 index="3">dummy</hash40>
   </list>
   <struct hash="param_private">
-    <int hash="uniq_float_float_frame">60</int>
+    <int hash="uniq_float_float_frame">30</int>
   </struct>
 </struct>

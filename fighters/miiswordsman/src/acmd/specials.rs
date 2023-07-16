@@ -5,18 +5,56 @@ use super::*;
 unsafe fn miiswordsman_special_n1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+    }
+
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_TORNADOSHOT, false, 0);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.85);
+    }  
+}
+
+#[acmd_script( agent = "miiswordsman", script = "game_specialairn1" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_air_n1_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+    }
+
+    frame(lua_state, 17.0);
+    if is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_TORNADOSHOT, false, 0);
+    }
+    frame(lua_state, 18.0);
+    if is_excute(fighter) {
+        FT_MOTION_RATE(fighter, 0.8);
+    }  
+}
+
+//Will need to be looked at in the future when rebalancing tornado
+/*
+#[acmd_script( agent = "miiswordsman", script = "game_specialn1" , category = ACMD_GAME , low_priority)]
+unsafe fn miiswordsman_special_n1_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     if is_excute(fighter) {
-        VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0); // Timer used to track time until Gale Strike is available again
-        //VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
-        VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+        VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0); // Timer used to track time until Gale Strike is available again
+        //VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
         ArticleModule::remove(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_TORNADOSHOT, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
      }
      frame(lua_state, 10.0);
      if is_excute(fighter) {
          if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW){
-             //VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
-             VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+             //VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+             VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
              FT_MOTION_RATE(fighter, 3.0);
          }
          else{
@@ -26,18 +64,18 @@ unsafe fn miiswordsman_special_n1_game(fighter: &mut L2CAgentBase) {
      frame(lua_state, 17.0);
      if is_excute(fighter) {
          ArticleModule::generate_article(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_TORNADOSHOT, false, 0);
-         //if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
-            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 120);
+         //if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
+            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 120);
          }
          else{
-            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 52);
+            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 52);
          }
      }
      frame(lua_state, 18.0);
      if is_excute(fighter) {
-         //if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+         //if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
              FT_MOTION_RATE(fighter, 1.2);
          }
          else{
@@ -57,7 +95,7 @@ unsafe fn miiswordsman_special_n1_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
             EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("haver"), 0, 7.5, 0.0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
             LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.84, 0.17);
         }
@@ -67,7 +105,7 @@ unsafe fn miiswordsman_special_n1_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
             LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.25, 0, 0, 0, 0, 0, 0, true);
             LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.84, 0.17);
             EFFECT(fighter, Hash40::new("miiswordsman_counter_flash"), Hash40::new("top"), 0, 9, 7.5, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
@@ -85,34 +123,34 @@ unsafe fn miiswordsman_special_air_n1_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let end_frame = MotionModule::end_frame(boma);
     if is_excute(fighter) {
-        VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 0); // Timer used to track time until Gale Strike is available again
-        //VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
-        VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+        VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0); // Timer used to track time until Gale Strike is available again
+        //VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
         ArticleModule::remove(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_TORNADOSHOT, app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
      }
      frame(lua_state, 10.0);
      if is_excute(fighter) {
          if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW){
-             //VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
-             VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+             //VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+             VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
              FT_MOTION_RATE(fighter, 3.0);
          }
      }
      frame(lua_state, 17.0);
      if is_excute(fighter) {
          ArticleModule::generate_article(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_TORNADOSHOT, false, 0);
-         //if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){             
-            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 120);
+         //if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){             
+            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 120);
          }
          else{
-            VarModule::set_int(fighter.battle_object, vars::common::GIMMICK_TIMER, 52);
+            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 52);
          }
      }
      frame(lua_state, 18.0);
      if is_excute(fighter) {
-         //if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+         //if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
              FT_MOTION_RATE(fighter, 1.2);
          }
          else{
@@ -133,7 +171,7 @@ unsafe fn miiswordsman_special_air_n1_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
             EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("haver"), 0, 7.5, 0.0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
             LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.84, 0.17);
         }
@@ -143,7 +181,7 @@ unsafe fn miiswordsman_special_air_n1_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 18.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
             LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.25, 0, 0, 0, 0, 0, 0, true);
             LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.84, 0.17);
             EFFECT(fighter, Hash40::new("miiswordsman_counter_flash"), Hash40::new("top"), 0, 9, 7.5, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
@@ -154,6 +192,7 @@ unsafe fn miiswordsman_special_air_n1_effect(fighter: &mut L2CAgentBase) {
         }
     }
 }
+*/
 
 #[acmd_script( agent = "miiswordsman", script = "game_specialn2" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_n2_game(fighter: &mut L2CAgentBase) {
@@ -162,35 +201,39 @@ unsafe fn miiswordsman_special_n2_game(fighter: &mut L2CAgentBase) {
 
     if is_excute(fighter) {
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_MOTION);
-        VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
-            VarModule::on_flag(fighter.battle_object, vars::miiswordsman::WAVE_SPECIAL_N);
-            VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+            VarModule::on_flag(fighter.battle_object, vars::miiswordsman::status::WAVE_SPECIAL_N);
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
             MotionModule::set_rate(boma, 0.3);
+        }
+        else {
+            MotionModule::set_rate(boma, 1.0/(1.0/(17.0-14.0)));
         }
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
         MotionModule::set_rate(boma, 1.0);
         // light
-        if !VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
-            ATTACK(fighter, 0, 0, Hash40::new("haver"), 11.0, 361, 100, 0, 39, 3.5, 0.0, 2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            ATTACK(fighter, 1, 0, Hash40::new("haver"), 12.0, 361, 100, 0, 39, 3.5, 0.0, 6.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            ATTACK(fighter, 2, 0, Hash40::new("haver"), 13.0, 361, 100, 0, 39, 3.5, 0.0, 13.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+            MotionModule::set_rate(boma, 1.0);
+            ATTACK(fighter, 0, 0, Hash40::new("haver"), 10.0, 361, 100, 0, 39, 3.5, 0.0, 2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 1, 0, Hash40::new("haver"), 11.0, 361, 100, 0, 39, 3.5, 0.0, 6.75, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 2, 0, Hash40::new("haver"), 12.0, 361, 100, 0, 39, 3.5, 0.0, 11.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
         // heavy
         else {
-            ATTACK(fighter, 0, 0, Hash40::new("haver"), 12.0, 361, 100, 0, 39, 3.5, 0.0, 2.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            ATTACK(fighter, 1, 0, Hash40::new("haver"), 13.0, 361, 100, 0, 39, 3.5, 0.0, 6.5, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            ATTACK(fighter, 2, 0, Hash40::new("haver"), 14.0, 361, 100, 0, 39, 3.5, 0.0, 13.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 0, 0, Hash40::new("haver"), 12.0, 361, 100, 0, 39, 3.5, 0.0, 2.0, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 1, 0, Hash40::new("haver"), 13.0, 361, 100, 0, 39, 3.5, 0.0, 6.75, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 2, 0, Hash40::new("haver"), 14.0, 361, 100, 0, 39, 3.5, 0.0, 11.5, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
             WorkModule::set_float(boma, 0.0, *FIGHTER_MIISWORDSMAN_STATUS_FINAL_WORK_ID_FLOAT_WAVE_ANGLE);
             ArticleModule::generate_article(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_WAVE, false, 0);
         }
@@ -201,7 +244,7 @@ unsafe fn miiswordsman_special_n2_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 33.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
             MotionModule::set_rate(boma, 0.333);
         }
     }
@@ -222,7 +265,7 @@ unsafe fn miiswordsman_special_n2_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
             EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("haver"), 0, 7.5, 0.0, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
             //LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.84, 0.17);
         }
@@ -263,46 +306,50 @@ unsafe fn miiswordsman_special_air_n2_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         let x_vel = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST, 0.0, x_vel * 0.6, 0.0, 0.0, 0.0);
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST, x_vel * 0.6, 0.0, 0.0, 0.0, 0.0);
         app::sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
         let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_speed_x_stable * 0.5, 100.0);
         app::sv_kinetic_energy::set_stable_speed(fighter.lua_state_agent);
-        VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
-            VarModule::on_flag(fighter.battle_object, vars::miiswordsman::WAVE_SPECIAL_N);
-            VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+            VarModule::on_flag(fighter.battle_object, vars::miiswordsman::status::WAVE_SPECIAL_N);
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
             MotionModule::set_rate(boma, 0.3);
+        }
+        else {
+            MotionModule::set_rate(boma, 1.0/(1.0/(17.0-14.0)));
         }
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
         MotionModule::set_rate(boma, 1.0);
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
             fighter.clear_lua_stack();
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 0.8);
             app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
         }
         // light
-        if !VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
-            ATTACK(fighter, 0, 0, Hash40::new("haver"), 11.0, 361, 100, 0, 39, 3.5, 0.0, 2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            ATTACK(fighter, 1, 0, Hash40::new("haver"), 12.0, 361, 100, 0, 39, 3.5, 0.0, 6.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            ATTACK(fighter, 2, 0, Hash40::new("haver"), 13.0, 361, 100, 0, 39, 3.5, 0.0, 13.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+            MotionModule::set_rate(boma, 1.0);
+            ATTACK(fighter, 0, 0, Hash40::new("haver"), 10.0, 361, 100, 0, 39, 3.5, 0.0, 2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 1, 0, Hash40::new("haver"), 11.0, 361, 100, 0, 39, 3.5, 0.0, 6.75, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 2, 0, Hash40::new("haver"), 12.0, 361, 100, 0, 39, 3.5, 0.0, 11.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
         // heavy
         else {
-            ATTACK(fighter, 0, 0, Hash40::new("haver"), 12.0, 361, 100, 0, 39, 3.5, 0.0, 2.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            ATTACK(fighter, 1, 0, Hash40::new("haver"), 13.0, 361, 100, 0, 39, 3.5, 0.0, 6.5, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            ATTACK(fighter, 2, 0, Hash40::new("haver"), 14.0, 361, 100, 0, 39, 3.5, 0.0, 13.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 0, 0, Hash40::new("haver"), 12.0, 361, 100, 0, 39, 3.5, 0.0, 2.0, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 1, 0, Hash40::new("haver"), 13.0, 361, 100, 0, 39, 3.5, 0.0, 6.75, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 2, 0, Hash40::new("haver"), 14.0, 361, 100, 0, 39, 3.5, 0.0, 11.5, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
     }
     frame(lua_state, 20.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
             WorkModule::set_float(boma, 0.0, *FIGHTER_MIISWORDSMAN_STATUS_FINAL_WORK_ID_FLOAT_WAVE_ANGLE);
             ArticleModule::generate_article(boma, *FIGHTER_MIISWORDSMAN_GENERATE_ARTICLE_WAVE, false, 0);
         }
@@ -313,7 +360,7 @@ unsafe fn miiswordsman_special_air_n2_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 33.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
             MotionModule::set_rate(boma, 0.333);
         }
     }
@@ -334,7 +381,7 @@ unsafe fn miiswordsman_special_air_n2_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 15.0);
     if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
             EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("haver"), 0, 7.5, 0.0, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true);
             //LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.84, 0.17);
         }
@@ -378,8 +425,8 @@ unsafe fn miiswordsman_special_n3_end_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     for _ in 0..4 {
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 180, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 92, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 180, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 92, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
@@ -388,7 +435,7 @@ unsafe fn miiswordsman_special_n3_end_game(fighter: &mut L2CAgentBase) {
         wait(lua_state, 2.0);
     }
     if is_excute(fighter) {
-        ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 91, 100, 21, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 91, 100, 21, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         AttackModule::set_add_reaction_frame(boma, 1, 10.0, false);
     }
     wait(lua_state, 2.0);
@@ -406,7 +453,7 @@ unsafe fn miiswordsman_special_n3_end_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 45.0);
     if is_excute(fighter) {
         //ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 40, 110, 0, 58, 13.0, 0.0, 10.0, 9.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 0, 0, Hash40::new("haver"), 8.0, 40, 110, 0, 58, 4.0, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("haver"), 8.0, 40, 110, 0, 58, 4.0, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
@@ -536,8 +583,8 @@ unsafe fn miiswordsman_special_n3_end_turn_game(fighter: &mut L2CAgentBase) {
     }
     for _ in 0..4 {
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 180, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 92, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 180, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 92, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
@@ -546,7 +593,7 @@ unsafe fn miiswordsman_special_n3_end_turn_game(fighter: &mut L2CAgentBase) {
         wait(lua_state, 2.0);
     }
     if is_excute(fighter) {
-        ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 91, 100, 21, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 91, 100, 21, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
@@ -563,7 +610,7 @@ unsafe fn miiswordsman_special_n3_end_turn_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 45.0);
     if is_excute(fighter) {
         //ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 40, 110, 0, 58, 13.0, 0.0, 10.0, 9.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 0, 0, Hash40::new("haver"), 8.0, 40, 110, 0, 58, 4.0, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("haver"), 8.0, 40, 110, 0, 58, 4.0, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
@@ -690,8 +737,8 @@ unsafe fn miiswordsman_special_n3_end_max_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     for _ in 0..4 {
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 180, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 92, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 180, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 92, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
@@ -700,7 +747,7 @@ unsafe fn miiswordsman_special_n3_end_max_game(fighter: &mut L2CAgentBase) {
         wait(lua_state, 2.0);
     }
     if is_excute(fighter) {
-        ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 91, 100, 21, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 91, 100, 21, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         AttackModule::set_add_reaction_frame(boma, 1, 10.0, false);
     }
     wait(lua_state, 2.0);
@@ -717,7 +764,7 @@ unsafe fn miiswordsman_special_n3_end_max_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 45.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("haver"), 8.0, 40, 110, 0, 58, 4.0, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("haver"), 8.0, 40, 110, 0, 58, 4.0, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
@@ -856,8 +903,8 @@ unsafe fn miiswordsman_special_n3_end_max_turn_game(fighter: &mut L2CAgentBase) 
     }
     for _ in 0..4 {
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 180, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 92, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 180, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 92, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
@@ -866,7 +913,7 @@ unsafe fn miiswordsman_special_n3_end_max_turn_game(fighter: &mut L2CAgentBase) 
         wait(lua_state, 2.0);
     }
     if is_excute(fighter) {
-        ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 91, 100, 21, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 91, 100, 21, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         AttackModule::set_add_reaction_frame(boma, 1, 10.0, false);
     }
     wait(lua_state, 2.0);
@@ -883,7 +930,7 @@ unsafe fn miiswordsman_special_n3_end_max_turn_game(fighter: &mut L2CAgentBase) 
     }
     frame(lua_state, 45.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("haver"), 8.0, 40, 110, 0, 58, 4.0, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("haver"), 8.0, 40, 110, 0, 58, 4.0, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
@@ -1022,7 +1069,7 @@ unsafe fn miiswordsman_special_air_n3_end_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     for _ in 0..2 {
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 90, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 90, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
@@ -1030,7 +1077,7 @@ unsafe fn miiswordsman_special_air_n3_end_game(fighter: &mut L2CAgentBase) {
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 285, 100, 10, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 285, 100, 10, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
@@ -1040,7 +1087,7 @@ unsafe fn miiswordsman_special_air_n3_end_game(fighter: &mut L2CAgentBase) {
     }
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 120, 100, 20, 0, 4.0, 0.0, 8.2, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 45, 100, 25, 0, 4.0, 0.0, -1.2, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 45, 100, 25, 0, 4.0, 0.0, -1.2, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         AttackModule::set_add_reaction_frame(boma, 0, 10.0, false);
         AttackModule::set_add_reaction_frame(boma, 1, 10.0, false);
     }
@@ -1064,7 +1111,7 @@ unsafe fn miiswordsman_special_air_n3_end_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 43.0);
     if is_excute(fighter) {
         //ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 40, 110, 0, 58, 13.0, 0.0, 10.0, 9.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 0, 0, Hash40::new("haver"), 8.0, 40, 110, 0, 58, 4.0, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("haver"), 8.0, 40, 110, 0, 58, 4.0, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
@@ -1194,7 +1241,7 @@ unsafe fn miiswordsman_special_air_n3_end_turn_game(fighter: &mut L2CAgentBase) 
     }
     for _ in 0..2 {
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 90, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 90, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
@@ -1202,7 +1249,7 @@ unsafe fn miiswordsman_special_air_n3_end_turn_game(fighter: &mut L2CAgentBase) 
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 285, 100, 10, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 285, 100, 10, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
@@ -1212,7 +1259,7 @@ unsafe fn miiswordsman_special_air_n3_end_turn_game(fighter: &mut L2CAgentBase) 
     }
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 120, 100, 20, 0, 4.0, 0.0, 8.2, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 45, 100, 25, 0, 4.0, 0.0, -1.2, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 45, 100, 25, 0, 4.0, 0.0, -1.2, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         AttackModule::set_add_reaction_frame(boma, 0, 10.0, false);
         AttackModule::set_add_reaction_frame(boma, 1, 10.0, false);
     }
@@ -1236,7 +1283,7 @@ unsafe fn miiswordsman_special_air_n3_end_turn_game(fighter: &mut L2CAgentBase) 
     frame(lua_state, 43.0);
     if is_excute(fighter) {
         //ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 40, 110, 0, 58, 13.0, 0.0, 10.0, 9.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 0, 0, Hash40::new("haver"), 8.0, 40, 110, 0, 58, 4.0, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("haver"), 8.0, 40, 110, 0, 58, 4.0, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
@@ -1363,7 +1410,7 @@ unsafe fn miiswordsman_special_air_n3_end_max_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 6.0);
     for _ in 0..2 {
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 90, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 90, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
@@ -1371,7 +1418,7 @@ unsafe fn miiswordsman_special_air_n3_end_max_game(fighter: &mut L2CAgentBase) {
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 285, 100, 10, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 285, 100, 10, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
@@ -1381,7 +1428,7 @@ unsafe fn miiswordsman_special_air_n3_end_max_game(fighter: &mut L2CAgentBase) {
     }
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 120, 100, 20, 0, 4.0, 0.0, 8.2, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 45, 100, 25, 0, 4.0, 0.0, -1.2, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 45, 100, 25, 0, 4.0, 0.0, -1.2, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         AttackModule::set_add_reaction_frame(boma, 0, 10.0, false);
         AttackModule::set_add_reaction_frame(boma, 1, 10.0, false);
     }
@@ -1405,7 +1452,7 @@ unsafe fn miiswordsman_special_air_n3_end_max_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 43.0);
     if is_excute(fighter) {
         //ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 40, 110, 0, 58, 13.0, 0.0, 10.0, 9.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 0, 0, Hash40::new("haver"), 8.0, 40, 110, 0, 58, 4.0, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("haver"), 8.0, 40, 110, 0, 58, 4.0, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
@@ -1534,7 +1581,7 @@ unsafe fn miiswordsman_special_air_n3_end_max_turn_game(fighter: &mut L2CAgentBa
     }
     for _ in 0..2 {
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 90, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 90, 100, 1, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
@@ -1542,7 +1589,7 @@ unsafe fn miiswordsman_special_air_n3_end_max_turn_game(fighter: &mut L2CAgentBa
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
-            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 285, 100, 10, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 285, 100, 10, 0, 3.5, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
         wait(lua_state, 2.0);
         if is_excute(fighter) {
@@ -1552,7 +1599,7 @@ unsafe fn miiswordsman_special_air_n3_end_max_turn_game(fighter: &mut L2CAgentBa
     }
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("haver"), 0.8, 120, 100, 20, 0, 4.0, 0.0, 8.2, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 45, 100, 25, 0, 4.0, 0.0, -1.2, 0.0, Some(0.0), Some(13.5), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 0.8, 45, 100, 25, 0, 4.0, 0.0, -1.2, 0.0, Some(0.0), Some(12.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         AttackModule::set_add_reaction_frame(boma, 0, 10.0, false);
         AttackModule::set_add_reaction_frame(boma, 1, 10.0, false);
     }
@@ -1576,7 +1623,7 @@ unsafe fn miiswordsman_special_air_n3_end_max_turn_game(fighter: &mut L2CAgentBa
     frame(lua_state, 43.0);
     if is_excute(fighter) {
         //ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 40, 110, 0, 58, 13.0, 0.0, 10.0, 9.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 0, 0, Hash40::new("haver"), 8.0, 40, 110, 0, 58, 4.0, 0.0, -2.0, 0.0, Some(0.0), Some(13.5), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("haver"), 8.0, 40, 110, 0, 58, 4.0, 0.0, -2.0, 0.0, Some(0.0), Some(12.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
@@ -1742,23 +1789,24 @@ unsafe fn miiswordsman_special_air_s1_game(fighter: &mut L2CAgentBase) {
     }
     
 }
-
+/*
 #[acmd_script( agent = "miiswordsman", script = "game_specials1hit" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_s1_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 2.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 12.5, 44, 91, 0, 70, 7.0, 0.0, 10.0, 11.0, Some(0.0), Some(1.5), Some(11.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 12.5, 44, 91, 0, 70, 7.0, 0.0, 2.0, 6.0, Some(0.0), Some(2.0), Some(11.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("haver"), 12.5, 44, 75, 0, 56, 4.5, 0.0, 2.0, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 12.5, 44, 75, 0, 56, 4.5, 0.0, 6.5, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 2, 0, Hash40::new("haver"), 12.5, 44, 75, 0, 56, 4.5, 0.0, 11.5, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
     }
-    frame(lua_state, 7.0);
+    frame(lua_state, 5.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
     
 }
-
+*/
 
 // =============================================================================================
 // ======================================== GALE STAB ==========================================
@@ -1855,7 +1903,6 @@ unsafe fn miiswordsman_special_s2_attack_effect(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "miiswordsman", script = "game_specialairs2dash" , category = ACMD_GAME , low_priority)]
 unsafe fn miiswordsman_special_air_s2_dash_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         MotionModule::set_rate(fighter.module_accessor, 0.5);
@@ -2173,21 +2220,21 @@ unsafe fn miiswordsman_special_air_hi1_game(fighter: &mut L2CAgentBase) {
         let addSpeed = smash::phx::Vector3f { x: 0.0, y: 0.5, z: 0.0 };
         KineticModule::add_speed(boma, &addSpeed);
         ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 46, 95, 0, 60, 4.0, 0.0, 7.0, 6.0, Some(0.0), Some(4.0), Some(6.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 10.0, 46, 95, 0, 60, 3.5, 0.0, 7.0, 13.0, Some(0.0), Some(4.0), Some(13.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 2, 0, Hash40::new("top"), 10.0, 46, 95, 0, 60, 3.5, 0.0, 7.0, 19.0, Some(0.0), Some(4.0), Some(19.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 10.0, 46, 95, 0, 60, 3.5, 0.0, 7.0, 10.0, Some(0.0), Some(4.0), Some(10.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 10.0, 46, 95, 0, 60, 3.5, 0.0, 7.0, 14.0, Some(0.0), Some(4.0), Some(14.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 4.0);
     if is_excute(fighter) {
         ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 92, 100, 60, 0, 4.0, 0.0, 7.0, 6.0, Some(0.0), Some(4.0), Some(6.0), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 4.0, 92, 100, 60, 0, 3.5, 0.0, 7.0, 13.0, Some(0.0), Some(4.0), Some(13.0), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 2, 0, Hash40::new("top"), 4.0, 92, 100, 60, 0, 3.5, 0.0, 7.0, 19.0, Some(0.0), Some(4.0), Some(19.0), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 4.0, 92, 100, 60, 0, 3.5, 0.0, 7.0, 10.0, Some(0.0), Some(4.0), Some(10.0), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 2, 0, Hash40::new("top"), 4.0, 92, 100, 60, 0, 3.5, 0.0, 7.0, 14.0, Some(0.0), Some(4.0), Some(14.0), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         AttackModule::set_add_reaction_frame(boma, 0, 7.0, false);
         AttackModule::set_add_reaction_frame(boma, 1, 7.0, false);
         AttackModule::set_add_reaction_frame(boma, 2, 7.0, false);
     }
     frame(lua_state, 7.0);
     if is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
@@ -2196,11 +2243,11 @@ unsafe fn miiswordsman_special_air_hi1_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 29.0);
     if is_excute(fighter) {
         // Tip
-        ATTACK(fighter, 0, 0, Hash40::new("haver"), 3.0, 268, 180, 30, 0, 5.0, 0.0, 16.0, 0.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("haver"), 3.0, 361, 100, 20, 0, 5.0, 0.0, 16.0, 0.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("haver"), 3.0, 268, 180, 30, 0, 5.0, 0.0, 14.5, 0.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 3.0, 361, 100, 20, 0, 5.0, 0.0, 14.5, 0.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         // Middle
-        ATTACK(fighter, 2, 0, Hash40::new("haver"), 3.0, 268, 180, 30, 0, 5.0, 0.0, 8.0, 0.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 3, 0, Hash40::new("haver"), 3.0, 361, 100, 20, 0, 5.0, 0.0, 8.0, 0.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 2, 0, Hash40::new("haver"), 3.0, 268, 180, 30, 0, 5.0, 0.0, 7.25, 0.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 3, 0, Hash40::new("haver"), 3.0, 361, 100, 20, 0, 5.0, 0.0, 7.25, 0.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         // Hilt
         ATTACK(fighter, 4, 0, Hash40::new("haver"), 3.0, 268, 180, 30, 0, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 5, 0, Hash40::new("haver"), 3.0, 361, 100, 20, 0, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -2263,15 +2310,15 @@ unsafe fn miiswordsman_special_hi2_hold_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        //VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
-        VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+        //VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
         FT_MOTION_RATE(fighter, 0.6);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW){
-            //VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
-            VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+            //VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
             FT_MOTION_RATE(fighter, 2.5);
         }
         else{
@@ -2281,8 +2328,8 @@ unsafe fn miiswordsman_special_hi2_hold_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 24.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 2.2, 91, 100, 140, 0, 4.0, 0.0, 2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 2.2, 100, 100, 80, 0, 10.0, 0.0, 8.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 2.2, 91, 100, 140, 0, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 2.2, 100, 100, 80, 0, 7.0, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
@@ -2297,15 +2344,15 @@ unsafe fn miiswordsman_special_hi2_hold_air_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        //VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
-        VarModule::off_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+        //VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
         FT_MOTION_RATE(fighter, 0.6);
     }
     frame(lua_state, 17.0);
     if is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW){
-            //VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
-            VarModule::on_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK);
+            //VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
+            VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
             FT_MOTION_RATE(fighter, 2.5);
         }
         else{
@@ -2315,8 +2362,8 @@ unsafe fn miiswordsman_special_hi2_hold_air_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 24.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 1.0);
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 2.2, 91, 100, 140, 0, 4.0, 0.0, 2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 2.2, 100, 100, 80, 0, 10.0, 0.0, 8.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
+        ATTACK(fighter, 0, 0, Hash40::new("rot"), 2.2, 91, 100, 140, 0, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
+        ATTACK(fighter, 1, 0, Hash40::new("rot"), 2.2, 100, 100, 80, 0, 7.0, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_NONE);
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
@@ -2333,19 +2380,19 @@ unsafe fn miiswordsman_special_hi2_game(fighter: &mut L2CAgentBase) {
         frame(lua_state, 2.0);
         if is_excute(fighter) {
             // Charged
-            //if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
-            if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
-                ATTACK(fighter, 0, 0, Hash40::new("rot"), 3.0, 367, 40, 0, 40, 8.0, 0.0, 0.0, 12.0, Some(0.0), Some(0.0), Some(15.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-                ATTACK(fighter, 1, 0, Hash40::new("rot"), 3.0, 55, 40, 0, 40, 8.0, 0.0, 0.0, 12.0, Some(0.0), Some(0.0), Some(15.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-                ATTACK(fighter, 2, 0, Hash40::new("rot"), 3.0, 367, 100, 100, 0, 3.0, 0.0, 10.0, 6.0, Some(0.0), Some(-10.0), Some(6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-                ATTACK(fighter, 3, 0, Hash40::new("rot"), 3.0, 363, 100, 120, 0, 3.0, 0.0, 10.0, 6.0, Some(0.0), Some(-10.0), Some(6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            //if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
+            if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
+                ATTACK(fighter, 0, 0, Hash40::new("rot"), 3.0, 367, 40, 0, 40, 6.0, 0.0, 0.0, 12.0, Some(0.0), Some(0.0), Some(15.0), 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+                ATTACK(fighter, 1, 0, Hash40::new("rot"), 3.0, 55, 40, 0, 40, 6.0, 0.0, 0.0, 12.0, Some(0.0), Some(0.0), Some(15.0), 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+                ATTACK(fighter, 2, 0, Hash40::new("rot"), 3.0, 367, 100, 100, 0, 3.0, 0.0, 6.0, 6.0, Some(0.0), Some(-6.0), Some(6.0), 0.75, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+                ATTACK(fighter, 3, 0, Hash40::new("rot"), 3.0, 363, 100, 120, 0, 3.0, 0.0, 6.0, 6.0, Some(0.0), Some(-6.0), Some(6.0), 0.75, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
             }
             // Uncharged
             else{
-                ATTACK(fighter, 0, 0, Hash40::new("rot"), 1.0, 367, 40, 0, 40, 8.0, 0.0, 0.0, 12.0, Some(0.0), Some(0.0), Some(15.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-                ATTACK(fighter, 1, 0, Hash40::new("rot"), 1.0, 55, 40, 0, 40, 8.0, 0.0, 0.0, 12.0, Some(0.0), Some(0.0), Some(15.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-                ATTACK(fighter, 2, 0, Hash40::new("rot"), 1.0, 367, 100, 100, 0, 3.0, 0.0, 10.0, 6.0, Some(0.0), Some(-10.0), Some(6.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-                ATTACK(fighter, 3, 0, Hash40::new("rot"), 1.0, 363, 100, 120, 0, 3.0, 0.0, 10.0, 6.0, Some(0.0), Some(-10.0), Some(6.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+                ATTACK(fighter, 0, 0, Hash40::new("rot"), 1.0, 367, 40, 0, 40, 6.0, 0.0, 0.0, 12.0, Some(0.0), Some(0.0), Some(15.0), 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+                ATTACK(fighter, 1, 0, Hash40::new("rot"), 1.0, 55, 40, 0, 40, 6.0, 0.0, 0.0, 12.0, Some(0.0), Some(0.0), Some(15.0), 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+                ATTACK(fighter, 2, 0, Hash40::new("rot"), 1.0, 367, 100, 100, 0, 3.0, 0.0, 6.0, 6.0, Some(0.0), Some(-6.0), Some(6.0), 0.75, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+                ATTACK(fighter, 3, 0, Hash40::new("rot"), 1.0, 363, 100, 120, 0, 3.0, 0.0, 6.0, 6.0, Some(0.0), Some(-6.0), Some(6.0), 0.75, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
             }
         }
         wait(lua_state, 2.0);
@@ -2375,20 +2422,72 @@ unsafe fn miiswordsman_special_hi2_game(fighter: &mut L2CAgentBase) {
         //println!("Launch Angle: {}", launch_angle);
         
         // Charged
-        //if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
-        if VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
-            ATTACK(fighter, 0, 0, Hash40::new("rot"), 6.0, launch_angle, 110, 0, 70, 8.0, 0.0, 0.0, 12.0, Some(0.0), Some(0.0), Some(15.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            ATTACK(fighter, 1, 0, Hash40::new("rot"), 6.0, launch_angle, 110, 0, 70, 3.0, 0.0, 10.0, 6.0, Some(0.0), Some(-10.0), Some(6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        //if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
+        if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
+            ATTACK(fighter, 0, 0, Hash40::new("rot"), 6.0, launch_angle, 110, 0, 70, 6.0, 0.0, 0.0, 12.0, Some(0.0), Some(0.0), Some(15.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 1, 0, Hash40::new("rot"), 6.0, launch_angle, 110, 0, 70, 3.0, 0.0, 6.0, 6.0, Some(0.0), Some(-6.0), Some(6.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
         // Uncharged
         else{
-            ATTACK(fighter, 0, 0, Hash40::new("rot"), 4.0, 79, 40, 0, 90, 8.0, 0.0, 0.0, 12.0, Some(0.0), Some(0.0), Some(15.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            ATTACK(fighter, 1, 0, Hash40::new("rot"), 4.0, 79, 40, 0, 90, 3.0, 0.0, 10.0, 6.0, Some(0.0), Some(-10.0), Some(6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 0, 0, Hash40::new("rot"), 4.0, 79, 40, 0, 90, 6.0, 0.0, 0.0, 12.0, Some(0.0), Some(0.0), Some(15.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            ATTACK(fighter, 1, 0, Hash40::new("rot"), 4.0, 79, 40, 0, 90, 3.0, 0.0, 6.0, 6.0, Some(0.0), Some(-6.0), Some(6.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
     }
     wait(lua_state, 2.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "miiswordsman", script = "effect_specialhi2", category = ACMD_EFFECT, low_priority )]
+unsafe fn miiswordsman_special_hi2_effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_FOLLOW_WORK(fighter, *FIGHTER_MIISWORDSMAN_INSTANCE_WORK_ID_INT_EFT_ID_SWORD_FLARE, Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(fighter, 1.3, 1.23, 0.65);
+        EFFECT_FOLLOW(fighter, Hash40::new("miiswordsman_sdash_slash"), Hash40::new("rot"), -2, -4, 0, 0, 0, 0, 0.9, true);
+        if fighter.is_situation(*SITUATION_KIND_GROUND) {
+            EFFECT(fighter, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0 ,0, 0, false);
+        }
+        else if fighter.is_situation(*SITUATION_KIND_AIR) {
+            EFFECT(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0 ,0, 0, false);
+        }
+    }
+    frame(lua_state, 2.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("miiswordsman_sdash"), Hash40::new("rot"), 0, 0, 9, 0, 0, 0, 0.3, true);
+        LAST_EFFECT_SET_ALPHA(fighter, 0.7);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("miiswordsman_sdash_slash2"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 0.9, true);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("miiswordsman_sdash_slash3"), Hash40::new("rot"), 0, -5, 0, 0, 0, 0, 0.9, true);
+    }
+    frame(lua_state, 10.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("miiswordsman_sdash_slash4"), Hash40::new("rot"), 0, -7.5, 0, 0, 0, 0, 0.9, true);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("miiswordsman_sdash_slash5"), Hash40::new("rot"), -1, -10, 3.5, 0, 0, 0, 0.9, true);
+    }
+    frame(lua_state, 16.0);
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("miiswordsman_sdash_slash6"), Hash40::new("rot"), 0, 0, -1.5, 0, 0, 0, 0.9, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.8);
+        EFFECT_DETACH_KIND(fighter, Hash40::new("miiswordsman_sdash_hit"), -1);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        AFTER_IMAGE_OFF(fighter, 2);
+    }
+    frame(lua_state, 22.0);
+    if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter, Hash40::new("miiswordsman_sdash"), false, true);
     }
 }
 
@@ -2398,8 +2497,8 @@ unsafe fn miiswordsman_special_hi2_landing_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        //if !VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
-        if !VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        //if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+        if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 0.8);
         }
     }
@@ -2411,11 +2510,11 @@ unsafe fn miiswordsman_special_hi2_fall_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 1.0);
     if is_excute(fighter) {
-        //if !VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK) {
-        if !VarModule::is_flag(fighter.battle_object, vars::common::IS_HEAVY_ATTACK){
+        //if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+        if !VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK){
             FT_MOTION_RATE(fighter, 0.8);
         }
-        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::SKYWARD_SLASH_DASH_HIT) {
+        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::instance::SKYWARD_SLASH_DASH_HIT) {
             FT_MOTION_RATE(fighter, 0.5);
         }
     }
@@ -2432,29 +2531,29 @@ unsafe fn miiswordsman_special_hi3_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     frame(lua_state, 4.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("haver"), 14.0, 40, 64, 0, 90, 4.5, 1.0, 12.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("haver"), 13.0, 40, 64, 0, 90, 4.0, 1.0, 7.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("haver"), 14.0, 40, 64, 0, 90, 4.5, 1.0, 11.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 13.0, 40, 64, 0, 90, 4.0, 1.0, 6.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 2, 0, Hash40::new("haver"), 10.0, 40, 64, 0, 90, 4.0, 1.0, 2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 6.0);
     if is_excute(fighter) {
         //AttackModule::clear_all(boma);
-        ATTACK(fighter, 0, 0, Hash40::new("haver"), 12.0, 361, 64, 0, 80, 4.5, 1.0, 12.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("haver"), 11.0, 361, 64, 0, 80, 4.0, 1.0, 7.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("haver"), 12.0, 361, 64, 0, 80, 4.5, 1.0, 11.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 11.0, 361, 64, 0, 80, 4.0, 1.0, 6.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 2, 0, Hash40::new("haver"), 8.0, 361, 64, 0, 80, 4.0, 1.0, 2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         //AttackModule::clear_all(boma);
-        ATTACK(fighter, 0, 0, Hash40::new("haver"), 9.0, 361, 64, 0, 75, 4.5, 1.0, 12.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("haver"), 9.0, 361, 64, 0, 75, 4.0, 1.0, 7.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("haver"), 9.0, 361, 64, 0, 75, 4.5, 1.0, 11.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 9.0, 361, 64, 0, 75, 4.0, 1.0, 6.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 2, 0, Hash40::new("haver"), 7.0, 361, 64, 0, 75, 4.0, 1.0, 2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 21.0);
     if is_excute(fighter) {
         //AttackModule::clear_all(boma);
-        ATTACK(fighter, 0, 0, Hash40::new("haver"), 7.0, 361, 64, 0, 70, 4.5, 1.0, 12.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        ATTACK(fighter, 1, 0, Hash40::new("haver"), 7.0, 361, 64, 0, 70, 4.0, 1.0, 7.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("haver"), 7.0, 361, 64, 0, 70, 4.5, 1.0, 11.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("haver"), 7.0, 361, 64, 0, 70, 4.0, 1.0, 6.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         ATTACK(fighter, 2, 0, Hash40::new("haver"), 5.0, 361, 64, 0, 70, 4.0, 1.0, 2.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 37.0);
@@ -2468,9 +2567,14 @@ unsafe fn miiswordsman_special_hi3_game(fighter: &mut L2CAgentBase) {
 unsafe fn miiswordsman_special_air_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    let start_speed = fighter.get_speed_x(*FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    let start_x_mul = ParamModule::get_float(fighter.battle_object, ParamType::Agent, "param_special_hi3.start_x_mul");
+    fighter.clear_lua_stack();
+    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, start_speed * start_x_mul);
+    app::sv_kinetic_energy::set_speed(fighter.lua_state_agent);
     frame(lua_state, 8.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 367, 100, 115, 0, 6.0, 0.0, 9.0, 7.0, Some(0.0), Some(6.0), Some(14.0), 1.0, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 367, 100, 115, 0, 6.0, 0.0, 9.0, 7.0, Some(0.0), Some(6.0), Some(14.0), 0.75, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
     }
     wait(lua_state, 1.0);
@@ -2480,7 +2584,7 @@ unsafe fn miiswordsman_special_air_hi3_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         JostleModule::set_status(boma, false);
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 60, 100, 80, 0, 6.0, 0.0, 10.0, -14.0, Some(0.0), Some(10.0), Some(-9.0), 1.0, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 60, 100, 80, 0, 6.0, 0.0, 10.0, -14.0, Some(0.0), Some(10.0), Some(-9.0), 0.75, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
     }
     wait(lua_state, 1.0);
@@ -2490,7 +2594,7 @@ unsafe fn miiswordsman_special_air_hi3_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 16.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 367, 100, 90, 0, 6.5, 0.0, 8.0, 9.0, Some(0.0), Some(7.0), Some(14.0), 1.0, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 367, 100, 90, 0, 6.5, 0.0, 8.0, 9.0, Some(0.0), Some(7.0), Some(14.0), 0.75, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
     }
     wait(lua_state, 1.0);
@@ -2499,7 +2603,7 @@ unsafe fn miiswordsman_special_air_hi3_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 19.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 60, 100, 90, 0, 6.5, 0.0, 5.0, -15.0, Some(0.0), Some(6.0), Some(-11.0), 1.0, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 60, 100, 90, 0, 6.5, 0.0, 5.0, -15.0, Some(0.0), Some(6.0), Some(-11.0), 0.75, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
     }
     wait(lua_state, 1.0);
@@ -2508,7 +2612,7 @@ unsafe fn miiswordsman_special_air_hi3_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 22.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 85, 100, 75, 0, 6.0, 0.0, 8.0, 9.0, Some(0.0), Some(6.0), Some(14.0), 1.0, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 85, 100, 75, 0, 6.0, 0.0, 8.0, 9.0, Some(0.0), Some(6.0), Some(14.0), 0.75, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
     }
     wait(lua_state, 1.0);
@@ -2517,7 +2621,7 @@ unsafe fn miiswordsman_special_air_hi3_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 26.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 60, 100, 90, 0, 6.5, 0.0, 8.0, -13.0, Some(0.0), Some(8.0), Some(-10.0), 1.0, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 60, 100, 90, 0, 6.5, 0.0, 8.0, -13.0, Some(0.0), Some(8.0), Some(-10.0), 0.75, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
     }
     wait(lua_state, 1.0);
@@ -2526,7 +2630,7 @@ unsafe fn miiswordsman_special_air_hi3_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 31.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 75, 95, 60, 0, 6.3, 0.0, 9.0, 9.0, Some(0.0), Some(9.0), Some(15.0), 1.0, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 75, 95, 60, 0, 6.3, 0.0, 9.0, 9.0, Some(0.0), Some(9.0), Some(15.0), 0.75, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
     }
     wait(lua_state, 1.0);
@@ -2536,7 +2640,7 @@ unsafe fn miiswordsman_special_air_hi3_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 38.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 60, 100, 100, 0, 6.0, 0.0, 9.0, -14.0, Some(0.0), Some(9.0), Some(-10.0), 1.0, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 60, 100, 100, 0, 6.0, 0.0, 9.0, -14.0, Some(0.0), Some(9.0), Some(-10.0), 0.75, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
     }
     wait(lua_state, 1.0);
@@ -2545,11 +2649,11 @@ unsafe fn miiswordsman_special_air_hi3_game(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 47.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 361, 208, 0, 30, 7.5, 0.0, 14.0, 4.0, Some(0.0), Some(18.0), Some(11.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 361, 208, 0, 30, 7.5, 0.0, 14.0, 4.0, Some(0.0), Some(18.0), Some(11.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 48.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 361, 208, 0, 30, 7.5, 0.0, 15.0, 3.0, Some(0.0), Some(19.0), Some(7.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 361, 208, 0, 30, 7.5, 0.0, 15.0, 3.0, Some(0.0), Some(19.0), Some(7.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     wait(lua_state, 1.0);
     if is_excute(fighter) {
@@ -2570,10 +2674,10 @@ unsafe fn miiswordsman_special_lw1_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        let current_level = VarModule::get_int(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL);
+        let current_level = VarModule::get_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL);
         // Attack transition
-        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_ATTACK_TRIGGER) {
-            VarModule::off_flag(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_ATTACK_TRIGGER);
+        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_LW1_ATTACK_TRIGGER) {
+            VarModule::off_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_LW1_ATTACK_TRIGGER);
             if current_level > 0{
                 if current_level == 1 {
                     // println!("Changing to level 1");
@@ -2588,10 +2692,10 @@ unsafe fn miiswordsman_special_lw1_hit_game(fighter: &mut L2CAgentBase) {
         else{
             // Increment the level
             if current_level < 2 {
-                VarModule::set_int(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL, current_level + 1); // Add a charge level
+                VarModule::set_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL, current_level + 1); // Add a charge level
                 // println!("Kinesis increment");
             }
-            // println!("Kinesis Level: {}", VarModule::get_int(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL));
+            // println!("Kinesis Level: {}", VarModule::get_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL));
         }
     }
     frame(lua_state, 23.0);
@@ -2606,10 +2710,10 @@ unsafe fn miiswordsman_special_air_lw1_hit_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        let current_level = VarModule::get_int(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL);
+        let current_level = VarModule::get_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL);
         // Attack transition
-        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_ATTACK_TRIGGER) {
-            VarModule::off_flag(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_ATTACK_TRIGGER);
+        if VarModule::is_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_LW1_ATTACK_TRIGGER) {
+            VarModule::off_flag(fighter.battle_object, vars::miiswordsman::status::SPECIAL_LW1_ATTACK_TRIGGER);
             if current_level > 0{
                 if current_level == 1 {
                     // println!("Changing to level 1");
@@ -2624,10 +2728,10 @@ unsafe fn miiswordsman_special_air_lw1_hit_game(fighter: &mut L2CAgentBase) {
         else{
             // Increment the level
             if current_level < 2 {
-                VarModule::set_int(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL, current_level + 1); // Add a charge level
+                VarModule::set_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL, current_level + 1); // Add a charge level
                 // println!("Kinesis increment");
             }
-            // println!("Kinesis Level: {}", VarModule::get_int(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL));
+            // println!("Kinesis Level: {}", VarModule::get_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL));
         }
     }
     frame(lua_state, 23.0);
@@ -2644,7 +2748,7 @@ unsafe fn miiswordsman_special_lw1_hit_lv1_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        VarModule::set_int(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL, 0); // Reset charge level
+        VarModule::set_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL, 0); // Reset charge level
         WorkModule::on_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_COUNTER_FLAG_GRAVITY_ON);
     }
     frame(lua_state, 1.0);
@@ -2680,7 +2784,7 @@ unsafe fn miiswordsman_special_air_lw1_hit_lv1_game(fighter: &mut L2CAgentBase) 
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
-        VarModule::set_int(fighter.battle_object, vars::miiswordsman::SPECIAL_LW1_CHARGE_LEVEL, 0); // Reset charge level
+        VarModule::set_int(fighter.battle_object, vars::miiswordsman::instance::SPECIAL_LW1_CHARGE_LEVEL, 0); // Reset charge level
         WorkModule::on_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_COUNTER_FLAG_GRAVITY_ON);
     }
     frame(lua_state, 1.0);
@@ -3022,7 +3126,7 @@ unsafe fn miiswordsman_special_lw3_end_game(fighter: &mut L2CAgentBase) {
     */
     frame(lua_state, 21.0);
     if is_excute(fighter) {
-        ATTACK(fighter, 0, 2, Hash40::new("haver"), 5.0, 80, 100, 0, 60, 6.8, 0.0, 0.0, 0.0, Some(0.0), Some(13.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 2, Hash40::new("haver"), 5.0, 80, 100, 0, 60, 6.8, 0.0, 0.0, 0.0, Some(0.0), Some(11.5), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
@@ -3034,6 +3138,8 @@ unsafe fn miiswordsman_special_lw3_end_game(fighter: &mut L2CAgentBase) {
 unsafe fn miiswordsman_special_air_lw3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    frame(lua_state, 16.0);
+    sv_kinetic_energy!(set_speed_mul_2nd, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.4, 1.0);
     frame(lua_state, 17.0);
     if is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_WORK_ID_FLAG_JET_STUB_WALL_CHECK);
@@ -3042,7 +3148,9 @@ unsafe fn miiswordsman_special_air_lw3_game(fighter: &mut L2CAgentBase) {
         ATTACK(fighter, /*ID*/ 2, /*Part*/ 0, /*Bone*/ Hash40::new("top"), /*Damage*/ 13.0, /*Angle*/ 275, /*KBG*/ 85, /*FKB*/ 0, /*BKB*/ 44, /*Size*/ 3.2, /*X*/ 0.0, /*Y*/ -7.0, /*Z*/ 3.0, /*X2*/ Some(0.0), /*Y2*/ Some(-11.0), /*Z2*/ Some(5.0), /*Hitlag*/ 1.0, /*SDI*/ 1.0, /*Clang_Rebound*/ *ATTACK_SETOFF_KIND_ON, /*FacingRestrict*/ *ATTACK_LR_CHECK_POS, /*SetWeight*/ false, /*ShieldDamage*/ 0, /*Trip*/ 0.0, /*Rehit*/ 0, /*Reflectable*/ false, /*Absorbable*/ false, /*Flinchless*/ false, /*DisableHitlag*/ false, /*Direct_Hitbox*/ true, /*Ground_or_Air*/ *COLLISION_SITUATION_MASK_A, /*Hitbits*/ *COLLISION_CATEGORY_MASK_ALL, /*CollisionPart*/ *COLLISION_PART_MASK_ALL, /*FriendlyFire*/ false, /*Effect*/ Hash40::new("collision_attr_sting"), /*SFXLevel*/ *ATTACK_SOUND_LEVEL_L, /*SFXType*/ *COLLISION_SOUND_ATTR_KICK, /*Type*/ *ATTACK_REGION_SWORD);
         ATTACK(fighter, /*ID*/ 3, /*Part*/ 0, /*Bone*/ Hash40::new("top"), /*Damage*/ 13.0, /*Angle*/ 361, /*KBG*/ 90, /*FKB*/ 0, /*BKB*/ 40, /*Size*/ 3.2, /*X*/ 0.0, /*Y*/ -7.0, /*Z*/ 3.0, /*X2*/ Some(0.0), /*Y2*/ Some(-11.0), /*Z2*/ Some(5.0), /*Hitlag*/ 0.5, /*SDI*/ 1.0, /*Clang_Rebound*/ *ATTACK_SETOFF_KIND_ON, /*FacingRestrict*/ *ATTACK_LR_CHECK_POS, /*SetWeight*/ false, /*ShieldDamage*/ 0, /*Trip*/ 0.0, /*Rehit*/ 0, /*Reflectable*/ false, /*Absorbable*/ false, /*Flinchless*/ false, /*DisableHitlag*/ false, /*Direct_Hitbox*/ true, /*Ground_or_Air*/ *COLLISION_SITUATION_MASK_G, /*Hitbits*/ *COLLISION_CATEGORY_MASK_ALL, /*CollisionPart*/ *COLLISION_PART_MASK_ALL, /*FriendlyFire*/ false, /*Effect*/ Hash40::new("collision_attr_sting"), /*SFXLevel*/ *ATTACK_SOUND_LEVEL_L, /*SFXType*/ *COLLISION_SOUND_ATTR_KICK, /*Type*/ *ATTACK_REGION_SWORD);
     }
-    wait(lua_state, 3.0);
+    frame(lua_state, 18.0);
+    sv_kinetic_energy!(set_speed_mul_2nd, fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.0, 1.0);
+    wait(lua_state, 2.0);
     if is_excute(fighter) {
         ATTACK(fighter, /*ID*/ 0, /*Part*/ 0, /*Bone*/ Hash40::new("top"), /*Damage*/ 8.0, /*Angle*/ 361, /*KBG*/ 75, /*FKB*/ 0, /*BKB*/ 40, /*Size*/ 3.5, /*X*/ 0.0, /*Y*/ -2.0, /*Z*/ 0.0, /*X2*/ Some(0.0), /*Y2*/ Some(-2.0), /*Z2*/ Some(0.0), /*Hitlag*/ 1.0, /*SDI*/ 1.0, /*Clang_Rebound*/ *ATTACK_SETOFF_KIND_ON, /*FacingRestrict*/ *ATTACK_LR_CHECK_POS, /*SetWeight*/ false, /*ShieldDamage*/ 0, /*Trip*/ 0.0, /*Rehit*/ 0, /*Reflectable*/ false, /*Absorbable*/ false, /*Flinchless*/ false, /*DisableHitlag*/ false, /*Direct_Hitbox*/ true, /*Ground_or_Air*/ *COLLISION_SITUATION_MASK_A, /*Hitbits*/ *COLLISION_CATEGORY_MASK_ALL, /*CollisionPart*/ *COLLISION_PART_MASK_ALL, /*FriendlyFire*/ false, /*Effect*/ Hash40::new("collision_attr_sting"), /*SFXLevel*/ *ATTACK_SOUND_LEVEL_M, /*SFXType*/ *COLLISION_SOUND_ATTR_KICK, /*Type*/ *ATTACK_REGION_SWORD);
         ATTACK(fighter, /*ID*/ 1, /*Part*/ 0, /*Bone*/ Hash40::new("top"), /*Damage*/ 8.0, /*Angle*/ 361, /*KBG*/ 75, /*FKB*/ 0, /*BKB*/ 40, /*Size*/ 3.5, /*X*/ 0.0, /*Y*/ -2.0, /*Z*/ 0.0, /*X2*/ Some(0.0), /*Y2*/ Some(-2.0), /*Z2*/ Some(0.0), /*Hitlag*/ 0.5, /*SDI*/ 1.0, /*Clang_Rebound*/ *ATTACK_SETOFF_KIND_ON, /*FacingRestrict*/ *ATTACK_LR_CHECK_POS, /*SetWeight*/ false, /*ShieldDamage*/ 0, /*Trip*/ 0.0, /*Rehit*/ 0, /*Reflectable*/ false, /*Absorbable*/ false, /*Flinchless*/ false, /*DisableHitlag*/ false, /*Direct_Hitbox*/ true, /*Ground_or_Air*/ *COLLISION_SITUATION_MASK_G, /*Hitbits*/ *COLLISION_CATEGORY_MASK_ALL, /*CollisionPart*/ *COLLISION_PART_MASK_ALL, /*FriendlyFire*/ false, /*Effect*/ Hash40::new("collision_attr_sting"), /*SFXLevel*/ *ATTACK_SOUND_LEVEL_M, /*SFXType*/ *COLLISION_SOUND_ATTR_KICK, /*Type*/ *ATTACK_REGION_SWORD);
@@ -3069,7 +3177,7 @@ unsafe fn miiswordsman_special_air_lw3_end_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 1.0);
     if is_excute(fighter) {
         FT_MOTION_RATE(fighter, 0.790);
-        WorkModule::on_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_WORK_ID_FLAG_JET_STUB_SP_BRAKE);
+        //WorkModule::on_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_WORK_ID_FLAG_JET_STUB_SP_BRAKE);
     }
     frame(lua_state, 2.0);
     if is_excute(fighter) {
@@ -3082,7 +3190,7 @@ unsafe fn miiswordsman_special_air_lw3_end_game(fighter: &mut L2CAgentBase) {
     wait(lua_state, 2.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        WorkModule::off_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_WORK_ID_FLAG_JET_STUB_SP_BRAKE);
+        //WorkModule::off_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_WORK_ID_FLAG_JET_STUB_SP_BRAKE);
     }
 }
 
@@ -3139,7 +3247,7 @@ unsafe fn miiswordsman_special_air_lw3_end_air_game(fighter: &mut L2CAgentBase) 
     frame(lua_state, 21.0);
     if is_excute(fighter) {
         REVERSE_LR(fighter);
-        ATTACK(fighter, 0, 2, Hash40::new("haver"), 5.0, 80, 100, 0, 60, 6.8, 0.0, 0.0, 0.0, Some(0.0), Some(13.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        ATTACK(fighter, 0, 2, Hash40::new("haver"), 5.0, 80, 100, 0, 60, 6.8, 0.0, 0.0, 0.0, Some(0.0), Some(11.5), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(lua_state, 24.0);
     if is_excute(fighter) {
@@ -3150,9 +3258,9 @@ unsafe fn miiswordsman_special_air_lw3_end_air_game(fighter: &mut L2CAgentBase) 
 pub fn install() {
     install_acmd_scripts!(
         miiswordsman_special_n1_game,
-        miiswordsman_special_n1_effect,
+        //miiswordsman_special_n1_effect,
         miiswordsman_special_air_n1_game,
-        miiswordsman_special_air_n1_effect,
+        //miiswordsman_special_air_n1_effect,
         miiswordsman_special_n2_game,
         miiswordsman_special_n2_effect,
         miiswordsman_special_n2_sound,
@@ -3188,7 +3296,7 @@ pub fn install() {
         miiswordsman_special_air_s1_start_game,
         miiswordsman_special_s1_game,
         miiswordsman_special_air_s1_game,
-        miiswordsman_special_s1_hit_game,
+        //miiswordsman_special_s1_hit_game,
         miiswordsman_special_s2_dash_game,
         miiswordsman_special_s2_attack_game,
         miiswordsman_special_s2_attack_effect,
@@ -3211,6 +3319,7 @@ pub fn install() {
         miiswordsman_special_hi2_landing_game,
         miiswordsman_special_hi2_fall_game,
         miiswordsman_special_hi2_game,
+        miiswordsman_special_hi2_effect,
         miiswordsman_special_hi3_game,
         miiswordsman_special_air_hi3_game,
 

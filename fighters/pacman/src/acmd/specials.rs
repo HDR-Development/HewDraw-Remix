@@ -101,6 +101,39 @@ unsafe fn pacman_special_air_n_shoot_game(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "pacman", script = "expression_specialairsreturn", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_specialairsreturn(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
+    }
+    if is_excute(fighter) {
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        ItemModule::set_attach_item_visibility(boma, false, *ATTACH_ITEM_GROUP_ALL as u8);
+        VisibilityModule::set_int64(boma, hash40("body") as i64, hash40("body_none") as i64);
+        VisibilityModule::set_int64(boma, hash40("pizza") as i64, hash40("pizza_normal") as i64);
+        HIT_NODE(fighter, Hash40::new("waist"), *HIT_STATUS_OFF);
+        HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_OFF);
+        HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_OFF);
+        HIT_NODE(fighter, Hash40::new("handr"), *HIT_STATUS_OFF);
+        HIT_NODE(fighter, Hash40::new("handl"), *HIT_STATUS_OFF);
+        HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_OFF);
+        HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_OFF);
+        HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_OFF);
+        HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_OFF);
+        HIT_NODE(fighter, Hash40::new("pizzapacman"), *HIT_STATUS_NORMAL);
+    }
+}
+
+#[acmd_script( agent = "pacman", script = "game_specialairhiend" , category = ACMD_GAME , low_priority)]
+unsafe fn pacman_special_air_hi_end_game(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        boma.select_cliff_hangdata_from_name("special_hi");
+    }
+}
 
 #[acmd_script( agent = "pacman", script = "game_speciallwfailure" , category = ACMD_GAME , low_priority)]
 unsafe fn pacman_special_lw_failure_game(fighter: &mut L2CAgentBase) {
@@ -152,8 +185,10 @@ unsafe fn pacman_special_air_lw_failure_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        pacman_special_n_shoot_game,
-        pacman_special_air_n_shoot_game,
+        //pacman_special_n_shoot_game,
+        //pacman_special_air_n_shoot_game,
+        expression_specialairsreturn,
+        pacman_special_air_hi_end_game,
         pacman_special_lw_failure_game,
         pacman_special_air_lw_failure_game,
     );

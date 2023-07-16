@@ -1,10 +1,10 @@
 // opff import
-utils::import_noreturn!(common::opff::{fighter_common_opff, check_b_reverse});
+utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
  
-pub unsafe fn land_cancel_and_b_reverse(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
+pub unsafe fn missile_land_cancel(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, situation_kind: i32) {
     if [*FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S1G,
         *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_S1A,
@@ -13,7 +13,6 @@ pub unsafe fn land_cancel_and_b_reverse(fighter: &mut L2CFighterCommon, boma: &m
         if situation_kind == *SITUATION_KIND_GROUND && StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_LANDING, false);
         }
-        common::opff::check_b_reverse(fighter);
     }
 }
 
@@ -23,9 +22,12 @@ extern "Rust" {
 
 // Shinespark charge
 unsafe fn shinespark_charge(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
-    if [*FIGHTER_STATUS_KIND_RUN, *FIGHTER_STATUS_KIND_TURN_RUN].contains(&status_kind) && frame > 30.0 {
-        if  !VarModule::is_flag(boma.object(), vars::samus::SHINESPARK_READY) {
-            VarModule::on_flag(boma.object(), vars::samus::SHINESPARK_READY);
+    if StatusModule::is_changing(boma) {
+        return;
+    }
+    if [*FIGHTER_STATUS_KIND_RUN, *FIGHTER_STATUS_KIND_TURN_RUN].contains(&status_kind) && frame > 31.0 {
+        if  !VarModule::is_flag(boma.object(), vars::samus::instance::SHINESPARK_READY) {
+            VarModule::on_flag(boma.object(), vars::samus::instance::SHINESPARK_READY);
             gimmick_flash(boma);
         }
     }
@@ -40,16 +42,19 @@ unsafe fn shinespark_reset(boma: &mut BattleObjectModuleAccessor, id: usize, sta
         *FIGHTER_STATUS_KIND_RUN_BRAKE,
         *FIGHTER_STATUS_KIND_TURN_RUN,
         *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE].contains(&status_kind) {
-            VarModule::off_flag(boma.object(), vars::samus::SHINESPARK_READY);
-            VarModule::off_flag(boma.object(), vars::samus::SHINESPARK_USED);
+            VarModule::off_flag(boma.object(), vars::samus::instance::SHINESPARK_READY);
+            VarModule::off_flag(boma.object(), vars::samus::instance::SHINESPARK_USED);
     }
 }
 
 // Morph Ball Crawl
 // PUBLIC
 pub unsafe fn morphball_crawl(boma: &mut BattleObjectModuleAccessor, status_kind: i32, frame: f32) {
+    if StatusModule::is_changing(boma) {
+        return;
+    }
     if [*FIGHTER_SAMUS_STATUS_KIND_SPECIAL_GROUND_LW, *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_AIR_LW].contains(&status_kind) {
-        if frame >= 31.0 {
+        if frame >= 32.0 {
             if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW))
                 && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
                 MotionModule::change_motion_force_inherit_frame(boma, Hash40::new("special_lw"), 12.0, 1.0, 1.0);
@@ -71,7 +76,7 @@ pub unsafe fn nspecial_cancels(boma: &mut BattleObjectModuleAccessor, status_kin
 #[no_mangle]
 pub unsafe extern "Rust" fn common_samus(fighter: &mut L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        land_cancel_and_b_reverse(fighter, &mut *info.boma, info.id, info.status_kind, info.situation_kind);
+        missile_land_cancel(fighter, &mut *info.boma, info.id, info.status_kind, info.situation_kind);
         morphball_crawl(&mut *info.boma, info.status_kind, info.frame);
         nspecial_cancels(&mut *info.boma, info.status_kind, info.situation_kind);
     }

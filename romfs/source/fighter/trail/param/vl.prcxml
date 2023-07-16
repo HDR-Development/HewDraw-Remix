@@ -2,11 +2,57 @@
 <struct>
   <list hash="cliff_hang_data">
     <struct index="0">
-      <float hash="p1_y">16.8</float>
+      <float hash="p1_y">21.8</float>
     </struct>
     <hash40 index="1">dummy</hash40>
     <struct index="2">
-      <float hash="p1_y">16.8</float>
+      <float hash="p1_y">21.8</float>
     </struct>
+  </list>
+  <struct hash="param_private">
+    <float hash="attack_air_hit_speed_x_mul">1</float>
+    <float hash="attack_air_hit_accel_x_mul">1</float>
+    <float hash="attack_air_hit_speed_max_x_mul">1</float>
+    <float hash="0x1b989845bd">10</float>
+    <float hash="0x1bef9f752b">12</float>
+  </struct>
+  <list hash="param_special_n">
+    <struct index="0">
+      <float hash="start_control_accel_x_mul_air">0.5</float>
+      <float hash="start_control_max_speed_x_mul_air">0.8</float>
+      <float hash="start_max_speed_y_mul_air">0.75</float>
+      <float hash="start_accel_y_mul_air">0.95</float>
+      <float hash="start_speed_y_air">0.6</float>
+      <float hash="hop_add_speed_x">0</float>
+      <float hash="hop_add_speed_y">0.6</float>
+      <float hash="control_accel_x_mul">0.5</float>
+      <float hash="control_speed_x_max_mul">0.8</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_s">
+    <struct index="0">
+	  <!-->
+	    attack_num is set to 3.5 due to how we force the game to allow Sonic Blade to be angleable.
+	    We simply pretend that Sora is already on the second Sonic Blade.
+	  </!-->
+      <int hash="attack_num">4</int>
+      <float hash="attack_speed_x">4.0</float>
+      <float hash="0x15530d2d10">0.82</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
+  </list>
+  <list hash="param_special_hi">
+    <struct index="0">
+      <float hash="start_accel_y_mul_air">0.6</float>
+      <float hash="jump_accel_y">0.035</float>
+    </struct>
+    <hash40 index="1">dummy</hash40>
+    <hash40 index="2">dummy</hash40>
+    <hash40 index="3">dummy</hash40>
   </list>
 </struct>

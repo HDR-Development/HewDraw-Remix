@@ -1,4 +1,3 @@
-#![feature(asm)]
 #![deny(deprecated)]
 #![allow(unused)]
 #![allow(non_snake_case)]
@@ -18,6 +17,7 @@ use smash::{
         self,
         sv_animcmd::{
             frame,
+            execute,
             wait
         },
         lua_bind::*
