@@ -1,3 +1,6 @@
+throw_b:
+  extra:
+    cancel_frame: 46
 attack_12:
   extra:
     cancel_frame: 20
@@ -6,6 +9,9 @@ attack_11:
     move: false
   extra:
     cancel_frame: 17
+attack_dash:
+  extra:
+    cancel_frame: 36
 attack_lw3:
   flags:
     move: false
@@ -41,6 +47,9 @@ attack_air_n:
 attack_s4_lw:
   flags:
     move: false
+  extra:
+    cancel_frame: 56
+special_air_n_hit:
   extra:
     cancel_frame: 56
 jump_aerial_f:
