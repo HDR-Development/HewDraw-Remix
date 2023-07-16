@@ -963,8 +963,11 @@ pub mod vars {
 
     pub mod miigunner {
         pub mod status {
+            // flags
+            pub const BOOSTED_AERIAL: i32 = 0x1100;
+
             // floats
-            pub const CHARGE_ATTACK_LEVEL: i32 = 0x1100;
+            pub const CURRENT_CHARGE: i32 = 0x1100;
             pub const IS_CHARGE_FINISHED: i32 = 0x1101;
             pub const MISSILE_DETONATE: i32 = 0x1102;
         }
@@ -977,6 +980,9 @@ pub mod vars {
             pub const LUNAR_LAUNCH_EFF_HANDLER: i32 = 0x0100;
             pub const MISSILE_OBJECT_ID: i32 = 0x0101;
             pub const STEALTHBOMB_EFF_HANDLER: i32 = 0x0102;
+
+            // floats
+            pub const GRENADE_CHARGE: i32 = 0x0102;
         }
     }
 
