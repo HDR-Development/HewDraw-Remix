@@ -66,8 +66,7 @@ unsafe fn magic_series(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i
     if(    (WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_RYU)
         || (WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_KEN)
         || (WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_LUCARIO)
-        || (WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_DOLLY)
-        || (WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_BAYONETTA)){
+        || (WorkModule::get_int(boma, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) == FIGHTER_KIND_DOLLY)){
         // Level 1: Jab and Dash Attack Cancels
         if [*FIGHTER_STATUS_KIND_ATTACK, *FIGHTER_STATUS_KIND_ATTACK_DASH].contains(&status_kind) {
             if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag())
@@ -444,9 +443,32 @@ unsafe fn nayru_fastfall_land_cancel(boma: &mut BattleObjectModuleAccessor, stat
     }
 }
 
-unsafe fn copy_ability_aerial_drift(fighter: &mut L2CFighterCommon) {
+unsafe fn bayo_nspecial_mechanics(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if fighter.is_status(*FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N_CHARGE) { //PM-like neutral-b canceling
+        if fighter.is_situation(*SITUATION_KIND_AIR) {
+            if fighter.is_cat_flag(Cat1::AirEscape)  {
+                ControlModule::reset_trigger(boma);
+                StatusModule::change_status_force(boma, *FIGHTER_STATUS_KIND_FALL, true);
+                ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+            }//drift
+            KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+            sv_kinetic_energy!(controller_set_accel_x_mul, fighter, 0.04);
+            sv_kinetic_energy!(controller_set_accel_x_add, fighter, 0.005);
+            sv_kinetic_energy!(set_stable_speed, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0.4, 0.0);
+        } else { //platdrop
+            KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+            if fighter.global_table[STICK_Y].get_f32() <= WorkModule::get_param_float(boma, hash40("common"), hash40("pass_stick_y"))
+            && fighter.global_table[FLICK_Y].get_i32() < WorkModule::get_param_int(boma, hash40("common"), hash40("pass_flick_y"))
+            && GroundModule::is_passable_ground(boma) {
+                GroundModule::pass_floor(fighter.module_accessor);
+                ControlModule::clear_command;
+            }
+        }
+    }
+}
+
+unsafe fn copy_ability_other_aerial_drift(fighter: &mut L2CFighterCommon) {
     if fighter.is_status_one_of(&[
-        *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N_CHARGE,
         *FIGHTER_KIRBY_STATUS_KIND_FOX_SPECIAL_N,
         *FIGHTER_KIRBY_STATUS_KIND_FALCO_SPECIAL_N,
         *FIGHTER_KIRBY_STATUS_KIND_WOLF_SPECIAL_N,
@@ -493,8 +515,11 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // Laser Airdodge Cancel
     airdodge_cancel(boma, status_kind, situation_kind, cat[0], frame);
 
-    // Aerial Drift
-    copy_ability_aerial_drift(fighter);
+    // Bullet Arts Mechanics
+    bayo_nspecial_mechanics(fighter, boma);
+
+    // Others Aerial Drift
+    copy_ability_other_aerial_drift(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_KIRBY )]
