@@ -40,12 +40,22 @@ pub unsafe fn init_settings_edges(boma: &mut BattleObjectModuleAccessor, situati
             *FIGHTER_STATUS_KIND_GUARD_DAMAGE,
             // *FIGHTER_STATUS_KIND_ESCAPE_AIR,
             // *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE,
+            *FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP,
             *FIGHTER_STATUS_KIND_DAMAGE,
-            *FIGHTER_STATUS_KIND_AIR_LASSO_LANDING].contains(&status_kind) {
+            *FIGHTER_STATUS_KIND_AIR_LASSO_LANDING,
+            *FIGHTER_STATUS_KIND_TREAD_DAMAGE,
+            *FIGHTER_STATUS_KIND_TREAD_DAMAGE_RV,
+            *FIGHTER_STATUS_KIND_LANDING_DAMAGE_LIGHT,
+            *FIGHTER_STATUS_KIND_DAMAGE_SONG,
+            *FIGHTER_STATUS_KIND_DAMAGE_SLEEP_START,
+            *FIGHTER_STATUS_KIND_DAMAGE_SLEEP,
+            *FIGHTER_STATUS_KIND_DAMAGE_SLEEP_END,
+            *FIGHTER_STATUS_KIND_DOWN_DAMAGE,
+            *FIGHTER_STATUS_KIND_SAVING_DAMAGE].contains(&status_kind) {
             fix = *GROUND_CORRECT_KIND_GROUND as u32;
         }
 
-        if    (fighter_kind == *FIGHTER_KIND_EDGE && [*FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, /* *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_CHARGED_RUSH,*/ *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_LANDING].contains(&status_kind) && StatusModule::prev_status_kind(boma, 0) != *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_CHARGED_RUSH)
+        if    (fighter_kind == *FIGHTER_KIND_EDGE && [*FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_LANDING].contains(&status_kind) && StatusModule::prev_status_kind(boma, 0) != *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_CHARGED_RUSH)
            || (fighter_kind == *FIGHTER_KIND_KAMUI && [*FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_B,
                                                        *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_F,
                                                        *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_B_LANDING,
@@ -107,8 +117,18 @@ unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, kind: GroundCorrec
             *FIGHTER_STATUS_KIND_LANDING,
             *FIGHTER_STATUS_KIND_TURN_DASH,
             *FIGHTER_STATUS_KIND_DASH,
-            *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL].contains(&status_kind) {
-            return original!()(boma, GroundCorrectKind(1));
+            *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL,
+            *FIGHTER_STATUS_KIND_DAMAGE,
+            *FIGHTER_STATUS_KIND_TREAD_DAMAGE,
+            *FIGHTER_STATUS_KIND_TREAD_DAMAGE_RV,
+            *FIGHTER_STATUS_KIND_LANDING_DAMAGE_LIGHT,
+            *FIGHTER_STATUS_KIND_DAMAGE_SONG,
+            *FIGHTER_STATUS_KIND_DAMAGE_SLEEP_START,
+            *FIGHTER_STATUS_KIND_DAMAGE_SLEEP,
+            *FIGHTER_STATUS_KIND_DAMAGE_SLEEP_END,
+            *FIGHTER_STATUS_KIND_DOWN_DAMAGE,
+            *FIGHTER_STATUS_KIND_SAVING_DAMAGE].contains(&status_kind) {
+            return original!()(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         }
 
         if ((fighter_kind == *FIGHTER_KIND_PIKACHU || fighter_kind == *FIGHTER_KIND_PICHU) &&
@@ -117,13 +137,18 @@ unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, kind: GroundCorrec
                  *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_S_END].contains(&status_kind))
             || (fighter_kind == *FIGHTER_KIND_CAPTAIN && status_kind == *FIGHTER_CAPTAIN_STATUS_KIND_SPECIAL_LW_END)
             || (fighter_kind == *FIGHTER_KIND_GANON && status_kind == *FIGHTER_GANON_STATUS_KIND_SPECIAL_LW_END)
-            || (fighter_kind == *FIGHTER_KIND_MIISWORDSMAN && [*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END].contains(&status_kind))
+            || (fighter_kind == *FIGHTER_KIND_MIISWORDSMAN && ( [*FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_LW3_END].contains(&status_kind) || (WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO) == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_3 && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_LW)) ))
             || (fighter_kind == *FIGHTER_KIND_KOOPA && status_kind == *FIGHTER_KOOPA_STATUS_KIND_SPECIAL_HI_G)
             || (fighter_kind == *FIGHTER_KIND_DONKEY && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI)
             || (fighter_kind == *FIGHTER_KIND_GAOGAEN && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N)
             || (fighter_kind == *FIGHTER_KIND_LUIGI && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N)
             || (fighter_kind == *FIGHTER_KIND_PEACH && status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_AWAY_END)
-            || (fighter_kind == *FIGHTER_KIND_DAISY && status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_AWAY_END) {
+            || (fighter_kind == *FIGHTER_KIND_DAISY && status_kind == *FIGHTER_PEACH_STATUS_KIND_SPECIAL_S_AWAY_END)
+            || (fighter_kind == *FIGHTER_KIND_EDGE && status_kind == *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH)
+            || (fighter_kind == *FIGHTER_KIND_YOSHI && status_kind == *FIGHTER_STATUS_KIND_SPECIAL_HI)
+            || (fighter_kind == *FIGHTER_KIND_PACMAN && status_kind == *FIGHTER_PACMAN_STATUS_KIND_SPECIAL_S_RETURN)
+            || (fighter_kind == *FIGHTER_KIND_TRAIL && status_kind == *FIGHTER_TRAIL_STATUS_KIND_SPECIAL_S_END)
+            || (fighter_kind == *FIGHTER_KIND_PLIZARDON && status_kind == *FIGHTER_PLIZARDON_STATUS_KIND_SPECIAL_S_END) {
             return original!()(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         }
     }

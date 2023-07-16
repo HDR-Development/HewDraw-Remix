@@ -6,7 +6,10 @@ pub fn install() {
     install_status_scripts!(
         pre_jump,
         pre_jump_squat,
-        
+
+        tantan_attack_landing_exec,
+        tantan_attack_jump_aerial_main,
+
         tantan_attack_pre,
         tantan_attack_main,
 
@@ -23,7 +26,6 @@ pub fn install() {
         
         tantan_attack_air_pre,
         tantan_attack_air_end,
-        tantan_attack_landing_exec,
 
         tantan_catch_pre,
         tantan_catch_main,
@@ -37,18 +39,15 @@ pub fn install() {
         tantan_special_hi_exec,
         tantan_special_hi_air_pre,
         tantan_special_hi_air_exec,
-        tantan_special_hi_air_reach_exec
+        tantan_special_hi_air_reach_exec,
     );
 }
 
 // FIGHTER_STATUS_KIND_JUMP //
-
 #[status_script(agent = "tantan", status = FIGHTER_STATUS_KIND_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 pub unsafe fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let mut arg = true;
-    if fighter.global_table[PREV_STATUS_KIND] == FIGHTER_TANTAN_STATUS_KIND_ATTACK_JUMP {
-        arg = false;
-    }
+    let arg = !(fighter.global_table[PREV_STATUS_KIND] == FIGHTER_TANTAN_STATUS_KIND_ATTACK_JUMP);
+    
     if fighter.status_pre_Jump_Common_param(L2CValue::Bool(arg)).get_bool() {
         return 1.into()
     }
@@ -59,7 +58,7 @@ pub unsafe fn pre_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
                 L2CValue::I32(-1),
                 L2CValue::I32(-1),
                 L2CValue::I32(-1),
-                L2CValue::I32(*FIGHTER_KINETIC_TYPE_JUMP),
+                L2CValue::I32(*FIGHTER_KINETIC_TYPE_NONE),
                 L2CValue::I32(*FS_SUCCEEDS_KEEP_EFFECT | *FS_SUCCEEDS_KEEP_SOUND | *FS_SUCCEEDS_KEEP_TRANSITION)
             );
         }
@@ -86,6 +85,14 @@ pub unsafe fn pre_jump_squat(fighter: &mut L2CFighterCommon) -> L2CValue {
     return original!(fighter);
 }
 
+#[status_script(agent = "tantan", status = FIGHTER_TANTAN_STATUS_KIND_ATTACK_JUMP_AERIAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn tantan_attack_jump_aerial_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    macros::EFFECT_OFF_KIND(fighter, Hash40::new("tantan_jump_line_s"), false, true);
+    macros::EFFECT_OFF_KIND(fighter, Hash40::new("tantan_jump_line_l"), false, true);
+    macros::EFFECT(fighter, Hash40::new("sys_jump_aerial"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    
+    return original!(fighter);
+}
 
 //ARMS land, prevents ARMDashing
 #[status_script(agent = "tantan", status = FIGHTER_TANTAN_STATUS_KIND_ATTACK_LANDING_LIGHT, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]

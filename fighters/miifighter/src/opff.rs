@@ -3,6 +3,23 @@ utils::import_noreturn!(common::opff::fighter_common_opff);
 use super::*;
 use globals::*;
 
+// #[repr(simd)]
+// #[derive(Debug)]
+// struct Vec3 {
+//     x: f32,
+//     y: f32,
+//     z: f32,
+// }
+
+// extern "C" {
+//     #[link_name = "\u{1}_ZN3app8lua_bind35ModelModule__joint_global_axis_implEPNS_26BattleObjectModuleAccessorEN3phx6Hash40Eib"]
+//     fn joint_global_axis(
+//         module_accessor: *mut BattleObjectModuleAccessor,
+//         arg2: Hash40,
+//         arg3: i32,
+//         arg4: bool,
+//     ) -> Vec3;
+// }
  
 // unsafe fn special_cancels(boma: &mut BattleObjectModuleAccessor, id: usize, status_kind: i32, frame: f32) {
 //     if status_kind == *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_HI1_2 {
@@ -44,6 +61,22 @@ unsafe fn wild_throw(boma: &mut BattleObjectModuleAccessor, status_kind: i32, fr
             StatusModule::set_keep_situation_air(boma, false);
         }
     }
+    // if status_kind == *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW3_THROW {
+    //     let axis_1 = joint_global_axis(boma, Hash40::new("throw"), 0, false);
+    //     let axis_2 = joint_global_axis(boma, Hash40::new("throw"), 1, false);
+    //     let axis_3 = joint_global_axis(boma, Hash40::new("throw"), 2, false);
+    //     println!("axis_1: {axis_1:?}");
+    //     println!("axis_2: {axis_2:?}");
+    //     println!("axis_3: {axis_3:?}");
+    //     let world_translate_vec = glam::f32::mat3(
+    //         glam::Vec3::new(axis_1.x, axis_1.y, axis_1.z),
+    //         glam::Vec3::new(axis_2.x, axis_2.y, axis_2.z),
+    //         glam::Vec3::new(axis_3.x, axis_3.y, axis_3.z)
+    //     ) * glam::Vec3::new(0.0, 0.0, -2.0);
+    //     println!("vec: {world_translate_vec:?}");
+    //     let world_vec = Vector3f::new(world_translate_vec.x, world_translate_vec.y, world_translate_vec.z);
+    //     ModelModule::set_joint_translate(boma, Hash40::new("throw"), &world_vec, false, false);
+    // }
 }
 //Onslaught Shield Activation + No Freefall on hit
 unsafe fn onslaught(boma: &mut BattleObjectModuleAccessor, frame: f32) {
@@ -59,32 +92,42 @@ unsafe fn onslaught(boma: &mut BattleObjectModuleAccessor, frame: f32) {
     }
 }
 //Earthquake Punch
-unsafe fn earthquake_punch(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32, frame: f32) {
+unsafe fn earthquake_punch(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, status_kind: i32) {
     //All the charge logic
     if status_kind == *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_LW1_GROUND {
         let is_hold = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL);
         let charge = VarModule::get_int(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE);
         let charge_distance = VarModule::get_float(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE_DISTANCE) as f32;
-        let max_charge_frames = 15.0;
-        let max_charge_distance = 25.0;
+        let charge_start_frame = ParamModule::get_float(boma.object(), ParamType::Agent, "earthquake_fist_ground.charge_start_frame");
+        let charge_end_frame = ParamModule::get_float(boma.object(), ParamType::Agent, "earthquake_fist_ground.charge_end_frame");
+        let max_charge_frames = ParamModule::get_float(boma.object(), ParamType::Agent, "earthquake_fist_ground.max_charge_frames");
+        let max_charge_distance = ParamModule::get_float(boma.object(), ParamType::Agent, "earthquake_fist_ground.max_charge_distance");
         let lr = PostureModule::lr(fighter.module_accessor);
         let is_ground = GroundModule::ray_check(
             fighter.module_accessor, 
-            &smash::phx::Vector2f{ x: PostureModule::pos_x(fighter.module_accessor)+((charge_distance + 12.0)*lr), y: PostureModule::pos_y(fighter.module_accessor)}, 
+            &smash::phx::Vector2f{ x: PostureModule::pos_x(fighter.module_accessor) + ((charge_distance + 12.0) * lr), y: PostureModule::pos_y(fighter.module_accessor)}, 
             &Vector2f{ x: 0.0, y: -6.0}, true
         ) == 1;
-        if frame < 3.0 {
+        if fighter.motion_frame() < 3.0 {
             VarModule::set_int(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE, 0);
             VarModule::set_float(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE_DISTANCE, 0.0);
         }
-        if MotionModule::end_frame(boma) - frame < 2.0 {
+        if MotionModule::end_frame(boma) - fighter.motion_frame() < 2.0 {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, false);
         }
         //println!("is_hold: {}, charge: {}, charge_distance: {}, is_ground: {}", is_hold, charge, charge_distance, is_ground);
-        if (6..8).contains(&(frame as i32)) && charge < max_charge_frames as i32 && is_hold && is_ground{
-            MotionModule::set_rate(fighter.module_accessor, 0.0);
-            VarModule::set_int(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE, (charge+1) as i32);
-            VarModule::set_float(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE_DISTANCE, charge_distance+(max_charge_distance/max_charge_frames));
+        if (charge_start_frame..charge_end_frame).contains(&fighter.motion_frame()) && charge < (max_charge_frames as i32) && is_hold {
+            MotionModule::set_rate(fighter.module_accessor, (charge_end_frame - charge_start_frame)/max_charge_frames);
+            let eff_handle = VarModule::get_int64(fighter.battle_object, vars::miifighter::instance::QUAKE_EFFECT_HANDLER);
+            let pos_offset = charge_distance + (max_charge_distance/max_charge_frames);
+            let mut eff_pos_offset = (charge as f32/max_charge_frames) + charge_distance + (max_charge_distance/max_charge_frames);
+            if is_ground {
+                VarModule::set_float(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE_DISTANCE, pos_offset);
+                eff_pos_offset = (10.0 - 10.0 * (charge as f32/max_charge_frames)) + charge_distance + (max_charge_distance/max_charge_frames);
+            }
+            EffectModule::set_pos(boma, eff_handle as u32, &Vector3f::new(0.0, 0.0, eff_pos_offset));
+            VarModule::set_int64(fighter.battle_object, vars::miifighter::instance::QUAKE_EFFECT_HANDLER, eff_handle as u64);
+            VarModule::set_int(fighter.battle_object, vars::miifighter::status::SPECIAL_LW1_CHARGE, (charge + 1) as i32);
         } else {
             MotionModule::set_rate(fighter.module_accessor, 1.0);
         }
@@ -102,7 +145,7 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     //special_cancels(boma, id, status_kind, frame);
     feint_jump_jc(boma);
     wild_throw(boma, status_kind, frame);
-    earthquake_punch(fighter, boma, status_kind, frame);
+    earthquake_punch(fighter, boma, status_kind);
     onslaught(boma, frame);
 }
 

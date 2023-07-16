@@ -23,6 +23,27 @@ unsafe fn game_attacks3(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "peach", script = "expression_attacks3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attacks3(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_L);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 6.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(lua_state, 38.0);
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 4);
+    }
+}
+
 #[acmd_script( agent = "peach", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn game_attackhi3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -112,6 +133,7 @@ unsafe fn game_attacklw3(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         game_attacks3,
+        expression_attacks3,
         game_attackhi3,
         effect_attackhi3,
         game_attacklw3,
