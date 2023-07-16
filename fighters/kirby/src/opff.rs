@@ -482,6 +482,21 @@ unsafe fn nayru_fastfall_land_cancel(boma: &mut BattleObjectModuleAccessor, stat
     }
 }
 
+unsafe fn copy_ability_aerial_drift(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status_one_of(&[
+        *FIGHTER_KIRBY_STATUS_KIND_BAYONETTA_SPECIAL_N_CHARGE,
+        *FIGHTER_KIRBY_STATUS_KIND_FOX_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_FALCO_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_WOLF_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_GAMEWATCH_SPECIAL_N]) {
+        if fighter.is_situation(*SITUATION_KIND_AIR) {
+            if KineticModule::get_kinetic_type(fighter.module_accessor) != *FIGHTER_KINETIC_TYPE_FALL {
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+            }
+        }
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     final_cutter_landing_bugfix(fighter);
     horizontal_cutter(fighter);
@@ -517,6 +532,8 @@ pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectMod
     // Laser Airdodge Cancel
     airdodge_cancel(boma, status_kind, situation_kind, cat[0], frame);
 
+    // Aerial Drift
+    copy_ability_aerial_drift(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_KIRBY )]

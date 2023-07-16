@@ -725,8 +725,7 @@ unsafe fn luigi_special_n_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND);
-        VarModule::off_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_DOUBLE_FIREBALL);
-    }
+        }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
@@ -820,13 +819,12 @@ unsafe fn luigi_special_n_sound(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kirby", script = "game_luigispecialairn" , category = ACMD_GAME , low_priority)]
-unsafe fn luigi_special_air_n_game(fighter: &mut L2CAgentBase) {
+unsafe fn luigi_special_air_n_game(fighter: &mut L2CAgentBase)  {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_FIREBRAND);
-        VarModule::off_flag(fighter.battle_object, vars::kirby::status::IS_SPECIAL_N_DOUBLE_FIREBALL);
-    }
+        }
     frame(lua_state, 12.0);
     if is_excute(fighter) {
         if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) {
@@ -856,7 +854,6 @@ unsafe fn luigi_special_air_n_game(fighter: &mut L2CAgentBase) {
             FT_MOTION_RATE(fighter, 0.5);
         }
     }
-    
 }
 
 #[acmd_script( agent = "kirby", script = "effect_luigispecialairn" , category = ACMD_EFFECT , low_priority)]
