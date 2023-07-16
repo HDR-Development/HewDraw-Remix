@@ -13,6 +13,7 @@ const SMOKE_FX: [u64 ; 15] = [hash40("sys_atk_smoke"),
                             hash40("sys_landing_smoke"),
                             hash40("sys_landing_smoke_s"),
                             hash40("sys_run_smoke"),
+                            hash40("sys_shield_smoke"),
                             hash40("sys_sliding_smoke"),
                             hash40("sys_turn_smoke"),
                             hash40("sys_v_smoke_a"),
@@ -63,7 +64,7 @@ unsafe fn EFFECT_hook(lua_state: u64) {
     original!()(lua_state);
     if reduce_alpha {
         l2c_agent.clear_lua_stack();
-        l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.7));
+        l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.5));
         sv_animcmd::LAST_EFFECT_SET_ALPHA(lua_state);
         l2c_agent.clear_lua_stack();
     }
@@ -111,7 +112,7 @@ unsafe fn EFFECT_FOLLOW_hook(lua_state: u64) {
     original!()(lua_state);
     if reduce_alpha {
         l2c_agent.clear_lua_stack();
-        l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.7));
+        l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.5));
         sv_animcmd::LAST_EFFECT_SET_ALPHA(lua_state);
         l2c_agent.clear_lua_stack();
     }
@@ -159,7 +160,7 @@ unsafe fn EFFECT_FOLLOW_FLIP_hook(lua_state: u64) {
     original!()(lua_state);
     if reduce_alpha {
         l2c_agent.clear_lua_stack();
-        l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.7));
+        l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.5));
         sv_animcmd::LAST_EFFECT_SET_ALPHA(lua_state);
         l2c_agent.clear_lua_stack();
     }
@@ -191,7 +192,7 @@ unsafe fn FOOT_EFFECT_hook(lua_state: u64) {
 
     original!()(lua_state);
     l2c_agent.clear_lua_stack();
-    l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.7));
+    l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.5));
     sv_animcmd::LAST_EFFECT_SET_ALPHA(lua_state);
     l2c_agent.clear_lua_stack();
 }
@@ -223,7 +224,7 @@ unsafe fn FOOT_EFFECT_FLIP_hook(lua_state: u64) {
 
     original!()(lua_state);
     l2c_agent.clear_lua_stack();
-    l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.7));
+    l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.5));
     sv_animcmd::LAST_EFFECT_SET_ALPHA(lua_state);
     l2c_agent.clear_lua_stack();
 }
@@ -254,7 +255,7 @@ unsafe fn LANDING_EFFECT_hook(lua_state: u64) {
 
     original!()(lua_state);
     l2c_agent.clear_lua_stack();
-    l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.7));
+    l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.5));
     sv_animcmd::LAST_EFFECT_SET_ALPHA(lua_state);
     l2c_agent.clear_lua_stack();
 }
@@ -286,7 +287,7 @@ unsafe fn LANDING_EFFECT_FLIP_hook(lua_state: u64) {
 
     original!()(lua_state);
     l2c_agent.clear_lua_stack();
-    l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.7));
+    l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.5));
     sv_animcmd::LAST_EFFECT_SET_ALPHA(lua_state);
     l2c_agent.clear_lua_stack();
 }
@@ -317,7 +318,7 @@ unsafe fn DOWN_EFFECT_hook(lua_state: u64) {
 
     original!()(lua_state);
     l2c_agent.clear_lua_stack();
-    l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.7));
+    l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.5));
     sv_animcmd::LAST_EFFECT_SET_ALPHA(lua_state);
     l2c_agent.clear_lua_stack();
 }
