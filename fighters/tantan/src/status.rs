@@ -43,12 +43,10 @@ pub fn install() {
         tantan_attack_s3_main,
         tantan_attack_s3_exec,
         
-        /*
         tantan_attack_s4_start_pre,
         tantan_attack_s4_start_main,
         tantan_attack_s4_hold_pre,
         tantan_attack_s4_hold_main,
-        */
         
         tantan_attack_air_pre,
         tantan_attack_air_end,

@@ -61,11 +61,11 @@ unsafe fn tantan_attack_lw3_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 13.0);
     FT_MOTION_RATE_RANGE(fighter,13.0,24.0,8.0);
     if is_excute(fighter) {        
-        let is_dragon = WorkModule::is_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_DRAGONIZE_L);
+        let is_dragonized = WorkModule::is_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_DRAGONIZE_L);
         let bigScale = WorkModule::get_param_float(boma,hash40("param_private"),hash40("arm_l_big_scale"));
-        let sizeFactor = if is_dragon {bigScale} else {1.0};
-        let powerFactor = if is_dragon {1.15} else {1.0};
-        let sfx_level = if is_dragon {*ATTACK_SOUND_LEVEL_L} else {*ATTACK_SOUND_LEVEL_M};
+        let sizeFactor = if is_dragonized {bigScale} else {1.0};
+        let powerFactor = if is_dragonized {1.15} else {1.0};
+        let sfx_level = if is_dragonized {*ATTACK_SOUND_LEVEL_L} else {*ATTACK_SOUND_LEVEL_M};
         
         ATTACK(fighter, 0, 0, Hash40::new("pl1_gimmickc"), 8.0*powerFactor, 361, 75, 0, 40, 2.9*sizeFactor, 3.0, 0.0, 0.3, Some(0.0), Some(0.0), Some(0.3), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), sfx_level, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
     }
@@ -95,14 +95,14 @@ unsafe fn tantan_attack_lw3_effect(fighter: &mut L2CAgentBase) {
     }
     frame(lua_state, 14.0);
     if is_excute(fighter) {    
-        let is_dragon = WorkModule::is_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_DRAGONIZE_L);
-        let scale = if is_dragon {1.5} else {1.25};
+        let is_dragonized = WorkModule::is_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_DRAGONIZE_L);
+        let scale = if is_dragonized {1.5} else {1.25};
         //EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line_b"), Hash40::new("pl1_have"), 0, 0, 0, 0, 90, 0, 1.2, true);
         EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line_b"), Hash40::new("top"), 0, 2.5, 10, 0, 0, 0, scale, true);
         LAST_EFFECT_SET_SCALE_W(fighter,1.5,1,1);
         LAST_EFFECT_SET_RATE(fighter,0.55);
 
-        if is_dragon {
+        if is_dragonized {
             LAST_EFFECT_SET_COLOR(fighter,0.25,1.0,0.375);
             EFFECT_FOLLOW(fighter, Hash40::new("tantan_dragon_attack_fire"), Hash40::new("pl1_have"), 0, 0, 0, 0, 180, 0, 1, true);
             LAST_EFFECT_SET_RATE(fighter,2.0);

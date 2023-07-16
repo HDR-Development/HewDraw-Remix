@@ -106,7 +106,7 @@ fn dragon_frame(weapon: &mut L2CFighterBase) {
     unsafe {
         let boma = weapon.module_accessor;
 
-        let mut is_dragon = WorkModule::is_flag(boma, *WEAPON_TANTAN_PUNCH1_INSTANCE_WORK_ID_FLAG_IS_DRAGONIZE);
+        let mut is_dragonized = WorkModule::is_flag(boma, *WEAPON_TANTAN_PUNCH1_INSTANCE_WORK_ID_FLAG_IS_DRAGONIZE);
         if !WorkModule::is_flag(boma, *WEAPON_TANTAN_PUNCH1_INSTANCE_WORK_ID_FLAG_IS_LEFT)
         && !WorkModule::is_flag(boma, *WEAPON_TANTAN_PUNCH1_INSTANCE_WORK_ID_FLAG_IS_KIRBY)
         {
@@ -117,20 +117,20 @@ fn dragon_frame(weapon: &mut L2CFighterBase) {
                 let bigScale = WorkModule::get_param_float(minmin_boma,hash40("param_private"),hash40("arm_l_big_scale"));
 
                 //Only update if previously was not dragonized
-                if !is_dragon {
-                    is_dragon = WorkModule::get_int(minmin_boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_ARM_L_BIG_FRAME) > 0;
-                    WorkModule::set_flag(boma, is_dragon,*WEAPON_TANTAN_PUNCH1_INSTANCE_WORK_ID_FLAG_IS_DRAGONIZE);  
+                if !is_dragonized {
+                    is_dragonized = WorkModule::get_int(minmin_boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_ARM_L_BIG_FRAME) > 0;
+                    WorkModule::set_flag(boma, is_dragonized,*WEAPON_TANTAN_PUNCH1_INSTANCE_WORK_ID_FLAG_IS_DRAGONIZE);  
 
-                    if is_dragon {
+                    if is_dragonized {
                         let handle = EffectModule::req_follow(boma, Hash40::new("tantan_dragon_attack_fire"), Hash40::new("gimmickc"), &Vector3f{x: 0.0, y: 0.0, z: 0.0}, &Vector3f{x: 0.0, y: 0.0, z: 0.0}, bigScale, true, 0, 0, 0, 0, 0, false, false);
                     }
                 }
-                if is_dragon {
+                if is_dragonized {
                     PostureModule::set_scale(boma, bigScale, false);
                 }
             }
         }
-        if is_dragon {
+        if is_dragonized {
             AttackModule::set_power_mul(boma, 1.15);
         }
     }
