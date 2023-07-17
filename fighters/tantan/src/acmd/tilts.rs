@@ -73,12 +73,12 @@ unsafe fn tantan_attack_lw3_game(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {    
         ATTACK(fighter, 0, 0, Hash40::new("pl1_gimmickc"), 10.0*powerFactor, 90, 85, 0, 50, 2.9*sizeFactor, 3.0, 0.0, 0.3, Some(0.0), Some(0.0), Some(0.3), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), sfx_level, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
     }
-    frame(lua_state, 22.0);
+    frame(lua_state, 24.0);
+    FT_MOTION_RATE(fighter,1.0);
     if is_excute(fighter) {    
         AttackModule::set_power(boma, 0, 8.0*powerFactor, false);
     }
     frame(lua_state, 26.0);
-    FT_MOTION_RATE(fighter,1.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
