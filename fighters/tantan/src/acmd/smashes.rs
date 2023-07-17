@@ -110,7 +110,7 @@ unsafe fn tantan_attack_s4_game(fighter: &mut L2CAgentBase) {
         is_dragonized = WorkModule::is_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_DRAGONIZE_L);
         is_doubledragon = WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R) == 0;
         if (is_doubledragon && is_dragonized) {
-            damage = 16.0;
+            damage = 17.5;
             sfx_level = *ATTACK_SOUND_LEVEL_L;
             ranges = [10.0,20.0,27.0,34.0,41.0];
             size = 5.0;
@@ -118,10 +118,13 @@ unsafe fn tantan_attack_s4_game(fighter: &mut L2CAgentBase) {
             ATTACK(fighter, 0, 0, Hash40::new("throw"), damage, 361, 75, 0, 60, 6.0, 0.0, 0.0, 10.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
         }
         else if is_dragonized {
-            damage = 13.0;
+            damage = 15.0;
             sfx_level = *ATTACK_SOUND_LEVEL_L;
             ranges = [23.0,28.0,34.0,39.0,41.0];
             size = 2.8;
+        }
+        else if is_doubledragon {
+            damage = 13.0;
         }
 
     }
@@ -307,7 +310,7 @@ unsafe fn tantan_attack_s4_charge_effect(fighter: &mut L2CAgentBase) {
             FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 10, 0, 4, 0, 0, 0, false);
         }
         wait(lua_state, 5.0);
-        EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("pl1_gimmickc"), 0, 2, 0, 0, 0, 0, 1, 4, 4, 4, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("pl1_gimmickc"), 3, 0, 0, 0, 0, 0, 1, 4, 4, 4, 0, 0, 0, true);
     }
 }
 #[acmd_script( agent = "tantan", script = "sound_attacks4charge", category = ACMD_SOUND )]
