@@ -122,7 +122,7 @@ unsafe fn tantan_attack_s4_game(fighter: &mut L2CAgentBase) {
 
             ATTACK(fighter, 2, 0, Hash40::new("pl1_muzzle_eff"), damage, 361, 75, 0, 70, 3.0, 0.0, 0.0, 0.0, None,None,None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
             
-            ATTACK(fighter, 3, 0, Hash40::new("effect"), damage, 361, 75, 0, 70, 3.0, 0.0, 0.0, 0.0, None,None,None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
+            ATTACK(fighter, 3, 0, Hash40::new("throw"), damage, 361, 75, 0, 70, 3.0, 0.0, 0.0, 0.0, None,None,None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
         }
         AttackModule::disable_tip(boma);
     }
@@ -192,43 +192,30 @@ unsafe fn tantan_attack_s4_effect(fighter: &mut L2CAgentBase) {
         if is_dragonized && is_doubledragon {
             EFFECT(fighter, Hash40::new("tantan_final_shot"), Hash40::new("pl1_muzzle"), 0, 0, 0, 0, 0, 90, 1, 0, 0, 0, 0, 0, 0, true);
 
-            EFFECT_FOLLOW(fighter, Hash40::new("tantan_final_punch"), Hash40::new("pl1_muzzle_eff"), 3.0, 0, 0.0, 180, 0, 180, 0.75, false);
+            //EFFECT_FOLLOW(fighter, Hash40::new("tantan_final_punch"), Hash40::new("pl1_muzzle_eff"), 3.0, 0, 0.0, 180, 0, 180, 0.75, false);
+            EFFECT_FOLLOW(fighter, Hash40::new("tantan_final_punch"), Hash40::new("throw"), -0.045, 0, 0, 0, 90, 0, 1, true);
+            LAST_EFFECT_SET_RATE(fighter,1.5);
             effect_l = EffectModule::get_last_handle(boma);
         }
         else{
-            let effect = if is_dragonized {Hash40::new("tantan_dragon_beam2_body")} else {Hash40::new("tantan_dragon_beam1_body")};
-            let offset = if is_dragonized {-1.0} else {-2.5};
-            let rate = if is_dragonized {1.0} else {0.75};
+            EFFECT_FOLLOW(fighter, Hash40::new("tantan_dragon_beam1_body"), Hash40::new("pl1_gimmickc"), -2.5, 0, 0, 0, 0, 180, 1, true);
+            LAST_EFFECT_SET_RATE(fighter,0.75);
+            effect_l = EffectModule::get_last_handle(boma);
 
-            if is_dragonized
-            {
-                let effect = if is_dragonized {Hash40::new("tantan_dragon_beam2_body")} else {Hash40::new("tantan_dragon_beam1_body")};
-                EFFECT_FOLLOW(fighter, effect, Hash40::new("pl1_muzzle_eff"), -4.5, 0, 0, 0, 0, 180, 1, true);
-
+            if is_dragonized {
+                EFFECT_FOLLOW(fighter, Hash40::new("tantan_wepon_shot1"), Hash40::new("pl1_gimmickc"), -1.0, 0, 0, 0, 0, -90, 1.0, true);
+                LAST_EFFECT_SET_SCALE_W(fighter, 1.0, 0.75, 1.0);
             }
-            else{
-                EFFECT_FOLLOW(fighter, effect, Hash40::new("pl1_gimmickc"), offset, 0, 0, 0, 0, 180, 1, true);
-                LAST_EFFECT_SET_RATE(fighter,rate);
-                effect_l = EffectModule::get_last_handle(boma);
-
-                if is_doubledragon{
-                    EFFECT_FOLLOW(fighter, effect, Hash40::new("pr1_gimmickc"), offset, 0, 0, 0, 180, 0, 1, true);
-                    LAST_EFFECT_SET_RATE(fighter,rate);
-                    effect_r = EffectModule::get_last_handle(boma);
-                }
+            if is_doubledragon {
+                EFFECT_FOLLOW(fighter, Hash40::new("tantan_dragon_beam1_body"), Hash40::new("pr1_gimmickc"), -2.5, 0, 0, 0, 0, 180, 1, true);
+                LAST_EFFECT_SET_RATE(fighter,0.75);
+                effect_r = EffectModule::get_last_handle(boma);
             }
         }
     }
     if is_dragonized && is_doubledragon {
-        
-        frame(lua_state, 19.0);
-        if is_excute(fighter) {
-            EffectModule::set_pos(boma, effect_l as u32,&Vector3f{x: 10.0, y: 0.0, z: 0.0})
-        }
-        frame(lua_state, 20.0);
-        if is_excute(fighter) {
-            EffectModule::set_pos(boma, effect_l as u32,&Vector3f{x: 14.0, y: 0.0, z: 0.0})
-        }
+        frame(lua_state, 25.0);
+        LAST_EFFECT_SET_RATE(fighter,1.0);
     }
     else{
         frame(lua_state, 20.0);

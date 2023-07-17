@@ -76,11 +76,24 @@ unsafe fn double_dragon(boma: &mut BattleObjectModuleAccessor)
         }
     }
 }
+unsafe fn fsmash_effect_translation(boma: &mut BattleObjectModuleAccessor, status_kind: i32)
+{
+    if status_kind != *FIGHTER_STATUS_KIND_ATTACK_S4 {
+        return;
+    }
+    if AttackModule::is_attack(boma, 0, false) {
+        let startFrame = 18.0;
+        let newpos = 2.0*(MotionModule::frame(boma)-startFrame);
+        ModelModule::set_joint_translate(boma, Hash40::new("pl1_muzzle_eff"), &Vector3f::new(0.0, newpos, 0.0),false,false);
+        ModelModule::set_joint_translate(boma, Hash40::new("pr1_muzzle_eff"), &Vector3f::new(0.0, newpos, 0.0),false,false);
+    }
+}
 
 pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     recoil_cancel(boma,status_kind,situation_kind);
     arms_switch_during_normals(boma, cat[0], status_kind, situation_kind, motion_kind);
     double_dragon(boma);
+    fsmash_effect_translation(boma,status_kind);
     //Prevent B Jab
     WorkModule::off_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_ATTACK_COMBO_ENABLE);
 }
