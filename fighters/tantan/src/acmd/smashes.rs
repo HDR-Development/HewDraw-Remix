@@ -87,9 +87,9 @@ unsafe fn tantan_attack_s4_game(fighter: &mut L2CAgentBase) {
     let boma = fighter.boma();
     let mut is_dragonized = false;
     let mut is_doubledragon = false;
-    let mut damage = 6.0;
+    let mut damage = 11.0;
     let mut sfx_level = *ATTACK_SOUND_LEVEL_M;
-    let mut range = 24.0;
+    let mut ranges = [18.0,22.0,25.0,29.0,31.0];
     let mut size = 1.3;
 
     if is_excute(fighter) {
@@ -109,47 +109,45 @@ unsafe fn tantan_attack_s4_game(fighter: &mut L2CAgentBase) {
 
         is_dragonized = WorkModule::is_flag(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_FLAG_DRAGONIZE_L);
         is_doubledragon = WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R) == 0;
-        
-        damage = if is_dragonized {9.0} else {6.0};
-        sfx_level = if is_dragonized {*ATTACK_SOUND_LEVEL_L} else {*ATTACK_SOUND_LEVEL_M};
-        range = if is_dragonized {23.0} else {19.0};
-        size = if is_dragonized {2.8} else {1.3};
+        if (is_doubledragon && is_dragonized) {
+            damage = 16.0;
+            sfx_level = *ATTACK_SOUND_LEVEL_L;
+            ranges = [10.0,20.0,27.0,34.0,41.0];
+            size = 5.0;
 
-        ATTACK(fighter, 0, 0, Hash40::new("pl1_gimmickc"), damage, 361, 75, 0, 70, size*1.2, 0.0, 0.0, 0.0, Some(range), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
+            ATTACK(fighter, 0, 0, Hash40::new("throw"), damage, 361, 75, 0, 60, 6.0, 0.0, 0.0, 10.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
+        }
+        else if is_dragonized {
+            damage = 13.0;
+            sfx_level = *ATTACK_SOUND_LEVEL_L;
+            ranges = [23.0,28.0,34.0,39.0,41.0];
+            size = 2.8;
+        }
 
-        if is_doubledragon {
-            ATTACK(fighter, 1, 0, Hash40::new("pr1_gimmickc"), damage, 361, 75, 0, 70, size*1.2, 0.0, 0.0, 0.0, Some(range), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
+    }
+    let mut range = 0.0;
+    for i in 0..5{
+        range = ranges[i];
+        if (is_doubledragon && is_dragonized) {
+            ATTACK(fighter, 1, 0, Hash40::new("throw"), damage, 361, 75, 0, 60, size, 0.0, 0.0, -range, Some(0.0), Some(0.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
+        }
+        else{
+            ATTACK(fighter, 2, 0, Hash40::new("pl1_gimmickc"), damage, 361, 75, 0, 60, size*1.2, 0.0, 0.0, 0.0, Some(range), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
 
-            ATTACK(fighter, 2, 0, Hash40::new("pl1_muzzle_eff"), damage, 361, 75, 0, 70, 3.0, 0.0, 0.0, 0.0, None,None,None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
-            
-            ATTACK(fighter, 3, 0, Hash40::new("throw"), damage, 361, 75, 0, 70, 3.0, 0.0, 0.0, 0.0, None,None,None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
+            if is_doubledragon {
+                ATTACK(fighter, 3, 0, Hash40::new("pr1_gimmickc"), damage, 361, 75, 0, 60, size*1.2, 0.0, 0.0, 0.0, Some(range), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
+            }
         }
         AttackModule::disable_tip(boma);
+        wait(lua_state, 1.0);
     }
-    wait(lua_state, 1.0);
     if is_excute(fighter) {
-        range = if is_dragonized {25.0} else {22.0};
-        ATTACK(fighter, 0, 0, Hash40::new("pl1_gimmickc"), damage, 361, 75, 0, 70, size*1.2, 0.0, 0.0, 0.0, Some(range*1.3), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
-
-        if is_doubledragon {
-            ATTACK(fighter, 1, 0, Hash40::new("pr1_gimmickc"), damage, 361, 75, 0, 70, size*1.2, 0.0, 0.0, 0.0, Some(range*1.3), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
+        if !(is_doubledragon && is_dragonized) {
+            AttackModule::clear(boma,2,false);
+            AttackModule::clear(boma,3,false);
         }
     }
-    wait(lua_state, 1.0);
-    if is_excute(fighter) {
-        range = if is_dragonized {30.0} else {25.0};
-        ATTACK(fighter, 0, 0, Hash40::new("pl1_gimmickc"), damage, 361, 75, 0, 70, size*1.2, 0.0, 0.0, 0.0, Some(range*1.3), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
-
-        if is_doubledragon {
-            ATTACK(fighter, 1, 0, Hash40::new("pr1_gimmickc"), damage, 361, 75, 0, 70, size*1.2, 0.0, 0.0, 0.0, Some(range*1.3), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), sfx_level, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
-        }
-    }
-    wait(lua_state, 1.0);
-    if is_excute(fighter) {
-        AttackModule::clear(boma,0,false);
-        AttackModule::clear(boma,1,false);
-    }
-    frame(lua_state, 38.0);
+    wait(lua_state, 3.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
@@ -169,19 +167,10 @@ unsafe fn tantan_attack_s4_effect(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 15, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
-    /* 
-    frame(lua_state, 14.0);
-    if is_excute(fighter) {
-        let is_doubledragon = WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R) == 0;
-        EFFECT_FOLLOW(fighter, Hash40::new("tantan_dragon_eye_flash"), Hash40::new("pl1_have"), 0, 0, 0, 0, 0, 0, 1.2, true);
-        if is_doubledragon {
-            EFFECT_FOLLOW(fighter, Hash40::new("tantan_dragon_eye_flash"), Hash40::new("pr1_have"), 0, 0, 0, 0, 0, 0, 1.2, true);
-        }
-    }
-    */
-    
+
     frame(lua_state, 17.0);
     if is_excute(fighter) {
+        EFFECT_OFF_KIND(fighter,Hash40::new("sys_sscope_hold"),false,false);
         LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(lua_state, 18.0);
@@ -197,8 +186,9 @@ unsafe fn tantan_attack_s4_effect(fighter: &mut L2CAgentBase) {
             LAST_EFFECT_SET_RATE(fighter,1.5);
             effect_l = EffectModule::get_last_handle(boma);
         }
-        else{
-            EFFECT_FOLLOW(fighter, Hash40::new("tantan_dragon_beam1_body"), Hash40::new("pl1_gimmickc"), -2.5, 0, 0, 0, 0, 180, 1, true);
+        else {
+            let size = if is_dragonized {1.15} else {1.0};
+            EFFECT_FOLLOW(fighter, Hash40::new("tantan_dragon_beam1_body"), Hash40::new("pl1_gimmickc"), -2.5, 0, 0, 0, 0, 180, size, true);
             LAST_EFFECT_SET_RATE(fighter,0.75);
             effect_l = EffectModule::get_last_handle(boma);
 
@@ -207,18 +197,30 @@ unsafe fn tantan_attack_s4_effect(fighter: &mut L2CAgentBase) {
                 LAST_EFFECT_SET_SCALE_W(fighter, 1.0, 0.75, 1.0);
             }
             if is_doubledragon {
-                EFFECT_FOLLOW(fighter, Hash40::new("tantan_dragon_beam1_body"), Hash40::new("pr1_gimmickc"), -2.5, 0, 0, 0, 0, 180, 1, true);
+                EFFECT_FOLLOW(fighter, Hash40::new("tantan_dragon_beam1_body"), Hash40::new("pr1_gimmickc"), -2.5, 0, 0, 0, 0, 180, size, true);
                 LAST_EFFECT_SET_RATE(fighter,0.75);
                 effect_r = EffectModule::get_last_handle(boma);
             }
         }
     }
     if is_dragonized && is_doubledragon {
-        frame(lua_state, 25.0);
-        LAST_EFFECT_SET_RATE(fighter,1.0);
+        frame(lua_state, 24.0);
+        if is_excute(fighter) {
+            EffectModule::set_rate(boma, effect_l as u32, 0.75);
+        }
+        frame(lua_state, 26.0);
+        if is_excute(fighter) {
+            EffectModule::set_rate(boma, effect_l as u32, 1.375);
+            EFFECT_DETACH_KIND(fighter,Hash40::new("tantan_final_punch"),-1)
+        }
     }
     else{
-        frame(lua_state, 20.0);
+        frame(lua_state, 19.0);
+        if is_excute(fighter) {
+            EffectModule::set_rate(boma, effect_l as u32, 0.375);
+            EffectModule::set_rate(boma, effect_r as u32, 0.375);
+        }
+        frame(lua_state, 24.0);
         if is_excute(fighter) {
             EffectModule::set_rate(boma, effect_l as u32, 1.1);
             EffectModule::set_rate(boma, effect_r as u32, 1.1);
@@ -292,13 +294,20 @@ unsafe fn tantan_attack_s4_charge_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
 
+    /* 
+    let is_doubledragon = WorkModule::get_int(boma, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R) == 0;
+    EFFECT_FOLLOW(fighter, Hash40::new("sys_sscope_hold"), Hash40::new("pl1_muzzle"), 1, 0, 0, 0, 0, 0, 0.3,  true);
+    if is_doubledragon {
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_sscope_hold"), Hash40::new("pr1_muzzle"), 1, 0, 0, 0, 0, 0, 0.3,  true);
+    }*/
+
     for i in 1..i32::MAX{
         frame(lua_state, 5.0);
         if is_excute(fighter) {
             FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 10, 0, 4, 0, 0, 0, false);
         }
         wait(lua_state, 5.0);
-        EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("pl1_gimmickc"), 2, 0, 0, 0, 0, 0, 1, 4, 4, 4, 0, 0, 0, true);
+        EFFECT(fighter, Hash40::new("sys_smash_flash_s"), Hash40::new("pl1_gimmickc"), 0, 2, 0, 0, 0, 0, 1, 4, 4, 4, 0, 0, 0, true);
     }
 }
 #[acmd_script( agent = "tantan", script = "sound_attacks4charge", category = ACMD_SOUND )]

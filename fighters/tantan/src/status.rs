@@ -47,6 +47,9 @@ pub fn install() {
         tantan_attack_s4_start_main,
         tantan_attack_s4_hold_pre,
         tantan_attack_s4_hold_main,
+        tantan_attack_s4_hold_exec,
+        tantan_attack_s4_exec,
+        tantan_attack_s4_end,
         
         tantan_attack_air_pre,
         tantan_attack_air_end,
@@ -184,6 +187,34 @@ unsafe fn tantan_attack_s4_hold_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
 #[status_script(agent = "tantan", status = FIGHTER_STATUS_KIND_ATTACK_S4_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn tantan_attack_s4_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_AttackS4Hold as *const () as _))
+}
+#[status_script(agent = "tantan", status = FIGHTER_STATUS_KIND_ATTACK_S4_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+pub unsafe fn tantan_attack_s4_hold_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let bigFrame =  WorkModule::get_int(fighter.module_accessor, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_ARM_L_BIG_FRAME);
+    if 0 < bigFrame && bigFrame < 2 {
+        WorkModule::set_int(fighter.module_accessor, 2,*FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_ARM_L_BIG_FRAME);
+    }
+    return 0.into()
+}
+#[status_script(agent = "tantan", status = FIGHTER_STATUS_KIND_ATTACK_S4, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+pub unsafe fn tantan_attack_s4_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let bigFrame =  WorkModule::get_int(fighter.module_accessor, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_ARM_L_BIG_FRAME);
+    if 0 < bigFrame && bigFrame < 2 {
+        WorkModule::set_int(fighter.module_accessor, 2,*FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_ARM_L_BIG_FRAME);
+    }
+    return 0.into()
+}
+#[status_script(agent = "tantan", status = FIGHTER_STATUS_KIND_ATTACK_S4, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn tantan_attack_s4_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let bigFrame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_ARM_L_BIG_FRAME);
+    if fighter.motion_frame() > 16.0 && WorkModule::get_int(fighter.module_accessor, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_PUNCH_KIND_R) == 0 {
+        if bigFrame > 0 {
+            let maxBigFrame = WorkModule::get_param_int(fighter.module_accessor,hash40("param_private"),hash40("arm_l_big_frame"));
+            let newBigFrame = (bigFrame-(maxBigFrame/2)).max(1);
+            WorkModule::set_int(fighter.module_accessor, newBigFrame, *FIGHTER_TANTAN_INSTANCE_WORK_ID_INT_ARM_L_BIG_FRAME);
+        }
+    }
+    return fighter.status_end_AttackS4();
 }
 
 // Aerial Attacks
