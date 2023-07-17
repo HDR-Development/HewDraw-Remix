@@ -28,7 +28,7 @@
   <list hash="param_special_hi">
     <struct index="0">
       <int hash="special_hi_charge_frame_max">43</int>
-      <float hash="special_hi_charge_ang_f_max">1</float>
+      <float hash="special_hi_charge_ang_f_max">4</float>
       <float hash="special_hi_charge_ang_max">45</float>
       <float hash="special_hi_charge_gravity_mul">0.05</float>
       <float hash="special_hi_jet_ang_f_max">0.75</float>
@@ -43,7 +43,7 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
-      <float hash="special_lw_throw_ang">135</float>
+      <float hash="special_lw_throw_ang">110</float>
       <float hash="special_lw_throw_spd_x">1.35</float>
       <float hash="special_lw_smash_throw_spd_mul">1.55</float>
       <int hash="special_lw_banana_num_max">1</int>
