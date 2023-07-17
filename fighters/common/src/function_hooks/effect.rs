@@ -2,7 +2,7 @@ use super::*;
 use globals::*;
 
 const SHOCKWAVE_FX: [u64 ; 3] = [hash40("sys_crown"), hash40("sys_crown_collision"), 0xde89fce0a];
-const SMOKE_FX: [u64 ; 15] = [hash40("sys_atk_smoke"),
+const SMOKE_FX: [u64 ; 16] = [hash40("sys_atk_smoke"),
                             hash40("sys_atk_smoke2"),
                             hash40("sys_bound_smoke"),
                             hash40("sys_dash_smoke"),
