@@ -69,7 +69,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs: version_and_changelog
     container: 
-      image: jugeeya/cargo-skyline:3.2.0-no-dkp
+      image: hewdrawremix/hewdraw-builder:latest
     outputs: 
       trimmed_tag: ${{ steps.trimmed_tag.outputs.tag }}
     steps:
