@@ -6,21 +6,23 @@ use super::*;
 unsafe fn yoshi_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+	let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+	FT_DESIRED_RATE(fighter, 5.0, 6.0);
 	frame(lua_state, 5.0);
+	FT_DESIRED_RATE(fighter, 4.0, 3.0);
 	if is_excute(fighter) {
-		ATTACK(fighter, 0, 0, Hash40::new("tail1"), 11.0, 75, 73, 0, 52, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
-		ATTACK(fighter, 1, 0, Hash40::new("tail1"), 11.0, 75, 73, 0, 52, 4.5, 4.3, -1.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
-		ATTACK(fighter, 2, 0, Hash40::new("tail2"), 11.0, 85, 73, 0, 52, 4.0, 5.0, 0.5, 0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
-		AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_HIGH), false);
-		HIT_NODE(fighter, Hash40::new("tail1"), *HIT_STATUS_XLU);
+		ATTACK(fighter, 0, 0, Hash40::new("tail1"), 13.0, 70, 80, 0, 40, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
+		ATTACK(fighter, 1, 0, Hash40::new("tail1"), 13.0, 70, 80, 0, 40, 4.4, 6.56, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
+		ATTACK(fighter, 2, 0, Hash40::new("tail1"), 13.0, 70, 80, 0, 40, 3.3, 13.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
 		HIT_NODE(fighter, Hash40::new("tail2"), *HIT_STATUS_XLU);
 	}
-	wait(lua_state, 3.0);
+	frame(lua_state, 9.0);
+	FT_MOTION_RATE(fighter, 1.0);
 	if is_excute(fighter) {
-	AttackModule::clear_all(boma);
-	HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
+		AttackModule::clear_all(boma);
+		HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
 	}
-
 }
 
 
@@ -28,13 +30,15 @@ unsafe fn yoshi_attack_s3_hi_game(fighter: &mut L2CAgentBase) {
 unsafe fn yoshi_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-	frame(lua_state, 3.0);
+	frame(lua_state, 4.0);
 	if is_excute(fighter) {
 		FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-		EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1, 12, 8, -7.79, -24, 49.865, 0.85, true, *EF_FLIP_YZ);
-		LAST_EFFECT_SET_RATE(fighter, 1.8);
 	}
-
+	frame(lua_state, 5.0);
+	if is_excute(fighter) {
+		EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1, 11, 6, 18, -27, 156, 1.15, true, *EF_FLIP_YZ);
+		LAST_EFFECT_SET_RATE(fighter, 1.5);
+	}
 }
 
 
@@ -42,19 +46,21 @@ unsafe fn yoshi_attack_s3_hi_effect(fighter: &mut L2CAgentBase) {
 unsafe fn yoshi_attack_s3_s_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+	FT_DESIRED_RATE(fighter, 5.0, 6.0);
 	frame(lua_state, 5.0);
+	FT_DESIRED_RATE(fighter, 4.0, 3.0);
 	if is_excute(fighter) {
-		ATTACK(fighter, 0, 0, Hash40::new("tail1"), 10.0, 75, 73, 0, 52, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
-		ATTACK(fighter, 1, 0, Hash40::new("tail1"), 10.0, 75, 73, 0, 52, 4.5, 4.3, -1.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
-		ATTACK(fighter, 2, 0, Hash40::new("tail2"), 10.0, 85, 73, 0, 52, 4.0, 5.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
+		ATTACK(fighter, 0, 0, Hash40::new("tail1"), 12.0, 70, 80, 0, 40, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
+		ATTACK(fighter, 1, 0, Hash40::new("tail1"), 12.0, 70, 80, 0, 40, 4.4, 6.56, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
+		ATTACK(fighter, 2, 0, Hash40::new("tail1"), 12.0, 70, 80, 0, 40, 3.3, 13.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
 		HIT_NODE(fighter, Hash40::new("tail2"), *HIT_STATUS_XLU);
 	}
-	wait(lua_state, 3.0);
+	frame(lua_state, 9.0);
+	FT_MOTION_RATE(fighter, 1.0);
 	if is_excute(fighter) {
 		AttackModule::clear_all(boma);
 		HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
 	}
-
 }
 
 
@@ -68,10 +74,9 @@ unsafe fn yoshi_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 5.0);
 	if is_excute(fighter) {
-		EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1, 9, 10, -3.255, -12.797, 37.054, 0.85, true, *EF_FLIP_YZ);
+		EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1, 9, 4, 173, -156, 2, 1.15, true, *EF_FLIP_YZ);
 		LAST_EFFECT_SET_RATE(fighter, 1.5);
 	}
-
 }
 
 
@@ -79,20 +84,21 @@ unsafe fn yoshi_attack_s3_s_effect(fighter: &mut L2CAgentBase) {
 unsafe fn yoshi_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+	FT_DESIRED_RATE(fighter, 5.0, 6.0);
 	frame(lua_state, 5.0);
+	FT_DESIRED_RATE(fighter, 4.0, 3.0);
 	if is_excute(fighter) {
-		ATTACK(fighter, 0, 0, Hash40::new("tail1"), 9.0, 75, 73, 0, 52, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
-		ATTACK(fighter, 1, 0, Hash40::new("tail1"), 9.0, 75, 73, 0, 52, 4.5, 4.3, -1.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
-		ATTACK(fighter, 2, 0, Hash40::new("tail2"), 9.0, 85, 73, 0, 52, 4.0, 5.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
-		AttackModule::set_attack_height_all(boma, app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
+		ATTACK(fighter, 0, 0, Hash40::new("tail1"), 11.0, 70, 80, 0, 40, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
+		ATTACK(fighter, 1, 0, Hash40::new("tail1"), 11.0, 70, 80, 0, 40, 4.4, 6.56, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
+		ATTACK(fighter, 2, 0, Hash40::new("tail1"), 11.0, 70, 80, 0, 40, 3.3, 13.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_TAIL);
 		HIT_NODE(fighter, Hash40::new("tail2"), *HIT_STATUS_XLU);
 	}
-	wait(lua_state, 3.0);
+	frame(lua_state, 9.0);
+	FT_MOTION_RATE(fighter, 1.0);
 	if is_excute(fighter) {
 		AttackModule::clear_all(boma);
 		HitModule::set_status_all(boma, app::HitStatus(*HIT_STATUS_NORMAL), 0);
 	}
-
 }
   
 
@@ -106,7 +112,7 @@ unsafe fn yoshi_attack_s3_lw_effect(fighter: &mut L2CAgentBase) {
 	}
 	frame(lua_state, 5.0);
 	if is_excute(fighter) {
-		EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1, 3.5, 10, 1.53, -13.258, 23.277, 0.85, true, *EF_FLIP_YZ);
+		EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 1, 6, 4, 166, -162, 9, 1.15, true, *EF_FLIP_YZ);
 		LAST_EFFECT_SET_RATE(fighter, 1.5);
 	}
 }
@@ -147,6 +153,22 @@ unsafe fn yoshi_attack_hi3_effect(fighter: &mut L2CAgentBase) {
 
 }
 
+#[acmd_script( agent = "yoshi", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn yoshi_attack_hi3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
 
 
 #[acmd_script( agent = "yoshi", script = "game_attacklw3" , category = ACMD_GAME , low_priority)]
@@ -199,6 +221,7 @@ pub fn install() {
 		yoshi_attack_s3_lw_effect,
 		yoshi_attack_hi3_effect,
 		yoshi_attack_lw3_effect,
+		yoshi_attack_hi3_expression
     );
 }
 

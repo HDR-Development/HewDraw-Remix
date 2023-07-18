@@ -81,6 +81,27 @@
 		],
 		"fighter/younglink/cmn": [
 			"fighter/younglink/param/hdr.prc"
+		],
+		"fighter/daisy/cmn": [
+			"fighter/daisy/param/hdr.prc"
+		],
+		"fighter/miiswordsman/cmn": [
+			"fighter/miiswordsman/param/hdr.prc"
+		],
+		"fighter/duckhunt/cmn": [
+			"fighter/duckhunt/param/hdr.prc"
+		],
+		"fighter/krool/cmn": [
+			"fighter/krool/param/hdr.prc"
+		],
+		"fighter/ganon/cmn": [
+			"fighter/ganon/param/hdr.prc"
+		],
+		"fighter/miifighter/cmn": [
+			"fighter/miifighter/param/hdr.prc"
+		],
+		"fighter/sheik/cmn": [
+			"fighter/sheik/param/hdr.prc"
 		]
 	}
 }

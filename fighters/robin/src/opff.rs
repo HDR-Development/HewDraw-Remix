@@ -32,6 +32,24 @@ unsafe fn elwind1_burn(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn levin_leniency(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR) 
+    && boma.status_frame() <= 5 
+    && !fighter.is_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) 
+    && boma.is_button_on(Buttons::Smash | Buttons::SpecialRaw) 
+    && !StatusModule::is_changing(boma) {
+        let levin = *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT;
+        if WorkModule::get_int(boma, levin) > 0 {
+            if WorkModule::get_int(boma, levin) == 1 {
+                app::FighterSpecializer_Reflet::set_flag_to_table(fighter.module_accessor as *mut app::FighterModuleAccessor, *FIGHTER_REFLET_MAGIC_KIND_SWORD, true, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THROWAWAY_TABLE);
+            }
+            fighter.on_flag(*FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
+            VisibilityModule::set_int64(boma, Hash40::new("sword").hash as i64, Hash40::new("sword_thunder").hash as i64);
+            WorkModule::dec_int(boma, levin);
+        }
+    }
+}
+
 // Lengthen sword
 unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
     let long_sword_scale = Vector3f{x: 1.0, y: 1.175, z: 1.0475};
@@ -41,6 +59,7 @@ unsafe fn sword_length(boma: &mut BattleObjectModuleAccessor) {
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     nspecial_cancels(boma, status_kind, situation_kind);
     elwind1_burn(fighter);
+    levin_leniency(fighter, boma);
     sword_length(boma);
 }
 

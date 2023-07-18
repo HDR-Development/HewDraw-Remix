@@ -53,7 +53,7 @@
   </list>
   <list hash="param_special_lw">
     <struct index="0">
-      <float hash="control_speed_x_mul">1</float>
+      <float hash="control_speed_x_mul">0.7</float>
       <float hash="special_lw_jump_xspd">0.1</float>
       <float hash="special_lw_jump_xspd_max">0.8</float>
       <float hash="special_lw_jump_yspd">2.3</float>

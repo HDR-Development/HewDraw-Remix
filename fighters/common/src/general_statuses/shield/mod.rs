@@ -6,11 +6,17 @@ mod guard_off;
 mod guard_on;
 mod misc;
 
+fn nro_hook(info: &skyline::nro::NroInfo) {
+    if info.name == "common" {
+        fighter_status_guard::install();
+        guard::install();
+        guard_damage::install();
+        guard_off::install();
+        guard_on::install();
+        misc::install();
+    }
+}
+
 pub fn install() {
-    //fighter_status_guard::install();
-    //guard::install();
-    guard_damage::install();
-    guard_off::install();
-    //guard_on::install();
-    misc::install();
+    let _ = skyline::nro::add_hook(nro_hook);
 }

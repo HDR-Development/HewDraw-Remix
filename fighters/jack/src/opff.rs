@@ -58,16 +58,24 @@ unsafe fn aerial_grappling_hook_stall(boma: &mut BattleObjectModuleAccessor, mot
     }
 }
 
+// Joker Grappling Hook Spike Cancel
+unsafe fn grappling_hook_spike_cancel (fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) && fighter.is_situation(*SITUATION_KIND_AIR) && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) && !boma.is_in_hitlag() {
+        MotionModule::set_rate(boma, 2.0);
+    }
+}
+
 // Lengthen knife
 unsafe fn knife_length(boma: &mut BattleObjectModuleAccessor) {
 	let long_sword_scale = Vector3f{x: 1.01, y: 1.1, z: 1.01};
 	ModelModule::set_joint_scale(boma, smash::phx::Hash40::new("knife"), &long_sword_scale);
 }
 
-pub unsafe fn moveset(boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
+pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     wings_of_rebellion_cancel(boma, status_kind);
     //arsene_grappling_hook(boma, situation_kind, motion_kind);
     aerial_grappling_hook_stall(boma, motion_kind, frame);
+    grappling_hook_spike_cancel(fighter, boma);
 	knife_length(boma);
     //arsene_summon_desmummon(boma);
 }
@@ -82,6 +90,6 @@ pub fn jack_frame_wrapper(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
 
 pub unsafe fn jack_frame(fighter: &mut smash::lua2cpp::L2CFighterCommon) {
     if let Some(info) = FrameInfo::update_and_get(fighter) {
-        moveset(&mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
+        moveset(fighter, &mut *info.boma, info.id, info.cat, info.status_kind, info.situation_kind, info.motion_kind.hash, info.stick_x, info.stick_y, info.facing, info.frame);
     }
 }

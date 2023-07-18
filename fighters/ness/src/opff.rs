@@ -100,11 +100,24 @@ unsafe fn pk_thunder_wall_ride(boma: &mut BattleObjectModuleAccessor, id: usize,
 
 }
 
+// Remove right arm growing during uair
+unsafe fn uair_scaling(boma: &mut BattleObjectModuleAccessor) {
+    if boma.is_status(*FIGHTER_STATUS_KIND_ATTACK_AIR)
+    && boma.is_motion(Hash40::new("attack_air_hi")) {
+        ModelModule::set_joint_scale(boma, Hash40::new("clavicler"), &Vector3f::new(1.0, 1.0, 1.0));
+        ModelModule::set_joint_scale(boma, Hash40::new("shoulderr"), &Vector3f::new(1.0, 1.0, 1.0));
+        ModelModule::set_joint_scale(boma, Hash40::new("armr"), &Vector3f::new(1.0, 1.0, 1.0));
+        ModelModule::set_joint_scale(boma, Hash40::new("haver"), &Vector3f::new(1.0, 1.0, 1.0));
+        ModelModule::set_joint_scale(boma, Hash40::new("handr"), &Vector3f::new(1.0, 1.0, 1.0));
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     psi_magnet_jump_cancel_turnaround(fighter);
     pk_thunder_cancel(boma, id, status_kind, situation_kind);
     pk_thunder_wall_ride(boma, id, status_kind, situation_kind);
     pk_fire_ff(boma, stick_y);
+    uair_scaling(boma);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_NESS )]

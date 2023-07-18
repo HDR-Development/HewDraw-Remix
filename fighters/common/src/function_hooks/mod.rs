@@ -21,6 +21,7 @@ pub mod set_fighter_status_data;
 pub mod attack;
 pub mod collision;
 pub mod camera;
+pub mod shotos;
 
 #[repr(C)]
 pub struct TempModule {
@@ -118,7 +119,7 @@ unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor, status_k
         || ((*boma).kind() == *FIGHTER_KIND_SIMON
             && [*FIGHTER_STATUS_KIND_ATTACK_AIR, *FIGHTER_STATUS_KIND_ATTACK_HI3, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_STATUS_KIND_ATTACK_HI4, *FIGHTER_STATUS_KIND_ATTACK_S4, *FIGHTER_STATUS_KIND_ATTACK_LW4].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_MASTER
-            && [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_MAX_SHOOT].contains(&status_kind))
+            && [*FIGHTER_MASTER_STATUS_KIND_SPECIAL_N_MAX_SHOOT, *FIGHTER_STATUS_KIND_SPECIAL_HI].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_KIRBY
             && [*FIGHTER_KIRBY_STATUS_KIND_MASTER_SPECIAL_N_MAX_SHOOT].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_JACK
@@ -135,6 +136,8 @@ unsafe fn skip_early_main_status(boma: *mut BattleObjectModuleAccessor, status_k
             && [*FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WAIT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_FALL_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_WALK_BACK, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_AERIAL, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_LANDING_LIGHT, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_S_RIDE].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_MIIGUNNER
             && [*FIGHTER_STATUS_KIND_SPECIAL_HI].contains(&status_kind))
+        || ((*boma).kind() == *FIGHTER_KIND_MIIFIGHTER
+            && [*FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S2_END, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S2_WEAK, *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S2_ATTACK, *FIGHTER_STATUS_KIND_SPECIAL_S].contains(&status_kind))
         || ((*boma).kind() == *FIGHTER_KIND_GEKKOUGA
             && [*FIGHTER_GEKKOUGA_STATUS_KIND_SPECIAL_S_ATTACK].contains(&status_kind)) )
     {
@@ -330,9 +333,59 @@ unsafe fn before_collision(object: *mut BattleObject) {
             kinetic_module__update_energy(module_accessor.kinetic_module, unk3);
 
             if (*boma).is_fighter() {
+                // <HDR>
+
+                // Handles double traction while your grounded speed is influenced by knockback
+                // if above max walk speed
+                let mut damage_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_DAMAGE) as *mut app::KineticEnergy;
+                let damage_speed_x = app::lua_bind::KineticEnergy::get_speed_x(damage_energy);
+                let damage_speed_y = app::lua_bind::KineticEnergy::get_speed_y(damage_energy);
+                if damage_speed_x != 0.0
+                && StatusModule::status_kind(boma) <= 0x1DB  // only affects common statuses
+                && (*boma).is_situation(*SITUATION_KIND_GROUND) {
+                    let speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_GROUND) - KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_EXTERN);
+                    let max_walk = WorkModule::get_param_float(boma, hash40("walk_speed_max"), 0);
+                    let ground_brake = WorkModule::get_param_float(boma, hash40("ground_brake"), 0);
+
+                    if speed_x.abs() >= max_walk {
+                        let mut damage_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_DAMAGE) as *mut app::KineticEnergyNormal;
+                        let extra_traction = -1.0 * ground_brake * damage_speed_x.signum();
+                        let vec2 = Vector2f{x: damage_speed_x + extra_traction, y: damage_speed_y};
+                        app::lua_bind::KineticEnergyNormal::set_speed(damage_energy, &vec2);
+                    }
+                }
+                
+                // </HDR>
+
                 let func_addr = (skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8).add(0x6212d0);
                 let battle_object__update_movement: extern "C" fn(*mut app::Fighter, bool) = std::mem::transmute(func_addr);
                 battle_object__update_movement(object as *mut app::Fighter, !is_receiver_in_hitlag);
+
+                // Prevents jostle from pushing you off of edges
+                // except if you are in knockdown (to allow for pratfall combos)
+                if (*boma).is_situation(*SITUATION_KIND_GROUND)
+                && !(*boma).is_status_one_of(&[
+                    *FIGHTER_STATUS_KIND_DOWN,
+                    *FIGHTER_STATUS_KIND_DOWN_CONTINUE,
+                    *FIGHTER_STATUS_KIND_DOWN_WAIT,
+                    *FIGHTER_STATUS_KIND_DOWN_WAIT_CONTINUE,
+                    *FIGHTER_STATUS_KIND_DOWN_DAMAGE])
+                && GroundModule::get_correct(boma) == *GROUND_CORRECT_KIND_GROUND
+                && KineticModule::is_enable_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_JOSTLE) {
+                    let main_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+                    let damage_speed_x = KineticModule::get_sum_speed_x(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_DAMAGE);
+                    let mut jostle_energy = KineticModule::get_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_JOSTLE) as *mut app::KineticEnergy;
+                    let jostle_energy_x = app::lua_bind::KineticEnergy::get_speed_x(jostle_energy);
+            
+                    if jostle_energy_x != 0.0
+                    && (main_speed_x + damage_speed_x).abs() < jostle_energy_x.abs() {
+                        // This check passes if the speed at which your character is moving due to general movement
+                        // (dashing, running, walking, grounded knockback, shield pushback, etc.)
+                        // is LESS than the speed at which jostle is pushing your character
+                        GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+                        VarModule::on_flag(object, vars::common::instance::TEMPORARY_CLIFF_STOP);
+                    }
+                }
 
             }
             else if (*boma).is_weapon() {
@@ -517,6 +570,13 @@ unsafe fn after_collision(object: *mut BattleObject) {
         return call_original!(object);
     }
 
+    // Resets flag which prevents jostle edge slipoffs for next frame
+    if (*boma).is_fighter()
+    && VarModule::is_flag(object, vars::common::instance::TEMPORARY_CLIFF_STOP) {
+        GroundModule::correct(boma, app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+        VarModule::off_flag(object, vars::common::instance::TEMPORARY_CLIFF_STOP);
+    }
+
     let stop_module__is_stop: extern "C" fn(*const TempModule) -> bool = std::mem::transmute(*(((module_accessor.stop_module.vtable as u64) + 0x88) as *const u64));
     let is_receiver_in_hitlag = stop_module__is_stop(module_accessor.stop_module);
 
@@ -643,6 +703,11 @@ unsafe fn after_collision(object: *mut BattleObject) {
 #[skyline::hook(offset = 0x4debc0)]
 unsafe fn status_module__change_status(status_module: *const u64, status_kind_next: i32) {
     let boma = *(status_module as *mut *mut BattleObjectModuleAccessor).add(1);
+
+    if (*boma).is_fighter() {
+        JostleModule::set_overlap_rate_mul(boma, 1.0);
+    }
+
     if (*boma).is_fighter()
     && skip_early_main_status(boma, status_kind_next)
     && VarModule::is_flag((*boma).object(), vars::common::instance::BEFORE_GROUND_COLLISION) {
@@ -651,6 +716,15 @@ unsafe fn status_module__change_status(status_module: *const u64, status_kind_ne
         return;
     }
     call_original!(status_module, status_kind_next);
+}
+
+// Only extra elec hitlag for hit character
+#[skyline::hook(offset = 0x406804, inline)]
+unsafe fn change_elec_hitlag_for_attacker(ctx: &mut skyline::hooks::InlineCtx) {
+  let is_attacker = *ctx.registers[4].w.as_ref() & 1 == 0;
+  if *ctx.registers[8].x.as_ref() == smash::hash40("collision_attr_elec") && is_attacker {
+    *ctx.registers[8].x.as_mut() = smash::hash40("collision_attr_normal");
+  }
 }
 
 pub fn install() {
@@ -674,6 +748,7 @@ pub fn install() {
     attack::install();
     collision::install();
     camera::install();
+    shotos::install();
 
     unsafe {
         // Handles getting rid of the kill zoom
@@ -689,10 +764,21 @@ pub fn install() {
         // Resets projectile lifetime on parry, rather than using remaining lifetime
         skyline::patching::Patch::in_text(0x33bd358).nop();
         skyline::patching::Patch::in_text(0x33bd35c).data(0x2a0a03e1);
+
+        // The following handles disabling the "Weapon Catch" animation for those who have it.
+        // You will only enter the weapon catch animation if you are completely idle.
+        // Link, Young Link, Toon Link
+        skyline::patching::Patch::in_text(0xc297f8).data(0x7100011F);
+        // Simon and Richter
+        skyline::patching::Patch::in_text(0x1195204).data(0x7100001F);
+        // Krool and Pyra are in their respective modules.
+        // Gives attacker less clank hitlag than defender
+        skyline::patching::Patch::in_text(0x3e0b28).data(0x1E204160);
     }
     skyline::install_hooks!(
         before_collision,
         after_collision,
-        status_module__change_status
+        status_module__change_status,
+        change_elec_hitlag_for_attacker
     );
 }

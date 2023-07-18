@@ -9,7 +9,7 @@ unsafe fn airdodge_cancel(boma: &mut BattleObjectModuleAccessor, status_kind: i3
         return;
     }
     if status_kind == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if frame > 17.0 {
+        if frame > 15.0 {
             FighterStatusModuleImpl::set_fighter_status_data(
                 boma,
                 false,
@@ -43,9 +43,17 @@ unsafe fn shine_jump_cancel(fighter: &mut L2CFighterCommon) {
         }
 }
 
+unsafe fn firefox_startup_ledgegrab(fighter: &mut L2CFighterCommon) {
+    if fighter.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+        // allows ledgegrab during Firefox startup
+        fighter.sub_transition_group_check_air_cliff();
+    }
+}
+
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     airdodge_cancel(boma, status_kind, situation_kind, cat[0], frame);
     shine_jump_cancel(fighter);
+    firefox_startup_ledgegrab(fighter);
 }
 
 #[utils::macros::opff(FIGHTER_KIND_WOLF )]

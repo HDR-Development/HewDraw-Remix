@@ -5,7 +5,7 @@ use globals::*;
 //== StatusModule::init_settings
 //=================================================================
 #[skyline::hook(replace=StatusModule::init_settings)]
-unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: smash::app::SituationKind, kinetic_type: i32, arg4: u32,
+unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, mut situation: smash::app::SituationKind, kinetic_type: i32, arg4: u32,
                              ground_cliff_check_kind: smash::app::GroundCliffCheckKind, jostle: bool,
                              keep_flag: i32, keep_int: i32, keep_float: i32, arg10: i32) -> u64 {
     let id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
@@ -64,6 +64,22 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
             VarModule::set_vec3(boma.object(), vars::common::instance::LEDGE_POS, GroundModule::hang_cliff_pos_3f(boma));
         }
 
+        // heavy item pickup should keep momentum and be affected by gravity in the air
+        if boma.is_status(*FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP) && boma.is_situation(*SITUATION_KIND_AIR) {
+            // change the kinetic type to the regular air type
+            kinetic_type = *FIGHTER_KINETIC_TYPE_FALL;
+            situation.0 = *SITUATION_KIND_NONE;
+        }
+
+        if boma.kind() == *FIGHTER_KIND_DONKEY && boma.is_situation(*SITUATION_KIND_AIR) 
+            && boma.is_status_one_of(&[
+            *FIGHTER_DONKEY_STATUS_KIND_SHOULDER_START,
+            *FIGHTER_DONKEY_STATUS_KIND_SHOULDER_WAIT,
+            *FIGHTER_STATUS_KIND_THROW,]) {
+                kinetic_type = *FIGHTER_KINETIC_TYPE_FALL;
+                situation.0 = *SITUATION_KIND_NONE;
+            }
+
         // Repeated tilt scaling; UNUSED
         /*
         if [*FIGHTER_KIND_RYU, *FIGHTER_KIND_KEN, *FIGHTER_KIND_DOLLY].contains(&fighter_kind) {
@@ -112,11 +128,11 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, situation: s
             && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI))
         || (boma.kind() == *FIGHTER_KIND_REFLET
             && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI))
+        || (boma.kind() == *FIGHTER_KIND_WOLF
+            && boma.is_status(*FIGHTER_STATUS_KIND_SPECIAL_HI))
         {
             cliff_check_kind = app::GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
         }
-
-        VarModule::off_flag(boma.object(), vars::common::instance::IS_MOTION_BASED_ATTACK);
 
         if boma.is_prev_status(*FIGHTER_STATUS_KIND_SWALLOWED_DRINK) {
             VisibilityModule::set_whole(boma, true);
