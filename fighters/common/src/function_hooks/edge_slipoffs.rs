@@ -42,7 +42,16 @@ pub unsafe fn init_settings_edges(boma: &mut BattleObjectModuleAccessor, situati
             // *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE,
             *FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP,
             *FIGHTER_STATUS_KIND_DAMAGE,
-            *FIGHTER_STATUS_KIND_AIR_LASSO_LANDING].contains(&status_kind) {
+            *FIGHTER_STATUS_KIND_AIR_LASSO_LANDING,
+            *FIGHTER_STATUS_KIND_TREAD_DAMAGE,
+            *FIGHTER_STATUS_KIND_TREAD_DAMAGE_RV,
+            *FIGHTER_STATUS_KIND_LANDING_DAMAGE_LIGHT,
+            *FIGHTER_STATUS_KIND_DAMAGE_SONG,
+            *FIGHTER_STATUS_KIND_DAMAGE_SLEEP_START,
+            *FIGHTER_STATUS_KIND_DAMAGE_SLEEP,
+            *FIGHTER_STATUS_KIND_DAMAGE_SLEEP_END,
+            *FIGHTER_STATUS_KIND_DOWN_DAMAGE,
+            *FIGHTER_STATUS_KIND_SAVING_DAMAGE].contains(&status_kind) {
             fix = *GROUND_CORRECT_KIND_GROUND as u32;
         }
 
@@ -108,8 +117,18 @@ unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, kind: GroundCorrec
             *FIGHTER_STATUS_KIND_LANDING,
             *FIGHTER_STATUS_KIND_TURN_DASH,
             *FIGHTER_STATUS_KIND_DASH,
-            *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL].contains(&status_kind) {
-            return original!()(boma, GroundCorrectKind(1));
+            *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL,
+            *FIGHTER_STATUS_KIND_DAMAGE,
+            *FIGHTER_STATUS_KIND_TREAD_DAMAGE,
+            *FIGHTER_STATUS_KIND_TREAD_DAMAGE_RV,
+            *FIGHTER_STATUS_KIND_LANDING_DAMAGE_LIGHT,
+            *FIGHTER_STATUS_KIND_DAMAGE_SONG,
+            *FIGHTER_STATUS_KIND_DAMAGE_SLEEP_START,
+            *FIGHTER_STATUS_KIND_DAMAGE_SLEEP,
+            *FIGHTER_STATUS_KIND_DAMAGE_SLEEP_END,
+            *FIGHTER_STATUS_KIND_DOWN_DAMAGE,
+            *FIGHTER_STATUS_KIND_SAVING_DAMAGE].contains(&status_kind) {
+            return original!()(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         }
 
         if ((fighter_kind == *FIGHTER_KIND_PIKACHU || fighter_kind == *FIGHTER_KIND_PICHU) &&

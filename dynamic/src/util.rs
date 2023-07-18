@@ -1,6 +1,7 @@
 use smash::app::{BattleObject, BattleObjectModuleAccessor};
 use smash::lua2cpp::L2CFighterCommon;
 use crate::offsets;
+use crate::ext::*;
 use std::arch::asm;
 
 #[macro_export]
@@ -227,6 +228,32 @@ pub fn get_game_state() -> *const u64 {
         }
         p_game_state
     }
+}
+
+pub unsafe fn get_mapped_controller_inputs_from_id(player: usize) -> &'static MappedInputs {
+    let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
+        .add(0x52c30f0) as *const u64);
+    &*((base + 0x2b8 + 0x8 * (player as u64)) as *const MappedInputs)
+}
+
+pub unsafe fn get_controller_mapping_from_id(player: usize) -> &'static ControllerMapping {
+    let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
+        .add(0x52c30f0) as *const u64);
+    &*((base + 0x18) as *const ControllerMapping).add(player as usize)
+}
+
+#[repr(C)]
+struct SomeControllerStruct {
+    padding: [u8; 0x10],
+    controller: &'static mut Controller,
+}
+
+pub unsafe fn get_controller_from_id(player: usize) -> &'static Controller {
+    let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
+        .add(0x5337860) as *const u64);
+    let uVar3 = *((base + 0x298 + (4 * (player as u64))) as *const u32);
+    let controller_struct = ((base + (0x8 * (uVar3 as i32)) as u64) as *mut SomeControllerStruct);
+    (*controller_struct).controller
 }
 
 /// Triggers a match exit (all the way back to the stage select screen) by entering into the `StateExit` game state.

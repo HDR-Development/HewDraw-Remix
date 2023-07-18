@@ -274,8 +274,9 @@ unsafe fn status_GuardOff_Common(fighter: &mut L2CFighterCommon) -> L2CValue {
         Hash40::new("guard_off"),
         true,
     );
+    let guard_off_motion_start_frame = ParamModule::get_float(fighter.battle_object, ParamType::Common, "guard_off_motion_start_frame");
     let ret_val = if 0.0 < fighter_guard_off_cancel_frame && 0 < guard_off_cancel_frame {
-        (fighter_guard_off_cancel_frame + 3.0) / (guard_off_cancel_frame as f32)
+        (fighter_guard_off_cancel_frame - guard_off_motion_start_frame) / (guard_off_cancel_frame as f32)
     } else {
         1.0
     };
@@ -367,10 +368,11 @@ unsafe fn status_GuardOff(fighter: &mut L2CFighterCommon) -> L2CValue {
         SoundModule::set_se_vol(fighter.module_accessor, sfx_handle as i32, 0.9, 0);
         SoundModule::stop_se(fighter.module_accessor, Hash40::new("se_common_guardon"), 0);
     } else {
+        let guard_off_motion_start_frame = ParamModule::get_float(fighter.battle_object, ParamType::Common, "guard_off_motion_start_frame");
         MotionModule::change_motion(
             fighter.module_accessor,
             Hash40::new("guard_off"),
-            3.0,
+            guard_off_motion_start_frame,
             rate,
             false,
             0.0,

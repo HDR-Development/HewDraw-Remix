@@ -134,6 +134,23 @@ unsafe fn lucina_attack_air_f_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "lucina", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn lucina_attack_air_f_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+    }
+}
+
 
 #[acmd_script( agent = "lucina", script = "game_attackairb" , category = ACMD_GAME , low_priority)]
 unsafe fn lucina_attack_air_b_game(fighter: &mut L2CAgentBase) {
@@ -240,6 +257,7 @@ pub fn install() {
         lucina_attack_air_lw_game,
         lucina_attack_air_n_effect,
         lucina_attack_air_f_effect,
+        lucina_attack_air_f_expression,
         lucina_attack_air_n_sound,
     );
 }

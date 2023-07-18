@@ -260,6 +260,18 @@ unsafe fn lucas_attack_air_b_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+
+#[acmd_script( agent = "lucas", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn lucas_attack_air_b_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 14.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 #[acmd_script( agent = "lucas", script = "game_attackairhi" , category = ACMD_GAME , low_priority)]
 unsafe fn lucas_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -283,7 +295,7 @@ unsafe fn lucas_attack_air_hi_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 11.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-        MotionModule::set_rate(boma, (37.0-11.0)/17.0); //shifts FAF to (28)
+        MotionModule::set_rate(boma, (37.0-11.0)/18.0); //shifts FAF to (28)
     }
     frame(lua_state, 37.0);
     if is_excute(fighter) {
@@ -304,6 +316,20 @@ unsafe fn lucas_attack_air_hi_effect(fighter: &mut L2CAgentBase) {
     frame(lua_state, 7.0);
     if is_excute(fighter) {
         EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 15, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true, 0.7);
+    }
+}
+
+#[acmd_script( agent = "lucas", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn lucas_attack_air_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
@@ -395,6 +421,7 @@ unsafe fn lucas_attack_air_lw_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
+
 #[acmd_script( agent = "lucas", script = "sound_attackairlw" , category = ACMD_SOUND , low_priority)]
 unsafe fn lucas_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -419,6 +446,26 @@ unsafe fn lucas_attack_air_lw_sound(fighter: &mut L2CAgentBase) {
     
 }
 
+#[acmd_script( agent = "lucas", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn lucas_attack_air_lw_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 13.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 19.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 6, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
+
 #[acmd_script( agent = "lucas", script = "game_aircatchlanding" , category = ACMD_GAME , low_priority)]
 unsafe fn lucas_landing_air_catch_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -439,12 +486,17 @@ pub fn install() {
         lucas_attack_air_f_effect,
         lucas_attack_air_b_game,
         lucas_attack_air_b_effect,
+        lucas_attack_air_b_expression,
         lucas_attack_air_hi_game,
         lucas_attack_air_hi_effect,
+        lucas_attack_air_hi_expression,
         lucas_attack_air_lw_game,
         lucas_attack_air_lw_effect,
         lucas_attack_air_lw_sound,
+        lucas_attack_air_lw_expression,
         lucas_landing_air_catch_game,
+
+        
     );
 }
 

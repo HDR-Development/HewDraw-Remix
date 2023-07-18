@@ -169,6 +169,10 @@ pub mod vars {
 
             pub const IS_PARRY_FOR_GUARD_OFF: i32 = 0x0060;
 
+            pub const TEMPORARY_CLIFF_STOP: i32 = 0x0061;
+
+            pub const ENABLE_FRAME_DATA_DEBUG: i32 = 0x0062;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -194,6 +198,8 @@ pub mod vars {
             pub const CLIFF_XLU_FRAME: i32 = 0x000B;
             pub const LAST_ATTACK_HITBOX_ID: i32 = 0x000C;
             pub const SHIELD_EFFECT_HANDLE: i32 = 0x000D;
+
+            pub const FRAME_COUNTER: i32 = 0x000E;
 
             // floats
 
@@ -232,6 +238,8 @@ pub mod vars {
         }
         pub mod status {
             // flags
+            pub const FAF_REACHED: i32 = 0x10FD;
+            pub const PREV_AUTOCANCEL_FLAG: i32 = 0x10FE;
             pub const DISABLE_ECB_SHIFT: i32 = 0x10FF;
 
             pub const IS_DASH_TO_RUN_FRAME: i32 = 0x1000;
@@ -278,12 +286,13 @@ pub mod vars {
             // ints
             pub const NUM_RECOVERY_RESOURCE_USED: i32 = 0x0100;
             pub const NUM_CANCEL_THIS_AIRTIME: i32 = 0x0101;
-            pub const ABK_ANGLE_ROUNDED: i32 = 0x0102;
         }
         pub mod status {
             // flags
             pub const IS_ACTIVATE: i32 = 0x1100;
             pub const DIRECT_HIT: i32 = 0x1101;
+            // floats
+            pub const ABK_ANGLE: i32 = 0x1102;
         }
     }
 
@@ -413,6 +422,7 @@ pub mod vars {
         pub mod status {
             // flags
             pub const SPECIAL_CHECKS: i32 = 0x1100;
+            pub const IS_NEUTRAL_TOSS: i32 = 0x1101;
 
             // pub const SPECIAL_AIR_LW_STOP: i32 = 0x1100;
         }
@@ -843,6 +853,8 @@ pub mod vars {
             pub const DTAUNT_C4_EXLPODE: i32 = 0x0103;
             pub const DTAUNT_GRENADE_WAIT_COUNT: i32 = 0x0104;
             pub const IS_GRAB_WALK: i32 = 0x0105;
+            pub const TRANQ_RELOAD_VULNERABLE: i32 = 0x0106;
+            pub const TRANQ_NEED_RELEOAD: i32 = 0x0107;
 
             // ints
             pub const SNAKE_GRENADE_COUNTER: i32 = 0x0100;
