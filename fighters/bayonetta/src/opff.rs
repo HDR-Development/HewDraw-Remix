@@ -200,7 +200,15 @@ unsafe fn abk(fighter: &mut smash::lua2cpp::L2CFighterCommon, frame: f32) {
             //    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, angle);
             //    app::sv_kinetic_energy::set_angle(fighter.lua_state_agent);
             //}
+        } //dabk
+        if boma.status_frame() == 5 {
+            if fighter.is_button_on(Buttons::Attack | Buttons::Catch) {
+                WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_AIR_SPECIAL_S_U_TO_D);
+                StatusModule::change_status_force(boma, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D, true);
+            }
         }
+    } else if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D) && fighter.is_prev_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U) && boma.status_frame() == 1 {
+        MotionModule::set_frame_sync_anim_cmd(boma, 6.0, true, false, false);
     }
 }
 

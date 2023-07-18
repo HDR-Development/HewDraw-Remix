@@ -169,6 +169,8 @@ special_air_n_end_f:
   flags:
     move: true
   blend_frames: 5
+special_air_s_d:
+  blend_frames: 2
 special_air_s_d_hit:
   extra:
     cancel_frame: 32
