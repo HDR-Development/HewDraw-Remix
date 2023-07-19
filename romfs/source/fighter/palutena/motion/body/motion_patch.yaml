@@ -12,7 +12,10 @@ throw_hi:
     cancel_frame: 47
 special_n:
   extra:
-    cancel_frame: 72
+    cancel_frame: 26
+special_air_n:
+  extra:
+    cancel_frame: 26
 special_s:
   extra:
     cancel_frame: 63
