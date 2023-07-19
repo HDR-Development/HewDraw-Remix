@@ -1,8 +1,8 @@
 
 use super::*;
 
-#[acmd_script(agent = "plizardon", script = "game_attack13" , category = ACMD_GAME , low_priority)]
-unsafe fn plizardon_attack_13_game(fighter: &mut L2CAgentBase) {
+#[acmd_script(agent = "plizardon", script = "game_attack11" , category = ACMD_GAME , low_priority)]
+unsafe fn game_attack11(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
     frame(lua_state, 1.0);
@@ -17,6 +17,48 @@ unsafe fn plizardon_attack_13_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 10.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "plizardon", script = "effect_attack11", category = ACMD_EFFECT, low_priority )]
+unsafe fn effect_attack11(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), -8, 0, 0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        EFFECT_FOLLOW_FLIP(agent, Hash40::new("plizardon_atk_wing"), Hash40::new("plizardon_atk_wing"), Hash40::new("top"), 0, 12, 7.5, 8.5, -55, 47, 1, true, *EF_FLIP_YZ);
+    }
+}
+
+#[acmd_script( agent = "plizardon", script = "sound_attack11", category = ACMD_SOUND, low_priority )]
+unsafe fn sound_attack11(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_plizardon_swing_l"));
+    }
+}
+
+#[acmd_script( agent = "plizardon", script = "expression_attack11", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_attack11(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("wingr7"), AttackDirectionAxis(*ATTACK_DIRECTION_X_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y));
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_wing"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 7.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
@@ -45,7 +87,10 @@ unsafe fn plizardon_attack_dash_game(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        plizardon_attack_13_game,
+        game_attack11,
+        effect_attack11,
+        sound_attack11,
+        expression_attack11,
         plizardon_attack_dash_game,
     );
 }

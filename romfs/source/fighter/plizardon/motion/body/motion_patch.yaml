@@ -19,27 +19,33 @@ guard_off:
   blend_frames: 4
 attack_11:
   flags:
-    move: false
+    move: true
+  animations:
+  - name: c00attack13.nuanmb
   extra:
-    cancel_frame: 18
+    cancel_frame: 33
 attack_lw3:
   flags:
-    move: false
+    move: true
+  animations:
+  - name: c01attacks3lw.nuanmb
+  extra:
+    cancel_frame: 35
 attack_hi4:
   flags:
-    move: false
+    move: true
 fall_aerial:
   blend_frames: 5
 attack_s3_s:
   flags:
-    move: false
+    move: true
   extra:
     cancel_frame: 34
 fall_special:
   blend_frames: 5
 attack_s3_lw:
   flags:
-    move: false
+    move: true
   extra:
     cancel_frame: 34
 attack_air_b:
@@ -53,7 +59,7 @@ attack_air_n:
     cancel_frame: 36
 attack_s3_hi:
   flags:
-    move: false
+    move: true
   extra:
     cancel_frame: 34
 attack_air_lw:

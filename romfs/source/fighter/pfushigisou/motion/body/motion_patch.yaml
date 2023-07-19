@@ -8,7 +8,7 @@ attack_11:
     cancel_frame: 16
 attack_lw3:
   extra:
-    cancel_frame: 32
+    cancel_frame: 38
 attack_hi4:
   extra:
     cancel_frame: 65
@@ -19,13 +19,13 @@ fall_aerial:
   blend_frames: 5
 attack_dash:
   extra:
-    cancel_frame: 38
+    cancel_frame: 44
 attack_s4_s:
   extra:
     cancel_frame: 65
 attack_s3_s:
   flags:
-    move: false
+    move: true
 fall_special:
   blend_frames: 5
 attack_s4_hi:
