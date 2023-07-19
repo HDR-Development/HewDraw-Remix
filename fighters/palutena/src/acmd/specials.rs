@@ -129,10 +129,12 @@ unsafe fn palutena_special_n_r_effect(agent: &mut L2CAgentBase) {
 unsafe fn palutena_special_n_r_sound(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
+    let sound_lvl = Hash40::new("se_common_bomb_l");
     frame(lua_state, 14.0);
     if is_excute(agent) {
         PLAY_SEQUENCE(agent, Hash40::new("seq_palutena_rnd_smash_s"));
         PLAY_SE(agent, Hash40::new("se_palutena_smash_s01"));
+        PLAY_SE(agent, sound_lvl);
     }
 }
 
@@ -420,31 +422,16 @@ unsafe fn palutena_special_n_p_sound(agent: &mut L2CAgentBase) {
 unsafe fn palutena_special_n_o_game(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
     let boma = agent.boma();
-    let current_damage = DamageModule::damage(boma, 0);
     frame(lua_state, 1.0);
     if is_excute(agent) {
         MeterModule::drain(boma.object(), 2);
         VarModule::on_flag(boma.object(), vars::palutena::instance::FLUSH);
+        PostureModule::set_lr(boma, PostureModule::lr(agent.module_accessor));
+        PostureModule::update_rot_y_lr(boma);
     }
-    frame(lua_state, 4.0);
+    frame(lua_state, 13.0);
     if is_excute(agent) {
-        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 20.0);
-    }
-    frame(lua_state, 19.0);
-    if is_excute(agent) {
-        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
-        VarModule::set_float(boma.object(), vars::palutena::status::ADD_DAMAGE, DamageModule::damage(boma, 0) - current_damage);
-    }
-    frame(lua_state, 23.0);
-    if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 15.0 + VarModule::get_float(boma.object(), vars::palutena::status::ADD_DAMAGE), 361, 50, 0, 70, 7.0, 0.0, 10.5, 13.0, Some(0.0), Some(10.5), Some(14.5), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_MAGIC);
-        ATTACK(agent, 1, 0, Hash40::new("top"), 15.0 + VarModule::get_float(boma.object(), vars::palutena::status::ADD_DAMAGE), 361, 30, 0, 65, 9.0, 0.0, 10.5, 9.0, Some(0.0), Some(10.5), Some(20.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_MAGIC);
-        AttackModule::set_force_reaction(boma, 0, true, false);
-        AttackModule::set_force_reaction(boma, 1, true, false);
-    }
-    frame(lua_state, 26.0);
-    if is_excute(agent) {
-        AttackModule::clear_all(boma);
+        ArticleModule::generate_article(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD, false, 0);
     }
 
 }
@@ -454,44 +441,26 @@ unsafe fn palutena_special_n_o_effect(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 1.0);
     if is_excute(agent) {
-        EFFECT_FLW_POS(agent, Hash40::new("palutena_counter_flash"), Hash40::new("shield"), -1, 0, -3, 0, 0, 0, 1, true);
-        EFFECT(agent, Hash40::new("palutena_counter_success"), Hash40::new("top"), 0, 14.8, -1, 0, 90, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        EFFECT(agent, Hash40::new("sys_counter_flash"), Hash40::new("top"), 0, 14.8, -1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-    }
-    frame(lua_state, 19.0);
-    if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
-        if is_excute(agent) {
-            EFFECT_FLW_POS(agent, Hash40::new("palutena_backlight"), Hash40::new("waist"), 10, -3, -1, 0, 90, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(agent, 0.8, 0.2, 0.01);
-            EffectModule::set_disable_render_offset_last(boma);
-            LAST_EFFECT_SET_RATE(agent, 2.75);
-        }
-    }
-    else {
-        if is_excute(agent) {
-            EFFECT_FLW_POS(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 0, 21, 5, 0, -90, 0, 1, true);
-            LAST_EFFECT_SET_COLOR(agent, 0.8, 0.2, 0.01);
-            EffectModule::set_disable_render_offset_last(boma);
-            LAST_EFFECT_SET_RATE(agent, 2.75);
-        }
-    }
-    frame(lua_state, 21.0);
-    if is_excute(agent) {
-        FLASH(agent, 1, 1, 1, 0);
-        EFFECT_FLW_POS(agent, Hash40::new("palutena_counter_attack"), Hash40::new("stick"), 0, 8.5, 0, 0, 0, 0, 1.2, true);
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light_trace"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+        EffectModule::enable_sync_init_pos_last(boma);
         LAST_EFFECT_SET_COLOR(agent, 0.8, 0.2, 0.01);
-        EffectModule::set_disable_render_offset_last(boma);
+        EFFECT_FOLLOW(agent, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
+        LAST_EFFECT_SET_COLOR(agent, 0.8, 0.2, 0.01);
+        EFFECT(agent, Hash40::new("palutena_throw_twinkle"), Hash40::new("top"), 0.0, 16.0, -8.0, 0, 0, 0, 0.95, 0, 0, 0, 0, 0, 0, true);
     }
-    frame(lua_state, 22.0);
+    frame(lua_state, 8.0);
     if is_excute(agent) {
+        EFFECT(agent, Hash40::new("palutena_mirror_break"), Hash40::new("top"), 0.0, 16.0, -8.0, 0, 0, 0, 0.225, 0, 0, 0, 0, 0, 0, true);
     }
-    frame(lua_state, 23.0);
+    frame(lua_state, 10.0);
     if is_excute(agent) {
-        EFFECT_DETACH_KIND(agent, Hash40::new("palutena_backlight"), -1);
+        EFFECT_FOLLOW_ALPHA(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), -1, 21, 1, 0, 90, 0, 1, true, 0.7);
+        LAST_EFFECT_SET_COLOR(agent, 0.8, 0.2, 0.01);
     }
-    frame(lua_state, 36.0);
+    frame(lua_state, 35.0);
     if is_excute(agent) {
-        COL_NORMAL(agent);
+        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light_trace"), false, false);
+        EFFECT_OFF_KIND(agent, Hash40::new("palutena_wand_light2"), false, false);
     }
 }
 
@@ -501,19 +470,7 @@ unsafe fn palutena_special_n_o_sound(agent: &mut L2CAgentBase) {
     let boma = agent.boma();
     frame(lua_state, 10.0);
     if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_palutena_special_l01"));
-    }
-    frame(lua_state, 19.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_palutena_special_l02"));
-    }
-    wait(lua_state, 2.0);
-    if is_excute(agent) {
-        PLAY_SE(agent, Hash40::new("se_palutena_special_l03"));
-    }
-    wait(lua_state, 1.0);
-    if is_excute(agent) {
-        PLAY_SEQUENCE(agent, Hash40::new("seq_palutena_rnd_special_l01"));
+        PLAY_SEQUENCE(agent, Hash40::new("seq_palutena_rnd_special_l02"));
     }
 }
 
@@ -528,12 +485,12 @@ unsafe fn palutena_special_n_g_game(agent: &mut L2CAgentBase) {
     }
     frame(lua_state, 8.0);
     if is_excute(agent) {
-        ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 122, 40, 0, 75, 8.0, 0.0, 12.0, 10.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_ITEM, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 122, 40, 0, 75, 10.0, 0.0, 12.0, 10.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_ITEM, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
     }
     wait(lua_state, 3.0);
     if is_excute(agent) {
         AttackModule::clear_all(boma);
-        ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 0, 40, 0, 75, 16.0, 0.0, 12.0, 10.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_ITEM, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_turn"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
+        ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 0, 40, 0, 75, 25.0, 0.0, 12.0, 10.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_ITEM, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_turn"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
     }
     wait(lua_state, 3.0);
     if is_excute(agent) {
@@ -585,234 +542,152 @@ unsafe fn palutena_special_n_g_sound(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "palutena", script = "game_speciallw" , category = ACMD_GAME , low_priority)]
-unsafe fn palutena_special_lw_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::palutena::status::SPECIAL_LW_AEGIS_REFLECTOR);
+unsafe fn palutena_special_lw_game(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    let current_damage = DamageModule::damage(boma, 0);
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 20.0);
     }
-    frame(lua_state, 3.0);
-    if is_excute(fighter) {
-        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 6.8, 6.8);
+    frame(lua_state, 19.0);
+    if is_excute(agent) {
+        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+        VarModule::set_float(boma.object(), vars::palutena::status::ADD_DAMAGE, DamageModule::damage(boma, 0) - current_damage);
     }
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW))
-           && !ArticleModule::is_exist(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD)
-           && !(VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER) > 0) {
-            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1); // Start counting the cooldown timer
-            VarModule::set_float(fighter.battle_object, vars::palutena::status::SPECIAL_LW_LR, PostureModule::lr(fighter.module_accessor));
-            VarModule::on_flag(fighter.battle_object, vars::palutena::status::SPECIAL_LW_AEGIS_REFLECTOR);
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_LW_REFLECT, true);
-        }
-        else{
-            WorkModule::on_flag(boma, *FIGHTER_PALUTENA_STATUS_SPECIAL_LW_FLAG_SHIELD);
-            shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PALUTENA_REFLECTOR_KIND_REFLECTOR, *FIGHTER_REFLECTOR_GROUP_EXTEND);
-            SEARCH(fighter, 0, 0, Hash40::new("top"), 12.3, 0.0, 10.0, 1.5, None, None, None, *COLLISION_KIND_MASK_AH, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false);
-        }
+    frame(lua_state, 23.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("top"), 15.0 + VarModule::get_float(boma.object(), vars::palutena::status::ADD_DAMAGE), 361, 50, 0, 70, 7.0, 0.0, 10.5, 13.0, Some(0.0), Some(10.5), Some(14.5), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_MAGIC);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 15.0 + VarModule::get_float(boma.object(), vars::palutena::status::ADD_DAMAGE), 361, 30, 0, 65, 9.0, 0.0, 10.5, 9.0, Some(0.0), Some(10.5), Some(20.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_MAGIC);
+        AttackModule::set_force_reaction(boma, 0, true, false);
+        AttackModule::set_force_reaction(boma, 1, true, false);
     }
-    frame(lua_state, 35.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.9);
-        WorkModule::off_flag(boma, *FIGHTER_PALUTENA_STATUS_SPECIAL_LW_FLAG_SHIELD);
-        shield!(fighter, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, *FIGHTER_PALUTENA_REFLECTOR_KIND_REFLECTOR, *FIGHTER_REFLECTOR_GROUP_EXTEND);
-        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 3.0, 3.2);
-        search!(fighter, *MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR, 0);
+    frame(lua_state, 26.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
     }
 
 }
 
 #[acmd_script( agent = "palutena", script = "game_specialairlw" , category = ACMD_GAME , low_priority)]
-unsafe fn palutena_special_air_lw_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, vars::palutena::status::SPECIAL_LW_AEGIS_REFLECTOR);
+unsafe fn palutena_special_air_lw_game(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    let current_damage = DamageModule::damage(boma, 0);
+    frame(lua_state, 4.0);
+    if is_excute(agent) {
+        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 20.0);
     }
-    frame(lua_state, 3.0);
-    if is_excute(fighter) {
-        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 6.8, 6.8);
+    frame(lua_state, 19.0);
+    if is_excute(agent) {
+        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+        VarModule::set_float(boma.object(), vars::palutena::status::ADD_DAMAGE, DamageModule::damage(boma, 0) - current_damage);
     }
-    frame(lua_state, 7.0);
-    if is_excute(fighter) {
-        if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW))
-           && !ArticleModule::is_exist(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD)
-           && !(VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER) > 0) {
-            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 1); // Start counting the cooldown timer
-            VarModule::set_float(fighter.battle_object, vars::palutena::status::SPECIAL_LW_LR, PostureModule::lr(fighter.module_accessor));
-            VarModule::on_flag(fighter.battle_object, vars::palutena::status::SPECIAL_LW_AEGIS_REFLECTOR);
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_PALUTENA_STATUS_KIND_SPECIAL_LW_REFLECT, true);
-        }
-        else{
-            WorkModule::on_flag(boma, *FIGHTER_PALUTENA_STATUS_SPECIAL_LW_FLAG_SHIELD);
-            shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PALUTENA_REFLECTOR_KIND_REFLECTOR, *FIGHTER_REFLECTOR_GROUP_EXTEND);
-            SEARCH(fighter, 0, 0, Hash40::new("top"), 12.3, 0.0, 10.0, 1.5, None, None, None, *COLLISION_KIND_MASK_AH, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false);
-        }
+    frame(lua_state, 23.0);
+    if is_excute(agent) {
+        ATTACK(agent, 0, 0, Hash40::new("top"), 15.0 + VarModule::get_float(boma.object(), vars::palutena::status::ADD_DAMAGE), 361, 50, 0, 70, 7.0, 0.0, 10.5, 13.0, Some(0.0), Some(10.5), Some(14.5), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_MAGIC);
+        ATTACK(agent, 1, 0, Hash40::new("top"), 15.0 + VarModule::get_float(boma.object(), vars::palutena::status::ADD_DAMAGE), 361, 30, 0, 65, 9.0, 0.0, 10.5, 9.0, Some(0.0), Some(10.5), Some(20.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_MAGIC);
+        AttackModule::set_force_reaction(boma, 0, true, false);
+        AttackModule::set_force_reaction(boma, 1, true, false);
     }
-    frame(lua_state, 35.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 0.9);
-        WorkModule::off_flag(boma, *FIGHTER_PALUTENA_STATUS_SPECIAL_LW_FLAG_SHIELD);
-        shield!(fighter, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, *FIGHTER_PALUTENA_REFLECTOR_KIND_REFLECTOR, *FIGHTER_REFLECTOR_GROUP_EXTEND);
-        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 3.0, 3.2);
-        search!(fighter, *MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR, 0);
+    frame(lua_state, 26.0);
+    if is_excute(agent) {
+        AttackModule::clear_all(boma);
     }
     
 }
 
-#[acmd_script( agent = "palutena", script = "game_speciallwreflect" , category = ACMD_GAME , low_priority)]
-unsafe fn palutena_special_lw_reflect_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::palutena::status::SPECIAL_LW_AEGIS_REFLECTOR) {
-            FT_MOTION_RATE(fighter, 1.5);
-            PostureModule::set_lr(boma, VarModule::get_float(fighter.battle_object, vars::palutena::status::SPECIAL_LW_LR));
-            PostureModule::update_rot_y_lr(boma);
-        }
-        else {
-            shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PALUTENA_REFLECTOR_KIND_REFLECTOR, *FIGHTER_REFLECTOR_GROUP_EXTEND);
-        }
-    }
-    frame(lua_state, 5.0);
-    if is_excute(fighter) {
-        if !VarModule::is_flag(fighter.battle_object, vars::palutena::status::SPECIAL_LW_AEGIS_REFLECTOR) {
-            shield!(fighter, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, *FIGHTER_PALUTENA_REFLECTOR_KIND_REFLECTOR, *FIGHTER_REFLECTOR_GROUP_EXTEND);
-        }
-    }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::palutena::status::SPECIAL_LW_AEGIS_REFLECTOR) {
-            ArticleModule::generate_article(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD, false, 0);
-            FT_MOTION_RATE(fighter, 0.75);
-        }
-        else{
-            FT_MOTION_RATE(fighter, 0.6);
-        }
-    }
-    frame(lua_state, 35.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
-    }
-
-}
-
-#[acmd_script( agent = "palutena", script = "effect_speciallwreflect" , category = ACMD_EFFECT , low_priority)]
-unsafe fn palutena_special_lw_reflect_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
+#[acmd_script( agent = "palutena", scripts = ["effect_speciallw", "effect_specialairlw"], category = ACMD_EFFECT, low_priority )]
+unsafe fn palutena_special_lw_effect(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::palutena::status::SPECIAL_LW_AEGIS_REFLECTOR) {
-            LANDING_EFFECT(fighter, Hash40::new("sys_action_smoke_h"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-            EFFECT_FOLLOW(fighter, Hash40::new("palutena_wand_light_trace"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-            EffectModule::enable_sync_init_pos_last(boma);
-            EFFECT_FOLLOW(fighter, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-            EFFECT(fighter, Hash40::new("palutena_throw_twinkle"), Hash40::new("top"), 0.0, 16.0, -8.0, 0, 0, 0, 0.95, 0, 0, 0, 0, 0, 0, true);
+    if is_excute(agent) {
+        EFFECT_FLW_POS(agent, Hash40::new("palutena_counter_flash"), Hash40::new("shield"), -1, 0, -3, 0, 0, 0, 1, true);
+        EFFECT(agent, Hash40::new("palutena_counter_success"), Hash40::new("top"), 0, 14.8, -1, 0, 90, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        EFFECT(agent, Hash40::new("sys_counter_flash"), Hash40::new("top"), 0, 14.8, -1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(lua_state, 19.0);
+    if sv_animcmd::get_value_float(lua_state, *SO_VAR_FLOAT_LR) < 0.0 {
+        if is_excute(agent) {
+            EFFECT_FLW_POS(agent, Hash40::new("palutena_backlight"), Hash40::new("waist"), 10, -3, -1, 0, 90, 0, 1, true);
+            EffectModule::set_disable_render_offset_last(boma);
+            LAST_EFFECT_SET_RATE(agent, 2.75);
         }
     }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::palutena::status::SPECIAL_LW_AEGIS_REFLECTOR) {
-            EFFECT(fighter, Hash40::new("palutena_mirror_break"), Hash40::new("top"), 0.0, 16.0, -8.0, 0, 0, 0, 0.225, 0, 0, 0, 0, 0, 0, true);
-        }
-        else{
-            EFFECT(fighter, Hash40::new("palutena_mirror"), Hash40::new("top"), 12.0, 12.0, 0, 0, 22.5, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-            EFFECT_DETACH_KIND(fighter, Hash40::new("palutena_backlight"), -1);
+    else {
+        if is_excute(agent) {
+            EFFECT_FLW_POS(agent, Hash40::new("palutena_backlight"), Hash40::new("top"), 0, 21, 5, 0, -90, 0, 1, true);
+            EffectModule::set_disable_render_offset_last(boma);
+            LAST_EFFECT_SET_RATE(agent, 2.75);
         }
     }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::palutena::status::SPECIAL_LW_AEGIS_REFLECTOR) {
-            EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("palutena_backlight"), Hash40::new("top"), -1, 21, 1, 0, 90, 0, 1, true, 0.7);
-        }
+    frame(lua_state, 21.0);
+    if is_excute(agent) {
+        FLASH(agent, 1, 1, 1, 0);
+        EFFECT_FLW_POS(agent, Hash40::new("palutena_counter_attack"), Hash40::new("stick"), 0, 8.5, 0, 0, 0, 0, 1.2, true);
+        EffectModule::set_disable_render_offset_last(boma);
     }
-    frame(lua_state, 35.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::palutena::status::SPECIAL_LW_AEGIS_REFLECTOR) {
-            EFFECT_OFF_KIND(fighter, Hash40::new("palutena_wand_light_trace"), false, false);
-            EFFECT_OFF_KIND(fighter, Hash40::new("palutena_wand_light2"), false, false);
-        }
+    frame(lua_state, 22.0);
+    if is_excute(agent) {
     }
-
+    frame(lua_state, 23.0);
+    if is_excute(agent) {
+        EFFECT_DETACH_KIND(agent, Hash40::new("palutena_backlight"), -1);
+    }
+    frame(lua_state, 36.0);
+    if is_excute(agent) {
+        COL_NORMAL(agent);
+    }
 }
 
-#[acmd_script( agent = "palutena", script = "game_specialairlwreflect" , category = ACMD_GAME , low_priority)]
-unsafe fn palutena_special_air_lw_reflect_game(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::palutena::status::SPECIAL_LW_AEGIS_REFLECTOR) {
-            FT_MOTION_RATE(fighter, 1.5);
-            PostureModule::set_lr(boma, VarModule::get_float(fighter.battle_object, vars::palutena::status::SPECIAL_LW_LR));
-            PostureModule::update_rot_y_lr(boma);
-        }
-        else {
-            shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PALUTENA_REFLECTOR_KIND_REFLECTOR, *FIGHTER_REFLECTOR_GROUP_EXTEND);
-        }
+#[acmd_script( agent = "palutena", scripts = ["expression_speciallw", "expression_specialairlw"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn palutena_special_lw_expression(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
-    frame(lua_state, 5.0);
-    if is_excute(fighter) {
-        if !VarModule::is_flag(fighter.battle_object, vars::palutena::status::SPECIAL_LW_AEGIS_REFLECTOR) {
-            shield!(fighter, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, *FIGHTER_PALUTENA_REFLECTOR_KIND_REFLECTOR, *FIGHTER_REFLECTOR_GROUP_EXTEND);
-        }
+    frame(lua_state, 6.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::palutena::status::SPECIAL_LW_AEGIS_REFLECTOR) {
-            ArticleModule::generate_article(boma, *FIGHTER_PALUTENA_GENERATE_ARTICLE_REFLECTIONBOARD, false, 0);
-            FT_MOTION_RATE(fighter, 0.75);
-        }
-        else{
-            FT_MOTION_RATE(fighter, 0.6);
-        }
+    frame(lua_state, 18.0);
+    if is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        QUAKE(agent, *CAMERA_QUAKE_KIND_M);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_counter"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(lua_state, 35.0);
-    if is_excute(fighter) {
-        FT_MOTION_RATE(fighter, 1.0);
+    frame(lua_state, 22.0);
+    if is_excute(agent) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-
+    frame(lua_state, 23.0);
+    if is_excute(agent) {
+        RUMBLE_HIT(agent, Hash40::new("rbkind_attackl"), 0);
+    }
 }
 
-#[acmd_script( agent = "palutena", script = "effect_specialairlwreflect" , category = ACMD_EFFECT , low_priority)]
-unsafe fn palutena_special_air_lw_reflect_effect(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = fighter.boma();
-    frame(lua_state, 1.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::palutena::status::SPECIAL_LW_AEGIS_REFLECTOR) {
-            EFFECT_FOLLOW(fighter, Hash40::new("palutena_wand_light_trace"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-            EffectModule::enable_sync_init_pos_last(boma);
-            EFFECT_FOLLOW(fighter, Hash40::new("palutena_wand_light2"), Hash40::new("stick"), 0, 8.65, 0, 0, 0, 0, 1, true);
-            EFFECT(fighter, Hash40::new("palutena_throw_twinkle"), Hash40::new("top"), 0.0, 16.0, -8.0, 0, 0, 0, 0.95, 0, 0, 0, 0, 0, 0, true);
-        }
-    }
-    frame(lua_state, 8.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::palutena::status::SPECIAL_LW_AEGIS_REFLECTOR) {
-            EFFECT(fighter, Hash40::new("palutena_mirror_break"), Hash40::new("top"), 0.0, 16.0, -8.0, 0, 0, 0, 0.225, 0, 0, 0, 0, 0, 0, true);
-        }
-        else{
-            EFFECT(fighter, Hash40::new("palutena_mirror"), Hash40::new("top"), 12.0, 12.0, 0, 0, 22.5, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-            EFFECT_DETACH_KIND(fighter, Hash40::new("palutena_backlight"), -1);
-        }
-    }
+#[acmd_script( agent = "palutena", scripts = ["sound_speciallw", "sound_specialairlw"], category = ACMD_SOUND, low_priority )]
+unsafe fn palutena_special_lw_sound(agent: &mut L2CAgentBase) {
+    let lua_state = agent.lua_state_agent;
+    let boma = agent.boma();
     frame(lua_state, 10.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::palutena::status::SPECIAL_LW_AEGIS_REFLECTOR) {
-            EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("palutena_backlight"), Hash40::new("top"), -1, 21, 1, 0, 90, 0, 1, true, 0.7);
-        }
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_palutena_special_l01"));
     }
-    frame(lua_state, 35.0);
-    if is_excute(fighter) {
-        if VarModule::is_flag(fighter.battle_object, vars::palutena::status::SPECIAL_LW_AEGIS_REFLECTOR) {
-            EFFECT_OFF_KIND(fighter, Hash40::new("palutena_wand_light_trace"), false, false);
-            EFFECT_OFF_KIND(fighter, Hash40::new("palutena_wand_light2"), false, false);
-        }
+    frame(lua_state, 19.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_palutena_special_l02"));
     }
-
+    wait(lua_state, 2.0);
+    if is_excute(agent) {
+        PLAY_SE(agent, Hash40::new("se_palutena_special_l03"));
+    }
+    wait(lua_state, 1.0);
+    if is_excute(agent) {
+        PLAY_SEQUENCE(agent, Hash40::new("seq_palutena_rnd_special_l01"));
+    }
 }
 
 
@@ -820,10 +695,9 @@ pub fn install() {
     install_acmd_scripts!(
         palutena_special_lw_game,
         palutena_special_air_lw_game,
-        palutena_special_lw_reflect_game,
-        palutena_special_lw_reflect_effect,
-        palutena_special_air_lw_reflect_game,
-        palutena_special_air_lw_reflect_effect,
+        palutena_special_lw_sound,
+        palutena_special_lw_effect,
+        palutena_special_lw_expression,
         palutena_special_n_game,
         palutena_special_n_effect,
         palutena_special_n_sound,

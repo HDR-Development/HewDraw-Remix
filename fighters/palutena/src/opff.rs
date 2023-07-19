@@ -7,7 +7,6 @@ use globals::*;
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
     palutena_teleport_wall_ride(fighter, boma, id, status_kind, situation_kind, cat[0]);
     actionable_teleport_air(fighter, boma, id, status_kind, situation_kind, frame);
-    aegis_reflector_timer(fighter, boma, id);
     var_reset(fighter, id, status_kind);
     training_mode_taunts(fighter, id, status_kind);
     dj_upB_jump_refresh(fighter);
@@ -103,24 +102,10 @@ extern "Rust" {
 }
 
 
-// Aegis Reflector Timer Count
-unsafe fn aegis_reflector_timer(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize) {
-    let gimmick_timerr = VarModule::get_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER);
-    if gimmick_timerr > 0 && gimmick_timerr < 721 {
-        if gimmick_timerr > 719 {
-            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
-            gimmick_flash(boma);
-        } else {
-            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, gimmick_timerr + 1);
-        }
-    }
-}
-
-// Aegis Reflector Timer & Power Board Death Reset
+// Power Board Death Reset
 unsafe fn var_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
     if [*FIGHTER_STATUS_KIND_DEAD,
         *FIGHTER_STATUS_KIND_REBIRTH].contains(&status_kind) {
-        VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
         MeterModule::drain_direct(fighter.object(), 999.0);
         VarModule::on_flag(fighter.object(), vars::palutena::instance::FLUSH);
     }
@@ -128,7 +113,6 @@ unsafe fn var_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32)
     if [*FIGHTER_STATUS_KIND_WIN,
         *FIGHTER_STATUS_KIND_LOSE,
         *FIGHTER_STATUS_KIND_ENTRY].contains(&status_kind) || !sv_information::is_ready_go() {
-        VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
         VarModule::on_flag(fighter.object(), vars::palutena::instance::FLUSH);
         MeterModule::reset(fighter.object());
     }
@@ -137,9 +121,6 @@ unsafe fn var_reset(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32)
 // Training Mode Aegis Reflector timer taunt reset & color charging
 unsafe fn training_mode_taunts(fighter: &mut L2CFighterCommon, id: usize, status_kind: i32) {
     if is_training_mode() {
-        if status_kind == *FIGHTER_STATUS_KIND_APPEAL || !smash::app::sv_information::is_ready_go() {
-            VarModule::set_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 0);
-        }
         if (fighter.is_motion(Hash40::new("appeal_s_r")) || fighter.is_motion(Hash40::new("appeal_s_l")))
         && fighter.motion_frame() == 2.0 {
             VarModule::set_int(fighter.object(), vars::palutena::instance::SET_COLOR, 1);
@@ -157,7 +138,7 @@ unsafe fn training_mode_taunts(fighter: &mut L2CFighterCommon, id: usize, status
 
 // sets set_color var, controlling when a color is charged
 unsafe fn color_charge(fighter: &mut L2CFighterCommon) {
-    // frame listed is the frame before the desired hitbox appears, and ignores motion rates
+    // frame range listed is from the frame before the hitbox appears to the frame the hitbox is cleared, and ignores motion rates
     // red moves: neutral/side
     if fighter.is_motion(Hash40::new("attack_100_end"))
     && fighter.motion_frame() >= 2.0 && fighter.motion_frame() < 6.0

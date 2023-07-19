@@ -929,12 +929,8 @@ pub mod vars {
 
     pub mod palutena {
         pub mod status {
-            // flags
-            pub const SPECIAL_LW_AEGIS_REFLECTOR: i32 = 0x1100;
-
             // floats
-            pub const SPECIAL_LW_LR: i32 = 0x1100;
-            pub const ADD_DAMAGE: i32 = 0x1101;
+            pub const ADD_DAMAGE: i32 = 0x1100;
         }
         pub mod instance {
             // flags

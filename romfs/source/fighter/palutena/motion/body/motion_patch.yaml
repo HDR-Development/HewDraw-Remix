@@ -53,9 +53,32 @@ special_air_s:
 attack_air_lw:
   extra:
     cancel_frame: 43
+special_n:
+  extra:
+    cancel_frame: 26
 special_air_n:
   extra:
-    cancel_frame: 72
+    cancel_frame: 26
+special_lw_l:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 67
+special_lw_r:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 67
+special_air_lw_l:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 67
+special_air_lw_r:
+  extra:
+    xlu_start: 0
+    xlu_end: 0
+    cancel_frame: 67
 special_n_r:
   game_script: game_specialnr
   flags:
@@ -291,13 +314,13 @@ special_n_o:
     - name: d00specialno.nuanmb
       unk: 0
   scripts:
-    - expression_attacks4
+    - expression_speciallwreflect
     - sound_specialno
     - effect_specialno
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 67
+    cancel_frame: 43
     no_stop_intp: false
 special_air_n_o:
   game_script: game_specialairno
@@ -318,13 +341,13 @@ special_air_n_o:
     - name: d00specialairno.nuanmb
       unk: 0
   scripts:
-    - expression_attacks4
+    - expression_specialairlwreflect
     - sound_specialairno
     - effect_specialairno
   extra:
     xlu_start: 0
     xlu_end: 0
-    cancel_frame: 67
+    cancel_frame: 43
     no_stop_intp: false
 special_n_g:
   game_script: game_specialng
