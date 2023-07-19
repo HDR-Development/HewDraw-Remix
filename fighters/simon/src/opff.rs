@@ -77,7 +77,7 @@ unsafe fn land_cancel_cross(fighter: &mut L2CFighterCommon, boma: &mut BattleObj
         // Current FAF in motion list is 42, frame is 0 indexed so subtract a frame
         let special_s1_cancel_frame_ground = 41.0;
         // 12F of landing lag plus one extra frame to subtract from the FAF to actually get that amount of lag
-        let landing_lag = 13.0;
+        let landing_lag = 11.0;
         if MotionModule::frame(fighter.module_accessor) < (special_s1_cancel_frame_ground - landing_lag) {
             MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, special_s1_cancel_frame_ground - landing_lag, true, true, false);
         }
