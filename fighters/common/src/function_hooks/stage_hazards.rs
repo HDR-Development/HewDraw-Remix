@@ -36,7 +36,6 @@ static HAZARDLESS_STAGE_IDS: &[u32] = &[
     0x3b, // venom
     0x3e, // brinstar
     0x62, // skyworld
-    0x68, // wario ware,
     0x6e, // halberd
     0x77, // summit
     0xcb, // find mii (StreetPass)
@@ -82,6 +81,9 @@ pub fn install() {
     skyline::patching::Patch::in_text(0x28440f4).data(0x52800009u32);
     skyline::patching::Patch::in_text(0x2844500).nop();
     skyline::patching::Patch::in_text(0x2844128).nop();
+    skyline::patching::Patch::in_text(0x4470134).data(std::f32::INFINITY).unwrap(); // palu temple
+    skyline::patching::Patch::in_text(0x44713dc).data(2880.0f32).unwrap(); // palu temple
+    skyline::patching::Patch::in_text(0x447042c).data(-2880.0f32).unwrap(); // palu temple
 
     skyline::install_hooks!(
         stub,
