@@ -203,12 +203,12 @@ unsafe fn abk(fighter: &mut smash::lua2cpp::L2CFighterCommon, frame: f32) {
             //    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, angle);
             //    app::sv_kinetic_energy::set_angle(fighter.lua_state_agent);
             //}
-        } //dabk
-        if boma.status_frame() == 7 && fighter.is_button_off(Buttons::Attack) {
-            if (fighter.is_button_on(Buttons::Special) && ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL as u8) >= 7) && boma.left_stick_y() <= -0.67 {
-                WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_AIR_SPECIAL_S_U_TO_D);
-                StatusModule::change_status_force(boma, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D, true);
-            }
+        } //dabk input
+        if boma.status_frame() <= 6 && fighter.is_button_on(Buttons::Attack | Buttons::Catch) {VarModule::on_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK); }
+        if boma.status_frame() == 6 && VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
+            WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_AIR_SPECIAL_S_U_TO_D);
+            StatusModule::change_status_force(boma, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D, true);
+            VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
         }
     } else if fighter.is_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D) && fighter.is_prev_status(*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U) && boma.status_frame() == 1 {
         MotionModule::set_frame_sync_anim_cmd(boma, 6.0, true, false, false);
