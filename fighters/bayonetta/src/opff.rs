@@ -130,6 +130,9 @@ unsafe fn reset_flags_resources(fighter: &mut L2CFighterCommon, boma: &mut Battl
     if VarModule::get_int(fighter.battle_object, vars::bayonetta::instance::NUM_RECOVERY_RESOURCE_USED) >= 2 {
         VarModule::on_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
         VarModule::on_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
+    } else {
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::SIDE_SPECIAL_CANCEL);
+        VarModule::off_flag(fighter.battle_object, vars::common::instance::UP_SPECIAL_CANCEL);
     }
     //manages hit-flag, needed bc specials switch statuses
     if StatusModule::is_changing(boma) && fighter.is_status_one_of(&[*FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D, *FIGHTER_STATUS_KIND_SPECIAL_HI]) {
@@ -201,8 +204,8 @@ unsafe fn abk(fighter: &mut smash::lua2cpp::L2CFighterCommon, frame: f32) {
             //    app::sv_kinetic_energy::set_angle(fighter.lua_state_agent);
             //}
         } //dabk
-        if boma.status_frame() == 5 {
-            if fighter.is_button_on(Buttons::Attack | Buttons::Catch) {
+        if boma.status_frame() == 7 && fighter.is_button_off(Buttons::Attack) {
+            if (fighter.is_button_on(Buttons::Special) && ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL as u8) >= 7) && boma.left_stick_y() <= -0.67 {
                 WorkModule::on_flag(boma, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_AIR_SPECIAL_S_U_TO_D);
                 StatusModule::change_status_force(boma, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D, true);
             }
