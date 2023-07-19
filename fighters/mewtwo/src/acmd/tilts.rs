@@ -90,6 +90,62 @@ unsafe fn mewtwo_attack_s3_lw_game(fighter: &mut L2CAgentBase) {
     
 }
 
+
+#[acmd_script( agent = "mewtwo", script = "expression_attacks3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn mewtwo_attack_s3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("s_tail1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y));
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+}
+
+#[acmd_script( agent = "mewtwo", script = "expression_attacks3lw", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn mewtwo_attack_s3_lw_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("s_tail1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y));
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+}
+
+#[acmd_script( agent = "mewtwo", script = "expression_attacks3hi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn mewtwo_attack_s3_hi_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(boma, Hash40::new("s_tail1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y));
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(lua_state, 8.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 9.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+}
+
+
 #[acmd_script( agent = "mewtwo", script = "game_attackhi3" , category = ACMD_GAME , low_priority)]
 unsafe fn mewtwo_attack_hi3_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -144,7 +200,25 @@ unsafe fn mewtwo_attack_lw3_game(fighter: &mut L2CAgentBase) {
         HIT_NO(fighter, 12, *HIT_STATUS_OFF);
         HIT_NO(fighter, 13, *HIT_STATUS_OFF);
     }
-    
+        
+}
+
+
+#[acmd_script( agent = "mewtwo", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn mewtwo_attack_lw3_expression(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = fighter.boma();
+    if is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 4, true);
+    }
+    frame(lua_state, 4.0);
+    if is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(lua_state, 5.0);
+    if is_excute(fighter) {
+        RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
 }
 
 pub fn install() {
@@ -152,8 +226,12 @@ pub fn install() {
         mewtwo_attack_s3_hi_game,
         mewtwo_attack_s3_s_game,
         mewtwo_attack_s3_lw_game,
+        mewtwo_attack_s3_lw_expression,
+        mewtwo_attack_s3_hi_expression,
+        mewtwo_attack_s3_expression,
         mewtwo_attack_hi3_game,
         mewtwo_attack_lw3_game,
+        mewtwo_attack_lw3_expression,
     );
 }
 

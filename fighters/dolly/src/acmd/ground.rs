@@ -162,7 +162,7 @@ unsafe fn dolly_attack_dash_game(fighter: &mut L2CAgentBase) {
         // EX detection
         if VarModule::is_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK) {
             if (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-                if MeterModule::drain(fighter.battle_object, 2) {
+                if MeterModule::drain(fighter.battle_object, 1) {
                     VarModule::on_flag(fighter.battle_object, vars::shotos::instance::IS_USE_EX_SPECIAL);
                     VarModule::off_flag(fighter.battle_object, vars::common::instance::IS_HEAVY_ATTACK);
                     FT_MOTION_RATE(fighter, 10.0/(10.0-6.0));
