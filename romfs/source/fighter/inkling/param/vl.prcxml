@@ -19,7 +19,7 @@
       <int hash="min_bullet_num">3</int>
       <float hash="max_accel_x_on_air">0.05</float>
       <float hash="max_speed_x_on_air">1</float>
-      <float hash="max_shoot_angle_up">60</float>
+      <float hash="max_shoot_angle_up">48</float>
       <float hash="change_up_angle_per_frame">2.5</float>
       <float hash="change_down_angle_per_frame">2.5</float>
     </struct>
@@ -29,7 +29,8 @@
   </list>
   <list hash="param_inkbullet">
     <struct index="0">
-      <int hash="max_life">13</int>
+      <int hash="max_life">8</int>
+      <float hash="default_speed">3.25</float>
       <float hash="ink">15</float>
     </struct>
     <hash40 index="1">dummy</hash40>
