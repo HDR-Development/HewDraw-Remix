@@ -145,12 +145,16 @@ unsafe fn wario_attack_lw4_expression(fighter: &mut L2CAgentBase) {
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
-    frame(lua_state, 11.0);
+    frame(lua_state, 9.0);
     if is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 2);
         RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
     }
-    wait(lua_state, 3.0);
+    wait(lua_state, 1.0);
+    if is_excute(fighter) {
+        QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+    }
+    frame(lua_state, 14.0);
     if is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohit_attacks"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
