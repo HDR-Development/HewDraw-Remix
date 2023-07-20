@@ -120,7 +120,7 @@ unsafe fn tantan_special_n_air_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority)]
+#[acmd_script( agent = "tantan", script = "expression_specialairn", category = ACMD_EXPRESSION, low_priority)]
 unsafe fn tantan_special_n_air_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
