@@ -1,3 +1,11 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
 float:
   game_script: game_float
   flags:
@@ -46,8 +54,6 @@ throw_lw:
 throw_hi:
   extra:
     cancel_frame: 40
-guard_off:
-  blend_frames: 4
 attack_11:
   extra:
     cancel_frame: 29
@@ -116,8 +122,6 @@ appeal_hi_r:
 appeal_lw_l:
   extra:
     cancel_frame: 90
-fall_special:
-  blend_frames: 6
 attack_s3_lw:
   game_script: game_attacks3lw
   flags:
