@@ -175,7 +175,6 @@ unsafe fn noknok_training(fighter: &mut L2CFighterCommon, id: usize, status_kind
 }
 
 pub unsafe fn moveset(fighter: &mut L2CFighterCommon, boma: &mut BattleObjectModuleAccessor, id: usize, cat: [i32 ; 4], status_kind: i32, situation_kind: i32, motion_kind: u64, stick_x: f32, stick_y: f32, facing: f32, frame: f32) {
-    println!("{}", ControlModule::get_flick_y(fighter.module_accessor));
     //dair_mash_rise(fighter, boma, id, motion_kind, situation_kind, frame);
     up_b_wall_jump(fighter, boma, id, status_kind, situation_kind, cat[0], frame);
     dspecial_cancels(boma, status_kind, situation_kind, cat[0]);
