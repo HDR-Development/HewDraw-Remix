@@ -1,0 +1,682 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+catch:
+  extra:
+    cancel_frame: 43
+throw_f:
+  extra:
+    cancel_frame: 27
+throw_b:
+  extra:
+    cancel_frame: 47
+throw_lw:
+  extra:
+    cancel_frame: 40
+throw_hi:
+  extra:
+    cancel_frame: 31
+attack_12:
+  extra:
+    cancel_frame: 22
+attack_13:
+  extra:
+    cancel_frame: 24
+attack_11:
+  extra:
+    cancel_frame: 18
+attack_lw3:
+  extra:
+    cancel_frame: 34
+attack_hi4:
+  flags:
+    move: false
+attack_lw4:
+  extra:
+    cancel_frame: 53
+attack_hi3:
+  flags:
+    move: false
+  extra:
+    cancel_frame: 34
+attack_dash:
+  extra:
+    cancel_frame: 35
+attack_s4_s:
+  game_script: game_attacks4
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c03attacks4s.nuanmb
+  scripts:
+  - expression_attacks4
+  - sound_attacks4
+  - effect_attacks4
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 45
+    freeze_during_hitstop: false
+attack_s3_s:
+  game_script: game_attacks3
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c01attacks3s.nuanmb
+  scripts:
+  - expression_attacks3
+  - sound_attacks3
+  - effect_attacks3
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 29
+    freeze_during_hitstop: false
+attack_s3_lw:
+  game_script: game_attacks3lw
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c01attacks3lw.nuanmb
+  scripts:
+  - expression_attacks3lw
+  - sound_attacks3lw
+  - effect_attacks3lw
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 29
+    freeze_during_hitstop: false
+attack_air_b:
+  game_script: game_attackairb
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c05attackairb.nuanmb
+  scripts:
+  - expression_attackairb
+  - sound_attackairb
+  - effect_attackairb
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 40
+    freeze_during_hitstop: false
+attack_air_f:
+  extra:
+    cancel_frame: 48
+attack_air_n:
+  extra:
+    cancel_frame: 45
+attack_s3_hi:
+  game_script: game_attacks3hi
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c01attacks3hi.nuanmb
+  scripts:
+  - expression_attacks3hi
+  - sound_attacks3hi
+  - effect_attacks3hi
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 29
+    freeze_during_hitstop: false
+special_air_n:
+  animations:
+  - name: d00specialairn.nuanmb
+  extra:
+    cancel_frame: 38
+landing_air_b:
+  game_script: game_landingairb
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c05landingairb.nuanmb
+  scripts:
+  - expression_landingairb
+  - sound_landingairb
+  - effect_landingairb
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 20
+    freeze_during_hitstop: false
+attack_air_hi:
+  extra:
+    cancel_frame: 32
+attack_s4_hold:
+  game_script: game_attacks4charge
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c03attacks4charge.nuanmb
+  scripts:
+  - expression_attacks4charge
+  - sound_attacks4charge
+  - effect_attacks4charge
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 0
+    freeze_during_hitstop: false
+attack_legs_fall:
+  flags:
+    unk_800: false
+attack_legs_wait:
+  flags:
+    unk_800: false
+attack_legs_squat:
+  flags:
+    unk_800: false
+special_air_n_end:
+  animations:
+  - name: d00specialairnend.nuanmb
+  extra:
+    cancel_frame: 20
+attack_legs_long_r:
+  flags:
+    unk_800: false
+attack_legs_hold_r:
+  flags:
+    unk_800: false
+item_light_throw_f:
+  flags:
+    move: false
+attack_legs_hold_l:
+  flags:
+    unk_800: false
+attack_legs_jump_f:
+  flags:
+    unk_800: false
+attack_legs_jump_b:
+  flags:
+    unk_800: false
+attack_legs_long_l:
+  flags:
+    unk_800: false
+attack_legs_long_rb:
+  flags:
+    unk_800: false
+attack_legs_long_r3:
+  flags:
+    unk_800: false
+attack_legs_short_l:
+  flags:
+    unk_800: false
+attack_legs_hold_lb:
+  flags:
+    unk_800: false
+attack_legs_long_r2:
+  flags:
+    unk_800: false
+attack_legs_hold_rb:
+  flags:
+    unk_800: false
+attack_legs_long_l2:
+  flags:
+    unk_800: false
+attack_legs_long_l3:
+  flags:
+    unk_800: false
+attack_legs_short_r:
+  flags:
+    unk_800: false
+attack_legs_long_lb:
+  flags:
+    unk_800: false
+attack_legs_long_lb3:
+  flags:
+    unk_800: false
+attack_legs_short_rb:
+  flags:
+    unk_800: false
+attack_legs_short_r3:
+  flags:
+    unk_800: false
+attack_legs_long_rb3:
+  flags:
+    unk_800: false
+attack_legs_squat_rv:
+  flags:
+    unk_800: false
+attack_legs_short_r2:
+  flags:
+    unk_800: false
+attack_legs_both_end:
+  flags:
+    unk_800: false
+attack_legs_long_rb2:
+  flags:
+    unk_800: false
+attack_legs_long_lb2:
+  flags:
+    unk_800: false
+attack_legs_short_l2:
+  flags:
+    unk_800: false
+attack_legs_short_l3:
+  flags:
+    unk_800: false
+attack_legs_short_lb:
+  flags:
+    unk_800: false
+attack_legs_short_rb3:
+  flags:
+    unk_800: false
+attack_legs_short_lb3:
+  flags:
+    unk_800: false
+attack_legs_short_lb2:
+  flags:
+    unk_800: false
+attack_legs_short_rb2:
+  flags:
+    unk_800: false
+attack_legs_walk_fast:
+  flags:
+    unk_800: false
+attack_legs_walk_slow:
+  flags:
+    unk_800: false
+attack_legs_long_end_l:
+  flags:
+    unk_800: false
+attack_legs_both_end_l:
+  flags:
+    unk_800: false
+attack_legs_twist_fall:
+  flags:
+    unk_800: false
+attack_legs_jump_squat:
+  flags:
+    unk_800: false
+attack_legs_twist_wait:
+  flags:
+    unk_800: false
+attack_legs_long_end_r:
+  flags:
+    unk_800: false
+attack_legs_both_end_r:
+  flags:
+    unk_800: false
+attack_legs_both_end_b:
+  flags:
+    unk_800: false
+attack_legs_squat_wait:
+  flags:
+    unk_800: false
+attack_legs_walk_middle:
+  flags:
+    unk_800: false
+attack_legs_long_end_lb:
+  flags:
+    unk_800: false
+attack_legs_twist_squat:
+  flags:
+    unk_800: false
+attack_legs_walk_slow_b:
+  flags:
+    unk_800: false
+attack_legs_short_end_r:
+  flags:
+    unk_800: false
+attack_legs_jump_f_mini:
+  flags:
+    unk_800: false
+attack_legs_fall_aerial:
+  flags:
+    unk_800: false
+attack_legs_short_end_l:
+  flags:
+    unk_800: false
+attack_legs_long_end_rb:
+  flags:
+    unk_800: false
+attack_legs_jump_b_mini:
+  flags:
+    unk_800: false
+attack_legs_walk_fast_b:
+  flags:
+    unk_800: false
+attack_legs_twist_jump_b:
+  flags:
+    unk_800: false
+attack_legs_twist_jump_f:
+  flags:
+    unk_800: false
+attack_legs_short_end_lb:
+  flags:
+    unk_800: false
+attack_legs_walk_brake_l:
+  flags:
+    unk_800: false
+attack_legs_long_pull_l2:
+  flags:
+    unk_800: false
+attack_legs_long_start_r:
+  flags:
+    unk_800: false
+attack_legs_long_pull_l3:
+  flags:
+    unk_800: false
+attack_legs_long_end_rb3:
+  flags:
+    unk_800: false
+attack_legs_long_end_lb3:
+  flags:
+    unk_800: false
+attack_legs_long_pull_r3:
+  flags:
+    unk_800: false
+attack_legs_long_start_l:
+  flags:
+    unk_800: false
+attack_legs_walk_brake_r:
+  flags:
+    unk_800: false
+attack_legs_long_pull_r2:
+  flags:
+    unk_800: false
+attack_legs_short_end_rb:
+  flags:
+    unk_800: false
+attack_legs_long_start_rb:
+  flags:
+    unk_800: false
+attack_legs_short_pull_r2:
+  flags:
+    unk_800: false
+attack_legs_long_start_r3:
+  flags:
+    unk_800: false
+attack_legs_jump_aerial_f:
+  flags:
+    unk_800: false
+attack_legs_jump_aerial_b:
+  flags:
+    unk_800: false
+attack_legs_long_pull_rb2:
+  flags:
+    unk_800: false
+attack_legs_short_start_l:
+  flags:
+    unk_800: false
+attack_legs_long_pull_lb2:
+  flags:
+    unk_800: false
+attack_legs_long_pull_lb3:
+  flags:
+    unk_800: false
+attack_legs_long_pull_rb3:
+  flags:
+    unk_800: false
+attack_legs_long_start_r2:
+  flags:
+    unk_800: false
+attack_legs_walk_brake_lb:
+  flags:
+    unk_800: false
+attack_legs_short_pull_r3:
+  flags:
+    unk_800: false
+attack_legs_short_end_rb3:
+  flags:
+    unk_800: false
+attack_legs_short_end_lb3:
+  flags:
+    unk_800: false
+attack_legs_walk_brake_rb:
+  flags:
+    unk_800: false
+attack_legs_short_pull_l3:
+  flags:
+    unk_800: false
+attack_legs_long_start_l2:
+  flags:
+    unk_800: false
+attack_legs_walk_middle_b:
+  flags:
+    unk_800: false
+attack_legs_long_start_l3:
+  flags:
+    unk_800: false
+attack_legs_landing_light:
+  flags:
+    unk_800: false
+attack_legs_short_pull_l2:
+  flags:
+    unk_800: false
+attack_legs_landing_heavy:
+  flags:
+    unk_800: false
+attack_legs_short_start_r:
+  flags:
+    unk_800: false
+attack_legs_long_start_lb:
+  flags:
+    unk_800: false
+attack_legs_short_start_l3:
+  flags:
+    unk_800: false
+attack_legs_short_start_lb:
+  flags:
+    unk_800: false
+attack_legs_long_start_lb3:
+  flags:
+    unk_800: false
+attack_legs_long_start_rb3:
+  flags:
+    unk_800: false
+attack_legs_long_start_rb2:
+  flags:
+    unk_800: false
+attack_legs_long_start_lb2:
+  flags:
+    unk_800: false
+attack_legs_walk_brake_l_b:
+  flags:
+    unk_800: false
+attack_legs_walk_brake_r_b:
+  flags:
+    unk_800: false
+attack_legs_short_start_l2:
+  flags:
+    unk_800: false
+attack_legs_short_pull_lb3:
+  flags:
+    unk_800: false
+attack_legs_short_pull_rb3:
+  flags:
+    unk_800: false
+attack_legs_short_start_r2:
+  flags:
+    unk_800: false
+attack_legs_short_start_rb:
+  flags:
+    unk_800: false
+attack_legs_short_start_r3:
+  flags:
+    unk_800: false
+attack_legs_twist_squat_rv:
+  flags:
+    unk_800: false
+attack_legs_short_pull_rb2:
+  flags:
+    unk_800: false
+attack_legs_short_pull_lb2:
+  flags:
+    unk_800: false
+attack_legs_twist_walk_fast:
+  flags:
+    unk_800: false
+attack_legs_twist_walk_slow:
+  flags:
+    unk_800: false
+attack_legs_short_start_rb3:
+  flags:
+    unk_800: false
+attack_legs_short_start_lb3:
+  flags:
+    unk_800: false
+attack_legs_short_start_lb2:
+  flags:
+    unk_800: false
+attack_legs_short_start_rb2:
+  flags:
+    unk_800: false
+attack_legs_twist_squat_wait:
+  flags:
+    unk_800: false
+attack_legs_twist_jump_squat:
+  flags:
+    unk_800: false
+attack_legs_twist_walk_fast_b:
+  flags:
+    unk_800: false
+attack_legs_twist_jump_b_mini:
+  flags:
+    unk_800: false
+attack_legs_twist_walk_middle:
+  flags:
+    unk_800: false
+attack_legs_twist_fall_aerial:
+  flags:
+    unk_800: false
+attack_legs_twist_jump_f_mini:
+  flags:
+    unk_800: false
+attack_legs_twist_walk_slow_b:
+  flags:
+    unk_800: false
+attack_legs_twist_walk_brake_l:
+  flags:
+    unk_800: false
+attack_legs_twist_walk_brake_r:
+  flags:
+    unk_800: false
+attack_legs_twist_landing_light:
+  flags:
+    unk_800: false
+attack_legs_twist_landing_heavy:
+  flags:
+    unk_800: false
+attack_legs_twist_walk_middle_b:
+  flags:
+    unk_800: false
+attack_legs_twist_jump_aerial_f:
+  flags:
+    unk_800: false
+attack_legs_twist_jump_aerial_b:
+  flags:
+    unk_800: false
+attack_legs_twist_walk_brake_l_b:
+  flags:
+    unk_800: false
+attack_legs_twist_walk_brake_r_b:
+  flags:
+    unk_800: false

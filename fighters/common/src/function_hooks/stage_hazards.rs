@@ -36,7 +36,6 @@ static HAZARDLESS_STAGE_IDS: &[u32] = &[
     0x3b, // venom
     0x3e, // brinstar
     0x62, // skyworld
-    0x68, // wario ware,
     0x6e, // halberd
     0x77, // summit
     0xcb, // find mii (StreetPass)
@@ -76,8 +75,40 @@ unsafe fn lylat_no_rot(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
+#[derive(Debug)]
+#[repr(C)]
+pub struct GreenHillData {
+    unk: [u8; 0xa0],
+    some_hash: u64,
+   // ?
+}
+
+#[skyline::from_offset(0x25d7a00)]
+fn something_for_gh_data(stage: u64, unk: u64, gh_data: &GreenHillData) -> [u8; 0x100];
+
+#[skyline::hook(offset = 0x25d8160)]
+unsafe fn init_ghz(ghz_obj: u64) {
+    call_original!(ghz_obj);
+
+    let vec = *((*((ghz_obj + 0x300) as *const u64) + 0x18) as *const u64)
+        as *const smash2::cpp::Vector<&'static GreenHillData>;
+    for item in (*vec).iter() {
+        if item.some_hash == smash::hash40("s68_greenhill_swing") /* i forgot the string */ {
+            something_for_gh_data(ghz_obj, 0, item);
+            return;
+        }
+    }
+}
+
 pub fn install() {
     skyline::patching::Patch::in_text(0x298236c).data(0x52800008u32);
+    skyline::patching::Patch::in_text(0x28444cc).data(0x52800009u32);
+    skyline::patching::Patch::in_text(0x28440f4).data(0x52800009u32);
+    skyline::patching::Patch::in_text(0x2844500).nop();
+    skyline::patching::Patch::in_text(0x2844128).nop();
+    skyline::patching::Patch::in_text(0x4470134).data(std::f32::INFINITY).unwrap(); // palu temple
+    skyline::patching::Patch::in_text(0x44713dc).data(2880.0f32).unwrap(); // palu temple
+    skyline::patching::Patch::in_text(0x447042c).data(-2880.0f32).unwrap(); // palu temple
 
     skyline::install_hooks!(
         stub,
@@ -86,5 +117,6 @@ pub fn install() {
         handle_movement_grav_update,
         fix_hazards_for_online,
         lylat_no_rot,
+        init_ghz,
     );
 }
