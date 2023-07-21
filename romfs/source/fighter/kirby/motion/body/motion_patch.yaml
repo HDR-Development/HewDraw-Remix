@@ -1,0 +1,162 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+attack_hi4:
+  extra:
+    cancel_frame: 55
+attack_lw4:
+  extra:
+    cancel_frame: 48
+attack_hi3:
+  extra:
+    cancel_frame: 26
+special_lw2:
+  extra:
+    cancel_frame: 28
+attack_dash:
+  extra:
+    cancel_frame: 65
+attack_s4_s:
+  extra:
+    cancel_frame: 53
+attack_s3_s:
+  extra:
+    cancel_frame: 27
+attack_s3_lw:
+  extra:
+    cancel_frame: 27
+attack_s4_hi:
+  extra:
+    cancel_frame: 53
+attack_air_f:
+  extra:
+    cancel_frame: 40
+special_hi_h:
+  game_script: game_specialhih
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: false
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d02specialhih.nuanmb
+  scripts:
+  - expression_specialhih
+  - sound_specialhih
+  - effect_specialhih
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 0
+    freeze_during_hitstop: false
+attack_s4_lw:
+  extra:
+    cancel_frame: 53
+attack_s3_hi:
+  extra:
+    cancel_frame: 27
+attack_air_lw:
+  extra:
+    cancel_frame: 50
+attack_air_hi:
+  extra:
+    cancel_frame: 35
+demon_special_n:
+  extra:
+    cancel_frame: 134
+special_air_lw2:
+  extra:
+    cancel_frame: 28
+elight_special_n:
+  extra:
+    cancel_frame: 71
+special_air_hi_h:
+  game_script: game_specialairhih
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: false
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d02specialairhih.nuanmb
+  scripts:
+  - expression_specialairhih
+  - sound_specialairhih
+  - effect_specialairhih
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 0
+    freeze_during_hitstop: false
+elight_special_n2:
+  extra:
+    cancel_frame: 71
+demon_special_n_hi:
+  extra:
+    cancel_frame: 134
+demon_special_air_n:
+  extra:
+    cancel_frame: 110
+elight_special_air_n:
+  extra:
+    cancel_frame: 71
+tantan_special_n_end:
+  extra:
+    cancel_frame: 40
+elight_special_air_n2:
+  extra:
+    cancel_frame: 71
+demon_special_air_n_hi:
+  extra:
+    cancel_frame: 110
+mewtwo_special_n_shoot:
+  extra:
+    cancel_frame: 28
+littlemac_special_n_dash:
+  extra:
+    cancel_frame: 45
+tantan_special_air_n_end:
+  extra:
+    cancel_frame: 40
+mewtwo_special_air_n_shoot:
+  extra:
+    cancel_frame: 28
+littlemac_special_n_dash_turn:
+  extra:
+    cancel_frame: 54
+littlemac_special_air_n_dash_turn:
+  extra:
+    cancel_frame: 60
+dedede_special_n_shot_object_spit:
+  extra:
+    cancel_frame: 22
+dedede_special_air_n_shot_object_spit:
+  extra:
+    cancel_frame: 22

@@ -171,6 +171,8 @@ pub mod vars {
 
             pub const TEMPORARY_CLIFF_STOP: i32 = 0x0061;
 
+            pub const ENABLE_FRAME_DATA_DEBUG: i32 = 0x0062;
+
             // ints
 
             pub const LAST_ATTACK_RECEIVER_ENTRY_ID: i32 = 0x0000;
@@ -196,6 +198,8 @@ pub mod vars {
             pub const CLIFF_XLU_FRAME: i32 = 0x000B;
             pub const LAST_ATTACK_HITBOX_ID: i32 = 0x000C;
             pub const SHIELD_EFFECT_HANDLE: i32 = 0x000D;
+
+            pub const FRAME_COUNTER: i32 = 0x000E;
 
             // floats
 
@@ -234,6 +238,8 @@ pub mod vars {
         }
         pub mod status {
             // flags
+            pub const FAF_REACHED: i32 = 0x10FD;
+            pub const PREV_AUTOCANCEL_FLAG: i32 = 0x10FE;
             pub const DISABLE_ECB_SHIFT: i32 = 0x10FF;
 
             pub const IS_DASH_TO_RUN_FRAME: i32 = 0x1000;
