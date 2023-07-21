@@ -23,16 +23,3 @@ scripts/artifacts/deletions.json
 **/upgrade/
 **/upgrade_artifacts/
 .DS_Store
-romfs/source/fighter/buddy/motion/
-
-*.code-workspace
-
-*.sqlite
-
-.vs/HewDraw-Remix/v17/.suo
-
-*.lnk
-
-scripts/banjo.bat
-
-*.bat
