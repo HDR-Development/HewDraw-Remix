@@ -1,5 +1,7 @@
 fall:
   blend_frames: 5
+guard_off:
+  blend_frames: 4
 throw_lw:
   extra:
     cancel_frame: 33

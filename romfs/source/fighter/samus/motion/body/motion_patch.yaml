@@ -1,5 +1,7 @@
 fall:
   blend_frames: 6
+guard_off:
+  blend_frames: 4
 special_s:
   flags:
     move: false
