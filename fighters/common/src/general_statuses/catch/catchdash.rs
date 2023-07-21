@@ -12,8 +12,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
         skyline::install_hooks!(
             status_pre_CatchDash_common,
             status_end_CatchDash,
-            bind_address_call_status_end_CatchDash,
-            status_CatchAttack_Main
+            bind_address_call_status_end_CatchDash
         );
     }
 }
@@ -33,21 +32,5 @@ unsafe fn status_end_CatchDash(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_bind_address_call_status_end_CatchDash)]
 unsafe fn bind_address_call_status_end_CatchDash(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
     fighter.status_end_CatchDash();
-    0.into()
-}
-
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_CatchAttack_Main)]
-unsafe fn status_CatchAttack_Main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if MotionModule::is_end(fighter.module_accessor) {
-        if fighter.CatchCont().get_bool() {
-            return 0.into();
-        }
-        if fighter.global_table[SITUATION_KIND] != SITUATION_KIND_AIR {
-            fighter.change_status_req(*FIGHTER_STATUS_KIND_CATCH_WAIT, false);
-        }
-    }
-    if fighter.global_table[SITUATION_KIND] == SITUATION_KIND_AIR {
-        fighter.change_status_req(*FIGHTER_STATUS_KIND_CATCH_JUMP, false);
-    }
     0.into()
 }

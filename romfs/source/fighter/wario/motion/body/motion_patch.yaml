@@ -44,3 +44,6 @@ attack_s4_hold:
 attack_hi4_hold:
   flags:
     move: false
+catch_attack:
+  extra:
+    cancel_frame: 25

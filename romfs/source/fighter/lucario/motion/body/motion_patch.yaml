@@ -85,3 +85,6 @@ special_air_s_throw:
 special_air_n_cancel:
   extra:
     cancel_frame: 7
+catch_attack:
+  extra:
+    cancel_frame: 25

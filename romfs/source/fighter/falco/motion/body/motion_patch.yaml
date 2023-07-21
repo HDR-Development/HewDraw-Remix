@@ -68,3 +68,6 @@ special_air_s_end:
 special_air_n_end:
   extra:
     cancel_frame: 19
+catch_attack:
+  extra:
+    cancel_frame: 25

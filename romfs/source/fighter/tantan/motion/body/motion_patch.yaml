@@ -680,3 +680,6 @@ attack_legs_twist_walk_brake_l_b:
 attack_legs_twist_walk_brake_r_b:
   flags:
     unk_800: false
+catch_attack:
+  extra:
+    cancel_frame: 25

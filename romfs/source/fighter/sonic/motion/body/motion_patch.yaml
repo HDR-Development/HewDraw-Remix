@@ -185,3 +185,6 @@ special_air_s_boost_end:
     intangible_end_frame: 0
     cancel_frame: 24
     freeze_during_hitstop: false
+catch_attack:
+  extra:
+    cancel_frame: 25

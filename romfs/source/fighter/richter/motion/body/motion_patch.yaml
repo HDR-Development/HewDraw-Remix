@@ -41,3 +41,6 @@ item_light_throw_f:
 attack_lw32_landing:
   extra:
     cancel_frame: 18
+catch_attack:
+  extra:
+    cancel_frame: 25

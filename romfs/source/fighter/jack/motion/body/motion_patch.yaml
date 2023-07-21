@@ -63,3 +63,6 @@ special_air_hi2:
 item_light_throw_f:
   flags:
     move: false
+catch_attack:
+  extra:
+    cancel_frame: 25

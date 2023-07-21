@@ -97,3 +97,6 @@ special_air_n_c:
 air_catch_landing:
   extra:
     cancel_frame: 28
+catch_attack:
+  extra:
+    cancel_frame: 25
