@@ -898,6 +898,9 @@ unsafe fn process_inputs_handheld(controller: &mut Controller) {
         if ninput::any::is_press(ninput::Buttons::PLUS) {
             SHOULD_END_RESULT_SCREEN = true;
         }
+        if ninput::any::is_press(ninput::Buttons::B) {
+            SHOULD_END_RESULT_SCREEN = false;
+        }
         if SHOULD_END_RESULT_SCREEN {
             let mut rng = rand::thread_rng();
             // Need to space apart A-presses so it does not seem like we are holding the button.

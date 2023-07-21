@@ -6,13 +6,14 @@ use super::*;
 unsafe fn pichu_special_n_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
-    let charged = VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1;
-    let charge_state_time = ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time");
+    let charged = if fighter.kind() == *FIGHTER_KIND_KIRBY {false} else {VarModule::get_int(fighter.battle_object, vars::pichu::instance::CHARGE_LEVEL) == 1};
+    let charge_state_time = if fighter.kind() == *FIGHTER_KIND_KIRBY {1} else {ParamModule::get_int(boma.object(), ParamType::Agent, "charge_state_time")};
     if is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK);
         if !charged {
             FT_MOTION_RATE(fighter, (14.0/18.0));
-        }else if charged {
+        }
+        else if charged {
             VarModule::on_flag(fighter.battle_object, vars::pichu::instance::IS_CHARGE_ATTACK);
             VarModule::sub_int(fighter.battle_object, vars::common::instance::GIMMICK_TIMER, 180);
             MeterModule::drain_direct(boma.object(), (50.0/(charge_state_time as f32)) * 180.0);
