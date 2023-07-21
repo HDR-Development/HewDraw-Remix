@@ -12,7 +12,6 @@
         <float hash="speed_lerp_max">3.0</float>
     </struct>
     <int hash="glide_toss_cancel_frame">5</int>
-    <float hash="wavedrop_stick_y_threshold">-0.8</float>
     <int hash="air_escape_snap_frame">5</int>
     <float hash="waveland_distance_threshold">6</float>
     <struct hash="dacus_enable">
