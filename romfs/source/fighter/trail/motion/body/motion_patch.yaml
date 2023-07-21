@@ -20,8 +20,8 @@ attack_s3_s3:
     cancel_frame: 45
 attack_lw4:
   extra:
-    xlu_start: 0
-    xlu_end: 0
+    intangible_start_frame: 0
+    intangible_end_frame: 0
 attack_air_f:
   extra:
     cancel_frame: 38
