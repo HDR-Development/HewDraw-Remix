@@ -218,6 +218,11 @@ unsafe extern "C" fn special_n_shoot_main_loop(fighter: &mut L2CFighterCommon) -
                 return 0.into();
             }
         }
+        else {
+            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_SPECIAL_N_FLAG_SHOOT) {
+                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_SPECIAL_N_FLAG_SHOOT);
+            }
+        }
     }
     0.into()
 }

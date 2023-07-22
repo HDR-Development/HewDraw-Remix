@@ -93,9 +93,6 @@ unsafe fn buddy_attack_dash_game(fighter: &mut L2CAgentBase) {
     frame(lua_state, 22.0);
     if is_excute(fighter) {
         AttackModule::clear_all(boma);
-    }
-    frame(lua_state,  23.0);
-    if is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, vars::common::status::ATTACK_DASH_ENABLE_AIR_DRIFT);
     }
 }
