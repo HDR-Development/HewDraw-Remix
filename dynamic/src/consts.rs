@@ -660,6 +660,7 @@ pub mod vars {
             // float
             /// This float holds the current multiplier on damage for misfire
             pub const MISFIRE_DAMAGE_MULTIPLIER: i32 = 0x0100;
+            pub const TRAINING_ALWAYS_MISFIRES: i32 = 0x0101;
         }
         pub mod status {
             // flag
