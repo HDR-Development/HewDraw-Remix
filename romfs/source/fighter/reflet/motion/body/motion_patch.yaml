@@ -18,24 +18,14 @@ special_s:
   extra:
     cancel_frame: 52
 attack_11:
-  flags:
-    move: false
   extra:
     cancel_frame: 19
 attack_lw3:
-  flags:
-    move: false
 attack_lw4:
-  flags:
-    move: false
 attack_hi3:
-  flags:
-    move: false
   extra:
     cancel_frame: 32
 attack_s3_s:
-  flags:
-    move: false
   extra:
     cancel_frame: 30
 special_air_s:
@@ -45,14 +35,10 @@ attack_air_hi:
   extra:
     cancel_frame: 44
 attack_s4_hold:
-  flags:
-    move: false
 special_n_start:
   flags:
     move: false
 attack_lw4_hold:
-  flags:
-    move: false
 special_n_cancel:
   extra:
     cancel_frame: 8

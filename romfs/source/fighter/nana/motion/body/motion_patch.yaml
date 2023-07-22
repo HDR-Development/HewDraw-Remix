@@ -13,27 +13,19 @@ attack_11:
   extra:
     cancel_frame: 18
 attack_hi4:
-  flags:
-    move: false
   extra:
     cancel_frame: 55
 attack_lw4:
   extra:
     cancel_frame: 46
 attack_s4_s:
-  flags:
-    move: false
   extra:
     cancel_frame: 51
 attack_s3_s:
-  flags:
-    move: false
 throw_b_nana:
   extra:
     cancel_frame: 1
 attack_s3_lw:
-  flags:
-    move: false
 attack_air_b:
   extra:
     cancel_frame: 32
@@ -41,8 +33,6 @@ throw_f_nana:
   extra:
     cancel_frame: 1
 attack_s3_hi:
-  flags:
-    move: false
 throw_lw_nana:
   extra:
     cancel_frame: 1

@@ -10,8 +10,6 @@ attack_11:
   extra:
     cancel_frame: 20
 attack_lw3:
-  flags:
-    move: false
 attack_hi4:
   extra:
     cancel_frame: 46
@@ -19,27 +17,19 @@ attack_lw4:
   extra:
     cancel_frame: 57
 attack_hi3:
-  flags:
-    move: false
 attack_s4_s:
   extra:
     cancel_frame: 64
 attack_s3_s:
-  flags:
-    move: false
   extra:
     cancel_frame: 27
 attack_s3_lw:
-  flags:
-    move: false
   extra:
     cancel_frame: 27
 attack_air_b:
   extra:
     cancel_frame: 50
 attack_s3_hi:
-  flags:
-    move: false
   extra:
     cancel_frame: 27
 landing_air_n:
