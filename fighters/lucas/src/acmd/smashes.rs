@@ -531,7 +531,7 @@ unsafe fn lucas_attack_lw4_expression(fighter: &mut L2CAgentBase) {
 
 // LW4PT2
 
-#[acmd_script( agent = "lucas", script = "game_attacklw4pt2" , category = ACMD_GAME , low_priority)]
+#[acmd_script( agent = "lucas", script = "game_attacklw42" , category = ACMD_GAME , low_priority)]
 unsafe fn lucas_attack_lw4_pt2_game(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -566,7 +566,7 @@ unsafe fn lucas_attack_lw4_pt2_game(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "sound_attacklw4pt2", category = ACMD_SOUND, low_priority)]
+#[acmd_script( agent = "lucas", script = "sound_attacklw42", category = ACMD_SOUND, low_priority)]
 unsafe fn lucas_attack_lw4_pt2_sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     frame(lua_state, 4.0);
@@ -575,7 +575,7 @@ unsafe fn lucas_attack_lw4_pt2_sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "effect_attacklw4pt2" , category = ACMD_EFFECT , low_priority)]
+#[acmd_script( agent = "lucas", script = "effect_attacklw42" , category = ACMD_EFFECT , low_priority)]
 unsafe fn lucas_attack_lw4_pt2_effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
@@ -601,7 +601,7 @@ unsafe fn lucas_attack_lw4_pt2_effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "expression_attacklw4pt2" , category = ACMD_EXPRESSION , low_priority)]
+#[acmd_script( agent = "lucas", script = "expression_attacklw42" , category = ACMD_EXPRESSION , low_priority)]
 unsafe fn lucas_attack_lw4_pt2_expression(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();

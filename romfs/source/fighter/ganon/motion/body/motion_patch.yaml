@@ -1,0 +1,231 @@
+fall:
+  blend_frames: 5
+fall_aerial:
+  blend_frames: 5
+fall_special:
+  blend_frames: 5
+guard_off:
+  blend_frames: 4
+float:
+  game_script: game_float
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d00float.nuanmb
+  scripts:
+  - expression_float
+  - sound_float
+  - effect_float
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 60
+    freeze_during_hitstop: false
+escape:
+  flags:
+    move: false
+fall_f:
+  blend_frames: 6
+fall_b:
+  blend_frames: 6
+throw_f:
+  extra:
+    cancel_frame: 29
+throw_b:
+  extra:
+    cancel_frame: 40
+throw_lw:
+  extra:
+    cancel_frame: 35
+throw_hi:
+  extra:
+    cancel_frame: 40
+attack_11:
+  extra:
+    cancel_frame: 29
+attack_lw3:
+  extra:
+    cancel_frame: 33
+attack_hi4:
+  extra:
+    cancel_frame: 66
+attack_lw4:
+  extra:
+    cancel_frame: 66
+attack_hi3:
+  extra:
+    cancel_frame: 48
+appeal_lw_r:
+  extra:
+    cancel_frame: 90
+float_start:
+  game_script: game_floatstart
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d00floatstart.nuanmb
+  scripts:
+  - expression_floatstart
+  - sound_floatstart
+  - effect_floatstart
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 0
+    freeze_during_hitstop: false
+appeal_hi_l:
+  extra:
+    cancel_frame: 80
+attack_s4_s:
+  extra:
+    cancel_frame: 74
+attack_s3_s:
+  extra:
+    cancel_frame: 35
+appeal_hi_r:
+  extra:
+    cancel_frame: 80
+appeal_lw_l:
+  extra:
+    cancel_frame: 90
+attack_s3_lw:
+  game_script: game_attacks3lw
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c01attacks3lw.nuanmb
+  scripts:
+  - expression_attacks3
+  - sound_attacks3
+  - effect_attacks3lw
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 35
+    freeze_during_hitstop: false
+attack_air_b:
+  extra:
+    cancel_frame: 30
+attack_air_f:
+  extra:
+    cancel_frame: 40
+attack_air_n:
+  extra:
+    cancel_frame: 40
+attack_s3_hi:
+  game_script: game_attacks3hi
+  flags:
+    turn: false
+    loop: false
+    move: false
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: c01attacks3hi.nuanmb
+  scripts:
+  - expression_attacks3
+  - sound_attacks3
+  - effect_attacks3hi
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 35
+    freeze_during_hitstop: false
+attack_air_lw:
+  extra:
+    cancel_frame: 40
+fall_aerial_f:
+  blend_frames: 6
+fall_aerial_b:
+  blend_frames: 6
+attack_air_hi:
+  extra:
+    cancel_frame: 31
+fall_special_b:
+  blend_frames: 6
+fall_special_f:
+  blend_frames: 6
+float_air_start:
+  game_script: game_floatairstart
+  flags:
+    turn: false
+    loop: false
+    move: true
+    fix_trans: false
+    fix_rot: false
+    fix_scale: false
+    unk_40: false
+    unk_80: true
+    unk_100: false
+    unk_200: false
+    unk_400: false
+    unk_800: false
+    unk_1000: false
+    unk_2000: false
+  blend_frames: 0
+  animations:
+  - name: d00floatairstart.nuanmb
+  scripts:
+  - expression_floatairstart
+  - sound_floatairstart
+  - effect_floatairstart
+  extra:
+    intangible_start_frame: 0
+    intangible_end_frame: 0
+    cancel_frame: 0
+    freeze_during_hitstop: false
+special_hi_throw:
+  extra:
+    cancel_frame: 37

@@ -1,0 +1,52 @@
+fall:
+  blend_frames: 5
+escape:
+  flags:
+    move: false
+throw_b:
+  extra:
+    cancel_frame: 43
+throw_lw:
+  extra:
+    cancel_frame: 75
+attack_12:
+  extra:
+    cancel_frame: 24
+attack_13:
+  extra:
+    cancel_frame: 28
+guard_off:
+  blend_frames: 4
+attack_11:
+  extra:
+    cancel_frame: 18
+attack_lw3:
+attack_hi4:
+fall_aerial:
+  blend_frames: 5
+attack_s3_s:
+  extra:
+    cancel_frame: 34
+fall_special:
+  blend_frames: 5
+attack_s3_lw:
+  extra:
+    cancel_frame: 34
+attack_air_b:
+  extra:
+    cancel_frame: 38
+attack_air_f:
+  extra:
+    cancel_frame: 36
+attack_air_n:
+  extra:
+    cancel_frame: 36
+attack_s3_hi:
+  extra:
+    cancel_frame: 34
+attack_air_lw:
+  extra:
+    cancel_frame: 45
+attack_air_hi:
+  extra:
+    cancel_frame: 38
