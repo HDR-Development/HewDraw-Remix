@@ -1,5 +1,7 @@
 fall:
   blend_frames: 5
+guard_off:
+  blend_frames: 4
 escape:
   flags:
     move: false
@@ -16,8 +18,6 @@ attack_11:
   extra:
     cancel_frame: 18
 attack_lw3:
-  flags:
-    move: false
   extra:
     cancel_frame: 27
 special_hi:
@@ -28,8 +28,6 @@ attack_hi4:
   extra:
     cancel_frame: 55
 attack_lw4:
-  flags:
-    move: false
   extra:
     cancel_frame: 45
 attack_hi3:
@@ -41,8 +39,6 @@ attack_dash:
   extra:
     cancel_frame: 37
 attack_s3_s:
-  flags:
-    move: false
   extra:
     cancel_frame: 36
 fall_special:
