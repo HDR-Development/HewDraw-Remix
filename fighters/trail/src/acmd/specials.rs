@@ -66,6 +66,19 @@ unsafe fn game_specialairn3(fighter: &mut L2CAgentBase) {
 unsafe fn effect_specialn2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = fighter.boma();
+    if is_excute(fighter) {
+        EFFECT_FOLLOW(fighter, Hash40::new("trail_ice_hold"), Hash40::new("haver"), 0, 10, -1, -90, 0, 0, 1, true);
+        EffectModule::enable_sync_init_pos_last(boma);
+        EFFECT_FOLLOW(fighter, Hash40::new("trail_ice_sword_flare"), Hash40::new("haver"), 0, 10, -1, -90, 0, 0, 1, true);
+        EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), 0, 3.5, 0, 0, 180, 0, 0.9, true);
+        LAST_EFFECT_SET_RATE(fighter, 0.3);
+            
+        //EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 0, 11, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+    }
+    // frame(lua_state, 90.0);
+    // if is_excute(fighter) {
+    //     EFFECT_OFF_KIND(fighter, Hash40::new("trail_ice_sword_flare"), false, false);
+    // }
     // frame(lua_state, 90.0);
     // if is_excute(fighter) {
     //     AttackModule::clear_all(boma);
