@@ -52,8 +52,15 @@ unsafe fn init_settings_hook(boma: &mut BattleObjectModuleAccessor, mut situatio
         JostleModule::set_team(boma, 0);
 
         // clear platform drop input when entering airdodge (to avoid buffering waveland platdrop with the same down input as the actual waveland)
-        if [*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE, *FIGHTER_STATUS_KIND_JUMP_SQUAT].contains(&status_kind) {
-            VarModule::off_flag(boma.object(), vars::common::instance::ENABLE_WAVELAND_PLATDROP);
+        // if [*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE, *FIGHTER_STATUS_KIND_JUMP_SQUAT].contains(&status_kind) {
+        //     ControlModule::reset_flick_y(boma);
+        //     // VarModule::off_flag(boma.object(), vars::common::instance::ENABLE_WAVELAND_PLATDROP);
+        // }
+
+        if boma.is_prev_status_one_of(&[*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE, *FIGHTER_STATUS_KIND_JUMP_SQUAT])
+        && boma.is_status(*FIGHTER_STATUS_KIND_LANDING)
+        && GroundModule::is_passable_ground(boma) {
+            ControlModule::reset_flick_y(boma);
         }
 
         // Occupy ledge on ledgegrab
