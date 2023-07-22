@@ -83,4 +83,4 @@ special_air_lw_start:
     cancel_frame: 62
 catch_attack:
   extra:
-    cancel_frame: 25
+    cancel_frame: 20

@@ -39,4 +39,4 @@ attack_lw32_landing:
     cancel_frame: 18
 catch_attack:
   extra:
-    cancel_frame: 25
+    cancel_frame: 20

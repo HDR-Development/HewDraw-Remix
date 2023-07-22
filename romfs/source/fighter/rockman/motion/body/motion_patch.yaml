@@ -71,4 +71,4 @@ special_air_n_turn_empty:
     cancel_frame: 35
 catch_attack:
   extra:
-    cancel_frame: 25
+    cancel_frame: 20

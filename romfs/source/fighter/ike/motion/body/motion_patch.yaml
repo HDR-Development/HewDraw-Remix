@@ -77,4 +77,4 @@ special_air_s_attack:
     cancel_frame: 38
 catch_attack:
   extra:
-    cancel_frame: 25
+    cancel_frame: 20

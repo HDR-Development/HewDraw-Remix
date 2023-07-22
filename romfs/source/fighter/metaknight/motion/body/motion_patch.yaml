@@ -117,4 +117,4 @@ metaquick_summon_r:
     freeze_during_hitstop: false
 catch_attack:
   extra:
-    cancel_frame: 25
+    cancel_frame: 20

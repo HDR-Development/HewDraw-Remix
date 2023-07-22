@@ -231,4 +231,4 @@ special_hi_throw:
     cancel_frame: 37
 catch_attack:
   extra:
-    cancel_frame: 25
+    cancel_frame: 20

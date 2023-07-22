@@ -60,4 +60,4 @@ special_air_n_end_max:
     cancel_frame: 38
 catch_attack:
   extra:
-    cancel_frame: 25
+    cancel_frame: 20

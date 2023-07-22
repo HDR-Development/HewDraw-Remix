@@ -47,4 +47,4 @@ attack_100_end:
     cancel_frame: 39
 catch_attack:
   extra:
-    cancel_frame: 25
+    cancel_frame: 20
